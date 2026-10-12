@@ -1,56 +1,278 @@
-# carecar-mobile
+<div align="center">
 
-Aplicación móvil CareCar, construida con Flutter.
+# CareCar · App móvil
 
-## Requisitos
+**App postventa de CareCar:** para los clientes que ya compraron una unidad en la agencia. Desde el celular consultan sus vehículos, el historial de servicios y tickets, y agendan citas en el taller.
 
-- Flutter SDK 3.47.5 o superior (canal `stable`)
-- Dart SDK 3.13.4 o superior (incluido con Flutter)
-- Android Studio / Xcode según la plataforma de destino
+<p>
+  <a href="https://github.com/lattice-systems/carecar-mobile/actions/workflows/ci.yml"><img src="https://github.com/lattice-systems/carecar-mobile/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
+  <a href="https://github.com/lattice-systems/carecar-mobile/actions/workflows/codeql.yml"><img src="https://github.com/lattice-systems/carecar-mobile/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL" /></a>
+</p>
 
-Verifica que tu entorno esté listo con:
+<p>
+  <img src="https://img.shields.io/badge/Flutter-3.47-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter 3.47" />
+  <img src="https://img.shields.io/badge/Dart-3.13-0175C2?style=for-the-badge&logo=dart&logoColor=white" alt="Dart 3.13" />
+  <img src="https://img.shields.io/badge/Material%20Design-757575?style=for-the-badge&logo=materialdesign&logoColor=white" alt="Material Design" />
+</p>
+<p>
+  <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" />
+  <img src="https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=apple&logoColor=white" alt="iOS" />
+  <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
+</p>
+
+[Cómo empezar](#-cómo-empezar) · [Comandos](#-comandos-útiles) · [Pruebas](#-pruebas) · [CI y checks](#-ci-y-checks-del-pr) · [Convenciones](docs/convenciones-commits.md)
+
+</div>
+
+> [!NOTE]
+> **Estado:** estructura inicial del proyecto. `lib/main.dart` todavía es la app de ejemplo de Flutter (el contador); no hay pantallas de CareCar implementadas.
+
+---
+
+## 📑 Contenido
+
+- [Contexto del proyecto](#-contexto-del-proyecto)
+- [Alcance de la app](#-alcance-de-la-app)
+- [Stack tecnológico](#-stack-tecnológico)
+- [Cómo empezar](#-cómo-empezar)
+- [Comandos útiles](#-comandos-útiles)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Arquitectura](#-arquitectura)
+- [Pruebas](#-pruebas)
+- [CI y checks del PR](#-ci-y-checks-del-pr)
+- [Forma de trabajo](#-forma-de-trabajo)
+- [Pendientes por definir](#-pendientes-por-definir)
+- [Documentación relacionada](#-documentación-relacionada)
+
+---
+
+## 🧭 Contexto del proyecto
+
+El proyecto se compone de cuatro aplicaciones que comparten una misma API:
+
+| Aplicación        | Usuarios                                           | Repositorio                                                                               |
+| ----------------- | -------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| **App CareCar**   | Clientes de la agencia que ya compraron una unidad | Este repositorio                                                                          |
+| **CRM web**       | Vendedores, gerente de marketing y administrador   | [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend) |
+| **ERP web**       | Personal de los departamentos de la agencia        | [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend) |
+| **API (backend)** | Atiende a la app, al CRM y al ERP                  | [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)           |
+
+---
+
+## 🎯 Alcance de la app
+
+Alcance del MVP según el documento de stack y arquitectura (v2):
+
+| Funcionalidad     | Descripción                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| Acceso exclusivo  | Sin registro público: la agencia entrega usuario y contraseña al cliente después de validar la compra |
+| Mis vehículos     | Las unidades del cliente, con su historial de servicios y los tickets que genera el taller            |
+| Citas de servicio | El cliente agenda una cita y queda registrada en el módulo de Servicio del ERP                        |
+
+En el **Sprint 1** se trabaja `APP-2.1 · Acceso exclusivo gestionado por la agencia`, contra una API simulada mientras el backend implementa el contrato.
+
+---
+
+## 🧰 Stack tecnológico
+
+| Tecnología      | Uso                                                   |
+| --------------- | ----------------------------------------------------- |
+| Flutter + Dart  | Framework de UI multiplataforma y lenguaje            |
+| Material Design | Componentes visuales base                             |
+| `flutter_lints` | Reglas de análisis estático (`analysis_options.yaml`) |
+| `flutter_test`  | Pruebas unitarias y de widgets                        |
+| GitHub Actions  | CI, CodeQL y Dependency Review                        |
+
+Las plataformas objetivo son **Android** e **iOS**. Las carpetas `web/`, `windows/`, `macos/` y `linux/` vienen de la plantilla de Flutter y no son parte del alcance.
+
+---
+
+## 🚀 Cómo empezar
+
+**Requisitos**
+
+| Herramienta    | Versión                      | Para qué                            |
+| -------------- | ---------------------------- | ----------------------------------- |
+| Flutter SDK    | 3.47.5 o superior (`stable`) | Compilar y correr la app            |
+| Dart SDK       | 3.13.4 o superior            | Viene incluido con Flutter          |
+| Android Studio | Reciente, con el Android SDK | Emulador y compilación para Android |
+| Xcode          | Reciente (solo en macOS)     | Simulador y compilación para iOS    |
+
+Revisa que tu entorno esté completo (Flutter marca lo que falta):
 
 ```bash
 flutter doctor
 ```
 
-## Puesta en marcha
+**Instalación**
 
 ```bash
-git clone <url-del-repositorio>
+# 1. Clonar el repositorio
+git clone https://github.com/lattice-systems/carecar-mobile.git
 cd carecar-mobile
+
+# 2. Instalar dependencias
 flutter pub get
+
+# 3. Correr la app en un emulador o dispositivo conectado
 flutter run
 ```
 
-## Comandos útiles
+> [!TIP]
+> Con `flutter devices` ves los emuladores y dispositivos disponibles; con `flutter run -d <id>` eliges uno.
+
+---
+
+## 🔧 Comandos útiles
+
+| Comando                     | Descripción                                               |
+| --------------------------- | --------------------------------------------------------- |
+| `flutter run`               | Corre la app con recarga en caliente (`r` en la terminal) |
+| `dart format lib test`      | Aplica el formato oficial de Dart                         |
+| `flutter analyze`           | Análisis estático con las reglas de `flutter_lints`       |
+| `flutter test`              | Corre todas las pruebas                                   |
+| `flutter build apk --debug` | Compila el APK de Android (lo mismo que revisa CI)        |
+| `flutter build ios`         | Compila para iOS (solo en macOS con Xcode)                |
+| `flutter pub outdated`      | Muestra qué dependencias tienen versiones más nuevas      |
+
+---
+
+## 📁 Estructura del proyecto
+
+```
+carecar-mobile/
+├── .github/workflows/     # CI (formato, análisis, pruebas, build), CodeQL y Dependency Review
+├── docs/                  # Convenciones de ramas, commits y PR
+├── lib/
+│   └── main.dart          # Punto de entrada (todavía la app de ejemplo de Flutter)
+├── test/
+│   └── widget_test.dart   # Prueba del widget principal
+├── android/               # Proyecto nativo de Android
+├── ios/                   # Proyecto nativo de iOS
+├── web/ windows/ macos/ linux/   # Plataformas de la plantilla, fuera del alcance
+├── analysis_options.yaml  # Reglas de análisis estático
+└── pubspec.yaml           # Dependencias y versión de la app
+```
+
+La organización de carpetas dentro de `lib/` se definirá conforme avance el desarrollo.
+
+**Identificadores**
+
+| Dato                       | Valor                        |
+| -------------------------- | ---------------------------- |
+| Paquete de Dart            | `carecar_mobile`             |
+| Application id / bundle id | `com.carecar.carecar_mobile` |
+
+El paquete de Dart usa guion bajo porque Dart no admite guiones en los nombres de paquete; el repositorio se llama `carecar-mobile`.
+
+> [!WARNING]
+> No subas secretos al repositorio. El `.gitignore` ya excluye archivos `.env` (salvo `.env.example`) y las llaves de firma de Android (`*.jks`, `*.keystore`, `key.properties`). Los archivos de configuración local (`android/local.properties`, `ios/Flutter/Generated.xcconfig`, `.dart_tool/`, `build/`) se generan solos y tampoco se versionan.
+
+---
+
+## 🧱 Arquitectura
+
+La app consume la misma **API REST** que el ERP y el CRM, construida con Spring Boot como **monolito modular**. Lo que usa la app vive en el módulo `carecarapp` del backend.
+
+```
+  ERP web             CRM web           App CareCar (este repo)
+     │                   │                      │
+     └───────────────────┼──────────────────────┘
+                         ▼
+       API REST · Spring Boot + Spring Modulith
+                         │
+     PostgreSQL · Redis · Almacenamiento · Firebase (FCM)
+```
+
+Lineamientos que afectan a la app:
+
+- La API se documenta con OpenAPI; el cliente Dart de la app se generará a partir de ese contrato.
+- **Sin registro público:** el login usa credenciales emitidas por la agencia.
+- Los datos que ve el cliente (servicios, tickets, citas) los genera el ERP; la app solo los consulta o crea citas.
+- Mientras el backend implementa el contrato, la app trabaja contra una **API simulada** con dirección configurable (TEC-5).
+
+---
+
+## 🧪 Pruebas
+
+| Tipo                   | Herramienta                                    | Estado           |
+| ---------------------- | ---------------------------------------------- | ---------------- |
+| Unitarias y de widgets | `flutter_test`                                 | ✅ Configurado    |
+| Simulación de la API   | Por definir en TEC-5                           | ⏳ Por configurar |
+| De integración         | `integration_test` (en emulador o dispositivo) | ⏳ Por configurar |
+
+Las pruebas viven en `test/` con el sufijo `_test.dart`. `test/widget_test.dart` muestra cómo construir un widget, simular un toque y revisar el resultado:
 
 ```bash
-flutter analyze        # análisis estático
-flutter test           # pruebas
-flutter build apk      # compilación Android
-flutter build ios      # compilación iOS
-flutter build web      # compilación Web
+flutter test                          # todas las pruebas
+flutter test test/widget_test.dart    # un solo archivo
 ```
 
-## Estructura
+---
 
+## ✅ CI y checks del PR
+
+Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` está protegida: solo se integra por PR, con una aprobación y **todos estos checks en verde**:
+
+| Check                                       | Workflow          | Cuándo corre                          |
+| ------------------------------------------- | ----------------- | ------------------------------------- |
+| `Formato (dart format)`                     | CI                | Cada push a cualquier rama y cada PR  |
+| `Análisis estático (flutter analyze)`       | CI                | Cada push a cualquier rama y cada PR  |
+| `Pruebas (flutter test)`                    | CI                | Cada push a cualquier rama y cada PR  |
+| `Build Android (APK)`                       | CI                | Cada push a cualquier rama y cada PR  |
+| `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
+| `Revisión de dependencias nuevas/cambiadas` | Dependency Review | Solo en PR                            |
+
+Los cuatro jobs de CI corren en paralelo. El más lento es el build de Android, que tarda unos 5 minutos; los demás, alrededor de minuto y medio.
+
+Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
+
+```bash
+dart format lib test && flutter analyze && flutter test
 ```
-lib/            código de la aplicación
-test/           pruebas
-android/        proyecto Android
-ios/            proyecto iOS
-web/            proyecto Web
-windows/        proyecto Windows
-macos/          proyecto macOS
-linux/          proyecto Linux
-```
 
-## Notas
+El detalle de cada check (y por qué CodeQL revisa los workflows y no el código Dart) está en [`docs/convenciones-commits.md`](docs/convenciones-commits.md).
 
-- El identificador de paquete del proyecto Dart es `carecar_mobile` (los nombres de
-  paquete de Dart no admiten guiones); el repositorio se llama `carecar-mobile`.
-- El application id / bundle id es `com.carecar.carecar_mobile`.
-- Los archivos de configuración local (`android/local.properties`,
-  `ios/Flutter/Generated.xcconfig`, `.dart_tool/`, `build/`) se generan
-  automáticamente y están excluidos del control de versiones.
+---
+
+## 🤝 Forma de trabajo
+
+- Metodología **Scrumban + XP**, en parejas de desarrollador + Claude.
+- Límite WIP: 1 historia activa por desarrollador.
+- Tablero, iteraciones y wiki en **Azure DevOps**; código en **GitHub**; CI/CD con **GitHub Actions**.
+- Ramas, commits y PR siguen [`docs/convenciones-commits.md`](docs/convenciones-commits.md): rama corta por tarea, commits `tipo(alcance): verbo + cambio`, PR con una aprobación y se integra con **merge commit**.
+
+<details>
+<summary><strong>Definition of Ready y Definition of Done</strong> (propuesta del backlog V2, pendiente de aprobación)</summary>
+
+- **Definition of Ready:** la historia tiene formato _Como / quiero / para_, criterios comprobables, dependencias resueltas o simuladas, y cabe en un sprint.
+- **Definition of Done:** criterios validados por el PO, pruebas unitarias (TDD) y CI en verde, revisión de la otra pareja, integración a la rama principal y requisitos no funcionales generales cumplidos (contraseñas con hash y HTTPS, bitácora de acciones sensibles y datos personales tratados según el aviso de privacidad).
+
+</details>
+
+---
+
+## 📌 Pendientes por definir
+
+| Tema                 | Qué falta                                                             |
+| -------------------- | --------------------------------------------------------------------- |
+| Tecnología de la app | Confirmar Flutter con el equipo y el PO (decisión D5 del Sprint 1)    |
+| Pantallas            | Reemplazar la app de ejemplo de Flutter por las pantallas de CareCar  |
+| API simulada         | Herramienta para simular la API a partir del contrato OpenAPI (TEC-5) |
+| Cliente de la API    | Generar el cliente Dart desde el contrato OpenAPI del backend         |
+| Librerías            | Navegación, manejo de estado y consumo de API                         |
+| Estructura de `lib/` | Organización de carpetas y convenciones de código                     |
+| Notificaciones push  | Integración con Firebase Cloud Messaging                              |
+| Build de iOS en CI   | Requiere un runner de macOS; hoy CI solo compila Android              |
+| Publicación          | Firma de release y publicación en Google Play y App Store             |
+
+---
+
+## 📚 Documentación relacionada
+
+- **Wiki del proyecto (Azure DevOps):** [Agente360 Wiki](https://dev.azure.com/latticesystems/Agente360/_wiki/wikis/Agente360.wiki), sección _Arquitectura y Tecnologías_.
+- **Convenciones de ramas, commits y PR:** [`docs/convenciones-commits.md`](docs/convenciones-commits.md)
+- **Backend:** [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)
+- **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)
+- **ERP frontend:** [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend)
+- **Documentación de Flutter:** [docs.flutter.dev](https://docs.flutter.dev)
