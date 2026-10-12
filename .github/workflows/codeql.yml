@@ -1,0 +1,39 @@
+name: CodeQL
+
+# CodeQL todavía no soporta Dart, así que aquí analiza los workflows de GitHub
+# Actions (.github/workflows/): inyección de comandos, permisos de más, uso
+# inseguro de datos del PR, etc.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Todos los lunes a las 06:00 UTC, además de en cada push/PR a main.
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  analyze:
+    name: Análisis de CodeQL (GitHub Actions)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Inicializar CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: actions
+          build-mode: none
+          queries: security-extended
+
+      - name: Ejecutar el análisis de CodeQL
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:actions"
