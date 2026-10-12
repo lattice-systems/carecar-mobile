@@ -1,0 +1,116 @@
+name: CI
+
+# Corre en cada push a cualquier rama (main está protegida, así que el trabajo
+# diario vive en ramas de feature) y en cada PR hacia main.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+# Si llegan varios push seguidos a la misma rama o PR, cancela la corrida
+# anterior: no tiene sentido esperar un build viejo si ya hay uno más nuevo.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Versión de Flutter para todos los jobs. "3.47.x" toma el último parche de la
+# 3.47, la misma línea que pide el README.
+env:
+  FLUTTER_VERSION: "3.47.x"
+
+# Cada revisión es un job aparte (corren en paralelo): así en el PR aparece un
+# check por cada una y se ve de inmediato qué falló.
+jobs:
+  formato:
+    name: Formato (dart format)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Revisar formato (dart format . si falla, en local)
+        run: dart format --output=none --set-exit-if-changed lib test
+
+  analisis:
+    name: Análisis estático (flutter analyze)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Revisar el código con las reglas de analysis_options.yaml
+        run: flutter analyze
+
+  pruebas:
+    name: Pruebas (flutter test)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Correr las pruebas
+        run: flutter test
+
+  build-android:
+    name: Build Android (APK)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      # Gradle necesita un JDK para compilar el proyecto Android.
+      - name: Configurar JDK 17 (Temurin)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      # Build de debug: comprueba que la app compila para Android sin necesitar
+      # las llaves de firma de producción.
+      - name: Compilar el APK
+        run: flutter build apk --debug
