@@ -1,0 +1,27 @@
+name: Dependency Review
+
+# Compara las dependencias que agrega/cambia cada PR contra la base de datos de
+# vulnerabilidades de GitHub Advisory. Solo tiene sentido en pull_request (necesita
+# comparar dos versiones del árbol de dependencias).
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    name: Revisión de dependencias nuevas/cambiadas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Escanear el diff de dependencias
+        uses: actions/dependency-review-action@v5
+        with:
+          # Revisa las dependencias de pubspec.lock. Bloquea el PR si se introduce una dependencia con severidad alta o crítica.
+          fail-on-severity: high
+          comment-summary-in-pr: always
