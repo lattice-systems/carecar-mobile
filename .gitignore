@@ -56,3 +56,10 @@ app.*.map.json
 *.keystore
 *.jks
 key.properties
+
+# Contexto de trabajo local para Claude Code (solo uso local del equipo).
+# Se excluye .claude/context/ y no todo .claude/, para dejar la puerta abierta
+# a versionar mas adelante configuracion compartida en .claude/settings.json.
+.claude/context/
+.claude/settings.local.json
+CLAUDE.local.md
