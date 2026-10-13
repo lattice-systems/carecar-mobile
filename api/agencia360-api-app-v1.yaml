@@ -1,0 +1,555 @@
+openapi: 3.0.3
+info:
+  title: Agencia360 · API para la app CareCar
+  version: 1.0.0-borrador
+  description: |
+    Contrato de API que Agencia360 expone a la app CareCar (TEC-1).
+
+    **Estado:** borrador para revisión y aceptación de CareCar (Jael) antes de construir contra él.
+    **Fuente:** Product Backlog V2 y respuestas del PO del 9 de octubre de 2026.
+
+    Alcance pedido por TEC-1: login, vehículos, tickets, agenda, catálogo y manuales.
+
+    Convenciones:
+    - Todas las rutas van bajo `/api/v1/app` y requieren token JWT, excepto las de `auth`.
+    - El cliente solo puede ver y modificar sus propios datos; un recurso ajeno responde 404.
+    - Fechas en ISO 8601 (`2026-10-20`), horas en `HH:mm`.
+    - Errores con el formato `ApiError` que ya usa el backend (`shared/exception/ApiError.java`).
+
+servers:
+  - url: /api/v1/app
+
+tags:
+  - name: Acceso
+    description: APP-2.1 y APP-2.3
+  - name: Vehículos
+    description: APP-3.1 y ADM-1
+  - name: Servicios y tickets
+    description: APP-3.2 y ERP-3.1
+  - name: Agenda
+    description: APP-3.3 y ERP-3.3
+  - name: Catálogo
+    description: APP-4.1 (fuera del MVP; incluido porque TEC-1 lo pide en el contrato)
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      tags: [Acceso]
+      summary: Iniciar sesión con la cuenta que entregó la agencia
+      description: |
+        No existe registro público (APP-2.1). Si la cuenta tiene contraseña temporal,
+        `debeCambiarContrasena` llega en `true` y la app debe forzar el cambio (APP-2.3).
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Sesión iniciada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          description: La cuenta está desactivada (CRM-1.3)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /auth/cambiar-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Cambiar la contraseña (obligatorio en el primer ingreso)
+      description: APP-2.3 · Sprint tentativo S2.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CambiarContrasenaRequest'
+      responses:
+        '204':
+          description: Contraseña actualizada
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /auth/recuperar-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Solicitar enlace de recuperación por correo
+      description: |
+        APP-2.3 · S2. Envía un enlace de un solo uso que expira.
+        Responde 202 aunque el correo no exista, para no revelar qué cuentas hay.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [correo]
+              properties:
+                correo:
+                  type: string
+                  format: email
+      responses:
+        '202':
+          description: Solicitud recibida
+
+  /auth/restablecer-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Definir nueva contraseña con el enlace de recuperación
+      description: APP-2.3 · S2.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token, contrasenaNueva]
+              properties:
+                token:
+                  type: string
+                contrasenaNueva:
+                  type: string
+                  format: password
+      responses:
+        '204':
+          description: Contraseña restablecida
+        '400':
+          description: Token inválido, usado o expirado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /vehiculos:
+    get:
+      tags: [Vehículos]
+      summary: Listar los vehículos del cliente
+      description: APP-3.1 · En el MVP solo el listado.
+      responses:
+        '200':
+          description: Vehículos asignados al cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehiculo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /vehiculos/{vehiculoId}/manuales:
+    get:
+      tags: [Vehículos]
+      summary: Manuales y fichas técnicas del modelo y año del vehículo
+      description: ADM-1 · Fuera del MVP; la respuesta puede venir vacía mientras no se carguen manuales.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Manuales disponibles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manual'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/servicios:
+    get:
+      tags: [Servicios y tickets]
+      summary: Historial de servicios del vehículo
+      description: APP-3.2 · Orden cronológico, el más reciente primero.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Órdenes de servicio del vehículo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servicio'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /servicios/{servicioId}/ticket:
+    get:
+      tags: [Servicios y tickets]
+      summary: Descargar el ticket de una orden de servicio
+      description: El ticket es un documento que genera la orden de servicio (decisión del 9 de octubre).
+      parameters:
+        - name: servicioId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Ticket en PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /agenda/disponibilidad:
+    get:
+      tags: [Agenda]
+      summary: Horarios con cupo para agendar
+      description: APP-3.3 · ERP-3.3. Solo devuelve franjas con cupo mayor a cero.
+      parameters:
+        - name: desde
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: hasta
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Franjas disponibles por fecha
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disponibilidad'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /citas:
+    get:
+      tags: [Agenda]
+      summary: Listar las citas del cliente
+      responses:
+        '200':
+          description: Citas del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cita'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+    post:
+      tags: [Agenda]
+      summary: Agendar una cita de servicio
+      description: APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaCita'
+      responses:
+        '201':
+          description: Cita confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La franja ya no tiene cupo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /citas/{citaId}/cancelar:
+    post:
+      tags: [Agenda]
+      summary: Cancelar una cita
+      description: APP-3.3 · El cliente puede cancelar hasta X horas antes. **El valor de X está pendiente del PO.**
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cita cancelada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: Fuera del plazo de cancelación o la cita ya no está confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /catalogo:
+    get:
+      tags: [Catálogo]
+      summary: Modelos actuales del catálogo
+      description: Lista aparte del inventario que solo muestra los modelos actuales (decisión del 9 de octubre).
+      responses:
+        '200':
+          description: Modelos activos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModeloCatalogo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    VehiculoId:
+      name: vehiculoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+  responses:
+    NoAutenticado:
+      description: Sin token, token inválido o credenciales incorrectas
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    NoEncontrado:
+      description: No existe o no pertenece al cliente
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    DatosInvalidos:
+      description: Datos de entrada inválidos
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [usuario, contrasena]
+      properties:
+        usuario:
+          type: string
+        contrasena:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      required: [accessToken, debeCambiarContrasena]
+      properties:
+        accessToken:
+          type: string
+        debeCambiarContrasena:
+          type: boolean
+          description: true si la contraseña es temporal (APP-2.3)
+
+    CambiarContrasenaRequest:
+      type: object
+      required: [contrasenaActual, contrasenaNueva]
+      properties:
+        contrasenaActual:
+          type: string
+          format: password
+        contrasenaNueva:
+          type: string
+          format: password
+
+    Vehiculo:
+      type: object
+      description: Vehículo del cliente (expediente, ERP-3.0)
+      required: [id, vin, modelo, anio]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vin:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        placas:
+          type: string
+          nullable: true
+        kilometraje:
+          type: integer
+          nullable: true
+
+    Manual:
+      type: object
+      required: [id, modelo, anio, url]
+      properties:
+        id:
+          type: integer
+          format: int64
+        modelo:
+          type: string
+        anio:
+          type: integer
+        url:
+          type: string
+          description: Enlace para descargar el PDF
+
+    Servicio:
+      type: object
+      description: Orden de servicio vista por el cliente (ERP-3.1)
+      required: [id, fecha, estatus, total]
+      properties:
+        id:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        estatus:
+          type: string
+          description: Valores pendientes de definir en ERP-3.1
+        total:
+          type: number
+          format: double
+          description: Mano de obra más refacciones
+
+    Disponibilidad:
+      type: object
+      required: [fecha, franjaId, horaInicio, horaFin, cupoDisponible]
+      properties:
+        fecha:
+          type: string
+          format: date
+        franjaId:
+          type: integer
+          format: int64
+        horaInicio:
+          type: string
+          example: '09:00'
+        horaFin:
+          type: string
+          example: '10:00'
+        cupoDisponible:
+          type: integer
+          minimum: 1
+
+    NuevaCita:
+      type: object
+      required: [vehiculoId, franjaId, fecha]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+
+    Cita:
+      type: object
+      required: [id, vehiculoId, fecha, horaInicio, horaFin, estado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        horaInicio:
+          type: string
+        horaFin:
+          type: string
+        estado:
+          type: string
+          enum: [CONFIRMADA, ATENDIDA, NO_ASISTIO, CANCELADA]
+
+    ModeloCatalogo:
+      type: object
+      description: Atributos adicionales (versiones, precio, imágenes) pendientes de definir en APP-4.1
+      required: [id, modelo]
+      properties:
+        id:
+          type: integer
+          format: int64
+        modelo:
+          type: string
+
+    Problema:
+      type: object
+      description: Formato de error del backend (ApiError en shared/exception).
+      required: [timestamp, status, error, message, path]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          example: 409
+        error:
+          type: string
+          example: Conflict
+        message:
+          type: string
+          example: La franja ya no tiene cupo
+        path:
+          type: string
+          example: /api/v1/app/citas

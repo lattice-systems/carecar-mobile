@@ -1,0 +1,5 @@
+node_modules/
+
+# db.json es el estado vivo: lo modifican las peticiones POST.
+# El estado inicial versionado es db.seed.json.
+db.json
