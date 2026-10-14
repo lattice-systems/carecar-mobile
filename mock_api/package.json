@@ -1,0 +1,16 @@
+{
+  "name": "carecar-mock-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API simulada de Agencia360 para la app CareCar (TEC-5)",
+  "scripts": {
+    "start": "node server.js",
+    "reset": "node -e \"require('fs').copyFileSync('db.seed.json','db.json');console.log('db.json restaurado desde db.seed.json')\""
+  },
+  "dependencies": {
+    "json-server": "0.17.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
