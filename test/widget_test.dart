@@ -1,30 +1,32 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:carecar_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:carecar_mobile/main.dart';
-
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets(
+    'sin API_URL la app explica como configurarla en lugar de arrancar',
+    (tester) async {
+      // Las pruebas corren sin --dart-define, asi que ApiConfig.desdeEntorno()
+      // falla a proposito. Es el comportamiento que se quiere: mejor un error
+      // claro que una app apuntando a ningun lado.
+      await tester.pumpWidget(const AppCareCar());
+      await tester.pumpAndSettle();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      expect(
+        find.text('Falta configurar la dirección de la API'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('--dart-define=API_URL'), findsOneWidget);
+    },
+  );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('la app no arranca con el contador de ejemplo de Flutter', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const AppCareCar());
+    await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsNothing);
+    expect(find.textContaining('You have pushed the button'), findsNothing);
   });
 }
