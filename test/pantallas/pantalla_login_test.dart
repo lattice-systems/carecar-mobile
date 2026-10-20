@@ -24,14 +24,42 @@ Future<void> _montar(WidgetTester tester, ControladorSesion controlador) async {
 
 Future<void> _escribirCredenciales(
   WidgetTester tester, {
-  String usuario = 'cliente1',
+  String correo = 'cliente1@example.com',
   String contrasena = 'CareCar2026',
 }) async {
-  await tester.enterText(find.byKey(PantallaLogin.campoUsuario), usuario);
+  await tester.enterText(find.byKey(PantallaLogin.campoCorreo), correo);
   await tester.enterText(find.byKey(PantallaLogin.campoContrasena), contrasena);
 }
 
 void main() {
+  group('APP-UX-1 · identidad de Agencia360', () {
+    testWidgets('muestra el logotipo, no un marcador de posicion', (
+      tester,
+    ) async {
+      await _montar(tester, _controlador(ApiFalsa()));
+
+      final logo = tester.widget<Image>(find.byKey(PantallaLogin.logo));
+      expect(logo.image, isA<AssetImage>());
+      expect(
+        (logo.image as AssetImage).assetName,
+        'assets/marca/agencia360-logo.png',
+      );
+      // Un logotipo sin texto siempre lleva etiqueta accesible.
+      expect(logo.semanticLabel, 'Agencia360');
+      // La guia pide 120 px de ancho minimo para el logo horizontal.
+      expect(logo.width, greaterThanOrEqualTo(120));
+    });
+
+    testWidgets('la app se identifica como CareCar, sin prefijo', (
+      tester,
+    ) async {
+      await _montar(tester, _controlador(ApiFalsa()));
+
+      expect(find.text('CareCar'), findsOneWidget);
+      expect(find.textContaining('Agencia360 ·'), findsNothing);
+    });
+  });
+
   group('el criterio de aceptacion de APP-2.1', () {
     testWidgets('no muestra ningun flujo de registro de cuenta nueva', (
       tester,
@@ -71,7 +99,7 @@ void main() {
     testWidgets('tiene campo de usuario y de contrasena', (tester) async {
       await _montar(tester, _controlador(ApiFalsa()));
 
-      expect(find.byKey(PantallaLogin.campoUsuario), findsOneWidget);
+      expect(find.byKey(PantallaLogin.campoCorreo), findsOneWidget);
       expect(find.byKey(PantallaLogin.campoContrasena), findsOneWidget);
     });
 
@@ -82,7 +110,7 @@ void main() {
 
       // Regla de la guia de estilos: «las etiquetas siempre van arriba del
       // campo y visibles. Nunca se usa solo el placeholder».
-      expect(find.text('Usuario'), findsOneWidget);
+      expect(find.text('Correo'), findsOneWidget);
       expect(find.text('Contraseña'), findsOneWidget);
     });
 
@@ -130,7 +158,7 @@ void main() {
       await _montar(tester, _controlador(ApiFalsa()));
 
       for (final llave in [
-        PantallaLogin.campoUsuario,
+        PantallaLogin.campoCorreo,
         PantallaLogin.campoContrasena,
       ]) {
         final campo = tester.widget<TextField>(
@@ -168,7 +196,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(api.llamadasAlLogin, 0);
-      expect(find.text('Escribe tu usuario.'), findsOneWidget);
+      expect(find.text('Escribe tu correo.'), findsOneWidget);
       expect(find.text('Escribe tu contraseña.'), findsOneWidget);
     });
 
@@ -294,7 +322,7 @@ void main() {
 
       final campo = tester.widget<TextField>(
         find.descendant(
-          of: find.byKey(PantallaLogin.campoUsuario),
+          of: find.byKey(PantallaLogin.campoCorreo),
           matching: find.byType(TextField),
         ),
       );
