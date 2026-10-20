@@ -4,4 +4,19 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- Permite HTTP sin cifrar SOLO en depuracion.
+         Desde Android 9 (API 28) el sistema bloquea el trafico en claro, y la
+         API simulada y el backend local corren sobre http://. Sin esto, la app
+         en el emulador falla con un error de red que parece «el servidor esta
+         apagado» (SinConexion) y despista.
+
+         Este archivo solo se aplica a las compilaciones de depuracion: las de
+         release siguen exigiendo HTTPS, como pidio Ricardo en RIC-6.
+
+         Direcciones utiles en depuracion (RIC-20):
+           emulador de Android -> http://10.0.2.2:8080/api/v1/app   (backend local)
+           emulador de Android -> http://10.0.2.2:3000/api/v1/app   (API simulada)
+    -->
+    <application android:usesCleartextTraffic="true"/>
 </manifest>
