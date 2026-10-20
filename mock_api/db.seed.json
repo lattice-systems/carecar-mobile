@@ -1,0 +1,177 @@
+{
+  "cuentas": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "usuario": "cliente1",
+      "contrasena": "CareCar2026",
+      "debeCambiarContrasena": false,
+      "activa": true,
+      "nombre": "Maria Elena Robles",
+      "correo": "cliente1@example.com"
+    },
+    {
+      "id": 2,
+      "clienteId": 2,
+      "usuario": "cliente2",
+      "contrasena": "Temporal123",
+      "debeCambiarContrasena": true,
+      "activa": true,
+      "nombre": "Jorge Alberto Fuentes",
+      "correo": "cliente2@example.com"
+    },
+    {
+      "id": 3,
+      "clienteId": 3,
+      "usuario": "cliente3",
+      "contrasena": "CareCar2026",
+      "debeCambiarContrasena": false,
+      "activa": false,
+      "nombre": "Cuenta desactivada",
+      "correo": "cliente3@example.com"
+    }
+  ],
+
+  "vehiculos": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "vin": "3N1CN7AD5ML000111",
+      "modelo": "Versa",
+      "anio": 2024,
+      "placas": "ABC-12-34",
+      "kilometraje": 18450
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "vin": "3N1CP5CD8ML000222",
+      "modelo": "Kicks",
+      "anio": 2023,
+      "placas": null,
+      "kilometraje": null
+    },
+    {
+      "id": 3,
+      "clienteId": 2,
+      "vin": "MAJ6S3KL9NC000333",
+      "modelo": "Sentra",
+      "anio": 2025,
+      "placas": "XYZ-98-76",
+      "kilometraje": 3200
+    },
+    {
+      "id": 4,
+      "clienteId": 3,
+      "vin": "1N4BL4BV6NN000444",
+      "modelo": "Versa",
+      "anio": 2022,
+      "placas": "QRS-55-11",
+      "kilometraje": 61000
+    }
+  ],
+
+  "servicios": [
+    {
+      "id": 1,
+      "vehiculoId": 1,
+      "fecha": "2026-09-18",
+      "estatus": "Terminado",
+      "total": 4850.5
+    },
+    {
+      "id": 2,
+      "vehiculoId": 1,
+      "fecha": "2026-05-04",
+      "estatus": "Terminado",
+      "total": 2300.0
+    },
+    {
+      "id": 3,
+      "vehiculoId": 1,
+      "fecha": "2026-01-22",
+      "estatus": "Terminado",
+      "total": 7120.75
+    },
+    {
+      "id": 4,
+      "vehiculoId": 2,
+      "fecha": "2026-08-30",
+      "estatus": "En proceso",
+      "total": 1540.0
+    },
+    {
+      "id": 5,
+      "vehiculoId": 3,
+      "fecha": "2026-10-02",
+      "estatus": "Terminado",
+      "total": 980.0
+    }
+  ],
+
+  "manuales": [
+    {
+      "id": 1,
+      "modelo": "Versa",
+      "anio": 2024,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-versa-2024.pdf"
+    },
+    {
+      "id": 2,
+      "modelo": "Kicks",
+      "anio": 2023,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-kicks-2023.pdf"
+    },
+    {
+      "id": 3,
+      "modelo": "Sentra",
+      "anio": 2025,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-sentra-2025.pdf"
+    }
+  ],
+
+  "franjas": [
+    { "id": 1, "fecha": "2026-10-20", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 2 },
+    { "id": 2, "fecha": "2026-10-20", "horaInicio": "10:00", "horaFin": "11:00", "cupoDisponible": 1 },
+    { "id": 3, "fecha": "2026-10-20", "horaInicio": "11:00", "horaFin": "12:00", "cupoDisponible": 0 },
+    { "id": 4, "fecha": "2026-10-21", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 3 },
+    { "id": 5, "fecha": "2026-10-21", "horaInicio": "16:00", "horaFin": "17:00", "cupoDisponible": 1 },
+    { "id": 6, "fecha": "2026-10-22", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 2 }
+  ],
+
+  "citas": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "vehiculoId": 1,
+      "franjaId": 4,
+      "fecha": "2026-10-21",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "estado": "CONFIRMADA"
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "vehiculoId": 2,
+      "franjaId": 1,
+      "fecha": "2026-09-15",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "estado": "ATENDIDA"
+    }
+  ],
+
+  "catalogo": [
+    { "id": 1, "modelo": "Versa", "activo": true },
+    { "id": 2, "modelo": "Kicks", "activo": true },
+    { "id": 3, "modelo": "Sentra", "activo": true },
+    { "id": 4, "modelo": "Tsuru", "activo": false }
+  ],
+
+  "tokensRecuperacion": [
+    { "id": 1, "token": "token-valido-de-prueba", "correo": "cliente1@example.com", "usado": false, "expira": "2099-01-01T00:00:00Z" },
+    { "id": 2, "token": "token-ya-usado", "correo": "cliente1@example.com", "usado": true, "expira": "2099-01-01T00:00:00Z" },
+    { "id": 3, "token": "token-expirado", "correo": "cliente1@example.com", "usado": false, "expira": "2020-01-01T00:00:00Z" }
+  ]
+}

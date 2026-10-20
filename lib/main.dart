@@ -1,121 +1,149 @@
 import 'package:flutter/material.dart';
 
+import 'api/api_config.dart';
+import 'api/carecar_api_http.dart';
+import 'api/cliente_api.dart';
+import 'pantallas/pantalla_inicio.dart';
+import 'pantallas/pantalla_login.dart';
+import 'sesion/almacen_sesion.dart';
+import 'sesion/controlador_sesion.dart';
+import 'tema/tema_carecar.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(const AppCareCar());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+/// Arma la app y conecta las piezas.
+///
+/// Este es el unico lugar que conoce a la vez la direccion del servidor, el
+/// cliente HTTP y las pantallas. Mas abajo nadie sabe de donde vienen los
+/// datos: las pantallas solo ven `CarecarApi` y `ControladorSesion`.
+///
+/// El cableado esta a mano a proposito: la inyeccion de dependencias todavia no
+/// esta decidida (peticion EQ-1) y para dos objetos no vale la pena una
+/// libreria.
+class AppCareCar extends StatefulWidget {
+  const AppCareCar({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<AppCareCar> createState() => _AppCareCarState();
+}
+
+class _AppCareCarState extends State<AppCareCar> {
+  ControladorSesion? _sesion;
+  ClienteApi? _cliente;
+  Object? _errorDeArranque;
+
+  @override
+  void initState() {
+    super.initState();
+    _armar();
+  }
+
+  void _armar() {
+    try {
+      final almacen = AlmacenEnMemoria();
+
+      // El cliente pide el token al almacen en cada peticion, asi que iniciar
+      // o cerrar sesion no obliga a reconstruirlo.
+      final cliente = ClienteApi(
+        config: ApiConfig.desdeEntorno(),
+        obtenerToken: almacen.leerToken,
+      );
+
+      _cliente = cliente;
+      _sesion = ControladorSesion(CarecarApiHttp(cliente), almacen);
+    } on ApiConfigInvalida catch (e) {
+      // Falta --dart-define=API_URL. Es preferible decirlo con el comando
+      // exacto que arrancar apuntando a ningun lado.
+      _errorDeArranque = e;
+    }
+  }
+
+  @override
+  void dispose() {
+    _cliente?.cerrar();
+    _sesion?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'CareCar',
+      theme: TemaCareCar.claro,
+      debugShowCheckedModeBanner: false,
+      home: _errorDeArranque != null
+          ? _PantallaDeErrorDeArranque(error: _errorDeArranque!)
+          : _Raiz(controlador: _sesion!),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+/// Decide si se muestra el login o el inicio, segun si hay sesion.
+///
+/// Es la navegacion minima que APP-2.1 necesita. Cuando el equipo defina como
+/// se navega (peticion EQ-1), se cambia aqui sin tocar las pantallas.
+class _Raiz extends StatefulWidget {
+  const _Raiz({required this.controlador});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  final ControladorSesion controlador;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<_Raiz> createState() => _RaizState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _RaizState extends State<_Raiz> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.controlador.haySesion) {
+      return PantallaInicio(
+        controlador: widget.controlador,
+        alCerrarSesion: () => setState(() {}),
+      );
+    }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+    return PantallaLogin(
+      controlador: widget.controlador,
+      alIniciarSesion: () => setState(() {}),
+    );
   }
+}
+
+/// Lo que se ve si la app se compilo sin la direccion de la API.
+class _PantallaDeErrorDeArranque extends StatelessWidget {
+  const _PantallaDeErrorDeArranque({required this.error});
+
+  final Object error;
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.settings_outlined,
+                size: 48,
+                color: TemaCareCar.peligro,
+              ),
+              const SizedBox(height: TemaCareCar.espacioCampos),
+              Text(
+                'Falta configurar la dirección de la API',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: TemaCareCar.espacioCampos),
+              SelectableText(
+                '$error',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
