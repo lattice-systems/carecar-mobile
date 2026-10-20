@@ -73,7 +73,7 @@ class ControladorSesion extends ChangeNotifier {
   Future<String?> obtenerToken() => _almacen.leerToken();
 
   Future<void> iniciarSesion({
-    required String usuario,
+    required String correo,
     required String contrasena,
   }) async {
     // Un doble toque no debe mandar dos logins.
@@ -83,7 +83,7 @@ class ControladorSesion extends ChangeNotifier {
 
     try {
       final sesion = await _api.iniciarSesion(
-        PeticionLogin(usuario: usuario, contrasena: contrasena),
+        PeticionLogin(correo: correo, contrasena: contrasena),
       );
       await _almacen.guardarToken(sesion.accessToken);
       _cambiarA(
@@ -99,7 +99,7 @@ class ControladorSesion extends ChangeNotifier {
       // Nada deberia llegar aqui, pero un error inesperado no puede dejar la
       // pantalla trabada en «Entrando…».
       _cambiarA(
-        const FalloDeSesion('Ocurrio un error inesperado. Intenta de nuevo.'),
+        const FalloDeSesion('Ocurrió un error inesperado. Intenta de nuevo.'),
       );
     }
   }

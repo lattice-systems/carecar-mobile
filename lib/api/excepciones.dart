@@ -58,6 +58,30 @@ class Conflicto extends ExcepcionApi {
   const Conflicto(super.mensaje, {super.problema});
 }
 
+/// 429 · Cinco intentos fallidos seguidos: el login se bloquea 15 minutos.
+///
+/// RIC-5. Sin este caso, un bloqueo se veria como «ocurrio un error
+/// inesperado», que es justo lo contrario de lo que el usuario necesita saber.
+class DemasiadosIntentos extends ExcepcionApi {
+  const DemasiadosIntentos(
+    super.mensaje, {
+    super.problema,
+    this.esperaSegundos,
+  });
+
+  /// Lo que dice el encabezado `Retry-After`, en segundos, si vino.
+  final int? esperaSegundos;
+
+  /// «15 minutos», «45 segundos»: para armar el mensaje al usuario.
+  String? get esperaLegible {
+    final s = esperaSegundos;
+    if (s == null || s <= 0) return null;
+    if (s < 60) return '$s segundos';
+    final minutos = (s / 60).ceil();
+    return minutos == 1 ? '1 minuto' : '$minutos minutos';
+  }
+}
+
 /// Cualquier otro codigo que el contrato no declara, incluido 5xx.
 class ErrorDelServidor extends ExcepcionApi {
   const ErrorDelServidor(super.mensaje, {super.problema, this.status});

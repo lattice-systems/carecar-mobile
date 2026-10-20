@@ -41,16 +41,30 @@ const TEXTO_ESTADO = {
   403: 'Forbidden',
   404: 'Not Found',
   409: 'Conflict',
+  429: 'Too Many Requests',
 };
 
-function problema(req, res, status, mensaje) {
-  res.status(status).jsonp({
+// Reglas de contrasena del contrato (RIC-9): de 8 a 72, con letra y numero.
+const TEXTO_CONTRASENA =
+  'La contrasena debe tener de 8 a 72 caracteres, con al menos una letra y un numero';
+
+function contrasenaValida(valor) {
+  const v = String(valor || '');
+  return v.length >= 8 && v.length <= 72 && /[A-Za-z]/.test(v) && /[0-9]/.test(v);
+}
+
+function problema(req, res, status, mensaje, codigo) {
+  const cuerpo = {
     timestamp: new Date().toISOString(),
     status,
     error: TEXTO_ESTADO[status] || 'Error',
     message: mensaje,
     path: req.originalUrl.split('?')[0],
-  });
+  };
+  // `codigo` es opcional en el contrato v1.1 (RIC-15). Se manda cuando se
+  // conoce, para que la app decida sin leer el texto.
+  if (codigo) cuerpo.codigo = codigo;
+  res.status(status).jsonp(cuerpo);
 }
 
 // El contrato dice que un recurso ajeno responde 404, no 403: la app no debe
@@ -128,7 +142,7 @@ servidor.use((req, res, siguiente) => {
 
   const sesion = leerToken(req.get('Authorization'));
   if (!sesion) {
-    return problema(req, res, 401, 'Sin token o token invalido');
+    return problema(req, res, 401, 'Sin token o token invalido', 'CREDENCIALES_INVALIDAS');
   }
 
   const cuenta = db.get('cuentas').find({ clienteId: Number(sesion.sub) }).value();
@@ -138,7 +152,7 @@ servidor.use((req, res, siguiente) => {
   // 403 para que la app pueda implementar y probar ese caso desde ahora. Si
   // Ricardo decide otra cosa, se cambia aqui.
   if (!cuenta || !cuenta.activa) {
-    return problema(req, res, 403, 'La cuenta esta desactivada');
+    return problema(req, res, 403, 'La cuenta esta desactivada', 'CUENTA_DESACTIVADA');
   }
 
   req.sesion = { clienteId: cuenta.clienteId, cuenta };
@@ -149,22 +163,71 @@ servidor.use((req, res, siguiente) => {
 // Acceso · APP-2.1 y APP-2.3
 // ---------------------------------------------------------------------------
 
+// Intentos fallidos por correo, en memoria. RIC-5: 5 seguidos bloquean 15 min.
+const intentos = new Map();
+const BLOQUEO_MS = 15 * 60 * 1000;
+const MAX_INTENTOS = 5;
+
+function segundosBloqueado(correo) {
+  const registro = intentos.get(correo);
+  if (!registro || registro.fallos < MAX_INTENTOS) return 0;
+  const restante = registro.hasta - Date.now();
+  if (restante <= 0) {
+    intentos.delete(correo);
+    return 0;
+  }
+  return Math.ceil(restante / 1000);
+}
+
+function registrarFallo(correo) {
+  const registro = intentos.get(correo) || { fallos: 0, hasta: 0 };
+  registro.fallos += 1;
+  if (registro.fallos >= MAX_INTENTOS) registro.hasta = Date.now() + BLOQUEO_MS;
+  intentos.set(correo, registro);
+}
+
 servidor.post(`${BASE}/auth/login`, (req, res) => {
-  const { usuario, contrasena } = req.body || {};
-  if (!usuario || !contrasena) {
-    return problema(req, res, 400, 'Escribe tu usuario y tu contrasena');
+  const { correo, contrasena } = req.body || {};
+  if (!correo || !contrasena) {
+    return problema(req, res, 400, 'Escribe tu correo y tu contrasena', 'DATOS_INVALIDOS');
   }
 
-  const cuenta = db.get('cuentas').find({ usuario }).value();
+  // El backend ignora mayusculas y espacios al inicio y al final (RIC-8).
+  const normalizado = String(correo).trim().toLowerCase();
+
+  const espera = segundosBloqueado(normalizado);
+  if (espera > 0) {
+    res.set('Retry-After', String(espera));
+    return problema(
+      req,
+      res,
+      429,
+      'Demasiados intentos. Intenta de nuevo mas tarde.',
+      'DEMASIADOS_INTENTOS',
+    );
+  }
+
+  const cuenta = db
+    .get('cuentas')
+    .find((c) => String(c.correo).toLowerCase() === normalizado)
+    .value();
+
   if (!cuenta || cuenta.contrasena !== contrasena) {
-    return problema(req, res, 401, 'Usuario o contrasena incorrectos');
+    registrarFallo(normalizado);
+    return problema(req, res, 401, 'Correo o contrasena incorrectos', 'CREDENCIALES_INVALIDAS');
   }
   if (!cuenta.activa) {
-    return problema(req, res, 403, 'La cuenta esta desactivada');
+    return problema(req, res, 403, 'La cuenta esta desactivada', 'CUENTA_DESACTIVADA');
   }
+
+  intentos.delete(normalizado);
 
   res.jsonp({
     accessToken: firmarToken(cuenta),
+    // La app todavia no los usa (se posponen al Sprint 3), pero el contrato
+    // los declara obligatorios, asi que el mock los manda.
+    expiresIn: 3600,
+    refreshToken: `refresh-de-prueba-${cuenta.id}`,
     debeCambiarContrasena: cuenta.debeCambiarContrasena,
   });
 });
@@ -172,15 +235,15 @@ servidor.post(`${BASE}/auth/login`, (req, res) => {
 servidor.post(`${BASE}/auth/cambiar-contrasena`, (req, res) => {
   const { contrasenaActual, contrasenaNueva } = req.body || {};
   if (!contrasenaActual || !contrasenaNueva) {
-    return problema(req, res, 400, 'Faltan la contrasena actual y la nueva');
+    return problema(req, res, 400, 'Faltan la contrasena actual y la nueva', 'DATOS_INVALIDOS');
   }
-  if (contrasenaNueva.length < 8) {
-    return problema(req, res, 400, 'La contrasena nueva debe tener al menos 8 caracteres');
+  if (!contrasenaValida(contrasenaNueva)) {
+    return problema(req, res, 400, TEXTO_CONTRASENA, 'DATOS_INVALIDOS');
   }
 
   const { cuenta } = req.sesion;
   if (cuenta.contrasena !== contrasenaActual) {
-    return problema(req, res, 400, 'La contrasena actual no coincide');
+    return problema(req, res, 400, 'La contrasena actual no coincide', 'DATOS_INVALIDOS');
   }
 
   db.get('cuentas')
@@ -195,21 +258,40 @@ servidor.post(`${BASE}/auth/cambiar-contrasena`, (req, res) => {
 servidor.post(`${BASE}/auth/recuperar-contrasena`, (req, res) => {
   const { correo } = req.body || {};
   if (!correo) {
-    return problema(req, res, 400, 'Escribe tu correo');
+    return problema(req, res, 400, 'Escribe tu correo', 'DATOS_INVALIDOS');
   }
   res.status(202).end();
 });
 
 servidor.post(`${BASE}/auth/restablecer-contrasena`, (req, res) => {
-  const { token, contrasenaNueva } = req.body || {};
-  if (!token || !contrasenaNueva) {
-    return problema(req, res, 400, 'Faltan el token y la contrasena nueva');
+  const { correo, codigo, contrasenaNueva } = req.body || {};
+  if (!correo || !codigo || !contrasenaNueva) {
+    return problema(
+      req,
+      res,
+      400,
+      'Faltan el correo, el codigo y la contrasena nueva',
+      'DATOS_INVALIDOS',
+    );
+  }
+  if (!contrasenaValida(contrasenaNueva)) {
+    return problema(req, res, 400, TEXTO_CONTRASENA, 'DATOS_INVALIDOS');
   }
 
-  const registro = db.get('tokensRecuperacion').find({ token }).value();
+  const normalizado = String(correo).trim().toLowerCase();
+  const registro = db
+    .get('tokensRecuperacion')
+    .find(
+      (t) =>
+        t.token === String(codigo).trim() &&
+        String(t.correo).toLowerCase() === normalizado,
+    )
+    .value();
   const expirado = registro && new Date(registro.expira) < new Date();
+  // Invalido, usado o vencido responden igual a proposito (RIC-19): si
+  // respondieran distinto se podria averiguar que codigos existen.
   if (!registro || registro.usado || expirado) {
-    return problema(req, res, 400, 'El enlace no es valido, ya se uso o expiro');
+    return problema(req, res, 400, 'El codigo no es valido, ya se uso o vencio', 'CODIGO_INVALIDO');
   }
 
   const cuenta = db.get('cuentas').find({ correo: registro.correo }).value();
@@ -365,7 +447,7 @@ servidor.post(`${BASE}/citas`, (req, res) => {
   if (!franja || franja.fecha !== fecha) return noEncontrado(req, res);
 
   if (franja.cupoDisponible < 1) {
-    return problema(req, res, 409, 'La franja ya no tiene cupo');
+    return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
   }
 
   // "No se puede reservar dos veces" (APP-3.3).
@@ -410,7 +492,7 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   if (!cita || cita.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
 
   if (cita.estado !== 'CONFIRMADA') {
-    return problema(req, res, 409, 'La cita ya no esta confirmada');
+    return problema(req, res, 409, 'La cita ya no esta confirmada', 'CITA_NO_CANCELABLE');
   }
 
   // PO-4 sigue abierta: no sabemos con cuantas horas de anticipacion se puede
@@ -418,7 +500,7 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   // el numero, se agrega la ventana aqui.
   const hoy = new Date().toISOString().slice(0, 10);
   if (cita.fecha < hoy) {
-    return problema(req, res, 409, 'Fuera del plazo de cancelacion');
+    return problema(req, res, 409, 'Fuera del plazo de cancelacion', 'FUERA_DE_PLAZO');
   }
 
   db.get('citas').find({ id: cita.id }).assign({ estado: 'CANCELADA' }).write();

@@ -48,7 +48,10 @@ void main() {
     if (!levantada) return markTestSkipped('La API simulada no esta levantada');
     final sesion = armar();
 
-    await sesion.iniciarSesion(usuario: 'cliente1', contrasena: 'CareCar2026');
+    await sesion.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'CareCar2026',
+    );
 
     expect(sesion.estado, isA<Autenticada>());
     expect((sesion.estado as Autenticada).debeCambiarContrasena, isFalse);
@@ -59,7 +62,10 @@ void main() {
     if (!levantada) return markTestSkipped('La API simulada no esta levantada');
     final sesion = armar();
 
-    await sesion.iniciarSesion(usuario: 'cliente2', contrasena: 'Temporal123');
+    await sesion.iniciarSesion(
+      correo: 'cliente2@example.com',
+      contrasena: 'Temporal123',
+    );
 
     expect((sesion.estado as Autenticada).debeCambiarContrasena, isTrue);
   });
@@ -68,7 +74,10 @@ void main() {
     if (!levantada) return markTestSkipped('La API simulada no esta levantada');
     final sesion = armar();
 
-    await sesion.iniciarSesion(usuario: 'cliente1', contrasena: 'equivocada');
+    await sesion.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'equivocada',
+    );
 
     final fallo = sesion.estado as FalloDeSesion;
     expect(fallo.esFalloDeRed, isFalse);
@@ -84,7 +93,10 @@ void main() {
     if (!levantada) return markTestSkipped('La API simulada no esta levantada');
     final sesion = armar();
 
-    await sesion.iniciarSesion(usuario: 'cliente3', contrasena: 'CareCar2026');
+    await sesion.iniciarSesion(
+      correo: 'cliente3@example.com',
+      contrasena: 'CareCar2026',
+    );
 
     expect(sesion.estado, isA<FalloDeSesion>());
     expect((sesion.estado as FalloDeSesion).esFalloDeRed, isFalse);
@@ -100,7 +112,7 @@ void main() {
       final sesion = armar(direccion: 'http://localhost:9/api/v1/app');
 
       await sesion.iniciarSesion(
-        usuario: 'cliente1',
+        correo: 'cliente1@example.com',
         contrasena: 'CareCar2026',
       );
 
@@ -116,7 +128,10 @@ void main() {
   test('cerrar sesion borra el token', () async {
     if (!levantada) return markTestSkipped('La API simulada no esta levantada');
     final sesion = armar();
-    await sesion.iniciarSesion(usuario: 'cliente1', contrasena: 'CareCar2026');
+    await sesion.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'CareCar2026',
+    );
 
     await sesion.cerrarSesion();
 
@@ -135,7 +150,10 @@ void main() {
     final api = CarecarApiHttp(cliente);
     final sesion = ControladorSesion(api, almacen);
 
-    await sesion.iniciarSesion(usuario: 'cliente1', contrasena: 'CareCar2026');
+    await sesion.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'CareCar2026',
+    );
     // Misma instancia de cliente: toma el token del almacen en cada peticion.
     final vehiculos = await api.misVehiculos();
 
