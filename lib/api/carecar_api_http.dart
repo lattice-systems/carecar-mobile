@@ -35,17 +35,15 @@ class CarecarApiHttp implements CarecarApi {
   Future<void> recuperarContrasena(String correo) =>
       _cliente.enviarSinRespuesta(
         '/auth/recuperar-contrasena',
-        cuerpo: {'correo': correo},
+        cuerpo: {'correo': correo.trim()},
       );
 
   @override
-  Future<void> restablecerContrasena({
-    required String token,
-    required String contrasenaNueva,
-  }) => _cliente.enviarSinRespuesta(
-    '/auth/restablecer-contrasena',
-    cuerpo: {'token': token, 'contrasenaNueva': contrasenaNueva},
-  );
+  Future<void> restablecerContrasena(PeticionRestablecer peticion) =>
+      _cliente.enviarSinRespuesta(
+        '/auth/restablecer-contrasena',
+        cuerpo: peticion.toJson(),
+      );
 
   @override
   Future<List<Vehiculo>> misVehiculos() =>

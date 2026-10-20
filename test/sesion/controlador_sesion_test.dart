@@ -34,7 +34,7 @@ void main() {
   group('login correcto', () {
     test('queda autenticada', () async {
       await controlador.iniciarSesion(
-        usuario: 'cliente1',
+        correo: 'cliente1@example.com',
         contrasena: 'CareCar2026',
       );
 
@@ -46,11 +46,11 @@ void main() {
       'manda al API el usuario y la contrasena que se escribieron',
       () async {
         await controlador.iniciarSesion(
-          usuario: 'cliente1',
+          correo: 'cliente1@example.com',
           contrasena: 'CareCar2026',
         );
 
-        expect(api.ultimaPeticion!.usuario, 'cliente1');
+        expect(api.ultimaPeticion!.correo, 'cliente1@example.com');
         expect(api.ultimaPeticion!.contrasena, 'CareCar2026');
       },
     );
@@ -58,7 +58,10 @@ void main() {
     test(
       'guarda el token en el almacen, que es lo que usa ClienteApi',
       () async {
-        await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+        await controlador.iniciarSesion(
+          correo: 'cliente1@example.com',
+          contrasena: 'x',
+        );
 
         expect(await almacen.leerToken(), 'token.valido.firmado');
       },
@@ -68,7 +71,10 @@ void main() {
       var avisos = 0;
       controlador.addListener(() => avisos++);
 
-      await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'x',
+      );
 
       // Al menos dos: uno al empezar a autenticar y otro al terminar.
       expect(avisos, greaterThanOrEqualTo(2));
@@ -77,7 +83,10 @@ void main() {
     test('expone debeCambiarContrasena para que APP-2.3 lo use', () async {
       armar(ApiFalsa.conContrasenaTemporal());
 
-      await controlador.iniciarSesion(usuario: 'cliente2', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente2@example.com',
+        contrasena: 'x',
+      );
 
       final estado = controlador.estado as Autenticada;
       expect(estado.debeCambiarContrasena, isTrue);
@@ -86,7 +95,10 @@ void main() {
     test(
       'con contrasena definitiva, debeCambiarContrasena viene en falso',
       () async {
-        await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+        await controlador.iniciarSesion(
+          correo: 'cliente1@example.com',
+          contrasena: 'x',
+        );
 
         final estado = controlador.estado as Autenticada;
         expect(estado.debeCambiarContrasena, isFalse);
@@ -100,7 +112,7 @@ void main() {
       armar(ApiFalsa.queTarda(puerta.future));
 
       final futuro = controlador.iniciarSesion(
-        usuario: 'cliente1',
+        correo: 'cliente1@example.com',
         contrasena: 'x',
       );
       expect(controlador.estado, isA<Autenticando>());
@@ -114,8 +126,14 @@ void main() {
       final puerta = Completer<void>();
       armar(ApiFalsa.queTarda(puerta.future));
 
-      final primera = controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
-      final segunda = controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
+      final primera = controlador.iniciarSesion(
+        correo: 'a@example.com',
+        contrasena: 'b',
+      );
+      final segunda = controlador.iniciarSesion(
+        correo: 'a@example.com',
+        contrasena: 'b',
+      );
 
       puerta.complete();
       await Future.wait([primera, segunda]);
@@ -136,7 +154,10 @@ void main() {
         ),
       );
 
-      await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'mala');
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'mala',
+      );
 
       final estado = controlador.estado as FalloDeSesion;
       expect(estado.mensaje, 'Usuario o contrasena incorrectos');
@@ -146,7 +167,10 @@ void main() {
     test('sin conexion deja un mensaje distinto al de credenciales', () async {
       armar(ApiFalsa.queFalla(const SinConexion()));
 
-      await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'x',
+      );
 
       final estado = controlador.estado as FalloDeSesion;
       expect(
@@ -159,7 +183,7 @@ void main() {
     test('credenciales invalidas no se marca como fallo de red', () async {
       armar(ApiFalsa.queFalla(const CredencialesInvalidas('Incorrectos')));
 
-      await controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
+      await controlador.iniciarSesion(correo: 'a@example.com', contrasena: 'b');
 
       expect((controlador.estado as FalloDeSesion).esFalloDeRed, isFalse);
     });
@@ -173,7 +197,10 @@ void main() {
         ),
       );
 
-      await controlador.iniciarSesion(usuario: 'cliente3', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente3@example.com',
+        contrasena: 'x',
+      );
 
       expect(
         (controlador.estado as FalloDeSesion).mensaje,
@@ -184,7 +211,7 @@ void main() {
     test('un error inesperado no tumba el controlador', () async {
       armar(ApiFalsa(alIniciarSesion: (_) async => throw StateError('boom')));
 
-      await controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
+      await controlador.iniciarSesion(correo: 'a@example.com', contrasena: 'b');
 
       expect(controlador.estado, isA<FalloDeSesion>());
       expect((controlador.estado as FalloDeSesion).mensaje, isNotEmpty);
@@ -193,19 +220,22 @@ void main() {
     test('un login fallido no deja token guardado', () async {
       armar(ApiFalsa.queFalla(const CredencialesInvalidas('Incorrectos')));
 
-      await controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
+      await controlador.iniciarSesion(correo: 'a@example.com', contrasena: 'b');
 
       expect(await almacen.leerToken(), isNull);
     });
 
     test('se puede reintentar despues de un fallo', () async {
       armar(ApiFalsa.queFalla(const SinConexion()));
-      await controlador.iniciarSesion(usuario: 'a', contrasena: 'b');
+      await controlador.iniciarSesion(correo: 'a@example.com', contrasena: 'b');
       expect(controlador.estado, isA<FalloDeSesion>());
 
       // Se restablece la red.
       api.alIniciarSesion = null;
-      await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'x',
+      );
 
       expect(controlador.estado, isA<Autenticada>());
     });
@@ -213,7 +243,10 @@ void main() {
 
   group('cerrar sesion', () {
     test('borra el token y vuelve a sin sesion', () async {
-      await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'x',
+      );
       expect(controlador.haySesion, isTrue);
 
       await controlador.cerrarSesion();

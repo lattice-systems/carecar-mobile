@@ -153,7 +153,20 @@ class ClienteApi {
       problema = null;
     }
 
-    final mensaje = problema?.message ?? _mensajePorOmision(status);
+    // RIC-14: el `message` del servidor solo se muestra en 401, 403, 404, 409 y
+    // 429. En 400 trae nombres de campos y en 5xx el detalle tecnico de la
+    // excepcion, asi que ahi va un texto de la app.
+    final mensaje = (problema != null && problema.mensajeEsParaElUsuario)
+        ? problema.message
+        : _mensajePorOmision(status, problema?.codigo);
+
+    if (status == 429) {
+      throw DemasiadosIntentos(
+        mensaje,
+        problema: problema,
+        esperaSegundos: _segundosDeEspera(respuesta),
+      );
+    }
 
     throw switch (status) {
       400 => DatosInvalidos(mensaje, problema: problema),
@@ -165,14 +178,41 @@ class ClienteApi {
     };
   }
 
-  static String _mensajePorOmision(int status) => switch (status) {
-    400 => 'Revisa los datos e intenta de nuevo.',
-    401 => 'Usuario o contrasena incorrectos.',
-    403 => 'Tu cuenta esta desactivada. Comunicate con la agencia.',
-    404 => 'No encontramos lo que buscabas.',
-    409 => 'No se pudo completar la operacion. Intenta de nuevo.',
-    _ => 'Ocurrio un error inesperado. Intenta de nuevo.',
-  };
+  /// Lee `Retry-After`, que el contrato manda en segundos con el 429 (RIC-5).
+  static int? _segundosDeEspera(http.Response respuesta) {
+    final valor = respuesta.headers['retry-after'];
+    return valor == null ? null : int.tryParse(valor.trim());
+  }
+
+  /// Texto propio de la app cuando el del servidor no sirve para mostrarse.
+  ///
+  /// Cuando viene `codigo` se usa ese, porque distingue cosas que el `status`
+  /// solo no distingue: el codigo de recuperacion invalido y una contrasena
+  /// que no cumple las reglas son los dos un 400 (RIC-15).
+  static String _mensajePorOmision(int status, CodigoProblema? codigo) =>
+      switch (codigo) {
+        CodigoProblema.codigoInvalido =>
+          'El código no es válido o ya venció. Pide uno nuevo.',
+        CodigoProblema.datosInvalidos => 'Revisa los datos e intenta de nuevo.',
+        CodigoProblema.credencialesInvalidas =>
+          'Correo o contraseña incorrectos.',
+        CodigoProblema.cuentaDesactivada =>
+          'Tu cuenta está desactivada. Comunícate con la agencia.',
+        CodigoProblema.demasiadosIntentos =>
+          'Demasiados intentos. Espera un momento e intenta de nuevo.',
+        CodigoProblema.franjaSinCupo => 'Esa hora ya no tiene lugar.',
+        CodigoProblema.fueraDePlazo => 'Ya pasó el plazo para cancelar.',
+        CodigoProblema.citaNoCancelable => 'Esa cita ya no se puede cancelar.',
+        _ => switch (status) {
+          400 => 'Revisa los datos e intenta de nuevo.',
+          401 => 'Correo o contraseña incorrectos.',
+          403 => 'Tu cuenta está desactivada. Comunícate con la agencia.',
+          404 => 'No encontramos lo que buscabas.',
+          409 => 'No se pudo completar la operación. Intenta de nuevo.',
+          429 => 'Demasiados intentos. Espera un momento e intenta de nuevo.',
+          _ => 'Ocurrió un error inesperado. Intenta de nuevo.',
+        },
+      };
 
   T _leerObjeto<T>(
     http.Response respuesta,

@@ -31,7 +31,6 @@
       "correo": "cliente3@example.com"
     }
   ],
-
   "vehiculos": [
     {
       "id": 1,
@@ -70,7 +69,6 @@
       "kilometraje": 61000
     }
   ],
-
   "servicios": [
     {
       "id": 1,
@@ -108,7 +106,6 @@
       "total": 980.0
     }
   ],
-
   "manuales": [
     {
       "id": 1,
@@ -129,16 +126,50 @@
       "url": "http://localhost:3000/api/v1/app/archivos/manual-sentra-2025.pdf"
     }
   ],
-
   "franjas": [
-    { "id": 1, "fecha": "2026-10-20", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 2 },
-    { "id": 2, "fecha": "2026-10-20", "horaInicio": "10:00", "horaFin": "11:00", "cupoDisponible": 1 },
-    { "id": 3, "fecha": "2026-10-20", "horaInicio": "11:00", "horaFin": "12:00", "cupoDisponible": 0 },
-    { "id": 4, "fecha": "2026-10-21", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 3 },
-    { "id": 5, "fecha": "2026-10-21", "horaInicio": "16:00", "horaFin": "17:00", "cupoDisponible": 1 },
-    { "id": 6, "fecha": "2026-10-22", "horaInicio": "09:00", "horaFin": "10:00", "cupoDisponible": 2 }
+    {
+      "id": 1,
+      "fecha": "2026-10-20",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "cupoDisponible": 2
+    },
+    {
+      "id": 2,
+      "fecha": "2026-10-20",
+      "horaInicio": "10:00",
+      "horaFin": "11:00",
+      "cupoDisponible": 1
+    },
+    {
+      "id": 3,
+      "fecha": "2026-10-20",
+      "horaInicio": "11:00",
+      "horaFin": "12:00",
+      "cupoDisponible": 0
+    },
+    {
+      "id": 4,
+      "fecha": "2026-10-21",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "cupoDisponible": 3
+    },
+    {
+      "id": 5,
+      "fecha": "2026-10-21",
+      "horaInicio": "16:00",
+      "horaFin": "17:00",
+      "cupoDisponible": 1
+    },
+    {
+      "id": 6,
+      "fecha": "2026-10-22",
+      "horaInicio": "09:00",
+      "horaFin": "10:00",
+      "cupoDisponible": 2
+    }
   ],
-
   "citas": [
     {
       "id": 1,
@@ -161,17 +192,49 @@
       "estado": "ATENDIDA"
     }
   ],
-
   "catalogo": [
-    { "id": 1, "modelo": "Versa", "activo": true },
-    { "id": 2, "modelo": "Kicks", "activo": true },
-    { "id": 3, "modelo": "Sentra", "activo": true },
-    { "id": 4, "modelo": "Tsuru", "activo": false }
+    {
+      "id": 1,
+      "modelo": "Versa",
+      "activo": true
+    },
+    {
+      "id": 2,
+      "modelo": "Kicks",
+      "activo": true
+    },
+    {
+      "id": 3,
+      "modelo": "Sentra",
+      "activo": true
+    },
+    {
+      "id": 4,
+      "modelo": "Tsuru",
+      "activo": false
+    }
   ],
-
   "tokensRecuperacion": [
-    { "id": 1, "token": "token-valido-de-prueba", "correo": "cliente1@example.com", "usado": false, "expira": "2099-01-01T00:00:00Z" },
-    { "id": 2, "token": "token-ya-usado", "correo": "cliente1@example.com", "usado": true, "expira": "2099-01-01T00:00:00Z" },
-    { "id": 3, "token": "token-expirado", "correo": "cliente1@example.com", "usado": false, "expira": "2020-01-01T00:00:00Z" }
+    {
+      "id": 1,
+      "token": "123456",
+      "correo": "cliente1@example.com",
+      "usado": false,
+      "expira": "2099-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "token": "222222",
+      "correo": "cliente1@example.com",
+      "usado": true,
+      "expira": "2099-01-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "token": "333333",
+      "correo": "cliente1@example.com",
+      "usado": false,
+      "expira": "2020-01-01T00:00:00Z"
+    }
   ]
 }

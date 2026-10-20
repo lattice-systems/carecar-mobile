@@ -80,7 +80,7 @@ void main() {
 
       await cliente.enviar(
         '/auth/login',
-        cuerpo: {'usuario': 'a'},
+        cuerpo: {'correo': 'a'},
         leer: (j) => j,
       );
 
@@ -102,11 +102,14 @@ void main() {
 
       await cliente.enviar(
         '/auth/login',
-        cuerpo: {'usuario': 'cliente1', 'contrasena': 'x'},
+        cuerpo: {'correo': 'cliente1@example.com', 'contrasena': 'x'},
         leer: (j) => j,
       );
 
-      expect(jsonDecode(cuerpo!), {'usuario': 'cliente1', 'contrasena': 'x'});
+      expect(jsonDecode(cuerpo!), {
+        'correo': 'cliente1@example.com',
+        'contrasena': 'x',
+      });
       expect(tipo, contains('application/json'));
     });
   });
