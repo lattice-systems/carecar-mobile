@@ -1,9 +1,16 @@
 // Tarea 4 de TEC-5 · Validar que las respuestas respetan el contrato.
+// Recalibrada a la v1.1 en la tarea 1 de TEC-6.
 //
-// Lee api/agencia360-api-app-v1.yaml y lo compara contra lo que la app cree que
-// dice. Si Ricardo cambia el contrato (agrega un campo, cambia uno a
+// Lee api/agencia360-api-app-v1.yaml y lo compara contra lo que esta prueba
+// declara. Si Ricardo cambia el contrato (agrega un campo, cambia uno a
 // obligatorio, agrega un endpoint o toca el enum de estados), estas pruebas se
-// ponen rojas y el CI avisa. Es la alarma que pedia RIC-22.
+// ponen rojas y el CI avisa. Es la alarma que pedia RIC-22, y ya sirvio: al
+// traer la v1.1 se pusieron rojas 6 de 7, nombrando cada cambio.
+//
+// Importante: estas pruebas comparan el YAML contra las constantes de abajo,
+// no contra el codigo de la app. Que esten verdes significa «el contrato es el
+// que creemos», no «la app ya implementa todo el contrato». Lo que falta por
+// implementar esta en _pendientesDeImplementar, con su prueba.
 //
 // El ultimo grupo, ademas, valida las respuestas reales de la API simulada
 // cuando esta levantada. En CI no lo esta y esas pruebas se omiten solas.
@@ -21,15 +28,60 @@ import 'package:yaml/yaml.dart';
 
 const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 
-/// Lo que la app cree que dice el contrato. Si el YAML se mueve, esto deja de
-/// coincidir y la prueba falla: ese es el punto.
-const _propiedadesQueLaAppConoce = <String, Set<String>>{
-  'LoginRequest': {'usuario', 'contrasena'},
-  'LoginResponse': {'accessToken', 'debeCambiarContrasena'},
+/// La version exacta del contrato que esta copia debe tener.
+///
+/// El contrato vive en `docs/api/` del repositorio del backend y cambia por PR.
+/// Esta copia se fija a una version a proposito (decision D-C): bajarla de la
+/// rama principal del backend seria perseguir un blanco movil.
+const _versionEsperada = '1.1.0';
+
+/// Los 17 esquemas de la v1.1.
+const _esquemasDelContrato = <String>{
+  'LoginRequest',
+  'LoginResponse',
+  'RefreshTokenRequest',
+  'CambiarContrasenaRequest',
+  'RestablecerContrasenaRequest',
+  'Perfil',
+  'Vehiculo',
+  'Manual',
+  'Servicio',
+  'PaginaServicios',
+  'Disponibilidad',
+  'NuevaCita',
+  'EstadoCita',
+  'Cita',
+  'PaginaCitas',
+  'ModeloCatalogo',
+  'Problema',
+};
+
+/// Propiedades de cada esquema de objeto.
+///
+/// `EstadoCita` no aparece porque es un enum de cadena y no tiene
+/// `properties`; se valida aparte, junto con el enum de la app.
+const _propiedadesDelContrato = <String, Set<String>>{
+  'LoginRequest': {'correo', 'contrasena'},
+  'LoginResponse': {
+    'accessToken',
+    'expiresIn',
+    'refreshToken',
+    'debeCambiarContrasena',
+  },
+  'RefreshTokenRequest': {'refreshToken'},
   'CambiarContrasenaRequest': {'contrasenaActual', 'contrasenaNueva'},
+  'RestablecerContrasenaRequest': {'correo', 'codigo', 'contrasenaNueva'},
+  'Perfil': {'id', 'nombre', 'correo'},
   'Vehiculo': {'id', 'vin', 'modelo', 'anio', 'placas', 'kilometraje'},
   'Manual': {'id', 'modelo', 'anio', 'url'},
   'Servicio': {'id', 'fecha', 'estatus', 'total'},
+  'PaginaServicios': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   'Disponibilidad': {
     'fecha',
     'franjaId',
@@ -38,19 +90,49 @@ const _propiedadesQueLaAppConoce = <String, Set<String>>{
     'cupoDisponible',
   },
   'NuevaCita': {'vehiculoId', 'franjaId', 'fecha'},
-  'Cita': {'id', 'vehiculoId', 'fecha', 'horaInicio', 'horaFin', 'estado'},
+  'Cita': {
+    'id',
+    'vehiculoId',
+    'franjaId',
+    'fecha',
+    'horaInicio',
+    'horaFin',
+    'estado',
+  },
+  'PaginaCitas': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   'ModeloCatalogo': {'id', 'modelo'},
-  'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
+  'Problema': {'timestamp', 'status', 'error', 'message', 'codigo', 'path'},
 };
 
-/// Campos que la app trata como obligatorios (no nulos) en cada modelo.
-const _obligatoriosQueLaAppConoce = <String, Set<String>>{
-  'LoginRequest': {'usuario', 'contrasena'},
-  'LoginResponse': {'accessToken', 'debeCambiarContrasena'},
+/// Campos que el contrato marca como obligatorios en cada esquema.
+const _obligatoriosDelContrato = <String, Set<String>>{
+  'LoginRequest': {'correo', 'contrasena'},
+  'LoginResponse': {
+    'accessToken',
+    'expiresIn',
+    'refreshToken',
+    'debeCambiarContrasena',
+  },
+  'RefreshTokenRequest': {'refreshToken'},
   'CambiarContrasenaRequest': {'contrasenaActual', 'contrasenaNueva'},
+  'RestablecerContrasenaRequest': {'correo', 'codigo', 'contrasenaNueva'},
+  'Perfil': {'id', 'nombre', 'correo'},
   'Vehiculo': {'id', 'vin', 'modelo', 'anio'},
   'Manual': {'id', 'modelo', 'anio', 'url'},
   'Servicio': {'id', 'fecha', 'estatus', 'total'},
+  'PaginaServicios': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   'Disponibilidad': {
     'fecha',
     'franjaId',
@@ -59,17 +141,36 @@ const _obligatoriosQueLaAppConoce = <String, Set<String>>{
     'cupoDisponible',
   },
   'NuevaCita': {'vehiculoId', 'franjaId', 'fecha'},
-  'Cita': {'id', 'vehiculoId', 'fecha', 'horaInicio', 'horaFin', 'estado'},
+  'Cita': {
+    'id',
+    'vehiculoId',
+    'franjaId',
+    'fecha',
+    'horaInicio',
+    'horaFin',
+    'estado',
+  },
+  'PaginaCitas': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   'ModeloCatalogo': {'id', 'modelo'},
+  // `codigo` es opcional: la app decide por el, pero no puede exigirlo.
   'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
 };
 
-/// Las 13 operaciones que la app implementa, como `METODO ruta`.
-const _operacionesQueLaAppImplementa = <String>{
+/// Las 16 operaciones de la v1.1, como `METODO ruta`.
+const _operacionesDelContrato = <String>{
   'POST /auth/login',
+  'POST /auth/refrescar',
+  'POST /auth/cerrar-sesion',
   'POST /auth/cambiar-contrasena',
   'POST /auth/recuperar-contrasena',
   'POST /auth/restablecer-contrasena',
+  'GET /perfil',
   'GET /vehiculos',
   'GET /vehiculos/{vehiculoId}/manuales',
   'GET /vehiculos/{vehiculoId}/servicios',
@@ -79,6 +180,38 @@ const _operacionesQueLaAppImplementa = <String>{
   'POST /citas',
   'POST /citas/{citaId}/cancelar',
   'GET /catalogo',
+};
+
+/// Rutas que el contrato declara sin token.
+///
+/// `cerrar-sesion` es publica a proposito: debe funcionar aunque el access
+/// token ya haya expirado, porque solo necesita el refresh token.
+const _rutasPublicas = <String>{
+  '/auth/login',
+  '/auth/refrescar',
+  '/auth/cerrar-sesion',
+  '/auth/recuperar-contrasena',
+  '/auth/restablecer-contrasena',
+};
+
+/// Lo que la v1.1 trae y la app todavia NO implementa.
+///
+/// Esta lista existe para que la deuda sea visible y no se confunda con que la
+/// app ya hable la v1.1 completa. Cada entrada dice en que tarea de TEC-6 o en
+/// que sprint entra. Al implementar una, se borra de aqui.
+const _pendientesDeImplementar = <String, String>{
+  'LoginRequest.correo': 'TEC-6 T2 · hoy la app manda `usuario`',
+  'LoginResponse.expiresIn': 'TEC-6 T4',
+  'LoginResponse.refreshToken': 'TEC-6 T4',
+  'POST /auth/refrescar': 'TEC-6 T4',
+  'POST /auth/cerrar-sesion': 'TEC-6 T4',
+  'RestablecerContrasenaRequest.codigo': 'APP-2.3 · hoy la firma pide un token',
+  'Problema.codigo': 'TEC-6 T5',
+  '429 DEMASIADOS_INTENTOS': 'TEC-6 T5',
+  'GET /perfil': 'Sprint 3',
+  'Cita.franjaId': 'Sprint 4, con APP-3.3',
+  'PaginaServicios': 'Sprint 4, con APP-3.2',
+  'PaginaCitas': 'Sprint 4, con APP-3.3',
 };
 
 void main() {
@@ -95,47 +228,54 @@ void main() {
   });
 
   group('el contrato sigue siendo el que la app espera', () {
+    test('la version del contrato es la fijada', () {
+      expect(
+        contrato['info']['version'],
+        _versionEsperada,
+        reason:
+            'Esta copia se fija a una version. Si cambio, revisa que trae de '
+            'nuevo antes de actualizar estas pruebas.',
+      );
+    });
+
     test('la base de las rutas no cambio', () {
       final servidores = contrato['servers'] as YamlList;
       expect(
         servidores.first['url'],
         '/api/v1/app',
-        reason: 'Si la base cambia, hay que actualizar API_URL en todas partes',
+        reason: 'Si la base cambia, hay que actualizar API_BASE_URL en todas partes',
       );
     });
 
-    test('los esquemas del contrato son los que la app conoce', () {
+    test('los esquemas del contrato son los que la prueba declara', () {
       final enElContrato = (contrato['components']['schemas'] as YamlMap).keys
           .cast<String>();
       expect(
         enElContrato.toSet(),
-        _propiedadesQueLaAppConoce.keys.toSet(),
+        _esquemasDelContrato,
         reason: 'Aparecio o desaparecio un esquema en el contrato',
       );
     });
 
-    test(
-      'cada esquema tiene exactamente las propiedades que la app conoce',
-      () {
-        final esquemas = contrato['components']['schemas'] as YamlMap;
-
-        for (final entrada in _propiedadesQueLaAppConoce.entries) {
-          final propiedades = (esquemas[entrada.key]['properties'] as YamlMap)
-              .keys
-              .cast<String>();
-          expect(
-            propiedades.toSet(),
-            entrada.value,
-            reason: 'Cambiaron las propiedades de ${entrada.key}',
-          );
-        }
-      },
-    );
-
-    test('cada esquema marca como obligatorio lo mismo que la app', () {
+    test('cada esquema de objeto tiene exactamente sus propiedades', () {
       final esquemas = contrato['components']['schemas'] as YamlMap;
 
-      for (final entrada in _obligatoriosQueLaAppConoce.entries) {
+      for (final entrada in _propiedadesDelContrato.entries) {
+        final propiedades = (esquemas[entrada.key]['properties'] as YamlMap)
+            .keys
+            .cast<String>();
+        expect(
+          propiedades.toSet(),
+          entrada.value,
+          reason: 'Cambiaron las propiedades de ${entrada.key}',
+        );
+      }
+    });
+
+    test('cada esquema marca como obligatorio lo que la prueba declara', () {
+      final esquemas = contrato['components']['schemas'] as YamlMap;
+
+      for (final entrada in _obligatoriosDelContrato.entries) {
         final requeridos =
             (esquemas[entrada.key]['required'] as YamlList?)?.cast<String>() ??
             [];
@@ -147,12 +287,19 @@ void main() {
       }
     });
 
-    test('el enum de Cita.estado coincide con EstadoCita', () {
+    test('el enum EstadoCita coincide con el de la app', () {
       final esquemas = contrato['components']['schemas'] as YamlMap;
-      final enElContrato =
-          (esquemas['Cita']['properties']['estado']['enum'] as YamlList)
-              .cast<String>()
-              .toSet();
+      // En la v1.1 `Cita.estado` es un $ref al esquema EstadoCita, ya no un
+      // enum escrito en linea.
+      expect(
+        esquemas['Cita']['properties']['estado'][r'$ref'],
+        '#/components/schemas/EstadoCita',
+        reason: 'Cita.estado dejo de apuntar a EstadoCita',
+      );
+
+      final enElContrato = (esquemas['EstadoCita']['enum'] as YamlList)
+          .cast<String>()
+          .toSet();
 
       final queLaAppMapea = EstadoCita.values
           .where((e) => e != EstadoCita.desconocido)
@@ -166,7 +313,7 @@ void main() {
       );
     });
 
-    test('las operaciones del contrato son las que la app implementa', () {
+    test('las operaciones del contrato son las 16 que la prueba declara', () {
       final rutas = contrato['paths'] as YamlMap;
       final enElContrato = <String>{};
 
@@ -178,33 +325,72 @@ void main() {
 
       expect(
         enElContrato,
-        _operacionesQueLaAppImplementa,
+        _operacionesDelContrato,
         reason: 'Aparecio o desaparecio una operacion en el contrato',
       );
     });
 
-    test(
-      'las rutas publicas del contrato son las tres que la app no autentica',
-      () {
-        final rutas = contrato['paths'] as YamlMap;
-        final publicas = <String>{};
+    test('las rutas publicas son las cinco que no llevan token', () {
+      final rutas = contrato['paths'] as YamlMap;
+      final publicas = <String>{};
 
-        rutas.forEach((ruta, operaciones) {
-          (operaciones as YamlMap).forEach((metodo, op) {
-            final seguridad = (op as YamlMap)['security'];
-            if (seguridad is YamlList && seguridad.isEmpty) {
-              publicas.add(ruta as String);
-            }
-          });
+      rutas.forEach((ruta, operaciones) {
+        (operaciones as YamlMap).forEach((metodo, op) {
+          final seguridad = (op as YamlMap)['security'];
+          if (seguridad is YamlList && seguridad.isEmpty) {
+            publicas.add(ruta as String);
+          }
         });
+      });
 
-        expect(publicas, {
-          '/auth/login',
-          '/auth/recuperar-contrasena',
-          '/auth/restablecer-contrasena',
-        }, reason: 'Cambio que rutas van sin token');
-      },
-    );
+      expect(
+        publicas,
+        _rutasPublicas,
+        reason: 'Cambio que rutas van sin token',
+      );
+    });
+
+    test('el login puede responder 429 por demasiados intentos', () {
+      // RIC-5. La app todavia no lo maneja (TEC-6 T5); esta prueba fija que el
+      // contrato lo declara, para que no se pierda.
+      final respuestas =
+          contrato['paths']['/auth/login']['post']['responses'] as YamlMap;
+      // El contrato escribe los codigos entre comillas, asi que son cadenas.
+      expect(respuestas.keys, contains('429'));
+    });
+  });
+
+  group('la deuda con la v1.1 esta declarada', () {
+    // No es una prueba de comportamiento: es un recordatorio con dientes. Si
+    // alguien implementa una de estas y no la borra de la lista, o borra una
+    // sin implementarla, al menos queda escrito en un solo lugar.
+    test('cada pendiente dice en que tarea o sprint entra', () {
+      expect(_pendientesDeImplementar, isNotEmpty);
+      for (final entrada in _pendientesDeImplementar.entries) {
+        expect(
+          entrada.value,
+          isNotEmpty,
+          reason: '${entrada.key} no dice cuando se implementa',
+        );
+      }
+    });
+
+    test('lo que ya se implemento se borro de la lista', () {
+      // `usuario` todavia es lo que la app manda: cuando T2 lo cambie a
+      // `correo`, esta prueba obliga a quitar la entrada de la lista.
+      final mandaUsuario = const PeticionLogin(
+        correo: 'a@example.com',
+        contrasena: 'b',
+      ).toJson().containsKey('correo');
+
+      expect(
+        _pendientesDeImplementar.containsKey('LoginRequest.correo'),
+        mandaUsuario,
+        reason: mandaUsuario
+            ? 'La app sigue mandando `usuario`: la entrada debe quedarse'
+            : 'La app ya manda `correo`: borra LoginRequest.correo de la lista',
+      );
+    });
   });
 
   group('los modelos parsean ejemplos armados desde el contrato', () {
@@ -221,16 +407,21 @@ void main() {
       },
     );
 
-    test('Cita exige los seis campos del contrato', () {
+    test('Cita parsea una respuesta de la v1.1, ignorando franjaId', () {
+      // La v1.1 agrega `franjaId` como obligatorio (RIC-10). El modelo todavia
+      // no lo lee, y no estorba porque `fromJson` ignora lo que no conoce. Se
+      // agrega en el Sprint 4, con APP-3.3, que es quien lo necesita.
       final c = Cita.fromJson(const {
         'id': 1,
         'vehiculoId': 1,
+        'franjaId': 7,
         'fecha': '2026-10-21',
         'horaInicio': '09:00',
         'horaFin': '10:00',
         'estado': 'CONFIRMADA',
       });
       expect(c.estado, EstadoCita.confirmada);
+      expect(c.horaInicio, '09:00');
     });
 
     test(
@@ -268,7 +459,7 @@ void main() {
               Uri.parse('$base/auth/login'),
               headers: const {'content-type': 'application/json'},
               body: jsonEncode(const {
-                'usuario': 'cliente1',
+                'correo': 'cliente1@example.com',
                 'contrasena': 'CareCar2026',
               }),
             )
@@ -284,7 +475,10 @@ void main() {
         ClienteApi(config: ApiConfig.para(base), http: http.Client()),
       );
       final sesion = await sinSesion.iniciarSesion(
-        const PeticionLogin(usuario: 'cliente1', contrasena: 'CareCar2026'),
+        const PeticionLogin(
+          correo: 'cliente1@example.com',
+          contrasena: 'CareCar2026',
+        ),
       );
       return CarecarApiHttp(
         ClienteApi(
@@ -303,7 +497,10 @@ void main() {
         ClienteApi(config: ApiConfig.para(base), http: http.Client()),
       );
       final sesion = await api.iniciarSesion(
-        const PeticionLogin(usuario: 'cliente1', contrasena: 'CareCar2026'),
+        const PeticionLogin(
+          correo: 'cliente1@example.com',
+          contrasena: 'CareCar2026',
+        ),
       );
       expect(
         sesion.accessToken.split('.'),
