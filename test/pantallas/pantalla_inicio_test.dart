@@ -12,7 +12,10 @@ Future<ControladorSesion> _sesionIniciada({bool temporal = false}) async {
     temporal ? ApiFalsa.conContrasenaTemporal() : ApiFalsa(),
     AlmacenEnMemoria(),
   );
-  await controlador.iniciarSesion(usuario: 'cliente1', contrasena: 'x');
+  await controlador.iniciarSesion(
+    correo: 'cliente1@example.com',
+    contrasena: 'x',
+  );
   return controlador;
 }
 

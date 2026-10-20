@@ -33,7 +33,7 @@ String _cuerpoDeError({
   'status': status,
   'error': 'Error',
   'message': message,
-  if (codigo != null) 'codigo': codigo,
+  ?'codigo': codigo,
   'path': '/api/v1/app/auth/login',
 });
 
