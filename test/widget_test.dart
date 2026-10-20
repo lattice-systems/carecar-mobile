@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets(
-    'sin API_URL la app explica como configurarla en lugar de arrancar',
+    'sin API_BASE_URL la app explica como configurarla en lugar de arrancar',
     (tester) async {
       // Las pruebas corren sin --dart-define, asi que ApiConfig.desdeEntorno()
       // falla a proposito. Es el comportamiento que se quiere: mejor un error
@@ -16,7 +16,7 @@ void main() {
         find.text('Falta configurar la dirección de la API'),
         findsOneWidget,
       );
-      expect(find.textContaining('--dart-define=API_URL'), findsOneWidget);
+      expect(find.textContaining('--dart-define=API_BASE_URL'), findsOneWidget);
     },
   );
 
