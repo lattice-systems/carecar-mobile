@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/aviso.dart';
+import '../widgets/campo_texto.dart';
 
 /// Pantalla de acceso · APP-2.1
 ///
@@ -12,6 +14,7 @@ class PantallaLogin extends StatefulWidget {
   const PantallaLogin({
     required this.controlador,
     this.alIniciarSesion,
+    this.alOlvidarContrasena,
     super.key,
   });
 
@@ -23,10 +26,18 @@ class PantallaLogin extends StatefulWidget {
   /// defina como se navega (peticion EQ-1), el cambio no toca esta pantalla.
   final VoidCallback? alIniciarSesion;
 
-  static const campoUsuario = Key('login_usuario');
+  /// Se llama al tocar «¿Olvidaste tu contraseña?».
+  ///
+  /// Recibe lo que el cliente ya escribio en el campo de correo, para no
+  /// pedirselo otra vez en la pantalla de recuperacion.
+  final void Function(String correo)? alOlvidarContrasena;
+
+  static const campoCorreo = Key('login_correo');
   static const campoContrasena = Key('login_contrasena');
   static const botonVerContrasena = Key('login_ver_contrasena');
   static const botonEntrar = Key('login_entrar');
+  static const botonOlvide = Key('login_olvide');
+  static const logo = Key('login_logo');
   static const avisoDeError = Key('login_aviso_error');
 
   @override
@@ -35,7 +46,7 @@ class PantallaLogin extends StatefulWidget {
 
 class _PantallaLoginState extends State<PantallaLogin> {
   final _formulario = GlobalKey<FormState>();
-  final _usuario = TextEditingController();
+  final _correo = TextEditingController();
   final _contrasena = TextEditingController();
   bool _verContrasena = false;
 
@@ -48,7 +59,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
   @override
   void dispose() {
     widget.controlador.removeListener(_alCambiarLaSesion);
-    _usuario.dispose();
+    _correo.dispose();
     _contrasena.dispose();
     super.dispose();
   }
@@ -61,13 +72,27 @@ class _PantallaLoginState extends State<PantallaLogin> {
     }
   }
 
+  /// Validacion minima: que tenga algo, una arroba y un punto despues.
+  ///
+  /// No se usa una expresion regular estricta a proposito: rechazar un correo
+  /// valido es peor que dejar pasar uno raro, porque el backend valida igual.
+  String? _validarCorreo(String? valor) {
+    final correo = (valor ?? '').trim();
+    if (correo.isEmpty) return 'Escribe tu correo.';
+    final arroba = correo.indexOf('@');
+    if (arroba <= 0 || !correo.contains('.', arroba)) {
+      return 'Escribe un correo válido, como nombre@dominio.com.';
+    }
+    return null;
+  }
+
   Future<void> _entrar() async {
     // Se valida antes de llamar al API: no tiene sentido una peticion de red
     // para descubrir que el campo venia vacio.
     if (!_formulario.currentState!.validate()) return;
 
     await widget.controlador.iniciarSesion(
-      usuario: _usuario.text.trim(),
+      correo: _correo.text.trim(),
       contrasena: _contrasena.text,
     );
   }
@@ -99,24 +124,36 @@ class _PantallaLoginState extends State<PantallaLogin> {
                     const _Encabezado(),
                     const SizedBox(height: TemaCareCar.espacioSecciones),
                     if (fallo != null) ...[
-                      _AvisoDeError(fallo: fallo),
+                      Aviso(
+                        key: PantallaLogin.avisoDeError,
+                        tono: fallo.esFalloDeRed
+                            ? TonoAviso.advertencia
+                            : TonoAviso.error,
+                        icono: fallo.esFalloDeRed
+                            ? Icons.wifi_off_outlined
+                            : null,
+                        titulo: fallo.esFalloDeRed
+                            ? 'Sin conexión'
+                            : 'No pudimos iniciar sesión',
+                        detalle: fallo.mensaje,
+                      ),
                       const SizedBox(height: TemaCareCar.espacioCampos),
                     ],
-                    _CampoTexto(
-                      llave: PantallaLogin.campoUsuario,
-                      controlador: _usuario,
-                      etiqueta: 'Usuario',
-                      ayuda: 'El que te dio la agencia',
+                    CampoTexto(
+                      llave: PantallaLogin.campoCorreo,
+                      controlador: _correo,
+                      etiqueta: 'Correo',
+                      ayuda: 'El que le diste a la agencia',
                       habilitado: !entrando,
-                      icono: Icons.person_outline,
+                      icono: Icons.mail_outline,
+                      // Teclado de correo, como pidio RIC-8.
+                      teclado: TextInputType.emailAddress,
+                      autocompletar: const [AutofillHints.email],
                       textInputAction: TextInputAction.next,
-                      validar: (valor) =>
-                          (valor == null || valor.trim().isEmpty)
-                          ? 'Escribe tu usuario.'
-                          : null,
+                      validar: _validarCorreo,
                     ),
                     const SizedBox(height: TemaCareCar.espacioCampos),
-                    _CampoTexto(
+                    CampoTexto(
                       llave: PantallaLogin.campoContrasena,
                       controlador: _contrasena,
                       etiqueta: 'Contraseña',
@@ -151,8 +188,24 @@ class _PantallaLoginState extends State<PantallaLogin> {
                       // Deshabilitado mientras entra: evita el doble toque y
                       // cumple la regla de la guia de estilos.
                       onPressed: entrando ? null : _entrar,
-                      child: Text(entrando ? 'Entrando…' : 'Iniciar sesión'),
+                      child: Text(
+                        entrando
+                            ? 'Entrando…'
+                            : (fallo?.esFalloDeRed ?? false)
+                            ? 'Reintentar'
+                            : 'Iniciar sesión',
+                      ),
                     ),
+                    if (widget.alOlvidarContrasena != null)
+                      TextButton(
+                        key: PantallaLogin.botonOlvide,
+                        onPressed: entrando
+                            ? null
+                            : () => widget.alOlvidarContrasena!(
+                                _correo.text.trim(),
+                              ),
+                        child: const Text('¿Olvidaste tu contraseña?'),
+                      ),
                     const SizedBox(height: TemaCareCar.espacioCampos),
                     const _NotaSinRegistro(),
                   ],
@@ -173,22 +226,16 @@ class _Encabezado extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Marcador de posicion del icono de la app: los archivos del logo no
-        // vinieron con la guia de estilos (peticion EQ-3).
-        Container(
-          width: 72,
-          height: 72,
-          decoration: BoxDecoration(
-            color: TemaCareCar.azulAgencia,
-            borderRadius: BorderRadius.circular(TemaCareCar.radioTarjeta),
-          ),
-          child: const Icon(
-            Icons.directions_car_outlined,
-            color: TemaCareCar.turquesa,
-            size: 40,
-          ),
+        // El logotipo de Agencia360: la app comparte su identidad y se
+        // identifica como nombre de producto debajo, como en los mockups.
+        // Ancho minimo de 120 px segun la guia; aqui va a 180.
+        Image.asset(
+          'assets/marca/agencia360-logo.png',
+          key: PantallaLogin.logo,
+          width: 180,
+          semanticLabel: 'Agencia360',
         ),
-        const SizedBox(height: TemaCareCar.espacioCampos),
+        const SizedBox(height: TemaCareCar.espacioSecciones),
         Text(
           'CareCar',
           style: Theme.of(context).textTheme.headlineMedium,
@@ -196,53 +243,12 @@ class _Encabezado extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Escribe tu usuario y tu contraseña.',
+          'Tu acceso a la agencia',
           style: Theme.of(context).textTheme.bodyMedium
               ?.copyWith(color: TemaCareCar.textoSecundario),
           textAlign: TextAlign.center,
         ),
       ],
-    );
-  }
-}
-
-/// Aviso de error arriba del formulario.
-///
-/// Lleva texto **y** icono: la guia de estilos pide que un estado nunca se
-/// comunique solo con color.
-class _AvisoDeError extends StatelessWidget {
-  const _AvisoDeError({required this.fallo});
-
-  final FalloDeSesion fallo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: PantallaLogin.avisoDeError,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: TemaCareCar.peligroFondo,
-        borderRadius: BorderRadius.circular(TemaCareCar.radioControl),
-        border: Border.all(color: TemaCareCar.peligro.withValues(alpha: 0.35)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            fallo.esFalloDeRed ? Icons.wifi_off_outlined : Icons.error_outline,
-            color: TemaCareCar.peligro,
-            size: 20,
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              fallo.mensaje,
-              style: Theme.of(context).textTheme.bodyMedium
-                  ?.copyWith(color: TemaCareCar.peligro),
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -267,71 +273,11 @@ class _NotaSinRegistro extends StatelessWidget {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            'La agencia te entrega tu usuario y tu contraseña cuando recibes '
+            'La agencia te entrega tu acceso cuando recibes '
             'tu unidad. Si no los tienes, comunícate con la agencia.',
             style: Theme.of(context).textTheme.bodyMedium
                 ?.copyWith(color: TemaCareCar.textoSecundario),
           ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Campo de formulario con la etiqueta siempre visible arriba.
-///
-/// La guia de estilos lo pide asi: «nunca se usa solo el placeholder».
-class _CampoTexto extends StatelessWidget {
-  const _CampoTexto({
-    required this.llave,
-    required this.controlador,
-    required this.etiqueta,
-    required this.habilitado,
-    required this.icono,
-    required this.validar,
-    this.ayuda,
-    this.ocultar = false,
-    this.sufijo,
-    this.textInputAction,
-    this.alEnviar,
-  });
-
-  final Key llave;
-  final TextEditingController controlador;
-  final String etiqueta;
-  final String? ayuda;
-  final bool habilitado;
-  final IconData icono;
-  final bool ocultar;
-  final Widget? sufijo;
-  final TextInputAction? textInputAction;
-  final VoidCallback? alEnviar;
-  final String? Function(String?) validar;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(etiqueta, style: Theme.of(context).textTheme.labelLarge),
-        const SizedBox(height: 6),
-        TextFormField(
-          key: llave,
-          controller: controlador,
-          enabled: habilitado,
-          obscureText: ocultar,
-          textInputAction: textInputAction,
-          onFieldSubmitted: alEnviar == null ? null : (_) => alEnviar!(),
-          autocorrect: false,
-          enableSuggestions: false,
-          // Siempre 16: con menos, iOS hace zoom al enfocar el campo.
-          style: const TextStyle(fontSize: TemaCareCar.tamanoCampo),
-          decoration: InputDecoration(
-            hintText: ayuda,
-            prefixIcon: Icon(icono, size: 20),
-            suffixIcon: sufijo,
-          ),
-          validator: validar,
         ),
       ],
     );

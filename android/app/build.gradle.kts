@@ -15,12 +15,15 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.carecar.carecar_mobile"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        // Versiones definidas por el PO (respuesta PO-3, 20 oct 2026):
+        // minSdk 24 = Android 7.0, targetSdk 35 = Android 15.
+        //
+        // minSdk se deja en el de Flutter porque ya vale 24, que es justo lo
+        // que pidio el PO. targetSdk si se fija a mano: Flutter 3.47 trae 36 y
+        // el PO pidio 35.
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 35
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
         // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
         // You can force using the value of versionCode by specifying the `-P force-version-code-ignoring-abi=true`

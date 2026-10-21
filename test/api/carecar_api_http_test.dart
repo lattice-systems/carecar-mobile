@@ -54,13 +54,16 @@ void main() {
     );
 
     final sesion = await api.iniciarSesion(
-      const PeticionLogin(usuario: 'cliente1', contrasena: 'CareCar2026'),
+      const PeticionLogin(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      ),
     );
 
     expect(espia.metodo, 'POST');
     expect(espia.url!.path, '/api/v1/app/auth/login');
     expect(jsonDecode(espia.cuerpo!), {
-      'usuario': 'cliente1',
+      'correo': 'cliente1@example.com',
       'contrasena': 'CareCar2026',
     });
     expect(sesion.accessToken, 'abc.def.ghi');
@@ -95,12 +98,18 @@ void main() {
     () async {
       final api = _api(espia, () => http.Response('', 204));
       await api.restablecerContrasena(
-        token: 'tok',
-        contrasenaNueva: 'NuevaClave1',
+        const PeticionRestablecer(
+          correo: '  Cliente1@Example.com ',
+          codigo: ' 123456 ',
+          contrasenaNueva: 'NuevaClave1',
+        ),
       );
       expect(espia.url!.path, '/api/v1/app/auth/restablecer-contrasena');
       expect(jsonDecode(espia.cuerpo!), {
-        'token': 'tok',
+        // Se recortan los espacios: el usuario suele pegar el codigo del
+        // correo con espacios alrededor.
+        'correo': 'Cliente1@Example.com',
+        'codigo': '123456',
         'contrasenaNueva': 'NuevaClave1',
       });
     },
