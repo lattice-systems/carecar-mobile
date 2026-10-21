@@ -59,10 +59,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  # Marca de Agencia360 (APP-UX-1).
+  #
+  # Los archivos llegaron como JPEG, no como los SVG que pide la guia de
+  # estilos (peticion EQ-3). Se convirtieron a PNG con el fondo transparente.
+  # Cuando lleguen los SVG conviene regenerarlos, sobre todo la version blanca
+  # para fondos oscuros, que no se puede derivar del JPEG.
+  assets:
+    - assets/marca/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -58,21 +58,47 @@ class ApiFalsa implements CarecarApi {
 
   // El resto de las operaciones no las usa APP-2.1. Llegan en S2 y S4.
 
+  // --- APP-2.3 ---
+
+  /// Que hace el cambio de contrasena. Si es nulo, responde bien.
+  Future<void> Function(String actual, String nueva)? alCambiarContrasena;
+
+  /// Que hace el envio del codigo. Si es nulo, responde bien.
+  Future<void> Function(String correo)? alRecuperarContrasena;
+
+  /// Que hace el restablecimiento. Si es nulo, responde bien.
+  Future<void> Function(PeticionRestablecer)? alRestablecerContrasena;
+
+  String? ultimaActual;
+  String? ultimaNueva;
+  String? ultimoCorreoDeRecuperacion;
+  PeticionRestablecer? ultimoRestablecimiento;
+  int llamadasAlRecuperar = 0;
+
   @override
   Future<void> cambiarContrasena({
     required String actual,
     required String nueva,
-  }) => throw UnimplementedError('APP-2.3');
+  }) async {
+    ultimaActual = actual;
+    ultimaNueva = nueva;
+    if (alCambiarContrasena != null) return alCambiarContrasena!(actual, nueva);
+  }
 
   @override
-  Future<void> recuperarContrasena(String correo) =>
-      throw UnimplementedError('APP-2.3');
+  Future<void> recuperarContrasena(String correo) async {
+    llamadasAlRecuperar++;
+    ultimoCorreoDeRecuperacion = correo;
+    if (alRecuperarContrasena != null) return alRecuperarContrasena!(correo);
+  }
 
   @override
-  Future<void> restablecerContrasena({
-    required String token,
-    required String contrasenaNueva,
-  }) => throw UnimplementedError('APP-2.3');
+  Future<void> restablecerContrasena(PeticionRestablecer peticion) async {
+    ultimoRestablecimiento = peticion;
+    if (alRestablecerContrasena != null) {
+      return alRestablecerContrasena!(peticion);
+    }
+  }
 
   @override
   Future<List<Vehiculo>> misVehiculos() => throw UnimplementedError('APP-3.1');

@@ -15,8 +15,14 @@ void main() {
 
   group('PeticionLogin', () {
     test('usa las claves del contrato, sin acentos', () {
-      const p = PeticionLogin(usuario: 'cliente1', contrasena: 'CareCar2026');
-      expect(p.toJson(), {'usuario': 'cliente1', 'contrasena': 'CareCar2026'});
+      const p = PeticionLogin(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+      expect(p.toJson(), {
+        'correo': 'cliente1@example.com',
+        'contrasena': 'CareCar2026',
+      });
     });
   });
 

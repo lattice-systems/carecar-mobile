@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'api/api_config.dart';
+import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
+import 'pantallas/pantalla_cambiar_contrasena.dart';
 import 'pantallas/pantalla_inicio.dart';
 import 'pantallas/pantalla_login.dart';
+import 'pantallas/pantalla_recuperar_contrasena.dart';
 import 'sesion/almacen_sesion.dart';
 import 'sesion/controlador_sesion.dart';
 import 'tema/tema_carecar.dart';
@@ -32,6 +35,7 @@ class AppCareCar extends StatefulWidget {
 class _AppCareCarState extends State<AppCareCar> {
   ControladorSesion? _sesion;
   ClienteApi? _cliente;
+  CarecarApi? _api;
   Object? _errorDeArranque;
 
   @override
@@ -51,10 +55,12 @@ class _AppCareCarState extends State<AppCareCar> {
         obtenerToken: almacen.leerToken,
       );
 
+      final api = CarecarApiHttp(cliente);
       _cliente = cliente;
-      _sesion = ControladorSesion(CarecarApiHttp(cliente), almacen);
+      _api = api;
+      _sesion = ControladorSesion(api, almacen);
     } on ApiConfigInvalida catch (e) {
-      // Falta --dart-define=API_URL. Es preferible decirlo con el comando
+      // Falta --dart-define=API_BASE_URL. Es preferible decirlo con el comando
       // exacto que arrancar apuntando a ningun lado.
       _errorDeArranque = e;
     }
@@ -75,37 +81,72 @@ class _AppCareCarState extends State<AppCareCar> {
       debugShowCheckedModeBanner: false,
       home: _errorDeArranque != null
           ? _PantallaDeErrorDeArranque(error: _errorDeArranque!)
-          : _Raiz(controlador: _sesion!),
+          : _Raiz(controlador: _sesion!, api: _api!),
     );
   }
 }
 
-/// Decide si se muestra el login o el inicio, segun si hay sesion.
+/// Decide que pantalla se ve, segun el estado de la sesion.
 ///
-/// Es la navegacion minima que APP-2.1 necesita. Cuando el equipo defina como
-/// se navega (peticion EQ-1), se cambia aqui sin tocar las pantallas.
+/// Es la navegacion minima que APP-2.1 y APP-2.3 necesitan. Cuando el equipo
+/// defina como se navega (peticion EQ-1), se cambia aqui sin tocar ninguna
+/// pantalla: todas avisan por callback y ninguna decide a donde ir.
 class _Raiz extends StatefulWidget {
-  const _Raiz({required this.controlador});
+  const _Raiz({required this.controlador, required this.api});
 
   final ControladorSesion controlador;
+  final CarecarApi api;
 
   @override
   State<_Raiz> createState() => _RaizState();
 }
 
 class _RaizState extends State<_Raiz> {
+  /// Fuera de null, se esta recuperando la contrasena con ese correo.
+  String? _recuperando;
+
+  /// Se marca cuando el cliente ya cambio su contrasena temporal.
+  ///
+  /// El contrato no devuelve una sesion nueva al cambiarla, asi que el
+  /// `debeCambiarContrasena` del login sigue en `true`. Sin esta bandera, la
+  /// pantalla de cambio volveria a salir en bucle.
+  bool _yaCambio = false;
+
   @override
   Widget build(BuildContext context) {
-    if (widget.controlador.haySesion) {
+    if (_recuperando != null) {
+      return PantallaRecuperarContrasena(
+        api: widget.api,
+        correoInicial: _recuperando!.isEmpty ? null : _recuperando,
+        alVolver: () => setState(() => _recuperando = null),
+      );
+    }
+
+    final estado = widget.controlador.estado;
+
+    if (estado is Autenticada) {
+      // APP-2.3: en el primer ingreso se obliga a cambiar la temporal.
+      if (estado.debeCambiarContrasena && !_yaCambio) {
+        return PantallaCambiarContrasena(
+          api: widget.api,
+          alCambiar: () => setState(() => _yaCambio = true),
+          alCerrarSesion: () async {
+            await widget.controlador.cerrarSesion();
+            if (mounted) setState(() => _yaCambio = false);
+          },
+        );
+      }
+
       return PantallaInicio(
         controlador: widget.controlador,
-        alCerrarSesion: () => setState(() {}),
+        alCerrarSesion: () => setState(() => _yaCambio = false),
       );
     }
 
     return PantallaLogin(
       controlador: widget.controlador,
       alIniciarSesion: () => setState(() {}),
+      alOlvidarContrasena: (correo) => setState(() => _recuperando = correo),
     );
   }
 }

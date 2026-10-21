@@ -9,7 +9,7 @@ import 'modelos/modelos.dart';
 /// cambiar de la API simulada a la real no obliga a rehacer pantallas: se
 /// cambia la implementacion, no la interfaz.
 ///
-/// Las 13 operaciones son las del contrato `api/agencia360-api-app-v1.yaml`.
+/// Las operaciones son las del contrato `api/agencia360-api-app-v1.yaml`.
 /// La prueba de contrato falla si el contrato gana o pierde alguna.
 ///
 /// Todos los metodos lanzan subclases de `ExcepcionApi`:
@@ -37,11 +37,13 @@ abstract interface class CarecarApi {
   /// Responde igual exista o no el correo, para no revelar que cuentas hay.
   Future<void> recuperarContrasena(String correo);
 
-  /// `POST /auth/restablecer-contrasena` con el enlace de un solo uso.
-  Future<void> restablecerContrasena({
-    required String token,
-    required String contrasenaNueva,
-  });
+  /// `POST /auth/restablecer-contrasena` con el codigo de 6 digitos.
+  ///
+  /// En la v1.1 ya no hay enlace de un solo uso (RIC-18). Un codigo invalido,
+  /// usado o vencido responde **400 con `CODIGO_INVALIDO`**, que es el mismo
+  /// codigo HTTP que una contrasena que no cumple las reglas: hay que
+  /// distinguirlos por `Problema.codigo`.
+  Future<void> restablecerContrasena(PeticionRestablecer peticion);
 
   // --- Vehiculos · APP-3.1 y ADM-1 ---
 

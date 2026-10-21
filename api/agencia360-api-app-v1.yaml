@@ -1,27 +1,40 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar
-  version: 1.0.0-borrador
+  version: 1.1.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar (TEC-1).
 
-    **Estado:** borrador para revisión y aceptación de CareCar (Jael) antes de construir contra él.
+    **Estado:** para revisión y aceptación de CareCar (Jael) antes de construir contra él.
     **Fuente:** Product Backlog V2 y respuestas del PO del 9 de octubre de 2026.
 
     Alcance pedido por TEC-1: login, vehículos, tickets, agenda, catálogo y manuales.
 
     Convenciones:
-    - Todas las rutas van bajo `/api/v1/app` y requieren token JWT, excepto las de `auth`.
+    - Todas las rutas van bajo `/api/v1/app` y requieren token JWT, excepto login, refrescar,
+      cerrar sesión, recuperar y restablecer la contraseña.
     - El cliente solo puede ver y modificar sus propios datos; un recurso ajeno responde 404.
-    - Fechas en ISO 8601 (`2026-10-20`), horas en `HH:mm`.
+    - Si la cuenta se desactiva (CRM-1.3), toda ruta protegida responde 403 con
+      `codigo: CUENTA_DESACTIVADA`, aunque el token siga vigente.
+    - Fechas en ISO 8601 (`2026-10-20`), horas en `HH:mm`. Las fechas y horas de citas,
+      franjas y servicios son hora local de la agencia, sin zona: la app las muestra tal cual,
+      sin convertirlas a la zona del dispositivo.
+    - Las listas que crecen con el tiempo se paginan con `pagina` (desde 0) y `tamano`
+      (20 por omisión, máximo 50).
     - Errores con el formato `ApiError` que ya usa el backend (`shared/exception/ApiError.java`).
+      El `message` está escrito para el usuario en 401, 403, 404, 409 y 429; en 400 y 5xx la app
+      muestra un texto propio. Cuando viene `codigo`, la app decide por él y no por el texto.
+
+    Versionado: `info.version` sigue versionado semántico. Una versión menor solo agrega campos
+    o rutas opcionales; un cambio incompatible va en una ruta nueva (`/api/v2/app`). Todo cambio
+    entra por PR con CareCar como revisora.
 
 servers:
   - url: /api/v1/app
 
 tags:
   - name: Acceso
-    description: APP-2.1 y APP-2.3
+    description: APP-2.1, APP-2.2 y APP-2.3
   - name: Vehículos
     description: APP-3.1 y ADM-1
   - name: Servicios y tickets
@@ -40,8 +53,13 @@ paths:
       tags: [Acceso]
       summary: Iniciar sesión con la cuenta que entregó la agencia
       description: |
-        No existe registro público (APP-2.1). Si la cuenta tiene contraseña temporal,
-        `debeCambiarContrasena` llega en `true` y la app debe forzar el cambio (APP-2.3).
+        No existe registro público (APP-2.1). El cliente entra con su correo.
+        Si la cuenta tiene contraseña temporal, `debeCambiarContrasena` llega en `true`
+        y la app debe forzar el cambio (APP-2.3).
+
+        Después de 5 intentos fallidos seguidos con el mismo correo, el login se bloquea
+        15 minutos y responde 429. La cuenta desactivada solo se informa (403) cuando la
+        contraseña es correcta; si no, responde 401 como cualquier credencial inválida.
       security: []
       requestBody:
         required: true
@@ -56,20 +74,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
         '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          description: La cuenta está desactivada (CRM-1.3)
+          description: Correo o contraseña incorrectos (`codigo` CREDENCIALES_INVALIDAS)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /auth/refrescar:
+    post:
+      tags: [Acceso]
+      summary: Obtener un token nuevo con el refresh token
+      description: |
+        Cada refresh token se usa una sola vez: la respuesta trae un par nuevo y el
+        anterior queda revocado. La app guarda siempre el último. El refresh token
+        vence a los 30 días.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Tokens nuevos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Refresh token inválido, usado, revocado o vencido. La app vuelve al login.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /auth/cerrar-sesion:
+    post:
+      tags: [Acceso]
+      summary: Cerrar la sesión y revocar el refresh token
+      description: |
+        No pide el access token, para que funcione aunque ya haya vencido. El access
+        token sigue siendo válido hasta su vencimiento (`expiresIn`); la app lo descarta.
+        Responde 204 aunque el refresh token ya no sea válido.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '204':
+          description: Sesión cerrada
 
   /auth/cambiar-contrasena:
     post:
       tags: [Acceso]
       summary: Cambiar la contraseña (obligatorio en el primer ingreso)
-      description: APP-2.3 · Sprint tentativo S2.
+      description: |
+        APP-2.3 · Sprint 2. La contraseña nueva debe cumplir las reglas de
+        `CambiarContrasenaRequest` y ser distinta de la actual.
       requestBody:
         required: true
         content:
@@ -83,13 +157,16 @@ paths:
           $ref: '#/components/responses/DatosInvalidos'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
 
   /auth/recuperar-contrasena:
     post:
       tags: [Acceso]
-      summary: Solicitar enlace de recuperación por correo
+      summary: Solicitar un código de recuperación por correo
       description: |
-        APP-2.3 · S2. Envía un enlace de un solo uso que expira.
+        APP-2.3 · Sprint 2. Envía al correo un código de 6 dígitos que vence a los
+        15 minutos y sirve una sola vez. Pedir uno nuevo invalida el anterior.
         Responde 202 aunque el correo no exista, para no revelar qué cuentas hay.
       security: []
       requestBody:
@@ -106,41 +183,58 @@ paths:
       responses:
         '202':
           description: Solicitud recibida
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
 
   /auth/restablecer-contrasena:
     post:
       tags: [Acceso]
-      summary: Definir nueva contraseña con el enlace de recuperación
-      description: APP-2.3 · S2.
+      summary: Definir nueva contraseña con el código de recuperación
+      description: |
+        APP-2.3 · Sprint 2. El código admite 5 intentos; después hay que pedir otro.
       security: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              required: [token, contrasenaNueva]
-              properties:
-                token:
-                  type: string
-                contrasenaNueva:
-                  type: string
-                  format: password
+              $ref: '#/components/schemas/RestablecerContrasenaRequest'
       responses:
         '204':
           description: Contraseña restablecida
         '400':
-          description: Token inválido, usado o expirado
+          description: |
+            Código inválido, usado o vencido (`codigo` CODIGO_INVALIDO), o contraseña que no
+            cumple las reglas (`codigo` DATOS_INVALIDOS)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /perfil:
+    get:
+      tags: [Acceso]
+      summary: Datos del cliente que inició sesión
+      description: APP-2.2 · Solo lectura; la edición del perfil se define en APP-2.2.
+      responses:
+        '200':
+          description: Datos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
   /vehiculos:
     get:
       tags: [Vehículos]
       summary: Listar los vehículos del cliente
-      description: APP-3.1 · En el MVP solo el listado.
+      description: APP-3.1 · En el MVP solo el listado. Un cliente puede tener varios vehículos.
       responses:
         '200':
           description: Vehículos asignados al cliente
@@ -152,6 +246,8 @@ paths:
                   $ref: '#/components/schemas/Vehiculo'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
 
   /vehiculos/{vehiculoId}/manuales:
     get:
@@ -171,6 +267,8 @@ paths:
                   $ref: '#/components/schemas/Manual'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
@@ -178,20 +276,24 @@ paths:
     get:
       tags: [Servicios y tickets]
       summary: Historial de servicios del vehículo
-      description: APP-3.2 · Orden cronológico, el más reciente primero.
+      description: APP-3.2 · Orden cronológico, el más reciente primero. Paginado.
       parameters:
         - $ref: '#/components/parameters/VehiculoId'
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
       responses:
         '200':
           description: Órdenes de servicio del vehículo
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Servicio'
+                $ref: '#/components/schemas/PaginaServicios'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
@@ -199,7 +301,9 @@ paths:
     get:
       tags: [Servicios y tickets]
       summary: Descargar el ticket de una orden de servicio
-      description: El ticket es un documento que genera la orden de servicio (decisión del 9 de octubre).
+      description: |
+        El ticket es un documento que genera la orden de servicio (decisión del 9 de octubre).
+        Se descarga con el mismo token Bearer; el PDF viene en el cuerpo de la respuesta.
       parameters:
         - name: servicioId
           in: path
@@ -210,6 +314,11 @@ paths:
       responses:
         '200':
           description: Ticket en PDF
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="ticket-{servicioId}.pdf"`'
+              schema:
+                type: string
           content:
             application/pdf:
               schema:
@@ -217,6 +326,8 @@ paths:
                 format: binary
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
@@ -251,22 +362,49 @@ paths:
           $ref: '#/components/responses/DatosInvalidos'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
 
   /citas:
     get:
       tags: [Agenda]
       summary: Listar las citas del cliente
+      description: |
+        Ordenadas por fecha y hora de inicio. Los filtros son opcionales y se combinan.
+        Próximas: `estado=CONFIRMADA&desde=<hoy>`. Pasadas: `hasta=<ayer>`.
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EstadoCita'
+        - name: desde
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: hasta
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
       responses:
         '200':
           description: Citas del cliente
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Cita'
+                $ref: '#/components/schemas/PaginaCitas'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
     post:
       tags: [Agenda]
       summary: Agendar una cita de servicio
@@ -288,10 +426,12 @@ paths:
           $ref: '#/components/responses/DatosInvalidos'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
         '409':
-          description: La franja ya no tiene cupo
+          description: La franja ya no tiene cupo (`codigo` FRANJA_SIN_CUPO)
           content:
             application/json:
               schema:
@@ -318,10 +458,14 @@ paths:
                 $ref: '#/components/schemas/Cita'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
         '409':
-          description: Fuera del plazo de cancelación o la cita ya no está confirmada
+          description: |
+            Fuera del plazo de cancelación (`codigo` FUERA_DE_PLAZO) o la cita ya no está
+            confirmada (`codigo` CITA_NO_CANCELABLE)
           content:
             application/json:
               schema:
@@ -343,6 +487,8 @@ paths:
                   $ref: '#/components/schemas/ModeloCatalogo'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
 
 components:
   securitySchemes:
@@ -359,10 +505,50 @@ components:
       schema:
         type: integer
         format: int64
+    Pagina:
+      name: pagina
+      in: query
+      required: false
+      description: Número de página, desde 0
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    Tamano:
+      name: tamano
+      in: query
+      required: false
+      description: Elementos por página
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
 
   responses:
     NoAutenticado:
-      description: Sin token, token inválido o credenciales incorrectas
+      description: |
+        Sin token, token inválido o vencido. La app intenta `/auth/refrescar` una vez y,
+        si falla, vuelve al login.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    CuentaDesactivada:
+      description: |
+        La agencia desactivó la cuenta (CRM-1.3), `codigo` CUENTA_DESACTIVADA. La app cierra
+        la sesión y muestra el `message`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    DemasiadosIntentos:
+      description: Demasiados intentos seguidos (`codigo` DEMASIADOS_INTENTOS)
+      headers:
+        Retry-After:
+          description: Segundos que faltan para poder intentar de nuevo
+          schema:
+            type: integer
       content:
         application/json:
           schema:
@@ -374,7 +560,7 @@ components:
           schema:
             $ref: '#/components/schemas/Problema'
     DatosInvalidos:
-      description: Datos de entrada inválidos
+      description: Datos de entrada inválidos (`codigo` DATOS_INVALIDOS)
       content:
         application/json:
           schema:
@@ -383,23 +569,39 @@ components:
   schemas:
     LoginRequest:
       type: object
-      required: [usuario, contrasena]
+      required: [correo, contrasena]
       properties:
-        usuario:
+        correo:
           type: string
+          format: email
+          description: Se ignoran mayúsculas y espacios al inicio y al final
         contrasena:
           type: string
           format: password
 
     LoginResponse:
       type: object
-      required: [accessToken, debeCambiarContrasena]
+      required: [accessToken, expiresIn, refreshToken, debeCambiarContrasena]
       properties:
         accessToken:
           type: string
+        expiresIn:
+          type: integer
+          description: Segundos de vida del accessToken. Es configurable; la app usa el valor recibido.
+          example: 3600
+        refreshToken:
+          type: string
+          description: Un solo uso; vence a los 30 días
         debeCambiarContrasena:
           type: boolean
           description: true si la contraseña es temporal (APP-2.3)
+
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
 
     CambiarContrasenaRequest:
       type: object
@@ -411,6 +613,40 @@ components:
         contrasenaNueva:
           type: string
           format: password
+          minLength: 8
+          maxLength: 72
+          description: Al menos una letra y un número; distinta de la actual
+
+    RestablecerContrasenaRequest:
+      type: object
+      required: [correo, codigo, contrasenaNueva]
+      properties:
+        correo:
+          type: string
+          format: email
+        codigo:
+          type: string
+          pattern: '^[0-9]{6}$'
+          description: Código de 6 dígitos que llegó al correo
+        contrasenaNueva:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          description: Al menos una letra y un número
+
+    Perfil:
+      type: object
+      required: [id, nombre, correo]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        correo:
+          type: string
+          format: email
 
     Vehiculo:
       type: object
@@ -446,7 +682,9 @@ components:
           type: integer
         url:
           type: string
-          description: Enlace para descargar el PDF
+          description: |
+            URL temporal firmada para descargar el PDF, sin token. Vence a los 15 minutos;
+            si venció, la app vuelve a pedir la lista.
 
     Servicio:
       type: object
@@ -466,6 +704,24 @@ components:
           type: number
           format: double
           description: Mano de obra más refacciones
+
+    PaginaServicios:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Servicio'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
 
     Disponibilidad:
       type: object
@@ -501,14 +757,21 @@ components:
           type: string
           format: date
 
+    EstadoCita:
+      type: string
+      enum: [CONFIRMADA, ATENDIDA, NO_ASISTIO, CANCELADA]
+
     Cita:
       type: object
-      required: [id, vehiculoId, fecha, horaInicio, horaFin, estado]
+      required: [id, vehiculoId, franjaId, fecha, horaInicio, horaFin, estado]
       properties:
         id:
           type: integer
           format: int64
         vehiculoId:
+          type: integer
+          format: int64
+        franjaId:
           type: integer
           format: int64
         fecha:
@@ -519,8 +782,25 @@ components:
         horaFin:
           type: string
         estado:
-          type: string
-          enum: [CONFIRMADA, ATENDIDA, NO_ASISTIO, CANCELADA]
+          $ref: '#/components/schemas/EstadoCita'
+
+    PaginaCitas:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cita'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
 
     ModeloCatalogo:
       type: object
@@ -541,6 +821,7 @@ components:
         timestamp:
           type: string
           format: date-time
+          description: En UTC
         status:
           type: integer
           example: 409
@@ -550,6 +831,21 @@ components:
         message:
           type: string
           example: La franja ya no tiene cupo
+        codigo:
+          type: string
+          nullable: true
+          description: |
+            Causa del error, para que la app decida sin leer el texto. Puede no venir.
+          enum:
+            - CREDENCIALES_INVALIDAS
+            - CUENTA_DESACTIVADA
+            - DEMASIADOS_INTENTOS
+            - CODIGO_INVALIDO
+            - DATOS_INVALIDOS
+            - FRANJA_SIN_CUPO
+            - FUERA_DE_PLAZO
+            - CITA_NO_CANCELABLE
+          example: FRANJA_SIN_CUPO
         path:
           type: string
           example: /api/v1/app/citas

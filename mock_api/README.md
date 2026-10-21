@@ -30,10 +30,10 @@ La dirección de la API se pasa al compilar, sin tocar código:
 
 ```bash
 # Contra la API simulada
-flutter run --dart-define=API_URL=http://localhost:3000/api/v1/app
+flutter run --dart-define=API_BASE_URL=http://localhost:3000/api/v1/app
 
 # Contra la API real, cuando exista
-flutter run --dart-define=API_URL=https://<servidor>/api/v1/app
+flutter run --dart-define=API_BASE_URL=https://<servidor>/api/v1/app
 ```
 
 > **En emulador o dispositivo físico, `localhost` no es tu computadora.**

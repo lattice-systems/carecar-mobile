@@ -26,7 +26,7 @@ void main() {
           isA<ApiConfigInvalida>().having(
             (e) => e.toString(),
             'mensaje',
-            contains('--dart-define=API_URL'),
+            contains('--dart-define=API_BASE_URL'),
           ),
         ),
       );

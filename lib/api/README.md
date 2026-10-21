@@ -43,7 +43,7 @@ pantallas: se cambia la dirección o la implementación, no la interfaz.
 Se pasa al compilar, nunca se escribe en el código:
 
 ```bash
-flutter run --dart-define=API_URL=http://localhost:3000/api/v1/app
+flutter run --dart-define=API_BASE_URL=http://localhost:3000/api/v1/app
 ```
 
 **No hay valor por omisión a propósito.** Es preferible un error claro al arrancar
