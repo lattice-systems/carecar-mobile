@@ -63,3 +63,6 @@ key.properties
 .claude/context/
 .claude/settings.local.json
 CLAUDE.local.md
+
+# Reporte de auditoria de seguridad (el repo es publico; no se versiona)
+SECURITY_REPORT.md
