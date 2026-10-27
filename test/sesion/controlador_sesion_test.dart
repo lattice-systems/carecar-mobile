@@ -446,6 +446,57 @@ void main() {
     });
   });
 
+  group('RIC-5 · el bloqueo por demasiados intentos', () {
+    test('le dice al usuario cuanto tiene que esperar', () async {
+      // `ClienteApi` ya lee el encabezado `Retry-After` y arma el texto, pero
+      // hasta ahora nadie lo usaba: el usuario veia «intenta mas tarde» sin
+      // saber cuanto, aunque el servidor si lo habia dicho.
+      armar(
+        ApiFalsa.queFalla(
+          const DemasiadosIntentos(
+            'Demasiados intentos. Intenta de nuevo mas tarde.',
+            esperaSegundos: 900,
+          ),
+        ),
+      );
+
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'mala',
+      );
+
+      final fallo = controlador.estado as FalloDeSesion;
+      expect(fallo.mensaje, contains('15 minutos'));
+      expect(fallo.esBloqueoTemporal, isTrue);
+      expect(fallo.esFalloDeRed, isFalse);
+    });
+
+    test('sin Retry-After no inventa un tiempo', () async {
+      armar(
+        ApiFalsa.queFalla(const DemasiadosIntentos('Demasiados intentos.')),
+      );
+
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'mala',
+      );
+
+      final fallo = controlador.estado as FalloDeSesion;
+      expect(fallo.esBloqueoTemporal, isTrue);
+      expect(fallo.mensaje, isNot(contains('minuto')));
+      expect(fallo.mensaje, contains('Espera'));
+    });
+
+    test('un 401 normal no se marca como bloqueo', () async {
+      armar(ApiFalsa.queFalla(const CredencialesInvalidas('Incorrectos')));
+
+      await controlador.iniciarSesion(correo: 'a@example.com', contrasena: 'b');
+
+      final fallo = controlador.estado as FalloDeSesion;
+      expect(fallo.esBloqueoTemporal, isFalse);
+    });
+  });
+
   group('cuenta desactivada', () {
     test('un 403 cierra la sesion sin avisarle al servidor', () async {
       // RIC-3: en la app un 403 solo puede ser cuenta desactivada, y el

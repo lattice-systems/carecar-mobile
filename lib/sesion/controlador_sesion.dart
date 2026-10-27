@@ -33,10 +33,22 @@ class Autenticada extends EstadoSesion {
 
 /// El login fallo. Se queda en la pantalla de login con el mensaje.
 class FalloDeSesion extends EstadoSesion {
-  const FalloDeSesion(this.mensaje, {this.esFalloDeRed = false});
+  const FalloDeSesion(
+    this.mensaje, {
+    this.esFalloDeRed = false,
+    this.esBloqueoTemporal = false,
+  });
 
   /// Siempre se puede mostrar al usuario.
   final String mensaje;
+
+  /// `true` cuando el servidor bloqueo la cuenta por demasiados intentos
+  /// (RIC-5): 5 fallidos seguidos y 15 minutos de espera.
+  ///
+  /// No es un error del usuario ni una falla de la app: es una espera. La
+  /// pantalla lo muestra como advertencia y no como error, igual que «sin
+  /// conexion», y reintentar antes de que pase el tiempo no va a servir.
+  final bool esBloqueoTemporal;
 
   /// `true` cuando no se pudo llegar al servidor.
   ///
@@ -145,6 +157,14 @@ class ControladorSesion extends ChangeNotifier {
       );
     } on SinConexion catch (e) {
       _cambiarA(FalloDeSesion(e.mensaje, esFalloDeRed: true));
+    } on DemasiadosIntentos catch (e) {
+      // Va antes del `ExcepcionApi` general para poder decir cuanto esperar.
+      _cambiarA(
+        FalloDeSesion(
+          _textoDelBloqueo(e.esperaLegible),
+          esBloqueoTemporal: true,
+        ),
+      );
     } on ExcepcionApi catch (e) {
       // Cubre credenciales invalidas, cuenta desactivada, datos invalidos y
       // errores del servidor. El mensaje ya viene listo para mostrar.
@@ -177,6 +197,15 @@ class ControladorSesion extends ChangeNotifier {
 
     await _terminar();
   }
+
+  /// Que se le dice al usuario cuando la cuenta quedo bloqueada (RIC-5).
+  ///
+  /// El `message` del servidor se puede mostrar en un 429, pero no incluye el
+  /// tiempo: eso viene en el encabezado `Retry-After`. Aqui se juntan los dos,
+  /// porque «espera 15 minutos» es accionable y «intenta mas tarde» no.
+  static String _textoDelBloqueo(String? espera) => espera == null
+      ? 'Demasiados intentos. Espera un momento e intenta de nuevo.'
+      : 'Demasiados intentos. Espera $espera e intenta de nuevo.';
 
   /// Cierra la sesion porque el servidor contesto 403.
   ///
