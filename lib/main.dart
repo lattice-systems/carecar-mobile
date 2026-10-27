@@ -8,7 +8,7 @@ import 'pantallas/pantalla_cambiar_contrasena.dart';
 import 'pantallas/pantalla_inicio.dart';
 import 'pantallas/pantalla_login.dart';
 import 'pantallas/pantalla_recuperar_contrasena.dart';
-import 'sesion/almacen_sesion.dart';
+import 'sesion/almacen_seguro.dart';
 import 'sesion/controlador_sesion.dart';
 import 'tema/tema_carecar.dart';
 
@@ -38,6 +38,12 @@ class _AppCareCarState extends State<AppCareCar> {
   CarecarApi? _api;
   Object? _errorDeArranque;
 
+  /// Mientras se lee la sesion guardada no se sabe si hay que mostrar el login.
+  ///
+  /// Sin esto se veria el login un instante y la app saltaria a inicio, que es
+  /// peor que una espera corta.
+  bool _restaurando = true;
+
   @override
   void initState() {
     super.initState();
@@ -46,23 +52,47 @@ class _AppCareCarState extends State<AppCareCar> {
 
   void _armar() {
     try {
-      final almacen = AlmacenEnMemoria();
+      // TEC-6 T3: el almacenamiento cifrado del sistema. Con el refresh token
+      // de 30 dias, la sesion sobrevive a cerrar la app.
+      final almacen = AlmacenSeguro.delSistema();
+
+      // Se declara antes del cliente porque el cliente necesita poder pedirle
+      // un refresco, y el controlador necesita la API que usa ese cliente. La
+      // referencia se resuelve cuando corre el callback, no al construirlo.
+      late final ControladorSesion sesion;
 
       // El cliente pide el token al almacen en cada peticion, asi que iniciar
       // o cerrar sesion no obliga a reconstruirlo.
       final cliente = ClienteApi(
         config: ApiConfig.desdeEntorno(),
-        obtenerToken: almacen.leerToken,
+        obtenerToken: () async => (await almacen.leer())?.accessToken,
+        // RIC-3: ante un 401 se intenta refrescar una vez.
+        renovarSesion: () => sesion.renovar(),
       );
 
       final api = CarecarApiHttp(cliente);
+      sesion = ControladorSesion(api, almacen);
+
       _cliente = cliente;
       _api = api;
-      _sesion = ControladorSesion(api, almacen);
+      _sesion = sesion;
+
+      _restaurar(sesion);
     } on ApiConfigInvalida catch (e) {
       // Falta --dart-define=API_BASE_URL. Es preferible decirlo con el comando
       // exacto que arrancar apuntando a ningun lado.
       _errorDeArranque = e;
+    }
+  }
+
+  /// Recupera la sesion guardada antes de decidir que pantalla se ve.
+  Future<void> _restaurar(ControladorSesion sesion) async {
+    try {
+      await sesion.restaurar();
+    } finally {
+      // Pase lo que pase hay que dejar de esperar: si no se pudo restaurar, se
+      // muestra el login, que es el comportamiento de siempre.
+      if (mounted) setState(() => _restaurando = false);
     }
   }
 
@@ -79,9 +109,36 @@ class _AppCareCarState extends State<AppCareCar> {
       title: 'CareCar',
       theme: TemaCareCar.claro,
       debugShowCheckedModeBanner: false,
-      home: _errorDeArranque != null
-          ? _PantallaDeErrorDeArranque(error: _errorDeArranque!)
-          : _Raiz(controlador: _sesion!, api: _api!),
+      home: switch (_errorDeArranque) {
+        final error? => _PantallaDeErrorDeArranque(error: error),
+        _ when _restaurando => const _PantallaDeArranque(),
+        _ => _Raiz(controlador: _sesion!, api: _api!),
+      },
+    );
+  }
+}
+
+/// Lo que se ve mientras se lee la sesion guardada.
+///
+/// Es la marca y nada mas: dura lo que tarda una lectura del almacenamiento
+/// cifrado, asi que un indicador de progreso alcanzaria a parpadear y se veria
+/// peor que esto.
+class _PantallaDeArranque extends StatelessWidget {
+  const _PantallaDeArranque();
+
+  static const logo = Key('arranque_logo');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Image.asset(
+          'assets/marca/agencia360-logo.png',
+          key: logo,
+          width: 180,
+          semanticLabel: 'Agencia360',
+        ),
+      ),
     );
   }
 }
