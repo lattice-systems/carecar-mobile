@@ -1,5 +1,5 @@
 // Tarea 4 de TEC-5 · Validar que las respuestas respetan el contrato.
-// Recalibrada a la v1.1 en la tarea 1 de TEC-6.
+// Recalibrada a la v1.1 en la tarea 1 de TEC-6, y a la v1.2 el 27 oct 2026.
 //
 // Lee api/agencia360-api-app-v1.yaml y lo compara contra lo que esta prueba
 // declara. Si Ricardo cambia el contrato (agrega un campo, cambia uno a
@@ -21,6 +21,7 @@ import 'dart:io';
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/carecar_api_http.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
+import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -33,9 +34,10 @@ const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 /// El contrato vive en `docs/api/` del repositorio del backend y cambia por PR.
 /// Esta copia se fija a una version a proposito (decision D-C): bajarla de la
 /// rama principal del backend seria perseguir un blanco movil.
-const _versionEsperada = '1.1.0';
+const _versionEsperada = '1.2.0';
 
-/// Los 17 esquemas de la v1.1.
+/// Los 17 esquemas de la v1.2. La v1.2 no agrega ni quita esquemas: solo
+/// agrega campos opcionales a `Vehiculo` y a `Manual`.
 const _esquemasDelContrato = <String>{
   'LoginRequest',
   'LoginResponse',
@@ -72,8 +74,21 @@ const _propiedadesDelContrato = <String, Set<String>>{
   'CambiarContrasenaRequest': {'contrasenaActual', 'contrasenaNueva'},
   'RestablecerContrasenaRequest': {'correo', 'codigo', 'contrasenaNueva'},
   'Perfil': {'id', 'nombre', 'correo'},
-  'Vehiculo': {'id', 'vin', 'modelo', 'anio', 'placas', 'kilometraje'},
-  'Manual': {'id', 'modelo', 'anio', 'url'},
+  // `marca` y `version` son nuevos en la v1.2 y los dos son opcionales.
+  // Ojo con los nombres: `modelo` es el Tipo (Sentra) y `anio` es el Modelo
+  // (2026), como en la factura. La v1.2 lo documenta explicitamente.
+  'Vehiculo': {
+    'id',
+    'vin',
+    'marca',
+    'modelo',
+    'anio',
+    'version',
+    'placas',
+    'kilometraje',
+  },
+  // `marca` y `titulo` son nuevos en la v1.2.
+  'Manual': {'id', 'marca', 'modelo', 'anio', 'titulo', 'url'},
   'Servicio': {'id', 'fecha', 'estatus', 'total'},
   'PaginaServicios': {
     'contenido',
@@ -162,7 +177,8 @@ const _obligatoriosDelContrato = <String, Set<String>>{
   'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
 };
 
-/// Las 16 operaciones de la v1.1, como `METODO ruta`.
+/// Las 16 operaciones del contrato, como `METODO ruta`. La v1.2 no agrega
+/// ninguna: son las mismas 16 de la v1.1.
 const _operacionesDelContrato = <String>{
   'POST /auth/login',
   'POST /auth/refrescar',
@@ -194,24 +210,59 @@ const _rutasPublicas = <String>{
   '/auth/restablecer-contrasena',
 };
 
-/// Lo que la v1.1 trae y la app todavia NO implementa.
+/// Lo que el contrato trae y la app todavia NO implementa.
 ///
 /// Esta lista existe para que la deuda sea visible y no se confunda con que la
-/// app ya hable la v1.1 completa. Cada entrada dice en que tarea de TEC-6 o en
-/// que sprint entra. Al implementar una, se borra de aqui.
+/// app ya hable el contrato completo. Cada entrada dice en que sprint entra. Al
+/// implementar una, se borra de aqui.
+///
+/// APP-2.3 y TEC-6 T5 cerraron cuatro entradas que estaban aqui: el login con
+/// `correo`, el codigo de restablecer, `Problema.codigo` y el 429. El grupo
+/// «la deuda esta declarada» comprueba contra el codigo real que sigan fuera.
 const _pendientesDeImplementar = <String, String>{
-  'LoginRequest.correo': 'TEC-6 T2 · hoy la app manda `usuario`',
-  'LoginResponse.expiresIn': 'TEC-6 T4',
-  'LoginResponse.refreshToken': 'TEC-6 T4',
-  'POST /auth/refrescar': 'TEC-6 T4',
-  'POST /auth/cerrar-sesion': 'TEC-6 T4',
-  'RestablecerContrasenaRequest.codigo': 'APP-2.3 · hoy la firma pide un token',
-  'Problema.codigo': 'TEC-6 T5',
-  '429 DEMASIADOS_INTENTOS': 'TEC-6 T5',
+  'LoginResponse.expiresIn': 'Sprint 3 · TEC-6 T4',
+  'LoginResponse.refreshToken': 'Sprint 3 · TEC-6 T4',
+  'POST /auth/refrescar': 'Sprint 3 · TEC-6 T4',
+  'POST /auth/cerrar-sesion': 'Sprint 3 · TEC-6 T4',
   'GET /perfil': 'Sprint 3',
+  'Vehiculo.marca': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
+  'Vehiculo.version': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
+  'Manual.marca': 'con los manuales de APP-3.1 · nuevo en la v1.2',
+  'Manual.titulo': 'con los manuales de APP-3.1 · nuevo en la v1.2',
   'Cita.franjaId': 'Sprint 4, con APP-3.3',
   'PaginaServicios': 'Sprint 4, con APP-3.2',
   'PaginaCitas': 'Sprint 4, con APP-3.3',
+};
+
+/// Lo que la app SI implementa ya, comprobado contra el codigo.
+///
+/// Es el espejo de la lista de arriba: si alguna de estas vuelve a aparecer en
+/// `_pendientesDeImplementar`, o si alguien revierte la implementacion, la
+/// prueba se pone roja. Sin esto la lista de deuda se queda vieja en silencio,
+/// que es justo lo que paso entre el Sprint 1 y el 2.
+Map<String, bool> _yaImplementado() => {
+  'LoginRequest.correo': const PeticionLogin(
+    correo: 'a@example.com',
+    contrasena: 'x',
+  ).toJson().containsKey('correo'),
+  'RestablecerContrasenaRequest.codigo': const PeticionRestablecer(
+    correo: 'a@example.com',
+    codigo: '123456',
+    contrasenaNueva: 'Nueva1234',
+  ).toJson().containsKey('codigo'),
+  'Problema.codigo':
+      Problema.fromJson(const {
+        'timestamp': 't',
+        'status': 400,
+        'error': 'Bad Request',
+        'message': 'x',
+        'codigo': 'CODIGO_INVALIDO',
+        'path': '/p',
+      }).codigo ==
+      CodigoProblema.codigoInvalido,
+  '429 DEMASIADOS_INTENTOS':
+      const DemasiadosIntentos('x', esperaSegundos: 900).esperaLegible ==
+      '15 minutos',
 };
 
 void main() {
@@ -360,7 +411,7 @@ void main() {
     });
   });
 
-  group('la deuda con la v1.1 esta declarada', () {
+  group('la deuda con el contrato esta declarada', () {
     // No es una prueba de comportamiento: es un recordatorio con dientes. Si
     // alguien implementa una de estas y no la borra de la lista, o borra una
     // sin implementarla, al menos queda escrito en un solo lugar.
@@ -375,21 +426,27 @@ void main() {
       }
     });
 
-    test('lo que ya se implemento se borro de la lista', () {
-      // `usuario` todavia es lo que la app manda: cuando T2 lo cambie a
-      // `correo`, esta prueba obliga a quitar la entrada de la lista.
-      final mandaUsuario = const PeticionLogin(
-        correo: 'a@example.com',
-        contrasena: 'b',
-      ).toJson().containsKey('correo');
-
-      expect(
-        _pendientesDeImplementar.containsKey('LoginRequest.correo'),
-        mandaUsuario,
-        reason: mandaUsuario
-            ? 'La app sigue mandando `usuario`: la entrada debe quedarse'
-            : 'La app ya manda `correo`: borra LoginRequest.correo de la lista',
-      );
+    test('lo que la app ya implementa no sigue en la lista de deuda', () {
+      // Se comprueba contra el codigo real, no contra un comentario. La
+      // version anterior de esta prueba solo miraba el login y ademas tenia la
+      // condicion invertida: pasaba en verde con cuatro entradas ya resueltas
+      // todavia en la lista.
+      for (final entrada in _yaImplementado().entries) {
+        expect(
+          entrada.value,
+          isTrue,
+          reason:
+              '${entrada.key} dejo de estar implementado. Si fue a proposito, '
+              'regresalo a _pendientesDeImplementar',
+        );
+        expect(
+          _pendientesDeImplementar.containsKey(entrada.key),
+          isFalse,
+          reason:
+              'La app ya implementa ${entrada.key}: borralo de '
+              '_pendientesDeImplementar',
+        );
+      }
     });
   });
 
