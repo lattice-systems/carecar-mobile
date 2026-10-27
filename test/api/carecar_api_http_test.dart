@@ -49,8 +49,12 @@ void main() {
   test('iniciarSesion llama POST /auth/login y lee la respuesta', () async {
     final api = _api(
       espia,
-      () =>
-          _json({'accessToken': 'abc.def.ghi', 'debeCambiarContrasena': true}),
+      () => _json({
+        'accessToken': 'abc.def.ghi',
+        'expiresIn': 3600,
+        'refreshToken': 'refresco.abc',
+        'debeCambiarContrasena': true,
+      }),
     );
 
     final sesion = await api.iniciarSesion(
@@ -67,6 +71,8 @@ void main() {
       'contrasena': 'CareCar2026',
     });
     expect(sesion.accessToken, 'abc.def.ghi');
+    expect(sesion.expiresIn, 3600);
+    expect(sesion.refreshToken, 'refresco.abc');
     expect(sesion.debeCambiarContrasena, isTrue);
   });
 

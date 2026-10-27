@@ -3,12 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('RespuestaLogin', () {
-    test('lee el token y la bandera de contrasena temporal', () {
+    test('lee los cuatro campos de la v1.1', () {
+      // Los cuatro son `required` en el contrato. El detalle de `expiresIn`,
+      // `refreshToken` y la conversion al par que se guarda esta en
+      // test/api/sesion_con_refresco_test.dart.
       final r = RespuestaLogin.fromJson({
         'accessToken': 'abc.def.ghi',
+        'expiresIn': 3600,
+        'refreshToken': 'refresco.abc',
         'debeCambiarContrasena': true,
       });
       expect(r.accessToken, 'abc.def.ghi');
+      expect(r.expiresIn, 3600);
+      expect(r.refreshToken, 'refresco.abc');
       expect(r.debeCambiarContrasena, isTrue);
     });
   });
