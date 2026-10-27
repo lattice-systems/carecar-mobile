@@ -68,15 +68,22 @@ abstract final class ReglasContrasena {
   }
 }
 
-/// Respuesta de `POST /auth/login`.
+/// Respuesta de `POST /auth/login` y de `POST /auth/refrescar`.
+///
+/// Las dos devuelven la misma forma, por eso un solo modelo. En la v1.1 trae
+/// cuatro campos y **los cuatro son obligatorios** en el contrato.
 class RespuestaLogin {
   const RespuestaLogin({
     required this.accessToken,
+    required this.expiresIn,
+    required this.refreshToken,
     required this.debeCambiarContrasena,
   });
 
   factory RespuestaLogin.fromJson(Map<String, Object?> json) => RespuestaLogin(
     accessToken: leerTexto(json['accessToken'], 'accessToken'),
+    expiresIn: leerEntero(json['expiresIn'], 'expiresIn'),
+    refreshToken: leerTexto(json['refreshToken'], 'refreshToken'),
     debeCambiarContrasena: leerBool(
       json['debeCambiarContrasena'],
       'debeCambiarContrasena',
@@ -85,7 +92,19 @@ class RespuestaLogin {
 
   final String accessToken;
 
+  /// Cuanto vive el access token, **en segundos** (RIC-1).
+  ///
+  /// Hoy son 3600, pero es configurable en el backend: la app usa el valor que
+  /// llega y **no abre el JWT** para averiguarlo.
+  final int expiresIn;
+
+  /// Dura 30 dias y **se usa una sola vez** (RIC-2).
+  ///
+  /// Cada refresco devuelve uno nuevo, asi que hay que guardar siempre el
+  /// ultimo. Si `POST /auth/refrescar` responde 401, la sesion termino.
+  final String refreshToken;
+
   /// `true` si la contrasena es temporal y la app debe forzar el cambio
-  /// (APP-2.3). El contrato no dice cuanto vive el token: pregunta RIC-1.
+  /// (APP-2.3).
   final bool debeCambiarContrasena;
 }
