@@ -219,11 +219,12 @@ const _rutasPublicas = <String>{
 /// APP-2.3 y TEC-6 T5 cerraron cuatro entradas que estaban aqui: el login con
 /// `correo`, el codigo de restablecer, `Problema.codigo` y el 429. El grupo
 /// «la deuda esta declarada» comprueba contra el codigo real que sigan fuera.
+/// TEC-6 T3 y T4 cerraron otras cuatro: `expiresIn`, `refreshToken`,
+/// `/auth/refrescar` y `/auth/cerrar-sesion`. Las dos operaciones no aparecen
+/// en [_yaImplementado] porque que existan ya lo garantiza el compilador —
+/// `CarecarApi` las declara— y su comportamiento esta cubierto en
+/// `test/api/sesion_con_refresco_test.dart`.
 const _pendientesDeImplementar = <String, String>{
-  'LoginResponse.expiresIn': 'Sprint 3 · TEC-6 T4',
-  'LoginResponse.refreshToken': 'Sprint 3 · TEC-6 T4',
-  'POST /auth/refrescar': 'Sprint 3 · TEC-6 T4',
-  'POST /auth/cerrar-sesion': 'Sprint 3 · TEC-6 T4',
   'GET /perfil': 'Sprint 3',
   'Vehiculo.marca': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
   'Vehiculo.version': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
@@ -263,7 +264,18 @@ Map<String, bool> _yaImplementado() => {
   '429 DEMASIADOS_INTENTOS':
       const DemasiadosIntentos('x', esperaSegundos: 900).esperaLegible ==
       '15 minutos',
+  'LoginResponse.expiresIn': _respuestaDeLogin().expiresIn == 3600,
+  'LoginResponse.refreshToken':
+      _respuestaDeLogin().refreshToken == 'refresco.abc',
 };
+
+/// Una respuesta de login completa, como la declara el contrato.
+RespuestaLogin _respuestaDeLogin() => RespuestaLogin.fromJson(const {
+  'accessToken': 'abc.def.ghi',
+  'expiresIn': 3600,
+  'refreshToken': 'refresco.abc',
+  'debeCambiarContrasena': false,
+});
 
 void main() {
   late YamlMap contrato;

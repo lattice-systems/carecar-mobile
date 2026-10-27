@@ -20,6 +20,7 @@ class ClienteApi {
     required this.config,
     http.Client? http,
     this.obtenerToken,
+    this.renovarSesion,
     this.tiempoLimite = const Duration(seconds: 20),
   }) : _http = http ?? _crearCliente();
 
@@ -34,13 +35,29 @@ class ClienteApi {
   /// reconstruir el cliente. Donde se guarda el token es decision de APP-2.1.
   final Future<String?> Function()? obtenerToken;
 
+  /// Renueva la sesion cuando el servidor contesta 401 (RIC-3).
+  ///
+  /// Devuelve `true` si consiguio un par de tokens nuevo, y entonces la
+  /// peticion se reintenta **una sola vez**. Si devuelve `false`, el 401 sale
+  /// como estaba y quien llamo decide que hacer.
+  ///
+  /// Es una funcion y no una dependencia a `ControladorSesion` porque si no,
+  /// la capa de datos dependeria de la de sesion, que es la direccion
+  /// contraria: el controlador usa el cliente, no al reves.
+  final Future<bool> Function()? renovarSesion;
+
   final Duration tiempoLimite;
 
   void cerrar() => _http.close();
 
-  Future<Map<String, String>> _encabezados({bool conCuerpo = false}) async {
+  Future<Map<String, String>> _encabezados({
+    bool conCuerpo = false,
+    bool conToken = true,
+  }) async {
     final encabezados = <String, String>{'accept': 'application/json'};
     if (conCuerpo) encabezados['content-type'] = 'application/json';
+
+    if (!conToken) return encabezados;
 
     final token = await obtenerToken?.call();
     if (token != null && token.isNotEmpty) {
@@ -49,17 +66,49 @@ class ClienteApi {
     return encabezados;
   }
 
+  /// `true` si hay token para mandar.
+  Future<bool> _haySesion() async {
+    final token = await obtenerToken?.call();
+    return token != null && token.isNotEmpty;
+  }
+
+  /// Ejecuta la peticion y, si el servidor contesta 401, la reintenta una vez
+  /// con la sesion renovada.
+  ///
+  /// El reintento solo se intenta cuando la peticion original **llevaba un
+  /// token**. Esa condicion es la que evita el error grave de esta tarea: el
+  /// login tambien contesta 401 cuando las credenciales estan mal, y ahi no hay
+  /// nada que refrescar. Sin ella, escribir mal la contrasena se veria como una
+  /// sesion expirada.
+  ///
+  /// Nunca hay un segundo reintento: [hacer] se llama como maximo dos veces.
+  Future<http.Response> _pedir(
+    Future<http.Response> Function() hacer, {
+    required bool conToken,
+  }) async {
+    final respuesta = await _ejecutar(hacer);
+    if (respuesta.statusCode != 401 || !conToken) return respuesta;
+
+    final renovar = renovarSesion;
+    if (renovar == null) return respuesta;
+    if (!await _haySesion()) return respuesta;
+
+    if (!await renovar()) return respuesta;
+    return _ejecutar(hacer);
+  }
+
   /// GET que devuelve un objeto.
   Future<T> obtener<T>(
     String camino,
     T Function(Map<String, Object?>) leer, {
     Map<String, String?>? consulta,
   }) async {
-    final respuesta = await _ejecutar(
+    final respuesta = await _pedir(
       () async => _http.get(
         config.ruta(camino, consulta: consulta),
         headers: await _encabezados(),
       ),
+      conToken: true,
     );
     return _leerObjeto(respuesta, leer);
   }
@@ -70,50 +119,69 @@ class ClienteApi {
     T Function(Map<String, Object?>) leer, {
     Map<String, String?>? consulta,
   }) async {
-    final respuesta = await _ejecutar(
+    final respuesta = await _pedir(
       () async => _http.get(
         config.ruta(camino, consulta: consulta),
         headers: await _encabezados(),
       ),
+      conToken: true,
     );
     return _leerLista(respuesta, leer);
   }
 
   /// POST que devuelve un objeto.
+  ///
+  /// [conToken] en `false` para las rutas publicas del contrato. Ademas de no
+  /// mandar el encabezado, apaga el reintento con sesion renovada, que en una
+  /// ruta publica no tendria sentido.
   Future<T> enviar<T>(
     String camino, {
     required Object? cuerpo,
     required T Function(Map<String, Object?>) leer,
+    bool conToken = true,
   }) async {
-    final respuesta = await _ejecutar(
+    final respuesta = await _pedir(
       () async => _http.post(
         config.ruta(camino),
-        headers: await _encabezados(conCuerpo: cuerpo != null),
+        headers: await _encabezados(
+          conCuerpo: cuerpo != null,
+          conToken: conToken,
+        ),
         body: cuerpo == null ? null : jsonEncode(cuerpo),
       ),
+      conToken: conToken,
     );
     return _leerObjeto(respuesta, leer);
   }
 
   /// POST de los endpoints que contestan 202 o 204 sin cuerpo.
-  Future<void> enviarSinRespuesta(String camino, {Object? cuerpo}) async {
-    final respuesta = await _ejecutar(
+  Future<void> enviarSinRespuesta(
+    String camino, {
+    Object? cuerpo,
+    bool conToken = true,
+  }) async {
+    final respuesta = await _pedir(
       () async => _http.post(
         config.ruta(camino),
-        headers: await _encabezados(conCuerpo: cuerpo != null),
+        headers: await _encabezados(
+          conCuerpo: cuerpo != null,
+          conToken: conToken,
+        ),
         body: cuerpo == null ? null : jsonEncode(cuerpo),
       ),
+      conToken: conToken,
     );
     _verificarEstado(respuesta);
   }
 
   /// GET de un archivo binario, como el ticket en PDF.
   Future<Uint8List> descargar(String camino) async {
-    final respuesta = await _ejecutar(
+    final respuesta = await _pedir(
       () async => _http.get(
         config.ruta(camino),
         headers: {...await _encabezados(), 'accept': '*/*'},
       ),
+      conToken: true,
     );
     _verificarEstado(respuesta);
     return respuesta.bodyBytes;

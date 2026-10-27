@@ -127,8 +127,12 @@ function leerToken(valor) {
 servidor.use(jsonServer.defaults({ logger: true }));
 servidor.use(jsonServer.bodyParser);
 
+// Las cinco rutas publicas del contrato. `refrescar` y `cerrar-sesion` lo son
+// a proposito: deben funcionar aunque el access token ya haya expirado.
 const RUTAS_SIN_TOKEN = [
   `${BASE}/auth/login`,
+  `${BASE}/auth/refrescar`,
+  `${BASE}/auth/cerrar-sesion`,
   `${BASE}/auth/recuperar-contrasena`,
   `${BASE}/auth/restablecer-contrasena`,
 ];
@@ -186,6 +190,31 @@ function registrarFallo(correo) {
   intentos.set(correo, registro);
 }
 
+// Refresh tokens vivos, en memoria: token -> id de cuenta. RIC-2: duran 30
+// dias y son de un solo uso, asi que refrescar borra el viejo y entrega otro.
+//
+// Vive en memoria y no en db.json a proposito: reiniciar el mock debe dejar
+// todas las sesiones cerradas, igual que reiniciar el backend en desarrollo.
+const refrescos = new Map();
+let contadorDeRefrescos = 0;
+
+function emitirRefresco(cuenta) {
+  contadorDeRefrescos += 1;
+  const token = `refresh-${cuenta.id}-${contadorDeRefrescos}`;
+  refrescos.set(token, cuenta.id);
+  return token;
+}
+
+/// La respuesta que comparten `/auth/login` y `/auth/refrescar`.
+function respuestaDeSesion(cuenta) {
+  return {
+    accessToken: firmarToken(cuenta),
+    expiresIn: VIDA_TOKEN_SEGUNDOS,
+    refreshToken: emitirRefresco(cuenta),
+    debeCambiarContrasena: cuenta.debeCambiarContrasena,
+  };
+}
+
 servidor.post(`${BASE}/auth/login`, (req, res) => {
   const { correo, contrasena } = req.body || {};
   if (!correo || !contrasena) {
@@ -222,14 +251,54 @@ servidor.post(`${BASE}/auth/login`, (req, res) => {
 
   intentos.delete(normalizado);
 
-  res.jsonp({
-    accessToken: firmarToken(cuenta),
-    // La app todavia no los usa (se posponen al Sprint 3), pero el contrato
-    // los declara obligatorios, asi que el mock los manda.
-    expiresIn: 3600,
-    refreshToken: `refresh-de-prueba-${cuenta.id}`,
-    debeCambiarContrasena: cuenta.debeCambiarContrasena,
-  });
+  res.jsonp(respuestaDeSesion(cuenta));
+});
+
+// RIC-2 · Cambia el refresh token por un par nuevo.
+//
+// Es publica a proposito: no pide el access token, para que funcione aunque ya
+// haya expirado. Eso es justo lo que la app necesita para renovar sola.
+servidor.post(`${BASE}/auth/refrescar`, (req, res) => {
+  const { refreshToken } = req.body || {};
+  if (!refreshToken) {
+    return problema(req, res, 400, 'Falta el refreshToken', 'DATOS_INVALIDOS');
+  }
+
+  const cuentaId = refrescos.get(refreshToken);
+  if (cuentaId === undefined) {
+    // Vencido, ya usado o revocado: el contrato no los distingue.
+    return problema(req, res, 401, 'La sesion termino. Vuelve a entrar.', 'CREDENCIALES_INVALIDAS');
+  }
+
+  // De un solo uso: se gasta aunque la cuenta resulte estar desactivada.
+  refrescos.delete(refreshToken);
+
+  const cuenta = db.get('cuentas').find({ id: cuentaId }).value();
+  if (!cuenta) {
+    return problema(req, res, 401, 'La sesion termino. Vuelve a entrar.', 'CREDENCIALES_INVALIDAS');
+  }
+  // RIC-3: tambien aqui se revisa que la cuenta siga activa.
+  if (!cuenta.activa) {
+    return problema(req, res, 403, 'La cuenta esta desactivada', 'CUENTA_DESACTIVADA');
+  }
+
+  res.jsonp(respuestaDeSesion(cuenta));
+});
+
+// RIC-4 · Revoca el refresh token.
+//
+// Tambien publica, y responde 204 aunque el token ya no exista: cerrar sesion
+// dos veces no es un error. El access token sigue valido hasta que expire, que
+// es el riesgo que el contrato acepta a cambio de no consultar una lista negra
+// en cada peticion.
+servidor.post(`${BASE}/auth/cerrar-sesion`, (req, res) => {
+  const { refreshToken } = req.body || {};
+  if (!refreshToken) {
+    return problema(req, res, 400, 'Falta el refreshToken', 'DATOS_INVALIDOS');
+  }
+
+  refrescos.delete(refreshToken);
+  res.status(204).end();
 });
 
 servidor.post(`${BASE}/auth/cambiar-contrasena`, (req, res) => {

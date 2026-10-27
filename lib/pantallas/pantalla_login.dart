@@ -126,15 +126,25 @@ class _PantallaLoginState extends State<PantallaLogin> {
                     if (fallo != null) ...[
                       Aviso(
                         key: PantallaLogin.avisoDeError,
-                        tono: fallo.esFalloDeRed
+                        // Ni «sin conexion» ni «demasiados intentos» son
+                        // errores del usuario: son esperas. Van en ambar, no
+                        // en rojo, que queda para las credenciales malas y la
+                        // cuenta desactivada.
+                        tono: fallo.esFalloDeRed || fallo.esBloqueoTemporal
                             ? TonoAviso.advertencia
                             : TonoAviso.error,
-                        icono: fallo.esFalloDeRed
-                            ? Icons.wifi_off_outlined
-                            : null,
-                        titulo: fallo.esFalloDeRed
-                            ? 'Sin conexión'
-                            : 'No pudimos iniciar sesión',
+                        icono: switch (fallo) {
+                          _ when fallo.esFalloDeRed => Icons.wifi_off_outlined,
+                          _ when fallo.esBloqueoTemporal =>
+                            Icons.lock_clock_outlined,
+                          _ => null,
+                        },
+                        titulo: switch (fallo) {
+                          _ when fallo.esFalloDeRed => 'Sin conexión',
+                          _ when fallo.esBloqueoTemporal =>
+                            'Demasiados intentos',
+                          _ => 'No pudimos iniciar sesión',
+                        },
                         detalle: fallo.mensaje,
                       ),
                       const SizedBox(height: TemaCareCar.espacioCampos),

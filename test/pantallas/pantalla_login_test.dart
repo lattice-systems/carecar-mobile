@@ -5,6 +5,7 @@ import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
+import 'package:carecar_mobile/widgets/aviso.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -240,6 +241,47 @@ void main() {
         find.text('No se pudo conectar con el servidor. Intenta de nuevo.'),
         findsOneWidget,
       );
+    });
+
+    testWidgets('el bloqueo por intentos dice cuanto esperar', (tester) async {
+      // RIC-5. El servidor manda el tiempo en `Retry-After` y la pantalla
+      // tiene que decirlo: «espera 15 minutos» es accionable, «intenta mas
+      // tarde» no.
+      final api = ApiFalsa.queFalla(
+        const DemasiadosIntentos('Demasiados intentos.', esperaSegundos: 900),
+      );
+      await _montar(tester, _controlador(api));
+
+      await _escribirCredenciales(tester);
+      await tester.tap(find.byKey(PantallaLogin.botonEntrar));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Demasiados intentos'), findsOneWidget);
+      expect(
+        find.text('Demasiados intentos. Espera 15 minutos e intenta de nuevo.'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('el bloqueo se ve como advertencia, no como error', (
+      tester,
+    ) async {
+      // No es un error del usuario: es una espera. Mismo trato que «sin
+      // conexion», que ya iba en ambar.
+      final api = ApiFalsa.queFalla(
+        const DemasiadosIntentos('Demasiados intentos.', esperaSegundos: 900),
+      );
+      await _montar(tester, _controlador(api));
+
+      await _escribirCredenciales(tester);
+      await tester.tap(find.byKey(PantallaLogin.botonEntrar));
+      await tester.pumpAndSettle();
+
+      final aviso = tester.widget<Aviso>(
+        find.byKey(PantallaLogin.avisoDeError),
+      );
+      expect(aviso.tono, TonoAviso.advertencia);
+      expect(aviso.icono, isNotNull, reason: 'nunca solo color');
     });
 
     testWidgets('el error no se comunica solo con color: lleva texto e icono', (
