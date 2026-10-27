@@ -36,6 +36,17 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.6.0
 
+  # Almacenamiento seguro de los dos tokens de sesion (TEC-6 T3, decision D-D).
+  #
+  # Autorizada por Jael el 27 de octubre de 2026. Hace falta porque la v1.1 del
+  # contrato trajo un refresh token de 30 dias: guardarlo en memoria obligaria
+  # al cliente a escribir su contrasena cada vez que abre la app, que es
+  # justamente lo que el refresh viene a evitar.
+  #
+  # Usa el Keystore de Android y el Keychain de iOS. Queda detras de la interfaz
+  # `AlmacenSesion`, asi que si el equipo prefiere otra, se cambia una clase.
+  flutter_secure_storage: ^11.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
