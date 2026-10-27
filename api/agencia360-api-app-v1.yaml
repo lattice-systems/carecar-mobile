@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar
-  version: 1.1.0
+  version: 1.2.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar (TEC-1).
 
@@ -36,7 +36,7 @@ tags:
   - name: Acceso
     description: APP-2.1, APP-2.2 y APP-2.3
   - name: Vehículos
-    description: APP-3.1 y ADM-1
+    description: APP-3.1
   - name: Servicios y tickets
     description: APP-3.2 y ERP-3.1
   - name: Agenda
@@ -234,7 +234,9 @@ paths:
     get:
       tags: [Vehículos]
       summary: Listar los vehículos del cliente
-      description: APP-3.1 · En el MVP solo el listado. Un cliente puede tener varios vehículos.
+      description: |
+        APP-3.1 · Un cliente puede tener varios vehículos; vienen en el orden en que se le
+        asignaron.
       responses:
         '200':
           description: Vehículos asignados al cliente
@@ -252,8 +254,11 @@ paths:
   /vehiculos/{vehiculoId}/manuales:
     get:
       tags: [Vehículos]
-      summary: Manuales y fichas técnicas del modelo y año del vehículo
-      description: ADM-1 · Fuera del MVP; la respuesta puede venir vacía mientras no se carguen manuales.
+      summary: Manuales de la marca, tipo y modelo del vehículo
+      description: |
+        APP-3.1 · Los manuales son de una marca, un tipo y un modelo (por ejemplo, Nissan March
+        2026); la versión no cambia el manual. La lista puede venir vacía si la agencia todavía no
+        sube el manual de ese vehículo. Cada `url` es temporal: ábrela directo, sin el Bearer.
       parameters:
         - $ref: '#/components/parameters/VehiculoId'
       responses:
@@ -650,7 +655,9 @@ components:
 
     Vehiculo:
       type: object
-      description: Vehículo del cliente (expediente, ERP-3.0)
+      description: |
+        Vehículo del cliente (expediente, ERP-3.0). Como en la factura, `modelo` se muestra
+        como Tipo (Sentra) y `anio` como Modelo (2026).
       required: [id, vin, modelo, anio]
       properties:
         id:
@@ -658,10 +665,24 @@ components:
           format: int64
         vin:
           type: string
+        marca:
+          type: string
+          nullable: true
+          description: Puede faltar en vehículos registrados antes de que se guardara.
+          example: Nissan
         modelo:
           type: string
+          description: Tipo del vehículo
+          example: Sentra
         anio:
           type: integer
+          description: Modelo (año) del vehículo
+          example: 2026
+        version:
+          type: string
+          nullable: true
+          description: Puede faltar en vehículos registrados antes de que se guardara.
+          example: Advance
         placas:
           type: string
           nullable: true
@@ -676,10 +697,21 @@ components:
         id:
           type: integer
           format: int64
+        marca:
+          type: string
+          example: Nissan
         modelo:
           type: string
+          description: Tipo del vehículo
+          example: March
         anio:
           type: integer
+          description: Modelo (año) del vehículo
+          example: 2026
+        titulo:
+          type: string
+          description: Nombre para mostrar el manual.
+          example: Nissan March 2026 Manual de propietario
         url:
           type: string
           description: |
