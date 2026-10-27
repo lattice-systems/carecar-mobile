@@ -12,6 +12,7 @@
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/carecar_api_http.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
+import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -38,7 +39,7 @@ void main() {
     final almacen = AlmacenEnMemoria();
     final cliente = ClienteApi(
       config: ApiConfig.para(direccion),
-      obtenerToken: almacen.leerToken,
+      obtenerToken: () async => (await almacen.leer())?.accessToken,
     );
     addTearDown(cliente.cerrar);
     return ControladorSesion(CarecarApiHttp(cliente), almacen);
@@ -144,7 +145,7 @@ void main() {
     final almacen = AlmacenEnMemoria();
     final cliente = ClienteApi(
       config: ApiConfig.para(_base),
-      obtenerToken: almacen.leerToken,
+      obtenerToken: () async => (await almacen.leer())?.accessToken,
     );
     addTearDown(cliente.cerrar);
     final api = CarecarApiHttp(cliente);
@@ -158,5 +159,120 @@ void main() {
     final vehiculos = await api.misVehiculos();
 
     expect(vehiculos, hasLength(2), reason: 'cliente1 tiene 2 vehiculos');
+  });
+
+  // --- La sesion con refresco · TEC-6 T3 y T4 ---
+  //
+  // Contra la simulada, que es la referencia de las pruebas (decision D-E).
+  // Los refresh tokens del mock viven en memoria, asi que estas pruebas no
+  // dejan estado sucio en db.json y se pueden repetir.
+
+  group('refresco contra la simulada', () {
+    test('el login trae el par completo', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final almacen = AlmacenEnMemoria();
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        obtenerToken: () async => (await almacen.leer())?.accessToken,
+      );
+      addTearDown(cliente.cerrar);
+      final sesion = ControladorSesion(CarecarApiHttp(cliente), almacen);
+
+      await sesion.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+
+      final guardado = await almacen.leer();
+      expect(guardado?.refreshToken, isNotEmpty);
+      expect(guardado?.vencido, isFalse);
+      // El mock manda 3600, igual que el backend hoy.
+      expect(
+        guardado!.expiraEn.difference(DateTime.now().toUtc()).inMinutes,
+        greaterThan(50),
+      );
+    });
+
+    test('renovar rota el par y el token nuevo sirve', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final almacen = AlmacenEnMemoria();
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        obtenerToken: () async => (await almacen.leer())?.accessToken,
+      );
+      addTearDown(cliente.cerrar);
+      final api = CarecarApiHttp(cliente);
+      final sesion = ControladorSesion(api, almacen);
+
+      await sesion.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+      final primero = (await almacen.leer())!;
+
+      expect(await sesion.renovar(), isTrue);
+      final segundo = (await almacen.leer())!;
+
+      expect(
+        segundo.refreshToken,
+        isNot(primero.refreshToken),
+        reason: 'RIC-2: cada refresco entrega uno nuevo',
+      );
+      // Lo que de verdad importa: el access token renovado abre una ruta
+      // protegida.
+      expect(await api.misVehiculos(), hasLength(2));
+    });
+
+    test('el refresh usado ya no sirve', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final almacen = AlmacenEnMemoria();
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        obtenerToken: () async => (await almacen.leer())?.accessToken,
+      );
+      addTearDown(cliente.cerrar);
+      final api = CarecarApiHttp(cliente);
+      final sesion = ControladorSesion(api, almacen);
+
+      await sesion.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+      final gastado = (await almacen.leer())!.refreshToken;
+      await sesion.renovar();
+
+      await expectLater(api.refrescar(gastado), throwsA(isA<ExcepcionApi>()));
+    });
+
+    test('cerrar sesion revoca el refresh en el servidor', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final almacen = AlmacenEnMemoria();
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        obtenerToken: () async => (await almacen.leer())?.accessToken,
+      );
+      addTearDown(cliente.cerrar);
+      final api = CarecarApiHttp(cliente);
+      final sesion = ControladorSesion(api, almacen);
+
+      await sesion.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+      final revocado = (await almacen.leer())!.refreshToken;
+
+      await sesion.cerrarSesion();
+
+      expect(sesion.estado, isA<SinSesion>());
+      await expectLater(api.refrescar(revocado), throwsA(isA<ExcepcionApi>()));
+    });
   });
 }

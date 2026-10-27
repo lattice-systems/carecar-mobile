@@ -23,6 +23,23 @@ class CarecarApiHttp implements CarecarApi {
       );
 
   @override
+  Future<RespuestaLogin> refrescar(String refreshToken) => _cliente.enviar(
+    '/auth/refrescar',
+    cuerpo: {'refreshToken': refreshToken},
+    leer: RespuestaLogin.fromJson,
+    // Ruta publica: sin Bearer y sin reintento con sesion renovada. Si esta
+    // responde 401, es que la sesion termino y no hay nada mas que intentar.
+    conToken: false,
+  );
+
+  @override
+  Future<void> cerrarSesion(String refreshToken) => _cliente.enviarSinRespuesta(
+    '/auth/cerrar-sesion',
+    cuerpo: {'refreshToken': refreshToken},
+    conToken: false,
+  );
+
+  @override
   Future<void> cambiarContrasena({
     required String actual,
     required String nueva,

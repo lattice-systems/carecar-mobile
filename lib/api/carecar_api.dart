@@ -26,6 +26,24 @@ abstract interface class CarecarApi {
   /// forzar el cambio.
   Future<RespuestaLogin> iniciarSesion(PeticionLogin peticion);
 
+  /// `POST /auth/refrescar`. Cambia el refresh token por un par nuevo.
+  ///
+  /// Es publica: no lleva el access token, para que funcione aunque ya haya
+  /// expirado. El refresh **se gasta al usarlo** (RIC-2), asi que la respuesta
+  /// trae uno nuevo y hay que guardar siempre el ultimo.
+  ///
+  /// Lanza `CredencialesInvalidas` con 401, que aqui significa **la sesion
+  /// termino**: el refresh venció, ya se habia usado o lo revocaron. Lanza
+  /// `CuentaDesactivada` con 403 (RIC-3).
+  Future<RespuestaLogin> refrescar(String refreshToken);
+
+  /// `POST /auth/cerrar-sesion`. Revoca ese refresh token.
+  ///
+  /// Tambien es publica, por lo mismo. **El access token sigue valido hasta que
+  /// expire**: es el riesgo que el contrato acepta a cambio de no consultar una
+  /// lista negra en cada peticion. La app borra los dos tokens de todos modos.
+  Future<void> cerrarSesion(String refreshToken);
+
   /// `POST /auth/cambiar-contrasena`. Obligatorio en el primer ingreso.
   Future<void> cambiarContrasena({
     required String actual,
