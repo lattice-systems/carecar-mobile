@@ -186,7 +186,8 @@ La app consume la misma **API REST** que el ERP y el CRM, construida con Spring 
 
 Lineamientos que afectan a la app:
 
-- La API se documenta con OpenAPI; el cliente Dart de la app se generará a partir de ese contrato.
+- La API se documenta con OpenAPI. El contrato vive en `docs/api/` del repositorio del backend y aquí se versiona una copia en `api/`, que es insumo de la API simulada y de la prueba de contrato.
+- **El cliente Dart de la app está escrito a mano** sobre `http`, no generado desde el contrato: una dependencia en lugar de tres y unas 150 líneas en lugar de ~40 archivos generados. Si el equipo decide generarlo, la interfaz `CarecarApi` no cambia y solo se reemplaza su implementación.
 - **Sin registro público:** el login usa credenciales emitidas por la agencia.
 - Los datos que ve el cliente (servicios, tickets, citas) los genera el ERP; la app solo los consulta o crea citas.
 - Mientras el backend implementa el contrato, la app trabaja contra una **API simulada** con dirección configurable (TEC-5).
@@ -252,19 +253,29 @@ El detalle de cada check (y por qué CodeQL revisa los workflows y no el código
 
 ---
 
+## ✅ Decisiones ya tomadas
+
+Estaban en «Pendientes por definir» y se cerraron en los Sprints 1 y 2.
+
+| Tema                 | Cómo quedó                                                                      |
+| -------------------- | ------------------------------------------------------------------------------- |
+| Tecnología de la app | **Flutter**, confirmado con el equipo y el PO (decisión D5)                      |
+| Pantallas            | **Hechas**: acceso, cambio de la contraseña inicial y recuperación por código    |
+| API simulada         | **json-server 0.17.4** sobre Express, en `mock_api/`                             |
+| Cliente de la API    | **Escrito a mano** sobre `http`, no generado desde el contrato                   |
+
+---
+
 ## 📌 Pendientes por definir
 
-| Tema                 | Qué falta                                                             |
-| -------------------- | --------------------------------------------------------------------- |
-| Tecnología de la app | Confirmar Flutter con el equipo y el PO (decisión D5 del Sprint 1)    |
-| Pantallas            | Reemplazar la app de ejemplo de Flutter por las pantallas de CareCar  |
-| API simulada         | Herramienta para simular la API a partir del contrato OpenAPI (TEC-5) |
-| Cliente de la API    | Generar el cliente Dart desde el contrato OpenAPI del backend         |
-| Librerías            | Navegación, manejo de estado y consumo de API                         |
-| Estructura de `lib/` | Organización de carpetas y convenciones de código                     |
-| Notificaciones push  | Integración con Firebase Cloud Messaging                              |
-| Build de iOS en CI   | Requiere un runner de macOS; hoy CI solo compila Android              |
-| Publicación          | Firma de release y publicación en Google Play y App Store             |
+| Tema                 | Qué falta                                                                       |
+| -------------------- | ------------------------------------------------------------------------------- |
+| Librerías            | Navegación y manejo de estado. Hoy `ChangeNotifier` y un `setState` en la raíz, en su versión mínima y a la espera del documento de stack y arquitectura |
+| Estructura de `lib/` | Convenciones de nombres y de carpetas. Hoy `api/`, `sesion/`, `pantallas/`, `tema/` y `widgets/` |
+| Tipografía y logo    | Faltan los `.ttf` de Inter y JetBrains Mono y el SVG del logo. Hoy la app usa la fuente del sistema y un PNG derivado del JPEG |
+| Notificaciones push  | Integración con Firebase Cloud Messaging                                         |
+| Build de iOS en CI   | Requiere un runner de macOS; hoy CI solo compila Android, y **la app nunca se ha compilado para iOS** |
+| Publicación          | Firma de release y publicación en Google Play y App Store                        |
 
 ---
 
