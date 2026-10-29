@@ -63,6 +63,9 @@ class CarecarApiHttp implements CarecarApi {
       );
 
   @override
+  Future<Perfil> miPerfil() => _cliente.obtener('/perfil', Perfil.fromJson);
+
+  @override
   Future<List<Vehiculo>> misVehiculos() =>
       _cliente.obtenerLista('/vehiculos', Vehiculo.fromJson);
 
