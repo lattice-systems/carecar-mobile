@@ -9,6 +9,10 @@ class Vehiculo {
     required this.anio,
     this.placas,
     this.kilometraje,
+    this.marca,
+    this.tipo,
+    this.version,
+    this.color,
   });
 
   factory Vehiculo.fromJson(Map<String, Object?> json) => Vehiculo(
@@ -16,6 +20,10 @@ class Vehiculo {
     vin: leerTexto(json['vin'], 'vin'),
     modelo: leerTexto(json['modelo'], 'modelo'),
     anio: leerEntero(json['anio'], 'anio'),
+    marca: json['marca'] as String?,
+    tipo: json['tipo'] as String?,
+    version: json['version'] as String?,
+    color: json['color'] as String?,
     // El contrato los marca opcionales: pueden llegar nulos o no llegar.
     placas: json['placas'] as String?,
     kilometraje: json['kilometraje'] == null
@@ -31,4 +39,10 @@ class Vehiculo {
   final int anio;
   final String? placas;
   final int? kilometraje;
+
+  // Extension opcional del mock; el backend v1.1 no garantiza estos campos.
+  final String? marca;
+  final String? tipo;
+  final String? version;
+  final String? color;
 }

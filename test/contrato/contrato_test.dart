@@ -225,9 +225,6 @@ const _rutasPublicas = <String>{
 /// `CarecarApi` las declara— y su comportamiento esta cubierto en
 /// `test/api/sesion_con_refresco_test.dart`.
 const _pendientesDeImplementar = <String, String>{
-  'GET /perfil': 'Sprint 3',
-  'Vehiculo.marca': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
-  'Vehiculo.version': 'Sprint 3, con APP-3.1 · nuevo en la v1.2',
   'Manual.marca': 'con los manuales de APP-3.1 · nuevo en la v1.2',
   'Manual.titulo': 'con los manuales de APP-3.1 · nuevo en la v1.2',
   'Cita.franjaId': 'Sprint 4, con APP-3.3',
@@ -267,7 +264,18 @@ Map<String, bool> _yaImplementado() => {
   'LoginResponse.expiresIn': _respuestaDeLogin().expiresIn == 3600,
   'LoginResponse.refreshToken':
       _respuestaDeLogin().refreshToken == 'refresco.abc',
+  'Vehiculo.marca': _vehiculoDelContrato().marca == 'Nissan',
+  'Vehiculo.version': _vehiculoDelContrato().version == 'Sense',
 };
+
+Vehiculo _vehiculoDelContrato() => Vehiculo.fromJson(const {
+  'id': 1,
+  'vin': '3N1CK3CD0LL123456',
+  'marca': 'Nissan',
+  'modelo': 'March',
+  'anio': 2020,
+  'version': 'Sense',
+});
 
 /// Una respuesta de login completa, como la declara el contrato.
 RespuestaLogin _respuestaDeLogin() => RespuestaLogin.fromJson(const {
@@ -518,7 +526,10 @@ void main() {
   //   cd mock_api && npm start
   // En CI no lo esta, y se omiten sin poner el build en rojo.
   group('las respuestas de la API simulada respetan el contrato', () {
-    const base = 'http://localhost:3000/api/v1/app';
+    const base = String.fromEnvironment(
+      'MOCK_API_URL',
+      defaultValue: 'http://localhost:3000/api/v1/app',
+    );
     late bool levantada;
 
     setUpAll(() async {

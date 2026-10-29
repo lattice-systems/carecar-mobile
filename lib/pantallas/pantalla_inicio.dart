@@ -1,103 +1,97 @@
 import 'package:flutter/material.dart';
 
+import '../api/carecar_api.dart';
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/menu_carecar.dart';
+import '../widgets/pagina_carecar.dart';
+import 'pantalla_ajustes.dart';
+import 'pantalla_proximamente.dart';
+import 'pantalla_vehiculos.dart';
 
-/// Pantalla a la que se llega despues del login.
-///
-/// **Es un marcador de posicion.** APP-2.1 solo pide el acceso; «Mis
-/// vehiculos» es APP-3.1 y entra en S2. Aqui solo se comprueba que la sesion
-/// quedo iniciada y se puede cerrar.
-class PantallaInicio extends StatelessWidget {
+/// Raiz de la navegacion autenticada. Al salir se descarta toda esta pila.
+class PantallaInicio extends StatefulWidget {
   const PantallaInicio({
+    required this.api,
     required this.controlador,
     required this.alCerrarSesion,
     super.key,
   });
 
+  final CarecarApi api;
   final ControladorSesion controlador;
   final VoidCallback alCerrarSesion;
-
-  static const botonCerrarSesion = Key('inicio_cerrar_sesion');
+  static const botonCerrarSesion = PaginaCareCar.botonCerrarSesion;
 
   @override
-  Widget build(BuildContext context) {
-    final estado = controlador.estado;
-    final debeCambiar = estado is Autenticada && estado.debeCambiarContrasena;
+  State<PantallaInicio> createState() => _PantallaInicioState();
+}
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('CareCar'),
-        actions: [
-          IconButton(
-            key: botonCerrarSesion,
-            onPressed: () async {
-              await controlador.cerrarSesion();
-              alCerrarSesion();
-            },
-            icon: const Icon(Icons.logout),
-            tooltip: 'Cerrar sesión',
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.check_circle_outline,
-              size: 56,
-              color: TemaCareCar.exito,
-            ),
-            const SizedBox(height: TemaCareCar.espacioCampos),
-            Text(
-              'Sesión iniciada',
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Aquí irá «Mis vehículos» (APP-3.1, sprint 2).',
-              style: Theme.of(context).textTheme.bodyMedium
-                  ?.copyWith(color: TemaCareCar.textoSecundario),
-              textAlign: TextAlign.center,
-            ),
-            if (debeCambiar) ...[
-              const SizedBox(height: TemaCareCar.espacioSecciones),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: TemaCareCar.advertenciaFondo,
-                  borderRadius: BorderRadius.circular(TemaCareCar.radioControl),
-                  border: Border.all(
-                    color: TemaCareCar.advertencia.withValues(alpha: 0.35),
+class _PantallaInicioState extends State<PantallaInicio> {
+  final _navegador = GlobalKey<NavigatorState>();
+  bool _cerrando = false;
+
+  Future<void> _cerrarSesion() async {
+    if (_cerrando) return;
+    _cerrando = true;
+    try {
+      await widget.controlador.cerrarSesion();
+      if (mounted) widget.alCerrarSesion();
+    } finally {
+      _cerrando = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => NavigatorPopHandler<Object?>(
+    onPopWithResult: (resultado) => _navegador.currentState!.pop(resultado),
+    child: Navigator(
+      key: _navegador,
+      onGenerateRoute: (_) => MaterialPageRoute<void>(
+        builder: (context) => PaginaCareCar(
+          titulo: 'Menú',
+          regresar: false,
+          alCerrarSesion: _cerrarSesion,
+          contenido: RejillaMenu(
+            tarjetas: [
+              TarjetaMenu(
+                titulo: 'Mis vehículos',
+                imagen: const DibujoMenu(IconoMenu.vehiculos),
+                alPulsar: () => abrirPantalla(
+                  context,
+                  PantallaVehiculos(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
                   ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.key_outlined,
-                      size: 20,
-                      color: TemaCareCar.advertencia,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Tu contraseña es temporal y hay que cambiarla. '
-                        'La pantalla de cambio llega en APP-2.3.',
-                        style: Theme.of(context).textTheme.bodyMedium
-                            ?.copyWith(color: TemaCareCar.advertencia),
-                      ),
-                    ),
-                  ],
+              ),
+              TarjetaMenu(
+                titulo: 'Catálogo',
+                imagen: const DibujoMenu(IconoMenu.catalogo),
+                color: TemaCareCar.exitoFondo,
+                alPulsar: () => abrirPantalla(
+                  context,
+                  PantallaProximamente(
+                    titulo: 'Catálogo',
+                    alCerrarSesion: _cerrarSesion,
+                  ),
+                ),
+              ),
+              TarjetaMenu(
+                titulo: 'Ajustes',
+                imagen: const DibujoMenu(IconoMenu.ajustes),
+                alPulsar: () => abrirPantalla(
+                  context,
+                  PantallaAjustes(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
+                  ),
                 ),
               ),
             ],
-          ],
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
