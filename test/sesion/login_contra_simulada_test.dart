@@ -241,7 +241,7 @@ void main() {
       );
       // Lo que de verdad importa: el access token renovado abre una ruta
       // protegida.
-      expect(await api.misVehiculos(), hasLength(2));
+      expect(await api.misVehiculos(), hasLength(4));
     });
 
     test('el refresh usado ya no sirve', () async {
