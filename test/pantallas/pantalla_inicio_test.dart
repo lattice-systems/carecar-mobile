@@ -57,6 +57,69 @@ Future<void> _tocar(WidgetTester tester, String texto) async {
 }
 
 void main() {
+  testWidgets('la sesion restaurada abre el menu y conserva los vehiculos', (
+    tester,
+  ) async {
+    final api = ApiFalsa()..alPedirVehiculos = () async => [_march, _jetta];
+    final almacen = AlmacenEnMemoria();
+    final anterior = ControladorSesion(api, almacen);
+    await anterior.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'CareCar2026',
+    );
+    anterior.dispose();
+
+    final restaurada = ControladorSesion(api, almacen);
+    addTearDown(restaurada.dispose);
+    await restaurada.restaurar();
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: TemaCareCar.claro,
+        home: FlujoCareCar(controlador: restaurada, api: api),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Menú'), findsOneWidget);
+    await _tocar(tester, 'Mis vehículos');
+    expect(find.text('${_march.modelo} 2020'), findsOneWidget);
+    expect(find.text('${_jetta.modelo} 2018'), findsOneWidget);
+    expect(api.llamadasAlLogin, 1);
+  });
+
+  testWidgets('el refresco conserva el detalle y su rechazo vuelve al login', (
+    tester,
+  ) async {
+    final api = ApiFalsa()..alPedirVehiculos = () async => [_march];
+    final sesion = await _montar(tester, api);
+    await _tocar(tester, 'Mis vehículos');
+    await _tocar(tester, '${_march.modelo} 2020');
+
+    expect(await sesion.renovar(), isTrue);
+    await tester.pumpAndSettle();
+    expect(find.text(_march.vin), findsOneWidget);
+
+    api.alRefrescar = (_) async =>
+        throw const CredencialesInvalidas('La sesión terminó');
+    expect(await sesion.renovar(), isFalse);
+    await tester.pumpAndSettle();
+    expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+    expect(find.text(_march.vin), findsNothing);
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text(_march.vin), findsNothing);
+
+    api.alIniciarSesion = (_) async =>
+        ApiFalsa.respuesta(debeCambiarContrasena: true);
+    await sesion.iniciarSesion(
+      correo: 'cliente2@example.com',
+      contrasena: 'Temporal123',
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Menú'), findsNothing);
+    expect(find.text('Cambia tu contraseña'), findsOneWidget);
+  });
+
   testWidgets(
     'login existente abre las tres opciones y cerrar sesion borra el token',
     (tester) async {

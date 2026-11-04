@@ -40,9 +40,11 @@ class Vehiculo {
   final String? placas;
   final int? kilometraje;
 
-  // Extension opcional del mock; el backend v1.1 no garantiza estos campos.
+  // Campos opcionales del contrato v1.2.
   final String? marca;
-  final String? tipo;
   final String? version;
+
+  // Extensiones locales del mock; el backend no garantiza estos campos.
+  final String? tipo;
   final String? color;
 }
