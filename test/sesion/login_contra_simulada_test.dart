@@ -18,7 +18,10 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 
-const _base = 'http://localhost:3000/api/v1/app';
+const _base = String.fromEnvironment(
+  'MOCK_API_URL',
+  defaultValue: 'http://localhost:3000/api/v1/app',
+);
 
 void main() {
   late bool levantada;
@@ -158,7 +161,21 @@ void main() {
     // Misma instancia de cliente: toma el token del almacen en cada peticion.
     final vehiculos = await api.misVehiculos();
 
-    expect(vehiculos, hasLength(2), reason: 'cliente1 tiene 2 vehiculos');
+    expect(
+      vehiculos,
+      hasLength(4),
+      reason: 'cliente1 conserva sus autos y recibe March y Jetta',
+    );
+    expect(
+      vehiculos.map((v) => v.modelo),
+      containsAll(['Nissan March Sense', 'Volkswagen Jetta Comfortline']),
+    );
+    expect(vehiculos.where((v) => v.id == 5).single.anio, 2020);
+    expect(vehiculos.where((v) => v.id == 6).single.anio, 2018);
+    expect(vehiculos.every((v) => v.vin.length == 17), isTrue);
+    final perfil = await api.miPerfil();
+    expect(perfil.correo, 'cliente1@example.com');
+    expect(perfil.nombre, 'Maria Elena Robles');
   });
 
   // --- La sesion con refresco · TEC-6 T3 y T4 ---
@@ -224,7 +241,7 @@ void main() {
       );
       // Lo que de verdad importa: el access token renovado abre una ruta
       // protegida.
-      expect(await api.misVehiculos(), hasLength(2));
+      expect(await api.misVehiculos(), hasLength(4));
     });
 
     test('el refresh usado ya no sirve', () async {

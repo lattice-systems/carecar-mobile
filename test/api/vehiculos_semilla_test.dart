@@ -1,0 +1,32 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:carecar_mobile/api/modelos/modelos.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  test('March y Jetta tienen VIN de 17 caracteres y pertenecen a cliente1', () {
+    final semilla = jsonDecode(
+      File('mock_api/db.seed.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    final cliente = (semilla['cuentas'] as List)
+        .cast<Map<String, dynamic>>()
+        .singleWhere((c) => c['usuario'] == 'cliente1');
+    final autos = (semilla['vehiculos'] as List).cast<Map<String, dynamic>>();
+    final esperados = {
+      'Nissan March Sense': (2020, 'Blanco'),
+      'Volkswagen Jetta Comfortline': (2018, 'Gris'),
+    };
+    expect(autos.map((v) => v['id']).toSet(), hasLength(autos.length));
+    expect(autos.map((v) => v['vin']).toSet(), hasLength(autos.length));
+    for (final esperado in esperados.entries) {
+      final datos = autos.singleWhere((v) => v['modelo'] == esperado.key);
+      final vehiculo = Vehiculo.fromJson(datos);
+      expect(datos['clienteId'], cliente['clienteId']);
+      expect(vehiculo.anio, esperado.value.$1);
+      // Color es metadata interna de la semilla: la v1.1 no lo expone.
+      expect(datos['color'], esperado.value.$2);
+      expect(vehiculo.vin, matches(RegExp(r'^[A-HJ-NPR-Z0-9]{17}$')));
+    }
+  });
+}

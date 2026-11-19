@@ -8,6 +8,38 @@ publica y no viaja en el APK.
 
 ## Levantarla
 
+### Menús, vehículos y perfil
+
+La app consulta `GET /api/v1/app/vehiculos` y `GET /api/v1/app/perfil` con
+el Bearer de la sesión. Perfil devuelve `id`, `nombre` y `correo` del cliente
+autenticado. Los menús de catálogo, citas, historial y manuales son placeholders.
+
+`cliente1@example.com` tiene cuatro vehículos en la semilla: Versa, Kicks,
+Nissan March Sense 2020 (id 5) y Volkswagen Jetta Comfortline 2018 (id 6).
+Los dos nuevos pertenecen a `clienteId: 1` y tienen VIN de 17 caracteres.
+Los colores Blanco/Gris son metadatos internos de la semilla: el contrato v1.1
+solo expone `id`, `vin`, `modelo`, `anio`, `placas` y `kilometraje`; la app muestra
+«No disponible» para marca, tipo, versión y color por separado.
+
+Si ya existe `db.json`, `npm run reset` copia la semilla **y elimina cambios
+locales del mock**. Reiniciar el servidor después de hacerlo; mantiene datos en
+memoria. Si los datos ya están incorporados, basta con reiniciar el servidor.
+
+Para probar en otro puerto desde PowerShell:
+
+```powershell
+# Terminal del mock, dentro de mock_api/
+$env:PORT = '3001'
+npm start
+
+# Otra terminal, desde la raíz del proyecto
+flutter test --dart-define=MOCK_API_URL=http://localhost:3001/api/v1/app
+```
+
+Las secciones históricas de abajo conservan referencias a `usuario`, tokens de
+recuperación y 13 operaciones. Para el flujo actual se usa correo, recuperación
+por código y el contrato `api/agencia360-api-app-v1.yaml` v1.1.0.
+
 Hace falta Node 20 o superior.
 
 ```bash

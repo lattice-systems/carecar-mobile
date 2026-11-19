@@ -43,6 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/android/.kotlin/
 
 # Widget Preview related
 .widget_preview/
@@ -63,6 +64,10 @@ key.properties
 .claude/context/
 .claude/settings.local.json
 CLAUDE.local.md
+
+# Documentacion y contexto de trabajo locales
+/context/
+/LOCAL_README.md
 
 # Reporte de auditoria de seguridad (el repo es publico; no se versiona)
 SECURITY_REPORT.md

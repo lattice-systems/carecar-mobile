@@ -379,11 +379,23 @@ servidor.post(`${BASE}/auth/restablecer-contrasena`, (req, res) => {
 // Vehiculos · APP-3.1 y ADM-1
 // ---------------------------------------------------------------------------
 
+// Perfil v1.1: siempre el de la cuenta autenticada, nunca un id del cliente.
+servidor.get(`${BASE}/perfil`, (req, res) => {
+  const cuenta = req.sesion.cuenta;
+  res.jsonp({ id: cuenta.clienteId, nombre: cuenta.nombre, correo: cuenta.correo });
+});
+
 const comoVehiculo = (v) => ({
   id: v.id,
   vin: v.vin,
   modelo: v.modelo,
   anio: v.anio,
+  // Extension local opcional. OpenAPI v1.1 permite propiedades adicionales;
+  // estos datos no se presuponen disponibles en el backend real.
+  marca: v.marca ?? null,
+  tipo: v.tipo ?? null,
+  version: v.version ?? null,
+  color: v.color ?? null,
   placas: v.placas ?? null,
   kilometraje: v.kilometraje ?? null,
 });

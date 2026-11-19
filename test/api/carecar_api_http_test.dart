@@ -139,6 +139,29 @@ void main() {
     expect(vehiculos[1].placas, isNull);
   });
 
+  test('miPerfil consume GET /perfil con el token de la sesion', () async {
+    late http.Request peticion;
+    final cliente = ClienteApi(
+      config: ApiConfig.para('http://localhost:3000/api/v1/app'),
+      obtenerToken: () async => 'token-del-cliente',
+      http: MockClient((req) async {
+        peticion = req;
+        return _json({
+          'id': 1,
+          'nombre': 'María Robles',
+          'correo': 'cliente1@example.com',
+        });
+      }),
+    );
+    addTearDown(cliente.cerrar);
+    final perfil = await CarecarApiHttp(cliente).miPerfil();
+    expect(peticion.method, 'GET');
+    expect(peticion.url.path, '/api/v1/app/perfil');
+    expect(peticion.headers['authorization'], 'Bearer token-del-cliente');
+    expect(perfil.nombre, 'María Robles');
+    expect(perfil.correo, 'cliente1@example.com');
+  });
+
   test('manualesDe llama GET /vehiculos/{id}/manuales', () async {
     final api = _api(espia, () => _json(const []));
     await api.manualesDe(7);

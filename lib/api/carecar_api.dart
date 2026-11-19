@@ -63,6 +63,9 @@ abstract interface class CarecarApi {
   /// distinguirlos por `Problema.codigo`.
   Future<void> restablecerContrasena(PeticionRestablecer peticion);
 
+  /// `GET /perfil`. Informacion de solo lectura del cliente autenticado.
+  Future<Perfil> miPerfil();
+
   // --- Vehiculos · APP-3.1 y ADM-1 ---
 
   /// `GET /vehiculos`. Solo los del cliente de la sesion.
