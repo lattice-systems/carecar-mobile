@@ -112,7 +112,7 @@ class _AppCareCarState extends State<AppCareCar> {
       home: switch (_errorDeArranque) {
         final error? => _PantallaDeErrorDeArranque(error: error),
         _ when _restaurando => const _PantallaDeArranque(),
-        _ => _Raiz(controlador: _sesion!, api: _api!),
+        _ => FlujoCareCar(controlador: _sesion!, api: _api!),
       },
     );
   }
@@ -148,17 +148,17 @@ class _PantallaDeArranque extends StatelessWidget {
 /// Es la navegacion minima que APP-2.1 y APP-2.3 necesitan. Cuando el equipo
 /// defina como se navega (peticion EQ-1), se cambia aqui sin tocar ninguna
 /// pantalla: todas avisan por callback y ninguna decide a donde ir.
-class _Raiz extends StatefulWidget {
-  const _Raiz({required this.controlador, required this.api});
+class FlujoCareCar extends StatefulWidget {
+  const FlujoCareCar({required this.controlador, required this.api, super.key});
 
   final ControladorSesion controlador;
   final CarecarApi api;
 
   @override
-  State<_Raiz> createState() => _RaizState();
+  State<FlujoCareCar> createState() => _RaizState();
 }
 
-class _RaizState extends State<_Raiz> {
+class _RaizState extends State<FlujoCareCar> {
   /// Fuera de null, se esta recuperando la contrasena con ese correo.
   String? _recuperando;
 
@@ -168,6 +168,35 @@ class _RaizState extends State<_Raiz> {
   /// `debeCambiarContrasena` del login sigue en `true`. Sin esta bandera, la
   /// pantalla de cambio volveria a salir en bucle.
   bool _yaCambio = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.controlador.addListener(_alCambiarSesion);
+  }
+
+  @override
+  void didUpdateWidget(covariant FlujoCareCar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controlador != widget.controlador) {
+      oldWidget.controlador.removeListener(_alCambiarSesion);
+      widget.controlador.addListener(_alCambiarSesion);
+      _yaCambio = false;
+      _recuperando = null;
+    }
+  }
+
+  void _alCambiarSesion() {
+    setState(() {
+      if (!widget.controlador.haySesion) _yaCambio = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.controlador.removeListener(_alCambiarSesion);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +224,7 @@ class _RaizState extends State<_Raiz> {
       }
 
       return PantallaInicio(
+        api: widget.api,
         controlador: widget.controlador,
         alCerrarSesion: () => setState(() => _yaCambio = false),
       );

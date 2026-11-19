@@ -33,13 +33,43 @@
   ],
   "vehiculos": [
     {
+      "id": 5,
+      "clienteId": 1,
+      "vin": "3N1CK3CD0LL123456",
+      "modelo": "Nissan March Sense",
+      "anio": 2020,
+      "placas": null,
+      "kilometraje": null,
+      "marca": "Nissan",
+      "tipo": "March",
+      "version": "Sense",
+      "color": "Blanco"
+    },
+    {
+      "id": 6,
+      "clienteId": 1,
+      "vin": "3VWDB7AJ0JM654321",
+      "modelo": "Volkswagen Jetta Comfortline",
+      "anio": 2018,
+      "placas": null,
+      "kilometraje": null,
+      "marca": "Volkswagen",
+      "tipo": "Jetta",
+      "version": "Comfortline",
+      "color": "Gris"
+    },
+    {
       "id": 1,
       "clienteId": 1,
       "vin": "3N1CN7AD5ML000111",
       "modelo": "Versa",
       "anio": 2024,
       "placas": "ABC-12-34",
-      "kilometraje": 18450
+      "kilometraje": 18450,
+      "marca": "Nissan",
+      "tipo": "Versa",
+      "version": "Sense",
+      "color": "Blanco"
     },
     {
       "id": 2,
@@ -48,7 +78,11 @@
       "modelo": "Kicks",
       "anio": 2023,
       "placas": null,
-      "kilometraje": null
+      "kilometraje": null,
+      "marca": "Nissan",
+      "tipo": "Kicks",
+      "version": "Advance",
+      "color": "Gris"
     },
     {
       "id": 3,

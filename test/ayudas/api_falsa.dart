@@ -140,7 +140,28 @@ class ApiFalsa implements CarecarApi {
   }
 
   @override
-  Future<List<Vehiculo>> misVehiculos() => throw UnimplementedError('APP-3.1');
+  Future<List<Vehiculo>> misVehiculos() async {
+    llamadasAVehiculos++;
+    return alPedirVehiculos == null ? [] : alPedirVehiculos!();
+  }
+
+  Future<List<Vehiculo>> Function()? alPedirVehiculos;
+  int llamadasAVehiculos = 0;
+
+  @override
+  Future<Perfil> miPerfil() async {
+    llamadasAPerfil++;
+    return alPedirPerfil == null
+        ? const Perfil(
+            id: 1,
+            nombre: 'María Robles',
+            correo: 'cliente1@example.com',
+          )
+        : alPedirPerfil!();
+  }
+
+  Future<Perfil> Function()? alPedirPerfil;
+  int llamadasAPerfil = 0;
 
   @override
   Future<List<Manual>> manualesDe(int vehiculoId) =>
