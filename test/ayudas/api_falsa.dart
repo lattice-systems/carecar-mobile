@@ -188,6 +188,18 @@ class ApiFalsa implements CarecarApi {
   Future<Uint8List> ticketDe(int servicioId) =>
       throw UnimplementedError('APP-3.2');
 
+  /// Que responde `GET /app/citas/{id}/ticket`. Si es nulo, un PDF minimo.
+  Future<Uint8List> Function(int citaId)? alPedirTicketDeCita;
+
+  final ticketsDeCitaPedidos = <int>[];
+
+  @override
+  Future<Uint8List> ticketDeCita(int citaId) {
+    ticketsDeCitaPedidos.add(citaId);
+    return alPedirTicketDeCita?.call(citaId) ??
+        Future.value(Uint8List.fromList('%PDF-1.4\n%%EOF\n'.codeUnits));
+  }
+
   // --- Agenda · APP-3.3 ---
 
   /// Que responde `GET /citas`. Si es nulo, una lista vacia.

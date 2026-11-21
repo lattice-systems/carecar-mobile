@@ -196,6 +196,9 @@ class CarecarApiConCache implements CarecarApi {
   Future<Uint8List> ticketDe(int servicioId) => _api.ticketDe(servicioId);
 
   @override
+  Future<Uint8List> ticketDeCita(int citaId) => _api.ticketDeCita(citaId);
+
+  @override
   Future<List<Disponibilidad>> disponibilidad({
     required DateTime desde,
     required DateTime hasta,
