@@ -25,7 +25,7 @@ App móvil **CareCar** (Flutter, Android + iOS) para clientes postventa de la ag
 | R2 | **Documentación siempre, sin excepción.** Todo PR actualiza la documentación afectada (plan, tablero, módulo, README, decisiones, diseño). Un PR sin cambio en docs se rechaza salvo que el PR mismo explique por qué ningún documento cambió… y aun así actualiza `plan/tablero.md`. |
 | R3 | **Sin IA como autor o co-autor.** Prohibido `Co-Authored-By:` de Claude/Codex/Gemini/Copilot/Antigravity y prohibidas líneas tipo "Generated with". El autor es la persona dueña de la tarea. Lo vigilan el hook [`.githooks/commit-msg`](.githooks/commit-msg) y el workflow `Autoría`. |
 | R4 | **Commits atómicos con intención.** Un commit = un cambio con un porqué. Formato `<tipo>(<alcance>): <verbo + cambio>` ([`docs/convenciones-commits.md`](docs/convenciones-commits.md)). El cuerpo explica el **porqué**, no el qué. Nada de `wip`, `update`, `fix` solos. |
-| R5 | **Nada directo a `main`.** Rama `<tipo>/<id-historia>-<descripcion>` → PR → 1 aprobación humana + checks verdes → merge commit. Abre el PR en cuanto la rama tenga algo revisable (borrador si hace falta). |
+| R5 | **Nada directo a `main`.** Rama `<tipo>/<id-historia>-<descripcion>` → PR → checks verdes (incluido `Sin co-autor de IA`) → merge commit. La revisión de otra persona se recomienda pero **no es obligatoria** (por ahora). Abre el PR en cuanto la rama tenga algo revisable (borrador si hace falta). |
 | R6 | **Todos contribuyen.** Las 6 personas programan, sin importar su rol Scrum. El reparto vive en [`plan/equipo-y-reparto.md`](plan/equipo-y-reparto.md). |
 | R7 | **Sin fechas en el plan.** Se planea con objetivos, hitos y criterios de salida; nunca con calendarios. |
 | R8 | **Sin secretos en el repo.** `.env`, llaves y tokens fuera de git (ver `.gitignore`). |
@@ -68,7 +68,7 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 - Cumple R1–R4; documentación y tablero actualizados en el mismo PR.
 - UI: usa solo tokens/componentes del sistema de diseño v2; probado en claro, oscuro, letra grande (200 %) y pantalla chica; textos con lector de pantalla.
 - Errores de red, vacío, carga y sin conexión resueltos (nada de pantallas en blanco).
-- Aprobado por otra persona del equipo.
+- Revisado por otra persona del equipo cuando sea posible (recomendado, no obligatorio por ahora).
 
 ## 6. Comandos
 

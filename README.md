@@ -247,7 +247,7 @@ flutter test test/widget_test.dart    # un solo archivo
 
 ## ✅ CI y checks del PR
 
-Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` está protegida: solo se integra por PR, con una aprobación y **todos estos checks en verde**:
+Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` está protegida: solo se integra por PR (sin aprobación obligatoria por ahora) y con **todos estos checks en verde**:
 
 | Check                                       | Workflow          | Cuándo corre                          |
 | ------------------------------------------- | ----------------- | ------------------------------------- |
@@ -258,6 +258,7 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 | `Build iOS (sin firma)`                     | CI (macOS)        | Cada push a cualquier rama y cada PR  |
 | `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
 | `Revisión de dependencias nuevas/cambiadas` | Dependency Review | Solo en PR                            |
+| `Sin co-autor de IA`                        | Autoría           | Solo en PR                            |
 
 Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos; el de iOS corre en un runner de macOS y compila sin firmar.
 

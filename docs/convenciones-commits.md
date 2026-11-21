@@ -4,7 +4,7 @@ Estas reglas aplican a todos los repositorios del proyecto: el backend, el ERP f
 
 ## Regla principal
 
-`main` debe permanecer estable. Integramos cambios únicamente mediante pull request (PR), con al menos una aprobación de otra persona y todos los checks requeridos en verde. No hagas push directo a `main`.
+`main` debe permanecer estable. Integramos cambios únicamente mediante pull request (PR) con todos los checks requeridos en verde. Por ahora **no se exige aprobación** de otra persona; pedir revisión sigue siendo buena práctica. No hagas push directo a `main`.
 
 ## Flujo de trabajo
 
@@ -12,7 +12,7 @@ Estas reglas aplican a todos los repositorios del proyecto: el backend, el ERP f
 2. Crea una rama corta para una sola tarea.
 3. Haz commits con mensajes claros y publica la rama.
 4. Abre un PR hacia `main`, completa la descripción y espera a que termine CI.
-5. Atiende los comentarios y consigue al menos una aprobación.
+5. Si alguien revisa, atiende sus comentarios (la aprobación no es obligatoria por ahora).
 6. Cuando todos los checks estén verdes y no queden conversaciones pendientes, integra el PR con **Create a merge commit** (es el único método que permite la regla de `main`) y borra la rama.
 
 ## Nombres de ramas
@@ -86,7 +86,7 @@ Antes de pedir revisión, comprueba que el PR tiene un alcance claro, que CI ter
 
 ## Revisión y checks requeridos
 
-- Cada PR necesita al menos **una aprobación de otra persona**.
+- Por ahora **no se exige aprobación**; la revisión de otra persona se recomienda.
 - Todos los checks requeridos deben terminar correctamente.
 - Los workflows deben ejecutarse en cada push y en los PRs dirigidos a `main`.
 - Backend: build y pruebas, incluidas las pruebas con Testcontainers.
@@ -138,7 +138,7 @@ Las dependencias no se actualizan con bots: los cambios de versión en `pubspec.
 Configura una regla de protección para `main` que:
 
 - Exija un PR antes de integrar.
-- Exija al menos una aprobación y checks requeridos en verde.
+- Exija checks requeridos en verde (incluido `Sin co-autor de IA`); por ahora **sin aprobaciones obligatorias**.
 - Exija resolver las conversaciones de revisión.
 - Bloquee push directo, force-push y borrado de la rama.
 - Evite excepciones de bypass para el trabajo normal.
@@ -146,5 +146,6 @@ Configura una regla de protección para `main` que:
 ## Resumen
 
 ```text
-actualizar main -> crear rama -> commit y push -> abrir PR -> aprobación + CI verde -> merge
+actualizar main -> crear rama -> commit y push -> abrir PR -> CI verde -> merge
 ```
+

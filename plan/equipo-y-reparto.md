@@ -17,10 +17,10 @@ El conteo sale de [`tablero.md`](tablero.md); si cambia el reparto, se actualiza
 
 ## Revisión cruzada
 
-Revisor fijo por módulo en [`modulos/README.md`](modulos/README.md). Reglas:
+Revisor fijo por módulo en [`modulos/README.md`](modulos/README.md). Por ahora GitHub **no exige aprobación** para integrar; la revisión cruzada sigue siendo la práctica del equipo:
 
-- El revisor aprueba los PR del módulo; si no está, revisa cualquier otra persona.
-- Nadie aprueba su propio PR (lo impide GitHub).
+- El revisor revisa los PR del módulo; si no está, cualquier otra persona.
+- Evita integrar tu propio PR sin que nadie lo haya visto, salvo cambios triviales de docs.
 - Cada persona revisa al menos un PR de otro frente por cada PR propio que integra.
 
 ## Qué toca a cada quien en cada hito
