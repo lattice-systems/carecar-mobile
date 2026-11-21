@@ -627,7 +627,14 @@ void main() {
         return markTestSkipped('La API simulada no esta levantada');
       }
       final api = await conSesion();
+      final pagina = await api.paginaDeCitas(tamano: 1);
+      expect(pagina.contenido.length, lessThanOrEqualTo(1));
       final citas = await api.misCitas();
+      expect(
+        citas.every((c) => c.franjaId != null),
+        isTrue,
+        reason: 'el contrato exige franjaId en cada cita',
+      );
       expect(
         citas.every((c) => c.estado != EstadoCita.desconocido),
         isTrue,
