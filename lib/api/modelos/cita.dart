@@ -53,6 +53,8 @@ class Cita {
     required this.horaInicio,
     required this.horaFin,
     required this.estado,
+    this.franjaId,
+    this.vehiculoNombre,
   });
 
   factory Cita.fromJson(Map<String, Object?> json) => Cita(
@@ -62,7 +64,28 @@ class Cita {
     horaInicio: leerTexto(json['horaInicio'], 'horaInicio'),
     horaFin: leerTexto(json['horaFin'], 'horaFin'),
     estado: EstadoCita.desdeContrato(leerTexto(json['estado'], 'estado')),
+    // El contrato exige franjaId, pero el backend actual aun no lo manda:
+    // se lee de forma tolerante hasta que llegue.
+    franjaId: json['franjaId'] is num
+        ? (json['franjaId']! as num).toInt()
+        : null,
+    vehiculoNombre: _leerNombreVehiculo(json),
   );
+
+  /// Acepta `vehiculoNombre` o un objeto `vehiculo` con modelo/anio.
+  static String? _leerNombreVehiculo(Map<String, Object?> json) {
+    final nombre = json['vehiculoNombre'] ?? json['nombreVehiculo'];
+    if (nombre is String && nombre.trim().isNotEmpty) return nombre.trim();
+    final vehiculo = json['vehiculo'];
+    if (vehiculo is Map) {
+      final partes = [
+        vehiculo['modelo'],
+        vehiculo['anio'],
+      ].where((p) => p != null && '$p'.trim().isNotEmpty).join(' ');
+      if (partes.isNotEmpty) return partes;
+    }
+    return null;
+  }
 
   final int id;
   final int vehiculoId;
@@ -71,7 +94,12 @@ class Cita {
   final String horaFin;
   final EstadoCita estado;
 
-  /// La respuesta no incluye `franjaId`, asi que no se puede saber con que
-  /// franja quedo agendada: es la pregunta RIC-10.
+  /// Franja con la que quedo agendada; null si el backend no la manda.
+  final int? franjaId;
+
+  /// Nombre del vehiculo si el backend lo incluye; si no, la pantalla lo
+  /// resuelve con `misVehiculos()`.
+  final String? vehiculoNombre;
+
   bool get sePuedeCancelar => estado == EstadoCita.confirmada;
 }
