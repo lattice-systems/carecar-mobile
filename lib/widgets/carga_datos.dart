@@ -7,6 +7,14 @@ import 'aviso.dart';
 import 'menu_carecar.dart';
 import 'movimiento.dart';
 
+/// Enlaza un [CargaDatos] con quien quiera recargarlo (pull-to-refresh).
+class Recargador {
+  Future<void> Function()? _accion;
+
+  /// Vuelve a pedir los datos y espera a que lleguen (o fallen).
+  Future<void> recargar() => _accion?.call() ?? Future.value();
+}
+
 /// Ciclo compartido de carga, fallo y reintento, sin repetir solicitudes al rebuild.
 class CargaDatos<T> extends StatefulWidget {
   const CargaDatos({
@@ -14,12 +22,14 @@ class CargaDatos<T> extends StatefulWidget {
     required this.mensajeCarga,
     required this.mensajeError,
     required this.construir,
+    this.recargador,
     super.key,
   });
   final Future<T> Function() cargar;
   final String mensajeCarga;
   final String mensajeError;
   final Widget Function(T) construir;
+  final Recargador? recargador;
 
   @override
   State<CargaDatos<T>> createState() => _CargaDatosState<T>();
@@ -32,6 +42,26 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
   void initState() {
     super.initState();
     _solicitud = Future.sync(widget.cargar);
+    widget.recargador?._accion = _recargar;
+  }
+
+  @override
+  void didUpdateWidget(CargaDatos<T> anterior) {
+    super.didUpdateWidget(anterior);
+    widget.recargador?._accion = _recargar;
+  }
+
+  Future<void> _recargar() async {
+    if (!mounted) return;
+    final nueva = Future.sync(widget.cargar);
+    setState(() {
+      _solicitud = nueva;
+    });
+    try {
+      await nueva;
+    } catch (_) {
+      // El FutureBuilder muestra el error con su boton de reintentar.
+    }
   }
 
   @override
@@ -89,11 +119,7 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
             ),
             const SizedBox(height: TemaCareCar.espacioCampos),
             OutlinedButton.icon(
-              onPressed: () {
-                setState(() {
-                  _solicitud = Future.sync(widget.cargar);
-                });
-              },
+              onPressed: _recargar,
               icon: const Icon(Icons.refresh),
               label: const Text('Reintentar'),
             ),

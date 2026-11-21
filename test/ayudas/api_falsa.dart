@@ -178,6 +178,13 @@ class ApiFalsa implements CarecarApi {
       alPedirServicios?.call(vehiculoId) ?? Future.value(const []);
 
   @override
+  Future<Pagina<Servicio>> paginaDeServicios(
+    int vehiculoId, {
+    int pagina = 0,
+    int tamano = 20,
+  }) async => _rebanar(await serviciosDe(vehiculoId), pagina, tamano);
+
+  @override
   Future<Uint8List> ticketDe(int servicioId) =>
       throw UnimplementedError('APP-3.2');
 
@@ -214,6 +221,20 @@ class ApiFalsa implements CarecarApi {
   Future<List<Cita>> misCitas() {
     llamadasACitas++;
     return alPedirCitas?.call() ?? Future.value(const []);
+  }
+
+  @override
+  Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) async =>
+      _rebanar(await misCitas(), pagina, tamano);
+
+  static Pagina<T> _rebanar<T>(List<T> todo, int pagina, int tamano) {
+    final inicio = (pagina * tamano).clamp(0, todo.length);
+    final fin = (inicio + tamano).clamp(0, todo.length);
+    return Pagina(
+      contenido: todo.sublist(inicio, fin),
+      pagina: pagina,
+      totalPaginas: todo.isEmpty ? 0 : (todo.length / tamano).ceil(),
+    );
   }
 
   @override

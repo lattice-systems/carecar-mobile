@@ -14,6 +14,7 @@ class PaginaCareCar extends StatelessWidget {
     required this.alCerrarSesion,
     this.regresar = true,
     this.expandir = false,
+    this.alRefrescar,
     super.key,
   });
   final String titulo;
@@ -21,6 +22,9 @@ class PaginaCareCar extends StatelessWidget {
   final VoidCallback alCerrarSesion;
   final bool regresar;
   final bool expandir;
+
+  /// Si no es nulo, el contenido admite deslizar hacia abajo para recargar.
+  final Future<void> Function()? alRefrescar;
 
   static const botonCerrarSesion = Key('inicio_cerrar_sesion');
 
@@ -39,17 +43,22 @@ class PaginaCareCar extends StatelessWidget {
             top: false,
             child: expandir
                 ? contenido
-                : SingleChildScrollView(
-                    key: PageStorageKey(titulo),
-                    padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxWidth: EstiloMenu.anchoMaximo,
-                        ),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: contenido,
+                : _refrescable(
+                    SingleChildScrollView(
+                      key: PageStorageKey(titulo),
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(
+                        TemaCareCar.espacioSecciones,
+                      ),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: EstiloMenu.anchoMaximo,
+                          ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: contenido,
+                          ),
                         ),
                       ),
                     ),
@@ -59,6 +68,16 @@ class PaginaCareCar extends StatelessWidget {
       ],
     ),
   );
+
+  Widget _refrescable(Widget hijo) {
+    final refrescar = alRefrescar;
+    if (refrescar == null) return hijo;
+    return RefreshIndicator(
+      onRefresh: refrescar,
+      color: TemaCareCar.azulAgencia,
+      child: hijo,
+    );
+  }
 }
 
 class _Encabezado extends StatelessWidget {
