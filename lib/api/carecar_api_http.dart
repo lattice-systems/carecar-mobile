@@ -97,7 +97,7 @@ class CarecarApiHttp implements CarecarApi {
 
   @override
   Future<Uint8List> ticketDeCita(int citaId) =>
-      _cliente.descargar('/app/citas/$citaId/ticket');
+      _cliente.descargar('/citas/$citaId/ticket');
 
   @override
   Future<List<Disponibilidad>> disponibilidad({
