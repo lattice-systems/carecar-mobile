@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/dialogos.dart';
 
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../api/carecar_api.dart';
@@ -12,6 +12,7 @@ import '../../tema/tema_carecar.dart';
 import '../../widgets/pagina_carecar.dart';
 import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
+import 'ticket_de_cita.dart';
 import 'pantalla_agendar_cita.dart';
 
 /// APP-3.3 · Mis citas: las citas de servicio del cliente de la sesion.
@@ -32,6 +33,8 @@ class PantallaMisCitas extends StatefulWidget {
   static const confirmarCancelacion = Key('citas_confirmar_cancelacion');
 
   static Key botonCancelar(int citaId) => Key('citas_cancelar_$citaId');
+
+  static Key botonTicket(int citaId) => Key('citas_ticket_$citaId');
 
   @override
   State<PantallaMisCitas> createState() => _PantallaMisCitasState();
@@ -301,6 +304,12 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
               cita: c,
               vehiculo: datos.vehiculos[c.vehiculoId],
               cancelando: _cancelando.contains(c.id),
+              alVerTicket: () => abrirTicketDeCita(
+                context,
+                widget.api,
+                c,
+                widget.alCerrarSesion,
+              ),
               alCancelar: esProxima(c) && c.sePuedeCancelar
                   ? () => _cancelar(c)
                   : null,
@@ -444,6 +453,7 @@ class TarjetaCita extends StatelessWidget {
     required this.cita,
     this.vehiculo,
     this.alCancelar,
+    this.alVerTicket,
     this.cancelando = false,
     super.key,
   });
@@ -451,6 +461,9 @@ class TarjetaCita extends StatelessWidget {
   final Cita cita;
   final Vehiculo? vehiculo;
   final VoidCallback? alCancelar;
+
+  /// Abre el ticket en PDF; tambien sirve en citas canceladas.
+  final VoidCallback? alVerTicket;
   final bool cancelando;
 
   @override
@@ -557,6 +570,18 @@ class TarjetaCita extends StatelessWidget {
               ],
             ),
           ),
+          if (alVerTicket != null) ...[
+            const SizedBox(height: 12),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ShadButton.outline(
+                key: PantallaMisCitas.botonTicket(c.id),
+                onPressed: alVerTicket,
+                leading: const Icon(Icons.receipt_long_outlined, size: 18),
+                child: const Text('Ver ticket'),
+              ),
+            ),
+          ],
           if (alCancelar != null) ...[
             const SizedBox(height: 12),
             Align(

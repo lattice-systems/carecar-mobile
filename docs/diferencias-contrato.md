@@ -16,3 +16,10 @@ Ya coinciden (no son diferencias): paginación `{contenido, pagina, tamano,
 totalElementos, totalPaginas}` con `pagina`/`tamano`, `franjaId` en `Cita`,
 `marca`/`version` en `Vehiculo` y `marca`/`titulo` en `Manual`, 400
 `DATOS_INVALIDOS` cuando falta `desde`/`hasta` en la disponibilidad.
+
+## Ticket de cita (pendiente en el YAML)
+
+La app consume `GET /app/citas/{citaId}/ticket` (PDF con la foto del coche; 404
+si la cita no es del cliente), que **no está en el YAML** del contrato. El YAML
+no se editó y `contrato_test.dart` sigue contando las 16 operaciones del
+contrato; falta agregar la operación en el contrato (v1.3).
