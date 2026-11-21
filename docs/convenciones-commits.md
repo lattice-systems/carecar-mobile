@@ -53,6 +53,21 @@ ci(backend): ejecutar pruebas en cada push
 
 Escribe mensajes breves y concretos. Evita mensajes como `cambios`, `update` o `fix` sin contexto. El alcance entre paréntesis puede ser un módulo o área; se puede omitir si no aporta claridad.
 
+### Commits atómicos con intención
+
+- Un commit = un cambio con un porqué. Si el asunto necesita "y", probablemente son dos commits.
+- El asunto dice **qué**; el cuerpo explica **por qué** (la intención), no repite el diff.
+- Para historias de la v2, el alcance es el módulo (`feat(m04): ...`, `docs(plan): ...`) y el cuerpo menciona el ID (`V2-M04.03`).
+- Cada PR incluye la actualización de la documentación afectada y de `plan/tablero.md`, **siempre** (regla R2 de `AGENTS.md`).
+
+### Autoría: sin IA como autor ni co-autor
+
+El autor del commit es la persona dueña de la tarea, aunque el código lo haya escrito un agente (Claude, Codex, Antigravity, Copilot…). Están prohibidas las líneas `Co-Authored-By:` de herramientas de IA y las firmas tipo `Generated with …`. Los co-autores humanos sí se permiten.
+
+- Activa el hook una vez por clon: `git config core.hooksPath .githooks` (quita esas líneas automáticamente).
+- El check `Autoría / Sin co-autor de IA` rechaza el PR si algún commit las trae.
+- Claude Code ya viene configurado sin atribución en `.claude/settings.json`.
+
 ## Pull requests
 
 El título del PR debe resumir el cambio. Puedes usar el mismo formato que un commit:
@@ -91,6 +106,12 @@ El workflow `.github/workflows/ci.yml` corre en cada push a cualquier rama y en 
 | `CI / Análisis estático (flutter analyze)` | Errores y reglas de `analysis_options.yaml` (`flutter_lints`) |
 | `CI / Pruebas (flutter test)` | Pruebas unitarias y de widgets |
 | `CI / Build Android (APK)` | Que la app compile para Android (`flutter build apk --debug`) |
+
+El workflow `.github/workflows/autoria.yml` corre en cada PR hacia `main`:
+
+| Check | Qué revisa |
+| --- | --- |
+| `Autoría / Sin co-autor de IA` | Que ningún commit del PR declare a una IA como co-autor ni lleve la firma `Generated with …` |
 
 Además hay dos revisiones de seguridad:
 
