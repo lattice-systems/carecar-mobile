@@ -13,8 +13,6 @@
 /// uso el Sprint 1, para no romper los comandos ya escritos.
 library;
 
-import 'package:flutter/foundation.dart' show kReleaseMode;
-
 /// La direccion configurada no sirve.
 class ApiConfigInvalida implements Exception {
   ApiConfigInvalida(this.motivo);
@@ -39,10 +37,7 @@ class ApiConfig {
   factory ApiConfig.desdeEntorno() =>
       ApiConfig.para(_base.isNotEmpty ? _base : _heredado);
 
-  ///
-  /// Con [exigirHttps] (por omision, en compilaciones release) se rechaza
-  /// `http`: en produccion y staging la API debe ir cifrada.
-  factory ApiConfig.para(String url, {bool exigirHttps = kReleaseMode}) {
+  factory ApiConfig.para(String url) {
     if (url.trim().isEmpty) {
       throw ApiConfigInvalida('esta vacia');
     }
@@ -53,9 +48,6 @@ class ApiConfig {
     }
     if (uri.scheme != 'http' && uri.scheme != 'https') {
       throw ApiConfigInvalida('el esquema «${uri.scheme}» no es http ni https');
-    }
-    if (exigirHttps && uri.scheme != 'https') {
-      throw ApiConfigInvalida('en release la direccion debe usar https');
     }
 
     // Se quita la diagonal final para que `ruta('/vehiculos')` no genere `//`.

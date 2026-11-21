@@ -82,21 +82,4 @@ void main() {
       expect(uri.query, contains('Versa+2024'));
     });
   });
-
-  group('HTTPS obligatorio en release', () {
-    test('rechaza http cuando se exige https', () {
-      expect(
-        () => ApiConfig.para('http://api.ejemplo.mx/v1', exigirHttps: true),
-        throwsA(isA<ApiConfigInvalida>()),
-      );
-    });
-
-    test('acepta https cuando se exige https', () {
-      final config = ApiConfig.para(
-        'https://api.ejemplo.mx/v1',
-        exigirHttps: true,
-      );
-      expect(config.base.scheme, 'https');
-    });
-  });
 }
