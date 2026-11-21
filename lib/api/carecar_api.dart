@@ -89,7 +89,7 @@ abstract interface class CarecarApi {
   /// `GET /servicios/{id}/ticket`. Devuelve los bytes del PDF.
   Future<Uint8List> ticketDe(int servicioId);
 
-  /// `GET /app/citas/{citaId}/ticket`. Devuelve los bytes del PDF.
+  /// `GET /citas/{citaId}/ticket`. Devuelve los bytes del PDF.
   Future<Uint8List> ticketDeCita(int citaId);
 
   // --- Agenda · APP-3.3 ---

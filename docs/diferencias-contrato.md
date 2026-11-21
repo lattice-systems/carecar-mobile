@@ -19,7 +19,7 @@ totalElementos, totalPaginas}` con `pagina`/`tamano`, `franjaId` en `Cita`,
 
 ## Ticket de cita (pendiente en el YAML)
 
-La app consume `GET /app/citas/{citaId}/ticket` (PDF con la foto del coche; 404
+La app consume `GET /citas/{citaId}/ticket` (PDF con la foto del coche; 404
 si la cita no es del cliente), que **no está en el YAML** del contrato. El YAML
 no se editó y `contrato_test.dart` sigue contando las 16 operaciones del
 contrato; falta agregar la operación en el contrato (v1.3).
