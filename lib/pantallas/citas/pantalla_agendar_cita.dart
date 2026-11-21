@@ -856,7 +856,7 @@ class _AvisoEnLinea extends StatelessWidget {
             ),
           ),
           if (alReintentar != null)
-            TextButton(
+            ShadButton.link(
               key: PantallaAgendarCita.botonReintentar,
               onPressed: alReintentar,
               child: const Text('Reintentar'),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter/services.dart';
 
 import '../api/carecar_api.dart';
@@ -246,8 +247,9 @@ class _PantallaRecuperarContrasenaState
       validar: _validarCorreo,
     ),
     const SizedBox(height: TemaCareCar.espacioSecciones),
-    FilledButton(
+    ShadButton(
       key: PantallaRecuperarContrasena.botonEnviar,
+      width: double.infinity,
       onPressed: _trabajando ? null : _pedirCodigo,
       child: Text(_trabajando ? 'Enviando…' : 'Enviar código'),
     ),
@@ -305,13 +307,14 @@ class _PantallaRecuperarContrasenaState
       validar: (v) => ReglasContrasena.revisar(v ?? ''),
     ),
     const SizedBox(height: TemaCareCar.espacioSecciones),
-    FilledButton(
+    ShadButton(
       key: PantallaRecuperarContrasena.botonGuardar,
+      width: double.infinity,
       onPressed: _trabajando ? null : _restablecer,
       child: Text(_trabajando ? 'Guardando…' : 'Cambiar contraseña'),
     ),
     const SizedBox(height: TemaCareCar.espacioCampos),
-    TextButton(
+    ShadButton.link(
       key: PantallaRecuperarContrasena.botonOtroCodigo,
       onPressed: _trabajando ? null : _pedirOtroCodigo,
       child: const Text('Enviar otro código'),
@@ -325,8 +328,9 @@ class _PantallaRecuperarContrasenaState
       detalle: 'Inicia sesión con la contraseña nueva.',
     ),
     const SizedBox(height: TemaCareCar.espacioSecciones),
-    FilledButton(
+    ShadButton(
       key: PantallaRecuperarContrasena.botonVolver,
+      width: double.infinity,
       onPressed: widget.alVolver,
       child: const Text('Iniciar sesión'),
     ),
