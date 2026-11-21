@@ -170,9 +170,12 @@ class ApiFalsa implements CarecarApi {
   Future<List<Manual>> manualesDe(int vehiculoId) =>
       alPedirManuales?.call(vehiculoId) ?? Future.value(const []);
 
+  /// Que responde `GET /vehiculos/{id}/servicios`. Si es nulo, una lista vacia.
+  Future<List<Servicio>> Function(int)? alPedirServicios;
+
   @override
   Future<List<Servicio>> serviciosDe(int vehiculoId) =>
-      throw UnimplementedError('APP-3.2');
+      alPedirServicios?.call(vehiculoId) ?? Future.value(const []);
 
   @override
   Future<Uint8List> ticketDe(int servicioId) =>

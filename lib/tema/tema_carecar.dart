@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Tema de CareCar, derivado de la guia de estilos de Agencia360.
 ///
@@ -87,6 +88,23 @@ abstract final class TemaCareCar {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [azulAgencia, azulProfundo],
+  );
+
+  /// Tema de `shadcn_ui` con la paleta de Agencia360, para que sus
+  /// componentes se vean como el resto de la app.
+  static ShadThemeData get shad => ShadThemeData(
+    brightness: Brightness.light,
+    colorScheme: const ShadSlateColorScheme.light(
+      primary: azulAgencia,
+      primaryForeground: Colors.white,
+      background: fondo,
+      foreground: textoPrincipal,
+      card: tarjeta,
+      border: borde,
+      destructive: peligro,
+      ring: azulAgencia,
+    ),
+    radius: BorderRadius.circular(radioTarjeta + 4),
   );
 
   /// [claro] con Inter y JetBrains Mono, servidas por `google_fonts`.

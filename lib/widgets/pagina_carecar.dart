@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../tema/tema_carecar.dart';
 import 'menu_carecar.dart';
+import 'movimiento.dart';
 
 /// Marco de todas las pantallas autenticadas: encabezado con el degradado de
 /// marca, regresar, cerrar sesion y el contenido debajo.
@@ -76,10 +77,52 @@ class _Encabezado extends StatelessWidget {
     final temas = Theme.of(context).textTheme;
     const blanco = Colors.white;
     return Container(
+      clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(
         gradient: TemaCareCar.degradadoMarca,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
       ),
+      child: Stack(
+        children: [
+          // Destellos que flotan despacio detras del titulo.
+          Positioned(
+            right: -40,
+            top: -30,
+            child: const _Destello(tamano: 170, opacidad: 0.22).siempre(
+              context,
+              (w) => w
+                  .animate(onPlay: (c) => c.repeat(reverse: true))
+                  .move(
+                    begin: Offset.zero,
+                    end: const Offset(-24, 18),
+                    duration: 4200.ms,
+                    curve: Curves.easeInOut,
+                  ),
+            ),
+          ),
+          Positioned(
+            left: -30,
+            bottom: -50,
+            child: const _Destello(tamano: 130, opacidad: 0.12).siempre(
+              context,
+              (w) => w
+                  .animate(onPlay: (c) => c.repeat(reverse: true))
+                  .move(
+                    begin: Offset.zero,
+                    end: const Offset(30, -14),
+                    duration: 5200.ms,
+                    curve: Curves.easeInOut,
+                  ),
+            ),
+          ),
+          _contenido(context, temas, blanco),
+        ],
+      ),
+    );
+  }
+
+  Widget _contenido(BuildContext context, TextTheme temas, Color blanco) {
+    return Container(
       padding: EdgeInsets.fromLTRB(
         8,
         MediaQuery.paddingOf(context).top + 4,
@@ -137,4 +180,28 @@ class _Encabezado extends StatelessWidget {
       ),
     );
   }
+}
+
+class _Destello extends StatelessWidget {
+  const _Destello({required this.tamano, required this.opacidad});
+
+  final double tamano;
+  final double opacidad;
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(
+    child: Container(
+      width: tamano,
+      height: tamano,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: RadialGradient(
+          colors: [
+            TemaCareCar.turquesa.withValues(alpha: opacidad),
+            TemaCareCar.turquesa.withValues(alpha: 0),
+          ],
+        ),
+      ),
+    ),
+  );
 }

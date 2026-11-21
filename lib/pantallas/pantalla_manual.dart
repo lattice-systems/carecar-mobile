@@ -6,6 +6,7 @@ import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../manuales/servicio_manuales.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/movimiento.dart';
 import '../widgets/aviso.dart';
 import '../widgets/pagina_carecar.dart';
 
@@ -15,6 +16,7 @@ class PantallaManual extends StatefulWidget {
     required this.alCerrarSesion,
     this.servicio,
     this.api,
+    this.etiqueta = 'Manual',
     super.key,
   });
   final Vehiculo vehiculo;
@@ -23,6 +25,9 @@ class PantallaManual extends StatefulWidget {
 
   /// Con la API se busca primero el manual que publica la agencia.
   final CarecarApi? api;
+
+  /// Antes del nombre en el titulo: «Manual» o «Ticket».
+  final String etiqueta;
   @override
   State<PantallaManual> createState() => _PantallaManualState();
 }
@@ -171,7 +176,7 @@ class _PantallaManualState extends State<PantallaManual> {
   @override
   Widget build(BuildContext context) => PaginaCareCar(
     titulo: _datos != null
-        ? 'Manual — ${_datos!.titulo}'
+        ? '${widget.etiqueta} — ${_datos!.titulo}'
         : 'Manual del propietario',
     expandir: true,
     alCerrarSesion: widget.alCerrarSesion,
@@ -198,17 +203,20 @@ class _IconoCargando extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: TemaCareCar.azulSuave,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.menu_book_rounded,
-              size: 40,
-              color: TemaCareCar.azulAgencia,
-            ),
-          )
-          .animate(onPlay: (c) => c.repeat(reverse: true))
-          .scaleXY(begin: 0.92, end: 1.05, duration: 700.ms);
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: TemaCareCar.azulSuave,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.menu_book_rounded,
+          size: 40,
+          color: TemaCareCar.azulAgencia,
+        ),
+      ).siempre(
+        context,
+        (w) => w
+            .animate(onPlay: (c) => c.repeat(reverse: true))
+            .scaleXY(begin: 0.92, end: 1.05, duration: 700.ms),
+      );
 }

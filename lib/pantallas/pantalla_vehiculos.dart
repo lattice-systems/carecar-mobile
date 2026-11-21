@@ -7,6 +7,7 @@ import '../widgets/aviso.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/carga_datos.dart';
 import '../widgets/formato.dart';
+import '../widgets/movimiento.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
 import 'pantalla_detalle_vehiculo.dart';
@@ -78,81 +79,87 @@ class TarjetaVehiculo extends StatelessWidget {
     final v = vehiculo;
     final subtitulo = [v.marca, v.version].whereType<String>().join(' · ');
 
-    return Material(
-      color: TemaCareCar.tarjeta,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(EstiloMenu.radio),
-        side: const BorderSide(color: TemaCareCar.borde),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: alPulsar,
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      gradient: TemaCareCar.degradadoMarca,
-                      borderRadius: BorderRadius.circular(16),
+    return Rebote(
+      child: Material(
+        color: TemaCareCar.tarjeta,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(EstiloMenu.radio),
+          side: const BorderSide(color: TemaCareCar.borde),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: alPulsar,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: TemaCareCar.degradadoMarca,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(
+                        Icons.directions_car_filled,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.directions_car_filled,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('${v.modelo} ${v.anio}', style: temas.titleMedium),
-                        if (subtitulo.isNotEmpty)
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Text(
-                            subtitulo,
-                            style: temas.bodyMedium?.copyWith(
-                              color: TemaCareCar.textoSecundario,
-                            ),
+                            '${v.modelo} ${v.anio}',
+                            style: temas.titleMedium,
                           ),
-                      ],
+                          if (subtitulo.isNotEmpty)
+                            Text(
+                              subtitulo,
+                              style: temas.bodyMedium?.copyWith(
+                                color: TemaCareCar.textoSecundario,
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: TemaCareCar.textoSecundario,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: _Dato(
-                      icono: Icons.pin_outlined,
-                      etiqueta: 'Placas',
-                      valor: v.placas,
-                      mono: true,
+                    const Icon(
+                      Icons.chevron_right,
+                      color: TemaCareCar.textoSecundario,
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _Dato(
-                      icono: Icons.speed_outlined,
-                      etiqueta: 'Kilometraje',
-                      valor: v.kilometraje == null
-                          ? null
-                          : formatoKm(v.kilometraje!),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _Dato(
+                        icono: Icons.pin_outlined,
+                        etiqueta: 'Placas',
+                        valor: v.placas,
+                        mono: true,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _Dato(
+                        icono: Icons.speed_outlined,
+                        etiqueta: 'Kilometraje',
+                        valor: v.kilometraje == null
+                            ? null
+                            : formatoKm(v.kilometraje!),
+                        kilometros: v.kilometraje,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -166,12 +173,16 @@ class _Dato extends StatelessWidget {
     required this.etiqueta,
     required this.valor,
     this.mono = false,
+    this.kilometros,
   });
 
   final IconData icono;
   final String etiqueta;
   final String? valor;
   final bool mono;
+
+  /// Si viene, el valor cuenta hasta esa cifra al aparecer.
+  final int? kilometros;
 
   @override
   Widget build(BuildContext context) {
@@ -199,23 +210,11 @@ class _Dato extends StatelessWidget {
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    valor ?? 'Sin capturar',
-                    maxLines: 1,
-                    style:
-                        (mono && !sinDato
-                                ? TemaCareCar.mono
-                                : const TextStyle())
-                            .merge(
-                              TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: sinDato
-                                    ? TemaCareCar.textoSecundario
-                                    : TemaCareCar.textoPrincipal,
-                                fontStyle: sinDato ? FontStyle.italic : null,
-                              ),
-                            ),
+                  child: _Valor(
+                    texto: valor ?? 'Sin capturar',
+                    kilometros: kilometros,
+                    sinDato: sinDato,
+                    mono: mono,
                   ),
                 ),
               ],
@@ -223,6 +222,40 @@ class _Dato extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _Valor extends StatelessWidget {
+  const _Valor({
+    required this.texto,
+    required this.sinDato,
+    required this.mono,
+    this.kilometros,
+  });
+
+  final String texto;
+  final int? kilometros;
+  final bool sinDato;
+  final bool mono;
+
+  @override
+  Widget build(BuildContext context) {
+    final estilo = (mono && !sinDato ? TemaCareCar.mono : const TextStyle())
+        .merge(
+          TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: sinDato
+                ? TemaCareCar.textoSecundario
+                : TemaCareCar.textoPrincipal,
+            fontStyle: sinDato ? FontStyle.italic : null,
+          ),
+        );
+    if (kilometros == null) return Text(texto, maxLines: 1, style: estilo);
+    return NumeroAnimado(
+      valor: kilometros!,
+      construir: (n) => Text(formatoKm(n), maxLines: 1, style: estilo),
     );
   }
 }

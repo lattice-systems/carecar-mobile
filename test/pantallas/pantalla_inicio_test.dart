@@ -188,18 +188,23 @@ void main() {
     await _tocar(tester, 'Reintentar');
     expect(find.text('No tienes vehículos asociados'), findsOneWidget);
     expect(api.llamadasAVehiculos, 2);
+    // Deja correr los timers de la animacion de entrada del aviso.
+    await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets(
-    'opciones del vehiculo son placeholders y el retroceso conserva la sesion',
+    'agendar e historial abren sus pantallas y el retroceso conserva la sesion',
     (tester) async {
       final api = ApiFalsa()..alPedirVehiculos = () async => [_march];
       final sesion = await _montar(tester, api);
       await _tocar(tester, 'Mis vehículos');
       await _tocar(tester, '${_march.modelo} 2020');
-      for (final opcion in ['Agendar cita', 'Historial de servicios']) {
+      for (final (opcion, contenido) in [
+        ('Agendar cita', 'Tres pasos y listo'),
+        ('Historial de servicios', 'Aún no hay servicios'),
+      ]) {
         await _tocar(tester, opcion);
-        expect(find.text('PRÓXIMAMENTE'), findsOneWidget);
+        expect(find.text(contenido), findsOneWidget);
         await _tocar(tester, 'Regresar');
         expect(find.text(_march.vin), findsOneWidget);
       }
@@ -238,13 +243,15 @@ void main() {
     await _montar(tester, api);
     await tester.tap(find.text('Ajustes'));
     await tester.pump();
-    expect(find.text('Cargando perfil…'), findsOneWidget);
+    // Mientras carga se ve el esqueleto, no un texto de espera.
+    expect(find.text('Nombre del cliente'), findsOneWidget);
     espera.completeError(const SinConexion('Sin conexión de prueba'));
     await tester.pumpAndSettle();
-    expect(find.text('No se pudo cargar tu perfil'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
     api.alPedirPerfil = () async => const Perfil(id: 1, nombre: '', correo: '');
     await _tocar(tester, 'Reintentar');
-    expect(find.text('No disponible'), findsNWidgets(2));
+    // Con datos vacios el perfil no inventa nombre ni correo.
+    expect(find.text('Nombre del cliente'), findsNothing);
   });
 
   testWidgets(
