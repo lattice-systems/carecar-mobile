@@ -105,6 +105,7 @@ flutter:
           weight: 700
   assets:
     - assets/marca/
+    - assets/autos/galeria/
     - assets/autos/
     - assets/Manuales/Nissan/March/2020/
     - assets/Manuales/Nissan/Kicks/2023/
