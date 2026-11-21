@@ -21,4 +21,4 @@ Ciclo de trabajo:
 - **Tablero** → mueve estados en `plan/tablero.md` con commits `docs(tablero): ...` en la rama del trabajo correspondiente o en una rama `docs/tablero-<tema>`.
 - **Reportar** al humano: qué se integró, qué espera revisión, qué está bloqueado y por qué, cuál es el siguiente paso.
 
-Nunca: push a `main`, merge sin aprobación humana, saltarte la ficha técnica, dejar un PR sin docs.
+Nunca: push a `main`, merge sin que la persona dueña de la historia lo pida, saltarte la ficha técnica, dejar un PR sin docs.
