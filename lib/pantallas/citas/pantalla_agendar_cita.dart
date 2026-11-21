@@ -12,6 +12,7 @@ import '../../tema/tema_carecar.dart';
 import '../../widgets/pagina_carecar.dart';
 import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
+import 'ticket_de_cita.dart';
 
 /// APP-3.3 · Agendar cita: vehiculo, dia y franja con cupo.
 ///
@@ -135,6 +136,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
       );
       if (!mounted) return;
       await mostrarCheckExito(context);
+      if (!mounted) return;
+      await abrirTicketDeCita(context, widget.api, cita, widget.alCerrarSesion);
       if (!mounted) return;
       Navigator.of(context).pop(cita);
     } on Conflicto catch (e) {
