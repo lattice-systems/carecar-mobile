@@ -347,9 +347,10 @@ void main() {
             find.textContaining('No fue posible identificar'),
             findsOneWidget,
           );
-          await _regresar(tester);
-          await _regresar(tester);
-          await _regresar(tester);
+          // En escritorio la ficha va junto a la lista: hay una ruta menos.
+          while (find.text('Menú').evaluate().isEmpty) {
+            await _regresar(tester);
+          }
           await _tocar(tester, 'Citas');
           await tester.scrollUntilVisible(
             find.text('PRÓXIMAS'),

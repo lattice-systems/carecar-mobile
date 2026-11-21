@@ -10,9 +10,10 @@ import '../widgets/formato.dart';
 import '../widgets/movimiento.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
+import '../widgets/pantalla.dart';
 import 'pantalla_detalle_vehiculo.dart';
 
-class PantallaVehiculos extends StatelessWidget {
+class PantallaVehiculos extends StatefulWidget {
   const PantallaVehiculos({
     required this.api,
     required this.alCerrarSesion,
@@ -22,15 +23,25 @@ class PantallaVehiculos extends StatelessWidget {
   final VoidCallback alCerrarSesion;
 
   @override
+  State<PantallaVehiculos> createState() => _PantallaVehiculosState();
+}
+
+class _PantallaVehiculosState extends State<PantallaVehiculos> {
+  final _recargador = Recargador();
+
+  /// En pantalla amplia, el vehiculo cuya ficha se ve a la derecha.
+  int? _elegidoId;
+
+  @override
   Widget build(BuildContext context) {
-    final recargador = Recargador();
+    final amplia = Pantalla.de(context) == Pantalla.amplio;
     return PaginaCareCar(
       titulo: 'Mis vehículos',
-      alCerrarSesion: alCerrarSesion,
-      alRefrescar: recargador.recargar,
+      alCerrarSesion: widget.alCerrarSesion,
+      alRefrescar: _recargador.recargar,
       contenido: CargaDatos<List<Vehiculo>>(
-        recargador: recargador,
-        cargar: api.misVehiculos,
+        recargador: _recargador,
+        cargar: widget.api.misVehiculos,
         mensajeCarga: 'Cargando vehículos…',
         mensajeError: 'No se pudieron cargar tus vehículos',
         construir: (vehiculos) => vehiculos.isEmpty
@@ -38,33 +49,82 @@ class PantallaVehiculos extends StatelessWidget {
                 titulo: 'No tienes vehículos asociados',
                 detalle: 'Contacta a tu agencia para revisar tus vehículos.',
               )
-            : Column(
-                children: [
-                  for (final (i, vehiculo) in vehiculos.indexed)
-                    Padding(
-                          padding: const EdgeInsets.only(
-                            bottom: TemaCareCar.espacioCampos,
-                          ),
-                          child: TarjetaVehiculo(
-                            vehiculo: vehiculo,
-                            alPulsar: () => abrirPantalla(
-                              context,
-                              PantallaDetalleVehiculo(
-                                vehiculo: vehiculo,
-                                api: api,
-                                alCerrarSesion: alCerrarSesion,
-                              ),
-                            ),
-                          ),
-                        )
-                        .animate(delay: (80 * i).ms)
-                        .fadeIn(duration: 350.ms)
-                        .slideY(begin: 0.12, curve: Curves.easeOutCubic),
+            : amplia
+            ? _maestroDetalle(vehiculos)
+            : RejillaAdaptable(
+                maxColumnas: 2,
+                hijos: [
+                  for (final (i, v) in vehiculos.indexed)
+                    _animar(i, _tarjeta(v, () => _abrir(v))),
                 ],
               ),
       ),
     );
   }
+
+  /// Tablet horizontal o escritorio: lista a la izquierda, ficha a la derecha.
+  Widget _maestroDetalle(List<Vehiculo> vehiculos) {
+    final elegido = vehiculos.firstWhere(
+      (v) => v.id == _elegidoId,
+      orElse: () => vehiculos.first,
+    );
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 380,
+          child: Column(
+            children: [
+              for (final (i, v) in vehiculos.indexed)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: TemaCareCar.espacioCampos,
+                  ),
+                  child: _animar(
+                    i,
+                    _tarjeta(
+                      v,
+                      () => setState(() => _elegidoId = v.id),
+                      elegido: v.id == elegido.id,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(width: TemaCareCar.espacioSecciones),
+        Expanded(
+          child: AnimatedSwitcher(
+            duration: 300.ms,
+            switchInCurve: Curves.easeOutCubic,
+            child: FichaVehiculo(
+              key: ValueKey(elegido.id),
+              vehiculo: elegido,
+              api: widget.api,
+              alCerrarSesion: widget.alCerrarSesion,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _tarjeta(Vehiculo v, VoidCallback alPulsar, {bool elegido = false}) =>
+      TarjetaVehiculo(vehiculo: v, alPulsar: alPulsar, elegido: elegido);
+
+  Widget _animar(int i, Widget hijo) => hijo
+      .animate(delay: (80 * i).ms)
+      .fadeIn(duration: 350.ms)
+      .slideY(begin: 0.12, curve: Curves.easeOutCubic);
+
+  void _abrir(Vehiculo v) => abrirPantalla(
+    context,
+    PantallaDetalleVehiculo(
+      vehiculo: v,
+      api: widget.api,
+      alCerrarSesion: widget.alCerrarSesion,
+    ),
+  );
 }
 
 /// Tarjeta de un vehiculo con sus placas y su kilometraje.
@@ -72,11 +132,15 @@ class TarjetaVehiculo extends StatelessWidget {
   const TarjetaVehiculo({
     required this.vehiculo,
     required this.alPulsar,
+    this.elegido = false,
     super.key,
   });
 
   final Vehiculo vehiculo;
   final VoidCallback alPulsar;
+
+  /// Resaltada cuando su ficha se ve al lado (maestro-detalle).
+  final bool elegido;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +153,10 @@ class TarjetaVehiculo extends StatelessWidget {
         color: TemaCareCar.tarjeta,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(EstiloMenu.radio),
-          side: const BorderSide(color: TemaCareCar.borde),
+          side: BorderSide(
+            color: elegido ? TemaCareCar.azulAgencia : TemaCareCar.borde,
+            width: elegido ? 2 : 1,
+          ),
         ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
