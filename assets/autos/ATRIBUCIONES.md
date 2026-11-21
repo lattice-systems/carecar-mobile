@@ -80,3 +80,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **altima_2** — 2019 Nissan Altima rear 12.24.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Altima_rear_12.24.18.jpg
 - **frontier_1** — 2022 Nissan Frontier (D41) Pro-X.jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41)_Pro-X.jpg
 - **frontier_2** — 2022 Nissan Frontier (D41, red).jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41,_red).jpg
+- **march_1** — 2020 Nissan Micra Acenta 1.0 IG-T Xtronic rear.jpg — JoachimKohler-HB — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Micra_Acenta_1.0_IG-T_Xtronic_rear.jpg
+- **march_2** — Nissan micra back.jpg — Alexander Migl — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:Nissan_micra_back.jpg
