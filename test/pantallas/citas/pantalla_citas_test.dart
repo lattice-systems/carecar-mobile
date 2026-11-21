@@ -177,6 +177,8 @@ void main() {
         franja(10, manana, '09:00'),
         franja(11, manana, '11:00'),
       ];
+      // pdfx no corre en pruebas: el ticket falla y el visor muestra el error.
+      api.alPedirTicketDeCita = (_) async => throw const SinConexion();
       api.alAgendar = (nueva) async {
         final c = Cita(
           id: 50,
@@ -201,6 +203,11 @@ void main() {
       await tester.tap(find.byKey(PantallaAgendarCita.franja(11)));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(PantallaAgendarCita.botonConfirmar));
+      await tester.pumpAndSettle();
+
+      // Al confirmar se abre el ticket de la cita nueva; se cierra el visor.
+      expect(api.ticketsDeCitaPedidos, [50]);
+      tester.state<NavigatorState>(find.byType(Navigator).first).pop();
       await tester.pumpAndSettle();
 
       expect(api.citasAgendadas, hasLength(1));
