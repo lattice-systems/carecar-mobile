@@ -7,6 +7,8 @@ import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'notificaciones/plugin_notificaciones_local.dart';
+import 'notificaciones/servicio_notificaciones.dart';
 import 'pantallas/pantalla_arranque.dart';
 import 'pantallas/pantalla_cambiar_contrasena.dart';
 import 'pantallas/pantalla_inicio.dart';
@@ -19,6 +21,14 @@ import 'tema/tema_carecar.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  // Recordatorios de citas con notificaciones locales (sin servidor).
+  late final ServicioNotificaciones servicio;
+  servicio = ServicioNotificaciones(
+    PluginNotificacionesLocal(alTocar: () => servicio.notificarToque()),
+    prefs,
+  );
+  Notificaciones.actual = servicio;
+  await servicio.iniciar();
   runApp(AppCareCar(prefs: prefs));
 }
 
