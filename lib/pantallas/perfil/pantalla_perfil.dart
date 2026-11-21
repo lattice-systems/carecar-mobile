@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../api/carecar_api.dart';
@@ -12,6 +12,7 @@ import '../../config/agencia.dart';
 import '../../config/version_app.dart';
 import '../../tema/tema_carecar.dart';
 import '../pantalla_cambiar_contrasena.dart';
+import '../../widgets/dialogos.dart';
 import '../../widgets/pagina_carecar.dart';
 
 /// APP-2.2 · Perfil del cliente: sus datos, la cuenta, ayuda y cerrar sesion.
@@ -80,8 +81,10 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
           obligatorio: false,
           alCambiar: () {
             Navigator.of(contexto).pop();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Tu contraseña quedó actualizada.')),
+            mostrarToast(
+              context,
+              'Tu contraseña quedó actualizada.',
+              exito: true,
             );
           },
         ),
@@ -90,60 +93,44 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   }
 
   void _contactar() {
-    showModalBottomSheet<void>(
+    showShadSheet<void>(
       context: context,
-      showDragHandle: true,
-      backgroundColor: TemaCareCar.tarjeta,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (_) => const _HojaContacto(),
+      side: ShadSheetSide.bottom,
+      builder: (_) => const ShadSheet(child: _HojaContacto()),
     );
   }
 
   void _privacidad() {
-    showDialog<void>(
+    showShadDialog<void>(
       context: context,
-      builder: (contexto) => AlertDialog(
+      builder: (contexto) => ShadDialog(
         title: const Text('Aviso de privacidad'),
-        content: const SingleChildScrollView(
-          child: Text(Agencia.avisoPrivacidad),
-        ),
         actions: [
-          TextButton(
+          ShadButton(
             onPressed: () => Navigator.of(contexto).pop(),
             child: const Text('Entendido'),
           ),
         ],
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: SingleChildScrollView(child: Text(Agencia.avisoPrivacidad)),
+        ),
       ),
     );
   }
 
   Future<void> _confirmarCierre() async {
-    final confirmado = await showDialog<bool>(
-      context: context,
-      builder: (contexto) => AlertDialog(
-        icon: const Icon(Icons.logout, color: TemaCareCar.peligro),
-        title: const Text('¿Cerrar sesión?'),
-        content: const Text(
+    final confirmado = await confirmarAccion(
+      context,
+      titulo: '¿Cerrar sesión?',
+      descripcion:
           'Tendrás que escribir tu correo y contraseña para volver a entrar.',
-        ),
-        actions: [
-          TextButton(
-            key: PantallaPerfil.botonCancelarCierre,
-            onPressed: () => Navigator.of(contexto).pop(false),
-            child: const Text('Cancelar'),
-          ),
-          FilledButton(
-            key: PantallaPerfil.botonConfirmarCierre,
-            style: FilledButton.styleFrom(backgroundColor: TemaCareCar.peligro),
-            onPressed: () => Navigator.of(contexto).pop(true),
-            child: const Text('Cerrar sesión'),
-          ),
-        ],
-      ),
+      textoConfirmar: 'Cerrar sesión',
+      destructiva: true,
+      llaveConfirmar: PantallaPerfil.botonConfirmarCierre,
+      llaveCancelar: PantallaPerfil.botonCancelarCierre,
     );
-    if (confirmado == true) await widget.alCerrarSesion();
+    if (confirmado) await widget.alCerrarSesion();
   }
 
   @override
@@ -362,15 +349,13 @@ class _EncabezadoError extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          FilledButton.icon(
+          ShadButton(
             key: PantallaPerfil.botonReintentar,
-            style: FilledButton.styleFrom(
-              backgroundColor: TemaCareCar.turquesa,
-              foregroundColor: TemaCareCar.azulProfundo,
-            ),
+            backgroundColor: TemaCareCar.turquesa,
+            foregroundColor: TemaCareCar.azulProfundo,
             onPressed: alReintentar,
-            icon: const Icon(Icons.refresh),
-            label: const Text('Reintentar'),
+            leading: const Icon(Icons.refresh),
+            child: const Text('Reintentar'),
           ),
         ],
       ).animate().fadeIn().shake(hz: 3, offset: const Offset(4, 0)),
@@ -611,7 +596,6 @@ class _HojaContacto extends StatelessWidget {
 
 /// Abre el marcador o el correo; avisa si el telefono no puede hacerlo.
 Future<void> _abrir(BuildContext context, Uri uri) async {
-  final mensajero = ScaffoldMessenger.of(context);
   var abierto = false;
   try {
     abierto = await launchUrl(uri);
@@ -619,9 +603,13 @@ Future<void> _abrir(BuildContext context, Uri uri) async {
     abierto = false;
   }
   if (!abierto) {
-    mensajero.showSnackBar(
-      const SnackBar(content: Text('No se pudo abrir en este dispositivo.')),
-    );
+    if (context.mounted) {
+      mostrarToast(
+        context,
+        'No se pudo abrir en este dispositivo.',
+        error: true,
+      );
+    }
   }
 }
 
