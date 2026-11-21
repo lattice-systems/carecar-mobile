@@ -238,7 +238,8 @@ void main() {
     await _tocar(tester, 'Ajustes');
     expect(find.text('María Robles'), findsOneWidget);
     expect(find.text('cliente1@example.com'), findsOneWidget);
-    expect(api.llamadasAPerfil, 1);
+    // Una del saludo del menu y otra de Ajustes.
+    expect(api.llamadasAPerfil, 2);
     await _tocar(tester, 'Regresar');
     expect(find.text('Menú'), findsOneWidget);
   });
