@@ -52,7 +52,6 @@ dependencies:
   google_fonts: ^6.3.2
 
   # Animaciones y esqueletos de carga de las pantallas de citas (APP-3.3).
-  flutter_animate: ^4.5.2
   skeletonizer: ^3.0.0
 
 dev_dependencies:
