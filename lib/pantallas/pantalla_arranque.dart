@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../tema/tema_carecar.dart';
+import '../widgets/logo_carecar.dart';
 
 /// Cortina de arranque: telon con la marca que se abre sobre la pantalla
 /// siguiente cuando termina la restauracion de sesion.
@@ -187,54 +188,10 @@ class _Marca extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          key: CortinaArranque.logo,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.18),
-              width: 1.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: TemaCareCar.turquesa.withValues(alpha: 0.35),
-                blurRadius: 40,
-                spreadRadius: 2,
-              ),
-              const BoxShadow(
-                color: Color(0x66000000),
-                blurRadius: 24,
-                offset: Offset(0, 12),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
-            child: Image.asset(
-              'assets/marca/agencia360-icono.png',
-              width: 112,
-              height: 112,
-              semanticLabel: 'CareCar',
-            ),
-          ),
-        ),
-        const SizedBox(height: 28),
-        const Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(text: 'Care'),
-              TextSpan(
-                text: 'Car',
-                style: TextStyle(color: TemaCareCar.turquesa),
-              ),
-            ],
-          ),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 44,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -1,
-          ),
+        const LogoCareCar(
+          tamano: 112,
+          vertical: true,
+          llaveIcono: CortinaArranque.logo,
         ),
         const SizedBox(height: 6),
         Text(
