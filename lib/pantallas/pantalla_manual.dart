@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pdfx/pdfx.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
+import '../manuales/guardar_pdf.dart';
 import '../manuales/servicio_manuales.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/movimiento.dart';
 import '../widgets/aviso.dart';
+import '../widgets/dialogos.dart';
 import '../widgets/pagina_carecar.dart';
 
 class PantallaManual extends StatefulWidget {
@@ -119,6 +121,18 @@ class _PantallaManualState extends State<PantallaManual> {
     ),
   );
 
+  Future<void> _descargar(DocumentoManual documento) async {
+    try {
+      final r = await guardarPdf(documento.bytes, documento.titulo);
+      if (!mounted || r == ResultadoGuardado.cancelado) return;
+      mostrarToast(context, 'Manual guardado', exito: true);
+    } catch (_) {
+      if (mounted) {
+        mostrarToast(context, 'No se pudo guardar el PDF.', error: true);
+      }
+    }
+  }
+
   Widget _visor(DocumentoManual documento) {
     if (_falloPdf != null) return _error(_falloPdf!);
     _pdf ??= PdfControllerPinch(
@@ -152,26 +166,33 @@ class _PantallaManualState extends State<PantallaManual> {
         ),
         Padding(
           padding: const EdgeInsets.all(12),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              gradient: TemaCareCar.degradadoMarca,
-              borderRadius: BorderRadius.circular(99),
-            ),
-            child: Text(
-              _total == 0
-                  ? 'Cargando PDF…'
-                  : 'Página $_pagina de $_total · Pellizca para ampliar',
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
+          child: Row(
+            children: [
+              Expanded(child: _contador()),
+              const SizedBox(width: 8),
+              ShadButton(
+                leading: const Icon(Icons.download),
+                onPressed: () => _descargar(documento),
+                child: const Text('Descargar PDF'),
               ),
-            ),
-          ).animate().fadeIn().slideY(begin: 0.5),
+            ],
+          ),
         ),
       ],
     );
   }
+
+  Widget _contador() => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    decoration: BoxDecoration(
+      gradient: TemaCareCar.degradadoMarca,
+      borderRadius: BorderRadius.circular(99),
+    ),
+    child: Text(
+      _total == 0 ? 'Cargando PDF…' : 'Página $_pagina de $_total',
+      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+    ),
+  ).animate().fadeIn().slideY(begin: 0.5);
 
   @override
   Widget build(BuildContext context) => PaginaCareCar(
