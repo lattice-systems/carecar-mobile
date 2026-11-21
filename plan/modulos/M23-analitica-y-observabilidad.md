@@ -3,7 +3,7 @@
 | Campo | Valor |
 | --- | --- |
 | Hito | H2 (errores) → H7 (tablero de objetivos) |
-| Dueño | Daniel |
+| Dueño | Haziel |
 | Revisa | Jael |
 | Ficha técnica | No (transversal) |
 | Estado | Listo para historias |

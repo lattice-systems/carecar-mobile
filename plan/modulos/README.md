@@ -19,7 +19,7 @@ Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias 
 | [M09](M09-documentos-y-vencimientos.md) | Documentos y vencimientos | — | H3 | Haziel | Jael |
 | [M10](M10-garantia-y-campanas.md) | Garantía y campañas de seguridad | — | H3 | Ricardo | Haziel |
 | [M11](M11-asistencia-en-camino.md) | Asistencia en camino (SOS) | — | H6 | Juan Pablo | Jael |
-| [M12](M12-lealtad.md) | Lealtad y recompensas | — | H4 | Cristian | Haziel |
+| [M12](M12-lealtad.md) | Lealtad y recompensas | — | H4 | Ricardo | Haziel |
 | [M13](M13-promociones.md) | Promociones y novedades | — | H4 | Haziel | Cristian |
 | [M14](M14-tienda.md) | Tienda de refacciones y accesorios | — | H5 | Cristian | Ricardo |
 | [M15](M15-encuestas-nps.md) | Encuestas y NPS | — | H4 | Haziel | Juan Pablo |
@@ -30,9 +30,9 @@ Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias 
 | [M20](M20-accesibilidad-e-idiomas.md) | Accesibilidad e idiomas | — | H2 → H7 | Cristian | Haziel |
 | [M21](M21-sin-conexion.md) | Sin conexión y sincronización | — | H2 → H7 | Jael | Juan Pablo |
 | [M22](M22-seguridad-y-privacidad.md) | Seguridad y privacidad (ARCO) | — | H2 → H7 | Daniel | Ricardo |
-| [M23](M23-analitica-y-observabilidad.md) | Analítica y observabilidad | — | H2 → H7 | Daniel | Jael |
+| [M23](M23-analitica-y-observabilidad.md) | Analítica y observabilidad | — | H2 → H7 | Haziel | Jael |
 | [M24](M24-asistente-carecar.md) | Asistente CareCar (IA) | — | H6 | Daniel | Cristian |
-| [M25](M25-widgets-y-wallet.md) | Widgets, Wallet y accesos rápidos | — | H6 | Jael | Cristian |
+| [M25](M25-widgets-y-wallet.md) | Widgets, Wallet y accesos rápidos | — | H6 | Juan Pablo | Cristian |
 | [M26](M26-valuacion.md) | Valuación y toma a cuenta avanzada | — | H5 | Cristian | Ricardo |
 | [M27](M27-ayuda-y-sucursales.md) | Centro de ayuda y sucursales | — | H4 | Haziel | Juan Pablo |
 
