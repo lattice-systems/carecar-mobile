@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../widgets/dialogos.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../api/carecar_api.dart';
@@ -316,16 +316,19 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
     final ultima = _ultimaExtra ?? datos.pagina;
     if (ultima.hayMas) {
       yield Center(
-        child: ShadButton.outline(
+        child: OutlinedButton.icon(
           key: PantallaMisCitas.botonCargarMas,
           onPressed: _cargandoMas ? null : () => _cargarMas(ultima),
-          leading: _cargandoMas
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(0, TemaCareCar.altoMinimoToque),
+          ),
+          icon: _cargandoMas
               ? const SizedBox.square(
                   dimension: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.expand_more),
-          child: Text(_cargandoMas ? 'Cargando…' : 'Cargar más'),
+          label: Text(_cargandoMas ? 'Cargando…' : 'Cargar más'),
         ),
       );
     }
@@ -558,16 +561,27 @@ class TarjetaCita extends StatelessWidget {
             const SizedBox(height: 12),
             Align(
               alignment: Alignment.centerRight,
-              child: ShadButton.destructive(
+              child: OutlinedButton.icon(
                 key: PantallaMisCitas.botonCancelar(c.id),
                 onPressed: cancelando ? null : alCancelar,
-                leading: cancelando
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: TemaCareCar.peligro,
+                  side: const BorderSide(color: TemaCareCar.peligroFondo),
+                  backgroundColor: TemaCareCar.peligroFondo.withValues(
+                    alpha: 0.4,
+                  ),
+                  minimumSize: const Size(0, 40),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                icon: cancelando
                     ? const SizedBox.square(
                         dimension: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.close, size: 18),
-                child: Text(cancelando ? 'Cancelando…' : 'Cancelar cita'),
+                label: Text(cancelando ? 'Cancelando…' : 'Cancelar cita'),
               ),
             ),
           ],
@@ -665,10 +679,12 @@ class ChipEstadoCita extends StatelessWidget {
         Icons.help_outline,
       ),
     };
-    return ShadBadge(
-      backgroundColor: fondo,
-      hoverBackgroundColor: fondo,
-      foregroundColor: color,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: fondo,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -771,11 +787,11 @@ class _Error extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          ShadButton(
+          FilledButton.icon(
             key: PantallaMisCitas.botonReintentar,
             onPressed: alReintentar,
-            leading: const Icon(Icons.refresh),
-            child: const Text('Reintentar'),
+            icon: const Icon(Icons.refresh),
+            label: const Text('Reintentar'),
           ),
         ],
       ).animate().fadeIn().shake(hz: 3, offset: const Offset(4, 0)),

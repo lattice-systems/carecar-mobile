@@ -162,7 +162,7 @@ void main() {
       await tester.pump();
 
       expect(find.text('Guardando…'), findsOneWidget);
-      final boton = tester.widget<FilledButton>(
+      final boton = tester.widget<ShadButton>(
         find.byKey(PantallaCambiarContrasena.botonGuardar),
       );
       expect(boton.onPressed, isNull);
