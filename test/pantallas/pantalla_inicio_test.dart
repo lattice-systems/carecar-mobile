@@ -231,7 +231,7 @@ void main() {
     final api = ApiFalsa();
     await _montar(tester, api);
     await _tocar(tester, 'Catálogo');
-    expect(find.text('PRÓXIMAMENTE'), findsOneWidget);
+    expect(find.text('Aún no hay modelos en el catálogo'), findsOneWidget);
     await _tocar(tester, 'Regresar');
     await _tocar(tester, 'Ajustes');
     expect(find.text('María Robles'), findsOneWidget);

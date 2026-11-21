@@ -270,6 +270,7 @@ class ApiFalsa implements CarecarApi {
   }
 
   @override
-  Future<List<ModeloCatalogo>> catalogo() =>
-      throw UnimplementedError('APP-4.1');
+  Future<List<ModeloCatalogo>> catalogo() async => modelosCatalogo;
+
+  List<ModeloCatalogo> modelosCatalogo = const [];
 }

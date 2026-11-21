@@ -4,21 +4,15 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../api/modelos/modelos.dart';
+import '../../config/agencia.dart';
+import '../../config/version_app.dart';
 import '../../tema/tema_carecar.dart';
 import '../pantalla_cambiar_contrasena.dart';
 import '../../widgets/pagina_carecar.dart';
-
-/// Version que se muestra en «Acerca de».
-///
-/// Se escribe a mano para no agregar `package_info_plus`: hay que mantenerla
-/// igual que `version` en `pubspec.yaml` al publicar.
-const versionDeLaApp = '1.0.0';
-
-// TODO(agencia): reemplazar por los datos reales de contacto de la agencia.
-const _telefonoAgencia = '+52 000 000 0000';
-// TODO(agencia): reemplazar por el correo real de atencion a clientes.
-const _correoAgencia = 'contacto@agencia.example.com';
 
 /// APP-2.2 · Perfil del cliente: sus datos, la cuenta, ayuda y cerrar sesion.
 class PantallaPerfil extends StatefulWidget {
@@ -48,6 +42,7 @@ class PantallaPerfil extends StatefulWidget {
 
 class _PantallaPerfilState extends State<PantallaPerfil> {
   late Future<Perfil> _perfil;
+  String _version = '';
 
   /// Lo que dibuja el esqueleto mientras carga.
   static const _deMentira = Perfil(
@@ -60,6 +55,9 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   void initState() {
     super.initState();
     _perfil = widget.api.miPerfil();
+    leerVersionApp().then((v) {
+      if (mounted) setState(() => _version = v);
+    });
   }
 
   Future<void> _recargar() async {
@@ -104,14 +102,12 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   }
 
   void _privacidad() {
-    // TODO(agencia): mostrar el aviso de privacidad real cuando exista.
     showDialog<void>(
       context: context,
       builder: (contexto) => AlertDialog(
         title: const Text('Aviso de privacidad'),
-        content: const Text(
-          'La agencia publicará aquí su aviso de privacidad. Tus datos solo '
-          'se usan para darte servicio a ti y a tus vehículos.',
+        content: const SingleChildScrollView(
+          child: Text(Agencia.avisoPrivacidad),
         ),
         actions: [
           TextButton(
@@ -193,13 +189,13 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                 ),
               ],
             ),
-            const _Seccion(
+            _Seccion(
               titulo: 'Acerca de',
               opciones: [
                 _Opcion(
                   icono: Icons.info_outline,
                   titulo: 'CareCar',
-                  subtitulo: 'Versión $versionDeLaApp',
+                  subtitulo: _version.isEmpty ? null : 'Versión $_version',
                 ),
               ],
             ),
@@ -576,23 +572,55 @@ class _HojaContacto extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 18),
-            const _Seccion(
+            _Seccion(
               opciones: [
                 _Opcion(
                   icono: Icons.phone_outlined,
                   titulo: 'Teléfono',
-                  subtitulo: _telefonoAgencia,
+                  subtitulo: Agencia.telefono,
+                  alTocar: () => _abrir(
+                    context,
+                    Uri(
+                      scheme: 'tel',
+                      path: Agencia.telefono.replaceAll(' ', ''),
+                    ),
+                  ),
                 ),
                 _Opcion(
                   icono: Icons.alternate_email,
                   titulo: 'Correo',
-                  subtitulo: _correoAgencia,
+                  subtitulo: Agencia.correo,
+                  alTocar: () => _abrir(
+                    context,
+                    Uri(scheme: 'mailto', path: Agencia.correo),
+                  ),
+                ),
+                const _Opcion(
+                  icono: Icons.place_outlined,
+                  titulo: 'Dirección',
+                  subtitulo: Agencia.direccion,
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Abre el marcador o el correo; avisa si el telefono no puede hacerlo.
+Future<void> _abrir(BuildContext context, Uri uri) async {
+  final mensajero = ScaffoldMessenger.of(context);
+  var abierto = false;
+  try {
+    abierto = await launchUrl(uri);
+  } on Object {
+    abierto = false;
+  }
+  if (!abierto) {
+    mensajero.showSnackBar(
+      const SnackBar(content: Text('No se pudo abrir en este dispositivo.')),
     );
   }
 }
