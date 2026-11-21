@@ -184,6 +184,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
   Widget build(BuildContext context) {
     return PaginaCareCar(
       titulo: 'Agendar cita',
+      anchoMaximo: Pantalla.anchoLectura,
       expandir: true,
       alCerrarSesion: widget.alCerrarSesion,
       contenido: Column(
