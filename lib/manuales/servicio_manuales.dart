@@ -1,5 +1,8 @@
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
+import '../api/carecar_api.dart';
+import '../api/excepciones.dart';
 import '../api/modelos/vehiculo.dart';
 
 class FalloManual implements Exception {
@@ -29,10 +32,10 @@ abstract final class ResolverManual {
 
   static String identificar(Vehiculo vehiculo) {
     final marca = vehiculo.marca?.trim();
-    final tipo = vehiculo.tipo?.trim();
+    // El backend real no manda `tipo`; su `modelo` es el mismo dato.
+    final tipo = (vehiculo.tipo ?? vehiculo.modelo).trim();
     if (marca == null ||
         marca.isEmpty ||
-        tipo == null ||
         tipo.isEmpty ||
         vehiculo.anio < 1886 ||
         [marca, tipo].any((v) => v.contains(RegExp(r'[/\\.]')))) {
@@ -71,9 +74,56 @@ class ManualesLocales implements ServicioManuales {
     final datos = await _bundle.load(ruta);
     return DocumentoManual(
       titulo:
-          '${vehiculo.marca!.trim()} ${vehiculo.tipo!.trim()} ${vehiculo.anio}',
+          '${vehiculo.marca!.trim()} ${(vehiculo.tipo ?? vehiculo.modelo).trim()} ${vehiculo.anio}',
       identificador: ruta,
       bytes: datos.buffer.asUint8List(datos.offsetInBytes, datos.lengthInBytes),
     );
+  }
+}
+
+/// Primero el manual que publica la agencia (`GET /vehiculos/{id}/manuales`,
+/// URL firmada y temporal); si no hay, el PDF incluido en la app.
+///
+/// Asi el cliente ve el manual exacto de su unidad aunque la app no lo traiga,
+/// y sin red sigue viendo los que si vienen incluidos.
+class ManualesDeLaAgencia implements ServicioManuales {
+  ManualesDeLaAgencia({
+    required this.api,
+    ServicioManuales? respaldo,
+    http.Client? cliente,
+  }) : _respaldo = respaldo ?? ManualesLocales(),
+       _cliente = cliente ?? http.Client();
+
+  final CarecarApi api;
+  final ServicioManuales _respaldo;
+  final http.Client _cliente;
+
+  static const _limite = Duration(seconds: 30);
+
+  @override
+  Future<DocumentoManual> cargar(Vehiculo vehiculo) async {
+    try {
+      final manuales = await api.manualesDe(vehiculo.id);
+      if (manuales.isNotEmpty) {
+        final manual = manuales.first;
+        final respuesta = await _cliente
+            .get(Uri.parse(manual.url))
+            .timeout(_limite);
+        if (respuesta.statusCode == 200 && respuesta.bodyBytes.isNotEmpty) {
+          return DocumentoManual(
+            titulo:
+                manual.titulo ??
+                '${manual.marca ?? ''} ${manual.modelo} ${manual.anio}'.trim(),
+            identificador: 'agencia:${manual.id}',
+            bytes: respuesta.bodyBytes,
+          );
+        }
+      }
+    } on ExcepcionApi {
+      // Sin respuesta de la agencia se intenta con el incluido en la app.
+    } on Exception {
+      // Igual con un fallo de red al bajar el PDF.
+    }
+    return _respaldo.cargar(vehiculo);
   }
 }

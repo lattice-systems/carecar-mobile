@@ -9,6 +9,8 @@ class Manual {
     required this.modelo,
     required this.anio,
     required this.url,
+    this.marca,
+    this.titulo,
   });
 
   factory Manual.fromJson(Map<String, Object?> json) => Manual(
@@ -16,6 +18,9 @@ class Manual {
     modelo: leerTexto(json['modelo'], 'modelo'),
     anio: leerEntero(json['anio'], 'anio'),
     url: leerTexto(json['url'], 'url'),
+    // El backend los manda aunque el contrato v1 no los nombra.
+    marca: json['marca'] as String?,
+    titulo: json['titulo'] as String?,
   );
 
   final int id;
@@ -25,4 +30,9 @@ class Manual {
   /// Enlace para descargar el PDF. El contrato no dice si pide token:
   /// pregunta RIC-17.
   final String url;
+
+  final String? marca;
+
+  /// Nombre del documento, por ejemplo «Manual de propietario».
+  final String? titulo;
 }

@@ -46,6 +46,7 @@ class PantallaVehiculos extends StatelessWidget {
                             context,
                             PantallaDetalleVehiculo(
                               vehiculo: vehiculo,
+                              api: api,
                               alCerrarSesion: alCerrarSesion,
                             ),
                           ),

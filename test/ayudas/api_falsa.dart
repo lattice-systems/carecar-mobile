@@ -163,9 +163,12 @@ class ApiFalsa implements CarecarApi {
   Future<Perfil> Function()? alPedirPerfil;
   int llamadasAPerfil = 0;
 
+  /// Que responde `GET /vehiculos/{id}/manuales`. Si es nulo, una lista vacia.
+  Future<List<Manual>> Function(int)? alPedirManuales;
+
   @override
   Future<List<Manual>> manualesDe(int vehiculoId) =>
-      throw UnimplementedError('ADM-1');
+      alPedirManuales?.call(vehiculoId) ?? Future.value(const []);
 
   @override
   Future<List<Servicio>> serviciosDe(int vehiculoId) =>

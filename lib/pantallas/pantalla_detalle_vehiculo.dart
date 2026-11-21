@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/dato_lectura.dart';
@@ -13,9 +14,11 @@ class PantallaDetalleVehiculo extends StatelessWidget {
   const PantallaDetalleVehiculo({
     required this.vehiculo,
     required this.alCerrarSesion,
+    this.api,
     super.key,
   });
   final Vehiculo vehiculo;
+  final CarecarApi? api;
   final VoidCallback alCerrarSesion;
 
   @override
@@ -104,6 +107,7 @@ class PantallaDetalleVehiculo extends StatelessWidget {
                   opcion.$2 == IconoMenu.manual
                       ? PantallaManual(
                           vehiculo: vehiculo,
+                          api: api,
                           alCerrarSesion: alCerrarSesion,
                         )
                       : PantallaProximamente(
