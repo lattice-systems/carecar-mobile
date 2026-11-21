@@ -12,6 +12,14 @@
 
 Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos ARCO) y OWASP MASVS L1. Mueve O8.
 
+## Datos
+
+| Tabla | Campos | Notas |
+| --- | --- | --- |
+| `aviso_privacidad` ➕ | id, version, texto, vigente_desde | Versionado; nunca se edita uno publicado. |
+| `aceptacion_aviso` ➕ | id, cuenta_app_id, aviso_privacidad_id, aceptado_en | Una por versión aceptada. |
+| `solicitud_arco` ➕ | id, cliente_id, tipo (acceso/rectificacion/cancelacion/oposicion), estado, archivo_url, creada_en, resuelta_en | |
+
 ## Historias
 
 | ID | Historia | Criterios de aceptación | B | Depende de |

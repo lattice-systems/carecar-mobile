@@ -27,6 +27,7 @@ Vender accesorios y refacciones originales compatibles con el auto del cliente, 
 | `compatibilidad_refaccion` ➕ | id, refaccion_id, modelo, anio_desde, anio_hasta | |
 | `pedido_app` ➕ | id, cliente_id, estado, entrega (mostrador/cita), cita_id, total | Aparta existencia con movimiento de inventario (bloqueo de fila). |
 | `pedido_app_renglon` ➕ | id, pedido_app_id, refaccion_id, cantidad, precio | |
+| `movimiento_inventario` (existe) | — | Cada apartado, venta o liberación es un movimiento; la existencia nunca se edita directo. |
 
 ## Historias
 

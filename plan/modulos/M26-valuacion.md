@@ -12,6 +12,12 @@
 
 Pasar de la estimación no vinculante a una **valuación formal**: el cliente sube fotos guiadas, agenda inspección y recibe una oferta de la agencia. Mueve O5.
 
+## Datos
+
+| Tabla | Campos | Notas |
+| --- | --- | --- |
+| `valuacion` ➕ | id, estimacion_toma_cuenta_id, cliente_id, fotos (json), cita_id, oferta, vigencia_hasta, estado | La oferta sí es formal (a diferencia de la estimación de M03). |
+
 ## Historias
 
 | ID | Historia | Criterios de aceptación | B | Depende de |

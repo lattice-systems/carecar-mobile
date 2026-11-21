@@ -25,6 +25,7 @@ Resolver dudas sin llamar y saber dónde y cuándo está la agencia. Reemplaza l
 | --- | --- | --- |
 | `sucursal` ➕ | id, nombre, direccion, lat, lng, telefono, correo, horarios (json) | |
 | `pregunta_frecuente` ➕ | id, tema, pregunta, respuesta, orden, activa | Editable por la agencia. |
+| `reporte_app` ➕ | id, cuenta_app_id, descripcion, version_app, sistema, dispositivo, creado_en | Sin datos personales extra. |
 
 ## Historias
 
