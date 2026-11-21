@@ -5,6 +5,7 @@ import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
+import 'citas/pantalla_mis_citas.dart';
 import 'pantalla_ajustes.dart';
 import 'pantalla_proximamente.dart';
 import 'pantalla_vehiculos.dart';
@@ -60,6 +61,17 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 alPulsar: () => abrirPantalla(
                   context,
                   PantallaVehiculos(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
+                  ),
+                ),
+              ),
+              TarjetaMenu(
+                titulo: 'Citas',
+                imagen: const DibujoMenu(IconoMenu.cita),
+                alPulsar: () => abrirPantalla(
+                  context,
+                  PantallaMisCitas(
                     api: widget.api,
                     alCerrarSesion: _cerrarSesion,
                   ),
