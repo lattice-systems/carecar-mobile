@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/api_config.dart';
 import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
+import 'cache/carecar_api_con_cache.dart';
 import 'pantallas/pantalla_cambiar_contrasena.dart';
 import 'pantallas/pantalla_inicio.dart';
 import 'pantallas/pantalla_login.dart';
@@ -12,8 +14,10 @@ import 'sesion/almacen_seguro.dart';
 import 'sesion/controlador_sesion.dart';
 import 'tema/tema_carecar.dart';
 
-void main() {
-  runApp(const AppCareCar());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  runApp(AppCareCar(prefs: prefs));
 }
 
 /// Arma la app y conecta las piezas.
@@ -26,7 +30,10 @@ void main() {
 /// esta decidida (peticion EQ-1) y para dos objetos no vale la pena una
 /// libreria.
 class AppCareCar extends StatefulWidget {
-  const AppCareCar({super.key});
+  const AppCareCar({super.key, this.prefs});
+
+  /// Si viene, las lecturas se guardan para verlas sin conexion.
+  final SharedPreferences? prefs;
 
   @override
   State<AppCareCar> createState() => _AppCareCarState();
@@ -70,7 +77,10 @@ class _AppCareCarState extends State<AppCareCar> {
         renovarSesion: () => sesion.renovar(),
       );
 
-      final api = CarecarApiHttp(cliente);
+      final prefs = widget.prefs;
+      final CarecarApi api = prefs == null
+          ? CarecarApiHttp(cliente)
+          : CarecarApiConCache(CarecarApiHttp(cliente), prefs);
       sesion = ControladorSesion(api, almacen);
 
       _cliente = cliente;

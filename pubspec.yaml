@@ -37,6 +37,7 @@ dependencies:
   http: ^1.6.0
   flutter_svg: ^2.3.0
   pdfx: 2.11.0
+  shared_preferences: ^2.5.6
 
   # Almacenamiento seguro de los dos tokens de sesion (TEC-6 T3, decision D-D).
   #
