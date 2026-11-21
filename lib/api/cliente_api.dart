@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 import 'api_config.dart';
 import 'excepciones.dart';
+import 'modelos/pagina.dart';
 import 'modelos/problema.dart';
 
 /// Transporte HTTP de la API: arma peticiones, lee JSON y traduce los codigos
@@ -127,6 +128,37 @@ class ClienteApi {
       conToken: true,
     );
     return _leerLista(respuesta, leer);
+  }
+
+  /// GET de una lista paginada (`{contenido, pagina, totalPaginas, ...}`).
+  ///
+  /// Si el servidor contesta una lista simple, se trata como pagina unica.
+  Future<Pagina<T>> obtenerPagina<T>(
+    String camino,
+    T Function(Map<String, Object?>) leer, {
+    required int pagina,
+    required int tamano,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.get(
+        config.ruta(
+          camino,
+          consulta: {'pagina': '$pagina', 'tamano': '$tamano'},
+        ),
+        headers: await _encabezados(),
+      ),
+      conToken: true,
+    );
+    final contenido = _leerLista(respuesta, leer);
+    final cuerpo = _decodificar(respuesta);
+    if (cuerpo is! Map) return Pagina(contenido: contenido);
+    final numero = cuerpo['pagina'];
+    final total = cuerpo['totalPaginas'];
+    return Pagina(
+      contenido: contenido,
+      pagina: numero is num ? numero.toInt() : pagina,
+      totalPaginas: total is num ? total.toInt() : pagina + 1,
+    );
   }
 
   /// POST que devuelve un objeto.
@@ -310,7 +342,12 @@ class ClienteApi {
   ) {
     _verificarEstado(respuesta);
 
-    final cuerpo = _decodificar(respuesta);
+    final decodificado = _decodificar(respuesta);
+    // Servicios y citas llegan paginados (`PaginaServicios`, `PaginaCitas`):
+    // se toma su `contenido`. Ver tambien [obtenerPagina].
+    final cuerpo = decodificado is Map && decodificado['contenido'] is List
+        ? decodificado['contenido']
+        : decodificado;
     if (cuerpo is! List) {
       throw RespuestaInvalida(
         'Se esperaba una lista JSON y llego ${cuerpo.runtimeType}.',

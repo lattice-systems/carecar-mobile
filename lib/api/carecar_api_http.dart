@@ -80,8 +80,24 @@ class CarecarApiHttp implements CarecarApi {
   );
 
   @override
+  Future<Pagina<Servicio>> paginaDeServicios(
+    int vehiculoId, {
+    int pagina = 0,
+    int tamano = 20,
+  }) => _cliente.obtenerPagina(
+    '/vehiculos/$vehiculoId/servicios',
+    Servicio.fromJson,
+    pagina: pagina,
+    tamano: tamano,
+  );
+
+  @override
   Future<Uint8List> ticketDe(int servicioId) =>
       _cliente.descargar('/servicios/$servicioId/ticket');
+
+  @override
+  Future<Uint8List> ticketDeCita(int citaId) =>
+      _cliente.descargar('/citas/$citaId/ticket');
 
   @override
   Future<List<Disponibilidad>> disponibilidad({
@@ -96,6 +112,15 @@ class CarecarApiHttp implements CarecarApi {
   @override
   Future<List<Cita>> misCitas() =>
       _cliente.obtenerLista('/citas', Cita.fromJson);
+
+  @override
+  Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) =>
+      _cliente.obtenerPagina(
+        '/citas',
+        Cita.fromJson,
+        pagina: pagina,
+        tamano: tamano,
+      );
 
   @override
   Future<Cita> agendarCita(NuevaCita nueva) =>

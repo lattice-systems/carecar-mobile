@@ -1,8 +1,11 @@
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/main.dart';
+import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
@@ -10,6 +13,7 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../ayudas/api_falsa.dart';
 
@@ -40,9 +44,13 @@ Future<ControladorSesion> _montar(
     );
   }
   await tester.pumpWidget(
-    MaterialApp(
-      theme: TemaCareCar.claro,
-      home: FlujoCareCar(controlador: sesion, api: api),
+    ShadApp.custom(
+      theme: TemaCareCar.shad,
+      appBuilder: (context) => MaterialApp(
+        theme: TemaCareCar.claro,
+        builder: (context, child) => ShadAppBuilder(child: child!),
+        home: FlujoCareCar(controlador: sesion, api: api),
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -73,8 +81,7 @@ void main() {
     addTearDown(restaurada.dispose);
     await restaurada.restaurar();
     await tester.pumpWidget(
-      MaterialApp(
-        theme: TemaCareCar.claro,
+      MaterialAppConShad(
         home: FlujoCareCar(controlador: restaurada, api: api),
       ),
     );
@@ -136,7 +143,7 @@ void main() {
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
       expect(find.text('Menú'), findsOneWidget);
-      for (final opcion in ['Mis vehículos', 'Catálogo', 'Ajustes']) {
+      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo', 'Ajustes']) {
         expect(find.text(opcion), findsOneWidget);
       }
       expect(api.llamadasAlLogin, 1);
@@ -162,7 +169,8 @@ void main() {
       for (final vehiculo in [_march, _jetta]) {
         await _tocar(tester, '${vehiculo.modelo} ${vehiculo.anio}');
         expect(find.text(vehiculo.vin), findsOneWidget);
-        expect(find.text('${vehiculo.anio}'), findsOneWidget);
+        // El ano sale en la insignia de la foto y en «Identificacion».
+        expect(find.text('${vehiculo.anio}'), findsWidgets);
         expect(find.text('No disponible'), findsWidgets);
         await _tocar(tester, 'Regresar');
         expect(
@@ -188,18 +196,23 @@ void main() {
     await _tocar(tester, 'Reintentar');
     expect(find.text('No tienes vehículos asociados'), findsOneWidget);
     expect(api.llamadasAVehiculos, 2);
+    // Deja correr los timers de la animacion de entrada del aviso.
+    await tester.pump(const Duration(milliseconds: 500));
   });
 
   testWidgets(
-    'opciones del vehiculo son placeholders y el retroceso conserva la sesion',
+    'agendar e historial abren sus pantallas y el retroceso conserva la sesion',
     (tester) async {
       final api = ApiFalsa()..alPedirVehiculos = () async => [_march];
       final sesion = await _montar(tester, api);
       await _tocar(tester, 'Mis vehículos');
       await _tocar(tester, '${_march.modelo} 2020');
-      for (final opcion in ['Agendar cita', 'Historial de servicios']) {
+      for (final (opcion, contenido) in [
+        ('Agendar cita', 'Tres pasos y listo'),
+        ('Historial de servicios', 'Aún no hay servicios'),
+      ]) {
         await _tocar(tester, opcion);
-        expect(find.text('PRÓXIMAMENTE'), findsOneWidget);
+        expect(find.text(contenido), findsOneWidget);
         await _tocar(tester, 'Regresar');
         expect(find.text(_march.vin), findsOneWidget);
       }
@@ -220,12 +233,13 @@ void main() {
     final api = ApiFalsa();
     await _montar(tester, api);
     await _tocar(tester, 'Catálogo');
-    expect(find.text('PRÓXIMAMENTE'), findsOneWidget);
+    expect(find.text('Aún no hay modelos en el catálogo'), findsOneWidget);
     await _tocar(tester, 'Regresar');
     await _tocar(tester, 'Ajustes');
     expect(find.text('María Robles'), findsOneWidget);
     expect(find.text('cliente1@example.com'), findsOneWidget);
-    expect(api.llamadasAPerfil, 1);
+    // Una del saludo del menu y otra de Ajustes.
+    expect(api.llamadasAPerfil, 2);
     await _tocar(tester, 'Regresar');
     expect(find.text('Menú'), findsOneWidget);
   });
@@ -238,13 +252,15 @@ void main() {
     await _montar(tester, api);
     await tester.tap(find.text('Ajustes'));
     await tester.pump();
-    expect(find.text('Cargando perfil…'), findsOneWidget);
+    // Mientras carga se ve el esqueleto, no un texto de espera.
+    expect(find.text('Nombre del cliente'), findsOneWidget);
     espera.completeError(const SinConexion('Sin conexión de prueba'));
     await tester.pumpAndSettle();
-    expect(find.text('No se pudo cargar tu perfil'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
     api.alPedirPerfil = () async => const Perfil(id: 1, nombre: '', correo: '');
     await _tocar(tester, 'Reintentar');
-    expect(find.text('No disponible'), findsNWidgets(2));
+    // Con datos vacios el perfil no inventa nombre ni correo.
+    expect(find.text('Nombre del cliente'), findsNothing);
   });
 
   testWidgets(
@@ -264,23 +280,106 @@ void main() {
     },
   );
 
-  for (final ancho in [320.0, 375.0, 768.0, 1280.0]) {
-    testWidgets('menus y detalle sin overflow a ancho $ancho', (tester) async {
-      tester.view.physicalSize = Size(ancho, 900);
-      tester.view.devicePixelRatio = 1;
-      addTearDown(tester.view.resetPhysicalSize);
-      addTearDown(tester.view.resetDevicePixelRatio);
-      final api = ApiFalsa()..alPedirVehiculos = () async => [_march, _jetta];
-      await _montar(tester, api);
-      final misVehiculos = tester.getTopLeft(find.text('Mis vehículos'));
-      final catalogo = tester.getTopLeft(find.text('Catálogo'));
-      expect((misVehiculos.dy - catalogo.dy).abs() < 1, ancho >= 768);
-      await _tocar(tester, 'Mis vehículos');
-      await _tocar(tester, '${_jetta.modelo} 2018');
-      expect(find.text(_jetta.vin), findsOneWidget);
-      await _tocar(tester, 'Manual del propietario');
-      expect(find.textContaining('No fue posible identificar'), findsOneWidget);
-      expect(tester.takeException(), isNull);
-    });
+  // Telefono chico, normal, horizontal, tablet vertical y escritorio, cada uno
+  // con la escala de texto del sistema en 1.0, 1.5 y 2.0.
+  for (final tamano in const [
+    Size(320, 640),
+    Size(375, 812),
+    Size(812, 375),
+    Size(768, 1024),
+    Size(1280, 800),
+  ]) {
+    for (final escala in const [1.0, 1.5, 2.0]) {
+      final nombre = '${tamano.width.toInt()}x${tamano.height.toInt()}';
+      testWidgets(
+        'pantallas principales sin overflow a $nombre y texto x$escala',
+        (tester) async {
+          tester.view.physicalSize = tamano;
+          tester.view.devicePixelRatio = 1;
+          tester.platformDispatcher.textScaleFactorTestValue = escala;
+          addTearDown(tester.view.resetPhysicalSize);
+          addTearDown(tester.view.resetDevicePixelRatio);
+          addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+          final manana = DateTime.now().add(const Duration(days: 1));
+          final api = ApiFalsa();
+          api.alPedirVehiculos = () async => [_march, _jetta];
+          api.alPedirServicios = (_) async => [
+            Servicio(
+              id: 1,
+              fecha: DateTime(2026, 3, 4),
+              estatus: 'TERMINADO',
+              total: 1850.5,
+            ),
+          ];
+          api.alPedirCitas = () async => [
+            Cita(
+              id: 1,
+              vehiculoId: _march.id,
+              fecha: manana,
+              horaInicio: '10:00',
+              horaFin: '11:00',
+              estado: EstadoCita.confirmada,
+            ),
+          ];
+          api.alPedirDisponibilidad = (_, _) async => [
+            for (var h = 9; h < 17; h++)
+              Disponibilidad(
+                fecha: DateTime.now(),
+                franjaId: h,
+                horaInicio: '${h.toString().padLeft(2, '0')}:00',
+                horaFin: '${(h + 1).toString().padLeft(2, '0')}:00',
+                cupoDisponible: h == 10 ? 1 : 3,
+              ),
+          ];
+          await _montar(tester, api);
+          if (escala == 1.0) {
+            // En tablet y escritorio el menu se reparte en columnas.
+            final misVehiculos = tester.getTopLeft(find.text('Mis vehículos'));
+            final citas = tester.getTopLeft(find.text('Citas'));
+            expect((misVehiculos.dy - citas.dy).abs() < 1, tamano.width >= 768);
+          }
+          await _tocar(tester, 'Mis vehículos');
+          await _tocar(tester, '${_jetta.modelo} 2018');
+          expect(find.text(_jetta.vin), findsOneWidget);
+          await _tocar(tester, 'Historial de servicios');
+          await _regresar(tester);
+          await _tocar(tester, 'Agendar cita');
+          await _regresar(tester);
+          await _tocar(tester, 'Manual del propietario');
+          expect(
+            find.textContaining('No fue posible identificar'),
+            findsOneWidget,
+          );
+          // En escritorio la ficha va junto a la lista: hay una ruta menos.
+          while (find.text('Menú').evaluate().isEmpty) {
+            await _regresar(tester);
+          }
+          await _tocar(tester, 'Citas');
+          await tester.scrollUntilVisible(
+            find.text('PRÓXIMAS'),
+            200,
+            scrollable: find
+                .descendant(
+                  of: find.byKey(PantallaMisCitas.lista),
+                  matching: find.byType(Scrollable),
+                )
+                .first,
+          );
+          expect(find.text('PRÓXIMAS'), findsOneWidget);
+          await _regresar(tester);
+          await _tocar(tester, 'Ajustes');
+          await _regresar(tester);
+          await _tocar(tester, 'Catálogo');
+          await _regresar(tester);
+          expect(find.text('Menú'), findsOneWidget);
+          expect(tester.takeException(), isNull);
+        },
+      );
+    }
   }
+}
+
+Future<void> _regresar(WidgetTester tester) async {
+  await tester.binding.handlePopRoute();
+  await tester.pumpAndSettle();
 }

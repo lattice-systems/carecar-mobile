@@ -1,17 +1,35 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Llaves de firma de release: se leen de android/key.properties, que NO se
+// versiona (ver android/key.properties.example y docs/publicacion.md).
+// Sin ese archivo, release se firma con la llave de debug para que
+// `flutter run --release` siga funcionando en local; ese APK no sirve para
+// publicar.
+val propiedadesFirma = Properties()
+val archivoFirma = rootProject.file("key.properties")
+if (archivoFirma.exists()) {
+    propiedadesFirma.load(FileInputStream(archivoFirma))
+}
+
 android {
     namespace = "com.carecar.carecar_mobile"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_local_notifications 23 exige compilar contra 37. Solo cambia
+    // las APIs disponibles al compilar; targetSdk sigue en 35 (PO-3).
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // flutter_local_notifications usa java.time en Android viejos.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -24,6 +42,8 @@ android {
         // el PO pidio 35.
         minSdk = flutter.minSdkVersion
         targetSdk = 35
+        // Version y numero de build salen de `version:` en pubspec.yaml
+        // (1.0.0+1 -> versionName 1.0.0, versionCode 1).
         // Uses the version code from pubspec.yaml. When using split APKs, 1000 * ABI_VERSION
         // is added automatically by Flutter. (https://developer.android.com/studio/build/configure-apk-splits#configure-APK-versions)
         // You can force using the value of versionCode by specifying the `-P force-version-code-ignoring-abi=true`
@@ -32,11 +52,24 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        if (archivoFirma.exists()) {
+            create("release") {
+                keyAlias = propiedadesFirma["keyAlias"] as String
+                keyPassword = propiedadesFirma["keyPassword"] as String
+                storeFile = file(propiedadesFirma["storeFile"] as String)
+                storePassword = propiedadesFirma["storePassword"] as String
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = if (archivoFirma.exists()) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
         }
     }
 }
@@ -49,4 +82,8 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

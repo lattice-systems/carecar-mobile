@@ -1,3 +1,5 @@
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/modelos/vehiculo.dart';
@@ -26,7 +28,7 @@ void main() {
   ) async {
     final servicio = _ManualesPrueba();
     await tester.pumpWidget(
-      MaterialApp(
+      MaterialAppConShad(
         theme: TemaCareCar.claro,
         home: Builder(
           builder: (context) => Scaffold(

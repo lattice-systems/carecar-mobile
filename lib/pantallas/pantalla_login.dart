@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
@@ -193,8 +194,9 @@ class _PantallaLoginState extends State<PantallaLogin> {
                           : null,
                     ),
                     const SizedBox(height: TemaCareCar.espacioSecciones),
-                    FilledButton(
+                    ShadButton(
                       key: PantallaLogin.botonEntrar,
+                      size: ShadButtonSize.lg,
                       // Deshabilitado mientras entra: evita el doble toque y
                       // cumple la regla de la guia de estilos.
                       onPressed: entrando ? null : _entrar,
@@ -207,7 +209,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                       ),
                     ),
                     if (widget.alOlvidarContrasena != null)
-                      TextButton(
+                      ShadButton.link(
                         key: PantallaLogin.botonOlvide,
                         onPressed: entrando
                             ? null

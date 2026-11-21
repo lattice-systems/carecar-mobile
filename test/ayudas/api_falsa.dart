@@ -163,35 +163,126 @@ class ApiFalsa implements CarecarApi {
   Future<Perfil> Function()? alPedirPerfil;
   int llamadasAPerfil = 0;
 
+  /// Que responde `GET /vehiculos/{id}/manuales`. Si es nulo, una lista vacia.
+  Future<List<Manual>> Function(int)? alPedirManuales;
+
   @override
   Future<List<Manual>> manualesDe(int vehiculoId) =>
-      throw UnimplementedError('ADM-1');
+      alPedirManuales?.call(vehiculoId) ?? Future.value(const []);
+
+  /// Que responde `GET /vehiculos/{id}/servicios`. Si es nulo, una lista vacia.
+  Future<List<Servicio>> Function(int)? alPedirServicios;
 
   @override
   Future<List<Servicio>> serviciosDe(int vehiculoId) =>
-      throw UnimplementedError('APP-3.2');
+      alPedirServicios?.call(vehiculoId) ?? Future.value(const []);
+
+  @override
+  Future<Pagina<Servicio>> paginaDeServicios(
+    int vehiculoId, {
+    int pagina = 0,
+    int tamano = 20,
+  }) async => _rebanar(await serviciosDe(vehiculoId), pagina, tamano);
 
   @override
   Future<Uint8List> ticketDe(int servicioId) =>
       throw UnimplementedError('APP-3.2');
 
+  /// Que responde `GET /citas/{id}/ticket`. Si es nulo, un PDF minimo.
+  Future<Uint8List> Function(int citaId)? alPedirTicketDeCita;
+
+  final ticketsDeCitaPedidos = <int>[];
+
+  @override
+  Future<Uint8List> ticketDeCita(int citaId) {
+    ticketsDeCitaPedidos.add(citaId);
+    return alPedirTicketDeCita?.call(citaId) ??
+        Future.value(Uint8List.fromList('%PDF-1.4\n%%EOF\n'.codeUnits));
+  }
+
+  // --- Agenda · APP-3.3 ---
+
+  /// Que responde `GET /citas`. Si es nulo, una lista vacia.
+  Future<List<Cita>> Function()? alPedirCitas;
+
+  /// Que responde `GET /agenda/disponibilidad`. Si es nulo, sin franjas.
+  Future<List<Disponibilidad>> Function(DateTime desde, DateTime hasta)?
+  alPedirDisponibilidad;
+
+  /// Que hace `POST /citas`. Si es nulo, la cita queda confirmada.
+  Future<Cita> Function(NuevaCita)? alAgendar;
+
+  /// Que hace `POST /citas/{id}/cancelar`. Si es nulo, la cita queda cancelada.
+  Future<Cita> Function(int citaId)? alCancelar;
+
+  final citasAgendadas = <NuevaCita>[];
+  final citasCanceladas = <int>[];
+  int llamadasACitas = 0;
+  int llamadasADisponibilidad = 0;
+
   @override
   Future<List<Disponibilidad>> disponibilidad({
     required DateTime desde,
     required DateTime hasta,
-  }) => throw UnimplementedError('APP-3.3');
+  }) {
+    llamadasADisponibilidad++;
+    return alPedirDisponibilidad?.call(desde, hasta) ?? Future.value(const []);
+  }
 
   @override
-  Future<List<Cita>> misCitas() => throw UnimplementedError('APP-3.3');
+  Future<List<Cita>> misCitas() {
+    llamadasACitas++;
+    return alPedirCitas?.call() ?? Future.value(const []);
+  }
 
   @override
-  Future<Cita> agendarCita(NuevaCita nueva) =>
-      throw UnimplementedError('APP-3.3');
+  Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) async =>
+      _rebanar(await misCitas(), pagina, tamano);
+
+  static Pagina<T> _rebanar<T>(List<T> todo, int pagina, int tamano) {
+    final inicio = (pagina * tamano).clamp(0, todo.length);
+    final fin = (inicio + tamano).clamp(0, todo.length);
+    return Pagina(
+      contenido: todo.sublist(inicio, fin),
+      pagina: pagina,
+      totalPaginas: todo.isEmpty ? 0 : (todo.length / tamano).ceil(),
+    );
+  }
 
   @override
-  Future<Cita> cancelarCita(int citaId) => throw UnimplementedError('APP-3.3');
+  Future<Cita> agendarCita(NuevaCita nueva) {
+    citasAgendadas.add(nueva);
+    return alAgendar?.call(nueva) ??
+        Future.value(
+          Cita(
+            id: 99,
+            vehiculoId: nueva.vehiculoId,
+            fecha: nueva.fecha,
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.confirmada,
+          ),
+        );
+  }
 
   @override
-  Future<List<ModeloCatalogo>> catalogo() =>
-      throw UnimplementedError('APP-4.1');
+  Future<Cita> cancelarCita(int citaId) {
+    citasCanceladas.add(citaId);
+    return alCancelar?.call(citaId) ??
+        Future.value(
+          Cita(
+            id: citaId,
+            vehiculoId: 0,
+            fecha: DateTime(2026),
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.cancelada,
+          ),
+        );
+  }
+
+  @override
+  Future<List<ModeloCatalogo>> catalogo() async => modelosCatalogo;
+
+  List<ModeloCatalogo> modelosCatalogo = const [];
 }

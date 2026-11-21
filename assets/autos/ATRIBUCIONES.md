@@ -1,0 +1,84 @@
+# Fotos de autos
+
+Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dominio público). Solo se usan dentro de la app, en local. Créditos:
+
+- **march** — Nissan Micra (K14) DSC 7790 (cropped).jpg — Alexander Migl — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_Micra_%28K14%29_DSC_7790_%28cropped%29.jpg
+- **versa** — 2020 Nissan Versa SR front NYIAS 2019.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2020_Nissan_Versa_SR_front_NYIAS_2019.jpg
+- **kicks** — 2021 Nissan Kicks SR, Front Right, 09-06-2021.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2021_Nissan_Kicks_SR%2C_Front_Right%2C_09-06-2021.jpg
+- **sentra** — 2020 Nissan Sentra SV in Electric Blue Metallic, front left.jpg — Mr.choppers — CC BY-SA 3.0 — https://commons.wikimedia.org/wiki/File%3A2020_Nissan_Sentra_SV_in_Electric_Blue_Metallic%2C_front_left.jpg
+- **xtrail** — Nissan X-Trail T33 Sanming 01 2022-12-31.jpg — JamesYoung8167 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_X-Trail_T33_Sanming_01_2022-12-31.jpg
+- **frontier** — 2022 Nissan Frontier Crew Cab Pro-4X in Boulder Gray Pearl, front left.jpg — Mr.choppers — CC BY-SA 3.0 — https://commons.wikimedia.org/wiki/File%3A2022_Nissan_Frontier_Crew_Cab_Pro-4X_in_Boulder_Gray_Pearl%2C_front_left.jpg
+- **leaf** — Nissan Leaf ZE1 2018, front view.jpg — Reinhard Müller — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_Leaf_ZE1_2018%2C_front_view.jpg
+- **ariya** — 2022 Dongfeng-Nissan Ariya (front).jpg — User3204 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2022_Dongfeng-Nissan_Ariya_%28front%29.jpg
+- **z** — Nissan FAIRLADY Z version ST 9AT (5BA-RZ34) front.jpg — Tokumeigakarinoaoshima — CC0 — https://commons.wikimedia.org/wiki/File%3ANissan_FAIRLADY_Z_version_ST_9AT_%285BA-RZ34%29_front.jpg
+- **gtr** — Nissan GT-R (4BA-R35) front.jpg — Tokumeigakarinoaoshima — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_GT-R_%284BA-R35%29_front.jpg
+- **altima** — 2019 Nissan Altima front 12.24.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2019_Nissan_Altima_front_12.24.18.jpg
+- **pathfinder** — 2022 Nissan Pathfinder SV in Pearl White, front right, 12-11-2021.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File%3A2022_Nissan_Pathfinder_SV_in_Pearl_White%2C_front_right%2C_12-11-2021.jpg
+- **murano** — 2025 Nissan Murano (Front) NYC Auto Show.png — Raszbeary — CC BY 4.0 — https://commons.wikimedia.org/wiki/File%3A2025_Nissan_Murano_%28Front%29_NYC_Auto_Show.png
+- **armada** — '17 Nissan Armada -- Front (MIAS '17).jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File%3A%2717_Nissan_Armada_--_Front_%28MIAS_%2717%29.jpg
+- **titan** — 2008 Nissan Titan, Front Right, 04-13-2021.jpg — SsmIntrigue — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2008_Nissan_Titan%2C_Front_Right%2C_04-13-2021.jpg
+- **urvan** — Nissan NV350 Urvan (Pennsylvania), front right, 12-10-2022.jpg — MercurySable99 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_NV350_Urvan_%28Pennsylvania%29%2C_front_right%2C_12-10-2022.jpg
+- **maxima** — 2019 Nissan Maxima (facelift) 3.5L, front 8.23.19.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3A2019_Nissan_Maxima_%28facelift%29_3.5L%2C_front_8.23.19.jpg
+- **juke** — 2020 Nissan Juke Tekna DIG-T - 999cc 1.0 (117PS) Petrol - Flame Red - 05-2024, Front.jpg — Harvey Bold — CC BY 4.0 — https://commons.wikimedia.org/wiki/File%3A2020_Nissan_Juke_Tekna_DIG-T_-_999cc_1.0_%28117PS%29_Petrol_-_Flame_Red_-_05-2024%2C_Front.jpg
+- **qashqai** — Nissan Qashqai, 2021, in Nissan Global HQ Gallery, front.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File%3ANissan_Qashqai%2C_2021%2C_in_Nissan_Global_HQ_Gallery%2C_front.jpg
+- **patrol** — Nissan PATROL (Y62) front.JPG — Tokumeigakarinoaoshima — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_PATROL_%28Y62%29_front.JPG
+- **tiida** — Nissan Tiida (front) Guangdong, Dongguan, China 31 May 2024.jpg — メイド理世 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File%3ANissan_Tiida_%28front%29_Guangdong%2C_Dongguan%2C_China_31_May_2024.jpg
+- **note** — Nissan Note e-POWER (E13), 2021, front-left.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File%3ANissan_Note_e-POWER_%28E13%29%2C_2021%2C_front-left.jpg
+
+## Galeria (assets/autos/galeria)
+
+- **versa_2** — '07-'09 Nissan Versa Hatchback -- Rear (Ste. Anne De Bellevue Veteran's Hospital '10).jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2707-%2709_Nissan_Versa_Hatchback_--_Rear_(Ste._Anne_De_Bellevue_Veteran%27s_Hospital_%2710).jpg
+- **versa_3** — '17 Nissan Versa Note -- Rear (MIAS '17).jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2717_Nissan_Versa_Note_--_Rear_(MIAS_%2717).jpg
+- **kicks_1** — 2018 Nissan Kicks SV rear 3.30.19.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2018_Nissan_Kicks_SV_rear_3.30.19.jpg
+- **kicks_2** — 2019 Nissan Kicks S in Gun Metallic, Rear Left, 10-09-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Kicks_S_in_Gun_Metallic,_Rear_Left,_10-09-2023.jpg
+- **kicks_3** — 2020 Nissan Kicks SR, rear right, 09-09-2023.jpg — MercurySable99 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Kicks_SR,_rear_right,_09-09-2023.jpg
+- **sentra_1** — '07-'08 Nissan Sentra 2.0S (Rear).jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2707-%2708_Nissan_Sentra_2.0S_(Rear).jpg
+- **sentra_2** — '09 Nissan Sentra -- Rear.jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2709_Nissan_Sentra_--_Rear.jpg
+- **sentra_3** — '09 Nissan Sentra FE+ (Rear).JPG — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2709_Nissan_Sentra_FE%2B_(Rear).JPG
+- **xtrail_1** — 2006 Nissan X-Trail SE, Rear Right, 04-24-2020.jpg — SsmIntrigue — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2006_Nissan_X-Trail_SE,_Rear_Right,_04-24-2020.jpg
+- **xtrail_2** — 2014 Nissan X-Trail 2.5 Xt (rear), Kediri.jpg — Alex Neman — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2014_Nissan_X-Trail_2.5_Xt_(rear),_Kediri.jpg
+- **xtrail_3** — 2015 Nissan X-Trail 2.5 (rear), West Surabaya.jpg — Alex Neman — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2015_Nissan_X-Trail_2.5_(rear),_West_Surabaya.jpg
+- **frontier_1** — '05-'08 Nissan Frontier Nismo -- Rear.JPG — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2705-%2708_Nissan_Frontier_Nismo_--_Rear.JPG
+- **frontier_2** — 1998 Nissan Frontier XE King Cab in Platinum Gold, rear right, 08-10-2022.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File:1998_Nissan_Frontier_XE_King_Cab_in_Platinum_Gold,_rear_right,_08-10-2022.jpg
+- **frontier_3** — 2000 Nissan Frontier XE Crew Cab in Silver Ice, rear right, 06-13-2026.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File:2000_Nissan_Frontier_XE_Crew_Cab_in_Silver_Ice,_rear_right,_06-13-2026.jpg
+- **leaf_1** — 2017 Nissan Leaf G (Rear).jpg — Chanokchon — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2017_Nissan_Leaf_G_(Rear).jpg
+- **leaf_2** — 2018 Nissan Leaf 2.Zero Rear.jpg — Vauxford — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2018_Nissan_Leaf_2.Zero_Rear.jpg
+- **leaf_3** — 2018 Nissan Leaf SL rear 4.2.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2018_Nissan_Leaf_SL_rear_4.2.18.jpg
+- **ariya_1** — 2022 Dongfeng-Nissan Ariya (rear).jpg — User3204 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Dongfeng-Nissan_Ariya_(rear).jpg
+- **ariya_2** — 2023 Nissan Ariya Advance Rear.jpg — Vauxford — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2023_Nissan_Ariya_Advance_Rear.jpg
+- **ariya_3** — 2023 Nissan Ariya Evolve e-4ORCE in Gun Metallic, Rear Left, 07-14-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2023_Nissan_Ariya_Evolve_e-4ORCE_in_Gun_Metallic,_Rear_Left,_07-14-2023.jpg
+- **z_1** — 1978-1981 Nissan Fairlady 280 Z-T rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:1978-1981_Nissan_Fairlady_280_Z-T_rear.jpg
+- **z_2** — 1981-1983 Nissan Fairlady Z T-Bar Roof Turbo rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:1981-1983_Nissan_Fairlady_Z_T-Bar_Roof_Turbo_rear.jpg
+- **z_3** — 1992 Nissan Fairlady Z rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:1992_Nissan_Fairlady_Z_rear.jpg
+- **gtr_1** — 1989-1991 Nissan Skyline GT-R rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:1989-1991_Nissan_Skyline_GT-R_rear.jpg
+- **gtr_2** — 1991 Nissan Skyline GT-R, Rear Right, 05-08-2021.jpg — SsmIntrigue — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:1991_Nissan_Skyline_GT-R,_Rear_Right,_05-08-2021.jpg
+- **gtr_3** — 2001 Nissan Skyline GT-R V-Spec II Rear.jpg — MrWalkr — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2001_Nissan_Skyline_GT-R_V-Spec_II_Rear.jpg
+- **altima_1** — 1992-1997 Nissan Altima rear 2.23.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:1992-1997_Nissan_Altima_rear_2.23.18.jpg
+- **altima_2** — 1993-1994 Nissan Altima GXE (rear).jpg — Spanish Coches — CC BY 2.0 — https://commons.wikimedia.org/wiki/File:1993-1994_Nissan_Altima_GXE_(rear).jpg
+- **altima_3** — 1999 Nissan Altima GXE, Rear left, 01-26-2026.jpg — 2000chevymontecarlo — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:1999_Nissan_Altima_GXE,_Rear_left,_01-26-2026.jpg
+- **pathfinder_1** — '02-'04 Nissan Pathfinder -- Rear.jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2702-%2704_Nissan_Pathfinder_--_Rear.jpg
+- **pathfinder_2** — 1995 Nissan Pathfinder SE, rear 5.19.19.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:1995_Nissan_Pathfinder_SE,_rear_5.19.19.jpg
+- **pathfinder_3** — 1995 Nissan Pathfinder XE in Champagne Pearl Metallic, rear left, 08-13-2022.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File:1995_Nissan_Pathfinder_XE_in_Champagne_Pearl_Metallic,_rear_left,_08-13-2022.jpg
+- **murano_1** — 2008 Nissan Murano SL AWD in Black, Rear Left, 05-06-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2008_Nissan_Murano_SL_AWD_in_Black,_Rear_Left,_05-06-2023.jpg
+- **murano_2** — 2009 Nissan Murano Automatic 3.5 Rear.jpg — Vauxford — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2009_Nissan_Murano_Automatic_3.5_Rear.jpg
+- **murano_3** — 2011 Nissan Murano CrossCabriolet in Merlot Metallic, rear right, 05-16-2023.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File:2011_Nissan_Murano_CrossCabriolet_in_Merlot_Metallic,_rear_right,_05-16-2023.jpg
+- **armada_1** — '05-'07 Nissan Armada -- Rear.JPG — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2705-%2707_Nissan_Armada_--_Rear.JPG
+- **armada_2** — '17 Nissan Armada -- Rear (MIAS '17).jpg — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:%2717_Nissan_Armada_--_Rear_(MIAS_%2717).jpg
+- **armada_3** — 2015 Nissan Armada Platinum in Arctic Blue Metallic, rear right, 08-30-2026.jpg — Cutlass — CC0 — https://commons.wikimedia.org/wiki/File:2015_Nissan_Armada_Platinum_in_Arctic_Blue_Metallic,_rear_right,_08-30-2026.jpg
+- **titan_1** — 2016 Nissan Titan XD SL Crew Cab 5.0L rear 6.15.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2016_Nissan_Titan_XD_SL_Crew_Cab_5.0L_rear_6.15.18.jpg
+- **titan_2** — 2017 Nissan Titan SV Crew Cab in Deep Blue Pearl, rear left, 2025-04-26.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2017_Nissan_Titan_SV_Crew_Cab_in_Deep_Blue_Pearl,_rear_left,_2025-04-26.jpg
+- **titan_3** — 2019 Nissan Titan XD Pro4X rear NYIAS 2019.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Titan_XD_Pro4X_rear_NYIAS_2019.jpg
+- **urvan_1** — 2019 NV350 Urvan Premium (rear).jpg — Ethan Llamas — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_NV350_Urvan_Premium_(rear).jpg
+- **altima_1** — 2019 Nissan Altima, rear 7.11.20.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Altima,_rear_7.11.20.jpg
+- **altima_2** — 2019 Nissan Altima rear 12.24.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Altima_rear_12.24.18.jpg
+- **frontier_1** — 2022 Nissan Frontier (D41) Pro-X.jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41)_Pro-X.jpg
+- **frontier_2** — 2022 Nissan Frontier (D41, red).jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41,_red).jpg
+- **march_1** — 2020 Nissan Micra Acenta 1.0 IG-T Xtronic rear.jpg — JoachimKohler-HB — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Micra_Acenta_1.0_IG-T_Xtronic_rear.jpg
+- **march_2** — Nissan micra back.jpg — Alexander Migl — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:Nissan_micra_back.jpg
+- **versa_1** — 2020 Nissan Versa rear.jpg — Ee2mba — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Versa_rear.jpg
+- **sentra_1** — 2020 Nissan Sentra SV, front 10.22.20.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_10.22.20.jpg
+- **sentra_2** — 2020 Nissan Sentra SV, front right, 06-17-2026.jpg — BuickCentury04 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_right,_06-17-2026.jpg
+- **z_1** — 2023 Nissan Z Performance 6MT in Passion Red TriCoat, Rear Left, 05-17-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2023_Nissan_Z_Performance_6MT_in_Passion_Red_TriCoat,_Rear_Left,_05-17-2023.jpg
+- **z_2** — Nissan Z NISMO, 2023, rear.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_Z_NISMO,_2023,_rear.jpg
+- **pathfinder_1** — 2022 Nissan Pathfinder, rear 6.11.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder,_rear_6.11.22.jpg
+- **pathfinder_2** — 2022 Nissan Pathfinder SV, front 6.2.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder_SV,_front_6.2.22.jpg

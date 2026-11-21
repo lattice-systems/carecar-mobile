@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Tema de CareCar, derivado de la guia de estilos de Agencia360.
 ///
@@ -6,11 +7,7 @@ import 'package:flutter/material.dart';
 /// React con Tailwind y shadcn/ui, asi que lo que se traslada son **los valores**
 /// (paleta, escala tipografica, radios, espaciado), no las librerias.
 ///
-/// **Pendiente:** las fuentes Inter y JetBrains Mono. La guia pide servirlas
-/// desde la app y no desde Google Fonts, pero los archivos `.ttf` no vinieron
-/// con la guia: es la peticion EQ-4. Mientras tanto se usa la fuente del
-/// sistema; al llegar los archivos solo se agregan a `pubspec.yaml` y se nombran
-/// aqui, sin tocar ninguna pantalla.
+/// Las fuentes Inter y JetBrains Mono van empaquetadas en `assets/fonts`.
 abstract final class TemaCareCar {
   // --- Paleta (guia de estilos, §2) ---
 
@@ -74,6 +71,39 @@ abstract final class TemaCareCar {
   ///
   /// **Siempre 16.** Con menos, iOS hace zoom al enfocar el campo.
   static const tamanoCampo = 16.0;
+
+  /// Estilo monoespaciado para VIN y placas (guia de estilos, §3).
+  ///
+  /// JetBrains Mono, empaquetada en la app.
+  static TextStyle mono = const TextStyle(fontFamily: 'JetBrainsMono');
+
+  /// Degradado de marca para encabezados y tarjetas destacadas.
+  static const degradadoMarca = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [azulAgencia, azulProfundo],
+  );
+
+  /// Tema de `shadcn_ui` con la paleta de Agencia360, para que sus
+  /// componentes se vean como el resto de la app.
+  static ShadThemeData get shad => ShadThemeData(
+    brightness: Brightness.light,
+    colorScheme: const ShadSlateColorScheme.light(
+      primary: azulAgencia,
+      primaryForeground: Colors.white,
+      background: fondo,
+      foreground: textoPrincipal,
+      card: tarjeta,
+      border: borde,
+      destructive: peligro,
+      ring: azulAgencia,
+    ),
+    radius: BorderRadius.circular(radioTarjeta + 4),
+  );
+
+  /// [claro] con Inter, empaquetada en `assets/fonts` (funciona sin internet).
+  static ThemeData conFuentes() =>
+      claro.copyWith(textTheme: claro.textTheme.apply(fontFamily: 'Inter'));
 
   static ThemeData get claro {
     const esquema = ColorScheme.light(
@@ -173,6 +203,31 @@ abstract final class TemaCareCar {
       ),
 
       // La guia pide bordes y no sombras, salvo en tarjetas y dialogos.
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: tarjeta,
+        indicatorColor: azulSuave,
+        elevation: 0,
+        height: 68,
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (estados) => TextStyle(
+            fontSize: 12,
+            fontWeight: estados.contains(WidgetState.selected)
+                ? FontWeight.w600
+                : FontWeight.w500,
+            color: estados.contains(WidgetState.selected)
+                ? azulAgencia
+                : textoSecundario,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (estados) => IconThemeData(
+            color: estados.contains(WidgetState.selected)
+                ? azulAgencia
+                : textoSecundario,
+          ),
+        ),
+      ),
+
       cardTheme: CardThemeData(
         color: tarjeta,
         elevation: 1,
