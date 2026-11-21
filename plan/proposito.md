@@ -10,7 +10,7 @@ Que el cliente de la agencia **viva toda la vida de su vehículo desde el celula
 
 ## Principios de producto
 
-1. **La ficha técnica es el piso, no el techo.** M01–M03 se cumplen al 100 %; todo lo demás se suma encima.
+1. **La ficha técnica es el piso, no el techo.** Sus 58 funcionalidades se cumplen al 100 %; todo lo demás se suma encima.
 2. **Cero callejones sin salida.** Toda pantalla tiene estado de carga, vacío, error, sin conexión y una acción siguiente.
 3. **Dos toques al valor.** Lo más frecuente (próxima cita, estado del servicio, documentos) a dos toques del inicio.
 4. **Proactiva, no reactiva.** La app avisa (mantenimiento, vencimientos, recalls, cita lista) antes de que el cliente pregunte.

@@ -10,7 +10,7 @@ Todo lo que el equipo (y sus agentes) necesita para saber **qué** construir, **
 | [`modulos/`](modulos/) | Un archivo por módulo: pantallas, datos, API e historias con criterios |
 | [`tablero.md`](tablero.md) | Estado de las 202 historias (fuente única del avance) |
 | [`equipo-y-reparto.md`](equipo-y-reparto.md) | Quién hace qué en cada hito y cómo se revisa |
-| [`cumplimiento-ficha.md`](cumplimiento-ficha.md) | Matriz requisito por requisito contra la ficha técnica v1.1 |
+| [`cumplimiento-ficha.md`](cumplimiento-ficha.md) | Matriz funcionalidad por funcionalidad contra la ficha técnica v2.0 |
 | [`arquitectura-v2.md`](arquitectura-v2.md) | Forma objetivo del código de la app |
 
 Relacionados: ficha técnica en [`../docs/ficha-tecnica/`](../docs/ficha-tecnica/README.md), decisiones en [`../docs/decisiones/`](../docs/decisiones/README.md), sistema de diseño en [`../docs/diseno/`](../docs/diseno/sistema-de-diseno-v2.md), reglas en [`../AGENTS.md`](../AGENTS.md). Plan del backend: `agencia-360-backend/plan/`.
@@ -23,7 +23,7 @@ Una historia pasa de `Borrador` a `Lista` cuando:
 - Sus dependencias están `Hecha` o se pueden simular (API simulada, datos de ejemplo).
 - Si es **B**, existe su historia espejo en el plan del backend con endpoint y tabla definidos.
 - Si toca UI, los componentes existen en el sistema de diseño o hay historia T02 para crearlos.
-- Si toca M01–M03, se sabe qué fila de `cumplimiento-ficha.md` mueve.
+- Si su módulo está en la ficha, se sabe qué fila de `cumplimiento-ficha.md` mueve.
 - Cabe en un PR revisable.
 
 ## Cómo se mantiene este plan
