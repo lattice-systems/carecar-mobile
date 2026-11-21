@@ -9,6 +9,7 @@ export 'cita.dart';
 export 'disponibilidad.dart';
 export 'manual.dart';
 export 'modelo_catalogo.dart';
+export 'pagina.dart';
 export 'perfil.dart';
 export 'problema.dart';
 export 'sesion.dart';
