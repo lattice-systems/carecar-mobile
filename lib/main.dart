@@ -107,7 +107,7 @@ class _AppCareCarState extends State<AppCareCar> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CareCar',
-      theme: TemaCareCar.claro,
+      theme: TemaCareCar.conFuentes(),
       debugShowCheckedModeBanner: false,
       home: switch (_errorDeArranque) {
         final error? => _PantallaDeErrorDeArranque(error: error),

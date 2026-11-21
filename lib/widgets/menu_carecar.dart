@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../tema/tema_carecar.dart';
@@ -71,8 +72,11 @@ class RejillaMenu extends StatelessWidget {
         spacing: espacio,
         runSpacing: espacio,
         children: [
-          for (final tarjeta in tarjetas)
-            SizedBox(width: ancho, child: tarjeta),
+          for (final (i, tarjeta) in tarjetas.indexed)
+            SizedBox(width: ancho, child: tarjeta)
+                .animate(delay: (70 * i).ms)
+                .fadeIn(duration: 350.ms)
+                .slideY(begin: 0.12, curve: Curves.easeOutCubic),
         ],
       );
     },
@@ -94,29 +98,50 @@ class TarjetaMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-    color: color,
-    borderRadius: BorderRadius.circular(EstiloMenu.radio),
+    color: TemaCareCar.tarjeta,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(EstiloMenu.radio),
+      side: const BorderSide(color: TemaCareCar.borde),
+    ),
     clipBehavior: Clip.antiAlias,
     child: InkWell(
       onTap: alPulsar,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 224),
-        child: Padding(
-          padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: TemaCareCar.espacioCampos),
-              ExcludeSemantics(child: imagen),
-              const SizedBox(height: TemaCareCar.espacioSecciones),
-              Text(
-                titulo,
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
+      child: Padding(
+        padding: const EdgeInsets.all(TemaCareCar.rellenoTarjeta + 4),
+        // Arriba y no al centro: asi los titulos de una fila quedan alineados
+        // aunque uno ocupe dos lineas con texto grande.
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // El color de la tarjeta queda como fondo del icono.
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(18),
               ),
-              const SizedBox(height: TemaCareCar.espacioCampos),
-            ],
-          ),
+              child: ExcludeSemantics(
+                child: SizedBox.square(
+                  dimension: 44,
+                  child: FittedBox(child: imagen),
+                ),
+              ),
+            ),
+            const SizedBox(width: TemaCareCar.espacioCampos),
+            Expanded(
+              child: Text(
+                titulo,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(top: 24),
+              child: Icon(
+                Icons.chevron_right,
+                color: TemaCareCar.textoSecundario,
+              ),
+            ),
+          ],
         ),
       ),
     ),

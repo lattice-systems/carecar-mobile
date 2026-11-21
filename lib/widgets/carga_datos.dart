@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../api/excepciones.dart';
 import '../tema/tema_carecar.dart';
@@ -44,16 +45,29 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
             children: [
               Text(widget.mensajeCarga),
               const SizedBox(height: TemaCareCar.espacioCampos),
+              // Placeholders con brillo mientras llega la respuesta.
               ExcludeSemantics(
-                child: Container(
-                  height: 224,
-                  width: EstiloMenu.anchoTarjeta,
-                  decoration: BoxDecoration(
-                    color: TemaCareCar.azulSuave,
-                    borderRadius: BorderRadius.circular(EstiloMenu.radio),
-                  ),
-                  padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
-                  child: const Center(child: CircularProgressIndicator()),
+                child: Column(
+                  children: [
+                    for (var i = 0; i < 2; i++)
+                      Container(
+                            height: 96,
+                            margin: const EdgeInsets.only(
+                              bottom: TemaCareCar.espacioCampos,
+                            ),
+                            decoration: BoxDecoration(
+                              color: TemaCareCar.azulSuave,
+                              borderRadius: BorderRadius.circular(
+                                EstiloMenu.radio,
+                              ),
+                            ),
+                          )
+                          .animate(onPlay: (c) => c.repeat())
+                          .shimmer(
+                            duration: 1200.ms,
+                            color: Colors.white.withValues(alpha: 0.6),
+                          ),
+                  ],
                 ),
               ),
             ],
@@ -84,7 +98,10 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
           ],
         );
       }
-      return widget.construir(resultado.data as T);
+      return widget
+          .construir(resultado.data as T)
+          .animate()
+          .fadeIn(duration: 300.ms);
     },
   );
 }
