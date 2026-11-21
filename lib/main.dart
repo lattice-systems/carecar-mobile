@@ -4,6 +4,7 @@ import 'api/api_config.dart';
 import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
+import 'pantallas/pantalla_arranque.dart';
 import 'pantallas/pantalla_cambiar_contrasena.dart';
 import 'pantallas/pantalla_inicio.dart';
 import 'pantallas/pantalla_login.dart';
@@ -26,7 +27,13 @@ void main() {
 /// esta decidida (peticion EQ-1) y para dos objetos no vale la pena una
 /// libreria.
 class AppCareCar extends StatefulWidget {
-  const AppCareCar({super.key});
+  const AppCareCar({
+    this.duracionArranque = const Duration(milliseconds: 1200),
+    super.key,
+  });
+
+  /// Tiempo minimo que se ve la cortina de arranque (cero en pruebas).
+  final Duration duracionArranque;
 
   @override
   State<AppCareCar> createState() => _AppCareCarState();
@@ -111,34 +118,12 @@ class _AppCareCarState extends State<AppCareCar> {
       debugShowCheckedModeBanner: false,
       home: switch (_errorDeArranque) {
         final error? => _PantallaDeErrorDeArranque(error: error),
-        _ when _restaurando => const _PantallaDeArranque(),
-        _ => FlujoCareCar(controlador: _sesion!, api: _api!),
-      },
-    );
-  }
-}
-
-/// Lo que se ve mientras se lee la sesion guardada.
-///
-/// Es la marca y nada mas: dura lo que tarda una lectura del almacenamiento
-/// cifrado, asi que un indicador de progreso alcanzaria a parpadear y se veria
-/// peor que esto.
-class _PantallaDeArranque extends StatelessWidget {
-  const _PantallaDeArranque();
-
-  static const logo = Key('arranque_logo');
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Image.asset(
-          'assets/marca/agencia360-logo.png',
-          key: logo,
-          width: 180,
-          semanticLabel: 'Agencia360',
+        _ => CortinaArranque(
+          listo: !_restaurando,
+          duracionMinima: widget.duracionArranque,
+          siguiente: (_) => FlujoCareCar(controlador: _sesion!, api: _api!),
         ),
-      ),
+      },
     );
   }
 }
