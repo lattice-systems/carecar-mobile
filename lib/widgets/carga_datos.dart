@@ -5,6 +5,7 @@ import '../api/excepciones.dart';
 import '../tema/tema_carecar.dart';
 import 'aviso.dart';
 import 'menu_carecar.dart';
+import 'movimiento.dart';
 
 /// Ciclo compartido de carga, fallo y reintento, sin repetir solicitudes al rebuild.
 class CargaDatos<T> extends StatefulWidget {
@@ -51,22 +52,23 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
                   children: [
                     for (var i = 0; i < 2; i++)
                       Container(
-                            height: 96,
-                            margin: const EdgeInsets.only(
-                              bottom: TemaCareCar.espacioCampos,
+                        height: 96,
+                        margin: const EdgeInsets.only(
+                          bottom: TemaCareCar.espacioCampos,
+                        ),
+                        decoration: BoxDecoration(
+                          color: TemaCareCar.azulSuave,
+                          borderRadius: BorderRadius.circular(EstiloMenu.radio),
+                        ),
+                      ).siempre(
+                        context,
+                        (w) => w
+                            .animate(onPlay: (c) => c.repeat())
+                            .shimmer(
+                              duration: 1200.ms,
+                              color: Colors.white.withValues(alpha: 0.6),
                             ),
-                            decoration: BoxDecoration(
-                              color: TemaCareCar.azulSuave,
-                              borderRadius: BorderRadius.circular(
-                                EstiloMenu.radio,
-                              ),
-                            ),
-                          )
-                          .animate(onPlay: (c) => c.repeat())
-                          .shimmer(
-                            duration: 1200.ms,
-                            color: Colors.white.withValues(alpha: 0.6),
-                          ),
+                      ),
                   ],
                 ),
               ),

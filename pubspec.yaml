@@ -53,6 +53,7 @@ dependencies:
 
   # Animaciones y esqueletos de carga de las pantallas de citas (APP-3.3).
   skeletonizer: ^3.0.0
+  shadcn_ui: ^0.61.2
 
 dev_dependencies:
   flutter_test:

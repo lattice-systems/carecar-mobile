@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../tema/tema_carecar.dart';
+import 'movimiento.dart';
 
 /// Medidas compartidas del area autenticada. No modifica los formularios de acceso.
 abstract final class EstiloMenu {
@@ -97,51 +98,53 @@ class TarjetaMenu extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: TemaCareCar.tarjeta,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(EstiloMenu.radio),
-      side: const BorderSide(color: TemaCareCar.borde),
-    ),
-    clipBehavior: Clip.antiAlias,
-    child: InkWell(
-      onTap: alPulsar,
-      child: Padding(
-        padding: const EdgeInsets.all(TemaCareCar.rellenoTarjeta + 4),
-        // Arriba y no al centro: asi los titulos de una fila quedan alineados
-        // aunque uno ocupe dos lineas con texto grande.
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // El color de la tarjeta queda como fondo del icono.
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: ExcludeSemantics(
-                child: SizedBox.square(
-                  dimension: 44,
-                  child: FittedBox(child: imagen),
+  Widget build(BuildContext context) => Rebote(
+    child: Material(
+      color: TemaCareCar.tarjeta,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(EstiloMenu.radio),
+        side: const BorderSide(color: TemaCareCar.borde),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: alPulsar,
+        child: Padding(
+          padding: const EdgeInsets.all(TemaCareCar.rellenoTarjeta + 4),
+          // Arriba y no al centro: asi los titulos de una fila quedan alineados
+          // aunque uno ocupe dos lineas con texto grande.
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // El color de la tarjeta queda como fondo del icono.
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: ExcludeSemantics(
+                  child: SizedBox.square(
+                    dimension: 44,
+                    child: FittedBox(child: imagen),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(width: TemaCareCar.espacioCampos),
-            Expanded(
-              child: Text(
-                titulo,
-                style: Theme.of(context).textTheme.titleMedium,
+              const SizedBox(width: TemaCareCar.espacioCampos),
+              Expanded(
+                child: Text(
+                  titulo,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 24),
-              child: Icon(
-                Icons.chevron_right,
-                color: TemaCareCar.textoSecundario,
+              const Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Icon(
+                  Icons.chevron_right,
+                  color: TemaCareCar.textoSecundario,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ),

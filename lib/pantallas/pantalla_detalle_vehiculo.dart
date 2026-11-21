@@ -7,7 +7,9 @@ import '../tema/tema_carecar.dart';
 import '../widgets/dato_lectura.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
+import 'citas/pantalla_agendar_cita.dart';
 import 'pantalla_proximamente.dart';
+import 'servicios/pantalla_historial.dart';
 import 'pantalla_manual.dart';
 
 class PantallaDetalleVehiculo extends StatelessWidget {
@@ -104,7 +106,18 @@ class PantallaDetalleVehiculo extends StatelessWidget {
                 imagen: DibujoMenu(opcion.$2),
                 alPulsar: () => abrirPantalla(
                   context,
-                  opcion.$2 == IconoMenu.manual
+                  opcion.$2 == IconoMenu.cita && api != null
+                      ? PantallaAgendarCita(
+                          api: api!,
+                          alCerrarSesion: alCerrarSesion,
+                        )
+                      : opcion.$2 == IconoMenu.historial && api != null
+                      ? PantallaHistorial(
+                          api: api!,
+                          vehiculo: vehiculo,
+                          alCerrarSesion: alCerrarSesion,
+                        )
+                      : opcion.$2 == IconoMenu.manual
                       ? PantallaManual(
                           vehiculo: vehiculo,
                           api: api,

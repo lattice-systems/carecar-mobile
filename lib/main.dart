@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'api/api_config.dart';
 import 'api/carecar_api.dart';
@@ -105,15 +106,21 @@ class _AppCareCarState extends State<AppCareCar> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CareCar',
-      theme: TemaCareCar.conFuentes(),
-      debugShowCheckedModeBanner: false,
-      home: switch (_errorDeArranque) {
-        final error? => _PantallaDeErrorDeArranque(error: error),
-        _ when _restaurando => const _PantallaDeArranque(),
-        _ => FlujoCareCar(controlador: _sesion!, api: _api!),
-      },
+    // shadcn_ui da los componentes (insignias, botones, dialogos); Material
+    // sigue debajo para las pantallas que ya existian.
+    return ShadApp.custom(
+      theme: TemaCareCar.shad,
+      appBuilder: (context) => MaterialApp(
+        title: 'CareCar',
+        theme: TemaCareCar.conFuentes(),
+        debugShowCheckedModeBanner: false,
+        builder: (context, child) => ShadAppBuilder(child: child!),
+        home: switch (_errorDeArranque) {
+          final error? => _PantallaDeErrorDeArranque(error: error),
+          _ when _restaurando => const _PantallaDeArranque(),
+          _ => FlujoCareCar(controlador: _sesion!, api: _api!),
+        },
+      ),
     );
   }
 }
