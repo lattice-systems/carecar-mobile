@@ -14,7 +14,7 @@ Total: **202 historias** + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-H0.01 | Reglas, agentes y plan maestro en carecar-mobile | Daniel | | — | Hecha | #13 |
 | V2-H0.02 | Reglas, agentes y plan del backend | Daniel | B | — | Hecha | backend#58 |
-| V2-H0.03 | Check `Autoría` requerido en `main` de ambos repos | Daniel | | V2-H0.01, V2-H0.02 | Lista | |
+| V2-H0.03 | Check `Autoría` requerido en `main` de ambos repos | Daniel | | V2-H0.01, V2-H0.02 | Hecha | |
 | V2-H0.04 | Cada integrante activa `core.hooksPath .githooks` y lee AGENTS.md | Todos | | V2-H0.01 | Lista | |
 
 ## H1 · Cimientos v2
