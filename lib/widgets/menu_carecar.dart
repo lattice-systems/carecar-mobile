@@ -151,5 +151,37 @@ class TarjetaMenu extends StatelessWidget {
 /// Conserva el objeto anterior en la pila y evita duplicarlo ante un doble toque.
 void abrirPantalla(BuildContext context, Widget pantalla) {
   if (ModalRoute.of(context)?.isCurrent != true) return;
-  Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => pantalla));
+  Navigator.of(context).push(rutaCareCar(pantalla));
 }
+
+/// Ruta con fundido y deslizamiento coordinados: la pantalla nueva entra desde
+/// la derecha mientras aparece, y la anterior se corre un poco al fondo.
+Route<T> rutaCareCar<T>(Widget pantalla) => PageRouteBuilder<T>(
+  transitionDuration: const Duration(milliseconds: 380),
+  reverseTransitionDuration: const Duration(milliseconds: 300),
+  pageBuilder: (_, _, _) => pantalla,
+  transitionsBuilder: (context, animacion, secundaria, hijo) {
+    final entrada = CurvedAnimation(
+      parent: animacion,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    final salida = CurvedAnimation(parent: secundaria, curve: Curves.easeInOut);
+    return SlideTransition(
+      position: Tween(
+        begin: Offset.zero,
+        end: const Offset(-0.08, 0),
+      ).animate(salida),
+      child: FadeTransition(
+        opacity: Tween(begin: 1.0, end: 0.85).animate(salida),
+        child: SlideTransition(
+          position: Tween(
+            begin: const Offset(0.12, 0),
+            end: Offset.zero,
+          ).animate(entrada),
+          child: FadeTransition(opacity: entrada, child: hijo),
+        ),
+      ),
+    );
+  },
+);

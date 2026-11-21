@@ -32,6 +32,7 @@ class PantallaDetalleVehiculo extends StatelessWidget {
       vehiculo: vehiculo,
       api: api,
       alCerrarSesion: alCerrarSesion,
+      conHero: true,
     ),
   );
 }
@@ -43,11 +44,18 @@ class FichaVehiculo extends StatelessWidget {
     required this.vehiculo,
     required this.alCerrarSesion,
     this.api,
+    this.conHero = false,
     super.key,
   });
   final Vehiculo vehiculo;
   final CarecarApi? api;
   final VoidCallback alCerrarSesion;
+
+  /// Solo en la pantalla de detalle: la tarjeta de la lista vuela hasta aqui.
+  final bool conHero;
+
+  Widget _conHero(Widget hijo) =>
+      conHero ? Hero(tag: 'carro-${vehiculo.id}', child: hijo) : hijo;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -63,7 +71,7 @@ class FichaVehiculo extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FotoAuto(modelo: vehiculo.modelo, alto: 190),
+            _conHero(FotoAuto(modelo: vehiculo.modelo, alto: 190)),
             const SizedBox(height: 14),
             Text(
               '${vehiculo.modelo} ${vehiculo.anio}',

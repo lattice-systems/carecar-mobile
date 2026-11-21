@@ -1,3 +1,5 @@
+import '../../ayudas/envolver_con_shad.dart';
+
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/pantallas/citas/pantalla_agendar_cita.dart';
@@ -5,6 +7,7 @@ import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../ayudas/api_falsa.dart';
 
@@ -34,7 +37,7 @@ Cita _cita(int id, int enDias, EstadoCita estado, {String hora = '09:00'}) =>
 
 Future<void> _montar(WidgetTester tester, ApiFalsa api) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaMisCitas(api: api, alCerrarSesion: () {}),
     ),
@@ -220,7 +223,7 @@ void main() {
           throw const Conflicto('La franja ya no tiene cupo.');
 
       await tester.pumpWidget(
-        MaterialApp(
+        MaterialAppConShad(
           theme: TemaCareCar.claro,
           home: PantallaAgendarCita(api: api, alCerrarSesion: () {}),
         ),
@@ -237,7 +240,7 @@ void main() {
       expect(find.text('La franja ya no tiene cupo.'), findsOneWidget);
       expect(api.llamadasADisponibilidad, 2);
       // La seleccion se limpia: no se puede reenviar la misma franja.
-      final boton = tester.widget<ButtonStyleButton>(
+      final boton = tester.widget<ShadButton>(
         find.byKey(PantallaAgendarCita.botonConfirmar),
       );
       expect(boton.onPressed, isNull);
@@ -246,7 +249,7 @@ void main() {
     testWidgets('un dia sin horarios lo explica', (tester) async {
       final api = ApiFalsa()..alPedirVehiculos = () async => const [_march];
       await tester.pumpWidget(
-        MaterialApp(
+        MaterialAppConShad(
           theme: TemaCareCar.claro,
           home: PantallaAgendarCita(api: api, alCerrarSesion: () {}),
         ),

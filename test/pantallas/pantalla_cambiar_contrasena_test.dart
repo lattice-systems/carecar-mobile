@@ -1,5 +1,7 @@
 // APP-2.3 · «En el primer ingreso se obliga a cambiar la contrasena temporal».
 
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
@@ -17,7 +19,7 @@ Future<void> _montar(
   VoidCallback? alCerrarSesion,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaCambiarContrasena(
         api: api,

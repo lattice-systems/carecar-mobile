@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Tema de CareCar, derivado de la guia de estilos de Agencia360.
@@ -8,11 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 /// React con Tailwind y shadcn/ui, asi que lo que se traslada son **los valores**
 /// (paleta, escala tipografica, radios, espaciado), no las librerias.
 ///
-/// **Pendiente:** las fuentes Inter y JetBrains Mono. La guia pide servirlas
-/// desde la app y no desde Google Fonts, pero los archivos `.ttf` no vinieron
-/// con la guia: es la peticion EQ-4. Mientras tanto se usa la fuente del
-/// sistema; al llegar los archivos solo se agregan a `pubspec.yaml` y se nombran
-/// aqui, sin tocar ninguna pantalla.
+/// Las fuentes Inter y JetBrains Mono van empaquetadas en `assets/fonts`.
 abstract final class TemaCareCar {
   // --- Paleta (guia de estilos, §2) ---
 
@@ -79,9 +74,8 @@ abstract final class TemaCareCar {
 
   /// Estilo monoespaciado para VIN y placas (guia de estilos, §3).
   ///
-  /// Arranca con la monoespaciada del sistema; [conFuentes] la cambia a
-  /// JetBrains Mono. Las pruebas no la cambian, asi no dependen de la red.
-  static TextStyle mono = const TextStyle(fontFamily: 'monospace');
+  /// JetBrains Mono, empaquetada en la app.
+  static TextStyle mono = const TextStyle(fontFamily: 'JetBrainsMono');
 
   /// Degradado de marca para encabezados y tarjetas destacadas.
   static const degradadoMarca = LinearGradient(
@@ -107,15 +101,9 @@ abstract final class TemaCareCar {
     radius: BorderRadius.circular(radioTarjeta + 4),
   );
 
-  /// [claro] con Inter y JetBrains Mono, servidas por `google_fonts`.
-  ///
-  /// Es el puente mientras llegan los `.ttf` de la peticion EQ-4: al llegar,
-  /// se declaran en `pubspec.yaml` y `google_fonts` los toma sin descargar.
-  static ThemeData conFuentes() {
-    mono = GoogleFonts.jetBrainsMono();
-    final base = claro;
-    return base.copyWith(textTheme: GoogleFonts.interTextTheme(base.textTheme));
-  }
+  /// [claro] con Inter, empaquetada en `assets/fonts` (funciona sin internet).
+  static ThemeData conFuentes() =>
+      claro.copyWith(textTheme: claro.textTheme.apply(fontFamily: 'Inter'));
 
   static ThemeData get claro {
     const esquema = ColorScheme.light(
