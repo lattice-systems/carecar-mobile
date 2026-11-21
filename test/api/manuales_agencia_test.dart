@@ -56,7 +56,7 @@ void main() {
 
     final doc = await servicio.cargar(_march);
 
-    expect(doc.titulo, 'Nissan March 2026 Manual de propietario');
+    expect(doc.titulo, 'Nissan March 2026');
     expect(doc.identificador, 'agencia:1');
     expect(doc.bytes, [37, 80, 68, 70]);
     expect(respaldo.llamadas, 0);
