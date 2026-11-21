@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../api/excepciones.dart';
 import '../tema/tema_carecar.dart';
@@ -118,10 +118,10 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
                   : 'Intenta de nuevo más tarde.',
             ),
             const SizedBox(height: TemaCareCar.espacioCampos),
-            OutlinedButton.icon(
+            ShadButton.outline(
               onPressed: _recargar,
-              icon: const Icon(Icons.refresh),
-              label: const Text('Reintentar'),
+              leading: const Icon(Icons.refresh, size: 18),
+              child: const Text('Reintentar'),
             ),
           ],
         );

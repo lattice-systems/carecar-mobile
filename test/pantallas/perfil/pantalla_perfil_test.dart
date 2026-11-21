@@ -1,4 +1,6 @@
 // Portado de feat/app-perfil (07a2b5c), adaptado a miPerfil() y PantallaAjustes.
+import '../../ayudas/envolver_con_shad.dart';
+
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/pantallas/pantalla_ajustes.dart';
@@ -16,7 +18,7 @@ Future<void> _montar(
   VoidCallback? alCerrarSesion,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaAjustes(api: api, alCerrarSesion: alCerrarSesion ?? () {}),
     ),

@@ -1,6 +1,8 @@
 // APP-2.3 · «La recuperacion es por correo, con un codigo de un solo uso que
 // expira» (criterio del backlog, ajustado por RIC-18: codigo, no enlace).
 
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
@@ -18,7 +20,7 @@ Future<void> _montar(
   VoidCallback? alVolver,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaRecuperarContrasena(
         api: api,

@@ -182,7 +182,10 @@ class TarjetaVehiculo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FotoAuto(modelo: v.modelo, alto: 150),
+                Hero(
+                  tag: 'carro-${v.id}',
+                  child: FotoAuto(modelo: v.modelo, alto: 150),
+                ),
                 const SizedBox(height: 14),
                 Row(
                   children: [
