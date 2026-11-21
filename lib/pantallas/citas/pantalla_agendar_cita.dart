@@ -446,6 +446,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
             ShadButton(
               key: PantallaAgendarCita.botonConfirmar,
               size: ShadButtonSize.lg,
+              expands: !baja,
+              width: baja ? 200 : null,
               onPressed: _listo ? _confirmar : null,
               leading: _enviando
                   ? const SizedBox.square(
