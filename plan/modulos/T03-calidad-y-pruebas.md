@@ -1,0 +1,20 @@
+# T03 · Calidad y pruebas
+
+| Campo | Valor |
+| --- | --- |
+| Hito | H1 (base) y siempre |
+| Dueño | Haziel (aceptación) · todos escriben pruebas |
+| Revisa | Daniel |
+| Estado | Listo para historias |
+
+## Historias
+
+| ID | Historia | Criterios de aceptación | B | Depende de |
+| --- | --- | --- | --- | --- |
+| V2-T03.01 | Como equipo queremos reglas de análisis más estrictas | `analysis_options.yaml` con lints estrictos acordados · CI sin avisos | | — |
+| V2-T03.02 | Como equipo queremos pruebas golden | Herramienta de golden elegida · fuentes reales · corren en CI (Linux) | | V2-T02.01 |
+| V2-T03.03 | Como equipo queremos `integration_test` del flujo principal | Login → garaje → agendar → cancelar contra `mock_api` en CI (emulador) | | V2-T01.03 |
+| V2-T03.04 | Como equipo queremos cobertura visible | Reporte de cobertura en CI · meta alta en `dominio/` y `datos/` | | — |
+| V2-T03.05 | Como PO quiero que cada criterio de aceptación tenga su prueba | Convención de nombre `V2-Mxx.nn: <criterio>` en las pruebas · enlazadas desde `cumplimiento-ficha.md` | | — |
+| V2-T03.06 | Como equipo queremos que la API simulada siga al contrato v2 | `mock_api` y prueba de contrato actualizadas con cada endpoint nuevo | | V2-T05.02 |
+| V2-T03.07 | Como equipo queremos pruebas en celular físico por hito | Guion de prueba manual en `docs/pruebas/` y evidencia por hito | | — |

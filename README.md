@@ -25,7 +25,10 @@
 </div>
 
 > [!NOTE]
-> **Estado (nov 2026):** app funcional contra el backend real (módulo `carecarapp`): acceso con sesión de 30 días, Mis vehículos, manuales, historial de servicios con ticket en PDF, citas (agendar y cancelar) y Ajustes/Perfil. El catálogo muestra «Próximamente». Ver [Pendientes](#-pendientes).
+> **Estado:** el MVP v1 está en `main` (acceso, vehículos, manuales, historial con ticket, citas, catálogo, ajustes). Arranca la **v2**: se construye nueva sobre la [ficha técnica](docs/ficha-tecnica/README.md), con [plan maestro](plan/README.md) de 27 módulos, [sistema de diseño nuevo](docs/diseno/sistema-de-diseno-v2.md) y reglas de trabajo en [`AGENTS.md`](AGENTS.md).
+
+> [!IMPORTANT]
+> **Antes de tu primer cambio:** lee [`AGENTS.md`](AGENTS.md) y corre `git config core.hooksPath .githooks`. Vale igual para personas, Claude Code, Codex y Antigravity.
 
 ---
 
@@ -157,10 +160,14 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 
 ```
 carecar-mobile/
-├── .github/workflows/     # CI (formato, análisis, pruebas, APK, iOS), CodeQL y Dependency Review
+├── AGENTS.md              # Reglas para personas y agentes (CLAUDE.md y GEMINI.md apuntan aquí)
+├── .claude/               # Subagentes de Claude Code y configuración sin atribución
+├── .githooks/             # Hook commit-msg que quita co-autores de IA
+├── .github/workflows/     # CI, Autoría, CodeQL y Dependency Review
 ├── api/                   # Copia del contrato OpenAPI de la app (fuente de verdad)
 ├── assets/                # Logo, imágenes y manuales PDF incluidos
-├── docs/                  # Convenciones y manuales locales
+├── docs/                  # Ficha técnica, decisiones, diseño v2, convenciones, manuales
+├── plan/                  # Plan maestro v2: propósito, hitos, módulos, tablero, reparto
 ├── mock_api/              # API simulada (json-server) para desarrollo sin backend
 ├── lib/
 │   ├── main.dart          # Arranque: lee API_BASE_URL, crea la sesión y el ShadApp
@@ -266,10 +273,11 @@ El detalle de cada check (y por qué CodeQL revisa los workflows y no el código
 
 ## 🤝 Forma de trabajo
 
-- Metodología **Scrumban + XP**, en parejas de desarrollador + Claude.
-- Límite WIP: 1 historia activa por desarrollador.
-- Tablero, iteraciones y wiki en **Azure DevOps**; código en **GitHub**; CI/CD con **GitHub Actions**.
-- Ramas, commits y PR siguen [`docs/convenciones-commits.md`](docs/convenciones-commits.md): rama corta por tarea, commits `tipo(alcance): verbo + cambio`, PR con una aprobación y se integra con **merge commit**.
+- Metodología **Scrumban + XP**. Las 6 personas programan, cada una dueña de sus módulos ([reparto](plan/equipo-y-reparto.md)).
+- Agentes de código con roles fijos: **sincronizador**, **planificador**, **orquestador** e **implementador** ([`AGENTS.md`](AGENTS.md) §3; en Claude Code viven en `.claude/agents/`).
+- Límite WIP: 1 historia activa por persona. Estado de todo en [`plan/tablero.md`](plan/tablero.md).
+- Ramas, commits y PR siguen [`docs/convenciones-commits.md`](docs/convenciones-commits.md): rama corta por historia, commits atómicos `tipo(alcance): verbo + cambio`, PR con una aprobación y **merge commit**.
+- **Documentación en cada PR, sin excepción**, y **sin IA como autor ni co-autor**.
 
 <details>
 <summary><strong>Definition of Ready y Definition of Done</strong> (propuesta del backlog V2, pendiente de aprobación)</summary>
@@ -298,23 +306,25 @@ Se cerraron en los Sprints 1 a 3.
 
 ## 📌 Pendientes
 
-| Tema | Qué falta |
+Los pendientes ya no viven aquí: todo está en el [plan maestro v2](plan/README.md) y su [tablero](plan/tablero.md). Lo más urgente frente a la ficha técnica (ver [matriz](plan/cumplimiento-ficha.md)):
+
+| Brecha | Historia |
 | --- | --- |
-| Integración | El backend con los endpoints de servicios, ticket y citas aún no está fusionado; citas sin verificar de punta a punta (agendar → cancelar, errores 409) |
-| Catálogo (APP-4.1) | El backend no lo implementa; la app muestra «Próximamente» |
-| Paginación | Historial y citas solo piden la primera página |
-| Perfil | Contacto de la agencia y aviso de privacidad son placeholders; la versión está escrita a mano |
-| Responsive | Pantallas nuevas sin revisar en tablet, horizontal ni con letra grande |
-| Diseño | Modo oscuro; fuentes `.ttf` empaquetadas; logo SVG, ícono y splash |
-| Notificaciones push | Firebase Cloud Messaging (recordatorio de cita, vehículo listo) |
-| Sin conexión | No hay caché; sin red se muestra error con reintentar |
-| Pruebas | Sin `integration_test` del flujo principal |
+| Falta la calculadora de toma a cuenta (APP-4.1) | V2-M03.04 |
+| Recuperación por código en vez de enlace de un solo uso | V2-M01.04, V2-T05.04 |
+| El cliente no puede editar teléfono y correo | V2-M01.07 |
+| Cinco tablas del backend no coinciden con la ficha | V2-T05.03 a V2-T05.07 |
 
 ---
 
 ## 📚 Documentación relacionada
 
 - **Wiki del proyecto (Azure DevOps):** [Agente360 Wiki](https://dev.azure.com/latticesystems/Agente360/_wiki/wikis/Agente360.wiki), sección _Arquitectura y Tecnologías_.
+- **Reglas para personas y agentes:** [`AGENTS.md`](AGENTS.md)
+- **Ficha técnica (obligatoria):** [`docs/ficha-tecnica/`](docs/ficha-tecnica/README.md)
+- **Plan maestro v2:** [`plan/`](plan/README.md)
+- **Sistema de diseño v2:** [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md)
+- **Decisiones de arquitectura:** [`docs/decisiones/`](docs/decisiones/README.md)
 - **Convenciones de ramas, commits y PR:** [`docs/convenciones-commits.md`](docs/convenciones-commits.md)
 - **Backend:** [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)
 - **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)

@@ -1,0 +1,33 @@
+name: Autoría
+
+# Regla R3 de AGENTS.md: ningún commit del PR puede declarar a una IA como
+# co-autor ni llevar la firma "Generated with ...".
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  sin-coautor-ia:
+    name: Sin co-autor de IA
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Revisar mensajes de los commits del PR
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          patron='^(Co-Authored-By:.*(Claude|Anthropic|anthropic\.com|Codex|OpenAI|openai\.com|Gemini|Antigravity|Copilot|Cursor)|.*Generated with \[?(Claude|Codex|Gemini|Antigravity|Copilot))'
+          malos=0
+          for sha in $(git rev-list "$BASE..$HEAD"); do
+            if git log -1 --format=%B "$sha" | grep -Eiq "$patron"; then
+              echo "::error::El commit $sha declara a una IA como co-autor o firma. Quita la línea (git commit --amend o rebase)."
+              malos=1
+            fi
+          done
+          exit $malos
