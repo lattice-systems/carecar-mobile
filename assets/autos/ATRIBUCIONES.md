@@ -78,3 +78,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **note_2** — 2014-2016 Nissan Note X rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:2014-2016_Nissan_Note_X_rear.jpg
 - **altima_1** — 2019 Nissan Altima, rear 7.11.20.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Altima,_rear_7.11.20.jpg
 - **altima_2** — 2019 Nissan Altima rear 12.24.18.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Nissan_Altima_rear_12.24.18.jpg
+- **frontier_1** — 2022 Nissan Frontier (D41) Pro-X.jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41)_Pro-X.jpg
+- **frontier_2** — 2022 Nissan Frontier (D41, red).jpg — DestinationFearFan — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Frontier_(D41,_red).jpg
