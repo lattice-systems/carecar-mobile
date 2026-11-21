@@ -142,11 +142,16 @@ class TarjetaVehiculo extends StatelessWidget {
   /// Resaltada cuando su ficha se ve al lado (maestro-detalle).
   final bool elegido;
 
+  /// En fila cada dato toma la mitad; apilados conservan su alto natural.
+  static Widget _envolver(bool apilar, Widget dato) =>
+      apilar ? dato : Expanded(child: dato);
+
   @override
   Widget build(BuildContext context) {
     final temas = Theme.of(context).textTheme;
     final v = vehiculo;
     final subtitulo = [v.marca, v.version].whereType<String>().join(' · ');
+    final apilar = MediaQuery.textScalerOf(context).scale(1) > 1.4;
 
     return Rebote(
       child: Material(
@@ -207,19 +212,26 @@ class TarjetaVehiculo extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Row(
+                // Con letra muy grande los datos van uno debajo del otro.
+                Flex(
+                  direction: apilar ? Axis.vertical : Axis.horizontal,
+                  crossAxisAlignment: apilar
+                      ? CrossAxisAlignment.stretch
+                      : CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: _Dato(
+                    _envolver(
+                      apilar,
+                      _Dato(
                         icono: Icons.pin_outlined,
                         etiqueta: 'Placas',
                         valor: v.placas,
                         mono: true,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: _Dato(
+                    const SizedBox(width: 10, height: 10),
+                    _envolver(
+                      apilar,
+                      _Dato(
                         icono: Icons.speed_outlined,
                         etiqueta: 'Kilometraje',
                         valor: v.kilometraje == null
