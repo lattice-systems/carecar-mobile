@@ -22,9 +22,9 @@ Los hitos ordenan prioridades, no bloquean a nadie: si una persona no tiene hist
 **Propósito:** que cualquiera (persona o agente) clone y sepa trabajar.
 
 Criterios de salida:
-- [ ] `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` y `.claude/agents/` integrados en `carecar-mobile` y `agencia-360-backend`.
-- [ ] Ficha técnica versionada en `docs/ficha-tecnica/` y matriz de cumplimiento creada.
-- [ ] Plan maestro (`plan/`) con módulos, historias, reparto y tablero.
+- [x] `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` y `.claude/agents/` integrados en `carecar-mobile` y `agencia-360-backend`.
+- [x] Ficha técnica versionada en `docs/ficha-tecnica/` y matriz de cumplimiento creada.
+- [x] Plan maestro (`plan/`) con módulos, historias, reparto y tablero.
 - [ ] Workflow `Autoría` corriendo y agregado como check requerido de `main` en ambos repos.
 - [ ] Las 6 personas corrieron `git config core.hooksPath .githooks`.
 
