@@ -429,6 +429,22 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/manuales`, (req, res) => {
 // Servicios y tickets · APP-3.2
 // ---------------------------------------------------------------------------
 
+// Arma la respuesta paginada del contrato (PaginaServicios, PaginaCitas).
+function paginar(req, res, todo) {
+  const pagina = req.query.pagina === undefined ? 0 : Number(req.query.pagina);
+  const tamano = req.query.tamano === undefined ? 20 : Number(req.query.tamano);
+  if (!Number.isInteger(pagina) || pagina < 0 || !Number.isInteger(tamano) || tamano < 1 || tamano > 100) {
+    return problema(req, res, 400, 'pagina o tamano no son validos', 'DATOS_INVALIDOS');
+  }
+  res.jsonp({
+    contenido: todo.slice(pagina * tamano, (pagina + 1) * tamano),
+    pagina,
+    tamano,
+    totalElementos: todo.length,
+    totalPaginas: Math.ceil(todo.length / tamano),
+  });
+}
+
 servidor.get(`${BASE}/vehiculos/:vehiculoId/servicios`, (req, res) => {
   const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
   if (!vehiculo) return noEncontrado(req, res);
@@ -442,7 +458,7 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/servicios`, (req, res) => {
     .sort((a, b) => b.fecha.localeCompare(a.fecha))
     .map((s) => ({ id: s.id, fecha: s.fecha, estatus: s.estatus, total: s.total }));
 
-  res.jsonp(servicios);
+  paginar(req, res, servicios);
 });
 
 servidor.get(`${BASE}/servicios/:servicioId/ticket`, (req, res) => {
@@ -504,6 +520,7 @@ servidor.get(`${BASE}/agenda/disponibilidad`, (req, res) => {
 const comoCita = (c) => ({
   id: c.id,
   vehiculoId: c.vehiculoId,
+  franjaId: c.franjaId,
   fecha: c.fecha,
   horaInicio: c.horaInicio,
   horaFin: c.horaFin,
@@ -512,7 +529,7 @@ const comoCita = (c) => ({
 
 servidor.get(`${BASE}/citas`, (req, res) => {
   const propias = db.get('citas').filter({ clienteId: req.sesion.clienteId }).value();
-  res.jsonp(propias.map(comoCita));
+  paginar(req, res, propias.map(comoCita));
 });
 
 servidor.post(`${BASE}/citas`, (req, res) => {

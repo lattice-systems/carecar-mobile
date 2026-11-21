@@ -242,6 +242,48 @@ void main() {
     expect(citas.single.estado, EstadoCita.confirmada);
   });
 
+  test('paginaDeCitas manda pagina/tamano y lee franjaId y vehiculo', () async {
+    final api = _api(
+      espia,
+      () => _json({
+        'contenido': [
+          {
+            'id': 1,
+            'vehiculoId': 2,
+            'franjaId': 4,
+            'vehiculoNombre': 'Nissan March 2026',
+            'fecha': '2026-10-21',
+            'horaInicio': '09:00',
+            'horaFin': '10:00',
+            'estado': 'CONFIRMADA',
+          },
+          {
+            'id': 2,
+            'vehiculoId': 2,
+            'fecha': '2026-10-22',
+            'horaInicio': '09:00',
+            'horaFin': '10:00',
+            'estado': 'CANCELADA',
+          },
+        ],
+        'pagina': 1,
+        'tamano': 2,
+        'totalElementos': 6,
+        'totalPaginas': 3,
+      }),
+    );
+
+    final pagina = await api.paginaDeCitas(pagina: 1, tamano: 2);
+
+    expect(espia.url!.queryParameters, {'pagina': '1', 'tamano': '2'});
+    expect(pagina.hayMas, isTrue);
+    expect(pagina.contenido.first.franjaId, 4);
+    expect(pagina.contenido.first.vehiculoNombre, 'Nissan March 2026');
+    // Sin franjaId ni nombre (backend actual) no truena.
+    expect(pagina.contenido.last.franjaId, isNull);
+    expect(pagina.contenido.last.vehiculoNombre, isNull);
+  });
+
   test('agendarCita llama POST /citas con el cuerpo del contrato', () async {
     final api = _api(
       espia,

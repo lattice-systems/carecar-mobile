@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../tema/tema_carecar.dart';
+import 'movimiento.dart';
+import 'pantalla.dart';
 
 /// Medidas compartidas del area autenticada. No modifica los formularios de acceso.
 abstract final class EstiloMenu {
@@ -60,19 +63,18 @@ class RejillaMenu extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, limites) {
       const espacio = TemaCareCar.espacioCampos;
-      final columnas = limites.maxWidth >= 1000
-          ? 3
-          : limites.maxWidth >= 650
-          ? 2
-          : 1;
+      final columnas = Pantalla.deAncho(limites.maxWidth).columnas;
       final ancho = ((limites.maxWidth - espacio * (columnas - 1)) / columnas)
           .clamp(0.0, EstiloMenu.anchoTarjeta);
       return Wrap(
         spacing: espacio,
         runSpacing: espacio,
         children: [
-          for (final tarjeta in tarjetas)
-            SizedBox(width: ancho, child: tarjeta),
+          for (final (i, tarjeta) in tarjetas.indexed)
+            SizedBox(width: ancho, child: tarjeta)
+                .animate(delay: (70 * i).ms)
+                .fadeIn(duration: 350.ms)
+                .slideY(begin: 0.12, curve: Curves.easeOutCubic),
         ],
       );
     },
@@ -93,28 +95,51 @@ class TarjetaMenu extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => Material(
-    color: color,
-    borderRadius: BorderRadius.circular(EstiloMenu.radio),
-    clipBehavior: Clip.antiAlias,
-    child: InkWell(
-      onTap: alPulsar,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 224),
+  Widget build(BuildContext context) => Rebote(
+    child: Material(
+      color: TemaCareCar.tarjeta,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(EstiloMenu.radio),
+        side: const BorderSide(color: TemaCareCar.borde),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: alPulsar,
         child: Padding(
-          padding: const EdgeInsets.all(TemaCareCar.espacioSecciones),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          padding: const EdgeInsets.all(TemaCareCar.rellenoTarjeta + 4),
+          // Arriba y no al centro: asi los titulos de una fila quedan alineados
+          // aunque uno ocupe dos lineas con texto grande.
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: TemaCareCar.espacioCampos),
-              ExcludeSemantics(child: imagen),
-              const SizedBox(height: TemaCareCar.espacioSecciones),
-              Text(
-                titulo,
-                style: Theme.of(context).textTheme.titleLarge,
-                textAlign: TextAlign.center,
+              // El color de la tarjeta queda como fondo del icono.
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: ExcludeSemantics(
+                  child: SizedBox.square(
+                    dimension: 44,
+                    child: FittedBox(child: imagen),
+                  ),
+                ),
               ),
-              const SizedBox(height: TemaCareCar.espacioCampos),
+              const SizedBox(width: TemaCareCar.espacioCampos),
+              Expanded(
+                child: Text(
+                  titulo,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 24),
+                child: Icon(
+                  Icons.chevron_right,
+                  color: TemaCareCar.textoSecundario,
+                ),
+              ),
             ],
           ),
         ),
@@ -126,5 +151,37 @@ class TarjetaMenu extends StatelessWidget {
 /// Conserva el objeto anterior en la pila y evita duplicarlo ante un doble toque.
 void abrirPantalla(BuildContext context, Widget pantalla) {
   if (ModalRoute.of(context)?.isCurrent != true) return;
-  Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => pantalla));
+  Navigator.of(context).push(rutaCareCar(pantalla));
 }
+
+/// Ruta con fundido y deslizamiento coordinados: la pantalla nueva entra desde
+/// la derecha mientras aparece, y la anterior se corre un poco al fondo.
+Route<T> rutaCareCar<T>(Widget pantalla) => PageRouteBuilder<T>(
+  transitionDuration: const Duration(milliseconds: 380),
+  reverseTransitionDuration: const Duration(milliseconds: 300),
+  pageBuilder: (_, _, _) => pantalla,
+  transitionsBuilder: (context, animacion, secundaria, hijo) {
+    final entrada = CurvedAnimation(
+      parent: animacion,
+      curve: Curves.easeOutCubic,
+      reverseCurve: Curves.easeInCubic,
+    );
+    final salida = CurvedAnimation(parent: secundaria, curve: Curves.easeInOut);
+    return SlideTransition(
+      position: Tween(
+        begin: Offset.zero,
+        end: const Offset(-0.08, 0),
+      ).animate(salida),
+      child: FadeTransition(
+        opacity: Tween(begin: 1.0, end: 0.85).animate(salida),
+        child: SlideTransition(
+          position: Tween(
+            begin: const Offset(0.12, 0),
+            end: Offset.zero,
+          ).animate(entrada),
+          child: FadeTransition(opacity: entrada, child: hijo),
+        ),
+      ),
+    );
+  },
+);
