@@ -89,6 +89,7 @@ flutter:
   # para fondos oscuros, que no se puede derivar del JPEG.
   assets:
     - assets/marca/
+    - assets/autos/
     - assets/Manuales/Nissan/March/2020/
     - assets/Manuales/Nissan/Kicks/2023/
     - assets/Manuales/Nissan/Versa/2024/

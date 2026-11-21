@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/foto_auto.dart';
 import '../widgets/dato_lectura.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
@@ -59,29 +60,15 @@ class FichaVehiculo extends StatelessWidget {
           gradient: TemaCareCar.degradadoMarca,
           borderRadius: BorderRadius.circular(EstiloMenu.radio),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-              ),
-              child: const Icon(
-                Icons.directions_car_filled,
-                color: TemaCareCar.turquesa,
-                size: 40,
-              ),
-            ),
-            const SizedBox(width: 18),
-            Expanded(
-              child: Text(
-                vehiculo.modelo,
-                style: Theme.of(context).textTheme.headlineMedium
-                    ?.copyWith(color: Colors.white),
-              ),
+            FotoAuto(modelo: vehiculo.modelo, alto: 190),
+            const SizedBox(height: 14),
+            Text(
+              '${vehiculo.modelo} ${vehiculo.anio}',
+              style: Theme.of(context).textTheme.headlineMedium
+                  ?.copyWith(color: Colors.white),
             ),
           ],
         ),

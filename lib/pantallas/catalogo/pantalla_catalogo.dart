@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../api/carecar_api.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
+import '../../widgets/foto_auto.dart';
 import '../../widgets/aviso.dart';
 import '../../widgets/carga_datos.dart';
 import '../../widgets/formato.dart';
@@ -105,7 +106,11 @@ class _TarjetaModelo extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ImagenModelo(url: modelo.imagenUrl, alto: 160),
+              ImagenModelo(
+                modelo: modelo.modelo,
+                url: modelo.imagenUrl,
+                alto: 160,
+              ),
               Padding(
                 padding: const EdgeInsets.all(TemaCareCar.rellenoTarjeta),
                 child: Column(
@@ -148,44 +153,24 @@ class _TarjetaModelo extends StatelessWidget {
   }
 }
 
-/// Imagen del modelo con marcador si no hay URL o falla la descarga.
+/// Imagen del modelo: la foto incluida en la app, la URL, o un marcador.
 class ImagenModelo extends StatelessWidget {
-  const ImagenModelo({required this.url, required this.alto, super.key});
+  const ImagenModelo({
+    required this.url,
+    required this.alto,
+    this.modelo,
+    super.key,
+  });
 
   final String? url;
+  final String? modelo;
   final double alto;
 
-  static const marcador = Key('catalogo_imagen_marcador');
+  static const marcador = FotoAuto.marcador;
 
   @override
-  Widget build(BuildContext context) {
-    final u = url;
-    final vacio = Container(
-      key: marcador,
-      height: alto,
-      width: double.infinity,
-      color: TemaCareCar.azulSuave,
-      child: const Icon(
-        Icons.directions_car_outlined,
-        size: 56,
-        color: TemaCareCar.azulAgencia,
-      ),
-    );
-    if (u == null) return vacio;
-    return Image.network(
-      u,
-      height: alto,
-      width: double.infinity,
-      fit: BoxFit.cover,
-      errorBuilder: (_, _, _) => vacio,
-      loadingBuilder: (_, hijo, avance) => avance == null
-          ? hijo
-          : SizedBox(
-              height: alto,
-              child: const Center(child: CircularProgressIndicator()),
-            ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      FotoAuto(modelo: modelo, url: url, alto: alto, radio: 0);
 }
 
 /// Detalle de un modelo del catalogo.
@@ -213,7 +198,11 @@ class PantallaDetalleModelo extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(16),
-                    child: ImagenModelo(url: modelo.imagenUrl, alto: 220),
+                    child: ImagenModelo(
+                      modelo: modelo.modelo,
+                      url: modelo.imagenUrl,
+                      alto: 220,
+                    ),
                   ),
                   const SizedBox(height: TemaCareCar.espacioCampos),
                   Text(tituloModelo(modelo), style: temas.titleLarge),
