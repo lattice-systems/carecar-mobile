@@ -1,47 +1,198 @@
-# Matriz de cumplimiento de la ficha técnica v1.1
+# Matriz de cumplimiento de la ficha técnica v2.0
 
-Cada requisito de la [ficha](../docs/ficha-tecnica/README.md) tiene una fila. Una fila pasa a ✅ solo con **prueba automática enlazada** (app y/o backend). Toda historia que toque M01–M03 actualiza esta tabla en su PR.
+Cada funcionalidad de la [ficha](../docs/ficha-tecnica/README.md) tiene una fila. Una fila pasa a ✅ solo con **prueba automática enlazada** (app y backend) y demostrada en celular. Toda historia que avance una funcionalidad actualiza esta tabla en su PR.
 
-Leyenda: ✅ cumple con prueba · 🟡 cumple sin prueba o en v1 (falta v2) · ❌ brecha · ➕ extensión v2 permitida (no contradice la ficha).
+Leyenda: ✅ cumple con prueba · 🟡 existe en v1, falta v2 o prueba · ❌ brecha contra lo que pide la ficha · ⬜ aún no existe (planeada).
 
-Estado inicial levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backend` (PR #57).
-
-## Tablas
-
-| Tabla (ficha) | Campos (ficha) | En backend hoy | Estado | Historia que lo cierra |
-| --- | --- | --- | --- | --- |
-| `cliente` | id, prospecto_id, nombre, telefono, correo | Igual (+ auditoría) | 🟡 | V2-M01.07 |
-| `cuenta_app` | id, cliente_id, usuario, contrasena_hash, debe_cambiar_contrasena, activa | **Falta `usuario`** (se usa `cliente.correo`); extra `intentos_fallidos`, `bloqueada_hasta` | ❌ | V2-T05.03 |
-| `token_recuperacion` | id, cuenta_app_id, token_hash, expira, usado | Existe como **`codigo_recuperacion`** (código, no enlace; `cuenta_id`, `codigo_hash`, `expira_en`, `usado_en`) | ❌ | V2-T05.04, V2-M01.04 |
-| `vehiculo_cliente` | id, cliente_id, vehiculo_id, vin, modelo, anio, placas, kilometraje | Igual (+ `color`) | 🟡 | V2-M02.01 |
-| `manual` | id, modelo, anio, archivo_pdf | Campo se llama **`archivo`** (+ `marca`, tamaño) | ❌ | V2-T05.05 |
-| `orden_servicio` | id, vehiculo_cliente_id, mano_de_obra, total, estatus, fecha_cierre | Existe como **`servicio`** (sin `mano_de_obra`, `estatus`, `fecha_cierre`; tiene `fecha`, `subtotal`, `iva`) | ❌ | V2-T05.06 |
-| `orden_refaccion` | id, orden_servicio_id, refaccion_id, cantidad, precio | Existe como **`renglon_servicio`** | ❌ | V2-T05.06 |
-| `franja_horario` | id, dia_semana, hora_inicio, hora_fin, capacidad | **No existe** (horario en código: `HorarioTaller`) | ❌ | V2-T05.07 |
-| `cita` | id, vehiculo_cliente_id, franja_id, fecha, estado | Igual (+ `cliente_id`, horas, `cancelada_en`); `franja_id` sin FK porque no hay tabla | 🟡 | V2-T05.07 |
-| `modelo_catalogo` | id, modelo, activo | Igual (+ marca, año, versión, precio, imagen, descripción) | 🟡 | V2-M03.01 |
+Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backend` (PR #57).
 
 ## Funcionalidades
 
-| Módulo | Requisito (ficha) | App v1 | Estado | Historia v2 |
-| --- | --- | --- | --- | --- |
-| 1 | Inicio de sesión con la cuenta de la agencia, sin registro público | Hecho | 🟡 | V2-M01.01 |
-| 1 | Cambio obligatorio de la contraseña temporal | Hecho | 🟡 | V2-M01.03 |
-| 1 | Recuperación de contraseña **por correo** con **enlace de un solo uso** que expira | Hecho con **código** de 6 dígitos | ❌ | V2-M01.04 |
-| 1 | Gestión del perfil: el cliente edita teléfono y correo | Perfil de solo lectura parcial | ❌ | V2-M01.06, V2-M01.07 |
-| 1 | La cuenta puede desactivarse (la app lo respeta) | Backend responde 403 | 🟡 | V2-M01.08 |
-| 2 | Consulta de vehículos del cliente | Hecho | 🟡 | V2-M02.01 |
-| 2 | Manuales y fichas técnicas por modelo y año | Hecho (PDF + respaldo local) | 🟡 | V2-M02.03, V2-M02.04 |
-| 2 | Kilometraje lo actualiza el taller al cerrar servicio (la app lo muestra) | Se muestra | 🟡 | V2-M02.02 |
-| 2 | Historial digital de servicios | Hecho (primera página) | 🟡 | V2-M02.05 |
-| 2 | Ticket por orden (mano de obra + refacciones = total) | PDF del ticket | 🟡 | V2-M02.06 |
-| 2 | Agendar cita en horarios disponibles (cupo por franja y fecha) | Hecho | 🟡 | V2-M02.08 |
-| 2 | Cancelar cita desde la app | Hecho | 🟡 | V2-M02.10 |
-| 2 | Estados de cita: confirmada, atendida, no asistió, cancelada | Hecho | 🟡 | V2-M02.09 |
-| 3 | Catálogo de modelos actuales (`activo`) | Hecho | 🟡 | V2-M03.01 |
-| 3 | **Mini calculadora de toma a cuenta con estimación no vinculante** | **No existe** | ❌ | V2-M03.04, V2-M03.05 |
-| — | Android e iOS | Hecho | 🟡 | V2-T04.03 |
+### 1. Acceso y perfil — plan [M01](modulos/M01-acceso-y-perfil.md)
 
-## Decisión pendiente para el PO
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 | V2-M01.01, V2-M01.11 |
+| Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 | V2-M01.03 |
+| Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | ❌ v1 usa código | V2-M01.04, V2-T05.04 |
+| Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
+| Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 | V2-M01.06 |
+| Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | ❌ | V2-M01.07, V2-T05.03 |
+| Sesiones y dispositivos activos | `sesion_app` | ⬜ | V2-M01.09, V2-M01.10 |
+| Aviso de cuenta desactivada | `cuenta_app` | 🟡 | V2-M01.08 |
 
-Las brechas de tablas (`token_recuperacion`, `orden_servicio`, `orden_refaccion`, `franja_horario`, `cuenta_app.usuario`, `manual.archivo_pdf`) se cierran con **migraciones nuevas** en el backend que dejen los nombres y campos de la ficha (renombrar o crear y migrar datos). Los campos extra se conservan como ➕. Ver [`T05-contrato-api-v2.md`](modulos/T05-contrato-api-v2.md).
+### 2. Mis vehículos y postventa — plan [M02](modulos/M02-vehiculos-y-postventa.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Mis vehículos (garaje) | `cliente`, `vehiculo_cliente` | 🟡 | V2-M02.01 |
+| Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
+| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 | V2-M02.03, V2-T05.05 |
+| Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 datos en la app | V2-M02.04 |
+| Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 solo 1.ª página | V2-M02.05, V2-T05.06 |
+| Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 | V2-M02.06, V2-T05.06 |
+| Disponibilidad del taller | `franja_horario`, `cita` | ❌ sin tabla | V2-M02.07, V2-T05.07 |
+| Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 | V2-M02.08 |
+| Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 | V2-M02.09 |
+| Cancelar y reprogramar cita | `cita`, `franja_horario` | 🟡 sin reprogramar | V2-M02.10, V2-M02.13 |
+| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 sin QR | V2-M02.11, V2-M02.12 |
+
+### 3. Catálogo y calculadora — plan [M03](modulos/M03-catalogo-y-calculadora.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Catálogo de modelos actuales | `modelo_catalogo`, `modelo_catalogo_imagen` | 🟡 | V2-M03.01, V2-M03.02 |
+| Comparador de modelos | `modelo_catalogo` | ⬜ | V2-M03.03 |
+| Calculadora de toma a cuenta (estimación no vinculante) | `modelo_catalogo`, `vehiculo_cliente`, `parametro_toma_cuenta`, `estimacion_toma_cuenta` | ❌ no existe | V2-M03.04 a V2-M03.07 |
+
+### 4. Taller en vivo — plan [M04](modulos/M04-taller-en-vivo.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | ⬜ | Ver M04 |
+| Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | ⬜ | Ver M04 |
+| Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | ⬜ | Ver M04 |
+
+### 5. Mantenimiento inteligente — plan [M05](modulos/M05-mantenimiento-inteligente.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | ⬜ | Ver M05 |
+| Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | ⬜ | Ver M05 |
+
+### 6. Notificaciones — plan [M06](modulos/M06-notificaciones.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | ⬜ | Ver M06 |
+| Bandeja de avisos | `notificacion` | ⬜ | Ver M06 |
+| Preferencias de avisos | `preferencia_notificacion` | ⬜ | Ver M06 |
+
+### 7. Mensajería con el asesor — plan [M07](modulos/M07-mensajeria-asesor.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Chat con el asesor | `conversacion`, `mensaje`, `orden_servicio`, `cita` | ⬜ | Ver M07 |
+
+### 8. Pagos y facturas — plan [M08](modulos/M08-pagos-y-facturas.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ | Ver M08 |
+| Métodos de pago guardados | `metodo_pago` | ⬜ | Ver M08 |
+| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ | Ver M08 |
+
+### 9. Documentos y vencimientos — plan [M09](modulos/M09-documentos-y-vencimientos.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | ⬜ | Ver M09 |
+| Alertas de vencimiento | `documento_vehiculo`, `notificacion` | ⬜ | Ver M09 |
+
+### 10. Garantía y campañas de seguridad — plan [M10](modulos/M10-garantia-y-campanas.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Cobertura de garantía | `garantia`, `vehiculo_cliente` | ⬜ | Ver M10 |
+| Campañas de seguridad (recalls) | `campana_seguridad`, `campana_vehiculo`, `vehiculo_cliente`, `cita` | ⬜ | Ver M10 |
+
+### 11. Asistencia en camino — plan [M11](modulos/M11-asistencia-en-camino.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | ⬜ | Ver M11 |
+
+### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Puntos y niveles | `movimiento_puntos` | ⬜ | Ver M12 |
+| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | ⬜ | Ver M12 |
+| Referidos | `referido`, `prospecto` | ⬜ | Ver M12 |
+
+### 13. Promociones y novedades — plan [M13](modulos/M13-promociones.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Promociones personalizadas | `promocion`, `promocion_vista`, `cita` | ⬜ | Ver M13 |
+
+### 14. Tienda de refacciones y accesorios — plan [M14](modulos/M14-tienda.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | ⬜ | Ver M14 |
+| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | ⬜ | Ver M14 |
+
+### 15. Encuestas y NPS — plan [M15](modulos/M15-encuestas-nps.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Encuesta de satisfacción del servicio | `encuesta_servicio`, `orden_servicio` | ⬜ | Ver M15 |
+
+### 16. Estreno — plan [M16](modulos/M16-estreno.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Prueba de manejo y cotización de auto nuevo | `solicitud_estreno`, `prospecto`, `modelo_catalogo`, `estimacion_toma_cuenta` | ⬜ | Ver M16 |
+
+### 17. Recolección y entrega a domicilio — plan [M17](modulos/M17-recoleccion-y-entrega.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | ⬜ | Ver M17 |
+
+### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | ⬜ | Ver M18 |
+
+### 19. Cuentas familiares — plan [M19](modulos/M19-cuentas-familiares.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Compartir vehículo con permisos | `acceso_compartido`, `vehiculo_cliente`, `cuenta_app` | ⬜ | Ver M19 |
+
+### 20. Seguridad y privacidad — plan [M22](modulos/M22-seguridad-y-privacidad.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Aviso de privacidad | `aviso_privacidad`, `aceptacion_aviso`, `cuenta_app` | ⬜ | Ver M22 |
+| Derechos ARCO (descargar datos y borrar cuenta) | `solicitud_arco`, `cliente`, `cuenta_app` | ⬜ | Ver M22 |
+
+### 21. Asistente CareCar (IA) — plan [M24](modulos/M24-asistente-carecar.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Preguntas sobre el manual del vehículo | `manual`, `fragmento_manual`, `consulta_asistente` | ⬜ | Ver M24 |
+| Identificación de testigos del tablero | `consulta_asistente`, `vehiculo_cliente` | ⬜ | Ver M24 |
+
+### 22. Valuación formal — plan [M26](modulos/M26-valuacion.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Valuación y oferta de toma a cuenta | `valuacion`, `estimacion_toma_cuenta`, `cita` | ⬜ | Ver M26 |
+
+### 23. Ayuda y sucursales — plan [M27](modulos/M27-ayuda-y-sucursales.md)
+
+| Funcionalidad | Tablas | Estado | Historias |
+| --- | --- | --- | --- |
+| Preguntas frecuentes | `pregunta_frecuente` | ⬜ | Ver M27 |
+| Sucursales y horarios | `sucursal` | ⬜ | Ver M27 |
+| Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
+
+Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
+
+## Tablas que hoy existen con otro nombre o faltan (backend)
+
+Prioridad máxima del backend: dejar estas tablas con los nombres y campos de la ficha mediante **migraciones nuevas**.
+
+| Ficha | Hoy en el backend | Historia |
+| --- | --- | --- |
+| `cuenta_app.usuario` | No existe (se usa `cliente.correo`) | V2-T05.03 |
+| `token_recuperacion` | `codigo_recuperacion` (código de 6 dígitos) | V2-T05.04 |
+| `manual.archivo_pdf` | `manual.archivo` | V2-T05.05 |
+| `orden_servicio`, `orden_refaccion` | `servicio`, `renglon_servicio` (sin `mano_de_obra`, `estatus`, `fecha_cierre`) | V2-T05.06 |
+| `franja_horario` | No existe (`HorarioTaller` en código) | V2-T05.07 |
+
+Tablas de la ficha que ya existen sin cambios: `cliente`, `vehiculo_cliente`, `cita`, `modelo_catalogo`, `sesion_app`, `refaccion`, `movimiento_inventario`, `factura`, `prospecto`. Todas las demás se crean con las historias de su módulo.
