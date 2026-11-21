@@ -271,19 +271,16 @@ class _LineaState extends State<_Linea> {
             ),
           ),
         if (_ultima.hayMas)
-          OutlinedButton.icon(
+          ShadButton.outline(
             key: PantallaHistorial.botonCargarMas,
             onPressed: _cargando ? null : _cargarMas,
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(0, TemaCareCar.altoMinimoToque),
-            ),
-            icon: _cargando
+            leading: _cargando
                 ? const SizedBox.square(
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.expand_more),
-            label: Text(_cargando ? 'Cargando…' : 'Cargar más'),
+            child: Text(_cargando ? 'Cargando…' : 'Cargar más'),
           ),
       ],
     );

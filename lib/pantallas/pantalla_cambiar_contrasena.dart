@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
@@ -224,8 +225,9 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                           : null,
                     ),
                     const SizedBox(height: TemaCareCar.espacioSecciones),
-                    FilledButton(
+                    ShadButton(
                       key: PantallaCambiarContrasena.botonGuardar,
+                      width: double.infinity,
                       onPressed: _guardando ? null : _guardar,
                       child: Text(
                         _guardando ? 'Guardando…' : 'Guardar contraseña',
@@ -233,7 +235,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                     ),
                     if (obligatorio && widget.alCerrarSesion != null) ...[
                       const SizedBox(height: TemaCareCar.espacioCampos),
-                      TextButton(
+                      ShadButton.link(
                         key: PantallaCambiarContrasena.botonCerrarSesion,
                         onPressed: _guardando ? null : widget.alCerrarSesion,
                         child: const Text('Cerrar sesión'),

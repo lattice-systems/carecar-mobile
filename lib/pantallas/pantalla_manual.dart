@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:pdfx/pdfx.dart';
 
 import '../api/carecar_api.dart';
@@ -105,11 +105,11 @@ class _PantallaManualState extends State<PantallaManual> {
           children: [
             Aviso.informacion(titulo: mensaje),
             const SizedBox(height: TemaCareCar.espacioCampos),
-            OutlinedButton(
+            ShadButton.outline(
               onPressed: _reintentar,
               child: const Text('Reintentar'),
             ),
-            TextButton(
+            ShadButton.link(
               onPressed: () => Navigator.of(context).maybePop(),
               child: const Text('Volver al detalle'),
             ),
