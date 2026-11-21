@@ -20,6 +20,7 @@ class TarjetaFichaTecnica extends StatelessWidget {
       (Icons.event_seat_outlined, 'Pasajeros', ficha.pasajeros),
       (Icons.local_gas_station_outlined, 'Propulsión', ficha.propulsion),
       (Icons.settings_outlined, 'Motor', ficha.motor),
+      (Icons.bolt_outlined, 'Potencia', ficha.potencia),
       (Icons.tune, 'Transmisión', ficha.transmision),
       (Icons.alt_route, 'Tracción', ficha.traccion),
     ];
@@ -38,8 +39,8 @@ class TarjetaFichaTecnica extends StatelessWidget {
           Text('Ficha técnica', style: temas.titleMedium),
           const SizedBox(height: 4),
           Text(
-            'Datos de referencia del modelo; pueden variar según el año y la '
-            'versión. La ficha de tu unidad está en su manual.',
+            'Especificaciones del modelo según su año y versión. El detalle '
+            'de tu unidad está en su manual del propietario.',
             style: temas.bodyMedium?.copyWith(
               color: TemaCareCar.textoSecundario,
             ),

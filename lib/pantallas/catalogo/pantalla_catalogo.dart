@@ -226,7 +226,12 @@ class PantallaDetalleModelo extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(modelo.descripcion!, style: temas.bodyLarge),
                   ],
-                  if (fichaDeModelo(modelo.modelo) case final ficha?) ...[
+                  if (fichaDeModelo(
+                        modelo.modelo,
+                        anio: modelo.anio,
+                        version: modelo.version,
+                      )
+                      case final ficha?) ...[
                     const SizedBox(height: TemaCareCar.espacioSecciones),
                     TarjetaFichaTecnica(ficha: ficha),
                   ],

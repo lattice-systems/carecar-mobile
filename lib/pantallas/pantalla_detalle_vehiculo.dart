@@ -64,7 +64,7 @@ class FichaVehiculo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final v = vehiculo;
-    final ficha = fichaDeModelo(v.modelo);
+    final ficha = fichaDeModelo(v.modelo, anio: v.anio, version: v.version);
     final temas = Theme.of(context).textTheme;
     final subtitulo = [v.marca, v.version].whereType<String>().join(' · ');
 
@@ -150,7 +150,7 @@ class FichaVehiculo extends StatelessWidget {
                 const SizedBox(height: 8),
                 // Datos opcionales del mock. No inferirlos del nombre ni del VIN.
                 DatoLectura('Marca', v.marca),
-                DatoLectura('Tipo', v.tipo),
+                DatoLectura('Tipo', v.tipo ?? ficha?.carroceria),
                 DatoLectura('Versión', v.version),
                 DatoLectura('Modelo (año)', '${v.anio}'),
                 DatoLectura('Color', v.color),
