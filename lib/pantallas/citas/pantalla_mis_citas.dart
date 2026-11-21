@@ -578,7 +578,15 @@ class TarjetaCita extends StatelessWidget {
                 key: PantallaMisCitas.botonTicket(c.id),
                 onPressed: alVerTicket,
                 leading: const Icon(Icons.receipt_long_outlined, size: 18),
-                child: const Text('Ver ticket'),
+                // Flexible: con letra grande y pantalla angosta el texto se
+                // recorta en vez de desbordar la fila del boton.
+                child: const Flexible(
+                  child: Text(
+                    'Ver ticket',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ),
             ),
           ],
