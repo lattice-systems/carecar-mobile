@@ -144,28 +144,18 @@ class _Saludo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primero = nombre.split(RegExp(r'\s+')).first;
+    // A la derecha del encabezado: textos alineados al borde derecho y la
+    // pastilla de iniciales al final.
     return Row(
       children: [
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: Colors.white.withValues(alpha: 0.2),
-          child: Text(
-            _iniciales(nombre),
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
         Expanded(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 'Hola, $primero',
                 maxLines: 1,
+                textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   color: Colors.white,
@@ -176,6 +166,7 @@ class _Saludo extends StatelessWidget {
               Text(
                 nombre,
                 maxLines: 1,
+                textAlign: TextAlign.right,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   color: Colors.white.withValues(alpha: 0.75),
@@ -183,6 +174,19 @@ class _Saludo extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+        const SizedBox(width: 10),
+        CircleAvatar(
+          radius: 18,
+          backgroundColor: Colors.white.withValues(alpha: 0.2),
+          child: Text(
+            _iniciales(nombre),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
           ),
         ),
       ],
