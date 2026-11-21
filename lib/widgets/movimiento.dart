@@ -74,6 +74,9 @@ abstract final class Movimiento {
 extension MovimientoContinuo on Widget {
   /// Aplica [animar] solo si el movimiento continuo esta permitido; si no,
   /// devuelve el widget quieto.
-  Widget siempre(BuildContext context, Widget Function(Widget) animar) =>
-      Movimiento.permitido(context) ? animar(this) : this;
+  Widget siempre(
+    BuildContext context,
+    Widget Function(Widget) animar, {
+    bool quieto = false,
+  }) => Movimiento.permitido(context) && !quieto ? animar(this) : this;
 }

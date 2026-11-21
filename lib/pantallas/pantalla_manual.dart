@@ -73,13 +73,17 @@ class _PantallaManualState extends State<PantallaManual> {
 
   PdfControllerPinch? _pdf;
   String? _falloPdf;
-  int _pagina = 1;
-  int _total = 0;
+  // Notifiers y no `setState`: pasar de pagina solo repinta el contador, no la
+  // pantalla entera (encabezado incluido), y el scroll del PDF no se traba.
+  final ValueNotifier<int> _pagina = ValueNotifier(1);
+  final ValueNotifier<int> _total = ValueNotifier(0);
   int _intento = 0;
 
   @override
   void dispose() {
     _pdf?.dispose();
+    _pagina.dispose();
+    _total.dispose();
     super.dispose();
   }
 
@@ -88,8 +92,8 @@ class _PantallaManualState extends State<PantallaManual> {
     setState(() {
       _pdf = null;
       _falloPdf = null;
-      _pagina = 1;
-      _total = 0;
+      _pagina.value = 1;
+      _total.value = 0;
       _intento++;
       _datos = null;
       _falloCarga = null;
@@ -141,27 +145,26 @@ class _PantallaManualState extends State<PantallaManual> {
     return Column(
       children: [
         Expanded(
-          child: PdfViewPinch(
-            key: ValueKey(_intento),
-            controller: _pdf!,
-            onDocumentLoaded: (pdf) {
-              if (mounted) {
-                setState(() => _total = pdf.pagesCount);
-              }
-            },
-            onPageChanged: (pagina) {
-              if (mounted) {
-                setState(() => _pagina = pagina);
-              }
-            },
-            onDocumentError: (error) {
-              if (mounted) {
-                setState(
-                  () =>
-                      _falloPdf = 'No se pudo cargar el PDF. Intenta de nuevo.',
-                );
-              }
-            },
+          // Aislado: lo que se repinta al hacer scroll no toca el resto.
+          child: RepaintBoundary(
+            child: PdfViewPinch(
+              key: ValueKey(_intento),
+              controller: _pdf!,
+              onDocumentLoaded: (pdf) {
+                if (mounted) _total.value = pdf.pagesCount;
+              },
+              onPageChanged: (pagina) {
+                if (mounted) _pagina.value = pagina;
+              },
+              onDocumentError: (error) {
+                if (mounted) {
+                  setState(
+                    () => _falloPdf =
+                        'No se pudo cargar el PDF. Intenta de nuevo.',
+                  );
+                }
+              },
+            ),
           ),
         ),
         Padding(
@@ -182,17 +185,26 @@ class _PantallaManualState extends State<PantallaManual> {
     );
   }
 
-  Widget _contador() => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-    decoration: BoxDecoration(
-      gradient: TemaCareCar.degradadoMarca,
-      borderRadius: BorderRadius.circular(99),
+  Widget _contador() => ValueListenableBuilder<int>(
+    valueListenable: _total,
+    builder: (context, total, _) => ValueListenableBuilder<int>(
+      valueListenable: _pagina,
+      builder: (context, pagina, _) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        decoration: BoxDecoration(
+          gradient: TemaCareCar.degradadoMarca,
+          borderRadius: BorderRadius.circular(99),
+        ),
+        child: Text(
+          total == 0 ? 'Cargando PDF…' : 'Página $pagina de $total',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     ),
-    child: Text(
-      _total == 0 ? 'Cargando PDF…' : 'Página $_pagina de $_total',
-      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-    ),
-  ).animate().fadeIn().slideY(begin: 0.5);
+  );
 
   @override
   Widget build(BuildContext context) => PaginaCareCar(
