@@ -1,0 +1,10 @@
+#!/bin/sh
+# Quita del mensaje de commit cualquier co-autoría o firma de herramientas de IA
+# (regla R3 de AGENTS.md). Se activa con: git config core.hooksPath .githooks
+msg_file="$1"
+patron='^(Co-Authored-By:.*(Claude|Anthropic|anthropic\.com|Codex|OpenAI|openai\.com|Gemini|Antigravity|Copilot|Cursor)|.*Generated with \[?(Claude|Codex|Gemini|Antigravity|Copilot))'
+tmp="$(mktemp)"
+grep -Eiv "$patron" "$msg_file" > "$tmp"
+# Quita líneas vacías sobrantes al final del mensaje.
+sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$tmp" > "$msg_file"
+rm -f "$tmp"
