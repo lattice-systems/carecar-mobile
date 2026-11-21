@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../notificaciones/servicio_notificaciones.dart';
+
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -29,6 +32,7 @@ class PantallaPerfil extends StatefulWidget {
   final Future<void> Function() alCerrarSesion;
 
   static const lista = Key('perfil_lista');
+  static const interruptorRecordatorios = Key('perfil_recordatorios');
   static const botonReintentar = Key('perfil_reintentar');
   static const avatar = Key('perfil_avatar');
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
@@ -42,6 +46,14 @@ class PantallaPerfil extends StatefulWidget {
 }
 
 class _PantallaPerfilState extends State<PantallaPerfil> {
+  /// Interruptor de recordatorios; se guarda en el telefono.
+  bool _recordatorios = Notificaciones.actual.activo;
+
+  Future<void> _cambiarRecordatorios(bool valor) async {
+    setState(() => _recordatorios = valor);
+    await Notificaciones.actual.cambiarActivo(valor);
+  }
+
   late Future<Perfil> _perfil;
   String _version = '';
 
@@ -155,6 +167,23 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                   titulo: 'Cambiar contraseña',
                   subtitulo: 'Actualiza la contraseña con la que entras',
                   alTocar: _cambiarContrasena,
+                ),
+              ],
+            ),
+            _Seccion(
+              titulo: 'Notificaciones',
+              opciones: [
+                _Opcion(
+                  icono: Icons.notifications_active_outlined,
+                  titulo: 'Recordatorios de citas',
+                  subtitulo: 'Un día y dos horas antes de cada cita',
+                  alTocar: () => _cambiarRecordatorios(!_recordatorios),
+                  extremo: Switch(
+                    key: PantallaPerfil.interruptorRecordatorios,
+                    value: _recordatorios,
+                    activeTrackColor: TemaCareCar.turquesaOscuro,
+                    onChanged: _cambiarRecordatorios,
+                  ),
                 ),
               ],
             ),
@@ -464,8 +493,11 @@ class _Opcion extends StatelessWidget {
     this.alTocar,
     this.llave,
     this.peligro = false,
+    this.extremo,
   });
 
+  /// Lo que va a la derecha en lugar de la flecha (un interruptor).
+  final Widget? extremo;
   final IconData icono;
   final String titulo;
   final String? subtitulo;
@@ -521,7 +553,9 @@ class _Opcion extends StatelessWidget {
                   ],
                 ),
               ),
-              if (alTocar != null && !peligro)
+              if (extremo != null)
+                extremo!
+              else if (alTocar != null && !peligro)
                 const Icon(
                   Icons.chevron_right,
                   color: TemaCareCar.textoSecundario,

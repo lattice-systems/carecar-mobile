@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../api/carecar_api.dart';
 import '../api/modelos/perfil.dart';
+import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/menu_carecar.dart';
@@ -35,6 +36,35 @@ class _PantallaInicioState extends State<PantallaInicio> {
   final _navegador = GlobalKey<NavigatorState>();
   bool _cerrando = false;
   late final Future<Perfil> _perfil = widget.api.miPerfil();
+
+  @override
+  void initState() {
+    super.initState();
+    final avisos = Notificaciones.actual;
+    avisos.toques.addListener(_abrirCitas);
+    // Si la app arranco desde un recordatorio, se abre «Mis citas».
+    if (avisos.abrirCitasAlEntrar) {
+      avisos.abrirCitasAlEntrar = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) => _abrirCitas());
+    }
+  }
+
+  @override
+  void dispose() {
+    Notificaciones.actual.toques.removeListener(_abrirCitas);
+    super.dispose();
+  }
+
+  /// Al tocar un recordatorio: vuelve al menu y abre «Mis citas».
+  void _abrirCitas() {
+    final navegador = _navegador.currentState;
+    if (!mounted || navegador == null) return;
+    navegador.popUntil((ruta) => ruta.isFirst);
+    abrirPantalla(
+      navegador.context,
+      PantallaMisCitas(api: widget.api, alCerrarSesion: _cerrarSesion),
+    );
+  }
 
   Future<void> _cerrarSesion() async {
     if (_cerrando) return;
