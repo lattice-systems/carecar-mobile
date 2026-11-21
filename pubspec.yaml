@@ -66,7 +66,6 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   yaml: ^3.1.4
   flutter_launcher_icons: ^0.9.3
-  flutter_native_splash: ^2.2.16
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -142,7 +141,9 @@ flutter_icons:
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"
 
-# Pantalla de arranque (se regenera con `dart run flutter_native_splash:create`).
+# Pantalla de arranque. Ya esta generada; para regenerarla agrega
+# flutter_native_splash a dev_dependencies, corre `dart run flutter_native_splash:create`
+# y quitala otra vez (su plugin de Android no declara namespace y rompe el build).
 flutter_native_splash:
   color: "#F5F7FA"
   image: assets/marca/agencia360-icono.png
