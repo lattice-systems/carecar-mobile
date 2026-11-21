@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_animate/flutter_animate.dart';
+
 import '../api/carecar_api.dart';
+import '../api/modelos/perfil.dart';
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/menu_carecar.dart';
@@ -31,6 +34,7 @@ class PantallaInicio extends StatefulWidget {
 class _PantallaInicioState extends State<PantallaInicio> {
   final _navegador = GlobalKey<NavigatorState>();
   bool _cerrando = false;
+  late final Future<Perfil> _perfil = widget.api.miPerfil();
 
   Future<void> _cerrarSesion() async {
     if (_cerrando) return;
@@ -52,6 +56,14 @@ class _PantallaInicioState extends State<PantallaInicio> {
         builder: (context) => PaginaCareCar(
           titulo: 'Menú',
           regresar: false,
+          cabecera: FutureBuilder<Perfil>(
+            future: _perfil,
+            builder: (context, snap) {
+              final nombre = snap.data?.nombre.trim() ?? '';
+              if (nombre.isEmpty) return const SizedBox.shrink();
+              return _Saludo(nombre: nombre);
+            },
+          ),
           alCerrarSesion: _cerrarSesion,
           contenido: RejillaMenu(
             tarjetas: [
@@ -117,4 +129,63 @@ class _PantallaInicioState extends State<PantallaInicio> {
       ),
     ),
   );
+}
+
+String _iniciales(String nombre) {
+  final partes = nombre.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty);
+  return partes.take(2).map((p) => p[0].toUpperCase()).join();
+}
+
+/// Saludo con pastilla de iniciales y nombre completo.
+class _Saludo extends StatelessWidget {
+  const _Saludo({required this.nombre});
+  final String nombre;
+
+  @override
+  Widget build(BuildContext context) {
+    final primero = nombre.split(RegExp(r'\s+')).first;
+    return Row(
+      children: [
+        CircleAvatar(
+          radius: 18,
+          backgroundColor: Colors.white.withValues(alpha: 0.2),
+          child: Text(
+            _iniciales(nombre),
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 13,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Hola, $primero',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+              Text(
+                nombre,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.75),
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.2);
+  }
 }

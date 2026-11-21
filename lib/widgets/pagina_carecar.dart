@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../tema/tema_carecar.dart';
+import 'logo_carecar.dart';
 import 'menu_carecar.dart';
 import 'movimiento.dart';
 import 'pantalla.dart';
@@ -17,6 +18,7 @@ class PaginaCareCar extends StatefulWidget {
     required this.contenido,
     required this.alCerrarSesion,
     this.regresar = true,
+    this.cabecera,
     this.expandir = false,
     this.alRefrescar,
     this.anchoMaximo = EstiloMenu.anchoMaximo,
@@ -26,6 +28,9 @@ class PaginaCareCar extends StatefulWidget {
   final Widget contenido;
   final VoidCallback alCerrarSesion;
   final bool regresar;
+
+  /// Saludo opcional bajo el titulo (p. ej. nombre de la persona).
+  final Widget? cabecera;
   final bool expandir;
 
   /// Ancho maximo del contenido; en pantallas amplias queda centrado.
@@ -73,6 +78,7 @@ class _PaginaCareCarState extends State<PaginaCareCar> {
         _Encabezado(
           titulo: titulo,
           regresar: widget.regresar,
+          cabecera: widget.cabecera,
           alCerrarSesion: widget.alCerrarSesion,
           colapso: _colapso,
         ),
@@ -118,12 +124,14 @@ class _Encabezado extends StatelessWidget {
   const _Encabezado({
     required this.titulo,
     required this.regresar,
+    required this.cabecera,
     required this.alCerrarSesion,
     required this.colapso,
   });
 
   final String titulo;
   final bool regresar;
+  final Widget? cabecera;
   final VoidCallback alCerrarSesion;
   final ValueListenable<double> colapso;
 
@@ -252,14 +260,7 @@ class _Encabezado extends StatelessWidget {
                 else
                   Padding(
                     padding: const EdgeInsets.only(left: 16, right: 12),
-                    child: Text(
-                      'CARECAR',
-                      style: temas.labelSmall?.copyWith(
-                        color: TemaCareCar.turquesa,
-                        letterSpacing: 2,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    child: const LogoCareCar(tamano: 32),
                   ),
                 if (baja) Expanded(child: tituloAnimado) else const Spacer(),
                 IconButton(
@@ -276,6 +277,11 @@ class _Encabezado extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(16, lerpDouble(8, 0, c)!, 16, 0),
               child: tituloAnimado,
+            ),
+          if (!baja && cabecera != null)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+              child: cabecera,
             ),
         ],
       ),
