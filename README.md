@@ -320,3 +320,17 @@ Se cerraron en los Sprints 1 a 3.
 - **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)
 - **ERP frontend:** [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend)
 - **Documentación de Flutter:** [docs.flutter.dev](https://docs.flutter.dev)
+
+## Correr en local con el celular
+
+Todo corre en la laptop; el celular Android se conecta por USB (con depuracion USB activada).
+
+1. Levanta el backend (puerto 8089 detras de nginx):
+   `cd ../backend-agencia360-wt-app2 && ADMIN_INICIAL_USUARIO=admin ADMIN_INICIAL_CONTRASENA=Admin12345 GERENTE_INICIAL_USUARIO=gerente GERENTE_INICIAL_CONTRASENA=Gerente12345 docker compose --profile proxy up -d`
+2. Datos de ejemplo (opcional): `API=http://localhost:8089 bash ../backend-agencia360-wt-app2/scripts/cargar-datos-de-ejemplo.sh`
+3. Instala y abre la app: `bash scripts/instalar_en_celular.sh` (puerto distinto: `API_PUERTO=8090 bash scripts/instalar_en_celular.sh`). Hace `adb reverse`, compila y usa `-r`.
+   Si adb dice `unauthorized`: `adb kill-server && adb start-server` y acepta el aviso en el telefono.
+
+Usuario de prueba: `laura.mendez@example.com` / `CareCar2026!`.
+Correos de recuperacion de contrasena: Mailpit en http://localhost:8025.
+Sin conexion, la app muestra los ultimos datos guardados (cache en disco, se borra al cerrar sesion).

@@ -3,8 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
+import '../cache/carecar_api_con_cache.dart';
 import '../widgets/aviso.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/aviso_sin_conexion.dart';
 import '../widgets/carga_datos.dart';
 import '../widgets/formato.dart';
 import '../widgets/movimiento.dart';
@@ -39,25 +41,33 @@ class _PantallaVehiculosState extends State<PantallaVehiculos> {
       titulo: 'Mis vehículos',
       alCerrarSesion: widget.alCerrarSesion,
       alRefrescar: _recargador.recargar,
-      contenido: CargaDatos<List<Vehiculo>>(
-        recargador: _recargador,
-        cargar: widget.api.misVehiculos,
-        mensajeCarga: 'Cargando vehículos…',
-        mensajeError: 'No se pudieron cargar tus vehículos',
-        construir: (vehiculos) => vehiculos.isEmpty
-            ? const Aviso.informacion(
-                titulo: 'No tienes vehículos asociados',
-                detalle: 'Contacta a tu agencia para revisar tus vehículos.',
-              )
-            : amplia
-            ? _maestroDetalle(vehiculos)
-            : RejillaAdaptable(
-                maxColumnas: 2,
-                hijos: [
-                  for (final (i, v) in vehiculos.indexed)
-                    _animar(i, _tarjeta(v, () => _abrir(v))),
-                ],
-              ),
+      contenido: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (widget.api case final CarecarApiConCache c)
+            AvisoSinConexion(sinConexion: c.sinConexion),
+          CargaDatos<List<Vehiculo>>(
+            recargador: _recargador,
+            cargar: widget.api.misVehiculos,
+            mensajeCarga: 'Cargando vehículos…',
+            mensajeError: 'No se pudieron cargar tus vehículos',
+            construir: (vehiculos) => vehiculos.isEmpty
+                ? const Aviso.informacion(
+                    titulo: 'No tienes vehículos asociados',
+                    detalle:
+                        'Contacta a tu agencia para revisar tus vehículos.',
+                  )
+                : amplia
+                ? _maestroDetalle(vehiculos)
+                : RejillaAdaptable(
+                    maxColumnas: 2,
+                    hijos: [
+                      for (final (i, v) in vehiculos.indexed)
+                        _animar(i, _tarjeta(v, () => _abrir(v))),
+                    ],
+                  ),
+          ),
+        ],
       ),
     );
   }
