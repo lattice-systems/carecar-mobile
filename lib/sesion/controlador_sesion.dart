@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../notificaciones/servicio_notificaciones.dart';
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
 import '../api/modelos/modelos.dart';
@@ -195,6 +196,8 @@ class ControladorSesion extends ChangeNotifier {
       }
     }
 
+    // Los recordatorios son de esta cuenta: no deben sonar para otra.
+    await Notificaciones.actual.alCerrarSesion();
     await _terminar();
   }
 

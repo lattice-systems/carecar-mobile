@@ -8,6 +8,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
+import '../../notificaciones/servicio_notificaciones.dart';
 import '../../tema/tema_carecar.dart';
 import '../../widgets/tarjeta_intro.dart';
 import '../../widgets/pagina_carecar.dart';
@@ -75,9 +76,23 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
   void initState() {
     super.initState();
     _datos = _cargar();
+    // Momento amable para pedir permiso: el cliente vino a ver sus citas.
+    Notificaciones.actual.pedirPermisoSiHaceFalta();
   }
 
   Future<_Datos> _cargar() async {
+    final datos = await _leer();
+    // Los recordatorios siguen a lo que diga el servidor.
+    Notificaciones.actual.sincronizar(
+      datos.citas,
+      vehiculos: {
+        for (final v in datos.vehiculos.values) v.id: '${v.modelo} ${v.anio}',
+      },
+    );
+    return datos;
+  }
+
+  Future<_Datos> _leer() async {
     final pagina = await widget.api.paginaDeCitas();
     final citas = pagina.contenido;
     // Si el backend ya manda el nombre del vehiculo no hace falta pedirlos.
@@ -162,6 +177,7 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
     setState(() => _cancelando.add(cita.id));
     try {
       await widget.api.cancelarCita(cita.id);
+      await Notificaciones.actual.alCancelar(cita.id);
       if (!mounted) return;
       _avisar('Tu cita fue cancelada.', exito: true);
     } on Conflicto catch (e) {
