@@ -408,8 +408,12 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
     );
   }
 
+  static Widget _envolverResumen(bool baja, Widget resumen) =>
+      baja ? Expanded(child: resumen) : resumen;
+
   Widget _barraConfirmar(BuildContext context) {
     final temas = Theme.of(context).textTheme;
+    final baja = Pantalla.esBaja(context);
     final f = _franja;
     return Container(
       decoration: const BoxDecoration(
@@ -419,44 +423,55 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: SafeArea(
         top: false,
-        child: Column(
+        child: Flex(
+          // En horizontal resumen y boton comparten fila para dejar alto
+          // al contenido.
+          direction: baja ? Axis.horizontal : Axis.vertical,
           mainAxisSize: MainAxisSize.min,
           children: [
-            AnimatedSwitcher(
-              duration: 250.ms,
-              child: f == null
-                  ? Text(
-                      'Elige vehículo, día y horario.',
-                      key: const ValueKey('sin-resumen'),
-                      style: temas.bodyMedium?.copyWith(
-                        color: TemaCareCar.textoSecundario,
-                      ),
-                    )
-                  : Row(
-                      key: ValueKey('resumen-${f.franjaId}-${f.fecha}'),
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.event_available,
-                          size: 18,
-                          color: TemaCareCar.turquesaOscuro,
+            _envolverResumen(
+              baja,
+              AnimatedSwitcher(
+                duration: 250.ms,
+                child: f == null
+                    ? Text(
+                        'Elige vehículo, día y horario.',
+                        key: const ValueKey('sin-resumen'),
+                        style: temas.bodyMedium?.copyWith(
+                          color: TemaCareCar.textoSecundario,
                         ),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: Text(
-                            '${formatoFechaLarga(f.fecha)} · '
-                            '${f.horaInicio} – ${f.horaFin}',
-                            overflow: TextOverflow.ellipsis,
-                            style: temas.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
+                      )
+                    : Row(
+                        key: ValueKey('resumen-${f.franjaId}-${f.fecha}'),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.event_available,
+                            size: 18,
+                            color: TemaCareCar.turquesaOscuro,
+                          ),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              '${formatoFechaLarga(f.fecha)} · '
+                              '${f.horaInicio} – ${f.horaFin}',
+                              overflow: TextOverflow.ellipsis,
+                              style: temas.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+              ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 10, width: 16),
             FilledButton.icon(
+              style: baja
+                  ? FilledButton.styleFrom(
+                      minimumSize: const Size(200, TemaCareCar.altoMinimoToque),
+                    )
+                  : null,
               key: PantallaAgendarCita.botonConfirmar,
               onPressed: _listo ? _confirmar : null,
               icon: _enviando
