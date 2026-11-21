@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../notificaciones/servicio_notificaciones.dart';
+
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../widgets/dialogos.dart';
@@ -135,6 +138,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
           fecha: franja.fecha,
         ),
       );
+      await Notificaciones.actual.alAgendar(cita);
       if (!mounted) return;
       await mostrarCheckExito(context);
       if (!mounted) return;
