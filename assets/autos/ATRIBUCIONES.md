@@ -87,3 +87,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **sentra_2** — 2020 Nissan Sentra SV, front right, 06-17-2026.jpg — BuickCentury04 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_right,_06-17-2026.jpg
 - **z_1** — 2023 Nissan Z Performance 6MT in Passion Red TriCoat, Rear Left, 05-17-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2023_Nissan_Z_Performance_6MT_in_Passion_Red_TriCoat,_Rear_Left,_05-17-2023.jpg
 - **z_2** — Nissan Z NISMO, 2023, rear.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_Z_NISMO,_2023,_rear.jpg
+- **pathfinder_1** — 2022 Nissan Pathfinder, rear 6.11.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder,_rear_6.11.22.jpg
+- **pathfinder_2** — 2022 Nissan Pathfinder SV, front 6.2.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder_SV,_front_6.2.22.jpg
