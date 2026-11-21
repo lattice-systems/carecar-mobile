@@ -9,6 +9,7 @@ import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
+import '../../widgets/tarjeta_intro.dart';
 import '../../widgets/pagina_carecar.dart';
 import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
@@ -348,61 +349,14 @@ class _Encabezado extends StatelessWidget {
   const _Encabezado();
 
   @override
-  Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: TemaCareCar.degradadoMarca,
-        borderRadius: BorderRadius.all(Radius.circular(24)),
-      ),
-      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'CARECAR',
-                  style: temas.labelSmall?.copyWith(
-                    color: TemaCareCar.turquesa,
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Servicio en taller',
-                  style: temas.titleLarge?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Agenda tu visita al taller y consulta tus citas.',
-                  style: temas.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.75),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
-            ),
-            child: const Icon(
-              Icons.event_available_outlined,
-              color: TemaCareCar.turquesa,
-              size: 30,
-            ),
-          ),
-        ],
-      ),
-    ).animate().fadeIn(duration: 400.ms);
-  }
+  Widget build(BuildContext context) => const TarjetaIntro(
+    etiqueta: 'SERVICIO EN TALLER',
+    titulo: 'Tus citas',
+    texto: 'Agenda tu visita al taller y consulta tus citas.',
+    icono: Icons.calendar_month_rounded,
+    color: Color(0xFF3B5BA9),
+    fondo: Color(0xFFEAEFFA),
+  );
 }
 
 class _TituloSeccion extends StatelessWidget {

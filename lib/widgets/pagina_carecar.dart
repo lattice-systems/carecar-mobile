@@ -139,50 +139,61 @@ class _Encabezado extends StatelessWidget {
   Widget build(BuildContext context) {
     final temas = Theme.of(context).textTheme;
     const blanco = Colors.white;
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(
-        gradient: TemaCareCar.degradadoMarca,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
+    final relleno = MediaQuery.paddingOf(context);
+    // Tarjeta flotante: empieza DEBAJO de la barra de notificaciones (nunca
+    // pasa por detras de ella) y deja un margen a los lados.
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        12 + relleno.left,
+        relleno.top + 8,
+        12 + relleno.right,
+        0,
       ),
-      child: Stack(
-        children: [
-          // Destellos que flotan despacio detras del titulo.
-          Positioned(
-            right: -40,
-            top: -30,
-            child: const _Destello(tamano: 170, opacidad: 0.22).siempre(
-              context,
-              (w) => w
-                  .animate(onPlay: (c) => c.repeat(reverse: true))
-                  .move(
-                    begin: Offset.zero,
-                    end: const Offset(-24, 18),
-                    duration: 4200.ms,
-                    curve: Curves.easeInOut,
-                  ),
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: const BoxDecoration(
+          gradient: TemaCareCar.degradadoMarca,
+          borderRadius: BorderRadius.all(Radius.circular(28)),
+        ),
+        child: Stack(
+          children: [
+            // Destellos que flotan despacio detras del titulo.
+            Positioned(
+              right: -40,
+              top: -30,
+              child: const _Destello(tamano: 170, opacidad: 0.22).siempre(
+                context,
+                (w) => w
+                    .animate(onPlay: (c) => c.repeat(reverse: true))
+                    .move(
+                      begin: Offset.zero,
+                      end: const Offset(-24, 18),
+                      duration: 4200.ms,
+                      curve: Curves.easeInOut,
+                    ),
+              ),
             ),
-          ),
-          Positioned(
-            left: -30,
-            bottom: -50,
-            child: const _Destello(tamano: 130, opacidad: 0.12).siempre(
-              context,
-              (w) => w
-                  .animate(onPlay: (c) => c.repeat(reverse: true))
-                  .move(
-                    begin: Offset.zero,
-                    end: const Offset(30, -14),
-                    duration: 5200.ms,
-                    curve: Curves.easeInOut,
-                  ),
+            Positioned(
+              left: -30,
+              bottom: -50,
+              child: const _Destello(tamano: 130, opacidad: 0.12).siempre(
+                context,
+                (w) => w
+                    .animate(onPlay: (c) => c.repeat(reverse: true))
+                    .move(
+                      begin: Offset.zero,
+                      end: const Offset(30, -14),
+                      duration: 5200.ms,
+                      curve: Curves.easeInOut,
+                    ),
+              ),
             ),
-          ),
-          ValueListenableBuilder<double>(
-            valueListenable: colapso,
-            builder: (context, c, _) => _contenido(context, temas, blanco, c),
-          ),
-        ],
+            ValueListenableBuilder<double>(
+              valueListenable: colapso,
+              builder: (context, c, _) => _contenido(context, temas, blanco, c),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -193,7 +204,6 @@ class _Encabezado extends StatelessWidget {
     Color blanco,
     double c,
   ) {
-    final relleno = MediaQuery.paddingOf(context);
     // En horizontal (ventana baja) el titulo va en la misma fila que los
     // botones para no comerse la pantalla.
     final baja = Pantalla.esBaja(context);
@@ -202,8 +212,8 @@ class _Encabezado extends StatelessWidget {
     final largo = titulo.length > 26;
     final tamanoInicio =
         baja || largo || Pantalla.de(context) == Pantalla.compacto
-        ? (largo ? 22.0 : 24.0)
-        : 30.0;
+        ? (largo ? 20.0 : 22.0)
+        : 26.0;
     final tamano = baja ? 20.0 : lerpDouble(tamanoInicio, 20, c)!;
     final estiloTitulo = temas.headlineLarge?.copyWith(
       color: blanco,
@@ -221,17 +231,12 @@ class _Encabezado extends StatelessWidget {
     ).animate().fadeIn(duration: 350.ms).slideX(begin: -0.04);
 
     return Container(
-      padding: EdgeInsets.fromLTRB(
-        8 + relleno.left,
-        relleno.top + 4,
-        8 + relleno.right,
-        baja ? 8 : lerpDouble(24, 10, c)!,
-      ),
+      padding: EdgeInsets.fromLTRB(8, 4, 8, baja ? 8 : lerpDouble(14, 8, c)!),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 48),
+            constraints: const BoxConstraints(minHeight: 44),
             child: Row(
               children: [
                 if (regresar)
@@ -275,7 +280,7 @@ class _Encabezado extends StatelessWidget {
           ),
           if (!baja)
             Padding(
-              padding: EdgeInsets.fromLTRB(16, lerpDouble(8, 0, c)!, 16, 0),
+              padding: EdgeInsets.fromLTRB(16, lerpDouble(4, 0, c)!, 16, 0),
               child: tituloAnimado,
             ),
           if (!baja && cabecera != null)

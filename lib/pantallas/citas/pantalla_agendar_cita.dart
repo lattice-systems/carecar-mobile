@@ -9,6 +9,7 @@ import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
+import '../../widgets/tarjeta_intro.dart';
 import '../../widgets/pagina_carecar.dart';
 import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
@@ -473,50 +474,14 @@ class _Encabezado extends StatelessWidget {
   const _Encabezado();
 
   @override
-  Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: TemaCareCar.degradadoMarca,
-        borderRadius: BorderRadius.all(Radius.circular(24)),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.zero,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'NUEVA CITA',
-                  style: temas.labelSmall?.copyWith(
-                    color: TemaCareCar.turquesa,
-                    letterSpacing: 2,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'Tres pasos y listo',
-                  style: temas.titleLarge?.copyWith(color: Colors.white),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Elige cuándo llevar tu vehículo al taller.',
-                  style: temas.bodyMedium?.copyWith(
-                    color: Colors.white.withValues(alpha: 0.75),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ).animate().fadeIn(duration: 400.ms);
-  }
+  Widget build(BuildContext context) => const TarjetaIntro(
+    etiqueta: 'NUEVA CITA',
+    titulo: 'Tres pasos y listo',
+    texto: 'Elige cuándo llevar tu vehículo al taller.',
+    icono: Icons.event_available_rounded,
+    color: TemaCareCar.turquesaOscuro,
+    fondo: Color(0xFFE8F6F4),
+  );
 }
 
 /// Bloque numerado de la pantalla: «1 Vehiculo», «2 Dia», «3 Horario».
