@@ -149,3 +149,14 @@ Configura una regla de protección para `main` que:
 actualizar main -> crear rama -> commit y push -> abrir PR -> CI verde -> merge
 ```
 
+## Historial de `main` reescrito
+
+El historial de `main` se reescribió para quitar las líneas `Co-Authored-By` de herramientas de IA de los commits anteriores (código, autores y fechas sin cambios; los co-autores humanos se conservaron). Si tienes un clon anterior:
+
+```bash
+git fetch origin
+git checkout main
+git reset --hard origin/main      # descarta tu main viejo
+```
+
+Si tenías una rama propia basada en el `main` viejo, pásala al nuevo con `git rebase --onto origin/main <main-viejo> <tu-rama>` o vuelve a crearla. Nunca hagas push de ramas basadas en el historial viejo: reintroducirían los commits antiguos.
