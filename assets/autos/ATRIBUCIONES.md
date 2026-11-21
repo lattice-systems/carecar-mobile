@@ -85,3 +85,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **versa_1** — 2020 Nissan Versa rear.jpg — Ee2mba — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Versa_rear.jpg
 - **sentra_1** — 2020 Nissan Sentra SV, front 10.22.20.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_10.22.20.jpg
 - **sentra_2** — 2020 Nissan Sentra SV, front right, 06-17-2026.jpg — BuickCentury04 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_right,_06-17-2026.jpg
+- **z_1** — 2023 Nissan Z Performance 6MT in Passion Red TriCoat, Rear Left, 05-17-2023.jpg — Elise240SX — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2023_Nissan_Z_Performance_6MT_in_Passion_Red_TriCoat,_Rear_Left,_05-17-2023.jpg
+- **z_2** — Nissan Z NISMO, 2023, rear.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_Z_NISMO,_2023,_rear.jpg
