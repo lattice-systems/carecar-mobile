@@ -48,6 +48,8 @@ dependencies:
   # Usa el Keystore de Android y el Keychain de iOS. Queda detras de la interfaz
   # `AlmacenSesion`, asi que si el equipo prefiere otra, se cambia una clase.
   flutter_secure_storage: ^11.2.0
+  flutter_animate: ^4.5.2
+  google_fonts: ^6.3.2
 
 dev_dependencies:
   flutter_test:

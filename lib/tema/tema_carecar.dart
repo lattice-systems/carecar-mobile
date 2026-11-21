@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Tema de CareCar, derivado de la guia de estilos de Agencia360.
 ///
@@ -74,6 +75,29 @@ abstract final class TemaCareCar {
   ///
   /// **Siempre 16.** Con menos, iOS hace zoom al enfocar el campo.
   static const tamanoCampo = 16.0;
+
+  /// Estilo monoespaciado para VIN y placas (guia de estilos, §3).
+  ///
+  /// Arranca con la monoespaciada del sistema; [conFuentes] la cambia a
+  /// JetBrains Mono. Las pruebas no la cambian, asi no dependen de la red.
+  static TextStyle mono = const TextStyle(fontFamily: 'monospace');
+
+  /// Degradado de marca para encabezados y tarjetas destacadas.
+  static const degradadoMarca = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [azulAgencia, azulProfundo],
+  );
+
+  /// [claro] con Inter y JetBrains Mono, servidas por `google_fonts`.
+  ///
+  /// Es el puente mientras llegan los `.ttf` de la peticion EQ-4: al llegar,
+  /// se declaran en `pubspec.yaml` y `google_fonts` los toma sin descargar.
+  static ThemeData conFuentes() {
+    mono = GoogleFonts.jetBrainsMono();
+    final base = claro;
+    return base.copyWith(textTheme: GoogleFonts.interTextTheme(base.textTheme));
+  }
 
   static ThemeData get claro {
     const esquema = ColorScheme.light(
@@ -173,6 +197,31 @@ abstract final class TemaCareCar {
       ),
 
       // La guia pide bordes y no sombras, salvo en tarjetas y dialogos.
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: tarjeta,
+        indicatorColor: azulSuave,
+        elevation: 0,
+        height: 68,
+        labelTextStyle: WidgetStateProperty.resolveWith(
+          (estados) => TextStyle(
+            fontSize: 12,
+            fontWeight: estados.contains(WidgetState.selected)
+                ? FontWeight.w600
+                : FontWeight.w500,
+            color: estados.contains(WidgetState.selected)
+                ? azulAgencia
+                : textoSecundario,
+          ),
+        ),
+        iconTheme: WidgetStateProperty.resolveWith(
+          (estados) => IconThemeData(
+            color: estados.contains(WidgetState.selected)
+                ? azulAgencia
+                : textoSecundario,
+          ),
+        ),
+      ),
+
       cardTheme: CardThemeData(
         color: tarjeta,
         elevation: 1,
