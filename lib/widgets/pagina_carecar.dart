@@ -1,3 +1,6 @@
+import 'dart:ui' show lerpDouble;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -8,7 +11,7 @@ import 'pantalla.dart';
 
 /// Marco de todas las pantallas autenticadas: encabezado con el degradado de
 /// marca, regresar, cerrar sesion y el contenido debajo.
-class PaginaCareCar extends StatelessWidget {
+class PaginaCareCar extends StatefulWidget {
   const PaginaCareCar({
     required this.titulo,
     required this.contenido,
@@ -34,33 +37,66 @@ class PaginaCareCar extends StatelessWidget {
   static const botonCerrarSesion = Key('inicio_cerrar_sesion');
 
   @override
+  State<PaginaCareCar> createState() => _PaginaCareCarState();
+}
+
+class _PaginaCareCarState extends State<PaginaCareCar> {
+  /// Que tanto se contrajo el encabezado: 0 = completo, 1 = compacto.
+  final _colapso = ValueNotifier<double>(0);
+
+  /// Pixeles de scroll que tarda el encabezado en contraerse del todo.
+  static const _recorrido = 90.0;
+
+  String get titulo => widget.titulo;
+  Widget get contenido => widget.contenido;
+  bool get expandir => widget.expandir;
+  double get anchoMaximo => widget.anchoMaximo;
+
+  @override
+  void dispose() {
+    _colapso.dispose();
+    super.dispose();
+  }
+
+  bool _alDesplazar(ScrollNotification n) {
+    if (n.metrics.axis != Axis.vertical) return false;
+    final valor = (n.metrics.pixels / _recorrido).clamp(0.0, 1.0);
+    if ((valor - _colapso.value).abs() > 0.01) _colapso.value = valor;
+    return false;
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
     body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _Encabezado(
           titulo: titulo,
-          regresar: regresar,
-          alCerrarSesion: alCerrarSesion,
+          regresar: widget.regresar,
+          alCerrarSesion: widget.alCerrarSesion,
+          colapso: _colapso,
         ),
         Expanded(
-          child: SafeArea(
-            top: false,
-            child: expandir
-                ? AnchoLimitado(anchoMaximo: anchoMaximo, child: contenido)
-                : _refrescable(
-                    SingleChildScrollView(
-                      key: PageStorageKey(titulo),
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(
-                        TemaCareCar.espacioSecciones,
-                      ),
-                      child: AnchoLimitado(
-                        anchoMaximo: anchoMaximo,
-                        child: contenido,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: _alDesplazar,
+            child: SafeArea(
+              top: false,
+              child: expandir
+                  ? AnchoLimitado(anchoMaximo: anchoMaximo, child: contenido)
+                  : _refrescable(
+                      SingleChildScrollView(
+                        key: PageStorageKey(titulo),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(
+                          TemaCareCar.espacioSecciones,
+                        ),
+                        child: AnchoLimitado(
+                          anchoMaximo: anchoMaximo,
+                          child: contenido,
+                        ),
                       ),
                     ),
-                  ),
+            ),
           ),
         ),
       ],
@@ -68,7 +104,7 @@ class PaginaCareCar extends StatelessWidget {
   );
 
   Widget _refrescable(Widget hijo) {
-    final refrescar = alRefrescar;
+    final refrescar = widget.alRefrescar;
     if (refrescar == null) return hijo;
     return RefreshIndicator(
       onRefresh: refrescar,
@@ -83,11 +119,13 @@ class _Encabezado extends StatelessWidget {
     required this.titulo,
     required this.regresar,
     required this.alCerrarSesion,
+    required this.colapso,
   });
 
   final String titulo;
   final bool regresar;
   final VoidCallback alCerrarSesion;
+  final ValueListenable<double> colapso;
 
   @override
   Widget build(BuildContext context) {
@@ -132,29 +170,45 @@ class _Encabezado extends StatelessWidget {
                   ),
             ),
           ),
-          _contenido(context, temas, blanco),
+          ValueListenableBuilder<double>(
+            valueListenable: colapso,
+            builder: (context, c, _) => _contenido(context, temas, blanco, c),
+          ),
         ],
       ),
     );
   }
 
-  Widget _contenido(BuildContext context, TextTheme temas, Color blanco) {
+  Widget _contenido(
+    BuildContext context,
+    TextTheme temas,
+    Color blanco,
+    double c,
+  ) {
     final relleno = MediaQuery.paddingOf(context);
     // En horizontal (ventana baja) el titulo va en la misma fila que los
     // botones para no comerse la pantalla.
     final baja = Pantalla.esBaja(context);
-    final estiloTitulo =
-        (baja || Pantalla.de(context) == Pantalla.compacto
-                ? temas.headlineMedium
-                : temas.headlineLarge)
-            ?.copyWith(color: blanco);
+    // Titulo adaptable: los largos arrancan mas chicos y todos se contraen al
+    // hacer scroll hasta una sola linea de 20 px.
+    final largo = titulo.length > 26;
+    final tamanoInicio =
+        baja || largo || Pantalla.de(context) == Pantalla.compacto
+        ? (largo ? 22.0 : 24.0)
+        : 30.0;
+    final tamano = baja ? 20.0 : lerpDouble(tamanoInicio, 20, c)!;
+    final estiloTitulo = temas.headlineLarge?.copyWith(
+      color: blanco,
+      fontSize: tamano,
+      height: 1.2,
+    );
     final tituloAnimado = Semantics(
       header: true,
       child: Text(
         titulo,
-        maxLines: baja ? 1 : 2,
+        maxLines: (baja || c > 0.5) ? 1 : 2,
         overflow: TextOverflow.ellipsis,
-        style: baja ? temas.titleLarge?.copyWith(color: blanco) : estiloTitulo,
+        style: estiloTitulo,
       ),
     ).animate().fadeIn(duration: 350.ms).slideX(begin: -0.04);
 
@@ -163,7 +217,7 @@ class _Encabezado extends StatelessWidget {
         8 + relleno.left,
         relleno.top + 4,
         8 + relleno.right,
-        baja ? 8 : 24,
+        baja ? 8 : lerpDouble(24, 10, c)!,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +274,7 @@ class _Encabezado extends StatelessWidget {
           ),
           if (!baja)
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              padding: EdgeInsets.fromLTRB(16, lerpDouble(8, 0, c)!, 16, 0),
               child: tituloAnimado,
             ),
         ],

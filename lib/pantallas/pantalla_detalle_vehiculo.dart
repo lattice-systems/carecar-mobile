@@ -31,6 +31,7 @@ class PantallaDetalleVehiculo extends StatelessWidget {
       vehiculo: vehiculo,
       api: api,
       alCerrarSesion: alCerrarSesion,
+      conHero: true,
     ),
   );
 }
@@ -42,11 +43,18 @@ class FichaVehiculo extends StatelessWidget {
     required this.vehiculo,
     required this.alCerrarSesion,
     this.api,
+    this.conHero = false,
     super.key,
   });
   final Vehiculo vehiculo;
   final CarecarApi? api;
   final VoidCallback alCerrarSesion;
+
+  /// Solo en la pantalla de detalle: la tarjeta de la lista vuela hasta aqui.
+  final bool conHero;
+
+  Widget _conHero(Widget hijo) =>
+      conHero ? Hero(tag: 'carro-${vehiculo.id}', child: hijo) : hijo;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -61,18 +69,22 @@ class FichaVehiculo extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 72,
-              height: 72,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.white.withValues(alpha: 0.2)),
-              ),
-              child: const Icon(
-                Icons.directions_car_filled,
-                color: TemaCareCar.turquesa,
-                size: 40,
+            _conHero(
+              Container(
+                width: 72,
+                height: 72,
+                decoration: BoxDecoration(
+                  gradient: TemaCareCar.degradadoMarca,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: const Icon(
+                  Icons.directions_car_filled,
+                  color: TemaCareCar.turquesa,
+                  size: 40,
+                ),
               ),
             ),
             const SizedBox(width: 18),

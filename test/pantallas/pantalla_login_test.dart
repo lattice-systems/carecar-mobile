@@ -1,3 +1,7 @@
+import 'package:shadcn_ui/shadcn_ui.dart';
+
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
@@ -16,7 +20,7 @@ ControladorSesion _controlador(ApiFalsa api) =>
 
 Future<void> _montar(WidgetTester tester, ControladorSesion controlador) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaLogin(controlador: controlador),
     ),
@@ -345,7 +349,7 @@ void main() {
       // Regla de la guia: «mientras guarda, el boton se deshabilita y cambia
       // el texto».
       expect(find.text('Entrando…'), findsOneWidget);
-      final boton = tester.widget<FilledButton>(
+      final boton = tester.widget<ShadButton>(
         find.byKey(PantallaLogin.botonEntrar),
       );
       expect(boton.onPressed, isNull);
@@ -400,7 +404,7 @@ void main() {
       var avisos = 0;
       final controlador = _controlador(ApiFalsa());
       await tester.pumpWidget(
-        MaterialApp(
+        MaterialAppConShad(
           theme: TemaCareCar.claro,
           home: PantallaLogin(
             controlador: controlador,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
+
+import '../../widgets/dialogos.dart';
+
 import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../api/carecar_api.dart';
@@ -131,6 +134,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
         ),
       );
       if (!mounted) return;
+      await mostrarCheckExito(context);
+      if (!mounted) return;
       Navigator.of(context).pop(cita);
     } on Conflicto catch (e) {
       if (!mounted) return;
@@ -149,36 +154,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
     }
   }
 
-  void _avisar(String texto, {String? titulo}) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: TemaCareCar.textoPrincipal,
-          content: Row(
-            children: [
-              const Icon(Icons.info_outline, color: Colors.white),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (titulo != null)
-                      Text(
-                        titulo,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                    Text(texto),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-  }
+  void _avisar(String texto, {String? titulo}) =>
+      mostrarToast(context, texto, titulo: titulo, error: true);
 
   @override
   Widget build(BuildContext context) {
@@ -466,15 +443,11 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
               ),
             ),
             const SizedBox(height: 10, width: 16),
-            FilledButton.icon(
-              style: baja
-                  ? FilledButton.styleFrom(
-                      minimumSize: const Size(200, TemaCareCar.altoMinimoToque),
-                    )
-                  : null,
+            ShadButton(
               key: PantallaAgendarCita.botonConfirmar,
+              size: ShadButtonSize.lg,
               onPressed: _listo ? _confirmar : null,
-              icon: _enviando
+              leading: _enviando
                   ? const SizedBox.square(
                       dimension: 18,
                       child: CircularProgressIndicator(
@@ -482,8 +455,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
                         color: Colors.white,
                       ),
                     )
-                  : const Icon(Icons.check),
-              label: Text(_enviando ? 'Agendando…' : 'Confirmar cita'),
+                  : const Icon(Icons.check, size: 18),
+              child: Text(_enviando ? 'Agendando…' : 'Confirmar cita'),
             ),
           ],
         ),
