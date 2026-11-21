@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../tema/tema_carecar.dart';
 import 'movimiento.dart';
+import 'pantalla.dart';
 
 /// Medidas compartidas del area autenticada. No modifica los formularios de acceso.
 abstract final class EstiloMenu {
@@ -62,11 +63,7 @@ class RejillaMenu extends StatelessWidget {
   Widget build(BuildContext context) => LayoutBuilder(
     builder: (context, limites) {
       const espacio = TemaCareCar.espacioCampos;
-      final columnas = limites.maxWidth >= 1000
-          ? 3
-          : limites.maxWidth >= 650
-          ? 2
-          : 1;
+      final columnas = Pantalla.deAncho(limites.maxWidth).columnas;
       final ancho = ((limites.maxWidth - espacio * (columnas - 1)) / columnas)
           .clamp(0.0, EstiloMenu.anchoTarjeta);
       return Wrap(

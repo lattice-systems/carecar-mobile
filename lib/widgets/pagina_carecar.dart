@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../tema/tema_carecar.dart';
 import 'menu_carecar.dart';
 import 'movimiento.dart';
+import 'pantalla.dart';
 
 /// Marco de todas las pantallas autenticadas: encabezado con el degradado de
 /// marca, regresar, cerrar sesion y el contenido debajo.
@@ -15,6 +16,7 @@ class PaginaCareCar extends StatelessWidget {
     this.regresar = true,
     this.expandir = false,
     this.alRefrescar,
+    this.anchoMaximo = EstiloMenu.anchoMaximo,
     super.key,
   });
   final String titulo;
@@ -22,6 +24,9 @@ class PaginaCareCar extends StatelessWidget {
   final VoidCallback alCerrarSesion;
   final bool regresar;
   final bool expandir;
+
+  /// Ancho maximo del contenido; en pantallas amplias queda centrado.
+  final double anchoMaximo;
 
   /// Si no es nulo, el contenido admite deslizar hacia abajo para recargar.
   final Future<void> Function()? alRefrescar;
@@ -42,7 +47,7 @@ class PaginaCareCar extends StatelessWidget {
           child: SafeArea(
             top: false,
             child: expandir
-                ? contenido
+                ? AnchoLimitado(anchoMaximo: anchoMaximo, child: contenido)
                 : _refrescable(
                     SingleChildScrollView(
                       key: PageStorageKey(titulo),
@@ -50,16 +55,9 @@ class PaginaCareCar extends StatelessWidget {
                       padding: const EdgeInsets.all(
                         TemaCareCar.espacioSecciones,
                       ),
-                      child: Center(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(
-                            maxWidth: EstiloMenu.anchoMaximo,
-                          ),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: contenido,
-                          ),
-                        ),
+                      child: AnchoLimitado(
+                        anchoMaximo: anchoMaximo,
+                        child: contenido,
                       ),
                     ),
                   ),
@@ -141,30 +139,65 @@ class _Encabezado extends StatelessWidget {
   }
 
   Widget _contenido(BuildContext context, TextTheme temas, Color blanco) {
+    final relleno = MediaQuery.paddingOf(context);
+    // En horizontal (ventana baja) el titulo va en la misma fila que los
+    // botones para no comerse la pantalla.
+    final baja = Pantalla.esBaja(context);
+    final estiloTitulo =
+        (baja || Pantalla.de(context) == Pantalla.compacto
+                ? temas.headlineMedium
+                : temas.headlineLarge)
+            ?.copyWith(color: blanco);
+    final tituloAnimado = Semantics(
+      header: true,
+      child: Text(
+        titulo,
+        maxLines: baja ? 1 : 2,
+        overflow: TextOverflow.ellipsis,
+        style: baja ? temas.titleLarge?.copyWith(color: blanco) : estiloTitulo,
+      ),
+    ).animate().fadeIn(duration: 350.ms).slideX(begin: -0.04);
+
     return Container(
       padding: EdgeInsets.fromLTRB(
-        8,
-        MediaQuery.paddingOf(context).top + 4,
-        8,
-        24,
+        8 + relleno.left,
+        relleno.top + 4,
+        8 + relleno.right,
+        baja ? 8 : 24,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 48,
+          ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 48),
             child: Row(
               children: [
                 if (regresar)
-                  TextButton.icon(
-                    style: TextButton.styleFrom(foregroundColor: blanco),
-                    onPressed: () => Navigator.of(context).maybePop(),
-                    icon: const Icon(Icons.arrow_back, size: 20),
-                    label: const Text('Regresar'),
+                  Flexible(
+                    flex: baja ? 0 : 1,
+                    child: TextButton.icon(
+                      style: TextButton.styleFrom(
+                        foregroundColor: blanco,
+                        minimumSize: const Size(
+                          TemaCareCar.altoMinimoToque,
+                          TemaCareCar.altoMinimoToque,
+                        ),
+                      ),
+                      onPressed: () => Navigator.of(context).maybePop(),
+                      icon: const Icon(Icons.arrow_back, size: 20),
+                      // En horizontal basta la flecha: el espacio es del titulo.
+                      label: baja
+                          ? const SizedBox.shrink()
+                          : const Text(
+                              'Regresar',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                    ),
                   )
                 else
                   Padding(
-                    padding: const EdgeInsets.only(left: 16),
+                    padding: const EdgeInsets.only(left: 16, right: 12),
                     child: Text(
                       'CARECAR',
                       style: temas.labelSmall?.copyWith(
@@ -174,7 +207,7 @@ class _Encabezado extends StatelessWidget {
                       ),
                     ),
                   ),
-                const Spacer(),
+                if (baja) Expanded(child: tituloAnimado) else const Spacer(),
                 IconButton(
                   key: PaginaCareCar.botonCerrarSesion,
                   onPressed: alCerrarSesion,
@@ -185,16 +218,11 @@ class _Encabezado extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Semantics(
-              header: true,
-              child: Text(
-                titulo,
-                style: temas.headlineLarge?.copyWith(color: blanco),
-              ),
+          if (!baja)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: tituloAnimado,
             ),
-          ).animate().fadeIn(duration: 350.ms).slideX(begin: -0.04),
         ],
       ),
     );
