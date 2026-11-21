@@ -209,7 +209,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                       ),
                     ),
                     if (widget.alOlvidarContrasena != null)
-                      TextButton(
+                      ShadButton.link(
                         key: PantallaLogin.botonOlvide,
                         onPressed: entrando
                             ? null
