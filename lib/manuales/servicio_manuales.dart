@@ -111,9 +111,19 @@ class ManualesDeLaAgencia implements ServicioManuales {
             .timeout(_limite);
         if (respuesta.statusCode == 200 && respuesta.bodyBytes.isNotEmpty) {
           return DocumentoManual(
+            // El backend manda «Nissan Frontier 2024 Manual de propietario»; la
+            // pantalla ya antepone «Manual», asi que se quita el sufijo.
             titulo:
-                manual.titulo ??
-                '${manual.marca ?? ''} ${manual.modelo} ${manual.anio}'.trim(),
+                (manual.titulo ??
+                        '${manual.marca ?? ''} ${manual.modelo} ${manual.anio}')
+                    .replaceAll(
+                      RegExp(
+                        r'\s*manual de propietario$',
+                        caseSensitive: false,
+                      ),
+                      '',
+                    )
+                    .trim(),
             identificador: 'agencia:${manual.id}',
             bytes: respuesta.bodyBytes,
           );

@@ -4,6 +4,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../api/carecar_api.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
+import '../../config/ficha_tecnica.dart';
+import '../../widgets/ficha_tecnica_widget.dart';
 import '../../widgets/foto_auto.dart';
 import '../../widgets/aviso.dart';
 import '../../widgets/carga_datos.dart';
@@ -223,6 +225,10 @@ class PantallaDetalleModelo extends StatelessWidget {
                   if (modelo.descripcion != null) ...[
                     const SizedBox(height: 12),
                     Text(modelo.descripcion!, style: temas.bodyLarge),
+                  ],
+                  if (fichaDeModelo(modelo.modelo) case final ficha?) ...[
+                    const SizedBox(height: TemaCareCar.espacioSecciones),
+                    TarjetaFichaTecnica(ficha: ficha),
                   ],
                 ],
               )

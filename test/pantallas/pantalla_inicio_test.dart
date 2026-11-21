@@ -169,7 +169,8 @@ void main() {
       for (final vehiculo in [_march, _jetta]) {
         await _tocar(tester, '${vehiculo.modelo} ${vehiculo.anio}');
         expect(find.text(vehiculo.vin), findsOneWidget);
-        expect(find.text('${vehiculo.anio}'), findsOneWidget);
+        // El ano sale en la insignia de la foto y en «Identificacion».
+        expect(find.text('${vehiculo.anio}'), findsWidgets);
         expect(find.text('No disponible'), findsWidgets);
         await _tocar(tester, 'Regresar');
         expect(
