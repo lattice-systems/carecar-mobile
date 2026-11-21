@@ -7,7 +7,7 @@ import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
 import 'citas/pantalla_mis_citas.dart';
 import 'pantalla_ajustes.dart';
-import 'pantalla_proximamente.dart';
+import 'catalogo/pantalla_catalogo.dart';
 import 'pantalla_vehiculos.dart';
 
 /// Raiz de la navegacion autenticada. Al salir se descarta toda esta pila.
@@ -83,8 +83,8 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 color: TemaCareCar.exitoFondo,
                 alPulsar: () => abrirPantalla(
                   context,
-                  PantallaProximamente(
-                    titulo: 'Catálogo',
+                  PantallaCatalogo(
+                    api: widget.api,
                     alCerrarSesion: _cerrarSesion,
                   ),
                 ),
