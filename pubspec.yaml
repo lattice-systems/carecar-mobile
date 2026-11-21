@@ -65,6 +65,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   yaml: ^3.1.4
+  flutter_launcher_icons: ^0.9.3
+  flutter_native_splash: ^2.2.16
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -129,3 +131,21 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Icono de la app (se regenera con `dart run flutter_launcher_icons:main`).
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/marca/agencia360-icono.png
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: assets/marca/agencia360-icono.png
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+
+# Pantalla de arranque (se regenera con `dart run flutter_native_splash:create`).
+flutter_native_splash:
+  color: "#F5F7FA"
+  image: assets/marca/agencia360-icono.png
+  android_12:
+    color: "#F5F7FA"
+    image: assets/marca/agencia360-icono.png
