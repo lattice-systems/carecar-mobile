@@ -7,6 +7,7 @@ import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
 import '../../widgets/pagina_carecar.dart';
+import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
 
 /// APP-3.3 · Agendar cita: vehiculo, dia y franja con cupo.
@@ -190,7 +191,10 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
           Expanded(
             child: CustomScrollView(
               slivers: [
-                const SliverToBoxAdapter(child: _Encabezado()),
+                // En horizontal la tarjeta de presentacion se omite: el espacio es
+                // para el contenido.
+                if (!Pantalla.esBaja(context))
+                  const SliverToBoxAdapter(child: _Encabezado()),
                 SliverToBoxAdapter(
                   child: _Seccion(
                     paso: 1,
@@ -275,8 +279,10 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
         final franjas = foto.connectionState == ConnectionState.done
             ? foto.data ?? const <Disponibilidad>[]
             : const <Disponibilidad>[];
+        // Crece con la letra del sistema para que el dia no se recorte.
+        final escala = MediaQuery.textScalerOf(context);
         return SizedBox(
-          height: 86,
+          height: 40 + escala.scale(46),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
@@ -352,28 +358,47 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
                         ?.copyWith(color: TemaCareCar.textoSecundario),
                   ),
                 ),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  for (final (i, f) in delDia.indexed)
-                    _ChipFranja(
-                          key: PantallaAgendarCita.franja(f.franjaId),
-                          franja: f,
-                          elegida:
-                              _franja?.franjaId == f.franjaId &&
-                              mismoDia(_franja!.fecha, f.fecha),
-                          alTocar: cargando
-                              ? null
-                              : () => setState(() => _franja = f),
-                        )
-                        .animate(delay: (40 * i).ms)
-                        .fadeIn(duration: 250.ms)
-                        .scale(
-                          begin: const Offset(0.92, 0.92),
-                          curve: Curves.easeOutBack,
-                        ),
-                ],
+              // Rejilla de columnas iguales: con Wrap los chips de ancho
+              // distinto («Último lugar») dejaban horarios solos en su fila.
+              LayoutBuilder(
+                builder: (context, limites) {
+                  const espacio = 10.0;
+                  final minimo = MediaQuery.textScalerOf(context)
+                      .scale(104)
+                      .clamp(104.0, 220.0);
+                  final columnas =
+                      ((limites.maxWidth + espacio) / (minimo + espacio))
+                          .floor()
+                          .clamp(2, 6);
+                  final ancho =
+                      (limites.maxWidth - espacio * (columnas - 1)) / columnas;
+                  return Wrap(
+                    spacing: espacio,
+                    runSpacing: espacio,
+                    children: [
+                      for (final (i, f) in delDia.indexed)
+                        SizedBox(
+                              width: ancho,
+                              child: _ChipFranja(
+                                key: PantallaAgendarCita.franja(f.franjaId),
+                                franja: f,
+                                elegida:
+                                    _franja?.franjaId == f.franjaId &&
+                                    mismoDia(_franja!.fecha, f.fecha),
+                                alTocar: cargando
+                                    ? null
+                                    : () => setState(() => _franja = f),
+                              ),
+                            )
+                            .animate(delay: (40 * i).ms)
+                            .fadeIn(duration: 250.ms)
+                            .scale(
+                              begin: const Offset(0.92, 0.92),
+                              curve: Curves.easeOutBack,
+                            ),
+                    ],
+                  );
+                },
               ),
             ],
           ),
@@ -673,7 +698,7 @@ class _Dia extends StatelessWidget {
       child: AnimatedContainer(
         duration: 220.ms,
         curve: Curves.easeOutCubic,
-        width: 60,
+        width: MediaQuery.textScalerOf(context).scale(44).clamp(60, 120),
         decoration: BoxDecoration(
           gradient: elegido ? TemaCareCar.degradadoMarca : null,
           color: elegido ? null : TemaCareCar.tarjeta,
@@ -691,42 +716,46 @@ class _Dia extends StatelessWidget {
                 ]
               : null,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              esHoy ? 'Hoy' : diaCorto(fecha),
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: elegido ? TemaCareCar.turquesa : texto,
+        // Con letra muy grande el dia se encoge en vez de recortarse.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                esHoy ? 'Hoy' : diaCorto(fecha),
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: elegido ? TemaCareCar.turquesa : texto,
+                ),
               ),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              '${fecha.day}',
-              style: TextStyle(
-                fontSize: 22,
-                height: 1.1,
-                fontWeight: FontWeight.w700,
-                color: texto,
+              const SizedBox(height: 2),
+              Text(
+                '${fecha.day}',
+                style: TextStyle(
+                  fontSize: 22,
+                  height: 1.1,
+                  fontWeight: FontWeight.w700,
+                  color: texto,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            // Punto que indica que el dia tiene horarios con cupo.
-            Container(
-              width: 6,
-              height: 6,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: conLugar
-                    ? (elegido
-                          ? TemaCareCar.turquesa
-                          : TemaCareCar.turquesaOscuro)
-                    : Colors.transparent,
+              const SizedBox(height: 4),
+              // Punto que indica que el dia tiene horarios con cupo.
+              Container(
+                width: 6,
+                height: 6,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: conLugar
+                      ? (elegido
+                            ? TemaCareCar.turquesa
+                            : TemaCareCar.turquesaOscuro)
+                      : Colors.transparent,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -756,7 +785,6 @@ class _ChipFranja extends StatelessWidget {
         onTap: alTocar,
         child: AnimatedContainer(
           duration: 200.ms,
-          constraints: const BoxConstraints(minWidth: 100),
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),

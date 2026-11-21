@@ -7,6 +7,7 @@ import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
 import '../../widgets/pagina_carecar.dart';
+import '../../widgets/pantalla.dart';
 import 'formato_citas.dart';
 import 'pantalla_agendar_cita.dart';
 
@@ -234,7 +235,10 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
             key: PantallaMisCitas.lista,
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-              const SliverToBoxAdapter(child: _Encabezado()),
+              // En horizontal la tarjeta de presentacion se omite: el espacio es
+              // para el contenido.
+              if (!Pantalla.esBaja(context))
+                const SliverToBoxAdapter(child: _Encabezado()),
               FutureBuilder<_Datos>(
                 future: _datos,
                 builder: (context, foto) {
@@ -632,8 +636,8 @@ class _Calendario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56,
-      height: 60,
+      constraints: const BoxConstraints(minWidth: 56, minHeight: 60),
+      padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         gradient: activa ? TemaCareCar.degradadoMarca : null,
         color: activa ? null : TemaCareCar.fondo,
@@ -641,6 +645,7 @@ class _Calendario extends StatelessWidget {
         border: activa ? null : Border.all(color: TemaCareCar.borde),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
@@ -720,12 +725,16 @@ class ChipEstadoCita extends StatelessWidget {
         children: [
           Icon(icono, size: 14, color: color),
           const SizedBox(width: 4),
-          Text(
-            texto,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: color,
+          Flexible(
+            child: Text(
+              texto,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
             ),
           ),
         ],
