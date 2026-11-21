@@ -10,18 +10,38 @@ import '../tema/tema_carecar.dart';
 String? fotoDeModelo(String? modelo) {
   if (modelo == null) return null;
   final m = modelo.toLowerCase().replaceAll(RegExp(r'[^a-z0-9]'), '');
-  for (final nombre in const [
-    'march',
-    'versa',
-    'kicks',
-    'sentra',
-    'xtrail',
-    'frontier',
-  ]) {
+  // «Z» es una sola letra: solo coincide completo, para no chocar con otros.
+  if (m == 'z' || m == 'nissanz') return 'assets/autos/z.jpg';
+  for (final nombre in fotosDeModelos) {
     if (m.contains(nombre)) return 'assets/autos/$nombre.jpg';
   }
   return null;
 }
+
+/// Modelos con foto en `assets/autos/` (sin la «z», que se resuelve aparte).
+const fotosDeModelos = [
+  'march',
+  'versa',
+  'kicks',
+  'sentra',
+  'xtrail',
+  'frontier',
+  'leaf',
+  'ariya',
+  'gtr',
+  'altima',
+  'pathfinder',
+  'murano',
+  'armada',
+  'titan',
+  'urvan',
+  'maxima',
+  'juke',
+  'qashqai',
+  'patrol',
+  'tiida',
+  'note',
+];
 
 /// Foto de un auto: la incluida en la app, si no la URL, si no un marcador.
 class FotoAuto extends StatelessWidget {
