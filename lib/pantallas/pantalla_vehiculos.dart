@@ -173,17 +173,20 @@ class TarjetaVehiculo extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        gradient: TemaCareCar.degradadoMarca,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(
-                        Icons.directions_car_filled,
-                        color: Colors.white,
-                        size: 30,
+                    Hero(
+                      tag: 'carro-${v.id}',
+                      child: Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          gradient: TemaCareCar.degradadoMarca,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Icon(
+                          Icons.directions_car_filled,
+                          color: Colors.white,
+                          size: 30,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 14),

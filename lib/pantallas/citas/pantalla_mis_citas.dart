@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import '../../widgets/dialogos.dart';
+
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -138,38 +141,19 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
   }
 
   Future<void> _cancelar(Cita cita) async {
-    final seguro = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        icon: const Icon(
-          Icons.event_busy_outlined,
-          color: TemaCareCar.peligro,
-          size: 32,
-        ),
-        title: const Text('¿Cancelar esta cita?'),
-        content: Text(
+    final seguro = await confirmarAccion(
+      context,
+      titulo: '¿Cancelar esta cita?',
+      descripcion:
           'Se liberará tu lugar del ${formatoFechaLarga(cita.fecha)} '
           'de ${cita.horaInicio} a ${cita.horaFin}. '
           'Esta acción no se puede deshacer.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Conservar'),
-          ),
-          FilledButton(
-            key: PantallaMisCitas.confirmarCancelacion,
-            style: FilledButton.styleFrom(
-              backgroundColor: TemaCareCar.peligro,
-              minimumSize: const Size(0, TemaCareCar.altoMinimoToque),
-            ),
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Sí, cancelar'),
-          ),
-        ],
-      ),
+      textoConfirmar: 'Sí, cancelar',
+      textoCancelar: 'Conservar',
+      destructiva: true,
+      llaveConfirmar: PantallaMisCitas.confirmarCancelacion,
     );
-    if (seguro != true || !mounted) return;
+    if (!seguro || !mounted) return;
 
     setState(() => _cancelando.add(cita.id));
     try {
@@ -192,28 +176,8 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
     await _recargar();
   }
 
-  void _avisar(String texto, {bool exito = false}) {
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: exito
-              ? TemaCareCar.exito
-              : TemaCareCar.textoPrincipal,
-          content: Row(
-            children: [
-              Icon(
-                exito ? Icons.check_circle_outline : Icons.info_outline,
-                color: Colors.white,
-              ),
-              const SizedBox(width: 12),
-              Expanded(child: Text(texto)),
-            ],
-          ),
-        ),
-      );
-  }
+  void _avisar(String texto, {bool exito = false}) =>
+      mostrarToast(context, texto, exito: exito, error: !exito);
 
   @override
   Widget build(BuildContext context) {

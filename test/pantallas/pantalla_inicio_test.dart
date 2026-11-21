@@ -1,3 +1,5 @@
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
@@ -79,8 +81,7 @@ void main() {
     addTearDown(restaurada.dispose);
     await restaurada.restaurar();
     await tester.pumpWidget(
-      MaterialApp(
-        theme: TemaCareCar.claro,
+      MaterialAppConShad(
         home: FlujoCareCar(controlador: restaurada, api: api),
       ),
     );

@@ -146,10 +146,20 @@ class _LineaState extends State<_Linea> {
                   width: 28,
                   child: Column(
                     children: [
+                      // Tramo de arriba: une con el punto anterior sin hueco.
+                      SizedBox(
+                        height: 22,
+                        child: i > 0
+                            ? const VerticalDivider(
+                                width: 2,
+                                thickness: 2,
+                                color: TemaCareCar.borde,
+                              )
+                            : null,
+                      ),
                       Container(
                         width: 14,
                         height: 14,
-                        margin: const EdgeInsets.only(top: 22),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: TemaCareCar.turquesaOscuro,
