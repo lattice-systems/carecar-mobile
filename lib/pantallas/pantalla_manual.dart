@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pdfx/pdfx.dart';
 
+import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../manuales/servicio_manuales.dart';
 import '../tema/tema_carecar.dart';
+import '../widgets/movimiento.dart';
 import '../widgets/aviso.dart';
 import '../widgets/pagina_carecar.dart';
 
@@ -12,17 +15,29 @@ class PantallaManual extends StatefulWidget {
     required this.vehiculo,
     required this.alCerrarSesion,
     this.servicio,
+    this.api,
+    this.etiqueta = 'Manual',
     super.key,
   });
   final Vehiculo vehiculo;
   final VoidCallback alCerrarSesion;
   final ServicioManuales? servicio;
+
+  /// Con la API se busca primero el manual que publica la agencia.
+  final CarecarApi? api;
+
+  /// Antes del nombre en el titulo: «Manual» o «Ticket».
+  final String etiqueta;
   @override
   State<PantallaManual> createState() => _PantallaManualState();
 }
 
 class _PantallaManualState extends State<PantallaManual> {
-  late final ServicioManuales _servicio = widget.servicio ?? ManualesLocales();
+  late final ServicioManuales _servicio =
+      widget.servicio ??
+      (widget.api == null
+          ? ManualesLocales()
+          : ManualesDeLaAgencia(api: widget.api!));
   DocumentoManual? _datos;
   String? _falloCarga;
   bool _cargando = true;
@@ -137,11 +152,22 @@ class _PantallaManualState extends State<PantallaManual> {
         ),
         Padding(
           padding: const EdgeInsets.all(12),
-          child: Text(
-            _total == 0
-                ? 'Cargando PDF…'
-                : 'Página $_pagina de $_total · Pellizca para ampliar',
-          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              gradient: TemaCareCar.degradadoMarca,
+              borderRadius: BorderRadius.circular(99),
+            ),
+            child: Text(
+              _total == 0
+                  ? 'Cargando PDF…'
+                  : 'Página $_pagina de $_total · Pellizca para ampliar',
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ).animate().fadeIn().slideY(begin: 0.5),
         ),
       ],
     );
@@ -150,7 +176,7 @@ class _PantallaManualState extends State<PantallaManual> {
   @override
   Widget build(BuildContext context) => PaginaCareCar(
     titulo: _datos != null
-        ? 'Manual — ${_datos!.titulo}'
+        ? '${widget.etiqueta} — ${_datos!.titulo}'
         : 'Manual del propietario',
     expandir: true,
     alCerrarSesion: widget.alCerrarSesion,
@@ -159,7 +185,7 @@ class _PantallaManualState extends State<PantallaManual> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircularProgressIndicator(),
+                _IconoCargando(),
                 SizedBox(height: 16),
                 Text('Cargando manual…'),
               ],
@@ -169,4 +195,28 @@ class _PantallaManualState extends State<PantallaManual> {
         ? _error(_falloCarga!)
         : _visor(_datos!),
   );
+}
+
+class _IconoCargando extends StatelessWidget {
+  const _IconoCargando();
+
+  @override
+  Widget build(BuildContext context) =>
+      Container(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
+          color: TemaCareCar.azulSuave,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.menu_book_rounded,
+          size: 40,
+          color: TemaCareCar.azulAgencia,
+        ),
+      ).siempre(
+        context,
+        (w) => w
+            .animate(onPlay: (c) => c.repeat(reverse: true))
+            .scaleXY(begin: 0.92, end: 1.05, duration: 700.ms),
+      );
 }

@@ -37,6 +37,7 @@ dependencies:
   http: ^1.6.0
   flutter_svg: ^2.3.0
   pdfx: 2.11.0
+  shared_preferences: ^2.5.6
 
   # Almacenamiento seguro de los dos tokens de sesion (TEC-6 T3, decision D-D).
   #
@@ -48,6 +49,13 @@ dependencies:
   # Usa el Keystore de Android y el Keychain de iOS. Queda detras de la interfaz
   # `AlmacenSesion`, asi que si el equipo prefiere otra, se cambia una clase.
   flutter_secure_storage: ^11.2.0
+  flutter_animate: ^4.5.2
+
+  # Animaciones y esqueletos de carga de las pantallas de citas (APP-3.3).
+  skeletonizer: ^3.0.0
+  shadcn_ui: ^0.61.2
+  package_info_plus: ^10.2.2
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +68,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   yaml: ^3.1.4
+  flutter_launcher_icons: ^0.9.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -78,8 +87,24 @@ flutter:
   # estilos (peticion EQ-3). Se convirtieron a PNG con el fondo transparente.
   # Cuando lleguen los SVG conviene regenerarlos, sobre todo la version blanca
   # para fondos oscuros, que no se puede derivar del JPEG.
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-400.ttf
+        - asset: assets/fonts/Inter-500.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-600.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-700.ttf
+          weight: 700
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-400.ttf
+        - asset: assets/fonts/JetBrainsMono-700.ttf
+          weight: 700
   assets:
     - assets/marca/
+    - assets/autos/
     - assets/Manuales/Nissan/March/2020/
     - assets/Manuales/Nissan/Kicks/2023/
     - assets/Manuales/Nissan/Versa/2024/
@@ -109,3 +134,23 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Icono de la app (se regenera con `dart run flutter_launcher_icons:main`).
+flutter_icons:
+  android: true
+  ios: true
+  image_path: assets/marca/agencia360-icono.png
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: assets/marca/agencia360-icono.png
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+
+# Pantalla de arranque. Ya esta generada; para regenerarla agrega
+# flutter_native_splash a dev_dependencies, corre `dart run flutter_native_splash:create`
+# y quitala otra vez (su plugin de Android no declara namespace y rompe el build).
+flutter_native_splash:
+  color: "#F5F7FA"
+  image: assets/marca/agencia360-icono.png
+  android_12:
+    color: "#F5F7FA"
+    image: assets/marca/agencia360-icono.png
