@@ -219,6 +219,7 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
   Widget build(BuildContext context) {
     return PaginaCareCar(
       titulo: 'Mis citas',
+      anchoMaximo: Pantalla.anchoLectura,
       expandir: true,
       alCerrarSesion: widget.alCerrarSesion,
       contenido: _cuerpo(),

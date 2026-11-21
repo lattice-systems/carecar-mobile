@@ -14,6 +14,7 @@ import '../../widgets/formato.dart';
 import '../../widgets/menu_carecar.dart';
 import '../../widgets/movimiento.dart';
 import '../../widgets/pagina_carecar.dart';
+import '../../widgets/pantalla.dart';
 import '../pantalla_manual.dart';
 
 /// APP-3.2 · Historial de servicios de un vehiculo, con su ticket en PDF.
@@ -36,6 +37,7 @@ class PantallaHistorial extends StatelessWidget {
     final recargador = Recargador();
     return PaginaCareCar(
       titulo: 'Historial de servicios',
+      anchoMaximo: Pantalla.anchoLectura,
       alCerrarSesion: alCerrarSesion,
       alRefrescar: recargador.recargar,
       contenido: CargaDatos<Pagina<Servicio>>(
