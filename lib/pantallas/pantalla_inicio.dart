@@ -57,7 +57,10 @@ class _PantallaInicioState extends State<PantallaInicio> {
             tarjetas: [
               TarjetaMenu(
                 titulo: 'Mis vehículos',
-                imagen: const DibujoMenu(IconoMenu.vehiculos),
+                subtitulo: 'Tus autos, fichas y manuales',
+                icono: IconoMenu.vehiculos.icono,
+                colores: [TemaCareCar.azulAgencia, TemaCareCar.azulProfundo],
+                indice: 0,
                 alPulsar: () => abrirPantalla(
                   context,
                   PantallaVehiculos(
@@ -68,7 +71,10 @@ class _PantallaInicioState extends State<PantallaInicio> {
               ),
               TarjetaMenu(
                 titulo: 'Citas',
-                imagen: const DibujoMenu(IconoMenu.cita),
+                subtitulo: 'Agenda y revisa tus citas',
+                icono: IconoMenu.cita.icono,
+                colores: [TemaCareCar.turquesaOscuro, Color(0xFF0E6B63)],
+                indice: 1,
                 alPulsar: () => abrirPantalla(
                   context,
                   PantallaMisCitas(
@@ -79,8 +85,10 @@ class _PantallaInicioState extends State<PantallaInicio> {
               ),
               TarjetaMenu(
                 titulo: 'Catálogo',
-                imagen: const DibujoMenu(IconoMenu.catalogo),
-                color: TemaCareCar.exitoFondo,
+                subtitulo: 'Conoce los modelos Nissan',
+                icono: IconoMenu.catalogo.icono,
+                colores: [Color(0xFF3D5A9E), Color(0xFF283C7A)],
+                indice: 2,
                 alPulsar: () => abrirPantalla(
                   context,
                   PantallaCatalogo(
@@ -91,7 +99,10 @@ class _PantallaInicioState extends State<PantallaInicio> {
               ),
               TarjetaMenu(
                 titulo: 'Ajustes',
-                imagen: const DibujoMenu(IconoMenu.ajustes),
+                subtitulo: 'Perfil, contraseña y ayuda',
+                icono: IconoMenu.ajustes.icono,
+                colores: [Color(0xFF52606D), Color(0xFF334155)],
+                indice: 3,
                 alPulsar: () => abrirPantalla(
                   context,
                   PantallaAjustes(

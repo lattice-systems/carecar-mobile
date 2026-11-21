@@ -170,7 +170,8 @@ class FichaVehiculo extends StatelessWidget {
             ])
               TarjetaMenu(
                 titulo: opcion.$1,
-                imagen: DibujoMenu(opcion.$2),
+                icono: opcion.$2.icono,
+                compacta: true,
                 alPulsar: () => abrirPantalla(
                   context,
                   opcion.$2 == IconoMenu.cita && api != null
