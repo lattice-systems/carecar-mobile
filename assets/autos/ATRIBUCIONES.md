@@ -83,3 +83,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **march_1** — 2020 Nissan Micra Acenta 1.0 IG-T Xtronic rear.jpg — JoachimKohler-HB — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Micra_Acenta_1.0_IG-T_Xtronic_rear.jpg
 - **march_2** — Nissan micra back.jpg — Alexander Migl — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:Nissan_micra_back.jpg
 - **versa_1** — 2020 Nissan Versa rear.jpg — Ee2mba — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Versa_rear.jpg
+- **sentra_1** — 2020 Nissan Sentra SV, front 10.22.20.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_10.22.20.jpg
+- **sentra_2** — 2020 Nissan Sentra SV, front right, 06-17-2026.jpg — BuickCentury04 — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2020_Nissan_Sentra_SV,_front_right,_06-17-2026.jpg
