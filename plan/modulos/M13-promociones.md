@@ -5,7 +5,7 @@
 | Hito | H4 |
 | Dueño | Haziel |
 | Revisa | Cristian |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 13. Promociones y novedades |
 | Estado | Borrador |
 
 ## Propósito

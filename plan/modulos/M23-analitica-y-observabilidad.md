@@ -5,7 +5,7 @@
 | Hito | H2 (errores) → H7 (tablero de objetivos) |
 | Dueño | Haziel |
 | Revisa | Jael |
-| Ficha técnica | No (transversal) |
+| Ficha técnica | No (frente transversal; se cumple dentro de las funcionalidades de la ficha) |
 | Estado | Listo para historias |
 
 ## Propósito

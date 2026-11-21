@@ -5,7 +5,7 @@
 | Hito | H5 |
 | Dueño | Cristian |
 | Revisa | Ricardo |
-| Ficha técnica | No (usa `refaccion` del inventario, referida por `orden_refaccion`) |
+| Ficha técnica | ✅ Sección 14. Tienda de refacciones y accesorios |
 | Estado | Borrador |
 
 ## Propósito

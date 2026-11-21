@@ -5,7 +5,7 @@
 | Hito | H2 (base) → H7 (auditoría) |
 | Dueño | Cristian |
 | Revisa | Haziel |
-| Ficha técnica | No (transversal a todas) |
+| Ficha técnica | No (frente transversal; se cumple dentro de las funcionalidades de la ficha) |
 | Estado | Listo para historias |
 
 ## Propósito

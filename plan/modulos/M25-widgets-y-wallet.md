@@ -5,7 +5,7 @@
 | Hito | H6 |
 | Dueño | Juan Pablo |
 | Revisa | Cristian |
-| Ficha técnica | No |
+| Ficha técnica | No (frente transversal; se cumple dentro de las funcionalidades de la ficha) |
 | Estado | Borrador |
 
 ## Propósito

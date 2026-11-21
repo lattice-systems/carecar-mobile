@@ -5,7 +5,7 @@
 | Hito | H3 |
 | Dueño | Jael |
 | Revisa | Daniel |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 6. Notificaciones |
 | Estado | Listo para historias |
 
 ## Propósito

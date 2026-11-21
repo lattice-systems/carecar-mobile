@@ -5,7 +5,7 @@
 | Hito | H2 (base) → H7 (MASVS) |
 | Dueño | Daniel |
 | Revisa | Ricardo |
-| Ficha técnica | No (transversal; protege los datos de `cliente` y `cuenta_app`) |
+| Ficha técnica | ✅ Sección 20. Seguridad y privacidad |
 | Estado | Listo para historias |
 
 ## Propósito

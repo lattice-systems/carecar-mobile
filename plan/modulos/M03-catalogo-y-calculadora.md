@@ -5,7 +5,7 @@
 | Hito | H2 |
 | Dueño | Cristian |
 | Revisa | Haziel |
-| Ficha técnica | ✅ Módulo 3 (APP-4.1) |
+| Ficha técnica | ✅ Sección 3. Catálogo y calculadora |
 | Estado | Listo para historias — **brecha: la calculadora no existe en v1** |
 
 ## Propósito

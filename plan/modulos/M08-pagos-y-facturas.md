@@ -5,7 +5,7 @@
 | Hito | H5 |
 | Dueño | Ricardo |
 | Revisa | Daniel |
-| Ficha técnica | No (usa `orden_servicio.total` de la ficha) |
+| Ficha técnica | ✅ Sección 8. Pagos y facturas |
 | Estado | Borrador |
 
 ## Propósito

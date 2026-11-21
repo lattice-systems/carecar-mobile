@@ -5,7 +5,7 @@
 | Hito | H4 |
 | Dueño | Jael |
 | Revisa | Ricardo |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 7. Mensajería con el asesor |
 | Estado | Borrador |
 
 ## Propósito

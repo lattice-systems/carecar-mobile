@@ -5,7 +5,7 @@
 | Hito | H4 |
 | Dueño | Ricardo |
 | Revisa | Haziel |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 12. Lealtad y recompensas |
 | Estado | Borrador |
 
 ## Propósito

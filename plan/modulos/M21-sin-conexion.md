@@ -5,7 +5,7 @@
 | Hito | H2 (lectura) → H7 (escritura en cola) |
 | Dueño | Jael |
 | Revisa | Juan Pablo |
-| Ficha técnica | No (transversal) |
+| Ficha técnica | No (frente transversal; se cumple dentro de las funcionalidades de la ficha) |
 | Estado | Listo para historias |
 
 ## Propósito
