@@ -5,7 +5,7 @@
 | Hito | H3 |
 | Dueño | Juan Pablo |
 | Revisa | Ricardo |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 5. Mantenimiento inteligente |
 | Estado | Listo para historias |
 
 ## Propósito

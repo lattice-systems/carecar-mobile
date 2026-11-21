@@ -5,7 +5,7 @@
 | Hito | H3 |
 | Dueño | Haziel |
 | Revisa | Jael |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 9. Documentos y vencimientos |
 | Estado | Listo para historias |
 
 ## Propósito

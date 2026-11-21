@@ -5,7 +5,7 @@
 | Hito | Hx |
 | Dueño | Persona (frente) |
 | Revisa | Persona |
-| Ficha técnica | Sí (Módulo n) / No |
+| Ficha técnica | ✅ Sección n. Nombre / No (frente transversal) |
 | Estado | Borrador / Listo para historias / En curso / Hecho |
 
 ## Propósito

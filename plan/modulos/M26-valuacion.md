@@ -5,7 +5,7 @@
 | Hito | H5 |
 | Dueño | Cristian |
 | Revisa | Ricardo |
-| Ficha técnica | No (continúa la calculadora de M03, que sigue siendo no vinculante) |
+| Ficha técnica | ✅ Sección 22. Valuación formal |
 | Estado | Borrador |
 
 ## Propósito

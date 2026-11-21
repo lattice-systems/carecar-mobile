@@ -5,7 +5,7 @@
 | Hito | H3 |
 | Dueño | Ricardo |
 | Revisa | Haziel |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 10. Garantía y campañas de seguridad |
 | Estado | Listo para historias |
 
 ## Propósito

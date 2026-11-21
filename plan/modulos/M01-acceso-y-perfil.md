@@ -5,7 +5,7 @@
 | Hito | H2 |
 | Dueño | Jael |
 | Revisa | Daniel |
-| Ficha técnica | ✅ Módulo 1 (APP-2.1, APP-2.2, APP-2.3) |
+| Ficha técnica | ✅ Sección 1. Acceso y perfil |
 | Estado | Listo para historias |
 
 ## Propósito

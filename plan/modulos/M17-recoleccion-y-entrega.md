@@ -5,7 +5,7 @@
 | Hito | H5 |
 | Dueño | Juan Pablo |
 | Revisa | Ricardo |
-| Ficha técnica | No (extiende `cita`) |
+| Ficha técnica | ✅ Sección 17. Recolección y entrega a domicilio |
 | Estado | Borrador |
 
 ## Propósito

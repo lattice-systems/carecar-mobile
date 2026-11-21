@@ -5,7 +5,7 @@
 | Hito | H6 |
 | Dueño | Daniel |
 | Revisa | Cristian |
-| Ficha técnica | No (usa `manual` de la ficha como fuente) |
+| Ficha técnica | ✅ Sección 21. Asistente CareCar (IA) |
 | Estado | Borrador |
 
 ## Propósito

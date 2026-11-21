@@ -5,7 +5,7 @@
 | Hito | H6 |
 | Dueño | Juan Pablo |
 | Revisa | Jael |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 11. Asistencia en camino |
 | Estado | Borrador |
 
 ## Propósito

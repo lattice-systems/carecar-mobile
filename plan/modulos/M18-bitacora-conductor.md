@@ -5,7 +5,7 @@
 | Hito | H6 |
 | Dueño | Juan Pablo |
 | Revisa | Cristian |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 18. Bitácora del conductor |
 | Estado | Borrador |
 
 ## Propósito

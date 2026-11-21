@@ -5,7 +5,7 @@
 | Hito | H6 |
 | Dueño | Jael |
 | Revisa | Daniel |
-| Ficha técnica | No (respeta: la cuenta del titular la crea la agencia) |
+| Ficha técnica | ✅ Sección 19. Cuentas familiares |
 | Estado | Borrador |
 
 ## Propósito

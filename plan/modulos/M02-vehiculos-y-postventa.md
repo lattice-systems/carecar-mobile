@@ -5,7 +5,7 @@
 | Hito | H2 |
 | Dueño | Juan Pablo (garaje, manuales, citas) · Ricardo (historial, tickets) |
 | Revisa | Cristian |
-| Ficha técnica | ✅ Módulo 2 (APP-3.1, APP-3.2, APP-3.3) |
+| Ficha técnica | ✅ Sección 2. Mis vehículos y postventa |
 | Estado | Listo para historias |
 
 ## Propósito

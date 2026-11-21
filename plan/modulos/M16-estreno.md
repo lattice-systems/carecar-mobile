@@ -5,7 +5,7 @@
 | Hito | H5 |
 | Dueño | Daniel |
 | Revisa | Haziel |
-| Ficha técnica | No (parte del catálogo M03) |
+| Ficha técnica | ✅ Sección 16. Estreno |
 | Estado | Borrador |
 
 ## Propósito

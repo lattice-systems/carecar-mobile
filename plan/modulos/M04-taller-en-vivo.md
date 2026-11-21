@@ -5,7 +5,7 @@
 | Hito | H3 |
 | Dueño | Ricardo |
 | Revisa | Juan Pablo |
-| Ficha técnica | No (extiende `orden_servicio` de la ficha) |
+| Ficha técnica | ✅ Sección 4. Taller en vivo |
 | Estado | Listo para historias |
 
 ## Propósito

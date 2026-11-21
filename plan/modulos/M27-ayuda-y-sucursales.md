@@ -5,7 +5,7 @@
 | Hito | H4 |
 | Dueño | Haziel |
 | Revisa | Juan Pablo |
-| Ficha técnica | No |
+| Ficha técnica | ✅ Sección 23. Ayuda y sucursales |
 | Estado | Listo para historias |
 
 ## Propósito
