@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions" />
 </p>
 
-[Cómo empezar](#-cómo-empezar) · [Comandos](#-comandos-útiles) · [Pruebas](#-pruebas) · [CI y checks](#-ci-y-checks-del-pr) · [Publicación](docs/publicacion.md) · [Convenciones](docs/convenciones-commits.md)
+[Cómo empezar](#-cómo-empezar) · [Comandos](#-comandos-útiles) · [Pruebas](#-pruebas) · [CI y checks](#-ci-y-checks-del-pr) · [Convenciones](docs/convenciones-commits.md)
 
 </div>
 
@@ -41,7 +41,6 @@
 - [Pruebas](#-pruebas)
 - [CI y checks del PR](#-ci-y-checks-del-pr)
 - [Forma de trabajo](#-forma-de-trabajo)
-- [Publicación](#-publicación)
 - [Pendientes](#-pendientes)
 - [Documentación relacionada](#-documentación-relacionada)
 
@@ -129,10 +128,10 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 | Emulador Android | `http://10.0.2.2:8080/api/v1/app` |
 | Celular por USB (con `adb reverse tcp:8080 tcp:8080`) | `http://localhost:8080/api/v1/app` |
 | API simulada (`mock_api/`) | `http://localhost:3000/api/v1/app` |
-| Staging / producción | `https://…` (ver [`docs/publicacion.md`](docs/publicacion.md)) |
+| Backend en Docker detrás de nginx (red local) | `http://IP-DE-LA-PC:8089/api/v1/app` |
 
-> [!IMPORTANT]
-> `http` solo funciona en debug. En release la app exige `https` (en `ApiConfig` y en la configuración de red de Android/iOS).
+> [!NOTE]
+> El proyecto es solo local: la app acepta `http` en debug y en release (IP de la PC con `ip -4 addr`).
 
 > [!TIP]
 > Con `flutter devices` ves los emuladores y dispositivos disponibles; con `flutter run -d <id>` eliges uno.
@@ -149,7 +148,7 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 | `flutter test`              | Corre todas las pruebas                                   |
 | `flutter build apk --debug` | Compila el APK de Android (lo mismo que revisa CI)        |
 | `flutter build ios --no-codesign` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
-| `flutter build appbundle --release` | AAB firmado para Google Play (requiere `android/key.properties`) |
+| `flutter build apk --release --dart-define=API_BASE_URL=http://IP-DE-LA-PC:8089/api/v1/app` | APK para instalar en el celular |
 | `flutter pub outdated`      | Muestra qué dependencias tienen versiones más nuevas      |
 
 ---
@@ -161,7 +160,7 @@ carecar-mobile/
 ├── .github/workflows/     # CI (formato, análisis, pruebas, APK, iOS), CodeQL y Dependency Review
 ├── api/                   # Copia del contrato OpenAPI de la app (fuente de verdad)
 ├── assets/                # Logo, imágenes y manuales PDF incluidos
-├── docs/                  # Convenciones, manuales locales y publicación
+├── docs/                  # Convenciones y manuales locales
 ├── mock_api/              # API simulada (json-server) para desarrollo sin backend
 ├── lib/
 │   ├── main.dart          # Arranque: lee API_BASE_URL, crea la sesión y el ShadApp
@@ -297,12 +296,6 @@ Se cerraron en los Sprints 1 a 3.
 
 ---
 
-## 📦 Publicación
-
-Firma de Android (`android/key.properties`, fuera del repositorio; plantilla en `android/key.properties.example`), versión desde `pubspec.yaml`, staging con `--dart-define` y pasos para Google Play y App Store: [`docs/publicacion.md`](docs/publicacion.md).
-
----
-
 ## 📌 Pendientes
 
 | Tema | Qué falta |
@@ -316,7 +309,6 @@ Firma de Android (`android/key.properties`, fuera del repositorio; plantilla en 
 | Notificaciones push | Firebase Cloud Messaging (recordatorio de cita, vehículo listo) |
 | Sin conexión | No hay caché; sin red se muestra error con reintentar |
 | Pruebas | Sin `integration_test` del flujo principal |
-| Entrega | Llaves de firma, cuentas de Google Play y Apple, y URL HTTPS de staging (ver [`docs/publicacion.md`](docs/publicacion.md)) |
 
 ---
 
@@ -324,7 +316,6 @@ Firma de Android (`android/key.properties`, fuera del repositorio; plantilla en 
 
 - **Wiki del proyecto (Azure DevOps):** [Agente360 Wiki](https://dev.azure.com/latticesystems/Agente360/_wiki/wikis/Agente360.wiki), sección _Arquitectura y Tecnologías_.
 - **Convenciones de ramas, commits y PR:** [`docs/convenciones-commits.md`](docs/convenciones-commits.md)
-- **Publicación y ambientes:** [`docs/publicacion.md`](docs/publicacion.md)
 - **Backend:** [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)
 - **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)
 - **ERP frontend:** [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend)
