@@ -28,7 +28,7 @@ env:
 #
 # subosito/flutter-action es de terceros, así que se fija al hash del commit (no
 # a la etiqueta v2, que se puede mover). Para actualizarla, cambia el hash y el
-# comentario con la versión en los cuatro jobs.
+# comentario con la versión en los cinco jobs.
 jobs:
   formato:
     name: Formato (dart format)
@@ -118,3 +118,25 @@ jobs:
       # las llaves de firma de producción.
       - name: Compilar el APK
         run: flutter build apk --debug
+
+  build-ios:
+    name: Build iOS (sin firma)
+    # Xcode solo existe en macOS. Se compila sin firmar: comprueba que el
+    # proyecto iOS compila sin certificados ni perfiles de Apple.
+    runs-on: macos-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Compilar para iOS sin firmar
+        run: flutter build ios --no-codesign

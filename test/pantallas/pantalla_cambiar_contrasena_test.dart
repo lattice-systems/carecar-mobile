@@ -1,11 +1,14 @@
 // APP-2.3 · «En el primer ingreso se obliga a cambiar la contrasena temporal».
 
+import '../ayudas/envolver_con_shad.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/pantallas/pantalla_cambiar_contrasena.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../ayudas/api_falsa.dart';
@@ -17,7 +20,7 @@ Future<void> _montar(
   VoidCallback? alCerrarSesion,
 }) async {
   await tester.pumpWidget(
-    MaterialApp(
+    MaterialAppConShad(
       theme: TemaCareCar.claro,
       home: PantallaCambiarContrasena(
         api: api,
@@ -160,7 +163,7 @@ void main() {
       await tester.pump();
 
       expect(find.text('Guardando…'), findsOneWidget);
-      final boton = tester.widget<FilledButton>(
+      final boton = tester.widget<ShadButton>(
         find.byKey(PantallaCambiarContrasena.botonGuardar),
       );
       expect(boton.onPressed, isNull);
