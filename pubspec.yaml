@@ -49,6 +49,10 @@ dependencies:
   # `AlmacenSesion`, asi que si el equipo prefiere otra, se cambia una clase.
   flutter_secure_storage: ^11.2.0
 
+  # Animaciones y esqueletos de carga de las pantallas de citas (APP-3.3).
+  flutter_animate: ^4.5.2
+  skeletonizer: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

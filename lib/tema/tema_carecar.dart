@@ -75,6 +75,16 @@ abstract final class TemaCareCar {
   /// **Siempre 16.** Con menos, iOS hace zoom al enfocar el campo.
   static const tamanoCampo = 16.0;
 
+  /// Estilo monoespaciado para VIN y placas (guia de estilos, §3).
+  static const mono = TextStyle(fontFamily: 'monospace');
+
+  /// Degradado de marca para encabezados y tarjetas destacadas.
+  static const degradadoMarca = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [azulAgencia, azulProfundo],
+  );
+
   static ThemeData get claro {
     const esquema = ColorScheme.light(
       primary: azulAgencia,
