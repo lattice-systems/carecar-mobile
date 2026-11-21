@@ -1,0 +1,8 @@
+# Copia este archivo a android/key.properties (ignorado en git) y llena los
+# valores. Nunca subas key.properties ni el .jks al repositorio.
+# Ver docs/publicacion.md.
+storePassword=CAMBIAR
+keyPassword=CAMBIAR
+keyAlias=carecar
+# Ruta al keystore, relativa a android/app/ (o absoluta)
+storeFile=/ruta/fuera/del/repo/carecar-release.jks
