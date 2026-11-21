@@ -9,6 +9,7 @@ import '../tema/tema_carecar.dart';
 import '../widgets/aviso_sin_conexion.dart';
 import '../widgets/carga_datos.dart';
 import '../widgets/formato.dart';
+import '../widgets/foto_auto.dart';
 import '../widgets/movimiento.dart';
 import '../widgets/menu_carecar.dart';
 import '../widgets/pagina_carecar.dart';
@@ -181,22 +182,10 @@ class TarjetaVehiculo extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                FotoAuto(modelo: v.modelo, alto: 150),
+                const SizedBox(height: 14),
                 Row(
                   children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        gradient: TemaCareCar.degradadoMarca,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Icon(
-                        Icons.directions_car_filled,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
