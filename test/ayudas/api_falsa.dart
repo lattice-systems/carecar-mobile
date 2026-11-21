@@ -175,21 +175,72 @@ class ApiFalsa implements CarecarApi {
   Future<Uint8List> ticketDe(int servicioId) =>
       throw UnimplementedError('APP-3.2');
 
+  // --- Agenda · APP-3.3 ---
+
+  /// Que responde `GET /citas`. Si es nulo, una lista vacia.
+  Future<List<Cita>> Function()? alPedirCitas;
+
+  /// Que responde `GET /agenda/disponibilidad`. Si es nulo, sin franjas.
+  Future<List<Disponibilidad>> Function(DateTime desde, DateTime hasta)?
+  alPedirDisponibilidad;
+
+  /// Que hace `POST /citas`. Si es nulo, la cita queda confirmada.
+  Future<Cita> Function(NuevaCita)? alAgendar;
+
+  /// Que hace `POST /citas/{id}/cancelar`. Si es nulo, la cita queda cancelada.
+  Future<Cita> Function(int citaId)? alCancelar;
+
+  final citasAgendadas = <NuevaCita>[];
+  final citasCanceladas = <int>[];
+  int llamadasACitas = 0;
+  int llamadasADisponibilidad = 0;
+
   @override
   Future<List<Disponibilidad>> disponibilidad({
     required DateTime desde,
     required DateTime hasta,
-  }) => throw UnimplementedError('APP-3.3');
+  }) {
+    llamadasADisponibilidad++;
+    return alPedirDisponibilidad?.call(desde, hasta) ?? Future.value(const []);
+  }
 
   @override
-  Future<List<Cita>> misCitas() => throw UnimplementedError('APP-3.3');
+  Future<List<Cita>> misCitas() {
+    llamadasACitas++;
+    return alPedirCitas?.call() ?? Future.value(const []);
+  }
 
   @override
-  Future<Cita> agendarCita(NuevaCita nueva) =>
-      throw UnimplementedError('APP-3.3');
+  Future<Cita> agendarCita(NuevaCita nueva) {
+    citasAgendadas.add(nueva);
+    return alAgendar?.call(nueva) ??
+        Future.value(
+          Cita(
+            id: 99,
+            vehiculoId: nueva.vehiculoId,
+            fecha: nueva.fecha,
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.confirmada,
+          ),
+        );
+  }
 
   @override
-  Future<Cita> cancelarCita(int citaId) => throw UnimplementedError('APP-3.3');
+  Future<Cita> cancelarCita(int citaId) {
+    citasCanceladas.add(citaId);
+    return alCancelar?.call(citaId) ??
+        Future.value(
+          Cita(
+            id: citaId,
+            vehiculoId: 0,
+            fecha: DateTime(2026),
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.cancelada,
+          ),
+        );
+  }
 
   @override
   Future<List<ModeloCatalogo>> catalogo() =>

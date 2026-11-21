@@ -136,7 +136,7 @@ void main() {
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
       expect(find.text('Menú'), findsOneWidget);
-      for (final opcion in ['Mis vehículos', 'Catálogo', 'Ajustes']) {
+      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo', 'Ajustes']) {
         expect(find.text(opcion), findsOneWidget);
       }
       expect(api.llamadasAlLogin, 1);
@@ -273,7 +273,7 @@ void main() {
       final api = ApiFalsa()..alPedirVehiculos = () async => [_march, _jetta];
       await _montar(tester, api);
       final misVehiculos = tester.getTopLeft(find.text('Mis vehículos'));
-      final catalogo = tester.getTopLeft(find.text('Catálogo'));
+      final catalogo = tester.getTopLeft(find.text('Citas'));
       expect((misVehiculos.dy - catalogo.dy).abs() < 1, ancho >= 768);
       await _tocar(tester, 'Mis vehículos');
       await _tocar(tester, '${_jetta.modelo} 2018');
