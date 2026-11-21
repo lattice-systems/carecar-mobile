@@ -64,7 +64,9 @@ class _PaginaCareCarState extends State<PaginaCareCar> {
   }
 
   bool _alDesplazar(ScrollNotification n) {
-    if (n.metrics.axis != Axis.vertical) return false;
+    // El visor de PDF (expandir) no contrae el encabezado: repintarlo en cada
+    // cuadro del scroll lo traba.
+    if (widget.expandir || n.metrics.axis != Axis.vertical) return false;
     final valor = (n.metrics.pixels / _recorrido).clamp(0.0, 1.0);
     if ((valor - _colapso.value).abs() > 0.01) _colapso.value = valor;
     return false;
@@ -81,6 +83,7 @@ class _PaginaCareCarState extends State<PaginaCareCar> {
           cabecera: widget.cabecera,
           alCerrarSesion: widget.alCerrarSesion,
           colapso: _colapso,
+          fondoQuieto: widget.expandir,
         ),
         Expanded(
           child: NotificationListener<ScrollNotification>(
@@ -127,6 +130,7 @@ class _Encabezado extends StatelessWidget {
     required this.cabecera,
     required this.alCerrarSesion,
     required this.colapso,
+    this.fondoQuieto = false,
   });
 
   final String titulo;
@@ -134,6 +138,9 @@ class _Encabezado extends StatelessWidget {
   final Widget? cabecera;
   final VoidCallback alCerrarSesion;
   final ValueListenable<double> colapso;
+
+  /// Sin destellos animados (pantallas con contenido pesado, como el visor PDF).
+  final bool fondoQuieto;
 
   @override
   Widget build(BuildContext context) {

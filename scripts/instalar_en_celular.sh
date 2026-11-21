@@ -39,10 +39,11 @@ adb reverse "tcp:$PUERTO" "tcp:$PUERTO"
 if ! command -v flutter >/dev/null 2>&1 && [ -x "$HOME/flutter/bin/flutter" ]; then
   export PATH="$PATH:$HOME/flutter/bin"
 fi
-flutter build apk --debug "--dart-define=API_BASE_URL=http://localhost:$PUERTO/api/v1/app"
+MODO="${MODO:-debug}"   # MODO=release: mucho mas fluido (sin las comprobaciones de depuracion)
+flutter build apk "--$MODO" "--dart-define=API_BASE_URL=http://localhost:$PUERTO/api/v1/app"
 
 # (e) instalar y abrir
-adb install -r build/app/outputs/flutter-apk/app-debug.apk
+adb install -r "build/app/outputs/flutter-apk/app-$MODO.apk"
 paquete="$(grep -m1 applicationId android/app/build.gradle* | sed -E "s/.*[\"']([^\"']+)[\"'].*/\1/")"
 adb shell monkey -p "$paquete" -c android.intent.category.LAUNCHER 1 >/dev/null
 echo "Listo: $paquete instalada y abierta."
