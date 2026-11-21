@@ -49,7 +49,6 @@ dependencies:
   # `AlmacenSesion`, asi que si el equipo prefiere otra, se cambia una clase.
   flutter_secure_storage: ^11.2.0
   flutter_animate: ^4.5.2
-  google_fonts: ^6.3.2
 
   # Animaciones y esqueletos de carga de las pantallas de citas (APP-3.3).
   skeletonizer: ^3.0.0
@@ -84,6 +83,21 @@ flutter:
   # estilos (peticion EQ-3). Se convirtieron a PNG con el fondo transparente.
   # Cuando lleguen los SVG conviene regenerarlos, sobre todo la version blanca
   # para fondos oscuros, que no se puede derivar del JPEG.
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-400.ttf
+        - asset: assets/fonts/Inter-500.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-600.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-700.ttf
+          weight: 700
+    - family: JetBrainsMono
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-400.ttf
+        - asset: assets/fonts/JetBrainsMono-700.ttf
+          weight: 700
   assets:
     - assets/marca/
     - assets/Manuales/Nissan/March/2020/
