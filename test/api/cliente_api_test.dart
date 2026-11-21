@@ -51,6 +51,21 @@ void main() {
       expect(pedida.toString(), 'http://localhost:3000/api/v1/app/vehiculos');
     });
 
+    test('de una respuesta paginada toma su contenido', () async {
+      final cliente = _clienteQueResponde(
+        (_) => http.Response(
+          '{"contenido":[{"id":1},{"id":2}],"pagina":0,"tamano":20,'
+          '"totalElementos":2,"totalPaginas":1}',
+          200,
+          headers: {'content-type': 'application/json'},
+        ),
+      );
+
+      final lista = await cliente.obtenerLista('/citas', (j) => j['id']);
+
+      expect(lista, [1, 2]);
+    });
+
     test('manda el token como Bearer cuando hay sesion', () async {
       String? autorizacion;
       final cliente = _clienteQueResponde((req) {

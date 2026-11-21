@@ -310,7 +310,12 @@ class ClienteApi {
   ) {
     _verificarEstado(respuesta);
 
-    final cuerpo = _decodificar(respuesta);
+    final decodificado = _decodificar(respuesta);
+    // Servicios y citas llegan paginados (`PaginaServicios`, `PaginaCitas`):
+    // se toma su `contenido`. La app aun no pide mas de una pagina.
+    final cuerpo = decodificado is Map && decodificado['contenido'] is List
+        ? decodificado['contenido']
+        : decodificado;
     if (cuerpo is! List) {
       throw RespuestaInvalida(
         'Se esperaba una lista JSON y llego ${cuerpo.runtimeType}.',
