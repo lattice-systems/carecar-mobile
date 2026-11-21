@@ -74,3 +74,5 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **urvan_1** — 2019 NV350 Urvan Premium (rear).jpg — Ethan Llamas — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_NV350_Urvan_Premium_(rear).jpg
 - **juke_1** — Nissan JUKE (F15) rear.JPG — Tokumeigakarinoaoshima — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_JUKE_(F15)_rear.JPG
 - **juke_2** — Nissan JUKE 15RX (F15) rear.JPG — Tokumeigakarinoaoshima — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_JUKE_15RX_(F15)_rear.JPG
+- **note_1** — 2014-2016 Nissan Note Aero Style rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:2014-2016_Nissan_Note_Aero_Style_rear.jpg
+- **note_2** — 2014-2016 Nissan Note X rear.jpg — TTTNIS — CC0 — https://commons.wikimedia.org/wiki/File:2014-2016_Nissan_Note_X_rear.jpg
