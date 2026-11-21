@@ -186,19 +186,27 @@ class _LineaState extends State<_Linea> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
+                                // Wrap: con letra grande la insignia baja de
+                                // linea en vez de desbordarse.
+                                Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 8,
+                                  runSpacing: 6,
                                   children: [
-                                    Expanded(
-                                      child: Text(
-                                        formatoFecha(s.fecha),
-                                        style: temas.titleMedium,
-                                      ),
+                                    Text(
+                                      formatoFecha(s.fecha),
+                                      style: temas.titleMedium,
                                     ),
                                     ShadBadge(child: Text(_estatus(s.estatus))),
                                   ],
                                 ),
                                 const SizedBox(height: 10),
-                                Row(
+                                Wrap(
+                                  alignment: WrapAlignment.spaceBetween,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 8,
+                                  runSpacing: 6,
                                   children: [
                                     NumeroAnimado(
                                       valor: s.total.round(),
@@ -209,18 +217,25 @@ class _LineaState extends State<_Linea> {
                                         ),
                                       ),
                                     ),
-                                    const Spacer(),
-                                    const Icon(
-                                      Icons.receipt_long_outlined,
-                                      size: 18,
-                                      color: TemaCareCar.textoSecundario,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      'Ver ticket',
-                                      style: temas.labelLarge?.copyWith(
-                                        color: TemaCareCar.textoSecundario,
-                                      ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.receipt_long_outlined,
+                                          size: 18,
+                                          color: TemaCareCar.textoSecundario,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Flexible(
+                                          child: Text(
+                                            'Ver ticket',
+                                            style: temas.labelLarge?.copyWith(
+                                              color:
+                                                  TemaCareCar.textoSecundario,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
