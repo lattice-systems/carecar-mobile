@@ -3,7 +3,7 @@
 | Campo | Valor |
 | --- | --- |
 | Hito | H4 |
-| Dueño | Cristian |
+| Dueño | Ricardo |
 | Revisa | Haziel |
 | Ficha técnica | No |
 | Estado | Borrador |

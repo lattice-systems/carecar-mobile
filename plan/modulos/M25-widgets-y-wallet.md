@@ -3,7 +3,7 @@
 | Campo | Valor |
 | --- | --- |
 | Hito | H6 |
-| Dueño | Jael |
+| Dueño | Juan Pablo |
 | Revisa | Cristian |
 | Ficha técnica | No |
 | Estado | Borrador |
