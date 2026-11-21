@@ -60,7 +60,7 @@ Total: **202 historias** + 4 de H0.
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Lista | |
 | V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
 
-## H2 · Ficha al 100 % (v2.0)
+## H2 · Núcleo de la ficha (secciones 1–3)
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |

@@ -8,7 +8,7 @@ Los hitos ordenan prioridades, no bloquean a nadie: si una persona no tiene hist
 | --- | --- | --- | --- |
 | ▶ H0 | Base de trabajo | Reglas, agentes, plan | O10 |
 | H1 | Cimientos v2 | T01, T02, T03, T04, T05 | O8, O9 |
-| H2 | Ficha al 100 % (v2.0) | M01, M02, M03 + base de M20, M21, M22, M23 | O1, O2 |
+| H2 | Núcleo de la ficha (secciones 1–3) | M01, M02, M03 + base de M20, M21, M22, M23 | O1, O2 |
 | H3 | Postventa viva | M04, M05, M06, M09, M10 | O3, O4, O6 |
 | H4 | Cliente conectado | M07, M12, M13, M15, M27 | O4, O7 |
 | H5 | Comercio | M08, M14, M16, M17, M26 | O5 |
@@ -40,12 +40,12 @@ Criterios de salida:
 - [ ] Distribución interna automática de cada `main` (APK firmado de prueba) para el equipo.
 - [ ] Contrato `agencia360-api-app-v2.yaml` iniciado, compatible con v1, copiado en `api/`.
 
-## H2 · Ficha al 100 % (v2.0)
+## H2 · Núcleo de la ficha (secciones 1–3)
 
-**Propósito:** la v2 hace todo lo que la ficha pide, con el diseño nuevo, mejor que v1.
+**Propósito:** las secciones 1–3 de la ficha (acceso, vehículos y postventa, catálogo y calculadora) funcionan en la v2 con el diseño nuevo, mejor que v1. Las demás secciones se cierran en H3–H6.
 
 Criterios de salida:
-- [ ] `plan/cumplimiento-ficha.md` con todas las filas en ✅ y prueba enlazada.
+- [ ] Filas de las secciones 1–3 en `plan/cumplimiento-ficha.md` en ✅ con prueba enlazada.
 - [ ] Calculadora de toma a cuenta (brecha de v1) funcionando.
 - [ ] M01, M02, M03 reconstruidos en la estructura v2; pantallas v1 retiradas.
 - [ ] Sin conexión: lectura de vehículos, historial y citas guardadas.
@@ -102,6 +102,7 @@ Criterios de salida:
 **Propósito:** publicar en Google Play y App Store con calidad de producto comercial.
 
 Criterios de salida:
+- [ ] `plan/cumplimiento-ficha.md` completa: las 58 funcionalidades de la ficha v2.0 en ✅ con prueba enlazada.
 - [ ] Auditoría WCAG 2.2 AA sin hallazgos críticos; app en español e inglés.
 - [ ] Revisión OWASP MASVS L1 aprobada; derechos ARCO funcionando (exportar y borrar cuenta).
 - [ ] Métricas de producto (O1–O10) en un tablero de analítica.

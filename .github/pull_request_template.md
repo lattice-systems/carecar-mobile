@@ -19,7 +19,7 @@
 
 ## Checklist (AGENTS.md)
 
-- [ ] Cumple la ficha técnica; si toca M01–M03, actualicé `plan/cumplimiento-ficha.md`
+- [ ] Cumple la ficha técnica; si toca una funcionalidad de la ficha, actualicé `plan/cumplimiento-ficha.md`
 - [ ] Documentación actualizada (módulo, tablero, README, decisiones o diseño)
 - [ ] `plan/tablero.md` refleja el estado de la historia
 - [ ] Commits atómicos con intención, sin co-autor de IA ni "Generated with"

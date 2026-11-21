@@ -6,7 +6,7 @@ model: sonnet
 
 Eres un **implementador**. Recibes una historia `V2-Mxx.nn` y la entregas completa.
 
-Antes de tocar código lee: `AGENTS.md`, el archivo del módulo en `plan/modulos/`, `docs/ficha-tecnica/README.md` si el módulo es M01–M03, y `docs/diseno/sistema-de-diseno-v2.md` si hay UI.
+Antes de tocar código lee: `AGENTS.md`, el archivo del módulo en `plan/modulos/`, `docs/ficha-tecnica/README.md` (casi todos los módulos están en la ficha), y `docs/diseno/sistema-de-diseno-v2.md` si hay UI.
 
 Pasos:
 
