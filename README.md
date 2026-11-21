@@ -25,7 +25,7 @@
 </div>
 
 > [!NOTE]
-> **Estado:** estructura inicial del proyecto. `lib/main.dart` todavía es la app de ejemplo de Flutter (el contador); no hay pantallas de CareCar implementadas.
+> **Estado (nov 2026):** app funcional contra el backend real (módulo `carecarapp`): acceso con sesión de 30 días, Mis vehículos, manuales, historial de servicios con ticket en PDF, citas (agendar y cancelar) y Ajustes/Perfil. El catálogo muestra «Próximamente». Ver [Pendientes](#-pendientes).
 
 ---
 
@@ -41,7 +41,7 @@
 - [Pruebas](#-pruebas)
 - [CI y checks del PR](#-ci-y-checks-del-pr)
 - [Forma de trabajo](#-forma-de-trabajo)
-- [Pendientes por definir](#-pendientes-por-definir)
+- [Pendientes](#-pendientes)
 - [Documentación relacionada](#-documentación-relacionada)
 
 ---
@@ -69,7 +69,7 @@ Alcance del MVP según el documento de stack y arquitectura (v2):
 | Mis vehículos     | Las unidades del cliente, con su historial de servicios y los tickets que genera el taller            |
 | Citas de servicio | El cliente agenda una cita y queda registrada en el módulo de Servicio del ERP                        |
 
-En el **Sprint 1** se trabaja `APP-2.1 · Acceso exclusivo gestionado por la agencia`, contra una API simulada mientras el backend implementa el contrato.
+Además: manuales del vehículo (PDF de la agencia o incluido en la app) y Ajustes/Perfil (cambiar contraseña, contacto, aviso de privacidad, cerrar sesión).
 
 ---
 
@@ -78,7 +78,12 @@ En el **Sprint 1** se trabaja `APP-2.1 · Acceso exclusivo gestionado por la age
 | Tecnología      | Uso                                                   |
 | --------------- | ----------------------------------------------------- |
 | Flutter + Dart  | Framework de UI multiplataforma y lenguaje            |
-| Material Design | Componentes visuales base                             |
+| Material Design + `shadcn_ui` | Componentes visuales (`ShadApp` con la paleta de marca) |
+| `http`          | Cliente de la API escrito a mano                      |
+| `flutter_secure_storage` | Guarda la sesión (tokens) cifrada            |
+| `flutter_animate`, `skeletonizer` | Animaciones y esqueletos de carga   |
+| `google_fonts`  | Inter y JetBrains Mono (hoy se descargan en runtime)  |
+| `pdfx`          | Visor de manuales y tickets en PDF                    |
 | `flutter_lints` | Reglas de análisis estático (`analysis_options.yaml`) |
 | `flutter_test`  | Pruebas unitarias y de widgets                        |
 | GitHub Actions  | CI, CodeQL y Dependency Review                        |
@@ -114,9 +119,19 @@ cd carecar-mobile
 # 2. Instalar dependencias
 flutter pub get
 
-# 3. Correr la app en un emulador o dispositivo conectado
-flutter run
+# 3. Correr la app (API_BASE_URL es obligatorio, no hay valor por omisión)
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emulador Android
 ```
+
+| Dónde corre la app | `API_BASE_URL` |
+| --- | --- |
+| Emulador Android | `http://10.0.2.2:8080/api/v1/app` |
+| Celular por USB (con `adb reverse tcp:8080 tcp:8080`) | `http://localhost:8080/api/v1/app` |
+| API simulada (`mock_api/`) | `http://localhost:3000/api/v1/app` |
+| Backend en Docker detrás de nginx (red local) | `http://IP-DE-LA-PC:8089/api/v1/app` |
+
+> [!NOTE]
+> El proyecto es solo local: la app acepta `http` en debug y en release (IP de la PC con `ip -4 addr`).
 
 > [!TIP]
 > Con `flutter devices` ves los emuladores y dispositivos disponibles; con `flutter run -d <id>` eliges uno.
@@ -132,7 +147,8 @@ flutter run
 | `flutter analyze`           | Análisis estático con las reglas de `flutter_lints`       |
 | `flutter test`              | Corre todas las pruebas                                   |
 | `flutter build apk --debug` | Compila el APK de Android (lo mismo que revisa CI)        |
-| `flutter build ios`         | Compila para iOS (solo en macOS con Xcode)                |
+| `flutter build ios --no-codesign` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
+| `flutter build apk --release --dart-define=API_BASE_URL=http://IP-DE-LA-PC:8089/api/v1/app` | APK para instalar en el celular |
 | `flutter pub outdated`      | Muestra qué dependencias tienen versiones más nuevas      |
 
 ---
@@ -141,27 +157,38 @@ flutter run
 
 ```
 carecar-mobile/
-├── .github/workflows/     # CI (formato, análisis, pruebas, build), CodeQL y Dependency Review
-├── docs/                  # Convenciones de ramas, commits y PR
+├── .github/workflows/     # CI (formato, análisis, pruebas, APK, iOS), CodeQL y Dependency Review
+├── api/                   # Copia del contrato OpenAPI de la app (fuente de verdad)
+├── assets/                # Logo, imágenes y manuales PDF incluidos
+├── docs/                  # Convenciones y manuales locales
+├── mock_api/              # API simulada (json-server) para desarrollo sin backend
 ├── lib/
-│   └── main.dart          # Punto de entrada (todavía la app de ejemplo de Flutter)
-├── test/
-│   └── widget_test.dart   # Prueba del widget principal
-├── android/               # Proyecto nativo de Android
-├── ios/                   # Proyecto nativo de iOS
-├── web/ windows/ macos/ linux/   # Plataformas de la plantilla, fuera del alcance
-├── analysis_options.yaml  # Reglas de análisis estático
-└── pubspec.yaml           # Dependencias y versión de la app
+│   ├── main.dart          # Arranque: lee API_BASE_URL, crea la sesión y el ShadApp
+│   ├── api/               # Cliente HTTP a mano: CarecarApi (interfaz), CarecarApiHttp,
+│   │   │                  # ClienteApi (tokens y refresco), ApiConfig, excepciones
+│   │   └── modelos/       # Vehiculo, Servicio, Cita, Disponibilidad, Manual, Perfil, ...
+│   ├── sesion/            # ControladorSesion (ChangeNotifier) y almacén seguro
+│   ├── manuales/          # Manual de la agencia con respaldo al PDF incluido
+│   ├── pantallas/         # Login, recuperar/cambiar contraseña, inicio (menú),
+│   │   │                  # vehículos, detalle, manual, ajustes, próximamente
+│   │   ├── citas/         # Mis citas y Agendar cita
+│   │   ├── servicios/     # Historial de servicios y ticket
+│   │   └── perfil/        # Perfil
+│   ├── tema/              # TemaCareCar: paleta, tipografía, tema Material y Shad
+│   └── widgets/           # PaginaCareCar, menú, CargaDatos, campos, avisos, Movimiento
+├── test/                  # Pruebas de API, contrato, sesión y pantallas
+├── android/ ios/          # Proyectos nativos
+├── analysis_options.yaml
+└── pubspec.yaml           # Dependencias y versión (version: x.y.z+build)
 ```
-
-La organización de carpetas dentro de `lib/` se definirá conforme avance el desarrollo.
 
 **Identificadores**
 
 | Dato                       | Valor                        |
 | -------------------------- | ---------------------------- |
 | Paquete de Dart            | `carecar_mobile`             |
-| Application id / bundle id | `com.carecar.carecar_mobile` |
+| Application id (Android)   | `com.carecar.carecar_mobile` |
+| Bundle id (iOS)            | `com.carecar.carecarMobile`  |
 
 El paquete de Dart usa guion bajo porque Dart no admite guiones en los nombres de paquete; el repositorio se llama `carecar-mobile`.
 
@@ -199,10 +226,10 @@ Lineamientos que afectan a la app:
 | Tipo                   | Herramienta                                    | Estado           |
 | ---------------------- | ---------------------------------------------- | ---------------- |
 | Unitarias y de widgets | `flutter_test`                                 | ✅ Configurado    |
-| Simulación de la API   | Por definir en TEC-5                           | ⏳ Por configurar |
+| Simulación de la API   | `mock_api/` (json-server) + prueba de contrato | ✅ Configurado    |
 | De integración         | `integration_test` (en emulador o dispositivo) | ⏳ Por configurar |
 
-Las pruebas viven en `test/` con el sufijo `_test.dart`. `test/widget_test.dart` muestra cómo construir un widget, simular un toque y revisar el resultado:
+Las pruebas viven en `test/` con el sufijo `_test.dart` (API, contrato, sesión y pantallas; `test/ayudas/api_falsa.dart` simula la API). Las animaciones infinitas se apagan en pruebas (`test/flutter_test_config.dart`).
 
 ```bash
 flutter test                          # todas las pruebas
@@ -221,10 +248,11 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 | `Análisis estático (flutter analyze)`       | CI                | Cada push a cualquier rama y cada PR  |
 | `Pruebas (flutter test)`                    | CI                | Cada push a cualquier rama y cada PR  |
 | `Build Android (APK)`                       | CI                | Cada push a cualquier rama y cada PR  |
+| `Build iOS (sin firma)`                     | CI (macOS)        | Cada push a cualquier rama y cada PR  |
 | `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
 | `Revisión de dependencias nuevas/cambiadas` | Dependency Review | Solo en PR                            |
 
-Los cuatro jobs de CI corren en paralelo. El más lento es el build de Android, que tarda unos 5 minutos; los demás, alrededor de minuto y medio.
+Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos; el de iOS corre en un runner de macOS y compila sin firmar.
 
 Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
 
@@ -255,27 +283,32 @@ El detalle de cada check (y por qué CodeQL revisa los workflows y no el código
 
 ## ✅ Decisiones ya tomadas
 
-Estaban en «Pendientes por definir» y se cerraron en los Sprints 1 y 2.
+Se cerraron en los Sprints 1 a 3.
 
 | Tema                 | Cómo quedó                                                                      |
 | -------------------- | ------------------------------------------------------------------------------- |
 | Tecnología de la app | **Flutter**, confirmado con el equipo y el PO (decisión D5)                      |
-| Pantallas            | **Hechas**: acceso, cambio de la contraseña inicial y recuperación por código    |
+| Pantallas            | **Hechas**: acceso, vehículos, manuales, historial y ticket, citas, ajustes      |
 | API simulada         | **json-server 0.17.4** sobre Express, en `mock_api/`                             |
 | Cliente de la API    | **Escrito a mano** sobre `http`, no generado desde el contrato                   |
+| Estado               | `ChangeNotifier`; sin Provider/Riverpod/Bloc                                     |
+| Componentes          | `shadcn_ui` sobre Material, con la paleta de marca                               |
 
 ---
 
-## 📌 Pendientes por definir
+## 📌 Pendientes
 
-| Tema                 | Qué falta                                                                       |
-| -------------------- | ------------------------------------------------------------------------------- |
-| Librerías            | Navegación y manejo de estado. Hoy `ChangeNotifier` y un `setState` en la raíz, en su versión mínima y a la espera del documento de stack y arquitectura |
-| Estructura de `lib/` | Convenciones de nombres y de carpetas. Hoy `api/`, `sesion/`, `pantallas/`, `tema/` y `widgets/` |
-| Tipografía y logo    | Faltan los `.ttf` de Inter y JetBrains Mono y el SVG del logo. Hoy la app usa la fuente del sistema y un PNG derivado del JPEG |
-| Notificaciones push  | Integración con Firebase Cloud Messaging                                         |
-| Build de iOS en CI   | Requiere un runner de macOS; hoy CI solo compila Android, y **la app nunca se ha compilado para iOS** |
-| Publicación          | Firma de release y publicación en Google Play y App Store                        |
+| Tema | Qué falta |
+| --- | --- |
+| Integración | El backend con los endpoints de servicios, ticket y citas aún no está fusionado; citas sin verificar de punta a punta (agendar → cancelar, errores 409) |
+| Catálogo (APP-4.1) | El backend no lo implementa; la app muestra «Próximamente» |
+| Paginación | Historial y citas solo piden la primera página |
+| Perfil | Contacto de la agencia y aviso de privacidad son placeholders; la versión está escrita a mano |
+| Responsive | Pantallas nuevas sin revisar en tablet, horizontal ni con letra grande |
+| Diseño | Modo oscuro; fuentes `.ttf` empaquetadas; logo SVG, ícono y splash |
+| Notificaciones push | Firebase Cloud Messaging (recordatorio de cita, vehículo listo) |
+| Sin conexión | No hay caché; sin red se muestra error con reintentar |
+| Pruebas | Sin `integration_test` del flujo principal |
 
 ---
 
