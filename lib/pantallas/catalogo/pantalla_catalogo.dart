@@ -6,6 +6,7 @@ import '../../api/modelos/modelos.dart';
 import '../../tema/tema_carecar.dart';
 import '../../config/ficha_tecnica.dart';
 import '../../widgets/ficha_tecnica_widget.dart';
+import '../../widgets/galeria_auto.dart';
 import '../../widgets/foto_auto.dart';
 import '../../widgets/aviso.dart';
 import '../../widgets/carga_datos.dart';
@@ -198,13 +199,10 @@ class PantallaDetalleModelo extends StatelessWidget {
           Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: ImagenModelo(
-                      modelo: modelo.modelo,
-                      url: modelo.imagenUrl,
-                      alto: 220,
-                    ),
+                  GaleriaAuto(
+                    modelo: modelo.modelo,
+                    url: modelo.imagenUrl,
+                    alto: 240,
                   ),
                   const SizedBox(height: TemaCareCar.espacioCampos),
                   Text(tituloModelo(modelo), style: temas.titleLarge),
