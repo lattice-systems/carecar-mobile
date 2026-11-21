@@ -20,12 +20,16 @@ if (archivoFirma.exists()) {
 
 android {
     namespace = "com.carecar.carecar_mobile"
-    compileSdk = flutter.compileSdkVersion
+    // flutter_local_notifications 23 exige compilar contra 37. Solo cambia
+    // las APIs disponibles al compilar; targetSdk sigue en 35 (PO-3).
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // flutter_local_notifications usa java.time en Android viejos.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -78,4 +82,8 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
