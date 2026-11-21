@@ -24,6 +24,7 @@ class PantallaMisCitas extends StatefulWidget {
   static const lista = Key('citas_lista');
   static const botonReintentar = Key('citas_reintentar');
   static const botonAgendar = Key('citas_agendar');
+  static const botonCargarMas = Key('citas_cargar_mas');
   static const confirmarCancelacion = Key('citas_confirmar_cancelacion');
 
   static Key botonCancelar(int citaId) => Key('citas_cancelar_$citaId');
@@ -33,10 +34,19 @@ class PantallaMisCitas extends StatefulWidget {
 }
 
 /// Lo que necesita la lista: las citas y, para nombrarlos, los vehiculos.
-typedef _Datos = ({List<Cita> citas, Map<int, Vehiculo> vehiculos});
+typedef _Datos = ({
+  List<Cita> citas,
+  Map<int, Vehiculo> vehiculos,
+  Pagina<Cita> pagina,
+});
 
 class _PantallaMisCitasState extends State<PantallaMisCitas> {
   late Future<_Datos> _datos;
+
+  /// Citas de las paginas que se piden con «Cargar más».
+  final _extra = <Cita>[];
+  Pagina<Cita>? _ultimaExtra;
+  bool _cargandoMas = false;
 
   /// Ids de las citas que se estan cancelando, para deshabilitar su boton.
   final _cancelando = <int>{};
@@ -60,15 +70,21 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
   }
 
   Future<_Datos> _cargar() async {
-    final citas = widget.api.misCitas();
+    final pagina = await widget.api.paginaDeCitas();
+    final citas = pagina.contenido;
+    // Si el backend ya manda el nombre del vehiculo no hace falta pedirlos.
+    if (citas.every((c) => c.vehiculoNombre != null)) {
+      return (citas: citas, vehiculos: const <int, Vehiculo>{}, pagina: pagina);
+    }
     // Los vehiculos solo dan el nombre: si fallan, la lista sigue sirviendo.
-    final vehiculos = widget.api.misVehiculos().then<List<Vehiculo>>(
+    final vehiculos = await widget.api.misVehiculos().then<List<Vehiculo>>(
       (v) => v,
       onError: (Object _) => const <Vehiculo>[],
     );
     return (
-      citas: await citas,
-      vehiculos: {for (final v in await vehiculos) v.id: v},
+      citas: citas,
+      vehiculos: {for (final v in vehiculos) v.id: v},
+      pagina: pagina,
     );
   }
 
@@ -76,11 +92,29 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
     final nuevos = _cargar();
     setState(() {
       _datos = nuevos;
+      _extra.clear();
+      _ultimaExtra = null;
     });
     try {
       await nuevos;
     } on ExcepcionApi {
       // El FutureBuilder ya muestra el error.
+    }
+  }
+
+  Future<void> _cargarMas(Pagina<Cita> ultima) async {
+    setState(() => _cargandoMas = true);
+    try {
+      final nueva = await widget.api.paginaDeCitas(pagina: ultima.pagina + 1);
+      if (!mounted) return;
+      setState(() {
+        _extra.addAll(nueva.contenido);
+        _ultimaExtra = nueva;
+      });
+    } on ExcepcionApi catch (e) {
+      if (mounted) _avisar(e.mensaje);
+    } finally {
+      if (mounted) setState(() => _cargandoMas = false);
     }
   }
 
@@ -276,8 +310,9 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
       return f != 0 ? f : a.horaInicio.compareTo(b.horaInicio);
     }
 
-    final proximas = datos.citas.where(esProxima).toList()..sort(porFecha);
-    final pasadas = datos.citas.where((c) => !esProxima(c)).toList()
+    final todas = [...datos.citas, ..._extra];
+    final proximas = todas.where(esProxima).toList()..sort(porFecha);
+    final pasadas = todas.where((c) => !esProxima(c)).toList()
       ..sort((a, b) => porFecha(b, a));
 
     var i = 0;
@@ -308,6 +343,26 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
 
     yield* seccion('Próximas', proximas);
     yield* seccion('Historial', pasadas);
+
+    final ultima = _ultimaExtra ?? datos.pagina;
+    if (ultima.hayMas) {
+      yield Center(
+        child: OutlinedButton.icon(
+          key: PantallaMisCitas.botonCargarMas,
+          onPressed: _cargandoMas ? null : () => _cargarMas(ultima),
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(0, TemaCareCar.altoMinimoToque),
+          ),
+          icon: _cargandoMas
+              ? const SizedBox.square(
+                  dimension: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Icon(Icons.expand_more),
+          label: Text(_cargandoMas ? 'Cargando…' : 'Cargar más'),
+        ),
+      );
+    }
   }
 }
 
@@ -435,9 +490,11 @@ class TarjetaCita extends StatelessWidget {
     final c = cita;
     final activa = c.estado == EstadoCita.confirmada;
     final v = vehiculo;
-    final nombreVehiculo = v == null
-        ? 'Vehículo #${c.vehiculoId}'
-        : [v.marca, v.modelo].whereType<String>().join(' ');
+    final nombreVehiculo =
+        c.vehiculoNombre ??
+        (v == null
+            ? 'Vehículo #${c.vehiculoId}'
+            : [v.marca, v.modelo].whereType<String>().join(' '));
 
     return Container(
       decoration: BoxDecoration(

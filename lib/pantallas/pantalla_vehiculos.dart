@@ -22,44 +22,49 @@ class PantallaVehiculos extends StatelessWidget {
   final VoidCallback alCerrarSesion;
 
   @override
-  Widget build(BuildContext context) => PaginaCareCar(
-    titulo: 'Mis vehículos',
-    alCerrarSesion: alCerrarSesion,
-    contenido: CargaDatos<List<Vehiculo>>(
-      cargar: api.misVehiculos,
-      mensajeCarga: 'Cargando vehículos…',
-      mensajeError: 'No se pudieron cargar tus vehículos',
-      construir: (vehiculos) => vehiculos.isEmpty
-          ? const Aviso.informacion(
-              titulo: 'No tienes vehículos asociados',
-              detalle: 'Contacta a tu agencia para revisar tus vehículos.',
-            )
-          : Column(
-              children: [
-                for (final (i, vehiculo) in vehiculos.indexed)
-                  Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: TemaCareCar.espacioCampos,
-                        ),
-                        child: TarjetaVehiculo(
-                          vehiculo: vehiculo,
-                          alPulsar: () => abrirPantalla(
-                            context,
-                            PantallaDetalleVehiculo(
-                              vehiculo: vehiculo,
-                              api: api,
-                              alCerrarSesion: alCerrarSesion,
+  Widget build(BuildContext context) {
+    final recargador = Recargador();
+    return PaginaCareCar(
+      titulo: 'Mis vehículos',
+      alCerrarSesion: alCerrarSesion,
+      alRefrescar: recargador.recargar,
+      contenido: CargaDatos<List<Vehiculo>>(
+        recargador: recargador,
+        cargar: api.misVehiculos,
+        mensajeCarga: 'Cargando vehículos…',
+        mensajeError: 'No se pudieron cargar tus vehículos',
+        construir: (vehiculos) => vehiculos.isEmpty
+            ? const Aviso.informacion(
+                titulo: 'No tienes vehículos asociados',
+                detalle: 'Contacta a tu agencia para revisar tus vehículos.',
+              )
+            : Column(
+                children: [
+                  for (final (i, vehiculo) in vehiculos.indexed)
+                    Padding(
+                          padding: const EdgeInsets.only(
+                            bottom: TemaCareCar.espacioCampos,
+                          ),
+                          child: TarjetaVehiculo(
+                            vehiculo: vehiculo,
+                            alPulsar: () => abrirPantalla(
+                              context,
+                              PantallaDetalleVehiculo(
+                                vehiculo: vehiculo,
+                                api: api,
+                                alCerrarSesion: alCerrarSesion,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                      .animate(delay: (80 * i).ms)
-                      .fadeIn(duration: 350.ms)
-                      .slideY(begin: 0.12, curve: Curves.easeOutCubic),
-              ],
-            ),
-    ),
-  );
+                        )
+                        .animate(delay: (80 * i).ms)
+                        .fadeIn(duration: 350.ms)
+                        .slideY(begin: 0.12, curve: Curves.easeOutCubic),
+                ],
+              ),
+      ),
+    );
+  }
 }
 
 /// Tarjeta de un vehiculo con sus placas y su kilometraje.

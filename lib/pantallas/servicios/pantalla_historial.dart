@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../api/carecar_api.dart';
+import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../manuales/servicio_manuales.dart';
 import '../../tema/tema_carecar.dart';
@@ -28,33 +29,43 @@ class PantallaHistorial extends StatelessWidget {
   final Vehiculo vehiculo;
   final VoidCallback alCerrarSesion;
 
+  static const botonCargarMas = Key('historial_cargar_mas');
+
   @override
-  Widget build(BuildContext context) => PaginaCareCar(
-    titulo: 'Historial de servicios',
-    alCerrarSesion: alCerrarSesion,
-    contenido: CargaDatos<List<Servicio>>(
-      cargar: () => api.serviciosDe(vehiculo.id),
-      mensajeCarga: 'Cargando servicios…',
-      mensajeError: 'No se pudo cargar el historial',
-      construir: (servicios) => servicios.isEmpty
-          ? const Aviso.informacion(
-              titulo: 'Aún no hay servicios',
-              detalle: 'Cuando el taller atienda tu vehículo, aparecerá aquí.',
-            )
-          : _Linea(
-              servicios: servicios,
-              abrirTicket: (s) => abrirPantalla(
-                context,
-                PantallaManual(
-                  vehiculo: vehiculo,
-                  alCerrarSesion: alCerrarSesion,
-                  etiqueta: 'Ticket',
-                  servicio: _Tickets(api, s),
+  Widget build(BuildContext context) {
+    final recargador = Recargador();
+    return PaginaCareCar(
+      titulo: 'Historial de servicios',
+      alCerrarSesion: alCerrarSesion,
+      alRefrescar: recargador.recargar,
+      contenido: CargaDatos<Pagina<Servicio>>(
+        recargador: recargador,
+        cargar: () => api.paginaDeServicios(vehiculo.id),
+        mensajeCarga: 'Cargando servicios…',
+        mensajeError: 'No se pudo cargar el historial',
+        construir: (primera) => primera.contenido.isEmpty
+            ? const Aviso.informacion(
+                titulo: 'Aún no hay servicios',
+                detalle:
+                    'Cuando el taller atienda tu vehículo, aparecerá aquí.',
+              )
+            : _Linea(
+                key: ObjectKey(primera),
+                primera: primera,
+                siguiente: (n) => api.paginaDeServicios(vehiculo.id, pagina: n),
+                abrirTicket: (s) => abrirPantalla(
+                  context,
+                  PantallaManual(
+                    vehiculo: vehiculo,
+                    alCerrarSesion: alCerrarSesion,
+                    etiqueta: 'Ticket',
+                    servicio: _Tickets(api, s),
+                  ),
                 ),
               ),
-            ),
-    ),
-  );
+      ),
+    );
+  }
 }
 
 /// Baja el ticket del servicio con la API y lo pasa al visor de PDF.
@@ -76,11 +87,48 @@ class _Tickets implements ServicioManuales {
 }
 
 /// Linea de tiempo vertical: un punto por servicio y su tarjeta al lado.
-class _Linea extends StatelessWidget {
-  const _Linea({required this.servicios, required this.abrirTicket});
+class _Linea extends StatefulWidget {
+  const _Linea({
+    required this.primera,
+    required this.siguiente,
+    required this.abrirTicket,
+    super.key,
+  });
 
-  final List<Servicio> servicios;
+  final Pagina<Servicio> primera;
+  final Future<Pagina<Servicio>> Function(int pagina) siguiente;
   final void Function(Servicio) abrirTicket;
+
+  @override
+  State<_Linea> createState() => _LineaState();
+}
+
+class _LineaState extends State<_Linea> {
+  late final List<Servicio> servicios = [...widget.primera.contenido];
+  late Pagina<Servicio> _ultima = widget.primera;
+  bool _cargando = false;
+  String? _error;
+
+  Future<void> _cargarMas() async {
+    setState(() {
+      _cargando = true;
+      _error = null;
+    });
+    try {
+      final nueva = await widget.siguiente(_ultima.pagina + 1);
+      if (!mounted) return;
+      setState(() {
+        servicios.addAll(nueva.contenido);
+        _ultima = nueva;
+      });
+    } on ExcepcionApi catch (e) {
+      if (mounted) setState(() => _error = e.mensaje);
+    } finally {
+      if (mounted) setState(() => _cargando = false);
+    }
+  }
+
+  void abrirTicket(Servicio s) => widget.abrirTicket(s);
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +234,30 @@ class _Linea extends StatelessWidget {
                 ),
               ],
             ),
-          ).animate(delay: (90 * i).ms).fadeIn().slideX(begin: 0.1),
+          ).animate(delay: (90 * (i % 20)).ms).fadeIn().slideX(begin: 0.1),
+        if (_error != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Aviso.error(
+              titulo: 'No se pudieron cargar más servicios',
+              detalle: _error!,
+            ),
+          ),
+        if (_ultima.hayMas)
+          OutlinedButton.icon(
+            key: PantallaHistorial.botonCargarMas,
+            onPressed: _cargando ? null : _cargarMas,
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size(0, TemaCareCar.altoMinimoToque),
+            ),
+            icon: _cargando
+                ? const SizedBox.square(
+                    dimension: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.expand_more),
+            label: Text(_cargando ? 'Cargando…' : 'Cargar más'),
+          ),
       ],
     );
   }
