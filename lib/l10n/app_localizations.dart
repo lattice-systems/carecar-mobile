@@ -122,6 +122,54 @@ abstract class AppLocalizations {
   /// **'Cuando la agencia publique modelos, los verás aquí.'**
   String get catalogoVacioMensaje;
 
+  /// Lo que anuncia el lector de pantalla mientras carga la disponibilidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando disponibilidad del taller'**
+  String get citasCargando;
+
+  /// Encabezado de las franjas del día elegido en el calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Horarios del {dia}'**
+  String citasHorariosDelDia(DateTime dia);
+
+  /// No description provided for @citasHorariosVacio.
+  ///
+  /// In es, this message translates to:
+  /// **'Este día ya no tiene lugares.'**
+  String get citasHorariosVacio;
+
+  /// No description provided for @citasNotaDiasSinCupo.
+  ///
+  /// In es, this message translates to:
+  /// **'Los días tachados no tienen lugares disponibles.'**
+  String get citasNotaDiasSinCupo;
+
+  /// No description provided for @citasSinDiaElegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día para ver sus horarios.'**
+  String get citasSinDiaElegido;
+
+  /// Título de la pantalla con el calendario de disponibilidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponibilidad del taller'**
+  String get citasTitulo;
+
+  /// No description provided for @citasVacioMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Por ahora el taller no tiene lugares en los próximos días. Vuelve a revisar pronto.'**
+  String get citasVacioMensaje;
+
+  /// No description provided for @citasVacioTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin lugares disponibles'**
+  String get citasVacioTitulo;
+
   /// Precio de entrada de un modelo.
   ///
   /// In es, this message translates to:
