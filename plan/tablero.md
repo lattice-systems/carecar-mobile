@@ -21,7 +21,7 @@ Total: **202 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Lista | |
+| V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | En revisión | #17 |
 | V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Lista | |
 | V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Lista | |
