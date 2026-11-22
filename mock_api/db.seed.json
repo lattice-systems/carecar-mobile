@@ -66,6 +66,7 @@
       "anio": 2024,
       "placas": "ABC-12-34",
       "kilometraje": 18450,
+      "kilometrajeActualizadoEn": "2026-09-18",
       "marca": "Nissan",
       "tipo": "Versa",
       "version": "Sense",
@@ -91,7 +92,8 @@
       "modelo": "Sentra",
       "anio": 2025,
       "placas": "XYZ-98-76",
-      "kilometraje": 3200
+      "kilometraje": 3200,
+      "kilometrajeActualizadoEn": "2026-10-05"
     },
     {
       "id": 4,
@@ -100,7 +102,8 @@
       "modelo": "Versa",
       "anio": 2022,
       "placas": "QRS-55-11",
-      "kilometraje": 61000
+      "kilometraje": 61000,
+      "kilometrajeActualizadoEn": "2026-10-20"
     }
   ],
   "servicios": [
