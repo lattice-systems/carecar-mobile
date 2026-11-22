@@ -31,16 +31,22 @@ class NuevaCita {
     required this.vehiculoId,
     required this.franjaId,
     required this.fecha,
+    this.motivo,
   });
 
   final int vehiculoId;
   final int franjaId;
   final DateTime fecha;
 
+  /// Para que viene el cliente (V2-M02.08); el backend v2 lo guarda en
+  /// `cita.motivo`. Se omite del cuerpo si no se eligio.
+  final String? motivo;
+
   Map<String, Object?> toJson() => {
     'vehiculoId': vehiculoId,
     'franjaId': franjaId,
     'fecha': escribirFecha(fecha),
+    if (motivo != null) 'motivo': motivo,
   };
 }
 
@@ -55,6 +61,7 @@ class Cita {
     required this.estado,
     this.franjaId,
     this.vehiculoNombre,
+    this.motivo,
   });
 
   factory Cita.fromJson(Map<String, Object?> json) => Cita(
@@ -70,6 +77,7 @@ class Cita {
         ? (json['franjaId']! as num).toInt()
         : null,
     vehiculoNombre: _leerNombreVehiculo(json),
+    motivo: json['motivo'] is String ? json['motivo']! as String : null,
   );
 
   /// Acepta `vehiculoNombre` o un objeto `vehiculo` con modelo/anio.
@@ -100,6 +108,9 @@ class Cita {
   /// Nombre del vehiculo si el backend lo incluye; si no, la pantalla lo
   /// resuelve con `misVehiculos()`.
   final String? vehiculoNombre;
+
+  /// Motivo de la cita si el backend ya lo guarda (V2-M02.08).
+  final String? motivo;
 
   bool get sePuedeCancelar => estado == EstadoCita.confirmada;
 }
