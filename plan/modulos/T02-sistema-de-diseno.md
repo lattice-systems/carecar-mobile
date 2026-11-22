@@ -58,3 +58,7 @@ Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucle
 | `Insignia`, `ChipPista`, `Avatar`, `Aviso` (con `Tono` compartido: neutro, información, éxito, advertencia, peligro) | Hecho |
 | `CampoTexto`, `CampoContrasena`, `Selector`, `Casilla`, `Interruptor` (con `CampoBase`: etiqueta visible, ayuda y error con icono) | Hecho |
 | `Dialogo` y `mostrarDialogo`, `HojaInferior` y `mostrarHojaInferior`, `Menu` con `ItemMenu`, `Pestanas` (zonas táctiles de 48, velo y movimiento de los tokens, respetan reducir movimiento) | Hecho |
+
+## Avance de V2-T02.11
+
+`DeslizarParaConfirmar` vive en `lib/nucleo/diseno/componentes/deslizar_para_confirmar.dart`. Hay que arrastrar la perilla al 90 % del recorrido (`umbral`) para confirmar, y soltar antes la regresa con el resorte del sistema. Con un lector de pantalla activo, o con `forzarAlternativa`, se cambia por un `Boton` que pide confirmación en un `Dialogo`. Con reducir movimiento la perilla regresa sin animar. Pruebas en `test/nucleo/diseno/componentes/deslizar_para_confirmar_test.dart`. El golden queda para V2-T03.02.
