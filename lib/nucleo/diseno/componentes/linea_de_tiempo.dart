@@ -4,6 +4,8 @@ import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/tokens_pista.dart';
+import 'boton.dart';
+import 'esqueleto.dart';
 
 /// Estado de un paso de la [LineaDeTiempo].
 enum EstadoPaso { hecho, actual, pendiente }
@@ -61,6 +63,87 @@ class LineaDeTiempo extends StatelessWidget {
   }
 }
 
+/// Linea de tiempo larga y paginada, para el historial.
+///
+/// Dibuja solo los pasos que se ven. Cuando hay mas (`hayMas`) agrega al final
+/// un "Ver mas" y, con `cargarAlLlegar`, pide la siguiente pagina sola al
+/// llegar ahi. Mientras llega (`cargandoMas`) muestra un esqueleto. El boton
+/// siempre esta, para quien usa lector de pantalla o no desplaza.
+class LineaDeTiempoPaginada extends StatefulWidget {
+  const LineaDeTiempoPaginada({
+    required this.pasos,
+    required this.hayMas,
+    required this.alPedirMas,
+    super.key,
+    this.cargandoMas = false,
+    this.cargarAlLlegar = true,
+    this.controlador,
+  });
+
+  final List<PasoLinea> pasos;
+  final bool hayMas;
+  final bool cargandoMas;
+  final VoidCallback alPedirMas;
+  final bool cargarAlLlegar;
+  final ScrollController? controlador;
+
+  @override
+  State<LineaDeTiempoPaginada> createState() => _LineaDeTiempoPaginadaState();
+}
+
+class _LineaDeTiempoPaginadaState extends State<LineaDeTiempoPaginada> {
+  int? _paginaPedida;
+
+  void _pedirSiHaceFalta() {
+    if (!widget.cargarAlLlegar || widget.cargandoMas) return;
+    if (_paginaPedida == widget.pasos.length) return;
+    _paginaPedida = widget.pasos.length;
+    widget.alPedirMas();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final total = widget.pasos.length;
+    return ListView.builder(
+      controller: widget.controlador,
+      itemCount: total + (widget.hayMas ? 1 : 0),
+      itemBuilder: (context, i) {
+        if (i < total) {
+          return _Paso(
+            paso: widget.pasos[i],
+            esUltimo: i == total - 1 && !widget.hayMas,
+            posicion: i + 1,
+            total: total,
+          );
+        }
+        if (widget.cargandoMas) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: Espaciado.e3),
+            child: Column(
+              children: [
+                Esqueleto.linea(),
+                SizedBox(height: Espaciado.e2),
+                Esqueleto.linea(ancho: 160),
+              ],
+            ),
+          );
+        }
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _pedirSiHaceFalta(),
+        );
+        return Align(
+          alignment: Alignment.centerLeft,
+          child: Boton(
+            texto: 'Ver mas',
+            variante: VarianteBoton.terciario,
+            alPresionar: widget.alPedirMas,
+          ),
+        );
+      },
+    );
+  }
+}
+
 class _Paso extends StatelessWidget {
   const _Paso({
     required this.paso,
@@ -90,11 +173,11 @@ class _Paso extends StatelessWidget {
         : c.texto;
 
     final partes = [
-      paso.titulo,
+      'Etapa $posicion de $total',
       paso._estadoTexto,
+      paso.titulo,
       ?paso.hora,
       ?paso.nota,
-      'paso $posicion de $total',
     ];
 
     return Semantics(

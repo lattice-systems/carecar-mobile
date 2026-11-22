@@ -56,19 +56,19 @@ void main() {
       );
       expect(
         find.bySemanticsLabel(
-          'Diagnostico, completado, 10:30, '
-          'Sin hallazgos graves, paso 2 de 5',
+          'Etapa 2 de 5, completado, Diagnostico, 10:30, '
+          'Sin hallazgos graves',
         ),
         findsOneWidget,
       );
       expect(
         find.bySemanticsLabel(
-          'En reparacion, en curso, Listo hacia las 16:00, paso 3 de 5',
+          'Etapa 3 de 5, en curso, En reparacion, Listo hacia las 16:00',
         ),
         findsOneWidget,
       );
       expect(
-        find.bySemanticsLabel('Entregado, pendiente, paso 5 de 5'),
+        find.bySemanticsLabel('Etapa 5 de 5, pendiente, Entregado'),
         findsOneWidget,
       );
     });
@@ -109,6 +109,108 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 100));
       expect(tester.hasRunningAnimations, isFalse);
+    });
+  });
+
+  group('LineaDeTiempoPaginada', () {
+    List<PasoLinea> pasos(int n) => [
+      for (var i = 1; i <= n; i++)
+        PasoLinea(titulo: 'Servicio $i', estado: EstadoPaso.hecho),
+    ];
+
+    Widget lista({
+      required int n,
+      required bool hayMas,
+      bool cargandoMas = false,
+      bool cargarAlLlegar = false,
+      required VoidCallback alPedirMas,
+      Escenario escenario = Escenario.claro,
+    }) => conTemaPista(
+      SizedBox(
+        height: 700,
+        child: LineaDeTiempoPaginada(
+          pasos: pasos(n),
+          hayMas: hayMas,
+          cargandoMas: cargandoMas,
+          cargarAlLlegar: cargarAlLlegar,
+          alPedirMas: alPedirMas,
+        ),
+      ),
+      escenario: escenario,
+    );
+
+    testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
+      for (final escenario in Escenario.values) {
+        await tester.pumpWidget(
+          lista(n: 3, hayMas: true, alPedirMas: () {}, escenario: escenario),
+        );
+        expect(find.text('Servicio 1'), findsOneWidget);
+        expect(tester.takeException(), isNull);
+      }
+    });
+
+    testWidgets('con mas paginas muestra Ver mas y lo pide al tocar', (
+      tester,
+    ) async {
+      var pedidas = 0;
+      await tester.pumpWidget(
+        lista(n: 3, hayMas: true, alPedirMas: () => pedidas++),
+      );
+      await tester.tap(find.text('Ver mas'));
+      expect(pedidas, 1);
+    });
+
+    testWidgets('sin mas paginas no muestra Ver mas', (tester) async {
+      await tester.pumpWidget(lista(n: 3, hayMas: false, alPedirMas: () {}));
+      expect(find.text('Ver mas'), findsNothing);
+    });
+
+    testWidgets('mientras carga muestra esqueleto y no el boton', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        lista(n: 3, hayMas: true, cargandoMas: true, alPedirMas: () {}),
+      );
+      expect(find.text('Ver mas'), findsNothing);
+    });
+
+    testWidgets('al llegar al final pide la pagina una sola vez', (
+      tester,
+    ) async {
+      var pedidas = 0;
+      await tester.pumpWidget(
+        lista(
+          n: 3,
+          hayMas: true,
+          cargarAlLlegar: true,
+          alPedirMas: () => pedidas++,
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(pedidas, 1);
+    });
+
+    testWidgets('pide otra vez cuando llega una pagina nueva', (tester) async {
+      var pedidas = 0;
+      Widget con(int n) => lista(
+        n: n,
+        hayMas: true,
+        cargarAlLlegar: true,
+        alPedirMas: () => pedidas++,
+      );
+      await tester.pumpWidget(con(3));
+      await tester.pump();
+      await tester.pumpWidget(con(6));
+      await tester.pump();
+      await tester.pump();
+      expect(pedidas, 2);
+    });
+
+    testWidgets('solo construye los pasos visibles', (tester) async {
+      await tester.pumpWidget(lista(n: 500, hayMas: false, alPedirMas: () {}));
+      expect(find.text('Servicio 500'), findsNothing);
+      expect(find.text('Servicio 1'), findsOneWidget);
     });
   });
 
