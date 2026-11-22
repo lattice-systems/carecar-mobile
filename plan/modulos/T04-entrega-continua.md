@@ -25,7 +25,7 @@
 **Dónde se aplica**
 
 - `ci.yml` (job `Build Android (APK)`): `flutter build apk --debug --build-number=<run_number>`.
-- `release.yml` (nuevo): corre al empujar una etiqueta `v*.*.*`. Pasos: (1) verifica que la etiqueta sea `v` + la versión del pubspec y que su commit esté en `main`, si no falla con mensaje claro; (2) compila `flutter build apk --release --build-name=<pubspec> --build-number=<run_number>`; (3) crea el GitHub Release con `gh` y adjunta `carecar-vX.Y.Z.apk`. Es el único workflow con `contents: write`; no usa acciones de terceros nuevas.
+- `release.yml` (nuevo): corre al empujar una etiqueta `v*.*.*`. Pasos: (1) verifica que la etiqueta sea `v` + la versión del pubspec y que su commit esté en `main`, si no falla con mensaje claro; (2) compila `flutter build apk --release --build-name=<pubspec> --build-number=<run_number> --dart-define=API_BASE_URL=<variable>`; la dirección sale de la variable de repositorio `API_BASE_URL` (la app no tiene valor por omisión) y si falta el workflow falla antes de compilar; (3) crea el GitHub Release con `gh` y adjunta `carecar-vX.Y.Z.apk`. Es el único workflow con `contents: write`; no usa acciones de terceros nuevas.
 - La pantalla de perfil ya lee la versión del paquete (`leerVersionApp`, con `package_info_plus`); no hay versión escrita a mano que cambiar (el `1.0.0` de `lib/config/version_app.dart` es solo el respaldo si la lectura falla).
 
 **Cómo sacar una versión**
