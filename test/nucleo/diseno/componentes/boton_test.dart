@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../ayudas/tema_pista.dart';
 
 ButtonStyle estiloDe(WidgetTester tester) {
-  final boton = find.byType(ButtonStyleButton);
+  final boton = find.bySubtype<ButtonStyleButton>();
   return tester.widget<ButtonStyleButton>(boton).style!;
 }
 
@@ -26,8 +26,9 @@ void main() {
     await tester.pumpWidget(
       conTemaPista(const Boton(texto: 'Agendar cita', alPresionar: null)),
     );
-    final boton =
-        tester.widget<ButtonStyleButton>(find.byType(ButtonStyleButton));
+    final boton = tester.widget<ButtonStyleButton>(
+      find.bySubtype<ButtonStyleButton>(),
+    );
     expect(boton.enabled, isFalse);
   });
 
@@ -69,14 +70,15 @@ void main() {
       TamanoBoton.grande: 56.0,
     };
     for (final entrada in altos.entries) {
-      testWidgets('${entrada.key.name} mide al menos ${entrada.value}',
-          (tester) async {
+      testWidgets('${entrada.key.name} mide al menos ${entrada.value}', (
+        tester,
+      ) async {
         await tester.pumpWidget(
           conTemaPista(
             Boton(texto: 'Seguir', tamano: entrada.key, alPresionar: () {}),
           ),
         );
-        final alto = tester.getSize(find.byType(ButtonStyleButton)).height;
+        final alto = tester.getSize(find.bySubtype<ButtonStyleButton>()).height;
         expect(alto, greaterThanOrEqualTo(entrada.value));
       });
     }
@@ -153,8 +155,9 @@ void main() {
       expect(estilo.side!.resolve({}), BorderSide.none);
     });
 
-    testWidgets('deshabilitado baja a texto terciario sobre hundida',
-        (tester) async {
+    testWidgets('deshabilitado baja a texto terciario sobre hundida', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         conTemaPista(const Boton(texto: 'Ok', alPresionar: null)),
       );
@@ -193,8 +196,9 @@ void main() {
   group('escenarios del sistema', () {
     for (final escenario in Escenario.values) {
       for (final variante in VarianteBoton.values) {
-        testWidgets('${variante.name} en ${escenario.name} no se desborda',
-            (tester) async {
+        testWidgets('${variante.name} en ${escenario.name} no se desborda', (
+          tester,
+        ) async {
           await tester.pumpWidget(
             conTemaPista(
               Boton(
@@ -219,11 +223,12 @@ void main() {
         Boton(texto: 'Seguir', anchoCompleto: true, alPresionar: () {}),
       ),
     );
-    expect(tester.getSize(find.byType(ButtonStyleButton)).width, 360);
+    expect(tester.getSize(find.bySubtype<ButtonStyleButton>()).width, 360);
   });
 
-  testWidgets('con teclado muestra el foco con borde de al menos 2',
-      (tester) async {
+  testWidgets('con teclado muestra el foco con borde de al menos 2', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       conTemaPista(Boton(texto: 'Ok', alPresionar: () {})),
     );
