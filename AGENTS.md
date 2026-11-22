@@ -55,11 +55,15 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 1. **Elegir** del tablero ([`plan/tablero.md`](plan/tablero.md)) una historia `Lista` del hito activo, asignada a ti (o sin dueño en tu frente).
 2. **Rama** desde `main` actualizado: `feat/v2-m04-03-linea-de-tiempo-taller`.
 3. **Tablero**: primer commit mueve la historia a `En curso` con tu nombre (`docs(tablero): tomar V2-M04.03`).
+   - Si es **B**, el siguiente commit escribe su diseño (tablas, migración, eventos, endpoints con errores) en `agencia-360-backend/plan/historias-backend.md` y el endpoint en el contrato. No se espera a que alguien más lo diseñe.
+   - Si depende de una historia de backend sin integrar, **no esperes**: trabaja contra el contrato y `mock_api` (dependencia `(simulable)` en el tablero).
 4. **TDD**: prueba que falla → código mínimo → refactor. Un commit por paso con intención.
 5. **Docs**: ficha del módulo (`plan/modulos/`), README, decisiones, diseño, cumplimiento de ficha — lo que aplique.
 6. **Verificar local**: `dart format lib test && flutter analyze && flutter test`.
 7. **PR** con la plantilla; enlaza la historia; capturas si hay UI (claro y oscuro).
 8. **Tablero**: `En revisión` en el PR; `Hecha` lo marca quien integra.
+
+**Trabajo en paralelo.** Las estrategias para que las 6 personas avancen a la vez sin esperarse ni pisarse (contrato primero con `mock_api`, interfaces y fakes, componentes provisionales, propiedad por carpeta, reglas de los archivos calientes, WIP, interruptor v1/v2, agentes y qué puede tomar cada quien) están en [`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md). Síguelas en cada historia.
 
 ## 5. Definición de Hecho (DoD)
 
@@ -90,7 +94,7 @@ cd mock_api && npm install && npm start   # API simulada en :3000
 
 ## 8. Diseño
 
-El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) y luego se usa.
+El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) con su historia `V2-T02.xx`. Mientras esa historia no se integra, la pantalla que lo necesita no espera: usa un **provisional** en `lib/modulos/<modulo>/presentacion/provisional/`, hecho solo con tokens y componentes existentes y marcado `// PROVISIONAL: se reemplaza por <Componente> de V2-T02.xx` ([`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md), sección 4). Ningún hito cierra con provisionales.
 
 ## 9. Seguridad
 
