@@ -79,7 +79,9 @@ void main() {
   });
 
   test('copyWith y lerp conservan el resto de los valores', () {
-    final cambiada = PaletaColores.claro.copyWith(acento: const Color(0xFFFF0000));
+    final cambiada = PaletaColores.claro.copyWith(
+      acento: const Color(0xFFFF0000),
+    );
     expect(cambiada.acento, const Color(0xFFFF0000));
     expect(cambiada.fondo, PaletaColores.claro.fondo);
 
