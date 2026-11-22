@@ -6,7 +6,7 @@ Estados: `Borrador` (falta refinar) → `Lista` (cumple la Definición de Listo)
 
 WIP: **una historia `En curso` por persona**. **B** = requiere backend (`agencia-360-backend`, plan espejo en su `plan/`).
 
-Total: **209 historias** + 4 de H0.
+Total: **210 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -50,6 +50,7 @@ Total: **209 historias** + 4 de H0.
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
+| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Lista | |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | |

@@ -7,7 +7,7 @@
 | Persona | Rol Scrum | GitHub | Frentes (dueño) | Historias |
 | --- | --- | --- | --- | --- |
 | Daniel Ojeda Luna | Scrum Master | `DevOjeda016` | T01 Arquitectura · T04 Entrega continua · M16 Estreno · M22 Seguridad y privacidad · M24 Asistente IA | 36 |
-| Haziel Orlando Gutierrez Hernandez | Product Owner | `UncrownedRex` | T03 Calidad y aceptación · M09 Documentos · M13 Promociones · M15 Encuestas · M23 Analítica · M27 Ayuda | 32 |
+| Haziel Orlando Gutierrez Hernandez | Product Owner | `UncrownedRex` | T03 Calidad y aceptación · M09 Documentos · M13 Promociones · M15 Encuestas · M23 Analítica · M27 Ayuda | 33 |
 | Cristian Veuliah Mares Cerda | Desarrollo | `CristianMares` | T02 Sistema de diseño · M03 Catálogo y calculadora · M14 Tienda · M20 Accesibilidad · M26 Valuación | 37 |
 | Ricardo Garnica Mejia | Desarrollo | `RichiGM` | T05 Contrato API y backend · M02 historial y tickets · M04 Taller en vivo · M08 Pagos · M10 Garantía · M12 Lealtad | 36 |
 | Juan Pablo Rea Cano | Desarrollo | `PabloDev24` | T02 LineaDeTiempo, Calendario y SelectorFranja · M02 garaje, manuales y citas · M05 Mantenimiento · M11 SOS · M17 Recolección · M18 Bitácora · M25 Widgets y Wallet | 37 |
@@ -28,7 +28,7 @@ Revisor fijo por módulo en [`modulos/README.md`](modulos/README.md). Por ahora 
 | Hito | Daniel | Haziel | Cristian | Ricardo | Juan Pablo | Jael |
 | --- | --- | --- | --- | --- | --- | --- |
 | H0 | Reglas, agentes, plan | Revisa ficha y matriz | Revisa diseño v2 | Revisa plan backend | Revisa M02 | Revisa M01 |
-| H1 | T01 esqueleto, rutas, flavors · T04 builds | T03 golden, integration_test, convenciones de prueba | T02 tokens y componentes | T05 contrato v2 + migraciones a la ficha | T02 componentes compuestos: `LineaDeTiempo` (V2-T02.13), `Calendario` y `SelectorFranja` (V2-T02.14) | T01 núcleo de datos (V2-T01.08) · M21 base local (V2-M21.01) |
+| H1 | T01 esqueleto, rutas, flavors · T04 builds | T03 golden, integration_test, convenciones de prueba, `mock_api` por módulo | T02 tokens y componentes | T05 contrato v2 + migraciones a la ficha | T02 componentes compuestos: `LineaDeTiempo` (V2-T02.13), `Calendario` y `SelectorFranja` (V2-T02.14) | T01 núcleo de datos (V2-T01.08) · M21 base local (V2-M21.01) |
 | H2 | M22 base de seguridad | M23 errores · aceptación de la matriz | M03 catálogo + **calculadora** · M20 base | M02 historial y tickets | M02 garaje, manuales y citas | M01 completo |
 | H3 | M22 aviso y ARCO | M09 Documentos | M20 idiomas | M04 Taller en vivo · M10 Garantía | M05 Mantenimiento | M06 Notificaciones |
 | H4 | M23/M24 preparación (ADR IA) | M13, M15, M27 | M12 (apoyo de diseño) | M12 Lealtad | M25 widgets (base) | M07 Mensajería |
