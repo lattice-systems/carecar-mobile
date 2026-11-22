@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:carecar_mobile/nucleo/diseno/tokens/tipografia.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,26 +19,76 @@ void main() {
   final t = Tipografia.crear();
 
   test('la escala coincide con el documento', () {
-    verifica(t.display,
-        tamano: 40, interlineado: 44, peso: FontWeight.w600, tracking: -0.01);
-    verifica(t.titulo1,
-        tamano: 28, interlineado: 34, peso: FontWeight.w600, tracking: -0.005);
-    verifica(t.titulo2,
-        tamano: 22, interlineado: 28, peso: FontWeight.w600, tracking: 0);
-    verifica(t.titulo3,
-        tamano: 18, interlineado: 24, peso: FontWeight.w600, tracking: 0);
-    verifica(t.cuerpo,
-        tamano: 16, interlineado: 24, peso: FontWeight.w400, tracking: 0);
-    verifica(t.cuerpoFuerte,
-        tamano: 16, interlineado: 24, peso: FontWeight.w500, tracking: 0);
-    verifica(t.cuerpoChico,
-        tamano: 14, interlineado: 20, peso: FontWeight.w400, tracking: 0);
-    verifica(t.etiqueta,
-        tamano: 13, interlineado: 16, peso: FontWeight.w500, tracking: 0.002);
-    verifica(t.micro,
-        tamano: 11, interlineado: 14, peso: FontWeight.w600, tracking: 0.06);
-    verifica(t.cifra,
-        tamano: 32, interlineado: 36, peso: FontWeight.w500, tracking: -0.02);
+    verifica(
+      t.display,
+      tamano: 40,
+      interlineado: 44,
+      peso: FontWeight.w600,
+      tracking: -0.01,
+    );
+    verifica(
+      t.titulo1,
+      tamano: 28,
+      interlineado: 34,
+      peso: FontWeight.w600,
+      tracking: -0.005,
+    );
+    verifica(
+      t.titulo2,
+      tamano: 22,
+      interlineado: 28,
+      peso: FontWeight.w600,
+      tracking: 0,
+    );
+    verifica(
+      t.titulo3,
+      tamano: 18,
+      interlineado: 24,
+      peso: FontWeight.w600,
+      tracking: 0,
+    );
+    verifica(
+      t.cuerpo,
+      tamano: 16,
+      interlineado: 24,
+      peso: FontWeight.w400,
+      tracking: 0,
+    );
+    verifica(
+      t.cuerpoFuerte,
+      tamano: 16,
+      interlineado: 24,
+      peso: FontWeight.w500,
+      tracking: 0,
+    );
+    verifica(
+      t.cuerpoChico,
+      tamano: 14,
+      interlineado: 20,
+      peso: FontWeight.w400,
+      tracking: 0,
+    );
+    verifica(
+      t.etiqueta,
+      tamano: 13,
+      interlineado: 16,
+      peso: FontWeight.w500,
+      tracking: 0.002,
+    );
+    verifica(
+      t.micro,
+      tamano: 11,
+      interlineado: 14,
+      peso: FontWeight.w600,
+      tracking: 0.06,
+    );
+    verifica(
+      t.cifra,
+      tamano: 32,
+      interlineado: 36,
+      peso: FontWeight.w500,
+      tracking: -0.02,
+    );
   });
 
   test('ningun estilo baja de 11', () {
