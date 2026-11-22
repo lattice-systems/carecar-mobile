@@ -134,9 +134,8 @@ void main() {
 
     test('otro 409 con cita confirmada igual se vuelve CitaDuplicada', () {
       final api = ApiFalsa()
-        ..alAgendar = (_) async =>
-            throw const Conflicto('x')
-              ..alPedirCitas = () async => [cita(id: 3)];
+        ..alAgendar = ((_) async => throw const Conflicto('x'))
+        ..alPedirCitas = () async => [cita(id: 3)];
       expect(
         RepositorioCitasApi(api)
             .agendar(vehiculoId: 1, franja: franja, motivo: MotivoCita.otro),
