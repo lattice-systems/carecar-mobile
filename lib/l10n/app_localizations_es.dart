@@ -23,7 +23,64 @@ class AppLocalizationsEs extends AppLocalizations {
       'Cuando la agencia publique modelos, los verás aquí.';
 
   @override
+  String get citasAgendarContinuar => 'Revisar y confirmar';
+
+  @override
+  String get citasAgendarMotivo => 'Motivo de la visita';
+
+  @override
+  String get citasAgendarMotivoSugerencia => 'Elige un motivo';
+
+  @override
+  String get citasAgendarSinDatos =>
+      'Elige vehículo, día, horario y motivo para continuar.';
+
+  @override
+  String get citasAgendarTitulo => 'Agendar cita';
+
+  @override
+  String get citasAgendarVehiculo => 'Vehículo';
+
+  @override
+  String get citasAgendarVehiculoSugerencia => 'Elige tu vehículo';
+
+  @override
   String get citasCargando => 'Cargando disponibilidad del taller';
+
+  @override
+  String get citasCargandoAgendar =>
+      'Cargando tus vehículos y los horarios del taller';
+
+  @override
+  String get citasConfirmar => 'Confirmar cita';
+
+  @override
+  String citasDuplicadaMensaje(DateTime fecha, String inicio, String fin) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Ya tienes una cita el $fechaString de $inicio a $fin. Si necesitas cambiarla, cancélala primero.';
+  }
+
+  @override
+  String get citasDuplicadaTitulo => 'Ya tienes una cita ese día';
+
+  @override
+  String get citasEditar => 'Cambiar datos';
+
+  @override
+  String get citasErrorAgendar =>
+      'No pudimos agendar tu cita. Intenta de nuevo.';
+
+  @override
+  String citasFranjaCercana(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString · $hora';
+  }
 
   @override
   String citasHorariosDelDia(DateTime dia) {
@@ -37,11 +94,80 @@ class AppLocalizationsEs extends AppLocalizations {
   String get citasHorariosVacio => 'Este día ya no tiene lugares.';
 
   @override
+  String get citasListoCerrar => 'Listo';
+
+  @override
+  String citasListoMensaje(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Te esperamos el $fechaString a las $hora.';
+  }
+
+  @override
+  String get citasListoTitulo => 'Cita confirmada';
+
+  @override
+  String get citasMotivoGarantia => 'Garantía';
+
+  @override
+  String get citasMotivoMantenimiento => 'Mantenimiento';
+
+  @override
+  String get citasMotivoOtro => 'Otro';
+
+  @override
+  String get citasMotivoReparacion => 'Reparación';
+
+  @override
+  String get citasMotivoRevision => 'Revisión';
+
+  @override
   String get citasNotaDiasSinCupo =>
       'Los días tachados no tienen lugares disponibles.';
 
   @override
+  String get citasResumenFecha => 'Día';
+
+  @override
+  String get citasResumenHorario => 'Horario';
+
+  @override
+  String citasResumenHorarioValor(String inicio, String fin) {
+    return '$inicio a $fin';
+  }
+
+  @override
+  String get citasResumenMotivo => 'Motivo';
+
+  @override
+  String get citasResumenTitulo => 'Resumen de tu cita';
+
+  @override
+  String get citasResumenVehiculo => 'Vehículo';
+
+  @override
+  String get citasSinCupoMensaje =>
+      'Alguien la tomó mientras decidías. Estas opciones están cerca:';
+
+  @override
+  String get citasSinCupoNinguna =>
+      'Por ahora no hay otros horarios cercanos. Elige otro día.';
+
+  @override
+  String get citasSinCupoTitulo => 'Ese horario ya no tiene lugar';
+
+  @override
   String get citasSinDiaElegido => 'Elige un día para ver sus horarios.';
+
+  @override
+  String get citasSinVehiculosMensaje =>
+      'La agencia registra tu auto cuando te lo entrega. Después podrás agendar aquí.';
+
+  @override
+  String get citasSinVehiculosTitulo => 'Aún no tienes vehículos';
 
   @override
   String get citasTitulo => 'Disponibilidad del taller';
