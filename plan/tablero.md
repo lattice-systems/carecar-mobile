@@ -39,7 +39,7 @@ Total: **206 historias** + 4 de H0.
 | V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
 | V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | En revisión | #27 |
 | V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | En revisión | #26 |
-| V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Lista | |
+| V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | En revisión | #28 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
