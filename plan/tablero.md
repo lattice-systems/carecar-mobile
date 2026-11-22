@@ -6,7 +6,7 @@ Estados: `Borrador` (falta refinar) → `Lista` (cumple la Definición de Listo)
 
 WIP: **una historia `En curso` por persona**. **B** = requiere backend (`agencia-360-backend`, plan espejo en su `plan/`).
 
-Total: **202 historias** + 4 de H0.
+Total: **206 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -36,6 +36,10 @@ Total: **202 historias** + 4 de H0.
 | V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05 | Lista | |
 | V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
+| V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
+| V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | Lista | |
+| V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | Lista | |
+| V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Lista | |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -76,17 +80,17 @@ Total: **202 historias** + 4 de H0.
 | V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
 | V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Lista | |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 | Lista | |
-| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01 | Lista | |
+| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 | Lista | |
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Lista | |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Lista | |
-| V2-M02.05 | El historial de servicios de mi auto | Ricardo |  | V2-T05.06 | Lista | |
+| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 | Lista | |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Lista | |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Lista | |
-| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08 | Lista | |
+| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Lista | |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Lista | |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 | Lista | |
 | V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Lista | |
@@ -209,10 +213,10 @@ Total: **202 historias** + 4 de H0.
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Borrador | |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Borrador | |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | — | Borrador | |
-| V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Borrador | |
-| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02 | Borrador | |
-| V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03 | Borrador | |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Lista | |
+| V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Lista | |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 | Lista | |
+| V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09, V2-T02.12 | Lista | |
 | V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
 | V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 | Borrador | |
 | V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01, V2-M02.08 | Borrador | |
@@ -223,15 +227,15 @@ Total: **202 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01 | Borrador | |
-| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01 | Borrador | |
-| V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Borrador | |
-| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02 | Borrador | |
-| V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Borrador | |
-| V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Borrador | |
-| V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01 | Borrador | |
-| V2-M18.04 | Registrar otros gastos | Juan Pablo | B | V2-M18.01 | Borrador | |
-| V2-M18.05 | Exportar mi bitácora | Juan Pablo |  | V2-M18.03 | Borrador | |
+| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Lista | |
+| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
+| V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Lista | |
+| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.05 | Lista | |
+| V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Lista | |
+| V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Lista | |
+| V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01, V2-T02.10 | Lista | |
+| V2-M18.04 | Registrar otros gastos | Juan Pablo | B | V2-M18.01 | Lista | |
+| V2-M18.05 | Exportar mi bitácora | Juan Pablo |  | V2-M18.03 | Lista | |
 | V2-M19.01 | Invitar a alguien a ver mi vehículo | Jael | B | V2-M01.04 | Borrador | |
 | V2-M19.02 | Aceptar y ver el vehículo compartido | Jael | B | V2-M19.01 | Borrador | |
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
@@ -243,11 +247,11 @@ Total: **202 historias** + 4 de H0.
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01 | Borrador | |
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03 | Borrador | |
 | V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Borrador | |
-| V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09 | Borrador | |
-| V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02 | Borrador | |
-| V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Borrador | |
-| V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Borrador | |
-| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Borrador | |
+| V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Lista | |
+| V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
+| V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Lista | |
+| V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Lista | |
+| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
 
 ## H7 · Lista para tiendas
 
