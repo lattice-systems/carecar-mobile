@@ -29,6 +29,7 @@ class PantallaRecuperarContrasena extends StatefulWidget {
     required this.alVolver,
     super.key,
     this.correoInicial,
+    this.codigoInicial,
   });
 
   final CarecarApi api;
@@ -38,6 +39,10 @@ class PantallaRecuperarContrasena extends StatefulWidget {
 
   /// Lo que el cliente ya habia escrito en el login, para no pedirlo dos veces.
   final String? correoInicial;
+
+  /// Codigo que ya viene en un enlace (`carecar://restablecer?token=...`,
+  /// V2-T01.03). Con correo y codigo, la pantalla abre directo en el paso 2.
+  final String? codigoInicial;
 
   static const campoCorreo = Key('recuperar_correo');
   static const campoCodigo = Key('recuperar_codigo');
@@ -59,10 +64,16 @@ class _PantallaRecuperarContrasenaState
   late final TextEditingController _correo = TextEditingController(
     text: widget.correoInicial ?? '',
   );
-  final _codigo = TextEditingController();
+  late final TextEditingController _codigo = TextEditingController(
+    text: widget.codigoInicial ?? '',
+  );
   final _nueva = TextEditingController();
 
-  _Paso _paso = _Paso.pedirCodigo;
+  late _Paso _paso =
+      (widget.codigoInicial?.isNotEmpty ?? false) &&
+          (widget.correoInicial?.isNotEmpty ?? false)
+      ? _Paso.escribirCodigo
+      : _Paso.pedirCodigo;
   bool _trabajando = false;
   bool _ver = false;
   String? _error;
