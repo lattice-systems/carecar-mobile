@@ -128,6 +128,7 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 
 | Dónde corre la app | `API_BASE_URL` |
 | --- | --- |
+| **Backend en la nube** (Azure + Neon, con datos de ejemplo) | `https://ca-agencia360-api.calmcliff-d0e7fc3b.eastus2.azurecontainerapps.io/api/v1/app` |
 | Emulador Android | `http://10.0.2.2:8080/api/v1/app` |
 | Celular por USB (con `adb reverse tcp:8080 tcp:8080`) | `http://localhost:8080/api/v1/app` |
 | API simulada (`mock_api/`) | `http://localhost:3000/api/v1/app` |

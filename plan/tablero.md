@@ -74,6 +74,7 @@ Total: **210 historias** + 4 de H0.
 | V2-T05.08 | Eventos en vivo | Ricardo | B | V2-T05.01 | Lista | |
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Lista | |
 | V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
+| V2-T05.11 | Desplegar la API en Azure automáticamente en cada merge | Daniel | B | — | Lista | |
 
 ## H2 · Núcleo de la ficha (secciones 1–3)
 
