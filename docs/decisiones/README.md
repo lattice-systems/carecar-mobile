@@ -11,3 +11,4 @@ Las acepta el equipo en el PR (aprobación de SM y PO). Las propone normalmente 
 | [0003](0003-navegacion-go-router.md) | Navegación declarativa con go_router | Aceptada |
 | [0004](0004-sistema-de-diseno-propio.md) | Sistema de diseño propio sobre Material 3 | Aceptada |
 | [0005](0005-base-local-drift.md) | Base local con drift (SQLite) cifrada | Aceptada |
+| [0006](0006-mapas-y-geocodificacion.md) | Mapas, ubicación y geocodificación | Propuesta |

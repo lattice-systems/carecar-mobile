@@ -115,3 +115,7 @@ La galería del sistema vive en `lib/modulos/galeria/` y se abre en la ruta `/ga
 - **Pruebas:** `test/modulos/galeria/galeria_test.dart` monta cada sección en claro, oscuro y letra al 200 %, así que sirve de prueba de humo de todo el sistema junto.
 - **Hallazgo:** al montar el visor de PDF en un contenedor de 320 de alto, su esqueleto de carga desbordaba 80 px. Ahora el bloque grande es flexible.
 - **Pendiente:** los golden de todas las secciones, que dependen de V2-T03.02.
+
+## Nota sobre V2-T02.09
+
+`Mapa` está bloqueada por una decisión: el criterio exige elegir proveedor de mapas y geocodificación en una ADR. Se propone en [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, todo detrás de interfaces en `lib/nucleo/mapas/`). Mientras esté en `Propuesta` no se escribe código del componente. Lo que falta para aceptarla es que el PO confirme el proveedor de teselas de producción y su costo.
