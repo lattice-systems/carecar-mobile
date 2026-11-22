@@ -38,7 +38,7 @@ class ChipPista extends StatelessWidget {
     final frente = !habilitado
         ? c.textoTerciario
         : (seleccionado ? c.acento : c.texto);
-    final borde = seleccionado ? c.acento : c.borde;
+    final borde = seleccionado ? c.acento : c.contornoControl;
     final letra = tokens.tipografia.etiqueta.copyWith(color: frente);
 
     return Semantics(

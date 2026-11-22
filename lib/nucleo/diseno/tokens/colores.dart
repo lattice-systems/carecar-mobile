@@ -9,6 +9,7 @@ class PaletaColores {
     required this.superficieElevada,
     required this.superficieHundida,
     required this.borde,
+    required this.contornoControl,
     required this.texto,
     required this.textoSecundario,
     required this.textoTerciario,
@@ -33,6 +34,7 @@ class PaletaColores {
     required Color superficieElevada,
     required Color superficieHundida,
     required Color borde,
+    required Color contornoControl,
     required Color texto,
     required Color textoSecundario,
     required Color textoTerciario,
@@ -51,6 +53,7 @@ class PaletaColores {
       superficieElevada: superficieElevada,
       superficieHundida: superficieHundida,
       borde: borde,
+      contornoControl: contornoControl,
       texto: texto,
       textoSecundario: textoSecundario,
       textoTerciario: textoTerciario,
@@ -80,6 +83,7 @@ class PaletaColores {
     superficieElevada: const Color(0xFFFFFFFF),
     superficieHundida: const Color(0xFFEEF0F3),
     borde: const Color(0xFFE3E6EB),
+    contornoControl: const Color(0xFF7C8391),
     texto: const Color(0xFF0B0D12),
     textoSecundario: const Color(0xFF5B6270),
     textoTerciario: const Color(0xFF8A909C),
@@ -98,6 +102,7 @@ class PaletaColores {
     superficieElevada: const Color(0xFF1C1F26),
     superficieHundida: const Color(0xFF07080A),
     borde: const Color(0xFF262A33),
+    contornoControl: const Color(0xFF6B7280),
     texto: const Color(0xFFF3F4F6),
     textoSecundario: const Color(0xFFA3A9B5),
     textoTerciario: const Color(0xFF6B7280),
@@ -115,6 +120,10 @@ class PaletaColores {
   final Color superficieElevada;
   final Color superficieHundida;
   final Color borde;
+
+  /// Contorno de controles (campo, casilla, interruptor, chip). Pide 3 a 1
+  /// contra la superficie, a diferencia de `borde`, que es decorativo.
+  final Color contornoControl;
   final Color texto;
   final Color textoSecundario;
   final Color textoTerciario;
@@ -136,6 +145,7 @@ class PaletaColores {
     Color? superficieElevada,
     Color? superficieHundida,
     Color? borde,
+    Color? contornoControl,
     Color? texto,
     Color? textoSecundario,
     Color? textoTerciario,
@@ -157,6 +167,7 @@ class PaletaColores {
       superficieElevada: superficieElevada ?? this.superficieElevada,
       superficieHundida: superficieHundida ?? this.superficieHundida,
       borde: borde ?? this.borde,
+      contornoControl: contornoControl ?? this.contornoControl,
       texto: texto ?? this.texto,
       textoSecundario: textoSecundario ?? this.textoSecundario,
       textoTerciario: textoTerciario ?? this.textoTerciario,
@@ -182,6 +193,7 @@ class PaletaColores {
       superficieElevada: c(superficieElevada, otra.superficieElevada),
       superficieHundida: c(superficieHundida, otra.superficieHundida),
       borde: c(borde, otra.borde),
+      contornoControl: c(contornoControl, otra.contornoControl),
       texto: c(texto, otra.texto),
       textoSecundario: c(textoSecundario, otra.textoSecundario),
       textoTerciario: c(textoTerciario, otra.textoTerciario),

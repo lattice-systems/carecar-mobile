@@ -42,7 +42,7 @@ class CampoBase extends StatelessWidget {
     );
     return InputDecoration(
       hintText: sugerencia,
-      hintStyle: tokens.tipografia.cuerpo.copyWith(color: c.textoTerciario),
+      hintStyle: tokens.tipografia.cuerpo.copyWith(color: c.textoSecundario),
       suffixIcon: sufijo,
       filled: true,
       fillColor: c.superficie,
@@ -52,7 +52,10 @@ class CampoBase extends StatelessWidget {
         horizontal: Espaciado.e4,
         vertical: Espaciado.e3,
       ),
-      enabledBorder: borde(conError ? c.peligro : c.borde, conError ? 2 : 1),
+      enabledBorder: borde(
+        conError ? c.peligro : c.contornoControl,
+        conError ? 2 : 1,
+      ),
       focusedBorder: borde(conError ? c.peligro : c.acento, 2),
       disabledBorder: borde(c.borde, 1),
       errorBorder: borde(c.peligro, 2),

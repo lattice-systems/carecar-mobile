@@ -118,7 +118,9 @@ class Casilla extends StatelessWidget {
             checkColor: c.sobreAcento,
             side: WidgetStateBorderSide.resolveWith(
               (e) => BorderSide(
-                color: e.contains(WidgetState.selected) ? c.acento : c.borde,
+                color: e.contains(WidgetState.selected)
+                    ? c.acento
+                    : c.contornoControl,
                 width: 2,
               ),
             ),
@@ -164,7 +166,9 @@ class Interruptor extends StatelessWidget {
             inactiveThumbColor: c.textoSecundario,
             inactiveTrackColor: c.superficieHundida,
             trackOutlineColor: WidgetStateProperty.resolveWith(
-              (e) => e.contains(WidgetState.selected) ? c.acento : c.borde,
+              (e) => e.contains(WidgetState.selected)
+                  ? c.acento
+                  : c.contornoControl,
             ),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),

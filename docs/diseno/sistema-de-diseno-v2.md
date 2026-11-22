@@ -30,9 +30,10 @@ Tokens semánticos; ningún componente usa hexadecimales directos. Valores inici
 | `superficieElevada` | `#FFFFFF` | `#1C1F26` | Menús, diálogos |
 | `superficieHundida` | `#EEF0F3` | `#07080A` | Campos, zonas secundarias |
 | `borde` | `#E3E6EB` | `#262A33` | Divisores, contornos sutiles |
+| `contornoControl` | `#7C8391` | `#6B7280` | Contorno de campos, casillas, interruptores y chips (3 a 1 contra la superficie) |
 | `texto` | `#0B0D12` | `#F3F4F6` | Texto principal |
 | `textoSecundario` | `#5B6270` | `#A3A9B5` | Apoyo |
-| `textoTerciario` | `#8A909C` | `#6B7280` | Marcas de agua, deshabilitado |
+| `textoTerciario` | `#8A909C` | `#6B7280` | Solo deshabilitado y marcas de agua. No pasa 4.5 a 1, no usarlo en texto que haya que leer, como las sugerencias de un campo |
 | `acento` | `#2457F5` | `#5B8CFF` | Acción principal, enlaces, foco |
 | `sobreAcento` | `#FFFFFF` | `#0A0B0E` | Texto sobre acento |
 | `marca` | `#1D3557` | `#8FB0DA` | Logo y momentos de marca de la agencia (con mesura) |
