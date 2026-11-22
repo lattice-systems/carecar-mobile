@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/galeria/galeria.dart';
 import 'rutas_del_nucleo.dart';
@@ -17,6 +18,7 @@ import 'rutas_del_nucleo.dart';
 List<RouteBase> rutasDeLaApp() => [
   ...rutasDelNucleo(),
   // --- Un renglon por modulo, en orden alfabetico ---
+  ...rutasCatalogo,
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.
   if (kDebugMode) ...rutasEjemplo,
   // La galeria del sistema de diseno es solo para desarrollo (V2-T02.06).

@@ -52,3 +52,12 @@ Mostrar lo nuevo de la agencia y despertar el siguiente auto del cliente con una
 ## Fuera de alcance / notas
 
 - La estimación **nunca** se presenta como oferta. Texto legal revisado por el PO.
+
+## Avance de V2-M03.01
+
+El catálogo vive en `lib/modulos/catalogo/` y se abre en la ruta `/catalogo` (exige sesión, como toda ruta de módulo). Sigue la estructura de la guía: `dominio/` con `ModeloVigente` y la interfaz `RepositorioCatalogo` en Dart puro, `datos/` con `RepositorioCatalogoApi`, que lee `GET /catalogo` de `CarecarApi`, y `presentacion/` con los proveedores Riverpod y `PantallaCatalogo`.
+
+- **Solo activos:** el backend ya entrega únicamente los modelos vigentes (`GET /catalogo`), por eso la app no vuelve a filtrar. El DTO no trae `activo`.
+- **Tarjeta:** cada modelo usa `TarjetaVehiculo` con foto, nombre ("Mazda CX-5 2024") y detalle ("Signature · Desde $450,000"). Sin foto muestra la silueta.
+- **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo.
+- **Pendiente:** al tocar una tarjeta aún no abre nada, porque el detalle es V2-M03.02. La tarjeta ya lleva `heroTag` para que la foto viaje al detalle. En `plan/cumplimiento-ficha.md` la fila del catálogo sigue en 🟡 hasta que entre M03.02, que suma la galería.
