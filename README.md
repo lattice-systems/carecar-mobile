@@ -251,16 +251,16 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 
 | Check                                       | Workflow          | Cuándo corre                          |
 | ------------------------------------------- | ----------------- | ------------------------------------- |
-| `Formato (dart format)`                     | CI                | Cada push a cualquier rama y cada PR  |
-| `Análisis estático (flutter analyze)`       | CI                | Cada push a cualquier rama y cada PR  |
-| `Pruebas (flutter test)`                    | CI                | Cada push a cualquier rama y cada PR  |
-| `Build Android (APK)`                       | CI                | Cada push a cualquier rama y cada PR  |
-| `Build iOS (sin firma)`                     | CI (macOS)        | Cada push a cualquier rama y cada PR  |
+| `Formato (dart format)`                     | CI                | Cada PR y cada push a `main`         |
+| `Análisis estático (flutter analyze)`       | CI                | Cada PR y cada push a `main`         |
+| `Pruebas (flutter test)`                    | CI                | Cada PR y cada push a `main`         |
+| `Build Android (APK)`                       | CI                | Cada PR y cada push a `main`         |
+| `Build iOS (sin firma)`                     | CI (macOS)        | Cada PR y cada push a `main`         |
 | `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
 | `Revisión de dependencias nuevas/cambiadas` | Dependency Review | Solo en PR                            |
 | `Sin co-autor de IA`                        | Autoría           | Solo en PR                            |
 
-Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos; el de iOS corre en un runner de macOS y compila sin firmar.
+Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos (5-6 y unos 3 minutos); el de iOS corre en un runner de macOS y compila sin firmar. Para no gastar tiempo: el push a una rama no dispara CI (lo cubre su PR; ábrelo temprano, aunque sea en borrador) y si el PR solo cambia documentación (`docs/`, `plan/`, `.claude/`, `.githooks/` o `.md`) los cinco jobs se saltan y cuentan como aprobados.
 
 Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
 
