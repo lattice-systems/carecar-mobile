@@ -32,5 +32,40 @@
         "example": "Mazda CX-5 2024"
       }
     }
-  }
+  },
+
+  "vehiculosCargando": "Cargando tu garaje",
+  "@vehiculosCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga el garaje."
+  },
+  "vehiculosKilometros": "{km} km",
+  "@vehiculosKilometros": {
+    "description": "Kilometraje de un vehículo.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,500"
+      }
+    }
+  },
+  "vehiculosPlacas": "Placas {placas}",
+  "@vehiculosPlacas": {
+    "description": "Placas de un vehículo.",
+    "placeholders": {
+      "placas": {
+        "type": "String",
+        "example": "ABC-123"
+      }
+    }
+  },
+  "vehiculosSinPlacas": "Sin placas",
+  "@vehiculosSinPlacas": {
+    "description": "Se muestra cuando el vehículo aún no tiene placas registradas."
+  },
+  "vehiculosTitulo": "Mi garaje",
+  "@vehiculosTitulo": {
+    "description": "Título de la pantalla con los vehículos del cliente."
+  },
+  "vehiculosVacioMensaje": "La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.",
+  "vehiculosVacioTitulo": "Aún no tienes vehículos"
 }
