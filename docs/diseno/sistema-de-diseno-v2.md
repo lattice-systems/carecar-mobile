@@ -1,6 +1,6 @@
 # Sistema de diseño v2 — «Pista»
 
-Estado: **Propuesta** (decisión [0004](../decisiones/0004-sistema-de-diseno-propio.md)). Reemplaza por completo el diseño v1 (`lib/tema/tema_carecar.dart`, `shadcn_ui`). Implementación: [T02](../../plan/modulos/T02-sistema-de-diseno.md).
+Estado: **Aceptada** (decisión [0004](../decisiones/0004-sistema-de-diseno-propio.md)). Reemplaza por completo el diseño v1 (`lib/tema/tema_carecar.dart`, `shadcn_ui`). Implementación: [T02](../../plan/modulos/T02-sistema-de-diseno.md).
 
 Avance: los tokens de las secciones 2 a 5 ya existen en código en `lib/nucleo/diseno/tokens/` y `TemaPista` arma el tema claro y oscuro. Los colores de estado del modo claro se oscurecieron un poco respecto a la propuesta inicial para pasar contraste AA sobre su fondo suave.
 
