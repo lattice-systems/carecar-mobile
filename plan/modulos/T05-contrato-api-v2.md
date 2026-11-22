@@ -26,3 +26,4 @@ Que el backend tenga **exactamente** las tablas de la ficha y un contrato v2 que
 | V2-T05.08 | Como equipo queremos eventos en vivo para la app | SSE para órdenes y WebSocket para chat detrás de JWT | ✅ | V2-T05.01 |
 | V2-T05.09 | Como equipo queremos almacenamiento de archivos para evidencias y documentos | Interfaz de almacenamiento con implementación local y en la nube · URLs firmadas de corta vida | ✅ | — |
 | V2-T05.10 | Como equipo queremos datos de ejemplo para cada módulo nuevo | `scripts/cargar-datos-de-ejemplo.sh` extendido | ✅ | — |
+| V2-T05.11 | Como equipo queremos desplegar la API en Azure automáticamente en cada merge a `main` | Workflow que construye la imagen en formato OCI, la publica en GHCR y actualiza `ca-agencia360-api` · credenciales de Azure como secretos de GitHub · verificación de `/actuator/health` tras desplegar · ver `agencia-360-backend/docs/despliegue-azure-neon.md` (dueño: Daniel) | ✅ | — |
