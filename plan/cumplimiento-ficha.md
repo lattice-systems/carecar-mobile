@@ -100,7 +100,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | ⬜ | Ver M11 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | ⬜ | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
@@ -139,13 +139,13 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | ⬜ | Ver M17 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | ⬜ | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | ⬜ | Ver M18 |
+| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | ⬜ | V2-M18.01, V2-M18.02, V2-M18.03, V2-M18.04, V2-M18.05, V2-M05.03 |
 
 ### 19. Cuentas familiares — plan [M19](modulos/M19-cuentas-familiares.md)
 
