@@ -28,3 +28,12 @@ Que cualquier persona use CareCar: lector de pantalla, letra grande, contraste, 
 ## Avance de V2-M20.04
 
 Todo movimiento del sistema v2 pasa por `context.movimiento(token)` (V2-T02.03), que con "reducir movimiento" del sistema entrega un fundido de 120 ms lineal. `test/nucleo/diseno/movimiento_reducido_test.dart` lo vigila de dos formas: un recorrido del código que falla si un componente de `lib/nucleo/diseno/componentes/` trae `Duration(`, `Curves.` o `Cubic(` propios, y una prueba de comportamiento con `Pestanas` en las dos preferencias. Lo que queda fuera es el código v1 (`lib/widgets/movimiento.dart` y las pantallas actuales), que se retira con V2-T02.08 y se migra con V2-T01.05, no antes.
+
+## Avance de V2-M20.06
+
+El contraste se prueba en `test/nucleo/diseno/tokens/colores_test.dart`, en claro y oscuro. Texto y estados piden 4.5 a 1 (WCAG 1.4.3) y los contornos de control piden 3 a 1 (WCAG 1.4.11). Al ampliar la cobertura salieron dos fallas reales que ya estaban en los componentes, y se corrigieron aquí:
+
+- La sugerencia de los campos usaba `textoTerciario`, que da 3.2 a 1 en claro. Ahora usa `textoSecundario`. `textoTerciario` queda solo para deshabilitado, que WCAG exime.
+- Los contornos de campo, casilla, interruptor y chip usaban `borde`, que da 1.25 a 1. Se agregó el token `contornoControl` (`#7C8391` en claro, `#6B7280` en oscuro) y esos cuatro componentes lo usan. `borde` sigue para divisores, que no delimitan nada.
+
+Pendiente fuera de esta historia: la auditoría con lector y dispositivo real es V2-M20.07, y el contraste de texto sobre fotos o imágenes no se puede garantizar con tokens.

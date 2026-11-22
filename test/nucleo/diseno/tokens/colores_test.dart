@@ -58,6 +58,26 @@ void main() {
         'advertencia sobre su fondo suave': (p.advertencia, p.advertenciaSuave),
         'peligro sobre su fondo suave': (p.peligro, p.peligroSuave),
         'acento sobre su fondo suave': (p.acento, p.acentoSuave),
+        'texto secundario sobre superficie elevada': (
+          p.textoSecundario,
+          p.superficieElevada,
+        ),
+        'texto secundario sobre superficie hundida': (
+          p.textoSecundario,
+          p.superficieHundida,
+        ),
+        'sobre acento sobre peligro': (p.sobreAcento, p.peligro),
+        'texto sobre fondo suave de exito': (p.texto, p.exitoSuave),
+        'texto sobre fondo suave de advertencia': (p.texto, p.advertenciaSuave),
+        'texto sobre fondo suave de peligro': (p.texto, p.peligroSuave),
+        'texto sobre fondo suave de acento': (p.texto, p.acentoSuave),
+        'acento sobre superficie elevada': (p.acento, p.superficieElevada),
+        'peligro sobre superficie elevada': (p.peligro, p.superficieElevada),
+        'advertencia sobre superficie elevada': (
+          p.advertencia,
+          p.superficieElevada,
+        ),
+        'exito sobre superficie elevada': (p.exito, p.superficieElevada),
       };
 
       for (final par in pares.entries) {
@@ -70,6 +90,50 @@ void main() {
         });
       }
     }
+  });
+
+  group('contraste de componentes (3 a 1, WCAG 1.4.11)', () {
+    for (final entrada in {
+      'claro': PaletaColores.claro,
+      'oscuro': PaletaColores.oscuro,
+    }.entries) {
+      final p = entrada.value;
+      final modo = entrada.key;
+
+      final pares = <String, (Color, Color)>{
+        'contorno de control sobre superficie': (
+          p.contornoControl,
+          p.superficie,
+        ),
+        'contorno de control sobre fondo': (p.contornoControl, p.fondo),
+        'contorno de control sobre superficie elevada': (
+          p.contornoControl,
+          p.superficieElevada,
+        ),
+        'acento sobre superficie hundida': (p.acento, p.superficieHundida),
+      };
+
+      for (final par in pares.entries) {
+        test('$modo: ${par.key}', () {
+          final (primer, segundo) = par.value;
+          expect(
+            Contraste.razon(primer, segundo),
+            greaterThanOrEqualTo(Contraste.minimoTextoGrande),
+          );
+        });
+      }
+    }
+
+    test('el borde decorativo no se usa como contorno de control', () {
+      // `borde` queda bajo 3 a 1 a proposito: solo divide, no delimita.
+      expect(
+        Contraste.razon(
+          PaletaColores.claro.borde,
+          PaletaColores.claro.superficie,
+        ),
+        lessThan(Contraste.minimoTextoGrande),
+      );
+    });
   });
 
   test('las variantes suaves se mezclan sobre la superficie', () {
