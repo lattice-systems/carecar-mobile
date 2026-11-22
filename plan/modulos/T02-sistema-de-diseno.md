@@ -79,13 +79,16 @@ Pruebas en `test/nucleo/diseno/componentes/fotos_firma_test.dart`. El golden que
 
 ## Avance de V2-T02.05
 
-Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucleo/diseno/componentes/`. Lo que falta de la lista del documento: `LineaDeTiempo`, `Calendario`, `SelectorFranja`, `VisorPdf` y `Semaforo`.
+Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucleo/diseno/componentes/`. Lo que falta de la lista del documento: `VisorPdf` y `Semaforo`.
 
 | Tanda | Componentes | Estado |
 | --- | --- | --- |
 | 1 | `EstadoVacio`, `EstadoError` (con `CausaError.sinConexion`), `Esqueleto` (con `.linea` y `.circulo`), `TarjetaMetrica`, `FilaLista` | Hecho |
 | 2 | `BarraNavegacion` (con `DestinoNavegacion` y globo de pendientes), `EncabezadoGrande` (sliver que se encoge), `TarjetaVehiculo` (héroe con `Hero` opcional), `TarjetaAccion` | Hecho |
+| 3 | `LineaDeTiempo` (con `PasoLinea` y `EstadoPaso`), `Calendario` (días sin cupo tachados), `SelectorFranja` (con `FranjaHoraria`) | Hecho |
 
 `EstadoVacio` y `EstadoError` se desplazan si no caben, porque a letra al 200 % desbordaban. `Esqueleto` no se anuncia al lector de pantalla: quien lo use avisa "cargando" una sola vez en el contenedor. `TarjetaMetrica` reduce la cifra para que una larga no desborde.
 
 `BarraNavegacion` siempre muestra la etiqueta, sin ocultar texto en los destinos inactivos, y anuncia "Inicio, 1 de 5". `EncabezadoGrande` calcula sus alturas con el tamaño de letra del sistema y reserva dos líneas de título cuando la letra pasa de 1.3, porque a 200 % el título se partía y desbordaba 35 px. `TarjetaVehiculo` sin foto usa la silueta en `textoTerciario`, como pide el documento.
+
+`LineaDeTiempo` hace respirar el paso actual y lo deja quieto con reducir movimiento. `Calendario` empieza la semana en lunes, usa nombres de mes en español sin depender de `intl` y recibe `hoy` para que las pruebas no dependan del reloj. Los días fuera de rango o sin cupo se tachan y se anuncian como "20 de noviembre, sin cupo". `SelectorFranja` reutiliza `ChipPista` y dice el cupo con texto ("09:00 · 3 lugares"). Las horas y los textos de fecha llegan ya formateados desde quien los usa.
