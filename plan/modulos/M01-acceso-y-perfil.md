@@ -61,6 +61,7 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 | V2-M01.09 | Como cliente quiero ver y cerrar mis sesiones abiertas en otros celulares para sentirme seguro | Lista con dispositivo y último uso · cerrar una o todas revoca sus tokens | ✅ | V2-M01.01 |
 | V2-M01.10 | Como cliente quiero cambiar mi contraseña desde Seguridad cuando yo quiera | Pide la actual · cierra las demás sesiones opcionalmente | | V2-M01.03 |
 | V2-M01.11 | Como cliente quiero que la sesión se renueve sola durante 30 días para no volver a escribir mi contraseña | Refresco transparente · si el refresco falla, vuelve a login conservando la pantalla destino | | V2-M01.01 |
+| V2-M01.12 | Como cliente quiero que el primer inicio de sesión espere al servidor dormido para no ver un error falso | El backend en Azure se apaga sin tráfico y tarda ~35 s en despertar · el tiempo límite de `ClienteApi` es 60 s (no 20) · tras 8 s sin respuesta el login muestra «Despertando el servidor…» con el botón en carga (la cortina de arranque cambia su texto) · el aviso desaparece al responder, con éxito o con error · sin reintentos automáticos que dupliquen peticiones | | V2-M01.01 |
 
 ## Fuera de alcance / notas
 
