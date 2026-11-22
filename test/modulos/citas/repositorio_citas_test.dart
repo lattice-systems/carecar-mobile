@@ -26,9 +26,8 @@ void main() {
             ),
           ];
         };
-      final taller = await RepositorioCitasApi(
-        api,
-      ).disponibilidad(desde: desde, hasta: hasta);
+      final taller = await RepositorioCitasApi(api)
+          .disponibilidad(desde: desde, hasta: hasta);
       expect(taller.tieneCupo(DateTime(2026, 11, 24)), isTrue);
       final franja = taller.franjasDe(DateTime(2026, 11, 24)).single;
       expect(franja.franjaId, 5);
