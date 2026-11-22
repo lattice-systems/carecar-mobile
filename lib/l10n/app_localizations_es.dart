@@ -64,7 +64,34 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get vehiculosAccesoFicha => 'Ficha técnica';
+
+  @override
+  String get vehiculosAccesoHistorial => 'Historial de servicios';
+
+  @override
+  String get vehiculosAccesoManuales => 'Manuales';
+
+  @override
+  String get vehiculosAccesoPronto => 'Disponible pronto';
+
+  @override
+  String get vehiculosAnio => 'Año';
+
+  @override
   String get vehiculosCargando => 'Cargando tu garaje';
+
+  @override
+  String get vehiculosColor => 'Color';
+
+  @override
+  String get vehiculosCopiarVin => 'Copiar VIN';
+
+  @override
+  String get vehiculosDetalleTitulo => 'Detalle del vehículo';
+
+  @override
+  String get vehiculosKilometraje => 'Kilometraje';
 
   @override
   String vehiculosKilometros(String km) {
@@ -72,9 +99,30 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String vehiculosKmActualizado(String fecha) {
+    return 'Actualizado por el taller el $fecha';
+  }
+
+  @override
+  String get vehiculosKmSinActualizar => 'Aún sin actualización del taller';
+
+  @override
+  String get vehiculosKmSinDato => 'Sin kilometraje registrado';
+
+  @override
+  String get vehiculosNoEncontradoMensaje =>
+      'Ese vehículo ya no está en tu garaje. Vuelve al garaje para elegir otro.';
+
+  @override
+  String get vehiculosNoEncontradoTitulo => 'No encontramos el vehículo';
+
+  @override
   String vehiculosPlacas(String placas) {
     return 'Placas $placas';
   }
+
+  @override
+  String get vehiculosPlacasEtiqueta => 'Placas';
 
   @override
   String get vehiculosSinPlacas => 'Sin placas';
@@ -88,4 +136,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vehiculosVacioTitulo => 'Aún no tienes vehículos';
+
+  @override
+  String get vehiculosVersion => 'Versión';
+
+  @override
+  String get vehiculosVin => 'VIN';
+
+  @override
+  String get vehiculosVinCopiado => 'VIN copiado';
 }
