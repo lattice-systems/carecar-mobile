@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('valores del documento', () {
     test('claro', () {
-      const p = PaletaColores.claro;
+      final p = PaletaColores.claro;
       expect(p.fondo, const Color(0xFFF6F7F9));
       expect(p.superficie, const Color(0xFFFFFFFF));
       expect(p.superficieHundida, const Color(0xFFEEF0F3));
@@ -17,7 +17,7 @@ void main() {
     });
 
     test('oscuro', () {
-      const p = PaletaColores.oscuro;
+      final p = PaletaColores.oscuro;
       expect(p.fondo, const Color(0xFF0A0B0E));
       expect(p.superficie, const Color(0xFF14161B));
       expect(p.superficieElevada, const Color(0xFF1C1F26));
