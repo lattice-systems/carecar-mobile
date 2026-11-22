@@ -6,8 +6,8 @@ Los hitos ordenan prioridades, no bloquean a nadie: si una persona no tiene hist
 
 | Hito | Nombre | Módulos | Objetivos |
 | --- | --- | --- | --- |
-| ▶ H0 | Base de trabajo | Reglas, agentes, plan | O10 |
-| H1 | Cimientos v2 | T01, T02, T03, T04, T05 | O8, O9 |
+| H0 | Base de trabajo | Reglas, agentes, plan | O10 |
+| ▶ H1 | Cimientos v2 | T01, T02, T03, T04, T05 | O8, O9 |
 | H2 | Núcleo de la ficha (secciones 1–3) | M01, M02, M03 + base de M20, M21, M22, M23 | O1, O2 |
 | H3 | Postventa viva | M04, M05, M06, M09, M10 | O3, O4, O6 |
 | H4 | Cliente conectado | M07, M12, M13, M15, M27 | O4, O7 |
@@ -33,7 +33,7 @@ Criterios de salida:
 **Propósito:** construir la base nueva sobre la que se rehace todo.
 
 Criterios de salida:
-- [ ] Decisiones 0001–0005 en estado `Aceptada` (o reemplazadas con otra decisión aceptada).
+- [x] Decisiones 0001–0005 en estado `Aceptada` (o reemplazadas con otra decisión aceptada).
 - [ ] Estructura `lib/nucleo/` + `lib/modulos/` creada, con navegación declarativa y deep links funcionando.
 - [ ] Sistema de diseño v2: tokens (claro/oscuro), tipografía, 100 % de los componentes base del catálogo con prueba golden y galería navegable en la app (modo desarrollo).
 - [ ] `integration_test` del flujo login → inicio corriendo en CI.
