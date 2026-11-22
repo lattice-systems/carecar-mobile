@@ -62,3 +62,7 @@ Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucle
 ## Avance de V2-T02.11
 
 `DeslizarParaConfirmar` vive en `lib/nucleo/diseno/componentes/deslizar_para_confirmar.dart`. Hay que arrastrar la perilla al 90 % del recorrido (`umbral`) para confirmar, y soltar antes la regresa con el resorte del sistema. Con un lector de pantalla activo, o con `forzarAlternativa`, se cambia por un `Boton` que pide confirmación en un `Dialogo`. Con reducir movimiento la perilla regresa sin animar. Pruebas en `test/nucleo/diseno/componentes/deslizar_para_confirmar_test.dart`. El golden queda para V2-T03.02.
+
+## Avance de V2-T02.10
+
+`Grafica` vive en `lib/nucleo/diseno/componentes/grafica.dart`, con `PuntoGrafica` y `TipoGrafica` (barras o líneas). Se dibuja con `CustomPaint` y los colores de los tokens, sin dependencias nuevas. El dibujo se excluye de la semántica y cada gráfica trae una tabla con los mismos datos: con un lector de pantalla activo la tabla se muestra sola, y cualquiera la alterna con "Ver como tabla". Sin datos muestra un mensaje que explica por qué. Con reducir movimiento la animación de entrada pasa a fundido corto. Pruebas en `test/nucleo/diseno/componentes/grafica_test.dart`. El golden queda para V2-T03.02.
