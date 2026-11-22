@@ -87,9 +87,9 @@ Total: **210 historias** + 4 de H0.
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 | Lista | |
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Lista | |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Lista | |
-| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 | Lista | |
+| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06, V2-T02.13 | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
-| V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 | Lista | |
+| V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07, V2-T02.14 | Lista | |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Lista | |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
@@ -138,7 +138,7 @@ Total: **210 historias** + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M04.01 | Ver en Inicio que mi auto está en el taller | Ricardo | B | V2-M02.05 | Lista | |
-| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01 | Lista | |
+| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01, V2-T02.13 | Lista | |
 | V2-M04.03 | Que la línea de tiempo se actualice sola | Ricardo | B | V2-M04.02, V2-M06.02 | Lista | |
 | V2-M04.04 | Ver la inspección multipunto con fotos | Ricardo | B | V2-M04.02 | Lista | |
 | V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | Lista | |
@@ -219,7 +219,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
 | V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Lista | |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Lista | |
-| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 | Lista | |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09, V2-T02.13 | Lista | |
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09, V2-T02.12 | Lista | |
 | V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
 | V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 | Borrador | |
@@ -234,7 +234,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Lista | |
 | V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Lista | |
-| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.05 | Lista | |
+| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 | Lista | |
 | V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Lista | |
 | V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Lista | |
 | V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01, V2-T02.10 | Lista | |

@@ -44,7 +44,7 @@ Que el cliente sepa en todo momento qué le están haciendo a su auto, cuánto f
 | ID | Historia | Criterios de aceptación | B | Depende de |
 | --- | --- | --- | --- | --- |
 | V2-M04.01 | Como cliente quiero ver en Inicio que mi auto está en el taller | Tarjeta aparece si hay orden abierta · desaparece al entregarse | ✅ | V2-M02.05 |
-| V2-M04.02 | Como cliente quiero la línea de tiempo de mi orden con la hora de cada etapa | Etapas en orden con hora · etapa actual animada · ETA visible | ✅ | V2-M04.01 |
+| V2-M04.02 | Como cliente quiero la línea de tiempo de mi orden con la hora de cada etapa | Etapas en orden con hora · etapa actual animada · ETA visible | ✅ | V2-M04.01, V2-T02.13 |
 | V2-M04.03 | Como cliente quiero que la línea de tiempo se actualice sola | Cambio de etapa aparece sin recargar (SSE) · si la app está cerrada llega push | ✅ | V2-M04.02, V2-M06.02 |
 | V2-M04.04 | Como cliente quiero ver la inspección multipunto con fotos | Semáforo por punto · fotos ampliables · video reproducible | ✅ | V2-M04.02 |
 | V2-M04.05 | Como cliente quiero aprobar o rechazar trabajos adicionales desde la app | Cotización por concepto · aprobar/rechazar uno por uno · firma en pantalla · total se recalcula · auditoría en backend | ✅ | V2-M04.02 |
