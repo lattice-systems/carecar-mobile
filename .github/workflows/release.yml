@@ -53,6 +53,18 @@ jobs:
           fi
           echo "nombre=$version" >> "$GITHUB_OUTPUT"
 
+      # La app no tiene dirección del servidor por omisión: sin API_BASE_URL el
+      # APK solo muestra el error de arranque. Se toma de la variable del
+      # repositorio (Settings → Secrets and variables → Actions → Variables).
+      - name: Verificar la dirección del servidor (API_BASE_URL)
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          if [ -z "$API_BASE_URL" ]; then
+            echo "::error::Falta la variable de repositorio API_BASE_URL (p. ej. http://IP-DE-LA-PC:8089/api/v1/app). Créala en Settings → Secrets and variables → Actions → Variables y vuelve a etiquetar."
+            exit 1
+          fi
+
       - name: Configurar JDK 17 (Temurin)
         uses: actions/setup-java@v6
         with:
@@ -78,7 +90,8 @@ jobs:
       - name: Compilar el APK
         env:
           NOMBRE: ${{ steps.version.outputs.nombre }}
-        run: flutter build apk --release --build-name="$NOMBRE" --build-number=${{ github.run_number }}
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: flutter build apk --release --build-name="$NOMBRE" --build-number=${{ github.run_number }} --dart-define=API_BASE_URL="$API_BASE_URL"
 
       - name: Nombrar el APK con su versión
         env:
