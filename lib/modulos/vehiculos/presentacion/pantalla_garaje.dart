@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
@@ -11,6 +12,7 @@ import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'proveedores_vehiculos.dart';
+import 'rutas_vehiculos.dart';
 
 /// Garaje del cliente: una tarjeta por vehiculo (V2-M02.01).
 ///
@@ -69,6 +71,7 @@ class _Lista extends StatelessWidget {
           nombre: v.titulo,
           detalle: _detalle(context, v),
           heroTag: 'vehiculo-${v.id}',
+          alToque: () => context.push(rutaDetalleVehiculo(v.id)),
         );
       },
     );
