@@ -1,6 +1,6 @@
 # 0001 · Organizar la app por módulos funcionales
 
-**Estado:** Propuesta
+**Estado:** Aceptada
 
 ## Contexto
 
