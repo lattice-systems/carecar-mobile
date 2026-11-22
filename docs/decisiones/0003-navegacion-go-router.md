@@ -1,6 +1,6 @@
 # 0003 · Navegación declarativa con go_router
 
-**Estado:** Propuesta
+**Estado:** Aceptada
 
 ## Contexto
 
