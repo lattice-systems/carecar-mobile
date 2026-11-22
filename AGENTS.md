@@ -55,6 +55,8 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 1. **Elegir** del tablero ([`plan/tablero.md`](plan/tablero.md)) una historia `Lista` del hito activo, asignada a ti (o sin dueño en tu frente).
 2. **Rama** desde `main` actualizado: `feat/v2-m04-03-linea-de-tiempo-taller`.
 3. **Tablero**: primer commit mueve la historia a `En curso` con tu nombre (`docs(tablero): tomar V2-M04.03`).
+   - Si es **B**, el siguiente commit escribe su diseño (tablas, migración, eventos, endpoints con errores) en `agencia-360-backend/plan/historias-backend.md` y el endpoint en el contrato. No se espera a que alguien más lo diseñe.
+   - Si depende de una historia de backend sin integrar, **no esperes**: trabaja contra el contrato y `mock_api` (dependencia `(simulable)` en el tablero).
 4. **TDD**: prueba que falla → código mínimo → refactor. Un commit por paso con intención.
 5. **Docs**: ficha del módulo (`plan/modulos/`), README, decisiones, diseño, cumplimiento de ficha — lo que aplique.
 6. **Verificar local**: `dart format lib test && flutter analyze && flutter test`.

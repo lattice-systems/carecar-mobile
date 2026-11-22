@@ -21,9 +21,9 @@ Relacionados: ficha técnica en [`../docs/ficha-tecnica/`](../docs/ficha-tecnica
 Una historia pasa de `Borrador` a `Lista` cuando:
 
 - Tiene formato *Como / quiero / para* y criterios de aceptación comprobables.
-- Sus dependencias están `Hecha` o se pueden simular (API simulada, datos de ejemplo).
-- Si es **B**, existe su historia espejo en el plan del backend con endpoint y tabla definidos.
-- Si toca UI, los componentes existen en el sistema de diseño o hay historia T02 para crearlos.
+- Sus dependencias están `Hecha` o se pueden simular (API simulada, datos de ejemplo). **Una dependencia hacia una historia de backend no bloquea**: la app se trabaja contra el contrato y `mock_api` ([`trabajo-en-paralelo.md`](trabajo-en-paralelo.md), sección 2). En el tablero esas dependencias llevan la marca `(simulable)`.
+- Si es **B**, tiene su sección en `agencia-360-backend/plan/historias-backend.md`. **No hace falta diseño técnico previo para tomarla**: quien la toma escribe el diseño (tablas, migración, eventos, endpoints con sus errores) en su primer commit en ese archivo, y el endpoint en el contrato antes de programarlo.
+- Si toca UI, los componentes existen en el sistema de diseño o hay historia T02 para crearlos; mientras no se integre, se usa un provisional (marca `(provisional)` en el tablero).
 - Si su módulo está en la ficha, se sabe qué fila de `cumplimiento-ficha.md` mueve.
 - Cabe en un PR revisable.
 
