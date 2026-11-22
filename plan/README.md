@@ -8,7 +8,7 @@ Todo lo que el equipo (y sus agentes) necesita para saber **qué** construir, **
 | [`hitos.md`](hitos.md) | Hitos H0–H7 con criterios de salida (hito activo marcado con ▶) |
 | [`modulos/README.md`](modulos/README.md) | Catálogo de 27 módulos y 5 frentes técnicos, con dueño y revisor |
 | [`modulos/`](modulos/) | Un archivo por módulo: pantallas, datos, API e historias con criterios |
-| [`tablero.md`](tablero.md) | Estado de las 202 historias (fuente única del avance) |
+| [`tablero.md`](tablero.md) | Estado de las 206 historias (fuente única del avance) |
 | [`equipo-y-reparto.md`](equipo-y-reparto.md) | Quién hace qué en cada hito y cómo se revisa |
 | [`cumplimiento-ficha.md`](cumplimiento-ficha.md) | Matriz funcionalidad por funcionalidad contra la ficha técnica v2.0 |
 | [`arquitectura-v2.md`](arquitectura-v2.md) | Forma objetivo del código de la app |
