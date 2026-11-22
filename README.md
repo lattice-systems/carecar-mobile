@@ -219,7 +219,7 @@ La app consume la misma **API REST** que el ERP y el CRM, construida con Spring 
                          ▼
        API REST · Spring Boot + Spring Modulith
                          │
-     PostgreSQL · Redis · Almacenamiento · Firebase (FCM)
+     PostgreSQL (Neon) · Almacenamiento · Firebase (FCM)
 ```
 
 Lineamientos que afectan a la app:

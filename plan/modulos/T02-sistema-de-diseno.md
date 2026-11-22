@@ -3,7 +3,7 @@
 | Campo | Valor |
 | --- | --- |
 | Hito | H1 |
-| Dueño | Cristian (todos aportan componentes) · Juan Pablo (V2-T02.13 y V2-T02.14) |
+| Dueño | Cristian (todos aportan componentes; también V2-T02.13 y V2-T02.14, que entregó en los PR 37 y 42) |
 | Revisa | Haziel |
 | Estado | Listo para historias |
 

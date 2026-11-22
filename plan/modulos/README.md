@@ -1,6 +1,6 @@
 # Catálogo de módulos de CareCar v2
 
-La **ficha técnica v2.0** cubre 23 módulos: los marcados ✅ en la columna Ficha (con su número de sección) son obligatorios. M01–M03 vienen de la ficha v1.1; los demás entraron en la v2.0. M20, M21, M23 y M25 son frentes transversales sin tablas propias. T01–T05 son frentes técnicos que sostienen a todos.
+La **ficha técnica v2.1** cubre 23 módulos: los marcados ✅ en la columna Ficha (con su número de sección) son obligatorios. M01–M03 vienen de la ficha v1.1; los demás entraron en la v2.0. M20, M21, M23 y M25 son frentes transversales sin tablas propias. T01–T05 son frentes técnicos que sostienen a todos.
 
 Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias (`V2-Mxx.nn`). Plantilla: [`_plantilla.md`](_plantilla.md).
 
@@ -41,7 +41,7 @@ Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias 
 | ID | Frente | Hito | Dueño | Revisa |
 | --- | --- | --- | --- | --- |
 | [T01](T01-arquitectura-v2.md) | Arquitectura v2 de la app | H1 | Daniel · Jael (V2-T01.08) | Jael (Daniel revisa V2-T01.08) |
-| [T02](T02-sistema-de-diseno.md) | Sistema de diseño v2 (componentes) | H1 | Cristian · Juan Pablo (V2-T02.13, V2-T02.14) | Haziel |
+| [T02](T02-sistema-de-diseno.md) | Sistema de diseño v2 (componentes) | H1 | Cristian | Haziel |
 | [T03](T03-calidad-y-pruebas.md) | Calidad y pruebas | H1 | Haziel | Daniel |
 | [T04](T04-entrega-continua.md) | Entrega continua y distribución | H1 | Daniel | Ricardo |
 | [T05](T05-contrato-api-v2.md) | Contrato API v2 y backend de la app | H1 | Ricardo | Juan Pablo |

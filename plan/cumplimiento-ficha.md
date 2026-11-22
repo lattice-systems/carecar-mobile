@@ -1,4 +1,4 @@
-# Matriz de cumplimiento de la ficha técnica v2.0
+# Matriz de cumplimiento de la ficha técnica v2.1
 
 Cada funcionalidad de la [ficha](../docs/ficha-tecnica/README.md) tiene una fila. Una fila pasa a ✅ solo con **prueba automática enlazada** (app y backend) y demostrada en celular. Toda historia que avance una funcionalidad actualiza esta tabla en su PR.
 

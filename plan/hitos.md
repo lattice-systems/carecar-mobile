@@ -102,7 +102,7 @@ Criterios de salida:
 **Propósito:** publicar en Google Play y App Store con calidad de producto comercial.
 
 Criterios de salida:
-- [ ] `plan/cumplimiento-ficha.md` completa: las 58 funcionalidades de la ficha v2.0 en ✅ con prueba enlazada.
+- [ ] `plan/cumplimiento-ficha.md` completa: las 58 funcionalidades de la ficha v2.1 en ✅ con prueba enlazada.
 - [ ] Auditoría WCAG 2.2 AA sin hallazgos críticos; app en español e inglés.
 - [ ] Revisión OWASP MASVS L1 aprobada; derechos ARCO funcionando (exportar y borrar cuenta).
 - [ ] Métricas de producto (O1–O10) en un tablero de analítica.
