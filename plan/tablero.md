@@ -6,7 +6,7 @@ Estados: `Borrador` (falta refinar) → `Lista` (cumple la Definición de Listo)
 
 WIP: **una historia `En curso` por persona**. **B** = requiere backend (`agencia-360-backend`, plan espejo en su `plan/`).
 
-Total: **206 historias** + 4 de H0.
+Total: **209 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -28,18 +28,21 @@ Total: **206 historias** + 4 de H0.
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Lista | |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
+| V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Lista | |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | En curso | #31, #33 |
-| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05 | Lista | |
+| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05, V2-T02.13, V2-T02.14 | Lista | |
 | V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
 | V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
 | V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | Hecha | #27 |
 | V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | Hecha | #26 |
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
+| V2-T02.13 | Componente `LineaDeTiempo` | Juan Pablo |  | V2-T02.04 | Lista | |
+| V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Juan Pablo |  | V2-T02.04 | Lista | |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
