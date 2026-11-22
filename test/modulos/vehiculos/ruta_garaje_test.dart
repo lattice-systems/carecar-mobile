@@ -55,7 +55,7 @@ void main() {
     await tester.tap(find.text('Mazda CX-5 2024'));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaDetalleVehiculo), findsOneWidget);
-    expect(find.text('Detalle del vehículo'), findsOneWidget);
+    expect(find.text('Vehicle details'), findsOneWidget);
     expect(find.text('VIN1'), findsOneWidget);
   });
 
@@ -73,7 +73,7 @@ void main() {
     await _montar(tester);
     enrutadorDe(tester).go('/garaje/abc');
     await tester.pumpAndSettle();
-    expect(find.text('No encontramos el vehículo'), findsOneWidget);
+    expect(find.text('We could not find the vehicle'), findsOneWidget);
   });
 
   testWidgets('/garaje/:id sin sesion manda al inicio de sesion', (
