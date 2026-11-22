@@ -21,3 +21,21 @@ Especificación: [`../../docs/diseno/sistema-de-diseno-v2.md`](../../docs/diseno
 | V2-T02.06 | Como equipo queremos una galería del sistema dentro de la app | Ruta oculta en flavor `desarrollo` con todos los componentes y estados | | V2-T02.05 |
 | V2-T02.07 | Como equipo queremos íconos, logo, ícono de app y splash nuevos | Set de íconos único · logo SVG claro/oscuro · ícono adaptativo · splash | | V2-T02.01 |
 | V2-T02.08 | Como equipo queremos retirar `shadcn_ui` y la paleta v1 | Sin imports · dependencia eliminada de `pubspec.yaml` | | V2-T01.07 |
+
+## Avance de V2-T02.01
+
+Los tokens viven en `lib/nucleo/diseno/tokens/` y el tema en `lib/nucleo/diseno/tema_pista.dart`. Pruebas en `test/nucleo/diseno/`.
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| `ThemeExtension` con color, tipografía, espacio, radio, elevación y movimiento | `TokensPista` junto con `Espaciado`, `Radios` y `Movimiento`, que son constantes de acceso directo |
+| Claro y oscuro | `TokensPista.claro`, `TokensPista.oscuro`, `TemaPista.claro()` y `TemaPista.oscuro()` |
+| Prueba de contraste AA | `colores_test.dart` revisa 17 pares por modo con `Contraste.razon` |
+
+Notas para quien siga con T02.02 a T02.04:
+
+- Los componentes leen los tokens con `TokensPista.de(context)`. Espaciado, radios y movimiento se usan directo desde sus clases.
+- `Tipografia` ya pide Geist y GeistMono con Inter y JetBrainsMono de respaldo. Al empaquetar Geist en T02.02 no hay que tocar los componentes.
+- `Movimiento` trae `paraAccesibilidad(reducir:)`, que devuelve el fundido de 120 ms. T02.03 solo debe conectarlo a la preferencia del sistema.
+- `micro` va en mayúsculas, y quien lo use debe aplicar `toUpperCase()` al texto.
+- `TemaPista` no se aplica todavía en `main.dart`, porque la decisión 0004 sigue en Propuesta y las reglas piden no migrar código por una decisión en ese estado.
