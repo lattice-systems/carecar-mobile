@@ -1,6 +1,6 @@
 # Arquitectura objetivo de la app v2
 
-Estado: **Propuesta** hasta que T01.01 acepte las decisiones 0001–0005. Mientras tanto, nadie migra código por este documento.
+Estado: **Aceptada**. T01.01 aceptó las decisiones 0001 a 0005, así que ya se puede migrar código por este documento.
 
 ## Forma
 
