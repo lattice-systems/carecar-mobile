@@ -1,10 +1,11 @@
 name: CI
 
-# Corre en cada push a cualquier rama (main está protegida, así que el trabajo
-# diario vive en ramas de feature) y en cada PR hacia main.
+# Corre en cada PR hacia main y en cada push a main (al integrar). Las ramas de
+# feature no corren con su push: las cubre su PR, así cada cambio compila una
+# vez y no dos. Abre el PR temprano (aunque sea en borrador) para tener CI.
 on:
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch: {}
