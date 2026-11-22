@@ -41,7 +41,7 @@ Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias 
 | ID | Frente | Hito | Dueño | Revisa |
 | --- | --- | --- | --- | --- |
 | [T01](T01-arquitectura-v2.md) | Arquitectura v2 de la app | H1 | Daniel · Jael (V2-T01.08) | Jael (Daniel revisa V2-T01.08) |
-| [T02](T02-sistema-de-diseno.md) | Sistema de diseño v2 (componentes) | H1 | Cristian · Juan Pablo (V2-T02.13, V2-T02.14) | Haziel |
+| [T02](T02-sistema-de-diseno.md) | Sistema de diseño v2 (componentes) | H1 | Cristian | Haziel |
 | [T03](T03-calidad-y-pruebas.md) | Calidad y pruebas | H1 | Haziel | Daniel |
 | [T04](T04-entrega-continua.md) | Entrega continua y distribución | H1 | Daniel | Ricardo |
 | [T05](T05-contrato-api-v2.md) | Contrato API v2 y backend de la app | H1 | Ricardo | Juan Pablo |
