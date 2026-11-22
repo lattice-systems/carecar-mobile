@@ -23,6 +23,37 @@ class AppLocalizationsEs extends AppLocalizations {
       'Cuando la agencia publique modelos, los verás aquí.';
 
   @override
+  String get citasCargando => 'Cargando disponibilidad del taller';
+
+  @override
+  String citasHorariosDelDia(DateTime dia) {
+    final intl.DateFormat diaDateFormat = intl.DateFormat.MMMMEEEEd(localeName);
+    final String diaString = diaDateFormat.format(dia);
+
+    return 'Horarios del $diaString';
+  }
+
+  @override
+  String get citasHorariosVacio => 'Este día ya no tiene lugares.';
+
+  @override
+  String get citasNotaDiasSinCupo =>
+      'Los días tachados no tienen lugares disponibles.';
+
+  @override
+  String get citasSinDiaElegido => 'Elige un día para ver sus horarios.';
+
+  @override
+  String get citasTitulo => 'Disponibilidad del taller';
+
+  @override
+  String get citasVacioMensaje =>
+      'Por ahora el taller no tiene lugares en los próximos días. Vuelve a revisar pronto.';
+
+  @override
+  String get citasVacioTitulo => 'Sin lugares disponibles';
+
+  @override
   String precioDesde(String precio) {
     return 'Desde $precio';
   }

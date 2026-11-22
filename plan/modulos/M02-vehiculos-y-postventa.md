@@ -80,3 +80,15 @@ El garaje vive en `lib/modulos/vehiculos/` y se abre en la ruta `/garaje` (exige
 - **Sin conexión:** la API del núcleo (`CarecarApiConCache`) devuelve la última copia guardada de `GET /vehiculos`, así que el garaje se ve con lo guardado; solo si nunca hubo datos aparece el estado "Sin conexión" con reintento.
 - **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo. `V2-T01.08` no está integrada: se usó el patrón del módulo `ejemplo` y se pasará a las piezas comunes cuando llegue.
 - **Pendiente:** la tarjeta aún no abre el detalle (V2-M02.02); ya lleva `heroTag`. La foto sigue siendo la silueta del sistema porque el contrato de vehículos no trae imagen. En `plan/cumplimiento-ficha.md` la fila "Mis vehículos (garaje)" sigue en 🟡 hasta demostrarla en celular con el backend real.
+
+## Avance de V2-M02.07
+
+Pantalla `PantallaDisponibilidad` en `lib/modulos/citas/` (ruta `/citas/disponibilidad`, exige sesión). Estado: **En revisión**.
+
+- **Dominio** (`dominio/`): `DisponibilidadTaller` agrupa las franjas por día, descarta las sin cupo y responde `tieneCupo(dia)` y `franjasDe(dia)` (ordenadas por hora). `RepositorioCitas` es la interfaz.
+- **Datos** (`datos/`): `RepositorioCitasApi` lee `GET /agenda/disponibilidad` por `carecarApiProvider`; `RepositorioCitasFake` genera franjas en memoria (lunes a viernes, sin cupo los días que terminan en 0 o 5) y falla a pedido con `error:`.
+- **Presentación** (`presentacion/`): `Calendario` y `SelectorFranja` del sistema v2. Los días sin cupo (o fuera de hoy a 60 días) se tachan y el lector de pantalla dice «sin cupo»; al elegir un día salen sus franjas con los lugares que quedan. Cinco estados: esqueleto, datos, vacío (sin lugares en todo el rango), error con reintento y sin conexión; se recarga jalando hacia abajo.
+- **Contrato**: no hizo falta cambiarlo. El endpoint solo devuelve franjas con `cupoDisponible > 0`, así que un día sin franjas es un día sin cupo; la capacidad de `franja_horario` se refleja como `cupoDisponible`. Cuando V2-T05.07 cree la tabla, la app solo cambia de URL.
+- **Textos**: claves `citas*` en `lib/l10n/app_es.arb` y `app_en.arb`.
+- **Pruebas**: `test/modulos/citas/` (dominio, repositorios, pantalla en claro, oscuro y letra al 200 %, y la ruta con y sin sesión).
+- **Pendientes**: el `mock_api` tiene franjas con fechas ya pasadas (`2026-10-20`), así que contra él la pantalla muestra el estado vacío; hay que sembrar fechas relativas a hoy (T03). El golden de la pantalla espera a V2-T03.02. Cupo por franja en V2-M02.08 (elegir franja y agendar) usa estos mismos proveedores.

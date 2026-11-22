@@ -6,6 +6,15 @@
   "catalogoVacioTitulo": "No models yet",
   "catalogoVacioMensaje": "When the dealership publishes models, you'll see them here.",
 
+  "citasCargando": "Loading workshop availability",
+  "citasHorariosDelDia": "Times for {dia}",
+  "citasHorariosVacio": "This day has no spots left.",
+  "citasNotaDiasSinCupo": "Crossed-out days have no spots available.",
+  "citasSinDiaElegido": "Pick a day to see its times.",
+  "citasTitulo": "Workshop availability",
+  "citasVacioMensaje": "The workshop has no spots in the coming days. Check back soon.",
+  "citasVacioTitulo": "No spots available",
+
   "precioDesde": "From {precio}",
 
   "fotoDeModelo": "Photo of the {modelo}",

@@ -12,6 +12,31 @@
   "catalogoVacioTitulo": "Aún no hay modelos",
   "catalogoVacioMensaje": "Cuando la agencia publique modelos, los verás aquí.",
 
+  "citasCargando": "Cargando disponibilidad del taller",
+  "@citasCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga la disponibilidad."
+  },
+  "citasHorariosDelDia": "Horarios del {dia}",
+  "@citasHorariosDelDia": {
+    "description": "Encabezado de las franjas del día elegido en el calendario.",
+    "placeholders": {
+      "dia": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      }
+    }
+  },
+  "citasHorariosVacio": "Este día ya no tiene lugares.",
+  "citasNotaDiasSinCupo": "Los días tachados no tienen lugares disponibles.",
+  "citasSinDiaElegido": "Elige un día para ver sus horarios.",
+  "citasTitulo": "Disponibilidad del taller",
+  "@citasTitulo": {
+    "description": "Título de la pantalla con el calendario de disponibilidad."
+  },
+  "citasVacioMensaje": "Por ahora el taller no tiene lugares en los próximos días. Vuelve a revisar pronto.",
+  "citasVacioTitulo": "Sin lugares disponibles",
+
   "precioDesde": "Desde {precio}",
   "@precioDesde": {
     "description": "Precio de entrada de un modelo.",

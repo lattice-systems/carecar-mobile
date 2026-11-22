@@ -23,6 +23,37 @@ class AppLocalizationsEn extends AppLocalizations {
       'When the dealership publishes models, you\'ll see them here.';
 
   @override
+  String get citasCargando => 'Loading workshop availability';
+
+  @override
+  String citasHorariosDelDia(DateTime dia) {
+    final intl.DateFormat diaDateFormat = intl.DateFormat.MMMMEEEEd(localeName);
+    final String diaString = diaDateFormat.format(dia);
+
+    return 'Times for $diaString';
+  }
+
+  @override
+  String get citasHorariosVacio => 'This day has no spots left.';
+
+  @override
+  String get citasNotaDiasSinCupo =>
+      'Crossed-out days have no spots available.';
+
+  @override
+  String get citasSinDiaElegido => 'Pick a day to see its times.';
+
+  @override
+  String get citasTitulo => 'Workshop availability';
+
+  @override
+  String get citasVacioMensaje =>
+      'The workshop has no spots in the coming days. Check back soon.';
+
+  @override
+  String get citasVacioTitulo => 'No spots available';
+
+  @override
   String precioDesde(String precio) {
     return 'From $precio';
   }
