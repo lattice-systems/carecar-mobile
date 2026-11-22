@@ -2,6 +2,8 @@
 
 Estado: **Propuesta** (decisión [0004](../decisiones/0004-sistema-de-diseno-propio.md)). Reemplaza por completo el diseño v1 (`lib/tema/tema_carecar.dart`, `shadcn_ui`). Implementación: [T02](../../plan/modulos/T02-sistema-de-diseno.md).
 
+Avance: los tokens de las secciones 2 a 5 ya existen en código en `lib/nucleo/diseno/tokens/` y `TemaPista` arma el tema claro y oscuro. Los colores de estado del modo claro se oscurecieron un poco respecto a la propuesta inicial para pasar contraste AA sobre su fondo suave.
+
 ## 1. Dirección
 
 Lo que mejor se ve hoy en apps automotrices premium: **superficies limpias, fotografía del auto como protagonista, tipografía precisa, un solo acento vivo y movimiento que se siente físico**. Nada de cajas con borde en todo, nada de pantallas llenas de texto gris.
@@ -34,9 +36,9 @@ Tokens semánticos; ningún componente usa hexadecimales directos. Valores inici
 | `acento` | `#2457F5` | `#5B8CFF` | Acción principal, enlaces, foco |
 | `sobreAcento` | `#FFFFFF` | `#0A0B0E` | Texto sobre acento |
 | `marca` | `#1D3557` | `#8FB0DA` | Logo y momentos de marca de la agencia (con mesura) |
-| `exito` | `#12805C` | `#34C38F` | Confirmada, vigente, listo |
-| `advertencia` | `#B25E09` | `#F5A524` | Por vencer, esperando aprobación |
-| `peligro` | `#D92D20` | `#F97066` | Vencido, error, cancelar |
+| `exito` | `#117857` | `#34C38F` | Confirmada, vigente, listo |
+| `advertencia` | `#A25608` | `#F5A524` | Por vencer, esperando aprobación |
+| `peligro` | `#C6291D` | `#F97066` | Vencido, error, cancelar |
 | `velo` | `#0B0D12` 48 % | `#000000` 64 % | Fondo de diálogos y hojas |
 
 Cada color de estado tiene variante `…Suave` (fondo tenue, 10–14 % de opacidad sobre `superficie`) para insignias y avisos.
