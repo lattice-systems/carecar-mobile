@@ -8,6 +8,7 @@ import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'l10n/idiomas.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
@@ -163,6 +164,9 @@ class _AppCareCarState extends State<AppCareCar> {
           return MaterialApp(
             title: 'CareCar',
             theme: TemaCareCar.conFuentes(),
+            localizationsDelegates: delegadasDeIdioma,
+            supportedLocales: idiomasSoportados,
+            localeResolutionCallback: resolverIdioma,
             debugShowCheckedModeBanner: false,
             builder: (context, child) => ShadAppBuilder(child: child!),
             home: _PantallaDeErrorDeArranque(error: error),
@@ -174,6 +178,9 @@ class _AppCareCarState extends State<AppCareCar> {
           builder: (context, ref, _) => MaterialApp.router(
             title: 'CareCar',
             theme: TemaCareCar.conFuentes(),
+            localizationsDelegates: delegadasDeIdioma,
+            supportedLocales: idiomasSoportados,
+            localeResolutionCallback: resolverIdioma,
             debugShowCheckedModeBanner: false,
             routerConfig: ref.watch(enrutadorProvider),
             // La cortina tapa la app mientras se restaura la sesion: asi no se

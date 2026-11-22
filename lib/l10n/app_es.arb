@@ -1,0 +1,36 @@
+{
+  "@@locale": "es",
+
+  "catalogoTitulo": "Catálogo",
+  "@catalogoTitulo": {
+    "description": "Título de la pantalla del catálogo de modelos."
+  },
+  "catalogoCargando": "Cargando catálogo",
+  "@catalogoCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga el catálogo."
+  },
+  "catalogoVacioTitulo": "Aún no hay modelos",
+  "catalogoVacioMensaje": "Cuando la agencia publique modelos, los verás aquí.",
+
+  "precioDesde": "Desde {precio}",
+  "@precioDesde": {
+    "description": "Precio de entrada de un modelo.",
+    "placeholders": {
+      "precio": {
+        "type": "String",
+        "example": "$450,000"
+      }
+    }
+  },
+
+  "fotoDeModelo": "Foto del {modelo}",
+  "@fotoDeModelo": {
+    "description": "Descripción de la foto de un modelo para el lector de pantalla.",
+    "placeholders": {
+      "modelo": {
+        "type": "String",
+        "example": "Mazda CX-5 2024"
+      }
+    }
+  }
+}

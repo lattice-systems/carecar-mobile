@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -20,9 +22,10 @@ class PantallaCatalogo extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final modelos = ref.watch(catalogoProvider);
+    final textos = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Catalogo')),
+      appBar: AppBar(title: Text(textos.catalogoTitulo)),
       body: modelos.when(
         skipLoadingOnReload: true,
         loading: () => const _Cargando(),
@@ -33,9 +36,9 @@ class PantallaCatalogo extends ConsumerWidget {
           alReintentar: () => ref.invalidate(catalogoProvider),
         ),
         data: (lista) => lista.isEmpty
-            ? const EstadoVacio(
-                titulo: 'Aun no hay modelos',
-                mensaje: 'Cuando la agencia publique modelos, los veras aqui.',
+            ? EstadoVacio(
+                titulo: textos.catalogoVacioTitulo,
+                mensaje: textos.catalogoVacioMensaje,
                 icono: Icons.directions_car_outlined,
               )
             : RefreshIndicator(
@@ -62,14 +65,33 @@ class _Lista extends StatelessWidget {
         final m = modelos[i];
         return TarjetaVehiculo(
           nombre: m.titulo,
-          detalle: m.detalle,
+          detalle: _detalle(context, m),
           foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
-          descripcionFoto: 'Foto del ${m.titulo}',
+          descripcionFoto: AppLocalizations.of(context).fotoDeModelo(m.titulo),
           heroTag: m.id == null ? null : 'modelo-${m.id}',
         );
       },
     );
   }
+}
+
+/// Los precios son en pesos mexicanos y se escriben igual en cualquier idioma:
+/// `$450,000`. Por eso el formato no sigue al idioma de la app.
+final _pesos = NumberFormat.currency(
+  locale: 'es_MX',
+  symbol: r'$',
+  decimalDigits: 0,
+);
+
+/// "Signature · Desde $450,000": la version y el precio, lo que haya.
+String? _detalle(BuildContext context, ModeloVigente m) {
+  final textos = AppLocalizations.of(context);
+  final precio = m.precioDesde;
+  final partes = [
+    ?m.version,
+    if (precio != null) textos.precioDesde(_pesos.format(precio)),
+  ];
+  return partes.isEmpty ? null : partes.join(' · ');
 }
 
 class _Cargando extends StatelessWidget {
@@ -78,7 +100,7 @@ class _Cargando extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Cargando catalogo',
+      label: AppLocalizations.of(context).catalogoCargando,
       liveRegion: true,
       child: const Padding(
         padding: EdgeInsets.all(Espaciado.e4),

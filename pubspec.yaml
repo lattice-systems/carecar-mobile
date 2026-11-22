@@ -63,6 +63,9 @@ dependencies:
   # Estado e inyeccion de dependencias de la v2 (ADR 0002, V2-T01.02).
   flutter_riverpod: ^3.5.0
   go_router: ^18.1.4
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.3
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +90,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Genera `AppLocalizations` a partir de los ARB de lib/l10n (V2-M20.01).
+  generate: true
 
   # Marca de Agencia360 (APP-UX-1).
   #

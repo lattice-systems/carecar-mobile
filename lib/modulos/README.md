@@ -40,6 +40,10 @@ Navegación con `go_router` (ADR 0003, V2-T01.03). **Cada módulo expone sus rut
 6. Mientras no exista el tema v2 global, envuelve la pantalla con `Theme(data: TemaPista...)` como en `ejemplo/presentacion/rutas_ejemplo.dart`.
 7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`.
 
+## Textos de la pantalla
+
+Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb` (con su `@clave` y una `description`) y a `app_en.arb`, corre `flutter gen-l10n` y úsala con `AppLocalizations.of(context).tuClave`. Si el texto lleva un dato, decláralo como placeholder (`"precioDesde": "Desde {precio}"`) y no concatenes en el código: el orden de las palabras cambia entre idiomas. El dominio nunca arma textos para la pantalla: entrega números y enums, y la presentación los traduce. La prueba `test/l10n/sin_cadenas_en_codigo_test.dart` falla si un archivo nuevo trae texto a mano. Ejemplo: `catalogo/presentacion/pantalla_catalogo.dart`.
+
 ## Qué te da el núcleo
 
 | Necesitas | Lee |

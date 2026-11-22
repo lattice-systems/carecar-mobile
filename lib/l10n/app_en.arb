@@ -1,0 +1,12 @@
+{
+  "@@locale": "en",
+
+  "catalogoTitulo": "Catalog",
+  "catalogoCargando": "Loading catalog",
+  "catalogoVacioTitulo": "No models yet",
+  "catalogoVacioMensaje": "When the dealership publishes models, you'll see them here.",
+
+  "precioDesde": "From {precio}",
+
+  "fotoDeModelo": "Photo of the {modelo}"
+}

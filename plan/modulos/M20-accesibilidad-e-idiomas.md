@@ -47,3 +47,12 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 - **Cómo se comprobó que las guías muerden:** un botón de 20 × 20 falla la guía de zona táctil, uno de 48 pasa, uno de 30 falla en iOS y un control sin etiqueta falla la de etiquetas. Ojo: las guías de Flutter ignoran los nodos pegados al borde de la pantalla, porque podrían estar medio fuera. Un botón en la esquina no se mide.
 - **Sigue manual:** la prueba con TalkBack y VoiceOver por pantalla que pide V2-M20.02. No se puede automatizar.
 - **Pendiente:** las pantallas v1 no se auditan, se retiran con V2-T02.08.
+
+## Avance de V2-M20.01 (fase 1)
+
+Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.
+
+- **Idioma:** `MaterialApp` usa el del sistema si es `es` o `en`, y español en cualquier otro caso (`resolverIdioma` en `lib/l10n/idiomas.dart`). El generador pone `en` primero y por defecto Flutter caería ahí, por eso se resuelve a mano. El selector desde Ajustes es V2-M20.05.
+- **Primer consumidor:** el módulo `catalogo` ya no tiene textos en el código. Su dominio dejó de armar frases ("Desde $450,000"): ahora entrega el precio como número y la pantalla lo formatea. Los precios son en pesos mexicanos y se escriben igual en cualquier idioma, así que el formato de moneda no sigue al idioma de la app (`es_MX`).
+- **Guarda:** `test/l10n/sin_cadenas_en_codigo_test.dart` falla si un archivo de `lib/modulos` o `lib/nucleo` trae `Text('...')` o un argumento de texto (`titulo:`, `tooltip:`, `label:`…) escrito a mano, y falla si `app_es.arb` y `app_en.arb` no tienen las mismas claves. La galería y el módulo de ejemplo están exentos porque no los ve ninguna persona usuaria. No ve cadenas dentro de ternarios ni de `??`.
+- **Falta para cerrar la historia (fase 2):** 13 componentes del sistema todavía llevan en el código sus etiquetas para el lector de pantalla y sus textos por defecto (están en la lista `pendientes` de la guarda, que solo puede achicarse). La v1 se retira con V2-T02.08 y no se migra. La historia sigue `En curso` hasta vaciar esa lista.
