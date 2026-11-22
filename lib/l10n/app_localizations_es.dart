@@ -31,4 +31,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String fotoDeModelo(String modelo) {
     return 'Foto del $modelo';
   }
+
+  @override
+  String get vehiculosCargando => 'Cargando tu garaje';
+
+  @override
+  String vehiculosKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String vehiculosPlacas(String placas) {
+    return 'Placas $placas';
+  }
+
+  @override
+  String get vehiculosSinPlacas => 'Sin placas';
+
+  @override
+  String get vehiculosTitulo => 'Mi garaje';
+
+  @override
+  String get vehiculosVacioMensaje =>
+      'La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.';
+
+  @override
+  String get vehiculosVacioTitulo => 'Aún no tienes vehículos';
 }

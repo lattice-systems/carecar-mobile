@@ -133,6 +133,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Foto del {modelo}'**
   String fotoDeModelo(String modelo);
+
+  /// Lo que anuncia el lector de pantalla mientras carga el garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu garaje'**
+  String get vehiculosCargando;
+
+  /// Kilometraje de un vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String vehiculosKilometros(String km);
+
+  /// Placas de un vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Placas {placas}'**
+  String vehiculosPlacas(String placas);
+
+  /// Se muestra cuando el vehículo aún no tiene placas registradas.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin placas'**
+  String get vehiculosSinPlacas;
+
+  /// Título de la pantalla con los vehículos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi garaje'**
+  String get vehiculosTitulo;
+
+  /// No description provided for @vehiculosVacioMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.'**
+  String get vehiculosVacioMensaje;
+
+  /// No description provided for @vehiculosVacioTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes vehículos'**
+  String get vehiculosVacioTitulo;
 }
 
 class _AppLocalizationsDelegate
