@@ -59,7 +59,10 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(EstadoVacio), findsOneWidget);
     expect(find.text('Aún no tienes vehículos'), findsOneWidget);
-    expect(find.textContaining('La agencia registra tus autos'), findsOneWidget);
+    expect(
+      find.textContaining('La agencia registra tus autos'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('mientras carga muestra el esqueleto y lo anuncia', (
@@ -94,16 +97,16 @@ void main() {
   testWidgets('sin conexion y sin copia guardada lo dice distinto', (
     tester,
   ) async {
-    await tester.pumpWidget(
-      _app(_Repo(() async => throw const SinConexion())),
-    );
+    await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
     expect(find.text('Sin conexion'), findsOneWidget);
   });
 
   testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
     for (final escenario in Escenario.values) {
-      await tester.pumpWidget(_app(RepositorioGarajeFake(), escenario: escenario));
+      await tester.pumpWidget(
+        _app(RepositorioGarajeFake(), escenario: escenario),
+      );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     }
