@@ -61,7 +61,7 @@ Cada quien escribe casi siempre en sus carpetas. Si necesitas cambiar algo en la
 | Carpeta | Dueño |
 | --- | --- |
 | `lib/modulos/<modulo>/` y `test/modulos/<modulo>/` | Dueño del módulo ([`modulos/README.md`](modulos/README.md)) |
-| `lib/nucleo/diseno/` y `test/nucleo/diseno/` | Cristian (T02). Juan Pablo en los archivos de `LineaDeTiempo`, `Calendario` y `SelectorFranja` |
+| `lib/nucleo/diseno/` y `test/nucleo/diseno/` | Cristian (T02) |
 | `lib/nucleo/api/`, `lib/nucleo/sesion/` | Daniel (T01). Jael en lo que agregue `V2-T01.08` |
 | `lib/nucleo/navegacion/`, `lib/app.dart`, `lib/main*.dart` | Daniel (T01.03, T01.04) |
 | `lib/nucleo/datos_locales/` | Jael (M21) |
@@ -126,7 +126,7 @@ Cada persona puede correr su propio equipo de agentes (roles en [`../AGENTS.md`]
 | Haziel | **`V2-T03.02`** (golden: los componentes lo esperan) · **`V2-T03.08`** (`mock_api` por módulo) · `V2-T03.01` · `V2-T03.04` · `V2-T03.05` · `V2-T03.07` · `V2-M23.02` | `V2-M27.05` · `V2-M27.01` (B simulable) | `V2-T03.06` cuando exista `V2-T05.02`; `V2-T03.03` cuando exista `V2-T01.03` |
 | Cristian | `V2-T02.05` (tandas que faltan) · `V2-T02.02` · `V2-T02.07` · `V2-T02.09` | **`V2-M20.01`** (textos al ARB) · `V2-M03.01` (provisional) | `V2-T02.06` cuando estén `V2-T02.05`, `V2-T02.13` y `V2-T02.14`; `V2-M03.02` |
 | Ricardo | **`V2-T05.02`** (contrato v2: base de "contrato primero") · `V2-T05.07` · `V2-T05.06` · `V2-T05.03` · `V2-T05.04` · `V2-T05.01` · `V2-T05.09` · `V2-T05.10` | `V2-M02.05` (simulable) | `V2-M02.06`, `V2-M04.01` |
-| Juan Pablo | **`V2-T02.13`** (`LineaDeTiempo`) · **`V2-T02.14`** (`Calendario` y `SelectorFranja`) | `V2-M02.01` (provisional) · `V2-M02.07` (simulable) | `V2-M02.02`, `V2-M02.08`, `V2-M11.03` |
+| Juan Pablo | `V2-M11.03` (sin dependencias) | `V2-M02.01` (provisional) · `V2-M02.07` (simulable) | `V2-M02.02`, `V2-M02.08`, `V2-M11.03` |
 | Jael | Revisar el PR de `V2-T01.02` (es revisora de T01) · PR `build(deps)` de `drift` y su cifrado para `V2-M21.01` | **`V2-T01.08`** (núcleo de datos) · `V2-M21.01` | `V2-M01.02`, `V2-M01.01`, `V2-M21.04` (provisional) |
 
 Si todo lo tuyo está bloqueado, aplica "Nunca sin trabajo" de [`equipo-y-reparto.md`](equipo-y-reparto.md).
