@@ -25,12 +25,17 @@ Future<TokenMovimiento> resolver(
 
 void main() {
   testWidgets('sin preferencia devuelve el token tal cual', (tester) async {
-    final r = await resolver(tester, reducir: false, token: Movimiento.enfatico);
+    final r = await resolver(
+      tester,
+      reducir: false,
+      token: Movimiento.enfatico,
+    );
     expect(r, Movimiento.enfatico);
   });
 
-  testWidgets('con reducir movimiento devuelve el fundido de 120 ms',
-      (tester) async {
+  testWidgets('con reducir movimiento devuelve el fundido de 120 ms', (
+    tester,
+  ) async {
     final r = await resolver(tester, reducir: true, token: Movimiento.enfatico);
     expect(r.duracion, const Duration(milliseconds: 120));
     expect(r.curva, Curves.linear);
@@ -69,7 +74,9 @@ void main() {
     }
 
     await tester.pumpWidget(construir(reducir: true));
-    final animado = tester.widget<AnimatedOpacity>(find.byType(AnimatedOpacity));
+    final animado = tester.widget<AnimatedOpacity>(
+      find.byType(AnimatedOpacity),
+    );
     expect(animado.duration, const Duration(milliseconds: 120));
   });
 }
