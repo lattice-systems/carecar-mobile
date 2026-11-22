@@ -31,8 +31,44 @@ env:
 # a la etiqueta v2, que se puede mover). Para actualizarla, cambia el hash y el
 # comentario con la versión en los cinco jobs.
 jobs:
+  # Decide si el PR toca código de la app. Si solo cambia documentación (docs/,
+  # plan/, .claude/, .githooks/ o archivos .md), los demás jobs se saltan: un job
+  # saltado cuenta como aprobado para los checks requeridos, así que no traba el
+  # merge. En push a main y en ejecución manual siempre corre todo.
+  cambios:
+    name: Detectar cambios de código
+    runs-on: ubuntu-latest
+    outputs:
+      codigo: ${{ steps.revisar.outputs.codigo }}
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Revisar qué archivos cambiaron
+        id: revisar
+        env:
+          EVENTO: ${{ github.event_name }}
+        run: |
+          if [ "$EVENTO" != "pull_request" ]; then
+            echo "codigo=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # En un PR, HEAD es el merge de prueba: su primer padre es main.
+          archivos=$(git diff --name-only HEAD^1 HEAD)
+          echo "$archivos"
+          if [ -z "$archivos" ] || echo "$archivos" | grep -Evq '^(docs/|plan/|\.claude/|\.githooks/)|\.md$'; then
+            echo "codigo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Solo documentación: se saltan formato, análisis, pruebas y builds."
+            echo "codigo=false" >> "$GITHUB_OUTPUT"
+          fi
+
   formato:
     name: Formato (dart format)
+    needs: cambios
+    if: needs.cambios.outputs.codigo == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -53,6 +89,8 @@ jobs:
 
   analisis:
     name: Análisis estático (flutter analyze)
+    needs: cambios
+    if: needs.cambios.outputs.codigo == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -73,6 +111,8 @@ jobs:
 
   pruebas:
     name: Pruebas (flutter test)
+    needs: cambios
+    if: needs.cambios.outputs.codigo == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -93,6 +133,8 @@ jobs:
 
   build-android:
     name: Build Android (APK)
+    needs: cambios
+    if: needs.cambios.outputs.codigo == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -122,6 +164,8 @@ jobs:
 
   build-ios:
     name: Build iOS (sin firma)
+    needs: cambios
+    if: needs.cambios.outputs.codigo == 'true'
     # Xcode solo existe en macOS. Se compila sin firmar: comprueba que el
     # proyecto iOS compila sin certificados ni perfiles de Apple.
     runs-on: macos-latest
