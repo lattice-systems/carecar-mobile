@@ -33,10 +33,14 @@ lib/
 5. Cada pantalla resuelve cinco estados: cargando (esqueleto), con datos, vacío, error con reintento, sin conexión.
 6. Cadenas visibles solo en ARB.
 
+## Inyección de dependencias (V2-T01.02)
+
+Riverpod sin generación de código. `lib/nucleo/api` y `lib/nucleo/sesion` exponen proveedores (`carecarApiProvider`, `apiClienteProvider`, `controladorSesionProvider`, `estadoSesionProvider`) que `main.dart` inyecta con `overrides`; en pruebas se sustituyen por fakes. Guía de módulo: [`lib/modulos/README.md`](../lib/modulos/README.md).
+
 ## Migración desde v1
 
 - La v1 vive en `lib/api`, `lib/sesion`, `lib/pantallas`, `lib/widgets`, `lib/tema`. Se migra **módulo por módulo** (M01 → M02 → M03) detrás de un interruptor de rutas (T01.05).
-- `lib/api/carecar_api.dart` y `cliente_api.dart` se reutilizan como base de `nucleo/api` (ya manejan tokens y refresco).
+- `lib/api/carecar_api.dart` y `cliente_api.dart` se reutilizan como base de `nucleo/api` (ya manejan tokens y refresco). Hoy `nucleo/api` los **envuelve** (`ApiCliente` = `ClienteApi`); el código físico se mueve en V2-T01.05.
 - Al cerrar H2 se elimina el código v1 (T01.07) y `shadcn_ui` (T02.08).
 
 ## Backend
