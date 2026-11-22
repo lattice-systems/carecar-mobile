@@ -97,3 +97,12 @@ Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucle
 `LineaDeTiempo` hace respirar el paso actual y lo deja quieto con reducir movimiento. `Calendario` empieza la semana en lunes, usa nombres de mes en español sin depender de `intl` y recibe `hoy` para que las pruebas no dependan del reloj. Los días fuera de rango o sin cupo se tachan y se anuncian como "20 de noviembre, sin cupo". `SelectorFranja` reutiliza `ChipPista` y dice el cupo con texto ("09:00 · 3 lugares"). Las horas y los textos de fecha llegan ya formateados desde quien los usa.
 
 `Semaforo` lleva icono y texto propios en cada estado, y sus tres tonos pasan AA en claro y oscuro. `VisorPdf` usa `pdfx`, que ya era dependencia, así que no suma paquetes. Recibe una función `cargar` que entrega los bytes, sin saber si vienen de la red o de un archivo. Muestra esqueleto mientras carga, `EstadoError` con reintento y un contador "Pagina 2 de 5". No busca texto dentro del PDF: ese riesgo sigue abierto para V2-M02.03. Los golden de toda T02.05 quedan para V2-T03.02.
+
+## Avance de V2-T02.13 y V2-T02.14
+
+El PR 37 entregó `LineaDeTiempo`, `Calendario` y `SelectorFranja` antes de que se repartieran a Juan Pablo. V2-T02.14 quedó completa con ese PR. A V2-T02.13 le faltaban dos criterios, que se cierran aquí:
+
+- `LineaDeTiempoPaginada` es la variante larga para el historial. Dibuja solo los pasos visibles, agrega "Ver más" al final y, con `cargarAlLlegar`, pide la siguiente página una sola vez al llegar. Con `cargandoMas` muestra un esqueleto.
+- El lector de pantalla ahora anuncia "Etapa 3 de 5, en curso, En reparación", como pide el criterio, en lugar de "paso 3 de 5".
+
+Los golden de las dos historias quedan para V2-T03.02, igual que el resto de T02.
