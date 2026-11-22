@@ -1,8 +1,8 @@
-# Ficha técnica CareCar v2.0 — contrato obligatorio
+# Ficha técnica CareCar v2.1 — contrato obligatorio
 
 > **Regla de oro:** todo lo que está en esta ficha se cumple **sí o sí**. Cada funcionalidad existe en la app y cada tabla listada existe en la base de datos de Agencia360. Se pueden agregar campos; nunca quitar, renombrar ni contradecir lo que la ficha define.
 
-- Original: [`ficha-tecnica-carecar-v2.0.docx`](ficha-tecnica-carecar-v2.0.docx) (fuente de verdad; este archivo es su transcripción fiel). Reemplaza a la v1.1, que queda descartada (consultable en el historial de git).
+- Original: [`ficha-tecnica-carecar-v2.1.docx`](ficha-tecnica-carecar-v2.1.docx) (fuente de verdad; este archivo es su transcripción fiel). Reemplaza a la v1.1, que queda descartada (consultable en el historial de git).
 - Cualquier cambio a la ficha lo aprueba el Product Owner y sube la versión del `.docx` y de esta transcripción en el mismo PR.
 - Matriz de cumplimiento: [`../../plan/cumplimiento-ficha.md`](../../plan/cumplimiento-ficha.md).
 
@@ -12,11 +12,11 @@
 | --- | --- |
 | Proyecto | CareCar (ecosistema Agencia360) |
 | Producto | Aplicación móvil de servicio postventa para clientes de la agencia automotriz |
-| Versión del documento | 2.0 (reemplaza a la v1.1) |
-| Fecha | 21 de noviembre de 2026 |
+| Versión del documento | 2.1 (reemplaza a la v2.0: se descarta Redis) |
+| Fecha | 22 de noviembre de 2026 |
 | Plataformas | Android e iOS |
 | Tecnología de la app | Flutter (Dart) |
-| Backend | API REST de Agencia360: Java 25, Spring Boot 3.5, Spring Modulith, PostgreSQL, Redis |
+| Backend | API REST de Agencia360: Java 25, Spring Boot 3.5, Spring Modulith, PostgreSQL (Neon) |
 | Acceso | Exclusivo: la agencia crea la cuenta del cliente al entregar la unidad; no hay registro público |
 | Metodología | Scrumban + XP |
 | Repositorios | lattice-systems/carecar-mobile · lattice-systems/agencia-360-backend |
