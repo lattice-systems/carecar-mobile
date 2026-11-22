@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/painting.dart';
 
 /// Escala tipografica del sistema de diseno v2.
@@ -81,15 +79,15 @@ class Tipografia {
   final TextStyle cifra;
 
   List<TextStyle> get todos => [
-        display,
-        titulo1,
-        titulo2,
-        titulo3,
-        cuerpo,
-        cuerpoFuerte,
-        cuerpoChico,
-        etiqueta,
-        micro,
-        cifra,
-      ];
+    display,
+    titulo1,
+    titulo2,
+    titulo3,
+    cuerpo,
+    cuerpoFuerte,
+    cuerpoChico,
+    etiqueta,
+    micro,
+    cifra,
+  ];
 }
