@@ -70,3 +70,13 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 - V2-T05.05 (`manual.archivo_pdf`) alinea la tabla `manual` con la ficha, pero es interna del backend: no bloquea a V2-M02.03.
 - La dirección del taller para el evento de calendario (V2-M02.12) sale de las sucursales de M27 (V2-M27.02).
 - Riesgo de V2-M02.03: el visor actual (`pdfx`) no busca texto dentro del PDF. Hay que elegir paquete o resolver la búsqueda antes de tomar la historia.
+
+## Avance de V2-M02.01
+
+El garaje vive en `lib/modulos/vehiculos/` y se abre en la ruta `/garaje` (exige sesión, como toda ruta de módulo; registrada con una línea en `registro_de_rutas.dart`). Sigue la estructura de la guía: `dominio/` con `VehiculoGaraje` y la interfaz `RepositorioGaraje` en Dart puro, `datos/` con `RepositorioGarajeApi` (lee `GET /vehiculos` de `CarecarApi`, nunca un cliente HTTP propio) y `RepositorioGarajeFake` (en memoria, con `fallar: true` para probar el error), y `presentacion/` con los proveedores Riverpod y `PantallaGaraje`.
+
+- **Tarjeta por vehículo:** `TarjetaVehiculo` con el título ("Mazda CX-5 2024") y el detalle ("Placas ABC-123 · 12,500 km"). Sin placas dice "Sin placas"; sin kilometraje omite ese dato. El kilometraje se escribe con coma de millares también en español, igual que los precios del catálogo.
+- **Vacío:** explica que la agencia registra los autos al entregarlos.
+- **Sin conexión:** la API del núcleo (`CarecarApiConCache`) devuelve la última copia guardada de `GET /vehiculos`, así que el garaje se ve con lo guardado; solo si nunca hubo datos aparece el estado "Sin conexión" con reintento.
+- **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo. `V2-T01.08` no está integrada: se usó el patrón del módulo `ejemplo` y se pasará a las piezas comunes cuando llegue.
+- **Pendiente:** la tarjeta aún no abre el detalle (V2-M02.02); ya lleva `heroTag`. La foto sigue siendo la silueta del sistema porque el contrato de vehículos no trae imagen. En `plan/cumplimiento-ficha.md` la fila "Mis vehículos (garaje)" sigue en 🟡 hasta demostrarla en celular con el backend real.
