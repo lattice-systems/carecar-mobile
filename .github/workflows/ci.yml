@@ -140,12 +140,17 @@ jobs:
       - name: Descargar el código
         uses: actions/checkout@v7
 
-      # Gradle necesita un JDK para compilar el proyecto Android.
+      # Gradle necesita un JDK para compilar el proyecto Android. La caché de
+      # Gradle (dependencias y wrapper) evita descargarlas en cada build.
       - name: Configurar JDK 17 (Temurin)
         uses: actions/setup-java@v6
         with:
           distribution: temurin
           java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            android/*.gradle*
+            android/gradle/wrapper/gradle-wrapper.properties
 
       - name: Configurar Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
