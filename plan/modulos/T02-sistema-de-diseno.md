@@ -106,3 +106,12 @@ El PR 37 entregó `LineaDeTiempo`, `Calendario` y `SelectorFranja` antes de que 
 - El lector de pantalla ahora anuncia "Etapa 3 de 5, en curso, En reparación", como pide el criterio, en lugar de "paso 3 de 5".
 
 Los golden de las dos historias quedan para V2-T03.02, igual que el resto de T02.
+
+## Avance de V2-T02.06
+
+La galería del sistema vive en `lib/modulos/galeria/` y se abre en la ruta `/galeria`. Muestra todos los componentes de T02.04, T02.05 y T02.10 a T02.14, cada uno con sus estados (deshabilitado, cargando, error, vacío, con tono), en 17 secciones. Arriba tiene tres interruptores para verlos en oscuro y con letra al 150 % y al 200 %.
+
+- **Solo desarrollo:** la ruta se registra con `kDebugMode` en `registro_de_rutas.dart`. Cuando exista el flavor `desarrollo` (V2-T01.04) hay que condicionarla a ese flavor, que es lo que pide el criterio. Como toda ruta de módulo, exige sesión.
+- **Pruebas:** `test/modulos/galeria/galeria_test.dart` monta cada sección en claro, oscuro y letra al 200 %, así que sirve de prueba de humo de todo el sistema junto.
+- **Hallazgo:** al montar el visor de PDF en un contenedor de 320 de alto, su esqueleto de carga desbordaba 80 px. Ahora el bloque grande es flexible.
+- **Pendiente:** los golden de todas las secciones, que dependen de V2-T03.02.
