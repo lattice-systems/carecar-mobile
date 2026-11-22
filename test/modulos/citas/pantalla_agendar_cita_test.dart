@@ -1,10 +1,7 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
-import 'package:carecar_mobile/modulos/citas/dominio/cita_agendada.dart';
-import 'package:carecar_mobile/modulos/citas/dominio/disponibilidad_taller.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
-import 'package:carecar_mobile/modulos/citas/dominio/motivo_cita.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
@@ -35,6 +32,16 @@ Widget _app(
   child: conTemaPista(const PantallaAgendarCita(), escenario: escenario),
 );
 
+/// Como `testWidgets`, pero con una pantalla alta para que la lista construya
+/// todo el formulario sin tener que desplazarse.
+void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) =>
+    testWidgets(descripcion, (tester) async {
+      tester.view.physicalSize = const Size(800, 8000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await cuerpo(tester);
+    });
+
 Future<void> _tocar(WidgetTester tester, Finder f) async {
   await tester.ensureVisible(f);
   await tester.pumpAndSettle();
@@ -60,7 +67,7 @@ Future<void> _irAlResumen(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('mientras carga muestra esqueleto y lo anuncia', (tester) async {
+  _prueba('mientras carga muestra esqueleto y lo anuncia', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     expect(find.byType(Esqueleto), findsWidgets);
     expect(
@@ -71,7 +78,7 @@ void main() {
     expect(find.byType(Esqueleto), findsNothing);
   });
 
-  testWidgets('no deja continuar hasta elegir todo y dice que falta', (
+  _prueba('no deja continuar hasta elegir todo y dice que falta', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
@@ -84,7 +91,7 @@ void main() {
     expect(find.text('Resumen de tu cita'), findsNothing);
   });
 
-  testWidgets('con todo elegido muestra el resumen de la cita', (tester) async {
+  _prueba('con todo elegido muestra el resumen de la cita', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
     await _irAlResumen(tester);
@@ -95,7 +102,7 @@ void main() {
     expect(find.text('Confirmar cita'), findsOneWidget);
   });
 
-  testWidgets('cambiar datos vuelve al formulario sin perder lo elegido', (
+  _prueba('cambiar datos vuelve al formulario sin perder lo elegido', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
@@ -107,7 +114,7 @@ void main() {
     expect(find.text('Mantenimiento'), findsOneWidget);
   });
 
-  testWidgets('confirmar agenda y avisa que la cita quedo confirmada', (
+  _prueba('confirmar agenda y avisa que la cita quedo confirmada', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
@@ -118,7 +125,7 @@ void main() {
     expect(find.textContaining('09:00'), findsOneWidget);
   });
 
-  testWidgets('sin cupo al confirmar ofrece franjas cercanas y las cambia', (
+  _prueba('sin cupo al confirmar ofrece franjas cercanas y las cambia', (
     tester,
   ) async {
     await tester.pumpWidget(_app(_RepoQueSeLlena()));
@@ -137,7 +144,7 @@ void main() {
     expect(find.text('Cita confirmada'), findsOneWidget);
   });
 
-  testWidgets('cita duplicada muestra la existente y no deja confirmar', (
+  _prueba('cita duplicada muestra la existente y no deja confirmar', (
     tester,
   ) async {
     final repo = _RepoQueFalla(
@@ -160,9 +167,7 @@ void main() {
     expect(find.text('Confirmar cita'), findsNothing);
   });
 
-  testWidgets('un error al agendar se explica y deja reintentar', (
-    tester,
-  ) async {
+  _prueba('un error al agendar se explica y deja reintentar', (tester) async {
     await tester.pumpWidget(_app(_RepoQueFalla(const SinConexion())));
     await tester.pumpAndSettle();
     await _irAlResumen(tester);
@@ -174,9 +179,7 @@ void main() {
     expect(find.text('Confirmar cita'), findsOneWidget);
   });
 
-  testWidgets('sin vehiculos explica por que no se puede agendar', (
-    tester,
-  ) async {
+  _prueba('sin vehiculos explica por que no se puede agendar', (tester) async {
     await tester.pumpWidget(
       _app(RepositorioCitasFake(), garaje: RepositorioGarajeFake(datos: [])),
     );
@@ -185,7 +188,7 @@ void main() {
     expect(find.text('Aún no tienes vehículos'), findsOneWidget);
   });
 
-  testWidgets('sin lugares en todo el rango explica por que no hay', (
+  _prueba('sin lugares en todo el rango explica por que no hay', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake(franjas: const [])));
@@ -193,7 +196,7 @@ void main() {
     expect(find.text('Sin lugares disponibles'), findsOneWidget);
   });
 
-  testWidgets('si falla el garaje o la disponibilidad ofrece reintentar', (
+  _prueba('si falla el garaje o la disponibilidad ofrece reintentar', (
     tester,
   ) async {
     await tester.pumpWidget(
@@ -203,9 +206,7 @@ void main() {
     expect(find.byType(EstadoError), findsOneWidget);
   });
 
-  testWidgets('sin conexion lo dice distinto a un error generico', (
-    tester,
-  ) async {
+  _prueba('sin conexion lo dice distinto a un error generico', (tester) async {
     await tester.pumpWidget(
       _app(RepositorioCitasFake(error: const SinConexion())),
     );
@@ -215,9 +216,7 @@ void main() {
   });
 
   for (final escenario in [Escenario.oscuro, Escenario.letraGrande]) {
-    testWidgets('formulario y resumen sin desbordes en $escenario', (
-      tester,
-    ) async {
+    _prueba('formulario y resumen sin desbordes en $escenario', (tester) async {
       await tester.pumpWidget(
         _app(RepositorioCitasFake(), escenario: escenario),
       );
