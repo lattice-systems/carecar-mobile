@@ -28,7 +28,7 @@ Total: **202 historias** + 4 de H0.
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Lista | |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
-| V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Lista | |
+| V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | En curso | |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Lista | |
