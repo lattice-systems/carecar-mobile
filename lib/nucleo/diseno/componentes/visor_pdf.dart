@@ -144,7 +144,7 @@ class _Cargando extends StatelessWidget {
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [
-            Esqueleto(alto: 320),
+            Expanded(child: Esqueleto(alto: double.infinity)),
             SizedBox(height: Espaciado.e3),
             Esqueleto.linea(),
             SizedBox(height: Espaciado.e2),
