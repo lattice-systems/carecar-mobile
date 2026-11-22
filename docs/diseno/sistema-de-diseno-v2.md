@@ -119,6 +119,6 @@ Cada componente documenta: anatomía, variantes, estados (normal, presionado, fo
 
 ## 10. Proceso
 
-1. ¿Falta algo? Se propone aquí (PR de docs) → se construye en `lib/nucleo/diseno` con golden → se usa.
+1. ¿Falta algo? Se propone aquí (PR de docs) → se construye en `lib/nucleo/diseno` con golden → se usa. Mientras se construye, quien lo necesita usa un provisional en su módulo ([`plan/trabajo-en-paralelo.md`](../../plan/trabajo-en-paralelo.md), sección 4) y lo reemplaza al integrarse el componente.
 2. Revisión visual con capturas claro/oscuro en cada PR con UI.
 3. Este documento se actualiza en el mismo PR que cambia un token o componente.

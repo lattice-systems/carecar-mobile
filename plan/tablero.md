@@ -4,9 +4,16 @@ Fuente única del estado de cada historia. Se actualiza **en el mismo PR** que m
 
 Estados: `Borrador` (falta refinar) → `Lista` (cumple la Definición de Listo) → `En curso` → `En revisión` (PR abierto) → `Hecha` (integrada). Al tomar una historia cambia su estado y anota el número de PR.
 
-WIP: **una historia `En curso` por persona**. **B** = requiere backend (`agencia-360-backend`, plan espejo en su `plan/`).
+WIP: **una historia `En curso` por persona**; al abrir su PR pasa a `En revisión` y puedes tomar la siguiente mientras esperas CI o revisión. **B** = requiere backend (`agencia-360-backend`, plan espejo en su `plan/`; el diseño técnico lo escribe quien la toma en su primer commit).
 
-Total: **206 historias** + 4 de H0.
+Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en-paralelo.md)):
+
+- `(simulable)`: es una historia de backend. La app avanza contra el contrato y `mock_api`.
+- `(provisional)`: es un componente del sistema de diseño. La pantalla avanza con un provisional en su módulo y lo reemplaza cuando se integre.
+
+Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
+
+Total: **210 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -22,24 +29,27 @@ Total: **206 historias** + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Hecha | #17 |
-| V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Lista | |
+| V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | En curso | |
 | V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Lista | |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
+| V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Lista | |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | En curso | #31, #33 |
-| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05 | Lista | |
+| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05, V2-T02.13, V2-T02.14 | Lista | |
 | V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
 | V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
 | V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | Hecha | #27 |
 | V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | Hecha | #26 |
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
+| V2-T02.13 | Componente `LineaDeTiempo` | Juan Pablo |  | V2-T02.04 | Lista | |
+| V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Juan Pablo |  | V2-T02.04 | Lista | |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -47,6 +57,7 @@ Total: **206 historias** + 4 de H0.
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
+| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Lista | |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | |
@@ -71,28 +82,28 @@ Total: **206 historias** + 4 de H0.
 | V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Lista | |
 | V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Lista | |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04, V2-T01.03 | Lista | |
+| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Lista | |
 | V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.06 | Ver mi perfil | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 | Lista | |
+| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | Lista | |
 | V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Lista | |
 | V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
 | V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Lista | |
-| V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 | Lista | |
-| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 | Lista | |
+| V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Lista | |
+| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Lista | |
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Lista | |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Lista | |
-| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 | Lista | |
+| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
-| V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 | Lista | |
+| V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Lista | |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Lista | |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Lista | |
 | V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Lista | |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Lista | |
-| V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 | Lista | |
+| V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Lista | |
 | V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Lista | |
 | V2-M03.03 | Comparar dos o tres modelos lado a lado | Cristian |  | V2-M03.02 | Lista | |
 | V2-M03.04 | Calcular cuánto me darían por mi auto a cuenta de uno nuevo | Cristian | B | V2-M03.01 | Lista | |
@@ -110,7 +121,7 @@ Total: **206 historias** + 4 de H0.
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
-| V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 | Lista | |
+| V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | Lista | |
 | V2-M21.05 | Resolver conflictos de forma predecible | Jael | B | V2-M21.03 | Lista | |
 | V2-M21.06 | Que la app sincronice en segundo plano | Jael |  | V2-M21.02 | Lista | |
 | V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Lista | |
@@ -134,7 +145,7 @@ Total: **206 historias** + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M04.01 | Ver en Inicio que mi auto está en el taller | Ricardo | B | V2-M02.05 | Lista | |
-| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01 | Lista | |
+| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01, V2-T02.13 (provisional) | Lista | |
 | V2-M04.03 | Que la línea de tiempo se actualice sola | Ricardo | B | V2-M04.02, V2-M06.02 | Lista | |
 | V2-M04.04 | Ver la inspección multipunto con fotos | Ricardo | B | V2-M04.02 | Lista | |
 | V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | Lista | |
@@ -213,10 +224,10 @@ Total: **206 historias** + 4 de H0.
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Borrador | |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Borrador | |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Lista | |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Lista | |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Lista | |
-| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 | Lista | |
-| V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09, V2-T02.12 | Lista | |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Lista | |
+| V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Lista | |
 | V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
 | V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 | Borrador | |
 | V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01, V2-M02.08 | Borrador | |
@@ -230,7 +241,7 @@ Total: **206 historias** + 4 de H0.
 | V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Lista | |
 | V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Lista | |
-| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.05 | Lista | |
+| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Lista | |
 | V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Lista | |
 | V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Lista | |
 | V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01, V2-T02.10 | Lista | |
