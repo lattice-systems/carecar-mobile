@@ -9,14 +9,11 @@ import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
 import 'nucleo/api/proveedores_api.dart';
+import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
 import 'notificaciones/plugin_notificaciones_local.dart';
 import 'notificaciones/servicio_notificaciones.dart';
 import 'pantallas/pantalla_arranque.dart';
-import 'pantallas/pantalla_cambiar_contrasena.dart';
-import 'pantallas/pantalla_inicio.dart';
-import 'pantallas/pantalla_login.dart';
-import 'pantallas/pantalla_recuperar_contrasena.dart';
 import 'sesion/almacen_seguro.dart';
 import 'sesion/controlador_sesion.dart';
 import 'tema/tema_carecar.dart';
@@ -32,7 +29,9 @@ Future<void> main() async {
   );
   Notificaciones.actual = servicio;
   await servicio.iniciar();
-  runApp(ProviderScope(child: AppCareCar(prefs: prefs)));
+  // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
+  // alcance anidado no vería los proveedores del enrutador.
+  runApp(AppCareCar(prefs: prefs));
 }
 
 /// Arma la app y conecta las piezas.
@@ -158,115 +157,37 @@ class _AppCareCarState extends State<AppCareCar> {
   Widget _construirApp() {
     return ShadApp.custom(
       theme: TemaCareCar.shad,
-      appBuilder: (context) => MaterialApp(
-        title: 'CareCar',
-        theme: TemaCareCar.conFuentes(),
-        debugShowCheckedModeBanner: false,
-        builder: (context, child) => ShadAppBuilder(child: child!),
-        home: switch (_errorDeArranque) {
-          final error? => _PantallaDeErrorDeArranque(error: error),
-          _ => CortinaArranque(
-            listo: !_restaurando,
-            duracionMinima: widget.duracionArranque,
-            siguiente: (_) => FlujoCareCar(controlador: _sesion!, api: _api!),
+      appBuilder: (context) {
+        final error = _errorDeArranque;
+        if (error != null) {
+          return MaterialApp(
+            title: 'CareCar',
+            theme: TemaCareCar.conFuentes(),
+            debugShowCheckedModeBanner: false,
+            builder: (context, child) => ShadAppBuilder(child: child!),
+            home: _PantallaDeErrorDeArranque(error: error),
+          );
+        }
+        // Navegacion declarativa (ADR 0003, V2-T01.03): el enrutador junta las
+        // rutas del nucleo y de los modulos y decide por la sesion.
+        return Consumer(
+          builder: (context, ref, _) => MaterialApp.router(
+            title: 'CareCar',
+            theme: TemaCareCar.conFuentes(),
+            debugShowCheckedModeBanner: false,
+            routerConfig: ref.watch(enrutadorProvider),
+            // La cortina tapa la app mientras se restaura la sesion: asi no se
+            // ve el login un instante antes de saltar a inicio ni a un enlace.
+            builder: (context, child) => ShadAppBuilder(
+              child: CortinaArranque(
+                listo: !_restaurando,
+                duracionMinima: widget.duracionArranque,
+                siguiente: (_) => child!,
+              ),
+            ),
           ),
-        },
-      ),
-    );
-  }
-}
-
-/// Decide que pantalla se ve, segun el estado de la sesion.
-///
-/// Es la navegacion minima que APP-2.1 y APP-2.3 necesitan. Cuando el equipo
-/// defina como se navega (peticion EQ-1), se cambia aqui sin tocar ninguna
-/// pantalla: todas avisan por callback y ninguna decide a donde ir.
-class FlujoCareCar extends StatefulWidget {
-  const FlujoCareCar({required this.controlador, required this.api, super.key});
-
-  final ControladorSesion controlador;
-  final CarecarApi api;
-
-  @override
-  State<FlujoCareCar> createState() => _RaizState();
-}
-
-class _RaizState extends State<FlujoCareCar> {
-  /// Fuera de null, se esta recuperando la contrasena con ese correo.
-  String? _recuperando;
-
-  /// Se marca cuando el cliente ya cambio su contrasena temporal.
-  ///
-  /// El contrato no devuelve una sesion nueva al cambiarla, asi que el
-  /// `debeCambiarContrasena` del login sigue en `true`. Sin esta bandera, la
-  /// pantalla de cambio volveria a salir en bucle.
-  bool _yaCambio = false;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controlador.addListener(_alCambiarSesion);
-  }
-
-  @override
-  void didUpdateWidget(covariant FlujoCareCar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controlador != widget.controlador) {
-      oldWidget.controlador.removeListener(_alCambiarSesion);
-      widget.controlador.addListener(_alCambiarSesion);
-      _yaCambio = false;
-      _recuperando = null;
-    }
-  }
-
-  void _alCambiarSesion() {
-    setState(() {
-      if (!widget.controlador.haySesion) _yaCambio = false;
-    });
-  }
-
-  @override
-  void dispose() {
-    widget.controlador.removeListener(_alCambiarSesion);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (_recuperando != null) {
-      return PantallaRecuperarContrasena(
-        api: widget.api,
-        correoInicial: _recuperando!.isEmpty ? null : _recuperando,
-        alVolver: () => setState(() => _recuperando = null),
-      );
-    }
-
-    final estado = widget.controlador.estado;
-
-    if (estado is Autenticada) {
-      // APP-2.3: en el primer ingreso se obliga a cambiar la temporal.
-      if (estado.debeCambiarContrasena && !_yaCambio) {
-        return PantallaCambiarContrasena(
-          api: widget.api,
-          alCambiar: () => setState(() => _yaCambio = true),
-          alCerrarSesion: () async {
-            await widget.controlador.cerrarSesion();
-            if (mounted) setState(() => _yaCambio = false);
-          },
         );
-      }
-
-      return PantallaInicio(
-        api: widget.api,
-        controlador: widget.controlador,
-        alCerrarSesion: () => setState(() => _yaCambio = false),
-      );
-    }
-
-    return PantallaLogin(
-      controlador: widget.controlador,
-      alIniciarSesion: () => setState(() {}),
-      alOlvidarContrasena: (correo) => setState(() => _recuperando = correo),
+      },
     );
   }
 }

@@ -8,3 +8,4 @@ library;
 export 'dominio/aviso.dart' show Aviso;
 export 'presentacion/pantalla_avisos.dart' show PantallaAvisos;
 export 'presentacion/proveedores_ejemplo.dart' show repositorioAvisosProvider;
+export 'presentacion/rutas_ejemplo.dart' show rutaAvisosEjemplo, rutasEjemplo;
