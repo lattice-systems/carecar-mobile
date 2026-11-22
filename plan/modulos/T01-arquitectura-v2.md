@@ -41,3 +41,31 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 5. Navegación (rutas, deep links) llega con V2-T01.03; hasta entonces no registren rutas nuevas, usen su pantalla desde pruebas.
 
 **Pendiente / fuera de alcance:** mover el código de `lib/api` y `lib/sesion` al núcleo (V2-T01.05, módulo por módulo); regla de dependencias automática (V2-T01.06).
+
+## Avance de V2-T01.03
+
+**Qué quedó**
+
+- Dependencia `go_router ^18.1.4`.
+- `lib/nucleo/navegacion/`: `enrutadorProvider` (el `GoRouter` en Riverpod), `Rutas`/`NombresRuta` (constantes y localizaciones tipadas), `guardia_sesion.dart` (`redirigirPorSesion`, pura), `enlaces.dart` (`EnlacesApp`), `rutas_del_nucleo.dart` y `registro_de_rutas.dart`.
+- `main.dart` usa `MaterialApp.router`; `FlujoCareCar` desapareció. Las pantallas v1 no se reescribieron: se montan como rutas. La cortina de arranque sigue tapando la app mientras se restaura la sesión. Se quitó el `ProviderScope` exterior de `main()` (un alcance anidado no ve los proveedores del enrutador).
+- Rutas del núcleo: `/` (inicio, privada), `/acceso`, `/recuperar?correo=`, `/restablecer?token=&correo=` (públicas), `/cambiar-contrasena` (solo con contraseña temporal). Módulo de ejemplo: `/ejemplo/avisos`, solo en `kDebugMode`.
+- Guardia: sin sesión, ruta privada va a `/acceso?desde=<ruta>` y vuelve a ella tras entrar; con `debe_cambiar_contrasena` todo va a `/cambiar-contrasena` hasta cambiarla (la bandera `contrasenaCambiadaProvider` reemplaza el `_yaCambio` de v1); con sesión, `/acceso` lleva a `desde` o al inicio. `desde` solo acepta rutas internas. Una ruta inexistente cae en el inicio.
+- Enlaces: `carecar://restablecer?token=123456&correo=a@b.mx` y `https://<host>/app/restablecer?...` llegan a `/restablecer`, que abre la pantalla v1 de recuperación en el paso del código (con `codigoInicial`). El flujo completo con enlace de un solo uso es V2-M01.04.
+- Android: `intent-filter` `carecar://`, App Link `https` con `autoVerify` y `flutter_deeplinking_enabled`. iOS: `CFBundleURLTypes` y `FlutterDeepLinkingEnabled`.
+- Pruebas: `test/nucleo/navegacion/` (una por ruta, guardia, enlaces, deep link entregado como lo hace el sistema operativo). `test/ayudas/app_enrutada.dart` monta la app con el enrutador real y fakes.
+
+**Cómo registra rutas cada persona** (detalle en `lib/modulos/README.md`)
+
+1. En su módulo: `presentacion/rutas_<modulo>.dart` con la constante del camino y `final rutas<Modulo> = <RouteBase>[...]`, exportada desde `<modulo>.dart`.
+2. Una línea en `lib/nucleo/navegacion/registro_de_rutas.dart`: `...rutas<Modulo>,`. Nada más en el núcleo.
+3. Son privadas por defecto (sesión y cambio de contraseña ya se resuelven); ya son alcanzables por `carecar://<ruta>` y `https://<host>/app/<ruta>`. Parámetros por camino o consulta, no `extra`.
+
+**Falta del lado del dominio y de las cuentas (no es código de la app)**
+
+- Host: hoy `carecar.example.com` (marcador). Cambiarlo en `EnlacesApp.hostEnlacesUniversales` y en el `android:host` del `AndroidManifest.xml`.
+- Android App Links: publicar `https://<host>/.well-known/assetlinks.json` con el `package_name` `com.carecar.carecar_mobile` y la huella SHA-256 del certificado de firma (debug, release y la de Play App Signing).
+- iOS enlaces universales: publicar `https://<host>/.well-known/apple-app-site-association` (sin extensión, `application/json`) con el `appID` `<TeamID>.com.carecar.carecarMobile` y `paths: ["/app/*"]`; y agregar la capacidad Associated Domains (`applinks:<host>`) al target Runner en Xcode (requiere la cuenta de Apple Developer). Hasta entonces el esquema `carecar://` funciona y los https abren el navegador.
+- Los correos de V2-M01.04 deben usar `https://<host>/app/restablecer?token=...`.
+
+**Pendiente / fuera de alcance:** pestañas con `StatefulShellRoute` (cuando exista la barra de navegación de la app v2); migrar `PantallaInicio`, que sigue con su `Navigator` interno, módulo por módulo (V2-T01.05); pruebas de enlaces en dispositivo real (necesitan el dominio); tema v2 global.
