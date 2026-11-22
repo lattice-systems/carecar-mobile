@@ -1,6 +1,6 @@
 # 0002 · Estado e inyección de dependencias con Riverpod
 
-**Estado:** Propuesta (reemplazaría la decisión v1 "`ChangeNotifier`, sin Provider/Riverpod/Bloc")
+**Estado:** Aceptada
 
 ## Contexto
 
