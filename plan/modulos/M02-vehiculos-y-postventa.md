@@ -38,7 +38,7 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 
 | Método | Ruta | Uso |
 | --- | --- | --- |
-| GET | `/vehiculos` · `/vehiculos/{id}/manuales` | Existen. |
+| GET | `/vehiculos` · `/vehiculos/{id}/manuales` | Existen. `/vehiculos` suma `kilometrajeActualizadoEn` (fecha `AAAA-MM-DD`, opcional, nula si no hay): fecha de cierre de la orden de servicio que dejó el km (V2-T05.06). Simulado en `mock_api`. |
 | GET | `/vehiculos/{id}/ficha-tecnica` | Nuevo. |
 | GET | `/vehiculos/{id}/servicios?pagina=&tamano=&anio=` | Existe con `pagina` y `tamano`; el filtro `anio` es nuevo. |
 | GET | `/servicios/{id}` · `/servicios/{id}/ticket` | Detalle nuevo; ticket existe. |
@@ -92,3 +92,17 @@ Pantalla `PantallaDisponibilidad` en `lib/modulos/citas/` (ruta `/citas/disponib
 - **Textos**: claves `citas*` en `lib/l10n/app_es.arb` y `app_en.arb`.
 - **Pruebas**: `test/modulos/citas/` (dominio, repositorios, pantalla en claro, oscuro y letra al 200 %, y la ruta con y sin sesión).
 - **Pendientes**: el `mock_api` tiene franjas con fechas ya pasadas (`2026-10-20`), así que contra él la pantalla muestra el estado vacío; hay que sembrar fechas relativas a hoy (T03). El golden de la pantalla espera a V2-T03.02. Cupo por franja en V2-M02.08 (elegir franja y agendar) usa estos mismos proveedores.
+
+## Avance de V2-M02.02
+
+El detalle vive en `lib/modulos/vehiculos/` (`PantallaDetalleVehiculo`, ruta `/garaje/:id`, exige sesión). Se llega tocando una tarjeta del garaje: la foto viaja con el `heroTag` que ya llevaba. Estado: **En revisión**.
+
+- **Datos:** no hay `GET /vehiculos/{id}` en el contrato v1, así que `vehiculoProvider(id)` busca el vehículo en la misma lectura del garaje (comparte copia guardada y recarga). `VehiculoGaraje` suma `vin`, `color`, `version` y `kilometrajeActualizadoEn`.
+- **VIN copiable:** en cifras (monoespaciado), con botón «Copiar VIN» (zona táctil de 48) y un `Aviso` «VIN copiado» que el lector de pantalla anuncia.
+- **Kilometraje:** «12,500 km» y debajo «Actualizado por el taller el <fecha completa>». Sin fecha de cierre dice «Aún sin actualización del taller»; sin km dice «Sin kilometraje registrado». Nunca inventa la fecha.
+- **Fecha de cierre (V2-T05.06, simulable):** el campo `kilometrajeActualizadoEn` se agregó a `GET /vehiculos` en `mock_api` (bloque de vehículos de `server.js` y semilla de los autos con km) y a la tabla API de arriba. Cuando Ricardo integre T05.06, la app solo cambia de URL; si el backend usa otro nombre o formato, se ajusta el DTO `Vehiculo`.
+- **Accesos:** historial, manuales y ficha técnica se ven como filas deshabilitadas con «Disponible pronto» (el lector de pantalla dice «Manuales. Disponible pronto»), sin pantallas en blanco. **Falta conectarlos:** historial a V2-M02.05 (Ricardo), manuales a V2-M02.03 y ficha a V2-M02.04. Hasta entonces ese criterio está cumplido a medias: están visibles, no navegan.
+- **Estados:** esqueleto, datos, vehículo no encontrado (estado vacío con explicación, también para un id que no es número), error con reintento y sin conexión (copia guardada de la API del núcleo, o aviso si nunca hubo datos); se recarga jalando hacia abajo.
+- **Textos:** claves `vehiculos*` en `app_es.arb` y `app_en.arb`.
+- **Pruebas:** `test/modulos/vehiculos/pantalla_detalle_test.dart` (datos, copiar con portapapeles simulado, fecha, accesos, cinco estados, inglés, claro/oscuro/letra al 200 %), `ruta_garaje_test.dart` (tarjeta abre el detalle, `/garaje/:id`, id inválido, sin sesión), `garaje_test.dart`, `modelos_test.dart` y `vehiculos_semilla_test.dart`.
+- **Pendientes:** el golden de la pantalla espera a V2-T03.02; sin foto del auto (el contrato no la trae); `plan/cumplimiento-ficha.md` no cambia: la fila «Detalle del vehículo y kilometraje» sigue en 🟡 hasta que exista T05.06 con `orden_servicio` real.
