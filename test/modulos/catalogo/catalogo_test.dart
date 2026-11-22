@@ -3,7 +3,6 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelo_catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/datos/repositorio_catalogo_api.dart';
-import 'package:carecar_mobile/modulos/catalogo/dominio/modelo_vigente.dart';
 import 'package:carecar_mobile/modulos/catalogo/dominio/repositorio_catalogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
@@ -50,30 +49,20 @@ const _cx5 = ModeloVigente(
 
 void main() {
   group('ModeloVigente', () {
-    test('arma titulo, precio y detalle', () {
+    test('arma el titulo con marca, modelo y anio', () {
       expect(_cx5.titulo, 'Mazda CX-5 2024');
-      expect(_cx5.precioTexto, r'Desde $450,000');
-      expect(_cx5.detalle, r'Signature · Desde $450,000');
     });
 
-    test('sin marca, anio, version ni precio usa solo lo que hay', () {
+    test('sin marca ni anio usa solo el modelo', () {
       const m = ModeloVigente(nombre: 'Mazda 3');
       expect(m.titulo, 'Mazda 3');
-      expect(m.precioTexto, isNull);
-      expect(m.detalle, isNull);
     });
 
-    test('conMiles separa de tres en tres', () {
-      expect(conMiles(0), '0');
-      expect(conMiles(999), '999');
-      expect(conMiles(1000), '1,000');
-      expect(conMiles(1234567), '1,234,567');
-      expect(conMiles(-4500), '-4,500');
-    });
-
-    test('el precio se redondea al entero mas cercano', () {
-      const m = ModeloVigente(nombre: 'X', precioDesde: 1999.6);
-      expect(m.precioTexto, r'Desde $2,000');
+    test('no arma textos para pantalla: eso es de la presentacion', () {
+      // El dominio no conoce el idioma. El precio y las frases se arman en la
+      // pantalla con AppLocalizations.
+      expect(_cx5.precioDesde, 450000);
+      expect(_cx5.version, 'Signature');
     });
   });
 
@@ -114,6 +103,28 @@ void main() {
       expect(find.text(r'Signature · Desde $450,000'), findsOneWidget);
     });
 
+    testWidgets('en ingles traduce titulo, precio y estado vacio', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            repositorioCatalogoProvider.overrideWithValue(
+              _Repo(() async => const [_cx5]),
+            ),
+          ],
+          child: conTemaPista(
+            const PantallaCatalogo(),
+            idioma: const Locale('en'),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Catalog'), findsOneWidget);
+      expect(find.text(r'Signature · From $450,000'), findsOneWidget);
+      expect(find.text('Catalogo'), findsNothing);
+    });
+
     testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
       for (final escenario in Escenario.values) {
         await tester.pumpWidget(
@@ -130,7 +141,7 @@ void main() {
       await tester.pumpWidget(
         _app(_Repo(() => Future.delayed(const Duration(seconds: 5), () => []))),
       );
-      expect(find.bySemanticsLabel('Cargando catalogo'), findsOneWidget);
+      expect(find.bySemanticsLabel('Cargando catálogo'), findsOneWidget);
       await tester.pump(const Duration(seconds: 6));
     });
 
@@ -138,6 +149,7 @@ void main() {
       await tester.pumpWidget(_app(_Repo(() async => const [])));
       await tester.pumpAndSettle();
       expect(find.byType(EstadoVacio), findsOneWidget);
+      expect(find.text('Aún no hay modelos'), findsOneWidget);
     });
 
     testWidgets('un fallo muestra el error y reintenta', (tester) async {
