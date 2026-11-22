@@ -37,3 +37,13 @@ El contraste se prueba en `test/nucleo/diseno/tokens/colores_test.dart`, en clar
 - Los contornos de campo, casilla, interruptor y chip usaban `borde`, que da 1.25 a 1. Se agregó el token `contornoControl` (`#7C8391` en claro, `#6B7280` en oscuro) y esos cuatro componentes lo usan. `borde` sigue para divisores, que no delimitan nada.
 
 Pendiente fuera de esta historia: la auditoría con lector y dispositivo real es V2-M20.07, y el contraste de texto sobre fotos o imágenes no se puede garantizar con tokens.
+
+## Avance de V2-M20.02, V2-M20.03 y V2-M20.08
+
+Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas están naciendo, así que no se pueden cerrar todavía. Lo que sí queda hecho es el mecanismo que las vigila, para que cada pantalla nueva lo pase desde su primer PR:
+
+- **Auditoría de la galería:** `test/accesibilidad/guias_galeria_test.dart` monta cada una de las 17 secciones del sistema y les corre las guías de Flutter: zona táctil de 48 (Android) y 44 (iOS), etiqueta en todo control tocable y contraste de texto en claro y oscuro, más que nada se desborde con letra al 200 %. Son 102 pruebas y hoy todas pasan, así que ningún componente del sistema incumple.
+- **Ayudante para pantallas:** `auditarAccesibilidad(tester)` en `test/ayudas/auditoria_accesibilidad.dart` corre esas mismas guías sobre una pantalla ya montada. `PantallaCatalogo` ya la pasa en `test/accesibilidad/guias_pantallas_test.dart`. Cada historia de pantalla suma ahí la suya.
+- **Cómo se comprobó que las guías muerden:** un botón de 20 × 20 falla la guía de zona táctil, uno de 48 pasa, uno de 30 falla en iOS y un control sin etiqueta falla la de etiquetas. Ojo: las guías de Flutter ignoran los nodos pegados al borde de la pantalla, porque podrían estar medio fuera. Un botón en la esquina no se mide.
+- **Sigue manual:** la prueba con TalkBack y VoiceOver por pantalla que pide V2-M20.02. No se puede automatizar.
+- **Pendiente:** las pantallas v1 no se auditan, se retiran con V2-T02.08.
