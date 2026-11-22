@@ -527,6 +527,7 @@ const comoCita = (c) => ({
   horaInicio: c.horaInicio,
   horaFin: c.horaFin,
   estado: c.estado,
+  ...(c.motivo ? { motivo: c.motivo } : {}),
 });
 
 servidor.get(`${BASE}/citas`, (req, res) => {
@@ -535,7 +536,7 @@ servidor.get(`${BASE}/citas`, (req, res) => {
 });
 
 servidor.post(`${BASE}/citas`, (req, res) => {
-  const { vehiculoId, franjaId, fecha } = req.body || {};
+  const { vehiculoId, franjaId, fecha, motivo } = req.body || {};
   if (!vehiculoId || !franjaId || !ES_FECHA.test(fecha || '')) {
     return problema(req, res, 400, 'Faltan vehiculoId, franjaId o fecha (AAAA-MM-DD)');
   }
@@ -550,19 +551,20 @@ servidor.post(`${BASE}/citas`, (req, res) => {
     return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
   }
 
-  // "No se puede reservar dos veces" (APP-3.3).
+  // "No se puede reservar dos veces" (APP-3.3): mismo vehiculo, mismo dia, o
+  // la misma franja. V2-M02.08 le pone el codigo CITA_DUPLICADA.
   const yaReservada = db
     .get('citas')
     .value()
     .some(
       (c) =>
         c.clienteId === req.sesion.clienteId &&
-        c.franjaId === franja.id &&
+        c.estado === 'CONFIRMADA' &&
         c.fecha === fecha &&
-        c.estado === 'CONFIRMADA'
+        (c.franjaId === franja.id || c.vehiculoId === vehiculo.id)
     );
   if (yaReservada) {
-    return problema(req, res, 409, 'Ya tienes una cita en esa franja');
+    return problema(req, res, 409, 'Ya tienes una cita para ese vehiculo ese dia', 'CITA_DUPLICADA');
   }
 
   const ids = db.get('citas').value().map((c) => c.id);
@@ -575,6 +577,8 @@ servidor.post(`${BASE}/citas`, (req, res) => {
     horaInicio: franja.horaInicio,
     horaFin: franja.horaFin,
     estado: 'CONFIRMADA',
+    // V2-M02.08: para que viene el cliente. Opcional.
+    ...(typeof motivo === 'string' && motivo.trim() ? { motivo: motivo.trim() } : {}),
   };
 
   // La cita descuenta capacidad de la franja (APP-3.3).
