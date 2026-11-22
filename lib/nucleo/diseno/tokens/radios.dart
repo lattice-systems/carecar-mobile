@@ -7,12 +7,16 @@ abstract final class Radios {
   static const double hoja = 28;
   static const double pildora = 999;
 
-  static const BorderRadius bordeControl =
-      BorderRadius.all(Radius.circular(control));
-  static const BorderRadius bordeTarjeta =
-      BorderRadius.all(Radius.circular(tarjeta));
-  static const BorderRadius bordeHoja =
-      BorderRadius.vertical(top: Radius.circular(hoja));
-  static const BorderRadius bordePildora =
-      BorderRadius.all(Radius.circular(pildora));
+  static const BorderRadius bordeControl = BorderRadius.all(
+    Radius.circular(control),
+  );
+  static const BorderRadius bordeTarjeta = BorderRadius.all(
+    Radius.circular(tarjeta),
+  );
+  static const BorderRadius bordeHoja = BorderRadius.vertical(
+    top: Radius.circular(hoja),
+  );
+  static const BorderRadius bordePildora = BorderRadius.all(
+    Radius.circular(pildora),
+  );
 }
