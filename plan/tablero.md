@@ -102,7 +102,7 @@ Total: **206 historias** + 4 de H0.
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Lista | |
 | V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
-| V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Lista | |
+| V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | En revisión | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Lista | |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Lista | |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
