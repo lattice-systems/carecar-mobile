@@ -4,7 +4,24 @@
 	<dict>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
-		<key>CFBundleDevelopmentRegion</key>
+		<!-- Deep links (V2-T01.03): Flutter entrega el enlace a go_router. -->
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+	<!-- Esquema propio: carecar://restablecer?token=... -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.carecar.carecarMobile</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>carecar</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
 		<string>Carecar Mobile</string>

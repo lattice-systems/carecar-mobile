@@ -33,6 +33,25 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Deep links (V2-T01.03). Flutter entrega el enlace a go_router. -->
+            <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+            <!-- Esquema propio: carecar://restablecer?token=... -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="carecar" />
+            </intent-filter>
+            <!-- App Links: https://<host>/app/... abre la app sin preguntar
+                 SOLO cuando el dominio sirve /.well-known/assetlinks.json.
+                 CONFIGURAR: cambiar el host por el dominio real de la agencia
+                 (igual que EnlacesApp.hostEnlacesUniversales en Dart). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="carecar.example.com" android:pathPrefix="/app" />
+            </intent-filter>
         </activity>
         <!-- Receptores de flutter_local_notifications: disparan los avisos
              programados y los vuelven a programar tras reiniciar. -->

@@ -4,7 +4,7 @@ Cada módulo de la app v2 (acceso, vehículos, citas, catálogo, taller…) vive
 
 ```
 lib/modulos/<modulo>/
-├── <modulo>.dart        # contrato público: lo único que otros importan
+├── <modulo>.dart        # contrato público: lo único que otros importan (incluye `rutas<Modulo>`)
 ├── datos/               # repositorio (implementación), DTO <-> modelo, fuentes remota/local
 ├── dominio/             # modelos inmutables, reglas puras e interfaz del repositorio (Dart puro)
 └── presentacion/        # pantallas, proveedores Riverpod, widgets propios
@@ -16,7 +16,29 @@ lib/modulos/<modulo>/
 2. **dominio/**: modelos y reglas sin importar Flutter ni `http`. Define ahí la interfaz del repositorio.
 3. **datos/**: el repositorio real recibe `CarecarApi` (ver abajo), traduce DTO a modelos y mapea errores. Nunca crees tu propio `http.Client`.
 4. **presentacion/**: un proveedor para el repositorio (sustituible en pruebas con `overrideWithValue`), uno por pantalla con `FutureProvider`/`AsyncNotifier`, y pantallas con `ConsumerWidget`. Resuelve los cinco estados (cargando con `Esqueleto`, datos, `EstadoVacio`, `EstadoError` con reintento, sin conexión) con componentes de `lib/nucleo/diseno`.
-5. **`<modulo>.dart`**: exporta solo lo que otros necesitan (pantalla raíz, modelos que viajan, proveedores públicos). Ver `ejemplo/ejemplo.dart`.
+5. **Rutas**: declara las de tu módulo (ver "Registrar las rutas de tu módulo").
+6. **`<modulo>.dart`**: exporta solo lo que otros necesitan (pantalla raíz, modelos que viajan, proveedores públicos, la lista de rutas). Ver `ejemplo/ejemplo.dart`.
+
+## Registrar las rutas de tu módulo
+
+Navegación con `go_router` (ADR 0003, V2-T01.03). **Cada módulo expone sus rutas; el enrutador solo las junta.**
+
+1. En `presentacion/rutas_<modulo>.dart` define el camino como constante y una lista de `RouteBase`:
+
+   ```dart
+   const rutaCitasLista = '/citas';
+   final rutasCitas = <RouteBase>[
+     GoRoute(path: rutaCitasLista, name: 'citas-lista', builder: (c, s) => const PantallaCitas(),
+       routes: [GoRoute(path: ':id', name: 'cita-detalle', builder: (c, s) => PantallaCita(id: s.pathParameters['id']!))]),
+   ];
+   ```
+
+2. Expórtala en `<modulo>.dart`: `export 'presentacion/rutas_citas.dart' show rutaCitasLista, rutasCitas;`
+3. En `lib/nucleo/navegacion/registro_de_rutas.dart` agrega **una línea** en `rutasDeLaApp()`: `...rutasCitas,` (orden alfabético; es el único archivo del núcleo que importa módulos y solo su `<modulo>.dart`).
+4. Reglas: nombres de ruta y caminos son de tu módulo y van en español sin acentos; para ir a otro módulo usa su constante (`<modulo>.dart`) o `context.goNamed`, nunca importes su `presentacion/`. Las rutas de módulos **exigen sesión** por defecto: sin sesión van al acceso y vuelven a ellas al entrar; el cambio obligatorio de contraseña también se respeta. Si una ruta debe ser pública, se agrega a `Rutas.publicas` (`nucleo/navegacion/rutas.dart`) con aviso al dueño de T01.
+5. Enlaces: `carecar://<ruta>` y `https://<host>/app/<ruta>` llegan a la misma ruta (`carecar://citas/5` → `/citas/5`), así que **toda ruta tuya ya es alcanzable por enlace**. Por eso: parámetros por camino/consulta (`:id`, `?token=`), nunca objetos en `extra`.
+6. Mientras no exista el tema v2 global, envuelve la pantalla con `Theme(data: TemaPista...)` como en `ejemplo/presentacion/rutas_ejemplo.dart`.
+7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`.
 
 ## Qué te da el núcleo
 
@@ -42,4 +64,4 @@ lib/modulos/<modulo>/
 
 ## Módulo `ejemplo`
 
-Es solo un modelo para copiar. Sin ruta en la app (la navegación llega con V2-T01.03). **Se elimina en V2-T01.07**, o antes si ya hay un módulo real que sirva de referencia.
+Es solo un modelo para copiar. Su ruta (`/ejemplo/avisos`) se registra solo en desarrollo (`kDebugMode`). **Se elimina en V2-T01.07**, o antes si ya hay un módulo real que sirva de referencia.

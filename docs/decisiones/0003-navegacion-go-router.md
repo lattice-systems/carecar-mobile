@@ -20,3 +20,7 @@ Opción 2. Rutas por URL, redirecciones por estado de sesión, soporte de enlace
 
 - Toda pantalla tiene una ruta y es alcanzable por enlace (probado en T01.03).
 - Configurar `assetlinks.json` y `apple-app-site-association` en el dominio de la agencia.
+
+## Implementación
+
+V2-T01.03: `lib/nucleo/navegacion/` (enrutador, guardia de sesión, enlaces `carecar://` y `https://<host>/app/...`). Cada módulo publica sus rutas y `registro_de_rutas.dart` las junta; ver [`lib/modulos/README.md`](../../lib/modulos/README.md). Lo que falta del dominio (`assetlinks.json`, `apple-app-site-association`) está en `plan/modulos/T01-arquitectura-v2.md`.

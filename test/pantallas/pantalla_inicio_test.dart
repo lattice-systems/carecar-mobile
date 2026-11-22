@@ -1,21 +1,17 @@
-import '../ayudas/envolver_con_shad.dart';
-
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
-import 'package:carecar_mobile/main.dart';
 import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
-import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../ayudas/api_falsa.dart';
+import '../ayudas/app_enrutada.dart';
 
 const _march = Vehiculo(
   id: 5,
@@ -43,16 +39,7 @@ Future<ControladorSesion> _montar(
       contrasena: 'CareCar2026',
     );
   }
-  await tester.pumpWidget(
-    ShadApp.custom(
-      theme: TemaCareCar.shad,
-      appBuilder: (context) => MaterialApp(
-        theme: TemaCareCar.claro,
-        builder: (context, child) => ShadAppBuilder(child: child!),
-        home: FlujoCareCar(controlador: sesion, api: api),
-      ),
-    ),
-  );
+  await tester.pumpWidget(AppEnrutadaDePrueba(api: api, controlador: sesion));
   await tester.pumpAndSettle();
   return sesion;
 }
@@ -81,9 +68,7 @@ void main() {
     addTearDown(restaurada.dispose);
     await restaurada.restaurar();
     await tester.pumpWidget(
-      MaterialAppConShad(
-        home: FlujoCareCar(controlador: restaurada, api: api),
-      ),
+      AppEnrutadaDePrueba(api: api, controlador: restaurada),
     );
     await tester.pumpAndSettle();
 
