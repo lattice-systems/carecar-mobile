@@ -88,7 +88,7 @@ Antes de pedir revisión, comprueba que el PR tiene un alcance claro, que CI ter
 
 - Por ahora **no se exige aprobación**; la revisión de otra persona se recomienda.
 - Todos los checks requeridos deben terminar correctamente.
-- Los workflows deben ejecutarse en cada push y en los PRs dirigidos a `main`.
+- Los workflows corren en los PRs dirigidos a `main` y en cada push a `main`; el push a una rama sin PR no corre CI.
 - Backend: build y pruebas, incluidas las pruebas con Testcontainers.
 - ERP frontend: lint, build y pruebas con Vitest y React Testing Library.
 - CRM frontend: lint, build y pruebas con Vitest y React Testing Library.
@@ -96,9 +96,9 @@ Antes de pedir revisión, comprueba que el PR tiene un alcance claro, que CI ter
 
 Los nombres exactos de los checks requeridos se configuran en GitHub después de que los workflows hayan corrido al menos una vez.
 
-### CareCar mobile: CI en cada push
+### CareCar mobile: CI en cada PR
 
-El workflow `.github/workflows/ci.yml` corre en cada push a cualquier rama y en cada PR hacia `main`. Tiene un job por revisión, que corren en paralelo, para que en el PR se vea directamente cuál falló:
+El workflow `.github/workflows/ci.yml` corre en cada PR hacia `main` y en cada push a `main` (al integrar). Un job previo, `Detectar cambios de código`, salta los demás si el PR solo cambia documentación (`docs/`, `plan/`, `.claude/`, `.githooks/` o archivos `.md`); un job saltado cuenta como aprobado. Tiene un job por revisión, que corren en paralelo, para que en el PR se vea directamente cuál falló:
 
 | Check | Qué revisa |
 | --- | --- |
