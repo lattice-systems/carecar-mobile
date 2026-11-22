@@ -61,6 +61,8 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 7. **PR** con la plantilla; enlaza la historia; capturas si hay UI (claro y oscuro).
 8. **Tablero**: `En revisión` en el PR; `Hecha` lo marca quien integra.
 
+**Trabajo en paralelo.** Las estrategias para que las 6 personas avancen a la vez sin esperarse ni pisarse (contrato primero con `mock_api`, interfaces y fakes, componentes provisionales, propiedad por carpeta, reglas de los archivos calientes, WIP, interruptor v1/v2, agentes y qué puede tomar cada quien) están en [`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md). Síguelas en cada historia.
+
 ## 5. Definición de Hecho (DoD)
 
 - Criterios de aceptación de la historia comprobados (prueba automática por criterio cuando se pueda).

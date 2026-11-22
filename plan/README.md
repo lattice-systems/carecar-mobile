@@ -10,6 +10,7 @@ Todo lo que el equipo (y sus agentes) necesita para saber **qué** construir, **
 | [`modulos/`](modulos/) | Un archivo por módulo: pantallas, datos, API e historias con criterios |
 | [`tablero.md`](tablero.md) | Estado de las 206 historias (fuente única del avance) |
 | [`equipo-y-reparto.md`](equipo-y-reparto.md) | Quién hace qué en cada hito y cómo se revisa |
+| [`trabajo-en-paralelo.md`](trabajo-en-paralelo.md) | Cómo trabajamos los seis a la vez: contrato primero, fakes, provisionales, archivos calientes, WIP y qué puede tomar cada quien |
 | [`cumplimiento-ficha.md`](cumplimiento-ficha.md) | Matriz funcionalidad por funcionalidad contra la ficha técnica v2.0 |
 | [`arquitectura-v2.md`](arquitectura-v2.md) | Forma objetivo del código de la app |
 
