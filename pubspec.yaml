@@ -59,6 +59,10 @@ dependencies:
   url_launcher: ^6.3.3
   flutter_local_notifications: ^23.0.3
   timezone: ^0.11.2
+
+  # Estado e inyeccion de dependencias de la v2 (ADR 0002, V2-T01.02).
+  flutter_riverpod: ^3.5.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

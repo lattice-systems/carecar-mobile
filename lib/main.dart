@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,6 +8,8 @@ import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'nucleo/api/proveedores_api.dart';
+import 'nucleo/sesion/proveedores_sesion.dart';
 import 'notificaciones/plugin_notificaciones_local.dart';
 import 'notificaciones/servicio_notificaciones.dart';
 import 'pantallas/pantalla_arranque.dart';
@@ -29,7 +32,7 @@ Future<void> main() async {
   );
   Notificaciones.actual = servicio;
   await servicio.iniciar();
-  runApp(AppCareCar(prefs: prefs));
+  runApp(ProviderScope(child: AppCareCar(prefs: prefs)));
 }
 
 /// Arma la app y conecta las piezas.
@@ -38,9 +41,9 @@ Future<void> main() async {
 /// cliente HTTP y las pantallas. Mas abajo nadie sabe de donde vienen los
 /// datos: las pantallas solo ven `CarecarApi` y `ControladorSesion`.
 ///
-/// El cableado esta a mano a proposito: la inyeccion de dependencias todavia no
-/// esta decidida (peticion EQ-1) y para dos objetos no vale la pena una
-/// libreria.
+/// El cableado de la v1 sigue a mano; ademas se publica en Riverpod
+/// (`nucleo/api`, `nucleo/sesion`) para que los modulos v2 lo lean sin
+/// constructores (ADR 0002, V2-T01.02).
 class AppCareCar extends StatefulWidget {
   const AppCareCar({
     super.key,
@@ -136,6 +139,23 @@ class _AppCareCarState extends State<AppCareCar> {
   Widget build(BuildContext context) {
     // shadcn_ui da los componentes (insignias, botones, dialogos); Material
     // sigue debajo para las pantallas que ya existian.
+    //
+    // El ProviderScope va por fuera del MaterialApp para que tambien lo vean
+    // las rutas que se empujan con Navigator. Inyecta los objetos que arma este
+    // estado (V2-T01.02): los modulos v2 los leen con `ref.watch`, y la v1
+    // sigue recibiendolos por constructor sin cambios.
+    return ProviderScope(
+      overrides: [
+        if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
+        if (_api != null) carecarApiProvider.overrideWithValue(_api!),
+        if (_sesion != null)
+          controladorSesionProvider.overrideWithValue(_sesion!),
+      ],
+      child: _construirApp(),
+    );
+  }
+
+  Widget _construirApp() {
     return ShadApp.custom(
       theme: TemaCareCar.shad,
       appBuilder: (context) => MaterialApp(

@@ -3,7 +3,7 @@
 | Campo | Valor |
 | --- | --- |
 | Hito | H1 |
-| Dueño | Cristian (todos aportan componentes) |
+| Dueño | Cristian (todos aportan componentes) · Juan Pablo (V2-T02.13 y V2-T02.14) |
 | Revisa | Haziel |
 | Estado | Listo para historias |
 
@@ -17,14 +17,16 @@ Especificación: [`../../docs/diseno/sistema-de-diseno-v2.md`](../../docs/diseno
 | V2-T02.02 | Como equipo queremos la tipografía v2 empaquetada | Fuentes en `assets/fonts` (sin descarga en runtime) · escala tipográfica del documento | | V2-T02.01 |
 | V2-T02.03 | Como equipo queremos movimiento consistente | Duraciones y curvas como tokens · respeta "reducir movimiento" | | V2-T02.01 |
 | V2-T02.04 | Como equipo queremos los componentes base | Botón, campo, selector, casilla, interruptor, chip, avatar, insignia, aviso, diálogo, hoja inferior, menú, pestañas · golden claro/oscuro/200 % | | V2-T02.01 |
-| V2-T02.05 | Como equipo queremos los componentes compuestos | Tarjeta de vehículo, fila de lista, encabezado grande, línea de tiempo, calendario, estado vacío, error, esqueleto, barra de navegación, tarjeta de métrica · golden | | V2-T02.04 |
-| V2-T02.06 | Como equipo queremos una galería del sistema dentro de la app | Ruta oculta en flavor `desarrollo` con todos los componentes y estados | | V2-T02.05 |
+| V2-T02.05 | Como equipo queremos los componentes compuestos | Tarjeta de vehículo, fila de lista, encabezado grande, estado vacío, error, esqueleto, barra de navegación, tarjeta de métrica, tarjeta de acción, visor PDF y semáforo · golden · la línea de tiempo pasa a V2-T02.13 y el calendario con el selector de franja a V2-T02.14 | | V2-T02.04 |
+| V2-T02.06 | Como equipo queremos una galería del sistema dentro de la app | Ruta oculta en flavor `desarrollo` con todos los componentes y estados | | V2-T02.05, V2-T02.13, V2-T02.14 |
 | V2-T02.07 | Como equipo queremos íconos, logo, ícono de app y splash nuevos | Set de íconos único · logo SVG claro/oscuro · ícono adaptativo · splash | | V2-T02.01 |
 | V2-T02.08 | Como equipo queremos retirar `shadcn_ui` y la paleta v1 | Sin imports · dependencia eliminada de `pubspec.yaml` | | V2-T01.07 |
 | V2-T02.09 | Como equipo queremos un componente `Mapa` para ubicar direcciones y seguir traslados | Pin arrastrable, ubicación propia y marcador en movimiento · proveedor de mapas y geocodificación elegido en una decisión (ADR) · golden claro/oscuro/200 % | | V2-T02.04 |
 | V2-T02.10 | Como equipo queremos un componente `Grafica` para mostrar cifras en el tiempo | Barras y líneas con los tokens · tabla alternativa para lector de pantalla · golden | | V2-T02.04 |
 | V2-T02.11 | Como equipo queremos un componente `DeslizarParaConfirmar` para acciones que no deben dispararse por error | Deslizar completo confirma; soltar antes regresa · alternativa accesible con botón y diálogo · golden | | V2-T02.04 |
 | V2-T02.12 | Como equipo queremos los componentes `GaleriaFotos` y `Firma` del catálogo | Galería con zoom y comparación antes/después · firma de solo lectura en imagen · golden | | V2-T02.04 |
+| V2-T02.13 | Como equipo queremos el componente `LineaDeTiempo` para mostrar etapas con su hora | Etapas pasadas, actual y futuras con su hora y un texto opcional · la actual se anima y respeta reducir movimiento · variante larga y paginada para el historial · el lector de pantalla anuncia "etapa 3 de 6, en curso" · pruebas en claro, oscuro y letra al 200 % · golden cuando V2-T03.02 lo permita · lo usan V2-M02.05, V2-M04.02, V2-M11.04 y V2-M17.03 | | V2-T02.04 |
+| V2-T02.14 | Como equipo queremos los componentes `Calendario` y `SelectorFranja` para elegir día y hora con cupo | `Calendario` mensual con los días sin cupo deshabilitados y explicados al lector de pantalla · cambio de mes y rango de fechas permitido · `SelectorFranja` con la hora y el cupo restante de cada franja, deshabilitada si no hay cupo · zonas táctiles de 48 · pruebas en claro, oscuro y letra al 200 % · golden cuando V2-T03.02 lo permita · lo usan V2-M02.07 y V2-M02.08 | | V2-T02.04 |
 
 ## Avance de V2-T02.01
 
@@ -79,7 +81,7 @@ Pruebas en `test/nucleo/diseno/componentes/fotos_firma_test.dart`. El golden que
 
 ## Avance de V2-T02.05
 
-Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucleo/diseno/componentes/`. Lo que falta de la lista del documento: `VisorPdf` y `Semaforo`.
+Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucleo/diseno/componentes/`. Lo que falta de la lista del documento: `VisorPdf` y `Semaforo`. `LineaDeTiempo` pasó a V2-T02.13 y `Calendario` con `SelectorFranja` a V2-T02.14 (Juan Pablo), para repartir H1, pero Cristian ya los entregó en el PR 37 (tanda 3), así que esas dos historias quedan cubiertas por ese PR.
 
 | Tanda | Componentes | Estado |
 | --- | --- | --- |
