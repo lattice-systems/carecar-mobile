@@ -21,7 +21,7 @@ Total: **206 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | En revisión | #17 |
+| V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Hecha | #17 |
 | V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Lista | |
 | V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Lista | |
@@ -31,15 +31,15 @@ Total: **206 historias** + 4 de H0.
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
-| V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | En revisión | #19, #22, #23, #24 |
+| V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | En curso | #31 |
 | V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05 | Lista | |
 | V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
 | V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
-| V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | En revisión | #27 |
-| V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | En revisión | #26 |
-| V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | En revisión | #28 |
+| V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | Hecha | #27 |
+| V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | Hecha | #26 |
+| V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -102,9 +102,9 @@ Total: **206 historias** + 4 de H0.
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Lista | |
 | V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
-| V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | En revisión | #29 |
+| V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Lista | |
-| V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | En revisión | #30 |
+| V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
 | V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | |
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
