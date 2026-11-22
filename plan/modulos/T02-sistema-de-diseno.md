@@ -43,3 +43,12 @@ Notas para quien siga con T02.02 a T02.04:
 ## Avance de V2-T02.03
 
 Los componentes piden su movimiento con `context.movimiento(Movimiento.base)` desde `lib/nucleo/diseno/movimiento_contexto.dart`. Si el sistema tiene activada la opción de reducir movimiento, el token se convierte en un fundido lineal de 120 ms. Las duraciones y curvas ya eran tokens desde T02.01. La prueba `movimiento_contexto_test.dart` cubre el token y una animación real.
+
+## Avance de V2-T02.04
+
+Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucleo/diseno/componentes/`. Las pruebas cubren claro, oscuro y letra al 200 % con `conTemaPista` (`test/ayudas/tema_pista.dart`). Los golden se agregan cuando V2-T03.02 deje listas las fuentes reales y la herramienta.
+
+| Componente | Estado |
+| --- | --- |
+| `Boton` (principal, secundario, terciario, peligro, tres tamaños, carga) | Hecho |
+| Campo, selector, casilla, interruptor, chip, avatar, insignia, aviso, diálogo, hoja inferior, menú, pestañas | Pendiente |
