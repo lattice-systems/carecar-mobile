@@ -30,7 +30,7 @@ Total: **202 historias** + 4 de H0.
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
-| V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Lista | |
+| V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | En revisión | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | Lista | |
 | V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05 | Lista | |

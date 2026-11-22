@@ -39,3 +39,7 @@ Notas para quien siga con T02.02 a T02.04:
 - `Movimiento` trae `paraAccesibilidad(reducir:)`, que devuelve el fundido de 120 ms. T02.03 solo debe conectarlo a la preferencia del sistema.
 - `micro` va en mayúsculas, y quien lo use debe aplicar `toUpperCase()` al texto.
 - `TemaPista` no se aplica todavía en `main.dart`, porque la decisión 0004 sigue en Propuesta y las reglas piden no migrar código por una decisión en ese estado.
+
+## Avance de V2-T02.03
+
+Los componentes piden su movimiento con `context.movimiento(Movimiento.base)` desde `lib/nucleo/diseno/movimiento_contexto.dart`. Si el sistema tiene activada la opción de reducir movimiento, el token se convierte en un fundido lineal de 120 ms. Las duraciones y curvas ya eran tokens desde T02.01. La prueba `movimiento_contexto_test.dart` cubre el token y una animación real.
