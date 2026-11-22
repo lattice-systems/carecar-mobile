@@ -1,5 +1,4 @@
 import 'package:flutter/animation.dart';
-import 'package:flutter/physics.dart';
 
 /// Una duracion con su curva.
 class TokenMovimiento {
@@ -17,12 +16,18 @@ class TokenMovimiento {
 
 /// Duraciones y curvas del sistema de diseno v2.
 abstract final class Movimiento {
-  static const TokenMovimiento rapido =
-      TokenMovimiento(Duration(milliseconds: 120), Curves.easeOut);
-  static const TokenMovimiento base =
-      TokenMovimiento(Duration(milliseconds: 220), Cubic(0.2, 0, 0, 1));
-  static const TokenMovimiento enfatico =
-      TokenMovimiento(Duration(milliseconds: 360), Cubic(0.05, 0.7, 0.1, 1));
+  static const TokenMovimiento rapido = TokenMovimiento(
+    Duration(milliseconds: 120),
+    Curves.easeOut,
+  );
+  static const TokenMovimiento base = TokenMovimiento(
+    Duration(milliseconds: 220),
+    Cubic(0.2, 0, 0, 1),
+  );
+  static const TokenMovimiento enfatico = TokenMovimiento(
+    Duration(milliseconds: 360),
+    Cubic(0.05, 0.7, 0.1, 1),
+  );
 
   static const double amortiguacionResorte = 0.85;
 
