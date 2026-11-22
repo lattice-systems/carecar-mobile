@@ -13,6 +13,7 @@ class Vehiculo {
     this.tipo,
     this.version,
     this.color,
+    this.kilometrajeActualizadoEn,
   });
 
   factory Vehiculo.fromJson(Map<String, Object?> json) => Vehiculo(
@@ -29,6 +30,12 @@ class Vehiculo {
     kilometraje: json['kilometraje'] == null
         ? null
         : leerEntero(json['kilometraje'], 'kilometraje'),
+    kilometrajeActualizadoEn: json['kilometrajeActualizadoEn'] == null
+        ? null
+        : leerFecha(
+            json['kilometrajeActualizadoEn'],
+            'kilometrajeActualizadoEn',
+          ),
   );
 
   final int id;
@@ -47,4 +54,8 @@ class Vehiculo {
   // Extensiones locales del mock; el backend no garantiza estos campos.
   final String? tipo;
   final String? color;
+
+  /// Fecha de cierre de la orden de servicio que dejo el kilometraje.
+  /// Depende de V2-T05.06; mientras tanto la simula el `mock_api`.
+  final DateTime? kilometrajeActualizadoEn;
 }
