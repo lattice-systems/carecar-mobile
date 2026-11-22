@@ -86,11 +86,15 @@ String _detalle(BuildContext context, VehiculoGaraje v) {
         : textos.vehiculosPlacas(placas),
     if (km != null)
       textos.vehiculosKilometros(
-        NumberFormat.decimalPattern(
-          Localizations.localeOf(context).toString(),
-        ).format(km),
+        NumberFormat.decimalPattern(_localeNumeros(context)).format(km),
       ),
   ].join(' · ');
+}
+
+/// Los numeros se escriben a la mexicana (`12,500`) tambien en espanol.
+String _localeNumeros(BuildContext context) {
+  final idioma = Localizations.localeOf(context).languageCode;
+  return idioma == 'es' ? 'es_MX' : idioma;
 }
 
 class _Cargando extends StatelessWidget {
