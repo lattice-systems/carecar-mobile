@@ -44,4 +44,32 @@ void main() {
       expect(DisponibilidadTaller(const []).tieneCupo(lunes), isFalse);
     });
   });
+
+  group('franjas cercanas', () {
+    final taller = DisponibilidadTaller([
+      _franja(1, lunes, '09:00', 2),
+      _franja(2, lunes, '11:00', 1),
+      _franja(3, lunes, '15:00', 1),
+      _franja(4, martes, '09:00', 4),
+      _franja(5, DateTime(2026, 11, 30), '09:00', 4),
+    ]);
+
+    test('ofrece primero las del mismo dia, por cercania de hora', () {
+      final cercanas = taller.cercanas(
+        _franja(2, lunes, '11:00', 0),
+        maximo: 2,
+      );
+      expect(cercanas.map((f) => f.franjaId), [1, 3]);
+    });
+
+    test('completa con otros dias, del mas cercano al mas lejano', () {
+      final cercanas = taller.cercanas(_franja(2, lunes, '11:00', 0));
+      expect(cercanas.map((f) => f.franjaId), [1, 3, 4]);
+    });
+
+    test('nunca ofrece la franja que se quedo sin cupo', () {
+      final cercanas = taller.cercanas(_franja(1, lunes, '09:00', 0));
+      expect(cercanas.any((f) => f.franjaId == 1), isFalse);
+    });
+  });
 }
