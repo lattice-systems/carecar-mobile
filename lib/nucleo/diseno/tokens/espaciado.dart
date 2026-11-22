@@ -11,7 +11,18 @@ abstract final class Espaciado {
   static const double e14 = 56;
   static const double e18 = 72;
 
-  static const List<double> escala = [e1, e2, e3, e4, e5, e6, e8, e10, e14, e18];
+  static const List<double> escala = [
+    e1,
+    e2,
+    e3,
+    e4,
+    e5,
+    e6,
+    e8,
+    e10,
+    e14,
+    e18,
+  ];
 
   static const double margenTelefono = 16;
   static const double margenTableta = 24;
