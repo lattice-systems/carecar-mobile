@@ -10,16 +10,8 @@ import 'colores.dart';
 /// sube un tono de superficie.
 abstract final class Elevacion {
   static const List<BoxShadow> _sombrasClaro = [
-    BoxShadow(
-      color: Color(0x0F000000),
-      offset: Offset(0, 1),
-      blurRadius: 2,
-    ),
-    BoxShadow(
-      color: Color(0x0F000000),
-      offset: Offset(0, 8),
-      blurRadius: 24,
-    ),
+    BoxShadow(color: Color(0x0F000000), offset: Offset(0, 1), blurRadius: 2),
+    BoxShadow(color: Color(0x0F000000), offset: Offset(0, 8), blurRadius: 24),
   ];
 
   static List<BoxShadow> sombras(Brightness brillo) {
