@@ -24,3 +24,7 @@ Que cualquier persona use CareCar: lector de pantalla, letra grande, contraste, 
 | V2-M20.06 | Como equipo queremos contraste AA garantizado | Prueba automática de contraste de tokens claro/oscuro | | V2-T02.01 |
 | V2-M20.07 | Como equipo queremos una auditoría WCAG 2.2 AA | Informe en `docs/` y hallazgos convertidos en historias | | H6 |
 | V2-M20.08 | Como cliente quiero objetivos táctiles cómodos | Mínimo 48 × 48 dp en todo control | | V2-T02.05 |
+
+## Avance de V2-M20.04
+
+Todo movimiento del sistema v2 pasa por `context.movimiento(token)` (V2-T02.03), que con "reducir movimiento" del sistema entrega un fundido de 120 ms lineal. `test/nucleo/diseno/movimiento_reducido_test.dart` lo vigila de dos formas: un recorrido del código que falla si un componente de `lib/nucleo/diseno/componentes/` trae `Duration(`, `Curves.` o `Cubic(` propios, y una prueba de comportamiento con `Pestanas` en las dos preferencias. Lo que queda fuera es el código v1 (`lib/widgets/movimiento.dart` y las pantallas actuales), que se retira con V2-T02.08 y se migra con V2-T01.05, no antes.
