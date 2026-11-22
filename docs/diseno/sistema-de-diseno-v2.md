@@ -34,9 +34,9 @@ Tokens semánticos; ningún componente usa hexadecimales directos. Valores inici
 | `acento` | `#2457F5` | `#5B8CFF` | Acción principal, enlaces, foco |
 | `sobreAcento` | `#FFFFFF` | `#0A0B0E` | Texto sobre acento |
 | `marca` | `#1D3557` | `#8FB0DA` | Logo y momentos de marca de la agencia (con mesura) |
-| `exito` | `#12805C` | `#34C38F` | Confirmada, vigente, listo |
-| `advertencia` | `#B25E09` | `#F5A524` | Por vencer, esperando aprobación |
-| `peligro` | `#D92D20` | `#F97066` | Vencido, error, cancelar |
+| `exito` | `#117857` | `#34C38F` | Confirmada, vigente, listo |
+| `advertencia` | `#A25608` | `#F5A524` | Por vencer, esperando aprobación |
+| `peligro` | `#C6291D` | `#F97066` | Vencido, error, cancelar |
 | `velo` | `#0B0D12` 48 % | `#000000` 64 % | Fondo de diálogos y hojas |
 
 Cada color de estado tiene variante `…Suave` (fondo tenue, 10–14 % de opacidad sobre `superficie`) para insignias y avisos.
