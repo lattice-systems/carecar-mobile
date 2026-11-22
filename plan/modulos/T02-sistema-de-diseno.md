@@ -56,4 +56,5 @@ Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucle
 | --- | --- |
 | `Boton` (principal, secundario, terciario, peligro, tres tamaños, carga) | Hecho |
 | `Insignia`, `ChipPista`, `Avatar`, `Aviso` (con `Tono` compartido: neutro, información, éxito, advertencia, peligro) | Hecho |
-| Campo, selector, casilla, interruptor, diálogo, hoja inferior, menú, pestañas | Pendiente |
+| `Dialogo` y `mostrarDialogo`, `HojaInferior` y `mostrarHojaInferior`, `Menu` con `ItemMenu`, `Pestanas` (zonas táctiles de 48, velo y movimiento de los tokens, respetan reducir movimiento) | Hecho |
+| Campo, selector, casilla, interruptor | Pendiente (PR 23) |
