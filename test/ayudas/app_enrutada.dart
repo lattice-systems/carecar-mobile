@@ -1,4 +1,5 @@
 import 'package:carecar_mobile/api/carecar_api.dart';
+import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/navegacion/proveedores_navegacion.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
@@ -39,6 +40,9 @@ class AppEnrutadaDePrueba extends StatelessWidget {
       appBuilder: (context) => Consumer(
         builder: (context, ref, _) => MaterialApp.router(
           theme: TemaCareCar.claro,
+          localizationsDelegates: delegadasDeIdioma,
+          supportedLocales: idiomasSoportados,
+          localeResolutionCallback: resolverIdioma,
           routerConfig: ref.watch(enrutadorProvider),
           builder: (context, child) => ShadAppBuilder(child: child!),
         ),

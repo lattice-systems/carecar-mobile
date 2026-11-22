@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:flutter/material.dart';
 
@@ -10,10 +11,14 @@ Widget conTemaPista(
   Widget hijo, {
   Escenario escenario = Escenario.claro,
   double ancho = 360,
+  Locale idioma = idiomaBase,
 }) {
   final oscuro = escenario == Escenario.oscuro;
   final escala = escenario == Escenario.letraGrande ? 2.0 : 1.0;
   return MaterialApp(
+    locale: idioma,
+    localizationsDelegates: delegadasDeIdioma,
+    supportedLocales: idiomasSoportados,
     theme: oscuro ? TemaPista.oscuro() : TemaPista.claro(),
     home: MediaQuery(
       data: MediaQueryData(
