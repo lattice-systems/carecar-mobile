@@ -12,9 +12,55 @@
   "catalogoVacioTitulo": "Aún no hay modelos",
   "catalogoVacioMensaje": "Cuando la agencia publique modelos, los verás aquí.",
 
+  "citasAgendarContinuar": "Revisar y confirmar",
+  "citasAgendarMotivo": "Motivo de la visita",
+  "citasAgendarMotivoSugerencia": "Elige un motivo",
+  "citasAgendarSinDatos": "Elige vehículo, día, horario y motivo para continuar.",
+  "citasAgendarTitulo": "Agendar cita",
+  "citasAgendarVehiculo": "Vehículo",
+  "citasAgendarVehiculoSugerencia": "Elige tu vehículo",
   "citasCargando": "Cargando disponibilidad del taller",
   "@citasCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras carga la disponibilidad."
+  },
+  "citasCargandoAgendar": "Cargando tus vehículos y los horarios del taller",
+  "citasConfirmar": "Confirmar cita",
+  "citasDuplicadaMensaje": "Ya tienes una cita el {fecha} de {inicio} a {fin}. Si necesitas cambiarla, cancélala primero.",
+  "@citasDuplicadaMensaje": {
+    "description": "Mensaje cuando el cliente ya tiene cita ese día con ese vehículo.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "10:00"
+      }
+    }
+  },
+  "citasDuplicadaTitulo": "Ya tienes una cita ese día",
+  "citasEditar": "Cambiar datos",
+  "citasErrorAgendar": "No pudimos agendar tu cita. Intenta de nuevo.",
+  "citasFranjaCercana": "{fecha} · {hora}",
+  "@citasFranjaCercana": {
+    "description": "Botón que ofrece una franja cercana cuando la elegida se llenó.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 nov"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
   },
   "citasHorariosDelDia": "Horarios del {dia}",
   "@citasHorariosDelDia": {
@@ -28,8 +74,54 @@
     }
   },
   "citasHorariosVacio": "Este día ya no tiene lugares.",
+  "citasListoCerrar": "Listo",
+  "citasListoMensaje": "Te esperamos el {fecha} a las {hora}.",
+  "@citasListoMensaje": {
+    "description": "Confirmación tras agendar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasListoTitulo": "Cita confirmada",
+  "citasMotivoGarantia": "Garantía",
+  "citasMotivoMantenimiento": "Mantenimiento",
+  "citasMotivoOtro": "Otro",
+  "citasMotivoReparacion": "Reparación",
+  "citasMotivoRevision": "Revisión",
   "citasNotaDiasSinCupo": "Los días tachados no tienen lugares disponibles.",
+  "citasResumenFecha": "Día",
+  "citasResumenHorario": "Horario",
+  "citasResumenHorarioValor": "{inicio} a {fin}",
+  "@citasResumenHorarioValor": {
+    "description": "Hora de inicio y fin de la franja en el resumen.",
+    "placeholders": {
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "10:00"
+      }
+    }
+  },
+  "citasResumenMotivo": "Motivo",
+  "citasResumenTitulo": "Resumen de tu cita",
+  "citasResumenVehiculo": "Vehículo",
+  "citasSinCupoMensaje": "Alguien la tomó mientras decidías. Estas opciones están cerca:",
+  "citasSinCupoNinguna": "Por ahora no hay otros horarios cercanos. Elige otro día.",
+  "citasSinCupoTitulo": "Ese horario ya no tiene lugar",
   "citasSinDiaElegido": "Elige un día para ver sus horarios.",
+  "citasSinVehiculosMensaje": "La agencia registra tu auto cuando te lo entrega. Después podrás agendar aquí.",
+  "citasSinVehiculosTitulo": "Aún no tienes vehículos",
   "citasTitulo": "Disponibilidad del taller",
   "@citasTitulo": {
     "description": "Título de la pantalla con el calendario de disponibilidad."
