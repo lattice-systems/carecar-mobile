@@ -55,4 +55,5 @@ Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucle
 | Componente | Estado |
 | --- | --- |
 | `Boton` (principal, secundario, terciario, peligro, tres tamaños, carga) | Hecho |
-| Campo, selector, casilla, interruptor, chip, avatar, insignia, aviso, diálogo, hoja inferior, menú, pestañas | Pendiente |
+| `Insignia`, `ChipPista`, `Avatar`, `Aviso` (con `Tono` compartido: neutro, información, éxito, advertencia, peligro) | Hecho |
+| Campo, selector, casilla, interruptor, diálogo, hoja inferior, menú, pestañas | Pendiente |
