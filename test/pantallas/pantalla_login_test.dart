@@ -10,6 +10,7 @@ import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:carecar_mobile/widgets/aviso.dart';
+import 'package:carecar_mobile/widgets/espera_servidor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -334,6 +335,68 @@ void main() {
       await tester.pump();
 
       expect(find.byKey(PantallaLogin.avisoDeError), findsNothing);
+    });
+  });
+
+  group('V2-M01.12 · servidor dormido', () {
+    testWidgets(
+      'no avisa antes de 8 s, avisa despues y se quita al responder',
+      (tester) async {
+        final puerta = Completer<void>();
+        await _montar(tester, _controlador(ApiFalsa.queTarda(puerta.future)));
+
+        await _escribirCredenciales(tester);
+        await tester.tap(find.byKey(PantallaLogin.botonEntrar));
+        await tester.pump();
+
+        await tester.pump(const Duration(seconds: 7));
+        expect(
+          find.byKey(PantallaLogin.avisoServidorDespertando),
+          findsNothing,
+        );
+
+        await tester.pump(const Duration(seconds: 2));
+        expect(
+          find.byKey(PantallaLogin.avisoServidorDespertando),
+          findsOneWidget,
+        );
+        expect(find.text('Despertando el servidor…'), findsOneWidget);
+        // El boton sigue en estado de carga.
+        expect(find.text('Entrando…'), findsOneWidget);
+
+        puerta.complete();
+        await tester.pumpAndSettle();
+        expect(
+          find.byKey(PantallaLogin.avisoServidorDespertando),
+          findsNothing,
+        );
+      },
+    );
+
+    testWidgets('si la peticion falla, el aviso se quita y sale el error', (
+      tester,
+    ) async {
+      final puerta = Completer<void>();
+      final api = ApiFalsa(
+        alIniciarSesion: (_) async {
+          await puerta.future;
+          throw const SinConexion();
+        },
+      );
+      await _montar(tester, _controlador(api));
+
+      await _escribirCredenciales(tester);
+      await tester.tap(find.byKey(PantallaLogin.botonEntrar));
+      await tester.pump(umbralServidorDespertando + const Duration(seconds: 1));
+      expect(
+        find.byKey(PantallaLogin.avisoServidorDespertando),
+        findsOneWidget,
+      );
+
+      puerta.complete();
+      await tester.pumpAndSettle();
+      expect(find.byKey(PantallaLogin.avisoServidorDespertando), findsNothing);
+      expect(find.byKey(PantallaLogin.avisoDeError), findsOneWidget);
     });
   });
 

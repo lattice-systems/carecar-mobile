@@ -135,6 +135,9 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 | Backend en Docker detrás de nginx (red local) | `http://IP-DE-LA-PC:8089/api/v1/app` |
 
 > [!NOTE]
+> **Arranque en frío del backend en la nube.** Azure Container Apps apaga el servidor sin tráfico; la primera petición tras un rato de inactividad (por ejemplo el primer inicio de sesión) tarda ~35 s en despertarlo. La app espera hasta 60 s en lugar de fallar, y tras 8 s muestra «Despertando el servidor…» (V2-M01.12). Si aun así ves «Sin conexión», el servidor tardó más de un minuto o no hay red.
+
+> [!NOTE]
 > El proyecto es solo local: la app acepta `http` en debug y en release (IP de la PC con `ip -4 addr`).
 
 > [!TIP]

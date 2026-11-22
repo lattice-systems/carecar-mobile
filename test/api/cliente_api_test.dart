@@ -34,6 +34,17 @@ http.Response _problema(int status, String mensaje) => http.Response(
 );
 
 void main() {
+  test(
+    'el tiempo limite por omision cubre el arranque en frio del servidor',
+    () {
+      // Azure Container Apps tarda ~35 s en despertar (V2-M01.12).
+      final cliente = ClienteApi(config: _config);
+      expect(cliente.tiempoLimite, const Duration(seconds: 60));
+      expect(cliente.tiempoLimite, greaterThan(const Duration(seconds: 35)));
+      cliente.cerrar();
+    },
+  );
+
   group('armado de la peticion', () {
     test('pega la ruta a la direccion configurada', () async {
       Uri? pedida;

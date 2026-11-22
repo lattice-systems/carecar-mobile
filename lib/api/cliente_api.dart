@@ -10,6 +10,14 @@ import 'excepciones.dart';
 import 'modelos/pagina.dart';
 import 'modelos/problema.dart';
 
+/// Tiempo que espera [ClienteApi] una respuesta antes de rendirse.
+///
+/// El backend corre en Azure Container Apps y se apaga sin trafico: el primer
+/// acceso tras un rato de inactividad tarda ~35 s en despertar. Con 20 s el
+/// primer inicio de sesion mostraba «Sin conexion» aunque el servidor si
+/// estaba llegando; 60 s deja holgura sobre el arranque en frio (V2-M01.12).
+const tiempoLimitePorOmision = Duration(seconds: 60);
+
 /// Transporte HTTP de la API: arma peticiones, lee JSON y traduce los codigos
 /// del contrato a excepciones de [ExcepcionApi].
 ///
@@ -22,7 +30,7 @@ class ClienteApi {
     http.Client? http,
     this.obtenerToken,
     this.renovarSesion,
-    this.tiempoLimite = const Duration(seconds: 20),
+    this.tiempoLimite = tiempoLimitePorOmision,
   }) : _http = http ?? _crearCliente();
 
   static http.Client _crearCliente() => http.Client();
