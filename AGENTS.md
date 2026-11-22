@@ -2,7 +2,7 @@
 
 Archivo canónico para **cualquier** agente de código (Claude Code, Codex, Antigravity/Gemini, Cursor…) y para las personas. `CLAUDE.md` y `GEMINI.md` solo apuntan aquí. Si algo choca con otro documento, gana este orden:
 
-1. **Ficha técnica v2.0** — [`docs/ficha-tecnica/`](docs/ficha-tecnica/README.md). Obligatoria, sí o sí.
+1. **Ficha técnica v2.1** — [`docs/ficha-tecnica/`](docs/ficha-tecnica/README.md). Obligatoria, sí o sí.
 2. **Este archivo** (reglas de trabajo).
 3. **Plan maestro v2** — [`plan/`](plan/README.md) (propósito, hitos, módulos, reparto, tablero).
 4. Decisiones de arquitectura — [`docs/decisiones/`](docs/decisiones/).
