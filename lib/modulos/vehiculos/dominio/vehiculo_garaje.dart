@@ -19,6 +19,12 @@ class VehiculoGaraje {
   final String? placas;
   final int? kilometraje;
 
-  /// Nombre completo para la tarjeta: "Mazda CX-5 2024".
-  String get titulo => [?marca, modelo, anio].join(' ');
+  /// Nombre completo para la tarjeta: "Mazda CX-5 2024". Si el modelo ya
+  /// empieza con la marca ("Nissan March"), no la repite.
+  String get titulo {
+    final m = marca;
+    final repetida =
+        m != null && modelo.toLowerCase().startsWith(m.toLowerCase());
+    return [if (m != null && !repetida) m, modelo, anio].join(' ');
+  }
 }
