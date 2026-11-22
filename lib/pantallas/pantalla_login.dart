@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -5,6 +7,7 @@ import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/aviso.dart';
 import '../widgets/campo_texto.dart';
+import '../widgets/espera_servidor.dart';
 
 /// Pantalla de acceso · APP-2.1
 ///
@@ -40,6 +43,7 @@ class PantallaLogin extends StatefulWidget {
   static const botonOlvide = Key('login_olvide');
   static const logo = Key('login_logo');
   static const avisoDeError = Key('login_aviso_error');
+  static const avisoServidorDespertando = Key('login_aviso_despertando');
 
   @override
   State<PantallaLogin> createState() => _PantallaLoginState();
@@ -51,6 +55,11 @@ class _PantallaLoginState extends State<PantallaLogin> {
   final _contrasena = TextEditingController();
   bool _verContrasena = false;
 
+  /// Arranca al empezar la peticion y avisa si el servidor tarda: puede estar
+  /// despertando de un apagado por inactividad (V2-M01.12).
+  Timer? _temporizadorDeEspera;
+  bool _servidorTarda = false;
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +69,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
   @override
   void dispose() {
     widget.controlador.removeListener(_alCambiarLaSesion);
+    _temporizadorDeEspera?.cancel();
     _correo.dispose();
     _contrasena.dispose();
     super.dispose();
@@ -67,6 +77,15 @@ class _PantallaLoginState extends State<PantallaLogin> {
 
   void _alCambiarLaSesion() {
     if (!mounted) return;
+    if (widget.controlador.estado is Autenticando) {
+      _temporizadorDeEspera ??= Timer(umbralServidorDespertando, () {
+        if (mounted) setState(() => _servidorTarda = true);
+      });
+    } else {
+      _temporizadorDeEspera?.cancel();
+      _temporizadorDeEspera = null;
+      _servidorTarda = false;
+    }
     setState(() {});
     if (widget.controlador.estado is Autenticada) {
       widget.alIniciarSesion?.call();
@@ -124,6 +143,12 @@ class _PantallaLoginState extends State<PantallaLogin> {
                   children: [
                     const _Encabezado(),
                     const SizedBox(height: TemaCareCar.espacioSecciones),
+                    if (entrando && _servidorTarda) ...[
+                      const AvisoServidorDespertando(
+                        key: PantallaLogin.avisoServidorDespertando,
+                      ),
+                      const SizedBox(height: TemaCareCar.espacioCampos),
+                    ],
                     if (fallo != null) ...[
                       Aviso(
                         key: PantallaLogin.avisoDeError,

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../tema/tema_carecar.dart';
+import '../widgets/espera_servidor.dart';
 import '../widgets/logo_carecar.dart';
 
 /// Cortina de arranque: telon con la marca que se abre sobre la pantalla
@@ -25,6 +26,7 @@ class CortinaArranque extends StatefulWidget {
   final Duration duracionMinima;
 
   static const logo = Key('arranque_logo');
+  static const avisoServidorDespertando = Key('arranque_aviso_despertando');
 
   @override
   State<CortinaArranque> createState() => _CortinaArranqueState();
@@ -207,8 +209,30 @@ class _Marca extends StatelessWidget {
   }
 }
 
-class _Carga extends StatelessWidget {
+class _Carga extends StatefulWidget {
   const _Carga();
+
+  @override
+  State<_Carga> createState() => _CargaState();
+}
+
+class _CargaState extends State<_Carga> {
+  Timer? _temporizador;
+  bool _servidorTarda = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _temporizador = Timer(umbralServidorDespertando, () {
+      if (mounted) setState(() => _servidorTarda = true);
+    });
+  }
+
+  @override
+  void dispose() {
+    _temporizador?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +254,9 @@ class _Carga extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          'Cargando…',
+          _servidorTarda ? textoServidorDespertando : 'Cargando…',
+          key: _servidorTarda ? CortinaArranque.avisoServidorDespertando : null,
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white.withValues(alpha: 0.7),
             fontSize: 13,
