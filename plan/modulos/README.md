@@ -1,6 +1,6 @@
 # Catálogo de módulos de CareCar v2
 
-La **ficha técnica v2.0** cubre 23 módulos: los marcados ✅ en la columna Ficha (con su número de sección) son obligatorios. M01–M03 vienen de la ficha v1.1; los demás entraron en la v2.0. M20, M21, M23 y M25 son frentes transversales sin tablas propias. T01–T05 son frentes técnicos que sostienen a todos.
+La **ficha técnica v2.1** cubre 23 módulos: los marcados ✅ en la columna Ficha (con su número de sección) son obligatorios. M01–M03 vienen de la ficha v1.1; los demás entraron en la v2.0. M20, M21, M23 y M25 son frentes transversales sin tablas propias. T01–T05 son frentes técnicos que sostienen a todos.
 
 Cada módulo tiene su archivo con propósito, pantallas, datos, API e historias (`V2-Mxx.nn`). Plantilla: [`_plantilla.md`](_plantilla.md).
 
