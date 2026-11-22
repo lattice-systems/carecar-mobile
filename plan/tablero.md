@@ -58,7 +58,7 @@ Total: **210 historias** + 4 de H0.
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
-| V2-T04.01 | Versión automática | Daniel |  | — | Lista | |
+| V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |

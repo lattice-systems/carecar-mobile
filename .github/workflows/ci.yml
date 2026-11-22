@@ -163,9 +163,11 @@ jobs:
         run: flutter pub get
 
       # Build de debug: comprueba que la app compila para Android sin necesitar
-      # las llaves de firma de producción.
+      # las llaves de firma de producción. El nombre de versión sale del
+      # `version` de pubspec.yaml y el número de build de la corrida de CI
+      # (github.run_number, siempre creciente), así cada APK es distinguible.
       - name: Compilar el APK
-        run: flutter build apk --debug
+        run: flutter build apk --debug --build-number=${{ github.run_number }}
 
   build-ios:
     name: Build iOS (sin firma)
