@@ -30,7 +30,7 @@ Total: **210 historias** + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Hecha | #17 |
 | V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Hecha | #34 |
-| V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Lista | |
+| V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Hecha | #39 |
 | V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Lista | |
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Lista | |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Lista | |
