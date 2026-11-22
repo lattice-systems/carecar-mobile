@@ -106,3 +106,18 @@ El detalle vive en `lib/modulos/vehiculos/` (`PantallaDetalleVehiculo`, ruta `/g
 - **Textos:** claves `vehiculos*` en `app_es.arb` y `app_en.arb`.
 - **Pruebas:** `test/modulos/vehiculos/pantalla_detalle_test.dart` (datos, copiar con portapapeles simulado, fecha, accesos, cinco estados, inglés, claro/oscuro/letra al 200 %), `ruta_garaje_test.dart` (tarjeta abre el detalle, `/garaje/:id`, id inválido, sin sesión), `garaje_test.dart`, `modelos_test.dart` y `vehiculos_semilla_test.dart`.
 - **Pendientes:** el golden de la pantalla espera a V2-T03.02; sin foto del auto (el contrato no la trae); `plan/cumplimiento-ficha.md` no cambia: la fila «Detalle del vehículo y kilometraje» sigue en 🟡 hasta que exista T05.06 con `orden_servicio` real.
+
+## Avance de V2-M02.08
+
+Pantalla `PantallaAgendarCita` en `lib/modulos/citas/` (ruta `/citas/agendar`, exige sesión). Estado: **En revisión**. Solo la parte de app y `mock_api`; el backend Java queda en su historia `Backend:`.
+
+- **Flujo** (tres pasos en la misma pantalla): formulario (vehículo del garaje con `garajeProvider`, calendario y franja de V2-M02.07, motivo) → resumen (vehículo, día, horario, motivo) con «Confirmar cita» y «Cambiar datos» → cita confirmada. «Revisar y confirmar» se habilita solo con los cuatro datos y la pantalla dice qué falta.
+- **409 `FRANJA_SIN_CUPO`**: se traduce a `FranjaSinCupo`; la pantalla recarga la disponibilidad y ofrece hasta 3 franjas cercanas (`DisponibilidadTaller.cercanas`: primero el mismo día por cercanía de hora, luego los días más próximos). Al tocar una, el resumen cambia a esa franja.
+- **409 `CITA_DUPLICADA`**: se traduce a `CitaDuplicada(existente)`; la pantalla muestra la cita que ya existe y no deja confirmar. Hoy el backend responde este 409 **sin código**: `RepositorioCitasApi` lo reconoce buscando en `GET /citas` la cita confirmada del mismo vehículo (o franja) y día. No se agregó `CITA_DUPLICADA` a `CodigoProblema` porque la prueba de contrato compara ese enum con el YAML v1; se agrega cuando exista el contrato v2.
+- **Motivo**: `NuevaCita.motivo` y `Cita.motivo` (opcionales, se omite del cuerpo si no hay). Motivos: mantenimiento, reparación, revisión, garantía, otro (`MotivoCita`; el código viaja en `cita.motivo`).
+- **mock_api**: `POST /citas` guarda `motivo`, lo devuelve en `GET /citas`, y responde 409 `CITA_DUPLICADA` (mismo vehículo y día, o misma franja). La semilla no se tocó.
+- **Fake**: `RepositorioCitasFake` genera fechas relativas al rango pedido (hoy), descuenta cupo al agendar y simula `FranjaSinCupo` (`franjasLlenas`) y `CitaDuplicada`.
+- **Cinco estados**: esqueleto, datos, vacío (sin vehículos o sin lugares en el rango), error con reintento y sin conexión; se recarga jalando hacia abajo.
+- **Textos**: claves `citas*` en los ARB es y en.
+- **Pruebas**: `test/modulos/citas/` (cercanas, repositorio API y fake, pantalla en claro, oscuro y letra al 200 %, ruta con y sin sesión) y `test/api/modelos_test.dart` (motivo).
+- **Pendientes**: backend de `cita.motivo` y del código `CITA_DUPLICADA` (historia `Backend:` de V2-M02.08, a cargo de Juan Pablo); actualizar el YAML y `CodigoProblema` con el contrato v2; ofrecer la cita existente con acceso al detalle cuando exista V2-M02.09; golden de la pantalla espera a V2-T03.02; punto de entrada desde la navegación principal (hoy solo por ruta).
