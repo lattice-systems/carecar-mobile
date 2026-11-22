@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:carecar_mobile/nucleo/diseno/tokens/colores.dart';
 import 'package:carecar_mobile/nucleo/diseno/tokens/elevacion.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -25,12 +24,18 @@ void main() {
   test('en claro la superficie no cambia al subir de nivel', () {
     final p = PaletaColores.claro;
     expect(Elevacion.superficie(p, Brightness.light, nivel: 0), p.superficie);
-    expect(Elevacion.superficie(p, Brightness.light, nivel: 1), p.superficieElevada);
+    expect(
+      Elevacion.superficie(p, Brightness.light, nivel: 1),
+      p.superficieElevada,
+    );
   });
 
   test('en oscuro subir de nivel aclara la superficie', () {
     final p = PaletaColores.oscuro;
     expect(Elevacion.superficie(p, Brightness.dark, nivel: 0), p.superficie);
-    expect(Elevacion.superficie(p, Brightness.dark, nivel: 1), p.superficieElevada);
+    expect(
+      Elevacion.superficie(p, Brightness.dark, nivel: 1),
+      p.superficieElevada,
+    );
   });
 }
