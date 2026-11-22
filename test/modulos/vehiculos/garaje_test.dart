@@ -35,6 +35,29 @@ void main() {
     });
   });
 
+  group('RepositorioGarajeApi detalle', () {
+    test('traduce vin, color, version y fecha de cierre del km', () async {
+      final api = ApiFalsa()
+        ..alPedirVehiculos = () async => [
+          Vehiculo(
+            id: 3,
+            vin: 'VIN123',
+            modelo: 'CX-30',
+            anio: 2025,
+            color: 'Rojo',
+            version: 'Sport',
+            kilometraje: 900,
+            kilometrajeActualizadoEn: DateTime(2026, 10, 20),
+          ),
+        ];
+      final v = (await RepositorioGarajeApi(api).vehiculos()).single;
+      expect(v.vin, 'VIN123');
+      expect(v.color, 'Rojo');
+      expect(v.version, 'Sport');
+      expect(v.kilometrajeActualizadoEn, DateTime(2026, 10, 20));
+    });
+  });
+
   group('RepositorioGarajeApi', () {
     test('traduce los vehiculos de la API al dominio', () async {
       final api = ApiFalsa()
