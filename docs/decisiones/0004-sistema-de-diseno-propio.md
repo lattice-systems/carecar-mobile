@@ -1,6 +1,6 @@
 # 0004 · Sistema de diseño propio sobre Material 3
 
-**Estado:** Propuesta (reemplazaría "`shadcn_ui` sobre Material con la paleta de marca")
+**Estado:** Aceptada
 
 ## Contexto
 

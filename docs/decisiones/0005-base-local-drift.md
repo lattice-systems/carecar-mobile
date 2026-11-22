@@ -1,6 +1,6 @@
 # 0005 · Base local con drift (SQLite) cifrada
 
-**Estado:** Propuesta
+**Estado:** Aceptada
 
 ## Contexto
 
