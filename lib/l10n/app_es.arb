@@ -59,9 +59,45 @@
     }
   },
 
+  "vehiculosAccesoFicha": "Ficha técnica",
+  "@vehiculosAccesoFicha": {
+    "description": "Acceso del detalle a la ficha técnica del vehículo."
+  },
+  "vehiculosAccesoHistorial": "Historial de servicios",
+  "@vehiculosAccesoHistorial": {
+    "description": "Acceso del detalle al historial de servicios del vehículo."
+  },
+  "vehiculosAccesoManuales": "Manuales",
+  "@vehiculosAccesoManuales": {
+    "description": "Acceso del detalle a los manuales del vehículo."
+  },
+  "vehiculosAccesoPronto": "Disponible pronto",
+  "@vehiculosAccesoPronto": {
+    "description": "Se dice en un acceso del detalle cuya pantalla aún no existe."
+  },
+  "vehiculosAnio": "Año",
+  "@vehiculosAnio": {
+    "description": "Etiqueta del año del vehículo."
+  },
   "vehiculosCargando": "Cargando tu garaje",
   "@vehiculosCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras carga el garaje."
+  },
+  "vehiculosColor": "Color",
+  "@vehiculosColor": {
+    "description": "Etiqueta del color del vehículo."
+  },
+  "vehiculosCopiarVin": "Copiar VIN",
+  "@vehiculosCopiarVin": {
+    "description": "Lo que lee el lector de pantalla en el botón que copia el VIN."
+  },
+  "vehiculosDetalleTitulo": "Detalle del vehículo",
+  "@vehiculosDetalleTitulo": {
+    "description": "Título de la pantalla de detalle de un vehículo."
+  },
+  "vehiculosKilometraje": "Kilometraje",
+  "@vehiculosKilometraje": {
+    "description": "Etiqueta del kilometraje del vehículo."
   },
   "vehiculosKilometros": "{km} km",
   "@vehiculosKilometros": {
@@ -73,6 +109,32 @@
       }
     }
   },
+  "vehiculosKmActualizado": "Actualizado por el taller el {fecha}",
+  "@vehiculosKmActualizado": {
+    "description": "Fecha de cierre del servicio que dejó el kilometraje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "20 oct 2026"
+      }
+    }
+  },
+  "vehiculosKmSinActualizar": "Aún sin actualización del taller",
+  "@vehiculosKmSinActualizar": {
+    "description": "Se muestra si el kilometraje no trae fecha de cierre."
+  },
+  "vehiculosKmSinDato": "Sin kilometraje registrado",
+  "@vehiculosKmSinDato": {
+    "description": "Se muestra si el vehículo no tiene kilometraje."
+  },
+  "vehiculosNoEncontradoMensaje": "Ese vehículo ya no está en tu garaje. Vuelve al garaje para elegir otro.",
+  "@vehiculosNoEncontradoMensaje": {
+    "description": "Mensaje cuando el vehículo pedido no existe en el garaje."
+  },
+  "vehiculosNoEncontradoTitulo": "No encontramos el vehículo",
+  "@vehiculosNoEncontradoTitulo": {
+    "description": "Título cuando el vehículo pedido no existe en el garaje."
+  },
   "vehiculosPlacas": "Placas {placas}",
   "@vehiculosPlacas": {
     "description": "Placas de un vehículo.",
@@ -83,6 +145,10 @@
       }
     }
   },
+  "vehiculosPlacasEtiqueta": "Placas",
+  "@vehiculosPlacasEtiqueta": {
+    "description": "Etiqueta de las placas del vehículo."
+  },
   "vehiculosSinPlacas": "Sin placas",
   "@vehiculosSinPlacas": {
     "description": "Se muestra cuando el vehículo aún no tiene placas registradas."
@@ -92,5 +158,17 @@
     "description": "Título de la pantalla con los vehículos del cliente."
   },
   "vehiculosVacioMensaje": "La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.",
-  "vehiculosVacioTitulo": "Aún no tienes vehículos"
+  "vehiculosVacioTitulo": "Aún no tienes vehículos",
+  "vehiculosVersion": "Versión",
+  "@vehiculosVersion": {
+    "description": "Etiqueta de la versión del vehículo."
+  },
+  "vehiculosVin": "VIN",
+  "@vehiculosVin": {
+    "description": "Etiqueta del número de serie del vehículo."
+  },
+  "vehiculosVinCopiado": "VIN copiado",
+  "@vehiculosVinCopiado": {
+    "description": "Confirmación al copiar el VIN."
+  }
 }
