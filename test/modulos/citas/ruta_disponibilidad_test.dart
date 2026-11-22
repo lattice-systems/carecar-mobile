@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/api/modelos/disponibilidad.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/calendario.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
@@ -39,7 +40,7 @@ void main() {
     enrutadorDe(tester).go(rutaDisponibilidad);
     await tester.pumpAndSettle();
     expect(find.byType(PantallaDisponibilidad), findsOneWidget);
-    expect(find.text('Disponibilidad del taller'), findsOneWidget);
+    expect(find.byType(Calendario), findsOneWidget);
   });
 
   testWidgets('/citas/disponibilidad sin sesion manda al acceso', (
