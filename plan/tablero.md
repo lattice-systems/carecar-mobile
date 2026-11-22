@@ -41,7 +41,7 @@ Total: **210 historias** + 4 de H0.
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | Hecha | #31, #33, #37, #41 |
-| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05, V2-T02.13, V2-T02.14 | Lista | |
+| V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05, V2-T02.13, V2-T02.14 | Hecha | #43 |
 | V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
 | V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
