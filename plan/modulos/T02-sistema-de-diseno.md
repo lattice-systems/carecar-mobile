@@ -76,3 +76,13 @@ Los componentes base se entregan por tandas, un PR a la vez. Viven en `lib/nucle
 - `Firma` es de solo lectura, con fondo claro fijo para que el trazo se lea en modo oscuro. Sin imagen explica que aún no hay firma.
 
 Pruebas en `test/nucleo/diseno/componentes/fotos_firma_test.dart`. El golden queda para V2-T03.02. `lib/widgets/galeria_auto.dart` es de v1 y se retira con V2-T02.08, no se toca aquí.
+
+## Avance de V2-T02.05
+
+Los componentes compuestos se entregan por tandas, un PR a la vez, en `lib/nucleo/diseno/componentes/`. Lo que falta de la lista del documento: `TarjetaVehiculo`, `EncabezadoGrande`, `LineaDeTiempo`, `Calendario`, `SelectorFranja`, `BarraNavegacion`, `TarjetaAccion`, `VisorPdf` y `Semaforo`.
+
+| Tanda | Componentes | Estado |
+| --- | --- | --- |
+| 1 | `EstadoVacio`, `EstadoError` (con `CausaError.sinConexion`), `Esqueleto` (con `.linea` y `.circulo`), `TarjetaMetrica`, `FilaLista` | Hecho |
+
+`EstadoVacio` y `EstadoError` se desplazan si no caben, porque a letra al 200 % desbordaban. `Esqueleto` no se anuncia al lector de pantalla: quien lo use avisa "cargando" una sola vez en el contenedor. `TarjetaMetrica` reduce la cifra para que una larga no desborde.
