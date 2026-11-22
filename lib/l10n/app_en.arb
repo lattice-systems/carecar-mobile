@@ -8,5 +8,13 @@
 
   "precioDesde": "From {precio}",
 
-  "fotoDeModelo": "Photo of the {modelo}"
+  "fotoDeModelo": "Photo of the {modelo}",
+
+  "vehiculosCargando": "Loading your garage",
+  "vehiculosKilometros": "{km} km",
+  "vehiculosPlacas": "Plates {placas}",
+  "vehiculosSinPlacas": "No plates",
+  "vehiculosTitulo": "My garage",
+  "vehiculosVacioMensaje": "The dealership registers your cars when it hands them over. Once it does, they will show up here.",
+  "vehiculosVacioTitulo": "You have no vehicles yet"
 }
