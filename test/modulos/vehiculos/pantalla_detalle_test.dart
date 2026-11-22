@@ -35,8 +35,19 @@ Widget _app(
       : conTemaPista(PantallaDetalleVehiculo(vehiculoId: id), idioma: idioma),
 );
 
+/// Como `testWidgets` pero con una pantalla alta: el detalle es una lista
+/// perezosa y lo de abajo no se construye si no cabe.
+void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) {
+  testWidgets(descripcion, (tester) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await cuerpo(tester);
+  });
+}
+
 void main() {
-  testWidgets('muestra vin, placas, anio, color, version y km', (tester) async {
+  _prueba('muestra vin, placas, anio, color, version y km', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     expect(find.text('Detalle del vehículo'), findsOneWidget);
@@ -48,16 +59,14 @@ void main() {
     expect(find.text('12,500 km'), findsOneWidget);
   });
 
-  testWidgets('el km dice cuando lo actualizo el taller', (tester) async {
+  _prueba('el km dice cuando lo actualizo el taller', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     expect(find.textContaining('Actualizado por el taller el'), findsOneWidget);
     expect(find.textContaining('2026'), findsOneWidget);
   });
 
-  testWidgets('sin fecha de cierre lo dice en vez de inventarla', (
-    tester,
-  ) async {
+  _prueba('sin fecha de cierre lo dice en vez de inventarla', (tester) async {
     final repo = RepositorioGarajeFake(
       datos: const [
         VehiculoGaraje(
@@ -75,16 +84,14 @@ void main() {
     expect(find.text('Aún sin actualización del taller'), findsOneWidget);
   });
 
-  testWidgets('sin km registrado lo dice y no muestra fecha', (tester) async {
+  _prueba('sin km registrado lo dice y no muestra fecha', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake(), id: 2));
     await tester.pumpAndSettle();
     expect(find.text('Sin kilometraje registrado'), findsOneWidget);
     expect(find.textContaining('Actualizado por el taller'), findsNothing);
   });
 
-  testWidgets('copiar el VIN lo deja en el portapapeles y avisa', (
-    tester,
-  ) async {
+  _prueba('copiar el VIN lo deja en el portapapeles y avisa', (tester) async {
     String? copiado;
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
       SystemChannels.platform,
@@ -110,7 +117,7 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  testWidgets('los accesos a historial, manuales y ficha se ven y explican '
+  _prueba('los accesos a historial, manuales y ficha se ven y explican '
       'que aun no estan', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
@@ -124,7 +131,7 @@ void main() {
     );
   });
 
-  testWidgets('un id que no esta en el garaje explica y no deja en blanco', (
+  _prueba('un id que no esta en el garaje explica y no deja en blanco', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake(), id: 99));
@@ -133,9 +140,7 @@ void main() {
     expect(find.text('No encontramos el vehículo'), findsOneWidget);
   });
 
-  testWidgets('mientras carga muestra el esqueleto y lo anuncia', (
-    tester,
-  ) async {
+  _prueba('mientras carga muestra el esqueleto y lo anuncia', (tester) async {
     await tester.pumpWidget(
       _app(_Repo(() => Future.delayed(const Duration(seconds: 5), () => []))),
     );
@@ -143,7 +148,7 @@ void main() {
     await tester.pump(const Duration(seconds: 6));
   });
 
-  testWidgets('un fallo muestra el error y reintenta', (tester) async {
+  _prueba('un fallo muestra el error y reintenta', (tester) async {
     var intentos = 0;
     await tester.pumpWidget(
       _app(
@@ -161,15 +166,13 @@ void main() {
     expect(find.text('Mazda CX-5 2024'), findsOneWidget);
   });
 
-  testWidgets('sin conexion y sin copia guardada lo dice distinto', (
-    tester,
-  ) async {
+  _prueba('sin conexion y sin copia guardada lo dice distinto', (tester) async {
     await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
     expect(find.text('Sin conexion'), findsOneWidget);
   });
 
-  testWidgets('en ingles traduce los textos', (tester) async {
+  _prueba('en ingles traduce los textos', (tester) async {
     await tester.pumpWidget(
       _app(RepositorioGarajeFake(), idioma: const Locale('en')),
     );
@@ -180,7 +183,7 @@ void main() {
     expect(find.textContaining('Updated by the workshop on'), findsOneWidget);
   });
 
-  testWidgets('se ve en claro, oscuro y letra grande sin desbordar', (
+  _prueba('se ve en claro, oscuro y letra grande sin desbordar', (
     tester,
   ) async {
     for (final escenario in Escenario.values) {
