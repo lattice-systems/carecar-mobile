@@ -23,6 +23,16 @@ void main() {
       const v = VehiculoGaraje(id: 1, modelo: 'Mazda 3', anio: 2022);
       expect(v.titulo, 'Mazda 3 2022');
     });
+
+    test('no repite la marca si el modelo ya la trae', () {
+      const v = VehiculoGaraje(
+        id: 1,
+        modelo: 'Nissan March Sense',
+        anio: 2020,
+        marca: 'Nissan',
+      );
+      expect(v.titulo, 'Nissan March Sense 2020');
+    });
   });
 
   group('RepositorioGarajeApi', () {
