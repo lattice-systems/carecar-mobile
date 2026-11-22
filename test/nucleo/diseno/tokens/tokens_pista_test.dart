@@ -58,7 +58,13 @@ void main() {
   });
 
   test('la tipografia hereda el color del texto de la paleta', () {
-    expect(TokensPista.claro.tipografia.cuerpo.color, PaletaColores.claro.texto);
-    expect(TokensPista.oscuro.tipografia.cuerpo.color, PaletaColores.oscuro.texto);
+    expect(
+      TokensPista.claro.tipografia.cuerpo.color,
+      PaletaColores.claro.texto,
+    );
+    expect(
+      TokensPista.oscuro.tipografia.cuerpo.color,
+      PaletaColores.oscuro.texto,
+    );
   });
 }
