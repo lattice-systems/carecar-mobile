@@ -19,3 +19,16 @@ final garajeProvider = FutureProvider<List<VehiculoGaraje>>(
   retry: (_, _) => null,
   name: 'garajeProvider',
 );
+
+/// Un vehiculo del garaje por su id, o `null` si ya no esta. Sale de la misma
+/// lectura que el garaje, asi comparte copia guardada y recarga.
+final vehiculoProvider = FutureProvider.family<VehiculoGaraje?, int>((
+  ref,
+  id,
+) async {
+  final lista = await ref.watch(garajeProvider.future);
+  for (final v in lista) {
+    if (v.id == id) return v;
+  }
+  return null;
+}, name: 'vehiculoProvider');
