@@ -30,8 +30,14 @@ void main() {
   });
 
   test('el lienzo es el fondo de la paleta', () {
-    expect(TemaPista.claro().scaffoldBackgroundColor, PaletaColores.claro.fondo);
-    expect(TemaPista.oscuro().scaffoldBackgroundColor, PaletaColores.oscuro.fondo);
+    expect(
+      TemaPista.claro().scaffoldBackgroundColor,
+      PaletaColores.claro.fondo,
+    );
+    expect(
+      TemaPista.oscuro().scaffoldBackgroundColor,
+      PaletaColores.oscuro.fondo,
+    );
   });
 
   test('el texto del tema usa la tipografia v2', () {
