@@ -10,6 +10,10 @@ class VehiculoGaraje {
     this.marca,
     this.placas,
     this.kilometraje,
+    this.vin,
+    this.color,
+    this.version,
+    this.kilometrajeActualizadoEn,
   });
 
   final int id;
@@ -18,6 +22,15 @@ class VehiculoGaraje {
   final String? marca;
   final String? placas;
   final int? kilometraje;
+
+  /// Numero de serie; el detalle lo muestra y lo deja copiar.
+  final String? vin;
+  final String? color;
+  final String? version;
+
+  /// Fecha de cierre de la orden de servicio que dejo el kilometraje. Sin ella
+  /// el detalle no dice quien ni cuando lo actualizo.
+  final DateTime? kilometrajeActualizadoEn;
 
   /// Nombre completo para la tarjeta: "Mazda CX-5 2024". Si el modelo ya
   /// empieza con la marca ("Nissan March"), no la repite.
