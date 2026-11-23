@@ -64,3 +64,33 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 - Los atajos de iOS salen sin ícono (necesitan assets en `Assets.xcassets`); se puede agregar con un diseño de Cristian.
 - Con arranque en frío y sesión por restaurar, el destino pasa por la guardia: si la sesión sigue activa se llega al destino, si no se pide acceso y se vuelve a él.
 - V2-M25.01 a V2-M25.03 y V2-M25.05 siguen sin empezar.
+
+## Avance de V2-M25.01
+
+**Qué quedó**
+
+- Dependencia `home_widget ^0.10.0` (canal y almacén compartido con el widget nativo). Queda detrás de `PuertoWidgetCita`; el adaptador real es `datos/widget_cita_home_widget.dart` y las pruebas usan un puerto falso.
+- Dominio puro (`dominio/proxima_cita_widget.dart`): `proximaCita` elige la cita **confirmada** que empieza primero y todavía no empieza; `ContenidoWidgetCita` (con cita o sin cita) y los enlaces `carecar://citas/<id>/comprobante` y `carecar://citas/agendar`, que `EnlacesApp` ya traduce a `/citas/:id/comprobante` y `/citas/agendar`. Para eso `citas.dart` ahora publica `CitaCliente` y `EstadoDeCita`.
+- `SincronizadorDelWidgetDeCita` se monta en el `builder` del `MaterialApp` (`lib/main.dart`). Observa la sesión y `misCitasProvider` y publica: con cita (día, horario y vehículo) o sin cita (mensaje e invitación a agendar). Se vuelve a publicar al cambiar el idioma, al volver la app al primer plano (la cita pudo empezar) y cada vez que cambia la lista.
+- **Se actualiza al agendar o cancelar:** cancelar y reprogramar ya reemplazaban o invalidaban `misCitasProvider`; agendar no, así que `pantalla_agendar_cita.dart` ahora invalida `misCitasProvider` al confirmar (con prueba).
+- Textos con prefijo `widgets` en los ARB es y en (`widgetsProximaCita*`, `widgetsSinCitaMensaje`; la acción reutiliza `widgetsAccesoAgendar`) y `app_localizations*.dart` regenerados.
+- **Android completo:** `ProximaCitaWidgetProvider.kt` (pinta desde `HomeWidgetPreferences` y abre la app con un `PendingIntent` de `ACTION_VIEW` al enlace `carecar://`, que `MainActivity` ya recibe como deep link), layout `widget_proxima_cita.xml`, ficha `widget_proxima_cita_info.xml` (3x2, redimensionable, `updatePeriodMillis=0`), fondo, colores claro y oscuro con los valores de los tokens de Pista, textos es y en del selector y el `<receiver>` en el manifiesto. Compila con `flutter build apk --debug`.
+- **iOS, código escrito pero sin enlazar:** `ios/ProximaCitaWidget/ProximaCitaWidget.swift` (WidgetKit, `kind` `ProximaCitaWidget`, lee el App Group `group.com.carecar.carecarMobile`, `widgetURL` al enlace). No se tocó `Runner.xcodeproj` porque crear el target de extensión a mano en el `pbxproj` no es fiable.
+
+**Datos y seguridad (OWASP Mobile)**
+
+- Al widget solo viajan textos de pantalla: día, horario, nombre del vehículo y el id de la cita dentro del enlace. No viajan nombre del cliente, placas, VIN ni el código firmado del QR.
+- Android: `SharedPreferences` privadas de la app (no legibles por otras apps). El widget es visible desde la pantalla de inicio aunque el teléfono esté bloqueado en algunos lanzadores: es el costo de mostrar la cita sin abrir la app.
+- Al cerrar sesión (o sin sesión al arrancar) se publica el estado sin cita y se borran los datos anteriores; no se piden citas sin sesión.
+- No se escribe nada en logs; los fallos del sistema al publicar se ignoran (escritorio, emulador sin lanzador).
+
+**Estados:** el widget tiene con cita y sin cita; mientras cargan las citas o si falla la red conserva lo último mostrado (probado). Los cinco estados de pantalla no aplican (no es una pantalla de la app).
+
+**Pendiente / fuera de alcance**
+
+- **iOS (falta Xcode):** (1) File > New > Target > Widget Extension llamado `ProximaCitaWidget` (sin Live Activity ni configuración), borrar los archivos que genera y agregar `ios/ProximaCitaWidget/ProximaCitaWidget.swift` al target; (2) activar la capacidad App Groups con `group.com.carecar.carecarMobile` en `Runner` y en la extensión (entitlements); (3) comprobar que el esquema `carecar://` ya está en `Info.plist` y probar el toque; (4) iOS 17 o superior por `containerBackground`.
+- Probar en un teléfono real el toque desde el widget con la app cerrada (arranque en frío con sesión por restaurar pasa por la guardia de sesión).
+- La cita deja de ser "próxima" cuando empieza; sin abrir la app el widget no se repinta solo hasta que la app vuelva al primer plano. Refresco en segundo plano (WorkManager o `BGAppRefresh`) queda como historia aparte si se necesita.
+- Las dimensiones y la tipografía del widget no son del sistema de diseño (los widgets nativos no usan Flutter); solo se reutilizan los valores de color de los tokens de Pista. Pedir a Cristian una revisión de diseño.
+- V2-M25.02 (estado del taller en el widget) reutiliza este widget y el puerto.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
