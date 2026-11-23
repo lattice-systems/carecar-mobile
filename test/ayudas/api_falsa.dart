@@ -281,6 +281,34 @@ class ApiFalsa implements CarecarApi {
         );
   }
 
+  /// Que hace `POST /citas/{id}/reprogramar`. Si es nulo, la cita queda
+  /// confirmada en la franja pedida.
+  Future<Cita> Function(int citaId, int franjaId, DateTime fecha)?
+  alReprogramar;
+
+  final citasReprogramadas = <({int citaId, int franjaId, DateTime fecha})>[];
+
+  @override
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  }) {
+    citasReprogramadas.add((citaId: citaId, franjaId: franjaId, fecha: fecha));
+    return alReprogramar?.call(citaId, franjaId, fecha) ??
+        Future.value(
+          Cita(
+            id: citaId,
+            vehiculoId: 0,
+            franjaId: franjaId,
+            fecha: fecha,
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.confirmada,
+          ),
+        );
+  }
+
   @override
   Future<List<ModeloCatalogo>> catalogo() async => modelosCatalogo;
 
