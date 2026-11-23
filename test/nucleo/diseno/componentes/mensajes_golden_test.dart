@@ -1,0 +1,40 @@
+import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_compuestos.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+import '../../../ayudas/tema_pista.dart';
+
+/// Golden de `BurbujaMensaje` y `CampoMensaje` (V2-T02.15) en claro, oscuro y
+/// letra al 200 %, a partir de la sección "Mensajes" de la galería. Usan la
+/// fuente de prueba de Flutter: vigilan estructura, color y espacio. Para
+/// regenerarlos: `flutter test --update-goldens
+/// test/nucleo/diseno/componentes/mensajes_golden_test.dart`.
+void main() {
+  final seccion = seccionesCompuestos().firstWhere(
+    (s) => s.titulo == 'Mensajes',
+  );
+
+  for (final escenario in Escenario.values) {
+    testWidgets('Mensajes en ${escenario.name}', (tester) async {
+      tester.view.physicalSize = const Size(360, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(
+        conTemaPista(
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Builder(builder: seccion.construir),
+            ),
+          ),
+          escenario: escenario,
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 300));
+      await expectLater(
+        find.byType(Scaffold),
+        matchesGoldenFile('goldens/mensajes_${escenario.name}.png'),
+      );
+    });
+  }
+}

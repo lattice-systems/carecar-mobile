@@ -127,3 +127,23 @@ Se agregaron al sistema `BotonPildora`, `CabeceraPortada` (con `AccionPortada`),
 ## Avance del estilo portada
 
 Se agregaron al sistema `BotonPildora`, `CabeceraPortada` (con `AccionPortada`), `Estante`, `GrupoLista` (con `FilaGrupo`) y la opción `translucido` de `EncabezadoGrande`, documentados en la sección 8 del sistema de diseño y presentes en la galería (`secciones_portada.dart`). Traen pruebas de widget en claro, oscuro y letra al 200 % y golden en `test/nucleo/diseno/componentes/goldens/`, con la fuente de prueba de Flutter hasta que V2-T03.02 deje las reales.
+
+## Avance de V2-T02.15
+
+- `lib/nucleo/diseno/componentes/burbuja_mensaje.dart`: `BurbujaMensaje`, `AutorMensaje`, `EstadoEnvio` y `FuenteMensaje`.
+- `lib/nucleo/diseno/componentes/campo_mensaje.dart`: `CampoMensaje`.
+- Pruebas en `test/nucleo/diseno/componentes/mensajes_test.dart`, 15 en total:
+  - lado y color por autor;
+  - 80 % del ancho;
+  - lector de pantalla;
+  - fuentes de 48 tocables;
+  - enviando y fallido con reintentar;
+  - envío recortado y vacío;
+  - crecimiento hasta 5 líneas;
+  - adjuntar opcional;
+  - botones de 48 con nombre;
+  - deshabilitado;
+  - sin desbordes en los tres escenarios.
+- Golden en claro, oscuro y letra al 200 %, a partir de la sección «Mensajes» de la galería.
+- Los textos («Enviando…», «Reintentar», «Escribe un mensaje», etc.) van en español por omisión y se pueden cambiar por parámetro, igual que `EstadoError`. Cada módulo los pasa traducidos (M20).
+
