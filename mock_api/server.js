@@ -665,6 +665,62 @@ servidor.post(`${BASE}/citas/:citaId/reprogramar`, (req, res) => {
     .write();
 
   res.jsonp(comoCita(db.get('citas').find({ id: cita.id }).value()));
+// V2-M02.11 · comprobante con QR. El backend real firma el id de la cita y
+// lo pone en el PDF del ticket; aqui el mock simula ambas cosas. El codigo
+// tiene la forma `CC1.<citaId>.<firma>`, donde firma son los primeros 16
+// caracteres hexadecimales de HMAC-SHA256(`cita:<citaId>`). Solo sirve para
+// que la app dibuje un QR; no es el algoritmo definitivo del backend.
+function codigoDeCita(citaId) {
+  const firma = crypto
+    .createHmac('sha256', SECRETO_DEV)
+    .update(`cita:${citaId}`)
+    .digest('hex')
+    .slice(0, 16);
+  return `CC1.${citaId}.${firma}`;
+}
+
+function citaDelCliente(req) {
+  const cita = db.get('citas').find({ id: Number(req.params.citaId) }).value();
+  if (!cita || cita.clienteId !== req.sesion.clienteId) return null;
+  return cita;
+}
+
+servidor.get(`${BASE}/citas/:citaId/comprobante`, (req, res) => {
+  const cita = citaDelCliente(req);
+  if (!cita) return noEncontrado(req, res);
+  const vehiculo = db.get('vehiculos').find({ id: cita.vehiculoId }).value();
+  res.jsonp({
+    citaId: cita.id,
+    codigo: codigoDeCita(cita.id),
+    fecha: cita.fecha,
+    horaInicio: cita.horaInicio,
+    horaFin: cita.horaFin,
+    ...(vehiculo ? { vehiculoNombre: `${vehiculo.modelo} ${vehiculo.anio}` } : {}),
+  });
+});
+
+servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
+  const cita = citaDelCliente(req);
+  if (!cita) return noEncontrado(req, res);
+  const vehiculo = db.get('vehiculos').find({ id: cita.vehiculoId }).value();
+
+  // El PDF real lleva el QR dibujado; el mock imprime el codigo que el QR
+  // contendria.
+  const pdf = construirTicketPdf([
+    'CareCar - Comprobante de cita (API simulada)',
+    '',
+    `Folio: ${cita.id}`,
+    `Fecha: ${cita.fecha}`,
+    `Horario: ${cita.horaInicio} a ${cita.horaFin}`,
+    `Estado: ${cita.estado}`,
+    ...(vehiculo ? [`Vehiculo: ${vehiculo.modelo} ${vehiculo.anio}`] : []),
+    '',
+    `Codigo QR: ${codigoDeCita(cita.id)}`,
+  ]);
+
+  res.set('Content-Type', 'application/pdf');
+  res.set('Content-Disposition', `inline; filename="cita-${cita.id}.pdf"`);
+  res.send(pdf);
 });
 
 // ---------------------------------------------------------------------------
