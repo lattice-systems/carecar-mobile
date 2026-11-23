@@ -126,6 +126,24 @@ void main() {
     expect(find.textContaining('09:00'), findsOneWidget);
   });
 
+  _prueba('confirmar refresca mis citas para que el widget de inicio la vea', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    final contenedor = ProviderScope.containerOf(
+      tester.element(find.byType(PantallaAgendarCita)),
+    );
+    final antes = await contenedor.read(misCitasProvider.future);
+    expect(antes.citas, isEmpty);
+
+    await _irAlResumen(tester);
+    await _tocar(tester, find.text('Confirmar cita'));
+
+    final despues = await contenedor.read(misCitasProvider.future);
+    expect(despues.citas, hasLength(1));
+  });
+
   _prueba('la cita confirmada abre su comprobante con QR', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
