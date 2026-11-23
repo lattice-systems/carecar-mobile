@@ -230,4 +230,11 @@ class CarecarApiConCache implements CarecarApi {
 
   @override
   Future<Cita> cancelarCita(int citaId) => _api.cancelarCita(citaId);
+
+  @override
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  }) => _api.reprogramarCita(citaId, franjaId: franjaId, fecha: fecha);
 }
