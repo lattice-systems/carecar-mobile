@@ -47,6 +47,8 @@ tags:
     description: V2-M24.02 y V2-M24.03 (ADR 0007)
   - name: Toma a cuenta
     description: V2-M03.04, V2-M03.06 y V2-M03.07
+  - name: Asistencia
+    description: V2-M11.01 (pedir ayuda con mi ubicación)
 
 security:
   - bearerAuth: []
@@ -479,6 +481,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
+
+  /asistencia:
+    post:
+      tags: [Asistencia]
+      summary: Pedir ayuda en el camino
+      description: |
+        V2-M11.01 · Crea una solicitud de asistencia para un vehículo del cliente. `lat` y `lng`
+        van las dos o ninguna: sin ubicación la solicitud se crea igual y el cliente dice dónde está
+        en el comentario. Solo puede haber una solicitud abierta por cliente. La ubicación se
+        guarda únicamente mientras la solicitud está abierta.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaSolicitudAsistencia'
+      responses:
+        '201':
+          description: Solicitud recibida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudAsistencia'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: Ya hay una solicitud abierta (`codigo` SOLICITUD_ABIERTA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+    get:
+      tags: [Asistencia]
+      summary: Solicitud de ayuda abierta del cliente
+      description: V2-M11.01 · Con `activa=true` devuelve la solicitud abierta, o 204 si no hay.
+      parameters:
+        - name: activa
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Solicitud abierta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudAsistencia'
+        '204':
+          description: No hay solicitud abierta
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
 
   /catalogo:
     get:
@@ -1015,6 +1077,66 @@ components:
           type: string
           format: date
 
+    TipoAsistencia:
+      type: string
+      enum: [llanta, bateria, choque, sin_gasolina, otro]
+
+    EstadoSolicitudAsistencia:
+      type: string
+      enum: [recibida, en_camino, atendida, cancelada]
+
+    NuevaSolicitudAsistencia:
+      type: object
+      required: [vehiculoId, tipo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        tipo:
+          $ref: '#/components/schemas/TipoAsistencia'
+        lat:
+          type: number
+          format: double
+          nullable: true
+          description: Latitud; va junto con `lng` o ninguna de las dos.
+        lng:
+          type: number
+          format: double
+          nullable: true
+        comentario:
+          type: string
+          maxLength: 500
+          nullable: true
+
+    SolicitudAsistencia:
+      type: object
+      required: [id, vehiculoId, tipo, estado, creadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        tipo:
+          $ref: '#/components/schemas/TipoAsistencia'
+        lat:
+          type: number
+          format: double
+          nullable: true
+        lng:
+          type: number
+          format: double
+          nullable: true
+        comentario:
+          type: string
+          nullable: true
+        estado:
+          $ref: '#/components/schemas/EstadoSolicitudAsistencia'
+        creadaEn:
+          type: string
+          format: date-time
+
     EstadoCita:
       type: string
       enum: [CONFIRMADA, ATENDIDA, NO_ASISTIO, CANCELADA]
@@ -1382,6 +1504,9 @@ components:
             - ASISTENTE_SIN_MANUAL
             - ASISTENTE_LIMITE
             - ASISTENTE_NO_DISPONIBLE
+            - SOLICITUD_ABIERTA
+            - FUERA_DE_COBERTURA
+            - DIRECCION_EN_USO
           example: FRANJA_SIN_CUPO
         path:
           type: string
