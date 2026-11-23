@@ -776,5 +776,27 @@
     }
   },
   "misEstimacionesVerMas": "Show more",
-  "misEstimacionesErrorMas": "We could not load more estimates. Try again."
+  "misEstimacionesErrorMas": "We could not load more estimates. Try again.",
+  "widgetsProximaCitaTitulo": "Next appointment",
+  "widgetsProximaCitaFecha": "{fecha}",
+  "@widgetsProximaCitaFecha": {
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd"
+      }
+    }
+  },
+  "widgetsProximaCitaHorario": "{inicio} to {fin}",
+  "@widgetsProximaCitaHorario": {
+    "placeholders": {
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetsSinCitaMensaje": "You have no upcoming appointments"
 }
