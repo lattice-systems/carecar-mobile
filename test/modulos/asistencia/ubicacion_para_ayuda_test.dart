@@ -33,9 +33,7 @@ void main() {
   });
 
   test('denegado para siempre ni siquiera lo vuelve a pedir', () async {
-    final falsa = UbicacionFalsa(
-      permiso: PermisoUbicacion.denegadoParaSiempre,
-    );
+    final falsa = UbicacionFalsa(permiso: PermisoUbicacion.denegadoParaSiempre);
     final r = await obtenerUbicacionParaAyuda(falsa);
     expect(
       (r as UbicacionNoDisponible).motivo,
