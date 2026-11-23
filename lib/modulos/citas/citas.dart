@@ -9,11 +9,14 @@ export 'dominio/disponibilidad_taller.dart'
 export 'dominio/motivo_cita.dart' show MotivoCita;
 export 'presentacion/pantalla_agendar_cita.dart' show PantallaAgendarCita;
 export 'presentacion/pantalla_disponibilidad.dart' show PantallaDisponibilidad;
+export 'presentacion/pantalla_mis_citas.dart' show PantallaMisCitas;
 export 'presentacion/proveedores_citas.dart'
     show
         disponibilidadProvider,
+        misCitasProvider,
         rangoAgendableProvider,
         relojCitasProvider,
-        repositorioCitasProvider;
+        repositorioCitasProvider,
+        tamanoPaginaCitasProvider;
 export 'presentacion/rutas_citas.dart'
     show rutaAgendarCita, rutaDisponibilidad, rutasCitas;
