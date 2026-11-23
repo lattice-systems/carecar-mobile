@@ -70,7 +70,7 @@ ADR [0007](../../docs/decisiones/0007-asistente-ia.md) en `Propuesta`:
   - La cuota diaria es compartida, así que hay límite de 10 preguntas y 3 fotos por cliente, más un tope global.
 - **Calidad:** al menos 80 % de citas correctas.
 
-Falta para aceptarlo: crear el proyecto del equipo sin facturación, anotar su cuota y la aprobación de SM y PO.
+Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en Azure (`gemini-api-key`). Falta la aprobación de SM y PO.
 
 ## Componentes que faltan
 

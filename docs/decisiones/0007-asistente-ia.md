@@ -64,7 +64,7 @@ El backend llama a la API REST de Gemini con el cliente HTTP de Spring (sin SDK,
 | Backend local de cada quien | Nivel gratis de Gemini, solo manuales de ejemplo y preguntas inventadas | Personal, en `.env` local (fuera de git), de un proyecto propio para no gastar la cuota del backend en Azure |
 | Backend en Azure (flavors `pruebas` y `produccion`) | Nivel gratis de Gemini | Del proyecto del equipo sin facturación, en el secreto de Azure |
 
-Se elige por configuración: `asistente.proveedor=gemini|falso`. Si la cuota gratis de Gemini no alcanza, la reserva es Groq (también gratis, con límites diarios) con un adaptador compatible con la API de OpenAI; se agrega solo si hace falta.
+Se elige por configuración: `asistente.proveedor=gemini|falso`. Si la cuota de Flash-Lite se agota, la reserva es **Gemma 4 31B** (el id exacto del modelo se confirma al programar) con la **misma llave y la misma API**, que tiene mucha más cuota diaria pero menos tokens por minuto; no hace falta un segundo proveedor.
 
 **Lo que cuesta no pagar** (se acepta a sabiendas):
 
@@ -95,12 +95,21 @@ Una pregunta lleva unos 3 000 tokens de entrada (instrucciones, 5 páginas del m
 
 ## Límites y fallas
 
-La cuota gratis es **por proyecto**, compartida por todos los clientes, así que se reparte:
+Cuota gratis del proyecto del equipo, leída en Google AI Studio el 2026-11-23 (Google puede cambiarla; se revisa ahí):
+
+| Modelo | Por minuto | Tokens por minuto | Por día |
+| --- | --- | --- | --- |
+| `gemini-3.5-flash-lite` | 15 | 250 000 | 500 |
+| `gemini-embedding-2` | 100 | 30 000 | 1 000 |
+| Gemma 4 31B (reserva) | 30 | 16 000 | 14 400 |
+| `gemini-3.8-flash` | 5 | 250 000 | 20 |
+
+La cuota es **por proyecto**, compartida por todos los clientes, así que se reparte:
 
 - **Por cliente y por día:** 10 preguntas y 3 fotos. Al pasarse, `ASISTENTE_LIMITE` con la hora en que se libera.
-- **Tope global del backend por día**, configurable y por debajo de la cuota que muestre Google AI Studio para el proyecto, para que un cliente no agote la del resto. Al llegar, `ASISTENTE_NO_DISPONIBLE`.
-- **Fotos con Flash-Lite por omisión**, que tiene más cuota gratis que Flash; se pasa a Flash por configuración solo si la evaluación muestra que Flash-Lite no reconoce bien los testigos.
-- **Indexar manuales despacio:** el comando de V2-M24.02 respeta la cuota de embeddings (pausa entre páginas y reanuda al día siguiente si se agota). Se indexa una sola vez por manual.
+- **Tope global del backend por día:** 450 llamadas a Flash-Lite (90 % de las 500 del día, entre preguntas y fotos). Al llegar, las preguntas pasan a Gemma 4; las fotos responden `ASISTENTE_NO_DISPONIBLE` (Gemma no se usa para fotos). Con 10 preguntas y 3 fotos por cliente, alcanza para unos 35 clientes activos al día.
+- **Fotos con Flash-Lite por omisión:** Flash solo da 20 por día. Se pasa a Flash por configuración solo si la evaluación muestra que Flash-Lite no reconoce bien los testigos.
+- **Indexar manuales despacio:** los embeddings dan 1 000 por día y 30 000 tokens por minuto (unas 60 páginas por minuto), y las preguntas también gastan uno cada una. El comando de V2-M24.02 indexa como máximo 500 páginas por día, hace pausas para no pasar el límite por minuto y reanuda al día siguiente. Se indexa una sola vez por manual.
 - **Proveedor caído, lento o sin cuota:** espera máxima de 20 s y un reintento; luego `ASISTENTE_NO_DISPONIBLE`. La app ofrece llamar a la agencia.
 
 ## Privacidad
@@ -127,6 +136,6 @@ Umbral para cerrar H6 (V2-M24.07): **al menos 80 %** de las preguntas del conjun
 
 ## Pendiente antes de aceptar
 
-- Crear el proyecto del equipo en Google AI Studio **sin facturación**, anotar aquí su cuota gratis por modelo (la muestra AI Studio) y fijar con ella el tope global diario.
-- Guardar su llave en el secreto de Azure desde la terminal del dueño (nunca en el chat ni en el repo).
+- ~~Crear el proyecto del equipo sin facturación y anotar su cuota~~: hecho (plan Free, cuota en la tabla de arriba).
+- ~~Guardar su llave en el secreto de Azure~~: hecho por el dueño desde su terminal (`gemini-api-key`, expuesto como `GEMINI_API_KEY`).
 - Aprobación de SM y PO en el PR.
