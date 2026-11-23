@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.1.0
+  version: 2.2.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1182,7 +1182,9 @@ components:
         estatus:
           type: string
           enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
-          description: Conjunto cerrado (PO-5). Hoy el backend solo responde TERMINADO.
+          description: |
+            Conjunto cerrado (PO-5). V2-T05.06 · Es el `estatus` de `orden_servicio`; hoy el
+            backend solo responde TERMINADO porque el expediente registra servicios ya hechos.
         total:
           type: number
           format: double
