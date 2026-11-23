@@ -249,6 +249,8 @@
       }
     }
   },
+  "estanteVerTodo": "See all",
+  "estanteVerTodoDe": "See all: {titulo}",
   "calendarioDelMes": "Calendar for {mes}",
   "@calendarioDelMes": {
     "description": "Nombre del calendario con el mes visible.",
