@@ -1,17 +1,33 @@
 /// Una especificacion: "Cilindrada" -> "1.6 L".
+///
+/// Los datos de la agencia traen su `clave` ya escrita. Los del respaldo local
+/// traen solo un `codigo` estable ("potencia") que la pantalla traduce al
+/// idioma de la app.
 class EspecificacionFicha {
-  const EspecificacionFicha({required this.clave, required this.valor});
+  const EspecificacionFicha({
+    required this.valor,
+    this.clave = '',
+    this.codigo,
+  });
 
   final String clave;
   final String valor;
+  final String? codigo;
 }
 
 /// Un grupo de especificaciones ("Motor", "Transmision") que la pantalla
 /// muestra plegable.
+///
+/// Igual que la especificacion: `titulo` de la agencia o `codigo` del respaldo.
 class SeccionFicha {
-  const SeccionFicha({required this.titulo, required this.especificaciones});
+  const SeccionFicha({
+    required this.especificaciones,
+    this.titulo = '',
+    this.codigo,
+  });
 
   final String titulo;
+  final String? codigo;
   final List<EspecificacionFicha> especificaciones;
 }
 
