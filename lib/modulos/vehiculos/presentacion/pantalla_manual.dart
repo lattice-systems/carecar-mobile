@@ -89,8 +89,7 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
           causa: error is SinConexion
               ? CausaError.sinConexion
               : CausaError.generico,
-          alReintentar: () =>
-              ref.invalidate(manualProvider(widget.vehiculoId)),
+          alReintentar: () => ref.invalidate(manualProvider(widget.vehiculoId)),
         ),
         data: (m) => m == null
             ? EstadoVacio(
