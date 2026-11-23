@@ -50,12 +50,16 @@ final repositorioFichaTecnicaProvider = Provider<RepositorioFichaTecnica>(
 
 /// Ficha tecnica del vehiculo `id`, o `null` si el vehiculo ya no esta en el
 /// garaje o nadie tiene su ficha.
-final fichaTecnicaProvider =
-    FutureProvider.family<FichaTecnicaVehiculo?, int>((ref, id) async {
-      final vehiculo = await ref.watch(vehiculoProvider(id).future);
-      if (vehiculo == null) return null;
-      return ref.watch(repositorioFichaTecnicaProvider).ficha(vehiculo);
-    }, name: 'fichaTecnicaProvider');
+final fichaTecnicaProvider = FutureProvider.family<FichaTecnicaVehiculo?, int>(
+  (ref, id) async {
+    final vehiculo = await ref.watch(vehiculoProvider(id).future);
+    if (vehiculo == null) return null;
+    return ref.watch(repositorioFichaTecnicaProvider).ficha(vehiculo);
+  },
+  // El reintento es del usuario (boton de EstadoError), no automatico.
+  retry: (_, _) => null,
+  name: 'fichaTecnicaProvider',
+);
 
 /// Fuente de manuales (V2-M02.03): el de la agencia y, si no hay, el PDF
 /// incluido en la app.
@@ -66,28 +70,30 @@ final servicioManualesProvider = Provider<ServicioManuales>(
 
 /// Manual del vehiculo `id` por su modelo y ano, o `null` si el vehiculo ya no
 /// esta o no hay manual ni en la agencia ni en la app.
-final manualProvider = FutureProvider.family<DocumentoManual?, int>((
-  ref,
-  id,
-) async {
-  final v = await ref.watch(vehiculoProvider(id).future);
-  if (v == null) return null;
-  try {
-    return await ref
-        .watch(servicioManualesProvider)
-        .cargar(
-          Vehiculo(
-            id: v.id,
-            vin: v.vin ?? '',
-            modelo: v.modelo,
-            anio: v.anio,
-            marca: v.marca,
-          ),
-        );
-  } on FalloManual {
-    return null;
-  }
-}, name: 'manualProvider');
+final manualProvider = FutureProvider.family<DocumentoManual?, int>(
+  (ref, id) async {
+    final v = await ref.watch(vehiculoProvider(id).future);
+    if (v == null) return null;
+    try {
+      return await ref
+          .watch(servicioManualesProvider)
+          .cargar(
+            Vehiculo(
+              id: v.id,
+              vin: v.vin ?? '',
+              modelo: v.modelo,
+              anio: v.anio,
+              marca: v.marca,
+            ),
+          );
+    } on FalloManual {
+      return null;
+    }
+  },
+  // El reintento es del usuario (boton de EstadoError), no automatico.
+  retry: (_, _) => null,
+  name: 'manualProvider',
+);
 
 /// Guarda el PDF con el selector del sistema. Las pruebas lo sustituyen.
 final guardarManualProvider =
