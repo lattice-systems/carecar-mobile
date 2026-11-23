@@ -115,7 +115,7 @@ npm run reset
 A diferencia de un mock sin estado, aquí las escrituras se quedan:
 
 - Agendar una cita la hace aparecer en `GET /citas`.
-- Agendar **descuenta** el cupo de la franja, y cancelar lo devuelve.
+- Agendar **descuenta** el cupo de la franja; cancelar lo devuelve y reprogramar ocupa la franja nueva y libera la anterior.
 - Cambiar la contraseña cambia con qué contraseña entras después.
 
 Por eso existe `npm run reset`.
@@ -132,12 +132,14 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/auth/restablecer-contrasena` | 204 · 400 si el token es inválido, usado o expiró |
 | GET | `/vehiculos` | Solo los del cliente de la sesión |
 | GET | `/vehiculos/{id}/manuales` | Por modelo y año, no por vehículo |
+| GET | `/vehiculos/{id}/ficha-tecnica` | Por modelo y año (V2-M02.04) · 404 si no hay ficha de ese modelo y año |
 | GET | `/vehiculos/{id}/servicios` | Orden cronológico, el más reciente primero |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
 | GET | `/citas` | Solo las del cliente |
 | POST | `/citas` | 201 · 409 sin cupo o doble reserva |
 | POST | `/citas/{id}/cancelar` | 200 · 409 si ya no está confirmada |
+| POST | `/citas/{id}/reprogramar` | 200 · 409 `FRANJA_SIN_CUPO`, `CITA_NO_REPROGRAMABLE` o `FUERA_DE_PLAZO` (propuesto en V2-M02.13; no está en el contrato v1) |
 | GET | `/catalogo` | Solo modelos activos |
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
 | POST | `/toma-a-cuenta/estimaciones` | 201 con el rango y los supuestos, y la guarda · 400 si el auto no viene de una sola forma o km, año o estado no sirven · 404 si el vehículo es ajeno o el modelo está retirado · 422 `SIN_PARAMETROS_DE_VALUACION` si no hay parámetros para ese auto |

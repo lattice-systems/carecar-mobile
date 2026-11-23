@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
@@ -16,13 +17,15 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'proveedores_vehiculos.dart';
+import 'rutas_vehiculos.dart';
 
 /// Detalle de un vehiculo del garaje (V2-M02.02): VIN copiable, datos del auto,
 /// kilometraje con la fecha en que el taller lo actualizo y accesos a historial,
 /// manuales y ficha tecnica.
 ///
-/// Los accesos todavia no tienen pantalla (V2-M02.03, V2-M02.04, V2-M02.05):
-/// se ven deshabilitados y dicen "Disponible pronto" en vez de fallar. Resuelve
+/// Manuales (V2-M02.03) y ficha tecnica (V2-M02.04) abren su pantalla; el
+/// historial (V2-M02.05) aun no la tiene: se ve deshabilitado y dice
+/// "Disponible pronto" en vez de fallar. Resuelve
 /// los cinco estados; si el id ya no esta en el garaje lo explica.
 class PantallaDetalleVehiculo extends ConsumerWidget {
   const PantallaDetalleVehiculo({required this.vehiculoId, super.key});
@@ -130,13 +133,13 @@ class _DetalleState extends State<_Detalle> {
         ),
         FilaLista(
           titulo: textos.vehiculosAccesoManuales,
-          subtitulo: textos.vehiculosAccesoPronto,
           inicio: const Icon(Icons.menu_book_outlined),
+          alToque: () => context.push(rutaManualVehiculo(v.id)),
         ),
         FilaLista(
           titulo: textos.vehiculosAccesoFicha,
-          subtitulo: textos.vehiculosAccesoPronto,
           inicio: const Icon(Icons.fact_check_outlined),
+          alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
         ),
       ],
     );

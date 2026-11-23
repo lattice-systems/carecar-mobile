@@ -17,6 +17,9 @@ enum CodigoProblema {
   fueraDePlazo('FUERA_DE_PLAZO'),
   citaNoCancelable('CITA_NO_CANCELABLE'),
   sinParametrosDeValuacion('SIN_PARAMETROS_DE_VALUACION'),
+  citaDuplicada('CITA_DUPLICADA'),
+  citaNoReprogramable('CITA_NO_REPROGRAMABLE'),
+  citaCancelada('CITA_CANCELADA'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

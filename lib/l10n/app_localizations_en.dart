@@ -10,6 +10,107 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get asistenciaGuiaChoquePaso1 =>
+      'Stop the car in a safe place, turn off the engine and switch on the hazard lights.';
+
+  @override
+  String get asistenciaGuiaChoquePaso2 =>
+      'Check for injured people. If there are any, call 911 right away and do not move anyone with neck or back pain.';
+
+  @override
+  String get asistenciaGuiaChoquePaso3 =>
+      'If you can, get out and stand behind a barrier, away from traffic. Set out the warning triangles.';
+
+  @override
+  String get asistenciaGuiaChoquePaso4 =>
+      'Call your insurer and wait for the adjuster. Do not accept or sign agreements with the other driver without them.';
+
+  @override
+  String get asistenciaGuiaChoquePaso5 =>
+      'Take photos of the vehicles, plates, damage and the place. Write down the other driver\'s name, phone and insurance details.';
+
+  @override
+  String get asistenciaGuiaChoquePaso6 =>
+      'Do not move the car until the authorities or the adjuster allow it, unless it blocks the road and it is safe to move.';
+
+  @override
+  String get asistenciaGuiaChoqueResumen =>
+      'Steps to look after everyone and protect your claim.';
+
+  @override
+  String get asistenciaGuiaChoqueTitulo => 'What to do after a crash';
+
+  @override
+  String get asistenciaGuiaCorrientePaso1 =>
+      'Park the other car facing yours, without touching. Turn off both engines and all accessories.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso2 =>
+      'Connect a red clamp to the positive (+) terminal of your dead battery and the other end to the positive terminal of the car giving the charge.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso3 =>
+      'Connect a black clamp to the negative (−) terminal of the good battery and the other end to an unpainted metal part of your engine, away from the battery.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso4 =>
+      'Start the car giving the charge and let it run for a few minutes.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso5 =>
+      'Try to start your car. If it does not start, wait a few more minutes and try again.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso6 =>
+      'Remove the clamps in reverse order, without letting them touch, and keep your car running for at least 20 minutes.';
+
+  @override
+  String get asistenciaGuiaCorrienteResumen =>
+      'How to start your car with cables from another vehicle.';
+
+  @override
+  String get asistenciaGuiaCorrienteTitulo => 'Jump-start the battery';
+
+  @override
+  String get asistenciaGuiaLlantaPaso1 =>
+      'Park on flat, firm ground, set the parking brake and switch on the hazard lights.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso2 =>
+      'Take out the spare tire, the jack and the lug wrench. Slightly loosen the nuts of the flat tire without removing them.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso3 =>
+      'Place the jack at the point shown in the manual and lift the car until the tire is off the ground.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso4 =>
+      'Remove the nuts and the flat tire. Mount the spare and tighten the nuts by hand.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso5 =>
+      'Lower the car, tighten the nuts in a star pattern with the wrench and check the pressure as soon as you can.';
+
+  @override
+  String get asistenciaGuiaLlantaResumen =>
+      'Swap it for the spare in a few steps.';
+
+  @override
+  String get asistenciaGuiaLlantaTitulo => 'Change a tire';
+
+  @override
+  String asistenciaGuiaPasoNumero(int numero, int total) {
+    return 'Step $numero of $total';
+  }
+
+  @override
+  String get asistenciaGuiasAvisoSinConexion =>
+      'These guides are stored in the app and work offline.';
+
+  @override
+  String get asistenciaGuiasTitulo => 'Emergency guides';
+
+  @override
   String get catalogoTitulo => 'Catalog';
 
   @override
@@ -45,11 +146,84 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasAgendarVehiculoSugerencia => 'Pick your vehicle';
 
   @override
+  String get citasCancelada =>
+      'Appointment cancelled. The time slot is free again.';
+
+  @override
+  String get citasCancelar => 'Cancel appointment';
+
+  @override
+  String get citasCancelarConfirmar => 'Yes, cancel';
+
+  @override
+  String citasCancelarDialogoMensaje(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Your appointment on $fechaString at $hora will be cancelled and the time slot will be freed for others.';
+  }
+
+  @override
+  String get citasCancelarDialogoTitulo => 'Cancel this appointment?';
+
+  @override
+  String get citasCancelarError =>
+      'We could not cancel your appointment. Try again.';
+
+  @override
+  String get citasCancelarMantener => 'Keep appointment';
+
+  @override
+  String get citasCancelarNoDisponible =>
+      'This appointment can no longer be cancelled.';
+
+  @override
   String get citasCargando => 'Loading workshop availability';
 
   @override
   String get citasCargandoAgendar =>
       'Loading your vehicles and the workshop times';
+
+  @override
+  String get citasComprobanteCargando => 'Loading your confirmation';
+
+  @override
+  String citasComprobanteCuando(DateTime fecha, String inicio, String fin) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, from $inicio to $fin';
+  }
+
+  @override
+  String citasComprobanteFolio(int id) {
+    return 'Reference $id';
+  }
+
+  @override
+  String get citasComprobanteIndicacion =>
+      'Show this code at reception to check in.';
+
+  @override
+  String get citasComprobanteQrDescripcion =>
+      'QR code of your appointment for reception';
+
+  @override
+  String get citasComprobanteTitulo => 'Appointment confirmation';
+
+  @override
+  String get citasComprobanteVerPdf => 'View confirmation as PDF';
+
+  @override
+  String get citasComprobanteVerPdfDescripcion =>
+      'PDF confirmation of your appointment';
+
+  @override
+  String get citasCargarMas => 'Load more appointments';
 
   @override
   String get citasConfirmar => 'Confirm appointment';
@@ -73,6 +247,35 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get citasErrorAgendar =>
       'We could not book your appointment. Try again.';
+
+  @override
+  String get citasErrorMas => 'We could not load more appointments. Try again.';
+
+  @override
+  String get citasEstadoAtendida => 'Attended';
+
+  @override
+  String get citasEstadoCancelada => 'Cancelled';
+
+  @override
+  String get citasEstadoConfirmada => 'Confirmed';
+
+  @override
+  String get citasEstadoDesconocido => 'No status';
+
+  @override
+  String get citasEstadoNoAsistio => 'No-show';
+
+  @override
+  String citasFilaTitulo(DateTime fecha, String inicio) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString · $inicio';
+  }
+
+  @override
+  String get citasFilaVehiculoGenerico => 'Your vehicle';
 
   @override
   String citasFranjaCercana(DateTime fecha, String hora) {
@@ -110,6 +313,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasListoTitulo => 'Appointment confirmed';
 
   @override
+  String get citasListoVerComprobante => 'View confirmation';
+
+  @override
+  String get citasMisCitasAgendar => 'Book an appointment';
+
+  @override
+  String get citasMisCitasCargando => 'Loading your appointments';
+
+  @override
+  String get citasMisCitasTitulo => 'My appointments';
+
+  @override
+  String get citasMisCitasVacioMensaje =>
+      'When you book an appointment it will show up here with its status.';
+
+  @override
+  String get citasMisCitasVacioTitulo => 'You have no appointments yet';
+
+  @override
   String get citasMotivoGarantia => 'Warranty';
 
   @override
@@ -127,6 +349,69 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get citasNotaDiasSinCupo =>
       'Crossed-out days have no spots available.';
+
+  @override
+  String get citasPasadas => 'Past';
+
+  @override
+  String get citasPasadasVacio => 'You have no past appointments yet.';
+
+  @override
+  String get citasProximas => 'Upcoming';
+
+  @override
+  String get citasProximasVacio => 'You have no upcoming appointments.';
+
+  @override
+  String get citasReprogramar => 'Reschedule';
+
+  @override
+  String citasReprogramarActual(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Your current appointment: $fechaString · $hora';
+  }
+
+  @override
+  String get citasReprogramarCargando =>
+      'Loading your appointment and the workshop times';
+
+  @override
+  String get citasReprogramarConfirmar => 'Move to this time';
+
+  @override
+  String get citasReprogramarError =>
+      'We could not reschedule your appointment. Try again.';
+
+  @override
+  String citasReprogramarListo(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Appointment moved to $fechaString at $hora. The previous time slot is free again.';
+  }
+
+  @override
+  String get citasReprogramarNoDisponible =>
+      'This appointment can no longer be changed.';
+
+  @override
+  String get citasReprogramarNoEncontradaMensaje =>
+      'It may no longer be available to change.';
+
+  @override
+  String get citasReprogramarNoEncontradaTitulo =>
+      'We could not find this appointment';
+
+  @override
+  String get citasReprogramarSinFranja =>
+      'Pick a new day and time to continue.';
+
+  @override
+  String get citasReprogramarTitulo => 'Reschedule appointment';
 
   @override
   String get citasResumenFecha => 'Day';
@@ -217,6 +502,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosDetalleTitulo => 'Vehicle details';
 
   @override
+  String get vehiculosFichaCargando => 'Loading the specifications';
+
+  @override
+  String get vehiculosFichaClaveCarroceria => 'Body';
+
+  @override
+  String get vehiculosFichaClaveMotor => 'Engine';
+
+  @override
+  String get vehiculosFichaClavePasajeros => 'Passengers';
+
+  @override
+  String get vehiculosFichaClavePotencia => 'Power';
+
+  @override
+  String get vehiculosFichaClavePropulsion => 'Fuel';
+
+  @override
+  String get vehiculosFichaClaveTraccion => 'Drive';
+
+  @override
+  String get vehiculosFichaClaveTransmision => 'Transmission';
+
+  @override
+  String get vehiculosFichaNota =>
+      'Model and year data. The exact specifications of your unit are in its manual.';
+
+  @override
+  String get vehiculosFichaRespaldo =>
+      'Showing the specifications saved in the app';
+
+  @override
+  String get vehiculosFichaSeccionGeneral => 'General';
+
+  @override
+  String get vehiculosFichaSeccionMotor => 'Engine';
+
+  @override
+  String get vehiculosFichaSeccionTransmision => 'Transmission';
+
+  @override
+  String get vehiculosFichaTitulo => 'Specifications';
+
+  @override
+  String get vehiculosFichaVacioMensaje =>
+      'We do not have the specifications for this model and year yet. The dealership will publish them soon.';
+
+  @override
+  String get vehiculosFichaVacioTitulo => 'No specifications';
+
+  @override
   String get vehiculosKilometraje => 'Mileage';
 
   @override
@@ -234,6 +570,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vehiculosKmSinDato => 'No mileage recorded';
+
+  @override
+  String get vehiculosManualCargando => 'Loading the manual';
+
+  @override
+  String get vehiculosManualCompartir => 'Share manual';
+
+  @override
+  String get vehiculosManualDescargar => 'Download manual';
+
+  @override
+  String vehiculosManualDescripcion(String vehiculo) {
+    return 'Manual of $vehiculo';
+  }
+
+  @override
+  String get vehiculosManualGuardado => 'Manual saved';
+
+  @override
+  String get vehiculosManualGuardadoError =>
+      'We could not save the manual. Please try again.';
+
+  @override
+  String get vehiculosManualTitulo => 'Manual';
+
+  @override
+  String get vehiculosManualVacioMensaje =>
+      'We do not have the manual for this model and year yet. The dealership will publish it soon.';
+
+  @override
+  String get vehiculosManualVacioTitulo => 'Manual not available';
 
   @override
   String get vehiculosNoEncontradoMensaje =>
@@ -271,6 +638,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vehiculosVinCopiado => 'VIN copied';
+
+  @override
+  String get widgetsAccesoAgendar => 'Book appointment';
+
+  @override
+  String get widgetsAccesoMiAuto => 'My car';
+
+  @override
+  String get widgetsAccesoSos => 'SOS';
 
   @override
   String get avisoCerrar => 'Close notice';

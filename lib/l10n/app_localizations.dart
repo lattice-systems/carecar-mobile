@@ -98,6 +98,162 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
+  /// No description provided for @asistenciaGuiaChoquePaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.'**
+  String get asistenciaGuiaChoquePaso1;
+
+  /// No description provided for @asistenciaGuiaChoquePaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.'**
+  String get asistenciaGuiaChoquePaso2;
+
+  /// No description provided for @asistenciaGuiaChoquePaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.'**
+  String get asistenciaGuiaChoquePaso3;
+
+  /// No description provided for @asistenciaGuiaChoquePaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Llama a tu aseguradora y espera al ajustador. No aceptes ni firmes acuerdos con el otro conductor sin ella.'**
+  String get asistenciaGuiaChoquePaso4;
+
+  /// No description provided for @asistenciaGuiaChoquePaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma fotos de los vehículos, las placas, los daños y el lugar. Anota el nombre, el teléfono y los datos del seguro del otro conductor.'**
+  String get asistenciaGuiaChoquePaso5;
+
+  /// No description provided for @asistenciaGuiaChoquePaso6.
+  ///
+  /// In es, this message translates to:
+  /// **'No muevas el auto hasta que lo autorice la autoridad o el ajustador, salvo que estorbe y sea seguro hacerlo.'**
+  String get asistenciaGuiaChoquePaso6;
+
+  /// No description provided for @asistenciaGuiaChoqueResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasos para cuidar a todos y proteger tu reclamación.'**
+  String get asistenciaGuiaChoqueResumen;
+
+  /// No description provided for @asistenciaGuiaChoqueTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacer en un choque'**
+  String get asistenciaGuiaChoqueTitulo;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Estaciona el otro auto de frente, sin que se toquen. Apaga ambos motores y los accesorios.'**
+  String get asistenciaGuiaCorrientePaso1;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Conecta una pinza roja al polo positivo (+) de tu batería descargada y el otro extremo al polo positivo del auto que da corriente.'**
+  String get asistenciaGuiaCorrientePaso2;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Conecta una pinza negra al polo negativo (−) de la batería buena y el otro extremo a una parte metálica sin pintar del motor de tu auto, lejos de la batería.'**
+  String get asistenciaGuiaCorrientePaso3;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Enciende el auto que da corriente y déjalo funcionando unos minutos.'**
+  String get asistenciaGuiaCorrientePaso4;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta encender tu auto. Si no arranca, espera unos minutos más e inténtalo de nuevo.'**
+  String get asistenciaGuiaCorrientePaso5;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso6.
+  ///
+  /// In es, this message translates to:
+  /// **'Quita las pinzas en orden inverso, sin que se toquen entre sí, y deja tu auto encendido al menos 20 minutos.'**
+  String get asistenciaGuiaCorrientePaso6;
+
+  /// No description provided for @asistenciaGuiaCorrienteResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo arrancar tu auto con cables de otro vehículo.'**
+  String get asistenciaGuiaCorrienteResumen;
+
+  /// No description provided for @asistenciaGuiaCorrienteTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasar corriente'**
+  String get asistenciaGuiaCorrienteTitulo;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Estaciona en terreno plano y firme, pon el freno de mano y enciende las luces intermitentes.'**
+  String get asistenciaGuiaLlantaPaso1;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Saca la llanta de refacción, el gato y la llave de cruz. Afloja un poco las tuercas de la llanta ponchada sin quitarlas.'**
+  String get asistenciaGuiaLlantaPaso2;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Coloca el gato en el punto indicado en el manual y levanta el auto hasta que la llanta quede en el aire.'**
+  String get asistenciaGuiaLlantaPaso3;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Quita las tuercas y la llanta ponchada. Monta la de refacción y aprieta las tuercas con la mano.'**
+  String get asistenciaGuiaLlantaPaso4;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Baja el auto, aprieta las tuercas en cruz con la llave y revisa la presión en cuanto puedas.'**
+  String get asistenciaGuiaLlantaPaso5;
+
+  /// No description provided for @asistenciaGuiaLlantaResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Cámbiala por la de refacción en pocos pasos.'**
+  String get asistenciaGuiaLlantaResumen;
+
+  /// No description provided for @asistenciaGuiaLlantaTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar una llanta'**
+  String get asistenciaGuiaLlantaTitulo;
+
+  /// Encabezado de cada paso de una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'Paso {numero} de {total}'**
+  String asistenciaGuiaPasoNumero(int numero, int total);
+
+  /// Aviso de que las guías no necesitan red.
+  ///
+  /// In es, this message translates to:
+  /// **'Estas guías están guardadas en la app y funcionan sin conexión.'**
+  String get asistenciaGuiasAvisoSinConexion;
+
+  /// Título de la pantalla de guías de emergencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Guías de emergencia'**
+  String get asistenciaGuiasTitulo;
+
   /// Título de la pantalla del catálogo de modelos.
   ///
   /// In es, this message translates to:
@@ -164,6 +320,54 @@ abstract class AppLocalizations {
   /// **'Elige tu vehículo'**
   String get citasAgendarVehiculoSugerencia;
 
+  /// Aviso tras cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita cancelada. El horario quedó libre.'**
+  String get citasCancelada;
+
+  /// Botón para cancelar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar cita'**
+  String get citasCancelar;
+
+  /// Acción de peligro del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, cancelar'**
+  String get citasCancelarConfirmar;
+
+  /// Mensaje del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita del {fecha} a las {hora} se cancelará y el horario quedará libre para otras personas.'**
+  String citasCancelarDialogoMensaje(DateTime fecha, String hora);
+
+  /// Título del diálogo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cancelar esta cita?'**
+  String get citasCancelarDialogoTitulo;
+
+  /// Fallo al cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cancelar tu cita. Intenta de nuevo.'**
+  String get citasCancelarError;
+
+  /// Acción segura del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantener cita'**
+  String get citasCancelarMantener;
+
+  /// 409: la cita ya no está confirmada o pasó el plazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cita ya no se puede cancelar.'**
+  String get citasCancelarNoDisponible;
+
   /// Lo que anuncia el lector de pantalla mientras carga la disponibilidad.
   ///
   /// In es, this message translates to:
@@ -175,6 +379,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando tus vehículos y los horarios del taller'**
   String get citasCargandoAgendar;
+
+  /// No description provided for @citasComprobanteCargando.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu comprobante'**
+  String get citasComprobanteCargando;
+
+  /// Día y horario de la cita en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String citasComprobanteCuando(DateTime fecha, String inicio, String fin);
+
+  /// Número de la cita en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio {id}'**
+  String citasComprobanteFolio(int id);
+
+  /// No description provided for @citasComprobanteIndicacion.
+  ///
+  /// In es, this message translates to:
+  /// **'Muestra este código en recepción para registrar tu llegada.'**
+  String get citasComprobanteIndicacion;
+
+  /// No description provided for @citasComprobanteQrDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Código QR de tu cita para recepción'**
+  String get citasComprobanteQrDescripcion;
+
+  /// No description provided for @citasComprobanteTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante de cita'**
+  String get citasComprobanteTitulo;
+
+  /// No description provided for @citasComprobanteVerPdf.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante en PDF'**
+  String get citasComprobanteVerPdf;
+
+  /// No description provided for @citasComprobanteVerPdfDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante en PDF de tu cita'**
+  String get citasComprobanteVerPdfDescripcion;
+
+  /// Botón de paginación.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más citas'**
+  String get citasCargarMas;
 
   /// No description provided for @citasConfirmar.
   ///
@@ -205,6 +463,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos agendar tu cita. Intenta de nuevo.'**
   String get citasErrorAgendar;
+
+  /// Fallo al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más citas. Intenta de nuevo.'**
+  String get citasErrorMas;
+
+  /// Estado de cita atendida.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get citasEstadoAtendida;
+
+  /// Estado de cita cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelada'**
+  String get citasEstadoCancelada;
+
+  /// Estado de cita confirmada.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmada'**
+  String get citasEstadoConfirmada;
+
+  /// Estado que la app no reconoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin estado'**
+  String get citasEstadoDesconocido;
+
+  /// Estado de cita a la que el cliente no llegó.
+  ///
+  /// In es, this message translates to:
+  /// **'No asistió'**
+  String get citasEstadoNoAsistio;
+
+  /// Título de una cita en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {inicio}'**
+  String citasFilaTitulo(DateTime fecha, String inicio);
+
+  /// Nombre cuando la cita no trae el vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu vehículo'**
+  String get citasFilaVehiculoGenerico;
 
   /// Botón que ofrece una franja cercana cuando la elegida se llenó.
   ///
@@ -242,6 +548,42 @@ abstract class AppLocalizations {
   /// **'Cita confirmada'**
   String get citasListoTitulo;
 
+  /// No description provided for @citasListoVerComprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante'**
+  String get citasListoVerComprobante;
+
+  /// Acción del estado vacío y de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get citasMisCitasAgendar;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus citas'**
+  String get citasMisCitasCargando;
+
+  /// Título de la lista de citas del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis citas'**
+  String get citasMisCitasTitulo;
+
+  /// Mensaje cuando no hay citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando agendes una cita aparecerá aquí con su estado.'**
+  String get citasMisCitasVacioMensaje;
+
+  /// Título cuando el cliente no tiene ninguna cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes citas'**
+  String get citasMisCitasVacioTitulo;
+
   /// No description provided for @citasMotivoGarantia.
   ///
   /// In es, this message translates to:
@@ -277,6 +619,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Los días tachados no tienen lugares disponibles.'**
   String get citasNotaDiasSinCupo;
+
+  /// Encabezado de las citas ya atendidas, canceladas o vencidas.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasadas'**
+  String get citasPasadas;
+
+  /// Sección de pasadas sin citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes citas pasadas.'**
+  String get citasPasadasVacio;
+
+  /// Encabezado de las citas confirmadas que aún no pasan.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximas'**
+  String get citasProximas;
+
+  /// Sección de próximas sin citas.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas próximas.'**
+  String get citasProximasVacio;
+
+  /// Botón para cambiar la cita de horario.
+  ///
+  /// In es, this message translates to:
+  /// **'Reprogramar'**
+  String get citasReprogramar;
+
+  /// Cita que se va a cambiar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita actual: {fecha} · {hora}'**
+  String citasReprogramarActual(DateTime fecha, String hora);
+
+  /// Lo que anuncia el lector de pantalla al cargar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu cita y los horarios del taller'**
+  String get citasReprogramarCargando;
+
+  /// Botón de confirmar el cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar a este horario'**
+  String get citasReprogramarConfirmar;
+
+  /// Fallo al reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos reprogramar tu cita. Intenta de nuevo.'**
+  String get citasReprogramarError;
+
+  /// Aviso tras reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.'**
+  String citasReprogramarListo(DateTime fecha, String hora);
+
+  /// 409: la cita ya no está confirmada o pasó el plazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cita ya no se puede cambiar.'**
+  String get citasReprogramarNoDisponible;
+
+  /// Mensaje si la cita no está en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no esté disponible para cambiarla.'**
+  String get citasReprogramarNoEncontradaMensaje;
+
+  /// Título si la cita no está en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esta cita'**
+  String get citasReprogramarNoEncontradaTitulo;
+
+  /// Ayuda cuando falta elegir la franja.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día y un horario nuevos para continuar.'**
+  String get citasReprogramarSinFranja;
+
+  /// Título de la pantalla de reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'Reprogramar cita'**
+  String get citasReprogramarTitulo;
 
   /// No description provided for @citasResumenFecha.
   ///
@@ -434,6 +866,102 @@ abstract class AppLocalizations {
   /// **'Detalle del vehículo'**
   String get vehiculosDetalleTitulo;
 
+  /// Mensaje que lee el lector de pantalla mientras carga la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la ficha técnica'**
+  String get vehiculosFichaCargando;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Carrocería'**
+  String get vehiculosFichaClaveCarroceria;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Motor'**
+  String get vehiculosFichaClaveMotor;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasajeros'**
+  String get vehiculosFichaClavePasajeros;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Potencia'**
+  String get vehiculosFichaClavePotencia;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Propulsión'**
+  String get vehiculosFichaClavePropulsion;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Tracción'**
+  String get vehiculosFichaClaveTraccion;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Transmisión'**
+  String get vehiculosFichaClaveTransmision;
+
+  /// Aviso al pie de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos del modelo y año. La ficha exacta de tu unidad está en su manual.'**
+  String get vehiculosFichaNota;
+
+  /// Aviso cuando la ficha sale del respaldo local y no de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrando la ficha guardada en la app'**
+  String get vehiculosFichaRespaldo;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'General'**
+  String get vehiculosFichaSeccionGeneral;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Motor'**
+  String get vehiculosFichaSeccionMotor;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Transmisión'**
+  String get vehiculosFichaSeccionTransmision;
+
+  /// Título de la pantalla de ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha técnica'**
+  String get vehiculosFichaTitulo;
+
+  /// Mensaje del estado vacío de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos las especificaciones de este modelo y año. La agencia las publicará pronto.'**
+  String get vehiculosFichaVacioMensaje;
+
+  /// Título del estado vacío de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin ficha técnica'**
+  String get vehiculosFichaVacioTitulo;
+
   /// Etiqueta del kilometraje del vehículo.
   ///
   /// In es, this message translates to:
@@ -463,6 +991,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin kilometraje registrado'**
   String get vehiculosKmSinDato;
+
+  /// Mensaje que lee el lector de pantalla mientras carga el manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el manual'**
+  String get vehiculosManualCargando;
+
+  /// Botón para compartir el PDF del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir manual'**
+  String get vehiculosManualCompartir;
+
+  /// Botón para guardar el PDF del manual en el teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar manual'**
+  String get vehiculosManualDescargar;
+
+  /// Nombre del documento para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual de {vehiculo}'**
+  String vehiculosManualDescripcion(String vehiculo);
+
+  /// Aviso cuando el manual se guardó.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual guardado'**
+  String get vehiculosManualGuardado;
+
+  /// Aviso cuando falla guardar el manual.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el manual. Inténtalo de nuevo.'**
+  String get vehiculosManualGuardadoError;
+
+  /// Título de la pantalla del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual'**
+  String get vehiculosManualTitulo;
+
+  /// Mensaje del estado vacío del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos el manual de este modelo y año. La agencia lo publicará pronto.'**
+  String get vehiculosManualVacioMensaje;
+
+  /// Título del estado vacío del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual no disponible'**
+  String get vehiculosManualVacioTitulo;
 
   /// Mensaje cuando el vehículo pedido no existe en el garaje.
   ///
@@ -529,6 +1111,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'VIN copiado'**
   String get vehiculosVinCopiado;
+
+  /// Acceso rápido del ícono: agendar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get widgetsAccesoAgendar;
+
+  /// Acceso rápido del ícono: abrir el garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi auto'**
+  String get widgetsAccesoMiAuto;
+
+  /// Acceso rápido del ícono: pedir ayuda en carretera.
+  ///
+  /// In es, this message translates to:
+  /// **'SOS'**
+  String get widgetsAccesoSos;
 
   /// Botón para cerrar un aviso.
   ///

@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart' show DateUtils;
 
 import '../dominio/cita_agendada.dart';
+import '../dominio/cita_cliente.dart';
+import '../dominio/comprobante_de_cita.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
@@ -16,12 +20,19 @@ import '../dominio/repositorio_citas.dart';
 ///
 /// `agendar` descuenta cupo, rechaza las `franjasLlenas` con `FranjaSinCupo` y
 /// responde `CitaDuplicada` si ya hay cita del mismo vehiculo ese dia.
+///
+/// `citas` es la semilla de `misCitas`; `cancelar` y `reprogramar` solo
+/// aceptan citas confirmadas que empiezan despues de `reloj()`, y liberan el
+/// cupo de la franja anterior como lo hace el servidor.
 class RepositorioCitasFake implements RepositorioCitas {
   RepositorioCitasFake({
     this.franjas,
     this.error,
     this.franjasLlenas = const {},
-  });
+    List<CitaCliente> citas = const [],
+    DateTime Function()? reloj,
+  }) : _citas = [...citas],
+       _reloj = reloj ?? DateTime.now;
 
   /// Franjas fijas; si es nulo se generan por rango.
   final List<FranjaDisponible>? franjas;
@@ -32,6 +43,8 @@ class RepositorioCitasFake implements RepositorioCitas {
   /// Ids de franja que ya no tienen lugar.
   final Set<int> franjasLlenas;
 
+  final List<CitaCliente> _citas;
+  final DateTime Function() _reloj;
   final _agendadas = <CitaAgendada>[];
   final _usados = <int, int>{};
 
@@ -119,6 +132,115 @@ class RepositorioCitasFake implements RepositorioCitas {
       motivo: motivo,
     );
     _agendadas.add(cita);
+    _citas.add(
+      CitaCliente(
+        id: cita.id,
+        vehiculoId: vehiculoId,
+        franjaId: franja.franjaId,
+        fecha: cita.fecha,
+        horaInicio: cita.horaInicio,
+        horaFin: cita.horaFin,
+        estado: EstadoDeCita.confirmada,
+        motivo: motivo,
+      ),
+    );
     return cita;
+  }
+
+  @override
+  Future<PaginaDeCitas> misCitas({int pagina = 0, int tamano = 20}) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    final inicio = (pagina * tamano).clamp(0, _citas.length);
+    final fin = (inicio + tamano).clamp(0, _citas.length);
+    return PaginaDeCitas(
+      citas: _citas.sublist(inicio, fin),
+      pagina: pagina,
+      totalPaginas: _citas.isEmpty ? 0 : (_citas.length / tamano).ceil(),
+    );
+  }
+
+  @override
+  Future<CitaCliente> cancelar(int citaId) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    final i = _modificable(citaId);
+    _liberar(_citas[i].franjaId);
+    return _citas[i] = _con(_citas[i], estado: EstadoDeCita.cancelada);
+  }
+
+  @override
+  Future<CitaCliente> reprogramar({
+    required int citaId,
+    required FranjaDisponible franja,
+  }) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    final i = _modificable(citaId);
+    if (_descontada(franja).cupo == 0) throw const FranjaSinCupo();
+    _liberar(_citas[i].franjaId);
+    _usados[franja.franjaId] = (_usados[franja.franjaId] ?? 0) + 1;
+    return _citas[i] = _con(
+      _citas[i],
+      franjaId: franja.franjaId,
+      fecha: franja.fecha,
+      horaInicio: franja.horaInicio,
+      horaFin: franja.horaFin,
+    );
+  }
+
+  int _modificable(int citaId) {
+    final i = _citas.indexWhere((c) => c.id == citaId);
+    if (i < 0 || !_citas[i].sePuedeModificar(_reloj())) {
+      throw const CitaNoModificable();
+    }
+    return i;
+  }
+
+  void _liberar(int? franjaId) {
+    if (franjaId == null) return;
+    final usados = _usados[franjaId] ?? 0;
+    _usados[franjaId] = usados > 0 ? usados - 1 : 0;
+  }
+
+  static CitaCliente _con(
+    CitaCliente c, {
+    EstadoDeCita? estado,
+    int? franjaId,
+    DateTime? fecha,
+    String? horaInicio,
+    String? horaFin,
+  }) => CitaCliente(
+    id: c.id,
+    vehiculoId: c.vehiculoId,
+    franjaId: franjaId ?? c.franjaId,
+    vehiculoNombre: c.vehiculoNombre,
+    fecha: fecha ?? c.fecha,
+    horaInicio: horaInicio ?? c.horaInicio,
+    horaFin: horaFin ?? c.horaFin,
+    estado: estado ?? c.estado,
+    motivo: c.motivo,
+  );
+
+  @override
+  Future<ComprobanteDeCita> comprobante(int citaId) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    final agendada = _agendadas.where((c) => c.id == citaId).firstOrNull;
+    return ComprobanteDeCita(
+      citaId: citaId,
+      codigo: 'CC1.$citaId.firma',
+      fecha: agendada?.fecha ?? DateTime(2026, 11, 24),
+      horaInicio: agendada?.horaInicio ?? '09:00',
+      horaFin: agendada?.horaFin ?? '10:00',
+      vehiculoNombre: 'Mazda CX-5 2024',
+    );
+  }
+
+  @override
+  Future<Uint8List> ticketPdf(int citaId) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    return Uint8List.fromList('%PDF-1.4\n%%EOF\n'.codeUnits);
   }
 }

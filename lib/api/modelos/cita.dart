@@ -114,3 +114,37 @@ class Cita {
 
   bool get sePuedeCancelar => estado == EstadoCita.confirmada;
 }
+
+/// Comprobante de una cita (`GET /citas/{id}/comprobante`, V2-M02.11).
+///
+/// `codigo` es lo que se dibuja en el QR: el id de la cita firmado por el
+/// backend. La app no lo interpreta ni lo firma; solo lo muestra.
+class ComprobanteCita {
+  const ComprobanteCita({
+    required this.citaId,
+    required this.codigo,
+    required this.fecha,
+    required this.horaInicio,
+    required this.horaFin,
+    this.vehiculoNombre,
+  });
+
+  factory ComprobanteCita.fromJson(Map<String, Object?> json) =>
+      ComprobanteCita(
+        citaId: leerEntero(json['citaId'], 'citaId'),
+        codigo: leerTexto(json['codigo'], 'codigo'),
+        fecha: leerFecha(json['fecha'], 'fecha'),
+        horaInicio: leerTexto(json['horaInicio'], 'horaInicio'),
+        horaFin: leerTexto(json['horaFin'], 'horaFin'),
+        vehiculoNombre: json['vehiculoNombre'] is String
+            ? json['vehiculoNombre']! as String
+            : null,
+      );
+
+  final int citaId;
+  final String codigo;
+  final DateTime fecha;
+  final String horaInicio;
+  final String horaFin;
+  final String? vehiculoNombre;
+}

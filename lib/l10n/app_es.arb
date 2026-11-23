@@ -1,5 +1,50 @@
 {
   "@@locale": "es",
+  "asistenciaGuiaChoquePaso1": "Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.",
+  "asistenciaGuiaChoquePaso2": "Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.",
+  "asistenciaGuiaChoquePaso3": "Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.",
+  "asistenciaGuiaChoquePaso4": "Llama a tu aseguradora y espera al ajustador. No aceptes ni firmes acuerdos con el otro conductor sin ella.",
+  "asistenciaGuiaChoquePaso5": "Toma fotos de los vehículos, las placas, los daños y el lugar. Anota el nombre, el teléfono y los datos del seguro del otro conductor.",
+  "asistenciaGuiaChoquePaso6": "No muevas el auto hasta que lo autorice la autoridad o el ajustador, salvo que estorbe y sea seguro hacerlo.",
+  "asistenciaGuiaChoqueResumen": "Pasos para cuidar a todos y proteger tu reclamación.",
+  "asistenciaGuiaChoqueTitulo": "Qué hacer en un choque",
+  "asistenciaGuiaCorrientePaso1": "Estaciona el otro auto de frente, sin que se toquen. Apaga ambos motores y los accesorios.",
+  "asistenciaGuiaCorrientePaso2": "Conecta una pinza roja al polo positivo (+) de tu batería descargada y el otro extremo al polo positivo del auto que da corriente.",
+  "asistenciaGuiaCorrientePaso3": "Conecta una pinza negra al polo negativo (−) de la batería buena y el otro extremo a una parte metálica sin pintar del motor de tu auto, lejos de la batería.",
+  "asistenciaGuiaCorrientePaso4": "Enciende el auto que da corriente y déjalo funcionando unos minutos.",
+  "asistenciaGuiaCorrientePaso5": "Intenta encender tu auto. Si no arranca, espera unos minutos más e inténtalo de nuevo.",
+  "asistenciaGuiaCorrientePaso6": "Quita las pinzas en orden inverso, sin que se toquen entre sí, y deja tu auto encendido al menos 20 minutos.",
+  "asistenciaGuiaCorrienteResumen": "Cómo arrancar tu auto con cables de otro vehículo.",
+  "asistenciaGuiaCorrienteTitulo": "Pasar corriente",
+  "asistenciaGuiaLlantaPaso1": "Estaciona en terreno plano y firme, pon el freno de mano y enciende las luces intermitentes.",
+  "asistenciaGuiaLlantaPaso2": "Saca la llanta de refacción, el gato y la llave de cruz. Afloja un poco las tuercas de la llanta ponchada sin quitarlas.",
+  "asistenciaGuiaLlantaPaso3": "Coloca el gato en el punto indicado en el manual y levanta el auto hasta que la llanta quede en el aire.",
+  "asistenciaGuiaLlantaPaso4": "Quita las tuercas y la llanta ponchada. Monta la de refacción y aprieta las tuercas con la mano.",
+  "asistenciaGuiaLlantaPaso5": "Baja el auto, aprieta las tuercas en cruz con la llave y revisa la presión en cuanto puedas.",
+  "asistenciaGuiaLlantaResumen": "Cámbiala por la de refacción en pocos pasos.",
+  "asistenciaGuiaLlantaTitulo": "Cambiar una llanta",
+  "asistenciaGuiaPasoNumero": "Paso {numero} de {total}",
+  "@asistenciaGuiaPasoNumero": {
+    "description": "Encabezado de cada paso de una guía.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "asistenciaGuiasAvisoSinConexion": "Estas guías están guardadas en la app y funcionan sin conexión.",
+  "@asistenciaGuiasAvisoSinConexion": {
+    "description": "Aviso de que las guías no necesitan red."
+  },
+  "asistenciaGuiasTitulo": "Guías de emergencia",
+  "@asistenciaGuiasTitulo": {
+    "description": "Título de la pantalla de guías de emergencia."
+  },
   "catalogoTitulo": "Catálogo",
   "@catalogoTitulo": {
     "description": "Título de la pantalla del catálogo de modelos."
@@ -17,11 +62,93 @@
   "citasAgendarTitulo": "Agendar cita",
   "citasAgendarVehiculo": "Vehículo",
   "citasAgendarVehiculoSugerencia": "Elige tu vehículo",
+  "citasCancelada": "Cita cancelada. El horario quedó libre.",
+  "@citasCancelada": {
+    "description": "Aviso tras cancelar."
+  },
+  "citasCancelar": "Cancelar cita",
+  "@citasCancelar": {
+    "description": "Botón para cancelar una cita."
+  },
+  "citasCancelarConfirmar": "Sí, cancelar",
+  "@citasCancelarConfirmar": {
+    "description": "Acción de peligro del diálogo de cancelar."
+  },
+  "citasCancelarDialogoMensaje": "Tu cita del {fecha} a las {hora} se cancelará y el horario quedará libre para otras personas.",
+  "@citasCancelarDialogoMensaje": {
+    "description": "Mensaje del diálogo de cancelar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasCancelarDialogoTitulo": "¿Cancelar esta cita?",
+  "@citasCancelarDialogoTitulo": {
+    "description": "Título del diálogo de confirmación."
+  },
+  "citasCancelarError": "No pudimos cancelar tu cita. Intenta de nuevo.",
+  "@citasCancelarError": {
+    "description": "Fallo al cancelar."
+  },
+  "citasCancelarMantener": "Mantener cita",
+  "@citasCancelarMantener": {
+    "description": "Acción segura del diálogo de cancelar."
+  },
+  "citasCancelarNoDisponible": "Esta cita ya no se puede cancelar.",
+  "@citasCancelarNoDisponible": {
+    "description": "409: la cita ya no está confirmada o pasó el plazo."
+  },
   "citasCargando": "Cargando disponibilidad del taller",
   "@citasCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras carga la disponibilidad."
   },
   "citasCargandoAgendar": "Cargando tus vehículos y los horarios del taller",
+  "citasComprobanteCargando": "Cargando tu comprobante",
+  "citasComprobanteCuando": "{fecha}, de {inicio} a {fin}",
+  "@citasComprobanteCuando": {
+    "description": "Día y horario de la cita en el comprobante.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "10:00"
+      }
+    }
+  },
+  "citasComprobanteFolio": "Folio {id}",
+  "@citasComprobanteFolio": {
+    "description": "Número de la cita en el comprobante.",
+    "placeholders": {
+      "id": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "citasComprobanteIndicacion": "Muestra este código en recepción para registrar tu llegada.",
+  "citasComprobanteQrDescripcion": "Código QR de tu cita para recepción",
+  "citasComprobanteTitulo": "Comprobante de cita",
+  "citasComprobanteVerPdf": "Ver comprobante en PDF",
+  "citasComprobanteVerPdfDescripcion": "Comprobante en PDF de tu cita",
+  "citasCargarMas": "Cargar más citas",
+  "@citasCargarMas": {
+    "description": "Botón de paginación."
+  },
   "citasConfirmar": "Confirmar cita",
   "citasDuplicadaMensaje": "Ya tienes una cita el {fecha} de {inicio} a {fin}. Si necesitas cambiarla, cancélala primero.",
   "@citasDuplicadaMensaje": {
@@ -45,6 +172,49 @@
   "citasDuplicadaTitulo": "Ya tienes una cita ese día",
   "citasEditar": "Cambiar datos",
   "citasErrorAgendar": "No pudimos agendar tu cita. Intenta de nuevo.",
+  "citasErrorMas": "No pudimos cargar más citas. Intenta de nuevo.",
+  "@citasErrorMas": {
+    "description": "Fallo al pedir la siguiente página."
+  },
+  "citasEstadoAtendida": "Atendida",
+  "@citasEstadoAtendida": {
+    "description": "Estado de cita atendida."
+  },
+  "citasEstadoCancelada": "Cancelada",
+  "@citasEstadoCancelada": {
+    "description": "Estado de cita cancelada."
+  },
+  "citasEstadoConfirmada": "Confirmada",
+  "@citasEstadoConfirmada": {
+    "description": "Estado de cita confirmada."
+  },
+  "citasEstadoDesconocido": "Sin estado",
+  "@citasEstadoDesconocido": {
+    "description": "Estado que la app no reconoce."
+  },
+  "citasEstadoNoAsistio": "No asistió",
+  "@citasEstadoNoAsistio": {
+    "description": "Estado de cita a la que el cliente no llegó."
+  },
+  "citasFilaTitulo": "{fecha} · {inicio}",
+  "@citasFilaTitulo": {
+    "description": "Título de una cita en la lista.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 nov"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasFilaVehiculoGenerico": "Tu vehículo",
+  "@citasFilaVehiculoGenerico": {
+    "description": "Nombre cuando la cita no trae el vehículo."
+  },
   "citasFranjaCercana": "{fecha} · {hora}",
   "@citasFranjaCercana": {
     "description": "Botón que ofrece una franja cercana cuando la elegida se llenó.",
@@ -89,12 +259,115 @@
     }
   },
   "citasListoTitulo": "Cita confirmada",
+  "citasListoVerComprobante": "Ver comprobante",
+  "citasMisCitasAgendar": "Agendar cita",
+  "@citasMisCitasAgendar": {
+    "description": "Acción del estado vacío y de la lista."
+  },
+  "citasMisCitasCargando": "Cargando tus citas",
+  "@citasMisCitasCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras cargan las citas."
+  },
+  "citasMisCitasTitulo": "Mis citas",
+  "@citasMisCitasTitulo": {
+    "description": "Título de la lista de citas del cliente."
+  },
+  "citasMisCitasVacioMensaje": "Cuando agendes una cita aparecerá aquí con su estado.",
+  "@citasMisCitasVacioMensaje": {
+    "description": "Mensaje cuando no hay citas."
+  },
+  "citasMisCitasVacioTitulo": "Aún no tienes citas",
+  "@citasMisCitasVacioTitulo": {
+    "description": "Título cuando el cliente no tiene ninguna cita."
+  },
   "citasMotivoGarantia": "Garantía",
   "citasMotivoMantenimiento": "Mantenimiento",
   "citasMotivoOtro": "Otro",
   "citasMotivoReparacion": "Reparación",
   "citasMotivoRevision": "Revisión",
   "citasNotaDiasSinCupo": "Los días tachados no tienen lugares disponibles.",
+  "citasPasadas": "Pasadas",
+  "@citasPasadas": {
+    "description": "Encabezado de las citas ya atendidas, canceladas o vencidas."
+  },
+  "citasPasadasVacio": "Aún no tienes citas pasadas.",
+  "@citasPasadasVacio": {
+    "description": "Sección de pasadas sin citas."
+  },
+  "citasProximas": "Próximas",
+  "@citasProximas": {
+    "description": "Encabezado de las citas confirmadas que aún no pasan."
+  },
+  "citasProximasVacio": "No tienes citas próximas.",
+  "@citasProximasVacio": {
+    "description": "Sección de próximas sin citas."
+  },
+  "citasReprogramar": "Reprogramar",
+  "@citasReprogramar": {
+    "description": "Botón para cambiar la cita de horario."
+  },
+  "citasReprogramarActual": "Tu cita actual: {fecha} · {hora}",
+  "@citasReprogramarActual": {
+    "description": "Cita que se va a cambiar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 nov"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasReprogramarCargando": "Cargando tu cita y los horarios del taller",
+  "@citasReprogramarCargando": {
+    "description": "Lo que anuncia el lector de pantalla al cargar."
+  },
+  "citasReprogramarConfirmar": "Cambiar a este horario",
+  "@citasReprogramarConfirmar": {
+    "description": "Botón de confirmar el cambio."
+  },
+  "citasReprogramarError": "No pudimos reprogramar tu cita. Intenta de nuevo.",
+  "@citasReprogramarError": {
+    "description": "Fallo al reprogramar."
+  },
+  "citasReprogramarListo": "Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.",
+  "@citasReprogramarListo": {
+    "description": "Aviso tras reprogramar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasReprogramarNoDisponible": "Esta cita ya no se puede cambiar.",
+  "@citasReprogramarNoDisponible": {
+    "description": "409: la cita ya no está confirmada o pasó el plazo."
+  },
+  "citasReprogramarNoEncontradaMensaje": "Puede que ya no esté disponible para cambiarla.",
+  "@citasReprogramarNoEncontradaMensaje": {
+    "description": "Mensaje si la cita no está en la lista."
+  },
+  "citasReprogramarNoEncontradaTitulo": "No encontramos esta cita",
+  "@citasReprogramarNoEncontradaTitulo": {
+    "description": "Título si la cita no está en la lista."
+  },
+  "citasReprogramarSinFranja": "Elige un día y un horario nuevos para continuar.",
+  "@citasReprogramarSinFranja": {
+    "description": "Ayuda cuando falta elegir la franja."
+  },
+  "citasReprogramarTitulo": "Reprogramar cita",
+  "@citasReprogramarTitulo": {
+    "description": "Título de la pantalla de reprogramar."
+  },
   "citasResumenFecha": "Día",
   "citasResumenHorario": "Horario",
   "citasResumenHorarioValor": "{inicio} a {fin}",
@@ -182,6 +455,70 @@
   "@vehiculosDetalleTitulo": {
     "description": "Título de la pantalla de detalle de un vehículo."
   },
+  "vehiculosFichaCargando": "Cargando la ficha técnica",
+  "@vehiculosFichaCargando": {
+    "description": "Mensaje que lee el lector de pantalla mientras carga la ficha técnica."
+  },
+  "vehiculosFichaClaveCarroceria": "Carrocería",
+  "@vehiculosFichaClaveCarroceria": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveMotor": "Motor",
+  "@vehiculosFichaClaveMotor": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePasajeros": "Pasajeros",
+  "@vehiculosFichaClavePasajeros": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePotencia": "Potencia",
+  "@vehiculosFichaClavePotencia": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePropulsion": "Propulsión",
+  "@vehiculosFichaClavePropulsion": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveTraccion": "Tracción",
+  "@vehiculosFichaClaveTraccion": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveTransmision": "Transmisión",
+  "@vehiculosFichaClaveTransmision": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaNota": "Datos del modelo y año. La ficha exacta de tu unidad está en su manual.",
+  "@vehiculosFichaNota": {
+    "description": "Aviso al pie de la ficha técnica."
+  },
+  "vehiculosFichaRespaldo": "Mostrando la ficha guardada en la app",
+  "@vehiculosFichaRespaldo": {
+    "description": "Aviso cuando la ficha sale del respaldo local y no de la agencia."
+  },
+  "vehiculosFichaSeccionGeneral": "General",
+  "@vehiculosFichaSeccionGeneral": {
+    "description": "Título de una sección del respaldo local de la ficha."
+  },
+  "vehiculosFichaSeccionMotor": "Motor",
+  "@vehiculosFichaSeccionMotor": {
+    "description": "Título de una sección del respaldo local de la ficha."
+  },
+  "vehiculosFichaSeccionTransmision": "Transmisión",
+  "@vehiculosFichaSeccionTransmision": {
+    "description": "Título de una sección del respaldo local de la ficha."
+  },
+  "vehiculosFichaTitulo": "Ficha técnica",
+  "@vehiculosFichaTitulo": {
+    "description": "Título de la pantalla de ficha técnica."
+  },
+  "vehiculosFichaVacioMensaje": "Todavía no tenemos las especificaciones de este modelo y año. La agencia las publicará pronto.",
+  "@vehiculosFichaVacioMensaje": {
+    "description": "Mensaje del estado vacío de la ficha técnica."
+  },
+  "vehiculosFichaVacioTitulo": "Sin ficha técnica",
+  "@vehiculosFichaVacioTitulo": {
+    "description": "Título del estado vacío de la ficha técnica."
+  },
   "vehiculosKilometraje": "Kilometraje",
   "@vehiculosKilometraje": {
     "description": "Etiqueta del kilometraje del vehículo."
@@ -213,6 +550,47 @@
   "vehiculosKmSinDato": "Sin kilometraje registrado",
   "@vehiculosKmSinDato": {
     "description": "Se muestra si el vehículo no tiene kilometraje."
+  },
+  "vehiculosManualCargando": "Cargando el manual",
+  "@vehiculosManualCargando": {
+    "description": "Mensaje que lee el lector de pantalla mientras carga el manual."
+  },
+  "vehiculosManualCompartir": "Compartir manual",
+  "@vehiculosManualCompartir": {
+    "description": "Botón para compartir el PDF del manual."
+  },
+  "vehiculosManualDescargar": "Descargar manual",
+  "@vehiculosManualDescargar": {
+    "description": "Botón para guardar el PDF del manual en el teléfono."
+  },
+  "vehiculosManualDescripcion": "Manual de {vehiculo}",
+  "@vehiculosManualDescripcion": {
+    "description": "Nombre del documento para el lector de pantalla.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "vehiculosManualGuardado": "Manual guardado",
+  "@vehiculosManualGuardado": {
+    "description": "Aviso cuando el manual se guardó."
+  },
+  "vehiculosManualGuardadoError": "No pudimos guardar el manual. Inténtalo de nuevo.",
+  "@vehiculosManualGuardadoError": {
+    "description": "Aviso cuando falla guardar el manual."
+  },
+  "vehiculosManualTitulo": "Manual",
+  "@vehiculosManualTitulo": {
+    "description": "Título de la pantalla del manual."
+  },
+  "vehiculosManualVacioMensaje": "Todavía no tenemos el manual de este modelo y año. La agencia lo publicará pronto.",
+  "@vehiculosManualVacioMensaje": {
+    "description": "Mensaje del estado vacío del manual."
+  },
+  "vehiculosManualVacioTitulo": "Manual no disponible",
+  "@vehiculosManualVacioTitulo": {
+    "description": "Título del estado vacío del manual."
   },
   "vehiculosNoEncontradoMensaje": "Ese vehículo ya no está en tu garaje. Vuelve al garaje para elegir otro.",
   "@vehiculosNoEncontradoMensaje": {
@@ -257,6 +635,18 @@
   "vehiculosVinCopiado": "VIN copiado",
   "@vehiculosVinCopiado": {
     "description": "Confirmación al copiar el VIN."
+  },
+  "widgetsAccesoAgendar": "Agendar cita",
+  "@widgetsAccesoAgendar": {
+    "description": "Acceso rápido del ícono: agendar una cita."
+  },
+  "widgetsAccesoMiAuto": "Mi auto",
+  "@widgetsAccesoMiAuto": {
+    "description": "Acceso rápido del ícono: abrir el garaje."
+  },
+  "widgetsAccesoSos": "SOS",
+  "@widgetsAccesoSos": {
+    "description": "Acceso rápido del ícono: pedir ayuda en carretera."
   },
   "avisoCerrar": "Cerrar aviso",
   "@avisoCerrar": {

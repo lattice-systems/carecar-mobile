@@ -200,6 +200,26 @@ class ApiFalsa implements CarecarApi {
         Future.value(Uint8List.fromList('%PDF-1.4\n%%EOF\n'.codeUnits));
   }
 
+  /// Que responde `GET /citas/{id}/comprobante`. Si es nulo, uno de ejemplo.
+  Future<ComprobanteCita> Function(int citaId)? alPedirComprobanteDeCita;
+
+  final comprobantesDeCitaPedidos = <int>[];
+
+  @override
+  Future<ComprobanteCita> comprobanteDeCita(int citaId) {
+    comprobantesDeCitaPedidos.add(citaId);
+    return alPedirComprobanteDeCita?.call(citaId) ??
+        Future.value(
+          ComprobanteCita(
+            citaId: citaId,
+            codigo: 'CC1.$citaId.firma',
+            fecha: DateTime(2026, 11, 24),
+            horaInicio: '09:00',
+            horaFin: '10:00',
+          ),
+        );
+  }
+
   // --- Agenda · APP-3.3 ---
 
   /// Que responde `GET /citas`. Si es nulo, una lista vacia.
@@ -277,6 +297,34 @@ class ApiFalsa implements CarecarApi {
             horaInicio: '09:00',
             horaFin: '10:00',
             estado: EstadoCita.cancelada,
+          ),
+        );
+  }
+
+  /// Que hace `POST /citas/{id}/reprogramar`. Si es nulo, la cita queda
+  /// confirmada en la franja pedida.
+  Future<Cita> Function(int citaId, int franjaId, DateTime fecha)?
+  alReprogramar;
+
+  final citasReprogramadas = <({int citaId, int franjaId, DateTime fecha})>[];
+
+  @override
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  }) {
+    citasReprogramadas.add((citaId: citaId, franjaId: franjaId, fecha: fecha));
+    return alReprogramar?.call(citaId, franjaId, fecha) ??
+        Future.value(
+          Cita(
+            id: citaId,
+            vehiculoId: 0,
+            franjaId: franjaId,
+            fecha: fecha,
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            estado: EstadoCita.confirmada,
           ),
         );
   }

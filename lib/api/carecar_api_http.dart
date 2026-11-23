@@ -100,6 +100,10 @@ class CarecarApiHttp implements CarecarApi {
       _cliente.descargar('/citas/$citaId/ticket');
 
   @override
+  Future<ComprobanteCita> comprobanteDeCita(int citaId) =>
+      _cliente.obtener('/citas/$citaId/comprobante', ComprobanteCita.fromJson);
+
+  @override
   Future<List<Disponibilidad>> disponibilidad({
     required DateTime desde,
     required DateTime hasta,
@@ -130,6 +134,17 @@ class CarecarApiHttp implements CarecarApi {
   Future<Cita> cancelarCita(int citaId) => _cliente.enviar(
     '/citas/$citaId/cancelar',
     cuerpo: null,
+    leer: Cita.fromJson,
+  );
+
+  @override
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  }) => _cliente.enviar(
+    '/citas/$citaId/reprogramar',
+    cuerpo: {'franjaId': franjaId, 'fecha': escribirFecha(fecha)},
     leer: Cita.fromJson,
   );
 

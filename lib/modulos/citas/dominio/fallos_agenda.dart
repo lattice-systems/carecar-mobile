@@ -19,3 +19,13 @@ class CitaDuplicada implements Exception {
   @override
   String toString() => 'CitaDuplicada(${existente.id})';
 }
+
+/// La cita ya no se puede cancelar ni reprogramar: dejó de estar confirmada o
+/// pasó el plazo (409 `CITA_NO_CANCELABLE`, `FUERA_DE_PLAZO` o el equivalente
+/// de reprogramar).
+class CitaNoModificable implements Exception {
+  const CitaNoModificable();
+
+  @override
+  String toString() => 'CitaNoModificable';
+}

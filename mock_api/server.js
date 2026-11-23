@@ -428,6 +428,48 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/manuales`, (req, res) => {
   res.jsonp(manuales.map((m) => ({ id: m.id, modelo: m.modelo, anio: m.anio, url: m.url })));
 });
 
+// ── vehiculos ──
+// Ficha tecnica por modelo y ano (V2-M02.04). Simula la tabla
+// `ficha_tecnica_modelo`; el backend real la reemplaza sin cambiar el contrato.
+const FICHAS_TECNICAS = {
+  'Versa:2024': [
+    { nombre: 'Motor', especificaciones: [
+      { nombre: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { nombre: 'Potencia', valor: '118 hp a 6,300 rpm' },
+      { nombre: 'Combustible', valor: 'Gasolina' },
+    ] },
+    { nombre: 'Transmisión', especificaciones: [
+      { nombre: 'Caja', valor: 'CVT Xtronic' },
+      { nombre: 'Tracción', valor: 'Delantera' },
+    ] },
+    { nombre: 'Dimensiones', especificaciones: [
+      { nombre: 'Carrocería', valor: 'Sedán' },
+      { nombre: 'Pasajeros', valor: '5' },
+    ] },
+  ],
+  'Kicks:2023': [
+    { nombre: 'Motor', especificaciones: [
+      { nombre: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { nombre: 'Potencia', valor: '118 hp a 6,300 rpm' },
+    ] },
+    { nombre: 'Transmisión', especificaciones: [
+      { nombre: 'Caja', valor: 'CVT Xtronic' },
+      { nombre: 'Tracción', valor: 'Delantera' },
+    ] },
+  ],
+};
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/ficha-tecnica`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+
+  // Igual que el backend: sin ficha para ese modelo y ano responde 200 con
+  // secciones vacias y la app usa su respaldo local.
+  const secciones = FICHAS_TECNICAS[`${vehiculo.modelo}:${vehiculo.anio}`] || [];
+
+  res.jsonp({ vehiculoId: vehiculo.id, modelo: vehiculo.modelo, anio: vehiculo.anio, secciones });
+});
+
 // ---------------------------------------------------------------------------
 // Servicios y tickets · APP-3.2
 // ---------------------------------------------------------------------------
@@ -552,8 +594,8 @@ servidor.post(`${BASE}/citas`, (req, res) => {
     return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
   }
 
-  // "No se puede reservar dos veces" (APP-3.3): mismo vehiculo, mismo dia, o
-  // la misma franja. V2-M02.08 le pone el codigo CITA_DUPLICADA.
+  // "No se puede reservar dos veces" (APP-3.3): mismo vehiculo, mismo dia,
+  // como el backend de V2-M02.08, que le pone el codigo CITA_DUPLICADA.
   const yaReservada = db
     .get('citas')
     .value()
@@ -562,7 +604,7 @@ servidor.post(`${BASE}/citas`, (req, res) => {
         c.clienteId === req.sesion.clienteId &&
         c.estado === 'CONFIRMADA' &&
         c.fecha === fecha &&
-        (c.franjaId === franja.id || c.vehiculoId === vehiculo.id)
+        c.vehiculoId === vehiculo.id
     );
   if (yaReservada) {
     return problema(req, res, 409, 'Ya tienes una cita para ese vehiculo ese dia', 'CITA_DUPLICADA');
@@ -618,6 +660,114 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   }
 
   res.jsonp({ ...comoCita(cita), estado: 'CANCELADA' });
+});
+
+// V2-M02.13 (propuesto, no esta en el contrato v1): cambia una cita confirmada
+// a otra franja sin cancelarla. La franja anterior se libera y la nueva se
+// ocupa en la misma operacion. 409 FRANJA_SIN_CUPO si la nueva se lleno;
+// 409 CITA_NO_REPROGRAMABLE si la cita ya no esta confirmada; 409
+// FUERA_DE_PLAZO si ya paso (misma regla provisional que cancelar, PO-4).
+servidor.post(`${BASE}/citas/:citaId/reprogramar`, (req, res) => {
+  const cita = db.get('citas').find({ id: Number(req.params.citaId) }).value();
+  if (!cita || cita.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
+
+  const { franjaId, fecha } = req.body || {};
+  if (!franjaId || !ES_FECHA.test(fecha || '')) {
+    return problema(req, res, 400, 'Faltan franjaId o fecha (AAAA-MM-DD)');
+  }
+
+  if (cita.estado !== 'CONFIRMADA') {
+    return problema(req, res, 409, 'La cita ya no esta confirmada', 'CITA_NO_REPROGRAMABLE');
+  }
+  const hoy = new Date().toISOString().slice(0, 10);
+  if (cita.fecha < hoy) {
+    return problema(req, res, 409, 'Fuera del plazo para reprogramar', 'FUERA_DE_PLAZO');
+  }
+
+  const nueva = db.get('franjas').find({ id: Number(franjaId) }).value();
+  if (!nueva || nueva.fecha !== fecha) return noEncontrado(req, res);
+
+  const anterior = db.get('franjas').find({ id: cita.franjaId }).value();
+  if (anterior && anterior.id === nueva.id) return res.jsonp(comoCita(cita));
+
+  if (nueva.cupoDisponible < 1) {
+    return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
+  }
+
+  db.get('franjas').find({ id: nueva.id }).assign({ cupoDisponible: nueva.cupoDisponible - 1 }).write();
+  if (anterior) {
+    db.get('franjas')
+      .find({ id: anterior.id })
+      .assign({ cupoDisponible: anterior.cupoDisponible + 1 })
+      .write();
+  }
+  db.get('citas')
+    .find({ id: cita.id })
+    .assign({ franjaId: nueva.id, fecha: nueva.fecha, horaInicio: nueva.horaInicio, horaFin: nueva.horaFin })
+    .write();
+
+  res.jsonp(comoCita(db.get('citas').find({ id: cita.id }).value()));
+});
+
+// V2-M02.11 · comprobante con QR. El backend real firma el id de la cita y
+// lo pone en el PDF del ticket; aqui el mock simula ambas cosas. El codigo
+// tiene la misma forma que el del backend, `CARECAR-CITA:<citaId>.<firma>`;
+// aqui la firma es HMAC-SHA256 con la llave de desarrollo del mock, asi que
+// no la valida el backend real.
+function codigoDeCita(citaId) {
+  const firma = crypto
+    .createHmac('sha256', SECRETO_DEV)
+    .update(`cita:${citaId}`)
+    .digest('hex')
+    .slice(0, 16);
+  return `CARECAR-CITA:${citaId}.${firma}`;
+}
+
+function citaDelCliente(req) {
+  const cita = db.get('citas').find({ id: Number(req.params.citaId) }).value();
+  if (!cita || cita.clienteId !== req.sesion.clienteId) return null;
+  return cita;
+}
+
+servidor.get(`${BASE}/citas/:citaId/comprobante`, (req, res) => {
+  const cita = citaDelCliente(req);
+  if (!cita) return noEncontrado(req, res);
+  if (cita.estado === 'CANCELADA') {
+    return problema(req, res, 409, 'La cita esta cancelada', 'CITA_CANCELADA');
+  }
+  const vehiculo = db.get('vehiculos').find({ id: cita.vehiculoId }).value();
+  res.jsonp({
+    citaId: cita.id,
+    codigo: codigoDeCita(cita.id),
+    fecha: cita.fecha,
+    horaInicio: cita.horaInicio,
+    horaFin: cita.horaFin,
+    ...(vehiculo ? { vehiculoNombre: `${vehiculo.modelo} ${vehiculo.anio}` } : {}),
+  });
+});
+
+servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
+  const cita = citaDelCliente(req);
+  if (!cita) return noEncontrado(req, res);
+  const vehiculo = db.get('vehiculos').find({ id: cita.vehiculoId }).value();
+
+  // El PDF real lleva el QR dibujado; el mock imprime el codigo que el QR
+  // contendria.
+  const pdf = construirTicketPdf([
+    'CareCar - Comprobante de cita (API simulada)',
+    '',
+    `Folio: ${cita.id}`,
+    `Fecha: ${cita.fecha}`,
+    `Horario: ${cita.horaInicio} a ${cita.horaFin}`,
+    `Estado: ${cita.estado}`,
+    ...(vehiculo ? [`Vehiculo: ${vehiculo.modelo} ${vehiculo.anio}`] : []),
+    '',
+    `Codigo QR: ${codigoDeCita(cita.id)}`,
+  ]);
+
+  res.set('Content-Type', 'application/pdf');
+  res.set('Content-Disposition', `inline; filename="cita-${cita.id}.pdf"`);
+  res.send(pdf);
 });
 
 // ---------------------------------------------------------------------------

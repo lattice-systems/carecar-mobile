@@ -203,6 +203,25 @@ void main() {
     expect(bytes, isNotEmpty);
   });
 
+  test('comprobanteDeCita llama GET /citas/{id}/comprobante', () async {
+    final api = _api(
+      espia,
+      () => _json({
+        'citaId': 7,
+        'codigo': 'CC1.7.abc123',
+        'fecha': '2026-11-24',
+        'horaInicio': '09:00',
+        'horaFin': '10:00',
+      }),
+    );
+
+    final comprobante = await api.comprobanteDeCita(7);
+
+    expect(espia.metodo, 'GET');
+    expect(espia.url!.path, '/api/v1/app/citas/7/comprobante');
+    expect(comprobante.codigo, 'CC1.7.abc123');
+  });
+
   test(
     'disponibilidad manda desde y hasta como parametros de consulta',
     () async {
@@ -329,6 +348,33 @@ void main() {
     expect(espia.metodo, 'POST');
     expect(espia.url!.path, '/api/v1/app/citas/3/cancelar');
     expect(cita.estado, EstadoCita.cancelada);
+  });
+
+  test('reprogramarCita llama POST /citas/{id}/reprogramar', () async {
+    final api = _api(
+      espia,
+      () => _json({
+        'id': 3,
+        'vehiculoId': 1,
+        'franjaId': 8,
+        'fecha': '2026-11-26',
+        'horaInicio': '11:00',
+        'horaFin': '12:00',
+        'estado': 'CONFIRMADA',
+      }),
+    );
+
+    final cita = await api.reprogramarCita(
+      3,
+      franjaId: 8,
+      fecha: DateTime(2026, 11, 26),
+    );
+
+    expect(espia.metodo, 'POST');
+    expect(espia.url!.path, '/api/v1/app/citas/3/reprogramar');
+    expect(jsonDecode(espia.cuerpo!), {'franjaId': 8, 'fecha': '2026-11-26'});
+    expect(cita.horaInicio, '11:00');
+    expect(cita.estado, EstadoCita.confirmada);
   });
 
   test('catalogo llama GET /catalogo', () async {

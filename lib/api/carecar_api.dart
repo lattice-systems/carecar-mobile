@@ -92,6 +92,10 @@ abstract interface class CarecarApi {
   /// `GET /citas/{citaId}/ticket`. Devuelve los bytes del PDF.
   Future<Uint8List> ticketDeCita(int citaId);
 
+  /// `GET /citas/{citaId}/comprobante` (V2-M02.11): el codigo firmado para el
+  /// QR y los datos de la cita.
+  Future<ComprobanteCita> comprobanteDeCita(int citaId);
+
   // --- Agenda · APP-3.3 ---
 
   /// `GET /agenda/disponibilidad`. Solo franjas con cupo.
@@ -114,6 +118,18 @@ abstract interface class CarecarApi {
   /// Lanza `Conflicto` si ya no esta confirmada o si quedo fuera del plazo.
   /// Cual es ese plazo sigue pendiente del PO (pregunta PO-4).
   Future<Cita> cancelarCita(int citaId);
+
+  /// `POST /citas/{id}/reprogramar` (propuesto en V2-M02.13; aun no esta en el
+  /// contrato v1). Cambia la cita a otra franja y libera la anterior en la
+  /// misma operacion.
+  ///
+  /// Lanza `Conflicto` con `FRANJA_SIN_CUPO` si la franja nueva se lleno, o sin
+  /// codigo reconocido si la cita ya no esta confirmada o paso el plazo.
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  });
 
   // --- Catalogo · APP-4.1 (fuera del MVP) ---
 

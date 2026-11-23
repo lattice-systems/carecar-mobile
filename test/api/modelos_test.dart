@@ -269,4 +269,45 @@ void main() {
       expect(p.message, isNotEmpty);
     });
   });
+
+  group('ComprobanteCita', () {
+    test('lee el codigo firmado y los datos de la cita', () {
+      final c = ComprobanteCita.fromJson({
+        'citaId': 7,
+        'codigo': 'CC1.7.abc123',
+        'fecha': '2026-11-24',
+        'horaInicio': '09:00',
+        'horaFin': '10:00',
+        'vehiculoNombre': 'Mazda CX-5 2024',
+      });
+      expect(c.citaId, 7);
+      expect(c.codigo, 'CC1.7.abc123');
+      expect(c.fecha, DateTime(2026, 11, 24));
+      expect(c.horaInicio, '09:00');
+      expect(c.vehiculoNombre, 'Mazda CX-5 2024');
+    });
+
+    test('el nombre del vehiculo es opcional', () {
+      final c = ComprobanteCita.fromJson({
+        'citaId': 7,
+        'codigo': 'CC1.7.abc123',
+        'fecha': '2026-11-24',
+        'horaInicio': '09:00',
+        'horaFin': '10:00',
+      });
+      expect(c.vehiculoNombre, isNull);
+    });
+
+    test('sin codigo es una respuesta invalida', () {
+      expect(
+        () => ComprobanteCita.fromJson({
+          'citaId': 7,
+          'fecha': '2026-11-24',
+          'horaInicio': '09:00',
+          'horaFin': '10:00',
+        }),
+        throwsA(anything),
+      );
+    });
+  });
 }

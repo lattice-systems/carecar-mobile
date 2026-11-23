@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/cita.dart';
 import '../../../api/modelos/problema.dart';
 import '../dominio/cita_agendada.dart';
+import '../dominio/cita_cliente.dart';
+import '../dominio/comprobante_de_cita.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
@@ -66,6 +70,22 @@ class RepositorioCitasApi implements RepositorioCitas {
     }
   }
 
+  @override
+  Future<ComprobanteDeCita> comprobante(int citaId) async {
+    final c = await _api.comprobanteDeCita(citaId);
+    return ComprobanteDeCita(
+      citaId: c.citaId,
+      codigo: c.codigo,
+      fecha: c.fecha,
+      horaInicio: c.horaInicio,
+      horaFin: c.horaFin,
+      vehiculoNombre: c.vehiculoNombre,
+    );
+  }
+
+  @override
+  Future<Uint8List> ticketPdf(int citaId) => _api.ticketDeCita(citaId);
+
   Future<Cita?> _citaExistente(int vehiculoId, FranjaDisponible franja) async {
     final citas = await _api.misCitas();
     for (final c in citas) {
@@ -81,6 +101,63 @@ class RepositorioCitasApi implements RepositorioCitas {
     }
     return null;
   }
+
+  @override
+  Future<PaginaDeCitas> misCitas({int pagina = 0, int tamano = 20}) async {
+    final p = await _api.paginaDeCitas(pagina: pagina, tamano: tamano);
+    return PaginaDeCitas(
+      citas: p.contenido.map(_aCliente).toList(),
+      pagina: p.pagina,
+      totalPaginas: p.totalPaginas,
+    );
+  }
+
+  @override
+  Future<CitaCliente> cancelar(int citaId) async {
+    try {
+      return _aCliente(await _api.cancelarCita(citaId));
+    } on Conflicto {
+      throw const CitaNoModificable();
+    }
+  }
+
+  @override
+  Future<CitaCliente> reprogramar({
+    required int citaId,
+    required FranjaDisponible franja,
+  }) async {
+    try {
+      final cita = await _api.reprogramarCita(
+        citaId,
+        franjaId: franja.franjaId,
+        fecha: franja.fecha,
+      );
+      return _aCliente(cita);
+    } on Conflicto catch (conflicto) {
+      if (conflicto.problema?.codigo == CodigoProblema.franjaSinCupo) {
+        throw const FranjaSinCupo();
+      }
+      throw const CitaNoModificable();
+    }
+  }
+
+  CitaCliente _aCliente(Cita c) => CitaCliente(
+    id: c.id,
+    vehiculoId: c.vehiculoId,
+    fecha: c.fecha,
+    horaInicio: c.horaInicio,
+    horaFin: c.horaFin,
+    estado: switch (c.estado) {
+      EstadoCita.confirmada => EstadoDeCita.confirmada,
+      EstadoCita.atendida => EstadoDeCita.atendida,
+      EstadoCita.noAsistio => EstadoDeCita.noAsistio,
+      EstadoCita.cancelada => EstadoDeCita.cancelada,
+      EstadoCita.desconocido => EstadoDeCita.desconocido,
+    },
+    franjaId: c.franjaId,
+    vehiculoNombre: c.vehiculoNombre,
+    motivo: MotivoCita.desdeCodigo(c.motivo),
+  );
 
   CitaAgendada _aDominio(Cita c) => CitaAgendada(
     id: c.id,
