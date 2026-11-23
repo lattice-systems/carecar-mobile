@@ -285,4 +285,11 @@ class ApiFalsa implements CarecarApi {
   Future<List<ModeloCatalogo>> catalogo() async => modelosCatalogo;
 
   List<ModeloCatalogo> modelosCatalogo = const [];
+
+  /// Detalle por id. Un id que no esta aqui responde `NoEncontrado`.
+  Map<int, DetalleModeloCatalogo> detallesCatalogo = {};
+
+  @override
+  Future<DetalleModeloCatalogo> detalleModelo(int id) async =>
+      detallesCatalogo[id] ?? (throw const NoEncontrado('No existe el modelo'));
 }

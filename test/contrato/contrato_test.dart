@@ -34,10 +34,11 @@ const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 /// El contrato vive en `docs/api/` del repositorio del backend y cambia por PR.
 /// Esta copia se fija a una version a proposito (decision D-C): bajarla de la
 /// rama principal del backend seria perseguir un blanco movil.
-const _versionEsperada = '1.2.0';
+const _versionEsperada = '1.3.0';
 
-/// Los 17 esquemas de la v1.2. La v1.2 no agrega ni quita esquemas: solo
-/// agrega campos opcionales a `Vehiculo` y a `Manual`.
+/// Los 21 esquemas de la v1.3. La v1.3 suma el detalle de un modelo del
+/// catalogo (V2-M03.02): `DetalleModeloCatalogo`, `ImagenModelo`,
+/// `VersionModelo` y `EspecificacionModelo`.
 const _esquemasDelContrato = <String>{
   'LoginRequest',
   'LoginResponse',
@@ -55,6 +56,10 @@ const _esquemasDelContrato = <String>{
   'Cita',
   'PaginaCitas',
   'ModeloCatalogo',
+  'DetalleModeloCatalogo',
+  'ImagenModelo',
+  'VersionModelo',
+  'EspecificacionModelo',
   'Problema',
 };
 
@@ -86,6 +91,7 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'version',
     'placas',
     'kilometraje',
+    'color',
   },
   // `marca` y `titulo` son nuevos en la v1.2.
   'Manual': {'id', 'marca', 'modelo', 'anio', 'titulo', 'url'},
@@ -113,6 +119,7 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'horaInicio',
     'horaFin',
     'estado',
+    'vehiculo',
   },
   'PaginaCitas': {
     'contenido',
@@ -121,7 +128,34 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'ModeloCatalogo': {'id', 'modelo'},
+  'ModeloCatalogo': {
+    'id',
+    'marca',
+    'modelo',
+    'anio',
+    'version',
+    'precioDesde',
+    'imagenUrl',
+    'descripcion',
+    'activo',
+  },
+  'DetalleModeloCatalogo': {
+    'id',
+    'marca',
+    'modelo',
+    'anio',
+    'version',
+    'precioDesde',
+    'imagenUrl',
+    'descripcion',
+    'activo',
+    'imagenes',
+    'versiones',
+    'especificaciones',
+  },
+  'ImagenModelo': {'id', 'url', 'color', 'descripcion', 'orden'},
+  'VersionModelo': {'id', 'nombre', 'precioDesde'},
+  'EspecificacionModelo': {'etiqueta', 'valor', 'orden'},
   'Problema': {'timestamp', 'status', 'error', 'message', 'codigo', 'path'},
 };
 
@@ -172,13 +206,26 @@ const _obligatoriosDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'ModeloCatalogo': {'id', 'modelo'},
+  'ModeloCatalogo': {'id', 'marca', 'modelo', 'anio', 'activo'},
+  'DetalleModeloCatalogo': {
+    'id',
+    'marca',
+    'modelo',
+    'anio',
+    'activo',
+    'imagenes',
+    'versiones',
+    'especificaciones',
+  },
+  'ImagenModelo': {'id', 'url', 'orden'},
+  'VersionModelo': {'id', 'nombre'},
+  'EspecificacionModelo': {'etiqueta', 'valor'},
   // `codigo` es opcional: la app decide por el, pero no puede exigirlo.
   'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
 };
 
-/// Las 16 operaciones del contrato, como `METODO ruta`. La v1.2 no agrega
-/// ninguna: son las mismas 16 de la v1.1.
+/// Las 17 operaciones del contrato, como `METODO ruta`. La v1.3 suma el
+/// detalle de un modelo del catalogo.
 const _operacionesDelContrato = <String>{
   'POST /auth/login',
   'POST /auth/refrescar',
@@ -196,6 +243,7 @@ const _operacionesDelContrato = <String>{
   'POST /citas',
   'POST /citas/{citaId}/cancelar',
   'GET /catalogo',
+  'GET /catalogo/{modeloId}',
 };
 
 /// Rutas que el contrato declara sin token.
@@ -230,6 +278,7 @@ const _pendientesDeImplementar = <String, String>{
   'Cita.franjaId': 'Sprint 4, con APP-3.3',
   'PaginaServicios': 'Sprint 4, con APP-3.2',
   'PaginaCitas': 'Sprint 4, con APP-3.3',
+  'Cita.vehiculo': 'con la lista de citas de V2-M02.08, nuevo en la v1.3',
 };
 
 /// Lo que la app SI implementa ya, comprobado contra el codigo.
@@ -384,7 +433,7 @@ void main() {
       );
     });
 
-    test('las operaciones del contrato son las 16 que la prueba declara', () {
+    test('las operaciones del contrato son las 17 que la prueba declara', () {
       final rutas = contrato['paths'] as YamlMap;
       final enElContrato = <String>{};
 
@@ -568,6 +617,19 @@ void main() {
         ),
       );
     }
+
+    test('el detalle del catalogo trae galeria, versiones y ficha', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final api = await conSesion();
+      final d = await api.detalleModelo(1);
+      expect(d.modelo.marca, 'Nissan');
+      expect(d.imagenes, isNotEmpty);
+      expect(d.versiones.map((v) => v.id), contains(1));
+      expect(d.especificaciones, isNotEmpty);
+      await expectLater(api.detalleModelo(7), throwsA(isA<NoEncontrado>()));
+    });
 
     test('el login devuelve una RespuestaLogin valida', () async {
       if (!levantada) {

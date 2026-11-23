@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
@@ -11,6 +12,7 @@ import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../dominio/modelo_vigente.dart';
 import 'proveedores_catalogo.dart';
+import 'rutas_catalogo.dart';
 
 /// Catalogo de modelos actuales de la agencia (V2-M03.01).
 ///
@@ -69,6 +71,9 @@ class _Lista extends StatelessWidget {
           foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
           descripcionFoto: AppLocalizations.of(context).fotoDeModelo(m.titulo),
           heroTag: m.id == null ? null : 'modelo-${m.id}',
+          alToque: m.id == null
+              ? null
+              : () => context.push(rutaDetalleModelo(m.id!)),
         );
       },
     );

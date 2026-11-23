@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar
-  version: 1.2.0
+  version: 1.3.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar (TEC-1).
 
@@ -495,6 +495,31 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /catalogo/{modeloId}:
+    get:
+      tags: [Catálogo]
+      summary: Detalle de un modelo del catálogo
+      description: |
+        V2-M03.02 · El modelo con su galería, las versiones que se venden de la misma marca,
+        modelo y año, y una ficha resumida. Un modelo retirado o que no existe responde 404.
+        `imagenes` y `especificaciones` pueden venir vacías mientras la agencia no las capture,
+        y `versiones` siempre incluye la versión pedida.
+      parameters:
+        - $ref: '#/components/parameters/ModeloId'
+      responses:
+        '200':
+          description: Detalle del modelo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetalleModeloCatalogo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -503,6 +528,13 @@ components:
       bearerFormat: JWT
 
   parameters:
+    ModeloId:
+      name: modeloId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
     VehiculoId:
       name: vehiculoId
       in: path
@@ -689,6 +721,12 @@ components:
         kilometraje:
           type: integer
           nullable: true
+        color:
+          type: string
+          nullable: true
+          maxLength: 40
+          description: Color del vehículo; lo fija Servicio.
+          example: Blanco
 
     Manual:
       type: object
@@ -731,7 +769,8 @@ components:
           format: date
         estatus:
           type: string
-          description: Valores pendientes de definir en ERP-3.1
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+          description: Conjunto cerrado (PO-5). Hoy el backend solo responde TERMINADO.
         total:
           type: number
           format: double
@@ -803,6 +842,10 @@ components:
         vehiculoId:
           type: integer
           format: int64
+        vehiculo:
+          type: string
+          nullable: true
+          description: Descripción corta del vehículo, p. ej. "Nissan March 2026 Advance"
         franjaId:
           type: integer
           format: int64
@@ -836,14 +879,143 @@ components:
 
     ModeloCatalogo:
       type: object
-      description: Atributos adicionales (versiones, precio, imágenes) pendientes de definir en APP-4.1
-      required: [id, modelo]
+      description: Lo que no es id, marca, modelo y año es opcional mientras el PO lo define (APP-4.1)
+      required: [id, marca, modelo, anio, activo]
       properties:
         id:
           type: integer
           format: int64
+        marca:
+          type: string
         modelo:
           type: string
+        anio:
+          type: integer
+        version:
+          type: string
+          nullable: true
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista más bajo, con IVA
+        imagenUrl:
+          type: string
+          nullable: true
+          description: URL https
+        descripcion:
+          type: string
+          nullable: true
+        activo:
+          type: boolean
+          description: Siempre true en la app
+
+    DetalleModeloCatalogo:
+      type: object
+      description: |
+        Un modelo del catálogo con su galería, sus versiones y su ficha resumida (V2-M03.02).
+        Los campos de `ModeloCatalogo` significan lo mismo aquí.
+      required: [id, marca, modelo, anio, activo, imagenes, versiones, especificaciones]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        version:
+          type: string
+          nullable: true
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista más bajo de esta versión, con IVA
+        imagenUrl:
+          type: string
+          nullable: true
+          description: Foto de portada, URL https
+        descripcion:
+          type: string
+          nullable: true
+        activo:
+          type: boolean
+          description: Siempre true en la app
+        imagenes:
+          type: array
+          description: Galería, ordenada por `orden`
+          items:
+            $ref: '#/components/schemas/ImagenModelo'
+        versiones:
+          type: array
+          description: Versiones activas de la misma marca, modelo y año, de la más barata a la más cara
+          items:
+            $ref: '#/components/schemas/VersionModelo'
+        especificaciones:
+          type: array
+          description: Ficha resumida, de 4 a 8 datos que la agencia captura, ordenados por `orden`
+          items:
+            $ref: '#/components/schemas/EspecificacionModelo'
+
+    ImagenModelo:
+      type: object
+      required: [id, url, orden]
+      properties:
+        id:
+          type: integer
+          format: int64
+        url:
+          type: string
+          description: URL https
+        color:
+          type: string
+          nullable: true
+          maxLength: 40
+          description: Color del auto en la foto, para agrupar la galería por color
+          example: Blanco
+        descripcion:
+          type: string
+          nullable: true
+          maxLength: 120
+          description: Texto para el lector de pantalla
+          example: Frente de la Mazda CX-5 blanca
+        orden:
+          type: integer
+          minimum: 0
+
+    VersionModelo:
+      type: object
+      required: [id, nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id del modelo del catálogo de esa versión, sirve para pedir su detalle
+        nombre:
+          type: string
+          description: Nombre de la versión. Si el modelo no tiene versión, el nombre del modelo
+          example: Signature
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista, con IVA
+
+    EspecificacionModelo:
+      type: object
+      required: [etiqueta, valor]
+      properties:
+        etiqueta:
+          type: string
+          maxLength: 60
+          example: Motor
+        valor:
+          type: string
+          maxLength: 120
+          example: 2.5 L, 4 cilindros
+        orden:
+          type: integer
+          minimum: 0
 
     Problema:
       type: object

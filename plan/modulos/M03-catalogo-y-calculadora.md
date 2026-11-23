@@ -60,4 +60,16 @@ El catálogo vive en `lib/modulos/catalogo/` y se abre en la ruta `/catalogo` (e
 - **Solo activos:** el backend ya entrega únicamente los modelos vigentes (`GET /catalogo`), por eso la app no vuelve a filtrar. El DTO no trae `activo`.
 - **Tarjeta:** cada modelo usa `TarjetaVehiculo` con foto, nombre ("Mazda CX-5 2024") y detalle ("Signature · Desde $450,000"). Sin foto muestra la silueta.
 - **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo.
-- **Pendiente:** al tocar una tarjeta aún no abre nada, porque el detalle es V2-M03.02. La tarjeta ya lleva `heroTag` para que la foto viaje al detalle. En `plan/cumplimiento-ficha.md` la fila del catálogo sigue en 🟡 hasta que entre M03.02, que suma la galería.
+- **Detalle:** al tocar una tarjeta se abre el detalle, ver el avance de V2-M03.02.
+
+## Avance de V2-M03.02
+
+El detalle de un modelo vive en `lib/modulos/catalogo/` y se abre en `/catalogo/:id` al tocar una tarjeta del catálogo (la foto viaja con el `heroTag` `modelo-<id>`).
+
+- **Contrato:** `GET /catalogo/{modeloId}` entra al contrato 1.3.0 con los esquemas `DetalleModeloCatalogo`, `ImagenModelo`, `VersionModelo` y `EspecificacionModelo`. El diseño del backend (tablas `modelo_catalogo_imagen` y `modelo_catalogo_especificacion`, capas, errores y pruebas pedidas) está en `agencia-360-backend/plan/historias-backend.md` (backend#68). La implementación en el backend sigue pendiente: la app trabaja contra `mock_api`, que ya sirve el detalle con galería, versiones y ficha, y responde 404 a un modelo retirado o inexistente.
+- **Pantalla:** `PantallaDetalleModelo` muestra la portada, la descripción, la galería (`GaleriaFotos`: se pasa con el dedo o con flechas y al tocar abre el visor con zoom), las versiones con su precio (tocar otra versión abre su detalle, la actual no es tocable) y la ficha resumida. Una sección sin datos no se muestra y, sin galería, la portada es la única foto. Resuelve los cinco estados y explica un modelo que ya no está vigente.
+- **Sin conexión:** `CarecarApiConCache` guarda el detalle por id y ahora también guarda todos los campos del catálogo (antes solo `id` y `modelo`).
+- **Contrato en la app:** la copia de `api/agencia360-api-app-v1.yaml` pasa a 1.3.0 y trae también lo que el backend ya había agregado a 1.2 (`Vehiculo.color`, `Cita.vehiculo`, el enum de `Servicio.estatus` y los campos completos de `ModeloCatalogo`). `Cita.vehiculo` queda declarado como pendiente en la prueba de contrato.
+- **Fuera de esta historia:** los botones "Calcular toma a cuenta" (V2-M03.04) y "Quiero probarlo" (M16) se agregan con sus historias, y la captura de galería y ficha desde el ERP o el CRM no entra porque están congelados.
+- **Pruebas:** `test/modulos/catalogo/detalle_modelo_test.dart` cubre la lectura del DTO, el repositorio, los cinco estados, las secciones vacías, claro, oscuro y letra grande, las guías de accesibilidad y las rutas. La prueba de contrato comprueba además el detalle contra `mock_api` cuando está levantada.
+
