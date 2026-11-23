@@ -22,9 +22,16 @@ import 'proveedores_citas.dart';
 /// datos, error con reintento y sin conexion (no hay "vacio": una cita sin
 /// comprobante es un error).
 class PantallaComprobanteCita extends ConsumerWidget {
-  const PantallaComprobanteCita({required this.citaId, super.key});
+  const PantallaComprobanteCita({
+    required this.citaId,
+    super.key,
+    this.fabricaVisorPdf,
+  });
 
   final int citaId;
+
+  /// Sustituye el motor de PDF (solo pruebas); nulo usa el del sistema.
+  final FabricaVisorPdf? fabricaVisorPdf;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -42,7 +49,8 @@ class PantallaComprobanteCita extends ConsumerWidget {
               : CausaError.generico,
           alReintentar: () => ref.invalidate(comprobanteCitaProvider(citaId)),
         ),
-        data: (datos) => _Comprobante(datos: datos),
+        data: (datos) =>
+            _Comprobante(datos: datos, fabricaVisorPdf: fabricaVisorPdf),
       ),
     );
   }
@@ -71,9 +79,10 @@ class _Cargando extends StatelessWidget {
 }
 
 class _Comprobante extends ConsumerWidget {
-  const _Comprobante({required this.datos});
+  const _Comprobante({required this.datos, this.fabricaVisorPdf});
 
   final ComprobanteDeCita datos;
+  final FabricaVisorPdf? fabricaVisorPdf;
 
   static const double _ladoQr = 220;
 
@@ -176,14 +185,21 @@ class _Comprobante extends ConsumerWidget {
   void _abrirPdf(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
     final repositorio = ref.read(repositorioCitasProvider);
+    final fabrica = fabricaVisorPdf;
     Navigator.of(context).push<void>(
       MaterialPageRoute(
         builder: (_) => Scaffold(
           appBar: AppBar(title: Text(textos.citasComprobanteTitulo)),
-          body: VisorPdf(
-            cargar: () => repositorio.ticketPdf(datos.citaId),
-            descripcion: textos.citasComprobanteVerPdfDescripcion,
-          ),
+          body: fabrica == null
+              ? VisorPdf(
+                  cargar: () => repositorio.ticketPdf(datos.citaId),
+                  descripcion: textos.citasComprobanteVerPdfDescripcion,
+                )
+              : VisorPdf(
+                  cargar: () => repositorio.ticketPdf(datos.citaId),
+                  descripcion: textos.citasComprobanteVerPdfDescripcion,
+                  fabrica: fabrica,
+                ),
         ),
       ),
     );
