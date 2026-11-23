@@ -1268,6 +1268,9 @@ components:
             - FUERA_DE_PLAZO
             - CITA_NO_CANCELABLE
             - SIN_PARAMETROS_DE_VALUACION
+            - CITA_DUPLICADA
+            - CITA_NO_REPROGRAMABLE
+            - CITA_CANCELADA
           example: FRANJA_SIN_CUPO
         path:
           type: string
