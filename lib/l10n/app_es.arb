@@ -459,6 +459,34 @@
   "@vehiculosFichaCargando": {
     "description": "Mensaje que lee el lector de pantalla mientras carga la ficha técnica."
   },
+  "vehiculosFichaClaveCarroceria": "Carrocería",
+  "@vehiculosFichaClaveCarroceria": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveMotor": "Motor",
+  "@vehiculosFichaClaveMotor": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePasajeros": "Pasajeros",
+  "@vehiculosFichaClavePasajeros": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePotencia": "Potencia",
+  "@vehiculosFichaClavePotencia": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClavePropulsion": "Propulsión",
+  "@vehiculosFichaClavePropulsion": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveTraccion": "Tracción",
+  "@vehiculosFichaClaveTraccion": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
+  "vehiculosFichaClaveTransmision": "Transmisión",
+  "@vehiculosFichaClaveTransmision": {
+    "description": "Etiqueta de una especificación del respaldo local de la ficha."
+  },
   "vehiculosFichaNota": "Datos del modelo y año. La ficha exacta de tu unidad está en su manual.",
   "@vehiculosFichaNota": {
     "description": "Aviso al pie de la ficha técnica."
@@ -466,6 +494,18 @@
   "vehiculosFichaRespaldo": "Mostrando la ficha guardada en la app",
   "@vehiculosFichaRespaldo": {
     "description": "Aviso cuando la ficha sale del respaldo local y no de la agencia."
+  },
+  "vehiculosFichaSeccionGeneral": "General",
+  "@vehiculosFichaSeccionGeneral": {
+    "description": "Título de una sección del respaldo local de la ficha."
+  },
+  "vehiculosFichaSeccionMotor": "Motor",
+  "@vehiculosFichaSeccionMotor": {
+    "description": "Título de una sección del respaldo local de la ficha."
+  },
+  "vehiculosFichaSeccionTransmision": "Transmisión",
+  "@vehiculosFichaSeccionTransmision": {
+    "description": "Título de una sección del respaldo local de la ficha."
   },
   "vehiculosFichaTitulo": "Ficha técnica",
   "@vehiculosFichaTitulo": {
