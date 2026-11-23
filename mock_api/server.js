@@ -639,9 +639,22 @@ servidor.get(`${BASE}/citas`, (req, res) => {
 });
 
 servidor.post(`${BASE}/citas`, (req, res) => {
-  const { vehiculoId, franjaId, fecha, motivo } = req.body || {};
+  const { vehiculoId, franjaId, fecha, motivo, recoleccion } = req.body || {};
   if (!vehiculoId || !franjaId || !ES_FECHA.test(fecha || '')) {
     return problema(req, res, 400, 'Faltan vehiculoId, franjaId o fecha (AAAA-MM-DD)');
+  }
+
+  // V2-M17.02 · `recoleccion: { direccionId }` es opcional. Una direccion ajena
+  // o inexistente responde 404 y una fuera de cobertura, 422; en los dos casos
+  // no se crea ni la cita ni los traslados.
+  let direccionRecoleccion = null;
+  if (recoleccion != null) {
+    if (!Number.isInteger(Number(recoleccion.direccionId))) {
+      return problema(req, res, 400, 'recoleccion.direccionId es obligatorio', 'DATOS_INVALIDOS');
+    }
+    direccionRecoleccion = direccionDelCliente(req, recoleccion.direccionId);
+    if (!direccionRecoleccion) return noEncontrado(req, res);
+    if (!enCobertura(direccionRecoleccion)) return fueraDeCobertura(req, res);
   }
 
   const vehiculo = vehiculoDelCliente(req, vehiculoId);
@@ -691,7 +704,11 @@ servidor.post(`${BASE}/citas`, (req, res) => {
     .assign({ cupoDisponible: franja.cupoDisponible - 1 })
     .write();
 
-  res.status(201).jsonp(comoCita(cita));
+  const cuerpo = comoCita(cita);
+  if (direccionRecoleccion) {
+    cuerpo.recoleccion = crearTraslados(cita, direccionRecoleccion);
+  }
+  res.status(201).jsonp(cuerpo);
 });
 
 servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
@@ -902,6 +919,203 @@ servidor.get(`${BASE}/citas/:citaId/pase`, (req, res) => {
   res.set('Content-Disposition', `attachment; filename="cita-${cita.id}.pkpass"`);
   res.send(Buffer.from(`PKPASS-FALSO cita ${cita.id} ${codigoDeCita(cita.id)}`));
 });
+
+// ── recoleccion ──
+// V2-M17.01 y V2-M17.02 · direcciones guardadas, cotizacion y traslados.
+// El backend real decide la cobertura con la geometria de la agencia; aqui es
+// un circulo de 40 km alrededor del centro de la Ciudad de Mexico, suficiente
+// para probar el 422 desde la app (un pin en Monterrey queda fuera).
+db.defaults({ direcciones: [], traslados: [] }).write();
+
+const CENTRO_COBERTURA = { lat: 19.4326, lng: -99.1332 };
+const RADIO_COBERTURA_KM = 40;
+const TARIFA_BASE = 80;
+const TARIFA_POR_KM = 12;
+const VENTANA_RECOGER = { inicio: '07:00', fin: '09:00' };
+const VENTANA_ENTREGAR = { inicio: '17:00', fin: '19:00' };
+
+function distanciaKm(a, b) {
+  const rad = (g) => (g * Math.PI) / 180;
+  const dLat = rad(b.lat - a.lat);
+  const dLng = rad(b.lng - a.lng);
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
+function enCobertura(direccion) {
+  return distanciaKm(CENTRO_COBERTURA, direccion) <= RADIO_COBERTURA_KM;
+}
+
+const costoPorTraslado = (direccion) =>
+  Math.round((TARIFA_BASE + TARIFA_POR_KM * distanciaKm(CENTRO_COBERTURA, direccion)) * 100) / 100;
+
+const fueraDeCobertura = (req, res) =>
+  problema(
+    req,
+    res,
+    422,
+    'La direccion queda fuera de la zona de cobertura',
+    'FUERA_DE_COBERTURA'
+  );
+
+function direccionDelCliente(req, id) {
+  const d = db.get('direcciones').find({ id: Number(id) }).value();
+  return d && d.clienteId === req.sesion.clienteId ? d : null;
+}
+
+const comoDireccion = (d) => ({
+  id: d.id,
+  alias: d.alias,
+  calle: d.calle,
+  colonia: d.colonia,
+  cp: d.cp,
+  ciudad: d.ciudad,
+  lat: d.lat,
+  lng: d.lng,
+});
+
+// Valida el cuerpo de NuevaDireccion con las mismas reglas del contrato.
+function validarDireccion(cuerpo) {
+  const c = cuerpo || {};
+  const texto = (v, max) => typeof v === 'string' && v.trim().length > 0 && v.trim().length <= max;
+  const numero = (v, min, max) => typeof v === 'number' && v >= min && v <= max;
+  if (
+    !texto(c.alias, 40) ||
+    !texto(c.calle, 120) ||
+    !texto(c.colonia, 80) ||
+    !/^[0-9]{5}$/.test(String(c.cp || '')) ||
+    !texto(c.ciudad, 80) ||
+    !numero(c.lat, -90, 90) ||
+    !numero(c.lng, -180, 180)
+  ) {
+    return null;
+  }
+  return {
+    alias: c.alias.trim(),
+    calle: c.calle.trim(),
+    colonia: c.colonia.trim(),
+    cp: c.cp,
+    ciudad: c.ciudad.trim(),
+    lat: c.lat,
+    lng: c.lng,
+  };
+}
+
+servidor.get(`${BASE}/direcciones`, (req, res) => {
+  const propias = db.get('direcciones').filter({ clienteId: req.sesion.clienteId }).value();
+  res.jsonp(propias.map(comoDireccion));
+});
+
+servidor.post(`${BASE}/direcciones`, (req, res) => {
+  const datos = validarDireccion(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de direccion invalidos', 'DATOS_INVALIDOS');
+  if (!enCobertura(datos)) return fueraDeCobertura(req, res);
+
+  const ids = db.get('direcciones').value().map((d) => d.id);
+  const direccion = {
+    id: ids.length ? Math.max(...ids) + 1 : 1,
+    clienteId: req.sesion.clienteId,
+    ...datos,
+  };
+  db.get('direcciones').push(direccion).write();
+  res.status(201).jsonp(comoDireccion(direccion));
+});
+
+servidor.put(`${BASE}/direcciones/:direccionId`, (req, res) => {
+  const existente = direccionDelCliente(req, req.params.direccionId);
+  if (!existente) return noEncontrado(req, res);
+  const datos = validarDireccion(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de direccion invalidos', 'DATOS_INVALIDOS');
+  if (!enCobertura(datos)) return fueraDeCobertura(req, res);
+
+  db.get('direcciones').find({ id: existente.id }).assign(datos).write();
+  res.jsonp(comoDireccion(db.get('direcciones').find({ id: existente.id }).value()));
+});
+
+servidor.delete(`${BASE}/direcciones/:direccionId`, (req, res) => {
+  const existente = direccionDelCliente(req, req.params.direccionId);
+  if (!existente) return noEncontrado(req, res);
+  const enUso = db.get('traslados').value().some((t) => t.direccionId === existente.id);
+  if (enUso) {
+    return problema(
+      req,
+      res,
+      409,
+      'La direccion ya tiene traslados y no se puede borrar',
+      'DIRECCION_EN_USO'
+    );
+  }
+  db.get('direcciones').remove({ id: existente.id }).write();
+  res.status(204).end();
+});
+
+servidor.get(`${BASE}/recoleccion/cotizacion`, (req, res) => {
+  const { direccionId, fecha } = req.query;
+  if (!/^\d+$/.test(direccionId || '') || !ES_FECHA.test(fecha || '')) {
+    return problema(
+      req,
+      res,
+      400,
+      'direccionId y fecha (AAAA-MM-DD) son obligatorios',
+      'DATOS_INVALIDOS'
+    );
+  }
+  const hoy = new Date().toISOString().slice(0, 10);
+  if (fecha < hoy) {
+    return problema(req, res, 400, 'La fecha no puede ser anterior a hoy', 'DATOS_INVALIDOS');
+  }
+  const direccion = direccionDelCliente(req, direccionId);
+  if (!direccion) return noEncontrado(req, res);
+  if (!enCobertura(direccion)) return fueraDeCobertura(req, res);
+
+  const costo = costoPorTraslado(direccion);
+  res.jsonp({
+    direccionId: direccion.id,
+    fecha,
+    costoPorTraslado: costo,
+    costoTotal: Math.round(costo * 2 * 100) / 100,
+    recoleccion: VENTANA_RECOGER,
+    entrega: VENTANA_ENTREGAR,
+  });
+});
+
+// Crea los dos traslados de una cita (recoger y entregar) y arma la
+// `RecoleccionCita` que devuelve POST /citas.
+function crearTraslados(cita, direccion) {
+  const costo = costoPorTraslado(direccion);
+  const ids = db.get('traslados').value().map((t) => t.id);
+  let siguiente = ids.length ? Math.max(...ids) + 1 : 1;
+  const nuevos = [
+    ['recoger', VENTANA_RECOGER],
+    ['entregar', VENTANA_ENTREGAR],
+  ].map(([tipo, ventana]) => ({
+    id: siguiente++,
+    citaId: cita.id,
+    direccionId: direccion.id,
+    tipo,
+    estado: 'programado',
+    costo,
+    fecha: cita.fecha,
+    ventanaInicio: ventana.inicio,
+    ventanaFin: ventana.fin,
+  }));
+  nuevos.forEach((t) => db.get('traslados').push(t).write());
+  return {
+    direccionId: direccion.id,
+    costoTotal: Math.round(costo * 2 * 100) / 100,
+    traslados: nuevos.map((t) => ({
+      id: t.id,
+      tipo: t.tipo,
+      estado: t.estado,
+      costo: t.costo,
+      fecha: t.fecha,
+      ventanaInicio: t.ventanaInicio,
+      ventanaFin: t.ventanaFin,
+    })),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
