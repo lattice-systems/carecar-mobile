@@ -46,6 +46,7 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 | GET/POST | `/citas` · POST `/citas/{id}/cancelar` | Existen; POST suma `motivo` y el 409 por cita duplicada suma el código `CITA_DUPLICADA` (hoy responde sin código; el cupo lleno ya usa `FRANJA_SIN_CUPO`). |
 | POST | `/citas/{id}/reprogramar` | **Nuevo (propuesto por V2-M02.13; no está en el contrato v1).** Cuerpo `{franjaId, fecha}` (`AAAA-MM-DD`). Cambia la cita confirmada futura a la franja nueva, la ocupa y libera la anterior **en la misma operación** (una transacción). Responde 200 con la cita (`Cita`) ya en la franja nueva. 409 `FRANJA_SIN_CUPO` si la nueva se llenó; 409 `CITA_NO_REPROGRAMABLE` si la cita ya no está confirmada; 409 `FUERA_DE_PLAZO` si ya empezó; 404 si no existe o no es del cliente. Simulado en `mock_api`. Historia `Backend:` pendiente. |
 | GET | `/citas/{id}/ticket` | Existe: PDF del comprobante con la foto del vehículo. V2-M02.11 le suma el QR firmado. |
+| GET | `/citas/{id}/comprobante` | Nuevo (V2-M02.11, simulado en `mock_api`). Responde `{citaId, codigo, fecha, horaInicio, horaFin, vehiculoNombre?}`; `codigo` es el id de la cita firmado por el backend con la forma `CC1.<citaId>.<firma>` y es lo que la app dibuja en el QR. 404 si la cita no es del cliente. El mismo código va impreso como QR en el PDF de `/citas/{id}/ticket`. |
 
 ## Historias
 
