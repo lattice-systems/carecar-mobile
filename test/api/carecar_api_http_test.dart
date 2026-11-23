@@ -331,6 +331,33 @@ void main() {
     expect(cita.estado, EstadoCita.cancelada);
   });
 
+  test('reprogramarCita llama POST /citas/{id}/reprogramar', () async {
+    final api = _api(
+      espia,
+      () => _json({
+        'id': 3,
+        'vehiculoId': 1,
+        'franjaId': 8,
+        'fecha': '2026-11-26',
+        'horaInicio': '11:00',
+        'horaFin': '12:00',
+        'estado': 'CONFIRMADA',
+      }),
+    );
+
+    final cita = await api.reprogramarCita(
+      3,
+      franjaId: 8,
+      fecha: DateTime(2026, 11, 26),
+    );
+
+    expect(espia.metodo, 'POST');
+    expect(espia.url!.path, '/api/v1/app/citas/3/reprogramar');
+    expect(jsonDecode(espia.cuerpo!), {'franjaId': 8, 'fecha': '2026-11-26'});
+    expect(cita.horaInicio, '11:00');
+    expect(cita.estado, EstadoCita.confirmada);
+  });
+
   test('catalogo llama GET /catalogo', () async {
     final api = _api(
       espia,
