@@ -31,9 +31,9 @@ Total: **213 historias** + 4 de H0.
 | V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Hecha | #17 |
 | V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Hecha | #34 |
 | V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Hecha | #39 |
-| V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | En revisión | #78 |
-| V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | En revisión | #75 |
-| V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | En revisión | #74 |
+| V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Hecha | #78 |
+| V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Hecha | #75 |
+| V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Hecha | #74 |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
 | V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Lista | |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
@@ -131,8 +131,8 @@ Total: **213 historias** + 4 de H0.
 | V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Lista | |
-| V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | En revisión | #76 |
-| V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | En revisión | #77 |
+| V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Hecha | #76 |
+| V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Lista | |
@@ -254,7 +254,7 @@ Total: **213 historias** + 4 de H0.
 | V2-M19.02 | Aceptar y ver el vehículo compartido | Jael | B | V2-M19.01 | Borrador | |
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
 | V2-M19.04 | Revocar un acceso | Jael | B | V2-M19.02 | Borrador | |
-| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | Lista | |
+| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | En revisión | #81 |
 | V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | Lista | |
 | V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Lista | |
 | V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |

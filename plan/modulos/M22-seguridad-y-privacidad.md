@@ -36,7 +36,7 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 
 ## Notas de implementación
 
-### V2-M22.05 · Equipos comprometidos (en revisión, PR #76)
+### V2-M22.05 · Equipos comprometidos (hecha, PR #76)
 
 - **Detección**: interfaz `DetectorIntegridad` en `lib/nucleo/seguridad/`; implementación real `DetectorIntegridadDelSistema` sobre [`safe_device`](https://pub.dev/packages/safe_device) y `DetectorIntegridadFalso` para pruebas. Los módulos nunca importan el paquete.
 - **Por qué `safe_device`**: licencia MIT, publicador verificado, mantenido (1.4.1, 2026), Android e iOS, API de una llamada (`isJailBroken`). Descartados: `jailbreak_root_detection` (pub.dev no declara licencia), `flutter_jailbreak_detection` (sin publicar desde 2023) y `freerasp` (RASP completo con SDK nativo propio, desproporcionado para un aviso). Es una señal, no una garantía: un equipo comprometido puede ocultarlo.
@@ -48,4 +48,4 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 - **Contrato para V2-M21.01** (base local): antes de abrir, escribir o leer la base, consultar `ref.watch(politicaDatosLocalesProvider).permiteCacheLocal`; si es `false`, no crearla ni leerla, y escuchar la política para borrarla si cambia a comprometido. Añadir prueba equivalente a `test/cache/carecar_api_con_cache_test.dart` (grupo "equipo comprometido").
 - **Pendiente**: `LSApplicationQueriesSchemes` (cydia) en iOS mejora la detección de jailbreak; se deja a la historia que toque `Info.plist` (T01.04/M22.06) para no pisar su alcance. Registro de la detección en logs: ninguno (sin datos personales).
 
-- **V2-M22.06** (en revisión): `lib/nucleo/privacidad/` (`CubiertaEnSegundoPlano`, `PantallaSegura`, `ProteccionDeCaptura` con fake), canal Android `FLAG_SECURE` y cubierta nativa iOS. Diseño, límites (iOS no bloquea capturas) y uso en [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Pendiente como historia nueva (Borrador): detectar captura/grabación en iOS (`UIScreen.isCaptured`) y tapar o avisar en pantallas de pago y documentos.
+- **V2-M22.06** (hecha, PR #77): `lib/nucleo/privacidad/` (`CubiertaEnSegundoPlano`, `PantallaSegura`, `ProteccionDeCaptura` con fake), canal Android `FLAG_SECURE` y cubierta nativa iOS. Diseño, límites (iOS no bloquea capturas) y uso en [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Pendiente como historia nueva (Borrador): detectar captura/grabación en iOS (`UIScreen.isCaptured`) y tapar o avisar en pantallas de pago y documentos.
