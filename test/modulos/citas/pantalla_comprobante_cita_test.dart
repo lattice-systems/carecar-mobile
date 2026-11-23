@@ -9,6 +9,7 @@ import 'package:carecar_mobile/modulos/citas/presentacion/boton_agregar_a_wallet
 import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_wallet.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/repositorio_citas.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/cabecera_portada.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/visor_pdf.dart';
@@ -73,6 +74,18 @@ void main() {
       find.text('Muestra este código en recepción para registrar tu llegada.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('el QR es la portada y los detalles van en una lista', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    expect(find.byType(CabeceraPortada), findsOneWidget);
+    expect(find.byType(QrImageView), findsOneWidget);
+    expect(find.text('Detalles de la cita'), findsOneWidget);
+    expect(find.text('En recepción'), findsOneWidget);
+    expect(find.text('Horario'), findsOneWidget);
   });
 
   testWidgets('el boton abre el PDF de la cita en el visor', (tester) async {
