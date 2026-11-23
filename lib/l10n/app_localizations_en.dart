@@ -558,6 +558,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosVinCopiado => 'VIN copied';
 
   @override
+  String get widgetsAccesoAgendar => 'Book appointment';
+
+  @override
+  String get widgetsAccesoMiAuto => 'My car';
+
+  @override
+  String get widgetsAccesoSos => 'SOS';
+
+  @override
   String get avisoCerrar => 'Close notice';
 
   @override
