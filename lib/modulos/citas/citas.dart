@@ -10,6 +10,8 @@ export 'dominio/motivo_cita.dart' show MotivoCita;
 export 'presentacion/pantalla_agendar_cita.dart' show PantallaAgendarCita;
 export 'presentacion/pantalla_disponibilidad.dart' show PantallaDisponibilidad;
 export 'presentacion/pantalla_mis_citas.dart' show PantallaMisCitas;
+export 'presentacion/pantalla_reprogramar_cita.dart'
+    show PantallaReprogramarCita;
 export 'presentacion/proveedores_citas.dart'
     show
         disponibilidadProvider,
