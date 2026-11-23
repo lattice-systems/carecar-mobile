@@ -56,9 +56,14 @@ Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb`
 
 ## Reglas de dependencia
 
-- `modulos/a` **no importa** `modulos/b/datos` ni `modulos/b/presentacion`; solo `modulos/b/b.dart` o se comunican por rutas. Se verificará en V2-T01.06.
-- `nucleo/` no conoce módulos.
+Las verifica `test/arquitectura/` (V2-T01.06) en cada `flutter test` y en el CI. Detalle y excepciones en [`plan/arquitectura-v2.md`](../../plan/arquitectura-v2.md#reglas-de-dependencia-verificadas-v2-t01-06).
+
+- **R1** `modulos/a` **no importa** `modulos/b/datos`, `dominio` ni `presentacion`; solo `modulos/b/b.dart` (o se comunican por rutas). Cuenta cualquier `import`, `export` o `part`, relativo o `package:`.
+- **R2** `nucleo/` no conoce módulos (la única excepción es `registro_de_rutas.dart`, y solo con `<modulo>.dart`).
+- **R3** `modulos/` y `nucleo/` no importan `lib/pantallas`, `lib/widgets` ni `lib/tema` (v1).
 - `dominio/` es Dart puro (se prueba sin Flutter).
+
+Si la prueba falla verás `archivo:línea importa "<import>" -> R#: <qué hacer>`: exporta lo que necesitas en el `<modulo>.dart` del otro módulo (con `show`) y úsalo desde ahí.
 
 ## Pruebas
 
