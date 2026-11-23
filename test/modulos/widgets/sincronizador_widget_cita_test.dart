@@ -116,10 +116,7 @@ void main() {
   });
 
   testWidgets('sin citas por venir invita a agendar', (tester) async {
-    final e = await _montar(
-      tester,
-      citas: [_cita(1, DateTime(2026, 11, 1))],
-    );
+    final e = await _montar(tester, citas: [_cita(1, DateTime(2026, 11, 1))]);
     final c = e.puerto.ultimo;
     expect(c.hayCita, isFalse);
     expect(c.mensaje, 'No tienes citas próximas');
@@ -180,9 +177,8 @@ void main() {
       ),
       motivo: MotivoCita.mantenimiento,
     );
-    ProviderScope.containerOf(
-      tester.element(find.text('inicio')),
-    ).invalidate(misCitasProvider);
+    ProviderScope.containerOf(tester.element(find.text('inicio')))
+        .invalidate(misCitasProvider);
     await tester.pumpAndSettle();
 
     expect(e.puerto.ultimo.hayCita, isTrue);
@@ -191,10 +187,7 @@ void main() {
   testWidgets('sin sesion el widget no conserva datos de ninguna cita', (
     tester,
   ) async {
-    final e = await _montar(
-      tester,
-      citas: [_cita(2, DateTime(2026, 11, 25))],
-    );
+    final e = await _montar(tester, citas: [_cita(2, DateTime(2026, 11, 25))]);
     expect(e.puerto.ultimo.hayCita, isTrue);
 
     await e.controlador.cerrarSesion();
