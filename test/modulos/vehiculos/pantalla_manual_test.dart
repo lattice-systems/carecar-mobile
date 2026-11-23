@@ -115,7 +115,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Descargar manual'));
+    await tester.ensureVisible(find.text('Descargar'));
+    await tester.tap(find.text('Descargar'));
     await tester.pumpAndSettle();
     expect(guardado, _bytes);
     expect(titulo, 'Mazda CX-5 2024');
@@ -130,7 +131,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Descargar manual'));
+    await tester.ensureVisible(find.text('Descargar'));
+    await tester.tap(find.text('Descargar'));
     await tester.pumpAndSettle();
     expect(find.text('Manual guardado'), findsNothing);
   });
@@ -140,7 +142,8 @@ void main() {
       _app(_Servicio(_manual), guardar: (_, _) async => throw Exception('x')),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Descargar manual'));
+    await tester.ensureVisible(find.text('Descargar'));
+    await tester.tap(find.text('Descargar'));
     await tester.pumpAndSettle();
     expect(
       find.text('No pudimos guardar el manual. Inténtalo de nuevo.'),
@@ -161,7 +164,8 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Compartir manual'));
+    await tester.ensureVisible(find.text('Compartir'));
+    await tester.tap(find.text('Compartir'));
     await tester.pumpAndSettle();
     expect(enviado, _bytes);
     expect(nombre, 'Manual Mazda CX-5 2024.pdf');
@@ -187,7 +191,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(EstadoVacio), findsOneWidget);
     expect(find.text('Manual no disponible'), findsOneWidget);
-    expect(find.byTooltip('Descargar manual'), findsNothing);
+    expect(find.text('Descargar'), findsNothing);
   });
 
   testWidgets('error inesperado: reintentar vuelve a pedir', (tester) async {
@@ -241,6 +245,6 @@ void main() {
       _app(_Servicio(_manual), idioma: const Locale('en')),
     );
     await tester.pumpAndSettle();
-    expect(find.byTooltip('Download manual'), findsOneWidget);
+    expect(find.text('Download'), findsOneWidget);
   });
 }
