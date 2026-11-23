@@ -1939,6 +1939,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.'**
   String get citasWalletErrorNoDisponible;
+
+  /// Botón de la portada del detalle que abre el flujo de agendar cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar servicio'**
+  String get vehiculosAgendarServicio;
+
+  /// Botón de la portada del detalle que abre el manual del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual'**
+  String get vehiculosBotonManual;
+
+  /// Botón de la portada del manual que guarda el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar'**
+  String get vehiculosBotonDescargar;
+
+  /// Botón de la portada del manual que comparte el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir'**
+  String get vehiculosBotonCompartir;
+
+  /// Botón de la portada del garaje cuando hay un solo vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver detalle'**
+  String get vehiculosVerDetalle;
+
+  /// Encabezado del grupo de datos del vehículo en el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos'**
+  String get vehiculosEncabezadoDatos;
+
+  /// Encabezado del grupo de accesos del detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto'**
+  String get vehiculosEncabezadoTuAuto;
+
+  /// Encabezado del grupo de datos rápidos del garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos rápidos'**
+  String get vehiculosEncabezadoRapidos;
+
+  /// Pista bajo el VIN que indica que se puede copiar.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca para copiar'**
+  String get vehiculosToqueCopiarVin;
 }
 
 class _AppLocalizationsDelegate
