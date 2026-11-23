@@ -50,7 +50,7 @@ Total: **213 historias** + 4 de H0.
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
 | V2-T02.13 | Componente `LineaDeTiempo` | Cristian |  | V2-T02.04 | Hecha | #37, #42 |
 | V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Cristian |  | V2-T02.04 | Hecha | #37 |
-| V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | En revisión | #83 |
+| V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | Hecha | #83 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -254,9 +254,9 @@ Total: **213 historias** + 4 de H0.
 | V2-M19.02 | Aceptar y ver el vehículo compartido | Jael | B | V2-M19.01 | Borrador | |
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
 | V2-M19.04 | Revocar un acceso | Jael | B | V2-M19.02 | Borrador | |
-| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | En revisión | #81 |
-| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | En revisión | backend#79, #84 |
-| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | En revisión | backend#79, #84 |
+| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | Hecha | #81 |
+| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | Hecha | backend#79, #84 |
+| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Hecha | backend#79, #84 |
 | V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Lista | |
