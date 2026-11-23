@@ -134,6 +134,15 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 | API simulada (`mock_api/`) | `http://localhost:3000/api/v1/app` |
 | Backend en Docker detrás de nginx (red local) | `http://IP-DE-LA-PC:8089/api/v1/app` |
 
+**Probar los módulos v2 (interruptor v1/v2, V2-T01.05).** Sin más opciones la app corre como la v1. Para ver un módulo ya migrado se enciende al compilar, sin servidor ni secretos:
+
+```bash
+flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V2=vehiculos,citas
+flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V2=todos --dart-define=MODULOS_V1=catalogo
+```
+
+Módulos válidos: `asistencia`, `catalogo`, `citas`, `vehiculos` (o `todos`). Un nombre mal escrito detiene el arranque. Guía completa en [`plan/arquitectura-v2.md`](plan/arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
+
 > [!NOTE]
 > **Arranque en frío del backend en la nube.** Azure Container Apps apaga el servidor sin tráfico; la primera petición tras un rato de inactividad (por ejemplo el primer inicio de sesión) tarda ~35 s en despertarlo. La app espera hasta 60 s en lugar de fallar, y tras 8 s muestra «Despertando el servidor…» (V2-M01.12). Si aun así ves «Sin conexión», el servidor tardó más de un minuto o no hay red.
 
@@ -179,6 +188,7 @@ carecar-mobile/
 │   ├── api/               # Cliente HTTP a mano: CarecarApi (interfaz), CarecarApiHttp,
 │   │   │                  # ClienteApi (tokens y refresco), ApiConfig, excepciones
 │   │   └── modelos/       # Vehiculo, Servicio, Cita, Disponibilidad, Manual, Perfil, ...
+│   ├── nucleo/migracion/  # Interruptor v1/v2 por módulo (se retira en V2-T01.07)
 │   ├── sesion/            # ControladorSesion (ChangeNotifier) y almacén seguro
 │   ├── manuales/          # Manual de la agencia con respaldo al PDF incluido
 │   ├── pantallas/         # Login, recuperar/cambiar contraseña, inicio (menú),
