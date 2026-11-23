@@ -299,9 +299,11 @@ class _TarjetaCifras extends StatelessWidget {
               Semantics(
                 button: true,
                 excludeSemantics: true,
-                label:
-                    '${textos.vehiculosVin}. $vin. '
-                    '${textos.vehiculosCopiarVin}',
+                label: [
+                  textos.vehiculosVin,
+                  vin,
+                  textos.vehiculosCopiarVin,
+                ].join('. '),
                 onTap: alCopiarVin,
                 child: Tooltip(
                   message: textos.vehiculosCopiarVin,
