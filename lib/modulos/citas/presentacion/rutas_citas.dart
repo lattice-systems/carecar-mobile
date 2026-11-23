@@ -19,6 +19,7 @@ const rutaMisCitas = '/citas';
 
 /// Camino para reprogramar una cita: `/citas/7/reprogramar`.
 String rutaReprogramarCita(int id) => '$rutaMisCitas/$id/reprogramar';
+
 /// Camino del comprobante con QR de la cita `citaId` (V2-M02.11).
 String rutaComprobanteCita(int citaId) => '/citas/$citaId/comprobante';
 
