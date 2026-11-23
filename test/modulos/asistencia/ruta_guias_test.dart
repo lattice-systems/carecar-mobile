@@ -10,6 +10,9 @@ import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
 
 Future<void> _montar(WidgetTester tester, {bool conSesion = true}) async {
+  // La plataforma de pruebas habla ingles; los textos que se comprueban son es.
+  tester.platformDispatcher.localesTestValue = const [Locale('es')];
+  addTearDown(tester.platformDispatcher.clearLocalesTestValue);
   final api = ApiFalsa();
   final sesion = ControladorSesion(api, AlmacenEnMemoria());
   addTearDown(sesion.dispose);
