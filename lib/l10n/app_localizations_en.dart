@@ -10,6 +10,107 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get asistenciaGuiaChoquePaso1 =>
+      'Stop the car in a safe place, turn off the engine and switch on the hazard lights.';
+
+  @override
+  String get asistenciaGuiaChoquePaso2 =>
+      'Check for injured people. If there are any, call 911 right away and do not move anyone with neck or back pain.';
+
+  @override
+  String get asistenciaGuiaChoquePaso3 =>
+      'If you can, get out and stand behind a barrier, away from traffic. Set out the warning triangles.';
+
+  @override
+  String get asistenciaGuiaChoquePaso4 =>
+      'Call your insurer and wait for the adjuster. Do not accept or sign agreements with the other driver without them.';
+
+  @override
+  String get asistenciaGuiaChoquePaso5 =>
+      'Take photos of the vehicles, plates, damage and the place. Write down the other driver\'s name, phone and insurance details.';
+
+  @override
+  String get asistenciaGuiaChoquePaso6 =>
+      'Do not move the car until the authorities or the adjuster allow it, unless it blocks the road and it is safe to move.';
+
+  @override
+  String get asistenciaGuiaChoqueResumen =>
+      'Steps to look after everyone and protect your claim.';
+
+  @override
+  String get asistenciaGuiaChoqueTitulo => 'What to do after a crash';
+
+  @override
+  String get asistenciaGuiaCorrientePaso1 =>
+      'Park the other car facing yours, without touching. Turn off both engines and all accessories.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso2 =>
+      'Connect a red clamp to the positive (+) terminal of your dead battery and the other end to the positive terminal of the car giving the charge.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso3 =>
+      'Connect a black clamp to the negative (−) terminal of the good battery and the other end to an unpainted metal part of your engine, away from the battery.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso4 =>
+      'Start the car giving the charge and let it run for a few minutes.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso5 =>
+      'Try to start your car. If it does not start, wait a few more minutes and try again.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso6 =>
+      'Remove the clamps in reverse order, without letting them touch, and keep your car running for at least 20 minutes.';
+
+  @override
+  String get asistenciaGuiaCorrienteResumen =>
+      'How to start your car with cables from another vehicle.';
+
+  @override
+  String get asistenciaGuiaCorrienteTitulo => 'Jump-start the battery';
+
+  @override
+  String get asistenciaGuiaLlantaPaso1 =>
+      'Park on flat, firm ground, set the parking brake and switch on the hazard lights.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso2 =>
+      'Take out the spare tire, the jack and the lug wrench. Slightly loosen the nuts of the flat tire without removing them.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso3 =>
+      'Place the jack at the point shown in the manual and lift the car until the tire is off the ground.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso4 =>
+      'Remove the nuts and the flat tire. Mount the spare and tighten the nuts by hand.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso5 =>
+      'Lower the car, tighten the nuts in a star pattern with the wrench and check the pressure as soon as you can.';
+
+  @override
+  String get asistenciaGuiaLlantaResumen =>
+      'Swap it for the spare in a few steps.';
+
+  @override
+  String get asistenciaGuiaLlantaTitulo => 'Change a tire';
+
+  @override
+  String asistenciaGuiaPasoNumero(int numero, int total) {
+    return 'Step $numero of $total';
+  }
+
+  @override
+  String get asistenciaGuiasAvisoSinConexion =>
+      'These guides are stored in the app and work offline.';
+
+  @override
+  String get asistenciaGuiasTitulo => 'Emergency guides';
+
+  @override
   String get catalogoTitulo => 'Catalog';
 
   @override
