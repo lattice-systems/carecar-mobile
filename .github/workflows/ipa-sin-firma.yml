@@ -39,17 +39,6 @@ jobs:
       - name: Descargar el código
         uses: actions/checkout@v7
 
-      # Igual que en release.yml: sin API_BASE_URL la app solo muestra el error
-      # de arranque, así que se falla antes de gastar minutos de macOS.
-      - name: Verificar la dirección del servidor (API_BASE_URL)
-        env:
-          API_BASE_URL: ${{ vars.API_BASE_URL }}
-        run: |
-          if [ -z "$API_BASE_URL" ]; then
-            echo "::error::Falta la variable de repositorio API_BASE_URL. Créala en Settings → Secrets and variables → Actions → Variables y vuelve a lanzar el workflow."
-            exit 1
-          fi
-
       # La versión sale de pubspec.yaml (fuente única, V2-T04.01) y el número
       # de build de la corrida. Desde Release, el nombre es la etiqueta
       # (carecar-vX.Y.Z.ipa, igual que el APK); a mano lleva el número de build
@@ -85,12 +74,18 @@ jobs:
 
       # --no-codesign: sin certificados ni perfiles de Apple. Sideloadly firma
       # después con el Apple ID de quien instala.
+      # Flavor produccion (V2-T01.04). Su dirección por omisión es el backend
+      # de Azure; la variable de repositorio API_BASE_URL, si existe, la
+      # sobrescribe (debe ser https: produccion rechaza http).
       - name: Compilar iOS en release sin firmar
         env:
           VERSION: ${{ steps.version.outputs.version }}
           NUMERO: ${{ github.run_number }}
           API_BASE_URL: ${{ vars.API_BASE_URL }}
-        run: flutter build ios --release --no-codesign --build-name="$VERSION" --build-number="$NUMERO" --dart-define=API_BASE_URL="$API_BASE_URL"
+        run: |
+          extra=()
+          if [ -n "$API_BASE_URL" ]; then extra+=("--dart-define=API_BASE_URL=$API_BASE_URL"); fi
+          flutter build ios --release --no-codesign --flavor produccion -t lib/main_produccion.dart --build-name="$VERSION" --build-number="$NUMERO" "${extra[@]}"
 
       # Un IPA es un zip con la app dentro de Payload/. -y guarda los enlaces
       # simbólicos de los frameworks tal cual.
