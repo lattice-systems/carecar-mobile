@@ -242,6 +242,54 @@ abstract class AppLocalizations {
   /// **'Paso {numero} de {total}'**
   String asistenciaGuiaPasoNumero(int numero, int total);
 
+  /// Título grande de la lista de guías de emergencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Emergencias'**
+  String get asistenciaListaTitulo;
+
+  /// Título de la tarjeta principal de emergencias.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Necesitas ayuda ahora?'**
+  String get asistenciaHeroeTitulo;
+
+  /// Explica por qué el botón de pedir ayuda aún no está disponible.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda con tu ubicación estará disponible pronto. Mientras tanto, estas guías te dicen qué hacer.'**
+  String get asistenciaHeroeTexto;
+
+  /// Botón de pedir ayuda, deshabilitado hasta que exista la solicitud de asistencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda'**
+  String get asistenciaHeroeAccion;
+
+  /// Título del carrusel de guías.
+  ///
+  /// In es, this message translates to:
+  /// **'Guías rápidas'**
+  String get asistenciaEstanteGuias;
+
+  /// Encabezado de la lista de guías.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las guías'**
+  String get asistenciaGrupoGuias;
+
+  /// Cuántos pasos tiene una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'{pasos} pasos'**
+  String asistenciaGuiaCantidadPasos(int pasos);
+
+  /// Subtítulo de la cabecera de una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'{pasos} pasos · sin conexión'**
+  String asistenciaGuiaSubtituloSinConexion(int pasos);
+
   /// Aviso de que las guías no necesitan red.
   ///
   /// In es, this message translates to:
