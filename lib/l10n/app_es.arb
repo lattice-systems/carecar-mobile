@@ -455,6 +455,30 @@
   "@vehiculosDetalleTitulo": {
     "description": "Título de la pantalla de detalle de un vehículo."
   },
+  "vehiculosFichaCargando": "Cargando la ficha técnica",
+  "@vehiculosFichaCargando": {
+    "description": "Mensaje que lee el lector de pantalla mientras carga la ficha técnica."
+  },
+  "vehiculosFichaNota": "Datos del modelo y año. La ficha exacta de tu unidad está en su manual.",
+  "@vehiculosFichaNota": {
+    "description": "Aviso al pie de la ficha técnica."
+  },
+  "vehiculosFichaRespaldo": "Mostrando la ficha guardada en la app",
+  "@vehiculosFichaRespaldo": {
+    "description": "Aviso cuando la ficha sale del respaldo local y no de la agencia."
+  },
+  "vehiculosFichaTitulo": "Ficha técnica",
+  "@vehiculosFichaTitulo": {
+    "description": "Título de la pantalla de ficha técnica."
+  },
+  "vehiculosFichaVacioMensaje": "Todavía no tenemos las especificaciones de este modelo y año. La agencia las publicará pronto.",
+  "@vehiculosFichaVacioMensaje": {
+    "description": "Mensaje del estado vacío de la ficha técnica."
+  },
+  "vehiculosFichaVacioTitulo": "Sin ficha técnica",
+  "@vehiculosFichaVacioTitulo": {
+    "description": "Título del estado vacío de la ficha técnica."
+  },
   "vehiculosKilometraje": "Kilometraje",
   "@vehiculosKilometraje": {
     "description": "Etiqueta del kilometraje del vehículo."
@@ -486,6 +510,47 @@
   "vehiculosKmSinDato": "Sin kilometraje registrado",
   "@vehiculosKmSinDato": {
     "description": "Se muestra si el vehículo no tiene kilometraje."
+  },
+  "vehiculosManualCargando": "Cargando el manual",
+  "@vehiculosManualCargando": {
+    "description": "Mensaje que lee el lector de pantalla mientras carga el manual."
+  },
+  "vehiculosManualCompartir": "Compartir manual",
+  "@vehiculosManualCompartir": {
+    "description": "Botón para compartir el PDF del manual."
+  },
+  "vehiculosManualDescargar": "Descargar manual",
+  "@vehiculosManualDescargar": {
+    "description": "Botón para guardar el PDF del manual en el teléfono."
+  },
+  "vehiculosManualDescripcion": "Manual de {vehiculo}",
+  "@vehiculosManualDescripcion": {
+    "description": "Nombre del documento para el lector de pantalla.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "vehiculosManualGuardado": "Manual guardado",
+  "@vehiculosManualGuardado": {
+    "description": "Aviso cuando el manual se guardó."
+  },
+  "vehiculosManualGuardadoError": "No pudimos guardar el manual. Inténtalo de nuevo.",
+  "@vehiculosManualGuardadoError": {
+    "description": "Aviso cuando falla guardar el manual."
+  },
+  "vehiculosManualTitulo": "Manual",
+  "@vehiculosManualTitulo": {
+    "description": "Título de la pantalla del manual."
+  },
+  "vehiculosManualVacioMensaje": "Todavía no tenemos el manual de este modelo y año. La agencia lo publicará pronto.",
+  "@vehiculosManualVacioMensaje": {
+    "description": "Mensaje del estado vacío del manual."
+  },
+  "vehiculosManualVacioTitulo": "Manual no disponible",
+  "@vehiculosManualVacioTitulo": {
+    "description": "Título del estado vacío del manual."
   },
   "vehiculosNoEncontradoMensaje": "Ese vehículo ya no está en tu garaje. Vuelve al garaje para elegir otro.",
   "@vehiculosNoEncontradoMensaje": {
