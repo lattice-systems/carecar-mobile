@@ -2,7 +2,6 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/cita_cliente.dart';
-import 'package:carecar_mobile/modulos/citas/dominio/disponibilidad_taller.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
