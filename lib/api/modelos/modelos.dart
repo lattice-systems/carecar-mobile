@@ -15,6 +15,7 @@ export 'modelo_catalogo.dart';
 export 'pagina.dart';
 export 'perfil.dart';
 export 'problema.dart';
+export 'recoleccion_cita.dart';
 export 'sesion.dart';
 export 'servicio.dart';
 export 'servicio_detalle.dart';
