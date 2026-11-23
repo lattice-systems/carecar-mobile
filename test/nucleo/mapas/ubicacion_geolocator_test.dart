@@ -116,24 +116,30 @@ void main() {
     expect(plataforma.peticiones, 0);
   });
 
-  test('el tiempo agotado del paquete se vuelve UbicacionTiempoAgotado', () async {
-    plataforma.falla = TimeoutException('lento');
-    await expectLater(
-      ubicacion.posicionActual(),
-      throwsA(isA<UbicacionTiempoAgotado>()),
-    );
-  });
+  test(
+    'el tiempo agotado del paquete se vuelve UbicacionTiempoAgotado',
+    () async {
+      plataforma.falla = TimeoutException('lento');
+      await expectLater(
+        ubicacion.posicionActual(),
+        throwsA(isA<UbicacionTiempoAgotado>()),
+      );
+    },
+  );
 
-  test('las excepciones de permiso y servicio del paquete se traducen', () async {
-    plataforma.falla = const PermissionDeniedException('no');
-    await expectLater(
-      ubicacion.posicionActual(),
-      throwsA(isA<UbicacionPermisoDenegado>()),
-    );
-    plataforma.falla = const LocationServiceDisabledException();
-    await expectLater(
-      ubicacion.posicionActual(),
-      throwsA(isA<UbicacionServicioApagado>()),
-    );
-  });
+  test(
+    'las excepciones de permiso y servicio del paquete se traducen',
+    () async {
+      plataforma.falla = const PermissionDeniedException('no');
+      await expectLater(
+        ubicacion.posicionActual(),
+        throwsA(isA<UbicacionPermisoDenegado>()),
+      );
+      plataforma.falla = const LocationServiceDisabledException();
+      await expectLater(
+        ubicacion.posicionActual(),
+        throwsA(isA<UbicacionServicioApagado>()),
+      );
+    },
+  );
 }
