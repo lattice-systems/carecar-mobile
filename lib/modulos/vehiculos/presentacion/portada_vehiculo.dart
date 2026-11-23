@@ -39,12 +39,20 @@ Color tinteDeColor(TokensPista tokens, String? nombre) {
 /// degradado del tinte y la silueta del auto al centro. Es decorativo; quien lo
 /// usa le pone la descripcion para el lector de pantalla.
 class PortadaVehiculo extends StatelessWidget {
-  const PortadaVehiculo({required this.tinte, super.key, this.lado});
+  const PortadaVehiculo({
+    required this.tinte,
+    super.key,
+    this.lado,
+    this.icono = Icons.directions_car_filled_rounded,
+  });
 
   final Color tinte;
 
   /// Si es `null` ocupa todo el cuadro que le den.
   final double? lado;
+
+  /// Silueta al centro; por defecto un auto (el manual usa un libro).
+  final IconData icono;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +72,7 @@ class PortadaVehiculo extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Icon(
-              Icons.directions_car_filled_rounded,
+              icono,
               size: 120,
               color: c.sobreAcento.withValues(alpha: 0.92),
             ),
