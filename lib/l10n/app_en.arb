@@ -933,6 +933,187 @@
   "@vehiculosToqueCopiarVin": {
     "description": "Pista bajo el VIN que indica que se puede copiar."
   },
+  "asistenciaHeroeTextoDisponible": "Tell us what happened and share your location so the agency can find you. While help arrives, these guides tell you what to do.",
+  "@asistenciaHeroeTextoDisponible": {
+    "description": "Texto de la tarjeta principal cuando pedir ayuda ya está disponible."
+  },
+  "asistenciaPedirTitulo": "Ask for help",
+  "@asistenciaPedirTitulo": {
+    "description": "Título de la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirCargando": "Loading",
+  "@asistenciaPedirCargando": {
+    "description": "Etiqueta de lector de pantalla mientras carga la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirVehiculoEncabezado": "Which vehicle needs help?",
+  "@asistenciaPedirVehiculoEncabezado": {
+    "description": "Encabezado de la lista de vehículos."
+  },
+  "asistenciaPedirSeleccionado": "Selected",
+  "@asistenciaPedirSeleccionado": {
+    "description": "Etiqueta de lector de pantalla del vehículo elegido."
+  },
+  "asistenciaPedirTipoEncabezado": "What happened?",
+  "@asistenciaPedirTipoEncabezado": {
+    "description": "Encabezado de los tipos de problema."
+  },
+  "asistenciaTipoLlanta": "Flat tire",
+  "@asistenciaTipoLlanta": {
+    "description": "Tipo de problema: llanta."
+  },
+  "asistenciaTipoBateria": "Battery",
+  "@asistenciaTipoBateria": {
+    "description": "Tipo de problema: batería."
+  },
+  "asistenciaTipoChoque": "Crash",
+  "@asistenciaTipoChoque": {
+    "description": "Tipo de problema: choque."
+  },
+  "asistenciaTipoSinGasolina": "Out of fuel",
+  "@asistenciaTipoSinGasolina": {
+    "description": "Tipo de problema: sin gasolina."
+  },
+  "asistenciaTipoOtro": "Other",
+  "@asistenciaTipoOtro": {
+    "description": "Tipo de problema: otro."
+  },
+  "asistenciaUbicacionEncabezado": "Your location",
+  "@asistenciaUbicacionEncabezado": {
+    "description": "Encabezado de la sección de ubicación."
+  },
+  "asistenciaUbicacionCompartir": "Share my location",
+  "@asistenciaUbicacionCompartir": {
+    "description": "Interruptor para compartir la ubicación."
+  },
+  "asistenciaUbicacionExplicacion": "The agency will know where you are. It is sent once, with the app open, and it is not used again when help ends.",
+  "@asistenciaUbicacionExplicacion": {
+    "description": "Explica cómo se usa la ubicación."
+  },
+  "asistenciaUbicacionObteniendo": "Finding your location…",
+  "@asistenciaUbicacionObteniendo": {
+    "description": "Mientras se lee la ubicación."
+  },
+  "asistenciaUbicacionLista": "Location ready to send",
+  "@asistenciaUbicacionLista": {
+    "description": "Cuando ya se tiene la ubicación."
+  },
+  "asistenciaUbicacionPermisoDenegado": "Location permission was not granted. You can try again or send the request without a location and write where you are.",
+  "@asistenciaUbicacionPermisoDenegado": {
+    "description": "Permiso de ubicación negado."
+  },
+  "asistenciaUbicacionPermisoBloqueado": "Location permission is blocked. Turn it on in Settings or send the request without a location and write where you are.",
+  "@asistenciaUbicacionPermisoBloqueado": {
+    "description": "Permiso de ubicación negado para siempre."
+  },
+  "asistenciaUbicacionServicioApagado": "Location services are off. Turn them on or send the request without a location and write where you are.",
+  "@asistenciaUbicacionServicioApagado": {
+    "description": "Servicio de ubicación apagado."
+  },
+  "asistenciaUbicacionTiempoAgotado": "We could not find you in time. Try again or send the request without a location and write where you are.",
+  "@asistenciaUbicacionTiempoAgotado": {
+    "description": "Se agotó el tiempo para leer la ubicación."
+  },
+  "asistenciaUbicacionReintentar": "Try again",
+  "@asistenciaUbicacionReintentar": {
+    "description": "Reintenta leer la ubicación."
+  },
+  "asistenciaUbicacionSinUbicacion": "Send without location",
+  "@asistenciaUbicacionSinUbicacion": {
+    "description": "Apaga la ubicación y deja enviar sin ella."
+  },
+  "asistenciaComentarioEtiqueta": "Comment (optional)",
+  "@asistenciaComentarioEtiqueta": {
+    "description": "Etiqueta del comentario cuando se comparte la ubicación."
+  },
+  "asistenciaComentarioEtiquetaSinUbicacion": "Where you are and what happened",
+  "@asistenciaComentarioEtiquetaSinUbicacion": {
+    "description": "Etiqueta del comentario cuando no se comparte la ubicación."
+  },
+  "asistenciaComentarioAyuda": "500 characters at most",
+  "@asistenciaComentarioAyuda": {
+    "description": "Ayuda del campo de comentario."
+  },
+  "asistenciaConfirmarTexto": "Slide to ask for help",
+  "@asistenciaConfirmarTexto": {
+    "description": "Texto del control de deslizar para confirmar."
+  },
+  "asistenciaEnviando": "Sending your request…",
+  "@asistenciaEnviando": {
+    "description": "Mientras se envía la solicitud."
+  },
+  "asistenciaErrorSinConexion": "No connection: we could not send your request. If it is urgent, call 911 or your insurer.",
+  "@asistenciaErrorSinConexion": {
+    "description": "Error de red al pedir ayuda."
+  },
+  "asistenciaErrorEnviar": "We could not send your request. Try again.",
+  "@asistenciaErrorEnviar": {
+    "description": "Error genérico al pedir ayuda."
+  },
+  "asistenciaErrorVehiculo": "We could not find that vehicle. Choose another and try again.",
+  "@asistenciaErrorVehiculo": {
+    "description": "El vehículo no existe o no es del cliente."
+  },
+  "asistenciaGarajeVacioTitulo": "You have no vehicles yet",
+  "@asistenciaGarajeVacioTitulo": {
+    "description": "Título cuando el garaje está vacío."
+  },
+  "asistenciaGarajeVacioMensaje": "To ask for help we need to know which vehicle it is. Ask the agency to register yours.",
+  "@asistenciaGarajeVacioMensaje": {
+    "description": "Mensaje cuando el garaje está vacío."
+  },
+  "asistenciaSolicitudFolio": "Reference {id}",
+  "@asistenciaSolicitudFolio": {
+    "description": "Folio de la solicitud.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "asistenciaSolicitudRecibida": "Request received",
+  "@asistenciaSolicitudRecibida": {
+    "description": "Estado de la solicitud recién creada."
+  },
+  "asistenciaSolicitudTexto": "The agency knows you need help. Keep your phone with you and stay somewhere safe.",
+  "@asistenciaSolicitudTexto": {
+    "description": "Mensaje tras enviar la solicitud."
+  },
+  "asistenciaSolicitudYaAbierta": "You already had an open request. It is shown here.",
+  "@asistenciaSolicitudYaAbierta": {
+    "description": "Aviso cuando ya hay una solicitud abierta."
+  },
+  "asistenciaSolicitudVehiculo": "Vehicle",
+  "@asistenciaSolicitudVehiculo": {
+    "description": "Fila de vehículo en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudProblema": "Problem",
+  "@asistenciaSolicitudProblema": {
+    "description": "Fila de problema en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacion": "Location",
+  "@asistenciaSolicitudUbicacion": {
+    "description": "Fila de ubicación en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacionCompartida": "Shared with the agency",
+  "@asistenciaSolicitudUbicacionCompartida": {
+    "description": "La ubicación se envió."
+  },
+  "asistenciaSolicitudUbicacionNoCompartida": "Not shared",
+  "@asistenciaSolicitudUbicacionNoCompartida": {
+    "description": "La ubicación no se envió."
+  },
+  "asistenciaSolicitudComentario": "Comment",
+  "@asistenciaSolicitudComentario": {
+    "description": "Fila de comentario en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudPrivacidad": "Your location is only shared while the request is open.",
+  "@asistenciaSolicitudPrivacidad": {
+    "description": "Recordatorio de privacidad."
+  },
+  "asistenciaSolicitudVerGuias": "See emergency guides",
+  "@asistenciaSolicitudVerGuias": {
+    "description": "Lleva a las guías."
+  },
   "seguridadEquipoComprometidoTitulo": "This device looks modified",
   "@seguridadEquipoComprometidoTitulo": {
     "description": "Title of the notice shown when root or jailbreak is detected. It does not block the app."
