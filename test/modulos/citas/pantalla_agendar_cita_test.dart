@@ -11,6 +11,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -123,6 +124,20 @@ void main() {
     await _tocar(tester, find.text('Confirmar cita'));
     expect(find.text('Cita confirmada'), findsOneWidget);
     expect(find.textContaining('09:00'), findsOneWidget);
+  });
+
+  _prueba('la cita confirmada abre su comprobante con QR', (tester) async {
+    await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    await _irAlResumen(tester);
+    await _tocar(tester, find.text('Confirmar cita'));
+    expect(find.text('Ver comprobante'), findsOneWidget);
+    expect(find.text('Listo'), findsOneWidget);
+
+    await _tocar(tester, find.text('Ver comprobante'));
+    expect(find.byType(PantallaComprobanteCita), findsOneWidget);
+    expect(find.byType(QrImageView), findsOneWidget);
+    expect(find.text('Folio 1'), findsOneWidget);
   });
 
   _prueba('sin cupo al confirmar ofrece franjas cercanas y las cambia', (
