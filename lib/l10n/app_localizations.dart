@@ -962,6 +962,24 @@ abstract class AppLocalizations {
   /// **'VIN copiado'**
   String get vehiculosVinCopiado;
 
+  /// Acceso rápido del ícono: agendar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get widgetsAccesoAgendar;
+
+  /// Acceso rápido del ícono: abrir el garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi auto'**
+  String get widgetsAccesoMiAuto;
+
+  /// Acceso rápido del ícono: pedir ayuda en carretera.
+  ///
+  /// In es, this message translates to:
+  /// **'SOS'**
+  String get widgetsAccesoSos;
+
   /// Botón para cerrar un aviso.
   ///
   /// In es, this message translates to:
