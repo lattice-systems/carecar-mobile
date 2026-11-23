@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import 'pantalla_agendar_cita.dart';
+import 'pantalla_comprobante_cita.dart';
 import 'pantalla_disponibilidad.dart';
 import 'pantalla_mis_citas.dart';
 import 'pantalla_reprogramar_cita.dart';
@@ -18,6 +19,8 @@ const rutaMisCitas = '/citas';
 
 /// Camino para reprogramar una cita: `/citas/7/reprogramar`.
 String rutaReprogramarCita(int id) => '$rutaMisCitas/$id/reprogramar';
+/// Camino del comprobante con QR de la cita `citaId` (V2-M02.11).
+String rutaComprobanteCita(int citaId) => '/citas/$citaId/comprobante';
 
 Widget _conTemaPista(BuildContext context, Widget pantalla) => Theme(
   data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
@@ -59,5 +62,19 @@ final rutasCitas = <RouteBase>[
     name: 'citas-agendar',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaAgendarCita()),
+  ),
+  GoRoute(
+    path: '/citas/:citaId/comprobante',
+    name: 'citas-comprobante',
+    redirect: (context, state) =>
+        int.tryParse(state.pathParameters['citaId'] ?? '') == null
+        ? rutaDisponibilidad
+        : null,
+    builder: (context, state) => _conTemaPista(
+      context,
+      PantallaComprobanteCita(
+        citaId: int.parse(state.pathParameters['citaId']!),
+      ),
+    ),
   ),
 ];
