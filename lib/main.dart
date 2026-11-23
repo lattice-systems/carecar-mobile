@@ -13,6 +13,10 @@ import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
+import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
+import 'nucleo/seguridad/detector_integridad.dart';
+import 'nucleo/seguridad/politica_datos_locales.dart';
+import 'nucleo/seguridad/proveedores_seguridad.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
 import 'notificaciones/plugin_notificaciones_local.dart';
 import 'notificaciones/servicio_notificaciones.dart';
@@ -32,9 +36,14 @@ Future<void> main() async {
   );
   Notificaciones.actual = servicio;
   await servicio.iniciar();
+  // Root o jailbreak (V2-M22.05): se evalua antes de abrir la app para que
+  // ninguna copia local se escriba sin saberlo. Nunca lanza y vence a los 3 s.
+  final politica = PoliticaDatosLocales(
+    await evaluarIntegridad(const DetectorIntegridadDelSistema()),
+  );
   // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
   // alcance anidado no vería los proveedores del enrutador.
-  runApp(AppCareCar(prefs: prefs));
+  runApp(AppCareCar(prefs: prefs, politica: politica));
 }
 
 /// Arma la app y conecta las piezas.
@@ -50,11 +59,16 @@ class AppCareCar extends StatefulWidget {
   const AppCareCar({
     super.key,
     this.prefs,
+    this.politica,
     this.duracionArranque = const Duration(milliseconds: 1200),
   });
 
   /// Tiempo minimo que se ve la cortina de arranque (cero en pruebas).
   final Duration duracionArranque;
+
+  /// Que se puede guardar en el equipo segun su integridad (V2-M22.05). Sin
+  /// ella la app se comporta como en un equipo sin señal de riesgo.
+  final PoliticaDatosLocales? politica;
 
   /// Si viene, las lecturas se guardan para verlas sin conexion.
   final SharedPreferences? prefs;
@@ -104,7 +118,11 @@ class _AppCareCarState extends State<AppCareCar> {
       final prefs = widget.prefs;
       final CarecarApi api = prefs == null
           ? CarecarApiHttp(cliente)
-          : CarecarApiConCache(CarecarApiHttp(cliente), prefs);
+          : CarecarApiConCache(
+              CarecarApiHttp(cliente),
+              prefs,
+              politica: widget.politica,
+            );
       sesion = ControladorSesion(api, almacen);
 
       _cliente = cliente;
@@ -149,6 +167,8 @@ class _AppCareCarState extends State<AppCareCar> {
     return ProviderScope(
       overrides: [
         preferenciasProvider.overrideWithValue(widget.prefs),
+        if (widget.politica != null)
+          politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
@@ -196,10 +216,12 @@ class _AppCareCarState extends State<AppCareCar> {
             builder: (context, child) => InstaladorDeAccesosRapidos(
               child: SincronizadorDelWidgetDeCita(
                 child: ShadAppBuilder(
-                  child: CortinaArranque(
-                    listo: !_restaurando,
-                    duracionMinima: widget.duracionArranque,
-                    siguiente: (_) => child!,
+                  child: AvisoEquipoComprometido(
+                    child: CortinaArranque(
+                      listo: !_restaurando,
+                      duracionMinima: widget.duracionArranque,
+                      siguiente: (_) => child!,
+                    ),
                   ),
                 ),
               ),

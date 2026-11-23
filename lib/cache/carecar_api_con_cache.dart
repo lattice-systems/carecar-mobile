@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
 import '../api/modelos/comun.dart';
 import '../api/modelos/modelos.dart';
+import '../nucleo/seguridad/politica_datos_locales.dart';
 
 /// Decorador de [CarecarApi] que guarda la ultima respuesta buena de las
 /// lecturas y la devuelve cuando no hay conexion.
@@ -14,12 +16,25 @@ import '../api/modelos/modelos.dart';
 /// Los demas metodos delegan sin cambio. La cache se limpia al cerrar sesion
 /// y al iniciar una nueva, para que otro usuario nunca vea datos ajenos.
 class CarecarApiConCache implements CarecarApi {
-  CarecarApiConCache(this._api, this._prefs);
+  /// Con [politica] (V2-M22.05), en un equipo con root o jailbreak no se
+  /// guarda ni se lee ninguna copia, y las que hubiera se borran.
+  CarecarApiConCache(this._api, this._prefs, {PoliticaDatosLocales? politica})
+    : _politica = politica {
+    politica?.addListener(_purgarSiNoSePermite);
+    _purgarSiNoSePermite();
+  }
 
   static const _prefijo = 'cache_carecar_';
 
   final CarecarApi _api;
   final SharedPreferences _prefs;
+  final PoliticaDatosLocales? _politica;
+
+  bool get _permiteCopias => _politica?.permiteCacheLocal ?? true;
+
+  void _purgarSiNoSePermite() {
+    if (!_permiteCopias) unawaited(limpiar());
+  }
 
   /// `true` cuando la ultima lectura salio de la copia guardada.
   final ValueNotifier<bool> sinConexion = ValueNotifier(false);
@@ -33,6 +48,7 @@ class CarecarApiConCache implements CarecarApi {
     try {
       final datos = await pedir();
       sinConexion.value = false;
+      if (!_permiteCopias) return datos;
       try {
         await _prefs.setString('$_prefijo$clave', jsonEncode(aJson(datos)));
       } catch (_) {
@@ -40,6 +56,7 @@ class CarecarApiConCache implements CarecarApi {
       }
       return datos;
     } on SinConexion {
+      if (!_permiteCopias) rethrow;
       final guardado = _prefs.getString('$_prefijo$clave');
       if (guardado == null) rethrow;
       final T datos;

@@ -2041,6 +2041,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Toca para copiar'**
   String get vehiculosToqueCopiarVin;
+
+  /// Título del aviso cuando se detecta root o jailbreak. No bloquea la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Este equipo parece modificado'**
+  String get seguridadEquipoComprometidoTitulo;
+
+  /// Explica que la app sigue funcionando pero no deja copias locales de los datos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.'**
+  String get seguridadEquipoComprometidoMensaje;
 }
 
 class _AppLocalizationsDelegate

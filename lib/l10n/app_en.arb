@@ -857,5 +857,13 @@
   "vehiculosToqueCopiarVin": "Tap to copy",
   "@vehiculosToqueCopiarVin": {
     "description": "Pista bajo el VIN que indica que se puede copiar."
+  },
+  "seguridadEquipoComprometidoTitulo": "This device looks modified",
+  "@seguridadEquipoComprometidoTitulo": {
+    "description": "Title of the notice shown when root or jailbreak is detected. It does not block the app."
+  },
+  "seguridadEquipoComprometidoMensaje": "You can keep using CareCar, but for your safety we do not store your data on this device. Offline, you will not see saved information.",
+  "@seguridadEquipoComprometidoMensaje": {
+    "description": "Explains the app keeps working but leaves no local copies of customer data."
   }
 }

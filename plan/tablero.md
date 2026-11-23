@@ -130,7 +130,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Lista | |
-| V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Lista | |
+| V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | En revisión | #76 |
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Lista | |
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
