@@ -107,7 +107,10 @@ class _Paso extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(Radios.pildora),
               ),
-              child: Text('$numero', style: t.titulo3.copyWith(color: color)),
+              child: Text(
+                numero.toString(),
+                style: t.titulo3.copyWith(color: color),
+              ),
             ),
           ),
           const SizedBox(width: Espaciado.e4),
