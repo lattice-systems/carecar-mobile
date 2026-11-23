@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/widgets/widgets.dart';
 import 'package:carecar_mobile/nucleo/navegacion/proveedores_navegacion.dart';
