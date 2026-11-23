@@ -201,9 +201,8 @@ void main() {
           cita(4, EstadoCita.cancelada),
           cita(5, EstadoCita.desconocido),
         ];
-      final pagina = await RepositorioCitasApi(
-        api,
-      ).misCitas(pagina: 0, tamano: 2);
+      final pagina = await RepositorioCitasApi(api)
+          .misCitas(pagina: 0, tamano: 2);
       expect(pagina.citas.map((c) => c.id), [1, 2]);
       expect(pagina.hayMas, isTrue);
       final todas = await RepositorioCitasApi(api).misCitas(tamano: 10);
@@ -221,7 +220,8 @@ void main() {
     });
 
     test('deja pasar SinConexion', () {
-      final api = ApiFalsa()..alPedirCitas = () async => throw const SinConexion();
+      final api = ApiFalsa()
+        ..alPedirCitas = () async => throw const SinConexion();
       expect(RepositorioCitasApi(api).misCitas(), throwsA(isA<SinConexion>()));
     });
   });
@@ -235,7 +235,8 @@ void main() {
     });
 
     test('un 409 se vuelve CitaNoModificable', () {
-      final api = ApiFalsa()..alCancelar = (_) async => throw const Conflicto('x');
+      final api = ApiFalsa()
+        ..alCancelar = (_) async => throw const Conflicto('x');
       expect(
         RepositorioCitasApi(api).cancelar(4),
         throwsA(isA<CitaNoModificable>()),
@@ -263,9 +264,8 @@ void main() {
           horaFin: '12:00',
           estado: EstadoCita.confirmada,
         );
-      final cita = await RepositorioCitasApi(
-        api,
-      ).reprogramar(citaId: 4, franja: nueva);
+      final cita = await RepositorioCitasApi(api)
+          .reprogramar(citaId: 4, franja: nueva);
       expect(api.citasReprogramadas.single.franjaId, 8);
       expect(api.citasReprogramadas.single.fecha, DateTime(2026, 11, 26));
       expect(cita.horaInicio, '11:00');
@@ -330,12 +330,18 @@ void main() {
       final repo = RepositorioCitasFake(citas: [cita(1)], reloj: () => hoy);
       final cancelada = await repo.cancelar(1);
       expect(cancelada.estado, EstadoDeCita.cancelada);
-      expect((await repo.misCitas()).citas.single.estado, EstadoDeCita.cancelada);
+      expect(
+        (await repo.misCitas()).citas.single.estado,
+        EstadoDeCita.cancelada,
+      );
     });
 
     test('cancelar una cita que no esta confirmada o ya paso falla', () async {
       final repo = RepositorioCitasFake(
-        citas: [cita(1, estado: EstadoDeCita.atendida), cita(2, dia: 20)],
+        citas: [
+          cita(1, estado: EstadoDeCita.atendida),
+          cita(2, dia: 20),
+        ],
         reloj: () => hoy,
       );
       expect(repo.cancelar(1), throwsA(isA<CitaNoModificable>()));
