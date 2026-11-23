@@ -152,6 +152,12 @@
   "@vehiculosDetalleTitulo": {
     "description": "Título de la pantalla de detalle de un vehículo."
   },
+  "vehiculosFichaCargando": "Loading the specifications",
+  "vehiculosFichaNota": "Model and year data. The exact specifications of your unit are in its manual.",
+  "vehiculosFichaRespaldo": "Showing the specifications saved in the app",
+  "vehiculosFichaTitulo": "Specifications",
+  "vehiculosFichaVacioMensaje": "We do not have the specifications for this model and year yet. The dealership will publish them soon.",
+  "vehiculosFichaVacioTitulo": "No specifications",
   "vehiculosKilometraje": "Mileage",
   "@vehiculosKilometraje": {
     "description": "Etiqueta del kilometraje del vehículo."
@@ -175,6 +181,15 @@
   "@vehiculosKmSinDato": {
     "description": "Se muestra si el vehículo no tiene kilometraje."
   },
+  "vehiculosManualCargando": "Loading the manual",
+  "vehiculosManualCompartir": "Share manual",
+  "vehiculosManualDescargar": "Download manual",
+  "vehiculosManualDescripcion": "Manual of {vehiculo}",
+  "vehiculosManualGuardado": "Manual saved",
+  "vehiculosManualGuardadoError": "We could not save the manual. Please try again.",
+  "vehiculosManualTitulo": "Manual",
+  "vehiculosManualVacioMensaje": "We do not have the manual for this model and year yet. The dealership will publish it soon.",
+  "vehiculosManualVacioTitulo": "Manual not available",
   "vehiculosNoEncontradoMensaje": "That vehicle is no longer in your garage. Go back to your garage to pick another.",
   "@vehiculosNoEncontradoMensaje": {
     "description": "Mensaje cuando el vehículo pedido no existe en el garaje."
