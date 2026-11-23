@@ -94,7 +94,7 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
             : Column(
                 children: [
                   Flexible(
-                    flex: 2,
+                    flex: 3,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -136,7 +136,7 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
                       ),
                     ),
                   ),
-                  Expanded(flex: 3, child: _visor(m, textos)),
+                  Expanded(flex: 4, child: _visor(m, textos)),
                 ],
               ),
       ),
