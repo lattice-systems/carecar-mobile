@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
+import '../dominio/comparativa.dart';
 import 'pantalla_catalogo.dart';
+import 'pantalla_comparador.dart';
 import 'pantalla_detalle_modelo.dart';
 
 /// Camino del catalogo de modelos.
@@ -20,6 +22,13 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
   child: hijo,
 );
 
+/// Camino de la comparativa: `/catalogo/comparar?ids=1,2,3`.
+const rutaComparador = '$rutaCatalogo/comparar';
+
+/// Camino de la comparativa de varios modelos.
+String rutaComparadorDe(List<int> ids) =>
+    '$rutaComparador?ids=${ids.join(',')}';
+
 /// Rutas que el modulo `catalogo` entrega al enrutador.
 final rutasCatalogo = <RouteBase>[
   GoRoute(
@@ -28,6 +37,17 @@ final rutasCatalogo = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCatalogo()),
     routes: [
+      // Va antes de ':id' para que "comparar" no se lea como un id.
+      GoRoute(
+        path: 'comparar',
+        name: 'comparar-modelos',
+        builder: (context, state) => _conTemaPista(
+          context,
+          PantallaComparador(
+            ids: idsDeComparativa(state.uri.queryParameters['ids']),
+          ),
+        ),
+      ),
       GoRoute(
         path: ':id',
         name: 'detalle-modelo',

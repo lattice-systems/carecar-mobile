@@ -28,3 +28,17 @@ final detalleModeloProvider = FutureProvider.family<DetalleModelo, int>(
   retry: (_, _) => null,
   name: 'detalleModeloProvider',
 );
+
+/// Los detalles de los modelos a comparar, en el orden pedido. La clave son los
+/// ids separados por comas (`'1,2,3'`), porque una lista no se compara por valor.
+/// Si un modelo ya no existe falla con `NoEncontrado`.
+final comparativaProvider = FutureProvider.family<List<DetalleModelo>, String>(
+  (ref, ids) {
+    final repositorio = ref.watch(repositorioCatalogoProvider);
+    return Future.wait([
+      for (final id in ids.split(',')) repositorio.detalle(int.parse(id)),
+    ]);
+  },
+  retry: (_, _) => null,
+  name: 'comparativaProvider',
+);

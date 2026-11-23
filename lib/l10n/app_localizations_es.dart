@@ -512,4 +512,54 @@ class AppLocalizationsEs extends AppLocalizations {
   String catalogoFotoDeColor(String modelo, String color, int numero) {
     return '$modelo, color $color, foto $numero';
   }
+
+  @override
+  String get catalogoComparar => 'Comparar modelos';
+
+  @override
+  String get catalogoSalirDeComparar => 'Salir de comparar';
+
+  @override
+  String catalogoCompararElegidos(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: 'Comparar $cantidad modelos',
+      one: 'Elige otro modelo',
+      zero: 'Elige de 2 a 3 modelos',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String catalogoCompararModelo(String modelo) {
+    return 'Comparar $modelo';
+  }
+
+  @override
+  String get catalogoComparadorTitulo => 'Comparar modelos';
+
+  @override
+  String get catalogoComparadorCargando => 'Cargando la comparativa';
+
+  @override
+  String get catalogoComparadorIdsMalosTitulo => 'Elige de dos a tres modelos';
+
+  @override
+  String get catalogoComparadorIdsMalosMensaje =>
+      'Vuelve al catálogo, activa comparar y marca los modelos que quieras ver lado a lado.';
+
+  @override
+  String get catalogoComparadorPrecio => 'Precio desde';
+
+  @override
+  String get catalogoComparadorSinDato => 'Sin dato';
+
+  @override
+  String get catalogoComparadorMasBajo => 'Precio más bajo';
+
+  @override
+  String catalogoComparadorCelda(String dato, String modelo, String valor) {
+    return '$dato, $modelo: $valor';
+  }
 }

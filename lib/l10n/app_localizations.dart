@@ -895,6 +895,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{modelo}, color {color}, foto {numero}'**
   String catalogoFotoDeColor(String modelo, String color, int numero);
+
+  /// Botón de la barra del catálogo que activa el modo comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar modelos'**
+  String get catalogoComparar;
+
+  /// Botón de la barra del catálogo que sale del modo comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'Salir de comparar'**
+  String get catalogoSalirDeComparar;
+
+  /// Texto del botón de abajo del catálogo en modo comparar, según cuántos modelos hay elegidos.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =0{Elige de 2 a 3 modelos} =1{Elige otro modelo} other{Comparar {cantidad} modelos}}'**
+  String catalogoCompararElegidos(int cantidad);
+
+  /// Etiqueta de la casilla que elige un modelo para comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar {modelo}'**
+  String catalogoCompararModelo(String modelo);
+
+  /// Título de la pantalla de comparativa.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar modelos'**
+  String get catalogoComparadorTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la comparativa.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la comparativa'**
+  String get catalogoComparadorCargando;
+
+  /// Título cuando la comparativa no trae entre dos y tres modelos válidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige de dos a tres modelos'**
+  String get catalogoComparadorIdsMalosTitulo;
+
+  /// Explicación cuando la comparativa no trae entre dos y tres modelos válidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve al catálogo, activa comparar y marca los modelos que quieras ver lado a lado.'**
+  String get catalogoComparadorIdsMalosMensaje;
+
+  /// Etiqueta de la fila de precio en la comparativa.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio desde'**
+  String get catalogoComparadorPrecio;
+
+  /// Valor de una celda cuando el modelo no tiene ese dato.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin dato'**
+  String get catalogoComparadorSinDato;
+
+  /// Marca el modelo con el menor precio en la comparativa.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio más bajo'**
+  String get catalogoComparadorMasBajo;
+
+  /// Lo que lee el lector de pantalla en una celda de la comparativa.
+  ///
+  /// In es, this message translates to:
+  /// **'{dato}, {modelo}: {valor}'**
+  String catalogoComparadorCelda(String dato, String modelo, String valor);
 }
 
 class _AppLocalizationsDelegate
