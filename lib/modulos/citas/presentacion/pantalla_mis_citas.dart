@@ -6,6 +6,7 @@ import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/dialogo.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -16,6 +17,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/cita_cliente.dart';
+import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
 import 'proveedores_citas.dart';
 import 'rutas_citas.dart';
@@ -36,6 +38,9 @@ class PantallaMisCitas extends ConsumerStatefulWidget {
 class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
   /// Aviso del resultado de la última acción sobre una cita.
   Widget? _aviso;
+
+  /// Cita que se está cancelando, para no mandar dos veces la misma petición.
+  int? _cancelandoId;
 
   @override
   Widget build(BuildContext context) {
@@ -130,10 +135,10 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
           ?_aviso,
           encabezado(textos.citasProximas),
           if (proximas.isEmpty) vacio(textos.citasProximasVacio),
-          for (final c in proximas) _fila(context, c, vehiculos),
+          for (final c in proximas) _fila(context, c, vehiculos, ahora),
           encabezado(textos.citasPasadas),
           if (pasadas.isEmpty) vacio(textos.citasPasadasVacio),
-          for (final c in pasadas) _fila(context, c, vehiculos),
+          for (final c in pasadas) _fila(context, c, vehiculos, ahora),
           if (estado.errorAlCargarMas)
             Padding(
               padding: const EdgeInsets.all(Espaciado.e4),
@@ -161,14 +166,17 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     BuildContext context,
     CitaCliente cita,
     Map<int, String> vehiculos,
+    DateTime ahora,
   ) {
     final textos = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
     final vehiculo =
         cita.vehiculoNombre ??
         vehiculos[cita.vehiculoId] ??
         textos.citasFilaVehiculoGenerico;
     final motivo = cita.motivo;
-    return FilaLista(
+    final modificable = cita.sePuedeModificar(ahora);
+    final fila = FilaLista(
       titulo: textos.citasFilaTitulo(cita.fecha, cita.horaInicio),
       subtitulo: motivo == null
           ? vehiculo
@@ -179,7 +187,88 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
         conIcono: true,
       ),
       conChevron: false,
+      conDivisor: !modificable,
     );
+    if (!modificable) return fila;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        fila,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(
+            Espaciado.e4,
+            0,
+            Espaciado.e4,
+            Espaciado.e2,
+          ),
+          child: Wrap(
+            alignment: WrapAlignment.end,
+            spacing: Espaciado.e2,
+            children: [
+              Boton(
+                texto: textos.citasCancelar,
+                variante: VarianteBoton.terciario,
+                tamano: TamanoBoton.chico,
+                cargando: _cancelandoId == cita.id,
+                alPresionar: _cancelandoId == null
+                    ? () => _cancelar(cita)
+                    : null,
+              ),
+            ],
+          ),
+        ),
+        Divider(height: 1, thickness: 1, color: tokens.colores.borde),
+      ],
+    );
+  }
+
+  Future<void> _cancelar(CitaCliente cita) async {
+    final textos = AppLocalizations.of(context);
+    final confirmada = await mostrarDialogo<bool>(
+      context,
+      cerrarAlTocarFuera: false,
+      builder: (dialogo) => Dialogo(
+        titulo: textos.citasCancelarDialogoTitulo,
+        mensaje: textos.citasCancelarDialogoMensaje(
+          cita.fecha,
+          cita.horaInicio,
+        ),
+        textoPrincipal: textos.citasCancelarConfirmar,
+        alPrincipal: () => Navigator.of(dialogo).pop(true),
+        textoSecundario: textos.citasCancelarMantener,
+        alSecundario: () => Navigator.of(dialogo).pop(false),
+        peligro: true,
+      ),
+    );
+    if (confirmada != true || !mounted) return;
+
+    setState(() {
+      _cancelandoId = cita.id;
+      _aviso = null;
+    });
+    try {
+      final cancelada = await ref
+          .read(repositorioCitasProvider)
+          .cancelar(cita.id);
+      // El cupo de la franja se libero: la disponibilidad ya no es la misma.
+      ref.invalidate(disponibilidadProvider);
+      if (!mounted) return;
+      ref.read(misCitasProvider.notifier).reemplazar(cancelada);
+      _mostrarAviso(textos.citasCancelada, Tono.exito);
+    } on CitaNoModificable {
+      // Alguien la cambio por otro lado: se vuelve a pedir la lista real.
+      ref.invalidate(misCitasProvider);
+      _mostrarAviso(textos.citasCancelarNoDisponible, Tono.advertencia);
+    } on Object {
+      _mostrarAviso(textos.citasCancelarError, Tono.peligro);
+    } finally {
+      if (mounted) setState(() => _cancelandoId = null);
+    }
+  }
+
+  void _mostrarAviso(String mensaje, Tono tono) {
+    if (!mounted) return;
+    setState(() => _aviso = Aviso(mensaje: mensaje, tono: tono));
   }
 
   static String _textoEstado(AppLocalizations textos, EstadoDeCita e) =>
