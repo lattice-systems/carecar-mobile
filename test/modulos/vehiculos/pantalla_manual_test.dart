@@ -96,7 +96,7 @@ void main() {
     expect(servicio.pedido!.id, 1);
     expect(find.text('Manual'), findsOneWidget);
     expect(find.text('PDF de 3 bytes'), findsOneWidget);
-    expect(find.text('Pagina 1 de 5'), findsOneWidget);
+    expect(find.text('Página 1 de 5'), findsOneWidget);
   });
 
   testWidgets('descargar guarda el PDF con el nombre del manual', (
