@@ -249,6 +249,33 @@ class ClienteApi {
     _verificarEstado(respuesta);
   }
 
+  /// PUT que devuelve un objeto (editar un recurso propio).
+  Future<T> actualizar<T>(
+    String camino, {
+    required Object? cuerpo,
+    required T Function(Map<String, Object?>) leer,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.put(
+        config.ruta(camino),
+        headers: await _encabezados(conCuerpo: cuerpo != null),
+        body: cuerpo == null ? null : jsonEncode(cuerpo),
+      ),
+      conToken: true,
+    );
+    return _leerObjeto(respuesta, leer);
+  }
+
+  /// DELETE de los endpoints que contestan 204 sin cuerpo.
+  Future<void> eliminar(String camino) async {
+    final respuesta = await _pedir(
+      () async =>
+          _http.delete(config.ruta(camino), headers: await _encabezados()),
+      conToken: true,
+    );
+    _verificarEstado(respuesta);
+  }
+
   /// GET de un archivo binario, como el ticket en PDF o el pase de Wallet.
   Future<Uint8List> descargar(
     String camino, {
