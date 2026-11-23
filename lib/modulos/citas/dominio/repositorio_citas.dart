@@ -1,4 +1,5 @@
 import 'cita_agendada.dart';
+import 'cita_cliente.dart';
 import 'disponibilidad_taller.dart';
 import 'motivo_cita.dart';
 
@@ -18,5 +19,23 @@ abstract interface class RepositorioCitas {
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+  });
+
+  /// Una página de las citas del cliente, de la más reciente a la más antigua
+  /// según el orden del servidor. `pagina` empieza en 0.
+  Future<PaginaDeCitas> misCitas({int pagina = 0, int tamano = 20});
+
+  /// Cancela una cita confirmada futura y libera su cupo.
+  ///
+  /// Lanza `CitaNoModificable` si ya no está confirmada o pasó el plazo.
+  Future<CitaCliente> cancelar(int citaId);
+
+  /// Cambia la cita a `franja` y libera la anterior en la misma operación.
+  ///
+  /// Lanza `FranjaSinCupo` si la franja nueva se llenó y `CitaNoModificable`
+  /// si la cita ya no se puede cambiar.
+  Future<CitaCliente> reprogramar({
+    required int citaId,
+    required FranjaDisponible franja,
   });
 }
