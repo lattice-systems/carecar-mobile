@@ -36,7 +36,10 @@ void main() {
   group('Cita.recoleccion', () {
     test('es nula cuando el servidor no la manda o manda null', () {
       expect(Cita.fromJson(_cita).recoleccion, isNull);
-      expect(Cita.fromJson({..._cita, 'recoleccion': null}).recoleccion, isNull);
+      expect(
+        Cita.fromJson({..._cita, 'recoleccion': null}).recoleccion,
+        isNull,
+      );
     });
 
     test('lee los traslados de recoger y entregar', () {
