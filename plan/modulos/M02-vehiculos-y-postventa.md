@@ -175,3 +175,19 @@ Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId
 - **Pruebas:** `pantalla_comprobante_cita_test.dart`, `ruta_comprobante_cita_test.dart`, `pantalla_agendar_cita_test.dart` (acceso), `repositorio_citas_test.dart`, `test/api/modelos_test.dart` y `carecar_api_http_test.dart`.
 - **Pendiente del backend (`agencia-360-backend`):** (1) definir y publicar `GET /citas/{id}/comprobante` en el contrato v2; (2) firmar el id (HMAC o JWT corto) con una llave fuera del repo (R8) y validar la firma cuando recepción escanee; (3) imprimir el mismo código como QR en el PDF de `GET /citas/{id}/ticket`; (4) que una cita cancelada devuelva un comprobante vencido o 409, para que el QR no sirva (hoy el mock no lo hace). Mientras tanto la app funciona contra el mock.
 - **Pendientes de app:** el botón «Agregar a Wallet» entra con V2-M25.03; golden de la pantalla espera a V2-T03.02; abrir el comprobante desde la lista de citas (V2-M02.09) cuando exista; `plan/cumplimiento-ficha.md` (fila «Comprobante de cita con código QR») y `plan/tablero.md` los actualiza quien integra, y la fila solo pasa a ✅ cuando el backend firme el QR.
+
+## Avance de V2-M02.03
+
+Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
+
+- **Por modelo y año:** `manualProvider(id)` toma el vehículo del garaje y pide el manual con `ManualesDeLaAgencia` (código v1): primero `GET /vehiculos/{id}/manuales` (que el backend filtra por modelo y año) y, si no hay o falla la red, el PDF empaquetado en `assets/Manuales/<marca>/<tipo>/<año>/` (respaldo local). Sin manual en ninguna parte: estado vacío que lo explica.
+- **Visor:** `VisorPdf` del sistema v2 con zoom de pellizco y contador «Página N de M». La pantalla le entrega los bytes ya descargados, así el respaldo local y el de la agencia se ven igual.
+- **Descargar:** `guardarPdf` (selector del sistema, sin permisos); avisa «Manual guardado» o el error, y un cancelado no avisa nada.
+- **Compartir:** paquete nuevo `share_plus` (commits `build(deps)` aparte); abre la hoja del sistema con el PDF en memoria y nombre «Manual <modelo> <año>.pdf».
+- **Estados:** esqueleto, datos, vacío, error con reintento y sin conexión.
+- **Textos:** claves `vehiculosManual*` en los ARB es y en.
+- **Pruebas:** `test/modulos/vehiculos/pantalla_manual_test.dart` (visor falso porque el motor nativo de PDF no corre en pruebas; claro, oscuro, letra al 200 % e inglés) y las rutas en `ruta_garaje_test.dart`.
+- **Pendientes (criterios no cumplidos):**
+  - **Búsqueda dentro del PDF e índice:** `pdfx` no extrae texto ni ofrece marcadores, así que no se resolvió. Hay que decidir paquete (p. ej. `pdfrx`, que sí busca texto y lee el índice, o la extracción de `syncfusion_flutter_pdf`, con su licencia) y reemplazar el motor de `VisorPdf`, que es de `lib/nucleo/diseno` (Cristian). Hasta entonces la historia no debe pasar a `Hecha`.
+  - El respaldo solo cubre los manuales empaquetados (Nissan Kicks 2023, March 2020, Versa 2024); un manual bajado de la agencia no queda guardado para verlo sin red después.
+  - Probado en pruebas de widget; falta probar descarga, compartir y el visor real en un teléfono.
