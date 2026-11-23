@@ -1179,4 +1179,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get citasWalletErrorNoDisponible =>
       'The Wallet pass is not available right now. Show the QR code at reception.';
+
+  @override
+  String get vehiculosAgendarServicio => 'Book a service';
+
+  @override
+  String get vehiculosBotonManual => 'Manual';
+
+  @override
+  String get vehiculosBotonDescargar => 'Download';
+
+  @override
+  String get vehiculosBotonCompartir => 'Share';
+
+  @override
+  String get vehiculosVerDetalle => 'View details';
+
+  @override
+  String get vehiculosEncabezadoDatos => 'Details';
+
+  @override
+  String get vehiculosEncabezadoTuAuto => 'Your car';
+
+  @override
+  String get vehiculosEncabezadoRapidos => 'Quick facts';
+
+  @override
+  String get vehiculosToqueCopiarVin => 'Tap to copy';
 }
