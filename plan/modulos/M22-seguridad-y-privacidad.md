@@ -36,7 +36,7 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 
 ## Notas de implementación
 
-### V2-M22.05 · Equipos comprometidos (en revisión)
+### V2-M22.05 · Equipos comprometidos (en revisión, PR #76)
 
 - **Detección**: interfaz `DetectorIntegridad` en `lib/nucleo/seguridad/`; implementación real `DetectorIntegridadDelSistema` sobre [`safe_device`](https://pub.dev/packages/safe_device) y `DetectorIntegridadFalso` para pruebas. Los módulos nunca importan el paquete.
 - **Por qué `safe_device`**: licencia MIT, publicador verificado, mantenido (1.4.1, 2026), Android e iOS, API de una llamada (`isJailBroken`). Descartados: `jailbreak_root_detection` (pub.dev no declara licencia), `flutter_jailbreak_detection` (sin publicar desde 2023) y `freerasp` (RASP completo con SDK nativo propio, desproporcionado para un aviso). Es una señal, no una garantía: un equipo comprometido puede ocultarlo.
