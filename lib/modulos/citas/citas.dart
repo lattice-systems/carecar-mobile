@@ -26,10 +26,8 @@ export 'presentacion/proveedores_citas.dart'
 export 'presentacion/rutas_citas.dart'
     show
         rutaAgendarCita,
+        rutaComprobanteCita,
         rutaDisponibilidad,
         rutaMisCitas,
         rutaReprogramarCita,
-        rutaComprobanteCita,
-        rutaDisponibilidad,
         rutasCitas;
-    show rutaAgendarCita, rutaComprobanteCita, rutaDisponibilidad, rutasCitas;
