@@ -41,7 +41,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Catálogo de modelos actuales | `modelo_catalogo`, `modelo_catalogo_imagen` | 🟡 | V2-M03.01, V2-M03.02 |
+| Catálogo de modelos actuales | `modelo_catalogo`, `modelo_catalogo_imagen` | 🟡 app lista contra `mock_api`, falta construir las tablas en el backend | V2-M03.01, V2-M03.02 |
 | Comparador de modelos | `modelo_catalogo` | ⬜ | V2-M03.03 |
 | Calculadora de toma a cuenta (estimación no vinculante) | `modelo_catalogo`, `vehiculo_cliente`, `parametro_toma_cuenta`, `estimacion_toma_cuenta` | ❌ no existe | V2-M03.04 a V2-M03.07 |
 

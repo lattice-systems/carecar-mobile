@@ -475,4 +475,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idiomaIngles => 'English';
+
+  @override
+  String get catalogoDetalleTitulo => 'Model details';
+
+  @override
+  String get catalogoDetalleCargando => 'Loading the model';
+
+  @override
+  String get catalogoNoEncontradoTitulo => 'We could not find the model';
+
+  @override
+  String get catalogoNoEncontradoMensaje =>
+      'The dealership may no longer offer it. Go back to the catalog to see the current models.';
+
+  @override
+  String get catalogoGaleria => 'Gallery';
+
+  @override
+  String get catalogoVersiones => 'Trims';
+
+  @override
+  String get catalogoVersionActual => 'The one you are viewing';
+
+  @override
+  String get catalogoFicha => 'Specifications';
+
+  @override
+  String get catalogoSinPrecio => 'Price to be confirmed';
+
+  @override
+  String catalogoFotoDe(String modelo, int numero) {
+    return '$modelo, photo $numero';
+  }
+
+  @override
+  String catalogoFotoDeColor(String modelo, String color, int numero) {
+    return '$modelo, $color, photo $numero';
+  }
 }

@@ -465,5 +465,68 @@
   "idiomaIngles": "English",
   "@idiomaIngles": {
     "description": "Nombre del idioma inglés, escrito en inglés."
+  },
+  "catalogoDetalleTitulo": "Model details",
+  "@catalogoDetalleTitulo": {
+    "description": "Título de la pantalla de detalle de un modelo."
+  },
+  "catalogoDetalleCargando": "Loading the model",
+  "@catalogoDetalleCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga el detalle."
+  },
+  "catalogoNoEncontradoTitulo": "We could not find the model",
+  "@catalogoNoEncontradoTitulo": {
+    "description": "Título cuando el modelo ya no está en el catálogo."
+  },
+  "catalogoNoEncontradoMensaje": "The dealership may no longer offer it. Go back to the catalog to see the current models.",
+  "@catalogoNoEncontradoMensaje": {
+    "description": "Explicación cuando el modelo ya no está en el catálogo."
+  },
+  "catalogoGaleria": "Gallery",
+  "@catalogoGaleria": {
+    "description": "Encabezado de la galería de fotos del modelo."
+  },
+  "catalogoVersiones": "Trims",
+  "@catalogoVersiones": {
+    "description": "Encabezado de las versiones del modelo."
+  },
+  "catalogoVersionActual": "The one you are viewing",
+  "@catalogoVersionActual": {
+    "description": "Marca la versión que se muestra en el detalle."
+  },
+  "catalogoFicha": "Specifications",
+  "@catalogoFicha": {
+    "description": "Encabezado de la ficha resumida del modelo."
+  },
+  "catalogoSinPrecio": "Price to be confirmed",
+  "@catalogoSinPrecio": {
+    "description": "Versión sin precio de lista."
+  },
+  "catalogoFotoDe": "{modelo}, photo {numero}",
+  "@catalogoFotoDe": {
+    "description": "Descripción de una foto de la galería que no trae texto propio.",
+    "placeholders": {
+      "modelo": {
+        "type": "String"
+      },
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "catalogoFotoDeColor": "{modelo}, {color}, photo {numero}",
+  "@catalogoFotoDeColor": {
+    "description": "Descripción de una foto de la galería con su color.",
+    "placeholders": {
+      "modelo": {
+        "type": "String"
+      },
+      "color": {
+        "type": "String"
+      },
+      "numero": {
+        "type": "int"
+      }
+    }
   }
 }

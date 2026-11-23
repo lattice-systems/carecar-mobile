@@ -829,6 +829,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'English'**
   String get idiomaIngles;
+
+  /// Título de la pantalla de detalle de un modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalle del modelo'**
+  String get catalogoDetalleTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras carga el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el modelo'**
+  String get catalogoDetalleCargando;
+
+  /// Título cuando el modelo ya no está en el catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos el modelo'**
+  String get catalogoNoEncontradoTitulo;
+
+  /// Explicación cuando el modelo ya no está en el catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Es posible que la agencia ya no lo ofrezca. Vuelve al catálogo para ver los modelos actuales.'**
+  String get catalogoNoEncontradoMensaje;
+
+  /// Encabezado de la galería de fotos del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Galería'**
+  String get catalogoGaleria;
+
+  /// Encabezado de las versiones del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Versiones'**
+  String get catalogoVersiones;
+
+  /// Marca la versión que se muestra en el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'La que estás viendo'**
+  String get catalogoVersionActual;
+
+  /// Encabezado de la ficha resumida del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha técnica'**
+  String get catalogoFicha;
+
+  /// Versión sin precio de lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio por confirmar'**
+  String get catalogoSinPrecio;
+
+  /// Descripción de una foto de la galería que no trae texto propio.
+  ///
+  /// In es, this message translates to:
+  /// **'{modelo}, foto {numero}'**
+  String catalogoFotoDe(String modelo, int numero);
+
+  /// Descripción de una foto de la galería con su color.
+  ///
+  /// In es, this message translates to:
+  /// **'{modelo}, color {color}, foto {numero}'**
+  String catalogoFotoDeColor(String modelo, String color, int numero);
 }
 
 class _AppLocalizationsDelegate

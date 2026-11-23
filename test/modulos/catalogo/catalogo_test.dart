@@ -17,6 +17,9 @@ class _Repo implements RepositorioCatalogo {
   final Future<List<ModeloVigente>> Function() alPedir;
   @override
   Future<List<ModeloVigente>> modelos() => alPedir();
+
+  @override
+  Future<DetalleModelo> detalle(int id) => throw UnimplementedError();
 }
 
 class _ApiConCatalogo implements CarecarApi {

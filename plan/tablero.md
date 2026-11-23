@@ -106,7 +106,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Lista | |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Lista | |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Hecha | #45 |
-| V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Lista | |
+| V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | En revisión | PR_M0302, backend#68 |
 | V2-M03.03 | Comparar dos o tres modelos lado a lado | Cristian |  | V2-M03.02 | Lista | |
 | V2-M03.04 | Calcular cuánto me darían por mi auto a cuenta de uno nuevo | Cristian | B | V2-M03.01 | Lista | |
 | V2-M03.05 | Ver la diferencia a pagar contra el modelo que me gustó | Cristian |  | V2-M03.04 | Lista | |
@@ -116,7 +116,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
-| V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | En revisión | #61 |
+| V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Hecha | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
 | V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | |
