@@ -866,6 +866,42 @@ abstract class AppLocalizations {
   /// **'Detalle del vehículo'**
   String get vehiculosDetalleTitulo;
 
+  /// Mensaje que lee el lector de pantalla mientras carga la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la ficha técnica'**
+  String get vehiculosFichaCargando;
+
+  /// Aviso al pie de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos del modelo y año. La ficha exacta de tu unidad está en su manual.'**
+  String get vehiculosFichaNota;
+
+  /// Aviso cuando la ficha sale del respaldo local y no de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrando la ficha guardada en la app'**
+  String get vehiculosFichaRespaldo;
+
+  /// Título de la pantalla de ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Ficha técnica'**
+  String get vehiculosFichaTitulo;
+
+  /// Mensaje del estado vacío de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos las especificaciones de este modelo y año. La agencia las publicará pronto.'**
+  String get vehiculosFichaVacioMensaje;
+
+  /// Título del estado vacío de la ficha técnica.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin ficha técnica'**
+  String get vehiculosFichaVacioTitulo;
+
   /// Etiqueta del kilometraje del vehículo.
   ///
   /// In es, this message translates to:
@@ -895,6 +931,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin kilometraje registrado'**
   String get vehiculosKmSinDato;
+
+  /// Mensaje que lee el lector de pantalla mientras carga el manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el manual'**
+  String get vehiculosManualCargando;
+
+  /// Botón para compartir el PDF del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir manual'**
+  String get vehiculosManualCompartir;
+
+  /// Botón para guardar el PDF del manual en el teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar manual'**
+  String get vehiculosManualDescargar;
+
+  /// Nombre del documento para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual de {vehiculo}'**
+  String vehiculosManualDescripcion(String vehiculo);
+
+  /// Aviso cuando el manual se guardó.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual guardado'**
+  String get vehiculosManualGuardado;
+
+  /// Aviso cuando falla guardar el manual.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el manual. Inténtalo de nuevo.'**
+  String get vehiculosManualGuardadoError;
+
+  /// Título de la pantalla del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual'**
+  String get vehiculosManualTitulo;
+
+  /// Mensaje del estado vacío del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos el manual de este modelo y año. La agencia lo publicará pronto.'**
+  String get vehiculosManualVacioMensaje;
+
+  /// Título del estado vacío del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual no disponible'**
+  String get vehiculosManualVacioTitulo;
 
   /// Mensaje cuando el vehículo pedido no existe en el garaje.
   ///
