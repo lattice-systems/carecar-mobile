@@ -2246,6 +2246,270 @@ abstract class AppLocalizations {
   /// **'Toca para copiar'**
   String get vehiculosToqueCopiarVin;
 
+  /// Texto de la tarjeta principal cuando pedir ayuda ya está disponible.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuéntanos qué pasó y comparte tu ubicación para que la agencia te encuentre. Mientras llega la ayuda, estas guías te dicen qué hacer.'**
+  String get asistenciaHeroeTextoDisponible;
+
+  /// Título de la pantalla de pedir ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda'**
+  String get asistenciaPedirTitulo;
+
+  /// Etiqueta de lector de pantalla mientras carga la pantalla de pedir ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando'**
+  String get asistenciaPedirCargando;
+
+  /// Encabezado de la lista de vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué vehículo necesita ayuda?'**
+  String get asistenciaPedirVehiculoEncabezado;
+
+  /// Etiqueta de lector de pantalla del vehículo elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionado'**
+  String get asistenciaPedirSeleccionado;
+
+  /// Encabezado de los tipos de problema.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué pasó?'**
+  String get asistenciaPedirTipoEncabezado;
+
+  /// Tipo de problema: llanta.
+  ///
+  /// In es, this message translates to:
+  /// **'Llanta'**
+  String get asistenciaTipoLlanta;
+
+  /// Tipo de problema: batería.
+  ///
+  /// In es, this message translates to:
+  /// **'Batería'**
+  String get asistenciaTipoBateria;
+
+  /// Tipo de problema: choque.
+  ///
+  /// In es, this message translates to:
+  /// **'Choque'**
+  String get asistenciaTipoChoque;
+
+  /// Tipo de problema: sin gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin gasolina'**
+  String get asistenciaTipoSinGasolina;
+
+  /// Tipo de problema: otro.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get asistenciaTipoOtro;
+
+  /// Encabezado de la sección de ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación'**
+  String get asistenciaUbicacionEncabezado;
+
+  /// Interruptor para compartir la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir mi ubicación'**
+  String get asistenciaUbicacionCompartir;
+
+  /// Explica cómo se usa la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia sabrá dónde estás. Se envía una sola vez, con la app abierta, y no se vuelve a usar cuando la ayuda termina.'**
+  String get asistenciaUbicacionExplicacion;
+
+  /// Mientras se lee la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando tu ubicación…'**
+  String get asistenciaUbicacionObteniendo;
+
+  /// Cuando ya se tiene la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación lista para enviar'**
+  String get asistenciaUbicacionLista;
+
+  /// Permiso de ubicación negado.
+  ///
+  /// In es, this message translates to:
+  /// **'No diste permiso de ubicación. Puedes intentarlo otra vez o enviar la solicitud sin ubicación y escribir dónde estás.'**
+  String get asistenciaUbicacionPermisoDenegado;
+
+  /// Permiso de ubicación negado para siempre.
+  ///
+  /// In es, this message translates to:
+  /// **'El permiso de ubicación está bloqueado. Actívalo en Ajustes o envía la solicitud sin ubicación y escribe dónde estás.'**
+  String get asistenciaUbicacionPermisoBloqueado;
+
+  /// Servicio de ubicación apagado.
+  ///
+  /// In es, this message translates to:
+  /// **'La ubicación del teléfono está apagada. Enciéndela o envía la solicitud sin ubicación y escribe dónde estás.'**
+  String get asistenciaUbicacionServicioApagado;
+
+  /// Se agotó el tiempo para leer la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos encontrarte a tiempo. Intenta otra vez o envía la solicitud sin ubicación y escribe dónde estás.'**
+  String get asistenciaUbicacionTiempoAgotado;
+
+  /// Reintenta leer la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentar de nuevo'**
+  String get asistenciaUbicacionReintentar;
+
+  /// Apaga la ubicación y deja enviar sin ella.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar sin ubicación'**
+  String get asistenciaUbicacionSinUbicacion;
+
+  /// Etiqueta del comentario cuando se comparte la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Comentario (opcional)'**
+  String get asistenciaComentarioEtiqueta;
+
+  /// Etiqueta del comentario cuando no se comparte la ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde estás y qué pasó'**
+  String get asistenciaComentarioEtiquetaSinUbicacion;
+
+  /// Ayuda del campo de comentario.
+  ///
+  /// In es, this message translates to:
+  /// **'Máximo 500 caracteres'**
+  String get asistenciaComentarioAyuda;
+
+  /// Texto del control de deslizar para confirmar.
+  ///
+  /// In es, this message translates to:
+  /// **'Desliza para pedir ayuda'**
+  String get asistenciaConfirmarTexto;
+
+  /// Mientras se envía la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando tu solicitud…'**
+  String get asistenciaEnviando;
+
+  /// Error de red al pedir ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión: no pudimos enviar tu solicitud. Si es urgente, llama al 911 o a tu aseguradora.'**
+  String get asistenciaErrorSinConexion;
+
+  /// Error genérico al pedir ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos enviar tu solicitud. Intenta de nuevo.'**
+  String get asistenciaErrorEnviar;
+
+  /// El vehículo no existe o no es del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese vehículo. Elige otro e intenta de nuevo.'**
+  String get asistenciaErrorVehiculo;
+
+  /// Título cuando el garaje está vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes vehículos'**
+  String get asistenciaGarajeVacioTitulo;
+
+  /// Mensaje cuando el garaje está vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Para pedir ayuda necesitamos saber qué vehículo es. Pide a la agencia que registre el tuyo.'**
+  String get asistenciaGarajeVacioMensaje;
+
+  /// Folio de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio {id}'**
+  String asistenciaSolicitudFolio(int id);
+
+  /// Estado de la solicitud recién creada.
+  ///
+  /// In es, this message translates to:
+  /// **'Solicitud recibida'**
+  String get asistenciaSolicitudRecibida;
+
+  /// Mensaje tras enviar la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia ya sabe que necesitas ayuda. Mantén el teléfono contigo y ponte en un lugar seguro.'**
+  String get asistenciaSolicitudTexto;
+
+  /// Aviso cuando ya hay una solicitud abierta.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tenías una solicitud abierta. Te la mostramos aquí.'**
+  String get asistenciaSolicitudYaAbierta;
+
+  /// Fila de vehículo en el detalle de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículo'**
+  String get asistenciaSolicitudVehiculo;
+
+  /// Fila de problema en el detalle de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Problema'**
+  String get asistenciaSolicitudProblema;
+
+  /// Fila de ubicación en el detalle de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación'**
+  String get asistenciaSolicitudUbicacion;
+
+  /// La ubicación se envió.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartida con la agencia'**
+  String get asistenciaSolicitudUbicacionCompartida;
+
+  /// La ubicación no se envió.
+  ///
+  /// In es, this message translates to:
+  /// **'No compartida'**
+  String get asistenciaSolicitudUbicacionNoCompartida;
+
+  /// Fila de comentario en el detalle de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Comentario'**
+  String get asistenciaSolicitudComentario;
+
+  /// Recordatorio de privacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación solo se comparte mientras la solicitud esté abierta.'**
+  String get asistenciaSolicitudPrivacidad;
+
+  /// Lleva a las guías.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver guías de emergencia'**
+  String get asistenciaSolicitudVerGuias;
+
   /// Título del aviso cuando se detecta root o jailbreak. No bloquea la app.
   ///
   /// In es, this message translates to:
