@@ -14,10 +14,10 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | --- | --- | --- | --- |
 | Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 | V2-M01.01, V2-M01.11 |
 | Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 | V2-M01.03 |
-| Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | ❌ v1 usa código | V2-M01.04, V2-T05.04 |
+| Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); falta la pantalla de la app (V2-M01.04) | V2-M01.04, V2-T05.04 |
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
 | Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 | V2-M01.06 |
-| Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | ❌ | V2-M01.07, V2-T05.03 |
+| Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | ❌ backend con `cuenta_app.usuario` que sigue al correo (V2-T05.03); falta `verificacion_contacto` y la pantalla | V2-M01.07, V2-T05.03 |
 | Sesiones y dispositivos activos | `sesion_app` | ⬜ | V2-M01.09, V2-M01.10 |
 | Aviso de cuenta desactivada | `cuenta_app` | 🟡 | V2-M01.08 |
 
@@ -27,7 +27,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | --- | --- | --- | --- |
 | Mis vehículos (garaje) | `cliente`, `vehiculo_cliente` | 🟡 | V2-M02.01 |
 | Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
-| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
+| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; backend con `manual.archivo_pdf`; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
 | Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 app v2 y backend (tabla y endpoint, rama `feat/v2-juan-pablo-citas-b`); la tabla aún sin datos, la app usa su respaldo | V2-M02.04 |
 | Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 backend con la tabla `orden_servicio` (`ExpedienteIntegrationTest`); app solo 1.ª página | V2-M02.05, V2-T05.06 |
 | Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 backend con `orden_servicio` y `orden_refaccion` (`refaccion_id` con FK a `refaccion`); falta la v2 del ticket en la app | V2-M02.06, V2-T05.06 |
@@ -189,9 +189,9 @@ Prioridad máxima del backend: dejar estas tablas con los nombres y campos de la
 
 | Ficha | Hoy en el backend | Historia |
 | --- | --- | --- |
-| `cuenta_app.usuario` | No existe (se usa `cliente.correo`) | V2-T05.03 |
-| `token_recuperacion` | `codigo_recuperacion` (código de 6 dígitos) | V2-T05.04 |
-| `manual.archivo_pdf` | `manual.archivo` | V2-T05.05 |
+| `cuenta_app.usuario` | Creada; el login la usa y sigue al correo del cliente | V2-T05.03 |
+| `token_recuperacion` | Creada con enlace de un solo uso y código para la app v1; `codigo_recuperacion` retirada | V2-T05.04 |
+| `manual.archivo_pdf` | Renombrada desde `manual.archivo` | V2-T05.05 |
 | `orden_servicio`, `orden_refaccion` | Creadas con `mano_de_obra`, `estatus` y `fecha_cierre`; la mano de obra detallada va en `orden_mano_de_obra` | V2-T05.06 |
 | `franja_horario` | Creada con sus campos; `cita.franja_id` apunta a ella | V2-T05.07 |
 
