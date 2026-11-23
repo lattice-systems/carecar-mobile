@@ -336,6 +336,25 @@ void main() {
       );
     });
 
+    test('cancelar libera el cupo de la franja', () async {
+      final repo = RepositorioCitasFake(reloj: () => hoy);
+      final antes = await repo.disponibilidad(desde: desde, hasta: hasta);
+      final franja = antes.franjasDe(DateTime(2026, 11, 26)).first;
+      await repo.agendar(
+        vehiculoId: 1,
+        franja: franja,
+        motivo: MotivoCita.revision,
+      );
+      final lleno = await repo.disponibilidad(desde: desde, hasta: hasta);
+      expect(
+        lleno.franjasDe(DateTime(2026, 11, 26)).first.cupo,
+        franja.cupo - 1,
+      );
+      await repo.cancelar(1);
+      final libre = await repo.disponibilidad(desde: desde, hasta: hasta);
+      expect(libre.franjasDe(DateTime(2026, 11, 26)).first.cupo, franja.cupo);
+    });
+
     test('cancelar una cita que no esta confirmada o ya paso falla', () async {
       final repo = RepositorioCitasFake(
         citas: [
