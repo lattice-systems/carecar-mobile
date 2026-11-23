@@ -3,8 +3,11 @@
 /// Otros modulos y la app solo importan este archivo.
 library;
 
+export 'dominio/cita_agendada.dart' show CitaAgendada;
 export 'dominio/disponibilidad_taller.dart'
     show DisponibilidadTaller, FranjaDisponible;
+export 'dominio/motivo_cita.dart' show MotivoCita;
+export 'presentacion/pantalla_agendar_cita.dart' show PantallaAgendarCita;
 export 'presentacion/pantalla_disponibilidad.dart' show PantallaDisponibilidad;
 export 'presentacion/proveedores_citas.dart'
     show
@@ -12,4 +15,5 @@ export 'presentacion/proveedores_citas.dart'
         rangoAgendableProvider,
         relojCitasProvider,
         repositorioCitasProvider;
-export 'presentacion/rutas_citas.dart' show rutaDisponibilidad, rutasCitas;
+export 'presentacion/rutas_citas.dart'
+    show rutaAgendarCita, rutaDisponibilidad, rutasCitas;

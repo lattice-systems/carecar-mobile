@@ -122,11 +122,95 @@ abstract class AppLocalizations {
   /// **'Cuando la agencia publique modelos, los verás aquí.'**
   String get catalogoVacioMensaje;
 
+  /// No description provided for @citasAgendarContinuar.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar y confirmar'**
+  String get citasAgendarContinuar;
+
+  /// No description provided for @citasAgendarMotivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Motivo de la visita'**
+  String get citasAgendarMotivo;
+
+  /// No description provided for @citasAgendarMotivoSugerencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un motivo'**
+  String get citasAgendarMotivoSugerencia;
+
+  /// No description provided for @citasAgendarSinDatos.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige vehículo, día, horario y motivo para continuar.'**
+  String get citasAgendarSinDatos;
+
+  /// No description provided for @citasAgendarTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get citasAgendarTitulo;
+
+  /// No description provided for @citasAgendarVehiculo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículo'**
+  String get citasAgendarVehiculo;
+
+  /// No description provided for @citasAgendarVehiculoSugerencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu vehículo'**
+  String get citasAgendarVehiculoSugerencia;
+
   /// Lo que anuncia el lector de pantalla mientras carga la disponibilidad.
   ///
   /// In es, this message translates to:
   /// **'Cargando disponibilidad del taller'**
   String get citasCargando;
+
+  /// No description provided for @citasCargandoAgendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus vehículos y los horarios del taller'**
+  String get citasCargandoAgendar;
+
+  /// No description provided for @citasConfirmar.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar cita'**
+  String get citasConfirmar;
+
+  /// Mensaje cuando el cliente ya tiene cita ese día con ese vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes una cita el {fecha} de {inicio} a {fin}. Si necesitas cambiarla, cancélala primero.'**
+  String citasDuplicadaMensaje(DateTime fecha, String inicio, String fin);
+
+  /// No description provided for @citasDuplicadaTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes una cita ese día'**
+  String get citasDuplicadaTitulo;
+
+  /// No description provided for @citasEditar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar datos'**
+  String get citasEditar;
+
+  /// No description provided for @citasErrorAgendar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos agendar tu cita. Intenta de nuevo.'**
+  String get citasErrorAgendar;
+
+  /// Botón que ofrece una franja cercana cuando la elegida se llenó.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {hora}'**
+  String citasFranjaCercana(DateTime fecha, String hora);
 
   /// Encabezado de las franjas del día elegido en el calendario.
   ///
@@ -140,17 +224,131 @@ abstract class AppLocalizations {
   /// **'Este día ya no tiene lugares.'**
   String get citasHorariosVacio;
 
+  /// No description provided for @citasListoCerrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get citasListoCerrar;
+
+  /// Confirmación tras agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Te esperamos el {fecha} a las {hora}.'**
+  String citasListoMensaje(DateTime fecha, String hora);
+
+  /// No description provided for @citasListoTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita confirmada'**
+  String get citasListoTitulo;
+
+  /// No description provided for @citasMotivoGarantia.
+  ///
+  /// In es, this message translates to:
+  /// **'Garantía'**
+  String get citasMotivoGarantia;
+
+  /// No description provided for @citasMotivoMantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get citasMotivoMantenimiento;
+
+  /// No description provided for @citasMotivoOtro.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get citasMotivoOtro;
+
+  /// No description provided for @citasMotivoReparacion.
+  ///
+  /// In es, this message translates to:
+  /// **'Reparación'**
+  String get citasMotivoReparacion;
+
+  /// No description provided for @citasMotivoRevision.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisión'**
+  String get citasMotivoRevision;
+
   /// No description provided for @citasNotaDiasSinCupo.
   ///
   /// In es, this message translates to:
   /// **'Los días tachados no tienen lugares disponibles.'**
   String get citasNotaDiasSinCupo;
 
+  /// No description provided for @citasResumenFecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Día'**
+  String get citasResumenFecha;
+
+  /// No description provided for @citasResumenHorario.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get citasResumenHorario;
+
+  /// Hora de inicio y fin de la franja en el resumen.
+  ///
+  /// In es, this message translates to:
+  /// **'{inicio} a {fin}'**
+  String citasResumenHorarioValor(String inicio, String fin);
+
+  /// No description provided for @citasResumenMotivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Motivo'**
+  String get citasResumenMotivo;
+
+  /// No description provided for @citasResumenTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Resumen de tu cita'**
+  String get citasResumenTitulo;
+
+  /// No description provided for @citasResumenVehiculo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículo'**
+  String get citasResumenVehiculo;
+
+  /// No description provided for @citasSinCupoMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien la tomó mientras decidías. Estas opciones están cerca:'**
+  String get citasSinCupoMensaje;
+
+  /// No description provided for @citasSinCupoNinguna.
+  ///
+  /// In es, this message translates to:
+  /// **'Por ahora no hay otros horarios cercanos. Elige otro día.'**
+  String get citasSinCupoNinguna;
+
+  /// No description provided for @citasSinCupoTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese horario ya no tiene lugar'**
+  String get citasSinCupoTitulo;
+
   /// No description provided for @citasSinDiaElegido.
   ///
   /// In es, this message translates to:
   /// **'Elige un día para ver sus horarios.'**
   String get citasSinDiaElegido;
+
+  /// No description provided for @citasSinVehiculosMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia registra tu auto cuando te lo entrega. Después podrás agendar aquí.'**
+  String get citasSinVehiculosMensaje;
+
+  /// No description provided for @citasSinVehiculosTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes vehículos'**
+  String get citasSinVehiculosTitulo;
 
   /// Título de la pantalla con el calendario de disponibilidad.
   ///
