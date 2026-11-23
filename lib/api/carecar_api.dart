@@ -119,4 +119,9 @@ abstract interface class CarecarApi {
 
   /// `GET /catalogo`. Solo los modelos vigentes.
   Future<List<ModeloCatalogo>> catalogo();
+
+  /// `GET /catalogo/{id}`. El modelo con galeria, versiones y ficha resumida.
+  ///
+  /// Lanza `NoEncontrado` si no existe o ya esta retirado.
+  Future<DetalleModeloCatalogo> detalleModelo(int id);
 }

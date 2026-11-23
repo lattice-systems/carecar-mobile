@@ -623,9 +623,74 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
 // ---------------------------------------------------------------------------
 
+function comoModelo(m) {
+  return {
+    id: m.id,
+    marca: m.marca,
+    modelo: m.modelo,
+    anio: m.anio,
+    version: m.version ?? null,
+    precioDesde: m.precioDesde ?? null,
+    imagenUrl: m.imagenUrl ?? null,
+    descripcion: m.descripcion ?? null,
+    activo: m.activo,
+  };
+}
+
 servidor.get(`${BASE}/catalogo`, (req, res) => {
   const activos = db.get('catalogo').filter({ activo: true }).value();
-  res.jsonp(activos.map((m) => ({ id: m.id, modelo: m.modelo })));
+  res.jsonp(activos.map(comoModelo));
+});
+
+// V2-M03.02 · Detalle de un modelo. Un modelo retirado o inexistente responde
+// 404, igual que el backend. Las versiones son los modelos activos de la misma
+// marca, modelo y anio, de la mas barata a la mas cara (sin precio al final).
+servidor.get(`${BASE}/catalogo/:modeloId`, (req, res) => {
+  const id = Number(req.params.modeloId);
+  const modelo = db.get('catalogo').find({ id, activo: true }).value();
+  if (!Number.isInteger(id) || !modelo) {
+    return problema(req, res, 404, 'No existe el modelo');
+  }
+
+  const ordenadoPor = (campo) => (a, b) => a[campo] - b[campo];
+  const imagenes = db
+    .get('catalogoImagenes')
+    .filter({ modeloId: id })
+    .value()
+    .sort(ordenadoPor('orden'))
+    .map(({ id: imagenId, url, color, descripcion, orden }) => ({
+      id: imagenId,
+      url,
+      color: color ?? null,
+      descripcion: descripcion ?? null,
+      orden,
+    }));
+  const especificaciones = db
+    .get('catalogoEspecificaciones')
+    .filter({ modeloId: id })
+    .value()
+    .sort(ordenadoPor('orden'))
+    .map(({ etiqueta, valor, orden }) => ({ etiqueta, valor, orden }));
+  const versiones = db
+    .get('catalogo')
+    .filter({
+      activo: true,
+      marca: modelo.marca,
+      modelo: modelo.modelo,
+      anio: modelo.anio,
+    })
+    .value()
+    .sort(
+      (a, b) =>
+        (a.precioDesde ?? Infinity) - (b.precioDesde ?? Infinity) || a.id - b.id,
+    )
+    .map((v) => ({
+      id: v.id,
+      nombre: v.version ?? v.modelo,
+      precioDesde: v.precioDesde ?? null,
+    }));
+
+  res.jsonp({ ...comoModelo(modelo), imagenes, versiones, especificaciones });
 });
 
 // ---------------------------------------------------------------------------

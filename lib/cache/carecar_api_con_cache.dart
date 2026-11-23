@@ -144,11 +144,19 @@ class CarecarApiConCache implements CarecarApi {
   Future<List<ModeloCatalogo>> catalogo() => _leer<List<ModeloCatalogo>>(
     'catalogo',
     _api.catalogo,
-    (l) => [
-      for (final m in l) {'id': m.id, 'modelo': m.modelo},
-    ],
+    (l) => [for (final m in l) m.toJson()],
     (j) => _lista(j, ModeloCatalogo.fromJson),
   );
+
+  @override
+  Future<DetalleModeloCatalogo> detalleModelo(int id) =>
+      _leer<DetalleModeloCatalogo>(
+        'catalogo_$id',
+        () => _api.detalleModelo(id),
+        (d) => d.toJson(),
+        (j) =>
+            DetalleModeloCatalogo.fromJson((j! as Map).cast<String, Object?>()),
+      );
 
   // Sesion: al iniciar o cerrar se limpia la cache.
 

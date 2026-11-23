@@ -42,4 +42,16 @@ class ModeloCatalogo {
   final double? precioDesde;
   final String? imagenUrl;
   final String? descripcion;
+
+  Map<String, Object?> toJson() => {
+    'id': id,
+    'modelo': modelo,
+    'marca': marca,
+    'anio': anio,
+    'version': version,
+    'precioDesde': precioDesde,
+    'imagenUrl': imagenUrl,
+    'descripcion': descripcion,
+    'activo': true,
+  };
 }

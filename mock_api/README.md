@@ -139,6 +139,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/citas` | 201 · 409 sin cupo o doble reserva |
 | POST | `/citas/{id}/cancelar` | 200 · 409 si ya no está confirmada |
 | GET | `/catalogo` | Solo modelos activos |
+| GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
 

@@ -136,4 +136,8 @@ class CarecarApiHttp implements CarecarApi {
   @override
   Future<List<ModeloCatalogo>> catalogo() =>
       _cliente.obtenerLista('/catalogo', ModeloCatalogo.fromJson);
+
+  @override
+  Future<DetalleModeloCatalogo> detalleModelo(int id) =>
+      _cliente.obtener('/catalogo/$id', DetalleModeloCatalogo.fromJson);
 }
