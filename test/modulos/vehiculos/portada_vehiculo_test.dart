@@ -11,7 +11,9 @@ void main() {
     expect(tinteDeColor(tokens, 'Verde bosque'), c.exito);
     expect(tinteDeColor(tokens, 'Amarillo'), c.advertencia);
     expect(tinteDeColor(tokens, 'Azul'), c.acento);
-    expect(tinteDeColor(tokens, 'Gris'), c.textoSecundario);
+    for (final neutro in ['Gris', 'Blanco', 'Plata', 'Negro', 'Silver']) {
+      expect(tinteDeColor(tokens, neutro), c.marca, reason: neutro);
+    }
     expect(tinteDeColor(tokens, 'Morado'), c.marca);
     expect(tinteDeColor(tokens, null), c.marca);
   });
