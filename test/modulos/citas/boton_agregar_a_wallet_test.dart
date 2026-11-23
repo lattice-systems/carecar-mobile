@@ -8,6 +8,7 @@ import 'package:carecar_mobile/modulos/citas/datos/repositorio_pase_wallet_fake.
 import 'package:carecar_mobile/modulos/citas/dominio/pase_de_wallet.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/boton_agregar_a_wallet.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_wallet.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -196,6 +197,72 @@ void main() {
       expect(find.byType(BotonAgregarAWallet), findsOneWidget);
     });
   }
+
+  group('como pildora del estilo portada', () {
+    Widget appPildora(
+      RepositorioPaseWalletFake repo, {
+      Escenario escenario = Escenario.claro,
+    }) => ProviderScope(
+      overrides: [
+        repositorioPaseWalletProvider.overrideWithValue(repo),
+        entregaDePaseProvider.overrideWithValue(EntregaDePaseFake()),
+        plataformaWalletProvider.overrideWithValue(PlataformaWallet.google),
+      ],
+      child: conTemaPista(
+        const BotonAgregarAWallet(citaId: 7, pildora: true),
+        escenario: escenario,
+      ),
+    );
+
+    testWidgets('pide el pase y anuncia la carga', (tester) async {
+      final espera = Completer<void>();
+      final repo = RepositorioPaseWalletFake(espera: espera.future);
+      await tester.pumpWidget(appPildora(repo));
+      expect(find.byType(BotonPildora), findsOneWidget);
+      expect(find.byType(OutlinedButton), findsNothing);
+
+      await tester.tap(find.text('Agregar a Wallet'));
+      await tester.pump();
+      expect(
+        find.bySemanticsLabel('Agregar a Wallet, cargando'),
+        findsOneWidget,
+      );
+      expect(repo.pedidos, [(7, PlataformaWallet.google)]);
+
+      espera.complete();
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('un fallo se dice en linea y deja reintentar', (tester) async {
+      final repo = RepositorioPaseWalletFake(fallo: const SinConexion());
+      await tester.pumpWidget(appPildora(repo));
+      await tester.tap(find.text('Agregar a Wallet'));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Sin conexión. Revisa tu red e intenta de nuevo.'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('Agregar a Wallet'));
+      await tester.pumpAndSettle();
+      expect(repo.pedidos, hasLength(2));
+    });
+
+    for (final escenario in Escenario.values) {
+      testWidgets('se ve completo en ${escenario.name}', (tester) async {
+        final repo = RepositorioPaseWalletFake(fallo: const SinConexion());
+        await tester.pumpWidget(appPildora(repo, escenario: escenario));
+        await tester.tap(find.text('Agregar a Wallet'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    testWidgets('mide al menos 48 de alto', (tester) async {
+      await tester.pumpWidget(appPildora(RepositorioPaseWalletFake()));
+      final alto = tester.getSize(find.byType(BotonPildora)).height;
+      expect(alto, greaterThanOrEqualTo(48));
+    });
+  });
 
   testWidgets('el boton mide al menos 48 de alto', (tester) async {
     await tester.pumpWidget(
