@@ -106,7 +106,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Lista | |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Lista | |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Hecha | #45 |
-| V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | En revisión | PR_M0302, backend#68 |
+| V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | En revisión | #62, backend#68 |
 | V2-M03.03 | Comparar dos o tres modelos lado a lado | Cristian |  | V2-M03.02 | Lista | |
 | V2-M03.04 | Calcular cuánto me darían por mi auto a cuenta de uno nuevo | Cristian | B | V2-M03.01 | Lista | |
 | V2-M03.05 | Ver la diferencia a pagar contra el modelo que me gustó | Cristian |  | V2-M03.04 | Lista | |
