@@ -51,6 +51,7 @@
 
 - `ipa-sin-firma.yml`: `workflow_dispatch` (a mano) y `workflow_call`. En `macos-latest` corre `flutter build ios --release --no-codesign --build-name=<pubspec> --build-number=<run_number> --dart-define=API_BASE_URL=<variable>` (falla antes de compilar si falta `API_BASE_URL`), mete `Runner.app` en `Payload/`, lo comprime con `zip -qry` y lo sube con `actions/upload-artifact` sin zip alrededor (`archive: false`) por 30 días. Nombre: `carecar-vX.Y.Z-build<n>.ipa` a mano; `carecar-vX.Y.Z.ipa` desde Release.
 - `release.yml`: después de publicar el Release con el APK, el job `ipa` llama a `ipa-sin-firma.yml` y `adjuntar-ipa` sube el IPA al mismo Release. Si la etiqueta no pasa la verificación no se gastan minutos de macOS; si falla iOS, el APK ya quedó publicado.
+- Probado tras integrar el PR #72: la corrida manual en `main` tardó unos 4 minutos y dejó `carecar-v1.0.0-build1.ipa` (30 MB) con `Payload/Runner.app/` en la raíz, bundle id `com.carecar.carecarMobile`, versión `1.0.0 (1)`, iOS mínimo 15.0 y la `API_BASE_URL` de la variable dentro de `App.framework`. Se descarga directo desde el navegador; con `gh` usa `gh api …/actions/artifacts/<id>/zip`, porque `gh run download` lo descomprime.
 - Decisión: workflow propio en vez de solo un job en `release.yml`, para poder sacar un IPA de `main` sin etiquetar versión; Release lo reusa para que haya una sola receta.
 
 **Límites conocidos**
