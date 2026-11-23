@@ -204,6 +204,12 @@ omisión (`1.0.0-beta.15`): el 1.x lleva mucho tiempo en beta y quitó justo el
 soporte de rutas y middleware propios, que es lo que necesitamos para esos 8
 endpoints.
 
+Como json-server queda fijo, sus dependencias (Express, `body-parser`, `qs`…) se
+parchean **en `package-lock.json`** sin cambiar `package.json`: si Dependabot avisa
+de una vulnerabilidad en una de ellas, `npm update <paquete>` la sube dentro del
+rango que ya acepta su padre y `npm audit` confirma que quedó limpio. Así se
+cerraron los avisos de `body-parser` (1.20.8 → 1.20.9) y `qs` (6.16.0 → 6.16.2).
+
 **La contrapartida:** las respuestas se mantienen a mano, así que pueden desviarse
 del contrato cuando Ricardo lo cambie. Eso lo cubre la prueba de validación contra
 el contrato (tarea 4 de TEC-5).
