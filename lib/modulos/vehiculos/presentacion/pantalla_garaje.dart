@@ -125,8 +125,8 @@ class _Contenido extends StatelessWidget {
             filas: [
               for (final v in vehiculos)
                 FilaGrupo(
-                  titulo: _detalle(context, v),
-                  subtitulo: v.modelo,
+                  titulo: v.titulo,
+                  subtitulo: _detalle(context, v),
                   icono: Icons.directions_car_filled_outlined,
                   colorIcono: tinteDeColor(tokens, v.color),
                   alToque: () => context.push(rutaDetalleVehiculo(v.id)),
