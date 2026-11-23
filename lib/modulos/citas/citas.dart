@@ -8,12 +8,15 @@ export 'dominio/disponibilidad_taller.dart'
     show DisponibilidadTaller, FranjaDisponible;
 export 'dominio/motivo_cita.dart' show MotivoCita;
 export 'presentacion/pantalla_agendar_cita.dart' show PantallaAgendarCita;
+export 'presentacion/pantalla_comprobante_cita.dart'
+    show PantallaComprobanteCita;
 export 'presentacion/pantalla_disponibilidad.dart' show PantallaDisponibilidad;
 export 'presentacion/pantalla_mis_citas.dart' show PantallaMisCitas;
 export 'presentacion/pantalla_reprogramar_cita.dart'
     show PantallaReprogramarCita;
 export 'presentacion/proveedores_citas.dart'
     show
+        comprobanteCitaProvider,
         disponibilidadProvider,
         misCitasProvider,
         rangoAgendableProvider,
@@ -26,4 +29,6 @@ export 'presentacion/rutas_citas.dart'
         rutaDisponibilidad,
         rutaMisCitas,
         rutaReprogramarCita,
+        rutaComprobanteCita,
+        rutaDisponibilidad,
         rutasCitas;
