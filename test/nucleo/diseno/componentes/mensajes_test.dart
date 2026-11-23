@@ -28,8 +28,9 @@ void main() {
       final burbuja = tester.getRect(
         find.byKey(const ValueKey('burbuja-mensaje-fondo')),
       );
-      expect(burbuja.right, closeTo(360, 0.5));
-      expect(burbuja.left, greaterThan(0));
+      final fila = tester.getRect(find.byType(BurbujaMensaje));
+      expect(burbuja.right, closeTo(fila.right, 0.5));
+      expect(burbuja.left, greaterThan(fila.left));
       expect(_fondoBurbuja(tester), PaletaColores.claro.acento);
     });
 
@@ -46,7 +47,9 @@ void main() {
       final burbuja = tester.getRect(
         find.byKey(const ValueKey('burbuja-mensaje-fondo')),
       );
-      expect(burbuja.left, closeTo(0, 0.5));
+      final fila = tester.getRect(find.byType(BurbujaMensaje));
+      expect(burbuja.left, closeTo(fila.left, 0.5));
+      expect(burbuja.right, lessThan(fila.right));
       expect(_fondoBurbuja(tester), PaletaColores.claro.superficieHundida);
     });
 
@@ -162,26 +165,28 @@ void main() {
       for (final escenario in Escenario.values) {
         await tester.pumpWidget(
           conTemaPista(
-            Column(
-              children: [
-                const BurbujaMensaje(
-                  texto: '¿Qué significa la luz naranja del motor?',
-                  autor: AutorMensaje.propio,
-                  nombreAutor: 'Tú',
-                  hora: '10:42',
-                  estado: EstadoEnvio.enviado,
-                ),
-                BurbujaMensaje(
-                  texto:
-                      'Es el testigo de revisión del motor. Agenda una cita.',
-                  autor: AutorMensaje.ajeno,
-                  nombreAutor: 'CareCar',
-                  hora: '10:42',
-                  fuentes: [
-                    FuenteMensaje(texto: 'Manual, pág. 214', alTocar: () {}),
-                  ],
-                ),
-              ],
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  const BurbujaMensaje(
+                    texto: '¿Qué significa la luz naranja del motor?',
+                    autor: AutorMensaje.propio,
+                    nombreAutor: 'Tú',
+                    hora: '10:42',
+                    estado: EstadoEnvio.enviado,
+                  ),
+                  BurbujaMensaje(
+                    texto:
+                        'Es el testigo de revisión del motor. Agenda una cita.',
+                    autor: AutorMensaje.ajeno,
+                    nombreAutor: 'CareCar',
+                    hora: '10:42',
+                    fuentes: [
+                      FuenteMensaje(texto: 'Manual, pág. 214', alTocar: () {}),
+                    ],
+                  ),
+                ],
+              ),
             ),
             escenario: escenario,
           ),
