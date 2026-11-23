@@ -92,6 +92,10 @@ abstract interface class CarecarApi {
   /// `GET /citas/{citaId}/ticket`. Devuelve los bytes del PDF.
   Future<Uint8List> ticketDeCita(int citaId);
 
+  /// `GET /citas/{citaId}/comprobante` (V2-M02.11): el codigo firmado para el
+  /// QR y los datos de la cita.
+  Future<ComprobanteCita> comprobanteDeCita(int citaId);
+
   // --- Agenda · APP-3.3 ---
 
   /// `GET /agenda/disponibilidad`. Solo franjas con cupo.
