@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **210 historias** + 4 de H0.
+Total: **213 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -50,6 +50,7 @@ Total: **210 historias** + 4 de H0.
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
 | V2-T02.13 | Componente `LineaDeTiempo` | Cristian |  | V2-T02.04 | Hecha | #37, #42 |
 | V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Cristian |  | V2-T02.04 | Hecha | #37 |
+| V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | Lista | |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -253,13 +254,15 @@ Total: **210 historias** + 4 de H0.
 | V2-M19.02 | Aceptar y ver el vehículo compartido | Jael | B | V2-M19.01 | Borrador | |
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
 | V2-M19.04 | Revocar un acceso | Jael | B | V2-M19.02 | Borrador | |
-| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | Borrador | |
-| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01 | Borrador | |
-| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 | Borrador | |
-| V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Borrador | |
-| V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01 | Borrador | |
-| V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03 | Borrador | |
-| V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Borrador | |
+| V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | Lista | |
+| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | Lista | |
+| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Lista | |
+| V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |
+| V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
+| V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Lista | |
+| V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Lista | |
+| V2-M24.08 | Ver preguntas sugeridas | Daniel |  | V2-M24.03 | Lista | |
+| V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Hecha | #68 |
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | En revisión | #71, backend#73 |
