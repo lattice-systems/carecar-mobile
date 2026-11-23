@@ -35,8 +35,12 @@ void main() {
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
-    final qr = tester.widget<QrImageView>(find.byType(QrImageView));
-    expect(qr.data, 'CC1.7.firma');
+    // El QrImageView no expone su dato: la pantalla lo identifica con una
+    // llave que lleva el codigo firmado.
+    expect(
+      find.byKey(const ValueKey('qr-comprobante:CC1.7.firma')),
+      findsOneWidget,
+    );
     expect(
       find.bySemanticsLabel('Código QR de tu cita para recepción'),
       findsOneWidget,
