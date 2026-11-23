@@ -88,10 +88,8 @@ void main() {
     await tester.pumpWidget(
       _app(
         _Repo(
-          () async => const FichaTecnicaVehiculo(
-            secciones: [],
-            delRespaldo: true,
-          ),
+          () async =>
+              const FichaTecnicaVehiculo(secciones: [], delRespaldo: true),
         ),
       ),
     );
@@ -136,9 +134,7 @@ void main() {
   });
 
   _prueba('sin conexión: estado de sin conexión', (tester) async {
-    await tester.pumpWidget(
-      _app(_Repo(() async => throw const SinConexion())),
-    );
+    await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
     expect(find.byType(EstadoError), findsOneWidget);
     expect(
