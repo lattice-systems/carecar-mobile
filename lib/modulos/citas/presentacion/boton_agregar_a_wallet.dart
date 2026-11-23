@@ -6,6 +6,7 @@ import '../../../api/modelos/problema.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../dominio/pase_de_wallet.dart';
@@ -19,9 +20,17 @@ import 'proveedores_pase_wallet.dart';
 /// posibilidad de reintentar. Donde no hay Wallet no se dibuja. El pase no se
 /// guarda: cada toque lo pide de nuevo.
 class BotonAgregarAWallet extends ConsumerStatefulWidget {
-  const BotonAgregarAWallet({required this.citaId, super.key});
+  const BotonAgregarAWallet({
+    required this.citaId,
+    super.key,
+    this.pildora = false,
+  });
 
   final int citaId;
+
+  /// Dibuja la acción como píldora del estilo portada (comprobante) en vez
+  /// del botón secundario. Mismos estados y mismos errores en línea.
+  final bool pildora;
 
   @override
   ConsumerState<BotonAgregarAWallet> createState() =>
@@ -65,6 +74,24 @@ class _BotonAgregarAWalletState extends ConsumerState<BotonAgregarAWallet> {
     });
   }
 
+  /// Píldora llena; mientras pide el pase queda deshabilitada y el lector de
+  /// pantalla anuncia «cargando», igual que el botón secundario.
+  Widget _pildora(BuildContext context, String texto, PlataformaWallet p) {
+    final pildora = BotonPildora(
+      texto: texto,
+      icono: Icons.account_balance_wallet_outlined,
+      expandido: true,
+      alPresionar: _cargando ? null : () => _agregar(p),
+    );
+    if (!_cargando) return pildora;
+    return Semantics(
+      button: true,
+      label: AppLocalizations.of(context).botonCargando(texto),
+      excludeSemantics: true,
+      child: pildora,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final plataforma = ref.watch(plataformaWalletProvider);
@@ -76,14 +103,17 @@ class _BotonAgregarAWalletState extends ConsumerState<BotonAgregarAWallet> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Boton(
-          texto: textos.citasWalletAgregar,
-          icono: Icons.account_balance_wallet_outlined,
-          variante: VarianteBoton.secundario,
-          anchoCompleto: true,
-          cargando: _cargando,
-          alPresionar: () => _agregar(plataforma),
-        ),
+        if (widget.pildora)
+          _pildora(context, textos.citasWalletAgregar, plataforma)
+        else
+          Boton(
+            texto: textos.citasWalletAgregar,
+            icono: Icons.account_balance_wallet_outlined,
+            variante: VarianteBoton.secundario,
+            anchoCompleto: true,
+            cargando: _cargando,
+            alPresionar: () => _agregar(plataforma),
+          ),
         if (falla != null) ...[
           const SizedBox(height: Espaciado.e3),
           Aviso(
