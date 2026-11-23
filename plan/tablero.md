@@ -93,13 +93,13 @@ Total: **210 historias** + 4 de H0.
 | V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54 |
-| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | En revisión | #57 |
+| V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57 |
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Lista | |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Lista | |
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
-| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | En revisión | #58 |
+| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58 |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Lista | |
