@@ -195,5 +195,90 @@ void main() {
       expect(find.text('No-show'), findsOneWidget);
     });
   });
+
+  group('V2-M02.10 cancelar una cita', () {
+    _prueba('solo las confirmadas futuras ofrecen cancelar', (tester) async {
+      await tester.pumpWidget(_app(_repo()));
+      await tester.pumpAndSettle();
+      // La cita 5 esta confirmada pero ya paso: no se puede cancelar.
+      expect(find.text('Cancelar cita'), findsOneWidget);
+    });
+
+    _prueba('pide confirmacion con un dialogo y deja mantenerla', (
+      tester,
+    ) async {
+      final repo = _repo();
+      await tester.pumpWidget(_app(repo));
+      await tester.pumpAndSettle();
+      await _tocar(tester, find.text('Cancelar cita'));
+      expect(find.byType(Dialogo), findsOneWidget);
+      expect(find.text('¿Cancelar esta cita?'), findsOneWidget);
+      await _tocar(tester, find.text('Mantener cita'));
+      expect(find.byType(Dialogo), findsNothing);
+      expect(find.text('Cancelar cita'), findsOneWidget);
+      expect(
+        (await repo.misCitas()).citas.first.estado,
+        EstadoDeCita.confirmada,
+      );
+    });
+
+    _prueba('al confirmar cancela, avisa que libero el horario', (
+      tester,
+    ) async {
+      final repo = _repo();
+      await tester.pumpWidget(_app(repo));
+      await tester.pumpAndSettle();
+      await _tocar(tester, find.text('Cancelar cita'));
+      await _tocar(tester, find.text('Sí, cancelar'));
+      expect(
+        find.text('Cita cancelada. El horario quedó libre.'),
+        findsOneWidget,
+      );
+      expect(find.text('Cancelar cita'), findsNothing);
+      expect(find.text('Cancelada'), findsNWidgets(2));
+      expect(
+        (await repo.misCitas()).citas.first.estado,
+        EstadoDeCita.cancelada,
+      );
+    });
+
+    _prueba('si ya no se puede cancelar lo explica', (tester) async {
+      await tester.pumpWidget(_app(_RepoQueRechaza(_variadas())));
+      await tester.pumpAndSettle();
+      await _tocar(tester, find.text('Cancelar cita'));
+      await _tocar(tester, find.text('Sí, cancelar'));
+      expect(find.text('Esta cita ya no se puede cancelar.'), findsOneWidget);
+    });
+
+    _prueba('un error de red al cancelar se explica y deja reintentar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_RepoQueFalla(_variadas())));
+      await tester.pumpAndSettle();
+      await _tocar(tester, find.text('Cancelar cita'));
+      await _tocar(tester, find.text('Sí, cancelar'));
+      expect(
+        find.text('No pudimos cancelar tu cita. Intenta de nuevo.'),
+        findsOneWidget,
+      );
+      expect(find.text('Cancelar cita'), findsOneWidget);
+    });
+  });
 }
 
+class _RepoQueRechaza extends RepositorioCitasFake {
+  _RepoQueRechaza(List<CitaCliente> citas)
+    : super(citas: citas, reloj: () => _ahora);
+
+  @override
+  Future<CitaCliente> cancelar(int citaId) async =>
+      throw const CitaNoModificable();
+}
+
+class _RepoQueFalla extends RepositorioCitasFake {
+  _RepoQueFalla(List<CitaCliente> citas)
+    : super(citas: citas, reloj: () => _ahora);
+
+  @override
+  Future<CitaCliente> cancelar(int citaId) async => throw const SinConexion();
+}
