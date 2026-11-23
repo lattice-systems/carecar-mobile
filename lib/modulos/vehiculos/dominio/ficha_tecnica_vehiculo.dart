@@ -53,13 +53,13 @@ class FichaTecnicaVehiculo {
       secciones: [
         for (final s in secciones.cast<Map<String, Object?>>())
           SeccionFicha(
-            titulo: s['titulo']! as String,
+            titulo: (s['nombre'] ?? s['titulo'])! as String,
             especificaciones: [
               for (final e
                   in (s['especificaciones']! as List)
                       .cast<Map<String, Object?>>())
                 EspecificacionFicha(
-                  clave: e['clave']! as String,
+                  clave: (e['nombre'] ?? e['clave'])! as String,
                   valor: e['valor']! as String,
                 ),
             ],
