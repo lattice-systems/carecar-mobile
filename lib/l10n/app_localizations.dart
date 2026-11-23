@@ -1849,6 +1849,36 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No tienes citas próximas'**
   String get widgetsSinCitaMensaje;
+
+  /// Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar a Wallet'**
+  String get citasWalletAgregar;
+
+  /// Error del botón de Wallet cuando algo falla sin causa conocida.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos preparar tu pase. Intenta de nuevo.'**
+  String get citasWalletErrorGenerico;
+
+  /// Error del botón de Wallet cuando no hay red.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu red e intenta de nuevo.'**
+  String get citasWalletErrorSinConexion;
+
+  /// Error del botón de Wallet cuando la cita está cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita está cancelada, así que ya no tiene pase.'**
+  String get citasWalletErrorCancelada;
+
+  /// Error del botón de Wallet cuando el servidor no tiene certificados.
+  ///
+  /// In es, this message translates to:
+  /// **'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.'**
+  String get citasWalletErrorNoDisponible;
 }
 
 class _AppLocalizationsDelegate
