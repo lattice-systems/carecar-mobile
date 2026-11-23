@@ -104,6 +104,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get asistenciaListaTitulo => 'Emergencies';
+
+  @override
+  String get asistenciaHeroeTitulo => 'Need help right now?';
+
+  @override
+  String get asistenciaHeroeTexto =>
+      'Asking for help with your location will be available soon. Meanwhile, these guides tell you what to do.';
+
+  @override
+  String get asistenciaHeroeAccion => 'Ask for help';
+
+  @override
+  String get asistenciaEstanteGuias => 'Quick guides';
+
+  @override
+  String get asistenciaGrupoGuias => 'All guides';
+
+  @override
+  String asistenciaGuiaCantidadPasos(int pasos) {
+    return '$pasos steps';
+  }
+
+  @override
+  String asistenciaGuiaSubtituloSinConexion(int pasos) {
+    return '$pasos steps · offline';
+  }
+
+  @override
   String get asistenciaGuiasAvisoSinConexion =>
       'These guides are stored in the app and work offline.';
 
