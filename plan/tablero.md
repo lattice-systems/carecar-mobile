@@ -50,7 +50,7 @@ Total: **213 historias** + 4 de H0.
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
 | V2-T02.13 | Componente `LineaDeTiempo` | Cristian |  | V2-T02.04 | Hecha | #37, #42 |
 | V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Cristian |  | V2-T02.04 | Hecha | #37 |
-| V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | En curso | |
+| V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | En revisión | #83 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
