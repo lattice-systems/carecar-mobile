@@ -191,3 +191,16 @@ Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`
   - **Búsqueda dentro del PDF e índice:** `pdfx` no extrae texto ni ofrece marcadores, así que no se resolvió. Hay que decidir paquete (p. ej. `pdfrx`, que sí busca texto y lee el índice, o la extracción de `syncfusion_flutter_pdf`, con su licencia) y reemplazar el motor de `VisorPdf`, que es de `lib/nucleo/diseno` (Cristian). Hasta entonces la historia no debe pasar a `Hecha`.
   - El respaldo solo cubre los manuales empaquetados (Nissan Kicks 2023, March 2020, Versa 2024); un manual bajado de la agencia no queda guardado para verlo sin red después.
   - Probado en pruebas de widget; falta probar descarga, compartir y el visor real en un teléfono.
+
+## Avance de V2-M02.04
+
+Pantalla `PantallaFichaTecnica` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/ficha-tecnica`, exige sesión; acceso «Ficha técnica» del detalle). Estado: **En curso**, a la espera de su historia `Backend:`. Solo la parte de app y `mock_api`.
+
+- **Datos desde la API:** `RepositorioFichaTecnicaApi` lee `GET /vehiculos/{id}/ficha-tecnica` con el cliente del núcleo (`apiClienteProvider`; `CarecarApi` es el contrato v1 y la prueba de contrato lo compara con el YAML, así que no se le agregó el método hasta que exista el contrato v2). Forma de la respuesta en la tabla API de arriba.
+- **Respaldo local:** con 404 (el backend aún no tiene `ficha_tecnica_modelo` o no hay ficha de ese modelo y año) o sin red, `FichaTecnicaLocal` arma las secciones General, Motor y Transmisión con los datos de `lib/config/ficha_tecnica.dart` (código v1) y la pantalla avisa «Mostrando la ficha guardada en la app». Sin respaldo: 404 es estado vacío; otro fallo, error con reintento. Los títulos del respaldo viajan en español, igual que los de la agencia.
+- **Secciones plegables:** el sistema v2 no tiene acordeón, así que se usó `SeccionPlegable` provisional en `presentacion/provisional/` (solo tokens, marcada `PROVISIONAL`).
+- **Estados:** esqueleto, datos, vacío, error con reintento y sin conexión; se recarga jalando hacia abajo.
+- **mock_api:** bloque `// ── vehiculos ──` en `server.js` con fichas de Versa 2024 y Kicks 2023; el resto de modelos responde 404 para ejercitar el respaldo.
+- **Textos:** claves `vehiculosFicha*` en los ARB es y en.
+- **Pruebas:** `ficha_tecnica_test.dart` (dominio, respaldo y repositorio con `MockClient`), `pantalla_ficha_tecnica_test.dart` (cinco estados, plegado, claro, oscuro, letra al 200 % e inglés) y las rutas en `ruta_garaje_test.dart`.
+- **Pendientes:** backend (`ficha_tecnica_modelo` y el endpoint, historia `Backend:` de V2-M02.04); componente `Acordeon` del sistema para reemplazar el provisional (pedir historia `V2-T02.xx` al planificador; `grep -rn "PROVISIONAL" lib/` no debe salir vacío al cerrar el hito); golden de la pantalla espera a V2-T03.02; `plan/cumplimiento-ficha.md` no se tocó en esta tanda.
