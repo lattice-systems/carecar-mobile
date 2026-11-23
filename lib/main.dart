@@ -13,6 +13,7 @@ import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
+import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
 import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
 import 'nucleo/seguridad/detector_integridad.dart';
 import 'nucleo/seguridad/politica_datos_locales.dart';
@@ -213,14 +214,18 @@ class _AppCareCarState extends State<AppCareCar> {
             // necesitan los textos del idioma activo y el enrutador. El widget
             // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
             // lo mismo y porque observa la sesion.
-            builder: (context, child) => InstaladorDeAccesosRapidos(
-              child: SincronizadorDelWidgetDeCita(
-                child: ShadAppBuilder(
-                  child: AvisoEquipoComprometido(
-                    child: CortinaArranque(
-                      listo: !_restaurando,
-                      duracionMinima: widget.duracionArranque,
-                      siguiente: (_) => child!,
+            // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
+            // tapar tambien la cortina y los dialogos en el selector de apps.
+            builder: (context, child) => CubiertaEnSegundoPlano(
+              child: InstaladorDeAccesosRapidos(
+                child: SincronizadorDelWidgetDeCita(
+                  child: ShadAppBuilder(
+                    child: AvisoEquipoComprometido(
+                      child: CortinaArranque(
+                        listo: !_restaurando,
+                        duracionMinima: widget.duracionArranque,
+                        siguiente: (_) => child!,
+                      ),
                     ),
                   ),
                 ),
