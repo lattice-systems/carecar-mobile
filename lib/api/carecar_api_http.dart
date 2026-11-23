@@ -134,6 +134,17 @@ class CarecarApiHttp implements CarecarApi {
   );
 
   @override
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  }) => _cliente.enviar(
+    '/citas/$citaId/reprogramar',
+    cuerpo: {'franjaId': franjaId, 'fecha': escribirFecha(fecha)},
+    leer: Cita.fromJson,
+  );
+
+  @override
   Future<List<ModeloCatalogo>> catalogo() =>
       _cliente.obtenerLista('/catalogo', ModeloCatalogo.fromJson);
 
