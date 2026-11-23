@@ -47,6 +47,43 @@ Ayuda inmediata cuando el auto falla en la calle: un botón que comparte ubicaci
 - Mientras el ERP siga congelado, el personal cambia el estado de la solicitud con un endpoint interno del backend (pruebas y datos de ejemplo); la pantalla del personal queda fuera de alcance.
 - La ubicación solo se envía al crear la solicitud y mientras esté abierta; nunca en segundo plano después.
 
+## Avance de V2-M11.01
+
+Parte de la app de «Pedir ayuda con mi ubicación». El backend (`POST /asistencia`, `GET /asistencia?activa=true`) ya está implementado en `agencia-360-backend`; esta parte solo consume el contrato.
+
+**Qué quedó**
+
+- **Contrato** (`api/agencia360-api-app-v1.yaml`, aditivo, sin cambiar la versión): `POST /asistencia`, `GET /asistencia`, esquemas `TipoAsistencia`, `EstadoSolicitudAsistencia`, `NuevaSolicitudAsistencia`, `SolicitudAsistencia` y los códigos `SOLICITUD_ABIERTA`, `FUERA_DE_COBERTURA` y `DIRECCION_EN_USO` (también en `CodigoProblema` y en las pruebas de contrato y de errores). `FUERA_DE_COBERTURA` y `DIRECCION_EN_USO` los usa V2-M17 (direcciones de recolección), no esta historia.
+- **Cliente HTTP:** `ClienteApi.obtenerOpcional` devuelve `null` ante un 204 (lo necesita `GET /asistencia?activa=true`).
+- **Mock** (`mock_api/server.js`, bloque `// ── asistencia ──`): una solicitud abierta por cliente, en memoria; otra devuelve 409 `SOLICITUD_ABIERTA`. No se escribe en `db.json`, así que las coordenadas no quedan en disco.
+- **Dominio** (`lib/modulos/asistencia/dominio/`): `TipoAsistencia`, `EstadoSolicitud`, `SolicitudAsistencia`, la interfaz `RepositorioAsistencia` y `SolicitudAbierta` (el 409 traducido).
+- **Datos:** `RepositorioAsistenciaApi` (con `apiClienteProvider`, sin cache) y `RepositorioAsistenciaFake`.
+- **Flujo** en `/asistencia/guias/pedir` (`rutaPedirAyuda`): vehículo (del garaje, vía el contrato público de `vehiculos`; con uno solo viene elegido), tipo en píldoras con ícono, interruptor «Compartir mi ubicación», comentario (máx. 500) y «Desliza para pedir ayuda» (`DeslizarParaConfirmar`, V2-T02.11). Termina en la solicitud enviada con folio, resumen y un recordatorio de privacidad.
+- **Acceso:** el botón de la tarjeta de emergencias queda activo y `rutaSos` apunta a `/asistencia/guias/pedir` (V2-M25.04 ya lo usa); regresar lleva a la lista de emergencias y desde la solicitud hay un atajo a las guías.
+- **Estilo portada:** `EncabezadoGrande` translúcido, `GrupoLista`, `ChipPista`, `BotonPildora` y `CabeceraPortada`/`BarraPortada` en la solicitud enviada; ningún contenido atraviesa el título.
+
+**Ubicación (restricción de la historia)**
+
+- Solo en primer plano y una sola lectura (`ProveedorUbicacion.posicionActual`) al activar el interruptor; vive en memoria del formulario y viaja únicamente en el `POST`. No se guarda en caché, almacenamiento ni logs, y la pantalla no muestra las coordenadas.
+- Permiso denegado, bloqueado para siempre, servicio apagado y tiempo agotado tienen cada uno su mensaje, con «Intentar de nuevo» y «Enviar sin ubicación». Sin ubicación, el campo de comentario pasa a «Dónde estás y qué pasó».
+- La ubicación deja de compartirse al cerrarse la solicitud porque la app no la vuelve a leer ni a enviar (el backend la descarta al quedar atendida o cancelada: V2-M11.04).
+
+**Estados**
+
+- Cargando (esqueleto con etiqueta de lector de pantalla), error de consulta o del garaje con reintento, garaje vacío, formulario y solicitud enviada o ya abierta.
+- Al enviar: sin conexión (aviso con el 911 y la aseguradora como salida mientras no exista V2-M11.02), vehículo ajeno (404), 409 (se consulta y se muestra la solicitud abierta con un aviso) y error genérico con texto propio (el texto del servidor no se muestra en 400 ni 5xx).
+- Accesibilidad: píldoras y filas anuncian «seleccionado», encabezados semánticos, avisos con región viva; con lector de pantalla `DeslizarParaConfirmar` cambia a un botón con diálogo. Probado con letra al 200 % en 320 × 568.
+
+**Textos:** ARB con prefijo `asistencia` (es y en), solo se agregaron claves. `asistenciaHeroeTexto` («estará disponible pronto») quedó sin uso; la tarjeta usa `asistenciaHeroeTextoDisponible`.
+
+**Pendiente / fuera de alcance**
+
+- «Atajo a llamar» sin conexión del criterio depende de V2-M11.02 (aún sin empezar): hoy el aviso nombra el 911 y la aseguradora, sin botón.
+- Seguimiento del estado y línea de tiempo: V2-M11.04. La solicitud abierta se retoma al entrar, pero no se actualiza sola.
+- Retirar la clave `asistenciaHeroeTexto` del ARB cuando se pueda borrar claves.
+- Goldens de las pantallas nuevas si se piden.
+- Tablero y `plan/cumplimiento-ficha.md` los actualiza quien integra.
+
 ## Avance de V2-M11.03
 
 **Qué quedó**
@@ -56,7 +93,7 @@ Ayuda inmediata cuando el auto falla en la calle: un botón que comparte ubicaci
 - Rutas `/asistencia/guias` y `/asistencia/guias/:tipo` (`llanta`, `corriente`, `choque`), registradas en `registro_de_rutas.dart` con una línea. Una guía inexistente vuelve a la lista. Exigen sesión como el resto de las rutas de módulo.
 - Textos en `lib/l10n/` (prefijo `asistencia`, es y en). Las guías viven en el ARB empaquetado en la app: no hacen peticiones y se abren en modo avión.
 - Accesibilidad: cada paso es un nodo semántico ("Paso 2 de 5" y su texto) con orden explícito, y se arman todos a la vez para que el lector de pantalla tenga la guía completa. Probado con letra al 200 %.
-- `rutaSos` (constante en `asistencia.dart`) apunta a la lista de guías mientras no exista V2-M11.01; la usa V2-M25.04.
+- `rutaSos` (constante en `asistencia.dart`) apuntaba a la lista de guías mientras no existía V2-M11.01; hoy apunta a «Pedir ayuda» (ver Avance de V2-M11.01). La usa V2-M25.04.
 
 **Estados:** al ser contenido empaquetado no hay carga, vacío ni error de red. Lo que sí aplica (datos y sin conexión) se resuelve por construcción: la guía siempre está y el aviso lo dice.
 
