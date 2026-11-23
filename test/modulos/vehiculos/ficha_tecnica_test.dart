@@ -76,31 +76,35 @@ void main() {
   });
 
   group('RepositorioFichaTecnicaApi', () {
-    test('pide GET /vehiculos/{id}/ficha-tecnica y traduce la respuesta',
-        () async {
-      late Uri pedido;
-      final repo = _repo(
-        MockClient((r) async {
-          pedido = r.url;
-          return http.Response(
-            jsonEncode(_json),
-            200,
-            headers: {'content-type': 'application/json'},
-          );
-        }),
-      );
-      final ficha = await repo.ficha(_versa);
-      expect(pedido.path, '/api/v1/app/vehiculos/1/ficha-tecnica');
-      expect(ficha!.delRespaldo, isFalse);
-      expect(ficha.secciones.single.titulo, 'Motor');
-    });
+    test(
+      'pide GET /vehiculos/{id}/ficha-tecnica y traduce la respuesta',
+      () async {
+        late Uri pedido;
+        final repo = _repo(
+          MockClient((r) async {
+            pedido = r.url;
+            return http.Response(
+              jsonEncode(_json),
+              200,
+              headers: {'content-type': 'application/json'},
+            );
+          }),
+        );
+        final ficha = await repo.ficha(_versa);
+        expect(pedido.path, '/api/v1/app/vehiculos/1/ficha-tecnica');
+        expect(ficha!.delRespaldo, isFalse);
+        expect(ficha.secciones.single.titulo, 'Motor');
+      },
+    );
 
-    test('con 404 usa el respaldo local mientras el backend no la tiene',
-        () async {
-      final repo = _repo(MockClient((_) async => http.Response('{}', 404)));
-      final ficha = await repo.ficha(_versa);
-      expect(ficha!.delRespaldo, isTrue);
-    });
+    test(
+      'con 404 usa el respaldo local mientras el backend no la tiene',
+      () async {
+        final repo = _repo(MockClient((_) async => http.Response('{}', 404)));
+        final ficha = await repo.ficha(_versa);
+        expect(ficha!.delRespaldo, isTrue);
+      },
+    );
 
     test('sin conexión usa el respaldo local', () async {
       final repo = _repo(
