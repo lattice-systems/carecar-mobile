@@ -27,3 +27,11 @@ Que el backend tenga **exactamente** las tablas de la ficha y un contrato v2 que
 | V2-T05.09 | Como equipo queremos almacenamiento de archivos para evidencias y documentos | Interfaz de almacenamiento con implementación local y en la nube · URLs firmadas de corta vida | ✅ | — |
 | V2-T05.10 | Como equipo queremos datos de ejemplo para cada módulo nuevo | `scripts/cargar-datos-de-ejemplo.sh` extendido | ✅ | — |
 | V2-T05.11 | Como equipo queremos desplegar la API en Azure automáticamente en cada merge a `main` | Workflow que construye la imagen en formato OCI, la publica en GHCR y actualiza `ca-agencia360-api` · entrada a Azure por OIDC con identidad administrada (variables de repositorio, sin secretos) · verificación de `/actuator/health` tras desplegar · ver `agencia-360-backend/docs/despliegue-azure-neon.md` (dueño: Daniel) | ✅ | — |
+
+## Avance de V2-T05.02
+
+Estado: **En revisión**.
+
+- **Backend:** `agencia-360-backend/docs/api/agencia360-api-app-v2.yaml`, versión 2.0.0. Es copia del v1 en 1.4.0 con la descripción de la v2; no agrega ni quita rutas, todas siguen bajo `/api/v1/app`. El v1 queda congelado en 1.4.0 como referencia de la app v1 instalada. Diseño en `agencia-360-backend/plan/historias-backend.md`.
+- **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
+- **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
