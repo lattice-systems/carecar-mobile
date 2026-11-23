@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'cita_agendada.dart';
 import 'cita_cliente.dart';
+import 'comprobante_de_cita.dart';
 import 'disponibilidad_taller.dart';
 import 'motivo_cita.dart';
 
@@ -38,4 +41,10 @@ abstract interface class RepositorioCitas {
     required int citaId,
     required FranjaDisponible franja,
   });
+  /// Comprobante de la cita `citaId`, con el codigo firmado para el QR
+  /// (V2-M02.11).
+  Future<ComprobanteDeCita> comprobante(int citaId);
+
+  /// Bytes del PDF que entrega `GET /citas/{id}/ticket`.
+  Future<Uint8List> ticketPdf(int citaId);
 }
