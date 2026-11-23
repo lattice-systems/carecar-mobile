@@ -63,7 +63,7 @@ void main() {
     test('arma secciones con lo que la app trae de ese modelo y año', () {
       final ficha = FichaTecnicaLocal.de(_versa)!;
       expect(ficha.delRespaldo, isTrue);
-      final motor = ficha.secciones.firstWhere((s) => s.titulo == 'Motor');
+      final motor = ficha.secciones.firstWhere((s) => s.codigo == 'motor');
       expect(
         motor.especificaciones.map((e) => e.valor),
         contains('118 hp a 6,300 rpm'),
