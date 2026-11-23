@@ -31,10 +31,7 @@ GoRouter _enrutador() => GoRouter(
     GoRoute(path: '/', builder: (_, _) => const Text('inicio')),
     GoRoute(path: '/citas/agendar', builder: (_, _) => const Text('agendar')),
     GoRoute(path: '/garaje', builder: (_, _) => const Text('garaje')),
-    GoRoute(
-      path: '/asistencia/guias',
-      builder: (_, _) => const Text('guias'),
-    ),
+    GoRoute(path: '/asistencia/guias', builder: (_, _) => const Text('guias')),
   ],
 );
 
@@ -58,8 +55,7 @@ Future<GoRouter> _montar(
         supportedLocales: idiomasSoportados,
         localeResolutionCallback: resolverIdioma,
         routerConfig: enrutador,
-        builder: (context, child) =>
-            InstaladorDeAccesosRapidos(child: child!),
+        builder: (context, child) => InstaladorDeAccesosRapidos(child: child!),
       ),
     ),
   );
@@ -94,10 +90,7 @@ void main() {
     final enrutador = await _montar(tester, puerto);
     puerto.alElegirAcceso!(AccesoRapido.agendar);
     await tester.pumpAndSettle();
-    expect(
-      enrutador.routeInformationProvider.value.uri.path,
-      '/citas/agendar',
-    );
+    expect(enrutador.routeInformationProvider.value.uri.path, '/citas/agendar');
     expect(find.text('agendar'), findsOneWidget);
   });
 
