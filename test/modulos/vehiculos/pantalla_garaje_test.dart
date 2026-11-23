@@ -37,9 +37,11 @@ void main() {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     expect(find.text('Mi garaje'), findsOneWidget);
-    expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+    // Cada auto sale en el estante y en «Datos rapidos» (titulo = modelo y
+    // anio; subtitulo = placas y km, o «Sin placas»).
+    expect(find.text('Mazda CX-5 2024'), findsNWidgets(2));
     expect(find.text('Placas ABC-123 · 12,500 km'), findsOneWidget);
-    expect(find.text('Mazda 3 2022'), findsOneWidget);
+    expect(find.text('Mazda 3 2022'), findsNWidgets(2));
     expect(find.text('Sin placas'), findsOneWidget);
   });
 
