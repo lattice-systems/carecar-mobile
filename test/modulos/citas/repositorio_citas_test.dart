@@ -422,6 +422,9 @@ void main() {
       final repo = RepositorioCitasFake(error: const SinConexion());
       expect(repo.misCitas(), throwsA(isA<SinConexion>()));
       expect(repo.cancelar(1), throwsA(isA<SinConexion>()));
+    });
+  });
+
   group('comprobante', () {
     test('RepositorioCitasApi traduce el comprobante y su codigo', () async {
       final api = ApiFalsa()
