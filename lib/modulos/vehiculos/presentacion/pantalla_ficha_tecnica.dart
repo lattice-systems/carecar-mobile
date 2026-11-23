@@ -80,7 +80,7 @@ class _Ficha extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: Espaciado.e3),
             child: SeccionPlegable(
-              titulo: s.titulo,
+              titulo: _tituloDe(textos, s),
               hijo: Column(
                 children: [
                   for (final e in s.especificaciones)
@@ -94,7 +94,7 @@ class _Ficha extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                e.clave,
+                                _claveDe(textos, e),
                                 style: t.cuerpoChico.copyWith(
                                   color: c.textoSecundario,
                                 ),
@@ -148,3 +148,24 @@ class _Cargando extends StatelessWidget {
     );
   }
 }
+
+/// Titulo de la seccion: el de la agencia o, en el respaldo local, el texto del
+/// idioma que corresponde a su codigo.
+String _tituloDe(AppLocalizations textos, SeccionFicha s) => switch (s.codigo) {
+  'general' => textos.vehiculosFichaSeccionGeneral,
+  'motor' => textos.vehiculosFichaSeccionMotor,
+  'transmision' => textos.vehiculosFichaSeccionTransmision,
+  _ => s.titulo,
+};
+
+String _claveDe(AppLocalizations textos, EspecificacionFicha e) =>
+    switch (e.codigo) {
+      'carroceria' => textos.vehiculosFichaClaveCarroceria,
+      'pasajeros' => textos.vehiculosFichaClavePasajeros,
+      'propulsion' => textos.vehiculosFichaClavePropulsion,
+      'motor' => textos.vehiculosFichaClaveMotor,
+      'potencia' => textos.vehiculosFichaClavePotencia,
+      'transmision' => textos.vehiculosFichaClaveTransmision,
+      'traccion' => textos.vehiculosFichaClaveTraccion,
+      _ => e.clave,
+    };
