@@ -1347,6 +1347,154 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosToqueCopiarVin => 'Tap to copy';
 
   @override
+  String get asistenciaHeroeTextoDisponible =>
+      'Tell us what happened and share your location so the agency can find you. While help arrives, these guides tell you what to do.';
+
+  @override
+  String get asistenciaPedirTitulo => 'Ask for help';
+
+  @override
+  String get asistenciaPedirCargando => 'Loading';
+
+  @override
+  String get asistenciaPedirVehiculoEncabezado => 'Which vehicle needs help?';
+
+  @override
+  String get asistenciaPedirSeleccionado => 'Selected';
+
+  @override
+  String get asistenciaPedirTipoEncabezado => 'What happened?';
+
+  @override
+  String get asistenciaTipoLlanta => 'Flat tire';
+
+  @override
+  String get asistenciaTipoBateria => 'Battery';
+
+  @override
+  String get asistenciaTipoChoque => 'Crash';
+
+  @override
+  String get asistenciaTipoSinGasolina => 'Out of fuel';
+
+  @override
+  String get asistenciaTipoOtro => 'Other';
+
+  @override
+  String get asistenciaUbicacionEncabezado => 'Your location';
+
+  @override
+  String get asistenciaUbicacionCompartir => 'Share my location';
+
+  @override
+  String get asistenciaUbicacionExplicacion =>
+      'The agency will know where you are. It is sent once, with the app open, and it is not used again when help ends.';
+
+  @override
+  String get asistenciaUbicacionObteniendo => 'Finding your location…';
+
+  @override
+  String get asistenciaUbicacionLista => 'Location ready to send';
+
+  @override
+  String get asistenciaUbicacionPermisoDenegado =>
+      'Location permission was not granted. You can try again or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionPermisoBloqueado =>
+      'Location permission is blocked. Turn it on in Settings or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionServicioApagado =>
+      'Location services are off. Turn them on or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionTiempoAgotado =>
+      'We could not find you in time. Try again or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionReintentar => 'Try again';
+
+  @override
+  String get asistenciaUbicacionSinUbicacion => 'Send without location';
+
+  @override
+  String get asistenciaComentarioEtiqueta => 'Comment (optional)';
+
+  @override
+  String get asistenciaComentarioEtiquetaSinUbicacion =>
+      'Where you are and what happened';
+
+  @override
+  String get asistenciaComentarioAyuda => '500 characters at most';
+
+  @override
+  String get asistenciaConfirmarTexto => 'Slide to ask for help';
+
+  @override
+  String get asistenciaEnviando => 'Sending your request…';
+
+  @override
+  String get asistenciaErrorSinConexion =>
+      'No connection: we could not send your request. If it is urgent, call 911 or your insurer.';
+
+  @override
+  String get asistenciaErrorEnviar =>
+      'We could not send your request. Try again.';
+
+  @override
+  String get asistenciaErrorVehiculo =>
+      'We could not find that vehicle. Choose another and try again.';
+
+  @override
+  String get asistenciaGarajeVacioTitulo => 'You have no vehicles yet';
+
+  @override
+  String get asistenciaGarajeVacioMensaje =>
+      'To ask for help we need to know which vehicle it is. Ask the agency to register yours.';
+
+  @override
+  String asistenciaSolicitudFolio(int id) {
+    return 'Reference $id';
+  }
+
+  @override
+  String get asistenciaSolicitudRecibida => 'Request received';
+
+  @override
+  String get asistenciaSolicitudTexto =>
+      'The agency knows you need help. Keep your phone with you and stay somewhere safe.';
+
+  @override
+  String get asistenciaSolicitudYaAbierta =>
+      'You already had an open request. It is shown here.';
+
+  @override
+  String get asistenciaSolicitudVehiculo => 'Vehicle';
+
+  @override
+  String get asistenciaSolicitudProblema => 'Problem';
+
+  @override
+  String get asistenciaSolicitudUbicacion => 'Location';
+
+  @override
+  String get asistenciaSolicitudUbicacionCompartida => 'Shared with the agency';
+
+  @override
+  String get asistenciaSolicitudUbicacionNoCompartida => 'Not shared';
+
+  @override
+  String get asistenciaSolicitudComentario => 'Comment';
+
+  @override
+  String get asistenciaSolicitudPrivacidad =>
+      'Your location is only shared while the request is open.';
+
+  @override
+  String get asistenciaSolicitudVerGuias => 'See emergency guides';
+
+  @override
   String get seguridadEquipoComprometidoTitulo => 'This device looks modified';
 
   @override
