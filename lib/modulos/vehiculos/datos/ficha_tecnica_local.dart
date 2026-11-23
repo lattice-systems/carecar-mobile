@@ -4,9 +4,9 @@ import '../dominio/vehiculo_garaje.dart';
 
 /// Respaldo de la ficha tecnica con lo que ya trae la app (codigo v1).
 ///
-/// Sirve mientras el backend no tenga `ficha_tecnica_modelo` o no haya red. Los
-/// titulos y claves viajan en espanol, igual que los datos que manda la
-/// agencia.
+/// Sirve mientras el backend no tenga `ficha_tecnica_modelo` o no haya red.
+/// Titulos y claves van como codigos (la pantalla los traduce); los valores
+/// vienen del codigo v1, en espanol.
 abstract final class FichaTecnicaLocal {
   /// `null` si el modelo no es uno de los que la app conoce.
   static FichaTecnicaVehiculo? de(VehiculoGaraje vehiculo) {
@@ -20,25 +20,25 @@ abstract final class FichaTecnicaLocal {
       delRespaldo: true,
       secciones: [
         SeccionFicha(
-          titulo: 'General',
+          codigo: 'general',
           especificaciones: [
-            EspecificacionFicha(clave: 'Carrocería', valor: f.carroceria),
-            EspecificacionFicha(clave: 'Pasajeros', valor: f.pasajeros),
+            EspecificacionFicha(codigo: 'carroceria', valor: f.carroceria),
+            EspecificacionFicha(codigo: 'pasajeros', valor: f.pasajeros),
           ],
         ),
         SeccionFicha(
-          titulo: 'Motor',
+          codigo: 'motor',
           especificaciones: [
-            EspecificacionFicha(clave: 'Propulsión', valor: f.propulsion),
-            EspecificacionFicha(clave: 'Motor', valor: f.motor),
-            EspecificacionFicha(clave: 'Potencia', valor: f.potencia),
+            EspecificacionFicha(codigo: 'propulsion', valor: f.propulsion),
+            EspecificacionFicha(codigo: 'motor', valor: f.motor),
+            EspecificacionFicha(codigo: 'potencia', valor: f.potencia),
           ],
         ),
         SeccionFicha(
-          titulo: 'Transmisión',
+          codigo: 'transmision',
           especificaciones: [
-            EspecificacionFicha(clave: 'Transmisión', valor: f.transmision),
-            EspecificacionFicha(clave: 'Tracción', valor: f.traccion),
+            EspecificacionFicha(codigo: 'transmision', valor: f.transmision),
+            EspecificacionFicha(codigo: 'traccion', valor: f.traccion),
           ],
         ),
       ],
