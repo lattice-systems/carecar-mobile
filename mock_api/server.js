@@ -428,6 +428,48 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/manuales`, (req, res) => {
   res.jsonp(manuales.map((m) => ({ id: m.id, modelo: m.modelo, anio: m.anio, url: m.url })));
 });
 
+// ── vehiculos ──
+// Ficha tecnica por modelo y ano (V2-M02.04). Simula la tabla
+// `ficha_tecnica_modelo`; el backend real la reemplaza sin cambiar el contrato.
+const FICHAS_TECNICAS = {
+  'Versa:2024': [
+    { titulo: 'Motor', especificaciones: [
+      { clave: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { clave: 'Potencia', valor: '118 hp a 6,300 rpm' },
+      { clave: 'Combustible', valor: 'Gasolina' },
+    ] },
+    { titulo: 'Transmisión', especificaciones: [
+      { clave: 'Caja', valor: 'CVT Xtronic' },
+      { clave: 'Tracción', valor: 'Delantera' },
+    ] },
+    { titulo: 'Dimensiones', especificaciones: [
+      { clave: 'Carrocería', valor: 'Sedán' },
+      { clave: 'Pasajeros', valor: '5' },
+    ] },
+  ],
+  'Kicks:2023': [
+    { titulo: 'Motor', especificaciones: [
+      { clave: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { clave: 'Potencia', valor: '118 hp a 6,300 rpm' },
+    ] },
+    { titulo: 'Transmisión', especificaciones: [
+      { clave: 'Caja', valor: 'CVT Xtronic' },
+      { clave: 'Tracción', valor: 'Delantera' },
+    ] },
+  ],
+};
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/ficha-tecnica`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+
+  // Sin ficha para ese modelo y ano responde 404: la app usa su respaldo local.
+  const secciones = FICHAS_TECNICAS[`${vehiculo.modelo}:${vehiculo.anio}`];
+  if (!secciones) return noEncontrado(req, res);
+
+  res.jsonp({ vehiculoId: vehiculo.id, modelo: vehiculo.modelo, anio: vehiculo.anio, secciones });
+});
+
 // ---------------------------------------------------------------------------
 // Servicios y tickets · APP-3.2
 // ---------------------------------------------------------------------------
