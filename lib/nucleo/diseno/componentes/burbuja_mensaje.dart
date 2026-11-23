@@ -34,7 +34,7 @@ class FuenteMensaje {
 /// La propia va a la derecha con el acento; la ajena a la izquierda sobre una
 /// superficie. Nunca pasa del 80 % del ancho. La esquina del lado de quien
 /// habla es más cerrada, como una cola. El lector de pantalla oye
-/// "<autor>: <texto>, <hora>" en un solo nodo; cada fuente es un botón aparte
+/// `autor: texto, hora` en un solo nodo; cada fuente es un botón aparte
 /// de al menos 48 de alto. Los estados de envío solo se muestran en mensajes
 /// propios.
 class BurbujaMensaje extends StatelessWidget {
@@ -91,10 +91,7 @@ class BurbujaMensaje extends StatelessWidget {
       bottomRight: _propio ? cola : radio,
     );
 
-    final etiqueta = [
-      '$nombreAutor: $texto',
-      if (hora != null) hora!,
-    ].join(', ');
+    final etiqueta = ['$nombreAutor: $texto', ?hora].join(', ');
 
     final burbuja = DecoratedBox(
       key: const ValueKey('burbuja-mensaje-fondo'),
