@@ -4,7 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 import '../../../nucleo/diseno/componentes/barra_navegacion.dart';
+import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/calendario.dart';
+import '../../../nucleo/diseno/componentes/campo_mensaje.dart';
 import '../../../nucleo/diseno/componentes/comparacion_antes_despues.dart';
 import '../../../nucleo/diseno/componentes/deslizar_para_confirmar.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -277,6 +279,46 @@ List<SeccionGaleria> seccionesCompuestos() => [
         indice: valor,
         alCambiar: cambiar,
       ),
+    ),
+  ),
+  SeccionGaleria(
+    titulo: 'Mensajes',
+    construir: (context) => Column(
+      children: [
+        const BurbujaMensaje(
+          texto: '¿Qué significa la luz naranja del motor?',
+          autor: AutorMensaje.propio,
+          nombreAutor: 'Tú',
+          hora: '10:42',
+          estado: EstadoEnvio.enviado,
+        ),
+        const SizedBox(height: Espaciado.e2),
+        BurbujaMensaje(
+          texto:
+              'Es el testigo de revisión del motor. Conviene agendar una '
+              'revisión pronto.',
+          autor: AutorMensaje.ajeno,
+          nombreAutor: 'CareCar',
+          hora: '10:42',
+          fuentes: [
+            FuenteMensaje(
+              texto: 'Manual, pág. 214',
+              etiquetaLector: 'Manual, página 214, abrir',
+              alTocar: () {},
+            ),
+          ],
+        ),
+        const SizedBox(height: Espaciado.e2),
+        BurbujaMensaje(
+          texto: '¿Y la presión de las llantas?',
+          autor: AutorMensaje.propio,
+          nombreAutor: 'Tú',
+          estado: EstadoEnvio.fallido,
+          alReintentar: () {},
+        ),
+        const SizedBox(height: Espaciado.e3),
+        CampoMensaje(alEnviar: (_) {}, alAdjuntar: () {}),
+      ],
     ),
   ),
 ];
