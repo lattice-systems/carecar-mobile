@@ -65,6 +65,41 @@
     "description": "Lo que anuncia el lector de pantalla mientras carga la disponibilidad."
   },
   "citasCargandoAgendar": "Cargando tus vehículos y los horarios del taller",
+  "citasComprobanteCargando": "Cargando tu comprobante",
+  "citasComprobanteCuando": "{fecha}, de {inicio} a {fin}",
+  "@citasComprobanteCuando": {
+    "description": "Día y horario de la cita en el comprobante.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "10:00"
+      }
+    }
+  },
+  "citasComprobanteFolio": "Folio {id}",
+  "@citasComprobanteFolio": {
+    "description": "Número de la cita en el comprobante.",
+    "placeholders": {
+      "id": {
+        "type": "int",
+        "example": "42"
+      }
+    }
+  },
+  "citasComprobanteIndicacion": "Muestra este código en recepción para registrar tu llegada.",
+  "citasComprobanteQrDescripcion": "Código QR de tu cita para recepción",
+  "citasComprobanteTitulo": "Comprobante de cita",
+  "citasComprobanteVerPdf": "Ver comprobante en PDF",
+  "citasComprobanteVerPdfDescripcion": "Comprobante en PDF de tu cita",
   "citasCargarMas": "Cargar más citas",
   "@citasCargarMas": {
     "description": "Botón de paginación."
@@ -179,6 +214,7 @@
     }
   },
   "citasListoTitulo": "Cita confirmada",
+  "citasListoVerComprobante": "Ver comprobante",
   "citasMisCitasAgendar": "Agendar cita",
   "@citasMisCitasAgendar": {
     "description": "Acción del estado vacío y de la lista."
