@@ -21,12 +21,12 @@ El workflow **IPA sin firma** ([`.github/workflows/ipa-sin-firma.yml`](../.githu
 1. Abre el repositorio en GitHub con tu cuenta (debe tener acceso a `lattice-systems/carecar-mobile`).
 2. Pestaña **Actions** → en la lista de la izquierda, **IPA sin firma**.
 3. Botón **Run workflow** → deja la rama **main** → **Run workflow**.
-4. Espera a que la corrida termine en verde (unos 5 minutos). Si falla en "Verificar la dirección del servidor", falta la variable de repositorio `API_BASE_URL` (Settings → Secrets and variables → Actions → Variables).
+4. Espera a que la corrida termine en verde (unos 5 minutos). El IPA es del flavor `produccion` (CareCar, bundle id `com.carecar.carecarMobile`).
 5. Entra a la corrida y baja hasta **Artifacts**. Haz clic en `carecar-vX.Y.Z-build<n>.ipa`: se descarga el `.ipa` directo (unos 30 MB), sin zip alrededor.
 
 El artefacto dura **30 días**. Cada versión etiquetada (`vX.Y.Z`) también trae su IPA en **Releases** (`carecar-vX.Y.Z.ipa`), junto al APK, unos minutos después de publicarse.
 
-La app apunta al servidor de la variable `API_BASE_URL` (hoy el backend en Azure, por HTTPS). No hay que configurar nada en el teléfono.
+La app apunta al backend en Azure por HTTPS (dirección por omisión del flavor `produccion`; si existe la variable de repositorio `API_BASE_URL`, la sobrescribe y debe ser `https`). No hay que configurar nada en el teléfono.
 
 Desde la terminal, si tienes `gh`:
 
@@ -119,6 +119,6 @@ Si una historia futura agrega alguna de las capacidades de la mitad de abajo, es
 | "You may create up to 10 App IDs every 7 days" | Cambiaste muchas veces el bundle id | Espera a que pase la semana y usa siempre el mismo. |
 | "Untrusted Developer" / "Desarrollador no confiable" al abrir | Falta confiar en el perfil | Paso 4.4. |
 | La app no abre y no pide nada | Falta el Modo desarrollador o la firma venció | Paso 4.1 o refirma (sección 5). |
-| La app abre pero dice que no hay conexión con el servidor | El IPA se compiló con otra `API_BASE_URL` o el servidor está caído | Revisa la variable del repositorio y genera otro IPA. |
+| La app abre pero dice que no hay conexión con el servidor | El IPA se compiló con otra `API_BASE_URL` (variable de repositorio) o el servidor está caído | Revisa la variable del repositorio y genera otro IPA. |
 
 Más ayuda: [preguntas frecuentes de Sideloadly](https://sideloadly.io/faq).

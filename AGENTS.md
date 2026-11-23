@@ -78,11 +78,11 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 
 ```bash
 flutter pub get
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emulador Android
+flutter run --flavor desarrollo -t lib/main_desarrollo.dart   # mock_api (en emulador Android usa 10.0.2.2)
 dart format lib test        # formato
 flutter analyze             # análisis estático
 flutter test                # pruebas
-flutter build apk --debug   # lo que compila CI
+flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart   # lo que compila CI (los tres flavors)
 cd mock_api && npm install && npm start   # API simulada en :3000
 ```
 

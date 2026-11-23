@@ -122,11 +122,29 @@ cd carecar-mobile
 # 2. Instalar dependencias
 flutter pub get
 
-# 3. Correr la app (API_BASE_URL es obligatorio, no hay valor por omisión)
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emulador Android
+# 3. Correr la app: siempre con flavor y su entrada (V2-T01.04)
+flutter run --flavor desarrollo -t lib/main_desarrollo.dart   # mock_api en :3000
 ```
 
-| Dónde corre la app | `API_BASE_URL` |
+### Flavors
+
+Hay tres ambientes. Cada uno fija nombre, ícono, `applicationId`/bundle id (con sufijo, así conviven instalados), dirección de la API y permiso de red:
+
+| Flavor | Nombre | Id (sufijo) | API por omisión | HTTP en claro | Comando |
+| --- | --- | --- | --- | --- | --- |
+| `desarrollo` | CareCar Dev (banda naranja) | `.dev` | mock local `:3000` (`10.0.2.2` en emulador Android) | sí | `flutter run --flavor desarrollo -t lib/main_desarrollo.dart` |
+| `pruebas` | CareCar Pruebas (banda azul) | `.pruebas` | backend en Azure | no | `flutter run --flavor pruebas -t lib/main_pruebas.dart` |
+| `produccion` | CareCar | — | backend en Azure | no | `flutter run --flavor produccion -t lib/main_produccion.dart` |
+
+Aún no hay un servidor de pruebas separado: `pruebas` apunta al mismo backend de Azure hasta que exista. `--dart-define=API_BASE_URL=...` sigue sobrescribiendo la dirección (en `pruebas` y `produccion` solo se acepta `https`).
+
+Con `API_BASE_URL` puedes apuntar a otro lado:
+
+```bash
+flutter run --flavor desarrollo -t lib/main_desarrollo.dart --dart-define=API_BASE_URL=http://IP-DE-LA-PC:8089/api/v1/app
+```
+
+| Dónde corre la app | `API_BASE_URL` (opcional: cada flavor trae la suya) |
 | --- | --- |
 | **Backend en la nube** (Azure + Neon, con datos de ejemplo) | `https://ca-agencia360-api.calmcliff-d0e7fc3b.eastus2.azurecontainerapps.io/api/v1/app` |
 | Emulador Android | `http://10.0.2.2:8080/api/v1/app` |
@@ -158,13 +176,13 @@ Módulos válidos: `asistencia`, `catalogo`, `citas`, `vehiculos` (o `todos`). U
 
 | Comando                     | Descripción                                               |
 | --------------------------- | --------------------------------------------------------- |
-| `flutter run`               | Corre la app con recarga en caliente (`r` en la terminal) |
+| `flutter run --flavor desarrollo -t lib/main_desarrollo.dart` | Corre la app con recarga en caliente (`r` en la terminal) |
 | `dart format lib test`      | Aplica el formato oficial de Dart                         |
 | `flutter analyze`           | Análisis estático con las reglas de `flutter_lints`       |
 | `flutter test`              | Corre todas las pruebas                                   |
-| `flutter build apk --debug` | Compila el APK de Android (lo mismo que revisa CI)        |
-| `flutter build ios --no-codesign` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
-| `flutter build apk --release --dart-define=API_BASE_URL=http://IP-DE-LA-PC:8089/api/v1/app` | APK para instalar en el celular |
+| `flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart` | Compila el APK de Android (CI compila los tres flavors) |
+| `flutter build ios --no-codesign --flavor produccion -t lib/main_produccion.dart` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
+| `flutter build apk --release --flavor produccion -t lib/main_produccion.dart` (agrega `--dart-define=API_BASE_URL=...` para otra API) | APK para instalar en el celular |
 | `gh workflow run ipa-sin-firma.yml --ref main` | IPA sin firmar para iPhone, compilado en GitHub (sin Mac; [guía](docs/guia-instalar-ios-sin-mac.md)) |
 | `flutter pub outdated`      | Muestra qué dependencias tienen versiones más nuevas      |
 
@@ -184,7 +202,9 @@ carecar-mobile/
 ├── plan/                  # Plan maestro v2: propósito, hitos, módulos, tablero, reparto
 ├── mock_api/              # API simulada (json-server) para desarrollo sin backend
 ├── lib/
-│   ├── main.dart          # Arranque: lee API_BASE_URL, crea la sesión y el ShadApp
+│   ├── main.dart          # arrancar(flavor): crea la sesión y el ShadApp
+│   ├── main_desarrollo.dart · main_pruebas.dart · main_produccion.dart   # una entrada por flavor
+│   ├── config/flavor.dart # Flavor: nombre, API por omisión y permiso de http en claro
 │   ├── api/               # Cliente HTTP a mano: CarecarApi (interfaz), CarecarApiHttp,
 │   │   │                  # ClienteApi (tokens y refresco), ApiConfig, excepciones
 │   │   └── modelos/       # Vehiculo, Servicio, Cita, Disponibilidad, Manual, Perfil, ...
