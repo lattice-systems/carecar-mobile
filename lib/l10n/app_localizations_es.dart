@@ -1340,6 +1340,156 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehiculosToqueCopiarVin => 'Toca para copiar';
 
   @override
+  String get asistenciaHeroeTextoDisponible =>
+      'Cuéntanos qué pasó y comparte tu ubicación para que la agencia te encuentre. Mientras llega la ayuda, estas guías te dicen qué hacer.';
+
+  @override
+  String get asistenciaPedirTitulo => 'Pedir ayuda';
+
+  @override
+  String get asistenciaPedirCargando => 'Cargando';
+
+  @override
+  String get asistenciaPedirVehiculoEncabezado =>
+      '¿Qué vehículo necesita ayuda?';
+
+  @override
+  String get asistenciaPedirSeleccionado => 'Seleccionado';
+
+  @override
+  String get asistenciaPedirTipoEncabezado => '¿Qué pasó?';
+
+  @override
+  String get asistenciaTipoLlanta => 'Llanta';
+
+  @override
+  String get asistenciaTipoBateria => 'Batería';
+
+  @override
+  String get asistenciaTipoChoque => 'Choque';
+
+  @override
+  String get asistenciaTipoSinGasolina => 'Sin gasolina';
+
+  @override
+  String get asistenciaTipoOtro => 'Otro';
+
+  @override
+  String get asistenciaUbicacionEncabezado => 'Tu ubicación';
+
+  @override
+  String get asistenciaUbicacionCompartir => 'Compartir mi ubicación';
+
+  @override
+  String get asistenciaUbicacionExplicacion =>
+      'La agencia sabrá dónde estás. Se envía una sola vez, con la app abierta, y no se vuelve a usar cuando la ayuda termina.';
+
+  @override
+  String get asistenciaUbicacionObteniendo => 'Buscando tu ubicación…';
+
+  @override
+  String get asistenciaUbicacionLista => 'Ubicación lista para enviar';
+
+  @override
+  String get asistenciaUbicacionPermisoDenegado =>
+      'No diste permiso de ubicación. Puedes intentarlo otra vez o enviar la solicitud sin ubicación y escribir dónde estás.';
+
+  @override
+  String get asistenciaUbicacionPermisoBloqueado =>
+      'El permiso de ubicación está bloqueado. Actívalo en Ajustes o envía la solicitud sin ubicación y escribe dónde estás.';
+
+  @override
+  String get asistenciaUbicacionServicioApagado =>
+      'La ubicación del teléfono está apagada. Enciéndela o envía la solicitud sin ubicación y escribe dónde estás.';
+
+  @override
+  String get asistenciaUbicacionTiempoAgotado =>
+      'No pudimos encontrarte a tiempo. Intenta otra vez o envía la solicitud sin ubicación y escribe dónde estás.';
+
+  @override
+  String get asistenciaUbicacionReintentar => 'Intentar de nuevo';
+
+  @override
+  String get asistenciaUbicacionSinUbicacion => 'Enviar sin ubicación';
+
+  @override
+  String get asistenciaComentarioEtiqueta => 'Comentario (opcional)';
+
+  @override
+  String get asistenciaComentarioEtiquetaSinUbicacion =>
+      'Dónde estás y qué pasó';
+
+  @override
+  String get asistenciaComentarioAyuda => 'Máximo 500 caracteres';
+
+  @override
+  String get asistenciaConfirmarTexto => 'Desliza para pedir ayuda';
+
+  @override
+  String get asistenciaEnviando => 'Enviando tu solicitud…';
+
+  @override
+  String get asistenciaErrorSinConexion =>
+      'Sin conexión: no pudimos enviar tu solicitud. Si es urgente, llama al 911 o a tu aseguradora.';
+
+  @override
+  String get asistenciaErrorEnviar =>
+      'No pudimos enviar tu solicitud. Intenta de nuevo.';
+
+  @override
+  String get asistenciaErrorVehiculo =>
+      'No encontramos ese vehículo. Elige otro e intenta de nuevo.';
+
+  @override
+  String get asistenciaGarajeVacioTitulo => 'Aún no tienes vehículos';
+
+  @override
+  String get asistenciaGarajeVacioMensaje =>
+      'Para pedir ayuda necesitamos saber qué vehículo es. Pide a la agencia que registre el tuyo.';
+
+  @override
+  String asistenciaSolicitudFolio(int id) {
+    return 'Folio $id';
+  }
+
+  @override
+  String get asistenciaSolicitudRecibida => 'Solicitud recibida';
+
+  @override
+  String get asistenciaSolicitudTexto =>
+      'La agencia ya sabe que necesitas ayuda. Mantén el teléfono contigo y ponte en un lugar seguro.';
+
+  @override
+  String get asistenciaSolicitudYaAbierta =>
+      'Ya tenías una solicitud abierta. Te la mostramos aquí.';
+
+  @override
+  String get asistenciaSolicitudVehiculo => 'Vehículo';
+
+  @override
+  String get asistenciaSolicitudProblema => 'Problema';
+
+  @override
+  String get asistenciaSolicitudUbicacion => 'Ubicación';
+
+  @override
+  String get asistenciaSolicitudUbicacionCompartida =>
+      'Compartida con la agencia';
+
+  @override
+  String get asistenciaSolicitudUbicacionNoCompartida => 'No compartida';
+
+  @override
+  String get asistenciaSolicitudComentario => 'Comentario';
+
+  @override
+  String get asistenciaSolicitudPrivacidad =>
+      'Tu ubicación solo se comparte mientras la solicitud esté abierta.';
+
+  @override
+  String get asistenciaSolicitudVerGuias => 'Ver guías de emergencia';
+
+  @override
   String get seguridadEquipoComprometidoTitulo =>
       'Este equipo parece modificado';
 
