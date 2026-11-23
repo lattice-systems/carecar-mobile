@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.3.0
+  version: 2.4.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -29,6 +29,17 @@ info:
     solo agrega campos o rutas opcionales; un cambio incompatible va en una ruta nueva
     (`/api/v2/app`) y la ruta anterior sigue respondiendo igual mientras exista la app v1.
 
+    Tiempo real (V2-T05.08): `GET /eventos` manda avisos por Server-Sent Events. El chat usa
+    WebSocket STOMP en `/ws` (fuera de `/api/v1/app`): el frame `CONNECT` lleva
+    `Authorization: Bearer <accessToken>`; sin token o con uno inválido el servidor responde
+    con un frame `ERROR` y cierra. Solo se puede suscribir a `/user/queue/...` y mandar a
+    `/app/...`; cada módulo que lo use (M07) documenta aquí sus destinos.
+
+    Archivos (V2-T05.09): las fotos y documentos se descargan con una URL temporal firmada que
+    arma el backend (`/api/v1/archivos/{carpeta}/{id}?expira=&firma=`, fuera de
+    `/api/v1/app`). Vence a los 15 minutos y no pide token; si venció, la app vuelve a pedir el
+    recurso que la trae.
+
     Cómo se cambia: cada historia escribe sus rutas y esquemas bajo la etiqueta de su módulo
     antes de programarlas, sin reordenar ni reformatear lo de otros, y sube la versión menor. Al
     integrar, se copia este archivo a `carecar-mobile/api/`.
@@ -51,6 +62,8 @@ tags:
     description: V2-M03.04, V2-M03.06 y V2-M03.07
   - name: Asistente
     description: V2-M24.02 y V2-M24.03 (ADR 0007)
+  - name: En vivo
+    description: V2-T05.08
 
 security:
   - bearerAuth: []
@@ -897,6 +910,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /eventos:
+    get:
+      tags: [En vivo]
+      summary: Avisos en vivo del cliente (Server-Sent Events)
+      description: |
+        V2-T05.08 · Conexión abierta con `Accept: text/event-stream`. Cuando cambia una orden de
+        servicio de un vehículo del cliente llega el evento `orden` con `data` en JSON
+        (`AvisoOrden`); la app vuelve a consultar la orden. Llega un comentario de latido cada
+        25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
+      responses:
+        '200':
+          description: Flujo de eventos
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/AvisoOrden'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1646,6 +1680,21 @@ components:
           format: int64
         totalPaginas:
           type: integer
+
+    AvisoOrden:
+      type: object
+      description: V2-T05.08 · `data` del evento `orden`
+      required: [ordenId, vehiculoId, estatus]
+      properties:
+        ordenId:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        estatus:
+          type: string
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
 
     Problema:
       type: object
