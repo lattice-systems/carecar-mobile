@@ -26,10 +26,7 @@ Widget _app(RepositorioCitas repo, {Escenario escenario = Escenario.claro}) =>
     ProviderScope(
       overrides: [repositorioCitasProvider.overrideWithValue(repo)],
       child: conTemaPista(
-        const PantallaComprobanteCita(
-          citaId: 7,
-          fabricaVisorPdf: _visorFalso,
-        ),
+        const PantallaComprobanteCita(citaId: 7, fabricaVisorPdf: _visorFalso),
         escenario: escenario,
       ),
     );
