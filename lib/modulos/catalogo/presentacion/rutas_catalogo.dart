@@ -6,6 +6,7 @@ import '../dominio/comparativa.dart';
 import 'pantalla_calculadora.dart';
 import 'pantalla_catalogo.dart';
 import 'pantalla_comparador.dart';
+import 'pantalla_mis_estimaciones.dart';
 import 'pantalla_detalle_modelo.dart';
 
 /// Camino del catalogo de modelos.
@@ -26,6 +27,9 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
 /// Camino de la comparativa: `/catalogo/comparar?ids=1,2,3`.
 const rutaComparador = '$rutaCatalogo/comparar';
 
+/// Camino de las estimaciones guardadas: `/catalogo/estimaciones`.
+const rutaMisEstimaciones = '$rutaCatalogo/estimaciones';
+
 /// Camino de la calculadora de toma a cuenta: `/catalogo/calculadora`.
 const rutaCalculadora = '$rutaCatalogo/calculadora';
 
@@ -44,8 +48,14 @@ final rutasCatalogo = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCatalogo()),
     routes: [
-      // Van antes de ':id' para que "calculadora" y "comparar" no se lean como
-      // un id.
+      // Van antes de ':id' para que "calculadora", "comparar" y "estimaciones"
+      // no se lean como un id.
+      GoRoute(
+        path: 'estimaciones',
+        name: 'mis-estimaciones',
+        builder: (context, state) =>
+            _conTemaPista(context, const PantallaMisEstimaciones()),
+      ),
       GoRoute(
         path: 'calculadora',
         name: 'calculadora-toma-a-cuenta',

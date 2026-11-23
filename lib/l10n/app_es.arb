@@ -904,5 +904,46 @@
         "type": "String"
       }
     }
+  },
+  "misEstimacionesTitulo": "Mis estimaciones",
+  "@misEstimacionesTitulo": {
+    "description": "Título de la lista de estimaciones de toma a cuenta guardadas."
+  },
+  "misEstimacionesCargando": "Cargando tus estimaciones",
+  "@misEstimacionesCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga la lista."
+  },
+  "misEstimacionesVacioTitulo": "Aún no tienes estimaciones",
+  "@misEstimacionesVacioTitulo": {
+    "description": "Título cuando el cliente no ha estimado nada."
+  },
+  "misEstimacionesVacioMensaje": "Cuando calcules cuánto valdría tu auto a cuenta de uno nuevo, la verás aquí.",
+  "@misEstimacionesVacioMensaje": {
+    "description": "Explicación de la lista vacía."
+  },
+  "misEstimacionesVacioAccion": "Calcular una estimación",
+  "@misEstimacionesVacioAccion": {
+    "description": "Botón de la lista vacía que abre la calculadora."
+  },
+  "misEstimacionesFila": "{fecha}, {rango}",
+  "@misEstimacionesFila": {
+    "description": "Subtítulo de cada estimación guardada: fecha y rango.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      },
+      "rango": {
+        "type": "String"
+      }
+    }
+  },
+  "misEstimacionesVerMas": "Ver más",
+  "@misEstimacionesVerMas": {
+    "description": "Botón que pide la siguiente página de estimaciones."
+  },
+  "misEstimacionesErrorMas": "No pudimos cargar más estimaciones. Intenta de nuevo.",
+  "@misEstimacionesErrorMas": {
+    "description": "Aviso cuando falla la siguiente página."
   }
 }

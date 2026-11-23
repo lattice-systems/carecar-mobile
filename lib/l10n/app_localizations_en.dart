@@ -697,4 +697,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String calculadoraDiferenciaCubierta(String precio) {
     return 'What your car could be worth would cover the list price, $precio. This is a non-binding estimate.';
   }
+
+  @override
+  String get misEstimacionesTitulo => 'My estimates';
+
+  @override
+  String get misEstimacionesCargando => 'Loading your estimates';
+
+  @override
+  String get misEstimacionesVacioTitulo => 'You have no estimates yet';
+
+  @override
+  String get misEstimacionesVacioMensaje =>
+      'When you estimate what your car would be worth as a trade-in, you will see it here.';
+
+  @override
+  String get misEstimacionesVacioAccion => 'Calculate an estimate';
+
+  @override
+  String misEstimacionesFila(DateTime fecha, String rango) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, $rango';
+  }
+
+  @override
+  String get misEstimacionesVerMas => 'Show more';
+
+  @override
+  String get misEstimacionesErrorMas =>
+      'We could not load more estimates. Try again.';
 }

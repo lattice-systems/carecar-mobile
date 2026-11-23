@@ -694,4 +694,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String calculadoraDiferenciaCubierta(String precio) {
     return 'Con lo que podría valer tu auto alcanzaría para el precio de lista, $precio. Es una estimación no vinculante.';
   }
+
+  @override
+  String get misEstimacionesTitulo => 'Mis estimaciones';
+
+  @override
+  String get misEstimacionesCargando => 'Cargando tus estimaciones';
+
+  @override
+  String get misEstimacionesVacioTitulo => 'Aún no tienes estimaciones';
+
+  @override
+  String get misEstimacionesVacioMensaje =>
+      'Cuando calcules cuánto valdría tu auto a cuenta de uno nuevo, la verás aquí.';
+
+  @override
+  String get misEstimacionesVacioAccion => 'Calcular una estimación';
+
+  @override
+  String misEstimacionesFila(DateTime fecha, String rango) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, $rango';
+  }
+
+  @override
+  String get misEstimacionesVerMas => 'Ver más';
+
+  @override
+  String get misEstimacionesErrorMas =>
+      'No pudimos cargar más estimaciones. Intenta de nuevo.';
 }
