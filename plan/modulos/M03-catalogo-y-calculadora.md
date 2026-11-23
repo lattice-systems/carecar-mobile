@@ -117,3 +117,11 @@ Las estimaciones guardadas se ven en `/catalogo/estimaciones`, desde el botón d
 - **Estados:** cargando con esqueleto, datos, vacío con botón a la calculadora, error con reintento y sin conexión, y recargar jalando hacia abajo.
 - **Pendiente de otra historia:** pedir una valuación formal desde una estimación es V2-M26.01, que depende de esta.
 - **Pruebas:** `test/modulos/catalogo/mis_estimaciones_test.dart` cubre el repositorio, la lista, el detalle, la paginación y su fallo, los cinco estados, claro, oscuro y letra grande, las guías de accesibilidad y las rutas.
+
+## Avance de V2-M03.06
+
+El backend ya está construido (backend#84). La fórmula vive en `CalculadoraTomaCuenta`, sin Spring ni base y con `BigDecimal` para que los resultados sean exactos, y sus valores salen de `parametro_toma_cuenta`. La migración `V34` crea esa tabla y `estimacion_toma_cuenta`, y `POST` y `GET /api/v1/app/toma-a-cuenta/estimaciones` ya responden según el contrato que la app usa.
+
+- **Pruebas en el backend:** `CalculadoraTomaCuentaTest` cubre un auto nuevo, con los kilómetros esperados, con el doble y con cero, cada estado, los límites de 0.5 y 1.2 del ajuste por kilómetros y el redondeo a 100. `TomaCuentaIntegrationTest` cubre 201, 400, 404, 422, 401 y 403, el orden y la paginación del historial y que una estimación guardada no cambie si cambia el parámetro.
+- **Pendiente del PO:** los valores reales de `parametro_toma_cuenta`. La migración no trae filas, así que contra el backend real todo auto responde 422 (`SIN_PARAMETROS_DE_VALUACION`) hasta que se capturen por SQL, porque el ERP está congelado. Los parámetros de `mock_api` son solo ejemplos.
+- **Pendiente del PO:** el texto de la leyenda no vinculante es provisional y debe revisarlo.
