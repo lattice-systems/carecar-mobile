@@ -43,3 +43,7 @@ La guantera digital: póliza de seguro, tarjeta de circulación, verificación, 
 | V2-M09.04 | Como cliente quiero alertas antes de que venza un documento | Push 30, 7 y 1 día antes · configurable | ✅ | V2-M06.02 |
 | V2-M09.05 | Como cliente quiero ver mis documentos sin conexión | Copia local cifrada de los marcados como "disponible sin red" | | V2-M21.01 |
 | V2-M09.06 | Como cliente quiero un calendario con todos mis vencimientos | Vista mensual y lista | | V2-M09.01 |
+
+## Privacidad de pantalla
+
+Las pantallas con documentos y su visor se envuelven con `PantallaSegura` (`lib/nucleo/privacidad/`, V2-M22.06) para bloquear capturas en Android; ver [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Su prueba usa `ProteccionDeCapturaFake`.
