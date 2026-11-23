@@ -1,0 +1,120 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../nucleo/api/proveedores_api.dart';
+import '../datos/repositorio_asistente_api.dart';
+import '../dominio/repositorio_asistente.dart';
+
+/// Repositorio del modulo. En pruebas:
+/// `repositorioAsistenteProvider.overrideWithValue(...)`.
+final repositorioAsistenteProvider = Provider<RepositorioAsistente>(
+  (ref) => RepositorioAsistenteApi(ref.watch(carecarApiProvider)),
+  name: 'repositorioAsistenteProvider',
+);
+
+/// Quien escribio un mensaje de la conversacion.
+enum AutorConversacion { cliente, asistente }
+
+/// Estado de envio de una pregunta del cliente.
+enum EnvioPregunta { enviando, enviada, fallida }
+
+/// Un mensaje de la conversacion con el asistente.
+class MensajeConversacion {
+  const MensajeConversacion({
+    required this.autor,
+    this.texto = '',
+    this.fuentes = const [],
+    this.envio = EnvioPregunta.enviada,
+    this.fallo,
+  });
+
+  final AutorConversacion autor;
+
+  /// Texto del mensaje. En una respuesta con [fallo] viene vacio: la pantalla
+  /// pone el texto traducido del fallo.
+  final String texto;
+  final List<CitaDelManual> fuentes;
+  final EnvioPregunta envio;
+  final FalloAsistente? fallo;
+
+  MensajeConversacion conEnvio(EnvioPregunta nuevo) => MensajeConversacion(
+    autor: autor,
+    texto: texto,
+    fuentes: fuentes,
+    envio: nuevo,
+    fallo: fallo,
+  );
+}
+
+/// Conversacion con el asistente sobre un vehiculo. Vive mientras la pantalla
+/// esta abierta: no se guarda en el telefono.
+class ConversacionAsistente extends Notifier<List<MensajeConversacion>> {
+  ConversacionAsistente(this.vehiculoId);
+
+  final int vehiculoId;
+
+  @override
+  List<MensajeConversacion> build() => const [];
+
+  /// `true` mientras espera una respuesta: no se manda otra pregunta encima.
+  bool get esperando => state.any((m) => m.envio == EnvioPregunta.enviando);
+
+  Future<void> preguntar(String pregunta) async {
+    if (esperando) return;
+    state = [
+      ...state,
+      MensajeConversacion(
+        autor: AutorConversacion.cliente,
+        texto: pregunta,
+        envio: EnvioPregunta.enviando,
+      ),
+    ];
+    await _resolver(state.length - 1);
+  }
+
+  /// Vuelve a mandar una pregunta que fallo.
+  Future<void> reintentar(int indice) async {
+    if (esperando) return;
+    final mensajes = [...state];
+    // Quita la explicacion del fallo que venia justo despues.
+    if (indice + 1 < mensajes.length && mensajes[indice + 1].fallo != null) {
+      mensajes.removeAt(indice + 1);
+    }
+    mensajes[indice] = mensajes[indice].conEnvio(EnvioPregunta.enviando);
+    state = mensajes;
+    await _resolver(indice);
+  }
+
+  Future<void> _resolver(int indice) async {
+    final pregunta = state[indice].texto;
+    MensajeConversacion respuesta;
+    var envio = EnvioPregunta.enviada;
+    try {
+      final r = await ref
+          .read(repositorioAsistenteProvider)
+          .preguntar(vehiculoId: vehiculoId, pregunta: pregunta);
+      respuesta = MensajeConversacion(
+        autor: AutorConversacion.asistente,
+        texto: r.texto,
+        fuentes: r.encontrado ? r.fuentes : const [],
+      );
+    } on FalloAsistente catch (fallo) {
+      if (fallo.sePuedeReintentar) envio = EnvioPregunta.fallida;
+      respuesta = MensajeConversacion(
+        autor: AutorConversacion.asistente,
+        fallo: fallo,
+      );
+    }
+    if (!ref.mounted) return;
+    final mensajes = [...state];
+    mensajes[indice] = mensajes[indice].conEnvio(envio);
+    mensajes.insert(indice + 1, respuesta);
+    state = mensajes;
+  }
+}
+
+/// Conversacion por vehiculo; se descarta al cerrar la pantalla.
+final conversacionAsistenteProvider = NotifierProvider.autoDispose
+    .family<ConversacionAsistente, List<MensajeConversacion>, int>(
+      ConversacionAsistente.new,
+      name: 'conversacionAsistenteProvider',
+    );

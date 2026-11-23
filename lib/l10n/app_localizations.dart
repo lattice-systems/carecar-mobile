@@ -2053,6 +2053,108 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.'**
   String get seguridadEquipoComprometidoMensaje;
+
+  /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pregúntale a tu auto'**
+  String get asistenteTitulo;
+
+  /// Aviso fijo de que las respuestas las genera una IA (ADR 0007).
+  ///
+  /// In es, this message translates to:
+  /// **'Respuestas generadas con IA a partir del manual de tu auto. Ante una falla, consulta a tu asesor.'**
+  String get asistenteAvisoIa;
+
+  /// Título cuando aún no hay preguntas.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué quieres saber de tu auto?'**
+  String get asistenteVacioTitulo;
+
+  /// Explica cómo responde el asistente.
+  ///
+  /// In es, this message translates to:
+  /// **'Respondo con el manual de tu auto y te digo en qué página lo dice.'**
+  String get asistenteVacioMensaje;
+
+  /// Texto de ayuda del campo para preguntar.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu pregunta'**
+  String get asistenteSugerencia;
+
+  /// Nombre del botón para enviar la pregunta.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar'**
+  String get asistenteEnviar;
+
+  /// Quién habla, para el lector de pantalla, en las preguntas del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tú'**
+  String get asistenteTu;
+
+  /// Quién habla, para el lector de pantalla, en las respuestas.
+  ///
+  /// In es, this message translates to:
+  /// **'CareCar'**
+  String get asistenteNombre;
+
+  /// Mientras espera la respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando en tu manual…'**
+  String get asistentePensando;
+
+  /// Debajo de una pregunta que falló.
+  ///
+  /// In es, this message translates to:
+  /// **'No se envió'**
+  String get asistenteNoSeEnvio;
+
+  /// Botón para volver a mandar una pregunta que falló.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get asistenteReintentar;
+
+  /// Respuesta cuando no hay conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'No me pude conectar. Revisa tu internet y vuelve a intentar.'**
+  String get asistenteSinConexion;
+
+  /// Respuesta cuando el servicio de IA no responde o se acabó la cuota del día.
+  ///
+  /// In es, this message translates to:
+  /// **'El asistente no está disponible por ahora. Intenta más tarde o pregúntale a tu asesor.'**
+  String get asistenteNoDisponible;
+
+  /// Respuesta cuando el modelo y año no tienen manual con texto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto aún no tiene un manual que pueda leer. Pregúntale a tu asesor en la agencia.'**
+  String get asistenteSinManual;
+
+  /// Respuesta cuando se pasa del límite diario.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hiciste tus preguntas de hoy. Mañana puedes hacer más.'**
+  String get asistenteLimite;
+
+  /// Cita de una página del manual al pie de una respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual, pág. {pagina}'**
+  String asistenteFuente(int pagina);
+
+  /// Lo que oye el lector de pantalla en una cita del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual, página {pagina}, abrir'**
+  String asistenteFuenteLector(int pagina);
 }
 
 class _AppLocalizationsDelegate
