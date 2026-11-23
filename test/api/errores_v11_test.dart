@@ -95,6 +95,9 @@ void main() {
         'ASISTENTE_SIN_MANUAL',
         'ASISTENTE_LIMITE',
         'ASISTENTE_NO_DISPONIBLE',
+        'SOLICITUD_ABIERTA',
+        'FUERA_DE_COBERTURA',
+        'DIRECCION_EN_USO',
       };
 
       final queLaAppMapea = CodigoProblema.values
