@@ -681,4 +681,17 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get calculadoraErrorGenerico =>
       'Algo salió mal al calcular. Intenta de nuevo en un momento.';
+
+  @override
+  String get calculadoraDiferenciaTitulo => 'Diferencia a pagar';
+
+  @override
+  String calculadoraDiferenciaExplicacion(String precio) {
+    return 'Es el precio de lista, $precio, menos el rango estimado de tu auto. También es una estimación no vinculante.';
+  }
+
+  @override
+  String calculadoraDiferenciaCubierta(String precio) {
+    return 'Con lo que podría valer tu auto alcanzaría para el precio de lista, $precio. Es una estimación no vinculante.';
+  }
 }

@@ -640,5 +640,22 @@
   "calculadoraErrorDatos": "We could not calculate the estimate. Check the data and try again.",
   "calculadoraErrorSinConexion": "No connection. Connect and try again.",
   "calculadoraErrorNoEncontrado": "We could not find that car or model. Go back and try again.",
-  "calculadoraErrorGenerico": "Something went wrong while calculating. Try again in a moment."
+  "calculadoraErrorGenerico": "Something went wrong while calculating. Try again in a moment.",
+  "calculadoraDiferenciaTitulo": "Amount left to pay",
+  "calculadoraDiferenciaExplicacion": "It is the list price, {precio}, minus the estimated range for your car. It is also a non-binding estimate.",
+  "@calculadoraDiferenciaExplicacion": {
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraDiferenciaCubierta": "What your car could be worth would cover the list price, {precio}. This is a non-binding estimate.",
+  "@calculadoraDiferenciaCubierta": {
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  }
 }

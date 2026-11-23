@@ -1159,6 +1159,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Algo salió mal al calcular. Intenta de nuevo en un momento.'**
   String get calculadoraErrorGenerico;
+
+  /// Título de la tarjeta con lo que faltaría pagar por el modelo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Diferencia a pagar'**
+  String get calculadoraDiferenciaTitulo;
+
+  /// Explica cómo sale la diferencia a pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Es el precio de lista, {precio}, menos el rango estimado de tu auto. También es una estimación no vinculante.'**
+  String calculadoraDiferenciaExplicacion(String precio);
+
+  /// Cuando incluso el valor más bajo del auto cubre el precio del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Con lo que podría valer tu auto alcanzaría para el precio de lista, {precio}. Es una estimación no vinculante.'**
+  String calculadoraDiferenciaCubierta(String precio);
 }
 
 class _AppLocalizationsDelegate
