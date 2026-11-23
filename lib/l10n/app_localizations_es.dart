@@ -502,11 +502,41 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehiculosFichaCargando => 'Cargando la ficha técnica';
 
   @override
+  String get vehiculosFichaClaveCarroceria => 'Carrocería';
+
+  @override
+  String get vehiculosFichaClaveMotor => 'Motor';
+
+  @override
+  String get vehiculosFichaClavePasajeros => 'Pasajeros';
+
+  @override
+  String get vehiculosFichaClavePotencia => 'Potencia';
+
+  @override
+  String get vehiculosFichaClavePropulsion => 'Propulsión';
+
+  @override
+  String get vehiculosFichaClaveTraccion => 'Tracción';
+
+  @override
+  String get vehiculosFichaClaveTransmision => 'Transmisión';
+
+  @override
   String get vehiculosFichaNota =>
       'Datos del modelo y año. La ficha exacta de tu unidad está en su manual.';
 
   @override
   String get vehiculosFichaRespaldo => 'Mostrando la ficha guardada en la app';
+
+  @override
+  String get vehiculosFichaSeccionGeneral => 'General';
+
+  @override
+  String get vehiculosFichaSeccionMotor => 'Motor';
+
+  @override
+  String get vehiculosFichaSeccionTransmision => 'Transmisión';
 
   @override
   String get vehiculosFichaTitulo => 'Ficha técnica';
