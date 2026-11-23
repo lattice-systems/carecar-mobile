@@ -156,6 +156,7 @@ flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8080/api/v1/app   # emula
 | `flutter build apk --debug` | Compila el APK de Android (lo mismo que revisa CI)        |
 | `flutter build ios --no-codesign` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
 | `flutter build apk --release --dart-define=API_BASE_URL=http://IP-DE-LA-PC:8089/api/v1/app` | APK para instalar en el celular |
+| `gh workflow run ipa-sin-firma.yml --ref main` | IPA sin firmar para iPhone, compilado en GitHub (sin Mac; [guía](docs/guia-instalar-ios-sin-mac.md)) |
 | `flutter pub outdated`      | Muestra qué dependencias tienen versiones más nuevas      |
 
 ---
@@ -167,7 +168,7 @@ carecar-mobile/
 ├── AGENTS.md              # Reglas para personas y agentes (CLAUDE.md y GEMINI.md apuntan aquí)
 ├── .claude/               # Subagentes de Claude Code y configuración sin atribución
 ├── .githooks/             # Hook commit-msg que quita co-autores de IA
-├── .github/workflows/     # CI, Release, Autoría, CodeQL y Dependency Review
+├── .github/workflows/     # CI, Release, IPA sin firma, Autoría, CodeQL y Dependency Review
 ├── api/                   # Copia del contrato OpenAPI de la app (fuente de verdad)
 ├── assets/                # Logo, imágenes y manuales PDF incluidos
 ├── docs/                  # Ficha técnica, decisiones, diseño v2, convenciones, manuales
@@ -266,7 +267,9 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 
 Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos (5-6 y unos 3 minutos); el de iOS corre en un runner de macOS y compila sin firmar. Para no gastar tiempo: el push a una rama no dispara CI (lo cubre su PR; ábrelo temprano, aunque sea en borrador) y si el PR solo cambia documentación (`docs/`, `plan/`, `.claude/`, `.githooks/` o `.md`) los cinco jobs se saltan y cuentan como aprobados.
 
-**Versión y releases.** La versión vive solo en `version:` de `pubspec.yaml`; el número de build lo pone CI (`github.run_number`). Para sacar una versión: sube la versión en `pubspec.yaml` por PR, intégrala a `main` y corre `git tag vX.Y.Z && git push origin vX.Y.Z`. El workflow `Release` verifica que la etiqueta coincida con el pubspec y publica un GitHub Release con el APK, apuntando al servidor de la variable de repositorio `API_BASE_URL` (si falta, el workflow falla; hoy firmado con la llave de debug; detalle en [`plan/modulos/T04-entrega-continua.md`](plan/modulos/T04-entrega-continua.md)).
+**Versión y releases.** La versión vive solo en `version:` de `pubspec.yaml`; el número de build lo pone CI (`github.run_number`). Para sacar una versión: sube la versión en `pubspec.yaml` por PR, intégrala a `main` y corre `git tag vX.Y.Z && git push origin vX.Y.Z`. El workflow `Release` verifica que la etiqueta coincida con el pubspec y publica un GitHub Release con el APK, apuntando al servidor de la variable de repositorio `API_BASE_URL` (si falta, el workflow falla; hoy firmado con la llave de debug; detalle en [`plan/modulos/T04-entrega-continua.md`](plan/modulos/T04-entrega-continua.md)). Después le adjunta el IPA sin firmar de iOS.
+
+**iPhone sin Mac.** El workflow `IPA sin firma` (solo a mano: Actions → IPA sin firma → Run workflow, o `gh workflow run ipa-sin-firma.yml --ref main`) compila en macOS un IPA sin firmar y lo deja 30 días como artefacto de la corrida. Se instala desde Windows con Sideloadly y un Apple ID gratis: paso a paso, límites (7 días, 3 apps) y capacidades que no funcionan en [`docs/guia-instalar-ios-sin-mac.md`](docs/guia-instalar-ios-sin-mac.md). No corre en cada push porque los minutos de macOS son caros.
 
 Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
 
@@ -333,6 +336,7 @@ Los pendientes ya no viven aquí: todo está en el [plan maestro v2](plan/README
 - **Sistema de diseño v2:** [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md)
 - **Decisiones de arquitectura:** [`docs/decisiones/`](docs/decisiones/README.md)
 - **Convenciones de ramas, commits y PR:** [`docs/convenciones-commits.md`](docs/convenciones-commits.md)
+- **Instalar en iPhone sin Mac (Sideloadly):** [`docs/guia-instalar-ios-sin-mac.md`](docs/guia-instalar-ios-sin-mac.md)
 - **Backend:** [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)
 - **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)
 - **ERP frontend:** [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend)

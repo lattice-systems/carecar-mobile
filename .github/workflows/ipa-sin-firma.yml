@@ -1,0 +1,117 @@
+name: IPA sin firma
+
+# Genera un IPA de iOS SIN FIRMAR para instalarlo con Sideloadly y un Apple ID
+# gratis: el equipo no tiene Mac ni cuenta de Apple Developer y solo hay un
+# iPhone. Sideloadly lo firma en la PC de quien lo instala. Paso a paso en
+# docs/guia-instalar-ios-sin-mac.md.
+#
+# No corre en cada push: los minutos de macOS cuestan diez veces los de Linux.
+# Se lanza a mano (Actions → IPA sin firma → Run workflow) y lo llama Release
+# al empujar una etiqueta vX.Y.Z, para adjuntar el IPA junto al APK.
+on:
+  workflow_dispatch: {}
+  workflow_call:
+    inputs:
+      etiqueta:
+        description: "Etiqueta vX.Y.Z del release: da el nombre del IPA y la versión."
+        type: string
+        required: true
+    outputs:
+      archivo:
+        description: "Nombre del IPA (y del artefacto), p. ej. carecar-v1.0.0.ipa."
+        value: ${{ jobs.ipa.outputs.archivo }}
+
+permissions:
+  contents: read
+
+# La misma versión de Flutter que ci.yml y release.yml.
+env:
+  FLUTTER_VERSION: "3.47.x"
+
+jobs:
+  ipa:
+    name: IPA sin firma (iOS)
+    runs-on: macos-latest
+    timeout-minutes: 45
+    outputs:
+      archivo: ${{ steps.version.outputs.archivo }}
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      # Igual que en release.yml: sin API_BASE_URL la app solo muestra el error
+      # de arranque, así que se falla antes de gastar minutos de macOS.
+      - name: Verificar la dirección del servidor (API_BASE_URL)
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          if [ -z "$API_BASE_URL" ]; then
+            echo "::error::Falta la variable de repositorio API_BASE_URL. Créala en Settings → Secrets and variables → Actions → Variables y vuelve a lanzar el workflow."
+            exit 1
+          fi
+
+      # La versión sale de pubspec.yaml (fuente única, V2-T04.01) y el número
+      # de build de la corrida. Desde Release, el nombre es la etiqueta
+      # (carecar-vX.Y.Z.ipa, igual que el APK); a mano lleva el número de build
+      # para distinguir un IPA de otro (carecar-vX.Y.Z-build<n>.ipa).
+      - name: Calcular la versión y el nombre del IPA
+        id: version
+        env:
+          ETIQUETA: ${{ inputs.etiqueta }}
+          NUMERO: ${{ github.run_number }}
+        run: |
+          version=$(sed -n 's/^version:[[:space:]]*\([0-9][0-9.]*\).*$/\1/p' pubspec.yaml | head -n 1)
+          if [ -z "$version" ]; then
+            echo "::error::No se pudo leer 'version' de pubspec.yaml."
+            exit 1
+          fi
+          if [ -n "$ETIQUETA" ]; then
+            nombre="$ETIQUETA"
+          else
+            nombre="v$version-build$NUMERO"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "archivo=carecar-$nombre.ipa" >> "$GITHUB_OUTPUT"
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      # --no-codesign: sin certificados ni perfiles de Apple. Sideloadly firma
+      # después con el Apple ID de quien instala.
+      - name: Compilar iOS en release sin firmar
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          NUMERO: ${{ github.run_number }}
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: flutter build ios --release --no-codesign --build-name="$VERSION" --build-number="$NUMERO" --dart-define=API_BASE_URL="$API_BASE_URL"
+
+      # Un IPA es un zip con la app dentro de Payload/. -y guarda los enlaces
+      # simbólicos de los frameworks tal cual.
+      - name: Empaquetar el IPA
+        env:
+          ARCHIVO: ${{ steps.version.outputs.archivo }}
+        run: |
+          rm -rf Payload
+          mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry "$ARCHIVO" Payload
+          unzip -l "$ARCHIVO" | grep -q ' Payload/Runner.app/Info.plist$' || { echo "::error::El IPA no trae Payload/Runner.app/Info.plist."; exit 1; }
+          ls -lh "$ARCHIVO"
+
+      # archive: false sube el .ipa tal cual: desde el navegador se descarga el
+      # IPA directo, sin un zip alrededor.
+      - name: Subir el IPA como artefacto
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.version.outputs.archivo }}
+          path: ${{ steps.version.outputs.archivo }}
+          archive: false
+          if-no-files-found: error
+          retention-days: 30
