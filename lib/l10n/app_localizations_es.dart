@@ -1223,4 +1223,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vehiculosToqueCopiarVin => 'Toca para copiar';
+
+  @override
+  String get seguridadEquipoComprometidoTitulo =>
+      'Este equipo parece modificado';
+
+  @override
+  String get seguridadEquipoComprometidoMensaje =>
+      'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.';
 }
