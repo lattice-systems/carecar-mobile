@@ -44,6 +44,7 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 | GET | `/servicios/{id}` · `/servicios/{id}/ticket` | Detalle nuevo; ticket existe. |
 | GET | `/agenda/disponibilidad?desde=&hasta=` | Existe; rango de fechas. |
 | GET/POST | `/citas` · POST `/citas/{id}/cancelar` | Existen; POST suma `motivo` y el 409 por cita duplicada suma el código `CITA_DUPLICADA` (hoy responde sin código; el cupo lleno ya usa `FRANJA_SIN_CUPO`). |
+| POST | `/citas/{id}/reprogramar` | **Nuevo (propuesto por V2-M02.13; no está en el contrato v1).** Cuerpo `{franjaId, fecha}` (`AAAA-MM-DD`). Cambia la cita confirmada futura a la franja nueva, la ocupa y libera la anterior **en la misma operación** (una transacción). Responde 200 con la cita (`Cita`) ya en la franja nueva. 409 `FRANJA_SIN_CUPO` si la nueva se llenó; 409 `CITA_NO_REPROGRAMABLE` si la cita ya no está confirmada; 409 `FUERA_DE_PLAZO` si ya empezó; 404 si no existe o no es del cliente. Simulado en `mock_api`. Historia `Backend:` pendiente. |
 | GET | `/citas/{id}/ticket` | Existe: PDF del comprobante con la foto del vehículo. V2-M02.11 le suma el QR firmado. |
 
 ## Historias
@@ -145,3 +146,16 @@ Cancelar vive en `PantallaMisCitas` (V2-M02.09). Estado: **En revisión**. Solo 
 - **Errores**: 409 (ya no está confirmada o pasó el plazo) se vuelve `CitaNoModificable`: la pantalla lo explica y recarga la lista real. Cualquier otro fallo muestra «No pudimos cancelar tu cita» y deja reintentar. El aviso de éxito dice que el horario quedó libre.
 - **Pruebas**: grupo «V2-M02.10» de `pantalla_mis_citas_test` (solo confirmadas futuras, mantener, confirmar, 409 y error de red) y `repositorio_citas_test` (traducción de 409, cupo liberado).
 - **Pendientes**: la ventana de anticipación para cancelar sigue abierta (PO-4): el mock y la app solo exigen que la cita no haya empezado; el golden de la pantalla espera a V2-T03.02.
+
+## Avance de V2-M02.13
+
+Pantalla `PantallaReprogramarCita` en `lib/modulos/citas/` (ruta `/citas/:id/reprogramar`, exige sesión); se entra con «Reprogramar» en una cita de «Mis citas». Estado: **En revisión**. Solo la parte de app y `mock_api`: **el endpoint no existe en el backend ni en el contrato v1**.
+
+- **Flujo**: cita actual (fecha y hora), calendario y franjas del taller con los mismos componentes y proveedores de V2-M02.07/08, y «Cambiar a este horario» (deshabilitado hasta elegir franja). Al confirmar, `RepositorioCitas.reprogramar` manda la franja nueva; la cita queda confirmada en ella y la pantalla avisa que el horario anterior quedó libre.
+- **Contrato propuesto**: `POST /citas/{id}/reprogramar` con `{franjaId, fecha}`; ver la fila nueva en la tabla API de arriba. Códigos: 409 `FRANJA_SIN_CUPO`, 409 `CITA_NO_REPROGRAMABLE`, 409 `FUERA_DE_PLAZO`. La app traduce `FRANJA_SIN_CUPO` a `FranjaSinCupo` (ofrece hasta 3 franjas cercanas, como al agendar) y cualquier otro 409 a `CitaNoModificable`, así no depende de los códigos nuevos hasta que el contrato v2 los declare (no se tocó `CodigoProblema` por la prueba de contrato contra el YAML v1).
+- **Atomicidad**: «la anterior se libera en la misma operación» es una garantía del backend. El `mock_api` ocupa la nueva y libera la anterior juntas; `RepositorioCitasFake` hace lo mismo y hay pruebas.
+- **API del núcleo**: `CarecarApi.reprogramarCita(id, franjaId:, fecha:)`, implementado en `CarecarApiHttp` y delegado en `CarecarApiConCache`; `ApiFalsa` lo simula para pruebas.
+- **Cita de origen**: se busca en la lista ya cargada de «Mis citas» (primera página); si no está o ya no es una confirmada futura, la pantalla lo explica («No encontramos esta cita») en vez de romper. Entrar por enlace directo a una cita fuera de la primera página no se resuelve hasta que exista `GET /citas/{id}`.
+- **Cinco estados**: esqueleto, datos, vacío (cita no encontrada o no modificable), error con reintento y sin conexión; se recarga jalando hacia abajo. Pruebas en claro, oscuro y letra al 200 %.
+- **Pruebas**: `pantalla_reprogramar_cita_test`, `ruta_reprogramar_cita_test`, `repositorio_citas_test` (API y fake) y `test/api/carecar_api_http_test.dart`.
+- **Pendientes**: historia `Backend:` de `POST /citas/{id}/reprogramar` (misma ventana de plazo que cancelar, PO-4) y su actualización en el YAML y en `CodigoProblema`; `GET /citas/{id}`; golden de la pantalla (V2-T03.02).
