@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../modulos/asistencia/asistencia.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
@@ -20,6 +21,7 @@ import 'rutas_del_nucleo.dart';
 List<RouteBase> rutasDeLaApp() => [
   ...rutasDelNucleo(),
   // --- Un renglon por modulo, en orden alfabetico ---
+  ...rutasAsistencia,
   ...rutasCatalogo,
   ...rutasCitas,
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.
