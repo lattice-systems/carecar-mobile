@@ -121,3 +121,16 @@ Pantalla `PantallaAgendarCita` en `lib/modulos/citas/` (ruta `/citas/agendar`, e
 - **Textos**: claves `citas*` en los ARB es y en.
 - **Pruebas**: `test/modulos/citas/` (cercanas, repositorio API y fake, pantalla en claro, oscuro y letra al 200 %, ruta con y sin sesión) y `test/api/modelos_test.dart` (motivo).
 - **Pendientes**: backend de `cita.motivo` y del código `CITA_DUPLICADA` (historia `Backend:` de V2-M02.08, a cargo de Juan Pablo); actualizar el YAML y `CodigoProblema` con el contrato v2; ofrecer la cita existente con acceso al detalle cuando exista V2-M02.09; golden de la pantalla espera a V2-T03.02; punto de entrada desde la navegación principal (hoy solo por ruta).
+
+## Avance de V2-M02.09
+
+Pantalla `PantallaMisCitas` en `lib/modulos/citas/` (ruta `/citas`, exige sesión). Estado: **En revisión**. Solo la parte de app; usa `GET /citas?pagina=&tamano=` que ya existe.
+
+- **Próximas y pasadas**: próximas son las citas confirmadas que aún no empiezan (`CitaCliente.esProxima`: estado confirmada y fecha más hora de inicio posterior a «ahora»); todo lo demás (atendidas, no asistió, canceladas y confirmadas vencidas) va en pasadas, de la más reciente a la más antigua. El reloj sale de `relojCitasProvider`.
+- **Estados**: `Insignia` con icono, color y texto: confirmada (éxito), atendida (información), no asistió (advertencia), cancelada (peligro). Un estado que el contrato no declara se muestra como «Sin estado» (neutro) en vez de romper.
+- **Paginación**: `misCitasProvider` (`AsyncNotifier`) pide páginas de 20 (`tamanoPaginaCitasProvider`) y acumula; «Cargar más citas» pide la siguiente, y si falla conserva lo cargado y avisa.
+- **Datos**: `RepositorioCitas.misCitas` traduce `Cita` a `CitaCliente` (estado, franja, vehículo, motivo). El nombre del vehículo sale de la cita si el backend lo manda y, si no, del garaje (`garajeProvider`); sin ninguno dice «Tu vehículo».
+- **Cinco estados**: esqueleto, datos, vacío (con acción «Agendar cita»), error con reintento y sin conexión; se recarga jalando hacia abajo.
+- **Textos**: claves `citas*` en los ARB es y en.
+- **Pruebas**: `test/modulos/citas/` (`cita_cliente_test`, `repositorio_citas_test`, `pantalla_mis_citas_test` en claro, oscuro, letra al 200 % e inglés, `ruta_mis_citas_test`).
+- **Pendientes**: el filtro por estado y «agregar al calendario» (criterios del módulo, no de esta historia); acceso desde la navegación principal (hoy solo por ruta `/citas`); ofrecer la cita existente de V2-M02.08 con acceso al detalle; el golden espera a V2-T03.02. El backend no manda `vehiculoNombre`: se resuelve con el garaje.
