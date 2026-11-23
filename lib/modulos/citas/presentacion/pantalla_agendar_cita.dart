@@ -535,16 +535,19 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).citasCargandoAgendar,
       liveRegion: true,
-      child: const Padding(
-        padding: EdgeInsets.all(Espaciado.e4),
-        child: Column(
-          children: [
-            Esqueleto(alto: 184, radio: 16),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 320, radio: 16),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 56),
-          ],
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.all(Espaciado.e4),
+          child: Column(
+            children: [
+              Esqueleto(alto: 184, radio: 16),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 320, radio: 16),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 56),
+            ],
+          ),
         ),
       ),
     );
