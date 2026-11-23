@@ -1445,5 +1445,41 @@
   "citasWalletErrorNoDisponible": "El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.",
   "@citasWalletErrorNoDisponible": {
     "description": "Error del botón de Wallet cuando el servidor no tiene certificados."
+  },
+  "vehiculosAgendarServicio": "Agendar servicio",
+  "@vehiculosAgendarServicio": {
+    "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
+  },
+  "vehiculosBotonManual": "Manual",
+  "@vehiculosBotonManual": {
+    "description": "Botón de la portada del detalle que abre el manual del vehículo."
+  },
+  "vehiculosBotonDescargar": "Descargar",
+  "@vehiculosBotonDescargar": {
+    "description": "Botón de la portada del manual que guarda el PDF."
+  },
+  "vehiculosBotonCompartir": "Compartir",
+  "@vehiculosBotonCompartir": {
+    "description": "Botón de la portada del manual que comparte el PDF."
+  },
+  "vehiculosVerDetalle": "Ver detalle",
+  "@vehiculosVerDetalle": {
+    "description": "Botón de la portada del garaje cuando hay un solo vehículo."
+  },
+  "vehiculosEncabezadoDatos": "Datos",
+  "@vehiculosEncabezadoDatos": {
+    "description": "Encabezado del grupo de datos del vehículo en el detalle."
+  },
+  "vehiculosEncabezadoTuAuto": "Tu auto",
+  "@vehiculosEncabezadoTuAuto": {
+    "description": "Encabezado del grupo de accesos del detalle."
+  },
+  "vehiculosEncabezadoRapidos": "Datos rápidos",
+  "@vehiculosEncabezadoRapidos": {
+    "description": "Encabezado del grupo de datos rápidos del garaje."
+  },
+  "vehiculosToqueCopiarVin": "Toca para copiar",
+  "@vehiculosToqueCopiarVin": {
+    "description": "Pista bajo el VIN que indica que se puede copiar."
   }
 }
