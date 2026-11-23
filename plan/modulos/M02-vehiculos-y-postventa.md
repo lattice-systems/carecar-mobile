@@ -205,3 +205,16 @@ Pantalla `PantallaFichaTecnica` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/f
 - **Textos:** claves `vehiculosFicha*` en los ARB es y en.
 - **Pruebas:** `ficha_tecnica_test.dart` (dominio, respaldo y repositorio con `MockClient`), `pantalla_ficha_tecnica_test.dart` (cinco estados, plegado, claro, oscuro, letra al 200 % e inglés) y las rutas en `ruta_garaje_test.dart`.
 - **Pendientes:** backend (`ficha_tecnica_modelo` y el endpoint, historia `Backend:` de V2-M02.04); componente `Acordeon` del sistema para reemplazar el provisional (pedir historia `V2-T02.xx` al planificador; `grep -rn "PROVISIONAL" lib/` no debe salir vacío al cerrar el hito); golden de la pantalla espera a V2-T03.02; `plan/cumplimiento-ficha.md` no se tocó en esta tanda.
+
+## Avance de rediseño (estilo portada)
+
+Rama local `local/rediseno-vehiculos`. Las cuatro pantallas del módulo se rehicieron con el estilo portada del sistema de diseño v2 (§8), sin cambiar lógica, proveedores, rutas ni criterios de aceptación.
+
+- **Garaje `/garaje`**: título grande translúcido «Mi garaje» (`EncabezadoGrande`). Con un vehículo, `CabeceraPortada` protagonista (portada con el tinte del color del auto, subtítulo con placas y km, píldora «Ver detalle»). Con varios, un `Estante` de portadas tipo álbum (cuadro redondeado con el tinte y el modelo debajo) y un `GrupoLista` «Datos rápidos». Cinco estados dentro del mismo scroll, con recarga jalando.
+- **Detalle `/garaje/:id`**: `CabeceraPortada` con el auto, título modelo y año, subtítulo placas y píldoras «Agendar servicio» (principal, `/citas/agendar`) y «Manual» (secundaria). Tarjeta de cifras con el km grande y «Actualizado por el taller el…» y el VIN en monoespaciado que se copia al tocarlo. `GrupoLista` «Datos» (placas, año, color, versión) y «Tu auto» (Manual, Ficha técnica, Historial «Disponible pronto») con íconos en cuadros de color.
+- **Manual `/garaje/:id/manual`**: `CabeceraPortada` pequeña con la portada del manual y píldoras «Descargar» y «Compartir» (antes íconos en la barra); el visor PDF ocupa el resto.
+- **Ficha técnica `/garaje/:id/ficha-tecnica`**: título grande translúcido y una `GrupoLista` plegable por sección (la fila de título despliega las especificaciones con su valor al final). Se eliminó el provisional `SeccionPlegable`.
+- **Tinte**: `tinteDeColor` mapea el nombre del color del auto a tokens (rojo `peligro`, verde `exito`, amarillo/naranja `advertencia`, azul `acento`, neutros `textoSecundario`, otro `marca`).
+- **Textos**: nueve claves nuevas con prefijo `vehiculos` en es y en (solo agregadas) y `app_localizations*.dart` regenerados.
+- **Pruebas**: ajustadas a los nuevos controles (píldoras con texto en vez de tooltip, «Ver detalle» desde la portada); se agrega prueba del tinte. Mismos criterios.
+- **Limitaciones**: la fila de `GrupoLista` excluye su semántica interna, por eso los datos van como «valor. etiqueta»; el estado abierto o cerrado de la ficha se ve por el chevron y no se anuncia (candidato a historia de sistema de diseño: fila expandible).
