@@ -312,10 +312,12 @@ void main() {
     testWidgets('error al consultar la solicitud abierta, con reintento', (
       tester,
     ) async {
-      final repo = RepositorioAsistenciaFake(fallo: const SinConexion());
+      final repo = RepositorioAsistenciaFake(
+        falloAlConsultar: const SinConexion(),
+      );
       await _montar(tester, repo: repo);
       expect(find.text('Reintentar'), findsOneWidget);
-      repo.fallo = null;
+      repo.falloAlConsultar = null;
       await _tocar(tester, 'Reintentar');
       expect(find.text('Desliza para pedir ayuda'), findsOneWidget);
     });
@@ -348,7 +350,6 @@ void main() {
         hasEnabledState: true,
         hasSelectedState: true,
         hasTapAction: true,
-        isFocusable: true,
       ),
     );
     semantica.dispose();
