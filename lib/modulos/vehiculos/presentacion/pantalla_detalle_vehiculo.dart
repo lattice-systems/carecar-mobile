@@ -17,7 +17,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
-import '../../citas/presentacion/rutas_citas.dart';
+import '../../citas/citas.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
