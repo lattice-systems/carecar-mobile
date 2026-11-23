@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../api/carecar_api.dart';
 import '../api/modelos/perfil.dart';
+import '../nucleo/migracion/interruptor_modulos.dart';
 import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
 import '../tema/tema_carecar.dart';
@@ -20,12 +21,17 @@ class PantallaInicio extends StatefulWidget {
     required this.api,
     required this.controlador,
     required this.alCerrarSesion,
+    this.abrirEnV2 = const {},
     super.key,
   });
 
   final CarecarApi api;
   final ControladorSesion controlador;
   final VoidCallback alCerrarSesion;
+
+  /// Tarjetas cuyo modulo ya esta en v2 (V2-T01.05): al tocarlas se llama a
+  /// esta accion en vez de abrir la pantalla v1. Vacio = todo en v1.
+  final Map<ModuloMigrable, VoidCallback> abrirEnV2;
   static const botonCerrarSesion = PaginaCareCar.botonCerrarSesion;
 
   @override
@@ -103,13 +109,15 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 icono: IconoMenu.vehiculos.icono,
                 colores: [TemaCareCar.azulAgencia, TemaCareCar.azulProfundo],
                 indice: 0,
-                alPulsar: () => abrirPantalla(
-                  context,
-                  PantallaVehiculos(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
-                  ),
-                ),
+                alPulsar:
+                    widget.abrirEnV2[ModuloMigrable.vehiculos] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaVehiculos(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    ),
               ),
               TarjetaMenu(
                 titulo: 'Citas',
@@ -117,13 +125,15 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 icono: IconoMenu.cita.icono,
                 colores: [TemaCareCar.turquesaOscuro, Color(0xFF0E6B63)],
                 indice: 1,
-                alPulsar: () => abrirPantalla(
-                  context,
-                  PantallaMisCitas(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
-                  ),
-                ),
+                alPulsar:
+                    widget.abrirEnV2[ModuloMigrable.citas] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaMisCitas(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    ),
               ),
               TarjetaMenu(
                 titulo: 'Catálogo',
@@ -131,13 +141,15 @@ class _PantallaInicioState extends State<PantallaInicio> {
                 icono: IconoMenu.catalogo.icono,
                 colores: [Color(0xFF3D5A9E), Color(0xFF283C7A)],
                 indice: 2,
-                alPulsar: () => abrirPantalla(
-                  context,
-                  PantallaCatalogo(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
-                  ),
-                ),
+                alPulsar:
+                    widget.abrirEnV2[ModuloMigrable.catalogo] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaCatalogo(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    ),
               ),
               TarjetaMenu(
                 titulo: 'Ajustes',
