@@ -12,6 +12,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/comprobante_de_cita.dart';
+import 'boton_agregar_a_wallet.dart';
 import 'proveedores_citas.dart';
 
 /// Comprobante de una cita con su QR para recepcion rapida (V2-M02.11).
@@ -175,6 +176,8 @@ class _Comprobante extends ConsumerWidget {
                 anchoCompleto: true,
                 alPresionar: () => _abrirPdf(context, ref),
               ),
+              const SizedBox(height: Espaciado.e3),
+              BotonAgregarAWallet(citaId: datos.citaId),
             ],
           ),
         ),
