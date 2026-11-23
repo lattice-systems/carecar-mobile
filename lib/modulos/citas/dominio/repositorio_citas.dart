@@ -41,6 +41,7 @@ abstract interface class RepositorioCitas {
     required int citaId,
     required FranjaDisponible franja,
   });
+
   /// Comprobante de la cita `citaId`, con el codigo firmado para el QR
   /// (V2-M02.11).
   Future<ComprobanteDeCita> comprobante(int citaId);
