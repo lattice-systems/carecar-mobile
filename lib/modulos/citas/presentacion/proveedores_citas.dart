@@ -156,8 +156,7 @@ final misCitasProvider =
 /// (V2-M02.11). Se descarta al salir de la pantalla: el codigo no se conserva.
 final comprobanteCitaProvider = FutureProvider.autoDispose
     .family<ComprobanteDeCita, int>(
-      (ref, citaId) =>
-          ref.watch(repositorioCitasProvider).comprobante(citaId),
+      (ref, citaId) => ref.watch(repositorioCitasProvider).comprobante(citaId),
       retry: (_, _) => null,
       name: 'comprobanteCitaProvider',
     );
