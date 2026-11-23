@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/barra_portada.dart';
 import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -44,12 +45,7 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: TokensPista.de(context).colores.fondo,
-      appBar: AppBar(
-        title: Text(textos.vehiculosDetalleTitulo),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
+      appBar: BarraPortada(titulo: textos.vehiculosDetalleTitulo),
       body: vehiculo.when(
         skipLoadingOnReload: true,
         loading: () => const _Cargando(),
