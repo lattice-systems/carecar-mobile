@@ -180,7 +180,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Vehicle details'), findsOneWidget);
     expect(find.text('Service history'), findsOneWidget);
-    expect(find.text('Coming soon'), findsNWidgets(3));
+    expect(find.text('Coming soon'), findsOneWidget);
     expect(find.textContaining('Updated by the workshop on'), findsOneWidget);
   });
 
