@@ -830,6 +830,54 @@ servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
   res.send(pdf);
 });
 
+// ── asistencia ──
+// V2-M11.01 · pedir ayuda. La solicitud vive en memoria (no en db.json): asi la
+// ubicacion del cliente no queda escrita en disco y reiniciar el mock la borra.
+// Una sola abierta por cliente: otra responde 409 SOLICITUD_ABIERTA.
+const TIPOS_ASISTENCIA = ['llanta', 'bateria', 'choque', 'sin_gasolina', 'otro'];
+const solicitudesAsistencia = new Map(); // clienteId -> solicitud abierta
+let ultimoIdAsistencia = 0;
+
+servidor.post(`${BASE}/asistencia`, (req, res) => {
+  const { vehiculoId, tipo, lat, lng, comentario } = req.body || {};
+  const sinLat = lat === undefined || lat === null;
+  const sinLng = lng === undefined || lng === null;
+  const coordenadasOk =
+    sinLat === sinLng &&
+    (sinLat ||
+      (typeof lat === 'number' && typeof lng === 'number' &&
+        Math.abs(lat) <= 90 && Math.abs(lng) <= 180));
+  const comentarioOk = comentario == null ||
+    (typeof comentario === 'string' && comentario.length <= 500);
+  if (!Number.isInteger(vehiculoId) || !TIPOS_ASISTENCIA.includes(tipo) ||
+      !coordenadasOk || !comentarioOk) {
+    return problema(req, res, 400, 'Datos invalidos', 'DATOS_INVALIDOS');
+  }
+  if (!vehiculoDelCliente(req, vehiculoId)) return noEncontrado(req, res);
+  if (solicitudesAsistencia.has(req.sesion.clienteId)) {
+    return problema(req, res, 409, 'Ya tienes una solicitud de ayuda abierta', 'SOLICITUD_ABIERTA');
+  }
+  const solicitud = {
+    id: ++ultimoIdAsistencia,
+    vehiculoId,
+    tipo,
+    lat: sinLat ? null : lat,
+    lng: sinLng ? null : lng,
+    comentario: comentario ? comentario : null,
+    estado: 'recibida',
+    creadaEn: new Date().toISOString(),
+  };
+  solicitudesAsistencia.set(req.sesion.clienteId, solicitud);
+  res.status(201).jsonp(solicitud);
+});
+
+servidor.get(`${BASE}/asistencia`, (req, res) => {
+  const abierta = solicitudesAsistencia.get(req.sesion.clienteId);
+  if (req.query.activa === 'true' && !abierta) return res.status(204).end();
+  if (!abierta) return res.status(204).end();
+  res.jsonp(abierta);
+});
+
 // ── citas ──
 // V2-M25.03 · pase de Wallet. El backend real firma el .pkpass (Apple) o arma
 // el JWT de "Guardar en Google Wallet"; aqui el mock devuelve un archivo y un
