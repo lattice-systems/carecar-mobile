@@ -1123,4 +1123,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetsSinCitaMensaje => 'You have no upcoming appointments';
+
+  @override
+  String get citasWalletAgregar => 'Add to Wallet';
+
+  @override
+  String get citasWalletErrorGenerico =>
+      'We could not prepare your pass. Try again.';
+
+  @override
+  String get citasWalletErrorSinConexion =>
+      'No connection. Check your network and try again.';
+
+  @override
+  String get citasWalletErrorCancelada =>
+      'Your appointment is cancelled, so it no longer has a pass.';
+
+  @override
+  String get citasWalletErrorNoDisponible =>
+      'The Wallet pass is not available right now. Show the QR code at reception.';
 }
