@@ -1181,6 +1181,30 @@ class AppLocalizationsEn extends AppLocalizations {
       'The Wallet pass is not available right now. Show the QR code at reception.';
 
   @override
+  String get citasAgendarDia => 'Day';
+
+  @override
+  String get citasAgendarHorario => 'Time';
+
+  @override
+  String get citasMisCitasProximaEtiqueta => 'Your next appointment';
+
+  @override
+  String get citasHeroComprobante => 'Receipt';
+
+  @override
+  String get citasAccionesCita => 'Appointment options';
+
+  @override
+  String get citasCerrar => 'Close';
+
+  @override
+  String get citasComprobanteDetalles => 'Appointment details';
+
+  @override
+  String get citasComprobanteRecepcion => 'At reception';
+
+  @override
   String get vehiculosAgendarServicio => 'Book a service';
 
   @override
