@@ -46,3 +46,22 @@ Ayuda inmediata cuando el auto falla en la calle: un botón que comparte ubicaci
 
 - Mientras el ERP siga congelado, el personal cambia el estado de la solicitud con un endpoint interno del backend (pruebas y datos de ejemplo); la pantalla del personal queda fuera de alcance.
 - La ubicación solo se envía al crear la solicitud y mientras esté abierta; nunca en segundo plano después.
+
+## Avance de V2-M11.03
+
+**Qué quedó**
+
+- Módulo `lib/modulos/asistencia/` con contrato `asistencia.dart`. Dominio puro (`TipoGuia`, `GuiaEmergencia`, `guiasDeEmergencia`): tres guías (cambiar llanta, 5 pasos; pasar corriente, 6; qué hacer en un choque, 6).
+- Pantallas `PantallaGuias` (lista) y `PantallaGuia` (pasos numerados). Usan `FilaLista` y `Aviso` del sistema v2 y los tokens de `TokensPista`; sin colores ni medidas sueltas.
+- Rutas `/asistencia/guias` y `/asistencia/guias/:tipo` (`llanta`, `corriente`, `choque`), registradas en `registro_de_rutas.dart` con una línea. Una guía inexistente vuelve a la lista. Exigen sesión como el resto de las rutas de módulo.
+- Textos en `lib/l10n/` (prefijo `asistencia`, es y en). Las guías viven en el ARB empaquetado en la app: no hacen peticiones y se abren en modo avión.
+- Accesibilidad: cada paso es un nodo semántico ("Paso 2 de 5" y su texto) con orden explícito, y se arman todos a la vez para que el lector de pantalla tenga la guía completa. Probado con letra al 200 %.
+- `rutaSos` (constante en `asistencia.dart`) apunta a la lista de guías mientras no exista V2-M11.01; la usa V2-M25.04.
+
+**Estados:** al ser contenido empaquetado no hay carga, vacío ni error de red. Lo que sí aplica (datos y sin conexión) se resuelve por construcción: la guía siempre está y el aviso lo dice.
+
+**Pendiente / fuera de alcance**
+
+- V2-M11.01, V2-M11.02 y V2-M11.04 siguen sin empezar. Cuando exista la pantalla SOS, `rutaSos` debe apuntar a ella y las guías quedan como destino de "Guías rápidas".
+- Los pasos son texto; si Diseño pide ilustraciones se agregan como assets en una historia aparte.
+- Queda por revisar con una persona de la agencia que los pasos de choque y corriente sean los que quieren dar a sus clientes.
