@@ -63,6 +63,9 @@ void main() {
   testWidgets('el boton abre el PDF de la cita en el visor', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
+    // En la pantalla de prueba el boton queda bajo el pliegue.
+    await tester.ensureVisible(find.text('Ver comprobante en PDF'));
+    await tester.pump();
     await tester.tap(find.text('Ver comprobante en PDF'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
