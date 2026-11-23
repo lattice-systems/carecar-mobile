@@ -43,7 +43,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | --- | --- | --- | --- |
 | Catálogo de modelos actuales | `modelo_catalogo`, `modelo_catalogo_imagen` | 🟡 app lista contra `mock_api`, falta construir las tablas en el backend | V2-M03.01, V2-M03.02 |
 | Comparador de modelos | `modelo_catalogo` | ✅ hecho (reutiliza el detalle de V2-M03.02) | V2-M03.03 |
-| Calculadora de toma a cuenta (estimación no vinculante) | `modelo_catalogo`, `vehiculo_cliente`, `parametro_toma_cuenta`, `estimacion_toma_cuenta` | 🟡 la calculadora (V2-M03.04) está lista contra `mock_api` y el diseño de las tablas y la fórmula está en el backend (backend#69), falta construirlo. Siguen M03.05 a M03.07 | V2-M03.04 a V2-M03.07 |
+| Calculadora de toma a cuenta (estimación no vinculante) | `modelo_catalogo`, `vehiculo_cliente`, `parametro_toma_cuenta`, `estimacion_toma_cuenta` | 🟡 la calculadora (V2-M03.04) está lista contra `mock_api` y el diseño de las tablas y la fórmula está en el backend (backend#69), falta construirlo. M03.05, la diferencia a pagar, también está lista. M03.07, la lista de estimaciones guardadas, también. Sigue M03.06 (parámetros editables, en el backend) | V2-M03.04 a V2-M03.07 |
 
 ### 4. Taller en vivo — plan [M04](modulos/M04-taller-en-vivo.md)
 

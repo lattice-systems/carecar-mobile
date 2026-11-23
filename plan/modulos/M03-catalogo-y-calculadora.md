@@ -97,3 +97,23 @@ La calculadora vive en `lib/modulos/catalogo/` y se abre en `/catalogo/calculado
 - **mock_api:** aplica la misma fórmula del diseño del backend con seis parámetros de ejemplo (`parametrosTomaCuenta` en `db.seed.json`), que no son valores de la agencia.
 - **Fuera de esta historia:** la diferencia contra el modelo elegido (V2-M03.05), la edición de parámetros (V2-M03.06, el alta de parámetros queda por SQL mientras el ERP esté congelado) y la lista de estimaciones guardadas (V2-M03.07).
 - **Pruebas:** `test/modulos/catalogo/calculadora_test.dart` cubre la lectura de kilometraje y año, el repositorio, la captura con validación, los cinco tipos de falla, claro, oscuro y letra grande, las guías de accesibilidad y las rutas. `test/contrato/contrato_test.dart` pasa a 19 operaciones y 26 esquemas y valida contra `mock_api` cuando está levantada.
+
+## Avance de V2-M03.05
+
+La diferencia a pagar sale de la misma estimación de V2-M03.04 y aparece pegada al resultado cuando la calculadora se abrió desde un modelo (`?modelo=<id>`) y ese modelo tiene precio de lista. No necesita backend: la respuesta ya trae `precioDestino`, el precio de lista del modelo al momento de estimar.
+
+- **Cuenta:** `diferenciaAPagar` (Dart puro, `dominio/toma_a_cuenta.dart`) da el rango a pagar como precio menos el máximo estimado y precio menos el mínimo estimado, sin bajar de cero. Es el criterio de la historia: precio del modelo menos rango estimado igual rango a pagar.
+- **Si el auto alcanza:** cuando hasta el valor más bajo cubre el precio, la tarjeta muestra $0 y dice que alcanzaría para el precio de lista, en lugar de un rango engañoso.
+- **No vinculante:** la tarjeta lo repite en su texto y la leyenda de arriba sigue siempre visible.
+- **Sin modelo o sin precio:** no se muestra la tarjeta. La calculadora abierta sin modelo funciona como en V2-M03.04.
+- **Pruebas:** `test/modulos/catalogo/calculadora_test.dart` cubre la resta, el precio ausente, el piso en cero, el caso cubierto, la tarjeta en pantalla, claro, oscuro y letra grande, y las guías de accesibilidad.
+
+## Avance de V2-M03.07
+
+Las estimaciones guardadas se ven en `/catalogo/estimaciones`, desde el botón de historial de la barra de la calculadora. No hay paso de guardar: el backend guarda cada estimación al calcularla (diseño en backend#69), así que esta historia solo las lee con `GET /toma-a-cuenta/estimaciones`.
+
+- **Lista:** de la más reciente a la más antigua, con fecha, rango y, si hubo, el modelo contra el que se estimó. Se piden de a 20 con el botón "Ver más". Si falla una página siguiente, avisa y deja reintentar sin perder lo ya cargado.
+- **Detalle:** tocar una fila abre una hoja con la leyenda no vinculante, el rango, los supuestos y la diferencia a pagar tal como se vieron. No recalcula: un cambio de parámetros de la agencia no reescribe lo ya mostrado. `ResultadoEstimacion` y `DiferenciaEstimacion` salieron a `tarjetas_estimacion.dart` para compartirse con la calculadora.
+- **Estados:** cargando con esqueleto, datos, vacío con botón a la calculadora, error con reintento y sin conexión, y recargar jalando hacia abajo.
+- **Pendiente de otra historia:** pedir una valuación formal desde una estimación es V2-M26.01, que depende de esta.
+- **Pruebas:** `test/modulos/catalogo/mis_estimaciones_test.dart` cubre el repositorio, la lista, el detalle, la paginación y su fallo, los cinco estados, claro, oscuro y letra grande, las guías de accesibilidad y las rutas.

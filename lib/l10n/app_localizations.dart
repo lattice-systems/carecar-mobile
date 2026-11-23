@@ -1759,6 +1759,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Algo salió mal al calcular. Intenta de nuevo en un momento.'**
   String get calculadoraErrorGenerico;
+
+  /// Título de la tarjeta con lo que faltaría pagar por el modelo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Diferencia a pagar'**
+  String get calculadoraDiferenciaTitulo;
+
+  /// Explica cómo sale la diferencia a pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Es el precio de lista, {precio}, menos el rango estimado de tu auto. También es una estimación no vinculante.'**
+  String calculadoraDiferenciaExplicacion(String precio);
+
+  /// Cuando incluso el valor más bajo del auto cubre el precio del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Con lo que podría valer tu auto alcanzaría para el precio de lista, {precio}. Es una estimación no vinculante.'**
+  String calculadoraDiferenciaCubierta(String precio);
+
+  /// Título de la lista de estimaciones de toma a cuenta guardadas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis estimaciones'**
+  String get misEstimacionesTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus estimaciones'**
+  String get misEstimacionesCargando;
+
+  /// Título cuando el cliente no ha estimado nada.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes estimaciones'**
+  String get misEstimacionesVacioTitulo;
+
+  /// Explicación de la lista vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando calcules cuánto valdría tu auto a cuenta de uno nuevo, la verás aquí.'**
+  String get misEstimacionesVacioMensaje;
+
+  /// Botón de la lista vacía que abre la calculadora.
+  ///
+  /// In es, this message translates to:
+  /// **'Calcular una estimación'**
+  String get misEstimacionesVacioAccion;
+
+  /// Subtítulo de cada estimación guardada: fecha y rango.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, {rango}'**
+  String misEstimacionesFila(DateTime fecha, String rango);
+
+  /// Botón que pide la siguiente página de estimaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get misEstimacionesVerMas;
+
+  /// Aviso cuando falla la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más estimaciones. Intenta de nuevo.'**
+  String get misEstimacionesErrorMas;
 }
 
 class _AppLocalizationsDelegate

@@ -117,3 +117,32 @@ int? leerAnio(String texto, {required int maximo}) {
   final anio = int.parse(limpio);
   return anio >= 1900 && anio <= maximo ? anio : null;
 }
+
+/// Lo que faltaria pagar por el modelo nuevo si se da el auto a cuenta
+/// (V2-M03.05). Tan poco vinculante como la estimacion de la que sale.
+class DiferenciaAPagar {
+  const DiferenciaAPagar({required this.minimo, required this.maximo});
+
+  /// Lo menos que se pagaria: el precio menos lo mas que valdria el auto.
+  final double minimo;
+
+  /// Lo mas que se pagaria: el precio menos lo menos que valdria el auto.
+  final double maximo;
+
+  /// `true` si hasta el valor mas bajo del auto alcanza para el precio.
+  bool get cubiertaPorElAuto => maximo <= 0;
+}
+
+/// Precio del modelo menos el rango estimado, sin bajar de cero.
+///
+/// `null` si la estimacion no se hizo contra un modelo o el modelo no tiene
+/// precio de lista.
+DiferenciaAPagar? diferenciaAPagar(Estimacion estimacion) {
+  final precio = estimacion.precioDestino;
+  if (precio == null) return null;
+  double sinNegativos(double v) => v < 0 ? 0 : v;
+  return DiferenciaAPagar(
+    minimo: sinNegativos(precio - estimacion.maximo),
+    maximo: sinNegativos(precio - estimacion.minimo),
+  );
+}

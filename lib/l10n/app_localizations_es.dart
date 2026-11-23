@@ -1053,4 +1053,48 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get calculadoraErrorGenerico =>
       'Algo salió mal al calcular. Intenta de nuevo en un momento.';
+
+  @override
+  String get calculadoraDiferenciaTitulo => 'Diferencia a pagar';
+
+  @override
+  String calculadoraDiferenciaExplicacion(String precio) {
+    return 'Es el precio de lista, $precio, menos el rango estimado de tu auto. También es una estimación no vinculante.';
+  }
+
+  @override
+  String calculadoraDiferenciaCubierta(String precio) {
+    return 'Con lo que podría valer tu auto alcanzaría para el precio de lista, $precio. Es una estimación no vinculante.';
+  }
+
+  @override
+  String get misEstimacionesTitulo => 'Mis estimaciones';
+
+  @override
+  String get misEstimacionesCargando => 'Cargando tus estimaciones';
+
+  @override
+  String get misEstimacionesVacioTitulo => 'Aún no tienes estimaciones';
+
+  @override
+  String get misEstimacionesVacioMensaje =>
+      'Cuando calcules cuánto valdría tu auto a cuenta de uno nuevo, la verás aquí.';
+
+  @override
+  String get misEstimacionesVacioAccion => 'Calcular una estimación';
+
+  @override
+  String misEstimacionesFila(DateTime fecha, String rango) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.yMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, $rango';
+  }
+
+  @override
+  String get misEstimacionesVerMas => 'Ver más';
+
+  @override
+  String get misEstimacionesErrorMas =>
+      'No pudimos cargar más estimaciones. Intenta de nuevo.';
 }
