@@ -1446,6 +1446,38 @@
   "@citasWalletErrorNoDisponible": {
     "description": "Error del botón de Wallet cuando el servidor no tiene certificados."
   },
+  "citasAgendarDia": "Día",
+  "@citasAgendarDia": {
+    "description": "Título de la sección de día al agendar."
+  },
+  "citasAgendarHorario": "Horario",
+  "@citasAgendarHorario": {
+    "description": "Título de la sección de horario al agendar."
+  },
+  "citasMisCitasProximaEtiqueta": "Tu próxima cita",
+  "@citasMisCitasProximaEtiqueta": {
+    "description": "Etiqueta sobre la tarjeta principal de la próxima cita."
+  },
+  "citasHeroComprobante": "Comprobante",
+  "@citasHeroComprobante": {
+    "description": "Píldora de la tarjeta principal que abre el comprobante con QR."
+  },
+  "citasAccionesCita": "Opciones de tu cita",
+  "@citasAccionesCita": {
+    "description": "Título de la hoja con las acciones de una cita próxima."
+  },
+  "citasCerrar": "Cerrar",
+  "@citasCerrar": {
+    "description": "Acción para cerrar una pantalla del flujo de citas."
+  },
+  "citasComprobanteDetalles": "Detalles de la cita",
+  "@citasComprobanteDetalles": {
+    "description": "Encabezado de la lista de detalles del comprobante."
+  },
+  "citasComprobanteRecepcion": "En recepción",
+  "@citasComprobanteRecepcion": {
+    "description": "Título de la indicación para recepción en el comprobante."
+  },
   "vehiculosAgendarServicio": "Agendar servicio",
   "@vehiculosAgendarServicio": {
     "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
