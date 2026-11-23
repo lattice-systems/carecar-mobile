@@ -71,6 +71,8 @@ void main() {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
     expect(find.text('Elige un día para ver sus horarios.'), findsOneWidget);
+    await tester.ensureVisible(find.bySemanticsLabel('26 de noviembre'));
+    await tester.pumpAndSettle();
     await tester.tap(find.bySemanticsLabel('26 de noviembre'));
     await tester.pumpAndSettle();
     expect(find.byType(SelectorFranja), findsOneWidget);
@@ -84,6 +86,8 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byTooltip('Mes siguiente'));
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Mes siguiente'));
     await tester.pumpAndSettle();
@@ -128,6 +132,8 @@ void main() {
       await tester.pumpWidget(
         _app(RepositorioCitasFake(), escenario: escenario),
       );
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.bySemanticsLabel('26 de noviembre'));
       await tester.pumpAndSettle();
       await tester.tap(find.bySemanticsLabel('26 de noviembre'));
       await tester.pumpAndSettle();
