@@ -1,6 +1,5 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
-import 'package:carecar_mobile/modulos/recoleccion/dominio/direccion_guardada.dart';
 import 'package:carecar_mobile/modulos/recoleccion/presentacion/provisional/mapa_provisional.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
