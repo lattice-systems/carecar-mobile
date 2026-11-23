@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
@@ -23,7 +24,7 @@ class DeslizarParaConfirmar extends StatefulWidget {
     required this.alConfirmar,
     super.key,
     this.peligro = false,
-    this.mensajeConfirmacion = 'Confirma que quieres continuar.',
+    this.mensajeConfirmacion,
     this.umbral = 0.9,
     this.forzarAlternativa = false,
   }) : assert(umbral > 0 && umbral <= 1, 'El umbral va de 0 a 1');
@@ -33,7 +34,7 @@ class DeslizarParaConfirmar extends StatefulWidget {
   final bool peligro;
 
   /// Texto del dialogo de la alternativa accesible.
-  final String mensajeConfirmacion;
+  final String? mensajeConfirmacion;
 
   /// Fraccion del recorrido que confirma, de 0 a 1.
   final double umbral;
@@ -90,10 +91,12 @@ class _DeslizarParaConfirmarState extends State<DeslizarParaConfirmar>
       context,
       builder: (c) => Dialogo(
         titulo: widget.texto,
-        mensaje: widget.mensajeConfirmacion,
-        textoPrincipal: 'Confirmar',
+        mensaje:
+            widget.mensajeConfirmacion ??
+            AppLocalizations.of(c).deslizarMensajeConfirmacion,
+        textoPrincipal: AppLocalizations.of(context).deslizarConfirmar,
         alPrincipal: () => Navigator.of(c).pop(true),
-        textoSecundario: 'Cancelar',
+        textoSecundario: AppLocalizations.of(context).deslizarCancelar,
         alSecundario: () => Navigator.of(c).pop(false),
         peligro: widget.peligro,
       ),
@@ -123,7 +126,7 @@ class _DeslizarParaConfirmarState extends State<DeslizarParaConfirmar>
 
     return Semantics(
       container: true,
-      label: '${widget.texto}, desliza para confirmar',
+      label: AppLocalizations.of(context).deslizarEtiqueta(widget.texto),
       enabled: _habilitado,
       excludeSemantics: true,
       child: LayoutBuilder(

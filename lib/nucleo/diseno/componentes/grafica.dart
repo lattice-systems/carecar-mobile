@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -30,7 +31,7 @@ class Grafica extends StatefulWidget {
     super.key,
     this.tipo = TipoGrafica.barras,
     this.formatoValor,
-    this.mensajeVacio = 'Aun no hay datos para mostrar.',
+    this.mensajeVacio,
     this.alto = 180,
   });
 
@@ -38,7 +39,7 @@ class Grafica extends StatefulWidget {
   final List<PuntoGrafica> puntos;
   final TipoGrafica tipo;
   final String Function(double valor)? formatoValor;
-  final String mensajeVacio;
+  final String? mensajeVacio;
   final double alto;
 
   @override
@@ -80,7 +81,8 @@ class _GraficaState extends State<Grafica> {
           const SizedBox(height: Espaciado.e3),
           if (vacia)
             Text(
-              widget.mensajeVacio,
+              widget.mensajeVacio ??
+                  AppLocalizations.of(context).graficaSinDatos,
               style: t.cuerpoChico.copyWith(color: c.textoSecundario),
             )
           else if (tabla)
@@ -92,7 +94,9 @@ class _GraficaState extends State<Grafica> {
             Align(
               alignment: Alignment.centerLeft,
               child: Boton(
-                texto: _verTabla ? 'Ver grafica' : 'Ver como tabla',
+                texto: _verTabla
+                    ? AppLocalizations.of(context).graficaVerGrafica
+                    : AppLocalizations.of(context).graficaVerTabla,
                 variante: VarianteBoton.terciario,
                 tamano: TamanoBoton.chico,
                 alPresionar: () => setState(() => _verTabla = !_verTabla),
@@ -122,7 +126,8 @@ class _Tabla extends StatelessWidget {
         for (final p in puntos)
           Semantics(
             container: true,
-            label: '${p.etiqueta}: ${formato(p.valor)}',
+            label: AppLocalizations.of(context)
+                .graficaPunto(p.etiqueta, formato(p.valor)),
             excludeSemantics: true,
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 48),

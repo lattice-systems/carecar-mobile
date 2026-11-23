@@ -135,7 +135,7 @@ void main() {
       final espera = Completer<Uint8List>();
       await tester.pumpWidget(visor(() => espera.future));
       expect(find.bySemanticsLabel('Cargando documento'), findsOneWidget);
-      expect(find.text('Pagina 1 de 5'), findsNothing);
+      expect(find.text('Página 1 de 5'), findsNothing);
     });
 
     testWidgets('con los bytes muestra el visor y el contador de paginas', (
@@ -145,7 +145,7 @@ void main() {
       await tester.pump();
       await tester.pump();
       expect(find.text('visor falso'), findsOneWidget);
-      expect(find.text('Pagina 1 de 5'), findsOneWidget);
+      expect(find.text('Página 1 de 5'), findsOneWidget);
     });
 
     testWidgets('el contador sigue el cambio de pagina', (tester) async {
@@ -154,7 +154,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.text('visor falso'));
       await tester.pump();
-      expect(find.text('Pagina 2 de 5'), findsOneWidget);
+      expect(find.text('Página 2 de 5'), findsOneWidget);
     });
 
     testWidgets('si falla muestra el error y reintenta', (tester) async {

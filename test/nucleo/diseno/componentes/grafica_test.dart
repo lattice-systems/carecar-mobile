@@ -48,7 +48,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('\$1200'), findsOneWidget);
     expect(find.text('\$800'), findsOneWidget);
-    await tester.tap(find.text('Ver grafica'));
+    await tester.tap(find.text('Ver gráfica'));
     await tester.pumpAndSettle();
     expect(find.text('\$1200'), findsNothing);
   });
@@ -96,7 +96,7 @@ void main() {
     await tester.pumpWidget(
       conTemaPista(const Grafica(titulo: 'Gasto por mes', puntos: [])),
     );
-    expect(find.text('Aun no hay datos para mostrar.'), findsOneWidget);
+    expect(find.text('Aún no hay datos para mostrar.'), findsOneWidget);
     expect(find.text('Ver como tabla'), findsNothing);
   });
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -25,10 +26,10 @@ class PasoLinea {
   final String? hora;
   final String? nota;
 
-  String get _estadoTexto => switch (estado) {
-    EstadoPaso.hecho => 'completado',
-    EstadoPaso.actual => 'en curso',
-    EstadoPaso.pendiente => 'pendiente',
+  String _estadoTexto(AppLocalizations textos) => switch (estado) {
+    EstadoPaso.hecho => textos.lineaPasoHecho,
+    EstadoPaso.actual => textos.lineaPasoActual,
+    EstadoPaso.pendiente => textos.lineaPasoPendiente,
   };
 }
 
@@ -134,7 +135,7 @@ class _LineaDeTiempoPaginadaState extends State<LineaDeTiempoPaginada> {
         return Align(
           alignment: Alignment.centerLeft,
           child: Boton(
-            texto: 'Ver mas',
+            texto: AppLocalizations.of(context).lineaVerMas,
             variante: VarianteBoton.terciario,
             alPresionar: widget.alPedirMas,
           ),
@@ -172,9 +173,10 @@ class _Paso extends StatelessWidget {
         ? c.textoSecundario
         : c.texto;
 
+    final textos = AppLocalizations.of(context);
     final partes = [
-      'Etapa $posicion de $total',
-      paso._estadoTexto,
+      textos.lineaEtapa(posicion, total),
+      paso._estadoTexto(textos),
       paso.titulo,
       ?paso.hora,
       ?paso.nota,

@@ -170,5 +170,318 @@
   "vehiculosVinCopiado": "VIN copiado",
   "@vehiculosVinCopiado": {
     "description": "Confirmación al copiar el VIN."
+  },
+
+  "avisoCerrar": "Cerrar aviso",
+  "@avisoCerrar": {
+    "description": "Botón para cerrar un aviso."
+  },
+  "navegacionPrincipal": "Navegación principal",
+  "@navegacionPrincipal": {
+    "description": "Nombre de la barra de navegación para el lector de pantalla."
+  },
+  "botonCargando": "{texto}, cargando",
+  "@botonCargando": {
+    "description": "Lo que anuncia un botón mientras trabaja.",
+    "placeholders": {
+      "texto": {
+        "type": "String"
+      }
+    }
+  },
+  "calendarioDelMes": "Calendario de {mes}",
+  "@calendarioDelMes": {
+    "description": "Nombre del calendario con el mes visible.",
+    "placeholders": {
+      "mes": {
+        "type": "DateTime",
+        "format": "yMMMM",
+        "example": "noviembre de 2026"
+      }
+    }
+  },
+  "calendarioTituloMes": "{mes}",
+  "@calendarioTituloMes": {
+    "description": "Encabezado del calendario con mes y año.",
+    "placeholders": {
+      "mes": {
+        "type": "DateTime",
+        "format": "yMMMM",
+        "example": "noviembre de 2026"
+      }
+    }
+  },
+  "calendarioMesAnterior": "Mes anterior",
+  "@calendarioMesAnterior": {
+    "description": "Botón para ir al mes anterior."
+  },
+  "calendarioMesSiguiente": "Mes siguiente",
+  "@calendarioMesSiguiente": {
+    "description": "Botón para ir al mes siguiente."
+  },
+  "calendarioDia": "{fecha}",
+  "@calendarioDia": {
+    "description": "Día del calendario, para el lector de pantalla.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMd",
+        "example": "15 de noviembre"
+      }
+    }
+  },
+  "calendarioHoy": "hoy",
+  "@calendarioHoy": {
+    "description": "Marca el día de hoy en el calendario."
+  },
+  "calendarioSeleccionado": "seleccionado",
+  "@calendarioSeleccionado": {
+    "description": "Marca el día elegido en el calendario."
+  },
+  "calendarioSinCupo": "sin cupo",
+  "@calendarioSinCupo": {
+    "description": "Marca un día sin lugares en el calendario."
+  },
+  "calendarioInicialesDias": "L,M,X,J,V,S,D",
+  "@calendarioInicialesDias": {
+    "description": "Iniciales de los días de la semana, de lunes a domingo, separadas por coma."
+  },
+  "deslizarConfirmar": "Confirmar",
+  "@deslizarConfirmar": {
+    "description": "Botón principal del diálogo de confirmación."
+  },
+  "deslizarCancelar": "Cancelar",
+  "@deslizarCancelar": {
+    "description": "Botón secundario del diálogo de confirmación."
+  },
+  "deslizarEtiqueta": "{texto}, desliza para confirmar",
+  "@deslizarEtiqueta": {
+    "description": "Lo que anuncia el control de deslizar para confirmar.",
+    "placeholders": {
+      "texto": {
+        "type": "String"
+      }
+    }
+  },
+  "firmaSinFirma": "Sin firma de {firmante}",
+  "@firmaSinFirma": {
+    "description": "Firma ausente, para el lector de pantalla.",
+    "placeholders": {
+      "firmante": {
+        "type": "String"
+      }
+    }
+  },
+  "firmaDe": "Firma de {pie}",
+  "@firmaDe": {
+    "description": "Firma presente, para el lector de pantalla.",
+    "placeholders": {
+      "pie": {
+        "type": "String"
+      }
+    }
+  },
+  "firmaAunSinFirma": "Aún sin firma",
+  "@firmaAunSinFirma": {
+    "description": "Texto del recuadro de firma vacío."
+  },
+  "galeriaEtiqueta": "Galería de fotos, {actual} de {total}",
+  "@galeriaEtiqueta": {
+    "description": "Nombre de la galería con la foto visible.",
+    "placeholders": {
+      "actual": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "galeriaContador": "{actual} de {total}",
+  "@galeriaContador": {
+    "description": "Contador visible de la galería.",
+    "placeholders": {
+      "actual": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "galeriaFotoAnterior": "Foto anterior",
+  "@galeriaFotoAnterior": {
+    "description": "Botón para ir a la foto anterior."
+  },
+  "galeriaFotoSiguiente": "Foto siguiente",
+  "@galeriaFotoSiguiente": {
+    "description": "Botón para ir a la foto siguiente."
+  },
+  "galeriaCerrarFoto": "Cerrar foto",
+  "@galeriaCerrarFoto": {
+    "description": "Botón para cerrar la foto ampliada."
+  },
+  "graficaSinDatos": "Aún no hay datos para mostrar.",
+  "@graficaSinDatos": {
+    "description": "Mensaje de una gráfica sin puntos."
+  },
+  "graficaVerGrafica": "Ver gráfica",
+  "@graficaVerGrafica": {
+    "description": "Botón para volver de la tabla a la gráfica."
+  },
+  "graficaVerTabla": "Ver como tabla",
+  "@graficaVerTabla": {
+    "description": "Botón para ver los datos de la gráfica como tabla."
+  },
+  "graficaPunto": "{etiqueta}: {valor}",
+  "@graficaPunto": {
+    "description": "Fila de la tabla de una gráfica.",
+    "placeholders": {
+      "etiqueta": {
+        "type": "String"
+      },
+      "valor": {
+        "type": "String"
+      }
+    }
+  },
+  "lineaPasoHecho": "completado",
+  "@lineaPasoHecho": {
+    "description": "Estado de un paso terminado en la línea de tiempo."
+  },
+  "lineaPasoActual": "en curso",
+  "@lineaPasoActual": {
+    "description": "Estado del paso actual en la línea de tiempo."
+  },
+  "lineaPasoPendiente": "pendiente",
+  "@lineaPasoPendiente": {
+    "description": "Estado de un paso por hacer en la línea de tiempo."
+  },
+  "lineaVerMas": "Ver más",
+  "@lineaVerMas": {
+    "description": "Botón para cargar más pasos de la línea de tiempo."
+  },
+  "lineaEtapa": "Etapa {posicion} de {total}",
+  "@lineaEtapa": {
+    "description": "Posición de un paso en la línea de tiempo.",
+    "placeholders": {
+      "posicion": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pestanaPosicion": "{texto}, {posicion} de {total}",
+  "@pestanaPosicion": {
+    "description": "Pestaña con su posición, para el lector de pantalla.",
+    "placeholders": {
+      "texto": {
+        "type": "String"
+      },
+      "posicion": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "franjasSinHorarios": "No hay horarios para este día.",
+  "@franjasSinHorarios": {
+    "description": "Mensaje del selector de horarios vacío."
+  },
+  "franjasDisponibles": "Horarios disponibles",
+  "@franjasDisponibles": {
+    "description": "Nombre del selector de horarios para el lector de pantalla."
+  },
+  "pdfPagina": "Página {pagina} de {total}",
+  "@pdfPagina": {
+    "description": "Contador de páginas del visor de documentos.",
+    "placeholders": {
+      "pagina": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pdfCargando": "Cargando documento",
+  "@pdfCargando": {
+    "description": "Lo que anuncia el visor mientras abre un documento."
+  },
+  "comparacionEtiqueta": "Comparación. {antes} contra {despues}",
+  "@comparacionEtiqueta": {
+    "description": "Nombre del control de comparar antes y después.",
+    "placeholders": {
+      "antes": {
+        "type": "String"
+      },
+      "despues": {
+        "type": "String"
+      }
+    }
+  },
+  "comparacionValor": "{porcentaje} % del antes",
+  "@comparacionValor": {
+    "description": "Valor del control de comparar antes y después.",
+    "placeholders": {
+      "porcentaje": {
+        "type": "int"
+      }
+    }
+  },
+  "comparacionPorcentaje": "{porcentaje} %",
+  "@comparacionPorcentaje": {
+    "description": "Valor al mover el control de comparar.",
+    "placeholders": {
+      "porcentaje": {
+        "type": "int"
+      }
+    }
+  },
+  "navegacionPendientes": "{conteo} pendientes",
+  "@navegacionPendientes": {
+    "description": "Cantidad de pendientes de un destino de la barra de navegación.",
+    "placeholders": {
+      "conteo": {
+        "type": "int"
+      }
+    }
+  },
+  "franjaSinCupo": "{hora} · sin cupo",
+  "@franjaSinCupo": {
+    "description": "Franja horaria sin lugares.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "franjaConCupo": "{hora} · {cupo, plural, =1{1 lugar} other{{cupo} lugares}}",
+  "@franjaConCupo": {
+    "description": "Franja horaria con sus lugares libres.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      },
+      "cupo": {
+        "type": "int"
+      }
+    }
+  },
+  "galeriaAmpliar": "Ampliar",
+  "@galeriaAmpliar": {
+    "description": "Pista de la foto de la galería para ampliarla."
+  },
+  "galeriaSinFotos": "Aún no hay fotos.",
+  "@galeriaSinFotos": {
+    "description": "Mensaje de la galería sin fotos."
+  },
+  "deslizarMensajeConfirmacion": "Confirma que quieres continuar.",
+  "@deslizarMensajeConfirmacion": {
+    "description": "Mensaje por defecto del diálogo de confirmación."
   }
 }

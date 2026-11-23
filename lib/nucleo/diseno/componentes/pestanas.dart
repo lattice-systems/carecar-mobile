@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -80,7 +81,8 @@ class _Pestana extends StatelessWidget {
     return Semantics(
       button: true,
       selected: seleccionada,
-      label: '$texto, $posicion de $total',
+      label: AppLocalizations.of(context)
+          .pestanaPosicion(texto, posicion, total),
       excludeSemantics: true,
       onTap: alToque,
       child: InkWell(

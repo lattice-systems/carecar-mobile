@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'chip_pista.dart';
@@ -15,10 +16,11 @@ class FranjaHoraria {
 
   bool get disponible => cupo == null || cupo! > 0;
 
-  String get _texto {
-    if (cupo == null) return etiqueta;
-    if (cupo == 0) return '$etiqueta · sin cupo';
-    return '$etiqueta · ${cupo == 1 ? '1 lugar' : '$cupo lugares'}';
+  String _texto(AppLocalizations textos) {
+    final lugares = cupo;
+    if (lugares == null) return etiqueta;
+    if (lugares == 0) return textos.franjaSinCupo(etiqueta);
+    return textos.franjaConCupo(etiqueta, lugares);
   }
 }
 
@@ -33,13 +35,13 @@ class SelectorFranja extends StatelessWidget {
     required this.seleccionada,
     required this.alSeleccionar,
     super.key,
-    this.mensajeVacio = 'No hay horarios para este dia.',
+    this.mensajeVacio,
   });
 
   final List<FranjaHoraria> franjas;
   final int? seleccionada;
   final ValueChanged<int> alSeleccionar;
-  final String mensajeVacio;
+  final String? mensajeVacio;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class SelectorFranja extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: Espaciado.e3),
         child: Text(
-          mensajeVacio,
+          mensajeVacio ?? AppLocalizations.of(context).franjasSinHorarios,
           style: t.cuerpoChico.copyWith(color: c.textoSecundario),
         ),
       );
@@ -60,14 +62,14 @@ class SelectorFranja extends StatelessWidget {
     return Semantics(
       container: true,
       explicitChildNodes: true,
-      label: 'Horarios disponibles',
+      label: AppLocalizations.of(context).franjasDisponibles,
       child: Wrap(
         spacing: Espaciado.e2,
         runSpacing: Espaciado.e1,
         children: [
           for (var i = 0; i < franjas.length; i++)
             ChipPista(
-              texto: franjas[i]._texto,
+              texto: franjas[i]._texto(AppLocalizations.of(context)),
               seleccionado: seleccionada == i,
               alCambiar: franjas[i].disponible ? (_) => alSeleccionar(i) : null,
             ),

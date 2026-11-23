@@ -41,7 +41,7 @@ void main() {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
     expect(find.byType(Calendario), findsOneWidget);
-    expect(find.text('noviembre 2026'), findsOneWidget);
+    expect(find.text('noviembre de 2026'), findsOneWidget);
   });
 
   testWidgets('el dia sin cupo se anuncia y no se puede elegir', (
@@ -87,7 +87,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Mes siguiente'));
     await tester.pumpAndSettle();
-    expect(find.text('diciembre 2026'), findsOneWidget);
+    expect(find.text('diciembre de 2026'), findsOneWidget);
     expect(find.bySemanticsLabel('1 de diciembre'), findsOneWidget);
   });
 

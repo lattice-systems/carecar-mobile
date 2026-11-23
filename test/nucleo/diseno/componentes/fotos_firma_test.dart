@@ -77,7 +77,7 @@ void main() {
 
     testWidgets('sin fotos muestra el mensaje', (tester) async {
       await tester.pumpWidget(conTemaPista(const GaleriaFotos(fotos: [])));
-      expect(find.text('Aun no hay fotos.'), findsOneWidget);
+      expect(find.text('Aún no hay fotos.'), findsOneWidget);
     });
 
     testWidgets('cada foto se anuncia con su descripcion', (tester) async {
@@ -149,11 +149,11 @@ void main() {
       final semantica = tester.ensureSemantics();
       await tester.pumpWidget(comparacion());
       await tester.pump();
-      final nodo = find.bySemanticsLabel(RegExp('Comparacion'));
+      final nodo = find.bySemanticsLabel(RegExp('Comparación'));
       expect(
         tester.getSemantics(nodo),
         matchesSemantics(
-          label: 'Comparacion. Rayon en la puerta contra Puerta reparada',
+          label: 'Comparación. Rayon en la puerta contra Puerta reparada',
           value: '50 % del antes',
           increasedValue: '60 %',
           decreasedValue: '40 %',
@@ -162,7 +162,7 @@ void main() {
           hasDecreaseAction: true,
         ),
       );
-      tester.semantics.increase(find.semantics.byLabel(RegExp("Comparacion")));
+      tester.semantics.increase(find.semantics.byLabel(RegExp("Comparación")));
       await tester.pump();
       expect(tester.getSemantics(nodo).value, '60 % del antes');
       semantica.dispose();
@@ -194,7 +194,7 @@ void main() {
       await tester.pumpWidget(
         conTemaPista(const Firma(firmante: 'Ana Perez', imagen: null)),
       );
-      expect(find.text('Aun sin firma'), findsOneWidget);
+      expect(find.text('Aún sin firma'), findsOneWidget);
       expect(find.bySemanticsLabel('Sin firma de Ana Perez'), findsOneWidget);
     });
 

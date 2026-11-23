@@ -14,27 +14,8 @@ import 'package:flutter_test/flutter_test.dart';
 /// probar que no queda ninguna.
 void main() {
   /// Archivos que todavia tienen cadenas escritas a mano y estan por migrar.
-  /// La lista solo debe achicarse: si migras un archivo, quitalo de aqui (la
-  /// prueba lo exige). Un archivo nuevo no entra a esta lista.
-  const pendientes = <String>{
-    // Componentes del sistema (V2-T02.04 a T02.14): sus etiquetas para el
-    // lector de pantalla y sus textos por defecto aun estan en espanol dentro
-    // del codigo. Se migran en la fase 2 de V2-M20.01, dandoles los textos por
-    // parametro o por `AppLocalizations`.
-    'lib/nucleo/diseno/componentes/aviso.dart',
-    'lib/nucleo/diseno/componentes/barra_navegacion.dart',
-    'lib/nucleo/diseno/componentes/boton.dart',
-    'lib/nucleo/diseno/componentes/calendario.dart',
-    'lib/nucleo/diseno/componentes/comparacion_antes_despues.dart',
-    'lib/nucleo/diseno/componentes/deslizar_para_confirmar.dart',
-    'lib/nucleo/diseno/componentes/firma.dart',
-    'lib/nucleo/diseno/componentes/galeria_fotos.dart',
-    'lib/nucleo/diseno/componentes/grafica.dart',
-    'lib/nucleo/diseno/componentes/linea_de_tiempo.dart',
-    'lib/nucleo/diseno/componentes/pestanas.dart',
-    'lib/nucleo/diseno/componentes/selector_franja.dart',
-    'lib/nucleo/diseno/componentes/visor_pdf.dart',
-  };
+  /// Hoy esta vacia (V2-M20.01 fase 2). Un archivo nuevo no entra a esta lista.
+  const pendientes = <String>{};
 
   /// Carpetas fuera de la regla, con su razon.
   const exentas = <String>[
