@@ -98,6 +98,162 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
+  /// No description provided for @asistenciaGuiaChoquePaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.'**
+  String get asistenciaGuiaChoquePaso1;
+
+  /// No description provided for @asistenciaGuiaChoquePaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.'**
+  String get asistenciaGuiaChoquePaso2;
+
+  /// No description provided for @asistenciaGuiaChoquePaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.'**
+  String get asistenciaGuiaChoquePaso3;
+
+  /// No description provided for @asistenciaGuiaChoquePaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Llama a tu aseguradora y espera al ajustador. No aceptes ni firmes acuerdos con el otro conductor sin ella.'**
+  String get asistenciaGuiaChoquePaso4;
+
+  /// No description provided for @asistenciaGuiaChoquePaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma fotos de los vehículos, las placas, los daños y el lugar. Anota el nombre, el teléfono y los datos del seguro del otro conductor.'**
+  String get asistenciaGuiaChoquePaso5;
+
+  /// No description provided for @asistenciaGuiaChoquePaso6.
+  ///
+  /// In es, this message translates to:
+  /// **'No muevas el auto hasta que lo autorice la autoridad o el ajustador, salvo que estorbe y sea seguro hacerlo.'**
+  String get asistenciaGuiaChoquePaso6;
+
+  /// No description provided for @asistenciaGuiaChoqueResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasos para cuidar a todos y proteger tu reclamación.'**
+  String get asistenciaGuiaChoqueResumen;
+
+  /// No description provided for @asistenciaGuiaChoqueTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacer en un choque'**
+  String get asistenciaGuiaChoqueTitulo;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Estaciona el otro auto de frente, sin que se toquen. Apaga ambos motores y los accesorios.'**
+  String get asistenciaGuiaCorrientePaso1;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Conecta una pinza roja al polo positivo (+) de tu batería descargada y el otro extremo al polo positivo del auto que da corriente.'**
+  String get asistenciaGuiaCorrientePaso2;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Conecta una pinza negra al polo negativo (−) de la batería buena y el otro extremo a una parte metálica sin pintar del motor de tu auto, lejos de la batería.'**
+  String get asistenciaGuiaCorrientePaso3;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Enciende el auto que da corriente y déjalo funcionando unos minutos.'**
+  String get asistenciaGuiaCorrientePaso4;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta encender tu auto. Si no arranca, espera unos minutos más e inténtalo de nuevo.'**
+  String get asistenciaGuiaCorrientePaso5;
+
+  /// No description provided for @asistenciaGuiaCorrientePaso6.
+  ///
+  /// In es, this message translates to:
+  /// **'Quita las pinzas en orden inverso, sin que se toquen entre sí, y deja tu auto encendido al menos 20 minutos.'**
+  String get asistenciaGuiaCorrientePaso6;
+
+  /// No description provided for @asistenciaGuiaCorrienteResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo arrancar tu auto con cables de otro vehículo.'**
+  String get asistenciaGuiaCorrienteResumen;
+
+  /// No description provided for @asistenciaGuiaCorrienteTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasar corriente'**
+  String get asistenciaGuiaCorrienteTitulo;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso1.
+  ///
+  /// In es, this message translates to:
+  /// **'Estaciona en terreno plano y firme, pon el freno de mano y enciende las luces intermitentes.'**
+  String get asistenciaGuiaLlantaPaso1;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso2.
+  ///
+  /// In es, this message translates to:
+  /// **'Saca la llanta de refacción, el gato y la llave de cruz. Afloja un poco las tuercas de la llanta ponchada sin quitarlas.'**
+  String get asistenciaGuiaLlantaPaso2;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso3.
+  ///
+  /// In es, this message translates to:
+  /// **'Coloca el gato en el punto indicado en el manual y levanta el auto hasta que la llanta quede en el aire.'**
+  String get asistenciaGuiaLlantaPaso3;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso4.
+  ///
+  /// In es, this message translates to:
+  /// **'Quita las tuercas y la llanta ponchada. Monta la de refacción y aprieta las tuercas con la mano.'**
+  String get asistenciaGuiaLlantaPaso4;
+
+  /// No description provided for @asistenciaGuiaLlantaPaso5.
+  ///
+  /// In es, this message translates to:
+  /// **'Baja el auto, aprieta las tuercas en cruz con la llave y revisa la presión en cuanto puedas.'**
+  String get asistenciaGuiaLlantaPaso5;
+
+  /// No description provided for @asistenciaGuiaLlantaResumen.
+  ///
+  /// In es, this message translates to:
+  /// **'Cámbiala por la de refacción en pocos pasos.'**
+  String get asistenciaGuiaLlantaResumen;
+
+  /// No description provided for @asistenciaGuiaLlantaTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar una llanta'**
+  String get asistenciaGuiaLlantaTitulo;
+
+  /// Encabezado de cada paso de una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'Paso {numero} de {total}'**
+  String asistenciaGuiaPasoNumero(int numero, int total);
+
+  /// Aviso de que las guías no necesitan red.
+  ///
+  /// In es, this message translates to:
+  /// **'Estas guías están guardadas en la app y funcionan sin conexión.'**
+  String get asistenciaGuiasAvisoSinConexion;
+
+  /// Título de la pantalla de guías de emergencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Guías de emergencia'**
+  String get asistenciaGuiasTitulo;
+
   /// Título de la pantalla del catálogo de modelos.
   ///
   /// In es, this message translates to:
