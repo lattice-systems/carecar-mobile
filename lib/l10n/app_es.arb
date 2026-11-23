@@ -17,11 +17,58 @@
   "citasAgendarTitulo": "Agendar cita",
   "citasAgendarVehiculo": "Vehículo",
   "citasAgendarVehiculoSugerencia": "Elige tu vehículo",
+  "citasCancelada": "Cita cancelada. El horario quedó libre.",
+  "@citasCancelada": {
+    "description": "Aviso tras cancelar."
+  },
+  "citasCancelar": "Cancelar cita",
+  "@citasCancelar": {
+    "description": "Botón para cancelar una cita."
+  },
+  "citasCancelarConfirmar": "Sí, cancelar",
+  "@citasCancelarConfirmar": {
+    "description": "Acción de peligro del diálogo de cancelar."
+  },
+  "citasCancelarDialogoMensaje": "Tu cita del {fecha} a las {hora} se cancelará y el horario quedará libre para otras personas.",
+  "@citasCancelarDialogoMensaje": {
+    "description": "Mensaje del diálogo de cancelar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasCancelarDialogoTitulo": "¿Cancelar esta cita?",
+  "@citasCancelarDialogoTitulo": {
+    "description": "Título del diálogo de confirmación."
+  },
+  "citasCancelarError": "No pudimos cancelar tu cita. Intenta de nuevo.",
+  "@citasCancelarError": {
+    "description": "Fallo al cancelar."
+  },
+  "citasCancelarMantener": "Mantener cita",
+  "@citasCancelarMantener": {
+    "description": "Acción segura del diálogo de cancelar."
+  },
+  "citasCancelarNoDisponible": "Esta cita ya no se puede cancelar.",
+  "@citasCancelarNoDisponible": {
+    "description": "409: la cita ya no está confirmada o pasó el plazo."
+  },
   "citasCargando": "Cargando disponibilidad del taller",
   "@citasCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras carga la disponibilidad."
   },
   "citasCargandoAgendar": "Cargando tus vehículos y los horarios del taller",
+  "citasCargarMas": "Cargar más citas",
+  "@citasCargarMas": {
+    "description": "Botón de paginación."
+  },
   "citasConfirmar": "Confirmar cita",
   "citasDuplicadaMensaje": "Ya tienes una cita el {fecha} de {inicio} a {fin}. Si necesitas cambiarla, cancélala primero.",
   "@citasDuplicadaMensaje": {
@@ -45,6 +92,49 @@
   "citasDuplicadaTitulo": "Ya tienes una cita ese día",
   "citasEditar": "Cambiar datos",
   "citasErrorAgendar": "No pudimos agendar tu cita. Intenta de nuevo.",
+  "citasErrorMas": "No pudimos cargar más citas. Intenta de nuevo.",
+  "@citasErrorMas": {
+    "description": "Fallo al pedir la siguiente página."
+  },
+  "citasEstadoAtendida": "Atendida",
+  "@citasEstadoAtendida": {
+    "description": "Estado de cita atendida."
+  },
+  "citasEstadoCancelada": "Cancelada",
+  "@citasEstadoCancelada": {
+    "description": "Estado de cita cancelada."
+  },
+  "citasEstadoConfirmada": "Confirmada",
+  "@citasEstadoConfirmada": {
+    "description": "Estado de cita confirmada."
+  },
+  "citasEstadoDesconocido": "Sin estado",
+  "@citasEstadoDesconocido": {
+    "description": "Estado que la app no reconoce."
+  },
+  "citasEstadoNoAsistio": "No asistió",
+  "@citasEstadoNoAsistio": {
+    "description": "Estado de cita a la que el cliente no llegó."
+  },
+  "citasFilaTitulo": "{fecha} · {inicio}",
+  "@citasFilaTitulo": {
+    "description": "Título de una cita en la lista.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 nov"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasFilaVehiculoGenerico": "Tu vehículo",
+  "@citasFilaVehiculoGenerico": {
+    "description": "Nombre cuando la cita no trae el vehículo."
+  },
   "citasFranjaCercana": "{fecha} · {hora}",
   "@citasFranjaCercana": {
     "description": "Botón que ofrece una franja cercana cuando la elegida se llenó.",
@@ -89,12 +179,114 @@
     }
   },
   "citasListoTitulo": "Cita confirmada",
+  "citasMisCitasAgendar": "Agendar cita",
+  "@citasMisCitasAgendar": {
+    "description": "Acción del estado vacío y de la lista."
+  },
+  "citasMisCitasCargando": "Cargando tus citas",
+  "@citasMisCitasCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras cargan las citas."
+  },
+  "citasMisCitasTitulo": "Mis citas",
+  "@citasMisCitasTitulo": {
+    "description": "Título de la lista de citas del cliente."
+  },
+  "citasMisCitasVacioMensaje": "Cuando agendes una cita aparecerá aquí con su estado.",
+  "@citasMisCitasVacioMensaje": {
+    "description": "Mensaje cuando no hay citas."
+  },
+  "citasMisCitasVacioTitulo": "Aún no tienes citas",
+  "@citasMisCitasVacioTitulo": {
+    "description": "Título cuando el cliente no tiene ninguna cita."
+  },
   "citasMotivoGarantia": "Garantía",
   "citasMotivoMantenimiento": "Mantenimiento",
   "citasMotivoOtro": "Otro",
   "citasMotivoReparacion": "Reparación",
   "citasMotivoRevision": "Revisión",
   "citasNotaDiasSinCupo": "Los días tachados no tienen lugares disponibles.",
+  "citasPasadas": "Pasadas",
+  "@citasPasadas": {
+    "description": "Encabezado de las citas ya atendidas, canceladas o vencidas."
+  },
+  "citasPasadasVacio": "Aún no tienes citas pasadas.",
+  "@citasPasadasVacio": {
+    "description": "Sección de pasadas sin citas."
+  },
+  "citasProximas": "Próximas",
+  "@citasProximas": {
+    "description": "Encabezado de las citas confirmadas que aún no pasan."
+  },
+  "citasProximasVacio": "No tienes citas próximas.",
+  "@citasProximasVacio": {
+    "description": "Sección de próximas sin citas."
+  },
+  "citasReprogramar": "Reprogramar",
+  "@citasReprogramar": {
+    "description": "Botón para cambiar la cita de horario."
+  },
+  "citasReprogramarActual": "Tu cita actual: {fecha} · {hora}",
+  "@citasReprogramarActual": {
+    "description": "Cita que se va a cambiar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 nov"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasReprogramarCargando": "Cargando tu cita y los horarios del taller",
+  "@citasReprogramarCargando": {
+    "description": "Lo que anuncia el lector de pantalla al cargar."
+  },
+  "citasReprogramarConfirmar": "Cambiar a este horario",
+  "@citasReprogramarConfirmar": {
+    "description": "Botón de confirmar el cambio."
+  },
+  "citasReprogramarError": "No pudimos reprogramar tu cita. Intenta de nuevo.",
+  "@citasReprogramarError": {
+    "description": "Fallo al reprogramar."
+  },
+  "citasReprogramarListo": "Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.",
+  "@citasReprogramarListo": {
+    "description": "Aviso tras reprogramar.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "hora": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasReprogramarNoDisponible": "Esta cita ya no se puede cambiar.",
+  "@citasReprogramarNoDisponible": {
+    "description": "409: la cita ya no está confirmada o pasó el plazo."
+  },
+  "citasReprogramarNoEncontradaMensaje": "Puede que ya no esté disponible para cambiarla.",
+  "@citasReprogramarNoEncontradaMensaje": {
+    "description": "Mensaje si la cita no está en la lista."
+  },
+  "citasReprogramarNoEncontradaTitulo": "No encontramos esta cita",
+  "@citasReprogramarNoEncontradaTitulo": {
+    "description": "Título si la cita no está en la lista."
+  },
+  "citasReprogramarSinFranja": "Elige un día y un horario nuevos para continuar.",
+  "@citasReprogramarSinFranja": {
+    "description": "Ayuda cuando falta elegir la franja."
+  },
+  "citasReprogramarTitulo": "Reprogramar cita",
+  "@citasReprogramarTitulo": {
+    "description": "Título de la pantalla de reprogramar."
+  },
   "citasResumenFecha": "Día",
   "citasResumenHorario": "Horario",
   "citasResumenHorarioValor": "{inicio} a {fin}",
