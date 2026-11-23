@@ -1148,6 +1148,18 @@ abstract class AppLocalizations {
   /// **'{texto}, cargando'**
   String botonCargando(String texto);
 
+  /// Enlace al final del titulo de un estante para abrir la lista completa.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo'**
+  String get estanteVerTodo;
+
+  /// Lo que anuncia el enlace Ver todo de un estante: incluye el titulo del estante.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo: {titulo}'**
+  String estanteVerTodoDe(String titulo);
+
   /// Nombre del calendario con el mes visible.
   ///
   /// In es, this message translates to:
