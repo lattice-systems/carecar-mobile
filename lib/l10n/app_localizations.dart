@@ -164,6 +164,54 @@ abstract class AppLocalizations {
   /// **'Elige tu vehículo'**
   String get citasAgendarVehiculoSugerencia;
 
+  /// Aviso tras cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita cancelada. El horario quedó libre.'**
+  String get citasCancelada;
+
+  /// Botón para cancelar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar cita'**
+  String get citasCancelar;
+
+  /// Acción de peligro del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, cancelar'**
+  String get citasCancelarConfirmar;
+
+  /// Mensaje del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita del {fecha} a las {hora} se cancelará y el horario quedará libre para otras personas.'**
+  String citasCancelarDialogoMensaje(DateTime fecha, String hora);
+
+  /// Título del diálogo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cancelar esta cita?'**
+  String get citasCancelarDialogoTitulo;
+
+  /// Fallo al cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cancelar tu cita. Intenta de nuevo.'**
+  String get citasCancelarError;
+
+  /// Acción segura del diálogo de cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantener cita'**
+  String get citasCancelarMantener;
+
+  /// 409: la cita ya no está confirmada o pasó el plazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cita ya no se puede cancelar.'**
+  String get citasCancelarNoDisponible;
+
   /// Lo que anuncia el lector de pantalla mientras carga la disponibilidad.
   ///
   /// In es, this message translates to:
@@ -175,6 +223,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando tus vehículos y los horarios del taller'**
   String get citasCargandoAgendar;
+
+  /// Botón de paginación.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargar más citas'**
+  String get citasCargarMas;
 
   /// No description provided for @citasConfirmar.
   ///
@@ -205,6 +259,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos agendar tu cita. Intenta de nuevo.'**
   String get citasErrorAgendar;
+
+  /// Fallo al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más citas. Intenta de nuevo.'**
+  String get citasErrorMas;
+
+  /// Estado de cita atendida.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get citasEstadoAtendida;
+
+  /// Estado de cita cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelada'**
+  String get citasEstadoCancelada;
+
+  /// Estado de cita confirmada.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmada'**
+  String get citasEstadoConfirmada;
+
+  /// Estado que la app no reconoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin estado'**
+  String get citasEstadoDesconocido;
+
+  /// Estado de cita a la que el cliente no llegó.
+  ///
+  /// In es, this message translates to:
+  /// **'No asistió'**
+  String get citasEstadoNoAsistio;
+
+  /// Título de una cita en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {inicio}'**
+  String citasFilaTitulo(DateTime fecha, String inicio);
+
+  /// Nombre cuando la cita no trae el vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu vehículo'**
+  String get citasFilaVehiculoGenerico;
 
   /// Botón que ofrece una franja cercana cuando la elegida se llenó.
   ///
@@ -242,6 +344,36 @@ abstract class AppLocalizations {
   /// **'Cita confirmada'**
   String get citasListoTitulo;
 
+  /// Acción del estado vacío y de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get citasMisCitasAgendar;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus citas'**
+  String get citasMisCitasCargando;
+
+  /// Título de la lista de citas del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis citas'**
+  String get citasMisCitasTitulo;
+
+  /// Mensaje cuando no hay citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando agendes una cita aparecerá aquí con su estado.'**
+  String get citasMisCitasVacioMensaje;
+
+  /// Título cuando el cliente no tiene ninguna cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes citas'**
+  String get citasMisCitasVacioTitulo;
+
   /// No description provided for @citasMotivoGarantia.
   ///
   /// In es, this message translates to:
@@ -277,6 +409,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Los días tachados no tienen lugares disponibles.'**
   String get citasNotaDiasSinCupo;
+
+  /// Encabezado de las citas ya atendidas, canceladas o vencidas.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasadas'**
+  String get citasPasadas;
+
+  /// Sección de pasadas sin citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes citas pasadas.'**
+  String get citasPasadasVacio;
+
+  /// Encabezado de las citas confirmadas que aún no pasan.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximas'**
+  String get citasProximas;
+
+  /// Sección de próximas sin citas.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas próximas.'**
+  String get citasProximasVacio;
+
+  /// Botón para cambiar la cita de horario.
+  ///
+  /// In es, this message translates to:
+  /// **'Reprogramar'**
+  String get citasReprogramar;
+
+  /// Cita que se va a cambiar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita actual: {fecha} · {hora}'**
+  String citasReprogramarActual(DateTime fecha, String hora);
+
+  /// Lo que anuncia el lector de pantalla al cargar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu cita y los horarios del taller'**
+  String get citasReprogramarCargando;
+
+  /// Botón de confirmar el cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar a este horario'**
+  String get citasReprogramarConfirmar;
+
+  /// Fallo al reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos reprogramar tu cita. Intenta de nuevo.'**
+  String get citasReprogramarError;
+
+  /// Aviso tras reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.'**
+  String citasReprogramarListo(DateTime fecha, String hora);
+
+  /// 409: la cita ya no está confirmada o pasó el plazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta cita ya no se puede cambiar.'**
+  String get citasReprogramarNoDisponible;
+
+  /// Mensaje si la cita no está en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no esté disponible para cambiarla.'**
+  String get citasReprogramarNoEncontradaMensaje;
+
+  /// Título si la cita no está en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esta cita'**
+  String get citasReprogramarNoEncontradaTitulo;
+
+  /// Ayuda cuando falta elegir la franja.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día y un horario nuevos para continuar.'**
+  String get citasReprogramarSinFranja;
+
+  /// Título de la pantalla de reprogramar.
+  ///
+  /// In es, this message translates to:
+  /// **'Reprogramar cita'**
+  String get citasReprogramarTitulo;
 
   /// No description provided for @citasResumenFecha.
   ///
