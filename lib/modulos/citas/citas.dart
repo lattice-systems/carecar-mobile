@@ -32,3 +32,4 @@ export 'presentacion/rutas_citas.dart'
         rutaComprobanteCita,
         rutaDisponibilidad,
         rutasCitas;
+    show rutaAgendarCita, rutaComprobanteCita, rutaDisponibilidad, rutasCitas;
