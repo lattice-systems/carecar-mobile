@@ -87,3 +87,7 @@ Rediseño visual de `PantallaGuias` y `PantallaGuia` (V2-M11.03) según el estil
 **Código:** `estilo_guias.dart` (ícono y color por guía, compartidos), claves ARB `asistenciaListaTitulo`, `asistenciaHeroe*`, `asistenciaEstanteGuias`, `asistenciaGrupoGuias`, `asistenciaGuiaCantidadPasos`, `asistenciaGuiaSubtituloSinConexion` (es y en). Pruebas de `test/modulos/asistencia/ruta_guias_test.dart` actualizadas (los títulos aparecen en estante y lista) y ampliadas (héroe explicado, portada abre la guía, lista y guía al 200 % sin desbordes).
 
 **Pendiente:** al integrar V2-M11.01 activar el botón del héroe; con V2-M11.02 agregar la píldora «Llamar a la agencia» en la guía; goldens de las dos pantallas si se piden.
+
+### Correcciones del rediseño (barras al desplazar)
+
+`PantallaGuia` usa `BarraPortada` (transparente arriba, opaca al desplazar) y `PantallaGuias` hereda el encabezado translúcido más opaco de `EncabezadoGrande`: ningún paso o tarjeta se ve a través del título ni del botón de regreso. Hay pruebas de widget que desplazan ambas pantallas.
