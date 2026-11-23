@@ -656,6 +656,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get estanteVerTodo => 'Ver todo';
+
+  @override
+  String estanteVerTodoDe(String titulo) {
+    return 'Ver todo: $titulo';
+  }
+
+  @override
   String calendarioDelMes(DateTime mes) {
     final intl.DateFormat mesDateFormat = intl.DateFormat.yMMMM(localeName);
     final String mesString = mesDateFormat.format(mes);
