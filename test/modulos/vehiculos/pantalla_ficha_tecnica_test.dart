@@ -97,6 +97,30 @@ void main() {
     expect(find.text('Mostrando la ficha guardada en la app'), findsOneWidget);
   });
 
+  _prueba('el respaldo local traduce sus títulos y claves al idioma', (
+    tester,
+  ) async {
+    const respaldo = FichaTecnicaVehiculo(
+      delRespaldo: true,
+      secciones: [
+        SeccionFicha(
+          codigo: 'motor',
+          especificaciones: [
+            EspecificacionFicha(codigo: 'potencia', valor: '118 hp'),
+          ],
+        ),
+      ],
+    );
+    await tester.pumpWidget(
+      _app(_Repo(() async => respaldo), idioma: const Locale('en')),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Engine'));
+    await tester.pumpAndSettle();
+    expect(find.text('Power'), findsOneWidget);
+    expect(find.text('118 hp'), findsOneWidget);
+  });
+
   _prueba('cargando: esqueleto con etiqueta para el lector de pantalla', (
     tester,
   ) async {
