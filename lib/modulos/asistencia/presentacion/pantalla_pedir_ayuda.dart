@@ -177,9 +177,8 @@ class _Marco extends StatelessWidget {
                 translucido: true,
                 acciones: [
                   IconButton(
-                    tooltip: MaterialLocalizations.of(
-                      context,
-                    ).closeButtonTooltip,
+                    tooltip: MaterialLocalizations.of(context)
+                        .closeButtonTooltip,
                     constraints: const BoxConstraints(
                       minWidth: Espaciado.objetivoTactilMinimo,
                       minHeight: Espaciado.objetivoTactilMinimo,
