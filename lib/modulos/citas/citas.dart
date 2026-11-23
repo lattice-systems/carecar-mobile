@@ -4,6 +4,7 @@
 library;
 
 export 'dominio/cita_agendada.dart' show CitaAgendada;
+export 'dominio/cita_cliente.dart' show CitaCliente, EstadoDeCita;
 export 'dominio/disponibilidad_taller.dart'
     show DisponibilidadTaller, FranjaDisponible;
 export 'dominio/motivo_cita.dart' show MotivoCita;
