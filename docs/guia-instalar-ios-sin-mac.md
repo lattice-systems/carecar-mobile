@@ -21,8 +21,8 @@ El workflow **IPA sin firma** ([`.github/workflows/ipa-sin-firma.yml`](../.githu
 1. Abre el repositorio en GitHub con tu cuenta (debe tener acceso a `lattice-systems/carecar-mobile`).
 2. Pestaña **Actions** → en la lista de la izquierda, **IPA sin firma**.
 3. Botón **Run workflow** → deja la rama **main** → **Run workflow**.
-4. Espera a que la corrida termine en verde (unos 10-15 minutos). Si falla en "Verificar la dirección del servidor", falta la variable de repositorio `API_BASE_URL` (Settings → Secrets and variables → Actions → Variables).
-5. Entra a la corrida y baja hasta **Artifacts**. Haz clic en `carecar-vX.Y.Z-build<n>.ipa`: se descarga el `.ipa` directo, sin zip alrededor.
+4. Espera a que la corrida termine en verde (unos 5 minutos). Si falla en "Verificar la dirección del servidor", falta la variable de repositorio `API_BASE_URL` (Settings → Secrets and variables → Actions → Variables).
+5. Entra a la corrida y baja hasta **Artifacts**. Haz clic en `carecar-vX.Y.Z-build<n>.ipa`: se descarga el `.ipa` directo (unos 30 MB), sin zip alrededor.
 
 El artefacto dura **30 días**. Cada versión etiquetada (`vX.Y.Z`) también trae su IPA en **Releases** (`carecar-vX.Y.Z.ipa`), junto al APK, unos minutos después de publicarse.
 
@@ -33,8 +33,14 @@ Desde la terminal, si tienes `gh`:
 ```bash
 gh workflow run ipa-sin-firma.yml --ref main -R lattice-systems/carecar-mobile
 gh run watch -R lattice-systems/carecar-mobile          # elige la corrida
-gh run download <id-de-la-corrida> -R lattice-systems/carecar-mobile
+# Id y nombre del artefacto de esa corrida:
+gh api repos/lattice-systems/carecar-mobile/actions/runs/<id-de-la-corrida>/artifacts \
+  --jq '.artifacts[] | "\(.id) \(.name)"'
+# Descarga el .ipa tal cual:
+gh api repos/lattice-systems/carecar-mobile/actions/artifacts/<id-del-artefacto>/zip > carecar.ipa
 ```
+
+No uses `gh run download`: trata el artefacto como zip y lo descomprime en una carpeta con el nombre del IPA, así que no obtienes el `.ipa`.
 
 ## 2. Preparar Windows (una sola vez)
 
