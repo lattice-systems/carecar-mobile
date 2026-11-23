@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Version oscura: mismos valores que los tokens de Pista (oscuro). -->
+    <color name="widget_cita_superficie">#FF14161B</color>
+    <color name="widget_cita_borde">#FF262A33</color>
+    <color name="widget_cita_texto">#FFF3F4F6</color>
+    <color name="widget_cita_texto_secundario">#FFA3A9B5</color>
+    <color name="widget_cita_acento">#FF5B8CFF</color>
+    <color name="widget_cita_sobre_acento">#FF0A0B0E</color>
+</resources>
