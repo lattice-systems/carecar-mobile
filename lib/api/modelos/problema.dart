@@ -21,6 +21,9 @@ enum CodigoProblema {
   citaNoReprogramable('CITA_NO_REPROGRAMABLE'),
   citaCancelada('CITA_CANCELADA'),
   walletNoConfigurado('WALLET_NO_CONFIGURADO'),
+  asistenteSinManual('ASISTENTE_SIN_MANUAL'),
+  asistenteLimite('ASISTENTE_LIMITE'),
+  asistenteNoDisponible('ASISTENTE_NO_DISPONIBLE'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

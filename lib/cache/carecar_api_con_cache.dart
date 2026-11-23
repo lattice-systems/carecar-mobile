@@ -230,6 +230,13 @@ class CarecarApiConCache implements CarecarApi {
   Future<List<Manual>> manualesDe(int vehiculoId) =>
       _api.manualesDe(vehiculoId);
 
+  /// Sin copia: cada respuesta del asistente es nueva y no sirve sin conexion.
+  @override
+  Future<RespuestaAsistente> preguntarAlAsistente({
+    required int vehiculoId,
+    required String pregunta,
+  }) => _api.preguntarAlAsistente(vehiculoId: vehiculoId, pregunta: pregunta);
+
   @override
   Future<Uint8List> ticketDe(int servicioId) => _api.ticketDe(servicioId);
 
