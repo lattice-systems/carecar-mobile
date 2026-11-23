@@ -20,6 +20,6 @@ final geocodificadorProvider = Provider<Geocodificador>(
 
 /// URL de teselas y atribución del build (ver [ConfiguracionTeselas]).
 final configuracionTeselasProvider = Provider<ConfiguracionTeselas>(
-  (ref) => ConfiguracionTeselas.openStreetMapDesarrollo,
+  (ref) => ConfiguracionTeselas.delEntorno,
   name: 'configuracionTeselasProvider',
 );
