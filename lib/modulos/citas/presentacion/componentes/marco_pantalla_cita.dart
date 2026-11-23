@@ -28,7 +28,9 @@ class MarcoPantallaCita extends StatelessWidget {
     super.key,
     this.subtitulo,
     this.acciones,
-  }) : slivers = [SliverFillRemaining(hasScrollBody: false, child: estado)],
+  }) : // El estado se centra y se desplaza solo (CentradoDesplazable), así
+       // que ocupa el resto con alto fijo en vez de medirse con intrínsecos.
+       slivers = [SliverFillRemaining(child: estado)],
        barraInferior = null,
        alRefrescar = null;
 
