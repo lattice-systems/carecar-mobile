@@ -57,4 +57,4 @@ Hay tres decisiones, no una: quién dibuja el mapa, de dónde sale la posición 
 
 ## Implementación
 
-Pendiente de aceptación. Al aceptarse: V2-T02.09 (`lib/nucleo/mapas/` y el componente `Mapa`).
+Hecho: dependencias (`flutter_map`, `latlong2`, `geolocator`, `geocoding`), permisos de ubicación en primer plano en Android e iOS y `lib/nucleo/mapas/` con las interfaces, implementaciones, fakes y proveedores Riverpod. Pendiente: el componente `Mapa` (V2-T02.09), que será el único que importe `flutter_map`.
