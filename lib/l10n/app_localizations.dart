@@ -224,6 +224,54 @@ abstract class AppLocalizations {
   /// **'Cargando tus vehículos y los horarios del taller'**
   String get citasCargandoAgendar;
 
+  /// No description provided for @citasComprobanteCargando.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu comprobante'**
+  String get citasComprobanteCargando;
+
+  /// Día y horario de la cita en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String citasComprobanteCuando(DateTime fecha, String inicio, String fin);
+
+  /// Número de la cita en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio {id}'**
+  String citasComprobanteFolio(int id);
+
+  /// No description provided for @citasComprobanteIndicacion.
+  ///
+  /// In es, this message translates to:
+  /// **'Muestra este código en recepción para registrar tu llegada.'**
+  String get citasComprobanteIndicacion;
+
+  /// No description provided for @citasComprobanteQrDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Código QR de tu cita para recepción'**
+  String get citasComprobanteQrDescripcion;
+
+  /// No description provided for @citasComprobanteTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante de cita'**
+  String get citasComprobanteTitulo;
+
+  /// No description provided for @citasComprobanteVerPdf.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante en PDF'**
+  String get citasComprobanteVerPdf;
+
+  /// No description provided for @citasComprobanteVerPdfDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante en PDF de tu cita'**
+  String get citasComprobanteVerPdfDescripcion;
+
   /// Botón de paginación.
   ///
   /// In es, this message translates to:
@@ -343,6 +391,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cita confirmada'**
   String get citasListoTitulo;
+
+  /// No description provided for @citasListoVerComprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante'**
+  String get citasListoVerComprobante;
 
   /// Acción del estado vacío y de la lista.
   ///
