@@ -19,4 +19,4 @@ export 'presentacion/proveedores_citas.dart'
         repositorioCitasProvider,
         tamanoPaginaCitasProvider;
 export 'presentacion/rutas_citas.dart'
-    show rutaAgendarCita, rutaDisponibilidad, rutasCitas;
+    show rutaAgendarCita, rutaDisponibilidad, rutaMisCitas, rutasCitas;
