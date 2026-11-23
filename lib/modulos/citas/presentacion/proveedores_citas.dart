@@ -152,6 +152,8 @@ final misCitasProvider =
       // El reintento es del usuario (boton de EstadoError), no automatico.
       retry: (_, _) => null,
       name: 'misCitasProvider',
+    );
+
 /// Comprobante de la cita `citaId` con el codigo firmado para el QR
 /// (V2-M02.11). Se descarta al salir de la pantalla: el codigo no se conserva.
 final comprobanteCitaProvider = FutureProvider.autoDispose
