@@ -93,7 +93,7 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - `lib/nucleo/migracion/`: `ModuloMigrable` (asistencia, catalogo, citas, vehiculos), `VersionModulo`, `InterruptorModulos` y `interruptorModulosProvider`. Valor por defecto en código: todo en v1. Se sobrescribe con `--dart-define=MODULOS_V2=<lista|todos>` y `MODULOS_V1=<lista|todos>` (v1 gana si hay choque; un nombre desconocido lanza `ArgumentError`). Sin servidor ni secretos.
 - `registro_de_rutas.dart`: `rutasDeLaApp(interruptor)` solo registra las rutas v2 de un módulo si está en v2; `destinosDeMenuV2` dice a qué ruta lleva cada tarjeta del menú v1.
 - `PantallaInicio` (v1) recibe `abrirEnV2`: con el módulo en v2 la tarjeta va a la ruta v2; sin él, abre la pantalla v1 igual que antes. El resto de la v1 no cambió.
-- Pruebas: `test/nucleo/migracion/` (valores por defecto, `--dart-define`, rutas por módulo en v1 y v2, tarjetas del menú). `AppEnrutadaDePrueba` acepta `interruptor` (por omisión todo en v2).
+- Pruebas: `test/nucleo/migracion/` (valores por defecto, `--dart-define`, rutas por módulo en v1 y v2, tarjetas del menú). `AppEnrutadaDePrueba` acepta `interruptor` (por omisión todo en v2; las pruebas de la v1 pasan `InterruptorModulos.porDefecto`).
 - Guía paso a paso (carpeta, interruptor, pruebas, encender y retirar en V2-T01.07) en [`../arquitectura-v2.md`](../arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105). README con el comando.
 
 **Decisiones**

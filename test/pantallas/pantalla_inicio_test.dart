@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
+import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
@@ -39,7 +40,13 @@ Future<ControladorSesion> _montar(
       contrasena: 'CareCar2026',
     );
   }
-  await tester.pumpWidget(AppEnrutadaDePrueba(api: api, controlador: sesion));
+  await tester.pumpWidget(
+    AppEnrutadaDePrueba(
+      api: api,
+      controlador: sesion,
+      interruptor: InterruptorModulos.porDefecto,
+    ),
+  );
   await tester.pumpAndSettle();
   return sesion;
 }
@@ -68,7 +75,11 @@ void main() {
     addTearDown(restaurada.dispose);
     await restaurada.restaurar();
     await tester.pumpWidget(
-      AppEnrutadaDePrueba(api: api, controlador: restaurada),
+      AppEnrutadaDePrueba(
+        api: api,
+        controlador: restaurada,
+        interruptor: InterruptorModulos.porDefecto,
+      ),
     );
     await tester.pumpAndSettle();
 
