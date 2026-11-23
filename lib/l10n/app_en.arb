@@ -204,6 +204,9 @@
   "@vehiculosVinCopiado": {
     "description": "Confirmación al copiar el VIN."
   },
+  "widgetsAccesoAgendar": "Book appointment",
+  "widgetsAccesoMiAuto": "My car",
+  "widgetsAccesoSos": "SOS",
   "avisoCerrar": "Close notice",
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
