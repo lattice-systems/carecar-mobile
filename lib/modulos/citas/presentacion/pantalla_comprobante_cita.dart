@@ -110,6 +110,7 @@ class _Comprobante extends ConsumerWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(Espaciado.e4),
                         child: QrImageView(
+                          key: ValueKey('qr-comprobante:${datos.codigo}'),
                           data: datos.codigo,
                           size: _ladoQr,
                           backgroundColor: Colors.white,
