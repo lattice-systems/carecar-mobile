@@ -10,6 +10,107 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get asistenciaGuiaChoquePaso1 =>
+      'Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.';
+
+  @override
+  String get asistenciaGuiaChoquePaso2 =>
+      'Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.';
+
+  @override
+  String get asistenciaGuiaChoquePaso3 =>
+      'Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.';
+
+  @override
+  String get asistenciaGuiaChoquePaso4 =>
+      'Llama a tu aseguradora y espera al ajustador. No aceptes ni firmes acuerdos con el otro conductor sin ella.';
+
+  @override
+  String get asistenciaGuiaChoquePaso5 =>
+      'Toma fotos de los vehículos, las placas, los daños y el lugar. Anota el nombre, el teléfono y los datos del seguro del otro conductor.';
+
+  @override
+  String get asistenciaGuiaChoquePaso6 =>
+      'No muevas el auto hasta que lo autorice la autoridad o el ajustador, salvo que estorbe y sea seguro hacerlo.';
+
+  @override
+  String get asistenciaGuiaChoqueResumen =>
+      'Pasos para cuidar a todos y proteger tu reclamación.';
+
+  @override
+  String get asistenciaGuiaChoqueTitulo => 'Qué hacer en un choque';
+
+  @override
+  String get asistenciaGuiaCorrientePaso1 =>
+      'Estaciona el otro auto de frente, sin que se toquen. Apaga ambos motores y los accesorios.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso2 =>
+      'Conecta una pinza roja al polo positivo (+) de tu batería descargada y el otro extremo al polo positivo del auto que da corriente.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso3 =>
+      'Conecta una pinza negra al polo negativo (−) de la batería buena y el otro extremo a una parte metálica sin pintar del motor de tu auto, lejos de la batería.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso4 =>
+      'Enciende el auto que da corriente y déjalo funcionando unos minutos.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso5 =>
+      'Intenta encender tu auto. Si no arranca, espera unos minutos más e inténtalo de nuevo.';
+
+  @override
+  String get asistenciaGuiaCorrientePaso6 =>
+      'Quita las pinzas en orden inverso, sin que se toquen entre sí, y deja tu auto encendido al menos 20 minutos.';
+
+  @override
+  String get asistenciaGuiaCorrienteResumen =>
+      'Cómo arrancar tu auto con cables de otro vehículo.';
+
+  @override
+  String get asistenciaGuiaCorrienteTitulo => 'Pasar corriente';
+
+  @override
+  String get asistenciaGuiaLlantaPaso1 =>
+      'Estaciona en terreno plano y firme, pon el freno de mano y enciende las luces intermitentes.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso2 =>
+      'Saca la llanta de refacción, el gato y la llave de cruz. Afloja un poco las tuercas de la llanta ponchada sin quitarlas.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso3 =>
+      'Coloca el gato en el punto indicado en el manual y levanta el auto hasta que la llanta quede en el aire.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso4 =>
+      'Quita las tuercas y la llanta ponchada. Monta la de refacción y aprieta las tuercas con la mano.';
+
+  @override
+  String get asistenciaGuiaLlantaPaso5 =>
+      'Baja el auto, aprieta las tuercas en cruz con la llave y revisa la presión en cuanto puedas.';
+
+  @override
+  String get asistenciaGuiaLlantaResumen =>
+      'Cámbiala por la de refacción en pocos pasos.';
+
+  @override
+  String get asistenciaGuiaLlantaTitulo => 'Cambiar una llanta';
+
+  @override
+  String asistenciaGuiaPasoNumero(int numero, int total) {
+    return 'Paso $numero de $total';
+  }
+
+  @override
+  String get asistenciaGuiasAvisoSinConexion =>
+      'Estas guías están guardadas en la app y funcionan sin conexión.';
+
+  @override
+  String get asistenciaGuiasTitulo => 'Guías de emergencia';
+
+  @override
   String get catalogoTitulo => 'Catálogo';
 
   @override
