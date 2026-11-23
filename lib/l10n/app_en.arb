@@ -798,5 +798,10 @@
       }
     }
   },
-  "widgetsSinCitaMensaje": "You have no upcoming appointments"
+  "widgetsSinCitaMensaje": "You have no upcoming appointments",
+  "citasWalletAgregar": "Add to Wallet",
+  "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
+  "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
+  "citasWalletErrorCancelada": "Your appointment is cancelled, so it no longer has a pass.",
+  "citasWalletErrorNoDisponible": "The Wallet pass is not available right now. Show the QR code at reception."
 }
