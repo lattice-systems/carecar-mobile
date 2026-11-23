@@ -73,3 +73,14 @@ El detalle de un modelo vive en `lib/modulos/catalogo/` y se abre en `/catalogo/
 - **Fuera de esta historia:** los botones "Calcular toma a cuenta" (V2-M03.04) y "Quiero probarlo" (M16) se agregan con sus historias, y la captura de galería y ficha desde el ERP o el CRM no entra porque están congelados.
 - **Pruebas:** `test/modulos/catalogo/detalle_modelo_test.dart` cubre la lectura del DTO, el repositorio, los cinco estados, las secciones vacías, claro, oscuro y letra grande, las guías de accesibilidad y las rutas. La prueba de contrato comprueba además el detalle contra `mock_api` cuando está levantada.
 
+## Avance de V2-M03.03
+
+El comparador vive en `lib/modulos/catalogo/` y se abre en `/catalogo/comparar?ids=1,2,3`. No necesita backend: reutiliza `GET /catalogo/{modeloId}` de V2-M03.02, una llamada por modelo, y por eso la historia no es B.
+
+- **Cómo se elige:** en el catálogo, el botón de la barra activa el modo comparar (solo aparece si hay al menos dos modelos con id). Cada tarjeta muestra una casilla, se eligen de dos a tres y la cuarta se bloquea. El botón de abajo dice cuántos faltan y se habilita con dos. Salir del modo borra la selección.
+- **Tabla:** una columna por modelo y una fila por dato, con el precio primero y luego la ficha técnica de todos. Las etiquetas se unen sin distinguir mayúsculas ni espacios de los bordes y salen en el orden en que aparecen. Un dato que un modelo no tiene dice "Sin dato". El precio más bajo se resalta con texto, no solo con color, y no se resalta si hay empate o ningún precio.
+- **Ajuste a pantallas chicas:** cada columna mide 160 px y la tabla se desliza de lado cuando no cabe, por ejemplo con tres modelos o con la letra al 200 %. Cada celda lee al lector de pantalla "dato, modelo: valor".
+- **Estados:** cargando con esqueleto, datos, error con reintento, sin conexión, modelo retirado (`NoEncontrado`) y enlace con ids que no sirven (menos de dos, más de tres, repetidos o no numéricos), que explica cómo llegar en lugar de fallar.
+- **Dominio:** `dominio/comparativa.dart` en Dart puro con `filasDeFicha`, `indiceMasBarato` e `idsDeComparativa`.
+- **Pruebas:** `test/modulos/catalogo/comparador_test.dart` cubre el dominio, los estados, claro, oscuro y letra grande, las guías de accesibilidad, el modo comparar del catálogo y las rutas.
+

@@ -1,11 +1,9 @@
 {
   "@@locale": "en",
-
   "catalogoTitulo": "Catalog",
   "catalogoCargando": "Loading catalog",
   "catalogoVacioTitulo": "No models yet",
   "catalogoVacioMensaje": "When the dealership publishes models, you'll see them here.",
-
   "citasAgendarContinuar": "Review and confirm",
   "citasAgendarMotivo": "Reason for the visit",
   "citasAgendarMotivoSugerencia": "Pick a reason",
@@ -47,11 +45,8 @@
   "citasTitulo": "Workshop availability",
   "citasVacioMensaje": "The workshop has no spots in the coming days. Check back soon.",
   "citasVacioTitulo": "No spots available",
-
   "precioDesde": "From {precio}",
-
   "fotoDeModelo": "Photo of the {modelo}",
-
   "vehiculosAccesoFicha": "Technical specs",
   "@vehiculosAccesoFicha": {
     "description": "Acceso del detalle a la ficha técnica del vehículo."
@@ -137,7 +132,6 @@
   "@vehiculosVinCopiado": {
     "description": "Confirmación al copiar el VIN."
   },
-
   "avisoCerrar": "Close notice",
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
@@ -526,6 +520,45 @@
       },
       "numero": {
         "type": "int"
+      }
+    }
+  },
+  "catalogoComparar": "Compare models",
+  "catalogoSalirDeComparar": "Exit compare mode",
+  "catalogoCompararElegidos": "{cantidad, plural, =0{Pick 2 or 3 models} =1{Pick one more model} other{Compare {cantidad} models}}",
+  "@catalogoCompararElegidos": {
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      }
+    }
+  },
+  "catalogoCompararModelo": "Compare {modelo}",
+  "@catalogoCompararModelo": {
+    "placeholders": {
+      "modelo": {
+        "type": "String"
+      }
+    }
+  },
+  "catalogoComparadorTitulo": "Compare models",
+  "catalogoComparadorCargando": "Loading the comparison",
+  "catalogoComparadorIdsMalosTitulo": "Pick two or three models",
+  "catalogoComparadorIdsMalosMensaje": "Go back to the catalog, turn on compare and tick the models you want to see side by side.",
+  "catalogoComparadorPrecio": "Price from",
+  "catalogoComparadorSinDato": "No data",
+  "catalogoComparadorMasBajo": "Lowest price",
+  "catalogoComparadorCelda": "{dato}, {modelo}: {valor}",
+  "@catalogoComparadorCelda": {
+    "placeholders": {
+      "dato": {
+        "type": "String"
+      },
+      "modelo": {
+        "type": "String"
+      },
+      "valor": {
+        "type": "String"
       }
     }
   }
