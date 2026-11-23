@@ -49,3 +49,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 | V2-M08.05 | Como cliente quiero capturar mis datos fiscales | Validación de RFC y CP · varios perfiles | ✅ | — |
 | V2-M08.06 | Como cliente quiero descargar mi factura PDF y XML | Disponible al timbrar · compartir/guardar | ✅ | V2-M08.05 |
 | V2-M08.07 | Como cliente quiero ver todos mis pagos | Lista paginada con estado y referencia | ✅ | V2-M08.02 |
+
+## Privacidad de pantalla
+
+Las pantallas de pago y facturas se envuelven con `PantallaSegura` (`lib/nucleo/privacidad/`, V2-M22.06) para bloquear capturas en Android; ver [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Su prueba usa `ProteccionDeCapturaFake`.
