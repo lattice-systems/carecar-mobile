@@ -1681,6 +1681,187 @@
   "@vehiculosToqueCopiarVin": {
     "description": "Pista bajo el VIN que indica que se puede copiar."
   },
+  "asistenciaHeroeTextoDisponible": "Cuéntanos qué pasó y comparte tu ubicación para que la agencia te encuentre. Mientras llega la ayuda, estas guías te dicen qué hacer.",
+  "@asistenciaHeroeTextoDisponible": {
+    "description": "Texto de la tarjeta principal cuando pedir ayuda ya está disponible."
+  },
+  "asistenciaPedirTitulo": "Pedir ayuda",
+  "@asistenciaPedirTitulo": {
+    "description": "Título de la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirCargando": "Cargando",
+  "@asistenciaPedirCargando": {
+    "description": "Etiqueta de lector de pantalla mientras carga la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirVehiculoEncabezado": "¿Qué vehículo necesita ayuda?",
+  "@asistenciaPedirVehiculoEncabezado": {
+    "description": "Encabezado de la lista de vehículos."
+  },
+  "asistenciaPedirSeleccionado": "Seleccionado",
+  "@asistenciaPedirSeleccionado": {
+    "description": "Etiqueta de lector de pantalla del vehículo elegido."
+  },
+  "asistenciaPedirTipoEncabezado": "¿Qué pasó?",
+  "@asistenciaPedirTipoEncabezado": {
+    "description": "Encabezado de los tipos de problema."
+  },
+  "asistenciaTipoLlanta": "Llanta",
+  "@asistenciaTipoLlanta": {
+    "description": "Tipo de problema: llanta."
+  },
+  "asistenciaTipoBateria": "Batería",
+  "@asistenciaTipoBateria": {
+    "description": "Tipo de problema: batería."
+  },
+  "asistenciaTipoChoque": "Choque",
+  "@asistenciaTipoChoque": {
+    "description": "Tipo de problema: choque."
+  },
+  "asistenciaTipoSinGasolina": "Sin gasolina",
+  "@asistenciaTipoSinGasolina": {
+    "description": "Tipo de problema: sin gasolina."
+  },
+  "asistenciaTipoOtro": "Otro",
+  "@asistenciaTipoOtro": {
+    "description": "Tipo de problema: otro."
+  },
+  "asistenciaUbicacionEncabezado": "Tu ubicación",
+  "@asistenciaUbicacionEncabezado": {
+    "description": "Encabezado de la sección de ubicación."
+  },
+  "asistenciaUbicacionCompartir": "Compartir mi ubicación",
+  "@asistenciaUbicacionCompartir": {
+    "description": "Interruptor para compartir la ubicación."
+  },
+  "asistenciaUbicacionExplicacion": "La agencia sabrá dónde estás. Se envía una sola vez, con la app abierta, y no se vuelve a usar cuando la ayuda termina.",
+  "@asistenciaUbicacionExplicacion": {
+    "description": "Explica cómo se usa la ubicación."
+  },
+  "asistenciaUbicacionObteniendo": "Buscando tu ubicación…",
+  "@asistenciaUbicacionObteniendo": {
+    "description": "Mientras se lee la ubicación."
+  },
+  "asistenciaUbicacionLista": "Ubicación lista para enviar",
+  "@asistenciaUbicacionLista": {
+    "description": "Cuando ya se tiene la ubicación."
+  },
+  "asistenciaUbicacionPermisoDenegado": "No diste permiso de ubicación. Puedes intentarlo otra vez o enviar la solicitud sin ubicación y escribir dónde estás.",
+  "@asistenciaUbicacionPermisoDenegado": {
+    "description": "Permiso de ubicación negado."
+  },
+  "asistenciaUbicacionPermisoBloqueado": "El permiso de ubicación está bloqueado. Actívalo en Ajustes o envía la solicitud sin ubicación y escribe dónde estás.",
+  "@asistenciaUbicacionPermisoBloqueado": {
+    "description": "Permiso de ubicación negado para siempre."
+  },
+  "asistenciaUbicacionServicioApagado": "La ubicación del teléfono está apagada. Enciéndela o envía la solicitud sin ubicación y escribe dónde estás.",
+  "@asistenciaUbicacionServicioApagado": {
+    "description": "Servicio de ubicación apagado."
+  },
+  "asistenciaUbicacionTiempoAgotado": "No pudimos encontrarte a tiempo. Intenta otra vez o envía la solicitud sin ubicación y escribe dónde estás.",
+  "@asistenciaUbicacionTiempoAgotado": {
+    "description": "Se agotó el tiempo para leer la ubicación."
+  },
+  "asistenciaUbicacionReintentar": "Intentar de nuevo",
+  "@asistenciaUbicacionReintentar": {
+    "description": "Reintenta leer la ubicación."
+  },
+  "asistenciaUbicacionSinUbicacion": "Enviar sin ubicación",
+  "@asistenciaUbicacionSinUbicacion": {
+    "description": "Apaga la ubicación y deja enviar sin ella."
+  },
+  "asistenciaComentarioEtiqueta": "Comentario (opcional)",
+  "@asistenciaComentarioEtiqueta": {
+    "description": "Etiqueta del comentario cuando se comparte la ubicación."
+  },
+  "asistenciaComentarioEtiquetaSinUbicacion": "Dónde estás y qué pasó",
+  "@asistenciaComentarioEtiquetaSinUbicacion": {
+    "description": "Etiqueta del comentario cuando no se comparte la ubicación."
+  },
+  "asistenciaComentarioAyuda": "Máximo 500 caracteres",
+  "@asistenciaComentarioAyuda": {
+    "description": "Ayuda del campo de comentario."
+  },
+  "asistenciaConfirmarTexto": "Desliza para pedir ayuda",
+  "@asistenciaConfirmarTexto": {
+    "description": "Texto del control de deslizar para confirmar."
+  },
+  "asistenciaEnviando": "Enviando tu solicitud…",
+  "@asistenciaEnviando": {
+    "description": "Mientras se envía la solicitud."
+  },
+  "asistenciaErrorSinConexion": "Sin conexión: no pudimos enviar tu solicitud. Si es urgente, llama al 911 o a tu aseguradora.",
+  "@asistenciaErrorSinConexion": {
+    "description": "Error de red al pedir ayuda."
+  },
+  "asistenciaErrorEnviar": "No pudimos enviar tu solicitud. Intenta de nuevo.",
+  "@asistenciaErrorEnviar": {
+    "description": "Error genérico al pedir ayuda."
+  },
+  "asistenciaErrorVehiculo": "No encontramos ese vehículo. Elige otro e intenta de nuevo.",
+  "@asistenciaErrorVehiculo": {
+    "description": "El vehículo no existe o no es del cliente."
+  },
+  "asistenciaGarajeVacioTitulo": "Aún no tienes vehículos",
+  "@asistenciaGarajeVacioTitulo": {
+    "description": "Título cuando el garaje está vacío."
+  },
+  "asistenciaGarajeVacioMensaje": "Para pedir ayuda necesitamos saber qué vehículo es. Pide a la agencia que registre el tuyo.",
+  "@asistenciaGarajeVacioMensaje": {
+    "description": "Mensaje cuando el garaje está vacío."
+  },
+  "asistenciaSolicitudFolio": "Folio {id}",
+  "@asistenciaSolicitudFolio": {
+    "description": "Folio de la solicitud.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "asistenciaSolicitudRecibida": "Solicitud recibida",
+  "@asistenciaSolicitudRecibida": {
+    "description": "Estado de la solicitud recién creada."
+  },
+  "asistenciaSolicitudTexto": "La agencia ya sabe que necesitas ayuda. Mantén el teléfono contigo y ponte en un lugar seguro.",
+  "@asistenciaSolicitudTexto": {
+    "description": "Mensaje tras enviar la solicitud."
+  },
+  "asistenciaSolicitudYaAbierta": "Ya tenías una solicitud abierta. Te la mostramos aquí.",
+  "@asistenciaSolicitudYaAbierta": {
+    "description": "Aviso cuando ya hay una solicitud abierta."
+  },
+  "asistenciaSolicitudVehiculo": "Vehículo",
+  "@asistenciaSolicitudVehiculo": {
+    "description": "Fila de vehículo en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudProblema": "Problema",
+  "@asistenciaSolicitudProblema": {
+    "description": "Fila de problema en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacion": "Ubicación",
+  "@asistenciaSolicitudUbicacion": {
+    "description": "Fila de ubicación en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacionCompartida": "Compartida con la agencia",
+  "@asistenciaSolicitudUbicacionCompartida": {
+    "description": "La ubicación se envió."
+  },
+  "asistenciaSolicitudUbicacionNoCompartida": "No compartida",
+  "@asistenciaSolicitudUbicacionNoCompartida": {
+    "description": "La ubicación no se envió."
+  },
+  "asistenciaSolicitudComentario": "Comentario",
+  "@asistenciaSolicitudComentario": {
+    "description": "Fila de comentario en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudPrivacidad": "Tu ubicación solo se comparte mientras la solicitud esté abierta.",
+  "@asistenciaSolicitudPrivacidad": {
+    "description": "Recordatorio de privacidad."
+  },
+  "asistenciaSolicitudVerGuias": "Ver guías de emergencia",
+  "@asistenciaSolicitudVerGuias": {
+    "description": "Lleva a las guías."
+  },
   "seguridadEquipoComprometidoTitulo": "Este equipo parece modificado",
   "@seguridadEquipoComprometidoTitulo": {
     "description": "Título del aviso cuando se detecta root o jailbreak. No bloquea la app."
