@@ -13,8 +13,10 @@ import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/visor_pdf.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../recoleccion/recoleccion.dart';
 import '../dominio/comprobante_de_cita.dart';
 import 'boton_agregar_a_wallet.dart';
+import 'componentes/grupo_recoleccion_cita.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'proveedores_citas.dart';
 
@@ -31,9 +33,14 @@ class PantallaComprobanteCita extends ConsumerWidget {
     required this.citaId,
     super.key,
     this.fabricaVisorPdf,
+    this.recoleccion,
   });
 
   final int citaId;
+
+  /// Los traslados de la cita cuando se agendo con recoleccion (V2-M17.02).
+  /// El comprobante del servidor no los trae: llegan de la confirmacion.
+  final RecoleccionAgendada? recoleccion;
 
   /// Sustituye el motor de PDF (solo pruebas); nulo usa el del sistema.
   final FabricaVisorPdf? fabricaVisorPdf;
@@ -62,7 +69,11 @@ class PantallaComprobanteCita extends ConsumerWidget {
         titulo: textos.citasComprobanteTitulo,
         slivers: [
           SliverToBoxAdapter(
-            child: _Comprobante(datos: datos, fabricaVisorPdf: fabricaVisorPdf),
+            child: _Comprobante(
+              datos: datos,
+              fabricaVisorPdf: fabricaVisorPdf,
+              recoleccion: recoleccion,
+            ),
           ),
         ],
       ),
@@ -96,10 +107,15 @@ class _Cargando extends StatelessWidget {
 }
 
 class _Comprobante extends ConsumerWidget {
-  const _Comprobante({required this.datos, this.fabricaVisorPdf});
+  const _Comprobante({
+    required this.datos,
+    this.fabricaVisorPdf,
+    this.recoleccion,
+  });
 
   final ComprobanteDeCita datos;
   final FabricaVisorPdf? fabricaVisorPdf;
+  final RecoleccionAgendada? recoleccion;
 
   static const double _lado = 240;
 
@@ -176,6 +192,10 @@ class _Comprobante extends ConsumerWidget {
             ),
           ],
         ),
+        if (recoleccion != null) ...[
+          const SizedBox(height: Espaciado.e4),
+          GrupoRecoleccionCita(recoleccion: recoleccion!),
+        ],
       ],
     );
   }
