@@ -39,7 +39,7 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 | Método | Ruta | Uso |
 | --- | --- | --- |
 | GET | `/vehiculos` · `/vehiculos/{id}/manuales` | Existen. `/vehiculos` suma `kilometrajeActualizadoEn` (fecha `AAAA-MM-DD`, opcional, nula si no hay): fecha de cierre de la orden de servicio que dejó el km (V2-T05.06). Simulado en `mock_api`. |
-| GET | `/vehiculos/{id}/ficha-tecnica` | Nuevo (V2-M02.04, simulado en `mock_api`). Responde `{vehiculoId, modelo, anio, secciones: [{titulo, especificaciones: [{clave, valor}]}]}` según el modelo y año del vehículo (tabla `ficha_tecnica_modelo`). 404 `NO_ENCONTRADO` si el vehículo no es del cliente o la agencia aún no tiene ficha de ese modelo y año: la app usa entonces su respaldo local. |
+| GET | `/vehiculos/{id}/ficha-tecnica` | Nuevo (V2-M02.04, simulado en `mock_api`). Responde `{vehiculoId, modelo, anio, secciones: [{titulo, especificaciones: [{clave, valor}]}]}` según el modelo y año del vehículo (tabla `ficha_tecnica_modelo`). 404 (Problema sin código) si el vehículo no es del cliente o la agencia aún no tiene ficha de ese modelo y año: la app usa entonces su respaldo local. |
 | GET | `/vehiculos/{id}/servicios?pagina=&tamano=&anio=` | Existe con `pagina` y `tamano`; el filtro `anio` es nuevo. |
 | GET | `/servicios/{id}` · `/servicios/{id}/ticket` | Detalle nuevo; ticket existe. |
 | GET | `/agenda/disponibilidad?desde=&hasta=` | Existe; rango de fechas. |
