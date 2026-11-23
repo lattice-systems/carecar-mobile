@@ -1,0 +1,1556 @@
+openapi: 3.0.3
+info:
+  title: Agencia360 · API para la app CareCar v2
+  version: 2.0.0
+  description: |
+    Contrato de API que Agencia360 expone a la app CareCar v2.
+
+    Nace como copia de `agencia360-api-app-v1.yaml` en su versión 1.4.0 y crece con los
+    endpoints nuevos de la v2. Es compatible con la v1: las rutas siguen bajo `/api/v1/app` y la
+    app v1 instalada sigue funcionando sin cambios. `agencia360-api-app-v1.yaml` queda congelado
+    como referencia de la app v1; todo cambio nuevo entra solo en este archivo.
+
+    Convenciones:
+    - Todas las rutas van bajo `/api/v1/app` y requieren token JWT, excepto login, refrescar,
+      cerrar sesión, recuperar y restablecer la contraseña.
+    - El cliente solo puede ver y modificar sus propios datos; un recurso ajeno responde 404.
+    - Si la cuenta se desactiva, toda ruta protegida responde 403 con
+      `codigo: CUENTA_DESACTIVADA`, aunque el token siga vigente.
+    - Fechas en ISO 8601 (`2026-10-20`), horas en `HH:mm`. Las fechas y horas de citas,
+      franjas y servicios son hora local de la agencia, sin zona: la app las muestra tal cual,
+      sin convertirlas a la zona del dispositivo.
+    - Las listas que crecen con el tiempo se paginan con `pagina` (desde 0) y `tamano`
+      (20 por omisión, máximo 50).
+    - Errores con el formato `ApiError` que ya usa el backend (`shared/exception/ApiError.java`).
+      El `message` está escrito para el usuario en 401, 403, 404, 409 y 429; en 400 y 5xx la app
+      muestra un texto propio. Cuando viene `codigo`, la app decide por él y no por el texto.
+
+    Versionado: `info.version` sigue versionado semántico a partir de 2.0.0. Una versión menor
+    solo agrega campos o rutas opcionales; un cambio incompatible va en una ruta nueva
+    (`/api/v2/app`) y la ruta anterior sigue respondiendo igual mientras exista la app v1.
+
+    Cómo se cambia: cada historia escribe sus rutas y esquemas bajo la etiqueta de su módulo
+    antes de programarlas, sin reordenar ni reformatear lo de otros, y sube la versión menor. Al
+    integrar, se copia este archivo a `carecar-mobile/api/`.
+
+servers:
+  - url: /api/v1/app
+
+tags:
+  - name: Acceso
+    description: APP-2.1, APP-2.2 y APP-2.3
+  - name: Vehículos
+    description: APP-3.1
+  - name: Servicios y tickets
+    description: APP-3.2 y ERP-3.1
+  - name: Agenda
+    description: APP-3.3 y ERP-3.3
+  - name: Catálogo
+    description: APP-4.1 (fuera del MVP; incluido porque TEC-1 lo pide en el contrato)
+  - name: Toma a cuenta
+    description: V2-M03.04, V2-M03.06 y V2-M03.07
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/login:
+    post:
+      tags: [Acceso]
+      summary: Iniciar sesión con la cuenta que entregó la agencia
+      description: |
+        No existe registro público (APP-2.1). El cliente entra con su correo.
+        Si la cuenta tiene contraseña temporal, `debeCambiarContrasena` llega en `true`
+        y la app debe forzar el cambio (APP-2.3).
+
+        Después de 5 intentos fallidos seguidos con el mismo correo, el login se bloquea
+        15 minutos y responde 429. La cuenta desactivada solo se informa (403) cuando la
+        contraseña es correcta; si no, responde 401 como cualquier credencial inválida.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Sesión iniciada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          description: Correo o contraseña incorrectos (`codigo` CREDENCIALES_INVALIDAS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /auth/refrescar:
+    post:
+      tags: [Acceso]
+      summary: Obtener un token nuevo con el refresh token
+      description: |
+        Cada refresh token se usa una sola vez: la respuesta trae un par nuevo y el
+        anterior queda revocado. La app guarda siempre el último. El refresh token
+        vence a los 30 días.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '200':
+          description: Tokens nuevos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Refresh token inválido, usado, revocado o vencido. La app vuelve al login.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /auth/cerrar-sesion:
+    post:
+      tags: [Acceso]
+      summary: Cerrar la sesión y revocar el refresh token
+      description: |
+        No pide el access token, para que funcione aunque ya haya vencido. El access
+        token sigue siendo válido hasta su vencimiento (`expiresIn`); la app lo descarta.
+        Responde 204 aunque el refresh token ya no sea válido.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshTokenRequest'
+      responses:
+        '204':
+          description: Sesión cerrada
+
+  /auth/cambiar-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Cambiar la contraseña (obligatorio en el primer ingreso)
+      description: |
+        APP-2.3 · Sprint 2. La contraseña nueva debe cumplir las reglas de
+        `CambiarContrasenaRequest` y ser distinta de la actual.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CambiarContrasenaRequest'
+      responses:
+        '204':
+          description: Contraseña actualizada
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /auth/recuperar-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Solicitar un código de recuperación por correo
+      description: |
+        APP-2.3 · Sprint 2. Envía al correo un código de 6 dígitos que vence a los
+        15 minutos y sirve una sola vez. Pedir uno nuevo invalida el anterior.
+        Responde 202 aunque el correo no exista, para no revelar qué cuentas hay.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [correo]
+              properties:
+                correo:
+                  type: string
+                  format: email
+      responses:
+        '202':
+          description: Solicitud recibida
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /auth/restablecer-contrasena:
+    post:
+      tags: [Acceso]
+      summary: Definir nueva contraseña con el código de recuperación
+      description: |
+        APP-2.3 · Sprint 2. El código admite 5 intentos; después hay que pedir otro.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestablecerContrasenaRequest'
+      responses:
+        '204':
+          description: Contraseña restablecida
+        '400':
+          description: |
+            Código inválido, usado o vencido (`codigo` CODIGO_INVALIDO), o contraseña que no
+            cumple las reglas (`codigo` DATOS_INVALIDOS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /perfil:
+    get:
+      tags: [Acceso]
+      summary: Datos del cliente que inició sesión
+      description: APP-2.2 · Solo lectura; la edición del perfil se define en APP-2.2.
+      responses:
+        '200':
+          description: Datos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /vehiculos:
+    get:
+      tags: [Vehículos]
+      summary: Listar los vehículos del cliente
+      description: |
+        APP-3.1 · Un cliente puede tener varios vehículos; vienen en el orden en que se le
+        asignaron.
+      responses:
+        '200':
+          description: Vehículos asignados al cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehiculo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /vehiculos/{vehiculoId}/manuales:
+    get:
+      tags: [Vehículos]
+      summary: Manuales de la marca, tipo y modelo del vehículo
+      description: |
+        APP-3.1 · Los manuales son de una marca, un tipo y un modelo (por ejemplo, Nissan March
+        2026); la versión no cambia el manual. La lista puede venir vacía si la agencia todavía no
+        sube el manual de ese vehículo. Cada `url` es temporal: ábrela directo, sin el Bearer.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Manuales disponibles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manual'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/ficha-tecnica:
+    get:
+      tags: [Vehículos]
+      summary: Ficha técnica del modelo del vehículo
+      description: |
+        V2-M02.04 · Especificaciones por marca, modelo y año agrupadas en secciones. Si la agencia
+        aún no las carga, `secciones` viene vacía y la app usa su respaldo local.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Ficha técnica
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FichaTecnica'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/servicios:
+    get:
+      tags: [Servicios y tickets]
+      summary: Historial de servicios del vehículo
+      description: APP-3.2 · Orden cronológico, el más reciente primero. Paginado.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Órdenes de servicio del vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaServicios'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /servicios/{servicioId}/ticket:
+    get:
+      tags: [Servicios y tickets]
+      summary: Descargar el ticket de una orden de servicio
+      description: |
+        El ticket es un documento que genera la orden de servicio (decisión del 9 de octubre).
+        Se descarga con el mismo token Bearer; el PDF viene en el cuerpo de la respuesta.
+      parameters:
+        - name: servicioId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Ticket en PDF
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="ticket-{servicioId}.pdf"`'
+              schema:
+                type: string
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /agenda/disponibilidad:
+    get:
+      tags: [Agenda]
+      summary: Horarios con cupo para agendar
+      description: APP-3.3 · ERP-3.3. Solo devuelve franjas con cupo mayor a cero.
+      parameters:
+        - name: desde
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: hasta
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Franjas disponibles por fecha
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disponibilidad'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /citas:
+    get:
+      tags: [Agenda]
+      summary: Listar las citas del cliente
+      description: |
+        Ordenadas por fecha y hora de inicio. Los filtros son opcionales y se combinan.
+        Próximas: `estado=CONFIRMADA&desde=<hoy>`. Pasadas: `hasta=<ayer>`.
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/EstadoCita'
+        - name: desde
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: hasta
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Citas del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaCitas'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Agenda]
+      summary: Agendar una cita de servicio
+      description: APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaCita'
+      responses:
+        '201':
+          description: Cita confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La franja ya no tiene cupo (`codigo` FRANJA_SIN_CUPO) o el vehículo ya tiene una cita
+            confirmada ese día (`codigo` CITA_DUPLICADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /citas/{citaId}/cancelar:
+    post:
+      tags: [Agenda]
+      summary: Cancelar una cita
+      description: APP-3.3 · El cliente puede cancelar hasta X horas antes. **El valor de X está pendiente del PO.**
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Cita cancelada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            Fuera del plazo de cancelación (`codigo` FUERA_DE_PLAZO) o la cita ya no está
+            confirmada (`codigo` CITA_NO_CANCELABLE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /citas/{citaId}/reprogramar:
+    post:
+      tags: [Agenda]
+      summary: Reprogramar una cita sin cancelarla
+      description: |
+        V2-M02.13 · Mueve la cita a otra franja (y opcionalmente otro día): libera la franja
+        anterior y ocupa la nueva en la misma operación. Solo citas confirmadas que no han empezado.
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReprogramarCita'
+      responses:
+        '200':
+          description: Cita reprogramada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La nueva franja no tiene cupo (`codigo` FRANJA_SIN_CUPO), el vehículo ya tiene otra cita
+            ese día (`codigo` CITA_DUPLICADA) o la cita ya no es reprogramable (`codigo`
+            CITA_NO_REPROGRAMABLE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /citas/{citaId}/ticket:
+    get:
+      tags: [Agenda]
+      summary: Descargar el comprobante PDF de una cita
+      description: |
+        PDF con un QR (`CARECAR-CITA:<id>.<firma>`) que recepción puede verificar; la firma es un
+        HMAC-SHA256 con una llave que solo conoce el backend (V2-M02.11).
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: PDF del comprobante
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /citas/{citaId}/comprobante:
+    get:
+      tags: [Agenda]
+      summary: Código QR firmado de una cita
+      description: |
+        V2-M02.11 · `codigo` es el mismo texto del QR del PDF (`CARECAR-CITA:<id>.<firma>`).
+        Solo citas confirmadas del cliente.
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Datos del comprobante
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [citaId, codigo, fecha, horaInicio, horaFin]
+                properties:
+                  citaId:
+                    type: integer
+                    format: int64
+                  codigo:
+                    type: string
+                  fecha:
+                    type: string
+                    format: date
+                  horaInicio:
+                    type: string
+                  horaFin:
+                    type: string
+                  vehiculoNombre:
+                    type: string
+                    nullable: true
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La cita está cancelada (`codigo` CITA_CANCELADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /citas/{citaId}/pase:
+    get:
+      tags: [Agenda]
+      summary: Pase de Wallet de una cita
+      description: |
+        V2-M25.03 · El QR del pase es exactamente el `codigo` del comprobante
+        (`CARECAR-CITA:<id>.<firma>`). `plataforma=apple` responde el `.pkpass` firmado;
+        `plataforma=google` responde `{url}` con el enlace `https://pay.google.com/gp/v/save/<jwt>`.
+        El pase vence al terminar la cita. Una cita cancelada no emite pase (409); un pase ya
+        emitido no se revoca desde el servidor, pero recepción valida el QR contra el estado
+        actual de la cita.
+      parameters:
+        - name: citaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: plataforma
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [apple, google]
+      responses:
+        '200':
+          description: Pase listo para guardar
+          content:
+            application/vnd.apple.pkpass:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: object
+                required: [url]
+                properties:
+                  url:
+                    type: string
+                    example: https://pay.google.com/gp/v/save/eyJhbGciOiJSUzI1NiJ9...
+        '400':
+          description: La plataforma falta o no es apple ni google (`codigo` DATOS_INVALIDOS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La cita está cancelada (`codigo` CITA_CANCELADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '503':
+          description: Faltan las credenciales de esa plataforma (`codigo` WALLET_NO_CONFIGURADO)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /catalogo:
+    get:
+      tags: [Catálogo]
+      summary: Modelos actuales del catálogo
+      description: Lista aparte del inventario que solo muestra los modelos actuales (decisión del 9 de octubre).
+      responses:
+        '200':
+          description: Modelos activos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModeloCatalogo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /catalogo/{modeloId}:
+    get:
+      tags: [Catálogo]
+      summary: Detalle de un modelo del catálogo
+      description: |
+        V2-M03.02 · El modelo con su galería, las versiones que se venden de la misma marca,
+        modelo y año, y una ficha resumida. Un modelo retirado o que no existe responde 404.
+        `imagenes` y `especificaciones` pueden venir vacías mientras la agencia no las capture,
+        y `versiones` siempre incluye la versión pedida.
+      parameters:
+        - $ref: '#/components/parameters/ModeloId'
+      responses:
+        '200':
+          description: Detalle del modelo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetalleModeloCatalogo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /toma-a-cuenta/estimaciones:
+    get:
+      tags: [Toma a cuenta]
+      summary: Listar mis estimaciones de toma a cuenta
+      description: |
+        V2-M03.07 · Las estimaciones del cliente, de la más reciente a la más antigua. Cada
+        una trae lo que se pidió, el rango que salió y los supuestos con que se calculó, así
+        que la app no recalcula nada: si la agencia cambia sus parámetros después, la
+        estimación guardada sigue diciendo lo que dijo ese día.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Estimaciones del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaEstimaciones'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Toma a cuenta]
+      summary: Estimar cuánto me darían por mi auto a cuenta de uno nuevo
+      description: |
+        V2-M03.04 y V2-M03.06 · Calcula un rango mínimo y máximo con los parámetros que la
+        agencia mantiene en `parametro_toma_cuenta` y lo guarda como una estimación del
+        cliente. La fórmula vive solo en el backend.
+
+        El auto se indica de una de dos formas, y mandar las dos o ninguna es un 400:
+        `vehiculoId` (uno de los vehículos del cliente, de donde salen marca, modelo y año) o
+        `marca`, `modelo` y `anio` capturados a mano. `modeloCatalogoId` es opcional y dice
+        contra qué modelo nuevo se está estimando; si viene, el modelo debe estar vigente.
+
+        **Es una estimación no vinculante, nunca una oferta.** La app lo dice siempre junto
+        al rango, con un texto propio revisado por el PO. Una valuación formal se pide aparte
+        (V2-M26.01).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaEstimacionTomaCuenta'
+      responses:
+        '201':
+          description: Estimación calculada y guardada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimacionTomaCuenta'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: |
+            El vehículo no existe o no es del cliente, o el modelo del catálogo no existe o
+            está retirado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            La agencia todavía no tiene parámetros para esa marca, modelo y año
+            (`codigo` SIN_PARAMETROS_DE_VALUACION). La app lo explica y ofrece pedir una
+            valuación formal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    ModeloId:
+      name: modeloId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    VehiculoId:
+      name: vehiculoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    Pagina:
+      name: pagina
+      in: query
+      required: false
+      description: Número de página, desde 0
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    Tamano:
+      name: tamano
+      in: query
+      required: false
+      description: Elementos por página
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 20
+
+  responses:
+    NoAutenticado:
+      description: |
+        Sin token, token inválido o vencido. La app intenta `/auth/refrescar` una vez y,
+        si falla, vuelve al login.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    CuentaDesactivada:
+      description: |
+        La agencia desactivó la cuenta (CRM-1.3), `codigo` CUENTA_DESACTIVADA. La app cierra
+        la sesión y muestra el `message`.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    DemasiadosIntentos:
+      description: Demasiados intentos seguidos (`codigo` DEMASIADOS_INTENTOS)
+      headers:
+        Retry-After:
+          description: Segundos que faltan para poder intentar de nuevo
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    NoEncontrado:
+      description: No existe o no pertenece al cliente
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    DatosInvalidos:
+      description: Datos de entrada inválidos (`codigo` DATOS_INVALIDOS)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [correo, contrasena]
+      properties:
+        correo:
+          type: string
+          format: email
+          description: Se ignoran mayúsculas y espacios al inicio y al final
+        contrasena:
+          type: string
+          format: password
+
+    LoginResponse:
+      type: object
+      required: [accessToken, expiresIn, refreshToken, debeCambiarContrasena]
+      properties:
+        accessToken:
+          type: string
+        expiresIn:
+          type: integer
+          description: Segundos de vida del accessToken. Es configurable; la app usa el valor recibido.
+          example: 3600
+        refreshToken:
+          type: string
+          description: Un solo uso; vence a los 30 días
+        debeCambiarContrasena:
+          type: boolean
+          description: true si la contraseña es temporal (APP-2.3)
+
+    RefreshTokenRequest:
+      type: object
+      required: [refreshToken]
+      properties:
+        refreshToken:
+          type: string
+
+    CambiarContrasenaRequest:
+      type: object
+      required: [contrasenaActual, contrasenaNueva]
+      properties:
+        contrasenaActual:
+          type: string
+          format: password
+        contrasenaNueva:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          description: Al menos una letra y un número; distinta de la actual
+
+    RestablecerContrasenaRequest:
+      type: object
+      required: [correo, codigo, contrasenaNueva]
+      properties:
+        correo:
+          type: string
+          format: email
+        codigo:
+          type: string
+          pattern: '^[0-9]{6}$'
+          description: Código de 6 dígitos que llegó al correo
+        contrasenaNueva:
+          type: string
+          format: password
+          minLength: 8
+          maxLength: 72
+          description: Al menos una letra y un número
+
+    Perfil:
+      type: object
+      required: [id, nombre, correo]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        correo:
+          type: string
+          format: email
+
+    Vehiculo:
+      type: object
+      description: |
+        Vehículo del cliente (expediente, ERP-3.0). Como en la factura, `modelo` se muestra
+        como Tipo (Sentra) y `anio` como Modelo (2026).
+      required: [id, vin, modelo, anio]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vin:
+          type: string
+        marca:
+          type: string
+          nullable: true
+          description: Puede faltar en vehículos registrados antes de que se guardara.
+          example: Nissan
+        modelo:
+          type: string
+          description: Tipo del vehículo
+          example: Sentra
+        anio:
+          type: integer
+          description: Modelo (año) del vehículo
+          example: 2026
+        version:
+          type: string
+          nullable: true
+          description: Puede faltar en vehículos registrados antes de que se guardara.
+          example: Advance
+        placas:
+          type: string
+          nullable: true
+        kilometraje:
+          type: integer
+          nullable: true
+        color:
+          type: string
+          nullable: true
+          maxLength: 40
+          description: Color del vehículo; lo fija Servicio.
+          example: Blanco
+
+    Manual:
+      type: object
+      required: [id, modelo, anio, url]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+          example: Nissan
+        modelo:
+          type: string
+          description: Tipo del vehículo
+          example: March
+        anio:
+          type: integer
+          description: Modelo (año) del vehículo
+          example: 2026
+        titulo:
+          type: string
+          description: Nombre para mostrar el manual.
+          example: Nissan March 2026 Manual de propietario
+        url:
+          type: string
+          description: |
+            URL temporal firmada para descargar el PDF, sin token. Vence a los 15 minutos;
+            si venció, la app vuelve a pedir la lista.
+
+    Servicio:
+      type: object
+      description: Orden de servicio vista por el cliente (ERP-3.1)
+      required: [id, fecha, estatus, total]
+      properties:
+        id:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        estatus:
+          type: string
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+          description: Conjunto cerrado (PO-5). Hoy el backend solo responde TERMINADO.
+        total:
+          type: number
+          format: double
+          description: Mano de obra más refacciones
+
+    PaginaServicios:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Servicio'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    Disponibilidad:
+      type: object
+      required: [fecha, franjaId, horaInicio, horaFin, cupoDisponible]
+      properties:
+        fecha:
+          type: string
+          format: date
+        franjaId:
+          type: integer
+          format: int64
+        horaInicio:
+          type: string
+          example: '09:00'
+        horaFin:
+          type: string
+          example: '10:00'
+        cupoDisponible:
+          type: integer
+          minimum: 1
+
+    NuevaCita:
+      type: object
+      required: [vehiculoId, franjaId, fecha]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        motivo:
+          $ref: '#/components/schemas/MotivoCita'
+
+    MotivoCita:
+      type: string
+      nullable: true
+      description: V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en minúsculas.
+      enum: [mantenimiento, reparacion, revision, garantia, otro]
+
+    ReprogramarCita:
+      type: object
+      required: [franjaId]
+      properties:
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+          description: Opcional; si falta se queda el día de la cita.
+
+    FichaTecnica:
+      type: object
+      required: [vehiculoId, modelo, anio, secciones]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        marca:
+          type: string
+          nullable: true
+        modelo:
+          type: string
+        anio:
+          type: integer
+        version:
+          type: string
+          nullable: true
+        secciones:
+          type: array
+          description: Vacía si la agencia aún no carga la ficha de ese modelo y año.
+          items:
+            type: object
+            required: [nombre, especificaciones]
+            properties:
+              nombre:
+                type: string
+              especificaciones:
+                type: array
+                items:
+                  type: object
+                  required: [nombre, valor]
+                  properties:
+                    nombre:
+                      type: string
+                    valor:
+                      type: string
+
+    EstadoCita:
+      type: string
+      enum: [CONFIRMADA, ATENDIDA, NO_ASISTIO, CANCELADA]
+
+    Cita:
+      type: object
+      required: [id, vehiculoId, franjaId, fecha, horaInicio, horaFin, estado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        vehiculo:
+          type: string
+          nullable: true
+          description: Descripción corta del vehículo, p. ej. "Nissan March 2026 Advance"
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        horaInicio:
+          type: string
+        horaFin:
+          type: string
+        estado:
+          $ref: '#/components/schemas/EstadoCita'
+        motivo:
+          $ref: '#/components/schemas/MotivoCita'
+
+    PaginaCitas:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Cita'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    ModeloCatalogo:
+      type: object
+      description: Lo que no es id, marca, modelo y año es opcional mientras el PO lo define (APP-4.1)
+      required: [id, marca, modelo, anio, activo]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        version:
+          type: string
+          nullable: true
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista más bajo, con IVA
+        imagenUrl:
+          type: string
+          nullable: true
+          description: URL https
+        descripcion:
+          type: string
+          nullable: true
+        activo:
+          type: boolean
+          description: Siempre true en la app
+
+    DetalleModeloCatalogo:
+      type: object
+      description: |
+        Un modelo del catálogo con su galería, sus versiones y su ficha resumida (V2-M03.02).
+        Los campos de `ModeloCatalogo` significan lo mismo aquí.
+      required: [id, marca, modelo, anio, activo, imagenes, versiones, especificaciones]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        version:
+          type: string
+          nullable: true
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista más bajo de esta versión, con IVA
+        imagenUrl:
+          type: string
+          nullable: true
+          description: Foto de portada, URL https
+        descripcion:
+          type: string
+          nullable: true
+        activo:
+          type: boolean
+          description: Siempre true en la app
+        imagenes:
+          type: array
+          description: Galería, ordenada por `orden`
+          items:
+            $ref: '#/components/schemas/ImagenModelo'
+        versiones:
+          type: array
+          description: Versiones activas de la misma marca, modelo y año, de la más barata a la más cara
+          items:
+            $ref: '#/components/schemas/VersionModelo'
+        especificaciones:
+          type: array
+          description: Ficha resumida, de 4 a 8 datos que la agencia captura, ordenados por `orden`
+          items:
+            $ref: '#/components/schemas/EspecificacionModelo'
+
+    ImagenModelo:
+      type: object
+      required: [id, url, orden]
+      properties:
+        id:
+          type: integer
+          format: int64
+        url:
+          type: string
+          description: URL https
+        color:
+          type: string
+          nullable: true
+          maxLength: 40
+          description: Color del auto en la foto, para agrupar la galería por color
+          example: Blanco
+        descripcion:
+          type: string
+          nullable: true
+          maxLength: 120
+          description: Texto para el lector de pantalla
+          example: Frente de la Mazda CX-5 blanca
+        orden:
+          type: integer
+          minimum: 0
+
+    VersionModelo:
+      type: object
+      required: [id, nombre]
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id del modelo del catálogo de esa versión, sirve para pedir su detalle
+        nombre:
+          type: string
+          description: Nombre de la versión. Si el modelo no tiene versión, el nombre del modelo
+          example: Signature
+        precioDesde:
+          type: number
+          nullable: true
+          description: Precio de lista, con IVA
+
+    EspecificacionModelo:
+      type: object
+      required: [etiqueta, valor]
+      properties:
+        etiqueta:
+          type: string
+          maxLength: 60
+          example: Motor
+        valor:
+          type: string
+          maxLength: 120
+          example: 2.5 L, 4 cilindros
+        orden:
+          type: integer
+          minimum: 0
+
+    EstadoVehiculo:
+      type: string
+      description: Estado general del auto según el cliente
+      enum: [EXCELENTE, BUENO, REGULAR, MALO]
+
+    NuevaEstimacionTomaCuenta:
+      type: object
+      description: |
+        Indica el auto con `vehiculoId` o con `marca`, `modelo` y `anio`, nunca con ambas
+        formas ni con ninguna.
+      required: [km, estado]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Uno de los vehículos del cliente
+        marca:
+          type: string
+          nullable: true
+          maxLength: 40
+          example: Nissan
+        modelo:
+          type: string
+          nullable: true
+          maxLength: 80
+          description: Tipo del vehículo, como en `Vehiculo.modelo`
+          example: Versa
+        anio:
+          type: integer
+          nullable: true
+          minimum: 1900
+          example: 2021
+        km:
+          type: integer
+          minimum: 0
+          maximum: 999999
+          description: Kilometraje actual
+          example: 48000
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+        modeloCatalogoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Modelo nuevo contra el que se estima, opcional
+
+    SupuestosEstimacion:
+      type: object
+      description: Lo que usó la fórmula, para mostrarlo al cliente y para auditar el resultado
+      required: [valorBase, edadAnios, kmEsperado, ajusteKm, ajusteEstado, margen]
+      properties:
+        valorBase:
+          type: number
+          description: Valor de referencia de la agencia para esa marca, modelo y año
+        edadAnios:
+          type: integer
+          minimum: 0
+        kmEsperado:
+          type: integer
+          description: Kilometraje que se espera por la edad del auto
+        ajusteKm:
+          type: number
+          description: Multiplicador por kilometraje, entre 0.5 y 1.2
+        ajusteEstado:
+          type: number
+          description: Multiplicador por estado general
+        margen:
+          type: number
+          description: Fracción que se resta y se suma al valor estimado para dar el rango
+          example: 0.08
+
+    EstimacionTomaCuenta:
+      type: object
+      description: |
+        Una estimación no vinculante. `minimo` y `maximo` son pesos con IVA incluido, ya
+        redondeados a 100. Esto no es una oferta de compra.
+      required: [id, creadaEn, marca, modelo, anio, km, estado, minimo, maximo, supuestos]
+      properties:
+        id:
+          type: integer
+          format: int64
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        vehiculoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: El vehículo del cliente, si se estimó con uno
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        km:
+          type: integer
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+        modeloCatalogoId:
+          type: integer
+          format: int64
+          nullable: true
+        modeloDestino:
+          type: string
+          nullable: true
+          description: Nombre del modelo nuevo, como "Mazda CX-5 2024", escrito al momento de estimar
+        precioDestino:
+          type: number
+          nullable: true
+          description: Precio de lista del modelo nuevo al momento de estimar, con IVA
+        minimo:
+          type: number
+        maximo:
+          type: number
+        supuestos:
+          $ref: '#/components/schemas/SupuestosEstimacion'
+
+    PaginaEstimaciones:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimacionTomaCuenta'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    Problema:
+      type: object
+      description: Formato de error del backend (ApiError en shared/exception).
+      required: [timestamp, status, error, message, path]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: En UTC
+        status:
+          type: integer
+          example: 409
+        error:
+          type: string
+          example: Conflict
+        message:
+          type: string
+          example: La franja ya no tiene cupo
+        codigo:
+          type: string
+          nullable: true
+          description: |
+            Causa del error, para que la app decida sin leer el texto. Puede no venir.
+          enum:
+            - CREDENCIALES_INVALIDAS
+            - CUENTA_DESACTIVADA
+            - DEMASIADOS_INTENTOS
+            - CODIGO_INVALIDO
+            - DATOS_INVALIDOS
+            - FRANJA_SIN_CUPO
+            - FUERA_DE_PLAZO
+            - CITA_NO_CANCELABLE
+            - SIN_PARAMETROS_DE_VALUACION
+            - CITA_DUPLICADA
+            - CITA_NO_REPROGRAMABLE
+            - CITA_CANCELADA
+            - WALLET_NO_CONFIGURADO
+          example: FRANJA_SIN_CUPO
+        path:
+          type: string
+          example: /api/v1/app/citas
