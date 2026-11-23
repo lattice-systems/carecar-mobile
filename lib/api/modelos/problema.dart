@@ -20,6 +20,7 @@ enum CodigoProblema {
   citaDuplicada('CITA_DUPLICADA'),
   citaNoReprogramable('CITA_NO_REPROGRAMABLE'),
   citaCancelada('CITA_CANCELADA'),
+  walletNoConfigurado('WALLET_NO_CONFIGURADO'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
