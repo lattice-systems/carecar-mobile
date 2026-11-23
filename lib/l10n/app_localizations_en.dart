@@ -45,11 +45,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasAgendarVehiculoSugerencia => 'Pick your vehicle';
 
   @override
+  String get citasCancelada =>
+      'Appointment cancelled. The time slot is free again.';
+
+  @override
+  String get citasCancelar => 'Cancel appointment';
+
+  @override
+  String get citasCancelarConfirmar => 'Yes, cancel';
+
+  @override
+  String citasCancelarDialogoMensaje(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Your appointment on $fechaString at $hora will be cancelled and the time slot will be freed for others.';
+  }
+
+  @override
+  String get citasCancelarDialogoTitulo => 'Cancel this appointment?';
+
+  @override
+  String get citasCancelarError =>
+      'We could not cancel your appointment. Try again.';
+
+  @override
+  String get citasCancelarMantener => 'Keep appointment';
+
+  @override
+  String get citasCancelarNoDisponible =>
+      'This appointment can no longer be cancelled.';
+
+  @override
   String get citasCargando => 'Loading workshop availability';
 
   @override
   String get citasCargandoAgendar =>
       'Loading your vehicles and the workshop times';
+
+  @override
+  String get citasCargarMas => 'Load more appointments';
 
   @override
   String get citasConfirmar => 'Confirm appointment';
@@ -73,6 +110,35 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get citasErrorAgendar =>
       'We could not book your appointment. Try again.';
+
+  @override
+  String get citasErrorMas => 'We could not load more appointments. Try again.';
+
+  @override
+  String get citasEstadoAtendida => 'Attended';
+
+  @override
+  String get citasEstadoCancelada => 'Cancelled';
+
+  @override
+  String get citasEstadoConfirmada => 'Confirmed';
+
+  @override
+  String get citasEstadoDesconocido => 'No status';
+
+  @override
+  String get citasEstadoNoAsistio => 'No-show';
+
+  @override
+  String citasFilaTitulo(DateTime fecha, String inicio) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString · $inicio';
+  }
+
+  @override
+  String get citasFilaVehiculoGenerico => 'Your vehicle';
 
   @override
   String citasFranjaCercana(DateTime fecha, String hora) {
@@ -110,6 +176,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasListoTitulo => 'Appointment confirmed';
 
   @override
+  String get citasMisCitasAgendar => 'Book an appointment';
+
+  @override
+  String get citasMisCitasCargando => 'Loading your appointments';
+
+  @override
+  String get citasMisCitasTitulo => 'My appointments';
+
+  @override
+  String get citasMisCitasVacioMensaje =>
+      'When you book an appointment it will show up here with its status.';
+
+  @override
+  String get citasMisCitasVacioTitulo => 'You have no appointments yet';
+
+  @override
   String get citasMotivoGarantia => 'Warranty';
 
   @override
@@ -127,6 +209,69 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get citasNotaDiasSinCupo =>
       'Crossed-out days have no spots available.';
+
+  @override
+  String get citasPasadas => 'Past';
+
+  @override
+  String get citasPasadasVacio => 'You have no past appointments yet.';
+
+  @override
+  String get citasProximas => 'Upcoming';
+
+  @override
+  String get citasProximasVacio => 'You have no upcoming appointments.';
+
+  @override
+  String get citasReprogramar => 'Reschedule';
+
+  @override
+  String citasReprogramarActual(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Your current appointment: $fechaString · $hora';
+  }
+
+  @override
+  String get citasReprogramarCargando =>
+      'Loading your appointment and the workshop times';
+
+  @override
+  String get citasReprogramarConfirmar => 'Move to this time';
+
+  @override
+  String get citasReprogramarError =>
+      'We could not reschedule your appointment. Try again.';
+
+  @override
+  String citasReprogramarListo(DateTime fecha, String hora) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Appointment moved to $fechaString at $hora. The previous time slot is free again.';
+  }
+
+  @override
+  String get citasReprogramarNoDisponible =>
+      'This appointment can no longer be changed.';
+
+  @override
+  String get citasReprogramarNoEncontradaMensaje =>
+      'It may no longer be available to change.';
+
+  @override
+  String get citasReprogramarNoEncontradaTitulo =>
+      'We could not find this appointment';
+
+  @override
+  String get citasReprogramarSinFranja =>
+      'Pick a new day and time to continue.';
+
+  @override
+  String get citasReprogramarTitulo => 'Reschedule appointment';
 
   @override
   String get citasResumenFecha => 'Day';
