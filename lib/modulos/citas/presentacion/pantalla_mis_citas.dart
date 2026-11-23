@@ -379,6 +379,8 @@ class _TarjetaProxima extends StatelessWidget {
       DateFormat.EEEE(idioma).format(cita.fecha),
     );
     final mesAnio = DateFormat.yMMMM(idioma).format(cita.fecha);
+    final dia = cita.fecha.day.toString();
+    final horario = '${cita.horaInicio} - ${cita.horaFin}';
     final tono = _EstadoPantallaMisCitas._tonoEstado(cita.estado);
     final oscuro = tokens.brillo == Brightness.dark;
     final etiquetaInfo = [
@@ -446,7 +448,7 @@ class _TarjetaProxima extends StatelessWidget {
                       spacing: Espaciado.e3,
                       children: [
                         Text(
-                          '${cita.fecha.day}',
+                          dia,
                           style: t.display.copyWith(
                             fontSize: 84,
                             height: 1,
@@ -476,7 +478,7 @@ class _TarjetaProxima extends StatelessWidget {
                     ),
                     const SizedBox(height: Espaciado.e3),
                     Text(
-                      '${cita.horaInicio} - ${cita.horaFin}',
+                      horario,
                       style: t.cifra.copyWith(
                         fontSize: 28,
                         height: 1.2,
@@ -608,16 +610,19 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).citasMisCitasCargando,
       liveRegion: true,
-      child: const Padding(
-        padding: EdgeInsets.all(Espaciado.e4),
-        child: Column(
-          children: [
-            Esqueleto(alto: 280, radio: 28),
-            SizedBox(height: Espaciado.e4),
-            Esqueleto(alto: 72),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 72),
-          ],
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.all(Espaciado.e4),
+          child: Column(
+            children: [
+              Esqueleto(alto: 280, radio: 28),
+              SizedBox(height: Espaciado.e4),
+              Esqueleto(alto: 72),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 72),
+            ],
+          ),
         ),
       ),
     );
