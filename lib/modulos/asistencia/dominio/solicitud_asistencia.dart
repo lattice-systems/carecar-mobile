@@ -66,7 +66,9 @@ class SolicitudAsistencia {
     final tipo = TipoAsistencia.desde(json['tipo'] as String?);
     final creada = DateTime.tryParse('${json['creadaEn']}');
     if (id is! num || vehiculoId is! num || tipo == null || creada == null) {
-      throw const FormatException('La solicitud de asistencia esta incompleta.');
+      throw const FormatException(
+        'La solicitud de asistencia esta incompleta.',
+      );
     }
     final lat = json['lat'];
     final lng = json['lng'];
