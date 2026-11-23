@@ -872,6 +872,48 @@ abstract class AppLocalizations {
   /// **'Cargando la ficha técnica'**
   String get vehiculosFichaCargando;
 
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Carrocería'**
+  String get vehiculosFichaClaveCarroceria;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Motor'**
+  String get vehiculosFichaClaveMotor;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Pasajeros'**
+  String get vehiculosFichaClavePasajeros;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Potencia'**
+  String get vehiculosFichaClavePotencia;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Propulsión'**
+  String get vehiculosFichaClavePropulsion;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Tracción'**
+  String get vehiculosFichaClaveTraccion;
+
+  /// Etiqueta de una especificación del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Transmisión'**
+  String get vehiculosFichaClaveTransmision;
+
   /// Aviso al pie de la ficha técnica.
   ///
   /// In es, this message translates to:
@@ -883,6 +925,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Mostrando la ficha guardada en la app'**
   String get vehiculosFichaRespaldo;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'General'**
+  String get vehiculosFichaSeccionGeneral;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Motor'**
+  String get vehiculosFichaSeccionMotor;
+
+  /// Título de una sección del respaldo local de la ficha.
+  ///
+  /// In es, this message translates to:
+  /// **'Transmisión'**
+  String get vehiculosFichaSeccionTransmision;
 
   /// Título de la pantalla de ficha técnica.
   ///
