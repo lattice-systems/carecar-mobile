@@ -433,28 +433,28 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/manuales`, (req, res) => {
 // `ficha_tecnica_modelo`; el backend real la reemplaza sin cambiar el contrato.
 const FICHAS_TECNICAS = {
   'Versa:2024': [
-    { titulo: 'Motor', especificaciones: [
-      { clave: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
-      { clave: 'Potencia', valor: '118 hp a 6,300 rpm' },
-      { clave: 'Combustible', valor: 'Gasolina' },
+    { nombre: 'Motor', especificaciones: [
+      { nombre: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { nombre: 'Potencia', valor: '118 hp a 6,300 rpm' },
+      { nombre: 'Combustible', valor: 'Gasolina' },
     ] },
-    { titulo: 'Transmisión', especificaciones: [
-      { clave: 'Caja', valor: 'CVT Xtronic' },
-      { clave: 'Tracción', valor: 'Delantera' },
+    { nombre: 'Transmisión', especificaciones: [
+      { nombre: 'Caja', valor: 'CVT Xtronic' },
+      { nombre: 'Tracción', valor: 'Delantera' },
     ] },
-    { titulo: 'Dimensiones', especificaciones: [
-      { clave: 'Carrocería', valor: 'Sedán' },
-      { clave: 'Pasajeros', valor: '5' },
+    { nombre: 'Dimensiones', especificaciones: [
+      { nombre: 'Carrocería', valor: 'Sedán' },
+      { nombre: 'Pasajeros', valor: '5' },
     ] },
   ],
   'Kicks:2023': [
-    { titulo: 'Motor', especificaciones: [
-      { clave: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
-      { clave: 'Potencia', valor: '118 hp a 6,300 rpm' },
+    { nombre: 'Motor', especificaciones: [
+      { nombre: 'Cilindrada', valor: '1.6 L, 4 cilindros' },
+      { nombre: 'Potencia', valor: '118 hp a 6,300 rpm' },
     ] },
-    { titulo: 'Transmisión', especificaciones: [
-      { clave: 'Caja', valor: 'CVT Xtronic' },
-      { clave: 'Tracción', valor: 'Delantera' },
+    { nombre: 'Transmisión', especificaciones: [
+      { nombre: 'Caja', valor: 'CVT Xtronic' },
+      { nombre: 'Tracción', valor: 'Delantera' },
     ] },
   ],
 };
@@ -463,9 +463,9 @@ servidor.get(`${BASE}/vehiculos/:vehiculoId/ficha-tecnica`, (req, res) => {
   const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
   if (!vehiculo) return noEncontrado(req, res);
 
-  // Sin ficha para ese modelo y ano responde 404: la app usa su respaldo local.
-  const secciones = FICHAS_TECNICAS[`${vehiculo.modelo}:${vehiculo.anio}`];
-  if (!secciones) return noEncontrado(req, res);
+  // Igual que el backend: sin ficha para ese modelo y ano responde 200 con
+  // secciones vacias y la app usa su respaldo local.
+  const secciones = FICHAS_TECNICAS[`${vehiculo.modelo}:${vehiculo.anio}`] || [];
 
   res.jsonp({ vehiculoId: vehiculo.id, modelo: vehiculo.modelo, anio: vehiculo.anio, secciones });
 });
@@ -594,8 +594,8 @@ servidor.post(`${BASE}/citas`, (req, res) => {
     return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
   }
 
-  // "No se puede reservar dos veces" (APP-3.3): mismo vehiculo, mismo dia, o
-  // la misma franja. V2-M02.08 le pone el codigo CITA_DUPLICADA.
+  // "No se puede reservar dos veces" (APP-3.3): mismo vehiculo, mismo dia,
+  // como el backend de V2-M02.08, que le pone el codigo CITA_DUPLICADA.
   const yaReservada = db
     .get('citas')
     .value()
@@ -604,7 +604,7 @@ servidor.post(`${BASE}/citas`, (req, res) => {
         c.clienteId === req.sesion.clienteId &&
         c.estado === 'CONFIRMADA' &&
         c.fecha === fecha &&
-        (c.franjaId === franja.id || c.vehiculoId === vehiculo.id)
+        c.vehiculoId === vehiculo.id
     );
   if (yaReservada) {
     return problema(req, res, 409, 'Ya tienes una cita para ese vehiculo ese dia', 'CITA_DUPLICADA');
@@ -711,16 +711,16 @@ servidor.post(`${BASE}/citas/:citaId/reprogramar`, (req, res) => {
 
 // V2-M02.11 · comprobante con QR. El backend real firma el id de la cita y
 // lo pone en el PDF del ticket; aqui el mock simula ambas cosas. El codigo
-// tiene la forma `CC1.<citaId>.<firma>`, donde firma son los primeros 16
-// caracteres hexadecimales de HMAC-SHA256(`cita:<citaId>`). Solo sirve para
-// que la app dibuje un QR; no es el algoritmo definitivo del backend.
+// tiene la misma forma que el del backend, `CARECAR-CITA:<citaId>.<firma>`;
+// aqui la firma es HMAC-SHA256 con la llave de desarrollo del mock, asi que
+// no la valida el backend real.
 function codigoDeCita(citaId) {
   const firma = crypto
     .createHmac('sha256', SECRETO_DEV)
     .update(`cita:${citaId}`)
     .digest('hex')
     .slice(0, 16);
-  return `CC1.${citaId}.${firma}`;
+  return `CARECAR-CITA:${citaId}.${firma}`;
 }
 
 function citaDelCliente(req) {
@@ -732,6 +732,9 @@ function citaDelCliente(req) {
 servidor.get(`${BASE}/citas/:citaId/comprobante`, (req, res) => {
   const cita = citaDelCliente(req);
   if (!cita) return noEncontrado(req, res);
+  if (cita.estado === 'CANCELADA') {
+    return problema(req, res, 409, 'La cita esta cancelada', 'CITA_CANCELADA');
+  }
   const vehiculo = db.get('vehiculos').find({ id: cita.vehiculoId }).value();
   res.jsonp({
     citaId: cita.id,
