@@ -620,6 +620,53 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   res.jsonp({ ...comoCita(cita), estado: 'CANCELADA' });
 });
 
+// V2-M02.13 (propuesto, no esta en el contrato v1): cambia una cita confirmada
+// a otra franja sin cancelarla. La franja anterior se libera y la nueva se
+// ocupa en la misma operacion. 409 FRANJA_SIN_CUPO si la nueva se lleno;
+// 409 CITA_NO_REPROGRAMABLE si la cita ya no esta confirmada; 409
+// FUERA_DE_PLAZO si ya paso (misma regla provisional que cancelar, PO-4).
+servidor.post(`${BASE}/citas/:citaId/reprogramar`, (req, res) => {
+  const cita = db.get('citas').find({ id: Number(req.params.citaId) }).value();
+  if (!cita || cita.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
+
+  const { franjaId, fecha } = req.body || {};
+  if (!franjaId || !ES_FECHA.test(fecha || '')) {
+    return problema(req, res, 400, 'Faltan franjaId o fecha (AAAA-MM-DD)');
+  }
+
+  if (cita.estado !== 'CONFIRMADA') {
+    return problema(req, res, 409, 'La cita ya no esta confirmada', 'CITA_NO_REPROGRAMABLE');
+  }
+  const hoy = new Date().toISOString().slice(0, 10);
+  if (cita.fecha < hoy) {
+    return problema(req, res, 409, 'Fuera del plazo para reprogramar', 'FUERA_DE_PLAZO');
+  }
+
+  const nueva = db.get('franjas').find({ id: Number(franjaId) }).value();
+  if (!nueva || nueva.fecha !== fecha) return noEncontrado(req, res);
+
+  const anterior = db.get('franjas').find({ id: cita.franjaId }).value();
+  if (anterior && anterior.id === nueva.id) return res.jsonp(comoCita(cita));
+
+  if (nueva.cupoDisponible < 1) {
+    return problema(req, res, 409, 'La franja ya no tiene cupo', 'FRANJA_SIN_CUPO');
+  }
+
+  db.get('franjas').find({ id: nueva.id }).assign({ cupoDisponible: nueva.cupoDisponible - 1 }).write();
+  if (anterior) {
+    db.get('franjas')
+      .find({ id: anterior.id })
+      .assign({ cupoDisponible: anterior.cupoDisponible + 1 })
+      .write();
+  }
+  db.get('citas')
+    .find({ id: cita.id })
+    .assign({ franjaId: nueva.id, fecha: nueva.fecha, horaInicio: nueva.horaInicio, horaFin: nueva.horaFin })
+    .write();
+
+  res.jsonp(comoCita(db.get('citas').find({ id: cita.id }).value()));
+});
+
 // ---------------------------------------------------------------------------
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
 // ---------------------------------------------------------------------------
