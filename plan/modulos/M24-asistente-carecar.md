@@ -6,7 +6,7 @@
 | Dueño | Daniel |
 | Revisa | Cristian |
 | Ficha técnica | ✅ Sección 21. Asistente CareCar (IA) |
-| Estado | Lista (refinado) |
+| Estado | En curso (M24.01 hecha; M24.02 y M24.03 en revisión) |
 
 ## Propósito
 
@@ -71,6 +71,35 @@ ADR [0007](../../docs/decisiones/0007-asistente-ia.md) `Aceptada` (SM y PO):
 - **Calidad:** al menos 80 % de citas correctas.
 
 Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en Azure (`gemini-api-key`). Aprobado por SM y PO.
+
+## Avance de V2-M24.02 y V2-M24.03
+
+**Backend** (backend#79):
+- **Tablas:** migración `V27` con `fragmento_manual` (texto por página y `vector(768)` con pgvector) y `consulta_asistente`.
+- **Indexado:** `IndexadorManuales` usa PDFBox y se dispara al subir un manual, al preguntar si falta, y cada 30 min. Los vectores se calculan con tope diario.
+- **Endpoint:** `POST /api/v1/app/asistente/preguntas`. Para responder:
+  - busca por vector o, si no hay, por texto completo;
+  - llama a Gemini sin datos personales;
+  - cita solo las páginas que se le dieron;
+  - responde "no lo encontré" sin llamar al modelo.
+- **Errores:** `409 ASISTENTE_SIN_MANUAL`, `429 ASISTENTE_LIMITE` y `503 ASISTENTE_NO_DISPONIBLE`.
+- **Manuales:** los PDF ahora viven en la base (backend#78), porque el disco del contenedor se borraba.
+
+**App:**
+- **Módulo:** `lib/modulos/asistente/` con `RepositorioAsistente` y su versión de API (decide por código), `ConversacionAsistente` (no se guarda en el teléfono) y `PantallaAsistente`.
+- **Pantalla:**
+  - aviso de IA fijo;
+  - estado vacío;
+  - burbujas con la cita «Manual, pág. N», que abre el manual;
+  - reintento sin conexión;
+  - límite y falta de manual explicados.
+- **Entrada:** desde el detalle del vehículo, en «Tu auto».
+- **API simulada:** responde con una cita de ejemplo.
+
+**Pendiente:**
+- Abrir el manual justo en la página citada (V2-M24.04, necesita `VisorPdf.paginaInicial`).
+- Reserva con Gemma cuando se agote Flash-Lite (ADR 0007).
+- El id exacto del modelo de reserva.
 
 ## Componentes que faltan
 

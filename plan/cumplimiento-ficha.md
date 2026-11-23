@@ -164,7 +164,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Preguntas sobre el manual del vehículo | `manual`, `fragmento_manual`, `consulta_asistente` | ⬜ | Ver M24 |
+| Preguntas sobre el manual del vehículo | `manual`, `fragmento_manual`, `consulta_asistente` | 🟡 | V2-M24.02 y V2-M24.03: tablas en `V27`, pruebas `AsistenteIntegrationTest` (backend) y `test/modulos/asistente/` (app); pasa a ✅ al demostrarse en celular |
 | Identificación de testigos del tablero | `consulta_asistente`, `vehiculo_cliente` | ⬜ | Ver M24 |
 
 ### 22. Valuación formal — plan [M26](modulos/M26-valuacion.md)
