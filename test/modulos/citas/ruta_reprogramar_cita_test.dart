@@ -1,6 +1,5 @@
 import 'package:carecar_mobile/api/modelos/cita.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
-import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
