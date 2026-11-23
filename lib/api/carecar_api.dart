@@ -115,6 +115,18 @@ abstract interface class CarecarApi {
   /// Cual es ese plazo sigue pendiente del PO (pregunta PO-4).
   Future<Cita> cancelarCita(int citaId);
 
+  /// `POST /citas/{id}/reprogramar` (propuesto en V2-M02.13; aun no esta en el
+  /// contrato v1). Cambia la cita a otra franja y libera la anterior en la
+  /// misma operacion.
+  ///
+  /// Lanza `Conflicto` con `FRANJA_SIN_CUPO` si la franja nueva se lleno, o sin
+  /// codigo reconocido si la cita ya no esta confirmada o paso el plazo.
+  Future<Cita> reprogramarCita(
+    int citaId, {
+    required int franjaId,
+    required DateTime fecha,
+  });
+
   // --- Catalogo · APP-4.1 (fuera del MVP) ---
 
   /// `GET /catalogo`. Solo los modelos vigentes.
