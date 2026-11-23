@@ -502,6 +502,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosDetalleTitulo => 'Vehicle details';
 
   @override
+  String get vehiculosFichaCargando => 'Loading the specifications';
+
+  @override
+  String get vehiculosFichaNota =>
+      'Model and year data. The exact specifications of your unit are in its manual.';
+
+  @override
+  String get vehiculosFichaRespaldo =>
+      'Showing the specifications saved in the app';
+
+  @override
+  String get vehiculosFichaTitulo => 'Specifications';
+
+  @override
+  String get vehiculosFichaVacioMensaje =>
+      'We do not have the specifications for this model and year yet. The dealership will publish them soon.';
+
+  @override
+  String get vehiculosFichaVacioTitulo => 'No specifications';
+
+  @override
   String get vehiculosKilometraje => 'Mileage';
 
   @override
@@ -519,6 +540,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vehiculosKmSinDato => 'No mileage recorded';
+
+  @override
+  String get vehiculosManualCargando => 'Loading the manual';
+
+  @override
+  String get vehiculosManualCompartir => 'Share manual';
+
+  @override
+  String get vehiculosManualDescargar => 'Download manual';
+
+  @override
+  String vehiculosManualDescripcion(String vehiculo) {
+    return 'Manual of $vehiculo';
+  }
+
+  @override
+  String get vehiculosManualGuardado => 'Manual saved';
+
+  @override
+  String get vehiculosManualGuardadoError =>
+      'We could not save the manual. Please try again.';
+
+  @override
+  String get vehiculosManualTitulo => 'Manual';
+
+  @override
+  String get vehiculosManualVacioMensaje =>
+      'We do not have the manual for this model and year yet. The dealership will publish it soon.';
+
+  @override
+  String get vehiculosManualVacioTitulo => 'Manual not available';
 
   @override
   String get vehiculosNoEncontradoMensaje =>
