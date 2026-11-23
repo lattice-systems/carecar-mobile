@@ -2,31 +2,39 @@ import 'package:carecar_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+/// Monta la app real y la deja avanzar un momento. No se usa
+/// `pumpAndSettle`: con dirección por flavor la app arranca de verdad
+/// (cortina, sesión, peticiones) y nunca queda quieta.
+Future<void> _montarApp(WidgetTester tester) async {
+  await tester.pumpWidget(const AppCareCar());
+  await tester.pump(const Duration(seconds: 1));
+}
+
 void main() {
   testWidgets(
-    'sin API_BASE_URL la app explica como configurarla en lugar de arrancar',
+    'sin --dart-define la app toma la dirección de su flavor y arranca',
     (tester) async {
-      // Las pruebas corren sin --dart-define, asi que ApiConfig.desdeEntorno()
-      // falla a proposito. Es el comportamiento que se quiere: mejor un error
-      // claro que una app apuntando a ningun lado.
-      await tester.pumpWidget(const AppCareCar());
-      await tester.pumpAndSettle();
+      // Antes de V2-T01.04 las pruebas sin API_BASE_URL caían en la pantalla
+      // de error. Ahora cada flavor trae su dirección por omisión (aquí
+      // produccion), así que ese error ya no debe aparecer. Los casos de
+      // dirección inválida se prueban en test/api/api_config_test.dart.
+      await _montarApp(tester);
 
       expect(
         find.text('Falta configurar la dirección de la API'),
-        findsOneWidget,
+        findsNothing,
       );
-      expect(find.textContaining('--dart-define=API_BASE_URL'), findsOneWidget);
+      await tester.pumpWidget(const SizedBox.shrink());
     },
   );
 
   testWidgets('la app no arranca con el contador de ejemplo de Flutter', (
     tester,
   ) async {
-    await tester.pumpWidget(const AppCareCar());
-    await tester.pumpAndSettle();
+    await _montarApp(tester);
 
     expect(find.byIcon(Icons.add), findsNothing);
     expect(find.textContaining('You have pushed the button'), findsNothing);
+    await tester.pumpWidget(const SizedBox.shrink());
   });
 }
