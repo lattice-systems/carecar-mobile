@@ -36,6 +36,15 @@ Estado: **Hecha**.
 - **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
 - **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
 
+## Avance de V2-T05.06
+
+Estado: **En revisión**.
+
+- **Backend:** la tabla `servicio` pasa a ser `orden_servicio`, con sus mismos ids, y gana `mano_de_obra`, `refacciones`, `estatus` y `fecha_cierre`; la base exige `total = mano_de_obra + refacciones`. Los renglones de `renglon_servicio` se reparten en `orden_refaccion` (`refaccion_id`, `cantidad`, `precio`, más `concepto` e `importe`) y `orden_mano_de_obra`, que se agrega para no perder el detalle de la mano de obra. Las órdenes existentes quedan `TERMINADO` con su fecha de cierre. Diseño en `agencia-360-backend/plan/historias-backend.md`.
+- **Estatus:** los mismos cuatro de PO-5 que ya devuelve la app (`RECIBIDO`, `EN_PROCESO`, `TERMINADO`, `ENTREGADO`); `Servicio.estatus` ahora sale de la orden.
+- **Contrato:** v2 en 2.2.0, solo cambia la descripción de `Servicio.estatus`. Sin rutas nuevas ni cambios de forma.
+- **App:** sin cambios. Copia del contrato en `api/agencia360-api-app-v2.yaml`. Desbloquea V2-M02.05 y V2-M02.06.
+
 ## Avance de V2-T05.07
 
 Estado: **Hecha**.
