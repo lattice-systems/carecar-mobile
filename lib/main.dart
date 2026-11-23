@@ -9,6 +9,7 @@ import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
 import 'l10n/idiomas.dart';
+import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
@@ -188,11 +189,15 @@ class _AppCareCarState extends State<AppCareCar> {
             routerConfig: ref.watch(enrutadorProvider),
             // La cortina tapa la app mientras se restaura la sesion: asi no se
             // ve el login un instante antes de saltar a inicio ni a un enlace.
-            builder: (context, child) => ShadAppBuilder(
-              child: CortinaArranque(
-                listo: !_restaurando,
-                duracionMinima: widget.duracionArranque,
-                siguiente: (_) => child!,
+            // Los accesos del icono (V2-M25.04) se registran aqui porque
+            // necesitan los textos del idioma activo y el enrutador.
+            builder: (context, child) => InstaladorDeAccesosRapidos(
+              child: ShadAppBuilder(
+                child: CortinaArranque(
+                  listo: !_restaurando,
+                  duracionMinima: widget.duracionArranque,
+                  siguiente: (_) => child!,
+                ),
               ),
             ),
           ),
