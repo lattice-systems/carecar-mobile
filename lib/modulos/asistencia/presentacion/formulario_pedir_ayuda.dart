@@ -23,8 +23,10 @@ import 'proveedores_asistencia.dart';
 import 'ubicacion_para_ayuda.dart';
 
 /// Lo que se hace cuando la solicitud queda creada (o ya existia).
-typedef AlEnviarSolicitud =
-    void Function(SolicitudAsistencia solicitud, {required bool yaAbierta});
+typedef AlEnviarSolicitud = void Function(
+  SolicitudAsistencia solicitud, {
+  required bool yaAbierta,
+});
 
 /// Lo que va leyendo la ubicacion: nada, buscando, lista o con un motivo.
 sealed class _Ubicacion {
