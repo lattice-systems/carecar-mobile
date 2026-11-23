@@ -84,6 +84,42 @@ class AppLocalizationsEs extends AppLocalizations {
       'Cargando tus vehículos y los horarios del taller';
 
   @override
+  String get citasComprobanteCargando => 'Cargando tu comprobante';
+
+  @override
+  String citasComprobanteCuando(DateTime fecha, String inicio, String fin) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, de $inicio a $fin';
+  }
+
+  @override
+  String citasComprobanteFolio(int id) {
+    return 'Folio $id';
+  }
+
+  @override
+  String get citasComprobanteIndicacion =>
+      'Muestra este código en recepción para registrar tu llegada.';
+
+  @override
+  String get citasComprobanteQrDescripcion =>
+      'Código QR de tu cita para recepción';
+
+  @override
+  String get citasComprobanteTitulo => 'Comprobante de cita';
+
+  @override
+  String get citasComprobanteVerPdf => 'Ver comprobante en PDF';
+
+  @override
+  String get citasComprobanteVerPdfDescripcion =>
+      'Comprobante en PDF de tu cita';
+
+  @override
   String get citasCargarMas => 'Cargar más citas';
 
   @override
@@ -172,6 +208,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get citasListoTitulo => 'Cita confirmada';
+
+  @override
+  String get citasListoVerComprobante => 'Ver comprobante';
 
   @override
   String get citasMisCitasAgendar => 'Agendar cita';
