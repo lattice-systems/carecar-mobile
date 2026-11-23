@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar
-  version: 1.3.0
+  version: 1.4.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar (TEC-1).
 
@@ -43,6 +43,8 @@ tags:
     description: APP-3.3 y ERP-3.3
   - name: Catálogo
     description: APP-4.1 (fuera del MVP; incluido porque TEC-1 lo pide en el contrato)
+  - name: Toma a cuenta
+    description: V2-M03.04, V2-M03.06 y V2-M03.07
 
 security:
   - bearerAuth: []
@@ -519,6 +521,84 @@ paths:
           $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
+
+  /toma-a-cuenta/estimaciones:
+    get:
+      tags: [Toma a cuenta]
+      summary: Listar mis estimaciones de toma a cuenta
+      description: |
+        V2-M03.07 · Las estimaciones del cliente, de la más reciente a la más antigua. Cada
+        una trae lo que se pidió, el rango que salió y los supuestos con que se calculó, así
+        que la app no recalcula nada: si la agencia cambia sus parámetros después, la
+        estimación guardada sigue diciendo lo que dijo ese día.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Estimaciones del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaEstimaciones'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Toma a cuenta]
+      summary: Estimar cuánto me darían por mi auto a cuenta de uno nuevo
+      description: |
+        V2-M03.04 y V2-M03.06 · Calcula un rango mínimo y máximo con los parámetros que la
+        agencia mantiene en `parametro_toma_cuenta` y lo guarda como una estimación del
+        cliente. La fórmula vive solo en el backend.
+
+        El auto se indica de una de dos formas, y mandar las dos o ninguna es un 400:
+        `vehiculoId` (uno de los vehículos del cliente, de donde salen marca, modelo y año) o
+        `marca`, `modelo` y `anio` capturados a mano. `modeloCatalogoId` es opcional y dice
+        contra qué modelo nuevo se está estimando; si viene, el modelo debe estar vigente.
+
+        **Es una estimación no vinculante, nunca una oferta.** La app lo dice siempre junto
+        al rango, con un texto propio revisado por el PO. Una valuación formal se pide aparte
+        (V2-M26.01).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaEstimacionTomaCuenta'
+      responses:
+        '201':
+          description: Estimación calculada y guardada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstimacionTomaCuenta'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: |
+            El vehículo no existe o no es del cliente, o el modelo del catálogo no existe o
+            está retirado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            La agencia todavía no tiene parámetros para esa marca, modelo y año
+            (`codigo` SIN_PARAMETROS_DE_VALUACION). La app lo explica y ofrece pedir una
+            valuación formal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
 components:
   securitySchemes:
@@ -1017,6 +1097,144 @@ components:
           type: integer
           minimum: 0
 
+    EstadoVehiculo:
+      type: string
+      description: Estado general del auto según el cliente
+      enum: [EXCELENTE, BUENO, REGULAR, MALO]
+
+    NuevaEstimacionTomaCuenta:
+      type: object
+      description: |
+        Indica el auto con `vehiculoId` o con `marca`, `modelo` y `anio`, nunca con ambas
+        formas ni con ninguna.
+      required: [km, estado]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Uno de los vehículos del cliente
+        marca:
+          type: string
+          nullable: true
+          maxLength: 40
+          example: Nissan
+        modelo:
+          type: string
+          nullable: true
+          maxLength: 80
+          description: Tipo del vehículo, como en `Vehiculo.modelo`
+          example: Versa
+        anio:
+          type: integer
+          nullable: true
+          minimum: 1900
+          example: 2021
+        km:
+          type: integer
+          minimum: 0
+          maximum: 999999
+          description: Kilometraje actual
+          example: 48000
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+        modeloCatalogoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Modelo nuevo contra el que se estima, opcional
+
+    SupuestosEstimacion:
+      type: object
+      description: Lo que usó la fórmula, para mostrarlo al cliente y para auditar el resultado
+      required: [valorBase, edadAnios, kmEsperado, ajusteKm, ajusteEstado, margen]
+      properties:
+        valorBase:
+          type: number
+          description: Valor de referencia de la agencia para esa marca, modelo y año
+        edadAnios:
+          type: integer
+          minimum: 0
+        kmEsperado:
+          type: integer
+          description: Kilometraje que se espera por la edad del auto
+        ajusteKm:
+          type: number
+          description: Multiplicador por kilometraje, entre 0.5 y 1.2
+        ajusteEstado:
+          type: number
+          description: Multiplicador por estado general
+        margen:
+          type: number
+          description: Fracción que se resta y se suma al valor estimado para dar el rango
+          example: 0.08
+
+    EstimacionTomaCuenta:
+      type: object
+      description: |
+        Una estimación no vinculante. `minimo` y `maximo` son pesos con IVA incluido, ya
+        redondeados a 100. Esto no es una oferta de compra.
+      required: [id, creadaEn, marca, modelo, anio, km, estado, minimo, maximo, supuestos]
+      properties:
+        id:
+          type: integer
+          format: int64
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        vehiculoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: El vehículo del cliente, si se estimó con uno
+        marca:
+          type: string
+        modelo:
+          type: string
+        anio:
+          type: integer
+        km:
+          type: integer
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+        modeloCatalogoId:
+          type: integer
+          format: int64
+          nullable: true
+        modeloDestino:
+          type: string
+          nullable: true
+          description: Nombre del modelo nuevo, como "Mazda CX-5 2024", escrito al momento de estimar
+        precioDestino:
+          type: number
+          nullable: true
+          description: Precio de lista del modelo nuevo al momento de estimar, con IVA
+        minimo:
+          type: number
+        maximo:
+          type: number
+        supuestos:
+          $ref: '#/components/schemas/SupuestosEstimacion'
+
+    PaginaEstimaciones:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/EstimacionTomaCuenta'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
     Problema:
       type: object
       description: Formato de error del backend (ApiError en shared/exception).
@@ -1049,6 +1267,7 @@ components:
             - FRANJA_SIN_CUPO
             - FUERA_DE_PLAZO
             - CITA_NO_CANCELABLE
+            - SIN_PARAMETROS_DE_VALUACION
           example: FRANJA_SIN_CUPO
         path:
           type: string

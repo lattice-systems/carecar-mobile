@@ -717,5 +717,170 @@
         "type": "String"
       }
     }
+  },
+  "catalogoCalcularTomaACuenta": "Calcular toma a cuenta",
+  "@catalogoCalcularTomaACuenta": {
+    "description": "Botón del detalle de un modelo que abre la calculadora de toma a cuenta."
+  },
+  "calculadoraTitulo": "Toma a cuenta",
+  "@calculadoraTitulo": {
+    "description": "Título de la calculadora de toma a cuenta."
+  },
+  "calculadoraLeyenda": "Estimación no vinculante. No es una oferta de compra: el valor final lo define la agencia cuando revise tu auto.",
+  "@calculadoraLeyenda": {
+    "description": "Leyenda legal que siempre se ve junto a la calculadora y al resultado. El texto final lo revisa el PO."
+  },
+  "calculadoraContra": "Contra: {modelo}",
+  "@calculadoraContra": {
+    "description": "Modelo nuevo contra el que se estima.",
+    "placeholders": {
+      "modelo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraAuto": "Tu auto",
+  "@calculadoraAuto": {
+    "description": "Etiqueta del selector del auto a dar a cuenta."
+  },
+  "calculadoraOtroAuto": "Otro auto",
+  "@calculadoraOtroAuto": {
+    "description": "Opción para capturar a mano un auto que no está en el garaje."
+  },
+  "calculadoraCargandoAutos": "Cargando tus autos",
+  "@calculadoraCargandoAutos": {
+    "description": "Lo que anuncia el lector de pantalla mientras cargan los autos del cliente."
+  },
+  "calculadoraMarca": "Marca",
+  "@calculadoraMarca": {
+    "description": "Campo de marca del auto capturado."
+  },
+  "calculadoraModelo": "Modelo",
+  "@calculadoraModelo": {
+    "description": "Campo de modelo del auto capturado, por ejemplo Versa."
+  },
+  "calculadoraAnio": "Año",
+  "@calculadoraAnio": {
+    "description": "Campo del año del auto capturado."
+  },
+  "calculadoraKm": "Kilometraje",
+  "@calculadoraKm": {
+    "description": "Campo del kilometraje actual del auto."
+  },
+  "calculadoraKmAyuda": "En kilómetros, como marca el tablero hoy",
+  "@calculadoraKmAyuda": {
+    "description": "Ayuda del campo de kilometraje."
+  },
+  "calculadoraEstado": "Estado general",
+  "@calculadoraEstado": {
+    "description": "Selector del estado general del auto."
+  },
+  "calculadoraEstadoExcelente": "Excelente",
+  "@calculadoraEstadoExcelente": {
+    "description": "Estado del auto."
+  },
+  "calculadoraEstadoBueno": "Bueno",
+  "@calculadoraEstadoBueno": {
+    "description": "Estado del auto."
+  },
+  "calculadoraEstadoRegular": "Regular",
+  "@calculadoraEstadoRegular": {
+    "description": "Estado del auto."
+  },
+  "calculadoraEstadoMalo": "Malo",
+  "@calculadoraEstadoMalo": {
+    "description": "Estado del auto."
+  },
+  "calculadoraCalcular": "Calcular estimación",
+  "@calculadoraCalcular": {
+    "description": "Botón que pide la estimación."
+  },
+  "calculadoraErrorMarca": "Escribe la marca",
+  "@calculadoraErrorMarca": {
+    "description": "Error del campo de marca vacío."
+  },
+  "calculadoraErrorModelo": "Escribe el modelo",
+  "@calculadoraErrorModelo": {
+    "description": "Error del campo de modelo vacío."
+  },
+  "calculadoraErrorAnio": "Escribe un año de cuatro cifras, de 1900 a {maximo}",
+  "@calculadoraErrorAnio": {
+    "description": "Error del campo de año.",
+    "placeholders": {
+      "maximo": {
+        "type": "int"
+      }
+    }
+  },
+  "calculadoraErrorKm": "Escribe un kilometraje de 0 a 999,999",
+  "@calculadoraErrorKm": {
+    "description": "Error del campo de kilometraje."
+  },
+  "calculadoraResultadoTitulo": "Estimación de toma a cuenta",
+  "@calculadoraResultadoTitulo": {
+    "description": "Título de la tarjeta con el resultado."
+  },
+  "calculadoraRango": "{minimo} a {maximo}",
+  "@calculadoraRango": {
+    "description": "El rango estimado, por ejemplo $137,800 a $161,800.",
+    "placeholders": {
+      "minimo": {
+        "type": "String"
+      },
+      "maximo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraRangoLector": "Entre {minimo} y {maximo}",
+  "@calculadoraRangoLector": {
+    "description": "El rango estimado como lo lee el lector de pantalla.",
+    "placeholders": {
+      "minimo": {
+        "type": "String"
+      },
+      "maximo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraSupuestos": "Se calculó para {edad, plural, =0{un auto de este año} =1{un auto de 1 año} other{un auto de {edad} años}}, con {km} km esperados para esa edad y un margen de más y menos {margen} %.",
+  "@calculadoraSupuestos": {
+    "description": "Los supuestos con que se calculó la estimación.",
+    "placeholders": {
+      "edad": {
+        "type": "int"
+      },
+      "km": {
+        "type": "String"
+      },
+      "margen": {
+        "type": "int"
+      }
+    }
+  },
+  "calculadoraSinParametrosTitulo": "Todavía no estimamos ese auto",
+  "@calculadoraSinParametrosTitulo": {
+    "description": "Título cuando la agencia no tiene datos para ese auto (422)."
+  },
+  "calculadoraSinParametrosMensaje": "La agencia aún no tiene datos para esa marca, modelo y año. Pide una valuación formal en la agencia.",
+  "@calculadoraSinParametrosMensaje": {
+    "description": "Explicación cuando la agencia no tiene datos para ese auto (422)."
+  },
+  "calculadoraErrorDatos": "No pudimos calcular la estimación. Revisa los datos e intenta de nuevo.",
+  "@calculadoraErrorDatos": {
+    "description": "Aviso cuando el servidor rechaza los datos."
+  },
+  "calculadoraErrorSinConexion": "Sin conexión. Conéctate e intenta de nuevo.",
+  "@calculadoraErrorSinConexion": {
+    "description": "Aviso cuando no hay red al calcular."
+  },
+  "calculadoraErrorNoEncontrado": "No encontramos ese auto o ese modelo. Vuelve atrás e intenta de nuevo.",
+  "@calculadoraErrorNoEncontrado": {
+    "description": "Aviso cuando el vehículo no es del cliente o el modelo ya no está vigente."
+  },
+  "calculadoraErrorGenerico": "Algo salió mal al calcular. Intenta de nuevo en un momento.",
+  "@calculadoraErrorGenerico": {
+    "description": "Aviso de error inesperado al calcular."
   }
 }

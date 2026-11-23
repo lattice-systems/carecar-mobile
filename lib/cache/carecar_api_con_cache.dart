@@ -140,6 +140,19 @@ class CarecarApiConCache implements CarecarApi {
     (j) => _lista(j, Cita.fromJson),
   );
 
+  // Estimar guarda en el servidor y no tiene sentido sin conexion, y las
+  // listas por paginas no se guardan en disco.
+  @override
+  Future<EstimacionTomaCuenta> estimarTomaACuenta(
+    NuevaEstimacionTomaCuenta nueva,
+  ) => _api.estimarTomaACuenta(nueva);
+
+  @override
+  Future<Pagina<EstimacionTomaCuenta>> paginaDeEstimaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _api.paginaDeEstimaciones(pagina: pagina, tamano: tamano);
+
   @override
   Future<List<ModeloCatalogo>> catalogo() => _leer<List<ModeloCatalogo>>(
     'catalogo',

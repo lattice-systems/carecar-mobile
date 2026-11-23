@@ -562,4 +562,123 @@ class AppLocalizationsEs extends AppLocalizations {
   String catalogoComparadorCelda(String dato, String modelo, String valor) {
     return '$dato, $modelo: $valor';
   }
+
+  @override
+  String get catalogoCalcularTomaACuenta => 'Calcular toma a cuenta';
+
+  @override
+  String get calculadoraTitulo => 'Toma a cuenta';
+
+  @override
+  String get calculadoraLeyenda =>
+      'Estimación no vinculante. No es una oferta de compra: el valor final lo define la agencia cuando revise tu auto.';
+
+  @override
+  String calculadoraContra(String modelo) {
+    return 'Contra: $modelo';
+  }
+
+  @override
+  String get calculadoraAuto => 'Tu auto';
+
+  @override
+  String get calculadoraOtroAuto => 'Otro auto';
+
+  @override
+  String get calculadoraCargandoAutos => 'Cargando tus autos';
+
+  @override
+  String get calculadoraMarca => 'Marca';
+
+  @override
+  String get calculadoraModelo => 'Modelo';
+
+  @override
+  String get calculadoraAnio => 'Año';
+
+  @override
+  String get calculadoraKm => 'Kilometraje';
+
+  @override
+  String get calculadoraKmAyuda => 'En kilómetros, como marca el tablero hoy';
+
+  @override
+  String get calculadoraEstado => 'Estado general';
+
+  @override
+  String get calculadoraEstadoExcelente => 'Excelente';
+
+  @override
+  String get calculadoraEstadoBueno => 'Bueno';
+
+  @override
+  String get calculadoraEstadoRegular => 'Regular';
+
+  @override
+  String get calculadoraEstadoMalo => 'Malo';
+
+  @override
+  String get calculadoraCalcular => 'Calcular estimación';
+
+  @override
+  String get calculadoraErrorMarca => 'Escribe la marca';
+
+  @override
+  String get calculadoraErrorModelo => 'Escribe el modelo';
+
+  @override
+  String calculadoraErrorAnio(int maximo) {
+    return 'Escribe un año de cuatro cifras, de 1900 a $maximo';
+  }
+
+  @override
+  String get calculadoraErrorKm => 'Escribe un kilometraje de 0 a 999,999';
+
+  @override
+  String get calculadoraResultadoTitulo => 'Estimación de toma a cuenta';
+
+  @override
+  String calculadoraRango(String minimo, String maximo) {
+    return '$minimo a $maximo';
+  }
+
+  @override
+  String calculadoraRangoLector(String minimo, String maximo) {
+    return 'Entre $minimo y $maximo';
+  }
+
+  @override
+  String calculadoraSupuestos(int edad, String km, int margen) {
+    String _temp0 = intl.Intl.pluralLogic(
+      edad,
+      locale: localeName,
+      other: 'un auto de $edad años',
+      one: 'un auto de 1 año',
+      zero: 'un auto de este año',
+    );
+    return 'Se calculó para $_temp0, con $km km esperados para esa edad y un margen de más y menos $margen %.';
+  }
+
+  @override
+  String get calculadoraSinParametrosTitulo => 'Todavía no estimamos ese auto';
+
+  @override
+  String get calculadoraSinParametrosMensaje =>
+      'La agencia aún no tiene datos para esa marca, modelo y año. Pide una valuación formal en la agencia.';
+
+  @override
+  String get calculadoraErrorDatos =>
+      'No pudimos calcular la estimación. Revisa los datos e intenta de nuevo.';
+
+  @override
+  String get calculadoraErrorSinConexion =>
+      'Sin conexión. Conéctate e intenta de nuevo.';
+
+  @override
+  String get calculadoraErrorNoEncontrado =>
+      'No encontramos ese auto o ese modelo. Vuelve atrás e intenta de nuevo.';
+
+  @override
+  String get calculadoraErrorGenerico =>
+      'Algo salió mal al calcular. Intenta de nuevo en un momento.';
 }

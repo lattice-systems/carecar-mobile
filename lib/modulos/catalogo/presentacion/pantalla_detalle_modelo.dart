@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -126,6 +127,13 @@ class _Detalle extends StatelessWidget {
             style: t.cuerpo.copyWith(color: c.textoSecundario),
           ),
         ],
+        const SizedBox(height: Espaciado.e4),
+        Boton(
+          texto: textos.catalogoCalcularTomaACuenta,
+          variante: VarianteBoton.secundario,
+          anchoCompleto: true,
+          alPresionar: () => context.push(rutaCalculadoraDe(modeloId)),
+        ),
         if (fotos.length > 1 || detalle.fotos.isNotEmpty) ...[
           _Encabezado(textos.catalogoGaleria),
           GaleriaFotos(fotos: fotos),

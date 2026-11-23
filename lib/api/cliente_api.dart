@@ -282,6 +282,7 @@ class ClienteApi {
       403 => CuentaDesactivada(mensaje, problema: problema),
       404 => NoEncontrado(mensaje, problema: problema),
       409 => Conflicto(mensaje, problema: problema),
+      422 => SinParametrosDeValuacion(mensaje, problema: problema),
       _ => ErrorDelServidor(mensaje, problema: problema, status: status),
     };
   }
@@ -311,6 +312,8 @@ class ClienteApi {
         CodigoProblema.franjaSinCupo => 'Esa hora ya no tiene lugar.',
         CodigoProblema.fueraDePlazo => 'Ya pasó el plazo para cancelar.',
         CodigoProblema.citaNoCancelable => 'Esa cita ya no se puede cancelar.',
+        CodigoProblema.sinParametrosDeValuacion =>
+          'Todavía no podemos estimar ese auto.',
         _ => switch (status) {
           400 => 'Revisa los datos e intenta de nuevo.',
           401 => 'Correo o contraseña incorrectos.',

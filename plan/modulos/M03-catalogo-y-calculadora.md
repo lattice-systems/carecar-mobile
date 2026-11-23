@@ -84,3 +84,16 @@ El comparador vive en `lib/modulos/catalogo/` y se abre en `/catalogo/comparar?i
 - **Dominio:** `dominio/comparativa.dart` en Dart puro con `filasDeFicha`, `indiceMasBarato` e `idsDeComparativa`.
 - **Pruebas:** `test/modulos/catalogo/comparador_test.dart` cubre el dominio, los estados, claro, oscuro y letra grande, las guías de accesibilidad, el modo comparar del catálogo y las rutas.
 
+
+## Avance de V2-M03.04
+
+La calculadora vive en `lib/modulos/catalogo/` y se abre en `/catalogo/calculadora`, con `?modelo=<id>` cuando el cliente viene del detalle de un modelo (el botón "Calcular toma a cuenta" de ese detalle). El diseño del backend, que cubre también V2-M03.06 y V2-M03.07, está en `agencia-360-backend/plan/historias-backend.md` (backend#69) y el contrato sube a 1.4.0 con `POST` y `GET /toma-a-cuenta/estimaciones`.
+
+- **Qué se pide:** el cliente elige uno de sus vehículos, que parte del primero con su kilometraje ya puesto, o captura marca, modelo (el tipo, como Versa) y año. Ajusta kilometraje (de 0 a 999,999) y estado general (excelente, bueno, regular o malo) y pide la estimación.
+- **Qué ve:** el rango mínimo a máximo en pesos y los supuestos con que se calculó (antigüedad, kilometraje esperado y margen). La app no recalcula nada: la fórmula vive solo en el backend. Cada estimación se guarda en el servidor al calcularla, que es lo que usará V2-M03.07 para listarlas.
+- **Leyenda:** "Estimación no vinculante" está siempre visible arriba, antes y después del resultado. El texto es provisional y lo debe revisar el PO.
+- **Errores:** un 422 (`SIN_PARAMETROS_DE_VALUACION`) explica que la agencia aún no valúa ese auto y manda a pedir una valuación formal. También se resuelven datos rechazados, sin conexión, vehículo o modelo que ya no están y error inesperado. El botón no responde mientras calcula.
+- **Capa de API:** `NuevaEstimacionTomaCuenta` (con constructores `deVehiculo` y `capturado`, que impiden mandar las dos formas), `EstimacionTomaCuenta`, `SupuestosEstimacion` y `EstadoVehiculo`, más `estimarTomaACuenta` y `paginaDeEstimaciones` en `CarecarApi`. El listado ya está en la interfaz porque la prueba de contrato exige las dos operaciones del contrato, pero su pantalla es de V2-M03.07.
+- **mock_api:** aplica la misma fórmula del diseño del backend con seis parámetros de ejemplo (`parametrosTomaCuenta` en `db.seed.json`), que no son valores de la agencia.
+- **Fuera de esta historia:** la diferencia contra el modelo elegido (V2-M03.05), la edición de parámetros (V2-M03.06, el alta de parámetros queda por SQL mientras el ERP esté congelado) y la lista de estimaciones guardadas (V2-M03.07).
+- **Pruebas:** `test/modulos/catalogo/calculadora_test.dart` cubre la lectura de kilometraje y año, el repositorio, la captura con validación, los cinco tipos de falla, claro, oscuro y letra grande, las guías de accesibilidad y las rutas. `test/contrato/contrato_test.dart` pasa a 19 operaciones y 26 esquemas y valida contra `mock_api` cuando está levantada.

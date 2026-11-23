@@ -967,6 +967,198 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{dato}, {modelo}: {valor}'**
   String catalogoComparadorCelda(String dato, String modelo, String valor);
+
+  /// Botón del detalle de un modelo que abre la calculadora de toma a cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Calcular toma a cuenta'**
+  String get catalogoCalcularTomaACuenta;
+
+  /// Título de la calculadora de toma a cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma a cuenta'**
+  String get calculadoraTitulo;
+
+  /// Leyenda legal que siempre se ve junto a la calculadora y al resultado. El texto final lo revisa el PO.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación no vinculante. No es una oferta de compra: el valor final lo define la agencia cuando revise tu auto.'**
+  String get calculadoraLeyenda;
+
+  /// Modelo nuevo contra el que se estima.
+  ///
+  /// In es, this message translates to:
+  /// **'Contra: {modelo}'**
+  String calculadoraContra(String modelo);
+
+  /// Etiqueta del selector del auto a dar a cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto'**
+  String get calculadoraAuto;
+
+  /// Opción para capturar a mano un auto que no está en el garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro auto'**
+  String get calculadoraOtroAuto;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan los autos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus autos'**
+  String get calculadoraCargandoAutos;
+
+  /// Campo de marca del auto capturado.
+  ///
+  /// In es, this message translates to:
+  /// **'Marca'**
+  String get calculadoraMarca;
+
+  /// Campo de modelo del auto capturado, por ejemplo Versa.
+  ///
+  /// In es, this message translates to:
+  /// **'Modelo'**
+  String get calculadoraModelo;
+
+  /// Campo del año del auto capturado.
+  ///
+  /// In es, this message translates to:
+  /// **'Año'**
+  String get calculadoraAnio;
+
+  /// Campo del kilometraje actual del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje'**
+  String get calculadoraKm;
+
+  /// Ayuda del campo de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'En kilómetros, como marca el tablero hoy'**
+  String get calculadoraKmAyuda;
+
+  /// Selector del estado general del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado general'**
+  String get calculadoraEstado;
+
+  /// Estado del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Excelente'**
+  String get calculadoraEstadoExcelente;
+
+  /// Estado del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Bueno'**
+  String get calculadoraEstadoBueno;
+
+  /// Estado del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Regular'**
+  String get calculadoraEstadoRegular;
+
+  /// Estado del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Malo'**
+  String get calculadoraEstadoMalo;
+
+  /// Botón que pide la estimación.
+  ///
+  /// In es, this message translates to:
+  /// **'Calcular estimación'**
+  String get calculadoraCalcular;
+
+  /// Error del campo de marca vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la marca'**
+  String get calculadoraErrorMarca;
+
+  /// Error del campo de modelo vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el modelo'**
+  String get calculadoraErrorModelo;
+
+  /// Error del campo de año.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un año de cuatro cifras, de 1900 a {maximo}'**
+  String calculadoraErrorAnio(int maximo);
+
+  /// Error del campo de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un kilometraje de 0 a 999,999'**
+  String get calculadoraErrorKm;
+
+  /// Título de la tarjeta con el resultado.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación de toma a cuenta'**
+  String get calculadoraResultadoTitulo;
+
+  /// El rango estimado, por ejemplo $137,800 a $161,800.
+  ///
+  /// In es, this message translates to:
+  /// **'{minimo} a {maximo}'**
+  String calculadoraRango(String minimo, String maximo);
+
+  /// El rango estimado como lo lee el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Entre {minimo} y {maximo}'**
+  String calculadoraRangoLector(String minimo, String maximo);
+
+  /// Los supuestos con que se calculó la estimación.
+  ///
+  /// In es, this message translates to:
+  /// **'Se calculó para {edad, plural, =0{un auto de este año} =1{un auto de 1 año} other{un auto de {edad} años}}, con {km} km esperados para esa edad y un margen de más y menos {margen} %.'**
+  String calculadoraSupuestos(int edad, String km, int margen);
+
+  /// Título cuando la agencia no tiene datos para ese auto (422).
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no estimamos ese auto'**
+  String get calculadoraSinParametrosTitulo;
+
+  /// Explicación cuando la agencia no tiene datos para ese auto (422).
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia aún no tiene datos para esa marca, modelo y año. Pide una valuación formal en la agencia.'**
+  String get calculadoraSinParametrosMensaje;
+
+  /// Aviso cuando el servidor rechaza los datos.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos calcular la estimación. Revisa los datos e intenta de nuevo.'**
+  String get calculadoraErrorDatos;
+
+  /// Aviso cuando no hay red al calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Conéctate e intenta de nuevo.'**
+  String get calculadoraErrorSinConexion;
+
+  /// Aviso cuando el vehículo no es del cliente o el modelo ya no está vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese auto o ese modelo. Vuelve atrás e intenta de nuevo.'**
+  String get calculadoraErrorNoEncontrado;
+
+  /// Aviso de error inesperado al calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal al calcular. Intenta de nuevo en un momento.'**
+  String get calculadoraErrorGenerico;
 }
 
 class _AppLocalizationsDelegate

@@ -2,9 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_catalogo_api.dart';
+import '../datos/repositorio_toma_a_cuenta_api.dart';
 import '../dominio/detalle_modelo.dart';
 import '../dominio/modelo_vigente.dart';
 import '../dominio/repositorio_catalogo.dart';
+import '../dominio/repositorio_toma_a_cuenta.dart';
 
 /// Repositorio del modulo. En pruebas:
 /// `repositorioCatalogoProvider.overrideWithValue(...)`.
@@ -41,4 +43,11 @@ final comparativaProvider = FutureProvider.family<List<DetalleModelo>, String>(
   },
   retry: (_, _) => null,
   name: 'comparativaProvider',
+);
+
+/// Repositorio de la toma a cuenta. En pruebas:
+/// `repositorioTomaACuentaProvider.overrideWithValue(...)`.
+final repositorioTomaACuentaProvider = Provider<RepositorioTomaACuenta>(
+  (ref) => RepositorioTomaACuentaApi(ref.watch(carecarApiProvider)),
+  name: 'repositorioTomaACuentaProvider',
 );

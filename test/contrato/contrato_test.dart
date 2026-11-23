@@ -34,11 +34,13 @@ const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 /// El contrato vive en `docs/api/` del repositorio del backend y cambia por PR.
 /// Esta copia se fija a una version a proposito (decision D-C): bajarla de la
 /// rama principal del backend seria perseguir un blanco movil.
-const _versionEsperada = '1.3.0';
+const _versionEsperada = '1.4.0';
 
-/// Los 21 esquemas de la v1.3. La v1.3 suma el detalle de un modelo del
+/// Los 26 esquemas de la v1.4. La v1.3 sumo el detalle de un modelo del
 /// catalogo (V2-M03.02): `DetalleModeloCatalogo`, `ImagenModelo`,
-/// `VersionModelo` y `EspecificacionModelo`.
+/// `VersionModelo` y `EspecificacionModelo`. La v1.4 suma la toma a cuenta
+/// (V2-M03.04): `EstadoVehiculo`, `NuevaEstimacionTomaCuenta`,
+/// `SupuestosEstimacion`, `EstimacionTomaCuenta` y `PaginaEstimaciones`.
 const _esquemasDelContrato = <String>{
   'LoginRequest',
   'LoginResponse',
@@ -60,6 +62,11 @@ const _esquemasDelContrato = <String>{
   'ImagenModelo',
   'VersionModelo',
   'EspecificacionModelo',
+  'EstadoVehiculo',
+  'NuevaEstimacionTomaCuenta',
+  'SupuestosEstimacion',
+  'EstimacionTomaCuenta',
+  'PaginaEstimaciones',
   'Problema',
 };
 
@@ -156,6 +163,46 @@ const _propiedadesDelContrato = <String, Set<String>>{
   'ImagenModelo': {'id', 'url', 'color', 'descripcion', 'orden'},
   'VersionModelo': {'id', 'nombre', 'precioDesde'},
   'EspecificacionModelo': {'etiqueta', 'valor', 'orden'},
+  'NuevaEstimacionTomaCuenta': {
+    'vehiculoId',
+    'marca',
+    'modelo',
+    'anio',
+    'km',
+    'estado',
+    'modeloCatalogoId',
+  },
+  'SupuestosEstimacion': {
+    'valorBase',
+    'edadAnios',
+    'kmEsperado',
+    'ajusteKm',
+    'ajusteEstado',
+    'margen',
+  },
+  'EstimacionTomaCuenta': {
+    'id',
+    'creadaEn',
+    'vehiculoId',
+    'marca',
+    'modelo',
+    'anio',
+    'km',
+    'estado',
+    'modeloCatalogoId',
+    'modeloDestino',
+    'precioDestino',
+    'minimo',
+    'maximo',
+    'supuestos',
+  },
+  'PaginaEstimaciones': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   'Problema': {'timestamp', 'status', 'error', 'message', 'codigo', 'path'},
 };
 
@@ -220,12 +267,40 @@ const _obligatoriosDelContrato = <String, Set<String>>{
   'ImagenModelo': {'id', 'url', 'orden'},
   'VersionModelo': {'id', 'nombre'},
   'EspecificacionModelo': {'etiqueta', 'valor'},
+  'NuevaEstimacionTomaCuenta': {'km', 'estado'},
+  'SupuestosEstimacion': {
+    'valorBase',
+    'edadAnios',
+    'kmEsperado',
+    'ajusteKm',
+    'ajusteEstado',
+    'margen',
+  },
+  'EstimacionTomaCuenta': {
+    'id',
+    'creadaEn',
+    'marca',
+    'modelo',
+    'anio',
+    'km',
+    'estado',
+    'minimo',
+    'maximo',
+    'supuestos',
+  },
+  'PaginaEstimaciones': {
+    'contenido',
+    'pagina',
+    'tamano',
+    'totalElementos',
+    'totalPaginas',
+  },
   // `codigo` es opcional: la app decide por el, pero no puede exigirlo.
   'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
 };
 
-/// Las 17 operaciones del contrato, como `METODO ruta`. La v1.3 suma el
-/// detalle de un modelo del catalogo.
+/// Las 19 operaciones del contrato, como `METODO ruta`. La v1.3 suma el
+/// detalle de un modelo del catalogo y la v1.4 las dos de toma a cuenta.
 const _operacionesDelContrato = <String>{
   'POST /auth/login',
   'POST /auth/refrescar',
@@ -244,6 +319,8 @@ const _operacionesDelContrato = <String>{
   'POST /citas/{citaId}/cancelar',
   'GET /catalogo',
   'GET /catalogo/{modeloId}',
+  'GET /toma-a-cuenta/estimaciones',
+  'POST /toma-a-cuenta/estimaciones',
 };
 
 /// Rutas que el contrato declara sin token.
@@ -433,7 +510,36 @@ void main() {
       );
     });
 
-    test('las operaciones del contrato son las 17 que la prueba declara', () {
+    test('el enum EstadoVehiculo coincide con el de la app', () {
+      final esquemas = contrato['components']['schemas'] as YamlMap;
+      final enElContrato = (esquemas['EstadoVehiculo']['enum'] as YamlList)
+          .cast<String>()
+          .toSet();
+      final queLaAppMapea = EstadoVehiculo.values
+          .where((e) => e != EstadoVehiculo.desconocido)
+          .map((e) => e.enElContrato)
+          .toSet();
+      expect(
+        enElContrato,
+        queLaAppMapea,
+        reason: 'Cambiaron los estados del vehiculo; revisa EstadoVehiculo',
+      );
+    });
+
+    test('Problema.codigo declara los mismos codigos que la app', () {
+      final esquemas = contrato['components']['schemas'] as YamlMap;
+      final enElContrato =
+          (esquemas['Problema']['properties']['codigo']['enum'] as YamlList)
+              .cast<String>()
+              .toSet();
+      final queLaAppMapea = CodigoProblema.values
+          .where((c) => c != CodigoProblema.desconocido)
+          .map((c) => c.enElContrato)
+          .toSet();
+      expect(enElContrato, queLaAppMapea);
+    });
+
+    test('las operaciones del contrato son las 19 que la prueba declara', () {
       final rutas = contrato['paths'] as YamlMap;
       final enElContrato = <String>{};
 
@@ -629,6 +735,38 @@ void main() {
       expect(d.versiones.map((v) => v.id), contains(1));
       expect(d.especificaciones, isNotEmpty);
       await expectLater(api.detalleModelo(7), throwsA(isA<NoEncontrado>()));
+    });
+
+    test('la estimacion de toma a cuenta sale con rango y se guarda', () async {
+      if (!levantada) {
+        return markTestSkipped('La API simulada no esta levantada');
+      }
+      final api = await conSesion();
+      final e = await api.estimarTomaACuenta(
+        const NuevaEstimacionTomaCuenta.deVehiculo(
+          vehiculoId: 5,
+          km: 48000,
+          estado: EstadoVehiculo.bueno,
+          modeloCatalogoId: 2,
+        ),
+      );
+      expect(e.minimo, lessThan(e.maximo));
+      expect(e.supuestos.margen, greaterThan(0));
+      expect(e.modeloDestino, 'Nissan Versa 2025');
+      final pagina = await api.paginaDeEstimaciones(tamano: 50);
+      expect(pagina.contenido.map((x) => x.id), contains(e.id));
+      await expectLater(
+        api.estimarTomaACuenta(
+          const NuevaEstimacionTomaCuenta.capturado(
+            marca: 'Ford',
+            modelo: 'Ka',
+            anio: 2015,
+            km: 1,
+            estado: EstadoVehiculo.malo,
+          ),
+        ),
+        throwsA(isA<SinParametrosDeValuacion>()),
+      );
     });
 
     test('el login devuelve una RespuestaLogin valida', () async {
