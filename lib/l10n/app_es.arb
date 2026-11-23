@@ -1,5 +1,50 @@
 {
   "@@locale": "es",
+  "asistenciaGuiaChoquePaso1": "Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.",
+  "asistenciaGuiaChoquePaso2": "Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.",
+  "asistenciaGuiaChoquePaso3": "Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.",
+  "asistenciaGuiaChoquePaso4": "Llama a tu aseguradora y espera al ajustador. No aceptes ni firmes acuerdos con el otro conductor sin ella.",
+  "asistenciaGuiaChoquePaso5": "Toma fotos de los vehículos, las placas, los daños y el lugar. Anota el nombre, el teléfono y los datos del seguro del otro conductor.",
+  "asistenciaGuiaChoquePaso6": "No muevas el auto hasta que lo autorice la autoridad o el ajustador, salvo que estorbe y sea seguro hacerlo.",
+  "asistenciaGuiaChoqueResumen": "Pasos para cuidar a todos y proteger tu reclamación.",
+  "asistenciaGuiaChoqueTitulo": "Qué hacer en un choque",
+  "asistenciaGuiaCorrientePaso1": "Estaciona el otro auto de frente, sin que se toquen. Apaga ambos motores y los accesorios.",
+  "asistenciaGuiaCorrientePaso2": "Conecta una pinza roja al polo positivo (+) de tu batería descargada y el otro extremo al polo positivo del auto que da corriente.",
+  "asistenciaGuiaCorrientePaso3": "Conecta una pinza negra al polo negativo (−) de la batería buena y el otro extremo a una parte metálica sin pintar del motor de tu auto, lejos de la batería.",
+  "asistenciaGuiaCorrientePaso4": "Enciende el auto que da corriente y déjalo funcionando unos minutos.",
+  "asistenciaGuiaCorrientePaso5": "Intenta encender tu auto. Si no arranca, espera unos minutos más e inténtalo de nuevo.",
+  "asistenciaGuiaCorrientePaso6": "Quita las pinzas en orden inverso, sin que se toquen entre sí, y deja tu auto encendido al menos 20 minutos.",
+  "asistenciaGuiaCorrienteResumen": "Cómo arrancar tu auto con cables de otro vehículo.",
+  "asistenciaGuiaCorrienteTitulo": "Pasar corriente",
+  "asistenciaGuiaLlantaPaso1": "Estaciona en terreno plano y firme, pon el freno de mano y enciende las luces intermitentes.",
+  "asistenciaGuiaLlantaPaso2": "Saca la llanta de refacción, el gato y la llave de cruz. Afloja un poco las tuercas de la llanta ponchada sin quitarlas.",
+  "asistenciaGuiaLlantaPaso3": "Coloca el gato en el punto indicado en el manual y levanta el auto hasta que la llanta quede en el aire.",
+  "asistenciaGuiaLlantaPaso4": "Quita las tuercas y la llanta ponchada. Monta la de refacción y aprieta las tuercas con la mano.",
+  "asistenciaGuiaLlantaPaso5": "Baja el auto, aprieta las tuercas en cruz con la llave y revisa la presión en cuanto puedas.",
+  "asistenciaGuiaLlantaResumen": "Cámbiala por la de refacción en pocos pasos.",
+  "asistenciaGuiaLlantaTitulo": "Cambiar una llanta",
+  "asistenciaGuiaPasoNumero": "Paso {numero} de {total}",
+  "@asistenciaGuiaPasoNumero": {
+    "description": "Encabezado de cada paso de una guía.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "2"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "asistenciaGuiasAvisoSinConexion": "Estas guías están guardadas en la app y funcionan sin conexión.",
+  "@asistenciaGuiasAvisoSinConexion": {
+    "description": "Aviso de que las guías no necesitan red."
+  },
+  "asistenciaGuiasTitulo": "Guías de emergencia",
+  "@asistenciaGuiasTitulo": {
+    "description": "Título de la pantalla de guías de emergencia."
+  },
   "catalogoTitulo": "Catálogo",
   "@catalogoTitulo": {
     "description": "Título de la pantalla del catálogo de modelos."
