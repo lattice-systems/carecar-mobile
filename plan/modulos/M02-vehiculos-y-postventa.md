@@ -160,3 +160,17 @@ Pantalla `PantallaReprogramarCita` en `lib/modulos/citas/` (ruta `/citas/:id/rep
 - **Cinco estados**: esqueleto, datos, vacío (cita no encontrada o no modificable), error con reintento y sin conexión; se recarga jalando hacia abajo. Pruebas en claro, oscuro y letra al 200 %.
 - **Pruebas**: `pantalla_reprogramar_cita_test`, `ruta_reprogramar_cita_test`, `repositorio_citas_test` (API y fake) y `test/api/carecar_api_http_test.dart`.
 - **Pendientes**: historia `Backend:` de `POST /citas/{id}/reprogramar` (misma ventana de plazo que cancelar, PO-4) y su actualización en el YAML y en `CodigoProblema`; `GET /citas/{id}`; golden de la pantalla (V2-T03.02).
+## Avance de V2-M02.11
+
+Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId/comprobante`, exige sesión; un id que no es número regresa al calendario). Estado: **En curso, parte de app lista**. Solo app y `mock_api`; el backend Java queda en su historia `Backend:` y la integración con Wallet en V2-M25.03.
+
+- **Qué muestra:** el QR (paquete `qr_flutter`, negro sobre blanco en cualquier tema porque el escáner lo exige), el folio, el día y horario, el vehículo si viene, una indicación para recepción y el botón «Ver comprobante en PDF», que abre el PDF de `GET /citas/{id}/ticket` en el `VisorPdf` del sistema de diseño (V2-T02.05).
+- **Acceso:** el paso «Cita confirmada» de `PantallaAgendarCita` ofrece «Ver comprobante» y deja «Listo» como cierre.
+- **Datos:** `CarecarApi.comprobanteDeCita` (modelo `ComprobanteCita` en `lib/api/modelos/cita.dart`), `RepositorioCitas.comprobante` y `ticketPdf`, `comprobanteCitaProvider(citaId)`. El comprobante no se guarda en la copia local: el código está firmado y puede vencer si la cita se cancela, así que sin conexión se muestra el estado «sin conexión».
+- **Cinco estados:** esqueleto, datos, error con reintento y sin conexión. No hay estado vacío: una cita sin comprobante es un error, no una lista vacía.
+- **Accesibilidad:** el QR se anuncia como «Código QR de tu cita para recepción»; probado en claro, oscuro y letra al 200 %.
+- **mock_api:** `GET /citas/:id/comprobante` y `GET /citas/:id/ticket` (este no existía en el mock). El código es `CC1.<citaId>.<firma>` con HMAC-SHA256 de desarrollo; **no** es el algoritmo definitivo.
+- **Textos:** claves `citasComprobante*` y `citasListoVerComprobante` en los ARB es y en.
+- **Pruebas:** `pantalla_comprobante_cita_test.dart`, `ruta_comprobante_cita_test.dart`, `pantalla_agendar_cita_test.dart` (acceso), `repositorio_citas_test.dart`, `test/api/modelos_test.dart` y `carecar_api_http_test.dart`.
+- **Pendiente del backend (`agencia-360-backend`):** (1) definir y publicar `GET /citas/{id}/comprobante` en el contrato v2; (2) firmar el id (HMAC o JWT corto) con una llave fuera del repo (R8) y validar la firma cuando recepción escanee; (3) imprimir el mismo código como QR en el PDF de `GET /citas/{id}/ticket`; (4) que una cita cancelada devuelva un comprobante vencido o 409, para que el QR no sirva (hoy el mock no lo hace). Mientras tanto la app funciona contra el mock.
+- **Pendientes de app:** el botón «Agregar a Wallet» entra con V2-M25.03; golden de la pantalla espera a V2-T03.02; abrir el comprobante desde la lista de citas (V2-M02.09) cuando exista; `plan/cumplimiento-ficha.md` (fila «Comprobante de cita con código QR») y `plan/tablero.md` los actualiza quien integra, y la fila solo pasa a ✅ cuando el backend firme el QR.
