@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../sesion/controlador_sesion.dart';
+import '../migracion/proveedores_migracion.dart';
 import '../sesion/proveedores_sesion.dart';
 import 'enlaces.dart';
 import 'guardia_sesion.dart';
@@ -47,7 +48,7 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
   final enrutador = GoRouter(
     initialLocation: Rutas.inicio,
     refreshListenable: cambios,
-    routes: rutasDeLaApp(),
+    routes: rutasDeLaApp(ref.read(interruptorModulosProvider)),
     redirect: (context, state) {
       // 1. Un enlace externo se vuelve ruta interna antes de cualquier regla.
       final interna = EnlacesApp.aRutaInterna(state.uri);

@@ -7,6 +7,7 @@ import '../../pantallas/pantalla_inicio.dart';
 import '../../pantallas/pantalla_login.dart';
 import '../../pantallas/pantalla_recuperar_contrasena.dart';
 import '../api/proveedores_api.dart';
+import '../migracion/interruptor_modulos.dart';
 import '../sesion/proveedores_sesion.dart';
 import 'proveedores_navegacion.dart';
 import 'rutas.dart';
@@ -15,7 +16,13 @@ import 'rutas.dart';
 /// lo que antes llegaba por constructor y cambian los `Navigator.push` del
 /// flujo por rutas. La guardia de sesion (no estas pantallas) decide el
 /// destino tras iniciar sesion, cambiar la contrasena o cerrar sesion.
-List<RouteBase> rutasDelNucleo() => [
+///
+/// [destinosV2] dice a que ruta v2 lleva cada tarjeta del menu; solo se usa
+/// para los modulos que [interruptor] tiene en v2 (V2-T01.05).
+List<RouteBase> rutasDelNucleo({
+  InterruptorModulos interruptor = InterruptorModulos.porDefecto,
+  Map<ModuloMigrable, String> destinosV2 = const {},
+}) => [
   GoRoute(
     path: Rutas.inicio,
     name: NombresRuta.inicio,
@@ -25,6 +32,10 @@ List<RouteBase> rutasDelNucleo() => [
         controlador: ref.watch(controladorSesionProvider),
         // Al cerrar sesion la guardia lleva al acceso.
         alCerrarSesion: () {},
+        abrirEnV2: {
+          for (final e in destinosV2.entries)
+            if (interruptor.esV2(e.key)) e.key: () => context.push(e.value),
+        },
       ),
     ),
   ),

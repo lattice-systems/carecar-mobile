@@ -1,6 +1,8 @@
 import 'package:carecar_mobile/api/carecar_api.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
+import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
+import 'package:carecar_mobile/nucleo/migracion/proveedores_migracion.dart';
 import 'package:carecar_mobile/nucleo/navegacion/proveedores_navegacion.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -19,6 +21,7 @@ class AppEnrutadaDePrueba extends StatelessWidget {
     required this.api,
     required this.controlador,
     this.overrides = const [],
+    this.interruptor,
     super.key,
   });
 
@@ -28,11 +31,19 @@ class AppEnrutadaDePrueba extends StatelessWidget {
   /// Proveedores extra a sustituir (repositorios de un modulo, por ejemplo).
   final List<Override> overrides;
 
+  /// Que modulos estan en v2 (V2-T01.05). Por omision todos, para que las
+  /// pruebas de rutas de los modulos v2 no dependan del valor por defecto de
+  /// la app (todo en v1).
+  final InterruptorModulos? interruptor;
+
   @override
   Widget build(BuildContext context) => ProviderScope(
     overrides: [
       carecarApiProvider.overrideWithValue(api),
       controladorSesionProvider.overrideWithValue(controlador),
+      interruptorModulosProvider.overrideWithValue(
+        interruptor ?? InterruptorModulos.todoV2,
+      ),
       ...overrides,
     ],
     child: ShadApp.custom(

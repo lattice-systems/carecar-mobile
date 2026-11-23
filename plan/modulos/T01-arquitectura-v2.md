@@ -85,3 +85,21 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - `nucleo/navegacion/rutas_del_nucleo.dart` monta pantallas v1 (`lib/pantallas`): excepción explícita `excepcionesV1`, se retira con T01.05/T01.07.
 
 **Pendiente / fuera de alcance:** verificar que `dominio/` no importe Flutter ni `http` (regla 2 de la arquitectura; candidata a historia nueva) y que ningún módulo cree `http.Client` (regla 3).
+
+## Avance de V2-T01.05
+
+**Qué quedó**
+
+- `lib/nucleo/migracion/`: `ModuloMigrable` (asistencia, catalogo, citas, vehiculos), `VersionModulo`, `InterruptorModulos` y `interruptorModulosProvider`. Valor por defecto en código: todo en v1. Se sobrescribe con `--dart-define=MODULOS_V2=<lista|todos>` y `MODULOS_V1=<lista|todos>` (v1 gana si hay choque; un nombre desconocido lanza `ArgumentError`). Sin servidor ni secretos.
+- `registro_de_rutas.dart`: `rutasDeLaApp(interruptor)` solo registra las rutas v2 de un módulo si está en v2; `destinosDeMenuV2` dice a qué ruta lleva cada tarjeta del menú v1.
+- `PantallaInicio` (v1) recibe `abrirEnV2`: con el módulo en v2 la tarjeta va a la ruta v2; sin él, abre la pantalla v1 igual que antes. El resto de la v1 no cambió.
+- Pruebas: `test/nucleo/migracion/` (valores por defecto, `--dart-define`, rutas por módulo en v1 y v2, tarjetas del menú). `AppEnrutadaDePrueba` acepta `interruptor` (por omisión todo en v2; las pruebas de la v1 pasan `InterruptorModulos.porDefecto`).
+- Guía paso a paso (carpeta, interruptor, pruebas, encender y retirar en V2-T01.07) en [`../arquitectura-v2.md`](../arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105). README con el comando.
+
+**Decisiones**
+
+- Con todo en v1 las rutas v2 **no existen** (no solo están ocultas): así una pantalla incompleta no se alcanza ni por `carecar://`. Consecuencia: los accesos rápidos y el widget de cita (M25) caen en el inicio mientras su módulo siga en v1.
+- El valor por defecto es todo v1 hasta que cada módulo esté completo. Cuando V2-T01.04 (flavors) llegue a `main`, `desarrollo` y `pruebas` pueden pasar `MODULOS_V2` por flavor; no se acopló a `kDebugMode` para no esconder el comportamiento en el modo de compilación.
+- La galería y el ejemplo siguen con `kDebugMode`, fuera del interruptor (no tienen v1).
+
+**Pendiente / fuera de alcance:** mover físicamente `lib/api` y `lib/sesion` al núcleo (se hace con el primer módulo que lo necesite o en V2-T01.07); cablear `MODULOS_V2` por flavor (V2-T01.04); retirar todo en V2-T01.07.
