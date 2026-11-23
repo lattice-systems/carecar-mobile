@@ -77,7 +77,7 @@ void main() {
       expect(p.codigo, CodigoProblema.desconocido);
     });
 
-    test('los nueve valores del contrato estan mapeados', () {
+    test('los doce valores del contrato estan mapeados', () {
       const enElContrato = {
         'CREDENCIALES_INVALIDAS',
         'CUENTA_DESACTIVADA',
@@ -88,6 +88,9 @@ void main() {
         'FUERA_DE_PLAZO',
         'CITA_NO_CANCELABLE',
         'SIN_PARAMETROS_DE_VALUACION',
+        'CITA_DUPLICADA',
+        'CITA_NO_REPROGRAMABLE',
+        'CITA_CANCELADA',
       };
 
       final queLaAppMapea = CodigoProblema.values
