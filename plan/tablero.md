@@ -112,7 +112,7 @@ Total: **213 historias** + 4 de H0.
 | V2-M03.04 | Calcular cuánto me darían por mi auto a cuenta de uno nuevo | Cristian | B | V2-M03.01 | Hecha | #64, backend#69 |
 | V2-M03.05 | Ver la diferencia a pagar contra el modelo que me gustó | Cristian |  | V2-M03.04 | Hecha | #66 |
 | V2-M03.06 | Que la estimación salga de parámetros que puedo ajustar | Cristian | B | V2-M03.04 | Lista | |
-| V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | En revisión | #67, backend#69 |
+| V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | Hecha | #67, #90, backend#69 |
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Hecha | #49, #60 |
 | V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
