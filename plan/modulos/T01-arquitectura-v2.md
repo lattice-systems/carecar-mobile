@@ -40,7 +40,7 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 4. Ojo: Riverpod 3 reintenta solos los proveedores con error; apaga con `retry: (_, _) => null` si la pantalla tiene botón de reintento.
 5. Navegación (rutas, deep links) llega con V2-T01.03; hasta entonces no registren rutas nuevas, usen su pantalla desde pruebas.
 
-**Pendiente / fuera de alcance:** mover el código de `lib/api` y `lib/sesion` al núcleo (V2-T01.05, módulo por módulo); regla de dependencias automática (V2-T01.06).
+**Pendiente / fuera de alcance:** mover el código de `lib/api` y `lib/sesion` al núcleo (V2-T01.05, módulo por módulo); regla de dependencias automática (hecha en V2-T01.06).
 
 ## Avance de V2-T01.03
 
@@ -69,3 +69,19 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - Los correos de V2-M01.04 deben usar `https://<host>/app/restablecer?token=...`.
 
 **Pendiente / fuera de alcance:** pestañas con `StatefulShellRoute` (cuando exista la barra de navegación de la app v2); migrar `PantallaInicio`, que sigue con su `Navigator` interno, módulo por módulo (V2-T01.05); pruebas de enlaces en dispositivo real (necesitan el dominio); tema v2 global.
+
+## Avance de V2-T01.06
+
+**Qué quedó**
+
+- `test/arquitectura/verificador_dependencias.dart` (Dart puro, sin dependencias nuevas): lee fuentes, resuelve imports/exports/parts relativos y `package:carecar_mobile/` y devuelve violaciones con archivo, línea, import, regla y qué hacer.
+- `test/arquitectura/verificador_dependencias_test.dart`: casos en memoria por regla (relativo, `package:`, `export`/`part`/condicionales, comentarios, módulo `widgets` vs `lib/widgets`, excepciones).
+- `test/arquitectura/reglas_de_dependencia_test.dart`: recorre el `lib/` real; corre con `flutter test` y por tanto en el CI.
+- Reglas R1 (internos de otro módulo), R2 (núcleo no conoce módulos) y R3 (v2 no importa interfaz v1) documentadas en `plan/arquitectura-v2.md` y `lib/modulos/README.md`.
+
+**Hallazgos en el árbol actual**
+
+- `vehiculos` importaba `citas/presentacion/rutas_citas.dart`: corregido a `citas/citas.dart` (ya exportaba las constantes).
+- `nucleo/navegacion/rutas_del_nucleo.dart` monta pantallas v1 (`lib/pantallas`): excepción explícita `excepcionesV1`, se retira con T01.05/T01.07.
+
+**Pendiente / fuera de alcance:** verificar que `dominio/` no importe Flutter ni `http` (regla 2 de la arquitectura; candidata a historia nueva) y que ningún módulo cree `http.Client` (regla 3).

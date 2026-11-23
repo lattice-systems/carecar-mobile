@@ -64,6 +64,7 @@ Cada quien escribe casi siempre en sus carpetas. Si necesitas cambiar algo en la
 | `lib/nucleo/diseno/` y `test/nucleo/diseno/` | Cristian (T02) |
 | `lib/nucleo/api/`, `lib/nucleo/sesion/` | Daniel (T01). Jael en lo que agregue `V2-T01.08` |
 | `lib/nucleo/navegacion/`, `lib/app.dart`, `lib/main*.dart` | Daniel (T01.03, T01.04) |
+| `test/arquitectura/` (reglas de dependencia, V2-T01.06) | Daniel (T01). Si tu PR lo rompe, usa el `<modulo>.dart` del otro módulo; no agregues excepciones sin avisarle |
 | `lib/nucleo/datos_locales/` | Jael (M21) |
 | `lib/nucleo/notificaciones/` | Jael (M06) |
 | `lib/nucleo/l10n/` | Cristian (M20); todos agregan claves (sección 6) |

@@ -26,12 +26,24 @@ lib/
 
 ## Reglas
 
-1. `modulos/a` **no importa** `modulos/b/datos` ni `modulos/b/presentacion`. Si dos módulos se necesitan, se comunican por rutas (navegación) o por un contrato publicado en `modulos/b/b.dart`. Lo verifica T01.06.
+1. `modulos/a` **no importa** `modulos/b/datos` ni `modulos/b/presentacion`. Si dos módulos se necesitan, se comunican por rutas (navegación) o por un contrato publicado en `modulos/b/b.dart`. Lo verifica `test/arquitectura/` (T01.06, ver abajo).
 2. `dominio/` es Dart puro: se prueba sin Flutter.
 3. Toda llamada de red pasa por `nucleo/api`; ningún módulo crea su propio `http.Client`.
 4. Toda pantalla usa componentes de `nucleo/diseno`. Prohibido `Color(0x…)`, tamaños de letra o `EdgeInsets` mágicos fuera de los tokens.
 5. Cada pantalla resuelve cinco estados: cargando (esqueleto), con datos, vacío, error con reintento, sin conexión.
 6. Cadenas visibles solo en ARB.
+
+## Reglas de dependencia verificadas (V2-T01.06)
+
+`test/arquitectura/reglas_de_dependencia_test.dart` recorre `lib/` (imports, exports y parts, relativos y `package:carecar_mobile/`) y falla en el CI si se rompe alguna. **Punto público de un módulo** = `lib/modulos/<m>/<m>.dart`; todo lo demás (`datos/`, `dominio/`, `presentacion/`) es interno.
+
+| Regla | Qué prohíbe | Excepción |
+| --- | --- | --- |
+| R1 | Importar un archivo que no sea `modulos/<b>/<b>.dart` desde fuera de `<b>` (otro módulo, v1, `main.dart`). Un módulo sí usa sus propios internos. | Ninguna. |
+| R2 | `lib/nucleo` importando `lib/modulos`. | Solo `nucleo/navegacion/registro_de_rutas.dart`, y solo contratos públicos (R1 sigue vigente). |
+| R3 | `lib/modulos` y `lib/nucleo` importando `lib/pantallas`, `lib/widgets` o `lib/tema` (v1). `lib/api` y `lib/sesion` siguen permitidos a través de `nucleo/api` y `nucleo/sesion` hasta T01.05. | `excepcionesV1` en `verificador_dependencias.dart`: hoy `nucleo/navegacion/rutas_del_nucleo.dart` (monta pantallas v1). Se vacía con T01.05/T01.07. |
+
+**Cómo leer el error:** `archivo:línea importa "<import>" -> R#: <qué hacer>`. Ejemplo: `lib/modulos/citas/a.dart:3 importa "../vehiculos/datos/x.dart" -> R1: es interno del modulo "vehiculos"; importa su contrato publico modulos/vehiculos/vehiculos.dart o comunicate por rutas.` Arreglo: exporta lo necesario en `<m>.dart` (con `show`) e impórtalo desde ahí, o navega por la constante de ruta. No agregues excepciones sin avisar al dueño de T01. Las pruebas del propio verificador (casos en memoria) están en `test/arquitectura/verificador_dependencias_test.dart`.
 
 ## Inyección de dependencias (V2-T01.02)
 
