@@ -1,6 +1,7 @@
 name: Release
 
-# Publica un GitHub Release con el APK al empujar una etiqueta vX.Y.Z.
+# Publica un GitHub Release con el APK al empujar una etiqueta vX.Y.Z y luego le
+# adjunta el IPA sin firmar (workflow ipa-sin-firma.yml, para Sideloadly).
 # Cómo sacar una versión: ver plan/modulos/T04-entrega-continua.md.
 on:
   push:
@@ -109,4 +110,43 @@ jobs:
             --verify-tag \
             --notes "APK de Android $ETIQUETA (build $NUMERO).
 
-          **Aviso:** este APK está firmado con la llave de debug porque aún no existe la firma de producción (V2-T04.02). Sirve para pruebas internas; no es apto para tiendas."
+          **Aviso:** este APK está firmado con la llave de debug porque aún no existe la firma de producción (V2-T04.02). Sirve para pruebas internas; no es apto para tiendas.
+
+          El IPA de iOS (sin firmar, para instalar con Sideloadly) se adjunta unos minutos después; guía en docs/guia-instalar-ios-sin-mac.md."
+
+  # El IPA va en un job aparte, después del Release: si la etiqueta no pasa la
+  # verificación no se gastan minutos de macOS, y si falla el build de iOS el
+  # APK ya quedó publicado. La compilación es la misma que la del lanzamiento
+  # manual (ipa-sin-firma.yml), así hay una sola receta.
+  ipa:
+    name: IPA sin firma
+    needs: release
+    permissions:
+      contents: read
+    uses: ./.github/workflows/ipa-sin-firma.yml
+    with:
+      etiqueta: ${{ github.ref_name }}
+
+  adjuntar-ipa:
+    name: Adjuntar el IPA al Release
+    needs: ipa
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el IPA
+        uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.ipa.outputs.archivo }}
+          path: ipa
+
+      - name: Adjuntar el IPA al Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ETIQUETA: ${{ github.ref_name }}
+        run: |
+          archivo=$(find ipa -name '*.ipa' | head -n 1)
+          if [ -z "$archivo" ]; then
+            echo "::error::No se encontró el IPA descargado."
+            exit 1
+          fi
+          gh release upload "$ETIQUETA" "$archivo" --clobber
