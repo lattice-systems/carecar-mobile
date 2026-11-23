@@ -1,6 +1,6 @@
 # 0007 · Proveedor de IA y búsqueda en manuales del asistente
 
-**Estado:** Propuesta
+**Estado:** Aceptada (SM Daniel y PO Haziel, 2026-11-23)
 
 Historia: [V2-M24.01](../../plan/modulos/M24-asistente-carecar.md).
 
@@ -138,4 +138,4 @@ Umbral para cerrar H6 (V2-M24.07): **al menos 80 %** de las preguntas del conjun
 
 - ~~Crear el proyecto del equipo sin facturación y anotar su cuota~~: hecho (plan Free, cuota en la tabla de arriba).
 - ~~Guardar su llave en el secreto de Azure~~: hecho por el dueño desde su terminal (`gemini-api-key`, expuesto como `GEMINI_API_KEY`).
-- Aprobación de SM y PO en el PR.
+- ~~Aprobación de SM y PO~~: hecha (SM Daniel en el PR; PO Haziel de palabra, registrada en el PR).

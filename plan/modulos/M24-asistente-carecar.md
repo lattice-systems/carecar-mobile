@@ -59,7 +59,7 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 
 ## Avance de V2-M24.01
 
-ADR [0007](../../docs/decisiones/0007-asistente-ia.md) en `Propuesta`:
+ADR [0007](../../docs/decisiones/0007-asistente-ia.md) `Aceptada` (SM y PO):
 
 - **Costo cero en todos los ambientes:** nivel gratis de Gemini con un proyecto **sin facturación**, así que no hay cobro posible.
 - **Modelos:** detrás de `ProveedorIA` en el backend, elegidos por configuración. Flash-Lite para preguntas y fotos, y `gemini-embedding-2` para el índice.
@@ -70,7 +70,7 @@ ADR [0007](../../docs/decisiones/0007-asistente-ia.md) en `Propuesta`:
   - La cuota diaria es compartida, así que hay límite de 10 preguntas y 3 fotos por cliente, más un tope global.
 - **Calidad:** al menos 80 % de citas correctas.
 
-Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en Azure (`gemini-api-key`). Falta la aprobación de SM y PO.
+Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en Azure (`gemini-api-key`). Aprobado por SM y PO.
 
 ## Componentes que faltan
 
