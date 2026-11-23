@@ -7,8 +7,9 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 ///
 /// Solo devuelve colores de los tokens del sistema (nada de colores sueltos):
 /// el rojo usa `peligro`, el verde `exito`, el amarillo/naranja/dorado
-/// `advertencia`, el azul `acento`, y los neutros (blanco, plata, gris, negro)
-/// `textoSecundario`. Un color desconocido o ausente cae en `marca`.
+/// `advertencia` y el azul `acento`. Los neutros (blanco, plata, gris, negro),
+/// los desconocidos y la ausencia de color caen en `marca`: un tinte gris
+/// dejaba el garaje y el detalle sin vida.
 Color tinteDeColor(TokensPista tokens, String? nombre) {
   final c = tokens.colores;
   final n = (nombre ?? '').toLowerCase();
@@ -19,19 +20,6 @@ Color tinteDeColor(TokensPista tokens, String? nombre) {
     return c.advertencia;
   }
   if (es(['azul', 'blue'])) return c.acento;
-  if (es([
-    'blanco',
-    'white',
-    'plata',
-    'silver',
-    'gris',
-    'gray',
-    'grey',
-    'negro',
-    'black',
-  ])) {
-    return c.textoSecundario;
-  }
   return c.marca;
 }
 
