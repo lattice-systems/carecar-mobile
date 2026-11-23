@@ -38,7 +38,7 @@ Estado: **Hecha**.
 
 ## Avance de V2-T05.07
 
-Estado: **En revisión**.
+Estado: **Hecha**.
 
 - **Backend:** tabla `franja_horario` (`dia_semana`, `hora_inicio`, `hora_fin`, `capacidad`, más `activa`) sembrada con el horario que tenía `HorarioTaller`: lunes a sábado, de 9:00 a 17:00, franjas de una hora con capacidad 3. `cita.franja_id` pasa a ser el id de esa tabla, con FK, y las citas existentes se migran por día de la semana y hora de inicio. El cupo es la capacidad de la franja menos sus citas confirmadas de esa fecha. Diseño en `agencia-360-backend/plan/historias-backend.md`.
 - **Contrato:** v2 en 2.1.0. Mismas rutas y formas; `franjaId` queda descrito como id de `franja_horario` y una franja de otro día o inactiva responde 400.

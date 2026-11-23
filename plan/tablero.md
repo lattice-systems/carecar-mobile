@@ -71,7 +71,7 @@ Total: **213 historias** + 4 de H0.
 | V2-T05.04 | `token_recuperacion` como en la ficha | Ricardo | B | — | Lista | |
 | V2-T05.05 | `manual.archivo_pdf` como en la ficha | Ricardo | B | — | Lista | |
 | V2-T05.06 | `orden_servicio` y `orden_refaccion` como en la ficha | Ricardo | B | — | Lista | |
-| V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | En revisión | backend#80 |
+| V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | Hecha | backend#80, #85 |
 | V2-T05.08 | Eventos en vivo | Ricardo | B | V2-T05.01 | Lista | |
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Lista | |
 | V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
