@@ -2,14 +2,12 @@ import 'package:carecar_mobile/api/modelos/vehiculo.dart';
 import 'package:carecar_mobile/manuales/servicio_manuales.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/ficha_tecnica_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_ficha_tecnica.dart';
-import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
-import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_ficha_tecnica.dart';
-import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_manual.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:flutter/widgets.dart' show Size;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
@@ -113,6 +111,9 @@ void main() {
   });
 
   testWidgets('el acceso Manuales del detalle abre el manual', (tester) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     await _montar(tester);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
@@ -124,6 +125,9 @@ void main() {
   testWidgets('el acceso Ficha técnica del detalle abre la ficha', (
     tester,
   ) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     await _montar(tester);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
