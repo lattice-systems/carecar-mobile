@@ -49,6 +49,8 @@ tags:
     description: APP-4.1 (fuera del MVP; incluido porque TEC-1 lo pide en el contrato)
   - name: Toma a cuenta
     description: V2-M03.04, V2-M03.06 y V2-M03.07
+  - name: Asistente
+    description: V2-M24.02 y V2-M24.03 (ADR 0007)
 
 security:
   - bearerAuth: []
@@ -819,6 +821,68 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /asistente/preguntas:
+    post:
+      tags: [Asistente]
+      summary: Preguntarle al asistente algo de mi auto
+      description: |
+        V2-M24.03 · Responde con base en el manual de propietario del modelo y año del
+        vehículo, citando las páginas que usó. Si el manual no lo dice, `encontrado` es false,
+        no hay fuentes y la respuesta lo dice sin inventar.
+
+        Lo genera un modelo de IA (Gemini, nivel gratis; ADR 0007) llamado solo desde el
+        backend. Al modelo solo le llegan la pregunta sin datos personales (el backend quita
+        correo, teléfono, VIN y placas), el modelo y año, y páginas del manual. La app muestra
+        siempre el aviso de que la respuesta la generó una IA.
+
+        Límites: 10 preguntas por cliente al día (`429` ASISTENTE_LIMITE, con `Retry-After`
+        hasta la medianoche de la agencia) y un tope global diario (`503`
+        ASISTENTE_NO_DISPONIBLE, igual que si el proveedor falla o se agota su cuota).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreguntaAsistente'
+      responses:
+        '200':
+          description: Respuesta del asistente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RespuestaAsistente'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: El modelo y año del vehículo no tienen un manual con texto (`codigo` ASISTENTE_SIN_MANUAL)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '429':
+          description: Ya hizo sus preguntas del día (`codigo` ASISTENTE_LIMITE)
+          headers:
+            Retry-After:
+              description: Segundos que faltan para la medianoche de la agencia
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '503':
+          description: Sin cuota del día o el proveedor de IA no responde (`codigo` ASISTENTE_NO_DISPONIBLE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -903,6 +967,49 @@ components:
             $ref: '#/components/schemas/Problema'
 
   schemas:
+    PreguntaAsistente:
+      type: object
+      required: [vehiculoId, pregunta]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+          description: Uno de los vehículos del cliente
+        pregunta:
+          type: string
+          minLength: 1
+          maxLength: 500
+          example: ¿Cada cuánto cambio el aceite?
+    RespuestaAsistente:
+      type: object
+      required: [consultaId, respuesta, encontrado, fuentes]
+      properties:
+        consultaId:
+          type: integer
+          format: int64
+        respuesta:
+          type: string
+          example: Cada 10 000 km o un año, lo que ocurra primero.
+        encontrado:
+          type: boolean
+          description: false si el manual no tiene la respuesta; entonces no hay fuentes
+        fuentes:
+          type: array
+          items:
+            $ref: '#/components/schemas/FuenteAsistente'
+    FuenteAsistente:
+      type: object
+      required: [manualId, pagina, titulo]
+      properties:
+        manualId:
+          type: integer
+          format: int64
+        pagina:
+          type: integer
+          example: 12
+        titulo:
+          type: string
+          example: Manual, pág. 12
     LoginRequest:
       type: object
       required: [correo, contrasena]
@@ -1550,6 +1657,9 @@ components:
             - CITA_NO_REPROGRAMABLE
             - CITA_CANCELADA
             - WALLET_NO_CONFIGURADO
+            - ASISTENTE_SIN_MANUAL
+            - ASISTENTE_LIMITE
+            - ASISTENTE_NO_DISPONIBLE
           example: FRANJA_SIN_CUPO
         path:
           type: string
