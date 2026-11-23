@@ -94,17 +94,17 @@ Total: **210 historias** + 4 de H0.
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54 |
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57 |
-| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Lista | |
-| V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Lista | |
+| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | En revisión | #65 |
+| V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | En revisión | #65, backend#70 |
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
-| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58 |
-| V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
-| V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
-| V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Lista | |
+| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58, backend#70 |
+| V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | En revisión | #65 |
+| V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | En revisión | #65 |
+| V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | En revisión | #65, backend#70 |
 | V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Lista | |
-| V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Lista | |
+| V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | En revisión | #65, backend#70 |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Hecha | #45 |
 | V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Hecha | #62, backend#68 |
 | V2-M03.03 | Comparar dos o tres modelos lado a lado | Cristian |  | V2-M03.02 | Hecha | #63 |
@@ -242,7 +242,7 @@ Total: **210 historias** + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Lista | |
 | V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
-| V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Lista | |
+| V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | En revisión | #65 |
 | V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Lista | |
 | V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Lista | |
 | V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Lista | |
@@ -263,7 +263,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Lista | |
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Lista | |
-| V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Lista | |
+| V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | En revisión | #65 |
 | V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
 
 ## H7 · Lista para tiendas
