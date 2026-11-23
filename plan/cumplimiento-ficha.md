@@ -29,8 +29,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
 | Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
 | Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 app v2 y backend (tabla y endpoint, rama `feat/v2-juan-pablo-citas-b`); la tabla aún sin datos, la app usa su respaldo | V2-M02.04 |
-| Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 solo 1.ª página | V2-M02.05, V2-T05.06 |
-| Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 | V2-M02.06, V2-T05.06 |
+| Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 backend con la tabla `orden_servicio` (`ExpedienteIntegrationTest`); app solo 1.ª página | V2-M02.05, V2-T05.06 |
+| Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 backend con `orden_servicio` y `orden_refaccion` (`refaccion_id` con FK a `refaccion`); falta la v2 del ticket en la app | V2-M02.06, V2-T05.06 |
 | Disponibilidad del taller | `franja_horario`, `cita` | 🟡 backend con la tabla `franja_horario` y `cita.franja_id` con FK (`AgendaAppIntegrationTest`); falta demostrar en celular | V2-M02.07, V2-T05.07 |
 | Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app y backend (`cita.motivo`, `CITA_DUPLICADA`) listos; falta demostrar en celular | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app v2 lista con estados y paginación; falta demostrar en celular | V2-M02.09 |
@@ -192,7 +192,7 @@ Prioridad máxima del backend: dejar estas tablas con los nombres y campos de la
 | `cuenta_app.usuario` | No existe (se usa `cliente.correo`) | V2-T05.03 |
 | `token_recuperacion` | `codigo_recuperacion` (código de 6 dígitos) | V2-T05.04 |
 | `manual.archivo_pdf` | `manual.archivo` | V2-T05.05 |
-| `orden_servicio`, `orden_refaccion` | `servicio`, `renglon_servicio` (sin `mano_de_obra`, `estatus`, `fecha_cierre`) | V2-T05.06 |
+| `orden_servicio`, `orden_refaccion` | Creadas con `mano_de_obra`, `estatus` y `fecha_cierre`; la mano de obra detallada va en `orden_mano_de_obra` | V2-T05.06 |
 | `franja_horario` | Creada con sus campos; `cita.franja_id` apunta a ella | V2-T05.07 |
 
 Tablas de la ficha que ya existen sin cambios: `cliente`, `vehiculo_cliente`, `cita`, `modelo_catalogo`, `sesion_app`, `refaccion`, `movimiento_inventario`, `factura`, `prospecto`. Todas las demás se crean con las historias de su módulo.
