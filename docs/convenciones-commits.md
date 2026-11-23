@@ -129,6 +129,15 @@ flutter test             # pruebas
 flutter build apk --debug  # opcional: tarda unos minutos
 ```
 
+### CareCar mobile: workflows que no son checks
+
+No corren en los PR ni bloquean el merge:
+
+| Workflow | Cuándo corre | Qué hace |
+| --- | --- | --- |
+| `Release` (`release.yml`) | Al empujar una etiqueta `vX.Y.Z` | Publica un GitHub Release con el APK y después le adjunta el IPA sin firmar |
+| `IPA sin firma` (`ipa-sin-firma.yml`) | A mano (Actions → Run workflow) y llamado por `Release` | Compila iOS en release sin firmar en macOS, lo empaqueta en `Payload/` como `carecar-<versión>.ipa` y lo sube como artefacto por 30 días. Se instala con Sideloadly: [`guia-instalar-ios-sin-mac.md`](guia-instalar-ios-sin-mac.md) |
+
 Las pruebas viven en `test/` con el sufijo `_test.dart` (por ejemplo, `test/widget_test.dart`).
 
 Las dependencias no se actualizan con bots: los cambios de versión en `pubspec.yaml` se hacen a mano en un PR propio (`build(deps): ...`).
