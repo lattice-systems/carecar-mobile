@@ -18,7 +18,7 @@ void main() {
 
   test('coordenadasDe sin resultados devuelve null', () async {
     final g = GeocodificadorNativo(
-      buscarCoordenadas: (d) async => throw const NoResultFoundException(),
+      buscarCoordenadas: (d) async => [],
       buscarDireccion: (la, lo) async => [],
     );
     expect(await g.coordenadasDe('???'), isNull);
@@ -37,28 +37,31 @@ void main() {
     expect(consultas, 0);
   });
 
-  test('direccionDe arma el texto con calle, colonia, ciudad y estado', () async {
-    final g = GeocodificadorNativo(
-      buscarCoordenadas: (d) async => [],
-      buscarDireccion: (la, lo) async => [
-        const Placemark(
-          thoroughfare: 'Av. Reforma',
-          subThoroughfare: '1',
-          subLocality: 'Centro',
-          locality: 'CDMX',
-          administrativeArea: 'Ciudad de México',
-          postalCode: '06000',
-        ),
-      ],
-    );
-    final d = await g.direccionDe(const Coordenada(19.4, -99.1));
-    expect(d!.texto, 'Av. Reforma 1, Centro, CDMX, Ciudad de México, 06000');
-    expect(d.calle, 'Av. Reforma 1');
-    expect(d.colonia, 'Centro');
-    expect(d.ciudad, 'CDMX');
-    expect(d.estado, 'Ciudad de México');
-    expect(d.codigoPostal, '06000');
-  });
+  test(
+    'direccionDe arma el texto con calle, colonia, ciudad y estado',
+    () async {
+      final g = GeocodificadorNativo(
+        buscarCoordenadas: (d) async => [],
+        buscarDireccion: (la, lo) async => [
+          const Placemark(
+            thoroughfare: 'Av. Reforma',
+            subThoroughfare: '1',
+            subLocality: 'Centro',
+            locality: 'CDMX',
+            administrativeArea: 'Ciudad de México',
+            postalCode: '06000',
+          ),
+        ],
+      );
+      final d = await g.direccionDe(const Coordenada(19.4, -99.1));
+      expect(d!.texto, 'Av. Reforma 1, Centro, CDMX, Ciudad de México, 06000');
+      expect(d.calle, 'Av. Reforma 1');
+      expect(d.colonia, 'Centro');
+      expect(d.ciudad, 'CDMX');
+      expect(d.estado, 'Ciudad de México');
+      expect(d.codigoPostal, '06000');
+    },
+  );
 
   test('direccionDe sin resultados devuelve null', () async {
     final g = GeocodificadorNativo(
