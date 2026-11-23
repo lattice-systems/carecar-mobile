@@ -561,5 +561,84 @@
         "type": "String"
       }
     }
-  }
+  },
+  "catalogoCalcularTomaACuenta": "Estimate my trade-in",
+  "calculadoraTitulo": "Trade-in",
+  "calculadoraLeyenda": "Non-binding estimate. This is not a purchase offer: the dealership sets the final value after inspecting your car.",
+  "calculadoraContra": "Toward: {modelo}",
+  "@calculadoraContra": {
+    "placeholders": {
+      "modelo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraAuto": "Your car",
+  "calculadoraOtroAuto": "Another car",
+  "calculadoraCargandoAutos": "Loading your cars",
+  "calculadoraMarca": "Make",
+  "calculadoraModelo": "Model",
+  "calculadoraAnio": "Year",
+  "calculadoraKm": "Mileage",
+  "calculadoraKmAyuda": "In kilometers, as the dashboard shows today",
+  "calculadoraEstado": "Overall condition",
+  "calculadoraEstadoExcelente": "Excellent",
+  "calculadoraEstadoBueno": "Good",
+  "calculadoraEstadoRegular": "Fair",
+  "calculadoraEstadoMalo": "Poor",
+  "calculadoraCalcular": "Calculate estimate",
+  "calculadoraErrorMarca": "Enter the make",
+  "calculadoraErrorModelo": "Enter the model",
+  "calculadoraErrorAnio": "Enter a four-digit year, from 1900 to {maximo}",
+  "@calculadoraErrorAnio": {
+    "placeholders": {
+      "maximo": {
+        "type": "int"
+      }
+    }
+  },
+  "calculadoraErrorKm": "Enter a mileage from 0 to 999,999",
+  "calculadoraResultadoTitulo": "Trade-in estimate",
+  "calculadoraRango": "{minimo} to {maximo}",
+  "@calculadoraRango": {
+    "placeholders": {
+      "minimo": {
+        "type": "String"
+      },
+      "maximo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraRangoLector": "Between {minimo} and {maximo}",
+  "@calculadoraRangoLector": {
+    "placeholders": {
+      "minimo": {
+        "type": "String"
+      },
+      "maximo": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraSupuestos": "Calculated for {edad, plural, =0{a car from this year} =1{a 1-year-old car} other{a {edad}-year-old car}}, with {km} km expected for that age and a margin of plus or minus {margen} %.",
+  "@calculadoraSupuestos": {
+    "placeholders": {
+      "edad": {
+        "type": "int"
+      },
+      "km": {
+        "type": "String"
+      },
+      "margen": {
+        "type": "int"
+      }
+    }
+  },
+  "calculadoraSinParametrosTitulo": "We cannot estimate that car yet",
+  "calculadoraSinParametrosMensaje": "The dealership does not have data for that make, model and year yet. Ask for a formal appraisal at the dealership.",
+  "calculadoraErrorDatos": "We could not calculate the estimate. Check the data and try again.",
+  "calculadoraErrorSinConexion": "No connection. Connect and try again.",
+  "calculadoraErrorNoEncontrado": "We could not find that car or model. Go back and try again.",
+  "calculadoraErrorGenerico": "Something went wrong while calculating. Try again in a moment."
 }

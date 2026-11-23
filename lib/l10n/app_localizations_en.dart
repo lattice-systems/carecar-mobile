@@ -563,4 +563,125 @@ class AppLocalizationsEn extends AppLocalizations {
   String catalogoComparadorCelda(String dato, String modelo, String valor) {
     return '$dato, $modelo: $valor';
   }
+
+  @override
+  String get catalogoCalcularTomaACuenta => 'Estimate my trade-in';
+
+  @override
+  String get calculadoraTitulo => 'Trade-in';
+
+  @override
+  String get calculadoraLeyenda =>
+      'Non-binding estimate. This is not a purchase offer: the dealership sets the final value after inspecting your car.';
+
+  @override
+  String calculadoraContra(String modelo) {
+    return 'Toward: $modelo';
+  }
+
+  @override
+  String get calculadoraAuto => 'Your car';
+
+  @override
+  String get calculadoraOtroAuto => 'Another car';
+
+  @override
+  String get calculadoraCargandoAutos => 'Loading your cars';
+
+  @override
+  String get calculadoraMarca => 'Make';
+
+  @override
+  String get calculadoraModelo => 'Model';
+
+  @override
+  String get calculadoraAnio => 'Year';
+
+  @override
+  String get calculadoraKm => 'Mileage';
+
+  @override
+  String get calculadoraKmAyuda =>
+      'In kilometers, as the dashboard shows today';
+
+  @override
+  String get calculadoraEstado => 'Overall condition';
+
+  @override
+  String get calculadoraEstadoExcelente => 'Excellent';
+
+  @override
+  String get calculadoraEstadoBueno => 'Good';
+
+  @override
+  String get calculadoraEstadoRegular => 'Fair';
+
+  @override
+  String get calculadoraEstadoMalo => 'Poor';
+
+  @override
+  String get calculadoraCalcular => 'Calculate estimate';
+
+  @override
+  String get calculadoraErrorMarca => 'Enter the make';
+
+  @override
+  String get calculadoraErrorModelo => 'Enter the model';
+
+  @override
+  String calculadoraErrorAnio(int maximo) {
+    return 'Enter a four-digit year, from 1900 to $maximo';
+  }
+
+  @override
+  String get calculadoraErrorKm => 'Enter a mileage from 0 to 999,999';
+
+  @override
+  String get calculadoraResultadoTitulo => 'Trade-in estimate';
+
+  @override
+  String calculadoraRango(String minimo, String maximo) {
+    return '$minimo to $maximo';
+  }
+
+  @override
+  String calculadoraRangoLector(String minimo, String maximo) {
+    return 'Between $minimo and $maximo';
+  }
+
+  @override
+  String calculadoraSupuestos(int edad, String km, int margen) {
+    String _temp0 = intl.Intl.pluralLogic(
+      edad,
+      locale: localeName,
+      other: 'a $edad-year-old car',
+      one: 'a 1-year-old car',
+      zero: 'a car from this year',
+    );
+    return 'Calculated for $_temp0, with $km km expected for that age and a margin of plus or minus $margen %.';
+  }
+
+  @override
+  String get calculadoraSinParametrosTitulo =>
+      'We cannot estimate that car yet';
+
+  @override
+  String get calculadoraSinParametrosMensaje =>
+      'The dealership does not have data for that make, model and year yet. Ask for a formal appraisal at the dealership.';
+
+  @override
+  String get calculadoraErrorDatos =>
+      'We could not calculate the estimate. Check the data and try again.';
+
+  @override
+  String get calculadoraErrorSinConexion =>
+      'No connection. Connect and try again.';
+
+  @override
+  String get calculadoraErrorNoEncontrado =>
+      'We could not find that car or model. Go back and try again.';
+
+  @override
+  String get calculadoraErrorGenerico =>
+      'Something went wrong while calculating. Try again in a moment.';
 }

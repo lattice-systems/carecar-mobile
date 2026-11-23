@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../dominio/comparativa.dart';
+import 'pantalla_calculadora.dart';
 import 'pantalla_catalogo.dart';
 import 'pantalla_comparador.dart';
 import 'pantalla_detalle_modelo.dart';
@@ -25,6 +26,12 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
 /// Camino de la comparativa: `/catalogo/comparar?ids=1,2,3`.
 const rutaComparador = '$rutaCatalogo/comparar';
 
+/// Camino de la calculadora de toma a cuenta: `/catalogo/calculadora`.
+const rutaCalculadora = '$rutaCatalogo/calculadora';
+
+/// Camino de la calculadora contra un modelo nuevo: `/catalogo/calculadora?modelo=7`.
+String rutaCalculadoraDe(int modeloId) => '$rutaCalculadora?modelo=$modeloId';
+
 /// Camino de la comparativa de varios modelos.
 String rutaComparadorDe(List<int> ids) =>
     '$rutaComparador?ids=${ids.join(',')}';
@@ -37,7 +44,18 @@ final rutasCatalogo = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCatalogo()),
     routes: [
-      // Va antes de ':id' para que "comparar" no se lea como un id.
+      // Van antes de ':id' para que "calculadora" y "comparar" no se lean como
+      // un id.
+      GoRoute(
+        path: 'calculadora',
+        name: 'calculadora-toma-a-cuenta',
+        builder: (context, state) => _conTemaPista(
+          context,
+          PantallaCalculadora(
+            modeloId: int.tryParse(state.uri.queryParameters['modelo'] ?? ''),
+          ),
+        ),
+      ),
       GoRoute(
         path: 'comparar',
         name: 'comparar-modelos',
