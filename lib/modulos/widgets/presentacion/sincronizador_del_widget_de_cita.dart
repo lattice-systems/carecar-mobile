@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/seguridad/politica_datos_locales.dart';
+import '../../../nucleo/seguridad/proveedores_seguridad.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../../sesion/controlador_sesion.dart';
 import '../../citas/citas.dart';
@@ -19,7 +21,8 @@ import 'proveedores_widgets.dart';
 /// Publica de nuevo cuando:
 /// - cambian las citas del cliente (agendar, cancelar o reprogramar actualizan
 ///   `misCitasProvider`);
-/// - la persona abre o cierra sesion: al salir, el widget queda sin datos de
+/// - la persona abre o cierra sesion (o el equipo resulta comprometido, ver
+///   `PoliticaDatosLocales`): al salir, el widget queda sin datos de
 ///   ninguna cita para no dejar informacion en la pantalla de inicio;
 /// - cambia el idioma, o la app vuelve al primer plano (la cita pudo empezar).
 ///
@@ -46,7 +49,13 @@ class _SincronizadorDelWidgetDeCitaState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     ref.listenManual(estadoSesionProvider, (_, _) => _sincronizar());
+    // En un equipo con root o jailbreak el widget no conserva datos del cliente
+    // (V2-M22.05): si la deteccion llega tarde, se vacia en cuanto llega.
+    _politica = ref.read(politicaDatosLocalesProvider)
+      ..addListener(_sincronizar);
   }
+
+  late final PoliticaDatosLocales _politica;
 
   @override
   void didChangeDependencies() {
@@ -67,14 +76,17 @@ class _SincronizadorDelWidgetDeCitaState
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _politica.removeListener(_sincronizar);
     _citas?.close();
     super.dispose();
   }
 
   /// Decide de donde sale el contenido segun la sesion.
   void _sincronizar() {
-    if (ref.read(estadoSesionProvider) is! Autenticada) {
-      // Sin sesion no se piden citas y el widget no conserva ninguna.
+    if (ref.read(estadoSesionProvider) is! Autenticada ||
+        !_politica.permiteCacheLocal) {
+      // Sin sesion (o en un equipo comprometido) no se piden citas y el widget
+      // no conserva ninguna.
       _citas?.close();
       _citas = null;
       _enviar(_sinCita(AppLocalizations.of(context)));

@@ -2,6 +2,9 @@ import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/widgets/widgets.dart';
+import 'package:carecar_mobile/nucleo/seguridad/detector_integridad.dart';
+import 'package:carecar_mobile/nucleo/seguridad/politica_datos_locales.dart';
+import 'package:carecar_mobile/nucleo/seguridad/proveedores_seguridad.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -56,6 +59,7 @@ Future<_Escenario> _montar(
   Object? falloAlCargar,
   bool conSesion = true,
   Locale idioma = const Locale('es'),
+  PoliticaDatosLocales? politica,
 }) async {
   tester.platformDispatcher.localesTestValue = [idioma];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -79,6 +83,8 @@ Future<_Escenario> _montar(
         repositorioCitasProvider.overrideWithValue(repositorio),
         relojCitasProvider.overrideWithValue(() => _ahora),
         controladorSesionProvider.overrideWithValue(controlador),
+        if (politica != null)
+          politicaDatosLocalesProvider.overrideWithValue(politica),
       ],
       child: MaterialApp(
         localizationsDelegates: delegadasDeIdioma,
@@ -95,6 +101,36 @@ Future<_Escenario> _montar(
 }
 
 void main() {
+  testWidgets('en equipo comprometido el widget no muestra datos de citas', (
+    tester,
+  ) async {
+    final politica = PoliticaDatosLocales(EstadoIntegridad.comprometido);
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      politica: politica,
+    );
+    expect(e.puerto.ultimo.hayCita, isFalse);
+    expect(e.puerto.ultimo.vehiculo, isNull);
+  });
+
+  testWidgets('si el equipo resulta comprometido despues, se vacia el widget', (
+    tester,
+  ) async {
+    final politica = PoliticaDatosLocales();
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      politica: politica,
+    );
+    expect(e.puerto.ultimo.hayCita, isTrue);
+
+    politica.actualizar(EstadoIntegridad.comprometido);
+    await tester.pumpAndSettle();
+
+    expect(e.puerto.ultimo.hayCita, isFalse);
+  });
+
   testWidgets('muestra la proxima cita confirmada con dia, horario y auto', (
     tester,
   ) async {
