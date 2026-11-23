@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
-import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
+import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
+import 'componentes/grupo_citas.dart';
+import 'componentes/marco_pantalla_cita.dart';
+import 'componentes/seccion_cita.dart';
+import 'componentes/vacio_ilustrado.dart';
 import 'proveedores_citas.dart';
 import 'rutas_citas.dart';
 
@@ -47,32 +52,39 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final textos = AppLocalizations.of(context);
     final citas = ref.watch(misCitasProvider);
 
-    final Widget cuerpo;
     if (citas.hasError && !citas.hasValue) {
-      cuerpo = EstadoError(
-        causa: citas.error is SinConexion
-            ? CausaError.sinConexion
-            : CausaError.generico,
-        alReintentar: () => ref.invalidate(misCitasProvider),
+      return MarcoPantallaCita.estado(
+        titulo: textos.citasMisCitasTitulo,
+        acciones: const [],
+        estado: EstadoError(
+          causa: citas.error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(misCitasProvider),
+        ),
       );
-    } else if (!citas.hasValue) {
-      cuerpo = const _Cargando();
-    } else if (citas.requireValue.citas.isEmpty) {
-      cuerpo = EstadoVacio(
-        titulo: textos.citasMisCitasVacioTitulo,
-        mensaje: textos.citasMisCitasVacioMensaje,
-        icono: Icons.event_note_outlined,
-        textoAccion: textos.citasMisCitasAgendar,
-        alAccion: () => context.push(rutaAgendarCita),
-      );
-    } else {
-      cuerpo = _lista(context, citas.requireValue);
     }
-
-    return Scaffold(
-      appBar: AppBar(title: Text(textos.citasMisCitasTitulo)),
-      body: cuerpo,
-    );
+    if (!citas.hasValue) {
+      return MarcoPantallaCita.estado(
+        titulo: textos.citasMisCitasTitulo,
+        acciones: const [],
+        estado: const _Cargando(),
+      );
+    }
+    if (citas.requireValue.citas.isEmpty) {
+      return MarcoPantallaCita.estado(
+        titulo: textos.citasMisCitasTitulo,
+        acciones: const [],
+        estado: VacioIlustrado(
+          titulo: textos.citasMisCitasVacioTitulo,
+          mensaje: textos.citasMisCitasVacioMensaje,
+          icono: Icons.event_note_outlined,
+          textoAccion: textos.citasMisCitasAgendar,
+          alAccion: () => context.push(rutaAgendarCita),
+        ),
+      );
+    }
+    return _lista(context, citas.requireValue);
   }
 
   Widget _lista(BuildContext context, EstadoMisCitas estado) {
@@ -92,31 +104,12 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       for (final c in estado.citas)
         if (!c.esProxima(ahora)) c,
     ]..sort((a, b) => b.inicio.compareTo(a.inicio));
+    final destacada = proximas.isEmpty ? null : proximas.first;
+    final otras = proximas.length > 1 ? proximas.sublist(1) : <CitaCliente>[];
 
-    Widget encabezado(String texto) => Padding(
-      padding: const EdgeInsets.fromLTRB(
-        Espaciado.e4,
-        Espaciado.e4,
-        Espaciado.e4,
-        Espaciado.e1,
-      ),
-      child: Semantics(
-        header: true,
-        child: Text(
-          texto,
-          style: tokens.tipografia.titulo3.copyWith(
-            color: tokens.colores.texto,
-          ),
-        ),
-      ),
-    );
-
-    Widget vacio(String texto) => Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Espaciado.e4,
-        vertical: Espaciado.e2,
-      ),
-      child: Text(
+    Widget seccionVacia(String encabezado, String texto) => SeccionCita(
+      titulo: encabezado,
+      hijo: Text(
         texto,
         style: tokens.tipografia.cuerpo.copyWith(
           color: tokens.colores.textoSecundario,
@@ -124,109 +117,158 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ),
     );
 
-    return RefreshIndicator(
-      onRefresh: () async {
+    return MarcoPantallaCita(
+      titulo: textos.citasMisCitasTitulo,
+      acciones: [
+        IconButton(
+          tooltip: textos.citasMisCitasAgendar,
+          constraints: const BoxConstraints(
+            minWidth: Espaciado.objetivoTactilMinimo,
+            minHeight: Espaciado.objetivoTactilMinimo,
+          ),
+          icon: Icon(Icons.add_rounded, color: tokens.colores.acento),
+          onPressed: () => context.push(rutaAgendarCita),
+        ),
+      ],
+      alRefrescar: () async {
         ref.invalidate(misCitasProvider);
         await ref.read(misCitasProvider.future);
       },
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        children: [
-          ?_aviso,
-          encabezado(textos.citasProximas),
-          if (proximas.isEmpty) vacio(textos.citasProximasVacio),
-          for (final c in proximas) _fila(context, c, vehiculos, ahora),
-          encabezado(textos.citasPasadas),
-          if (pasadas.isEmpty) vacio(textos.citasPasadasVacio),
-          for (final c in pasadas) _fila(context, c, vehiculos, ahora),
-          if (estado.errorAlCargarMas)
-            Padding(
-              padding: const EdgeInsets.all(Espaciado.e4),
-              child: Aviso(mensaje: textos.citasErrorMas, tono: Tono.peligro),
-            ),
-          if (estado.hayMas)
-            Padding(
-              padding: const EdgeInsets.all(Espaciado.e4),
-              child: Boton(
-                texto: textos.citasCargarMas,
-                variante: VarianteBoton.secundario,
-                anchoCompleto: true,
-                cargando: estado.cargandoMas,
-                alPresionar: () =>
-                    ref.read(misCitasProvider.notifier).cargarMas(),
-              ),
-            ),
-          const SizedBox(height: Espaciado.e4),
-        ],
-      ),
-    );
-  }
-
-  Widget _fila(
-    BuildContext context,
-    CitaCliente cita,
-    Map<int, String> vehiculos,
-    DateTime ahora,
-  ) {
-    final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final vehiculo =
-        cita.vehiculoNombre ??
-        vehiculos[cita.vehiculoId] ??
-        textos.citasFilaVehiculoGenerico;
-    final motivo = cita.motivo;
-    final modificable = cita.sePuedeModificar(ahora);
-    final fila = FilaLista(
-      titulo: textos.citasFilaTitulo(cita.fecha, cita.horaInicio),
-      subtitulo: motivo == null
-          ? vehiculo
-          : '$vehiculo · ${_textoMotivo(textos, motivo)}',
-      fin: Insignia(
-        texto: _textoEstado(textos, cita.estado),
-        tono: _tonoEstado(cita.estado),
-        conIcono: true,
-      ),
-      conChevron: false,
-      conDivisor: !modificable,
-    );
-    if (!modificable) return fila;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        fila,
-        Padding(
-          padding: const EdgeInsets.fromLTRB(
-            Espaciado.e4,
-            0,
-            Espaciado.e4,
-            Espaciado.e2,
-          ),
-          child: Wrap(
-            alignment: WrapAlignment.end,
-            spacing: Espaciado.e2,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Boton(
-                texto: textos.citasReprogramar,
-                variante: VarianteBoton.secundario,
-                tamano: TamanoBoton.chico,
-                alPresionar: _cancelandoId == null
-                    ? () => context.push(rutaReprogramarCita(cita.id))
-                    : null,
-              ),
-              Boton(
-                texto: textos.citasCancelar,
-                variante: VarianteBoton.terciario,
-                tamano: TamanoBoton.chico,
-                cargando: _cancelandoId == cita.id,
-                alPresionar: _cancelandoId == null
-                    ? () => _cancelar(cita)
-                    : null,
-              ),
+              if (_aviso != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: Espaciado.e2),
+                  child: _aviso,
+                ),
+              if (destacada != null)
+                _TarjetaProxima(
+                  cita: destacada,
+                  vehiculo: _nombreVehiculo(textos, destacada, vehiculos),
+                  cancelando: _cancelandoId == destacada.id,
+                  ocupado: _cancelandoId != null,
+                  alCancelar: () => _cancelar(destacada),
+                  textoEstado: _textoEstado(textos, destacada.estado),
+                  textoMotivo: destacada.motivo == null
+                      ? null
+                      : _textoMotivo(textos, destacada.motivo!),
+                )
+              else
+                seccionVacia(textos.citasProximas, textos.citasProximasVacio),
+              if (otras.isNotEmpty)
+                GrupoCitas(
+                  encabezado: textos.citasProximas,
+                  filas: [
+                    for (final c in otras)
+                      _fila(
+                        context,
+                        c,
+                        vehiculos,
+                        alToque: () => _abrirAcciones(c, vehiculos),
+                      ),
+                  ],
+                ),
+              if (pasadas.isEmpty)
+                seccionVacia(textos.citasPasadas, textos.citasPasadasVacio)
+              else
+                GrupoCitas(
+                  encabezado: textos.citasPasadas,
+                  filas: [
+                    for (final c in pasadas) _fila(context, c, vehiculos),
+                  ],
+                ),
+              if (estado.errorAlCargarMas)
+                Padding(
+                  padding: const EdgeInsets.all(Espaciado.e4),
+                  child: Aviso(
+                    mensaje: textos.citasErrorMas,
+                    tono: Tono.peligro,
+                  ),
+                ),
+              if (estado.hayMas)
+                Padding(
+                  padding: const EdgeInsets.all(Espaciado.e4),
+                  child: Center(
+                    child: BotonPildora(
+                      texto: textos.citasCargarMas,
+                      variante: VarianteBotonPildora.tonal,
+                      icono: Icons.expand_more_rounded,
+                      alPresionar: estado.cargandoMas
+                          ? null
+                          : () =>
+                                ref.read(misCitasProvider.notifier).cargarMas(),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
-        Divider(height: 1, thickness: 1, color: tokens.colores.borde),
       ],
+    );
+  }
+
+  String _nombreVehiculo(
+    AppLocalizations textos,
+    CitaCliente cita,
+    Map<int, String> vehiculos,
+  ) =>
+      cita.vehiculoNombre ??
+      vehiculos[cita.vehiculoId] ??
+      textos.citasFilaVehiculoGenerico;
+
+  FilaCita _fila(
+    BuildContext context,
+    CitaCliente cita,
+    Map<int, String> vehiculos, {
+    VoidCallback? alToque,
+  }) {
+    final textos = AppLocalizations.of(context);
+    final vehiculo = _nombreVehiculo(textos, cita, vehiculos);
+    final motivo = cita.motivo;
+    final titulo = textos.citasFilaTitulo(cita.fecha, cita.horaInicio);
+    final estado = _textoEstado(textos, cita.estado);
+    final subtitulo = motivo == null
+        ? vehiculo
+        : '$vehiculo · ${_textoMotivo(textos, motivo)}';
+    return FilaCita(
+      fecha: cita.fecha,
+      tono: _tonoEstado(cita.estado),
+      titulo: titulo,
+      subtitulo: subtitulo,
+      etiquetaSemantica: '$titulo. $subtitulo. $estado',
+      fin: Insignia(
+        texto: estado,
+        tono: _tonoEstado(cita.estado),
+        conIcono: true,
+      ),
+      alToque: alToque,
+    );
+  }
+
+  /// Hoja con las acciones de una cita próxima que no es la destacada.
+  Future<void> _abrirAcciones(CitaCliente cita, Map<int, String> vehiculos) {
+    final textos = AppLocalizations.of(context);
+    return mostrarHojaInferior<void>(
+      context,
+      titulo: textos.citasAccionesCita,
+      builder: (hoja) => Padding(
+        padding: const EdgeInsets.fromLTRB(
+          Espaciado.e4,
+          0,
+          Espaciado.e4,
+          Espaciado.e4,
+        ),
+        child: _AccionesCita(
+          cita: cita,
+          ocupado: _cancelandoId != null,
+          cancelando: _cancelandoId == cita.id,
+          antes: () => Navigator.of(hoja).pop(),
+          alCancelar: () => _cancelar(cita),
+        ),
+      ),
     );
   }
 
@@ -306,6 +348,258 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       };
 }
 
+/// Tarjeta héroe de la próxima cita, al estilo «reproduciendo ahora».
+class _TarjetaProxima extends StatelessWidget {
+  const _TarjetaProxima({
+    required this.cita,
+    required this.vehiculo,
+    required this.textoEstado,
+    required this.cancelando,
+    required this.ocupado,
+    required this.alCancelar,
+    this.textoMotivo,
+  });
+
+  final CitaCliente cita;
+  final String vehiculo;
+  final String textoEstado;
+  final String? textoMotivo;
+  final bool cancelando;
+  final bool ocupado;
+  final VoidCallback alCancelar;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final t = tokens.tipografia;
+    final idioma = Localizations.localeOf(context).toString();
+    final semana = toBeginningOfSentenceCase(
+      DateFormat.EEEE(idioma).format(cita.fecha),
+    );
+    final mesAnio = DateFormat.yMMMM(idioma).format(cita.fecha);
+    final tono = _EstadoPantallaMisCitas._tonoEstado(cita.estado);
+    final oscuro = tokens.brillo == Brightness.dark;
+    final etiquetaInfo = [
+      textos.citasMisCitasProximaEtiqueta,
+      textos.citasFilaTitulo(cita.fecha, cita.horaInicio),
+      vehiculo,
+      textoEstado,
+    ].join('. ');
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        Espaciado.e4,
+        Espaciado.e2,
+        Espaciado.e4,
+        Espaciado.e2,
+      ),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: Radios.bordeHoja,
+          boxShadow: tokens.sombras,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color.alphaBlend(
+                c.acento.withValues(alpha: oscuro ? 0.34 : 0.20),
+                c.superficie,
+              ),
+              c.superficie,
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(Espaciado.e5),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Semantics(
+                container: true,
+                label: etiquetaInfo,
+                excludeSemantics: true,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: Espaciado.e2,
+                      runSpacing: Espaciado.e2,
+                      children: [
+                        Text(
+                          textos.citasMisCitasProximaEtiqueta.toUpperCase(),
+                          style: t.micro.copyWith(color: c.acento),
+                        ),
+                        Insignia(
+                          texto: textoEstado,
+                          tono: tono,
+                          conIcono: true,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Espaciado.e4),
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      spacing: Espaciado.e3,
+                      children: [
+                        Text(
+                          '${cita.fecha.day}',
+                          style: t.display.copyWith(
+                            fontSize: 84,
+                            height: 1,
+                            color: c.texto,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: Espaciado.e2),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                semana,
+                                style: t.titulo3.copyWith(color: c.texto),
+                              ),
+                              Text(
+                                mesAnio,
+                                style: t.cuerpo.copyWith(
+                                  color: c.textoSecundario,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Espaciado.e3),
+                    Text(
+                      '${cita.horaInicio} - ${cita.horaFin}',
+                      style: t.cifra.copyWith(
+                        fontSize: 28,
+                        height: 1.2,
+                        color: c.acento,
+                      ),
+                    ),
+                    const SizedBox(height: Espaciado.e2),
+                    Text(
+                      textoMotivo == null
+                          ? vehiculo
+                          : '$vehiculo · $textoMotivo',
+                      style: t.cuerpoFuerte.copyWith(color: c.texto),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: Espaciado.e5),
+              _AccionesCita(
+                cita: cita,
+                ocupado: ocupado,
+                cancelando: cancelando,
+                alCancelar: alCancelar,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Comprobante y Reprogramar como píldoras; Cancelar como acción terciaria de
+/// peligro. Se usa en la tarjeta héroe y en la hoja de las otras próximas.
+class _AccionesCita extends StatelessWidget {
+  const _AccionesCita({
+    required this.cita,
+    required this.ocupado,
+    required this.cancelando,
+    required this.alCancelar,
+    this.antes,
+  });
+
+  final CitaCliente cita;
+
+  /// Hay una cancelación en curso: se bloquea lo demás.
+  final bool ocupado;
+  final bool cancelando;
+  final VoidCallback alCancelar;
+
+  /// Se ejecuta antes de cualquier acción (cerrar la hoja).
+  final VoidCallback? antes;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Wrap(
+          spacing: Espaciado.e2,
+          runSpacing: Espaciado.e2,
+          children: [
+            BotonPildora(
+              texto: textos.citasHeroComprobante,
+              icono: Icons.qr_code_2_rounded,
+              alPresionar: ocupado
+                  ? null
+                  : () {
+                      antes?.call();
+                      context.push(rutaComprobanteCita(cita.id));
+                    },
+            ),
+            BotonPildora(
+              texto: textos.citasReprogramar,
+              icono: Icons.event_repeat_rounded,
+              variante: VarianteBotonPildora.tonal,
+              alPresionar: ocupado
+                  ? null
+                  : () {
+                      antes?.call();
+                      context.push(rutaReprogramarCita(cita.id));
+                    },
+            ),
+          ],
+        ),
+        const SizedBox(height: Espaciado.e2),
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: c.peligro,
+              minimumSize: const Size(
+                Espaciado.objetivoTactilMinimo,
+                Espaciado.objetivoTactilMinimo,
+              ),
+              textStyle: tokens.tipografia.cuerpoFuerte,
+            ),
+            onPressed: ocupado
+                ? null
+                : () {
+                    antes?.call();
+                    alCancelar();
+                  },
+            child: cancelando
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: c.peligro,
+                    ),
+                  )
+                : Text(textos.citasCancelar),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _Cargando extends StatelessWidget {
   const _Cargando();
 
@@ -318,8 +612,8 @@ class _Cargando extends StatelessWidget {
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [
-            Esqueleto(alto: 72),
-            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 280, radio: 28),
+            SizedBox(height: Espaciado.e4),
             Esqueleto(alto: 72),
             SizedBox(height: Espaciado.e3),
             Esqueleto(alto: 72),
