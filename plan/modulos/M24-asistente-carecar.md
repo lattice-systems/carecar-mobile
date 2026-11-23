@@ -61,16 +61,16 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 
 ADR [0007](../../docs/decisiones/0007-asistente-ia.md) en `Propuesta`:
 
-- **Modelo:** Gemini en producción, detrás de `ProveedorIA` en el backend: Flash-Lite para preguntas, Flash para fotos y `gemini-embedding-2` para el índice. Los modelos se eligen por configuración.
-- **Búsqueda:** `pgvector` en Neon, filtrada por manual. Si no se puede calcular el vector, usa texto completo de respaldo.
-- **Gratis fuera de producción:**
-  - Proveedor falso en las pruebas automáticas.
-  - Nivel gratis de Gemini solo en el backend local, con datos inventados.
-- **Costo:** unos $1.65 dólares por cada 1 000 preguntas, con alerta de presupuesto a $10 al mes.
-- **Límite:** 20 preguntas y 5 fotos por cliente al día.
+- **Costo cero en todos los ambientes:** nivel gratis de Gemini con un proyecto **sin facturación**, así que no hay cobro posible.
+- **Modelos:** detrás de `ProveedorIA` en el backend, elegidos por configuración. Flash-Lite para preguntas y fotos, y `gemini-embedding-2` para el índice.
+- **Búsqueda:** `pgvector` en Neon, filtrada por manual, con texto completo de respaldo.
+- **Pruebas automáticas:** proveedor falso, sin red.
+- **Precio de no pagar:**
+  - Google puede usar lo enviado para mejorar sus productos; por eso nada personal sale del backend y el aviso de privacidad lo dice.
+  - La cuota diaria es compartida, así que hay límite de 10 preguntas y 3 fotos por cliente, más un tope global.
 - **Calidad:** al menos 80 % de citas correctas.
 
-Falta para aceptarlo: confirmar el precio del modelo de embeddings, medir el costo de una foto y la aprobación de SM y PO en el PR.
+Falta para aceptarlo: crear el proyecto del equipo sin facturación, anotar su cuota y la aprobación de SM y PO.
 
 ## Componentes que faltan
 

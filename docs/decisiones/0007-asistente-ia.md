@@ -15,7 +15,7 @@ Restricciones que ya fija el módulo M24:
 - Si el manual no tiene la respuesta, el asistente lo dice; no inventa.
 - Límite de preguntas por cliente al día (`ASISTENTE_LIMITE`) y error propio si el proveedor no responde (`ASISTENTE_NO_DISPONIBLE`).
 
-El backend corre en Azure Container Apps con PostgreSQL en Neon. El dueño y el equipo pidieron **Gemini en producción** y **una opción gratis para pruebas**.
+El backend corre en Azure Container Apps con PostgreSQL en Neon. El dueño pidió **Gemini** y **costo cero en todos los ambientes, también en producción**: no se paga nada.
 
 Hay tres decisiones: qué modelo genera las respuestas, cómo se encuentran los fragmentos del manual y qué se usa fuera de producción.
 
@@ -23,10 +23,10 @@ Hay tres decisiones: qué modelo genera las respuestas, cómo se encuentran los 
 
 ### Modelo que genera las respuestas
 
-1. **Gemini (API de Google, nivel de pago).** Hay un modelo de texto barato (Flash-Lite) y uno más capaz (Flash), los dos aceptan imágenes y Google tiene su propio modelo de embeddings, así que un solo proveedor cubre texto, fotos e índice. En el nivel de pago Google no usa los prompts ni las respuestas para mejorar sus productos.
-2. **Claude (API de Anthropic).** Buena calidad para responder con citas y seguir instrucciones. No ofrece un modelo de embeddings propio: haría falta un segundo proveedor para el índice (dos llaves, dos contratos).
-3. **OpenAI.** Texto, imágenes y embeddings en un proveedor. Sin ventaja clara sobre Gemini para este caso y el equipo ya eligió Gemini.
-4. **Groq o modelos `:free` de OpenRouter.** Gratis con límites diarios, pensados para desarrollo, no para producción. Sirven de reserva para pruebas.
+1. **Gemini (API de Google).** Tiene nivel gratis sin tarjeta que incluye texto (Flash-Lite y Flash), imágenes y su propio modelo de embeddings, así que un solo proveedor cubre texto, fotos e índice a costo cero. En el nivel gratis Google usa lo enviado para mejorar sus productos; en el de pago no.
+2. **Claude (API de Anthropic).** Buena calidad para responder con citas y seguir instrucciones, pero sin nivel gratis permanente para producción y sin modelo de embeddings propio (haría falta un segundo proveedor).
+3. **OpenAI.** Texto, imágenes y embeddings en un proveedor, pero de pago. Descartado por el costo cero.
+4. **Groq o modelos `:free` de OpenRouter.** Gratis con límites diarios, pero sin embeddings ni (en general) imágenes en el mismo proveedor. Sirven de reserva si la cuota de Gemini no alcanza.
 
 ### Cómo se encuentran los fragmentos
 
@@ -42,31 +42,41 @@ Hay tres decisiones: qué modelo genera las respuestas, cómo se encuentran los 
 
 ## Decisión propuesta
 
-**Modelo:** Gemini en producción, detrás de una interfaz `ProveedorIA` del módulo `asistente` del backend, con el modelo elegido por configuración (nunca en el código):
+**Costo cero:** se usa el **nivel gratis de Gemini en todos los ambientes**, con un proyecto de Google **sin cuenta de facturación vinculada**. Según los términos de Gemini, el uso solo pasa a ser de pago si el proyecto tiene facturación activa; sin ella, Google no puede cobrar, y al agotarse la cuota del día las llamadas fallan en vez de cobrarse. Nadie del equipo vincula facturación a ese proyecto: hacerlo exige reemplazar esta decisión.
+
+**Modelo:** Gemini detrás de una interfaz `ProveedorIA` del módulo `asistente` del backend, con el modelo elegido por configuración (nunca en el código):
 
 | Uso | Modelo inicial | Por qué |
 | --- | --- | --- |
 | Preguntas (M24.03) | `gemini-3.5-flash-lite` | El más barato; la respuesta sale de los fragmentos del manual, no del conocimiento del modelo |
-| Fotos de testigos (M24.05) | `gemini-3.8-flash` | Reconocer un ícono en una foto pide más capacidad |
+| Fotos de testigos (M24.05) | `gemini-3.5-flash-lite` (o `gemini-3.8-flash` si la evaluación lo pide) | Más cuota gratis que Flash; se cambia por configuración |
 | Embeddings (M24.02 y M24.03) | `gemini-embedding-2` | Mismo proveedor; la dimensión del vector se fija en la migración |
 
-El backend llama a la API REST de Gemini con el cliente HTTP de Spring (sin SDK, para no sumar dependencias que vigila Trivy). La llave vive en el secreto `gemini-api-key` de Azure, expuesto como `GEMINI_API_KEY`.
+El backend llama a la API REST de Gemini con el cliente HTTP de Spring (sin SDK, para no sumar dependencias que vigila Trivy). La llave del proyecto del equipo vive en el secreto `gemini-api-key` de Azure, expuesto como `GEMINI_API_KEY`.
 
 **Búsqueda:** opción 3. `pgvector` con índice HNSW por distancia coseno, filtrado por `manual_id`, las 5 páginas más cercanas. Si el vector de la pregunta no se puede calcular (cuota agotada o proveedor caído), se usa la búsqueda de texto completo para no dejar al cliente sin respuesta. Si ninguna página pasa el umbral de parecido, el asistente dice que no lo encontró en el manual.
 
-**Fuera de producción** (pedido del equipo: gratis):
+**Por ambiente:**
 
-| Ambiente | Proveedor | Datos permitidos |
+| Ambiente | Proveedor | Llave |
 | --- | --- | --- |
-| Pruebas automáticas (`./mvnw verify`, `flutter test`, CI) | `ProveedorIAFalso`: respuestas fijas con citas, sin red ni llave | Ninguno real |
-| Backend local de cada quien | Nivel gratis de Gemini: proyecto de Google **sin facturación** y llave personal en `.env` local (fuera de git) | **Solo manuales de ejemplo y preguntas inventadas**, nunca datos de clientes, porque el nivel gratis se usa para entrenar |
-| Backend en Azure (lo usan los flavors `pruebas` y `produccion`) | Gemini de pago, proyecto con facturación | Datos reales |
+| Pruebas automáticas (`./mvnw verify`, `flutter test`, CI) | `ProveedorIAFalso`: respuestas fijas con citas, sin red ni llave | Ninguna |
+| Backend local de cada quien | Nivel gratis de Gemini, solo manuales de ejemplo y preguntas inventadas | Personal, en `.env` local (fuera de git), de un proyecto propio para no gastar la cuota del backend en Azure |
+| Backend en Azure (flavors `pruebas` y `produccion`) | Nivel gratis de Gemini | Del proyecto del equipo sin facturación, en el secreto de Azure |
 
-Si los límites del nivel gratis de Gemini no alcanzan para desarrollar, la reserva es Groq con un adaptador compatible con la API de OpenAI, solo en local. Se elige por configuración: `asistente.proveedor=gemini|falso`.
+Se elige por configuración: `asistente.proveedor=gemini|falso`. Si la cuota gratis de Gemini no alcanza, la reserva es Groq (también gratis, con límites diarios) con un adaptador compatible con la API de OpenAI; se agrega solo si hace falta.
 
-## Costo estimado
+**Lo que cuesta no pagar** (se acepta a sabiendas):
 
-Precios de la página oficial de Google consultada el 2026-11-23 (dólares por millón de tokens, nivel estándar de pago):
+- **Google usa lo que se le manda para mejorar sus productos** (términos del nivel gratis). Por eso al modelo solo le llegan la pregunta ya limpia de datos personales, el modelo y año, y fragmentos del manual (público). El aviso de privacidad (V2-M22.01) lo dice con claridad.
+- **Cuota diaria baja y que Google puede cambiar.** Se consulta por proyecto en Google AI Studio. Cuando se agota, el asistente responde `ASISTENTE_NO_DISPONIBLE` hasta el día siguiente (se reinicia a medianoche, hora del Pacífico).
+- **Sin garantía de servicio.** Para un proyecto escolar con pocos usuarios alcanza; si algún día tuviera clientes reales en volumen, se reemplaza esta decisión.
+
+## Costo
+
+**$0.** No hay facturación vinculada, así que no hay forma de que llegue un cobro.
+
+Como referencia, por si algún día se decide pagar: precios de la página oficial de Google consultada el 2026-11-23 (dólares por millón de tokens, nivel de pago):
 
 | Modelo | Entrada | Salida |
 | --- | --- | --- |
@@ -83,23 +93,23 @@ Una pregunta lleva unos 3 000 tokens de entrada (instrucciones, 5 páginas del m
 | Vectores de 1 000 preguntas | 50 mil tokens × $0.20 | ≈ $0.01 |
 | Indexar un manual de 400 páginas | 200 mil tokens × $0.20 | ≈ $0.04 |
 
-Las fotos se cobran como tokens de entrada; el costo por foto se mide con las primeras pruebas y se anota aquí antes de aceptar esta decisión.
-
-**Tope:** alerta de presupuesto en Google Cloud a 10 dólares al mes. Con el límite por cliente (abajo) eso alcanza para miles de preguntas.
-
 ## Límites y fallas
 
-- **Por cliente y por día:** 20 preguntas y 5 fotos. Al pasarse, `ASISTENTE_LIMITE` con la hora en que se libera.
-- **Proveedor caído o lento:** espera máxima de 20 s y un reintento; luego `ASISTENTE_NO_DISPONIBLE`. La app ofrece llamar a la agencia. No hay un segundo proveedor en producción.
+La cuota gratis es **por proyecto**, compartida por todos los clientes, así que se reparte:
+
+- **Por cliente y por día:** 10 preguntas y 3 fotos. Al pasarse, `ASISTENTE_LIMITE` con la hora en que se libera.
+- **Tope global del backend por día**, configurable y por debajo de la cuota que muestre Google AI Studio para el proyecto, para que un cliente no agote la del resto. Al llegar, `ASISTENTE_NO_DISPONIBLE`.
+- **Fotos con Flash-Lite por omisión**, que tiene más cuota gratis que Flash; se pasa a Flash por configuración solo si la evaluación muestra que Flash-Lite no reconoce bien los testigos.
+- **Indexar manuales despacio:** el comando de V2-M24.02 respeta la cuota de embeddings (pausa entre páginas y reanuda al día siguiente si se agota). Se indexa una sola vez por manual.
+- **Proveedor caído, lento o sin cuota:** espera máxima de 20 s y un reintento; luego `ASISTENTE_NO_DISPONIBLE`. La app ofrece llamar a la agencia.
 
 ## Privacidad
 
 - **Lo que sale hacia Google:** la pregunta, el modelo y año, y los fragmentos del manual. Antes de enviarla, el backend borra de la pregunta lo que parezca correo, teléfono, VIN o placa, porque el cliente puede escribirlos sin querer.
 - **Lo que nunca sale:** nombre, cliente, cuenta ni token.
-- **En el nivel de pago:** Google no usa prompts ni respuestas para mejorar sus productos.
-- **En el nivel gratis:** sí los usa, y por eso ahí solo van datos inventados.
+- **Nivel gratis:** Google puede usar las preguntas, los fragmentos y las respuestas para mejorar sus productos, y personas pueden revisarlos. Por eso nada personal sale del backend y el aviso de privacidad lo dice.
 - **Retención:** `consulta_asistente` guarda pregunta, respuesta y fuentes 180 días. La cancelación ARCO (V2-M22.03) las borra antes.
-- **Aviso de privacidad:** el de la app (V2-M22.01) menciona el uso de un proveedor de IA.
+- **Aviso de privacidad:** el de la app (V2-M22.01) dice que las preguntas al asistente se procesan con un servicio de IA de Google que puede usarlas para mejorar sus productos, y que no se deben escribir datos personales.
 
 ## Calidad
 
@@ -107,13 +117,16 @@ Umbral para cerrar H6 (V2-M24.07): **al menos 80 %** de las preguntas del conjun
 
 ## Consecuencias
 
+- Costo cero garantizado: sin facturación vinculada no hay cobro posible.
 - Una sola llave y un solo proveedor para texto, fotos y vectores.
+- El asistente puede quedarse sin cuota algún día; la app lo explica y ofrece llamar a la agencia.
 - El índice depende del modelo de embeddings: cambiarlo obliga a reindexar todos los manuales. El comando de reindexado de V2-M24.02 lo cubre.
-- Los modelos se cambian por configuración. Si Google retira uno o sube su precio, se cambia sin tocar código.
+- Los modelos se cambian por configuración. Si Google retira uno o cambia la cuota gratis, se cambia sin tocar código.
 - Las pruebas automáticas nunca llaman a un proveedor real: no cuestan y no fallan por cuota.
 - Cada quien necesita su propia llave gratis para probar el asistente contra un modelo real en local. Sin llave, el backend local usa el proveedor falso.
 
 ## Pendiente antes de aceptar
 
-- Confirmar en la página oficial el precio de `gemini-embedding-2` y medir el costo de una foto.
-- Crear el proyecto de Google con facturación y la alerta de presupuesto (lo hace el dueño; la llave va directo al secreto de Azure, nunca al chat ni al repo).
+- Crear el proyecto del equipo en Google AI Studio **sin facturación**, anotar aquí su cuota gratis por modelo (la muestra AI Studio) y fijar con ella el tope global diario.
+- Guardar su llave en el secreto de Azure desde la terminal del dueño (nunca en el chat ni en el repo).
+- Aprobación de SM y PO en el PR.
