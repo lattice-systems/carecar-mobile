@@ -97,8 +97,10 @@ void main() {
         tipo: TipoAsistencia.otro,
         comentario: '   ',
       );
-      expect((jsonDecode(pedida!.body) as Map).containsKey('comentario'),
-          isFalse);
+      expect(
+        (jsonDecode(pedida!.body) as Map).containsKey('comentario'),
+        isFalse,
+      );
     });
 
     test('409 SOLICITUD_ABIERTA se traduce', () async {
