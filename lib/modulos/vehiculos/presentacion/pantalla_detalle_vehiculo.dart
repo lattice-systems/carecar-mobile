@@ -17,6 +17,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../asistente/asistente.dart';
 import '../../citas/citas.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'portada_vehiculo.dart';
@@ -192,6 +193,12 @@ class _DetalleState extends State<_Detalle> {
                     icono: Icons.fact_check_outlined,
                     colorIcono: c.exito,
                     alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.asistenteTitulo,
+                    icono: Icons.auto_awesome_outlined,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaAsistente(v.id)),
                   ),
                   FilaGrupo(
                     titulo: textos.vehiculosAccesoHistorial,
