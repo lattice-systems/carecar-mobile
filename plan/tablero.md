@@ -116,7 +116,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
-| V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | En revisión | PR_M2005 |
+| V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | En revisión | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
 | V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | |
