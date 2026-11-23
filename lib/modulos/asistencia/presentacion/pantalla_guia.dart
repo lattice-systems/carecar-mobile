@@ -23,33 +23,40 @@ class PantallaGuia extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(textos.tituloDeGuia(guia.tipo))),
-      body: ListView.separated(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(Espaciado.e4),
-        itemCount: guia.pasos,
-        separatorBuilder: (_, _) => const SizedBox(height: Espaciado.e5),
-        itemBuilder: (context, i) {
-          final numero = i + 1;
-          return Semantics(
-            container: true,
-            sortKey: OrdinalSortKey(numero.toDouble()),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  textos.asistenciaGuiaPasoNumero(numero, guia.pasos),
-                  style: t.tipografia.etiqueta.copyWith(
-                    color: t.colores.acento,
-                  ),
+        // Pocos pasos: se arman todos para que el lector de pantalla tenga la
+        // guia completa en orden, sin esperar a que se desplace.
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var numero = 1; numero <= guia.pasos; numero++) ...[
+              if (numero > 1) const SizedBox(height: Espaciado.e5),
+              Semantics(
+                container: true,
+                sortKey: OrdinalSortKey(numero.toDouble()),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      textos.asistenciaGuiaPasoNumero(numero, guia.pasos),
+                      style: t.tipografia.etiqueta.copyWith(
+                        color: t.colores.acento,
+                      ),
+                    ),
+                    const SizedBox(height: Espaciado.e1),
+                    Text(
+                      textos.pasoDeGuia(guia.tipo, numero),
+                      style: t.tipografia.cuerpo.copyWith(
+                        color: t.colores.texto,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: Espaciado.e1),
-                Text(
-                  textos.pasoDeGuia(guia.tipo, numero),
-                  style: t.tipografia.cuerpo.copyWith(color: t.colores.texto),
-                ),
-              ],
-            ),
-          );
-        },
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
