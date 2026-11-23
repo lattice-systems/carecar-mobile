@@ -21,6 +21,7 @@ import '../dominio/cita_agendada.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
+import 'pantalla_comprobante_cita.dart';
 import 'proveedores_citas.dart';
 
 enum _Paso { formulario, resumen, listo }
@@ -355,12 +356,38 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
   Widget _listo(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final cita = _confirmada!;
-    return EstadoVacio(
-      titulo: textos.citasListoTitulo,
-      mensaje: textos.citasListoMensaje(cita.fecha, cita.horaInicio),
-      icono: Icons.check_circle_outline,
-      textoAccion: textos.citasListoCerrar,
-      alAccion: () => Navigator.of(context).maybePop(),
+    final tema = Theme.of(context);
+    return Column(
+      children: [
+        Expanded(
+          child: EstadoVacio(
+            titulo: textos.citasListoTitulo,
+            mensaje: textos.citasListoMensaje(cita.fecha, cita.horaInicio),
+            icono: Icons.check_circle_outline,
+            textoAccion: textos.citasListoVerComprobante,
+            // La ruta nueva no cuelga del tema Pista de esta pantalla: se le
+            // pasa el mismo para que el comprobante se vea igual.
+            alAccion: () => Navigator.of(context).push<void>(
+              MaterialPageRoute(
+                builder: (_) => Theme(
+                  data: tema,
+                  child: PantallaComprobanteCita(citaId: cita.id),
+                ),
+              ),
+            ),
+          ),
+        ),
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(Espaciado.e4),
+            child: Boton(
+              texto: textos.citasListoCerrar,
+              anchoCompleto: true,
+              alPresionar: () => Navigator.of(context).maybePop(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
