@@ -38,7 +38,7 @@ class PantallaGaraje extends ConsumerWidget {
     final fondo = TokensPista.de(context).colores.fondo;
 
     Widget estado(Widget hijo) =>
-        SliverFillRemaining(hasScrollBody: false, child: hijo);
+        SliverFillRemaining(hasScrollBody: true, child: hijo);
 
     final contenido = vehiculos.when(
       skipLoadingOnReload: true,
