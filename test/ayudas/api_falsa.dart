@@ -200,6 +200,26 @@ class ApiFalsa implements CarecarApi {
         Future.value(Uint8List.fromList('%PDF-1.4\n%%EOF\n'.codeUnits));
   }
 
+  /// Que responde `GET /citas/{id}/comprobante`. Si es nulo, uno de ejemplo.
+  Future<ComprobanteCita> Function(int citaId)? alPedirComprobanteDeCita;
+
+  final comprobantesDeCitaPedidos = <int>[];
+
+  @override
+  Future<ComprobanteCita> comprobanteDeCita(int citaId) {
+    comprobantesDeCitaPedidos.add(citaId);
+    return alPedirComprobanteDeCita?.call(citaId) ??
+        Future.value(
+          ComprobanteCita(
+            citaId: citaId,
+            codigo: 'CC1.$citaId.firma',
+            fecha: DateTime(2026, 11, 24),
+            horaInicio: '09:00',
+            horaFin: '10:00',
+          ),
+        );
+  }
+
   // --- Agenda · APP-3.3 ---
 
   /// Que responde `GET /citas`. Si es nulo, una lista vacia.
