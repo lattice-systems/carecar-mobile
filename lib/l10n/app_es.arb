@@ -1335,5 +1335,38 @@
   "misEstimacionesErrorMas": "No pudimos cargar más estimaciones. Intenta de nuevo.",
   "@misEstimacionesErrorMas": {
     "description": "Aviso cuando falla la siguiente página."
+  },
+  "widgetsProximaCitaTitulo": "Próxima cita",
+  "@widgetsProximaCitaTitulo": {
+    "description": "Encabezado del widget de pantalla de inicio con la próxima cita."
+  },
+  "widgetsProximaCitaFecha": "{fecha}",
+  "@widgetsProximaCitaFecha": {
+    "description": "Día de la próxima cita en el widget de inicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMEd",
+        "example": "lun, 23 de nov"
+      }
+    }
+  },
+  "widgetsProximaCitaHorario": "{inicio} a {fin}",
+  "@widgetsProximaCitaHorario": {
+    "description": "Horario de la próxima cita en el widget de inicio.",
+    "placeholders": {
+      "inicio": {
+        "type": "String",
+        "example": "09:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "10:00"
+      }
+    }
+  },
+  "widgetsSinCitaMensaje": "No tienes citas próximas",
+  "@widgetsSinCitaMensaje": {
+    "description": "Texto del widget de inicio cuando no hay una cita confirmada por venir."
   }
 }
