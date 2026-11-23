@@ -86,6 +86,42 @@ class AppLocalizationsEn extends AppLocalizations {
       'Loading your vehicles and the workshop times';
 
   @override
+  String get citasComprobanteCargando => 'Loading your confirmation';
+
+  @override
+  String citasComprobanteCuando(DateTime fecha, String inicio, String fin) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, from $inicio to $fin';
+  }
+
+  @override
+  String citasComprobanteFolio(int id) {
+    return 'Reference $id';
+  }
+
+  @override
+  String get citasComprobanteIndicacion =>
+      'Show this code at reception to check in.';
+
+  @override
+  String get citasComprobanteQrDescripcion =>
+      'QR code of your appointment for reception';
+
+  @override
+  String get citasComprobanteTitulo => 'Appointment confirmation';
+
+  @override
+  String get citasComprobanteVerPdf => 'View confirmation as PDF';
+
+  @override
+  String get citasComprobanteVerPdfDescripcion =>
+      'PDF confirmation of your appointment';
+
+  @override
   String get citasCargarMas => 'Load more appointments';
 
   @override
@@ -174,6 +210,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get citasListoTitulo => 'Appointment confirmed';
+
+  @override
+  String get citasListoVerComprobante => 'View confirmation';
 
   @override
   String get citasMisCitasAgendar => 'Book an appointment';
