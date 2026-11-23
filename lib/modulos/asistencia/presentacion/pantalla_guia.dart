@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_portada.dart';
 import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -32,11 +33,7 @@ class PantallaGuia extends StatelessWidget {
     return Scaffold(
       backgroundColor: c.fondo,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
+      appBar: const BarraPortada(),
       body: SingleChildScrollView(
         // Pocos pasos: se arman todos para que el lector de pantalla tenga la
         // guia completa en orden, sin esperar a que se desplace.
