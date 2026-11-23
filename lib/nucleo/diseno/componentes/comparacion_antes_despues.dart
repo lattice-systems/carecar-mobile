@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 import 'galeria_fotos.dart';
@@ -42,16 +43,22 @@ class _ComparacionAntesDespuesState extends State<ComparacionAntesDespues> {
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
     final porcentaje = (_posicion * 100).round();
+    final textos = AppLocalizations.of(context);
 
     return Semantics(
       container: true,
       slider: true,
-      label:
-          'Comparacion. ${widget.antes.descripcion} contra '
-          '${widget.despues.descripcion}',
-      value: '$porcentaje % del antes',
-      increasedValue: '${((_posicion + _paso).clamp(0, 1) * 100).round()} %',
-      decreasedValue: '${((_posicion - _paso).clamp(0, 1) * 100).round()} %',
+      label: textos.comparacionEtiqueta(
+        widget.antes.descripcion,
+        widget.despues.descripcion,
+      ),
+      value: textos.comparacionValor(porcentaje),
+      increasedValue: textos.comparacionPorcentaje(
+        ((_posicion + _paso).clamp(0, 1) * 100).round(),
+      ),
+      decreasedValue: textos.comparacionPorcentaje(
+        ((_posicion - _paso).clamp(0, 1) * 100).round(),
+      ),
       onIncrease: () => _mover(_posicion + _paso),
       onDecrease: () => _mover(_posicion - _paso),
       excludeSemantics: true,

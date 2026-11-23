@@ -271,4 +271,195 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vehiculosVinCopiado => 'VIN copiado';
+
+  @override
+  String get avisoCerrar => 'Cerrar aviso';
+
+  @override
+  String get navegacionPrincipal => 'Navegación principal';
+
+  @override
+  String botonCargando(String texto) {
+    return '$texto, cargando';
+  }
+
+  @override
+  String calendarioDelMes(DateTime mes) {
+    final intl.DateFormat mesDateFormat = intl.DateFormat.yMMMM(localeName);
+    final String mesString = mesDateFormat.format(mes);
+
+    return 'Calendario de $mesString';
+  }
+
+  @override
+  String calendarioTituloMes(DateTime mes) {
+    final intl.DateFormat mesDateFormat = intl.DateFormat.yMMMM(localeName);
+    final String mesString = mesDateFormat.format(mes);
+
+    return '$mesString';
+  }
+
+  @override
+  String get calendarioMesAnterior => 'Mes anterior';
+
+  @override
+  String get calendarioMesSiguiente => 'Mes siguiente';
+
+  @override
+  String calendarioDia(DateTime fecha) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString';
+  }
+
+  @override
+  String get calendarioHoy => 'hoy';
+
+  @override
+  String get calendarioSeleccionado => 'seleccionado';
+
+  @override
+  String get calendarioSinCupo => 'sin cupo';
+
+  @override
+  String get calendarioInicialesDias => 'L,M,X,J,V,S,D';
+
+  @override
+  String get deslizarConfirmar => 'Confirmar';
+
+  @override
+  String get deslizarCancelar => 'Cancelar';
+
+  @override
+  String deslizarEtiqueta(String texto) {
+    return '$texto, desliza para confirmar';
+  }
+
+  @override
+  String firmaSinFirma(String firmante) {
+    return 'Sin firma de $firmante';
+  }
+
+  @override
+  String firmaDe(String pie) {
+    return 'Firma de $pie';
+  }
+
+  @override
+  String get firmaAunSinFirma => 'Aún sin firma';
+
+  @override
+  String galeriaEtiqueta(int actual, int total) {
+    return 'Galería de fotos, $actual de $total';
+  }
+
+  @override
+  String galeriaContador(int actual, int total) {
+    return '$actual de $total';
+  }
+
+  @override
+  String get galeriaFotoAnterior => 'Foto anterior';
+
+  @override
+  String get galeriaFotoSiguiente => 'Foto siguiente';
+
+  @override
+  String get galeriaCerrarFoto => 'Cerrar foto';
+
+  @override
+  String get graficaSinDatos => 'Aún no hay datos para mostrar.';
+
+  @override
+  String get graficaVerGrafica => 'Ver gráfica';
+
+  @override
+  String get graficaVerTabla => 'Ver como tabla';
+
+  @override
+  String graficaPunto(String etiqueta, String valor) {
+    return '$etiqueta: $valor';
+  }
+
+  @override
+  String get lineaPasoHecho => 'completado';
+
+  @override
+  String get lineaPasoActual => 'en curso';
+
+  @override
+  String get lineaPasoPendiente => 'pendiente';
+
+  @override
+  String get lineaVerMas => 'Ver más';
+
+  @override
+  String lineaEtapa(int posicion, int total) {
+    return 'Etapa $posicion de $total';
+  }
+
+  @override
+  String pestanaPosicion(String texto, int posicion, int total) {
+    return '$texto, $posicion de $total';
+  }
+
+  @override
+  String get franjasSinHorarios => 'No hay horarios para este día.';
+
+  @override
+  String get franjasDisponibles => 'Horarios disponibles';
+
+  @override
+  String pdfPagina(int pagina, int total) {
+    return 'Página $pagina de $total';
+  }
+
+  @override
+  String get pdfCargando => 'Cargando documento';
+
+  @override
+  String comparacionEtiqueta(String antes, String despues) {
+    return 'Comparación. $antes contra $despues';
+  }
+
+  @override
+  String comparacionValor(int porcentaje) {
+    return '$porcentaje % del antes';
+  }
+
+  @override
+  String comparacionPorcentaje(int porcentaje) {
+    return '$porcentaje %';
+  }
+
+  @override
+  String navegacionPendientes(int conteo) {
+    return '$conteo pendientes';
+  }
+
+  @override
+  String franjaSinCupo(String hora) {
+    return '$hora · sin cupo';
+  }
+
+  @override
+  String franjaConCupo(String hora, int cupo) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cupo,
+      locale: localeName,
+      other: '$cupo lugares',
+      one: '1 lugar',
+    );
+    return '$hora · $_temp0';
+  }
+
+  @override
+  String get galeriaAmpliar => 'Ampliar';
+
+  @override
+  String get galeriaSinFotos => 'Aún no hay fotos.';
+
+  @override
+  String get deslizarMensajeConfirmacion => 'Confirma que quieres continuar.';
 }

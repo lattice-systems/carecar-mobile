@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pdfx/pdfx.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -116,7 +117,8 @@ class _VisorPdfState extends State<VisorPdf> {
                             vertical: Espaciado.e2,
                           ),
                           child: Text(
-                            'Pagina $_pagina de $_total',
+                            AppLocalizations.of(context)
+                                .pdfPagina(_pagina, _total),
                             style: t.etiqueta.copyWith(color: c.texto),
                           ),
                         ),
@@ -138,7 +140,7 @@ class _Cargando extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Cargando documento',
+      label: AppLocalizations.of(context).pdfCargando,
       liveRegion: true,
       child: const Padding(
         padding: EdgeInsets.all(Espaciado.e4),

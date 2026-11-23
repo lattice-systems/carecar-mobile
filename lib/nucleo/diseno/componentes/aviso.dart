@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -67,7 +68,7 @@ class Aviso extends StatelessWidget {
               if (alCerrar != null)
                 IconButton(
                   onPressed: alCerrar,
-                  tooltip: 'Cerrar aviso',
+                  tooltip: AppLocalizations.of(context).avisoCerrar,
                   constraints: const BoxConstraints(
                     minWidth: 48,
                     minHeight: 48,

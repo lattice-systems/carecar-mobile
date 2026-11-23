@@ -1,25 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
-
-const List<String> _meses = [
-  'enero',
-  'febrero',
-  'marzo',
-  'abril',
-  'mayo',
-  'junio',
-  'julio',
-  'agosto',
-  'septiembre',
-  'octubre',
-  'noviembre',
-  'diciembre',
-];
-
-const List<String> _inicialesDias = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
 
 /// Calendario de un mes para elegir un dia, con dias sin cupo.
 ///
@@ -93,7 +77,7 @@ class Calendario extends StatelessWidget {
     return Semantics(
       container: true,
       explicitChildNodes: true,
-      label: 'Calendario de ${_meses[mes.month - 1]} de ${mes.year}',
+      label: AppLocalizations.of(context).calendarioDelMes(mes),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -101,7 +85,7 @@ class Calendario extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: hayAnterior ? () => alCambiarMes(anterior) : null,
-                tooltip: 'Mes anterior',
+                tooltip: AppLocalizations.of(context).calendarioMesAnterior,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 icon: const Icon(Icons.chevron_left),
               ),
@@ -110,7 +94,7 @@ class Calendario extends StatelessWidget {
                   header: true,
                   liveRegion: true,
                   child: Text(
-                    '${_meses[mes.month - 1]} ${mes.year}',
+                    AppLocalizations.of(context).calendarioTituloMes(mes),
                     textAlign: TextAlign.center,
                     style: t.cuerpoFuerte.copyWith(color: c.texto),
                   ),
@@ -118,7 +102,7 @@ class Calendario extends StatelessWidget {
               ),
               IconButton(
                 onPressed: haySiguiente ? () => alCambiarMes(siguiente) : null,
-                tooltip: 'Mes siguiente',
+                tooltip: AppLocalizations.of(context).calendarioMesSiguiente,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 icon: const Icon(Icons.chevron_right),
               ),
@@ -127,7 +111,9 @@ class Calendario extends StatelessWidget {
           ExcludeSemantics(
             child: Row(
               children: [
-                for (final inicial in _inicialesDias)
+                for (final inicial in AppLocalizations.of(
+                  context,
+                ).calendarioInicialesDias.split(','))
                   Expanded(
                     child: Center(
                       child: Text(
@@ -171,11 +157,12 @@ class Calendario extends StatelessWidget {
         ? c.sobreAcento
         : (elegible ? c.texto : c.textoTerciario);
 
+    final textos = AppLocalizations.of(context);
     final etiqueta = [
-      '$numero de ${_meses[mes.month - 1]}',
-      if (esHoy) 'hoy',
-      if (elegido) 'seleccionado',
-      if (!elegible) 'sin cupo',
+      textos.calendarioDia(dia),
+      if (esHoy) textos.calendarioHoy,
+      if (elegido) textos.calendarioSeleccionado,
+      if (!elegible) textos.calendarioSinCupo,
     ].join(', ');
 
     return Semantics(
@@ -203,7 +190,7 @@ class Calendario extends StatelessWidget {
                     : null,
               ),
               child: Text(
-                '$numero',
+                numero.toString(),
                 style: t.cuerpo.copyWith(
                   color: colorTexto,
                   decoration: elegible ? null : TextDecoration.lineThrough,

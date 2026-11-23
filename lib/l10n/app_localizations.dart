@@ -529,6 +529,282 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'VIN copiado'**
   String get vehiculosVinCopiado;
+
+  /// Botón para cerrar un aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar aviso'**
+  String get avisoCerrar;
+
+  /// Nombre de la barra de navegación para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Navegación principal'**
+  String get navegacionPrincipal;
+
+  /// Lo que anuncia un botón mientras trabaja.
+  ///
+  /// In es, this message translates to:
+  /// **'{texto}, cargando'**
+  String botonCargando(String texto);
+
+  /// Nombre del calendario con el mes visible.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario de {mes}'**
+  String calendarioDelMes(DateTime mes);
+
+  /// Encabezado del calendario con mes y año.
+  ///
+  /// In es, this message translates to:
+  /// **'{mes}'**
+  String calendarioTituloMes(DateTime mes);
+
+  /// Botón para ir al mes anterior.
+  ///
+  /// In es, this message translates to:
+  /// **'Mes anterior'**
+  String get calendarioMesAnterior;
+
+  /// Botón para ir al mes siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mes siguiente'**
+  String get calendarioMesSiguiente;
+
+  /// Día del calendario, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}'**
+  String calendarioDia(DateTime fecha);
+
+  /// Marca el día de hoy en el calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'hoy'**
+  String get calendarioHoy;
+
+  /// Marca el día elegido en el calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'seleccionado'**
+  String get calendarioSeleccionado;
+
+  /// Marca un día sin lugares en el calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'sin cupo'**
+  String get calendarioSinCupo;
+
+  /// Iniciales de los días de la semana, de lunes a domingo, separadas por coma.
+  ///
+  /// In es, this message translates to:
+  /// **'L,M,X,J,V,S,D'**
+  String get calendarioInicialesDias;
+
+  /// Botón principal del diálogo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get deslizarConfirmar;
+
+  /// Botón secundario del diálogo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get deslizarCancelar;
+
+  /// Lo que anuncia el control de deslizar para confirmar.
+  ///
+  /// In es, this message translates to:
+  /// **'{texto}, desliza para confirmar'**
+  String deslizarEtiqueta(String texto);
+
+  /// Firma ausente, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin firma de {firmante}'**
+  String firmaSinFirma(String firmante);
+
+  /// Firma presente, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma de {pie}'**
+  String firmaDe(String pie);
+
+  /// Texto del recuadro de firma vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún sin firma'**
+  String get firmaAunSinFirma;
+
+  /// Nombre de la galería con la foto visible.
+  ///
+  /// In es, this message translates to:
+  /// **'Galería de fotos, {actual} de {total}'**
+  String galeriaEtiqueta(int actual, int total);
+
+  /// Contador visible de la galería.
+  ///
+  /// In es, this message translates to:
+  /// **'{actual} de {total}'**
+  String galeriaContador(int actual, int total);
+
+  /// Botón para ir a la foto anterior.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto anterior'**
+  String get galeriaFotoAnterior;
+
+  /// Botón para ir a la foto siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto siguiente'**
+  String get galeriaFotoSiguiente;
+
+  /// Botón para cerrar la foto ampliada.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar foto'**
+  String get galeriaCerrarFoto;
+
+  /// Mensaje de una gráfica sin puntos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay datos para mostrar.'**
+  String get graficaSinDatos;
+
+  /// Botón para volver de la tabla a la gráfica.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver gráfica'**
+  String get graficaVerGrafica;
+
+  /// Botón para ver los datos de la gráfica como tabla.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver como tabla'**
+  String get graficaVerTabla;
+
+  /// Fila de la tabla de una gráfica.
+  ///
+  /// In es, this message translates to:
+  /// **'{etiqueta}: {valor}'**
+  String graficaPunto(String etiqueta, String valor);
+
+  /// Estado de un paso terminado en la línea de tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'completado'**
+  String get lineaPasoHecho;
+
+  /// Estado del paso actual en la línea de tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'en curso'**
+  String get lineaPasoActual;
+
+  /// Estado de un paso por hacer en la línea de tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'pendiente'**
+  String get lineaPasoPendiente;
+
+  /// Botón para cargar más pasos de la línea de tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get lineaVerMas;
+
+  /// Posición de un paso en la línea de tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Etapa {posicion} de {total}'**
+  String lineaEtapa(int posicion, int total);
+
+  /// Pestaña con su posición, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'{texto}, {posicion} de {total}'**
+  String pestanaPosicion(String texto, int posicion, int total);
+
+  /// Mensaje del selector de horarios vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay horarios para este día.'**
+  String get franjasSinHorarios;
+
+  /// Nombre del selector de horarios para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Horarios disponibles'**
+  String get franjasDisponibles;
+
+  /// Contador de páginas del visor de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Página {pagina} de {total}'**
+  String pdfPagina(int pagina, int total);
+
+  /// Lo que anuncia el visor mientras abre un documento.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando documento'**
+  String get pdfCargando;
+
+  /// Nombre del control de comparar antes y después.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparación. {antes} contra {despues}'**
+  String comparacionEtiqueta(String antes, String despues);
+
+  /// Valor del control de comparar antes y después.
+  ///
+  /// In es, this message translates to:
+  /// **'{porcentaje} % del antes'**
+  String comparacionValor(int porcentaje);
+
+  /// Valor al mover el control de comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'{porcentaje} %'**
+  String comparacionPorcentaje(int porcentaje);
+
+  /// Cantidad de pendientes de un destino de la barra de navegación.
+  ///
+  /// In es, this message translates to:
+  /// **'{conteo} pendientes'**
+  String navegacionPendientes(int conteo);
+
+  /// Franja horaria sin lugares.
+  ///
+  /// In es, this message translates to:
+  /// **'{hora} · sin cupo'**
+  String franjaSinCupo(String hora);
+
+  /// Franja horaria con sus lugares libres.
+  ///
+  /// In es, this message translates to:
+  /// **'{hora} · {cupo, plural, =1{1 lugar} other{{cupo} lugares}}'**
+  String franjaConCupo(String hora, int cupo);
+
+  /// Pista de la foto de la galería para ampliarla.
+  ///
+  /// In es, this message translates to:
+  /// **'Ampliar'**
+  String get galeriaAmpliar;
+
+  /// Mensaje de la galería sin fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay fotos.'**
+  String get galeriaSinFotos;
+
+  /// Mensaje por defecto del diálogo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma que quieres continuar.'**
+  String get deslizarMensajeConfirmacion;
 }
 
 class _AppLocalizationsDelegate

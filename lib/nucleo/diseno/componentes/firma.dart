@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -30,11 +31,14 @@ class Firma extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final pie = fecha == null ? firmante : '$firmante, $fecha';
+    final textos = AppLocalizations.of(context);
 
     return Semantics(
       container: true,
       image: imagen != null,
-      label: imagen == null ? 'Sin firma de $firmante' : 'Firma de $pie',
+      label: imagen == null
+          ? textos.firmaSinFirma(firmante)
+          : textos.firmaDe(pie),
       excludeSemantics: true,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,7 +54,7 @@ class Firma extends StatelessWidget {
             child: imagen == null
                 ? Center(
                     child: Text(
-                      'Aun sin firma',
+                      textos.firmaAunSinFirma,
                       style: t.cuerpoChico.copyWith(
                         color: const Color(0xFF5B6270),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -71,7 +72,7 @@ class Boton extends StatelessWidget {
     if (!cargando) return dimensionado;
     return Semantics(
       button: true,
-      label: '$texto, cargando',
+      label: AppLocalizations.of(context).botonCargando(texto),
       excludeSemantics: true,
       child: dimensionado,
     );

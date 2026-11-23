@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/galeria/galeria.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/pantalla_galeria.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/seccion_galeria.dart';
@@ -45,7 +46,11 @@ void main() {
   }
 
   group('PantallaGaleria', () {
-    Widget pantalla() => const MaterialApp(home: PantallaGaleria());
+    Widget pantalla() => const MaterialApp(
+      localizationsDelegates: delegadasDeIdioma,
+      supportedLocales: idiomasSoportados,
+      home: PantallaGaleria(),
+    );
 
     testWidgets('muestra los tres interruptores y la primera seccion', (
       tester,

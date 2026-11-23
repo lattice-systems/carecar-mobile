@@ -156,13 +156,13 @@ void main() {
       await tester.pumpWidget(
         lista(n: 3, hayMas: true, alPedirMas: () => pedidas++),
       );
-      await tester.tap(find.text('Ver mas'));
+      await tester.tap(find.text('Ver más'));
       expect(pedidas, 1);
     });
 
     testWidgets('sin mas paginas no muestra Ver mas', (tester) async {
       await tester.pumpWidget(lista(n: 3, hayMas: false, alPedirMas: () {}));
-      expect(find.text('Ver mas'), findsNothing);
+      expect(find.text('Ver más'), findsNothing);
     });
 
     testWidgets('mientras carga muestra esqueleto y no el boton', (
@@ -171,7 +171,7 @@ void main() {
       await tester.pumpWidget(
         lista(n: 3, hayMas: true, cargandoMas: true, alPedirMas: () {}),
       );
-      expect(find.text('Ver mas'), findsNothing);
+      expect(find.text('Ver más'), findsNothing);
     });
 
     testWidgets('al llegar al final pide la pagina una sola vez', (
@@ -244,7 +244,7 @@ void main() {
     testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
       for (final escenario in Escenario.values) {
         await tester.pumpWidget(calendario(escenario: escenario));
-        expect(find.text('noviembre 2026'), findsOneWidget);
+        expect(find.text('noviembre de 2026'), findsOneWidget);
         expect(tester.takeException(), isNull);
       }
     });
@@ -424,7 +424,7 @@ void main() {
           ),
         ),
       );
-      expect(find.text('No hay horarios para este dia.'), findsOneWidget);
+      expect(find.text('No hay horarios para este día.'), findsOneWidget);
     });
   });
 }

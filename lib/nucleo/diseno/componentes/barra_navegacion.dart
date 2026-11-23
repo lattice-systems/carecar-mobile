@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -50,7 +51,7 @@ class BarraNavegacion extends StatelessWidget {
     return Semantics(
       container: true,
       explicitChildNodes: true,
-      label: 'Navegacion principal',
+      label: AppLocalizations.of(context).navegacionPrincipal,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: c.superficie,
@@ -105,13 +106,15 @@ class _Destino extends StatelessWidget {
     final mov = context.movimiento(Movimiento.base);
     final color = seleccionado ? c.acento : c.textoSecundario;
     final pendientes = destino.conteo;
+    final textos = AppLocalizations.of(context);
 
     return Semantics(
       button: true,
       selected: seleccionado,
-      label:
-          '${destino.etiqueta}, $posicion de $total'
-          '${pendientes > 0 ? ', $pendientes pendientes' : ''}',
+      label: [
+        textos.pestanaPosicion(destino.etiqueta, posicion, total),
+        if (pendientes > 0) textos.navegacionPendientes(pendientes),
+      ].join(', '),
       onTap: alToque,
       excludeSemantics: true,
       child: InkWell(

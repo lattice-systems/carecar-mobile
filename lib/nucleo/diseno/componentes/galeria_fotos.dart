@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -25,12 +26,12 @@ class GaleriaFotos extends StatefulWidget {
     required this.fotos,
     super.key,
     this.alto = 220,
-    this.mensajeVacio = 'Aun no hay fotos.',
+    this.mensajeVacio,
   });
 
   final List<FotoGaleria> fotos;
   final double alto;
-  final String mensajeVacio;
+  final String? mensajeVacio;
 
   static const flechaSiguiente = Key('galeria_siguiente');
   static const flechaAnterior = Key('galeria_anterior');
@@ -73,7 +74,8 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
             child: Padding(
               padding: const EdgeInsets.all(Espaciado.e4),
               child: Text(
-                widget.mensajeVacio,
+                widget.mensajeVacio ??
+                    AppLocalizations.of(context).galeriaSinFotos,
                 textAlign: TextAlign.center,
                 style: t.cuerpoChico.copyWith(color: c.textoSecundario),
               ),
@@ -84,10 +86,11 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
     }
 
     final total = widget.fotos.length;
+    final textos = AppLocalizations.of(context);
     return Semantics(
       container: true,
       explicitChildNodes: true,
-      label: 'Galeria de fotos, ${_actual + 1} de $total',
+      label: textos.galeriaEtiqueta(_actual + 1, total),
       child: Column(
         children: [
           ClipRRect(
@@ -106,7 +109,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                         image: true,
                         button: true,
                         label: foto.descripcion,
-                        onTapHint: 'Ampliar',
+                        onTapHint: textos.galeriaAmpliar,
                         excludeSemantics: true,
                         child: GestureDetector(
                           onTap: () => mostrarVisorFoto(context, foto),
@@ -132,7 +135,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                       child: _Flecha(
                         llave: GaleriaFotos.flechaAnterior,
                         icono: Icons.chevron_left,
-                        tooltip: 'Foto anterior',
+                        tooltip: textos.galeriaFotoAnterior,
                         alPresionar: _actual > 0
                             ? () => _ir(_actual - 1)
                             : null,
@@ -143,7 +146,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                       child: _Flecha(
                         llave: GaleriaFotos.flechaSiguiente,
                         icono: Icons.chevron_right,
-                        tooltip: 'Foto siguiente',
+                        tooltip: textos.galeriaFotoSiguiente,
                         alPresionar: _actual < total - 1
                             ? () => _ir(_actual + 1)
                             : null,
@@ -157,7 +160,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
           const SizedBox(height: Espaciado.e2),
           ExcludeSemantics(
             child: Text(
-              '${_actual + 1} de $total',
+              textos.galeriaContador(_actual + 1, total),
               style: t.etiqueta.copyWith(color: c.textoSecundario),
             ),
           ),
@@ -236,7 +239,7 @@ class _VisorFoto extends StatelessWidget {
               padding: const EdgeInsets.all(Espaciado.e2),
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                tooltip: 'Cerrar foto',
+                tooltip: AppLocalizations.of(context).galeriaCerrarFoto,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 style: IconButton.styleFrom(
                   backgroundColor: Colors.black54,
