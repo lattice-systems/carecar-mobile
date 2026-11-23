@@ -52,6 +52,33 @@ void main() {
     expect(color.a, lessThan(1));
   });
 
+  testWidgets('al desplazar el titulo sigue visible y nada lo tapa', (
+    tester,
+  ) async {
+    await tester.pumpWidget(conTemaPista(_pantalla(translucido: true)));
+    for (final dy in [-100.0, -400.0, -1200.0]) {
+      await tester.drag(find.byType(CustomScrollView), Offset(0, dy));
+      await tester.pump();
+      expect(find.text('Mi auto').hitTestable(), findsOneWidget);
+    }
+  });
+
+  testWidgets('contraido el fondo cubre lo bastante para no leer lo de abajo', (
+    tester,
+  ) async {
+    await tester.pumpWidget(conTemaPista(_pantalla(translucido: true)));
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -400));
+    await tester.pump();
+    final caja = tester.widget<DecoratedBox>(
+      find.descendant(
+        of: find.byType(BackdropFilter),
+        matching: find.byType(DecoratedBox),
+      ),
+    );
+    final color = (caja.decoration as BoxDecoration).color!;
+    expect(color.a, greaterThanOrEqualTo(0.9));
+  });
+
   testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
     for (final escenario in Escenario.values) {
       await tester.pumpWidget(
