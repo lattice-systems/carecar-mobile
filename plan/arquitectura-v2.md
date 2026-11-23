@@ -87,6 +87,8 @@ En código, `interruptorModulosProvider` entrega el `InterruptorModulos`; las pr
 
 **Cómo se retira (V2-T01.07).** Al cerrar H2, con todos los módulos en v2: se borran `lib/nucleo/migracion/`, `interruptorModulosProvider`, el parámetro `abrirEnV2` de `PantallaInicio` (que desaparece con `lib/pantallas`), `destinosDeMenuV2` y las pruebas de `test/nucleo/migracion/`; `registro_de_rutas.dart` vuelve a `...rutas<Modulo>,` sin envoltorio y el parámetro `interruptor` de `rutasDeLaApp` se quita. `grep -rn "migracion/\|ModuloMigrable\|MODULOS_V" lib test` debe quedar vacío.
 
+**Reglas de dependencia.** El interruptor no agrega excepciones a `excepcionesV1` (`test/arquitectura/`): el archivo del núcleo que monta pantallas v1 sigue siendo `rutas_del_nucleo.dart`, y `nucleo/migracion/` no importa v1. Al migrar un módulo, quita de esa lista lo que ya no monte v1.
+
 **Límites conocidos.** Los accesos rápidos del ícono (V2-M25.04) y el widget de cita (V2-M25.01) apuntan a rutas v2: con el módulo en v1 caen en el inicio. Es lo esperado: el módulo incompleto no se ve.
 
 ## Backend
