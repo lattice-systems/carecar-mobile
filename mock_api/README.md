@@ -132,6 +132,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/auth/restablecer-contrasena` | 204 · 400 si el token es inválido, usado o expiró |
 | GET | `/vehiculos` | Solo los del cliente de la sesión |
 | GET | `/vehiculos/{id}/manuales` | Por modelo y año, no por vehículo |
+| GET | `/vehiculos/{id}/ficha-tecnica` | Por modelo y año (V2-M02.04) · 404 si no hay ficha de ese modelo y año |
 | GET | `/vehiculos/{id}/servicios` | Orden cronológico, el más reciente primero |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
