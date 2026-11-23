@@ -206,6 +206,14 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
             spacing: Espaciado.e2,
             children: [
               Boton(
+                texto: textos.citasReprogramar,
+                variante: VarianteBoton.secundario,
+                tamano: TamanoBoton.chico,
+                alPresionar: _cancelandoId == null
+                    ? () => context.push(rutaReprogramarCita(cita.id))
+                    : null,
+              ),
+              Boton(
                 texto: textos.citasCancelar,
                 variante: VarianteBoton.terciario,
                 tamano: TamanoBoton.chico,
