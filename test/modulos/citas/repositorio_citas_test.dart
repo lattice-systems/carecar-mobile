@@ -422,6 +422,54 @@ void main() {
       final repo = RepositorioCitasFake(error: const SinConexion());
       expect(repo.misCitas(), throwsA(isA<SinConexion>()));
       expect(repo.cancelar(1), throwsA(isA<SinConexion>()));
+  group('comprobante', () {
+    test('RepositorioCitasApi traduce el comprobante y su codigo', () async {
+      final api = ApiFalsa()
+        ..alPedirComprobanteDeCita = (id) async => ComprobanteCita(
+          citaId: id,
+          codigo: 'CC1.$id.firma',
+          fecha: DateTime(2026, 11, 24),
+          horaInicio: '09:00',
+          horaFin: '10:00',
+          vehiculoNombre: 'Mazda CX-5 2024',
+        );
+      final c = await RepositorioCitasApi(api).comprobante(7);
+      expect(api.comprobantesDeCitaPedidos, [7]);
+      expect(c.citaId, 7);
+      expect(c.codigo, 'CC1.7.firma');
+      expect(c.vehiculoNombre, 'Mazda CX-5 2024');
+    });
+
+    test('RepositorioCitasApi baja el PDF del ticket de la cita', () async {
+      final api = ApiFalsa();
+      final bytes = await RepositorioCitasApi(api).ticketPdf(7);
+      expect(api.ticketsDeCitaPedidos, [7]);
+      expect(bytes, isNotEmpty);
+    });
+
+    test('el fake arma el comprobante de una cita agendada', () async {
+      final repo = RepositorioCitasFake();
+      final f = FranjaDisponible(
+        franjaId: 1,
+        fecha: DateTime(2026, 11, 24),
+        horaInicio: '11:00',
+        horaFin: '12:00',
+        cupo: 2,
+      );
+      final cita = await repo.agendar(
+        vehiculoId: 1,
+        franja: f,
+        motivo: MotivoCita.otro,
+      );
+      final c = await repo.comprobante(cita.id);
+      expect(c.codigo, isNotEmpty);
+      expect(c.horaInicio, '11:00');
+    });
+
+    test('el fake puede fallar a pedido', () {
+      final repo = RepositorioCitasFake(error: const SinConexion());
+      expect(repo.comprobante(1), throwsA(isA<SinConexion>()));
+      expect(repo.ticketPdf(1), throwsA(isA<SinConexion>()));
     });
   });
 }
