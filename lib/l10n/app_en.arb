@@ -814,6 +814,14 @@
   "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
   "citasWalletErrorCancelada": "Your appointment is cancelled, so it no longer has a pass.",
   "citasWalletErrorNoDisponible": "The Wallet pass is not available right now. Show the QR code at reception.",
+  "citasAgendarDia": "Day",
+  "citasAgendarHorario": "Time",
+  "citasMisCitasProximaEtiqueta": "Your next appointment",
+  "citasHeroComprobante": "Receipt",
+  "citasAccionesCita": "Appointment options",
+  "citasCerrar": "Close",
+  "citasComprobanteDetalles": "Appointment details",
+  "citasComprobanteRecepcion": "At reception",
   "vehiculosAgendarServicio": "Book a service",
   "@vehiculosAgendarServicio": {
     "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
