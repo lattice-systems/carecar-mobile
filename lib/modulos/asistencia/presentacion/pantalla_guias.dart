@@ -163,7 +163,10 @@ class _PortadaGuia extends StatelessWidget {
 
     return Semantics(
       button: true,
-      label: '$titulo, ${textos.asistenciaGuiaCantidadPasos(guia.pasos)}',
+      label: [
+        titulo,
+        textos.asistenciaGuiaCantidadPasos(guia.pasos),
+      ].join(', '),
       excludeSemantics: true,
       onTap: () => context.go(rutaGuiaDeEmergencia(guia.tipo)),
       child: Material(
