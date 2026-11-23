@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.2.0
+  version: 2.3.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -61,7 +61,9 @@ paths:
       tags: [Acceso]
       summary: Iniciar sesión con la cuenta que entregó la agencia
       description: |
-        No existe registro público (APP-2.1). El cliente entra con su correo.
+        No existe registro público (APP-2.1). El cliente entra con su correo, que es el
+        usuario de su cuenta (`cuenta_app.usuario`, V2-T05.03); si la agencia cambia el
+        correo del cliente, el usuario cambia con él.
         Si la cuenta tiene contraseña temporal, `debeCambiarContrasena` llega en `true`
         y la app debe forzar el cambio (APP-2.3).
 
@@ -171,11 +173,14 @@ paths:
   /auth/recuperar-contrasena:
     post:
       tags: [Acceso]
-      summary: Solicitar un código de recuperación por correo
+      summary: Solicitar un enlace de recuperación por correo
       description: |
-        APP-2.3 · Sprint 2. Envía al correo un código de 6 dígitos que vence a los
-        15 minutos y sirve una sola vez. Pedir uno nuevo invalida el anterior.
-        Responde 202 aunque el correo no exista, para no revelar qué cuentas hay.
+        APP-2.3 · V2-T05.04. Envía al correo un enlace de un solo uso que abre la app
+        (`carecar://restablecer-contrasena?token=...`, configurable con
+        `RECUPERACION_ENLACE`) y, para la app v1, un código de 6 dígitos. Los dos vencen a
+        los 15 minutos, viven en la misma fila de `token_recuperacion` y usar uno cierra el
+        otro. Pedir uno nuevo invalida el anterior. Responde 202 aunque el correo no
+        exista, para no revelar qué cuentas hay.
       security: []
       requestBody:
         required: true
@@ -199,9 +204,11 @@ paths:
   /auth/restablecer-contrasena:
     post:
       tags: [Acceso]
-      summary: Definir nueva contraseña con el código de recuperación
+      summary: Definir nueva contraseña con el enlace o el código de recuperación
       description: |
-        APP-2.3 · Sprint 2. El código admite 5 intentos; después hay que pedir otro.
+        APP-2.3 · V2-T05.04. La app v2 manda `token` (el del enlace); la app v1 manda
+        `correo` y `codigo`. El código admite 5 intentos; después hay que pedir otro. Al
+        restablecer se cierran las sesiones abiertas de la cuenta.
       security: []
       requestBody:
         required: true
@@ -214,8 +221,9 @@ paths:
           description: Contraseña restablecida
         '400':
           description: |
-            Código inválido, usado o vencido (`codigo` CODIGO_INVALIDO), o contraseña que no
-            cumple las reglas (`codigo` DATOS_INVALIDOS)
+            Enlace o código inválido, usado o vencido (`codigo` CODIGO_INVALIDO); falta el
+            `token` o el `correo` con el `codigo`, o la contraseña no cumple las reglas
+            (`codigo` DATOS_INVALIDOS)
           content:
             application/json:
               schema:
@@ -1068,8 +1076,13 @@ components:
 
     RestablecerContrasenaRequest:
       type: object
-      required: [correo, codigo, contrasenaNueva]
+      required: [contrasenaNueva]
+      description: Con `token`, o con `correo` y `codigo` (app v1). Si llega `token`, se usa ese.
       properties:
+        token:
+          type: string
+          maxLength: 100
+          description: V2-T05.04 · Token del enlace de un solo uso que llegó al correo
         correo:
           type: string
           format: email
