@@ -72,9 +72,8 @@ Future<void> _montar(
         localizationsDelegates: delegadasDeIdioma,
         supportedLocales: idiomasSoportados,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(
-            context,
-          ).copyWith(textScaler: TextScaler.linear(escala)),
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: TextScaler.linear(escala)),
           child: child!,
         ),
         home: const PantallaPedirAyuda(),
@@ -112,7 +111,13 @@ void main() {
     expect(find.text('Pedir ayuda'), findsWidgets);
     expect(find.text('Mazda CX-5 2024'), findsOneWidget);
     expect(find.text('Mazda 3 2022'), findsOneWidget);
-    for (final tipo in ['Llanta', 'Batería', 'Choque', 'Sin gasolina', 'Otro']) {
+    for (final tipo in [
+      'Llanta',
+      'Batería',
+      'Choque',
+      'Sin gasolina',
+      'Otro',
+    ]) {
       expect(find.text(tipo), findsOneWidget);
     }
     expect(find.text('Compartir mi ubicación'), findsOneWidget);
@@ -129,32 +134,35 @@ void main() {
     expect(repo.pedidos, isEmpty, reason: 'falta el tipo');
   });
 
-  testWidgets('crea la solicitud con vehiculo, tipo y ubicacion y da el folio', (
-    tester,
-  ) async {
-    final repo = RepositorioAsistenciaFake();
-    await _montar(
-      tester,
-      repo: repo,
-      ubicacion: UbicacionFalsa(posicion: const Coordenada(19.4326, -99.1332)),
-    );
-    await _llenarLoBasico(tester);
-    await _tocar(tester, 'Compartir mi ubicación');
-    expect(find.text('Ubicación lista para enviar'), findsOneWidget);
-    await tester.enterText(find.byType(TextField), 'Frente a la gasolinera');
-    await _deslizar(tester);
+  testWidgets(
+    'crea la solicitud con vehiculo, tipo y ubicacion y da el folio',
+    (tester) async {
+      final repo = RepositorioAsistenciaFake();
+      await _montar(
+        tester,
+        repo: repo,
+        ubicacion: UbicacionFalsa(
+          posicion: const Coordenada(19.4326, -99.1332),
+        ),
+      );
+      await _llenarLoBasico(tester);
+      await _tocar(tester, 'Compartir mi ubicación');
+      expect(find.text('Ubicación lista para enviar'), findsOneWidget);
+      await tester.enterText(find.byType(TextField), 'Frente a la gasolinera');
+      await _deslizar(tester);
 
-    final pedido = repo.pedidos.single;
-    expect(pedido.vehiculoId, 1);
-    expect(pedido.tipo, TipoAsistencia.llanta);
-    expect(pedido.ubicacion, const Coordenada(19.4326, -99.1332));
-    expect(pedido.comentario, 'Frente a la gasolinera');
-    expect(find.text('Folio 1'), findsOneWidget);
-    expect(find.text('Solicitud recibida'), findsWidgets);
-    expect(find.text('Compartida con la agencia'), findsOneWidget);
-    // La pantalla no pone las coordenadas a la vista ni las repite.
-    expect(find.textContaining('19.43'), findsNothing);
-  });
+      final pedido = repo.pedidos.single;
+      expect(pedido.vehiculoId, 1);
+      expect(pedido.tipo, TipoAsistencia.llanta);
+      expect(pedido.ubicacion, const Coordenada(19.4326, -99.1332));
+      expect(pedido.comentario, 'Frente a la gasolinera');
+      expect(find.text('Folio 1'), findsOneWidget);
+      expect(find.text('Solicitud recibida'), findsWidgets);
+      expect(find.text('Compartida con la agencia'), findsOneWidget);
+      // La pantalla no pone las coordenadas a la vista ni las repite.
+      expect(find.textContaining('19.43'), findsNothing);
+    },
+  );
 
   testWidgets('sin compartir ubicacion se envia sin coordenadas', (
     tester,
@@ -198,22 +206,23 @@ void main() {
     expect(find.textContaining('Ajustes'), findsOneWidget);
   });
 
-  testWidgets('servicio apagado y tiempo agotado tienen su mensaje y reintento', (
-    tester,
-  ) async {
-    final ubicacion = UbicacionFalsa(error: const UbicacionServicioApagado());
-    await _montar(tester, ubicacion: ubicacion);
-    await _tocar(tester, 'Compartir mi ubicación');
-    expect(find.textContaining('está apagada'), findsOneWidget);
+  testWidgets(
+    'servicio apagado y tiempo agotado tienen su mensaje y reintento',
+    (tester) async {
+      final ubicacion = UbicacionFalsa(error: const UbicacionServicioApagado());
+      await _montar(tester, ubicacion: ubicacion);
+      await _tocar(tester, 'Compartir mi ubicación');
+      expect(find.textContaining('está apagada'), findsOneWidget);
 
-    ubicacion.error = const UbicacionTiempoAgotado();
-    await _tocar(tester, 'Intentar de nuevo');
-    expect(find.textContaining('a tiempo'), findsOneWidget);
+      ubicacion.error = const UbicacionTiempoAgotado();
+      await _tocar(tester, 'Intentar de nuevo');
+      expect(find.textContaining('a tiempo'), findsOneWidget);
 
-    ubicacion.error = null;
-    await _tocar(tester, 'Intentar de nuevo');
-    expect(find.text('Ubicación lista para enviar'), findsOneWidget);
-  });
+      ubicacion.error = null;
+      await _tocar(tester, 'Intentar de nuevo');
+      expect(find.text('Ubicación lista para enviar'), findsOneWidget);
+    },
+  );
 
   testWidgets('sin conexion al enviar avisa y deja intentar de nuevo', (
     tester,
@@ -256,7 +265,10 @@ void main() {
     );
     await _montar(tester, repo: repo);
     expect(find.text('Folio 41'), findsOneWidget);
-    expect(find.textContaining('Ya tenías una solicitud abierta'), findsOneWidget);
+    expect(
+      find.textContaining('Ya tenías una solicitud abierta'),
+      findsOneWidget,
+    );
     expect(find.text('Desliza para pedir ayuda'), findsNothing);
   });
 
@@ -276,7 +288,10 @@ void main() {
     await _llenarLoBasico(tester);
     await _deslizar(tester);
     expect(find.text('Folio 77'), findsOneWidget);
-    expect(find.textContaining('Ya tenías una solicitud abierta'), findsOneWidget);
+    expect(
+      find.textContaining('Ya tenías una solicitud abierta'),
+      findsOneWidget,
+    );
   });
 
   group('cinco estados', () {
