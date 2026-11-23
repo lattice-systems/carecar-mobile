@@ -1340,6 +1340,299 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehiculosToqueCopiarVin => 'Toca para copiar';
 
   @override
+  String get recoleccionCerrar => 'Cerrar';
+
+  @override
+  String get recoleccionDireccionesTitulo => 'Mis direcciones';
+
+  @override
+  String get recoleccionDireccionesAgregar => 'Agregar dirección';
+
+  @override
+  String get recoleccionDireccionesCargando => 'Cargando tus direcciones';
+
+  @override
+  String get recoleccionDireccionesVacioTitulo => 'Aún no tienes direcciones';
+
+  @override
+  String get recoleccionDireccionesVacioMensaje =>
+      'Guarda una para que recojamos tu auto sin escribirla cada vez.';
+
+  @override
+  String get recoleccionDireccionesEncabezado => 'Guardadas';
+
+  @override
+  String get recoleccionDireccionesPie => 'Toca una para editarla o borrarla.';
+
+  @override
+  String recoleccionDireccionEditar(String alias) {
+    return 'Editar $alias';
+  }
+
+  @override
+  String get recoleccionDireccionBorrada => 'Dirección borrada';
+
+  @override
+  String get recoleccionFormNuevaTitulo => 'Nueva dirección';
+
+  @override
+  String get recoleccionFormEditarTitulo => 'Editar dirección';
+
+  @override
+  String get recoleccionFormUbicacionTitulo => 'Ubicación en el mapa';
+
+  @override
+  String get recoleccionFormPinAyuda =>
+      'Toca el mapa para poner el pin donde recogeremos tu auto.';
+
+  @override
+  String get recoleccionFormPinFalta => 'Pon el pin en el mapa.';
+
+  @override
+  String recoleccionFormMapaDescripcion(String latitud, String longitud) {
+    return 'Mapa para elegir la ubicación. Pin en $latitud, $longitud.';
+  }
+
+  @override
+  String get recoleccionFormMapaSinPin =>
+      'Mapa para elegir la ubicación. Todavía no hay pin.';
+
+  @override
+  String get recoleccionFormUsarUbicacion => 'Usar mi ubicación';
+
+  @override
+  String get recoleccionFormBuscarEtiqueta => 'Buscar dirección';
+
+  @override
+  String get recoleccionFormBuscarSugerencia => 'Calle, número y colonia';
+
+  @override
+  String get recoleccionFormBuscarAccion => 'Buscar';
+
+  @override
+  String get recoleccionFormBuscando => 'Buscando la dirección';
+
+  @override
+  String get recoleccionFormAliasEtiqueta => 'Nombre';
+
+  @override
+  String get recoleccionFormAliasSugerencia => 'Casa, oficina…';
+
+  @override
+  String get recoleccionFormCalleEtiqueta => 'Calle y número';
+
+  @override
+  String get recoleccionFormColoniaEtiqueta => 'Colonia';
+
+  @override
+  String get recoleccionFormCpEtiqueta => 'Código postal';
+
+  @override
+  String get recoleccionFormCiudadEtiqueta => 'Ciudad';
+
+  @override
+  String get recoleccionErrorAlias =>
+      'Escribe un nombre de hasta 40 caracteres.';
+
+  @override
+  String get recoleccionErrorCalle =>
+      'Escribe la calle y el número, hasta 120 caracteres.';
+
+  @override
+  String get recoleccionErrorColonia =>
+      'Escribe la colonia, hasta 80 caracteres.';
+
+  @override
+  String get recoleccionErrorCp => 'El código postal tiene 5 dígitos.';
+
+  @override
+  String get recoleccionErrorCiudad =>
+      'Escribe la ciudad, hasta 80 caracteres.';
+
+  @override
+  String get recoleccionGuardar => 'Guardar dirección';
+
+  @override
+  String get recoleccionBorrar => 'Borrar dirección';
+
+  @override
+  String get recoleccionBorrarTitulo => '¿Borrar esta dirección?';
+
+  @override
+  String recoleccionBorrarMensaje(String alias) {
+    return 'Se borrará «$alias». No se puede deshacer.';
+  }
+
+  @override
+  String get recoleccionBorrarConfirmar => 'Borrar';
+
+  @override
+  String get recoleccionBorrarCancelar => 'Cancelar';
+
+  @override
+  String get recoleccionErrorEnUso =>
+      'Esta dirección ya tiene recolecciones y no se puede borrar.';
+
+  @override
+  String get recoleccionCoberturaTitulo => 'Fuera de cobertura';
+
+  @override
+  String get recoleccionCoberturaMensaje =>
+      'Todavía no recogemos autos en esa zona. Mueve el pin o elige otra dirección.';
+
+  @override
+  String get recoleccionErrorGuardar =>
+      'No pudimos guardar la dirección. Intenta de nuevo.';
+
+  @override
+  String get recoleccionErrorBorrar =>
+      'No pudimos borrar la dirección. Intenta de nuevo.';
+
+  @override
+  String get recoleccionErrorSinConexion =>
+      'Sin conexión. Revisa tu red e intenta de nuevo.';
+
+  @override
+  String get recoleccionUbicacionDenegada =>
+      'Necesitamos tu permiso para usar la ubicación. También puedes poner el pin a mano.';
+
+  @override
+  String get recoleccionUbicacionApagada =>
+      'Activa la ubicación del teléfono o pon el pin a mano.';
+
+  @override
+  String get recoleccionUbicacionTiempo =>
+      'No pudimos ubicarte a tiempo. Intenta de nuevo o pon el pin a mano.';
+
+  @override
+  String get recoleccionBusquedaSinResultados =>
+      'No encontramos esa dirección. Prueba con otra o pon el pin a mano.';
+
+  @override
+  String get recoleccionBusquedaError =>
+      'No pudimos buscar la dirección. Pon el pin a mano.';
+
+  @override
+  String get recoleccionSelectorTitulo => '¿Cómo llega tu auto al taller?';
+
+  @override
+  String get recoleccionSelectorLoLlevo => 'Lo llevo yo';
+
+  @override
+  String get recoleccionSelectorQueRecojan => 'Que recojan mi auto';
+
+  @override
+  String get recoleccionSelectorDireccion => 'Dirección de recolección';
+
+  @override
+  String get recoleccionSelectorAdministrar => 'Administrar mis direcciones';
+
+  @override
+  String get recoleccionSelectorSinDirecciones =>
+      'Aún no tienes direcciones guardadas.';
+
+  @override
+  String get recoleccionSelectorElegirDia =>
+      'Elige día y horario para cotizar la recolección.';
+
+  @override
+  String get recoleccionSelectorElegirDireccion =>
+      'Elige una dirección para ver el costo.';
+
+  @override
+  String get recoleccionSelectorCotizando =>
+      'Calculando el costo de la recolección';
+
+  @override
+  String get recoleccionSelectorElegida => 'Elegida';
+
+  @override
+  String get recoleccionCotizacionEncabezado => 'Costo y horario';
+
+  @override
+  String get recoleccionCotizacionRecogemos => 'Recogemos tu auto';
+
+  @override
+  String get recoleccionCotizacionEntregamos => 'Te lo entregamos';
+
+  @override
+  String get recoleccionCotizacionPorTraslado => 'Cada traslado';
+
+  @override
+  String get recoleccionCotizacionTotal => 'Total de la recolección';
+
+  @override
+  String recoleccionCotizacionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, de $inicio a $fin';
+  }
+
+  @override
+  String get recoleccionCotizacionErrorTitulo =>
+      'No pudimos cotizar la recolección';
+
+  @override
+  String get recoleccionCotizacionErrorMensaje =>
+      'Revisa tu conexión e intenta de nuevo. Mientras tanto puedes llevar tú el auto.';
+
+  @override
+  String get recoleccionCotizacionReintentar => 'Reintentar';
+
+  @override
+  String get recoleccionCotizacionFueraDeCobertura =>
+      'Esa dirección queda fuera de nuestra zona de cobertura. Elige otra o lleva tú el auto.';
+
+  @override
+  String get citasResumenRecoleccion => 'Recolección';
+
+  @override
+  String citasResumenRecoleccionValor(String alias, String direccion) {
+    return '$alias · $direccion';
+  }
+
+  @override
+  String get citasResumenRecogemos => 'Recogemos tu auto';
+
+  @override
+  String get citasResumenEntregamos => 'Te lo entregamos';
+
+  @override
+  String citasResumenRecoleccionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, de $inicio a $fin';
+  }
+
+  @override
+  String get citasResumenRecoleccionCosto => 'Costo de la recolección';
+
+  @override
+  String get citasResumenRecoleccionEncabezado => 'Recolección a domicilio';
+
+  @override
+  String get citasErrorCobertura =>
+      'Esa dirección ya no está en nuestra zona de cobertura. Elige otra o lleva tú el auto.';
+
+  @override
+  String get citasErrorRecoleccion =>
+      'No encontramos esa dirección. Elige otra e intenta de nuevo.';
+
+  @override
   String get asistenciaHeroeTextoDisponible =>
       'Cuéntanos qué pasó y comparte tu ubicación para que la agencia te encuentre. Mientras llega la ayuda, estas guías te dicen qué hacer.';
 
