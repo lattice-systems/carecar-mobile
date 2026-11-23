@@ -63,17 +63,18 @@ void main() {
     expect(find.byType(PantallaLogin), findsOneWidget);
   });
 
-  testWidgets('el boton de la tarjeta de emergencias esta activo y abre la ruta', (
-    tester,
-  ) async {
-    await _montar(tester);
-    enrutadorDe(tester).go(rutaAsistenciaGuias);
-    await tester.pumpAndSettle();
-    expect(find.textContaining('estará disponible pronto'), findsNothing);
-    await tester.tap(find.text('Pedir ayuda'));
-    await tester.pumpAndSettle();
-    expect(find.byType(PantallaPedirAyuda), findsOneWidget);
-  });
+  testWidgets(
+    'el boton de la tarjeta de emergencias esta activo y abre la ruta',
+    (tester) async {
+      await _montar(tester);
+      enrutadorDe(tester).go(rutaAsistenciaGuias);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('estará disponible pronto'), findsNothing);
+      await tester.tap(find.text('Pedir ayuda'));
+      await tester.pumpAndSettle();
+      expect(find.byType(PantallaPedirAyuda), findsOneWidget);
+    },
+  );
 
   testWidgets('desde pedir ayuda se regresa a las guias', (tester) async {
     await _montar(tester);
