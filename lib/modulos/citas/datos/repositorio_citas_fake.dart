@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart' show DateUtils;
 
+import '../../recoleccion/recoleccion.dart';
 import '../dominio/cita_agendada.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/comprobante_de_cita.dart';
@@ -31,6 +32,8 @@ class RepositorioCitasFake implements RepositorioCitas {
     this.franjasLlenas = const {},
     List<CitaCliente> citas = const [],
     DateTime Function()? reloj,
+    this.costoPorTraslado = 150,
+    this.direccionesFueraDeCobertura = const {},
   }) : _citas = [...citas],
        _reloj = reloj ?? DateTime.now;
 
@@ -42,6 +45,12 @@ class RepositorioCitasFake implements RepositorioCitas {
 
   /// Ids de franja que ya no tienen lugar.
   final Set<int> franjasLlenas;
+
+  /// Pesos de cada traslado cuando la cita se agenda con recoleccion.
+  final double costoPorTraslado;
+
+  /// Ids de direccion que el servidor rechaza con `FueraDeCobertura`.
+  final Set<int> direccionesFueraDeCobertura;
 
   final List<CitaCliente> _citas;
   final DateTime Function() _reloj;
@@ -112,9 +121,13 @@ class RepositorioCitasFake implements RepositorioCitas {
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+    int? direccionRecoleccionId,
   }) async {
     final falla = error;
     if (falla != null) throw falla;
+    if (direccionesFueraDeCobertura.contains(direccionRecoleccionId)) {
+      throw const FueraDeCobertura();
+    }
     for (final c in _agendadas) {
       if (c.vehiculoId == vehiculoId &&
           DateUtils.isSameDay(c.fecha, franja.fecha)) {
@@ -130,6 +143,9 @@ class RepositorioCitasFake implements RepositorioCitas {
       horaInicio: franja.horaInicio,
       horaFin: franja.horaFin,
       motivo: motivo,
+      recoleccion: direccionRecoleccionId == null
+          ? null
+          : _recoleccion(direccionRecoleccionId, franja.fecha),
     );
     _agendadas.add(cita);
     _citas.add(
@@ -146,6 +162,30 @@ class RepositorioCitasFake implements RepositorioCitas {
     );
     return cita;
   }
+
+  RecoleccionAgendada _recoleccion(int direccionId, DateTime fecha) =>
+      RecoleccionAgendada(
+        direccionId: direccionId,
+        costoTotal: costoPorTraslado * 2,
+        traslados: [
+          TrasladoAgendado(
+            id: 1,
+            tipo: TipoTraslado.recoger,
+            costo: costoPorTraslado,
+            fecha: fecha,
+            ventanaInicio: '07:00',
+            ventanaFin: '09:00',
+          ),
+          TrasladoAgendado(
+            id: 2,
+            tipo: TipoTraslado.entregar,
+            costo: costoPorTraslado,
+            fecha: fecha,
+            ventanaInicio: '17:00',
+            ventanaFin: '19:00',
+          ),
+        ],
+      );
 
   @override
   Future<PaginaDeCitas> misCitas({int pagina = 0, int tamano = 20}) async {
