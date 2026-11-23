@@ -1,5 +1,4 @@
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
-import 'package:carecar_mobile/modulos/recoleccion/dominio/direccion_guardada.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
