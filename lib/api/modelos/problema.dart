@@ -24,6 +24,9 @@ enum CodigoProblema {
   asistenteSinManual('ASISTENTE_SIN_MANUAL'),
   asistenteLimite('ASISTENTE_LIMITE'),
   asistenteNoDisponible('ASISTENTE_NO_DISPONIBLE'),
+  solicitudAbierta('SOLICITUD_ABIERTA'),
+  fueraDeCobertura('FUERA_DE_COBERTURA'),
+  direccionEnUso('DIRECCION_EN_USO'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
