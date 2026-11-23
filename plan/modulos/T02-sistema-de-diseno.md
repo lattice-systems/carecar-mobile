@@ -119,3 +119,10 @@ La galería del sistema vive en `lib/modulos/galeria/` y se abre en la ruta `/ga
 ## Nota sobre V2-T02.09
 
 `Mapa` está bloqueada por una decisión: el criterio exige elegir proveedor de mapas y geocodificación en una ADR. Se propone en [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, todo detrás de interfaces en `lib/nucleo/mapas/`). Mientras esté en `Propuesta` no se escribe código del componente. Lo que falta para aceptarla es que el PO confirme el proveedor de teselas de producción y su costo.
+
+## Avance del estilo portada
+
+Se agregaron al sistema `BotonPildora`, `CabeceraPortada` (con `AccionPortada`), `Estante`, `GrupoLista` (con `FilaGrupo`) y la opción `translucido` de `EncabezadoGrande`, documentados en la sección 8 del sistema de diseño y presentes en la galería (`secciones_portada.dart`). Traen pruebas de widget en claro, oscuro y letra al 200 
+## Avance del estilo portada
+
+Se agregaron al sistema `BotonPildora`, `CabeceraPortada` (con `AccionPortada`), `Estante`, `GrupoLista` (con `FilaGrupo`) y la opción `translucido` de `EncabezadoGrande`, documentados en la sección 8 del sistema de diseño y presentes en la galería (`secciones_portada.dart`). Traen pruebas de widget en claro, oscuro y letra al 200 % y golden en `test/nucleo/diseno/componentes/goldens/`, con la fuente de prueba de Flutter hasta que V2-T03.02 deje las reales.
