@@ -26,6 +26,7 @@ class CuadroFecha extends StatelessWidget {
     final colores = ColoresTono.de(tono, tokens.colores);
     final t = tokens.tipografia;
     final idioma = Localizations.localeOf(context).toString();
+    final dia = fecha.day.toString();
     final mes = DateFormat.MMM(idioma).format(fecha).toUpperCase();
 
     return ExcludeSemantics(
@@ -41,10 +42,7 @@ class CuadroFecha extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${fecha.day}',
-                  style: t.titulo2.copyWith(color: colores.frente),
-                ),
+                Text(dia, style: t.titulo2.copyWith(color: colores.frente)),
                 Text(
                   mes.replaceAll('.', ''),
                   style: t.micro.copyWith(color: colores.frente),
