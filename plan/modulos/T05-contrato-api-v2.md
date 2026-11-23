@@ -36,9 +36,31 @@ Estado: **Hecha**.
 - **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
 - **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
 
-## Avance de V2-T05.06
+## Avance de V2-T05.03
 
 Estado: **En revisión**.
+
+- **Backend:** `cuenta_app.usuario` (único), lleno con el correo del cliente; el login y la recuperación buscan la cuenta por ese usuario. El módulo de clientes expone `DirectorioClientes.cambiarCorreo` y publica `CorreoDeClienteCambiado`; la cuenta cambia de usuario en la misma transacción. Diseño en `agencia-360-backend/plan/historias-backend.md`.
+- **App:** sin cambios; el login sigue mandando `correo`. V2-M01.07 usa `cambiarCorreo` al confirmar el correo nuevo.
+
+## Avance de V2-T05.04
+
+Estado: **En revisión**.
+
+- **Backend:** `token_recuperacion` (`cuenta_app_id`, `token_hash`, `expira`, `usado`, más `codigo_hash`, `usado_en` e `intentos`) reemplaza a `codigo_recuperacion`, que se borra tras pasar sus códigos. El correo trae un enlace de un solo uso (`carecar://restablecer-contrasena?token=...`, configurable con `RECUPERACION_ENLACE`) y el código de 6 dígitos para la app v1; usar uno cierra el otro.
+- **Contrato:** v2 en 2.3.0. `POST /auth/restablecer-contrasena` acepta `token` o `correo` con `codigo`. Compatible con la app v1.
+- **App:** sin cambios en esta historia; V2-M01.04 abre el enlace y manda `token`.
+
+## Avance de V2-T05.05
+
+Estado: **En revisión**.
+
+- **Backend:** `manual.archivo` se renombra a `archivo_pdf` (sigue siendo la clave del PDF). Sin cambios de rutas.
+- **App:** sin cambios.
+
+## Avance de V2-T05.06
+
+Estado: **Hecha**.
 
 - **Backend:** la tabla `servicio` pasa a ser `orden_servicio`, con sus mismos ids, y gana `mano_de_obra`, `refacciones`, `estatus` y `fecha_cierre`; la base exige `total = mano_de_obra + refacciones`. Los renglones de `renglon_servicio` se reparten en `orden_refaccion` (`refaccion_id`, `cantidad`, `precio`, más `concepto` e `importe`) y `orden_mano_de_obra`, que se agrega para no perder el detalle de la mano de obra. Las órdenes existentes quedan `TERMINADO` con su fecha de cierre. Diseño en `agencia-360-backend/plan/historias-backend.md`.
 - **Estatus:** los mismos cuatro de PO-5 que ya devuelve la app (`RECIBIDO`, `EN_PROCESO`, `TERMINADO`, `ENTREGADO`); `Servicio.estatus` ahora sale de la orden.
