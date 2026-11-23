@@ -160,6 +160,7 @@ Pantalla `PantallaReprogramarCita` en `lib/modulos/citas/` (ruta `/citas/:id/rep
 - **Cinco estados**: esqueleto, datos, vacío (cita no encontrada o no modificable), error con reintento y sin conexión; se recarga jalando hacia abajo. Pruebas en claro, oscuro y letra al 200 %.
 - **Pruebas**: `pantalla_reprogramar_cita_test`, `ruta_reprogramar_cita_test`, `repositorio_citas_test` (API y fake) y `test/api/carecar_api_http_test.dart`.
 - **Pendientes**: historia `Backend:` de `POST /citas/{id}/reprogramar` (misma ventana de plazo que cancelar, PO-4) y su actualización en el YAML y en `CodigoProblema`; `GET /citas/{id}`; golden de la pantalla (V2-T03.02).
+
 ## Avance de V2-M02.11
 
 Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId/comprobante`, exige sesión; un id que no es número regresa al calendario). Estado: **En curso, parte de app lista**. Solo app y `mock_api`; el backend Java queda en su historia `Backend:` y la integración con Wallet en V2-M25.03.
