@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.0.0
+  version: 2.1.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -371,7 +371,10 @@ paths:
     get:
       tags: [Agenda]
       summary: Horarios con cupo para agendar
-      description: APP-3.3 · ERP-3.3. Solo devuelve franjas con cupo mayor a cero.
+      description: |
+        APP-3.3 · ERP-3.3. Solo devuelve franjas activas con cupo mayor a cero. Las franjas y su
+        capacidad salen de la tabla `franja_horario` (V2-T05.07); el cupo es la capacidad menos
+        las citas confirmadas de esa franja en esa fecha.
       parameters:
         - name: desde
           in: query
@@ -444,7 +447,9 @@ paths:
     post:
       tags: [Agenda]
       summary: Agendar una cita de servicio
-      description: APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
+      description: |
+        APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
+        Responde 400 si la franja no existe, no está activa o no es del día de `fecha`.
       requestBody:
         required: true
         content:
@@ -516,6 +521,7 @@ paths:
       description: |
         V2-M02.13 · Mueve la cita a otra franja (y opcionalmente otro día): libera la franja
         anterior y ocupa la nueva en la misma operación. Solo citas confirmadas que no han empezado.
+        La franja debe ser del día de la cita, o del día de `fecha` si viene; si no, responde 400.
       parameters:
         - name: citaId
           in: path
@@ -1210,6 +1216,9 @@ components:
         franjaId:
           type: integer
           format: int64
+          description: |
+            V2-T05.07 · Id de la fila de `franja_horario`. Cada franja es de un día de la semana;
+            la app lo toma de esta respuesta y lo manda tal cual al agendar o reprogramar.
         horaInicio:
           type: string
           example: '09:00'
@@ -1230,6 +1239,7 @@ components:
         franjaId:
           type: integer
           format: int64
+          description: V2-T05.07 · Id de `franja_horario` tomado de la disponibilidad de esa fecha.
         fecha:
           type: string
           format: date
@@ -1249,6 +1259,7 @@ components:
         franjaId:
           type: integer
           format: int64
+          description: V2-T05.07 · Id de `franja_horario`; debe ser del día de la cita o de `fecha`.
         fecha:
           type: string
           format: date
@@ -1312,6 +1323,7 @@ components:
         franjaId:
           type: integer
           format: int64
+          description: V2-T05.07 · Id de `franja_horario` de la cita.
         fecha:
           type: string
           format: date
