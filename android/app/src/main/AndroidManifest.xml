@@ -6,6 +6,10 @@
          inexactas, asi que no hace falta SCHEDULE_EXACT_ALARM. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!-- Ubicacion solo en primer plano (decision 0006): pedir ayuda y guardar
+         direcciones. No se declara ACCESS_BACKGROUND_LOCATION a proposito. -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:usesCleartextTraffic="${usesCleartextTraffic}"
