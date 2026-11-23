@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/cita.dart';
 import '../../../api/modelos/problema.dart';
 import '../dominio/cita_agendada.dart';
 import '../dominio/cita_cliente.dart';
+import '../dominio/comprobante_de_cita.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
@@ -66,6 +69,22 @@ class RepositorioCitasApi implements RepositorioCitas {
       rethrow;
     }
   }
+
+  @override
+  Future<ComprobanteDeCita> comprobante(int citaId) async {
+    final c = await _api.comprobanteDeCita(citaId);
+    return ComprobanteDeCita(
+      citaId: c.citaId,
+      codigo: c.codigo,
+      fecha: c.fecha,
+      horaInicio: c.horaInicio,
+      horaFin: c.horaFin,
+      vehiculoNombre: c.vehiculoNombre,
+    );
+  }
+
+  @override
+  Future<Uint8List> ticketPdf(int citaId) => _api.ticketDeCita(citaId);
 
   Future<Cita?> _citaExistente(int vehiculoId, FranjaDisponible franja) async {
     final citas = await _api.misCitas();
