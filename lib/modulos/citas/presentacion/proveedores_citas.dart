@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_citas_api.dart';
 import '../dominio/cita_cliente.dart';
+import '../dominio/comprobante_de_cita.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/repositorio_citas.dart';
 
@@ -151,4 +152,12 @@ final misCitasProvider =
       // El reintento es del usuario (boton de EstadoError), no automatico.
       retry: (_, _) => null,
       name: 'misCitasProvider',
+/// Comprobante de la cita `citaId` con el codigo firmado para el QR
+/// (V2-M02.11). Se descarta al salir de la pantalla: el codigo no se conserva.
+final comprobanteCitaProvider = FutureProvider.autoDispose
+    .family<ComprobanteDeCita, int>(
+      (ref, citaId) =>
+          ref.watch(repositorioCitasProvider).comprobante(citaId),
+      retry: (_, _) => null,
+      name: 'comprobanteCitaProvider',
     );
