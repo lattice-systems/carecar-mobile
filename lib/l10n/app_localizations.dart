@@ -1940,6 +1940,54 @@ abstract class AppLocalizations {
   /// **'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.'**
   String get citasWalletErrorNoDisponible;
 
+  /// Título de la sección de día al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Día'**
+  String get citasAgendarDia;
+
+  /// Título de la sección de horario al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get citasAgendarHorario;
+
+  /// Etiqueta sobre la tarjeta principal de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu próxima cita'**
+  String get citasMisCitasProximaEtiqueta;
+
+  /// Píldora de la tarjeta principal que abre el comprobante con QR.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante'**
+  String get citasHeroComprobante;
+
+  /// Título de la hoja con las acciones de una cita próxima.
+  ///
+  /// In es, this message translates to:
+  /// **'Opciones de tu cita'**
+  String get citasAccionesCita;
+
+  /// Acción para cerrar una pantalla del flujo de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get citasCerrar;
+
+  /// Encabezado de la lista de detalles del comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles de la cita'**
+  String get citasComprobanteDetalles;
+
+  /// Título de la indicación para recepción en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'En recepción'**
+  String get citasComprobanteRecepcion;
+
   /// Botón de la portada del detalle que abre el flujo de agendar cita.
   ///
   /// In es, this message translates to:
