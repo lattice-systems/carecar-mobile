@@ -1174,6 +1174,30 @@ class AppLocalizationsEs extends AppLocalizations {
       'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.';
 
   @override
+  String get citasAgendarDia => 'Día';
+
+  @override
+  String get citasAgendarHorario => 'Horario';
+
+  @override
+  String get citasMisCitasProximaEtiqueta => 'Tu próxima cita';
+
+  @override
+  String get citasHeroComprobante => 'Comprobante';
+
+  @override
+  String get citasAccionesCita => 'Opciones de tu cita';
+
+  @override
+  String get citasCerrar => 'Cerrar';
+
+  @override
+  String get citasComprobanteDetalles => 'Detalles de la cita';
+
+  @override
+  String get citasComprobanteRecepcion => 'En recepción';
+
+  @override
   String get vehiculosAgendarServicio => 'Agendar servicio';
 
   @override
