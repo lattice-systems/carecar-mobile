@@ -8,6 +8,7 @@ import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
@@ -26,7 +27,15 @@ import 'sesion/almacen_seguro.dart';
 import 'sesion/controlador_sesion.dart';
 import 'tema/tema_carecar.dart';
 
-Future<void> main() async {
+/// Entrada sin flavor: equivale a `produccion` (el mas restrictivo).
+///
+/// Para trabajar usa un punto de entrada por flavor (`main_desarrollo.dart`,
+/// `main_pruebas.dart`, `main_produccion.dart`), que llama a [arrancar].
+Future<void> main() => arrancar(Flavor.produccion);
+
+/// Arranca la app en el [flavor] dado (V2-T01.04).
+Future<void> arrancar(Flavor flavor) async {
+  Flavor.actual = flavor;
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   // Recordatorios de citas con notificaciones locales (sin servidor).

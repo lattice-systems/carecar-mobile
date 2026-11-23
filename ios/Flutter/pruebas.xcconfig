@@ -1,0 +1,8 @@
+// Ajustes del flavor pruebas (V2-T01.04). Los incluyen Debug/Release/Profile-pruebas.
+// Los valores de Runner NO se repiten en project.pbxproj: ahi se quitaron para
+// que estos manden.
+APP_DISPLAY_NAME = CareCar Pruebas
+PRODUCT_BUNDLE_IDENTIFIER = com.carecar.carecarMobile.pruebas
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-pruebas
+// Info.plist sin excepciones de ATS: solo https.
+INFOPLIST_FILE = Runner/Info.plist

@@ -61,11 +61,12 @@ PORT=4000 npm start
 La dirección de la API se pasa al compilar, sin tocar código:
 
 ```bash
-# Contra la API simulada
-flutter run --dart-define=API_BASE_URL=http://localhost:3000/api/v1/app
+# Contra la API simulada: el flavor desarrollo ya apunta a :3000
+# (10.0.2.2 en emulador Android, localhost en simulador iOS)
+flutter run --flavor desarrollo -t lib/main_desarrollo.dart
 
-# Contra la API real, cuando exista
-flutter run --dart-define=API_BASE_URL=https://<servidor>/api/v1/app
+# Otra dirección (PC en la red local, servidor propio)
+flutter run --flavor desarrollo -t lib/main_desarrollo.dart --dart-define=API_BASE_URL=http://IP-DE-LA-PC:3000/api/v1/app
 ```
 
 > **En emulador o dispositivo físico, `localhost` no es tu computadora.**

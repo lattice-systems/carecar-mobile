@@ -22,7 +22,7 @@ Total: **213 historias** + 4 de H0.
 | V2-H0.01 | Reglas, agentes y plan maestro en carecar-mobile | Daniel | | — | Hecha | #13 |
 | V2-H0.02 | Reglas, agentes y plan del backend | Daniel | B | — | Hecha | backend#58 |
 | V2-H0.03 | Check `Autoría` requerido en `main` de ambos repos | Daniel | | V2-H0.01, V2-H0.02 | Hecha | |
-| V2-H0.04 | Cada integrante activa `core.hooksPath .githooks` y lee AGENTS.md | Todos | | V2-H0.01 | Lista | |
+| V2-H0.04 | Cada integrante activa `core.hooksPath .githooks` y lee AGENTS.md | Todos | | V2-H0.01 | Hecha | |
 
 ## H1 · Cimientos v2
 
@@ -31,7 +31,7 @@ Total: **213 historias** + 4 de H0.
 | V2-T01.01 | Aceptar o reemplazar las decisiones 0001–0005 | Daniel |  | — | Hecha | #17 |
 | V2-T01.02 | El esqueleto `lib/nucleo` + `lib/modulos` | Daniel |  | V2-T01.01 | Hecha | #34 |
 | V2-T01.03 | Navegación declarativa con deep links | Daniel |  | V2-T01.02 | Hecha | #39 |
-| V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | Lista | |
+| V2-T01.04 | Flavors `desarrollo`, `pruebas` y `produccion` | Daniel |  | V2-T01.02 | En revisión | #78 |
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | En revisión | #75 |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | En revisión | #74 |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |

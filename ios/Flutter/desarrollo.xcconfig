@@ -1,0 +1,8 @@
+// Ajustes del flavor desarrollo (V2-T01.04). Los incluyen Debug/Release/Profile-desarrollo.
+// Los valores de Runner NO se repiten en project.pbxproj: ahi se quitaron para
+// que estos manden.
+APP_DISPLAY_NAME = CareCar Dev
+PRODUCT_BUNDLE_IDENTIFIER = com.carecar.carecarMobile.dev
+ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon-desarrollo
+// Solo este flavor lleva ATS abierto (http en claro) para el mock local.
+INFOPLIST_FILE = Runner/Info-desarrollo.plist

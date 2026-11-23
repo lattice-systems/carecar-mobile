@@ -24,8 +24,8 @@
 
 **Dónde se aplica**
 
-- `ci.yml` (job `Build Android (APK)`): `flutter build apk --debug --build-number=<run_number>`.
-- `release.yml` (nuevo): corre al empujar una etiqueta `v*.*.*`. Pasos: (1) verifica que la etiqueta sea `v` + la versión del pubspec y que su commit esté en `main`, si no falla con mensaje claro; (2) compila `flutter build apk --release --build-name=<pubspec> --build-number=<run_number> --dart-define=API_BASE_URL=<variable>`; la dirección sale de la variable de repositorio `API_BASE_URL` (la app no tiene valor por omisión) y si falta el workflow falla antes de compilar; (3) crea el GitHub Release con `gh` y adjunta `carecar-vX.Y.Z.apk`. Es el único workflow con `contents: write`; no usa acciones de terceros nuevas.
+- `ci.yml` (job `Build Android (APK)`): `flutter build apk --debug --flavor <desarrollo|pruebas|produccion> -t lib/main_<flavor>.dart --build-number=<run_number>` (los tres flavors, V2-T01.04).
+- `release.yml` (nuevo): corre al empujar una etiqueta `v*.*.*`. Pasos: (1) verifica que la etiqueta sea `v` + la versión del pubspec y que su commit esté en `main`, si no falla con mensaje claro; (2) compila `flutter build apk --release --flavor produccion -t lib/main_produccion.dart --build-name=<pubspec> --build-number=<run_number>`; desde V2-T01.04 la dirección es la del flavor y la variable `API_BASE_URL`, si existe, solo la sobrescribe (ya no falla si falta); (3) crea el GitHub Release con `gh` y adjunta `carecar-vX.Y.Z.apk`. Es el único workflow con `contents: write`; no usa acciones de terceros nuevas.
 - La pantalla de perfil ya lee la versión del paquete (`leerVersionApp`, con `package_info_plus`); no hay versión escrita a mano que cambiar (el `1.0.0` de `lib/config/version_app.dart` es solo el respaldo si la lectura falla).
 
 **Cómo sacar una versión**
@@ -49,7 +49,7 @@
 
 **Qué hay**
 
-- `ipa-sin-firma.yml`: `workflow_dispatch` (a mano) y `workflow_call`. En `macos-latest` corre `flutter build ios --release --no-codesign --build-name=<pubspec> --build-number=<run_number> --dart-define=API_BASE_URL=<variable>` (falla antes de compilar si falta `API_BASE_URL`), mete `Runner.app` en `Payload/`, lo comprime con `zip -qry` y lo sube con `actions/upload-artifact` sin zip alrededor (`archive: false`) por 30 días. Nombre: `carecar-vX.Y.Z-build<n>.ipa` a mano; `carecar-vX.Y.Z.ipa` desde Release.
+- `ipa-sin-firma.yml`: `workflow_dispatch` (a mano) y `workflow_call`. En `macos-latest` corre `flutter build ios --release --no-codesign --flavor produccion -t lib/main_produccion.dart --build-name=<pubspec> --build-number=<run_number>` (la variable `API_BASE_URL`, si existe, sobrescribe la dirección), mete `Runner.app` en `Payload/`, lo comprime con `zip -qry` y lo sube con `actions/upload-artifact` sin zip alrededor (`archive: false`) por 30 días. Nombre: `carecar-vX.Y.Z-build<n>.ipa` a mano; `carecar-vX.Y.Z.ipa` desde Release.
 - `release.yml`: después de publicar el Release con el APK, el job `ipa` llama a `ipa-sin-firma.yml` y `adjuntar-ipa` sube el IPA al mismo Release. Si la etiqueta no pasa la verificación no se gastan minutos de macOS; si falla iOS, el APK ya quedó publicado.
 - Probado tras integrar el PR #72: la corrida manual en `main` tardó unos 4 minutos y dejó `carecar-v1.0.0-build1.ipa` (30 MB) con `Payload/Runner.app/` en la raíz, bundle id `com.carecar.carecarMobile`, versión `1.0.0 (1)`, iOS mínimo 15.0 y la `API_BASE_URL` de la variable dentro de `App.framework`. Se descarga directo desde el navegador; con `gh` usa `gh api …/actions/artifacts/<id>/zip`, porque `gh run download` lo descomprime.
 - Decisión: workflow propio en vez de solo un job en `release.yml`, para poder sacar un IPA de `main` sin etiquetar versión; Release lo reusa para que haya una sola receta.

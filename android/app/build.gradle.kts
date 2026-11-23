@@ -52,6 +52,36 @@ android {
         versionName = flutter.versionName
     }
 
+    // Flavors (V2-T01.04): nombre, applicationId y permiso de http en claro por
+    // ambiente. El sufijo del applicationId deja instalar los tres a la vez. El
+    // nombre del flavor es el mismo que el de `Flavor` en lib/config/flavor.dart.
+    // Solo `desarrollo` permite http en claro (el mock local); `pruebas` y
+    // `produccion` quedan HTTPS. Los iconos distintos viven en
+    // src/<flavor>/res (tool/generar_iconos_flavor.py).
+    buildFeatures {
+        resValues = true
+    }
+    flavorDimensions += "entorno"
+    productFlavors {
+        create("desarrollo") {
+            dimension = "entorno"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "CareCar Dev")
+            manifestPlaceholders["usesCleartextTraffic"] = "true"
+        }
+        create("pruebas") {
+            dimension = "entorno"
+            applicationIdSuffix = ".pruebas"
+            resValue("string", "app_name", "CareCar Pruebas")
+            manifestPlaceholders["usesCleartextTraffic"] = "false"
+        }
+        create("produccion") {
+            dimension = "entorno"
+            resValue("string", "app_name", "CareCar")
+            manifestPlaceholders["usesCleartextTraffic"] = "false"
+        }
+    }
+
     signingConfigs {
         if (archivoFirma.exists()) {
             create("release") {

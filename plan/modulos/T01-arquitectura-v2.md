@@ -103,3 +103,29 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - La galería y el ejemplo siguen con `kDebugMode`, fuera del interruptor (no tienen v1).
 
 **Pendiente / fuera de alcance:** mover físicamente `lib/api` y `lib/sesion` al núcleo (se hace con el primer módulo que lo necesite o en V2-T01.07); cablear `MODULOS_V2` por flavor (V2-T01.04); retirar todo en V2-T01.07.
+
+## Avance de V2-T01.04
+
+**Qué quedó**
+
+- `lib/config/flavor.dart`: `enum Flavor { desarrollo, pruebas, produccion }` con nombre de app, permiso de http en claro y dirección por omisión. `Flavor.actual` lo fija `arrancar(flavor)` en `main.dart`; sin flavor vale `produccion` (el más restrictivo).
+- Una entrada por ambiente: `lib/main_desarrollo.dart`, `main_pruebas.dart`, `main_produccion.dart`. `lib/main.dart` sin flavor equivale a `produccion`.
+- `ApiConfig.resolver`: `--dart-define=API_BASE_URL` sobrescribe la dirección del flavor; `pruebas` y `produccion` rechazan `http://` aunque se lo pasen. Se acabó el error de arranque por falta de `API_BASE_URL`.
+
+| Flavor | Nombre | applicationId / bundle id | API por omisión | HTTP en claro |
+| --- | --- | --- | --- | --- |
+| `desarrollo` | CareCar Dev | `com.carecar.carecar_mobile.dev` / `com.carecar.carecarMobile.dev` | `http://10.0.2.2:3000/api/v1/app` (Android) · `http://localhost:3000/...` | sí |
+| `pruebas` | CareCar Pruebas | `...carecar_mobile.pruebas` / `...carecarMobile.pruebas` | backend en Azure | no |
+| `produccion` | CareCar | `com.carecar.carecar_mobile` / `com.carecar.carecarMobile` | backend en Azure | no |
+
+- **Android:** `productFlavors` en `android/app/build.gradle.kts` (nombre por `resValue app_name`, sufijo de `applicationId`, marcador `usesCleartextTraffic` que usa el manifiesto) e íconos por flavor en `android/app/src/<flavor>/res`.
+- **iOS:** configuraciones `Debug|Release|Profile-<flavor>` en `Runner.xcodeproj`, un `ios/Flutter/<flavor>.xcconfig` (nombre, bundle id, ícono, plist) y un scheme compartido por flavor. ATS abierto solo en `ios/Runner/Info-desarrollo.plist` (copia de `Info.plist` más `NSAppTransportSecurity`); una prueba vigila que no se desfasen.
+- **Íconos:** `tool/generar_iconos_flavor.py` pone una banda de color con etiqueta (DEV naranja, PRUEBAS azul) sobre el ícono de producción, sin arte nuevo.
+- **CI:** `ci.yml` compila los tres flavors en Android y `desarrollo` y `produccion` en iOS; el IPA y el release usan `produccion`.
+- Pruebas: `test/config/` (flavor, resolución de dirección, coherencia de los archivos nativos con `Flavor`).
+
+**Decisiones**
+
+- `pruebas` apunta al mismo backend de Azure que `produccion` porque no existe un ambiente de pruebas separado; cuando exista, solo cambia `Flavor.pruebas` (o se pasa `API_BASE_URL`).
+- iOS se configuró sin Mac: la validación es el job `Build iOS (sin firma)` de CI.
+- Pendiente de otras historias: la galería de diseño (V2-T02.06) debe condicionarse a `Flavor.actual == Flavor.desarrollo` en vez de `kDebugMode`; V2-M22.09 (HTTPS fuera de local) ya tiene el bloqueo nativo y de `ApiConfig` por flavor.

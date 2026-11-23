@@ -166,8 +166,15 @@ jobs:
       # las llaves de firma de producción. El nombre de versión sale del
       # `version` de pubspec.yaml y el número de build de la corrida de CI
       # (github.run_number, siempre creciente), así cada APK es distinguible.
-      - name: Compilar el APK
-        run: flutter build apk --debug --build-number=${{ github.run_number }}
+      # Se compilan los tres flavors (V2-T01.04) para que ninguno se rompa.
+      - name: Compilar el APK (desarrollo)
+        run: flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart --build-number=${{ github.run_number }}
+
+      - name: Compilar el APK (pruebas)
+        run: flutter build apk --debug --flavor pruebas -t lib/main_pruebas.dart --build-number=${{ github.run_number }}
+
+      - name: Compilar el APK (produccion)
+        run: flutter build apk --debug --flavor produccion -t lib/main_produccion.dart --build-number=${{ github.run_number }}
 
   build-ios:
     name: Build iOS (sin firma)
@@ -190,5 +197,10 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
-      - name: Compilar para iOS sin firmar
-        run: flutter build ios --no-codesign
+      # desarrollo es el único con ATS abierto (Info-desarrollo.plist) y
+      # produccion el más restrictivo: con los dos se prueban ambos Info.plist.
+      - name: Compilar para iOS sin firmar (desarrollo)
+        run: flutter build ios --no-codesign --flavor desarrollo -t lib/main_desarrollo.dart
+
+      - name: Compilar para iOS sin firmar (produccion)
+        run: flutter build ios --no-codesign --flavor produccion -t lib/main_produccion.dart
