@@ -60,7 +60,7 @@ Total: **210 historias** + 4 de H0.
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Lista | |
-| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | #72 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)) |
+| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)) |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Lista | |
