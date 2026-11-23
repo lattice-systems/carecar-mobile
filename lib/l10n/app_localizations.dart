@@ -2246,6 +2246,488 @@ abstract class AppLocalizations {
   /// **'Toca para copiar'**
   String get vehiculosToqueCopiarVin;
 
+  /// Cierra una pantalla de direcciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get recoleccionCerrar;
+
+  /// Título de la lista de direcciones guardadas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis direcciones'**
+  String get recoleccionDireccionesTitulo;
+
+  /// Botón para guardar una dirección nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar dirección'**
+  String get recoleccionDireccionesAgregar;
+
+  /// Anuncio mientras cargan las direcciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus direcciones'**
+  String get recoleccionDireccionesCargando;
+
+  /// Título cuando no hay direcciones guardadas.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes direcciones'**
+  String get recoleccionDireccionesVacioTitulo;
+
+  /// Mensaje cuando no hay direcciones guardadas.
+  ///
+  /// In es, this message translates to:
+  /// **'Guarda una para que recojamos tu auto sin escribirla cada vez.'**
+  String get recoleccionDireccionesVacioMensaje;
+
+  /// Encabezado del grupo de direcciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardadas'**
+  String get recoleccionDireccionesEncabezado;
+
+  /// Pie de la lista de direcciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca una para editarla o borrarla.'**
+  String get recoleccionDireccionesPie;
+
+  /// Pista de la fila de una dirección.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar {alias}'**
+  String recoleccionDireccionEditar(String alias);
+
+  /// Aviso tras borrar una dirección.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección borrada'**
+  String get recoleccionDireccionBorrada;
+
+  /// Título del formulario de alta.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva dirección'**
+  String get recoleccionFormNuevaTitulo;
+
+  /// Título del formulario de edición.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar dirección'**
+  String get recoleccionFormEditarTitulo;
+
+  /// Título de la sección del mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación en el mapa'**
+  String get recoleccionFormUbicacionTitulo;
+
+  /// Ayuda bajo el mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca el mapa para poner el pin donde recogeremos tu auto.'**
+  String get recoleccionFormPinAyuda;
+
+  /// Error cuando falta el pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Pon el pin en el mapa.'**
+  String get recoleccionFormPinFalta;
+
+  /// Descripción del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa para elegir la ubicación. Pin en {latitud}, {longitud}.'**
+  String recoleccionFormMapaDescripcion(String latitud, String longitud);
+
+  /// Descripción del mapa sin pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa para elegir la ubicación. Todavía no hay pin.'**
+  String get recoleccionFormMapaSinPin;
+
+  /// Botón que pone el pin donde está el teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar mi ubicación'**
+  String get recoleccionFormUsarUbicacion;
+
+  /// Etiqueta del campo de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar dirección'**
+  String get recoleccionFormBuscarEtiqueta;
+
+  /// Sugerencia del campo de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Calle, número y colonia'**
+  String get recoleccionFormBuscarSugerencia;
+
+  /// Acción de buscar la dirección escrita.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar'**
+  String get recoleccionFormBuscarAccion;
+
+  /// Anuncio mientras se busca.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando la dirección'**
+  String get recoleccionFormBuscando;
+
+  /// Etiqueta del campo alias.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get recoleccionFormAliasEtiqueta;
+
+  /// Sugerencia del campo alias.
+  ///
+  /// In es, this message translates to:
+  /// **'Casa, oficina…'**
+  String get recoleccionFormAliasSugerencia;
+
+  /// Etiqueta del campo calle.
+  ///
+  /// In es, this message translates to:
+  /// **'Calle y número'**
+  String get recoleccionFormCalleEtiqueta;
+
+  /// Etiqueta del campo colonia.
+  ///
+  /// In es, this message translates to:
+  /// **'Colonia'**
+  String get recoleccionFormColoniaEtiqueta;
+
+  /// Etiqueta del campo código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Código postal'**
+  String get recoleccionFormCpEtiqueta;
+
+  /// Etiqueta del campo ciudad.
+  ///
+  /// In es, this message translates to:
+  /// **'Ciudad'**
+  String get recoleccionFormCiudadEtiqueta;
+
+  /// Error del alias.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un nombre de hasta 40 caracteres.'**
+  String get recoleccionErrorAlias;
+
+  /// Error de la calle.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la calle y el número, hasta 120 caracteres.'**
+  String get recoleccionErrorCalle;
+
+  /// Error de la colonia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la colonia, hasta 80 caracteres.'**
+  String get recoleccionErrorColonia;
+
+  /// Error del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'El código postal tiene 5 dígitos.'**
+  String get recoleccionErrorCp;
+
+  /// Error de la ciudad.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la ciudad, hasta 80 caracteres.'**
+  String get recoleccionErrorCiudad;
+
+  /// Botón que guarda la dirección.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar dirección'**
+  String get recoleccionGuardar;
+
+  /// Botón que borra la dirección.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar dirección'**
+  String get recoleccionBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar esta dirección?'**
+  String get recoleccionBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borrará «{alias}». No se puede deshacer.'**
+  String recoleccionBorrarMensaje(String alias);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get recoleccionBorrarConfirmar;
+
+  /// Descarta el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get recoleccionBorrarCancelar;
+
+  /// Aviso de dirección en uso (409).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta dirección ya tiene recolecciones y no se puede borrar.'**
+  String get recoleccionErrorEnUso;
+
+  /// Título del aviso de cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Fuera de cobertura'**
+  String get recoleccionCoberturaTitulo;
+
+  /// Aviso de dirección fuera de cobertura (422).
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no recogemos autos en esa zona. Mueve el pin o elige otra dirección.'**
+  String get recoleccionCoberturaMensaje;
+
+  /// Error genérico al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar la dirección. Intenta de nuevo.'**
+  String get recoleccionErrorGuardar;
+
+  /// Error genérico al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos borrar la dirección. Intenta de nuevo.'**
+  String get recoleccionErrorBorrar;
+
+  /// Aviso sin conexión en el formulario.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu red e intenta de nuevo.'**
+  String get recoleccionErrorSinConexion;
+
+  /// Aviso de permiso de ubicación denegado.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitamos tu permiso para usar la ubicación. También puedes poner el pin a mano.'**
+  String get recoleccionUbicacionDenegada;
+
+  /// Aviso de ubicación apagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Activa la ubicación del teléfono o pon el pin a mano.'**
+  String get recoleccionUbicacionApagada;
+
+  /// Aviso de tiempo agotado.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos ubicarte a tiempo. Intenta de nuevo o pon el pin a mano.'**
+  String get recoleccionUbicacionTiempo;
+
+  /// Aviso de búsqueda sin resultados.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa dirección. Prueba con otra o pon el pin a mano.'**
+  String get recoleccionBusquedaSinResultados;
+
+  /// Aviso de error al buscar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos buscar la dirección. Pon el pin a mano.'**
+  String get recoleccionBusquedaError;
+
+  /// Título de la sección de recolección al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cómo llega tu auto al taller?'**
+  String get recoleccionSelectorTitulo;
+
+  /// Opción sin recolección.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo llevo yo'**
+  String get recoleccionSelectorLoLlevo;
+
+  /// Opción con recolección.
+  ///
+  /// In es, this message translates to:
+  /// **'Que recojan mi auto'**
+  String get recoleccionSelectorQueRecojan;
+
+  /// Encabezado de la lista de direcciones al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Dirección de recolección'**
+  String get recoleccionSelectorDireccion;
+
+  /// Lleva a la lista de direcciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Administrar mis direcciones'**
+  String get recoleccionSelectorAdministrar;
+
+  /// Mensaje sin direcciones al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes direcciones guardadas.'**
+  String get recoleccionSelectorSinDirecciones;
+
+  /// Pide elegir fecha antes de cotizar.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige día y horario para cotizar la recolección.'**
+  String get recoleccionSelectorElegirDia;
+
+  /// Pide elegir dirección.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una dirección para ver el costo.'**
+  String get recoleccionSelectorElegirDireccion;
+
+  /// Anuncio mientras se cotiza.
+  ///
+  /// In es, this message translates to:
+  /// **'Calculando el costo de la recolección'**
+  String get recoleccionSelectorCotizando;
+
+  /// Estado de la dirección elegida para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegida'**
+  String get recoleccionSelectorElegida;
+
+  /// Encabezado de la cotización.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo y horario'**
+  String get recoleccionCotizacionEncabezado;
+
+  /// Fila de la franja de recoger.
+  ///
+  /// In es, this message translates to:
+  /// **'Recogemos tu auto'**
+  String get recoleccionCotizacionRecogemos;
+
+  /// Fila de la franja de entregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Te lo entregamos'**
+  String get recoleccionCotizacionEntregamos;
+
+  /// Fila del costo por traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cada traslado'**
+  String get recoleccionCotizacionPorTraslado;
+
+  /// Fila del costo total.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de la recolección'**
+  String get recoleccionCotizacionTotal;
+
+  /// Día y franja de un traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String recoleccionCotizacionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  );
+
+  /// Título del error de cotización.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cotizar la recolección'**
+  String get recoleccionCotizacionErrorTitulo;
+
+  /// Mensaje del error de cotización.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu conexión e intenta de nuevo. Mientras tanto puedes llevar tú el auto.'**
+  String get recoleccionCotizacionErrorMensaje;
+
+  /// Reintenta la cotización.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get recoleccionCotizacionReintentar;
+
+  /// Aviso de cotización fuera de cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa dirección queda fuera de nuestra zona de cobertura. Elige otra o lleva tú el auto.'**
+  String get recoleccionCotizacionFueraDeCobertura;
+
+  /// Fila de la recolección en el resumen y el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Recolección'**
+  String get citasResumenRecoleccion;
+
+  /// Alias y dirección de la recolección.
+  ///
+  /// In es, this message translates to:
+  /// **'{alias} · {direccion}'**
+  String citasResumenRecoleccionValor(String alias, String direccion);
+
+  /// Franja en que recogemos el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Recogemos tu auto'**
+  String get citasResumenRecogemos;
+
+  /// Franja en que entregamos el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Te lo entregamos'**
+  String get citasResumenEntregamos;
+
+  /// Día y franja de un traslado en el resumen.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String citasResumenRecoleccionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  );
+
+  /// Costo total de los dos traslados.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo de la recolección'**
+  String get citasResumenRecoleccionCosto;
+
+  /// Encabezado del grupo de recolección.
+  ///
+  /// In es, this message translates to:
+  /// **'Recolección a domicilio'**
+  String get citasResumenRecoleccionEncabezado;
+
+  /// Error al confirmar una cita con recolección fuera de cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa dirección ya no está en nuestra zona de cobertura. Elige otra o lleva tú el auto.'**
+  String get citasErrorCobertura;
+
+  /// Error al confirmar una cita con una dirección que ya no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa dirección. Elige otra e intenta de nuevo.'**
+  String get citasErrorRecoleccion;
+
   /// Texto de la tarjeta principal cuando pedir ayuda ya está disponible.
   ///
   /// In es, this message translates to:
