@@ -41,6 +41,8 @@
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>CareCar usa tu ubicación solo mientras la app está abierta, para compartirla cuando pides ayuda y para marcar la dirección de tu recolección.</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UIApplicationSceneManifest</key>
