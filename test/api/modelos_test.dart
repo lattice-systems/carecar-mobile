@@ -67,6 +67,29 @@ void main() {
       },
     );
 
+    test('lee la fecha de cierre del servicio que actualizo el km', () {
+      final v = Vehiculo.fromJson({
+        'id': 4,
+        'vin': 'VIN4',
+        'modelo': 'Kicks',
+        'anio': 2023,
+        'kilometraje': 30100,
+        'kilometrajeActualizadoEn': '2026-10-20',
+      });
+      expect(v.kilometrajeActualizadoEn, DateTime(2026, 10, 20));
+    });
+
+    test('sin fecha de cierre el campo queda nulo', () {
+      final v = Vehiculo.fromJson({
+        'id': 5,
+        'vin': 'VIN5',
+        'modelo': 'Kicks',
+        'anio': 2023,
+        'kilometrajeActualizadoEn': null,
+      });
+      expect(v.kilometrajeActualizadoEn, isNull);
+    });
+
     test('acepta que las claves opcionales ni vengan', () {
       final v = Vehiculo.fromJson({
         'id': 3,

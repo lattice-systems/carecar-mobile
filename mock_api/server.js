@@ -398,6 +398,8 @@ const comoVehiculo = (v) => ({
   color: v.color ?? null,
   placas: v.placas ?? null,
   kilometraje: v.kilometraje ?? null,
+  // Simulada hasta V2-T05.06: fecha de cierre de la orden que dejo el km.
+  kilometrajeActualizadoEn: v.kilometrajeActualizadoEn ?? null,
 });
 
 // Devuelve el vehiculo solo si es del cliente de la sesion.

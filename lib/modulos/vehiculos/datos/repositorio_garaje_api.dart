@@ -26,5 +26,9 @@ class RepositorioGarajeApi implements RepositorioGaraje {
     marca: v.marca,
     placas: v.placas,
     kilometraje: v.kilometraje,
+    vin: v.vin,
+    color: v.color,
+    version: v.version,
+    kilometrajeActualizadoEn: v.kilometrajeActualizadoEn,
   );
 }

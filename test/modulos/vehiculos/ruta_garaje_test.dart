@@ -48,7 +48,45 @@ void main() {
     expect(find.byType(PantallaLogin), findsOneWidget);
   });
 
+  testWidgets('tocar una tarjeta del garaje abre su detalle', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaGaraje);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Mazda CX-5 2024'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaDetalleVehiculo), findsOneWidget);
+    expect(find.text('Vehicle details'), findsOneWidget);
+    expect(find.text('VIN1'), findsOneWidget);
+  });
+
+  testWidgets('/garaje/:id abre el detalle de ese vehiculo', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaDetalleVehiculo(1));
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaDetalleVehiculo), findsOneWidget);
+    expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+  });
+
+  testWidgets('/garaje/:id con un id que no es numero no queda en blanco', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester).go('/garaje/abc');
+    await tester.pumpAndSettle();
+    expect(find.text('We could not find the vehicle'), findsOneWidget);
+  });
+
+  testWidgets('/garaje/:id sin sesion manda al inicio de sesion', (
+    tester,
+  ) async {
+    await _montar(tester, conSesion: false);
+    enrutadorDe(tester).go(rutaDetalleVehiculo(1));
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaLogin), findsOneWidget);
+  });
+
   test('exporta su ruta', () {
+    expect(rutaDetalleVehiculo(7), '/garaje/7');
     expect(rutaGaraje, '/garaje');
     expect(rutasVehiculos, isNotEmpty);
   });

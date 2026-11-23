@@ -29,4 +29,16 @@ void main() {
       expect(vehiculo.vin, matches(RegExp(r'^[A-HJ-NPR-Z0-9]{17}$')));
     }
   });
+
+  test('todo vehiculo con km trae la fecha de cierre que lo dejo', () {
+    final semilla = jsonDecode(
+      File('mock_api/db.seed.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    final autos = (semilla['vehiculos'] as List).cast<Map<String, dynamic>>();
+    final conKm = autos.where((v) => v['kilometraje'] != null);
+    expect(conKm, isNotEmpty);
+    for (final v in conKm) {
+      expect(Vehiculo.fromJson(v).kilometrajeActualizadoEn, isNotNull);
+    }
+  });
 }
