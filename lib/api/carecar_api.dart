@@ -124,4 +124,23 @@ abstract interface class CarecarApi {
   ///
   /// Lanza `NoEncontrado` si no existe o ya esta retirado.
   Future<DetalleModeloCatalogo> detalleModelo(int id);
+
+  // --- Toma a cuenta · V2-M03.04 y V2-M03.07 ---
+
+  /// `POST /toma-a-cuenta/estimaciones`. Calcula el rango y lo guarda.
+  ///
+  /// Es una estimacion no vinculante, nunca una oferta. Lanza `NoEncontrado`
+  /// si el vehiculo no es del cliente o el modelo ya no esta vigente,
+  /// `DatosInvalidos` con datos fuera de rango y `SinParametrosDeValuacion`
+  /// con 422 cuando la agencia aun no valua ese auto.
+  Future<EstimacionTomaCuenta> estimarTomaACuenta(
+    NuevaEstimacionTomaCuenta nueva,
+  );
+
+  /// `GET /toma-a-cuenta/estimaciones?pagina=&tamano=`, de la mas reciente a
+  /// la mas antigua.
+  Future<Pagina<EstimacionTomaCuenta>> paginaDeEstimaciones({
+    int pagina = 0,
+    int tamano = 20,
+  });
 }

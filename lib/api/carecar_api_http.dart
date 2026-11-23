@@ -140,4 +140,24 @@ class CarecarApiHttp implements CarecarApi {
   @override
   Future<DetalleModeloCatalogo> detalleModelo(int id) =>
       _cliente.obtener('/catalogo/$id', DetalleModeloCatalogo.fromJson);
+
+  @override
+  Future<EstimacionTomaCuenta> estimarTomaACuenta(
+    NuevaEstimacionTomaCuenta nueva,
+  ) => _cliente.enviar(
+    '/toma-a-cuenta/estimaciones',
+    cuerpo: nueva.toJson(),
+    leer: EstimacionTomaCuenta.fromJson,
+  );
+
+  @override
+  Future<Pagina<EstimacionTomaCuenta>> paginaDeEstimaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _cliente.obtenerPagina(
+    '/toma-a-cuenta/estimaciones',
+    EstimacionTomaCuenta.fromJson,
+    pagina: pagina,
+    tamano: tamano,
+  );
 }

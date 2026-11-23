@@ -16,6 +16,7 @@ enum CodigoProblema {
   franjaSinCupo('FRANJA_SIN_CUPO'),
   fueraDePlazo('FUERA_DE_PLAZO'),
   citaNoCancelable('CITA_NO_CANCELABLE'),
+  sinParametrosDeValuacion('SIN_PARAMETROS_DE_VALUACION'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

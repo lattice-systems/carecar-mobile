@@ -424,5 +424,74 @@
       "valor": "Automática CVT",
       "orden": 1
     }
-  ]
+  ],
+  "parametrosTomaCuenta": [
+    {
+      "id": 1,
+      "marca": "Nissan",
+      "modelo": "March",
+      "anio": 2020,
+      "valorBase": 260000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 2,
+      "marca": "Volkswagen",
+      "modelo": "Jetta",
+      "anio": 2018,
+      "valorBase": 420000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 3,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2024,
+      "valorBase": 380000,
+      "depreciacionAnual": 0.12,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 4,
+      "marca": "Nissan",
+      "modelo": "Kicks",
+      "anio": 2023,
+      "valorBase": 450000,
+      "depreciacionAnual": 0.11,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 5,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2021,
+      "valorBase": 330000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 6,
+      "marca": "Nissan",
+      "modelo": "Sentra",
+      "anio": 2022,
+      "valorBase": 400000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    }
+  ],
+  "estimacionesTomaCuenta": []
 }

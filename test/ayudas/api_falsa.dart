@@ -292,4 +292,50 @@ class ApiFalsa implements CarecarApi {
   @override
   Future<DetalleModeloCatalogo> detalleModelo(int id) async =>
       detallesCatalogo[id] ?? (throw const NoEncontrado('No existe el modelo'));
+
+  /// Que hace `POST /toma-a-cuenta/estimaciones`. Si es nulo, calcula una
+  /// estimacion fija de 100,000 a 120,000.
+  Future<EstimacionTomaCuenta> Function(NuevaEstimacionTomaCuenta)? alEstimar;
+
+  final estimacionesPedidas = <NuevaEstimacionTomaCuenta>[];
+
+  /// Que responde `GET /toma-a-cuenta/estimaciones`.
+  List<EstimacionTomaCuenta> estimaciones = const [];
+
+  @override
+  Future<EstimacionTomaCuenta> estimarTomaACuenta(
+    NuevaEstimacionTomaCuenta nueva,
+  ) {
+    estimacionesPedidas.add(nueva);
+    return alEstimar?.call(nueva) ??
+        Future.value(
+          EstimacionTomaCuenta(
+            id: 1,
+            creadaEn: DateTime.utc(2026, 11, 22),
+            vehiculoId: nueva.vehiculoId,
+            marca: nueva.marca ?? 'Nissan',
+            modelo: nueva.modelo ?? 'Versa',
+            anio: nueva.anio ?? 2021,
+            km: nueva.km,
+            estado: nueva.estado,
+            modeloCatalogoId: nueva.modeloCatalogoId,
+            minimo: 100000,
+            maximo: 120000,
+            supuestos: const SupuestosEstimacion(
+              valorBase: 200000,
+              edadAnios: 5,
+              kmEsperado: 75000,
+              ajusteKm: 1,
+              ajusteEstado: 1,
+              margen: 0.08,
+            ),
+          ),
+        );
+  }
+
+  @override
+  Future<Pagina<EstimacionTomaCuenta>> paginaDeEstimaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) async => _rebanar(estimaciones, pagina, tamano);
 }

@@ -62,6 +62,15 @@ class Conflicto extends ExcepcionApi {
 ///
 /// RIC-5. Sin este caso, un bloqueo se veria como «ocurrio un error
 /// inesperado», que es justo lo contrario de lo que el usuario necesita saber.
+/// 422 de `POST /toma-a-cuenta/estimaciones`: la agencia todavia no tiene
+/// parametros para esa marca, modelo y anio (`SIN_PARAMETROS_DE_VALUACION`).
+///
+/// No es un fallo de la app ni del cliente: la app lo explica y ofrece pedir
+/// una valuacion formal.
+class SinParametrosDeValuacion extends ExcepcionApi {
+  const SinParametrosDeValuacion(super.mensaje, {super.problema});
+}
+
 class DemasiadosIntentos extends ExcepcionApi {
   const DemasiadosIntentos(
     super.mensaje, {
