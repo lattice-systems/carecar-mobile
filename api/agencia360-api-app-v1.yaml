@@ -1271,6 +1271,7 @@ components:
             - CITA_DUPLICADA
             - CITA_NO_REPROGRAMABLE
             - CITA_CANCELADA
+            - WALLET_NO_CONFIGURADO
           example: FRANJA_SIN_CUPO
         path:
           type: string

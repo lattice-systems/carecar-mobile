@@ -37,6 +37,50 @@
       }
     }
   },
+  "asistenciaListaTitulo": "Emergencias",
+  "@asistenciaListaTitulo": {
+    "description": "Título grande de la lista de guías de emergencia."
+  },
+  "asistenciaHeroeTitulo": "¿Necesitas ayuda ahora?",
+  "@asistenciaHeroeTitulo": {
+    "description": "Título de la tarjeta principal de emergencias."
+  },
+  "asistenciaHeroeTexto": "Pedir ayuda con tu ubicación estará disponible pronto. Mientras tanto, estas guías te dicen qué hacer.",
+  "@asistenciaHeroeTexto": {
+    "description": "Explica por qué el botón de pedir ayuda aún no está disponible."
+  },
+  "asistenciaHeroeAccion": "Pedir ayuda",
+  "@asistenciaHeroeAccion": {
+    "description": "Botón de pedir ayuda, deshabilitado hasta que exista la solicitud de asistencia."
+  },
+  "asistenciaEstanteGuias": "Guías rápidas",
+  "@asistenciaEstanteGuias": {
+    "description": "Título del carrusel de guías."
+  },
+  "asistenciaGrupoGuias": "Todas las guías",
+  "@asistenciaGrupoGuias": {
+    "description": "Encabezado de la lista de guías."
+  },
+  "asistenciaGuiaCantidadPasos": "{pasos} pasos",
+  "@asistenciaGuiaCantidadPasos": {
+    "description": "Cuántos pasos tiene una guía.",
+    "placeholders": {
+      "pasos": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "asistenciaGuiaSubtituloSinConexion": "{pasos} pasos · sin conexión",
+  "@asistenciaGuiaSubtituloSinConexion": {
+    "description": "Subtítulo de la cabecera de una guía.",
+    "placeholders": {
+      "pasos": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "asistenciaGuiasAvisoSinConexion": "Estas guías están guardadas en la app y funcionan sin conexión.",
   "@asistenciaGuiasAvisoSinConexion": {
     "description": "Aviso de que las guías no necesitan red."
@@ -661,6 +705,19 @@
     "description": "Lo que anuncia un botón mientras trabaja.",
     "placeholders": {
       "texto": {
+        "type": "String"
+      }
+    }
+  },
+  "estanteVerTodo": "Ver todo",
+  "@estanteVerTodo": {
+    "description": "Enlace al final del titulo de un estante para abrir la lista completa."
+  },
+  "estanteVerTodoDe": "Ver todo: {titulo}",
+  "@estanteVerTodoDe": {
+    "description": "Lo que anuncia el enlace Ver todo de un estante: incluye el titulo del estante.",
+    "placeholders": {
+      "titulo": {
         "type": "String"
       }
     }
@@ -1368,5 +1425,93 @@
   "widgetsSinCitaMensaje": "No tienes citas próximas",
   "@widgetsSinCitaMensaje": {
     "description": "Texto del widget de inicio cuando no hay una cita confirmada por venir."
+  },
+  "citasWalletAgregar": "Agregar a Wallet",
+  "@citasWalletAgregar": {
+    "description": "Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet."
+  },
+  "citasWalletErrorGenerico": "No pudimos preparar tu pase. Intenta de nuevo.",
+  "@citasWalletErrorGenerico": {
+    "description": "Error del botón de Wallet cuando algo falla sin causa conocida."
+  },
+  "citasWalletErrorSinConexion": "Sin conexión. Revisa tu red e intenta de nuevo.",
+  "@citasWalletErrorSinConexion": {
+    "description": "Error del botón de Wallet cuando no hay red."
+  },
+  "citasWalletErrorCancelada": "Tu cita está cancelada, así que ya no tiene pase.",
+  "@citasWalletErrorCancelada": {
+    "description": "Error del botón de Wallet cuando la cita está cancelada."
+  },
+  "citasWalletErrorNoDisponible": "El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.",
+  "@citasWalletErrorNoDisponible": {
+    "description": "Error del botón de Wallet cuando el servidor no tiene certificados."
+  },
+  "citasAgendarDia": "Día",
+  "@citasAgendarDia": {
+    "description": "Título de la sección de día al agendar."
+  },
+  "citasAgendarHorario": "Horario",
+  "@citasAgendarHorario": {
+    "description": "Título de la sección de horario al agendar."
+  },
+  "citasMisCitasProximaEtiqueta": "Tu próxima cita",
+  "@citasMisCitasProximaEtiqueta": {
+    "description": "Etiqueta sobre la tarjeta principal de la próxima cita."
+  },
+  "citasHeroComprobante": "Comprobante",
+  "@citasHeroComprobante": {
+    "description": "Píldora de la tarjeta principal que abre el comprobante con QR."
+  },
+  "citasAccionesCita": "Opciones de tu cita",
+  "@citasAccionesCita": {
+    "description": "Título de la hoja con las acciones de una cita próxima."
+  },
+  "citasCerrar": "Cerrar",
+  "@citasCerrar": {
+    "description": "Acción para cerrar una pantalla del flujo de citas."
+  },
+  "citasComprobanteDetalles": "Detalles de la cita",
+  "@citasComprobanteDetalles": {
+    "description": "Encabezado de la lista de detalles del comprobante."
+  },
+  "citasComprobanteRecepcion": "En recepción",
+  "@citasComprobanteRecepcion": {
+    "description": "Título de la indicación para recepción en el comprobante."
+  },
+  "vehiculosAgendarServicio": "Agendar servicio",
+  "@vehiculosAgendarServicio": {
+    "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
+  },
+  "vehiculosBotonManual": "Manual",
+  "@vehiculosBotonManual": {
+    "description": "Botón de la portada del detalle que abre el manual del vehículo."
+  },
+  "vehiculosBotonDescargar": "Descargar",
+  "@vehiculosBotonDescargar": {
+    "description": "Botón de la portada del manual que guarda el PDF."
+  },
+  "vehiculosBotonCompartir": "Compartir",
+  "@vehiculosBotonCompartir": {
+    "description": "Botón de la portada del manual que comparte el PDF."
+  },
+  "vehiculosVerDetalle": "Ver detalle",
+  "@vehiculosVerDetalle": {
+    "description": "Botón de la portada del garaje cuando hay un solo vehículo."
+  },
+  "vehiculosEncabezadoDatos": "Datos",
+  "@vehiculosEncabezadoDatos": {
+    "description": "Encabezado del grupo de datos del vehículo en el detalle."
+  },
+  "vehiculosEncabezadoTuAuto": "Tu auto",
+  "@vehiculosEncabezadoTuAuto": {
+    "description": "Encabezado del grupo de accesos del detalle."
+  },
+  "vehiculosEncabezadoRapidos": "Datos rápidos",
+  "@vehiculosEncabezadoRapidos": {
+    "description": "Encabezado del grupo de datos rápidos del garaje."
+  },
+  "vehiculosToqueCopiarVin": "Toca para copiar",
+  "@vehiculosToqueCopiarVin": {
+    "description": "Pista bajo el VIN que indica que se puede copiar."
   }
 }

@@ -8,12 +8,15 @@ import '../../../l10n/app_localizations.dart';
 import '../../../manuales/guardar_pdf.dart';
 import '../../../manuales/servicio_manuales.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/componentes/visor_pdf.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
 
 /// Manual del vehiculo por su modelo y ano (V2-M02.03): visor de PDF con zoom
@@ -65,22 +68,13 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
     final doc = manual.asData?.value;
 
     return Scaffold(
+      backgroundColor: TokensPista.de(context).colores.fondo,
       appBar: AppBar(
-        title: Text(textos.vehiculosManualTitulo),
-        actions: [
-          if (doc != null) ...[
-            IconButton(
-              tooltip: textos.vehiculosManualDescargar,
-              onPressed: () => _descargar(doc),
-              icon: const Icon(Icons.download_outlined),
-            ),
-            IconButton(
-              tooltip: textos.vehiculosManualCompartir,
-              onPressed: () => _compartir(doc),
-              icon: const Icon(Icons.share_outlined),
-            ),
-          ],
-        ],
+        // Con manual el titulo vive en la portada; sin el, en la barra.
+        title: doc == null ? Text(textos.vehiculosManualTitulo) : null,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
       body: manual.when(
         skipLoadingOnReload: true,
@@ -99,18 +93,50 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
               )
             : Column(
                 children: [
-                  if (_guardado != null)
-                    Padding(
-                      padding: const EdgeInsets.all(Espaciado.e3),
-                      child: Aviso(
-                        mensaje: _guardado!
-                            ? textos.vehiculosManualGuardado
-                            : textos.vehiculosManualGuardadoError,
-                        tono: _guardado! ? Tono.exito : Tono.peligro,
-                        alCerrar: () => setState(() => _guardado = null),
+                  Flexible(
+                    flex: 3,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CabeceraPortada(
+                            titulo: textos.vehiculosManualTitulo,
+                            subtitulo: m.titulo,
+                            descripcion: textos.vehiculosManualDescripcion(
+                              m.titulo,
+                            ),
+                            lado: 120,
+                            portada: PortadaVehiculo(
+                              tinte: TokensPista.de(context).colores.acento,
+                              icono: Icons.menu_book_rounded,
+                            ),
+                            principal: AccionPortada(
+                              texto: textos.vehiculosBotonDescargar,
+                              icono: Icons.download_outlined,
+                              alPresionar: () => _descargar(m),
+                            ),
+                            secundaria: AccionPortada(
+                              texto: textos.vehiculosBotonCompartir,
+                              icono: Icons.share_outlined,
+                              alPresionar: () => _compartir(m),
+                            ),
+                          ),
+                          if (_guardado != null)
+                            Padding(
+                              padding: const EdgeInsets.all(Espaciado.e3),
+                              child: Aviso(
+                                mensaje: _guardado!
+                                    ? textos.vehiculosManualGuardado
+                                    : textos.vehiculosManualGuardadoError,
+                                tono: _guardado! ? Tono.exito : Tono.peligro,
+                                alCerrar: () =>
+                                    setState(() => _guardado = null),
+                              ),
+                            ),
+                        ],
                       ),
                     ),
-                  Expanded(child: _visor(m, textos)),
+                  ),
+                  Expanded(flex: 4, child: _visor(m, textos)),
                 ],
               ),
       ),

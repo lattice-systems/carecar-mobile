@@ -104,6 +104,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get asistenciaListaTitulo => 'Emergencies';
+
+  @override
+  String get asistenciaHeroeTitulo => 'Need help right now?';
+
+  @override
+  String get asistenciaHeroeTexto =>
+      'Asking for help with your location will be available soon. Meanwhile, these guides tell you what to do.';
+
+  @override
+  String get asistenciaHeroeAccion => 'Ask for help';
+
+  @override
+  String get asistenciaEstanteGuias => 'Quick guides';
+
+  @override
+  String get asistenciaGrupoGuias => 'All guides';
+
+  @override
+  String asistenciaGuiaCantidadPasos(int pasos) {
+    return '$pasos steps';
+  }
+
+  @override
+  String asistenciaGuiaSubtituloSinConexion(int pasos) {
+    return '$pasos steps · offline';
+  }
+
+  @override
   String get asistenciaGuiasAvisoSinConexion =>
       'These guides are stored in the app and work offline.';
 
@@ -660,6 +689,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get estanteVerTodo => 'See all';
+
+  @override
+  String estanteVerTodoDe(String titulo) {
+    return 'See all: $titulo';
+  }
+
+  @override
   String calendarioDelMes(DateTime mes) {
     final intl.DateFormat mesDateFormat = intl.DateFormat.yMMMM(localeName);
     final String mesString = mesDateFormat.format(mes);
@@ -1123,4 +1160,74 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get widgetsSinCitaMensaje => 'You have no upcoming appointments';
+
+  @override
+  String get citasWalletAgregar => 'Add to Wallet';
+
+  @override
+  String get citasWalletErrorGenerico =>
+      'We could not prepare your pass. Try again.';
+
+  @override
+  String get citasWalletErrorSinConexion =>
+      'No connection. Check your network and try again.';
+
+  @override
+  String get citasWalletErrorCancelada =>
+      'Your appointment is cancelled, so it no longer has a pass.';
+
+  @override
+  String get citasWalletErrorNoDisponible =>
+      'The Wallet pass is not available right now. Show the QR code at reception.';
+
+  @override
+  String get citasAgendarDia => 'Day';
+
+  @override
+  String get citasAgendarHorario => 'Time';
+
+  @override
+  String get citasMisCitasProximaEtiqueta => 'Your next appointment';
+
+  @override
+  String get citasHeroComprobante => 'Receipt';
+
+  @override
+  String get citasAccionesCita => 'Appointment options';
+
+  @override
+  String get citasCerrar => 'Close';
+
+  @override
+  String get citasComprobanteDetalles => 'Appointment details';
+
+  @override
+  String get citasComprobanteRecepcion => 'At reception';
+
+  @override
+  String get vehiculosAgendarServicio => 'Book a service';
+
+  @override
+  String get vehiculosBotonManual => 'Manual';
+
+  @override
+  String get vehiculosBotonDescargar => 'Download';
+
+  @override
+  String get vehiculosBotonCompartir => 'Share';
+
+  @override
+  String get vehiculosVerDetalle => 'View details';
+
+  @override
+  String get vehiculosEncabezadoDatos => 'Details';
+
+  @override
+  String get vehiculosEncabezadoTuAuto => 'Your car';
+
+  @override
+  String get vehiculosEncabezadoRapidos => 'Quick facts';
+
+  @override
+  String get vehiculosToqueCopiarVin => 'Tap to copy';
 }

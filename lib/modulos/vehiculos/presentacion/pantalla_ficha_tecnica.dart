@@ -4,17 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/ficha_tecnica_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
-import 'provisional/seccion_plegable.dart';
 
-/// Ficha tecnica del vehiculo por modelo y ano (V2-M02.04), en secciones
-/// plegables.
+/// Ficha tecnica del vehiculo por modelo y ano (V2-M02.04) en estilo portada:
+/// titulo grande translucido y una lista agrupada plegable por seccion.
 ///
 /// Sale de la API y, mientras el backend no la tenga o no haya red, de lo que
 /// trae la app (lo avisa). Resuelve los cinco estados: esqueleto, datos, vacio,
@@ -29,28 +30,46 @@ class PantallaFichaTecnica extends ConsumerWidget {
     final ficha = ref.watch(fichaTecnicaProvider(vehiculoId));
     final textos = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(textos.vehiculosFichaTitulo)),
-      body: ficha.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => EstadoError(
+    Widget estado(Widget hijo) =>
+        SliverFillRemaining(hasScrollBody: true, child: hijo);
+
+    final contenido = ficha.when(
+      skipLoadingOnReload: true,
+      loading: () => estado(const _Cargando()),
+      error: (error, _) => estado(
+        EstadoError(
           causa: error is SinConexion
               ? CausaError.sinConexion
               : CausaError.generico,
           alReintentar: () => ref.invalidate(fichaTecnicaProvider(vehiculoId)),
         ),
-        data: (f) => f == null || f.secciones.isEmpty && !f.delRespaldo
-            ? EstadoVacio(
+      ),
+      data: (f) => f == null || f.secciones.isEmpty && !f.delRespaldo
+          ? estado(
+              EstadoVacio(
                 titulo: textos.vehiculosFichaVacioTitulo,
                 mensaje: textos.vehiculosFichaVacioMensaje,
                 icono: Icons.fact_check_outlined,
-              )
-            : RefreshIndicator(
-                onRefresh: () =>
-                    ref.refresh(fichaTecnicaProvider(vehiculoId).future),
-                child: _Ficha(ficha: f),
               ),
+            )
+          : SliverToBoxAdapter(child: _Ficha(ficha: f)),
+    );
+
+    return Scaffold(
+      backgroundColor: TokensPista.de(context).colores.fondo,
+      body: RefreshIndicator(
+        onRefresh: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),
+        child: CustomScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            EncabezadoGrande(
+              titulo: textos.vehiculosFichaTitulo,
+              translucido: true,
+            ),
+            contenido,
+            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
+          ],
+        ),
       ),
     );
   }
@@ -67,59 +86,89 @@ class _Ficha extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
+    final colores = [c.acento, c.exito, c.marca, c.advertencia];
 
-    return ListView(
-      padding: const EdgeInsets.all(Espaciado.e4),
-      children: [
-        if (ficha.delRespaldo)
-          Padding(
-            padding: const EdgeInsets.only(bottom: Espaciado.e3),
-            child: Aviso(mensaje: textos.vehiculosFichaRespaldo),
-          ),
-        for (final s in ficha.secciones)
-          Padding(
-            padding: const EdgeInsets.only(bottom: Espaciado.e3),
-            child: SeccionPlegable(
-              titulo: _tituloDe(textos, s),
-              hijo: Column(
-                children: [
-                  for (final e in s.especificaciones)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: Espaciado.e1,
-                      ),
-                      child: MergeSemantics(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                _claveDe(textos, e),
-                                style: t.cuerpoChico.copyWith(
-                                  color: c.textoSecundario,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: Espaciado.e3),
-                            Expanded(
-                              child: Text(
-                                e.valor,
-                                textAlign: TextAlign.end,
-                                style: t.cuerpoFuerte.copyWith(color: c.texto),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (ficha.delRespaldo)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Espaciado.e3),
+              child: Aviso(mensaje: textos.vehiculosFichaRespaldo),
+            ),
+          for (var i = 0; i < ficha.secciones.length; i++)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Espaciado.e3),
+              child: _SeccionFicha(
+                titulo: _tituloDe(textos, ficha.secciones[i]),
+                color: colores[i % colores.length],
+                filas: [
+                  for (final e in ficha.secciones[i].especificaciones)
+                    (_claveDe(textos, e), e.valor),
                 ],
               ),
             ),
+          Text(
+            textos.vehiculosFichaNota,
+            style: t.cuerpoChico.copyWith(color: c.textoSecundario),
           ),
-        Text(
-          textos.vehiculosFichaNota,
-          style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+        ],
+      ),
+    );
+  }
+}
+
+/// Una seccion de la ficha como lista agrupada: su primera fila (con ícono de
+/// color) pliega y despliega las especificaciones, cada una con su valor al
+/// final. Cerrada solo se ve el titulo.
+class _SeccionFicha extends StatefulWidget {
+  const _SeccionFicha({
+    required this.titulo,
+    required this.color,
+    required this.filas,
+  });
+
+  final String titulo;
+  final Color color;
+  final List<(String, String)> filas;
+
+  @override
+  State<_SeccionFicha> createState() => _SeccionFichaState();
+}
+
+class _SeccionFichaState extends State<_SeccionFicha> {
+  bool _abierta = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final t = tokens.tipografia;
+
+    return GrupoLista(
+      filas: [
+        FilaGrupo(
+          titulo: widget.titulo,
+          icono: Icons.fact_check_outlined,
+          colorIcono: widget.color,
+          fin: Icon(
+            _abierta ? Icons.expand_less : Icons.expand_more,
+            color: c.textoSecundario,
+          ),
+          alToque: () => setState(() => _abierta = !_abierta),
         ),
+        if (_abierta)
+          for (final (clave, valor) in widget.filas)
+            FilaGrupo(
+              titulo: clave,
+              fin: Text(
+                valor,
+                textAlign: TextAlign.end,
+                style: t.cuerpoFuerte.copyWith(color: c.texto),
+              ),
+            ),
       ],
     );
   }

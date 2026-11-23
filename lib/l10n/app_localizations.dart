@@ -242,6 +242,54 @@ abstract class AppLocalizations {
   /// **'Paso {numero} de {total}'**
   String asistenciaGuiaPasoNumero(int numero, int total);
 
+  /// Título grande de la lista de guías de emergencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Emergencias'**
+  String get asistenciaListaTitulo;
+
+  /// Título de la tarjeta principal de emergencias.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Necesitas ayuda ahora?'**
+  String get asistenciaHeroeTitulo;
+
+  /// Explica por qué el botón de pedir ayuda aún no está disponible.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda con tu ubicación estará disponible pronto. Mientras tanto, estas guías te dicen qué hacer.'**
+  String get asistenciaHeroeTexto;
+
+  /// Botón de pedir ayuda, deshabilitado hasta que exista la solicitud de asistencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda'**
+  String get asistenciaHeroeAccion;
+
+  /// Título del carrusel de guías.
+  ///
+  /// In es, this message translates to:
+  /// **'Guías rápidas'**
+  String get asistenciaEstanteGuias;
+
+  /// Encabezado de la lista de guías.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las guías'**
+  String get asistenciaGrupoGuias;
+
+  /// Cuántos pasos tiene una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'{pasos} pasos'**
+  String asistenciaGuiaCantidadPasos(int pasos);
+
+  /// Subtítulo de la cabecera de una guía.
+  ///
+  /// In es, this message translates to:
+  /// **'{pasos} pasos · sin conexión'**
+  String asistenciaGuiaSubtituloSinConexion(int pasos);
+
   /// Aviso de que las guías no necesitan red.
   ///
   /// In es, this message translates to:
@@ -1148,6 +1196,18 @@ abstract class AppLocalizations {
   /// **'{texto}, cargando'**
   String botonCargando(String texto);
 
+  /// Enlace al final del titulo de un estante para abrir la lista completa.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo'**
+  String get estanteVerTodo;
+
+  /// Lo que anuncia el enlace Ver todo de un estante: incluye el titulo del estante.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo: {titulo}'**
+  String estanteVerTodoDe(String titulo);
+
   /// Nombre del calendario con el mes visible.
   ///
   /// In es, this message translates to:
@@ -1849,6 +1909,138 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No tienes citas próximas'**
   String get widgetsSinCitaMensaje;
+
+  /// Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar a Wallet'**
+  String get citasWalletAgregar;
+
+  /// Error del botón de Wallet cuando algo falla sin causa conocida.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos preparar tu pase. Intenta de nuevo.'**
+  String get citasWalletErrorGenerico;
+
+  /// Error del botón de Wallet cuando no hay red.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu red e intenta de nuevo.'**
+  String get citasWalletErrorSinConexion;
+
+  /// Error del botón de Wallet cuando la cita está cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita está cancelada, así que ya no tiene pase.'**
+  String get citasWalletErrorCancelada;
+
+  /// Error del botón de Wallet cuando el servidor no tiene certificados.
+  ///
+  /// In es, this message translates to:
+  /// **'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.'**
+  String get citasWalletErrorNoDisponible;
+
+  /// Título de la sección de día al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Día'**
+  String get citasAgendarDia;
+
+  /// Título de la sección de horario al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get citasAgendarHorario;
+
+  /// Etiqueta sobre la tarjeta principal de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu próxima cita'**
+  String get citasMisCitasProximaEtiqueta;
+
+  /// Píldora de la tarjeta principal que abre el comprobante con QR.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante'**
+  String get citasHeroComprobante;
+
+  /// Título de la hoja con las acciones de una cita próxima.
+  ///
+  /// In es, this message translates to:
+  /// **'Opciones de tu cita'**
+  String get citasAccionesCita;
+
+  /// Acción para cerrar una pantalla del flujo de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get citasCerrar;
+
+  /// Encabezado de la lista de detalles del comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles de la cita'**
+  String get citasComprobanteDetalles;
+
+  /// Título de la indicación para recepción en el comprobante.
+  ///
+  /// In es, this message translates to:
+  /// **'En recepción'**
+  String get citasComprobanteRecepcion;
+
+  /// Botón de la portada del detalle que abre el flujo de agendar cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar servicio'**
+  String get vehiculosAgendarServicio;
+
+  /// Botón de la portada del detalle que abre el manual del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Manual'**
+  String get vehiculosBotonManual;
+
+  /// Botón de la portada del manual que guarda el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar'**
+  String get vehiculosBotonDescargar;
+
+  /// Botón de la portada del manual que comparte el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir'**
+  String get vehiculosBotonCompartir;
+
+  /// Botón de la portada del garaje cuando hay un solo vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver detalle'**
+  String get vehiculosVerDetalle;
+
+  /// Encabezado del grupo de datos del vehículo en el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos'**
+  String get vehiculosEncabezadoDatos;
+
+  /// Encabezado del grupo de accesos del detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto'**
+  String get vehiculosEncabezadoTuAuto;
+
+  /// Encabezado del grupo de datos rápidos del garaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos rápidos'**
+  String get vehiculosEncabezadoRapidos;
+
+  /// Pista bajo el VIN que indica que se puede copiar.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca para copiar'**
+  String get vehiculosToqueCopiarVin;
 }
 
 class _AppLocalizationsDelegate

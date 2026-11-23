@@ -4,18 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/boton.dart';
-import '../../../nucleo/diseno/componentes/calendario.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
+import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/selector_franja.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
+import 'componentes/barra_inferior_cita.dart';
+import 'componentes/marco_pantalla_cita.dart';
+import 'componentes/seleccion_dia_horario.dart';
 import 'proveedores_citas.dart';
 
 /// Por qué falló el último intento de reprogramar.
@@ -61,36 +64,37 @@ class _EstadoPantallaReprogramarCita
     final disponibilidad = ref.watch(disponibilidadProvider);
     final ahora = ref.watch(relojCitasProvider)();
 
-    final Widget cuerpo;
+    Widget estado(Widget hijo) => MarcoPantallaCita.estado(
+      titulo: textos.citasReprogramarTitulo,
+      estado: hijo,
+    );
+
     final error = citas.error ?? disponibilidad.error;
-    if (_reprogramada != null) {
-      cuerpo = _listo(context, _reprogramada!);
-    } else if (error != null && !(citas.hasValue && disponibilidad.hasValue)) {
-      cuerpo = EstadoError(
-        causa: error is SinConexion
-            ? CausaError.sinConexion
-            : CausaError.generico,
-        alReintentar: _reintentar,
+    if (_reprogramada != null) return _listo(context, _reprogramada!);
+    if (error != null && !(citas.hasValue && disponibilidad.hasValue)) {
+      return estado(
+        EstadoError(
+          causa: error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: _reintentar,
+        ),
       );
-    } else if (!citas.hasValue || !disponibilidad.hasValue) {
-      cuerpo = const _Cargando();
-    } else {
-      final cita = _buscar(citas.requireValue.citas);
-      if (cita == null || !cita.sePuedeModificar(ahora)) {
-        cuerpo = EstadoVacio(
+    }
+    if (!citas.hasValue || !disponibilidad.hasValue) {
+      return estado(const _Cargando());
+    }
+    final cita = _buscar(citas.requireValue.citas);
+    if (cita == null || !cita.sePuedeModificar(ahora)) {
+      return estado(
+        EstadoVacio(
           titulo: textos.citasReprogramarNoEncontradaTitulo,
           mensaje: textos.citasReprogramarNoEncontradaMensaje,
           icono: Icons.event_busy_outlined,
-        );
-      } else {
-        cuerpo = _formulario(context, cita, disponibilidad.requireValue);
-      }
+        ),
+      );
     }
-
-    return Scaffold(
-      appBar: AppBar(title: Text(textos.citasReprogramarTitulo)),
-      body: cuerpo,
-    );
+    return _formulario(context, cita, disponibilidad.requireValue);
   }
 
   CitaCliente? _buscar(List<CitaCliente> citas) {
@@ -107,6 +111,7 @@ class _EstadoPantallaReprogramarCita
   ) {
     final textos = AppLocalizations.of(context);
     final tokens = TokensPista.de(context);
+    final c = tokens.colores;
     final rango = ref.watch(rangoAgendableProvider);
     final dia = _dia;
     final franjas = dia == null
@@ -114,146 +119,202 @@ class _EstadoPantallaReprogramarCita
         : taller.franjasDe(dia);
     final indice = franjas.indexWhere((f) => f.franjaId == _franja?.franjaId);
 
-    return RefreshIndicator(
-      onRefresh: () async {
+    return MarcoPantallaCita(
+      titulo: textos.citasReprogramarTitulo,
+      alRefrescar: () async {
         ref.invalidate(disponibilidadProvider);
         await ref.read(disponibilidadProvider.future);
       },
-      child: ListView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(Espaciado.e4),
-        children: [
-          Aviso(
-            mensaje: textos.citasReprogramarActual(cita.fecha, cita.horaInicio),
-          ),
-          const SizedBox(height: Espaciado.e4),
-          Calendario(
-            mes: _mes ?? rango.desde,
-            seleccionado: dia,
-            primerDia: rango.desde,
-            ultimoDia: rango.hasta,
-            hoy: rango.desde,
-            habilitado: taller.tieneCupo,
-            alCambiarMes: (mes) => setState(() => _mes = mes),
-            alSeleccionar: (d) => setState(() {
-              _dia = d;
-              _franja = null;
-            }),
-          ),
-          const SizedBox(height: Espaciado.e2),
-          Text(
-            textos.citasNotaDiasSinCupo,
-            style: tokens.tipografia.cuerpoChico.copyWith(
-              color: tokens.colores.textoSecundario,
-            ),
-          ),
-          const SizedBox(height: Espaciado.e4),
-          if (dia == null)
-            Text(
-              textos.citasSinDiaElegido,
-              style: tokens.tipografia.cuerpo.copyWith(
-                color: tokens.colores.textoSecundario,
-              ),
-            )
-          else ...[
-            Semantics(
-              header: true,
-              child: Text(
-                textos.citasHorariosDelDia(dia),
-                style: tokens.tipografia.cuerpoFuerte.copyWith(
-                  color: tokens.colores.texto,
-                ),
-              ),
-            ),
-            const SizedBox(height: Espaciado.e2),
-            SelectorFranja(
-              franjas: [
-                for (final f in franjas)
-                  FranjaHoraria(etiqueta: f.horaInicio, cupo: f.cupo),
-              ],
-              seleccionada: indice < 0 ? null : indice,
-              mensajeVacio: textos.citasHorariosVacio,
-              alSeleccionar: (i) => setState(() {
-                _franja = franjas[i];
-                _fallo = null;
-              }),
-            ),
-          ],
-          const SizedBox(height: Espaciado.e4),
-          ..._avisoDelFallo(context),
+      barraInferior: BarraInferiorCita(
+        hijos: [
           if (_franja == null) ...[
             Text(
               textos.citasReprogramarSinFranja,
+              textAlign: TextAlign.center,
               style: tokens.tipografia.cuerpoChico.copyWith(
-                color: tokens.colores.textoSecundario,
+                color: c.textoSecundario,
               ),
             ),
             const SizedBox(height: Espaciado.e2),
           ],
-          Boton(
+          BotonPildora(
             texto: textos.citasReprogramarConfirmar,
-            anchoCompleto: true,
-            cargando: _enviando,
-            alPresionar: _franja == null ? null : () => _confirmar(cita),
+            expandido: true,
+            alPresionar: _franja == null || _enviando
+                ? null
+                : () => _confirmar(cita),
           ),
         ],
       ),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: Espaciado.e4,
+                  vertical: Espaciado.e2,
+                ),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: c.acentoSuave,
+                    borderRadius: Radios.bordeTarjeta,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(Espaciado.e4),
+                    child: Row(
+                      children: [
+                        ExcludeSemantics(
+                          child: Icon(
+                            Icons.event_outlined,
+                            color: c.acento,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: Espaciado.e3),
+                        Expanded(
+                          child: Text(
+                            textos.citasReprogramarActual(
+                              cita.fecha,
+                              cita.horaInicio,
+                            ),
+                            style: tokens.tipografia.cuerpoFuerte.copyWith(
+                              color: c.texto,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SeleccionDiaHorario(
+                taller: taller,
+                rango: rango,
+                mes: _mes ?? rango.desde,
+                dia: dia,
+                franjas: franjas,
+                franjaSeleccionada: indice < 0 ? null : indice,
+                alCambiarMes: (mes) => setState(() => _mes = mes),
+                alElegirDia: (d) => setState(() {
+                  _dia = d;
+                  _franja = null;
+                }),
+                alElegirFranja: (i) => setState(() {
+                  _franja = franjas[i];
+                  _fallo = null;
+                }),
+              ),
+              ..._avisoDelFallo(context),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   List<Widget> _avisoDelFallo(BuildContext context) {
     final textos = AppLocalizations.of(context);
+    Widget margen(Widget hijo) => Padding(
+      padding: const EdgeInsets.fromLTRB(
+        Espaciado.e4,
+        Espaciado.e4,
+        Espaciado.e4,
+        0,
+      ),
+      child: hijo,
+    );
     switch (_fallo) {
       case null:
         return const [];
       case _Fallo.generico:
         return [
-          Aviso(mensaje: textos.citasReprogramarError, tono: Tono.peligro),
-          const SizedBox(height: Espaciado.e2),
+          margen(
+            Aviso(mensaje: textos.citasReprogramarError, tono: Tono.peligro),
+          ),
         ];
       case _Fallo.noModificable:
         return [
-          Aviso(
-            mensaje: textos.citasReprogramarNoDisponible,
-            tono: Tono.advertencia,
+          margen(
+            Aviso(
+              mensaje: textos.citasReprogramarNoDisponible,
+              tono: Tono.advertencia,
+            ),
           ),
-          const SizedBox(height: Espaciado.e2),
         ];
       case _Fallo.sinCupo:
         return [
-          Aviso(
-            titulo: textos.citasSinCupoTitulo,
-            mensaje: _cercanas.isEmpty
-                ? textos.citasSinCupoNinguna
-                : textos.citasSinCupoMensaje,
-            tono: Tono.advertencia,
-          ),
-          for (final f in _cercanas) ...[
-            const SizedBox(height: Espaciado.e2),
-            Boton(
-              texto: textos.citasFranjaCercana(f.fecha, f.horaInicio),
-              variante: VarianteBoton.secundario,
-              anchoCompleto: true,
-              alPresionar: () => setState(() {
-                _franja = f;
-                _dia = f.fecha;
-                _fallo = null;
-              }),
+          margen(
+            Aviso(
+              titulo: textos.citasSinCupoTitulo,
+              mensaje: _cercanas.isEmpty
+                  ? textos.citasSinCupoNinguna
+                  : textos.citasSinCupoMensaje,
+              tono: Tono.advertencia,
             ),
-          ],
-          const SizedBox(height: Espaciado.e2),
+          ),
+          for (final f in _cercanas)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                Espaciado.e4,
+                Espaciado.e2,
+                Espaciado.e4,
+                0,
+              ),
+              child: BotonPildora(
+                texto: textos.citasFranjaCercana(f.fecha, f.horaInicio),
+                variante: VarianteBotonPildora.tonal,
+                expandido: true,
+                alPresionar: () => setState(() {
+                  _franja = f;
+                  _dia = f.fecha;
+                  _fallo = null;
+                }),
+              ),
+            ),
         ];
     }
   }
 
   Widget _listo(BuildContext context, CitaCliente cita) {
     final textos = AppLocalizations.of(context);
-    return EstadoVacio(
-      titulo: textos.citasReprogramarTitulo,
-      mensaje: textos.citasReprogramarListo(cita.fecha, cita.horaInicio),
-      icono: Icons.check_circle_outline,
-      textoAccion: textos.citasListoCerrar,
-      alAccion: () => Navigator.of(context).maybePop(),
+    final c = TokensPista.de(context).colores;
+    return Scaffold(
+      backgroundColor: c.fondo,
+      body: SafeArea(
+        top: false,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: Espaciado.anchoMaximoContenido,
+            ),
+            child: SingleChildScrollView(
+              child: CabeceraPortada(
+                titulo: textos.citasReprogramarTitulo,
+                subtitulo: textos.citasReprogramarListo(
+                  cita.fecha,
+                  cita.horaInicio,
+                ),
+                tinte: c.exito,
+                lado: 200,
+                portada: ColoredBox(
+                  color: c.exitoSuave,
+                  child: Icon(
+                    Icons.check_circle_rounded,
+                    size: 104,
+                    color: c.exito,
+                  ),
+                ),
+                principal: AccionPortada(
+                  texto: textos.citasListoCerrar,
+                  alPresionar: () => Navigator.of(context).maybePop(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -309,16 +370,19 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).citasReprogramarCargando,
       liveRegion: true,
-      child: const Padding(
-        padding: EdgeInsets.all(Espaciado.e4),
-        child: Column(
-          children: [
-            Esqueleto(alto: 56),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 320),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 56),
-          ],
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.all(Espaciado.e4),
+          child: Column(
+            children: [
+              Esqueleto(alto: 56),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 320),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 56),
+            ],
+          ),
         ),
       ),
     );

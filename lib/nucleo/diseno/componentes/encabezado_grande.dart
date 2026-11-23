@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
@@ -11,12 +12,18 @@ import '../tokens/tokens_pista.dart';
 /// titulo pasa de `titulo1` a `titulo3` y el subtitulo se desvanece. Las
 /// alturas crecen con el tamano de letra del sistema, para que a 200 % el
 /// titulo no se corte.
+///
+/// Con `translucido` la barra contraida deja ver el contenido que pasa por
+/// debajo, desenfocado y teñido con el fondo (estilo barra de navegacion
+/// compacta); el fondo baja apenas a 92 % de opacidad al contraerse: deja un asomo de
+/// color pero el texto de abajo no se lee a traves del titulo.
 class EncabezadoGrande extends StatelessWidget {
   const EncabezadoGrande({
     required this.titulo,
     super.key,
     this.subtitulo,
     this.acciones = const [],
+    this.translucido = false,
   });
 
   final String titulo;
@@ -24,6 +31,9 @@ class EncabezadoGrande extends StatelessWidget {
 
   /// Botones al final del encabezado, cada uno con su zona tactil de 48.
   final List<Widget> acciones;
+
+  /// Barra contraida translucida con desenfoque.
+  final bool translucido;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +44,7 @@ class EncabezadoGrande extends StatelessWidget {
         titulo: titulo,
         subtitulo: subtitulo,
         acciones: acciones,
+        translucido: translucido,
         escala: escala,
         tokens: TokensPista.de(context),
         arriba: MediaQuery.paddingOf(context).top,
@@ -47,6 +58,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     required this.titulo,
     required this.subtitulo,
     required this.acciones,
+    required this.translucido,
     required this.escala,
     required this.tokens,
     required this.arriba,
@@ -55,6 +67,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
   final String titulo;
   final String? subtitulo;
   final List<Widget> acciones;
+  final bool translucido;
   final TextScaler escala;
   final TokensPista tokens;
   final double arriba;
@@ -105,67 +118,82 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       avance,
     )!.copyWith(color: c.texto);
 
-    return Semantics(
-      container: true,
-      header: true,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.fondo,
-          border: Border(
-            bottom: BorderSide(
-              color: avance >= 1 ? c.borde : Colors.transparent,
-            ),
-          ),
+    final fondo = translucido
+        ? c.fondo.withValues(alpha: 1 - 0.08 * avance)
+        : c.fondo;
+
+    final barra = DecoratedBox(
+      decoration: BoxDecoration(
+        color: fondo,
+        border: Border(
+          bottom: BorderSide(color: avance >= 1 ? c.borde : Colors.transparent),
         ),
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(
-            Espaciado.e4,
-            arriba,
-            Espaciado.e2,
-            Espaciado.e2,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      titulo,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: estiloTitulo,
-                    ),
-                    if (subtitulo != null && avance < 1)
-                      Opacity(
-                        opacity: 1 - avance,
-                        child: Text(
-                          subtitulo!,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: t.cuerpoChico.copyWith(
-                            color: c.textoSecundario,
-                          ),
-                        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          Espaciado.e4,
+          arriba,
+          Espaciado.e2,
+          Espaciado.e2,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titulo,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: estiloTitulo,
+                  ),
+                  if (subtitulo != null && avance < 1)
+                    Opacity(
+                      opacity: 1 - avance,
+                      child: Text(
+                        subtitulo!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
                       ),
-                  ],
-                ),
+                    ),
+                ],
               ),
-              ...acciones,
-            ],
-          ),
+            ),
+            ...acciones,
+          ],
         ),
       ),
     );
+
+    return Semantics(
+      container: true,
+      header: true,
+      child: translucido && avance > 0
+          ? ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: _desenfoque * avance,
+                  sigmaY: _desenfoque * avance,
+                ),
+                child: barra,
+              ),
+            )
+          : barra,
+    );
   }
+
+  static const double _desenfoque = 30;
 
   @override
   bool shouldRebuild(_Delegado anterior) =>
       anterior.titulo != titulo ||
       anterior.subtitulo != subtitulo ||
       anterior.acciones != acciones ||
+      anterior.translucido != translucido ||
       anterior.escala != escala ||
       anterior.tokens != tokens ||
       anterior.arriba != arriba;

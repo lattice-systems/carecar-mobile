@@ -27,7 +27,7 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 
 | Método | Ruta | Uso |
 | --- | --- | --- |
-| GET | `/citas/{id}/pase?plataforma=apple\|google` | Pase firmado por el backend con el QR del comprobante (V2-M02.11). |
+| GET | `/citas/{id}/pase?plataforma=apple\|google` | Pase firmado por el backend con el QR del comprobante (V2-M02.11). Apple responde el archivo `.pkpass` (`application/vnd.apple.pkpass`); Google responde `{url}` con el enlace «Guardar en Google Wallet» (`https://pay.google.com/gp/v/save/<jwt>`). 404 si la cita no es del cliente; 409 `CITA_CANCELADA` si está cancelada (el pase queda vencido); 503 `WALLET_NO_CONFIGURADO` si el servidor no tiene certificados. Simulado en `mock_api`. |
 
 ## Historias
 
@@ -94,3 +94,29 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 - Las dimensiones y la tipografía del widget no son del sistema de diseño (los widgets nativos no usan Flutter); solo se reutilizan los valores de color de los tokens de Pista. Pedir a Cristian una revisión de diseño.
 - V2-M25.02 (estado del taller en el widget) reutiliza este widget y el puerto.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
+
+## Avance de V2-M25.03
+
+Parte de **app** de «Guardar mi cita en Wallet». Estado: **En curso**; el pase firmado depende de la historia `Backend:` (otro agente la implementa contra el mismo contrato) y de los certificados de Apple y Google (ver notas de arriba).
+
+**Qué quedó**
+
+- **Botón en el comprobante:** `BotonAgregarAWallet` (`lib/modulos/citas/presentacion/`) bajo «Ver comprobante en PDF» en `PantallaComprobanteCita`. Usa `Boton`, `Aviso` y tokens del sistema v2. Donde no hay Wallet (escritorio) no se dibuja.
+- **Por plataforma:** Android pide `plataforma=google` y abre el enlace «Guardar en Google Wallet» con `url_launcher` (modo aplicación externa); iOS pide `plataforma=apple`, descarga el `.pkpass` y lo ofrece en la hoja de compartir (`share_plus`), desde donde se abre en Wallet. La plataforma sale de `plataformaWalletProvider`.
+- **Datos:** `RepositorioPaseWalletApi` usa el cliente del núcleo (`apiClienteProvider`); `ClienteApi.descargar` ahora acepta `consulta`. Dominio puro en `dominio/pase_de_wallet.dart` (`PlataformaWallet`, `PaseApple`, `PaseGoogle`, `RepositorioPaseWallet`, `EntregaDePase`) con fakes en `datos/`.
+- **Estados:** carga (el botón anuncia «cargando» y no admite doble toque), éxito (se entrega al sistema) y error en línea con reintento: sin conexión, cita cancelada (409 `CITA_CANCELADA`), Wallet no configurado (503 `WALLET_NO_CONFIGURADO`, remite al QR) y genérico. No hay estado vacío (no es lista).
+- **Sin caché:** el pase no pasa por `CarecarApiConCache` ni se escribe en disco; cada toque lo pide de nuevo y los bytes del `.pkpass` viajan en memoria.
+- **Contrato:** `WALLET_NO_CONFIGURADO` agregado a `Problema.codigo` en `api/agencia360-api-app-v1.yaml`, a `CodigoProblema` y a `errores_v11_test.dart`. Fila del endpoint en las tablas API de M02 y M25.
+- **mock_api:** `GET /citas/:citaId/pase` (pkpass falso de pocos bytes para Apple, `{url}` falsa para Google, 409 en cita cancelada, 400 con plataforma inválida).
+- **Seguridad:** el enlace de Google solo se abre si es HTTPS de `pay.google.com`; cualquier otro se rechaza como respuesta inválida. No se registra el pase ni datos del cliente.
+- **Textos:** claves `citasWallet*` en los ARB es y en.
+- **Pruebas:** `repositorio_pase_wallet_test.dart` (Apple, Google, enlace falso, 409, 503, sin red), `boton_agregar_a_wallet_test.dart` (plataformas, carga, errores, 48 de zona tactil, claro, oscuro y letra al 200 %) y el caso nuevo de `pantalla_comprobante_cita_test.dart`.
+
+**Pendiente / fuera de alcance**
+
+- **Criterio «el pase queda vencido si se cancela»:** es del backend (pase con fecha de expiración o `voided` en Google y `voided` en el `.pkpass`; hoy solo se garantiza que no se emite uno nuevo con 409). La app no puede invalidar un pase ya guardado.
+- Backend real: firma del `.pkpass` y JWT de Google con certificados fuera del repo (R8, tramitados con T04).
+- Probar en teléfono real: abrir Google Wallet y la hoja de compartir de iOS con el `.pkpass` (las pruebas usan puertos falsos porque son canales de plataforma). En iOS no se verificó que la hoja ofrezca «Agregar a Wallet»; si no, usar `PassKit` con un canal propio.
+- `queries` de Android 11+ para `url_launcher` (`https`) no se tocaron: el enlace se abre con `launchUrl`, que no depende de `canLaunchUrl`.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
+- V2-M25.02 y V2-M25.05 siguen sin empezar.

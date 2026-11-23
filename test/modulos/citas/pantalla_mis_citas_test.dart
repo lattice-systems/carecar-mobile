@@ -5,10 +5,11 @@ import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/modulos/citas/presentacion/componentes/vacio_ilustrado.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/dialogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
-import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,6 +43,9 @@ List<CitaCliente> _variadas() => [
   _cita(4, estado: EstadoDeCita.cancelada, dia: 15),
   _cita(5, dia: 20),
 ];
+
+/// Las mismas, con otra cita proxima el viernes 27.
+List<CitaCliente> _conOtraProxima() => [..._variadas(), _cita(6, dia: 27)];
 
 Widget _app(
   RepositorioCitasFake citas, {
@@ -90,18 +94,42 @@ void main() {
       expect(find.byType(Esqueleto), findsNothing);
     });
 
-    _prueba('separa proximas de pasadas', (tester) async {
-      await tester.pumpWidget(_app(_repo()));
+    _prueba('la proxima va en tarjeta heroe y luego proximas y pasadas', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
       await tester.pumpAndSettle();
+      expect(find.text('TU PRÓXIMA CITA'), findsOneWidget);
       expect(find.text('Próximas'), findsOneWidget);
       expect(find.text('Pasadas'), findsOneWidget);
-      // Una proxima y cuatro pasadas, cada una con su insignia.
-      expect(find.byType(Insignia), findsNWidgets(5));
+      // La heroe, otra proxima y cuatro pasadas, cada una con su insignia.
+      expect(find.byType(Insignia), findsNWidgets(6));
+      final heroe = tester.getTopLeft(find.text('TU PRÓXIMA CITA')).dy;
       final proximas = tester.getTopLeft(find.text('Próximas')).dy;
       final pasadas = tester.getTopLeft(find.text('Pasadas')).dy;
-      final confirmadaHoy = tester.getTopLeft(find.text('Confirmada').first).dy;
-      expect(confirmadaHoy, greaterThan(proximas));
-      expect(confirmadaHoy, lessThan(pasadas));
+      expect(heroe, lessThan(proximas));
+      expect(proximas, lessThan(pasadas));
+    });
+
+    _prueba('la heroe ofrece comprobante y reprogramar como pildoras', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_repo()));
+      await tester.pumpAndSettle();
+      expect(find.byType(BotonPildora), findsNWidgets(2));
+      expect(find.text('Comprobante'), findsOneWidget);
+      expect(find.text('Reprogramar'), findsOneWidget);
+    });
+
+    _prueba('las otras proximas abren una hoja con sus acciones', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
+      await tester.pumpAndSettle();
+      expect(find.text('Cancelar cita'), findsOneWidget);
+      await _tocar(tester, find.text('vie, 27 nov · 09:00'));
+      expect(find.text('Opciones de tu cita'), findsOneWidget);
+      expect(find.text('Cancelar cita'), findsNWidgets(2));
     });
 
     _prueba('cada estado lleva texto, no solo color', (tester) async {
@@ -121,8 +149,12 @@ void main() {
     _prueba('muestra fecha, hora y vehiculo de la cita', (tester) async {
       await tester.pumpWidget(_app(_repo()));
       await tester.pumpAndSettle();
-      expect(find.textContaining('26 nov'), findsOneWidget);
-      expect(find.textContaining('09:00'), findsWidgets);
+      // La heroe dice el dia enorme, el dia de la semana y el horario.
+      expect(find.text('26'), findsOneWidget);
+      expect(find.text('Jueves'), findsOneWidget);
+      expect(find.text('09:00 - 10:00'), findsOneWidget);
+      // Las pasadas llevan su fecha en la fila.
+      expect(find.text('mar, 10 nov · 09:00'), findsOneWidget);
       expect(find.text('Mazda CX-5 2024'), findsWidgets);
       expect(find.text('Mazda 3 2022'), findsOneWidget);
     });
@@ -154,7 +186,8 @@ void main() {
     _prueba('sin citas explica y ofrece agendar', (tester) async {
       await tester.pumpWidget(_app(_repo(const [])));
       await tester.pumpAndSettle();
-      expect(find.byType(EstadoVacio), findsOneWidget);
+      expect(find.byType(VacioIlustrado), findsOneWidget);
+      expect(find.byType(BotonPildora), findsOneWidget);
       expect(find.text('Aún no tienes citas'), findsOneWidget);
       expect(find.text('Agendar cita'), findsOneWidget);
     });
@@ -186,8 +219,11 @@ void main() {
     }
 
     _prueba('en ingles traduce estados y secciones', (tester) async {
-      await tester.pumpWidget(_app(_repo(), idioma: const Locale('en')));
+      await tester.pumpWidget(
+        _app(_repo(_conOtraProxima()), idioma: const Locale('en')),
+      );
       await tester.pumpAndSettle();
+      expect(find.text('YOUR NEXT APPOINTMENT'), findsOneWidget);
       expect(find.text('Upcoming'), findsOneWidget);
       expect(find.text('Past'), findsOneWidget);
       expect(find.text('Attended'), findsOneWidget);

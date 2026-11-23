@@ -214,11 +214,14 @@ class ClienteApi {
     _verificarEstado(respuesta);
   }
 
-  /// GET de un archivo binario, como el ticket en PDF.
-  Future<Uint8List> descargar(String camino) async {
+  /// GET de un archivo binario, como el ticket en PDF o el pase de Wallet.
+  Future<Uint8List> descargar(
+    String camino, {
+    Map<String, String?>? consulta,
+  }) async {
     final respuesta = await _pedir(
       () async => _http.get(
-        config.ruta(camino),
+        config.ruta(camino, consulta: consulta),
         headers: {...await _encabezados(), 'accept': '*/*'},
       ),
       conToken: true,

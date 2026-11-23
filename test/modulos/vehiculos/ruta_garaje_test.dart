@@ -73,11 +73,11 @@ void main() {
     expect(find.byType(PantallaLogin), findsOneWidget);
   });
 
-  testWidgets('tocar una tarjeta del garaje abre su detalle', (tester) async {
+  testWidgets('tocar la portada del garaje abre su detalle', (tester) async {
     await _montar(tester);
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Mazda CX-5 2024'));
+    await tester.tap(find.text('View details'));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaDetalleVehiculo), findsOneWidget);
     expect(find.text('Vehicle details'), findsOneWidget);

@@ -106,7 +106,25 @@ Barra inferior con 5 destinos: **Inicio · Mi auto · Servicio · Explorar · Cu
 
 Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; con carga), `CampoTexto`, `CampoContrasena`, `Selector`, `Casilla`, `Interruptor`, `Chip` (en código `ChipPista`, para no chocar con el `Chip` de Material), `Avatar`, `Insignia`, `Aviso` (info/éxito/advertencia/peligro), `Dialogo`, `HojaInferior`, `Menu`, `Pestanas`.
 
-Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar), `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`.
+Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`.
+
+### Estilo portada
+
+Para pantallas con aire, esquinas generosas y una pieza protagonista (referencia de ritmo: las apps de música; sin copiar marcas, íconos ni recursos de nadie). Solo usan tokens; en oscuro no hay sombra y se sube de superficie; el movimiento pasa por `context.movimiento`.
+
+**`EncabezadoGrande(translucido: true)`.** Título grande en negrita que se contrae a una barra compacta. Con `translucido` la barra contraída desenfoca (σ hasta 30) y deja asomar el color del contenido, pero su fondo solo baja a 92 % de opacidad con el desplazamiento: el texto de abajo no se lee a través del título. Expandido no tiene desenfoque. Accesibilidad: sigue siendo un encabezado; con letra grande reserva dos líneas.
+
+**`BotonPildora`.** Píldora de ancho flexible con ícono opcional y texto. Variantes: `lleno` (acción principal, `acento`) y `tonal` (secundaria, `acentoSuave`). Estados: normal, presionado (se encoge a 96 % con `rapido`; con reducir movimiento no se encoge), foco y hover (velo del 10 %), deshabilitado (`superficieHundida` y `textoTerciario`). Mínimo 48 de alto; el texto se parte en líneas con letra al 200 %. Semántica: botón con el texto como etiqueta y estado habilitado.
+
+**`CabeceraPortada`.** Pieza cuadrada con radio `hoja` y sombra suave (foto, silueta o ícono grande) sobre un fondo hecho con la misma pieza desenfocada (σ 40) y un degradado del `tinte` (por defecto `acento`, 42 % en claro y 55 % en oscuro) que termina en `fondo`, sin borde duro. Debajo: título (`titulo1`), subtítulo y hasta dos `BotonPildora` (principal llena, secundaria tonal; `AccionPortada`). Con letra grande los botones se apilan. Semántica: la pieza es una imagen con `descripcion`, el título es encabezado, el fondo se excluye.
+
+**`BarraPortada`.** Barra superior (`AppBar`) de las pantallas con `CabeceraPortada` a pantalla completa (`Scaffold(extendBodyBehindAppBar: true)`). Arriba del todo es transparente para que el fondo de la portada llegue al borde; al desplazar (`scrolledUnder`) pasa a `fondo` opaco, así ninguna tarjeta se ve a través del título ni del botón de regreso. Título opcional.
+
+**`Estante`.** Título grande (`titulo2`) como encabezado, enlace «Ver todo» opcional (48 de zona táctil, etiqueta «Ver todo: título») y carrusel horizontal de `hijos` de ancho `anchoTarjeta` que, al soltar, se alinea a una tarjeta con el resorte del sistema. El `alto` lo fija quien lo usa y debe dar cabida a la tarjeta con letra al 200 %.
+
+**`GrupoLista` y `FilaGrupo`.** Lista agrupada: tarjeta de radio `tarjeta` con filas separadas por líneas finas que empiezan después del ícono. Cada fila lleva ícono en cuadro redondeado de color (`colorIcono`), título, subtítulo, adorno final y chevron si es tocable. `encabezado` (etiqueta, como encabezado accesible) y `pie` (texto de apoyo) van fuera de la tarjeta. Cada fila es un solo nodo para el lector de pantalla.
+
+Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %), con la fuente de prueba de Flutter hasta que V2-T03.02 deje las reales. Todos están en la galería.
 
 Cada componente documenta: anatomía, variantes, estados (normal, presionado, foco, deshabilitado, cargando, error), accesibilidad (`Semantics`, orden de foco) y golden en claro, oscuro y 200 %.
 

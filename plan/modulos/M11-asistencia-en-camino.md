@@ -65,3 +65,29 @@ Ayuda inmediata cuando el auto falla en la calle: un botón que comparte ubicaci
 - V2-M11.01, V2-M11.02 y V2-M11.04 siguen sin empezar. Cuando exista la pantalla SOS, `rutaSos` debe apuntar a ella y las guías quedan como destino de "Guías rápidas".
 - Los pasos son texto; si Diseño pide ilustraciones se agregan como assets en una historia aparte.
 - Queda por revisar con una persona de la agencia que los pasos de choque y corriente sean los que quieren dar a sus clientes.
+
+## Avance de rediseño (estilo portada)
+
+Rediseño visual de `PantallaGuias` y `PantallaGuia` (V2-M11.03) según el estilo portada del sistema de diseño v2 (§8). No cambian lógica, rutas ni criterios de aceptación; solo la presentación y textos nuevos.
+
+**Lista (`/asistencia/guias`)**
+
+- Título grande «Emergencias» con `EncabezadoGrande(translucido: true)`.
+- Tarjeta héroe «¿Necesitas ayuda ahora?» (tinte `peligro`, ícono SOS grande). Su `BotonPildora` «Pedir ayuda» queda **deshabilitado** y el texto explica que llegará pronto; se activa cuando exista V2-M11.01 (hoy `rutaSos` ya apunta a esta lista).
+- `Aviso` discreto «funciona sin conexión».
+- `Estante` «Guías rápidas» con las tres guías como portadas: ícono grande (64) sobre el color de la guía (llanta `acento`, corriente `advertencia`, choque `peligro`) y su número de pasos. Cada portada es un solo nodo táctil con etiqueta «título, N pasos».
+- `GrupoLista` «Todas las guías» con las mismas guías (ícono en cuadro de color, «N pasos», chevron). No hay duración por guía en el dominio, solo número de pasos.
+
+**Guía (`/asistencia/guias/:tipo`)**
+
+- `CabeceraPortada` con el ícono grande de la guía y su tinte, título y subtítulo «N pasos · sin conexión»; la barra superior es transparente solo con el botón de regreso.
+- Pasos como lista numerada grande: número en círculo de color, «Paso N de M» en negrita y el texto con aire. Un nodo semántico por paso con `OrdinalSortKey`, como antes; el círculo se excluye de la semántica.
+- La píldora «Llamar a la agencia» se **omitió**: no hay acción disponible hasta V2-M11.02 / M27.02.
+
+**Código:** `estilo_guias.dart` (ícono y color por guía, compartidos), claves ARB `asistenciaListaTitulo`, `asistenciaHeroe*`, `asistenciaEstanteGuias`, `asistenciaGrupoGuias`, `asistenciaGuiaCantidadPasos`, `asistenciaGuiaSubtituloSinConexion` (es y en). Pruebas de `test/modulos/asistencia/ruta_guias_test.dart` actualizadas (los títulos aparecen en estante y lista) y ampliadas (héroe explicado, portada abre la guía, lista y guía al 200 % sin desbordes).
+
+**Pendiente:** al integrar V2-M11.01 activar el botón del héroe; con V2-M11.02 agregar la píldora «Llamar a la agencia» en la guía; goldens de las dos pantallas si se piden.
+
+### Correcciones del rediseño (barras al desplazar)
+
+`PantallaGuia` usa `BarraPortada` (transparente arriba, opaca al desplazar) y `PantallaGuias` hereda el encabezado translúcido más opaco de `EncabezadoGrande`: ningún paso o tarjeta se ve a través del título ni del botón de regreso. Hay pruebas de widget que desplazan ambas pantallas.

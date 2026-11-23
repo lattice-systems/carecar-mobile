@@ -4,6 +4,7 @@ import 'package:carecar_mobile/modulos/galeria/presentacion/pantalla_galeria.dar
 import 'package:carecar_mobile/modulos/galeria/presentacion/seccion_galeria.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_base.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_compuestos.dart';
+import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_portada.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -13,6 +14,7 @@ void main() {
   final secciones = <SeccionGaleria>[
     ...seccionesBase(),
     ...seccionesCompuestos(),
+    ...seccionesPortada(),
   ];
 
   test(

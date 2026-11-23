@@ -31,17 +31,46 @@ void main() {
     enrutadorDe(tester).go(rutaAsistenciaGuias);
     await tester.pumpAndSettle();
     expect(find.byType(PantallaGuias), findsOneWidget);
-    expect(find.text('Cambiar una llanta'), findsOneWidget);
-    expect(find.text('Pasar corriente'), findsOneWidget);
-    expect(find.text('Qué hacer en un choque'), findsOneWidget);
+    expect(find.text('Cambiar una llanta'), findsWidgets);
+    expect(find.text('Pasar corriente'), findsWidgets);
+    expect(find.text('Qué hacer en un choque'), findsWidgets);
     expect(find.textContaining('sin conexión'), findsWidgets);
+  });
+
+  testWidgets('la lista trae titulo grande y la tarjeta de ayuda explicada', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
+    await tester.pumpAndSettle();
+    expect(find.text('Emergencias'), findsWidgets);
+    expect(find.text('¿Necesitas ayuda ahora?'), findsOneWidget);
+    expect(find.textContaining('estará disponible pronto'), findsOneWidget);
+    expect(find.text('Guías rápidas'), findsOneWidget);
+  });
+
+  testWidgets('al tocar una portada del estante se abre su guia', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Pasar corriente').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pasar corriente').first);
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaGuia), findsOneWidget);
+    expect(find.text('Paso 1 de 6'), findsOneWidget);
+    expect(find.text('6 pasos · sin conexión'), findsOneWidget);
   });
 
   testWidgets('al tocar una guia se abren sus pasos numerados', (tester) async {
     await _montar(tester);
     enrutadorDe(tester).go(rutaAsistenciaGuias);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Cambiar una llanta'));
+    await tester.ensureVisible(find.text('Cambiar una llanta').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cambiar una llanta').last);
     await tester.pumpAndSettle();
     expect(find.byType(PantallaGuia), findsOneWidget);
     expect(find.text('Paso 1 de 5'), findsOneWidget);
@@ -88,6 +117,9 @@ void main() {
     tester.platformDispatcher.textScaleFactorTestValue = 2;
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
     enrutadorDe(tester).go(rutaGuiaDeEmergencia(TipoGuia.corriente));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);

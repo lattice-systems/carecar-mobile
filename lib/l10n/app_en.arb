@@ -24,6 +24,14 @@
   "asistenciaGuiaLlantaResumen": "Swap it for the spare in a few steps.",
   "asistenciaGuiaLlantaTitulo": "Change a tire",
   "asistenciaGuiaPasoNumero": "Step {numero} of {total}",
+  "asistenciaListaTitulo": "Emergencies",
+  "asistenciaHeroeTitulo": "Need help right now?",
+  "asistenciaHeroeTexto": "Asking for help with your location will be available soon. Meanwhile, these guides tell you what to do.",
+  "asistenciaHeroeAccion": "Ask for help",
+  "asistenciaEstanteGuias": "Quick guides",
+  "asistenciaGrupoGuias": "All guides",
+  "asistenciaGuiaCantidadPasos": "{pasos} steps",
+  "asistenciaGuiaSubtituloSinConexion": "{pasos} steps · offline",
   "asistenciaGuiasAvisoSinConexion": "These guides are stored in the app and work offline.",
   "asistenciaGuiasTitulo": "Emergency guides",
   "catalogoTitulo": "Catalog",
@@ -249,6 +257,8 @@
       }
     }
   },
+  "estanteVerTodo": "See all",
+  "estanteVerTodoDe": "See all: {titulo}",
   "calendarioDelMes": "Calendar for {mes}",
   "@calendarioDelMes": {
     "description": "Nombre del calendario con el mes visible.",
@@ -798,5 +808,54 @@
       }
     }
   },
-  "widgetsSinCitaMensaje": "You have no upcoming appointments"
+  "widgetsSinCitaMensaje": "You have no upcoming appointments",
+  "citasWalletAgregar": "Add to Wallet",
+  "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
+  "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
+  "citasWalletErrorCancelada": "Your appointment is cancelled, so it no longer has a pass.",
+  "citasWalletErrorNoDisponible": "The Wallet pass is not available right now. Show the QR code at reception.",
+  "citasAgendarDia": "Day",
+  "citasAgendarHorario": "Time",
+  "citasMisCitasProximaEtiqueta": "Your next appointment",
+  "citasHeroComprobante": "Receipt",
+  "citasAccionesCita": "Appointment options",
+  "citasCerrar": "Close",
+  "citasComprobanteDetalles": "Appointment details",
+  "citasComprobanteRecepcion": "At reception",
+  "vehiculosAgendarServicio": "Book a service",
+  "@vehiculosAgendarServicio": {
+    "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
+  },
+  "vehiculosBotonManual": "Manual",
+  "@vehiculosBotonManual": {
+    "description": "Botón de la portada del detalle que abre el manual del vehículo."
+  },
+  "vehiculosBotonDescargar": "Download",
+  "@vehiculosBotonDescargar": {
+    "description": "Botón de la portada del manual que guarda el PDF."
+  },
+  "vehiculosBotonCompartir": "Share",
+  "@vehiculosBotonCompartir": {
+    "description": "Botón de la portada del manual que comparte el PDF."
+  },
+  "vehiculosVerDetalle": "View details",
+  "@vehiculosVerDetalle": {
+    "description": "Botón de la portada del garaje cuando hay un solo vehículo."
+  },
+  "vehiculosEncabezadoDatos": "Details",
+  "@vehiculosEncabezadoDatos": {
+    "description": "Encabezado del grupo de datos del vehículo en el detalle."
+  },
+  "vehiculosEncabezadoTuAuto": "Your car",
+  "@vehiculosEncabezadoTuAuto": {
+    "description": "Encabezado del grupo de accesos del detalle."
+  },
+  "vehiculosEncabezadoRapidos": "Quick facts",
+  "@vehiculosEncabezadoRapidos": {
+    "description": "Encabezado del grupo de datos rápidos del garaje."
+  },
+  "vehiculosToqueCopiarVin": "Tap to copy",
+  "@vehiculosToqueCopiarVin": {
+    "description": "Pista bajo el VIN que indica que se puede copiar."
+  }
 }

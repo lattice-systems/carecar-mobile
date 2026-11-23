@@ -104,6 +104,35 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get asistenciaListaTitulo => 'Emergencias';
+
+  @override
+  String get asistenciaHeroeTitulo => '¿Necesitas ayuda ahora?';
+
+  @override
+  String get asistenciaHeroeTexto =>
+      'Pedir ayuda con tu ubicación estará disponible pronto. Mientras tanto, estas guías te dicen qué hacer.';
+
+  @override
+  String get asistenciaHeroeAccion => 'Pedir ayuda';
+
+  @override
+  String get asistenciaEstanteGuias => 'Guías rápidas';
+
+  @override
+  String get asistenciaGrupoGuias => 'Todas las guías';
+
+  @override
+  String asistenciaGuiaCantidadPasos(int pasos) {
+    return '$pasos pasos';
+  }
+
+  @override
+  String asistenciaGuiaSubtituloSinConexion(int pasos) {
+    return '$pasos pasos · sin conexión';
+  }
+
+  @override
   String get asistenciaGuiasAvisoSinConexion =>
       'Estas guías están guardadas en la app y funcionan sin conexión.';
 
@@ -656,6 +685,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get estanteVerTodo => 'Ver todo';
+
+  @override
+  String estanteVerTodoDe(String titulo) {
+    return 'Ver todo: $titulo';
+  }
+
+  @override
   String calendarioDelMes(DateTime mes) {
     final intl.DateFormat mesDateFormat = intl.DateFormat.yMMMM(localeName);
     final String mesString = mesDateFormat.format(mes);
@@ -1116,4 +1153,74 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get widgetsSinCitaMensaje => 'No tienes citas próximas';
+
+  @override
+  String get citasWalletAgregar => 'Agregar a Wallet';
+
+  @override
+  String get citasWalletErrorGenerico =>
+      'No pudimos preparar tu pase. Intenta de nuevo.';
+
+  @override
+  String get citasWalletErrorSinConexion =>
+      'Sin conexión. Revisa tu red e intenta de nuevo.';
+
+  @override
+  String get citasWalletErrorCancelada =>
+      'Tu cita está cancelada, así que ya no tiene pase.';
+
+  @override
+  String get citasWalletErrorNoDisponible =>
+      'El pase de Wallet no está disponible por ahora. Muestra el código QR en recepción.';
+
+  @override
+  String get citasAgendarDia => 'Día';
+
+  @override
+  String get citasAgendarHorario => 'Horario';
+
+  @override
+  String get citasMisCitasProximaEtiqueta => 'Tu próxima cita';
+
+  @override
+  String get citasHeroComprobante => 'Comprobante';
+
+  @override
+  String get citasAccionesCita => 'Opciones de tu cita';
+
+  @override
+  String get citasCerrar => 'Cerrar';
+
+  @override
+  String get citasComprobanteDetalles => 'Detalles de la cita';
+
+  @override
+  String get citasComprobanteRecepcion => 'En recepción';
+
+  @override
+  String get vehiculosAgendarServicio => 'Agendar servicio';
+
+  @override
+  String get vehiculosBotonManual => 'Manual';
+
+  @override
+  String get vehiculosBotonDescargar => 'Descargar';
+
+  @override
+  String get vehiculosBotonCompartir => 'Compartir';
+
+  @override
+  String get vehiculosVerDetalle => 'Ver detalle';
+
+  @override
+  String get vehiculosEncabezadoDatos => 'Datos';
+
+  @override
+  String get vehiculosEncabezadoTuAuto => 'Tu auto';
+
+  @override
+  String get vehiculosEncabezadoRapidos => 'Datos rápidos';
+
+  @override
+  String get vehiculosToqueCopiarVin => 'Toca para copiar';
 }

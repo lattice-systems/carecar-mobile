@@ -7,26 +7,31 @@ import 'package:intl/intl.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/barra_portada.dart';
+import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
-import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../citas/presentacion/rutas_citas.dart';
 import '../dominio/vehiculo_garaje.dart';
+import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
 import 'rutas_vehiculos.dart';
 
-/// Detalle de un vehiculo del garaje (V2-M02.02): VIN copiable, datos del auto,
-/// kilometraje con la fecha en que el taller lo actualizo y accesos a historial,
-/// manuales y ficha tecnica.
+/// Detalle de un vehiculo del garaje en estilo portada (V2-M02.02): el auto
+/// como portada con sus acciones, VIN copiable y kilometraje con la fecha en
+/// que el taller lo actualizo, datos del auto y accesos a manual, ficha tecnica
+/// e historial.
 ///
-/// Manuales (V2-M02.03) y ficha tecnica (V2-M02.04) abren su pantalla; el
-/// historial (V2-M02.05) aun no la tiene: se ve deshabilitado y dice
-/// "Disponible pronto" en vez de fallar. Resuelve
-/// los cinco estados; si el id ya no esta en el garaje lo explica.
+/// Manual (V2-M02.03) y ficha tecnica (V2-M02.04) abren su pantalla; el
+/// historial (V2-M02.05) aun no la tiene: se ve sin accion y dice
+/// "Disponible pronto" en vez de fallar. Resuelve los cinco estados; si el id
+/// ya no esta en el garaje lo explica.
 class PantallaDetalleVehiculo extends ConsumerWidget {
   const PantallaDetalleVehiculo({required this.vehiculoId, super.key});
 
@@ -38,21 +43,27 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text(textos.vehiculosDetalleTitulo)),
+      extendBodyBehindAppBar: true,
+      backgroundColor: TokensPista.de(context).colores.fondo,
+      appBar: BarraPortada(titulo: textos.vehiculosDetalleTitulo),
       body: vehiculo.when(
         skipLoadingOnReload: true,
         loading: () => const _Cargando(),
-        error: (error, _) => EstadoError(
-          causa: error is SinConexion
-              ? CausaError.sinConexion
-              : CausaError.generico,
-          alReintentar: () => ref.invalidate(garajeProvider),
+        error: (error, _) => SafeArea(
+          child: EstadoError(
+            causa: error is SinConexion
+                ? CausaError.sinConexion
+                : CausaError.generico,
+            alReintentar: () => ref.invalidate(garajeProvider),
+          ),
         ),
         data: (v) => v == null
-            ? EstadoVacio(
-                titulo: textos.vehiculosNoEncontradoTitulo,
-                mensaje: textos.vehiculosNoEncontradoMensaje,
-                icono: Icons.directions_car_outlined,
+            ? SafeArea(
+                child: EstadoVacio(
+                  titulo: textos.vehiculosNoEncontradoTitulo,
+                  mensaje: textos.vehiculosNoEncontradoMensaje,
+                  icono: Icons.directions_car_outlined,
+                ),
               )
             : RefreshIndicator(
                 onRefresh: () => ref.refresh(garajeProvider.future),
@@ -84,159 +95,259 @@ class _DetalleState extends State<_Detalle> {
   Widget build(BuildContext context) {
     final v = widget.vehiculo;
     final textos = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final tinte = tinteDeColor(tokens, v.color);
     final vin = v.vin;
     final placas = v.placas;
+    final sinPlacas = placas == null || placas.isEmpty;
 
     return ListView(
-      padding: const EdgeInsets.all(Espaciado.e4),
+      padding: const EdgeInsets.only(bottom: Espaciado.e8),
       children: [
-        TarjetaVehiculo(nombre: v.titulo, heroTag: 'vehiculo-${v.id}'),
-        const SizedBox(height: Espaciado.e4),
-        if (vin != null && vin.isNotEmpty) ...[
-          _Dato(
-            etiqueta: textos.vehiculosVin,
-            valor: vin,
-            cifras: true,
-            fin: IconButton(
-              tooltip: textos.vehiculosCopiarVin,
-              onPressed: () => _copiarVin(vin),
-              icon: const Icon(Icons.copy_outlined),
-            ),
-          ),
-          if (_vinCopiado)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: Espaciado.e2),
-              child: Aviso(
-                mensaje: textos.vehiculosVinCopiado,
-                tono: Tono.exito,
-                alCerrar: () => setState(() => _vinCopiado = false),
-              ),
-            ),
-        ],
-        _Dato(
-          etiqueta: textos.vehiculosPlacasEtiqueta,
-          valor: placas == null || placas.isEmpty
+        CabeceraPortada(
+          titulo: v.titulo,
+          subtitulo: sinPlacas
               ? textos.vehiculosSinPlacas
-              : placas,
+              : textos.vehiculosPlacas(placas),
+          descripcion: textos.fotoDeModelo(v.titulo),
+          tinte: tinte,
+          portada: PortadaVehiculo(tinte: tinte),
+          principal: AccionPortada(
+            texto: textos.vehiculosAgendarServicio,
+            icono: Icons.event_available_outlined,
+            alPresionar: () => context.push(rutaAgendarCita),
+          ),
+          secundaria: AccionPortada(
+            texto: textos.vehiculosBotonManual,
+            icono: Icons.menu_book_outlined,
+            alPresionar: () => context.push(rutaManualVehiculo(v.id)),
+          ),
         ),
-        _Dato(etiqueta: textos.vehiculosAnio, valor: '${v.anio}'),
-        if (v.color != null)
-          _Dato(etiqueta: textos.vehiculosColor, valor: v.color!),
-        if (v.version != null)
-          _Dato(etiqueta: textos.vehiculosVersion, valor: v.version!),
-        _Kilometraje(vehiculo: v),
-        const SizedBox(height: Espaciado.e4),
-        FilaLista(
-          titulo: textos.vehiculosAccesoHistorial,
-          subtitulo: textos.vehiculosAccesoPronto,
-          inicio: const Icon(Icons.history),
-        ),
-        FilaLista(
-          titulo: textos.vehiculosAccesoManuales,
-          inicio: const Icon(Icons.menu_book_outlined),
-          alToque: () => context.push(rutaManualVehiculo(v.id)),
-        ),
-        FilaLista(
-          titulo: textos.vehiculosAccesoFicha,
-          inicio: const Icon(Icons.fact_check_outlined),
-          alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: Espaciado.e4),
+              _TarjetaCifras(
+                vehiculo: v,
+                alCopiarVin: vin == null || vin.isEmpty
+                    ? null
+                    : () => _copiarVin(vin),
+              ),
+              if (_vinCopiado)
+                Padding(
+                  padding: const EdgeInsets.only(top: Espaciado.e2),
+                  child: Aviso(
+                    mensaje: textos.vehiculosVinCopiado,
+                    tono: Tono.exito,
+                    alCerrar: () => setState(() => _vinCopiado = false),
+                  ),
+                ),
+              const SizedBox(height: Espaciado.e4),
+              GrupoLista(
+                encabezado: textos.vehiculosEncabezadoDatos,
+                filas: [
+                  _dato(
+                    Icons.pin_outlined,
+                    textos.vehiculosPlacasEtiqueta,
+                    sinPlacas ? textos.vehiculosSinPlacas : placas,
+                    c.acento,
+                  ),
+                  _dato(
+                    Icons.calendar_today_outlined,
+                    textos.vehiculosAnio,
+                    '${v.anio}',
+                    c.marca,
+                  ),
+                  if (v.color != null)
+                    _dato(
+                      Icons.palette_outlined,
+                      textos.vehiculosColor,
+                      v.color!,
+                      tinte,
+                    ),
+                  if (v.version != null)
+                    _dato(
+                      Icons.tune,
+                      textos.vehiculosVersion,
+                      v.version!,
+                      c.exito,
+                    ),
+                ],
+              ),
+              const SizedBox(height: Espaciado.e4),
+              GrupoLista(
+                encabezado: textos.vehiculosEncabezadoTuAuto,
+                filas: [
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoManuales,
+                    icono: Icons.menu_book_outlined,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaManualVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoFicha,
+                    icono: Icons.fact_check_outlined,
+                    colorIcono: c.exito,
+                    alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoHistorial,
+                    subtitulo: textos.vehiculosAccesoPronto,
+                    icono: Icons.history,
+                    colorIcono: c.textoTerciario,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
+
+  /// Fila de dato: el valor va arriba y la etiqueta debajo, como una sola
+  /// frase para el lector de pantalla.
+  FilaGrupo _dato(IconData icono, String etiqueta, String valor, Color color) =>
+      FilaGrupo(
+        titulo: valor,
+        subtitulo: etiqueta,
+        icono: icono,
+        colorIcono: color,
+      );
 }
 
-/// Kilometraje y, debajo, cuando lo actualizo el taller. Sin fecha de cierre
-/// lo dice; nunca la inventa.
-class _Kilometraje extends StatelessWidget {
-  const _Kilometraje({required this.vehiculo});
+/// Tarjeta con las dos cifras del auto: el kilometraje grande, con la fecha en
+/// que lo actualizo el taller (o que aun no hay), y el VIN en monoespaciado que
+/// se copia al tocarlo. Sin fecha de cierre lo dice; nunca la inventa.
+class _TarjetaCifras extends StatelessWidget {
+  const _TarjetaCifras({required this.vehiculo, required this.alCopiarVin});
 
   final VehiculoGaraje vehiculo;
+  final VoidCallback? alCopiarVin;
 
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final km = vehiculo.kilometraje;
-    if (km == null) {
-      return _Dato(
-        etiqueta: textos.vehiculosKilometraje,
-        valor: textos.vehiculosKmSinDato,
-      );
-    }
-    final idioma = Localizations.localeOf(context).languageCode;
-    final cierre = vehiculo.kilometrajeActualizadoEn;
-    return _Dato(
-      etiqueta: textos.vehiculosKilometraje,
-      valor: textos.vehiculosKilometros(
-        NumberFormat.decimalPattern(idioma == 'es' ? 'es_MX' : idioma)
-            .format(km),
-      ),
-      nota: cierre == null
-          ? textos.vehiculosKmSinActualizar
-          : textos.vehiculosKmActualizado(
-              MaterialLocalizations.of(context).formatFullDate(cierre),
-            ),
-    );
-  }
-}
-
-/// Una fila de dato: etiqueta, valor (en cifras si es un codigo), una nota
-/// opcional y un adorno al final. El lector de pantalla recibe etiqueta, valor
-/// y nota juntos.
-class _Dato extends StatelessWidget {
-  const _Dato({
-    required this.etiqueta,
-    required this.valor,
-    this.nota,
-    this.cifras = false,
-    this.fin,
-  });
-
-  final String etiqueta;
-  final String valor;
-  final String? nota;
-  final bool cifras;
-  final Widget? fin;
-
-  @override
-  Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
+    final km = vehiculo.kilometraje;
+    final idioma = Localizations.localeOf(context).languageCode;
+    final cierre = vehiculo.kilometrajeActualizadoEn;
+    final vin = vehiculo.vin;
+
+    final String valorKm;
+    final String notaKm;
+    if (km == null) {
+      valorKm = textos.vehiculosKmSinDato;
+      notaKm = '';
+    } else {
+      valorKm = textos.vehiculosKilometros(
+        NumberFormat.decimalPattern(idioma == 'es' ? 'es_MX' : idioma)
+            .format(km),
+      );
+      notaKm = cierre == null
+          ? textos.vehiculosKmSinActualizar
+          : textos.vehiculosKmActualizado(
+              MaterialLocalizations.of(context).formatFullDate(cierre),
+            );
+    }
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: c.borde)),
+        color: c.superficie,
+        borderRadius: BorderRadius.circular(Radios.tarjeta),
+        boxShadow: tokens.sombras,
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Espaciado.e2),
-        child: Row(
+        padding: const EdgeInsets.all(Espaciado.e4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: MergeSemantics(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            MergeSemantics(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    textos.vehiculosKilometraje,
+                    style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+                  ),
+                  Text(
+                    valorKm,
+                    style: (km == null ? t.cuerpoFuerte : t.cifra).copyWith(
+                      color: c.texto,
+                    ),
+                  ),
+                  if (notaKm.isNotEmpty)
                     Text(
-                      etiqueta,
+                      notaKm,
                       style: t.cuerpoChico.copyWith(color: c.textoSecundario),
                     ),
-                    Text(
-                      valor,
-                      style: (cifras ? t.cifra : t.cuerpoFuerte).copyWith(
-                        color: c.texto,
-                      ),
-                    ),
-                    if (nota != null)
-                      Text(
-                        nota!,
-                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                      ),
-                  ],
-                ),
+                ],
               ),
             ),
-            ?fin,
+            if (vin != null && vin.isNotEmpty) ...[
+              const SizedBox(height: Espaciado.e3),
+              Divider(height: 1, color: c.borde),
+              Semantics(
+                button: true,
+                excludeSemantics: true,
+                label: [
+                  textos.vehiculosVin,
+                  vin,
+                  textos.vehiculosCopiarVin,
+                ].join('. '),
+                onTap: alCopiarVin,
+                child: Tooltip(
+                  message: textos.vehiculosCopiarVin,
+                  child: InkWell(
+                    onTap: alCopiarVin,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: Espaciado.objetivoTactilMinimo,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: Espaciado.e3),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    textos.vehiculosVin,
+                                    style: t.cuerpoChico.copyWith(
+                                      color: c.textoSecundario,
+                                    ),
+                                  ),
+                                  Text(
+                                    vin,
+                                    style: t.cifra.copyWith(
+                                      fontSize: 18,
+                                      color: c.texto,
+                                    ),
+                                  ),
+                                  Text(
+                                    textos.vehiculosToqueCopiarVin,
+                                    style: t.cuerpoChico.copyWith(
+                                      color: c.textoTerciario,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Icon(Icons.copy_outlined, color: c.acento),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),
@@ -252,16 +363,18 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).vehiculosCargando,
       liveRegion: true,
-      child: const Padding(
-        padding: EdgeInsets.all(Espaciado.e4),
-        child: Column(
-          children: [
-            Esqueleto(alto: 200),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 56),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 56),
-          ],
+      child: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(Espaciado.e4),
+          child: Column(
+            children: [
+              Esqueleto(alto: 240),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 56),
+              SizedBox(height: Espaciado.e3),
+              Esqueleto(alto: 56),
+            ],
+          ),
         ),
       ),
     );

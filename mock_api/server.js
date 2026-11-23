@@ -770,6 +770,31 @@ servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
   res.send(pdf);
 });
 
+// ── citas ──
+// V2-M25.03 · pase de Wallet. El backend real firma el .pkpass (Apple) o arma
+// el JWT de "Guardar en Google Wallet"; aqui el mock devuelve un archivo y un
+// enlace falsos que solo ejercitan el flujo de la app. Una cita cancelada
+// responde 409 CITA_CANCELADA: el pase queda vencido.
+servidor.get(`${BASE}/citas/:citaId/pase`, (req, res) => {
+  const cita = citaDelCliente(req);
+  if (!cita) return noEncontrado(req, res);
+  if (cita.estado === 'CANCELADA') {
+    return problema(req, res, 409, 'La cita esta cancelada', 'CITA_CANCELADA');
+  }
+  const plataforma = req.query.plataforma;
+  if (plataforma !== 'apple' && plataforma !== 'google') {
+    return problema(req, res, 400, 'Plataforma invalida', 'DATOS_INVALIDOS');
+  }
+  if (plataforma === 'google') {
+    return res.jsonp({
+      url: `https://pay.google.com/gp/v/save/mock.${cita.id}.firma-falsa`,
+    });
+  }
+  res.set('Content-Type', 'application/vnd.apple.pkpass');
+  res.set('Content-Disposition', `attachment; filename="cita-${cita.id}.pkpass"`);
+  res.send(Buffer.from(`PKPASS-FALSO cita ${cita.id} ${codigoDeCita(cita.id)}`));
+});
+
 // ---------------------------------------------------------------------------
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
 // ---------------------------------------------------------------------------

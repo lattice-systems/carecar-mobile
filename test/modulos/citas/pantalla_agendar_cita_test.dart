@@ -2,6 +2,7 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
+import 'package:carecar_mobile/modulos/citas/presentacion/componentes/tarjeta_vehiculo_cita.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
@@ -52,14 +53,10 @@ Future<void> _tocar(WidgetTester tester, Finder f) async {
 
 /// Elige vehiculo, el 26 de noviembre a las 09:00 y un motivo.
 Future<void> _llenarFormulario(WidgetTester tester) async {
-  await _tocar(tester, find.byType(DropdownButtonFormField<int>));
-  await tester.tap(find.text('Mazda CX-5 2024').last);
-  await tester.pumpAndSettle();
+  await _tocar(tester, find.text('Mazda CX-5 2024'));
   await _tocar(tester, find.bySemanticsLabel('26 de noviembre'));
   await _tocar(tester, find.text('09:00 · 3 lugares'));
-  await _tocar(tester, find.byType(DropdownButtonFormField<MotivoCita>));
-  await tester.tap(find.text('Mantenimiento').last);
-  await tester.pumpAndSettle();
+  await _tocar(tester, find.text('Mantenimiento'));
 }
 
 Future<void> _irAlResumen(WidgetTester tester) async {
@@ -90,6 +87,25 @@ void main() {
     );
     await _tocar(tester, find.text('Revisar y confirmar'));
     expect(find.text('Resumen de tu cita'), findsNothing);
+  });
+
+  _prueba('el vehiculo se elige en tarjetas y la elegida queda marcada', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    expect(find.byType(TarjetaVehiculoCita), findsWidgets);
+    expect(
+      tester
+          .widgetList<TarjetaVehiculoCita>(find.byType(TarjetaVehiculoCita))
+          .where((t) => t.seleccionada),
+      isEmpty,
+    );
+    await _tocar(tester, find.text('Mazda CX-5 2024'));
+    final elegidas = tester
+        .widgetList<TarjetaVehiculoCita>(find.byType(TarjetaVehiculoCita))
+        .where((t) => t.seleccionada);
+    expect(elegidas.single.nombre, 'Mazda CX-5 2024');
   });
 
   _prueba('con todo elegido muestra el resumen de la cita', (tester) async {
