@@ -665,6 +665,8 @@ servidor.post(`${BASE}/citas/:citaId/reprogramar`, (req, res) => {
     .write();
 
   res.jsonp(comoCita(db.get('citas').find({ id: cita.id }).value()));
+});
+
 // V2-M02.11 · comprobante con QR. El backend real firma el id de la cita y
 // lo pone en el PDF del ticket; aqui el mock simula ambas cosas. El codigo
 // tiene la forma `CC1.<citaId>.<firma>`, donde firma son los primeros 16
