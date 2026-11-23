@@ -813,5 +813,41 @@
   "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
   "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
   "citasWalletErrorCancelada": "Your appointment is cancelled, so it no longer has a pass.",
-  "citasWalletErrorNoDisponible": "The Wallet pass is not available right now. Show the QR code at reception."
+  "citasWalletErrorNoDisponible": "The Wallet pass is not available right now. Show the QR code at reception.",
+  "vehiculosAgendarServicio": "Book a service",
+  "@vehiculosAgendarServicio": {
+    "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
+  },
+  "vehiculosBotonManual": "Manual",
+  "@vehiculosBotonManual": {
+    "description": "Botón de la portada del detalle que abre el manual del vehículo."
+  },
+  "vehiculosBotonDescargar": "Download",
+  "@vehiculosBotonDescargar": {
+    "description": "Botón de la portada del manual que guarda el PDF."
+  },
+  "vehiculosBotonCompartir": "Share",
+  "@vehiculosBotonCompartir": {
+    "description": "Botón de la portada del manual que comparte el PDF."
+  },
+  "vehiculosVerDetalle": "View details",
+  "@vehiculosVerDetalle": {
+    "description": "Botón de la portada del garaje cuando hay un solo vehículo."
+  },
+  "vehiculosEncabezadoDatos": "Details",
+  "@vehiculosEncabezadoDatos": {
+    "description": "Encabezado del grupo de datos del vehículo en el detalle."
+  },
+  "vehiculosEncabezadoTuAuto": "Your car",
+  "@vehiculosEncabezadoTuAuto": {
+    "description": "Encabezado del grupo de accesos del detalle."
+  },
+  "vehiculosEncabezadoRapidos": "Quick facts",
+  "@vehiculosEncabezadoRapidos": {
+    "description": "Encabezado del grupo de datos rápidos del garaje."
+  },
+  "vehiculosToqueCopiarVin": "Tap to copy",
+  "@vehiculosToqueCopiarVin": {
+    "description": "Pista bajo el VIN que indica que se puede copiar."
+  }
 }
