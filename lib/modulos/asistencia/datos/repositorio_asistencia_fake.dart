@@ -19,14 +19,21 @@ class PedidoDeAyuda {
 
 /// Repositorio en memoria para pruebas y el flavor `desarrollo`.
 ///
-/// Con [abierta] arranca con una solicitud ya abierta; con [fallo] cada
-/// llamada lanza ese error; con [espera] no contesta hasta que se complete,
-/// para ver el estado de carga.
+/// Con [abierta] arranca con una solicitud ya abierta; con [fallo] crear la
+/// solicitud lanza ese error y con [falloAlConsultar] lo hace consultar la
+/// abierta; con [espera] no contesta hasta que se complete, para ver el
+/// estado de carga.
 class RepositorioAsistenciaFake implements RepositorioAsistencia {
-  RepositorioAsistenciaFake({this.abierta, this.fallo, this.espera});
+  RepositorioAsistenciaFake({
+    this.abierta,
+    this.fallo,
+    this.falloAlConsultar,
+    this.espera,
+  });
 
   SolicitudAsistencia? abierta;
   Object? fallo;
+  Object? falloAlConsultar;
   final Future<void>? espera;
 
   final List<PedidoDeAyuda> pedidos = [];
@@ -65,7 +72,7 @@ class RepositorioAsistenciaFake implements RepositorioAsistencia {
   @override
   Future<SolicitudAsistencia?> activa() async {
     await espera;
-    final error = fallo;
+    final error = falloAlConsultar;
     if (error != null) throw error;
     return abierta;
   }
