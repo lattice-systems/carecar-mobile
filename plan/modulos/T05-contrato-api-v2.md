@@ -30,8 +30,17 @@ Que el backend tenga **exactamente** las tablas de la ficha y un contrato v2 que
 
 ## Avance de V2-T05.02
 
-Estado: **En revisión**.
+Estado: **Hecha**.
 
 - **Backend:** `agencia-360-backend/docs/api/agencia360-api-app-v2.yaml`, versión 2.0.0. Es copia del v1 en 1.4.0 con la descripción de la v2; no agrega ni quita rutas, todas siguen bajo `/api/v1/app`. El v1 queda congelado en 1.4.0 como referencia de la app v1 instalada. Diseño en `agencia-360-backend/plan/historias-backend.md`.
 - **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
 - **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
+
+## Avance de V2-T05.07
+
+Estado: **En revisión**.
+
+- **Backend:** tabla `franja_horario` (`dia_semana`, `hora_inicio`, `hora_fin`, `capacidad`, más `activa`) sembrada con el horario que tenía `HorarioTaller`: lunes a sábado, de 9:00 a 17:00, franjas de una hora con capacidad 3. `cita.franja_id` pasa a ser el id de esa tabla, con FK, y las citas existentes se migran por día de la semana y hora de inicio. El cupo es la capacidad de la franja menos sus citas confirmadas de esa fecha. Diseño en `agencia-360-backend/plan/historias-backend.md`.
+- **Contrato:** v2 en 2.1.0. Mismas rutas y formas; `franjaId` queda descrito como id de `franja_horario` y una franja de otro día o inactiva responde 400.
+- **App:** sin cambios. Ya toma `franjaId` de la disponibilidad y lo manda con su fecha al agendar y reprogramar. Copia del contrato en `api/agencia360-api-app-v2.yaml`.
+- **Franjas:** no hay pantalla para editarlas (el ERP está congelado); se cambian con SQL sobre `franja_horario`.

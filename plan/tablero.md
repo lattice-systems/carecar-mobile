@@ -66,12 +66,12 @@ Total: **213 historias** + 4 de H0.
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Lista | |
 | V2-T05.01 | Módulos Modulith nuevos | Ricardo | B | — | Lista | |
-| V2-T05.02 | El contrato `agencia360-api-app-v2.yaml` | Ricardo | B | — | En revisión | backend#75 |
+| V2-T05.02 | El contrato `agencia360-api-app-v2.yaml` | Ricardo | B | — | Hecha | backend#75, #79 |
 | V2-T05.03 | `cuenta_app.usuario` como en la ficha | Ricardo | B | — | Lista | |
 | V2-T05.04 | `token_recuperacion` como en la ficha | Ricardo | B | — | Lista | |
 | V2-T05.05 | `manual.archivo_pdf` como en la ficha | Ricardo | B | — | Lista | |
 | V2-T05.06 | `orden_servicio` y `orden_refaccion` como en la ficha | Ricardo | B | — | Lista | |
-| V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | Lista | |
+| V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | En revisión | backend#80 |
 | V2-T05.08 | Eventos en vivo | Ricardo | B | V2-T05.01 | Lista | |
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Lista | |
 | V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
