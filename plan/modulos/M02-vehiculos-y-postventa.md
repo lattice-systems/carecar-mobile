@@ -232,3 +232,10 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 - **Textos nuevos:** `citasAgendarDia`, `citasAgendarHorario`, `citasMisCitasProximaEtiqueta`, `citasHeroComprobante`, `citasAccionesCita`, `citasCerrar`, `citasComprobanteDetalles`, `citasComprobanteRecepcion`.
 - **Pruebas:** se actualizaron las de mis citas (héroe, píldoras, hoja de acciones, vacío ilustrado), agendar (tarjetas y chips en lugar de desplegables), disponibilidad (desplazar hasta el calendario) y comprobante/Wallet (portada, detalles y píldora). Se conservan los criterios de V2-M02.07 a V2-M02.13 y V2-M25.03, incluidos claro, oscuro y letra al 200 %.
 - **Pendientes:** `GrupoCitas` y `CuadroFecha` viven en el módulo porque `FilaGrupo` no admite un widget al inicio de la fila; si otro módulo lo necesita, proponer historia `V2-T02.xx` para añadir `leading` a `FilaGrupo` (doc, componente y golden). Falta revisar el resultado en un teléfono real y capturas en claro y oscuro.
+
+### Correcciones del rediseño (portadas, datos rápidos y barras)
+
+- Las portadas de autos con color neutro (blanco, plata, gris, negro) o desconocido usan el tinte de marca en vez de gris, en garaje y detalle.
+- Garaje, «Datos rápidos»: título = modelo y año («Nissan Versa 2024»), subtítulo = placas · km («Sin placas» si no hay).
+- Detalle: usa `BarraPortada` (transparente arriba, opaca al desplazar) y el fondo difuminado de `CabeceraPortada` lleva más color.
+- `EncabezadoGrande(translucido)` sube su opacidad contraída a 92 %: en garaje, ficha técnica, mis citas, agendar, disponibilidad, reprogramar y comprobante ya no se lee contenido a través del título. Pruebas de widget desplazan cada pantalla y verifican que el título recibe el toque.
