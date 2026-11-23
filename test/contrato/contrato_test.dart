@@ -244,15 +244,7 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'NuevaDireccion': {
-    'alias',
-    'calle',
-    'colonia',
-    'cp',
-    'ciudad',
-    'lat',
-    'lng',
-  },
+  'NuevaDireccion': {'alias', 'calle', 'colonia', 'cp', 'ciudad', 'lat', 'lng'},
   'FranjaRecoleccion': {'inicio', 'fin'},
   'CotizacionRecoleccion': {
     'direccionId',
@@ -365,15 +357,7 @@ const _obligatoriosDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'NuevaDireccion': {
-    'alias',
-    'calle',
-    'colonia',
-    'cp',
-    'ciudad',
-    'lat',
-    'lng',
-  },
+  'NuevaDireccion': {'alias', 'calle', 'colonia', 'cp', 'ciudad', 'lat', 'lng'},
   'FranjaRecoleccion': {'inicio', 'fin'},
   'CotizacionRecoleccion': {
     'direccionId',
