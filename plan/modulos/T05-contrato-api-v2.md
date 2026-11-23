@@ -28,6 +28,12 @@ Que el backend tenga **exactamente** las tablas de la ficha y un contrato v2 que
 | V2-T05.10 | Como equipo queremos datos de ejemplo para cada módulo nuevo | `scripts/cargar-datos-de-ejemplo.sh` extendido | ✅ | — |
 | V2-T05.11 | Como equipo queremos desplegar la API en Azure automáticamente en cada merge a `main` | Workflow que construye la imagen en formato OCI, la publica en GHCR y actualiza `ca-agencia360-api` · entrada a Azure por OIDC con identidad administrada (variables de repositorio, sin secretos) · verificación de `/actuator/health` tras desplegar · ver `agencia-360-backend/docs/despliegue-azure-neon.md` (dueño: Daniel) | ✅ | — |
 
+## Avance de V2-T05.01
+
+Estado: **En revisión**.
+
+- **Backend:** catálogo de módulos de la v2 en `agencia-360-backend/plan/README.md`. `postventa` vive en `servicio`, `pagosapp` en `caja` y `facturacion`, y el asistente dentro de `carecarapp`; los módulos nuevos nacen con su primera historia. Se crea `archivos` (V2-T05.09); `ModularityTests` lo verifica.
+
 ## Avance de V2-T05.02
 
 Estado: **Hecha**.
@@ -38,14 +44,14 @@ Estado: **Hecha**.
 
 ## Avance de V2-T05.03
 
-Estado: **En revisión**.
+Estado: **Hecha**.
 
 - **Backend:** `cuenta_app.usuario` (único), lleno con el correo del cliente; el login y la recuperación buscan la cuenta por ese usuario. El módulo de clientes expone `DirectorioClientes.cambiarCorreo` y publica `CorreoDeClienteCambiado`; la cuenta cambia de usuario en la misma transacción. Diseño en `agencia-360-backend/plan/historias-backend.md`.
 - **App:** sin cambios; el login sigue mandando `correo`. V2-M01.07 usa `cambiarCorreo` al confirmar el correo nuevo.
 
 ## Avance de V2-T05.04
 
-Estado: **En revisión**.
+Estado: **Hecha**.
 
 - **Backend:** `token_recuperacion` (`cuenta_app_id`, `token_hash`, `expira`, `usado`, más `codigo_hash`, `usado_en` e `intentos`) reemplaza a `codigo_recuperacion`, que se borra tras pasar sus códigos. El correo trae un enlace de un solo uso (`carecar://restablecer-contrasena?token=...`, configurable con `RECUPERACION_ENLACE`) y el código de 6 dígitos para la app v1; usar uno cierra el otro.
 - **Contrato:** v2 en 2.3.0. `POST /auth/restablecer-contrasena` acepta `token` o `correo` con `codigo`. Compatible con la app v1.
@@ -53,7 +59,7 @@ Estado: **En revisión**.
 
 ## Avance de V2-T05.05
 
-Estado: **En revisión**.
+Estado: **Hecha**.
 
 - **Backend:** `manual.archivo` se renombra a `archivo_pdf` (sigue siendo la clave del PDF). Sin cambios de rutas.
 - **App:** sin cambios.
@@ -75,3 +81,19 @@ Estado: **Hecha**.
 - **Contrato:** v2 en 2.1.0. Mismas rutas y formas; `franjaId` queda descrito como id de `franja_horario` y una franja de otro día o inactiva responde 400.
 - **App:** sin cambios. Ya toma `franjaId` de la disponibilidad y lo manda con su fecha al agendar y reprogramar. Copia del contrato en `api/agencia360-api-app-v2.yaml`.
 - **Franjas:** no hay pantalla para editarlas (el ERP está congelado); se cambian con SQL sobre `franja_horario`.
+
+## Avance de V2-T05.08
+
+Estado: **En revisión**.
+
+- **Órdenes en vivo:** `GET /eventos` (Server-Sent Events, token de la app). Cuando cambia una orden de servicio de sus vehículos llega el evento `orden` con `ordenId`, `vehiculoId` y `estatus`; la app vuelve a consultar. Latido cada 25 s y cierre a los 30 min para reconectar con el token.
+- **Chat:** WebSocket STOMP en `/ws` con `Authorization: Bearer` en el `CONNECT`; solo `/user/queue/...` y `/app/...`. Lo usará M07.
+- **Contrato:** v2 en 2.4.0 (`/eventos`, esquema `AvisoOrden` y la sección de tiempo real en `info`). Desbloquea V2-M04.03.
+
+## Avance de V2-T05.09
+
+Estado: **En revisión**.
+
+- **Backend:** módulo `archivos` con `AlmacenArchivos` (guardar, leer, borrar, URL temporal). Por omisión guarda en la tabla `archivo` de PostgreSQL (Neon en producción); en desarrollo puede usar una carpeta. Solo JPEG, PNG, WebP y PDF hasta 20 MB.
+- **URL firmadas:** `/api/v1/archivos/{carpeta}/{id}?expira=&firma=`, vencen a los 15 minutos y no piden token.
+- **App:** sin cambios; recibirá estas URL en las evidencias (M04), documentos (M09) y traslados (M17).
