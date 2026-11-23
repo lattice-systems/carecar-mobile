@@ -1,6 +1,6 @@
 # 0006 · Mapas, ubicación y geocodificación
 
-**Estado:** Propuesta
+**Estado:** Aceptada
 
 ## Contexto
 
@@ -33,7 +33,7 @@ Hay tres decisiones, no una: quién dibuja el mapa, de dónde sale la posición 
 2. **Nominatim público.** Gratis, pero con límite de una consulta por segundo y política de uso que no admite una app en producción.
 3. **`geocoding` (geocodificador nativo del sistema).** Sin llave y sin costo, usa el de Android y el de iOS. Calidad variable según el país y no hay garantía de disponibilidad.
 
-## Decisión propuesta
+## Decisión
 
 - **Mapa:** opción 2, `flutter_map`, con la URL de teselas y el nombre del proveedor en la configuración del flavor, no en el código. Desarrollo y pruebas usan las teselas públicas de OpenStreetMap con tráfico mínimo; producción apunta a un proveedor que el PO contrate. Se elige porque el mapa queda dentro del árbol de widgets: se tiñe con los tokens en claro y oscuro, se prueba con `flutter test` y no obliga a facturar antes de tener usuarios.
 - **Posición:** `geolocator`, pedida solo en primer plano.
