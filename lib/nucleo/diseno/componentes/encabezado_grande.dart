@@ -15,7 +15,8 @@ import '../tokens/tokens_pista.dart';
 ///
 /// Con `translucido` la barra contraida deja ver el contenido que pasa por
 /// debajo, desenfocado y teñido con el fondo (estilo barra de navegacion
-/// compacta); el fondo se vuelve translucido de forma gradual al desplazar.
+/// compacta); el fondo baja apenas a 92 % de opacidad al contraerse: deja un asomo de
+/// color pero el texto de abajo no se lee a traves del titulo.
 class EncabezadoGrande extends StatelessWidget {
   const EncabezadoGrande({
     required this.titulo,
@@ -118,7 +119,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     )!.copyWith(color: c.texto);
 
     final fondo = translucido
-        ? c.fondo.withValues(alpha: 1 - 0.28 * avance)
+        ? c.fondo.withValues(alpha: 1 - 0.08 * avance)
         : c.fondo;
 
     final barra = DecoratedBox(
@@ -185,7 +186,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     );
   }
 
-  static const double _desenfoque = 20;
+  static const double _desenfoque = 30;
 
   @override
   bool shouldRebuild(_Delegado anterior) =>
