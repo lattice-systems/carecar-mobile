@@ -64,9 +64,7 @@ class _EstadoPantallaDisponibilidad
           : MarcoPantallaCita(
               titulo: textos.citasTitulo,
               alRefrescar: () => ref.refresh(disponibilidadProvider.future),
-              slivers: [
-                SliverToBoxAdapter(child: _contenido(context, taller)),
-              ],
+              slivers: [SliverToBoxAdapter(child: _contenido(context, taller))],
             ),
     );
   }
