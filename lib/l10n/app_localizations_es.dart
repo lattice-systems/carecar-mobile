@@ -1231,4 +1231,65 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get seguridadEquipoComprometidoMensaje =>
       'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.';
+
+  @override
+  String get asistenteTitulo => 'Pregúntale a tu auto';
+
+  @override
+  String get asistenteAvisoIa =>
+      'Respuestas generadas con IA a partir del manual de tu auto. Ante una falla, consulta a tu asesor.';
+
+  @override
+  String get asistenteVacioTitulo => '¿Qué quieres saber de tu auto?';
+
+  @override
+  String get asistenteVacioMensaje =>
+      'Respondo con el manual de tu auto y te digo en qué página lo dice.';
+
+  @override
+  String get asistenteSugerencia => 'Escribe tu pregunta';
+
+  @override
+  String get asistenteEnviar => 'Enviar';
+
+  @override
+  String get asistenteTu => 'Tú';
+
+  @override
+  String get asistenteNombre => 'CareCar';
+
+  @override
+  String get asistentePensando => 'Buscando en tu manual…';
+
+  @override
+  String get asistenteNoSeEnvio => 'No se envió';
+
+  @override
+  String get asistenteReintentar => 'Reintentar';
+
+  @override
+  String get asistenteSinConexion =>
+      'No me pude conectar. Revisa tu internet y vuelve a intentar.';
+
+  @override
+  String get asistenteNoDisponible =>
+      'El asistente no está disponible por ahora. Intenta más tarde o pregúntale a tu asesor.';
+
+  @override
+  String get asistenteSinManual =>
+      'Tu auto aún no tiene un manual que pueda leer. Pregúntale a tu asesor en la agencia.';
+
+  @override
+  String get asistenteLimite =>
+      'Ya hiciste tus preguntas de hoy. Mañana puedes hacer más.';
+
+  @override
+  String asistenteFuente(int pagina) {
+    return 'Manual, pág. $pagina';
+  }
+
+  @override
+  String asistenteFuenteLector(int pagina) {
+    return 'Manual, página $pagina, abrir';
+  }
 }

@@ -1521,5 +1521,83 @@
   "seguridadEquipoComprometidoMensaje": "Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.",
   "@seguridadEquipoComprometidoMensaje": {
     "description": "Explica que la app sigue funcionando pero no deja copias locales de los datos del cliente."
+  },
+  "asistenteTitulo": "Pregúntale a tu auto",
+  "@asistenteTitulo": {
+    "description": "Título de la pantalla del asistente y acceso desde el detalle del vehículo."
+  },
+  "asistenteAvisoIa": "Respuestas generadas con IA a partir del manual de tu auto. Ante una falla, consulta a tu asesor.",
+  "@asistenteAvisoIa": {
+    "description": "Aviso fijo de que las respuestas las genera una IA (ADR 0007)."
+  },
+  "asistenteVacioTitulo": "¿Qué quieres saber de tu auto?",
+  "@asistenteVacioTitulo": {
+    "description": "Título cuando aún no hay preguntas."
+  },
+  "asistenteVacioMensaje": "Respondo con el manual de tu auto y te digo en qué página lo dice.",
+  "@asistenteVacioMensaje": {
+    "description": "Explica cómo responde el asistente."
+  },
+  "asistenteSugerencia": "Escribe tu pregunta",
+  "@asistenteSugerencia": {
+    "description": "Texto de ayuda del campo para preguntar."
+  },
+  "asistenteEnviar": "Enviar",
+  "@asistenteEnviar": {
+    "description": "Nombre del botón para enviar la pregunta."
+  },
+  "asistenteTu": "Tú",
+  "@asistenteTu": {
+    "description": "Quién habla, para el lector de pantalla, en las preguntas del cliente."
+  },
+  "asistenteNombre": "CareCar",
+  "@asistenteNombre": {
+    "description": "Quién habla, para el lector de pantalla, en las respuestas."
+  },
+  "asistentePensando": "Buscando en tu manual…",
+  "@asistentePensando": {
+    "description": "Mientras espera la respuesta."
+  },
+  "asistenteNoSeEnvio": "No se envió",
+  "@asistenteNoSeEnvio": {
+    "description": "Debajo de una pregunta que falló."
+  },
+  "asistenteReintentar": "Reintentar",
+  "@asistenteReintentar": {
+    "description": "Botón para volver a mandar una pregunta que falló."
+  },
+  "asistenteSinConexion": "No me pude conectar. Revisa tu internet y vuelve a intentar.",
+  "@asistenteSinConexion": {
+    "description": "Respuesta cuando no hay conexión."
+  },
+  "asistenteNoDisponible": "El asistente no está disponible por ahora. Intenta más tarde o pregúntale a tu asesor.",
+  "@asistenteNoDisponible": {
+    "description": "Respuesta cuando el servicio de IA no responde o se acabó la cuota del día."
+  },
+  "asistenteSinManual": "Tu auto aún no tiene un manual que pueda leer. Pregúntale a tu asesor en la agencia.",
+  "@asistenteSinManual": {
+    "description": "Respuesta cuando el modelo y año no tienen manual con texto."
+  },
+  "asistenteLimite": "Ya hiciste tus preguntas de hoy. Mañana puedes hacer más.",
+  "@asistenteLimite": {
+    "description": "Respuesta cuando se pasa del límite diario."
+  },
+  "asistenteFuente": "Manual, pág. {pagina}",
+  "@asistenteFuente": {
+    "description": "Cita de una página del manual al pie de una respuesta.",
+    "placeholders": {
+      "pagina": {
+        "type": "int"
+      }
+    }
+  },
+  "asistenteFuenteLector": "Manual, página {pagina}, abrir",
+  "@asistenteFuenteLector": {
+    "description": "Lo que oye el lector de pantalla en una cita del manual.",
+    "placeholders": {
+      "pagina": {
+        "type": "int"
+      }
+    }
   }
 }

@@ -74,6 +74,18 @@ abstract interface class CarecarApi {
   /// `GET /vehiculos/{id}/manuales`. Puede venir vacia (ADM-1 esta fuera del MVP).
   Future<List<Manual>> manualesDe(int vehiculoId);
 
+  // --- Asistente · V2-M24.03 ---
+
+  /// `POST /asistente/preguntas`. Respuesta con base en el manual del vehiculo.
+  ///
+  /// 409 `ASISTENTE_SIN_MANUAL`, 429 `ASISTENTE_LIMITE` y 503
+  /// `ASISTENTE_NO_DISPONIBLE` llegan como `Conflicto`, `DemasiadosIntentos` y
+  /// `ErrorDelServidor` con su `Problema.codigo`.
+  Future<RespuestaAsistente> preguntarAlAsistente({
+    required int vehiculoId,
+    required String pregunta,
+  });
+
   // --- Servicios y tickets · APP-3.2 ---
 
   /// `GET /vehiculos/{id}/servicios`, del mas reciente al mas antiguo.

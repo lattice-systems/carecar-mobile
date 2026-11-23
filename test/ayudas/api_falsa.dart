@@ -170,6 +170,26 @@ class ApiFalsa implements CarecarApi {
   Future<List<Manual>> manualesDe(int vehiculoId) =>
       alPedirManuales?.call(vehiculoId) ?? Future.value(const []);
 
+  /// Que responde `POST /asistente/preguntas`. Si es nulo, una respuesta sin
+  /// fuentes que dice que no lo encontro.
+  Future<RespuestaAsistente> Function(int vehiculoId, String pregunta)?
+  alPreguntarAlAsistente;
+
+  @override
+  Future<RespuestaAsistente> preguntarAlAsistente({
+    required int vehiculoId,
+    required String pregunta,
+  }) =>
+      alPreguntarAlAsistente?.call(vehiculoId, pregunta) ??
+      Future.value(
+        const RespuestaAsistente(
+          consultaId: 1,
+          respuesta: 'No encontre eso en tu manual.',
+          encontrado: false,
+          fuentes: [],
+        ),
+      );
+
   /// Que responde `GET /vehiculos/{id}/servicios`. Si es nulo, una lista vacia.
   Future<List<Servicio>> Function(int)? alPedirServicios;
 

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../modulos/asistencia/asistencia.dart';
+import '../../modulos/asistente/asistente.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
@@ -27,6 +28,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasDelNucleo(interruptor: interruptor, destinosV2: destinosDeMenuV2),
   // --- Un renglon por modulo, en orden alfabetico ---
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
+  // El asistente (M24) es nuevo en v2: no pasa por el interruptor.
+  ...rutasAsistente,
   ...interruptor.rutas(ModuloMigrable.catalogo, rutasCatalogo),
   ...interruptor.rutas(ModuloMigrable.citas, rutasCitas),
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.

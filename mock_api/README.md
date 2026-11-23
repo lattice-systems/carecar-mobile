@@ -145,6 +145,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
 | POST | `/toma-a-cuenta/estimaciones` | 201 con el rango y los supuestos, y la guarda · 400 si el auto no viene de una sola forma o km, año o estado no sirven · 404 si el vehículo es ajeno o el modelo está retirado · 422 `SIN_PARAMETROS_DE_VALUACION` si no hay parámetros para ese auto |
 | GET | `/toma-a-cuenta/estimaciones` | Las del cliente, la más reciente primero, con `pagina` y `tamano` |
+| POST | `/asistente/preguntas` | Sin IA (V2-M24.03): si la pregunta toca un tema del manual (aceite, llantas, testigos, frenos…) responde con una cita de ejemplo a la página 12; si no, `encontrado: false` sin fuentes · 400 sin pregunta · 404 vehículo ajeno |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
 

@@ -127,6 +127,16 @@ class CarecarApiHttp implements CarecarApi {
       );
 
   @override
+  Future<RespuestaAsistente> preguntarAlAsistente({
+    required int vehiculoId,
+    required String pregunta,
+  }) => _cliente.enviar(
+    '/asistente/preguntas',
+    cuerpo: {'vehiculoId': vehiculoId, 'pregunta': pregunta},
+    leer: RespuestaAsistente.fromJson,
+  );
+
+  @override
   Future<Cita> agendarCita(NuevaCita nueva) =>
       _cliente.enviar('/citas', cuerpo: nueva.toJson(), leer: Cita.fromJson);
 

@@ -912,6 +912,27 @@ const comoEstimacion = (e) => {
   return contrato;
 };
 
+// V2-M24.03 · Asistente (ADR 0007). Sin IA: responde con una cita de ejemplo
+// si la pregunta toca un tema del manual, para que la app avance sin backend.
+const TEMAS_DEL_MANUAL = /aceite|llanta|presi[oó]n|testigo|luz|mantenimiento|servicio|frenos?|bater[ií]a/;
+servidor.post(`${BASE}/asistente/preguntas`, (req, res) => {
+  const { vehiculoId, pregunta } = req.body || {};
+  if (typeof pregunta !== 'string' || !pregunta.trim() || pregunta.length > 500) {
+    return problema(req, res, 400, 'Escribe una pregunta de hasta 500 caracteres', 'DATOS_INVALIDOS');
+  }
+  const vehiculo = vehiculoDelCliente(req, vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  const encontrado = TEMAS_DEL_MANUAL.test(pregunta.toLowerCase());
+  res.json({
+    consultaId: Date.now(),
+    encontrado,
+    respuesta: encontrado
+      ? 'Respuesta de ejemplo de la API simulada: en el manual de tu auto viene en la página 12.'
+      : 'No encontré eso en el manual de tu auto. Puedes preguntarle a tu asesor en la agencia.',
+    fuentes: encontrado ? [{ manualId: 1, pagina: 12, titulo: 'Manual, pág. 12' }] : [],
+  });
+});
+
 servidor.get(`${BASE}/toma-a-cuenta/estimaciones`, (req, res) => {
   const propias = db
     .get('estimacionesTomaCuenta')

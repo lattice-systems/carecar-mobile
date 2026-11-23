@@ -34,13 +34,15 @@ const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 /// El contrato vive en `docs/api/` del repositorio del backend y cambia por PR.
 /// Esta copia se fija a una version a proposito (decision D-C): bajarla de la
 /// rama principal del backend seria perseguir un blanco movil.
-const _versionEsperada = '1.4.0';
+const _versionEsperada = '1.5.0';
 
-/// Los 26 esquemas de la v1.4. La v1.3 sumo el detalle de un modelo del
+/// Los 29 esquemas de la v1.5. La v1.3 sumo el detalle de un modelo del
 /// catalogo (V2-M03.02): `DetalleModeloCatalogo`, `ImagenModelo`,
 /// `VersionModelo` y `EspecificacionModelo`. La v1.4 suma la toma a cuenta
 /// (V2-M03.04): `EstadoVehiculo`, `NuevaEstimacionTomaCuenta`,
-/// `SupuestosEstimacion`, `EstimacionTomaCuenta` y `PaginaEstimaciones`.
+/// `SupuestosEstimacion`, `EstimacionTomaCuenta` y `PaginaEstimaciones`. La
+/// v1.5 suma el asistente (V2-M24.03): `PreguntaAsistente`,
+/// `RespuestaAsistente` y `FuenteAsistente`.
 const _esquemasDelContrato = <String>{
   'LoginRequest',
   'LoginResponse',
@@ -67,6 +69,9 @@ const _esquemasDelContrato = <String>{
   'SupuestosEstimacion',
   'EstimacionTomaCuenta',
   'PaginaEstimaciones',
+  'PreguntaAsistente',
+  'RespuestaAsistente',
+  'FuenteAsistente',
   'Problema',
 };
 
@@ -321,6 +326,7 @@ const _operacionesDelContrato = <String>{
   'GET /catalogo/{modeloId}',
   'GET /toma-a-cuenta/estimaciones',
   'POST /toma-a-cuenta/estimaciones',
+  'POST /asistente/preguntas',
 };
 
 /// Rutas que el contrato declara sin token.
@@ -539,7 +545,7 @@ void main() {
       expect(enElContrato, queLaAppMapea);
     });
 
-    test('las operaciones del contrato son las 19 que la prueba declara', () {
+    test('las operaciones del contrato son las 20 que la prueba declara', () {
       final rutas = contrato['paths'] as YamlMap;
       final enElContrato = <String>{};
 
