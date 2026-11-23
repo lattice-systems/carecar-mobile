@@ -134,3 +134,14 @@ Pantalla `PantallaMisCitas` en `lib/modulos/citas/` (ruta `/citas`, exige sesió
 - **Textos**: claves `citas*` en los ARB es y en.
 - **Pruebas**: `test/modulos/citas/` (`cita_cliente_test`, `repositorio_citas_test`, `pantalla_mis_citas_test` en claro, oscuro, letra al 200 % e inglés, `ruta_mis_citas_test`).
 - **Pendientes**: el filtro por estado y «agregar al calendario» (criterios del módulo, no de esta historia); acceso desde la navegación principal (hoy solo por ruta `/citas`); ofrecer la cita existente de V2-M02.08 con acceso al detalle; el golden espera a V2-T03.02. El backend no manda `vehiculoNombre`: se resuelve con el garaje.
+
+## Avance de V2-M02.10
+
+Cancelar vive en `PantallaMisCitas` (V2-M02.09). Estado: **En revisión**. Solo la parte de app; usa `POST /citas/{id}/cancelar`, que ya existe.
+
+- **Solo confirmadas futuras**: el botón «Cancelar cita» aparece únicamente si `CitaCliente.sePuedeModificar(ahora)` (estado confirmada y aún no empieza). Las atendidas, no asistió, canceladas y las confirmadas ya vencidas no lo ofrecen.
+- **Confirmación**: `Dialogo` de peligro con «Sí, cancelar» y «Mantener cita»; no se cierra al tocar fuera.
+- **Libera el cupo**: lo hace el servidor al cancelar (el `mock_api` ya devolvía el lugar). La app invalida `disponibilidadProvider` para que el calendario de agendar lo vea, y reemplaza la cita en la lista sin volver a pedir todo (`MisCitasNotifier.reemplazar`). `RepositorioCitasFake` reproduce el cupo liberado y hay prueba.
+- **Errores**: 409 (ya no está confirmada o pasó el plazo) se vuelve `CitaNoModificable`: la pantalla lo explica y recarga la lista real. Cualquier otro fallo muestra «No pudimos cancelar tu cita» y deja reintentar. El aviso de éxito dice que el horario quedó libre.
+- **Pruebas**: grupo «V2-M02.10» de `pantalla_mis_citas_test` (solo confirmadas futuras, mantener, confirmar, 409 y error de red) y `repositorio_citas_test` (traducción de 409, cupo liberado).
+- **Pendientes**: la ventana de anticipación para cancelar sigue abierta (PO-4): el mock y la app solo exigen que la cita no haya empezado; el golden de la pantalla espera a V2-T03.02.
