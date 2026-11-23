@@ -71,6 +71,10 @@ dependencies:
   share_plus: ^13.3.1
   home_widget: ^0.10.0
   safe_device: ^1.4.1
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  geolocator: ^14.0.1
+  geocoding: ^5.0.1
 
 dev_dependencies:
   flutter_test:
