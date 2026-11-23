@@ -190,13 +190,17 @@ class _AppCareCarState extends State<AppCareCar> {
             // La cortina tapa la app mientras se restaura la sesion: asi no se
             // ve el login un instante antes de saltar a inicio ni a un enlace.
             // Los accesos del icono (V2-M25.04) se registran aqui porque
-            // necesitan los textos del idioma activo y el enrutador.
+            // necesitan los textos del idioma activo y el enrutador. El widget
+            // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
+            // lo mismo y porque observa la sesion.
             builder: (context, child) => InstaladorDeAccesosRapidos(
-              child: ShadAppBuilder(
-                child: CortinaArranque(
-                  listo: !_restaurando,
-                  duracionMinima: widget.duracionArranque,
-                  siguiente: (_) => child!,
+              child: SincronizadorDelWidgetDeCita(
+                child: ShadAppBuilder(
+                  child: CortinaArranque(
+                    listo: !_restaurando,
+                    duracionMinima: widget.duracionArranque,
+                    siguiente: (_) => child!,
+                  ),
                 ),
               ),
             ),

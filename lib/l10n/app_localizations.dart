@@ -1825,6 +1825,30 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos cargar más estimaciones. Intenta de nuevo.'**
   String get misEstimacionesErrorMas;
+
+  /// Encabezado del widget de pantalla de inicio con la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Próxima cita'**
+  String get widgetsProximaCitaTitulo;
+
+  /// Día de la próxima cita en el widget de inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}'**
+  String widgetsProximaCitaFecha(DateTime fecha);
+
+  /// Horario de la próxima cita en el widget de inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{inicio} a {fin}'**
+  String widgetsProximaCitaHorario(String inicio, String fin);
+
+  /// Texto del widget de inicio cuando no hay una cita confirmada por venir.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas próximas'**
+  String get widgetsSinCitaMensaje;
 }
 
 class _AppLocalizationsDelegate

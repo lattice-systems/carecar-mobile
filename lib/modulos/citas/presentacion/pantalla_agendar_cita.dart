@@ -405,6 +405,9 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         motivo: _motivo!,
       );
       ref.invalidate(disponibilidadProvider);
+      // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
+      // inicio (V2-M25.01) deben ver la nueva.
+      ref.invalidate(misCitasProvider);
       if (!mounted) return;
       setState(() {
         _confirmada = cita;

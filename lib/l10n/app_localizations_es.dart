@@ -1097,4 +1097,23 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get misEstimacionesErrorMas =>
       'No pudimos cargar más estimaciones. Intenta de nuevo.';
+
+  @override
+  String get widgetsProximaCitaTitulo => 'Próxima cita';
+
+  @override
+  String widgetsProximaCitaFecha(DateTime fecha) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMEd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString';
+  }
+
+  @override
+  String widgetsProximaCitaHorario(String inicio, String fin) {
+    return '$inicio a $fin';
+  }
+
+  @override
+  String get widgetsSinCitaMensaje => 'No tienes citas próximas';
 }

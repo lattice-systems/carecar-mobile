@@ -53,6 +53,19 @@
                 <data android:scheme="https" android:host="carecar.example.com" android:pathPrefix="/app" />
             </intent-filter>
         </activity>
+        <!-- Widget de pantalla de inicio con la proxima cita (V2-M25.01). Lo
+             pinta ProximaCitaWidgetProvider con datos que deja Flutter. -->
+        <receiver
+            android:name=".ProximaCitaWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_proxima_cita_nombre">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_proxima_cita_info" />
+        </receiver>
         <!-- Receptores de flutter_local_notifications: disparan los avisos
              programados y los vuelven a programar tras reiniciar. -->
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
