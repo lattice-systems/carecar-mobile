@@ -1,10 +1,8 @@
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/modulos/asistencia/datos/repositorio_asistencia_fake.dart';
-import 'package:carecar_mobile/modulos/asistencia/presentacion/proveedores_asistencia.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
-import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
