@@ -6,7 +6,7 @@
 | Dueño | Daniel |
 | Revisa | Cristian |
 | Ficha técnica | ✅ Sección 21. Asistente CareCar (IA) |
-| Estado | En curso (M24.01 hecha; M24.02 y M24.03 en revisión) |
+| Estado | En curso (M24.01, M24.02 y M24.03 hechas) |
 
 ## Propósito
 
