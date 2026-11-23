@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
@@ -12,11 +14,22 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../ayudas/tema_pista.dart';
 
+/// El motor nativo de PDF no corre en pruebas: se sustituye por una caja.
+Widget _visorFalso(
+  BuildContext context,
+  Uint8List bytes,
+  ValueChanged<int> alCargar,
+  ValueChanged<int> alCambiarPagina,
+) => const SizedBox(key: ValueKey('visor-falso'));
+
 Widget _app(RepositorioCitas repo, {Escenario escenario = Escenario.claro}) =>
     ProviderScope(
       overrides: [repositorioCitasProvider.overrideWithValue(repo)],
       child: conTemaPista(
-        const PantallaComprobanteCita(citaId: 7),
+        const PantallaComprobanteCita(
+          citaId: 7,
+          fabricaVisorPdf: _visorFalso,
+        ),
         escenario: escenario,
       ),
     );
@@ -70,6 +83,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
     expect(find.byType(VisorPdf), findsOneWidget);
+    expect(find.byKey(const ValueKey('visor-falso')), findsOneWidget);
   });
 
   testWidgets('un fallo muestra error con reintento', (tester) async {
