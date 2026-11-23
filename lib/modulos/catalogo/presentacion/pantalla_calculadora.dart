@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
@@ -10,13 +10,14 @@ import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/selector.dart';
-import '../../../nucleo/diseno/componentes/tarjeta_metrica.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/toma_a_cuenta.dart';
 import 'proveedores_catalogo.dart';
+import 'rutas_catalogo.dart';
+import 'tarjetas_estimacion.dart';
 
 /// Calculadora de toma a cuenta (V2-M03.04).
 ///
@@ -43,13 +44,6 @@ enum _Falla { sinParametros, datos, sinConexion, noEncontrado, generico }
 
 /// Valor del selector para "otro auto": ningun id de vehiculo es 0.
 const _otroAuto = 0;
-
-final _pesos = NumberFormat.currency(
-  locale: 'es_MX',
-  symbol: r'$',
-  decimalDigits: 0,
-);
-final _miles = NumberFormat.decimalPattern('es_MX');
 
 class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
   final _marca = TextEditingController();
@@ -93,7 +87,7 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
       _estimacion = null;
       _falla = null;
       final km = garaje.where((v) => v.id == id).firstOrNull?.kilometraje;
-      if (km != null) _km.text = _miles.format(km);
+      if (km != null) _km.text = formatoMiles.format(km);
     });
   }
 
@@ -203,7 +197,16 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
     final capturando = _vehiculoId == _otroAuto;
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.calculadoraTitulo)),
+      appBar: AppBar(
+        title: Text(t.calculadoraTitulo),
+        actions: [
+          IconButton(
+            tooltip: t.misEstimacionesTitulo,
+            icon: const Icon(Icons.history),
+            onPressed: () => context.push(rutaMisEstimaciones),
+          ),
+        ],
+      ),
       body: ListView(
         controller: _scroll,
         padding: const EdgeInsets.all(Espaciado.e4),
@@ -212,10 +215,10 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
           Aviso(mensaje: t.calculadoraLeyenda),
           if (_estimacion != null) ...[
             const SizedBox(height: Espaciado.e4),
-            _Resultado(estimacion: _estimacion!),
+            ResultadoEstimacion(estimacion: _estimacion!),
             if (diferenciaAPagar(_estimacion!) case final diferencia?) ...[
               const SizedBox(height: Espaciado.e3),
-              _Diferencia(
+              DiferenciaEstimacion(
                 modelo: _estimacion!.modeloDestino,
                 precio: _estimacion!.precioDestino!,
                 diferencia: diferencia,
@@ -336,96 +339,6 @@ String _textoDeEstado(AppLocalizations t, EstadoAuto e) => switch (e) {
   EstadoAuto.regular => t.calculadoraEstadoRegular,
   EstadoAuto.malo => t.calculadoraEstadoMalo,
 };
-
-class _Resultado extends StatelessWidget {
-  const _Resultado({required this.estimacion});
-
-  final Estimacion estimacion;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final e = estimacion;
-    final minimo = _pesos.format(e.minimo);
-    final maximo = _pesos.format(e.maximo);
-
-    return Semantics(
-      container: true,
-      liveRegion: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TarjetaMetrica(
-            etiqueta: t.calculadoraResultadoTitulo,
-            cifra: t.calculadoraRango(minimo, maximo),
-            tono: Tono.informacion,
-            detalle: e.titulo,
-          ),
-          const SizedBox(height: Espaciado.e2),
-          Text(
-            t.calculadoraSupuestos(
-              e.edadAnios,
-              _miles.format(e.kmEsperado),
-              e.margenPorcentaje,
-            ),
-            style: tokens.tipografia.cuerpoChico.copyWith(
-              color: tokens.colores.textoSecundario,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Cuanto faltaria pagar por el modelo nuevo (V2-M03.05). Va pegada al
-/// resultado y es igual de no vinculante.
-class _Diferencia extends StatelessWidget {
-  const _Diferencia({
-    required this.modelo,
-    required this.precio,
-    required this.diferencia,
-  });
-
-  final String? modelo;
-  final double precio;
-  final DiferenciaAPagar diferencia;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final minimo = _pesos.format(diferencia.minimo);
-    final maximo = _pesos.format(diferencia.maximo);
-
-    return Semantics(
-      container: true,
-      liveRegion: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TarjetaMetrica(
-            etiqueta: t.calculadoraDiferenciaTitulo,
-            cifra: diferencia.cubiertaPorElAuto
-                ? _pesos.format(0)
-                : t.calculadoraRango(minimo, maximo),
-            detalle: modelo,
-          ),
-          const SizedBox(height: Espaciado.e2),
-          Text(
-            diferencia.cubiertaPorElAuto
-                ? t.calculadoraDiferenciaCubierta(_pesos.format(precio))
-                : t.calculadoraDiferenciaExplicacion(_pesos.format(precio)),
-            style: tokens.tipografia.cuerpoChico.copyWith(
-              color: tokens.colores.textoSecundario,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _AvisoDeFalla extends StatelessWidget {
   const _AvisoDeFalla({required this.falla});

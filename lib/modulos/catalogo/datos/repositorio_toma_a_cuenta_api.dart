@@ -31,7 +31,23 @@ class RepositorioTomaACuentaApi implements RepositorioTomaACuenta {
         modeloCatalogoId: solicitud.modeloDestinoId,
       ),
     };
-    final dto = await _api.estimarTomaACuenta(peticion);
+    return _aEstimacion(await _api.estimarTomaACuenta(peticion));
+  }
+
+  @override
+  Future<PaginaDeEstimaciones> guardadas({
+    int pagina = 0,
+    int tamano = 20,
+  }) async {
+    final p = await _api.paginaDeEstimaciones(pagina: pagina, tamano: tamano);
+    return PaginaDeEstimaciones(
+      estimaciones: [for (final e in p.contenido) _aEstimacion(e)],
+      pagina: p.pagina,
+      hayMas: p.hayMas,
+    );
+  }
+
+  static Estimacion _aEstimacion(EstimacionTomaCuenta dto) {
     return Estimacion(
       id: dto.id,
       creadaEn: dto.creadaEn,

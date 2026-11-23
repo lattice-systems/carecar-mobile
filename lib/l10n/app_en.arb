@@ -657,5 +657,24 @@
         "type": "String"
       }
     }
-  }
+  },
+  "misEstimacionesTitulo": "My estimates",
+  "misEstimacionesCargando": "Loading your estimates",
+  "misEstimacionesVacioTitulo": "You have no estimates yet",
+  "misEstimacionesVacioMensaje": "When you estimate what your car would be worth as a trade-in, you will see it here.",
+  "misEstimacionesVacioAccion": "Calculate an estimate",
+  "misEstimacionesFila": "{fecha}, {rango}",
+  "@misEstimacionesFila": {
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "yMMMd"
+      },
+      "rango": {
+        "type": "String"
+      }
+    }
+  },
+  "misEstimacionesVerMas": "Show more",
+  "misEstimacionesErrorMas": "We could not load more estimates. Try again."
 }
