@@ -41,9 +41,26 @@ Widget _visor(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
-) {
-  WidgetsBinding.instance.addPostFrameCallback((_) => alCargar(5));
-  return Text('PDF de ${bytes.length} bytes');
+) => _VisorFalso(bytes: bytes, alCargar: alCargar);
+
+class _VisorFalso extends StatefulWidget {
+  const _VisorFalso({required this.bytes, required this.alCargar});
+  final Uint8List bytes;
+  final ValueChanged<int> alCargar;
+  @override
+  State<_VisorFalso> createState() => _VisorFalsoState();
+}
+
+class _VisorFalsoState extends State<_VisorFalso> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => widget.alCargar(5));
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      Text('PDF de ${widget.bytes.length} bytes');
 }
 
 Widget _app(
