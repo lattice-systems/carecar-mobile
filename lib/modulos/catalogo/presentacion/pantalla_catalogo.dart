@@ -5,11 +5,14 @@ import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/control_binario.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../dominio/comparativa.dart';
 import '../dominio/modelo_vigente.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
@@ -18,16 +21,72 @@ import 'rutas_catalogo.dart';
 ///
 /// Resuelve los cinco estados: cargando con esqueleto, datos, vacio, error con
 /// reintento y sin conexion. Se puede recargar jalando hacia abajo.
-class PantallaCatalogo extends ConsumerWidget {
+///
+/// El boton de la barra activa el modo comparar (V2-M03.03): cada modelo con id
+/// muestra una casilla, se eligen de dos a tres y el boton de abajo abre la
+/// comparativa.
+class PantallaCatalogo extends ConsumerStatefulWidget {
   const PantallaCatalogo({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PantallaCatalogo> createState() => _EstadoPantallaCatalogo();
+}
+
+class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
+  bool _comparando = false;
+  final List<int> _elegidos = [];
+
+  void _alternarModo() => setState(() {
+    _comparando = !_comparando;
+    _elegidos.clear();
+  });
+
+  void _elegir(int id, bool elegido) => setState(() {
+    if (elegido) {
+      if (_elegidos.length < maximoComparables && !_elegidos.contains(id)) {
+        _elegidos.add(id);
+      }
+    } else {
+      _elegidos.remove(id);
+    }
+  });
+
+  @override
+  Widget build(BuildContext context) {
     final modelos = ref.watch(catalogoProvider);
     final textos = AppLocalizations.of(context);
+    // Comparar solo tiene sentido con al menos dos modelos que se puedan abrir.
+    final comparables =
+        modelos.asData?.value.where((m) => m.id != null).length ?? 0;
 
     return Scaffold(
-      appBar: AppBar(title: Text(textos.catalogoTitulo)),
+      appBar: AppBar(
+        title: Text(textos.catalogoTitulo),
+        actions: [
+          if (comparables >= minimoComparables)
+            IconButton(
+              tooltip: _comparando
+                  ? textos.catalogoSalirDeComparar
+                  : textos.catalogoComparar,
+              icon: Icon(_comparando ? Icons.close : Icons.compare_arrows),
+              onPressed: _alternarModo,
+            ),
+        ],
+      ),
+      bottomNavigationBar: _comparando
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(Espaciado.e4),
+                child: Boton(
+                  texto: textos.catalogoCompararElegidos(_elegidos.length),
+                  anchoCompleto: true,
+                  alPresionar: _elegidos.length >= minimoComparables
+                      ? () => context.push(rutaComparadorDe(_elegidos))
+                      : null,
+                ),
+              ),
+            )
+          : null,
       body: modelos.when(
         skipLoadingOnReload: true,
         loading: () => const _Cargando(),
@@ -45,7 +104,12 @@ class PantallaCatalogo extends ConsumerWidget {
               )
             : RefreshIndicator(
                 onRefresh: () => ref.refresh(catalogoProvider.future),
-                child: _Lista(modelos: lista),
+                child: _Lista(
+                  modelos: lista,
+                  comparando: _comparando,
+                  elegidos: _elegidos,
+                  alElegir: _elegir,
+                ),
               ),
       ),
     );
@@ -53,27 +117,50 @@ class PantallaCatalogo extends ConsumerWidget {
 }
 
 class _Lista extends StatelessWidget {
-  const _Lista({required this.modelos});
+  const _Lista({
+    required this.modelos,
+    required this.comparando,
+    required this.elegidos,
+    required this.alElegir,
+  });
 
   final List<ModeloVigente> modelos;
+  final bool comparando;
+  final List<int> elegidos;
+  final void Function(int id, bool elegido) alElegir;
 
   @override
   Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
     return ListView.separated(
       padding: const EdgeInsets.all(Espaciado.e4),
       itemCount: modelos.length,
       separatorBuilder: (_, _) => const SizedBox(height: Espaciado.e3),
       itemBuilder: (context, i) {
         final m = modelos[i];
-        return TarjetaVehiculo(
+        final tarjeta = TarjetaVehiculo(
           nombre: m.titulo,
           detalle: _detalle(context, m),
           foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
-          descripcionFoto: AppLocalizations.of(context).fotoDeModelo(m.titulo),
+          descripcionFoto: textos.fotoDeModelo(m.titulo),
           heroTag: m.id == null ? null : 'modelo-${m.id}',
           alToque: m.id == null
               ? null
               : () => context.push(rutaDetalleModelo(m.id!)),
+        );
+        final id = m.id;
+        if (!comparando || id == null) return tarjeta;
+        final elegido = elegidos.contains(id);
+        final lleno = elegidos.length >= maximoComparables && !elegido;
+        return Column(
+          children: [
+            tarjeta,
+            Casilla(
+              etiqueta: textos.catalogoCompararModelo(m.titulo),
+              valor: elegido,
+              alCambiar: lleno ? null : (v) => alElegir(id, v),
+            ),
+          ],
         );
       },
     );
