@@ -505,12 +505,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosFichaCargando => 'Loading the specifications';
 
   @override
+  String get vehiculosFichaClaveCarroceria => 'Body';
+
+  @override
+  String get vehiculosFichaClaveMotor => 'Engine';
+
+  @override
+  String get vehiculosFichaClavePasajeros => 'Passengers';
+
+  @override
+  String get vehiculosFichaClavePotencia => 'Power';
+
+  @override
+  String get vehiculosFichaClavePropulsion => 'Fuel';
+
+  @override
+  String get vehiculosFichaClaveTraccion => 'Drive';
+
+  @override
+  String get vehiculosFichaClaveTransmision => 'Transmission';
+
+  @override
   String get vehiculosFichaNota =>
       'Model and year data. The exact specifications of your unit are in its manual.';
 
   @override
   String get vehiculosFichaRespaldo =>
       'Showing the specifications saved in the app';
+
+  @override
+  String get vehiculosFichaSeccionGeneral => 'General';
+
+  @override
+  String get vehiculosFichaSeccionMotor => 'Engine';
+
+  @override
+  String get vehiculosFichaSeccionTransmision => 'Transmission';
 
   @override
   String get vehiculosFichaTitulo => 'Specifications';
