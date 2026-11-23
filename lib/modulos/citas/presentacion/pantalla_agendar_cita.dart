@@ -18,12 +18,14 @@ import '../../../nucleo/diseno/movimiento_contexto.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/movimiento.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../recoleccion/recoleccion.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/cita_agendada.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
 import 'componentes/barra_inferior_cita.dart';
+import 'componentes/grupo_recoleccion_cita.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'componentes/seccion_cita.dart';
 import 'componentes/seleccion_dia_horario.dart';
@@ -34,7 +36,7 @@ import 'proveedores_citas.dart';
 enum _Paso { formulario, resumen, listo }
 
 /// Por que fallo el ultimo intento de confirmar.
-enum _Fallo { sinCupo, duplicada, generico }
+enum _Fallo { sinCupo, duplicada, cobertura, direccion, generico }
 
 /// Agendar una cita: vehiculo, dia, horario y motivo (V2-M02.08).
 ///
@@ -59,6 +61,10 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
   FranjaDisponible? _franja;
   MotivoCita? _motivo;
 
+  // Recoleccion a domicilio (V2-M17.02): si se pidio y en que direccion.
+  bool _recoleccion = false;
+  int? _direccionId;
+
   bool _enviando = false;
   _Fallo? _fallo;
   List<FranjaDisponible> _cercanas = const [];
@@ -67,6 +73,22 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
 
   bool get _completo =>
       _vehiculoId != null && _dia != null && _franja != null && _motivo != null;
+
+  /// La cotizacion de la recoleccion pedida; nula si no se pidio, falta la
+  /// direccion o el dia, o el servidor aun no responde (o la rechazo).
+  AsyncValue<CotizacionRecoleccion>? _cotizacion() {
+    final direccionId = _direccionId;
+    final dia = _dia;
+    if (!_recoleccion || direccionId == null || dia == null) return null;
+    return ref.watch(
+      cotizacionRecoleccionProvider((direccionId: direccionId, fecha: dia)),
+    );
+  }
+
+  /// Pidieron recoleccion pero aun no hay un costo valido que mostrar: la
+  /// cita no se puede revisar hasta que la direccion este cotizada.
+  bool get _recoleccionPendiente =>
+      _recoleccion && !(_cotizacion()?.hasValue ?? false);
 
   void _reintentar() {
     ref.invalidate(garajeProvider);
@@ -165,7 +187,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
           BotonPildora(
             texto: textos.citasAgendarContinuar,
             expandido: true,
-            alPresionar: _completo
+            alPresionar: _completo && !_recoleccionPendiente
                 ? () => setState(() {
                     _paso = _Paso.resumen;
                     _fallo = null;
@@ -221,6 +243,16 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                       ),
                   ],
                 ),
+              ),
+              SeleccionRecoleccion(
+                pedida: _recoleccion,
+                direccionId: _direccionId,
+                fecha: dia,
+                alCambiarPedida: (pedida) => setState(() {
+                  _recoleccion = pedida;
+                  if (!pedida) _direccionId = null;
+                }),
+                alElegirDireccion: (id) => setState(() => _direccionId = id),
               ),
             ],
           ),
@@ -307,12 +339,71 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                   ),
                 ],
               ),
+              ..._resumenRecoleccion(context),
               ..._avisoDelFallo(context),
             ],
           ),
         ),
       ],
     );
+  }
+
+  /// Direccion, franjas y costo de la recoleccion pedida, para revisarlos
+  /// antes de confirmar. Vacio si la persona lleva el auto.
+  List<Widget> _resumenRecoleccion(BuildContext context) {
+    final cotizacion = _cotizacion()?.value;
+    if (!_recoleccion || cotizacion == null) return const [];
+    final textos = AppLocalizations.of(context);
+    final c = TokensPista.de(context).colores;
+    final direccion = ref
+        .watch(direccionesProvider)
+        .value
+        ?.where((d) => d.id == _direccionId)
+        .firstOrNull;
+
+    String ventana(VentanaHoraria v) => textos.citasResumenRecoleccionVentana(
+      cotizacion.fecha,
+      v.inicio,
+      v.fin,
+    );
+
+    return [
+      const SizedBox(height: Espaciado.e4),
+      GrupoLista(
+        encabezado: textos.citasResumenRecoleccionEncabezado,
+        filas: [
+          FilaGrupo(
+            titulo: textos.citasResumenRecoleccion,
+            subtitulo: direccion == null
+                ? null
+                : textos.citasResumenRecoleccionValor(
+                    direccion.alias,
+                    direccion.resumen,
+                  ),
+            icono: Icons.place_outlined,
+            colorIcono: c.acento,
+          ),
+          FilaGrupo(
+            titulo: textos.citasResumenRecogemos,
+            subtitulo: ventana(cotizacion.recoleccion),
+            icono: Icons.local_shipping_outlined,
+            colorIcono: c.marca,
+          ),
+          FilaGrupo(
+            titulo: textos.citasResumenEntregamos,
+            subtitulo: ventana(cotizacion.entrega),
+            icono: Icons.home_outlined,
+            colorIcono: c.exito,
+          ),
+          FilaGrupo(
+            titulo: textos.citasResumenRecoleccionCosto,
+            subtitulo: formatearPesos(context, cotizacion.costoTotal),
+            icono: Icons.payments_outlined,
+            colorIcono: c.advertencia,
+          ),
+        ],
+      ),
+    ];
   }
 
   List<Widget> _avisoDelFallo(BuildContext context) {
@@ -332,6 +423,22 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       case _Fallo.generico:
         return [
           margen(Aviso(mensaje: textos.citasErrorAgendar, tono: Tono.peligro)),
+        ];
+      case _Fallo.cobertura:
+        return [
+          margen(
+            Aviso(
+              titulo: textos.recoleccionCoberturaTitulo,
+              mensaje: textos.citasErrorCobertura,
+              tono: Tono.advertencia,
+            ),
+          ),
+        ];
+      case _Fallo.direccion:
+        return [
+          margen(
+            Aviso(mensaje: textos.citasErrorRecoleccion, tono: Tono.peligro),
+          ),
         ];
       case _Fallo.duplicada:
         final e = _existente!;
@@ -397,33 +504,48 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
               maxWidth: Espaciado.anchoMaximoContenido,
             ),
             child: SingleChildScrollView(
-              child: CabeceraPortada(
-                titulo: textos.citasListoTitulo,
-                subtitulo: textos.citasListoMensaje(
-                  cita.fecha,
-                  cita.horaInicio,
-                ),
-                tinte: c.exito,
-                lado: 200,
-                portada: const _Celebracion(),
-                principal: AccionPortada(
-                  texto: textos.citasListoVerComprobante,
-                  icono: Icons.qr_code_2_rounded,
-                  // La ruta nueva no cuelga del tema Pista de esta pantalla:
-                  // se le pasa el mismo para que el comprobante se vea igual.
-                  alPresionar: () => Navigator.of(context).push<void>(
-                    MaterialPageRoute(
-                      builder: (_) => Theme(
-                        data: tema,
-                        child: PantallaComprobanteCita(citaId: cita.id),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  CabeceraPortada(
+                    titulo: textos.citasListoTitulo,
+                    subtitulo: textos.citasListoMensaje(
+                      cita.fecha,
+                      cita.horaInicio,
+                    ),
+                    tinte: c.exito,
+                    lado: 200,
+                    portada: const _Celebracion(),
+                    principal: AccionPortada(
+                      texto: textos.citasListoVerComprobante,
+                      icono: Icons.qr_code_2_rounded,
+                      // La ruta nueva no cuelga del tema Pista de esta pantalla:
+                      // se le pasa el mismo para que el comprobante se vea igual.
+                      alPresionar: () => Navigator.of(context).push<void>(
+                        MaterialPageRoute(
+                          builder: (_) => Theme(
+                            data: tema,
+                            child: PantallaComprobanteCita(
+                              citaId: cita.id,
+                              recoleccion: cita.recoleccion,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                    secundaria: AccionPortada(
+                      texto: textos.citasListoCerrar,
+                      alPresionar: () => Navigator.of(context).maybePop(),
+                    ),
                   ),
-                ),
-                secundaria: AccionPortada(
-                  texto: textos.citasListoCerrar,
-                  alPresionar: () => Navigator.of(context).maybePop(),
-                ),
+                  if (cita.recoleccion != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: Espaciado.e4),
+                      child: GrupoRecoleccionCita(
+                        recoleccion: cita.recoleccion!,
+                      ),
+                    ),
+                ],
               ),
             ),
           ),
@@ -444,6 +566,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         vehiculoId: _vehiculoId!,
         franja: franja,
         motivo: _motivo!,
+        direccionRecoleccionId: _recoleccion ? _direccionId : null,
       );
       ref.invalidate(disponibilidadProvider);
       // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
@@ -468,6 +591,16 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         _cercanas = cercanas;
         _fallo = _Fallo.sinCupo;
       });
+    } on FueraDeCobertura {
+      // La zona cambio despues de cotizar: la cotizacion guardada ya no vale.
+      ref.invalidate(cotizacionRecoleccionProvider);
+      if (!mounted) return;
+      setState(() => _fallo = _Fallo.cobertura);
+    } on NoEncontrado {
+      if (!mounted) return;
+      setState(
+        () => _fallo = _recoleccion ? _Fallo.direccion : _Fallo.generico,
+      );
     } on CitaDuplicada catch (duplicada) {
       if (!mounted) return;
       setState(() {
