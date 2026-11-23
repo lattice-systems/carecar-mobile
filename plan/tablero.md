@@ -99,7 +99,7 @@ Total: **210 historias** + 4 de H0.
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Lista | |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Lista | |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
-| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Lista | |
+| V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | En revisión | #58 |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Lista | |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Lista | |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Lista | |

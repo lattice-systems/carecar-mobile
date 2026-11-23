@@ -32,7 +32,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 solo 1.ª página | V2-M02.05, V2-T05.06 |
 | Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 | V2-M02.06, V2-T05.06 |
 | Disponibilidad del taller | `franja_horario`, `cita` | ❌ sin tabla (app lista contra la API v1) | V2-M02.07, V2-T05.07 |
-| Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 | V2-M02.08 |
+| Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app lista contra el mock; faltan `cita.motivo` y el código `CITA_DUPLICADA` en el backend | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 | V2-M02.09 |
 | Cancelar y reprogramar cita | `cita`, `franja_horario` | 🟡 sin reprogramar | V2-M02.10, V2-M02.13 |
 | Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 sin QR | V2-M02.11, V2-M02.12 |

@@ -1,11 +1,18 @@
 import '../../../api/carecar_api.dart';
+import '../../../api/excepciones.dart';
+import '../../../api/modelos/cita.dart';
+import '../../../api/modelos/problema.dart';
+import '../dominio/cita_agendada.dart';
 import '../dominio/disponibilidad_taller.dart';
+import '../dominio/fallos_agenda.dart';
+import '../dominio/motivo_cita.dart';
 import '../dominio/repositorio_citas.dart';
 
-/// Lee `GET /agenda/disponibilidad` y lo traduce a modelos de dominio.
+/// Lee `GET /agenda/disponibilidad` y agenda con `POST /citas`, y lo traduce a
+/// modelos de dominio.
 ///
 /// Las excepciones de la API (`SinConexion`, `ExcepcionApi`) pasan tal cual: la
-/// presentacion decide como mostrarlas.
+/// presentacion decide como mostrarlas. Solo el 409 se traduce.
 class RepositorioCitasApi implements RepositorioCitas {
   const RepositorioCitasApi(this._api);
 
@@ -29,4 +36,58 @@ class RepositorioCitasApi implements RepositorioCitas {
       ),
     );
   }
+
+  @override
+  Future<CitaAgendada> agendar({
+    required int vehiculoId,
+    required FranjaDisponible franja,
+    required MotivoCita motivo,
+  }) async {
+    try {
+      final cita = await _api.agendarCita(
+        NuevaCita(
+          vehiculoId: vehiculoId,
+          franjaId: franja.franjaId,
+          fecha: franja.fecha,
+          motivo: motivo.codigo,
+        ),
+      );
+      return _aDominio(cita);
+    } on Conflicto catch (conflicto) {
+      if (conflicto.problema?.codigo == CodigoProblema.franjaSinCupo) {
+        throw const FranjaSinCupo();
+      }
+      // Hoy el backend responde el 409 de cita duplicada sin codigo; se
+      // reconoce buscando la cita confirmada que ya existe. Cuando llegue
+      // `CITA_DUPLICADA` seguira funcionando igual.
+      final existente = await _citaExistente(vehiculoId, franja);
+      if (existente != null) throw CitaDuplicada(_aDominio(existente));
+      rethrow;
+    }
+  }
+
+  Future<Cita?> _citaExistente(int vehiculoId, FranjaDisponible franja) async {
+    final citas = await _api.misCitas();
+    for (final c in citas) {
+      final mismoDia =
+          c.fecha.year == franja.fecha.year &&
+          c.fecha.month == franja.fecha.month &&
+          c.fecha.day == franja.fecha.day;
+      if (c.estado == EstadoCita.confirmada &&
+          mismoDia &&
+          (c.vehiculoId == vehiculoId || c.franjaId == franja.franjaId)) {
+        return c;
+      }
+    }
+    return null;
+  }
+
+  CitaAgendada _aDominio(Cita c) => CitaAgendada(
+    id: c.id,
+    vehiculoId: c.vehiculoId,
+    fecha: c.fecha,
+    horaInicio: c.horaInicio,
+    horaFin: c.horaFin,
+    motivo: MotivoCita.desdeCodigo(c.motivo),
+  );
 }

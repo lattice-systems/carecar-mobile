@@ -178,6 +178,22 @@ void main() {
       );
       expect(n.toJson()['fecha'], '2026-01-05');
     });
+
+    test('manda el motivo solo cuando se eligio uno', () {
+      final sin = NuevaCita(
+        vehiculoId: 1,
+        franjaId: 2,
+        fecha: DateTime(2026, 1, 5),
+      );
+      final con = NuevaCita(
+        vehiculoId: 1,
+        franjaId: 2,
+        fecha: DateTime(2026, 1, 5),
+        motivo: 'mantenimiento',
+      );
+      expect(sin.toJson().containsKey('motivo'), isFalse);
+      expect(con.toJson()['motivo'], 'mantenimiento');
+    });
   });
 
   group('Cita', () {
@@ -210,6 +226,19 @@ void main() {
         'estado': 'REAGENDADA',
       });
       expect(c.estado, EstadoCita.desconocido);
+    });
+
+    test('lee el motivo cuando el backend lo manda y tolera que falte', () {
+      final base = {
+        'id': 1,
+        'vehiculoId': 1,
+        'fecha': '2026-10-21',
+        'horaInicio': '09:00',
+        'horaFin': '10:00',
+        'estado': 'CONFIRMADA',
+      };
+      expect(Cita.fromJson({...base, 'motivo': 'revision'}).motivo, 'revision');
+      expect(Cita.fromJson(base).motivo, isNull);
     });
   });
 
