@@ -57,6 +57,21 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 | V2-M24.08 | Como cliente quiero ver preguntas sugeridas para empezar sin saber qué escribir | Con la conversación vacía se muestran de 4 a 6 sugerencias con `ChipPista` · tocar una la envía como pregunta · lista genérica en la app (mantenimiento, presión de llantas, testigos, capacidad de aceite) · textos traducidos (M20) | | V2-M24.03 |
 | V2-M24.09 | Como cliente quiero ver la respuesta mientras se escribe para no esperar en blanco | `POST /asistente/preguntas` responde en streaming (SSE) y las citas llegan al final · la app pinta el texto por partes y anuncia al lector de pantalla solo la respuesta completa · cortar la conexión a la mitad deja la respuesta parcial marcada con opción de reintentar | ✅ | V2-M24.03 |
 
+## Avance de V2-M24.01
+
+ADR [0007](../../docs/decisiones/0007-asistente-ia.md) en `Propuesta`:
+
+- **Modelo:** Gemini en producción, detrás de `ProveedorIA` en el backend: Flash-Lite para preguntas, Flash para fotos y `gemini-embedding-2` para el índice. Los modelos se eligen por configuración.
+- **Búsqueda:** `pgvector` en Neon, filtrada por manual. Si no se puede calcular el vector, usa texto completo de respaldo.
+- **Gratis fuera de producción:**
+  - Proveedor falso en las pruebas automáticas.
+  - Nivel gratis de Gemini solo en el backend local, con datos inventados.
+- **Costo:** unos $1.65 dólares por cada 1 000 preguntas, con alerta de presupuesto a $10 al mes.
+- **Límite:** 20 preguntas y 5 fotos por cliente al día.
+- **Calidad:** al menos 80 % de citas correctas.
+
+Falta para aceptarlo: confirmar el precio del modelo de embeddings, medir el costo de una foto y la aprobación de SM y PO en el PR.
+
 ## Componentes que faltan
 
 - **V2-T02.15 · `BurbujaMensaje` y `CampoMensaje`** (sistema de diseño): burbuja de mensaje propia y ajena con fuentes opcionales al pie, y campo de escritura con botón de enviar y adjuntar. Los usa este módulo y M07 (mensajería con el asesor). Mientras no se integre, las pantallas usan un provisional en `lib/modulos/asistente/presentacion/provisional/`.
