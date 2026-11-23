@@ -255,8 +255,8 @@ Total: **213 historias** + 4 de H0.
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
 | V2-M19.04 | Revocar un acceso | Jael | B | V2-M19.02 | Borrador | |
 | V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | En revisión | #81 |
-| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | Lista | |
-| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Lista | |
+| V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | En curso | |
+| V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | En curso | |
 | V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Lista | |
