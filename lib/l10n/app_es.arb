@@ -531,6 +531,18 @@
   "@vehiculosVinCopiado": {
     "description": "Confirmación al copiar el VIN."
   },
+  "widgetsAccesoAgendar": "Agendar cita",
+  "@widgetsAccesoAgendar": {
+    "description": "Acceso rápido del ícono: agendar una cita."
+  },
+  "widgetsAccesoMiAuto": "Mi auto",
+  "@widgetsAccesoMiAuto": {
+    "description": "Acceso rápido del ícono: abrir el garaje."
+  },
+  "widgetsAccesoSos": "SOS",
+  "@widgetsAccesoSos": {
+    "description": "Acceso rápido del ícono: pedir ayuda en carretera."
+  },
   "avisoCerrar": "Cerrar aviso",
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
