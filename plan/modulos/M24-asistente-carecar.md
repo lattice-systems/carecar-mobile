@@ -57,6 +57,21 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 | V2-M24.08 | Como cliente quiero ver preguntas sugeridas para empezar sin saber qué escribir | Con la conversación vacía se muestran de 4 a 6 sugerencias con `ChipPista` · tocar una la envía como pregunta · lista genérica en la app (mantenimiento, presión de llantas, testigos, capacidad de aceite) · textos traducidos (M20) | | V2-M24.03 |
 | V2-M24.09 | Como cliente quiero ver la respuesta mientras se escribe para no esperar en blanco | `POST /asistente/preguntas` responde en streaming (SSE) y las citas llegan al final · la app pinta el texto por partes y anuncia al lector de pantalla solo la respuesta completa · cortar la conexión a la mitad deja la respuesta parcial marcada con opción de reintentar | ✅ | V2-M24.03 |
 
+## Avance de V2-M24.01
+
+ADR [0007](../../docs/decisiones/0007-asistente-ia.md) `Aceptada` (SM y PO):
+
+- **Costo cero en todos los ambientes:** nivel gratis de Gemini con un proyecto **sin facturación**, así que no hay cobro posible.
+- **Modelos:** detrás de `ProveedorIA` en el backend, elegidos por configuración. Flash-Lite para preguntas y fotos, y `gemini-embedding-2` para el índice.
+- **Búsqueda:** `pgvector` en Neon, filtrada por manual, con texto completo de respaldo.
+- **Pruebas automáticas:** proveedor falso, sin red.
+- **Precio de no pagar:**
+  - Google puede usar lo enviado para mejorar sus productos; por eso nada personal sale del backend y el aviso de privacidad lo dice.
+  - La cuota diaria es compartida, así que hay límite de 10 preguntas y 3 fotos por cliente, más un tope global.
+- **Calidad:** al menos 80 % de citas correctas.
+
+Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en Azure (`gemini-api-key`). Aprobado por SM y PO.
+
 ## Componentes que faltan
 
 - **V2-T02.15 · `BurbujaMensaje` y `CampoMensaje`** (sistema de diseño): burbuja de mensaje propia y ajena con fuentes opcionales al pie, y campo de escritura con botón de enviar y adjuntar. Los usa este módulo y M07 (mensajería con el asesor). Mientras no se integre, las pantallas usan un provisional en `lib/modulos/asistente/presentacion/provisional/`.
