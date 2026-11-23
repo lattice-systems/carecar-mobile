@@ -684,4 +684,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get calculadoraErrorGenerico =>
       'Something went wrong while calculating. Try again in a moment.';
+
+  @override
+  String get calculadoraDiferenciaTitulo => 'Amount left to pay';
+
+  @override
+  String calculadoraDiferenciaExplicacion(String precio) {
+    return 'It is the list price, $precio, minus the estimated range for your car. It is also a non-binding estimate.';
+  }
+
+  @override
+  String calculadoraDiferenciaCubierta(String precio) {
+    return 'What your car could be worth would cover the list price, $precio. This is a non-binding estimate.';
+  }
 }

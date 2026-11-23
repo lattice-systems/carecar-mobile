@@ -16,11 +16,13 @@ export 'dominio/detalle_modelo.dart'
 export 'dominio/modelo_vigente.dart' show ModeloVigente;
 export 'dominio/toma_a_cuenta.dart'
     show
+        DiferenciaAPagar,
         EstadoAuto,
         Estimacion,
         SolicitudCapturada,
         SolicitudDeVehiculo,
         SolicitudEstimacion,
+        diferenciaAPagar,
         leerAnio,
         leerKilometraje;
 export 'presentacion/pantalla_calculadora.dart' show PantallaCalculadora;

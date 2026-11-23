@@ -213,6 +213,14 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
           if (_estimacion != null) ...[
             const SizedBox(height: Espaciado.e4),
             _Resultado(estimacion: _estimacion!),
+            if (diferenciaAPagar(_estimacion!) case final diferencia?) ...[
+              const SizedBox(height: Espaciado.e3),
+              _Diferencia(
+                modelo: _estimacion!.modeloDestino,
+                precio: _estimacion!.precioDestino!,
+                diferencia: diferencia,
+              ),
+            ],
           ],
           if (_falla != null) ...[
             const SizedBox(height: Espaciado.e4),
@@ -361,6 +369,54 @@ class _Resultado extends StatelessWidget {
               _miles.format(e.kmEsperado),
               e.margenPorcentaje,
             ),
+            style: tokens.tipografia.cuerpoChico.copyWith(
+              color: tokens.colores.textoSecundario,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Cuanto faltaria pagar por el modelo nuevo (V2-M03.05). Va pegada al
+/// resultado y es igual de no vinculante.
+class _Diferencia extends StatelessWidget {
+  const _Diferencia({
+    required this.modelo,
+    required this.precio,
+    required this.diferencia,
+  });
+
+  final String? modelo;
+  final double precio;
+  final DiferenciaAPagar diferencia;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
+    final minimo = _pesos.format(diferencia.minimo);
+    final maximo = _pesos.format(diferencia.maximo);
+
+    return Semantics(
+      container: true,
+      liveRegion: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TarjetaMetrica(
+            etiqueta: t.calculadoraDiferenciaTitulo,
+            cifra: diferencia.cubiertaPorElAuto
+                ? _pesos.format(0)
+                : t.calculadoraRango(minimo, maximo),
+            detalle: modelo,
+          ),
+          const SizedBox(height: Espaciado.e2),
+          Text(
+            diferencia.cubiertaPorElAuto
+                ? t.calculadoraDiferenciaCubierta(_pesos.format(precio))
+                : t.calculadoraDiferenciaExplicacion(_pesos.format(precio)),
             style: tokens.tipografia.cuerpoChico.copyWith(
               color: tokens.colores.textoSecundario,
             ),

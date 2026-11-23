@@ -882,5 +882,27 @@
   "calculadoraErrorGenerico": "Algo salió mal al calcular. Intenta de nuevo en un momento.",
   "@calculadoraErrorGenerico": {
     "description": "Aviso de error inesperado al calcular."
+  },
+  "calculadoraDiferenciaTitulo": "Diferencia a pagar",
+  "@calculadoraDiferenciaTitulo": {
+    "description": "Título de la tarjeta con lo que faltaría pagar por el modelo nuevo."
+  },
+  "calculadoraDiferenciaExplicacion": "Es el precio de lista, {precio}, menos el rango estimado de tu auto. También es una estimación no vinculante.",
+  "@calculadoraDiferenciaExplicacion": {
+    "description": "Explica cómo sale la diferencia a pagar.",
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "calculadoraDiferenciaCubierta": "Con lo que podría valer tu auto alcanzaría para el precio de lista, {precio}. Es una estimación no vinculante.",
+  "@calculadoraDiferenciaCubierta": {
+    "description": "Cuando incluso el valor más bajo del auto cubre el precio del modelo.",
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
   }
 }

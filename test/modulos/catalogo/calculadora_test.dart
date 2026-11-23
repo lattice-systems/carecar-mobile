@@ -83,6 +83,8 @@ Future<void> _calcular(WidgetTester tester) async {
 }
 
 void main() {
+  pruebasDeDiferencia();
+
   group('leerKilometraje', () {
     test('acepta digitos con separadores de miles', () {
       expect(leerKilometraje('48000'), 48000);
@@ -429,6 +431,155 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(PantallaCalculadora), findsOneWidget);
       expect(find.textContaining('Toward'), findsNothing);
+    });
+  });
+}
+
+Estimacion _estimacion({
+  double? precio,
+  double minimo = 100000,
+  double maximo = 120000,
+}) => Estimacion(
+  id: 1,
+  creadaEn: DateTime.utc(2026, 11, 22),
+  marca: 'Nissan',
+  modelo: 'March',
+  anio: 2020,
+  km: 48000,
+  estado: EstadoAuto.bueno,
+  minimo: minimo,
+  maximo: maximo,
+  edadAnios: 6,
+  kmEsperado: 90000,
+  margen: 0.08,
+  modeloDestino: 'Nissan Versa 2025',
+  precioDestino: precio,
+);
+
+Future<EstimacionTomaCuenta> Function(NuevaEstimacionTomaCuenta) _responde(
+  double? precio,
+) =>
+    (nueva) async => EstimacionTomaCuenta(
+      id: 1,
+      creadaEn: DateTime.utc(2026, 11, 22),
+      marca: 'Nissan',
+      modelo: 'March',
+      anio: 2020,
+      km: nueva.km,
+      estado: nueva.estado,
+      modeloCatalogoId: nueva.modeloCatalogoId,
+      modeloDestino: precio == null ? null : 'Nissan Versa 2025',
+      precioDestino: precio,
+      minimo: 100000,
+      maximo: 120000,
+      supuestos: const SupuestosEstimacion(
+        valorBase: 1,
+        edadAnios: 6,
+        kmEsperado: 90000,
+        ajusteKm: 1,
+        ajusteEstado: 1,
+        margen: 0.08,
+      ),
+    );
+
+void pruebasDeDiferencia() {
+  group('diferenciaAPagar', () {
+    test('resta el rango del precio', () {
+      final d = diferenciaAPagar(_estimacion(precio: 369900))!;
+      expect(d.minimo, 249900);
+      expect(d.maximo, 269900);
+      expect(d.cubiertaPorElAuto, isFalse);
+    });
+
+    test('sin precio de lista no hay diferencia', () {
+      expect(diferenciaAPagar(_estimacion()), isNull);
+    });
+
+    test('nunca baja de cero', () {
+      final d = diferenciaAPagar(_estimacion(precio: 110000))!;
+      expect(d.minimo, 0);
+      expect(d.maximo, 10000);
+      expect(d.cubiertaPorElAuto, isFalse);
+    });
+
+    test('si el auto alcanza para el precio queda cubierta', () {
+      final d = diferenciaAPagar(_estimacion(precio: 90000))!;
+      expect(d.minimo, 0);
+      expect(d.maximo, 0);
+      expect(d.cubiertaPorElAuto, isTrue);
+    });
+  });
+
+  group('la diferencia en pantalla', () {
+    testWidgets('con precio muestra lo que falta pagar y sigue la leyenda', (
+      tester,
+    ) async {
+      _pantallaAlta(tester);
+      final api = _api()..alEstimar = _responde(369900);
+      await tester.pumpWidget(_app(api, modeloId: 2));
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+
+      expect(find.text('Diferencia a pagar'), findsOneWidget);
+      expect(find.text(r'$249,900 a $269,900'), findsOneWidget);
+      expect(
+        find.textContaining(r'precio de lista, $369,900, menos el rango'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('estimación no vinculante'), findsWidgets);
+      expect(find.text(_leyenda), findsOneWidget);
+    });
+
+    testWidgets('si el auto cubre el precio lo dice en lugar de un rango', (
+      tester,
+    ) async {
+      _pantallaAlta(tester);
+      final api = _api()..alEstimar = _responde(90000);
+      await tester.pumpWidget(_app(api, modeloId: 2));
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+
+      expect(find.text(r'$0'), findsOneWidget);
+      expect(
+        find.textContaining(r'alcanzaría para el precio de lista, $90,000'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('sin modelo elegido no hay diferencia', (tester) async {
+      _pantallaAlta(tester);
+      final api = _api()..alEstimar = _responde(null);
+      await tester.pumpWidget(_app(api));
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+
+      expect(find.byType(TarjetaMetrica), findsOneWidget);
+      expect(find.text('Diferencia a pagar'), findsNothing);
+    });
+
+    testWidgets('pasa las guias de accesibilidad con la diferencia', (
+      tester,
+    ) async {
+      _pantallaAlta(tester);
+      final api = _api()..alEstimar = _responde(369900);
+      await tester.pumpWidget(_app(api, modeloId: 2));
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+      await auditarAccesibilidad(tester);
+    });
+
+    testWidgets('se ve en claro, oscuro y letra grande sin desbordar', (
+      tester,
+    ) async {
+      _pantallaAlta(tester);
+      for (final e in Escenario.values) {
+        final api = _api()..alEstimar = _responde(369900);
+        await tester.pumpWidget(_app(api, modeloId: 2, escenario: e));
+        await tester.pumpAndSettle();
+        await _calcular(tester);
+        expect(tester.takeException(), isNull);
+        expect(find.byType(TarjetaMetrica), findsNWidgets(2));
+      }
     });
   });
 }
