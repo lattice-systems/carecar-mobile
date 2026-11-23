@@ -463,4 +463,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deslizarMensajeConfirmacion =>
       'Confirm that you want to continue.';
+
+  @override
+  String get idiomaEtiqueta => 'Language';
+
+  @override
+  String get idiomaSistema => 'Automatic (system language)';
+
+  @override
+  String get idiomaEspanol => 'Español';
+
+  @override
+  String get idiomaIngles => 'English';
 }

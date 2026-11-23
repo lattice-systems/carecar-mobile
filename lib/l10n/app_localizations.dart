@@ -805,6 +805,30 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Confirma que quieres continuar.'**
   String get deslizarMensajeConfirmacion;
+
+  /// Etiqueta del selector de idioma de la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Idioma'**
+  String get idiomaEtiqueta;
+
+  /// Opción que sigue el idioma del sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Automático (idioma del sistema)'**
+  String get idiomaSistema;
+
+  /// Nombre del idioma español, escrito en español.
+  ///
+  /// In es, this message translates to:
+  /// **'Español'**
+  String get idiomaEspanol;
+
+  /// Nombre del idioma inglés, escrito en inglés.
+  ///
+  /// In es, this message translates to:
+  /// **'English'**
+  String get idiomaIngles;
 }
 
 class _AppLocalizationsDelegate

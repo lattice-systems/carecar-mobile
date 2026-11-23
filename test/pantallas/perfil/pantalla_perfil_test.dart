@@ -27,6 +27,13 @@ Future<void> _montar(
 }
 
 void main() {
+  testWidgets('Ajustes ofrece elegir el idioma de la app', (tester) async {
+    await _montar(tester, ApiFalsa());
+
+    expect(find.text('Idioma'), findsOneWidget);
+    expect(find.text('Automático (idioma del sistema)'), findsOneWidget);
+  });
+
   testWidgets('muestra el nombre, las iniciales y el correo', (tester) async {
     final api = ApiFalsa();
     await _montar(tester, api);
