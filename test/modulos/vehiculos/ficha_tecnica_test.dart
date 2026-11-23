@@ -51,6 +51,25 @@ void main() {
       expect(ficha.delRespaldo, isFalse);
     });
 
+    test('lee la forma del backend: nombre de sección y de especificación', () {
+      final ficha = FichaTecnicaVehiculo.fromJson({
+        'vehiculoId': 1,
+        'secciones': [
+          {
+            'nombre': 'Motor',
+            'especificaciones': [
+              {'nombre': 'Cilindrada', 'valor': '1.6 L'},
+            ],
+          },
+        ],
+      });
+      expect(ficha.secciones.single.titulo, 'Motor');
+      expect(
+        ficha.secciones.single.especificaciones.single.clave,
+        'Cilindrada',
+      );
+    });
+
     test('rechaza un cuerpo sin secciones como respuesta inválida', () {
       expect(
         () => FichaTecnicaVehiculo.fromJson(const {'modelo': 'Versa'}),
@@ -105,6 +124,32 @@ void main() {
         expect(ficha!.delRespaldo, isTrue);
       },
     );
+
+    test('con secciones vacías usa el respaldo local', () async {
+      final repo = _repo(
+        MockClient(
+          (_) async => http.Response(
+            jsonEncode({'vehiculoId': 1, 'secciones': <Object>[]}),
+            200,
+            headers: {'content-type': 'application/json'},
+          ),
+        ),
+      );
+      expect((await repo.ficha(_versa))!.delRespaldo, isTrue);
+    });
+
+    test('con secciones vacías y sin respaldo no hay ficha (null)', () async {
+      final repo = _repo(
+        MockClient(
+          (_) async => http.Response(
+            jsonEncode({'vehiculoId': 9, 'secciones': <Object>[]}),
+            200,
+            headers: {'content-type': 'application/json'},
+          ),
+        ),
+      );
+      expect(await repo.ficha(_desconocido), isNull);
+    });
 
     test('sin conexión usa el respaldo local', () async {
       final repo = _repo(
