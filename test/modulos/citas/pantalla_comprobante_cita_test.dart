@@ -2,6 +2,11 @@ import 'dart:typed_data';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
+import 'package:carecar_mobile/modulos/citas/datos/entrega_de_pase_fake.dart';
+import 'package:carecar_mobile/modulos/citas/datos/repositorio_pase_wallet_fake.dart';
+import 'package:carecar_mobile/modulos/citas/dominio/pase_de_wallet.dart';
+import 'package:carecar_mobile/modulos/citas/presentacion/boton_agregar_a_wallet.dart';
+import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_wallet.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/repositorio_citas.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
@@ -81,6 +86,39 @@ void main() {
     await tester.pump(const Duration(milliseconds: 400));
     expect(find.byType(VisorPdf), findsOneWidget);
     expect(find.byKey(const ValueKey('visor-falso')), findsOneWidget);
+  });
+
+  testWidgets('ofrece Agregar a Wallet y pide el pase de esta cita', (
+    tester,
+  ) async {
+    final pases = RepositorioPaseWalletFake();
+    final entrega = EntregaDePaseFake();
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          repositorioCitasProvider.overrideWithValue(RepositorioCitasFake()),
+          repositorioPaseWalletProvider.overrideWithValue(pases),
+          entregaDePaseProvider.overrideWithValue(entrega),
+          plataformaWalletProvider.overrideWithValue(PlataformaWallet.google),
+        ],
+        child: conTemaPista(
+          const PantallaComprobanteCita(
+            citaId: 7,
+            fabricaVisorPdf: _visorFalso,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BotonAgregarAWallet), findsOneWidget);
+    await tester.ensureVisible(find.text('Agregar a Wallet'));
+    await tester.pump();
+    await tester.tap(find.text('Agregar a Wallet'));
+    await tester.pumpAndSettle();
+
+    expect(pases.pedidos, [(7, PlataformaWallet.google)]);
+    expect(entrega.entregados, hasLength(1));
   });
 
   testWidgets('un fallo muestra error con reintento', (tester) async {
