@@ -39,6 +39,22 @@
 
 - Mientras no exista V2-T04.02 el APK va firmado con la **llave de debug** (el `build.gradle.kts` ya cae a debug si no hay `key.properties`); el Release lo dice. No sirve para tiendas.
 - `github.run_number` cuenta por workflow: el número de build de `ci.yml` y el de `release.yml` son series distintas. Para el APK de prueba por merge (V2-T04.03) habrá que decidir una sola serie si ambos se instalan sobre el mismo teléfono.
-- Solo Android: el equipo no tiene Mac, así que el job de iOS no cambia y el Release no incluye IPA.
+- iOS: el equipo no tiene Mac; el Release adjunta un IPA **sin firmar** para sideload (ver "Avance de V2-T04.03" abajo).
 - Las notas del Release son fijas; las automáticas son V2-T04.05.
 
+
+## Avance de V2-T04.03: IPA sin firmar para sideload
+
+**Por qué sideload y no TestFlight.** En el equipo hay **un solo iPhone**, nadie tiene Mac ni la membresía de Apple Developer. TestFlight (el criterio de V2-T04.03) y la firma en CI de iOS (V2-T04.02) necesitan esa membresía. Mientras no exista, el iPhone se prueba con un IPA sin firmar que Sideloadly firma en Windows con un Apple ID gratis. Guía paso a paso: [`docs/guia-instalar-ios-sin-mac.md`](../../docs/guia-instalar-ios-sin-mac.md).
+
+**Qué hay**
+
+- `ipa-sin-firma.yml`: `workflow_dispatch` (a mano) y `workflow_call`. En `macos-latest` corre `flutter build ios --release --no-codesign --build-name=<pubspec> --build-number=<run_number> --dart-define=API_BASE_URL=<variable>` (falla antes de compilar si falta `API_BASE_URL`), mete `Runner.app` en `Payload/`, lo comprime con `zip -qry` y lo sube con `actions/upload-artifact` sin zip alrededor (`archive: false`) por 30 días. Nombre: `carecar-vX.Y.Z-build<n>.ipa` a mano; `carecar-vX.Y.Z.ipa` desde Release.
+- `release.yml`: después de publicar el Release con el APK, el job `ipa` llama a `ipa-sin-firma.yml` y `adjuntar-ipa` sube el IPA al mismo Release. Si la etiqueta no pasa la verificación no se gastan minutos de macOS; si falla iOS, el APK ya quedó publicado.
+- Decisión: workflow propio en vez de solo un job en `release.yml`, para poder sacar un IPA de `main` sin etiquetar versión; Release lo reusa para que haya una sola receta.
+
+**Límites conocidos**
+
+- No corre en cada merge (los minutos de macOS son caros) y no hay distribución a las 6 personas: V2-T04.03 sigue `Lista` hasta tener TestFlight (o Firebase App Distribution) y V2-T04.02 sigue sin firma de iOS.
+- Apple ID gratis: la firma dura 7 días, máximo 3 apps por sideload y 10 App IDs por semana. Push remotas, App Groups (el widget de V2-M25.01 cuando entre al proyecto Xcode), enlaces universales e iniciar sesión con Apple no funcionarían; detalle en la guía.
+- `github.run_number` del IPA manual es otra serie distinta de la de CI y de Release.
