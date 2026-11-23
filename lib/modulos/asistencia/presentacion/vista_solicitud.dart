@@ -43,6 +43,7 @@ class VistaSolicitud extends ConsumerWidget {
         .asData
         ?.value;
     final comentario = solicitud.comentario;
+    final resumen = [folio, tipo].join(', ');
 
     return Scaffold(
       backgroundColor: c.fondo,
@@ -57,7 +58,7 @@ class VistaSolicitud extends ConsumerWidget {
               subtitulo: solicitud.estado == EstadoSolicitud.recibida
                   ? textos.asistenciaSolicitudRecibida
                   : tipo,
-              descripcion: '$folio, $tipo',
+              descripcion: resumen,
               tinte: c.peligro,
               portada: ColoredBox(
                 color: c.superficieElevada,
