@@ -10,6 +10,7 @@ import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
 import 'l10n/idiomas.dart';
 import 'nucleo/api/proveedores_api.dart';
+import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
 import 'notificaciones/plugin_notificaciones_local.dart';
@@ -146,6 +147,7 @@ class _AppCareCarState extends State<AppCareCar> {
     // sigue recibiendolos por constructor sin cambios.
     return ProviderScope(
       overrides: [
+        preferenciasProvider.overrideWithValue(widget.prefs),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
@@ -180,6 +182,7 @@ class _AppCareCarState extends State<AppCareCar> {
             theme: TemaCareCar.conFuentes(),
             localizationsDelegates: delegadasDeIdioma,
             supportedLocales: idiomasSoportados,
+            locale: ref.watch(idiomaElegidoProvider),
             localeResolutionCallback: resolverIdioma,
             debugShowCheckedModeBanner: false,
             routerConfig: ref.watch(enrutadorProvider),

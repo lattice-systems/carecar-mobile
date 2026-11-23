@@ -1,3 +1,5 @@
+import 'package:carecar_mobile/l10n/idiomas.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carecar_mobile/tema/tema_carecar.dart';
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -11,12 +13,17 @@ class MaterialAppConShad extends StatelessWidget {
   final ThemeData? theme;
 
   @override
-  Widget build(BuildContext context) => ShadApp.custom(
-    theme: TemaCareCar.shad,
-    appBuilder: (context) => MaterialApp(
-      theme: theme ?? TemaCareCar.claro,
-      builder: (context, child) => ShadAppBuilder(child: child!),
-      home: home,
+  Widget build(BuildContext context) => ProviderScope(
+    child: ShadApp.custom(
+      theme: TemaCareCar.shad,
+      appBuilder: (context) => MaterialApp(
+        theme: theme ?? TemaCareCar.claro,
+        locale: idiomaBase,
+        localizationsDelegates: delegadasDeIdioma,
+        supportedLocales: idiomasSoportados,
+        builder: (context, child) => ShadAppBuilder(child: child!),
+        home: home,
+      ),
     ),
   );
 }

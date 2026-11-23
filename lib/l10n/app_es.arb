@@ -575,5 +575,21 @@
   "deslizarMensajeConfirmacion": "Confirma que quieres continuar.",
   "@deslizarMensajeConfirmacion": {
     "description": "Mensaje por defecto del diálogo de confirmación."
+  },
+  "idiomaEtiqueta": "Idioma",
+  "@idiomaEtiqueta": {
+    "description": "Etiqueta del selector de idioma de la app."
+  },
+  "idiomaSistema": "Automático (idioma del sistema)",
+  "@idiomaSistema": {
+    "description": "Opción que sigue el idioma del sistema."
+  },
+  "idiomaEspanol": "Español",
+  "@idiomaEspanol": {
+    "description": "Nombre del idioma español, escrito en español."
+  },
+  "idiomaIngles": "English",
+  "@idiomaIngles": {
+    "description": "Nombre del idioma inglés, escrito en inglés."
   }
 }
