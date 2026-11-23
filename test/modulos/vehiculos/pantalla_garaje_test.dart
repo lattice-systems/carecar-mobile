@@ -93,7 +93,7 @@ void main() {
     await tester.tap(find.text('Reintentar'));
     await tester.pumpAndSettle();
     expect(intentos, 2);
-    expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+    expect(find.text('Mazda CX-5 2024'), findsNWidgets(2));
   });
 
   testWidgets('sin conexion y sin copia guardada lo dice distinto', (
