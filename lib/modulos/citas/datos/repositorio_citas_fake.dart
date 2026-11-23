@@ -157,17 +157,6 @@ class RepositorioCitasFake implements RepositorioCitas {
       citas: _citas.sublist(inicio, fin),
       pagina: pagina,
       totalPaginas: _citas.isEmpty ? 0 : (_citas.length / tamano).ceil(),
-  Future<ComprobanteDeCita> comprobante(int citaId) async {
-    final falla = error;
-    if (falla != null) throw falla;
-    final agendada = _agendadas.where((c) => c.id == citaId).firstOrNull;
-    return ComprobanteDeCita(
-      citaId: citaId,
-      codigo: 'CC1.$citaId.firma',
-      fecha: agendada?.fecha ?? DateTime(2026, 11, 24),
-      horaInicio: agendada?.horaInicio ?? '09:00',
-      horaFin: agendada?.horaFin ?? '10:00',
-      vehiculoNombre: 'Mazda CX-5 2024',
     );
   }
 
@@ -232,6 +221,23 @@ class RepositorioCitasFake implements RepositorioCitas {
     estado: estado ?? c.estado,
     motivo: c.motivo,
   );
+
+  @override
+  Future<ComprobanteDeCita> comprobante(int citaId) async {
+    final falla = error;
+    if (falla != null) throw falla;
+    final agendada = _agendadas.where((c) => c.id == citaId).firstOrNull;
+    return ComprobanteDeCita(
+      citaId: citaId,
+      codigo: 'CC1.$citaId.firma',
+      fecha: agendada?.fecha ?? DateTime(2026, 11, 24),
+      horaInicio: agendada?.horaInicio ?? '09:00',
+      horaFin: agendada?.horaFin ?? '10:00',
+      vehiculoNombre: 'Mazda CX-5 2024',
+    );
+  }
+
+  @override
   Future<Uint8List> ticketPdf(int citaId) async {
     final falla = error;
     if (falla != null) throw falla;
