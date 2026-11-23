@@ -172,12 +172,9 @@ void main() {
     await tester.pumpWidget(_app(_Servicio((_) => espera.future)));
     await tester.pump();
     expect(find.bySemanticsLabel('Cargando el manual'), findsOneWidget);
-    espera.complete(await _manual(const Vehiculo(
-      id: 1,
-      vin: '',
-      modelo: '',
-      anio: 2000,
-    )));
+    espera.complete(
+      await _manual(const Vehiculo(id: 1, vin: '', modelo: '', anio: 2000)),
+    );
     await tester.pumpAndSettle();
   });
 
