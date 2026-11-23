@@ -219,6 +219,11 @@ class CarecarApiConCache implements CarecarApi {
   @override
   Future<Uint8List> ticketDeCita(int citaId) => _api.ticketDeCita(citaId);
 
+  // El comprobante lleva un codigo firmado: nunca se guarda en cache.
+  @override
+  Future<ComprobanteCita> comprobanteDeCita(int citaId) =>
+      _api.comprobanteDeCita(citaId);
+
   @override
   Future<List<Disponibilidad>> disponibilidad({
     required DateTime desde,
