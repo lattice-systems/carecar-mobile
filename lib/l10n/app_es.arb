@@ -37,6 +37,50 @@
       }
     }
   },
+  "asistenciaListaTitulo": "Emergencias",
+  "@asistenciaListaTitulo": {
+    "description": "Título grande de la lista de guías de emergencia."
+  },
+  "asistenciaHeroeTitulo": "¿Necesitas ayuda ahora?",
+  "@asistenciaHeroeTitulo": {
+    "description": "Título de la tarjeta principal de emergencias."
+  },
+  "asistenciaHeroeTexto": "Pedir ayuda con tu ubicación estará disponible pronto. Mientras tanto, estas guías te dicen qué hacer.",
+  "@asistenciaHeroeTexto": {
+    "description": "Explica por qué el botón de pedir ayuda aún no está disponible."
+  },
+  "asistenciaHeroeAccion": "Pedir ayuda",
+  "@asistenciaHeroeAccion": {
+    "description": "Botón de pedir ayuda, deshabilitado hasta que exista la solicitud de asistencia."
+  },
+  "asistenciaEstanteGuias": "Guías rápidas",
+  "@asistenciaEstanteGuias": {
+    "description": "Título del carrusel de guías."
+  },
+  "asistenciaGrupoGuias": "Todas las guías",
+  "@asistenciaGrupoGuias": {
+    "description": "Encabezado de la lista de guías."
+  },
+  "asistenciaGuiaCantidadPasos": "{pasos} pasos",
+  "@asistenciaGuiaCantidadPasos": {
+    "description": "Cuántos pasos tiene una guía.",
+    "placeholders": {
+      "pasos": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "asistenciaGuiaSubtituloSinConexion": "{pasos} pasos · sin conexión",
+  "@asistenciaGuiaSubtituloSinConexion": {
+    "description": "Subtítulo de la cabecera de una guía.",
+    "placeholders": {
+      "pasos": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "asistenciaGuiasAvisoSinConexion": "Estas guías están guardadas en la app y funcionan sin conexión.",
   "@asistenciaGuiasAvisoSinConexion": {
     "description": "Aviso de que las guías no necesitan red."
