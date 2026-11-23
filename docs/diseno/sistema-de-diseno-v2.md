@@ -106,7 +106,32 @@ Barra inferior con 5 destinos: **Inicio · Mi auto · Servicio · Explorar · Cu
 
 Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; con carga), `CampoTexto`, `CampoContrasena`, `Selector`, `Casilla`, `Interruptor`, `Chip` (en código `ChipPista`, para no chocar con el `Chip` de Material), `Avatar`, `Insignia`, `Aviso` (info/éxito/advertencia/peligro), `Dialogo`, `HojaInferior`, `Menu`, `Pestanas`.
 
-Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`. Pendientes con historia: `BurbujaMensaje` y `CampoMensaje` (V2-T02.15, para M24 y M07).
+Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
+
+### Mensajes (chat)
+
+Para el asistente (M24) y la mensajería con el asesor (M07). Un solo par de componentes para que todos los chats de la app se vean igual.
+
+**`BurbujaMensaje`.**
+- **Lado y color:** la propia va a la derecha con `acento` y texto `sobreAcento`; la ajena va a la izquierda sobre `superficieHundida` con texto `texto`.
+- **Forma:** radio `tarjeta`; la esquina inferior del lado de quien habla es de 4, como cola.
+- **Ancho:** nunca pasa del 80 % del disponible.
+- **Hora:** opcional, en `micro`.
+- **Fuentes:** opcionales al pie, por ejemplo «Manual, pág. 214». Son botones subrayados con ícono de libro, de al menos 48 de alto, con su propia etiqueta para el lector, por ejemplo «Manual, página 214, abrir».
+- **Estados de envío:** solo en mensajes propios.
+  - `enviando` muestra «Enviando…».
+  - `fallido` muestra «No se envió» en `peligro` con el botón «Reintentar» de 48.
+  - `enviado` no muestra nada.
+- **Lector de pantalla:** oye «Tú: texto, hora» o «CareCar: texto, hora» en un solo nodo.
+
+**`CampoMensaje`.**
+- **Forma:** campo sobre `superficieHundida` con radio `tarjeta`; con foco, borde de `acento`.
+- **Alto:** crece con el texto hasta 5 líneas y después se desplaza por dentro.
+- **Enviar:** ícono en `acento`, deshabilitado mientras no haya texto, sin contar espacios. Al enviar entrega el texto recortado y se vacía.
+- **Adjuntar:** solo aparece si la pantalla lo pide.
+- **Botones:** los dos miden 48 y tienen nombre propio para el lector («Enviar», «Adjuntar»).
+
+Golden en `test/nucleo/diseno/componentes/goldens/mensajes_*.png`.
 
 ### Estilo portada
 
