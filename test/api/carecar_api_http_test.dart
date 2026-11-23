@@ -203,6 +203,25 @@ void main() {
     expect(bytes, isNotEmpty);
   });
 
+  test('comprobanteDeCita llama GET /citas/{id}/comprobante', () async {
+    final api = _api(
+      espia,
+      () => _json({
+        'citaId': 7,
+        'codigo': 'CC1.7.abc123',
+        'fecha': '2026-11-24',
+        'horaInicio': '09:00',
+        'horaFin': '10:00',
+      }),
+    );
+
+    final comprobante = await api.comprobanteDeCita(7);
+
+    expect(espia.metodo, 'GET');
+    expect(espia.url!.path, '/api/v1/app/citas/7/comprobante');
+    expect(comprobante.codigo, 'CC1.7.abc123');
+  });
+
   test(
     'disponibilidad manda desde y hasta como parametros de consulta',
     () async {
