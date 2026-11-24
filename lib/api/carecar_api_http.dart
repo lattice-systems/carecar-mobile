@@ -84,12 +84,22 @@ class CarecarApiHttp implements CarecarApi {
     int vehiculoId, {
     int pagina = 0,
     int tamano = 20,
+    int? anio,
   }) => _cliente.obtenerPagina(
     '/vehiculos/$vehiculoId/servicios',
     Servicio.fromJson,
     pagina: pagina,
     tamano: tamano,
+    consulta: {'anio': anio?.toString()},
   );
+
+  @override
+  Future<List<int>> aniosDeServicios(int vehiculoId) =>
+      _cliente.obtenerEnteros('/vehiculos/$vehiculoId/servicios/anios');
+
+  @override
+  Future<ServicioDetalle> detalleDeServicio(int servicioId) =>
+      _cliente.obtener('/servicios/$servicioId', ServicioDetalle.fromJson);
 
   @override
   Future<Uint8List> ticketDe(int servicioId) =>

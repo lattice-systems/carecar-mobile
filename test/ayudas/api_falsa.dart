@@ -202,7 +202,29 @@ class ApiFalsa implements CarecarApi {
     int vehiculoId, {
     int pagina = 0,
     int tamano = 20,
-  }) async => _rebanar(await serviciosDe(vehiculoId), pagina, tamano);
+    int? anio,
+  }) async => _rebanar(
+    [
+      for (final s in await serviciosDe(vehiculoId))
+        if (anio == null || s.fecha.year == anio) s,
+    ],
+    pagina,
+    tamano,
+  );
+
+  @override
+  Future<List<int>> aniosDeServicios(int vehiculoId) async {
+    final anios = {for (final s in await serviciosDe(vehiculoId)) s.fecha.year};
+    return anios.toList()..sort((a, b) => b.compareTo(a));
+  }
+
+  /// Que responde `GET /servicios/{id}`. Si es nulo, falla como la API.
+  Future<ServicioDetalle> Function(int servicioId)? alPedirDetalleDeServicio;
+
+  @override
+  Future<ServicioDetalle> detalleDeServicio(int servicioId) =>
+      alPedirDetalleDeServicio?.call(servicioId) ??
+      (throw UnimplementedError('V2-M02.06'));
 
   @override
   Future<Uint8List> ticketDe(int servicioId) =>

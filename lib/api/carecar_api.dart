@@ -91,12 +91,22 @@ abstract interface class CarecarApi {
   /// `GET /vehiculos/{id}/servicios`, del mas reciente al mas antiguo.
   Future<List<Servicio>> serviciosDe(int vehiculoId);
 
-  /// `GET /vehiculos/{id}/servicios?pagina=&tamano=`, una pagina.
+  /// `GET /vehiculos/{id}/servicios?anio=&pagina=&tamano=`, una pagina.
+  /// `anio` nulo trae todos los años (V2-M02.05).
   Future<Pagina<Servicio>> paginaDeServicios(
     int vehiculoId, {
     int pagina = 0,
     int tamano = 20,
+    int? anio,
   });
+
+  /// `GET /vehiculos/{id}/servicios/anios`: años con servicios, del mas
+  /// reciente al mas antiguo (V2-M02.05).
+  Future<List<int>> aniosDeServicios(int vehiculoId);
+
+  /// `GET /servicios/{id}`: el ticket con mano de obra y refacciones
+  /// (V2-M02.06).
+  Future<ServicioDetalle> detalleDeServicio(int servicioId);
 
   /// `GET /servicios/{id}/ticket`. Devuelve los bytes del PDF.
   Future<Uint8List> ticketDe(int servicioId);

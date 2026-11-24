@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.4.0
+  version: 2.5.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -333,9 +333,20 @@ paths:
     get:
       tags: [Servicios y tickets]
       summary: Historial de servicios del vehículo
-      description: APP-3.2 · Orden cronológico, el más reciente primero. Paginado.
+      description: |
+        APP-3.2 · V2-M02.05. Orden cronológico, el más reciente primero. Paginado; la app
+        pide la página siguiente al llegar al final (paginación infinita). `anio` filtra por
+        el año del servicio.
       parameters:
         - $ref: '#/components/parameters/VehiculoId'
+        - name: anio
+          in: query
+          required: false
+          description: V2-M02.05 · Solo los servicios de ese año (1900 a 2100)
+          schema:
+            type: integer
+            minimum: 1900
+            maximum: 2100
         - $ref: '#/components/parameters/Pagina'
         - $ref: '#/components/parameters/Tamano'
       responses:
@@ -347,6 +358,60 @@ paths:
                 $ref: '#/components/schemas/PaginaServicios'
         '400':
           $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/servicios/anios:
+    get:
+      tags: [Servicios y tickets]
+      summary: Años con servicios del vehículo
+      description: V2-M02.05 · Para el filtro del historial, del más reciente al más antiguo.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Años con al menos un servicio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                example: [2026, 2025]
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /servicios/{servicioId}:
+    get:
+      tags: [Servicios y tickets]
+      summary: Ticket de una orden de servicio
+      description: |
+        V2-M02.06 · Mano de obra y refacciones con cantidad, precio e importe (cantidad ×
+        precio), y los totales: `total` = `totalManoDeObra` + `totalRefacciones`. Los precios
+        traen el IVA incluido; `subtotal` e `iva` se desglosan del total. El PDF del mismo
+        ticket está en `/servicios/{servicioId}/ticket`.
+      parameters:
+        - name: servicioId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Ticket de la orden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServicioDetalle'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -1232,10 +1297,84 @@ components:
           description: |
             Conjunto cerrado (PO-5). V2-T05.06 · Es el `estatus` de `orden_servicio`; hoy el
             backend solo responde TERMINADO porque el expediente registra servicios ya hechos.
+        fechaCierre:
+          type: string
+          nullable: true
+          example: '2026-10-20T13:45:00'
+          description: V2-M02.05 · Cuándo se cerró la orden, en hora de la agencia; nula si sigue abierta
         total:
           type: number
           format: double
           description: Mano de obra más refacciones
+
+    ServicioDetalle:
+      type: object
+      description: V2-M02.06 · Ticket de una orden de servicio
+      required: [id, vehiculoId, fecha, kilometraje, estatus, manoDeObra, refacciones, totalManoDeObra,
+        totalRefacciones, subtotal, iva, total]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        kilometraje:
+          type: integer
+        estatus:
+          type: string
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+        fechaCierre:
+          type: string
+          nullable: true
+          example: '2026-10-20T13:45:00'
+          description: En hora de la agencia; nula si la orden sigue abierta
+        manoDeObra:
+          type: array
+          items:
+            $ref: '#/components/schemas/RenglonTicket'
+        refacciones:
+          type: array
+          items:
+            $ref: '#/components/schemas/RenglonTicket'
+        totalManoDeObra:
+          type: number
+          format: double
+        totalRefacciones:
+          type: number
+          format: double
+        subtotal:
+          type: number
+          format: double
+          description: Total sin IVA
+        iva:
+          type: number
+          format: double
+        total:
+          type: number
+          format: double
+          description: totalManoDeObra + totalRefacciones, con IVA incluido
+
+    RenglonTicket:
+      type: object
+      required: [concepto, cantidad, precio, importe]
+      properties:
+        concepto:
+          type: string
+        cantidad:
+          type: integer
+          minimum: 1
+        precio:
+          type: number
+          format: double
+          description: Precio unitario con IVA incluido
+        importe:
+          type: number
+          format: double
+          description: cantidad × precio
 
     PaginaServicios:
       type: object

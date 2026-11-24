@@ -122,6 +122,22 @@ class ClienteApi {
     return _leerObjeto(respuesta, leer);
   }
 
+  /// GET que devuelve una lista de enteros (`[2026, 2025]`).
+  Future<List<int>> obtenerEnteros(String camino) async {
+    final respuesta = await _pedir(
+      () async => _http.get(config.ruta(camino), headers: await _encabezados()),
+      conToken: true,
+    );
+    _verificarEstado(respuesta);
+    final cuerpo = _decodificar(respuesta);
+    if (cuerpo is! List || cuerpo.any((e) => e is! num)) {
+      throw RespuestaInvalida(
+        'Se esperaba una lista de números y llegó ${cuerpo.runtimeType}.',
+      );
+    }
+    return [for (final e in cuerpo) (e as num).toInt()];
+  }
+
   /// GET que devuelve una lista.
   Future<List<T>> obtenerLista<T>(
     String camino,
@@ -146,12 +162,13 @@ class ClienteApi {
     T Function(Map<String, Object?>) leer, {
     required int pagina,
     required int tamano,
+    Map<String, String?>? consulta,
   }) async {
     final respuesta = await _pedir(
       () async => _http.get(
         config.ruta(
           camino,
-          consulta: {'pagina': '$pagina', 'tamano': '$tamano'},
+          consulta: {...?consulta, 'pagina': '$pagina', 'tamano': '$tamano'},
         ),
         headers: await _encabezados(),
       ),
