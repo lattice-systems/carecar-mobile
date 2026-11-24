@@ -62,18 +62,13 @@ class SeguimientoTrasladoNotifier extends AsyncNotifier<TrasladoDetalle> {
   /// Vuelve a consultar sin borrar lo que ya se muestra. Si falla, el estado
   /// queda con el error **y** el ultimo valor conocido (`hasError` y `value`).
   Future<void> refrescar() async {
-    final previo = state;
-    state = const AsyncLoading<TrasladoDetalle>().copyWithPrevious(previo);
+    // Riverpod conserva el ultimo valor al pasar a cargando o a error.
+    state = const AsyncLoading<TrasladoDetalle>();
     try {
       final nuevo = await ref.read(repositorioRecoleccionProvider).traslado(id);
       if (ref.mounted) state = AsyncData(nuevo);
     } on Object catch (error, pila) {
-      if (ref.mounted) {
-        state = AsyncError<TrasladoDetalle>(
-          error,
-          pila,
-        ).copyWithPrevious(previo);
-      }
+      if (ref.mounted) state = AsyncError<TrasladoDetalle>(error, pila);
     }
   }
 }
