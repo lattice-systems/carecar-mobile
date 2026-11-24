@@ -21,7 +21,7 @@ const _manual = Manual(
   id: 1,
   modelo: 'March',
   anio: 2026,
-  url: 'http://localhost:8080/api/v1/app/manuales/1/archivo?firma=x',
+  url: 'https://api.ejemplo.mx/api/v1/app/manuales/1/archivo?firma=x',
   marca: 'Nissan',
   titulo: 'Nissan March 2026 Manual de propietario',
 );
@@ -109,5 +109,45 @@ void main() {
       ResolverManual.identificar(march2020),
       'assets/Manuales/Nissan/March/2020/NissanMarch2020Manual.pdf',
     );
+  });
+
+  group('HTTPS fuera de local (V2-M22.09)', () {
+    const enClaro = Manual(
+      id: 1,
+      modelo: 'March',
+      anio: 2026,
+      url: 'http://localhost:8080/api/v1/app/manuales/1/archivo?firma=x',
+      marca: 'Nissan',
+    );
+
+    test('fuera de desarrollo no baja un manual por http', () async {
+      final respaldo = _Respaldo();
+      final servicio = ManualesDeLaAgencia(
+        api: ApiFalsa()..alPedirManuales = (_) async => const [enClaro],
+        respaldo: respaldo,
+        permitirHttp: false,
+        cliente: MockClient((_) async => fail('no debe descargar por http')),
+      );
+
+      final doc = await servicio.cargar(_march);
+
+      expect(doc.identificador, 'assets/local.pdf');
+      expect(respaldo.llamadas, 1);
+    });
+
+    test('desarrollo baja el manual del mock local por http', () async {
+      final servicio = ManualesDeLaAgencia(
+        api: ApiFalsa()..alPedirManuales = (_) async => const [enClaro],
+        respaldo: _Respaldo(),
+        permitirHttp: true,
+        cliente: MockClient(
+          (_) async => http.Response.bytes([37, 80, 68, 70], 200),
+        ),
+      );
+
+      final doc = await servicio.cargar(_march);
+
+      expect(doc.identificador, 'agencia:1');
+    });
   });
 }

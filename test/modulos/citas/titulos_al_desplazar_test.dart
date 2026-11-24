@@ -17,6 +17,7 @@ Widget _visorFalso(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
+  int paginaInicial,
 ) => const SizedBox(height: 600);
 
 Widget _app(Widget pantalla, Escenario escenario) => ProviderScope(

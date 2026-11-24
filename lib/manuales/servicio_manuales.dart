@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
 import '../api/modelos/vehiculo.dart';
+import '../config/flavor.dart';
 
 class FalloManual implements Exception {
   const FalloManual(this.mensaje);
@@ -91,12 +92,17 @@ class ManualesDeLaAgencia implements ServicioManuales {
     required this.api,
     ServicioManuales? respaldo,
     http.Client? cliente,
+    bool? permitirHttp,
   }) : _respaldo = respaldo ?? ManualesLocales(),
-       _cliente = cliente ?? http.Client();
+       _cliente = cliente ?? http.Client(),
+       _permitirHttp = permitirHttp ?? Flavor.actual.permiteHttpEnClaro;
 
   final CarecarApi api;
   final ServicioManuales _respaldo;
   final http.Client _cliente;
+
+  /// V2-M22.09: fuera de desarrollo la URL firmada solo se baja por https.
+  final bool _permitirHttp;
 
   static const _limite = Duration(seconds: 30);
 
@@ -106,9 +112,13 @@ class ManualesDeLaAgencia implements ServicioManuales {
       final manuales = await api.manualesDe(vehiculo.id);
       if (manuales.isNotEmpty) {
         final manual = manuales.first;
-        final respuesta = await _cliente
-            .get(Uri.parse(manual.url))
-            .timeout(_limite);
+        final direccion = Uri.parse(manual.url);
+        // Una URL firmada por http se podria leer en el camino: se usa el
+        // manual incluido en la app.
+        if (direccion.scheme != 'https' && !_permitirHttp) {
+          return await _respaldo.cargar(vehiculo);
+        }
+        final respuesta = await _cliente.get(direccion).timeout(_limite);
         if (respuesta.statusCode == 200 && respuesta.bodyBytes.isNotEmpty) {
           return DocumentoManual(
             // El backend manda «Nissan Frontier 2024 Manual de propietario»; la

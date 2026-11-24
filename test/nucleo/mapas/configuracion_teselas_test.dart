@@ -41,4 +41,28 @@ void main() {
       throwsStateError,
     );
   });
+
+  group('HTTPS fuera de local (V2-M22.09)', () {
+    test('fuera de desarrollo rechaza un proveedor con http', () {
+      expect(
+        () => ConfiguracionTeselas.desdeEntorno(
+          url: 'http://teselas.ejemplo.mx/{z}/{x}/{y}.png',
+          atribucion: '',
+          produccion: false,
+          permitirHttp: false,
+        ),
+        throwsStateError,
+      );
+    });
+
+    test('desarrollo acepta un servidor local con http', () {
+      final c = ConfiguracionTeselas.desdeEntorno(
+        url: 'http://10.0.2.2:8080/{z}/{x}/{y}.png',
+        atribucion: '',
+        produccion: false,
+        permitirHttp: true,
+      );
+      expect(c.urlPlantilla, startsWith('http://'));
+    });
+  });
 }
