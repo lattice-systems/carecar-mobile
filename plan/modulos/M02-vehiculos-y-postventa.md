@@ -84,6 +84,17 @@ El garaje vive en `lib/modulos/vehiculos/` y se abre en la ruta `/garaje` (exige
 - **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo. `V2-T01.08` no está integrada: se usó el patrón del módulo `ejemplo` y se pasará a las piezas comunes cuando llegue.
 - **Pendiente:** la tarjeta ya abre el detalle (V2-M02.02). La foto sigue siendo la silueta del sistema porque el contrato de vehículos no trae imagen. En `plan/cumplimiento-ficha.md` la fila "Mis vehículos (garaje)" sigue en 🟡 hasta demostrarla en celular con el backend real.
 
+## Avance de V2-M02.05 y V2-M02.06
+
+Estado: **En revisión**.
+
+- **App:** módulo nuevo `lib/modulos/historial/` (carpeta de Ricardo). Rutas `/historial/{vehiculoId}` y `/historial/{vehiculoId}/ticket/{servicioId}`, también por enlace.
+  - **Historial (V2-M02.05):** órdenes de la más reciente a la más antigua con fecha del servicio, estatus (texto e icono, no solo color), fecha de cierre y total. Paginación infinita: al llegar al final se pide la página siguiente; si falla, avisa y deja reintentar sin perder lo cargado. Filtro por año con los años que tienen servicios. Resuelve esqueleto, vacío, error con reintento y sin conexión; se recarga jalando.
+  - **Ticket (V2-M02.06):** mano de obra y refacciones, cada renglón con cantidad × precio e importe; totales de mano de obra, refacciones, subtotal sin IVA, IVA y total. Si la mano de obra más las refacciones no dan el total, lo avisa. «Compartir PDF» descarga el PDF y abre la hoja del sistema.
+  - **Pruebas:** `test/modulos/historial/` (dominio, repositorio, pantallas en claro, oscuro y letra al 200 %, y rutas).
+- **Backend:** `GET /vehiculos/{id}/servicios?anio=` con `fechaCierre`, `GET /vehiculos/{id}/servicios/anios` y `GET /servicios/{id}` (backend#85). Contrato v2 en 2.5.0; copia en `api/`. `mock_api` con los mismos datos.
+- **Acceso desde el detalle:** la fila «Historial de servicios» del detalle del vehículo (carpeta de Juan Pablo) se conecta en un PR aparte, como pide la propiedad por carpeta.
+
 ## Avance de V2-M02.07
 
 Pantalla `PantallaDisponibilidad` en `lib/modulos/citas/` (ruta `/citas/disponibilidad`, exige sesión). Estado: **En revisión**.
