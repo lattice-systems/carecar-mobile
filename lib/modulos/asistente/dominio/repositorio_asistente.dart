@@ -8,6 +8,15 @@ abstract interface class RepositorioAsistente {
     required String pregunta,
   });
 
+  /// Pregunta y entrega la respuesta mientras se escribe (V2-M24.09): varios
+  /// [AvanceTexto] y al final un [AvanceFin].
+  ///
+  /// El flujo falla con un [FalloAsistente].
+  Stream<AvanceRespuesta> preguntarEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  });
+
   /// Identifica el testigo del tablero en una foto (V2-M24.05). La foto solo
   /// viaja; no se guarda en el telefono.
   ///
@@ -123,4 +132,21 @@ class TestigoDelTablero {
   final GravedadTestigo gravedad;
   final String? queHacer;
   final List<CitaDelManual> fuentes;
+}
+
+/// Lo que llega de una respuesta en flujo (V2-M24.09).
+sealed class AvanceRespuesta {
+  const AvanceRespuesta();
+}
+
+/// Una parte mas del texto.
+class AvanceTexto extends AvanceRespuesta {
+  const AvanceTexto(this.texto);
+  final String texto;
+}
+
+/// La respuesta terminada, con sus fuentes.
+class AvanceFin extends AvanceRespuesta {
+  const AvanceFin(this.respuesta);
+  final RespuestaDelAsistente respuesta;
 }

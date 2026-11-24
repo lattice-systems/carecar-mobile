@@ -1289,6 +1289,36 @@ servidor.post(`${BASE}/asistente/consultas/:consultaId/calificacion`, (req, res)
   res.status(204).end();
 });
 
+// V2-M24.09: misma respuesta que /asistente/preguntas, palabra por palabra.
+servidor.post(`${BASE}/asistente/preguntas/flujo`, (req, res) => {
+  const { vehiculoId, pregunta } = req.body || {};
+  if (typeof pregunta !== 'string' || !pregunta.trim() || pregunta.length > 500) {
+    return problema(req, res, 400, 'Escribe una pregunta de hasta 500 caracteres', 'DATOS_INVALIDOS');
+  }
+  if (!vehiculoDelCliente(req, vehiculoId)) return noEncontrado(req, res);
+  const encontrado = TEMAS_DEL_MANUAL.test(pregunta.toLowerCase());
+  const respuesta = encontrado
+    ? 'Respuesta de ejemplo de la API simulada: en el manual de tu auto viene en la página 12.'
+    : 'No encontré eso en el manual de tu auto. Puedes preguntarle a tu asesor en la agencia.';
+  res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache' });
+  const palabras = respuesta.split(/(?<= )/);
+  let i = 0;
+  const enviar = () => {
+    if (i < palabras.length) {
+      res.write(`event:texto\ndata:${JSON.stringify({ texto: palabras[i++] })}\n\n`);
+      return setTimeout(enviar, 70);
+    }
+    res.write(`event:fin\ndata:${JSON.stringify({
+      consultaId: Date.now(),
+      respuesta,
+      encontrado,
+      fuentes: encontrado ? [{ manualId: 1, pagina: 12, titulo: 'Manual, pág. 12' }] : [],
+    })}\n\n`);
+    res.end();
+  };
+  enviar();
+});
+
 servidor.get(`${BASE}/toma-a-cuenta/estimaciones`, (req, res) => {
   const propias = db
     .get('estimacionesTomaCuenta')

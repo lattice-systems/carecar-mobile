@@ -161,4 +161,61 @@ void main() {
       }
     });
   });
+
+  group('Respuesta en flujo (V2-M24.09)', () {
+    test('traduce los trozos y el fin con sus fuentes', () async {
+      final api = ApiFalsa()
+        ..alPreguntarEnFlujo = (_, _) => Stream.fromIterable(const [
+          TrozoAsistente('Cada '),
+          TrozoAsistente('10 000 km.'),
+          FinAsistente(
+            RespuestaAsistente(
+              consultaId: 3,
+              respuesta: 'Cada 10 000 km.',
+              encontrado: true,
+              fuentes: [FuenteAsistente(manualId: 1, pagina: 12)],
+            ),
+          ),
+        ]);
+      final avances = await RepositorioAsistenteApi(api)
+          .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+          .toList();
+      expect(avances.whereType<AvanceTexto>().map((a) => a.texto), [
+        'Cada ',
+        '10 000 km.',
+      ]);
+      final fin = avances.last as AvanceFin;
+      expect(fin.respuesta.consultaId, 3);
+      expect(fin.respuesta.fuentes.single.pagina, 12);
+    });
+
+    test('un error a la mitad o un corte sin fin son fallos', () async {
+      for (final eventos in <List<EventoAsistente>>[
+        const [TrozoAsistente('Ca'), ErrorAsistenteEnFlujo('X')],
+        const [TrozoAsistente('Ca')],
+      ]) {
+        final api = ApiFalsa()
+          ..alPreguntarEnFlujo = (_, _) => Stream.fromIterable(eventos);
+        expect(
+          RepositorioAsistenteApi(api)
+              .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+              .toList(),
+          throwsA(isA<FalloAsistente>()),
+        );
+      }
+    });
+
+    test('el limite antes de empezar llega como su fallo', () async {
+      final api = ApiFalsa()
+        ..alPreguntarEnFlujo = (_, _) => Stream.error(
+          DemasiadosIntentos('x', problema: _problema('ASISTENTE_LIMITE', 429)),
+        );
+      expect(
+        RepositorioAsistenteApi(api)
+            .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+            .toList(),
+        throwsA(isA<AsistenteLimiteDiario>()),
+      );
+    });
+  });
 }
