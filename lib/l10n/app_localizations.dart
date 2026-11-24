@@ -962,6 +962,300 @@ abstract class AppLocalizations {
   /// **'Sin lugares disponibles'**
   String get citasVacioTitulo;
 
+  /// Fila del detalle del vehículo que abre el plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get mantenimientoAcceso;
+
+  /// Abre agendar cita con el servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar este servicio'**
+  String get mantenimientoAgendar;
+
+  /// Anuncio mientras carga el plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu plan de mantenimiento'**
+  String get mantenimientoCargando;
+
+  /// Anuncio mientras carga un servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el servicio'**
+  String get mantenimientoCargandoServicio;
+
+  /// Cerrar una pantalla de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get mantenimientoCerrar;
+
+  /// Descripción de la portada del plan para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Ilustración de una llave de servicio'**
+  String get mantenimientoDescripcionPortada;
+
+  /// Encabezado de los conceptos del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué incluye'**
+  String get mantenimientoEncabezadoConceptos;
+
+  /// Encabezado del grupo de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu kilometraje'**
+  String get mantenimientoEncabezadoKm;
+
+  /// Encabezado de la lista de servicios.
+  ///
+  /// In es, this message translates to:
+  /// **'Plan de servicios'**
+  String get mantenimientoEncabezadoPlan;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hecho'**
+  String get mantenimientoEstadoHecho;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get mantenimientoEstadoPendiente;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximo'**
+  String get mantenimientoEstadoProximo;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get mantenimientoEstadoVencido;
+
+  /// Cuánto falta y la fecha estimada.
+  ///
+  /// In es, this message translates to:
+  /// **'Faltan {km} km · hacia el {fecha}'**
+  String mantenimientoFaltan(String km, String fecha);
+
+  /// Cuándo se hizo el servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hecho el {fecha}'**
+  String mantenimientoHechoEl(String fecha);
+
+  /// Kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String mantenimientoKilometros(String km);
+
+  /// Ayuda con el último kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu último registro: {km} km'**
+  String mantenimientoKmAyuda(String km);
+
+  /// Ayuda sin lectura previa.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el número que marca el tablero de tu auto.'**
+  String get mantenimientoKmAyudaSinRegistro;
+
+  /// Etiqueta del campo.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje actual'**
+  String get mantenimientoKmCampo;
+
+  /// Fuente cliente del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado por ti el {fecha}'**
+  String mantenimientoKmDelCliente(String fecha);
+
+  /// Fuente taller del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado por el taller el {fecha}'**
+  String mantenimientoKmDelTaller(String fecha);
+
+  /// Validación.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa solo números enteros mayores que cero.'**
+  String get mantenimientoKmErrorFormato;
+
+  /// Validación contra la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'No puede ser menor a {km} km, el último que tenemos.'**
+  String mantenimientoKmErrorMenor(String km);
+
+  /// Fallo al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu kilometraje. Revisa tu internet y vuelve a intentarlo.'**
+  String get mantenimientoKmErrorRed;
+
+  /// Respuesta 422 KM_INVALIDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese kilometraje es menor al último registrado. Revísalo en tu tablero.'**
+  String get mantenimientoKmErrorServidor;
+
+  /// Validación.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu kilometraje.'**
+  String get mantenimientoKmErrorVacio;
+
+  /// Aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje guardado. Actualizamos tu próximo servicio.'**
+  String get mantenimientoKmGuardado;
+
+  /// Anuncio al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando kilometraje'**
+  String get mantenimientoKmGuardando;
+
+  /// Botón de guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar kilometraje'**
+  String get mantenimientoKmGuardar;
+
+  /// Nota sobre el km oficial.
+  ///
+  /// In es, this message translates to:
+  /// **'El kilometraje que registra el taller es el oficial: tu registro no lo reemplaza.'**
+  String get mantenimientoKmNota;
+
+  /// Aún no hay kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin registrar'**
+  String get mantenimientoKmSinDato;
+
+  /// Sin fuente del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay una lectura de tu auto'**
+  String get mantenimientoKmSinFuente;
+
+  /// Título del formulario de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar kilometraje'**
+  String get mantenimientoKmTitulo;
+
+  /// Motivo del próximo servicio: kilómetros.
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca por kilometraje'**
+  String get mantenimientoMotivoKm;
+
+  /// Motivo del próximo servicio: meses.
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca por tiempo transcurrido'**
+  String get mantenimientoMotivoTiempo;
+
+  /// Etiqueta del precio.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio estimado'**
+  String get mantenimientoPrecioEtiqueta;
+
+  /// Leyenda obligatoria junto a todo precio estimado.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación no vinculante'**
+  String get mantenimientoPrecioLeyenda;
+
+  /// Promedio de kilómetros diarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Promedio: {km} km al día'**
+  String mantenimientoPromedio(String km);
+
+  /// Abre el registro de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar km'**
+  String get mantenimientoRegistrarKm;
+
+  /// Resumen de un servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km · {meses} meses'**
+  String mantenimientoResumenServicio(String km, String meses);
+
+  /// Servicio ausente del plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que el plan haya cambiado. Vuelve al plan e inténtalo de nuevo.'**
+  String get mantenimientoServicioNoEncontradoMensaje;
+
+  /// Servicio ausente del plan.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este servicio'**
+  String get mantenimientoServicioNoEncontradoTitulo;
+
+  /// Servicio sin conceptos.
+  ///
+  /// In es, this message translates to:
+  /// **'Este servicio no trae conceptos detallados.'**
+  String get mantenimientoSinConceptos;
+
+  /// Invita a registrar el kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu kilometraje para calcular cuándo te toca el siguiente servicio.'**
+  String get mantenimientoSinProximoMensaje;
+
+  /// Héroe cuando no se puede estimar el próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin próximo servicio estimado'**
+  String get mantenimientoSinProximoTitulo;
+
+  /// Título de la pantalla del plan de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get mantenimientoTitulo;
+
+  /// Mensaje cuando el modelo no tiene plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos el plan de servicios de este modelo. Pregunta a tu asesor en la agencia.'**
+  String get mantenimientoVacioMensaje;
+
+  /// Título cuando el modelo no tiene plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay plan para tu auto'**
+  String get mantenimientoVacioTitulo;
+
+  /// El servicio ya llegó o pasó.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya te toca · pasó de los {km} km'**
+  String mantenimientoYaToca(String km);
+
   /// Precio de entrada de un modelo.
   ///
   /// In es, this message translates to:
