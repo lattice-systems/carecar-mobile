@@ -19,6 +19,7 @@ import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../asistente/asistente.dart';
 import '../../citas/citas.dart';
+import '../../historial/historial.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
@@ -29,10 +30,9 @@ import 'rutas_vehiculos.dart';
 /// que el taller lo actualizo, datos del auto y accesos a manual, ficha tecnica
 /// e historial.
 ///
-/// Manual (V2-M02.03) y ficha tecnica (V2-M02.04) abren su pantalla; el
-/// historial (V2-M02.05) aun no la tiene: se ve sin accion y dice
-/// "Disponible pronto" en vez de fallar. Resuelve los cinco estados; si el id
-/// ya no esta en el garaje lo explica.
+/// Manual (V2-M02.03), ficha tecnica (V2-M02.04) e historial (V2-M02.05) abren
+/// su pantalla. Resuelve los cinco estados; si el id ya no esta en el garaje
+/// lo explica.
 class PantallaDetalleVehiculo extends ConsumerWidget {
   const PantallaDetalleVehiculo({required this.vehiculoId, super.key});
 
@@ -202,9 +202,9 @@ class _DetalleState extends State<_Detalle> {
                   ),
                   FilaGrupo(
                     titulo: textos.vehiculosAccesoHistorial,
-                    subtitulo: textos.vehiculosAccesoPronto,
                     icono: Icons.history,
-                    colorIcono: c.textoTerciario,
+                    colorIcono: c.marca,
+                    alToque: () => context.push(rutaHistorialVehiculo(v.id)),
                   ),
                 ],
               ),
