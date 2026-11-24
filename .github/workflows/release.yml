@@ -74,8 +74,16 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
-      # Sin llaves de producción (V2-T04.02) android/app/build.gradle.kts firma
-      # el release con la llave de debug.
+      # V2-T04.02: la llave de producción viene de GitHub Secrets; sin ella
+      # android/app/build.gradle.kts firma el release con la llave de debug.
+      - name: Preparar la firma de producción
+        id: firma
+        env:
+          LLAVE_BASE64: ${{ secrets.ANDROID_PRODUCCION_LLAVE_BASE64 }}
+          LLAVE_CONTRASENA: ${{ secrets.ANDROID_PRODUCCION_LLAVE_CONTRASENA }}
+          LLAVE_ALIAS: ${{ secrets.ANDROID_PRODUCCION_LLAVE_ALIAS }}
+        run: scripts/preparar-firma-android.sh
+
       # Flavor produccion (V2-T01.04): su dirección por omisión es el backend
       # de Azure; la variable de repositorio API_BASE_URL, si existe, la
       # sobrescribe (debe ser https).
@@ -98,13 +106,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           ETIQUETA: ${{ github.ref_name }}
           NUMERO: ${{ github.run_number }}
+          FIRMADO: ${{ steps.firma.outputs.firmado }}
         run: |
+          if [ "$FIRMADO" = true ]; then
+            firma="Firmado con la llave de producción."
+          else
+            firma="**Aviso:** firmado con la llave de debug porque el repositorio aún no tiene los secretos de producción (V2-T04.02, scripts/crear-llaves-android.sh). Sirve para pruebas internas; no es apto para tiendas."
+          fi
           gh release create "$ETIQUETA" "carecar-$ETIQUETA.apk" \
             --title "CareCar $ETIQUETA" \
             --verify-tag \
             --notes "APK de Android $ETIQUETA (build $NUMERO).
 
-          **Aviso:** este APK está firmado con la llave de debug porque aún no existe la firma de producción (V2-T04.02). Sirve para pruebas internas; no es apto para tiendas.
+          $firma
 
           El IPA de iOS (sin firmar, para instalar con Sideloadly) se adjunta unos minutos después; guía en docs/guia-instalar-ios-sin-mac.md."
 
