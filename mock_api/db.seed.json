@@ -111,35 +111,180 @@
       "id": 1,
       "vehiculoId": 1,
       "fecha": "2026-09-18",
-      "estatus": "Terminado",
-      "total": 4850.5
+      "kilometraje": 30200,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-09-18T17:30:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 30,000 km",
+          "cantidad": 1,
+          "precio": 2400.0,
+          "importe": 2400.0
+        },
+        {
+          "concepto": "Rotación de llantas",
+          "cantidad": 1,
+          "precio": 350.0,
+          "importe": 350.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Aceite sintético 0W-20",
+          "cantidad": 5,
+          "precio": 240.1,
+          "importe": 1200.5
+        },
+        {
+          "concepto": "Filtro de aceite",
+          "cantidad": 1,
+          "precio": 300.0,
+          "importe": 300.0
+        }
+      ],
+      "total": 4250.5
     },
     {
       "id": 2,
       "vehiculoId": 1,
       "fecha": "2026-05-04",
-      "estatus": "Terminado",
+      "kilometraje": 20100,
+      "estatus": "ENTREGADO",
+      "fechaCierre": "2026-05-04T13:15:00",
+      "manoDeObra": [
+        {
+          "concepto": "Cambio de balatas delanteras",
+          "cantidad": 1,
+          "precio": 900.0,
+          "importe": 900.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Juego de balatas delanteras",
+          "cantidad": 1,
+          "precio": 1400.0,
+          "importe": 1400.0
+        }
+      ],
       "total": 2300.0
     },
     {
       "id": 3,
       "vehiculoId": 1,
       "fecha": "2026-01-22",
-      "estatus": "Terminado",
-      "total": 7120.75
+      "kilometraje": 10050,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-01-22T16:40:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 10,000 km",
+          "cantidad": 1,
+          "precio": 2950.0,
+          "importe": 2950.0
+        },
+        {
+          "concepto": "Alineación y balanceo",
+          "cantidad": 1,
+          "precio": 870.0,
+          "importe": 870.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Aceite sintético 0W-20",
+          "cantidad": 5,
+          "precio": 240.1,
+          "importe": 1200.5
+        },
+        {
+          "concepto": "Filtro de aire",
+          "cantidad": 1,
+          "precio": 450.0,
+          "importe": 450.0
+        },
+        {
+          "concepto": "Filtro de cabina",
+          "cantidad": 1,
+          "precio": 649.25,
+          "importe": 649.25
+        }
+      ],
+      "total": 6119.75
+    },
+    {
+      "id": 6,
+      "vehiculoId": 1,
+      "fecha": "2025-07-15",
+      "kilometraje": 5000,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2025-07-15T12:05:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 5,000 km",
+          "cantidad": 1,
+          "precio": 1200.0,
+          "importe": 1200.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Filtro de aceite",
+          "cantidad": 1,
+          "precio": 300.0,
+          "importe": 300.0
+        }
+      ],
+      "total": 1500.0
     },
     {
       "id": 4,
       "vehiculoId": 2,
       "fecha": "2026-08-30",
-      "estatus": "En proceso",
+      "kilometraje": 45100,
+      "estatus": "EN_PROCESO",
+      "fechaCierre": null,
+      "manoDeObra": [
+        {
+          "concepto": "Diagnóstico de suspensión",
+          "cantidad": 1,
+          "precio": 640.0,
+          "importe": 640.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Bujes de horquilla",
+          "cantidad": 2,
+          "precio": 450.0,
+          "importe": 900.0
+        }
+      ],
       "total": 1540.0
     },
     {
       "id": 5,
       "vehiculoId": 3,
       "fecha": "2026-10-02",
-      "estatus": "Terminado",
+      "kilometraje": 8200,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-10-02T11:20:00",
+      "manoDeObra": [
+        {
+          "concepto": "Revisión de garantía",
+          "cantidad": 1,
+          "precio": 0.0,
+          "importe": 0.0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Limpiaparabrisas",
+          "cantidad": 2,
+          "precio": 490.0,
+          "importe": 980.0
+        }
+      ],
       "total": 980.0
     }
   ],

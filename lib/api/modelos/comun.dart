@@ -41,6 +41,25 @@ DateTime leerFecha(Object? valor, String campo) {
   return DateTime(fecha.year, fecha.month, fecha.day);
 }
 
+/// Lee una fecha y hora del contrato sin zona (`2026-10-20T13:45:00`), que es
+/// hora de la agencia. Devuelve nulo si el campo no viene o es nulo.
+DateTime? leerFechaHoraOpcional(Object? valor, String campo) {
+  if (valor == null) return null;
+  final texto = leerTexto(valor, campo);
+  final fecha = DateTime.tryParse(texto);
+  if (fecha == null) {
+    throw FormatException('El campo «$campo» no es una fecha y hora: $texto');
+  }
+  return DateTime(
+    fecha.year,
+    fecha.month,
+    fecha.day,
+    fecha.hour,
+    fecha.minute,
+    fecha.second,
+  );
+}
+
 /// Escribe una fecha como `AAAA-MM-DD`, el formato que pide el contrato.
 String escribirFecha(DateTime fecha) {
   final mes = fecha.month.toString().padLeft(2, '0');

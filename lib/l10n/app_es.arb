@@ -1017,6 +1017,173 @@
   "@deslizarMensajeConfirmacion": {
     "description": "Mensaje por defecto del diálogo de confirmación."
   },
+  "historialCargandoMas": "Cargando más servicios",
+  "@historialCargandoMas": {
+    "description": "Lector de pantalla mientras llega la página siguiente del historial."
+  },
+  "historialCerradaEl": "Cerrada el {fecha}",
+  "@historialCerradaEl": {
+    "description": "Fecha y hora de cierre de una orden en el historial.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "historialErrorMas": "No pudimos cargar más servicios.",
+  "@historialErrorMas": {
+    "description": "Aviso cuando falla la página siguiente del historial."
+  },
+  "historialEstatusEnProceso": "En proceso",
+  "@historialEstatusEnProceso": {
+    "description": "Estatus de una orden: el taller trabaja en el vehículo."
+  },
+  "historialEstatusEntregado": "Entregado",
+  "@historialEstatusEntregado": {
+    "description": "Estatus de una orden: el cliente ya recogió el vehículo."
+  },
+  "historialEstatusOtro": "Sin estatus",
+  "@historialEstatusOtro": {
+    "description": "Estatus de una orden que la app aún no conoce."
+  },
+  "historialEstatusRecibido": "Recibido",
+  "@historialEstatusRecibido": {
+    "description": "Estatus de una orden: el vehículo entró al taller."
+  },
+  "historialEstatusTerminado": "Terminado",
+  "@historialEstatusTerminado": {
+    "description": "Estatus de una orden: el servicio está hecho."
+  },
+  "historialEstatusYCierre": "{estatus} · {cierre}",
+  "@historialEstatusYCierre": {
+    "description": "Estatus y cierre de una orden en el historial; el estatus va con texto, no solo con color.",
+    "placeholders": {
+      "estatus": {
+        "type": "String"
+      },
+      "cierre": {
+        "type": "String"
+      }
+    }
+  },
+  "historialFiltroEtiqueta": "Filtrar por año",
+  "@historialFiltroEtiqueta": {
+    "description": "Lector de pantalla del filtro de años del historial."
+  },
+  "historialFiltroTodos": "Todos",
+  "@historialFiltroTodos": {
+    "description": "Opción del filtro del historial que muestra todos los años."
+  },
+  "historialReintentar": "Reintentar",
+  "@historialReintentar": {
+    "description": "Botón para reintentar una carga del historial o del ticket."
+  },
+  "historialSinCierre": "Orden abierta",
+  "@historialSinCierre": {
+    "description": "Una orden que todavía no se cierra."
+  },
+  "historialTicketCantidadPorPrecio": "{cantidad} × {precio}",
+  "@historialTicketCantidadPorPrecio": {
+    "description": "Cantidad por precio unitario de un renglón del ticket.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      },
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketCierre": "Fecha de cierre",
+  "@historialTicketCierre": {
+    "description": "Etiqueta de la fecha de cierre en el ticket."
+  },
+  "historialTicketCompartir": "Compartir PDF",
+  "@historialTicketCompartir": {
+    "description": "Botón para descargar y compartir el PDF del ticket."
+  },
+  "historialTicketCompartirError": "No pudimos descargar el PDF. Intenta de nuevo.",
+  "@historialTicketCompartirError": {
+    "description": "Aviso cuando falla la descarga del PDF del ticket."
+  },
+  "historialTicketFecha": "Fecha del servicio",
+  "@historialTicketFecha": {
+    "description": "Etiqueta de la fecha del servicio en el ticket."
+  },
+  "historialTicketIva": "IVA",
+  "@historialTicketIva": {
+    "description": "Renglón del IVA en los totales del ticket."
+  },
+  "historialTicketKilometraje": "Kilometraje",
+  "@historialTicketKilometraje": {
+    "description": "Etiqueta del kilometraje en el ticket."
+  },
+  "historialTicketKilometrajeValor": "{km} km",
+  "@historialTicketKilometrajeValor": {
+    "description": "Kilometraje del vehículo en el ticket.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketManoDeObra": "Mano de obra",
+  "@historialTicketManoDeObra": {
+    "description": "Encabezado y total de la mano de obra del ticket."
+  },
+  "historialTicketNoCuadra": "Los importes de este ticket no cuadran. Pide a la agencia que lo revise.",
+  "@historialTicketNoCuadra": {
+    "description": "Aviso si la suma de los renglones no da el total."
+  },
+  "historialTicketPreciosConIva": "Los precios incluyen IVA.",
+  "@historialTicketPreciosConIva": {
+    "description": "Pie de los totales del ticket."
+  },
+  "historialTicketRefacciones": "Refacciones",
+  "@historialTicketRefacciones": {
+    "description": "Encabezado y total de las refacciones del ticket."
+  },
+  "historialTicketSinRenglones": "Sin renglones",
+  "@historialTicketSinRenglones": {
+    "description": "Grupo del ticket sin mano de obra o sin refacciones."
+  },
+  "historialTicketSubtotal": "Subtotal sin IVA",
+  "@historialTicketSubtotal": {
+    "description": "Renglón del subtotal en los totales del ticket."
+  },
+  "historialTicketTitulo": "Ticket",
+  "@historialTicketTitulo": {
+    "description": "Título de la pantalla del ticket. Corto: con subtítulo, el encabezado grande reserva una sola línea."
+  },
+  "historialTicketTotal": "Total",
+  "@historialTicketTotal": {
+    "description": "Renglón del total del ticket."
+  },
+  "historialTicketTotales": "Totales",
+  "@historialTicketTotales": {
+    "description": "Encabezado de los totales del ticket."
+  },
+  "historialTitulo": "Historial",
+  "@historialTitulo": {
+    "description": "Título de la pantalla del historial de servicios. Corto: con subtítulo, el encabezado grande reserva una sola línea."
+  },
+  "historialVacioAnioMensaje": "No hay servicios en {anio}.",
+  "@historialVacioAnioMensaje": {
+    "description": "Estado vacío del historial con un año elegido.",
+    "placeholders": {
+      "anio": {
+        "type": "String"
+      }
+    }
+  },
+  "historialVacioMensaje": "Cuando el taller cierre una orden de este auto, aparecerá aquí.",
+  "@historialVacioMensaje": {
+    "description": "Mensaje del estado vacío del historial."
+  },
+  "historialVacioTitulo": "Aún no hay servicios",
+  "@historialVacioTitulo": {
+    "description": "Título del estado vacío del historial."
+  },
   "idiomaEtiqueta": "Idioma",
   "@idiomaEtiqueta": {
     "description": "Etiqueta del selector de idioma de la app."

@@ -29,8 +29,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
 | Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; backend con `manual.archivo_pdf`; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
 | Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 app v2 y backend (tabla y endpoint, rama `feat/v2-juan-pablo-citas-b`); la tabla aún sin datos, la app usa su respaldo | V2-M02.04 |
-| Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 backend con la tabla `orden_servicio` (`ExpedienteIntegrationTest`); app solo 1.ª página | V2-M02.05, V2-T05.06 |
-| Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 backend con `orden_servicio` y `orden_refaccion` (`refaccion_id` con FK a `refaccion`); falta la v2 del ticket en la app | V2-M02.06, V2-T05.06 |
+| Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 app v2 con paginación infinita, filtro por año, fecha de cierre, estatus y total (`test/modulos/historial/`); backend con filtro y años (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.05, V2-T05.06 |
+| Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 app v2 con mano de obra y refacciones (cantidad × precio) que suman el total y PDF para compartir (`test/modulos/historial/`); backend `GET /servicios/{id}` (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.06, V2-T05.06 |
 | Disponibilidad del taller | `franja_horario`, `cita` | 🟡 backend con la tabla `franja_horario` y `cita.franja_id` con FK (`AgendaAppIntegrationTest`); falta demostrar en celular | V2-M02.07, V2-T05.07 |
 | Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app y backend (`cita.motivo`, `CITA_DUPLICADA`) listos; falta demostrar en celular | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app v2 lista con estados y paginación; falta demostrar en celular | V2-M02.09 |

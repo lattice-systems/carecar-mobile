@@ -878,6 +878,121 @@ class AppLocalizationsEn extends AppLocalizations {
       'Confirm that you want to continue.';
 
   @override
+  String get historialCargandoMas => 'Loading more services';
+
+  @override
+  String historialCerradaEl(String fecha) {
+    return 'Closed on $fecha';
+  }
+
+  @override
+  String get historialErrorMas => 'We couldn\'t load more services.';
+
+  @override
+  String get historialEstatusEnProceso => 'In progress';
+
+  @override
+  String get historialEstatusEntregado => 'Delivered';
+
+  @override
+  String get historialEstatusOtro => 'No status';
+
+  @override
+  String get historialEstatusRecibido => 'Received';
+
+  @override
+  String get historialEstatusTerminado => 'Finished';
+
+  @override
+  String historialEstatusYCierre(String estatus, String cierre) {
+    return '$estatus · $cierre';
+  }
+
+  @override
+  String get historialFiltroEtiqueta => 'Filter by year';
+
+  @override
+  String get historialFiltroTodos => 'All';
+
+  @override
+  String get historialReintentar => 'Try again';
+
+  @override
+  String get historialSinCierre => 'Open order';
+
+  @override
+  String historialTicketCantidadPorPrecio(int cantidad, String precio) {
+    return '$cantidad × $precio';
+  }
+
+  @override
+  String get historialTicketCierre => 'Closing date';
+
+  @override
+  String get historialTicketCompartir => 'Share PDF';
+
+  @override
+  String get historialTicketCompartirError =>
+      'We couldn\'t download the PDF. Please try again.';
+
+  @override
+  String get historialTicketFecha => 'Service date';
+
+  @override
+  String get historialTicketIva => 'VAT';
+
+  @override
+  String get historialTicketKilometraje => 'Mileage';
+
+  @override
+  String historialTicketKilometrajeValor(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get historialTicketManoDeObra => 'Labor';
+
+  @override
+  String get historialTicketNoCuadra =>
+      'The amounts on this ticket don\'t add up. Ask the dealership to review it.';
+
+  @override
+  String get historialTicketPreciosConIva => 'Prices include VAT.';
+
+  @override
+  String get historialTicketRefacciones => 'Parts';
+
+  @override
+  String get historialTicketSinRenglones => 'No items';
+
+  @override
+  String get historialTicketSubtotal => 'Subtotal before VAT';
+
+  @override
+  String get historialTicketTitulo => 'Ticket';
+
+  @override
+  String get historialTicketTotal => 'Total';
+
+  @override
+  String get historialTicketTotales => 'Totals';
+
+  @override
+  String get historialTitulo => 'History';
+
+  @override
+  String historialVacioAnioMensaje(String anio) {
+    return 'There are no services in $anio.';
+  }
+
+  @override
+  String get historialVacioMensaje =>
+      'When the shop closes an order for this car, it will show up here.';
+
+  @override
+  String get historialVacioTitulo => 'No services yet';
+
+  @override
   String get idiomaEtiqueta => 'Language';
 
   @override

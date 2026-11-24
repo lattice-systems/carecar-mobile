@@ -122,6 +122,7 @@ class CarecarApiConCache implements CarecarApi {
           'fecha': escribirFecha(s.fecha),
           'estatus': s.estatus,
           'total': s.total,
+          'fechaCierre': s.fechaCierre?.toIso8601String(),
         },
     ],
     (j) => _lista(j, Servicio.fromJson),
@@ -133,7 +134,21 @@ class CarecarApiConCache implements CarecarApi {
     int vehiculoId, {
     int pagina = 0,
     int tamano = 20,
-  }) => _api.paginaDeServicios(vehiculoId, pagina: pagina, tamano: tamano);
+    int? anio,
+  }) => _api.paginaDeServicios(
+    vehiculoId,
+    pagina: pagina,
+    tamano: tamano,
+    anio: anio,
+  );
+
+  @override
+  Future<List<int>> aniosDeServicios(int vehiculoId) =>
+      _api.aniosDeServicios(vehiculoId);
+
+  @override
+  Future<ServicioDetalle> detalleDeServicio(int servicioId) =>
+      _api.detalleDeServicio(servicioId);
 
   @override
   Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) =>

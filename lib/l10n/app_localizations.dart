@@ -1466,6 +1466,210 @@ abstract class AppLocalizations {
   /// **'Confirma que quieres continuar.'**
   String get deslizarMensajeConfirmacion;
 
+  /// Lector de pantalla mientras llega la página siguiente del historial.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más servicios'**
+  String get historialCargandoMas;
+
+  /// Fecha y hora de cierre de una orden en el historial.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrada el {fecha}'**
+  String historialCerradaEl(String fecha);
+
+  /// Aviso cuando falla la página siguiente del historial.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más servicios.'**
+  String get historialErrorMas;
+
+  /// Estatus de una orden: el taller trabaja en el vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'En proceso'**
+  String get historialEstatusEnProceso;
+
+  /// Estatus de una orden: el cliente ya recogió el vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregado'**
+  String get historialEstatusEntregado;
+
+  /// Estatus de una orden que la app aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin estatus'**
+  String get historialEstatusOtro;
+
+  /// Estatus de una orden: el vehículo entró al taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibido'**
+  String get historialEstatusRecibido;
+
+  /// Estatus de una orden: el servicio está hecho.
+  ///
+  /// In es, this message translates to:
+  /// **'Terminado'**
+  String get historialEstatusTerminado;
+
+  /// Estatus y cierre de una orden en el historial; el estatus va con texto, no solo con color.
+  ///
+  /// In es, this message translates to:
+  /// **'{estatus} · {cierre}'**
+  String historialEstatusYCierre(String estatus, String cierre);
+
+  /// Lector de pantalla del filtro de años del historial.
+  ///
+  /// In es, this message translates to:
+  /// **'Filtrar por año'**
+  String get historialFiltroEtiqueta;
+
+  /// Opción del filtro del historial que muestra todos los años.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos'**
+  String get historialFiltroTodos;
+
+  /// Botón para reintentar una carga del historial o del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get historialReintentar;
+
+  /// Una orden que todavía no se cierra.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden abierta'**
+  String get historialSinCierre;
+
+  /// Cantidad por precio unitario de un renglón del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad} × {precio}'**
+  String historialTicketCantidadPorPrecio(int cantidad, String precio);
+
+  /// Etiqueta de la fecha de cierre en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha de cierre'**
+  String get historialTicketCierre;
+
+  /// Botón para descargar y compartir el PDF del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir PDF'**
+  String get historialTicketCompartir;
+
+  /// Aviso cuando falla la descarga del PDF del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos descargar el PDF. Intenta de nuevo.'**
+  String get historialTicketCompartirError;
+
+  /// Etiqueta de la fecha del servicio en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha del servicio'**
+  String get historialTicketFecha;
+
+  /// Renglón del IVA en los totales del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'IVA'**
+  String get historialTicketIva;
+
+  /// Etiqueta del kilometraje en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje'**
+  String get historialTicketKilometraje;
+
+  /// Kilometraje del vehículo en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String historialTicketKilometrajeValor(String km);
+
+  /// Encabezado y total de la mano de obra del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get historialTicketManoDeObra;
+
+  /// Aviso si la suma de los renglones no da el total.
+  ///
+  /// In es, this message translates to:
+  /// **'Los importes de este ticket no cuadran. Pide a la agencia que lo revise.'**
+  String get historialTicketNoCuadra;
+
+  /// Pie de los totales del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Los precios incluyen IVA.'**
+  String get historialTicketPreciosConIva;
+
+  /// Encabezado y total de las refacciones del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get historialTicketRefacciones;
+
+  /// Grupo del ticket sin mano de obra o sin refacciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin renglones'**
+  String get historialTicketSinRenglones;
+
+  /// Renglón del subtotal en los totales del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Subtotal sin IVA'**
+  String get historialTicketSubtotal;
+
+  /// Título de la pantalla del ticket. Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Ticket'**
+  String get historialTicketTitulo;
+
+  /// Renglón del total del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get historialTicketTotal;
+
+  /// Encabezado de los totales del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Totales'**
+  String get historialTicketTotales;
+
+  /// Título de la pantalla del historial de servicios. Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Historial'**
+  String get historialTitulo;
+
+  /// Estado vacío del historial con un año elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay servicios en {anio}.'**
+  String historialVacioAnioMensaje(String anio);
+
+  /// Mensaje del estado vacío del historial.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando el taller cierre una orden de este auto, aparecerá aquí.'**
+  String get historialVacioMensaje;
+
+  /// Título del estado vacío del historial.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay servicios'**
+  String get historialVacioTitulo;
+
   /// Etiqueta del selector de idioma de la app.
   ///
   /// In es, this message translates to:

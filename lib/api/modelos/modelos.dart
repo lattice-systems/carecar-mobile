@@ -17,4 +17,5 @@ export 'perfil.dart';
 export 'problema.dart';
 export 'sesion.dart';
 export 'servicio.dart';
+export 'servicio_detalle.dart';
 export 'vehiculo.dart';
