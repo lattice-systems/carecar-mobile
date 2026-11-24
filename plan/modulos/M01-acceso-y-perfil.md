@@ -67,3 +67,32 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 
 - Registro público: **prohibido por ficha**.
 - Inicio con Google/Apple: no, la cuenta la crea la agencia.
+
+## Avance de V2-M01.01
+
+**Qué quedó**
+
+- `lib/modulos/acceso/` nace con su contrato público (`acceso.dart`), su dominio y su presentación.
+- `dominio/bloqueo_por_intentos.dart` — cuenta cuánto falta del bloqueo por intentos (429 / RIC-5). Dart puro, cero imports. **No arma textos**: entrega números y la presentación elige la clave del ARB.
+- `presentacion/pantalla_acceso.dart` — la pantalla v2 con los componentes del sistema. Sin ningún flujo de registro, con nota que explica por qué, y los tres fallos distinguidos: credenciales en rojo, sin conexión y bloqueo en ámbar, porque los dos últimos son esperas y no algo que la persona pueda corregir.
+- `presentacion/aviso_bloqueo.dart` — la cuenta regresiva, que baja cada segundo y se quita sola al acabarse.
+- `presentacion/espera_servidor.dart` — el «Despertando el servidor…» de V2-M01.12 portado a la v2.
+- `presentacion/rutas_acceso.dart` — la ruta, **declarada y no registrada** (ver abajo).
+- **42 pruebas** y 21 claves nuevas en `app_es.arb` y `app_en.arb`.
+
+**Hallazgos en el árbol actual**
+
+- **Tres de los cuatro criterios ya los cumplía la lógica de la v1**: no hay registro, el 401 del contrato es genérico y por eso no revela si el correo existe, y el cuarto —ver Inicio en menos de 2 s— resulta ser del enrutador, porque el guardia de sesión saca de `/acceso` a quien ya entró. Lo genuinamente nuevo era el bloqueo con minutos restantes.
+- **`FalloDeSesion` solo cargaba el texto ya armado** por `_textoDelBloqueo`, escrito al fallar: a los diez minutos de un bloqueo de quince seguía diciendo quince. Se le agregó `esperaSegundos`, opcional, sin cambiar nada de la v1.
+- **La arquitectura v2 no tiene hoy dónde poner utilidades pequeñas compartidas.** Esta historia duplicó dos por reglas distintas: el reloj inyectable, porque R1 prohíbe importar el de `citas/presentacion/`, y el umbral de espera del servidor con su aviso, porque R3 prohíbe importar `lib/widgets/`. Las dos copias quedan comentadas en ambos sentidos. Su lugar es `lib/nucleo/`, pero subirlas obliga a tocar carpetas de otros para migrarlas y ninguna historia lo cubre. **Va a repetirse con cada módulo nuevo.**
+- **Las trece pruebas que comprueban la redirección por el widget** (`find.byType(PantallaLogin)`) y no por la ruta, en los módulos de otras cuatro personas, son lo que hace caro encender este módulo. Con `AppEnrutadaDePrueba` usando `todoV2` por omisión, agregar el valor al enum las pone rojas de golpe.
+
+**Decisiones**
+
+- **La pantalla no navega.** El guardia de sesión ya redirige a quien tiene sesión, así que la pantalla no recibe callbacks de éxito ni llama a `go`: solo pide la sesión y muestra lo que pasa. Es también lo que cumple el criterio de los 2 s.
+- **El botón se bloquea también con la sesión ya iniciada**, no solo mientras entra. Lo encontró la prueba del doble toque: al terminar un login exitoso, `entrando` vuelve a ser falso y un segundo toque pedía otra sesión al servidor. Depender de que el enrutador llegue primero es frágil, y con cinco intentos y 15 minutos de bloqueo una petición de más sale caro.
+- **El fin del bloqueo se guarda una sola vez**, cuando el fallo aparece. El `Retry-After` dice cuántos segundos faltan *desde que falló*, así que recalcularlo en cada `build` reinicia la cuenta —basta escribir en un campo— y el usuario vería «15 min» para siempre.
+- **La ruta queda declarada y sin registrar.** Encenderla hoy dejaría «¿Olvidaste tu contraseña?» muerto hasta V2-M01.04 —el cliente **perdería** algo que la v1 sí le da—, mandaría a cambiar la contraseña temporal a una pantalla v1, y rompería las trece pruebas ajenas. El detalle del encendido está en el dartdoc de `rutas_acceso.dart`.
+- **El dominio no escribe textos.** Al contrario del `esperaLegible` de la v1, que devolvía «15 minutos» en español. Lo exige la regla del módulo y lo vigila `test/l10n/sin_cadenas_en_codigo_test.dart`, que de hecho rechazó un `Text('CareCar')` escrito a mano: la marca también vive en el ARB, con la nota de que es nombre propio y no se traduce.
+
+**Pendiente / fuera de alcance:** encender la ruta (pide V2-M01.03 y V2-M01.04); subir el reloj y la espera del servidor a `lib/nucleo/` (historia del núcleo); demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y una captura en claro, oscuro y letra grande para el PR.

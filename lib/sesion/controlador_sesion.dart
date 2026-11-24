@@ -38,6 +38,7 @@ class FalloDeSesion extends EstadoSesion {
     this.mensaje, {
     this.esFalloDeRed = false,
     this.esBloqueoTemporal = false,
+    this.esperaSegundos,
   });
 
   /// Siempre se puede mostrar al usuario.
@@ -50,6 +51,15 @@ class FalloDeSesion extends EstadoSesion {
   /// pantalla lo muestra como advertencia y no como error, igual que «sin
   /// conexion», y reintentar antes de que pase el tiempo no va a servir.
   final bool esBloqueoTemporal;
+
+  /// Lo que dijo el encabezado `Retry-After`, en segundos, cuando vino.
+  ///
+  /// Solo lo trae un [esBloqueoTemporal]. Existe para que una pantalla pueda
+  /// hacer **cuenta regresiva** en vez de repetir el texto fijo de [mensaje],
+  /// que se arma al fallar y se queda viejo: a los diez minutos de un bloqueo
+  /// de quince seguiria diciendo quince. El encabezado es opcional en el
+  /// contrato, asi que puede ser nulo y entonces no hay cuenta que mostrar.
+  final int? esperaSegundos;
 
   /// `true` cuando no se pudo llegar al servidor.
   ///
@@ -164,6 +174,7 @@ class ControladorSesion extends ChangeNotifier {
         FalloDeSesion(
           _textoDelBloqueo(e.esperaLegible),
           esBloqueoTemporal: true,
+          esperaSegundos: e.esperaSegundos,
         ),
       );
     } on ExcepcionApi catch (e) {

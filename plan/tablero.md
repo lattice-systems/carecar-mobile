@@ -64,10 +64,10 @@ Total: **214 historias** + 4 de H0.
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
-| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | En curso | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` |
+| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
-| V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Lista | |
+| V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Descartada | sin tiendas: APK + Sideloadly |
 | V2-T05.01 | Módulos Modulith nuevos | Ricardo | B | — | Hecha | backend#83, #89 |
 | V2-T05.02 | El contrato `agencia360-api-app-v2.yaml` | Ricardo | B | — | Hecha | backend#75, #79 |
 | V2-T05.03 | `cuenta_app.usuario` como en la ficha | Ricardo | B | — | Hecha | backend#82, #88 |
@@ -84,7 +84,7 @@ Total: **214 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Lista | |
+| V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Hecha | #107 |
 | V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Lista | |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Lista | |
@@ -226,10 +226,10 @@ Total: **214 historias** + 4 de H0.
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
 | V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Borrador | |
 | V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M06.02 | Borrador | |
-| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Borrador | |
-| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Borrador | |
-| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Borrador | |
-| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
+| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Lista | |
+| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Lista | |
+| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Lista | |
+| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Lista | |
 | V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | En revisión | #94, backend#86 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | En revisión | #94, backend#86 |
 | V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Lista | |
@@ -265,7 +265,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Hecha | #97 |
 | V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Hecha | #100, backend#87 |
 | V2-M24.08 | Ver preguntas sugeridas | Daniel |  | V2-M24.03 | Hecha | #96 |
-| V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
+| V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Hecha | #113, backend#91 |
 | V2-M24.10 | Entrar al asistente desde el detalle del auto con preguntas sugeridas | Daniel |  | V2-M24.08, V2-T02.19 | Hecha | #110 |
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Hecha | #68 |
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
@@ -273,6 +273,6 @@ Total: **214 historias** + 4 de H0.
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
 | V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
 
-## H7 · Lista para tiendas
+## H7 · Lista para entregar
 
 Se llena con las historias de endurecimiento que salgan de M20.07, M22.08, M23.06 y T04.06, más los hallazgos de las pruebas en celular de cada hito.

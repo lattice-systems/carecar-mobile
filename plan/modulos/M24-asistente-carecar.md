@@ -92,6 +92,7 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - aviso de IA fijo;
   - estado vacío con cinco preguntas sugeridas en `ChipPista` que se envían al tocarlas (V2-M24.08);
   - burbujas con la cita «Manual, pág. N», que abre el manual justo en esa página (`/garaje/:id/manual?pagina=N`, V2-M24.04);
+  - la respuesta aparece mientras se escribe (V2-M24.09): «Buscando en tu manual…» hasta el primer trozo, luego una burbuja que crece; las acciones (agendar, 👍/👎) y la cita salen al terminar; si se corta a la mitad se quita lo parcial y se deja reintentar;
   - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
   - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
   - botón de cámara en el campo (V2-M24.05): hoja «Tomar foto» / «Elegir de tus fotos»; la respuesta muestra el testigo con su gravedad en una insignia con texto, el aviso «Detente…» y «Pedir ayuda» (SOS) si es roja, «Agendar revisión» si es roja o amarilla, y la cita del manual; si no lo reconoce pide describirlo; sin permiso explica y ofrece «Abrir ajustes»;
@@ -99,6 +100,8 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - límite y falta de manual explicados.
 - **Entrada:** `TarjetaAsistente` de vidrio con ✦ en el detalle del vehículo (V2-M24.10); sus preguntas sugeridas abren el asistente y la envían con `preguntaInicial`.
 - **API simulada:** responde con una cita de ejemplo.
+
+**Flujo (V2-M24.09):** `ClienteApi.enviarFlujo` lee SSE (`Accept: text/event-stream, application/json`, así los errores previos llegan en JSON); `ConversacionAsistente` pone un borrador `escribiendo` justo después de la pregunta y le agrega cada trozo. Backend: backend#91, contrato 2.9.0. `mock_api` manda una palabra cada 70 ms.
 
 **Testigos (V2-M24.05):** `SelectorFoto` en `lib/nucleo/camara/` envuelve `image_picker` (foto de máximo 1600 px, sin metadatos completos, se borra el temporal); la foto vive solo en memoria para reintentar. El backend la limpia de nuevo (sin EXIF, 1024 px) y no la guarda (backend#90, contrato 2.8.0). `mock_api` responde siempre «Presión de aceite», roja.
 

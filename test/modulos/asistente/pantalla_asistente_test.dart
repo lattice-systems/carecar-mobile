@@ -23,6 +23,23 @@ class _Repo implements RepositorioAsistente {
   final calificaciones = <(int, bool)>[];
   Object? falloAlCalificar;
 
+  Stream<AvanceRespuesta> Function(String pregunta)? alPreguntarEnFlujo;
+
+  @override
+  Stream<AvanceRespuesta> preguntarEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  }) {
+    final flujo = alPreguntarEnFlujo;
+    if (flujo != null) {
+      preguntas.add(pregunta);
+      return flujo(pregunta);
+    }
+    return Stream.fromFuture(
+      preguntar(vehiculoId: vehiculoId, pregunta: pregunta),
+    ).expand((r) => [AvanceTexto(r.texto), AvanceFin(r)]);
+  }
+
   Future<TestigoDelTablero> Function(List<int> imagen)? alIdentificar;
   final fotos = <List<int>>[];
 
@@ -98,7 +115,11 @@ Future<void> _preguntar(WidgetTester tester, String texto) async {
   await tester.enterText(find.byType(TextField), texto);
   await tester.pump();
   await tester.tap(find.byKey(const ValueKey('campo-mensaje-enviar')));
-  await tester.pump();
+  // La respuesta llega en flujo (V2-M24.09): unos cuantos ciclos para que los
+  // falsos que ya respondieron terminen de entregar sus partes.
+  for (var i = 0; i < 4; i++) {
+    await tester.pump();
+  }
 }
 
 void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) {
@@ -516,6 +537,55 @@ void main() {
         await fotografiar(tester);
         expect(tester.takeException(), isNull);
       }
+    });
+  });
+
+  group('Respuesta mientras se escribe (V2-M24.09)', () {
+    _prueba('el texto aparece por partes y las acciones al terminar', (
+      tester,
+    ) async {
+      final control = StreamController<AvanceRespuesta>();
+      final repo = _Repo((_) async => _conCita)
+        ..alPreguntarEnFlujo = (_) => control.stream;
+      await tester.pumpWidget(_app(repo));
+      await _preguntar(tester, '¿Aceite?');
+      expect(find.text('Buscando en tu manual…'), findsOneWidget);
+
+      control.add(const AvanceTexto('Cada 10 000 km'));
+      await tester.pump();
+      expect(find.text('Buscando en tu manual…'), findsNothing);
+      expect(find.text('Cada 10 000 km'), findsOneWidget);
+      expect(find.text('Agendar revisión'), findsNothing);
+      expect(find.bySemanticsLabel('Me sirvió'), findsNothing);
+
+      control.add(const AvanceTexto(' o un año.'));
+      await tester.pump();
+      expect(find.text('Cada 10 000 km o un año.'), findsOneWidget);
+
+      control.add(const AvanceFin(_conCita));
+      await control.close();
+      await tester.pump();
+      expect(find.text('Cada 10 000 km o un año.'), findsOneWidget);
+      expect(find.text('Manual, pág. 12'), findsOneWidget);
+      expect(find.text('Agendar revisión'), findsOneWidget);
+      expect(find.bySemanticsLabel('Me sirvió'), findsOneWidget);
+    });
+
+    _prueba('si se corta a la mitad deja reintentar', (tester) async {
+      final control = StreamController<AvanceRespuesta>();
+      final repo = _Repo((_) async => _conCita)
+        ..alPreguntarEnFlujo = (_) => control.stream;
+      await tester.pumpWidget(_app(repo));
+      await _preguntar(tester, '¿Aceite?');
+      control.add(const AvanceTexto('Cada 10'));
+      await tester.pump();
+      control.addError(const AsistenteSinConexion());
+      await control.close();
+      await tester.pump();
+
+      expect(find.text('Cada 10'), findsNothing);
+      expect(find.text('No se envió'), findsOneWidget);
+      expect(find.textContaining('Revisa tu internet'), findsOneWidget);
     });
   });
 }

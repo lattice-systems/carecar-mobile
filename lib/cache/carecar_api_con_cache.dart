@@ -252,6 +252,16 @@ class CarecarApiConCache implements CarecarApi {
     required String pregunta,
   }) => _api.preguntarAlAsistente(vehiculoId: vehiculoId, pregunta: pregunta);
 
+  /// Sin copia, igual que [preguntarAlAsistente].
+  @override
+  Stream<EventoAsistente> preguntarAlAsistenteEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  }) => _api.preguntarAlAsistenteEnFlujo(
+    vehiculoId: vehiculoId,
+    pregunta: pregunta,
+  );
+
   /// Sin copia: la foto y su respuesta no se guardan en el telefono.
   @override
   Future<TestigoAsistente> identificarTestigo({

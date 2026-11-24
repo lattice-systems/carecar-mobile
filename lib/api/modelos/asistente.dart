@@ -75,3 +75,26 @@ class TestigoAsistente {
   final String? queHacer;
   final List<FuenteAsistente> fuentes;
 }
+
+/// Evento de `POST /asistente/preguntas/flujo` (V2-M24.09).
+sealed class EventoAsistente {
+  const EventoAsistente();
+}
+
+/// Una parte del texto, en orden.
+class TrozoAsistente extends EventoAsistente {
+  const TrozoAsistente(this.texto);
+  final String texto;
+}
+
+/// La respuesta completa, con sus fuentes.
+class FinAsistente extends EventoAsistente {
+  const FinAsistente(this.respuesta);
+  final RespuestaAsistente respuesta;
+}
+
+/// El modelo fallo a la mitad (`codigo`, p. ej. ASISTENTE_NO_DISPONIBLE).
+class ErrorAsistenteEnFlujo extends EventoAsistente {
+  const ErrorAsistenteEnFlujo(this.codigo);
+  final String? codigo;
+}

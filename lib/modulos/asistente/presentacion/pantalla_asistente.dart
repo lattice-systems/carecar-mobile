@@ -131,6 +131,8 @@ class _ContenidoAsistente extends ConsumerWidget {
     final mensajes = ref.watch(proveedor);
     final conversacion = ref.read(proveedor.notifier);
     final esperando = mensajes.any((m) => m.envio == EnvioPregunta.enviando);
+    // Con texto en camino, la burbuja que crece reemplaza a «Buscando…».
+    final escribiendo = mensajes.any((m) => m.escribiendo);
 
     // La lista va al reves para que lo nuevo quede abajo, junto al campo.
     final elementos = <Widget>[
@@ -141,7 +143,7 @@ class _ContenidoAsistente extends ConsumerWidget {
           alReintentar: () => conversacion.reintentar(i),
           alCalificar: (util) => conversacion.calificar(i, util),
         ),
-      if (esperando)
+      if (esperando && !escribiendo)
         BurbujaMensaje(
           texto:
               mensajes
@@ -352,7 +354,7 @@ class _Mensaje extends StatelessWidget {
           ),
       ],
     );
-    if (fallo != null) return burbuja;
+    if (fallo != null || mensaje.escribiendo) return burbuja;
     final gravedad = testigo?.gravedad;
     final roja = gravedad == GravedadTestigo.roja;
     // Un testigo informativo no necesita taller (V2-M24.05).
