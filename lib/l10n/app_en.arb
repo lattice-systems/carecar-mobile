@@ -1522,5 +1522,6 @@
   "asistentePreguntaLlantas": "What tire pressure should I use?",
   "asistentePreguntaTestigos": "What does a red light on the dashboard mean?",
   "asistentePreguntaAceite": "How much oil does the engine take?",
-  "asistentePreguntaGasolina": "What fuel should I use?"
+  "asistentePreguntaGasolina": "What fuel should I use?",
+  "asistenteAgendarRevision": "Book a check-up"
 }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/campo_mensaje.dart';
 import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
@@ -12,6 +13,7 @@ import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../citas/citas.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/repositorio_asistente.dart';
 import 'proveedores_asistente.dart';
@@ -191,7 +193,7 @@ class _Mensaje extends StatelessWidget {
       );
     }
     final fallo = mensaje.fallo;
-    return BurbujaMensaje(
+    final burbuja = BurbujaMensaje(
       texto: fallo == null ? mensaje.texto : _textoDe(textos, fallo),
       autor: AutorMensaje.ajeno,
       nombreAutor: textos.asistenteNombre,
@@ -202,6 +204,26 @@ class _Mensaje extends StatelessWidget {
             etiquetaLector: textos.asistenteFuenteLector(cita.pagina),
             alTocar: () => context.push(rutaManualVehiculo(vehiculoId)),
           ),
+      ],
+    );
+    if (fallo != null) return burbuja;
+    // V2-M24.06: atender el problema sin volver a explicarlo.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        burbuja,
+        const SizedBox(height: Espaciado.e2),
+        BotonPildora(
+          texto: textos.asistenteAgendarRevision,
+          icono: Icons.event_available_outlined,
+          variante: VarianteBotonPildora.tonal,
+          alPresionar: () => context.push(
+            rutaAgendarCitaCon(
+              vehiculoId: vehiculoId,
+              motivo: MotivoCita.revision,
+            ),
+          ),
+        ),
       ],
     );
   }

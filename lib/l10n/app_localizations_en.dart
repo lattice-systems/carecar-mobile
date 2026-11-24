@@ -1873,4 +1873,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistentePreguntaGasolina => 'What fuel should I use?';
+
+  @override
+  String get asistenteAgendarRevision => 'Book a check-up';
 }
