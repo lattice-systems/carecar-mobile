@@ -2166,7 +2166,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get recoleccionSeguimientoAbrir => 'Track the transfer';
+  String get recoleccionSeguimientoAbrir => 'Tap a transfer to follow it live.';
 
   @override
   String get recoleccionSeguimientoLineaEncabezado => 'Progress';
