@@ -3514,6 +3514,546 @@ abstract class AppLocalizations {
   /// **'Manual, página {pagina}, abrir'**
   String asistenteFuenteLector(int pagina);
 
+  /// Título de la bitácora del conductor.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get bitacoraTitulo;
+
+  /// Subtítulo de la portada cuando no se conoce el nombre del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto'**
+  String get bitacoraSubtituloSinNombre;
+
+  /// Descripción para el lector de pantalla del arte de la portada de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Ícono de una bomba de gasolina'**
+  String get bitacoraDescripcionPortada;
+
+  /// Botón que abre el alta de una carga de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva carga'**
+  String get bitacoraNuevaCarga;
+
+  /// Botón que abre el alta de un gasto que no es gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro gasto'**
+  String get bitacoraOtroGasto;
+
+  /// Cierra la pantalla de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get bitacoraCerrar;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu bitácora'**
+  String get bitacoraCargando;
+
+  /// Título de la bitácora sin gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay gastos'**
+  String get bitacoraVacioTitulo;
+
+  /// Mensaje de la bitácora sin gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu primera carga de gasolina para saber cuánto rinde y cuánto te cuesta tu auto.'**
+  String get bitacoraVacioMensaje;
+
+  /// Encabezado del estante con las cifras de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu rendimiento'**
+  String get bitacoraResumenTitulo;
+
+  /// Etiqueta de la cifra de kilómetros por litro.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento'**
+  String get bitacoraEtiquetaRendimiento;
+
+  /// Rendimiento en kilómetros por litro.
+  ///
+  /// In es, this message translates to:
+  /// **'{valor} km/l'**
+  String bitacoraCifraKmPorLitro(String valor);
+
+  /// Etiqueta de la cifra de pesos por kilómetro.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo por km'**
+  String get bitacoraEtiquetaCostoPorKm;
+
+  /// Costo en pesos por kilómetro.
+  ///
+  /// In es, this message translates to:
+  /// **'{valor}/km'**
+  String bitacoraCifraCostoPorKm(String valor);
+
+  /// Etiqueta de la cifra del gasto del mes en curso.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto de este mes'**
+  String get bitacoraEtiquetaGastoMes;
+
+  /// Cifra cuando todavía no se puede calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'—'**
+  String get bitacoraCifraSinDatos;
+
+  /// Detalle de una cifra que aún no se puede calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitas 2 cargas'**
+  String get bitacoraDetalleSinDatos;
+
+  /// Fila que abre las estadísticas.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento y gasto por mes'**
+  String get bitacoraVerEstadisticas;
+
+  /// Fila que abre la exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportar bitácora'**
+  String get bitacoraExportar;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina'**
+  String get bitacoraTipoGasolina;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Estacionamiento'**
+  String get bitacoraTipoEstacionamiento;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Casetas'**
+  String get bitacoraTipoCasetas;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Lavado'**
+  String get bitacoraTipoLavado;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get bitacoraTipoOtro;
+
+  /// Subtítulo de una carga de gasolina en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {litros} l · {km} km'**
+  String bitacoraDetalleCarga(String fecha, String litros, String km);
+
+  /// Título del formulario de alta de una carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva carga'**
+  String get bitacoraFormCargaTitulo;
+
+  /// Título del formulario de edición de una carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar carga'**
+  String get bitacoraFormEditarCargaTitulo;
+
+  /// Título del formulario de alta de otro gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo gasto'**
+  String get bitacoraFormGastoTitulo;
+
+  /// Título del formulario de edición de otro gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar gasto'**
+  String get bitacoraFormEditarGastoTitulo;
+
+  /// Etiqueta del selector de tipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de gasto'**
+  String get bitacoraCampoTipo;
+
+  /// Etiqueta del campo de litros.
+  ///
+  /// In es, this message translates to:
+  /// **'Litros'**
+  String get bitacoraCampoLitros;
+
+  /// Etiqueta del campo de monto en pesos.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto total'**
+  String get bitacoraCampoMonto;
+
+  /// Etiqueta del campo de km.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje del tablero'**
+  String get bitacoraCampoKm;
+
+  /// Ayuda bajo el campo de km con la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu última lectura es de {km} km.'**
+  String bitacoraAyudaKm(String km);
+
+  /// Etiqueta del selector de fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get bitacoraCampoFecha;
+
+  /// Acción que abre el calendario del formulario.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir fecha'**
+  String get bitacoraElegirFecha;
+
+  /// Etiqueta del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get bitacoraCampoDescripcion;
+
+  /// Ayuda del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Obligatoria en «Otro», máximo 200 caracteres.'**
+  String get bitacoraAyudaDescripcion;
+
+  /// Error del campo de monto.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un monto mayor a 0.'**
+  String get bitacoraErrorMonto;
+
+  /// Error del campo de litros.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los litros, mayores a 0.'**
+  String get bitacoraErrorLitros;
+
+  /// Error del campo de km cuando falta o no es entero.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el kilometraje como número entero.'**
+  String get bitacoraErrorKm;
+
+  /// Error del campo de km cuando es menor a la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'No puede ser menor a tu última lectura ({km} km).'**
+  String bitacoraErrorKmMenor(String km);
+
+  /// Error del campo de km cuando el servidor contesta 422.
+  ///
+  /// In es, this message translates to:
+  /// **'El servidor lo rechazó: es menor a tu última lectura. Revisa el kilometraje.'**
+  String get bitacoraErrorKmServidor;
+
+  /// Error del campo de fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una fecha que no sea futura.'**
+  String get bitacoraErrorFecha;
+
+  /// Error del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Describe el gasto, en máximo 200 caracteres.'**
+  String get bitacoraErrorDescripcion;
+
+  /// Aviso de un fallo al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar. Intenta de nuevo.'**
+  String get bitacoraErrorGuardar;
+
+  /// Aviso de un fallo al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo borrar. Intenta de nuevo.'**
+  String get bitacoraErrorBorrar;
+
+  /// Aviso de falta de conexión al guardar o borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get bitacoraErrorSinConexion;
+
+  /// Guarda el gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get bitacoraGuardar;
+
+  /// Borra el gasto que se edita.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar gasto'**
+  String get bitacoraBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar este gasto?'**
+  String get bitacoraBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borrará «{descripcion}». No se puede deshacer.'**
+  String bitacoraBorrarMensaje(String descripcion);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get bitacoraBorrarConfirmar;
+
+  /// Cancela el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get bitacoraBorrarCancelar;
+
+  /// Aviso tras guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto guardado.'**
+  String get bitacoraGastoGuardado;
+
+  /// Aviso tras borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto borrado.'**
+  String get bitacoraGastoBorrado;
+
+  /// Encabezado de la sección que lee el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Llenar desde el ticket'**
+  String get bitacoraTicketTitulo;
+
+  /// Aclaración de privacidad de la lectura del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'La foto se lee en tu teléfono; no se guarda ni se sube.'**
+  String get bitacoraTicketPrivacidad;
+
+  /// Abre la cámara para fotografiar el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get bitacoraTicketTomar;
+
+  /// Abre la galería para elegir la foto del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de fotos'**
+  String get bitacoraTicketElegir;
+
+  /// Se anuncia mientras se reconoce el texto.
+  ///
+  /// In es, this message translates to:
+  /// **'Leyendo el ticket…'**
+  String get bitacoraTicketLeyendo;
+
+  /// Aviso tras leer el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Esto fue lo que leímos. Revísalo y corrige lo que haga falta.'**
+  String get bitacoraTicketLeido;
+
+  /// Aviso cuando no se leyó nada.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos leer el ticket. Llena los datos a mano.'**
+  String get bitacoraTicketNoLeyo;
+
+  /// Aviso cuando se negó el permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'No tenemos permiso para usar la cámara o tus fotos. Actívalo en los ajustes o llena los datos a mano.'**
+  String get bitacoraTicketSinPermiso;
+
+  /// Aviso de un fallo al leer la foto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir la foto. Llena los datos a mano.'**
+  String get bitacoraTicketError;
+
+  /// Título de la pantalla de estadísticas.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento y gasto'**
+  String get bitacoraEstadisticasTitulo;
+
+  /// Título de la gráfica de gasto mensual.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto por mes'**
+  String get bitacoraGraficaTitulo;
+
+  /// Mensaje de la gráfica sin datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay gastos que graficar.'**
+  String get bitacoraGraficaVacia;
+
+  /// Título cuando no se puede calcular el rendimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay rendimiento'**
+  String get bitacoraSinRendimientoTitulo;
+
+  /// Explica por qué aún no hay rendimiento, según cuántas cargas hay.
+  ///
+  /// In es, this message translates to:
+  /// **'Para calcular los km/l y el costo por km necesitamos al menos 2 cargas con su kilometraje. {cargas, plural, =0{Todavía no registras ninguna.} =1{Tienes 1 carga.} other{Tienes {cargas} cargas, pero sus kilometrajes no avanzan.}}'**
+  String bitacoraSinRendimientoMensaje(int cargas);
+
+  /// Base del cálculo del rendimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Calculado con {km} km recorridos en {tramos, plural, =1{1 tramo} other{{tramos} tramos}} entre cargas.'**
+  String bitacoraBaseDelCalculo(String km, int tramos);
+
+  /// Título de la pantalla de exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportar bitácora'**
+  String get bitacoraExportarTitulo;
+
+  /// Explicación de la pantalla de exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige los meses y comparte tu bitácora con la hoja del sistema.'**
+  String get bitacoraExportarIntro;
+
+  /// Selector del primer mes a exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'Desde'**
+  String get bitacoraExportarDesde;
+
+  /// Selector del último mes a exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'Hasta'**
+  String get bitacoraExportarHasta;
+
+  /// Exporta la bitácora como CSV.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir CSV'**
+  String get bitacoraExportarCsv;
+
+  /// Exporta la bitácora como PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir PDF'**
+  String get bitacoraExportarPdf;
+
+  /// Aviso cuando el rango no tiene gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay gastos en esos meses.'**
+  String get bitacoraExportarVacio;
+
+  /// Aviso de un rango al revés.
+  ///
+  /// In es, this message translates to:
+  /// **'El mes inicial no puede ser posterior al final.'**
+  String get bitacoraExportarRangoInvalido;
+
+  /// Aviso de un fallo al exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo compartir el archivo. Intenta de nuevo.'**
+  String get bitacoraExportarError;
+
+  /// Título del PDF exportado.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora de {vehiculo}'**
+  String bitacoraPdfTitulo(String vehiculo);
+
+  /// Periodo que cubre el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String bitacoraPdfPeriodo(String desde, String hasta);
+
+  /// Total gastado en el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Total: {monto}'**
+  String bitacoraPdfTotal(String monto);
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get bitacoraColumnaFecha;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo'**
+  String get bitacoraColumnaTipo;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto'**
+  String get bitacoraColumnaMonto;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Litros'**
+  String get bitacoraColumnaLitros;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Km'**
+  String get bitacoraColumnaKm;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalle'**
+  String get bitacoraColumnaDetalle;
+
+  /// Fila del detalle del vehículo que abre la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get bitacoraAccesoFila;
+
   /// Encabezado de las preguntas sugeridas con la conversación vacía (V2-M24.08).
   ///
   /// In es, this message translates to:
