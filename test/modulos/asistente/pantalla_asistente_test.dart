@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/asistente/dominio/repositorio_asistente.dart';
+import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:carecar_mobile/modulos/asistente/presentacion/pantalla_asistente.dart';
 import 'package:carecar_mobile/modulos/asistente/presentacion/proveedores_asistente.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_mensaje.dart';
@@ -8,6 +10,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/chip_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -209,6 +212,67 @@ void main() {
         expect(find.byType(ChipPista), findsWidgets);
         expect(tester.takeException(), isNull);
       }
+    });
+  });
+
+  group('Agendar desde la respuesta (V2-M24.06)', () {
+    Widget conRutas(_Repo repo, List<Uri> visitadas) {
+      final enrutador = GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (_, _) => const PantallaAsistente(vehiculoId: 2),
+          ),
+          GoRoute(
+            path: '/citas/agendar',
+            builder: (_, estado) {
+              visitadas.add(estado.uri);
+              return const Text('Agendar cita');
+            },
+          ),
+        ],
+      );
+      addTearDown(enrutador.dispose);
+      return ProviderScope(
+        overrides: [repositorioAsistenteProvider.overrideWithValue(repo)],
+        child: MaterialApp.router(
+          routerConfig: enrutador,
+          theme: TemaPista.claro(),
+          locale: idiomaBase,
+          localizationsDelegates: delegadasDeIdioma,
+          supportedLocales: idiomasSoportados,
+        ),
+      );
+    }
+
+    _prueba('cada respuesta trae Agendar revision y abre la cita precargada', (
+      tester,
+    ) async {
+      final visitadas = <Uri>[];
+      await tester.pumpWidget(
+        conRutas(_Repo((_) async => _conCita), visitadas),
+      );
+      await _preguntar(tester, '¿Por qué vibra el volante?');
+      await tester.pump();
+
+      expect(find.text('Agendar revisión'), findsOneWidget);
+      await tester.tap(find.text('Agendar revisión'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Agendar cita'), findsOneWidget);
+      expect(visitadas.single.queryParameters, {
+        'vehiculo': '2',
+        'motivo': 'revision',
+      });
+    });
+
+    _prueba('un fallo del asistente no ofrece agendar', (tester) async {
+      await tester.pumpWidget(
+        conRutas(_Repo((_) async => throw const AsistenteLimiteDiario()), []),
+      );
+      await _preguntar(tester, 'Uno');
+      await tester.pump();
+      expect(find.text('Agendar revisión'), findsNothing);
     });
   });
 }

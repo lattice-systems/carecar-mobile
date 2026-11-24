@@ -3141,6 +3141,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¿Qué gasolina le pongo?'**
   String get asistentePreguntaGasolina;
+
+  /// Botón bajo cada respuesta del asistente: abre Agendar cita con el vehículo y el motivo Revisión ya elegidos (V2-M24.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar revisión'**
+  String get asistenteAgendarRevision;
 }
 
 class _AppLocalizationsDelegate

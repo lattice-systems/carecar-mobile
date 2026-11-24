@@ -6,6 +6,7 @@ import 'package:carecar_mobile/modulos/citas/presentacion/componentes/tarjeta_ve
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/chip_pista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
@@ -23,6 +24,7 @@ Widget _app(
   RepositorioCitasFake citas, {
   RepositorioGaraje? garaje,
   Escenario escenario = Escenario.claro,
+  Widget pantalla = const PantallaAgendarCita(),
 }) => ProviderScope(
   overrides: [
     repositorioCitasProvider.overrideWithValue(citas),
@@ -31,7 +33,7 @@ Widget _app(
     ),
     relojCitasProvider.overrideWithValue(() => _hoy),
   ],
-  child: conTemaPista(const PantallaAgendarCita(), escenario: escenario),
+  child: conTemaPista(pantalla, escenario: escenario),
 );
 
 /// Como `testWidgets`, pero con una pantalla alta para que la lista construya
@@ -275,6 +277,67 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  group('Precargada desde el asistente (V2-M24.06)', () {
+    Iterable<String> vehiculosElegidos(WidgetTester tester) => tester
+        .widgetList<TarjetaVehiculoCita>(find.byType(TarjetaVehiculoCita))
+        .where((t) => t.seleccionada)
+        .map((t) => t.nombre);
+
+    Iterable<String> motivosElegidos(WidgetTester tester) => tester
+        .widgetList<ChipPista>(find.byType(ChipPista))
+        .where((c) => c.seleccionado)
+        .map((c) => c.texto);
+
+    _prueba('llega con el vehiculo y el motivo ya elegidos', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          RepositorioCitasFake(),
+          pantalla: const PantallaAgendarCita(
+            vehiculoInicial: 2,
+            motivoInicial: MotivoCita.revision,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(vehiculosElegidos(tester), ['Mazda 3 2022']);
+      expect(motivosElegidos(tester), contains('Revisión'));
+      expect(motivosElegidos(tester), isNot(contains('Reparación')));
+    });
+
+    _prueba('el motivo precargado se puede cambiar', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          RepositorioCitasFake(),
+          pantalla: const PantallaAgendarCita(
+            vehiculoInicial: 2,
+            motivoInicial: MotivoCita.revision,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await _tocar(tester, find.text('Reparación'));
+      expect(motivosElegidos(tester), contains('Reparación'));
+      expect(motivosElegidos(tester), isNot(contains('Revisión')));
+    });
+
+    _prueba('un vehiculo que ya no esta en el garaje no queda elegido', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(
+          RepositorioCitasFake(),
+          pantalla: const PantallaAgendarCita(vehiculoInicial: 99),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(vehiculosElegidos(tester), isEmpty);
+      expect(
+        find.text('Elige vehículo, día, horario y motivo para continuar.'),
+        findsOneWidget,
+      );
+    });
+  });
 }
 
 /// Se llena justo al confirmar la primera vez, como si otro cliente ganara.
