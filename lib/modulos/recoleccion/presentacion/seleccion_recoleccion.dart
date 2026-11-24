@@ -145,7 +145,7 @@ class _Direcciones extends ConsumerWidget {
             icono: lista.isEmpty
                 ? Icons.add_location_alt_outlined
                 : Icons.edit_location_alt_outlined,
-            variante: VarianteBotonPildora.tonal,
+            variante: VarianteBotonPildora.vidrio,
             expandido: true,
             alPresionar: () => lista.isEmpty
                 ? abrirFormularioDireccion(context)
@@ -283,7 +283,7 @@ class _ErrorInline extends StatelessWidget {
         const SizedBox(height: Espaciado.e2),
         BotonPildora(
           texto: textos.recoleccionCotizacionReintentar,
-          variante: VarianteBotonPildora.tonal,
+          variante: VarianteBotonPildora.vidrio,
           expandido: true,
           alPresionar: alReintentar,
         ),

@@ -151,7 +151,7 @@ class _Comprobante extends ConsumerWidget {
               BotonPildora(
                 texto: textos.citasComprobanteVerPdf,
                 icono: Icons.picture_as_pdf_outlined,
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => _abrirPdf(context, ref),
               ),

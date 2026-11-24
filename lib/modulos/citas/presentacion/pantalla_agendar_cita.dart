@@ -309,7 +309,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
           ],
           BotonPildora(
             texto: textos.citasEditar,
-            variante: VarianteBotonPildora.tonal,
+            variante: VarianteBotonPildora.vidrio,
             expandido: true,
             alPresionar: _enviando
                 ? null
@@ -499,7 +499,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
               ),
               child: BotonPildora(
                 texto: textos.citasFranjaCercana(f.fecha, f.horaInicio),
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => setState(() {
                   _franja = f;
