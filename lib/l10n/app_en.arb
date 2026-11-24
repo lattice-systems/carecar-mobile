@@ -1599,6 +1599,433 @@
   "asistenteLimite": "You've used today's questions. You can ask more tomorrow.",
   "asistenteFuente": "Manual, p. {pagina}",
   "asistenteFuenteLector": "Manual, page {pagina}, open",
+  "bitacoraTitulo": "Logbook",
+  "@bitacoraTitulo": {
+    "description": "Título de la bitácora del conductor."
+  },
+  "bitacoraSubtituloSinNombre": "Your car",
+  "@bitacoraSubtituloSinNombre": {
+    "description": "Subtítulo de la portada cuando no se conoce el nombre del vehículo."
+  },
+  "bitacoraDescripcionPortada": "Gas pump icon",
+  "@bitacoraDescripcionPortada": {
+    "description": "Descripción para el lector de pantalla del arte de la portada de la bitácora."
+  },
+  "bitacoraNuevaCarga": "New fill-up",
+  "@bitacoraNuevaCarga": {
+    "description": "Botón que abre el alta de una carga de gasolina."
+  },
+  "bitacoraOtroGasto": "Other expense",
+  "@bitacoraOtroGasto": {
+    "description": "Botón que abre el alta de un gasto que no es gasolina."
+  },
+  "bitacoraCerrar": "Close",
+  "@bitacoraCerrar": {
+    "description": "Cierra la pantalla de la bitácora."
+  },
+  "bitacoraCargando": "Loading your logbook",
+  "@bitacoraCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga la bitácora."
+  },
+  "bitacoraVacioTitulo": "No expenses yet",
+  "@bitacoraVacioTitulo": {
+    "description": "Título de la bitácora sin gastos."
+  },
+  "bitacoraVacioMensaje": "Log your first fill-up to see your fuel economy and what your car costs you.",
+  "@bitacoraVacioMensaje": {
+    "description": "Mensaje de la bitácora sin gastos."
+  },
+  "bitacoraResumenTitulo": "Your numbers",
+  "@bitacoraResumenTitulo": {
+    "description": "Encabezado del estante con las cifras de la bitácora."
+  },
+  "bitacoraEtiquetaRendimiento": "Fuel economy",
+  "@bitacoraEtiquetaRendimiento": {
+    "description": "Etiqueta de la cifra de kilómetros por litro."
+  },
+  "bitacoraCifraKmPorLitro": "{valor} km/l",
+  "@bitacoraCifraKmPorLitro": {
+    "description": "Rendimiento en kilómetros por litro.",
+    "placeholders": {
+      "valor": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraEtiquetaCostoPorKm": "Cost per km",
+  "@bitacoraEtiquetaCostoPorKm": {
+    "description": "Etiqueta de la cifra de pesos por kilómetro."
+  },
+  "bitacoraCifraCostoPorKm": "{valor}/km",
+  "@bitacoraCifraCostoPorKm": {
+    "description": "Costo en pesos por kilómetro.",
+    "placeholders": {
+      "valor": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraEtiquetaGastoMes": "Spent this month",
+  "@bitacoraEtiquetaGastoMes": {
+    "description": "Etiqueta de la cifra del gasto del mes en curso."
+  },
+  "bitacoraCifraSinDatos": "—",
+  "@bitacoraCifraSinDatos": {
+    "description": "Cifra cuando todavía no se puede calcular."
+  },
+  "bitacoraDetalleSinDatos": "You need 2 fill-ups",
+  "@bitacoraDetalleSinDatos": {
+    "description": "Detalle de una cifra que aún no se puede calcular."
+  },
+  "bitacoraVerEstadisticas": "Fuel economy and monthly spending",
+  "@bitacoraVerEstadisticas": {
+    "description": "Fila que abre las estadísticas."
+  },
+  "bitacoraExportar": "Export logbook",
+  "@bitacoraExportar": {
+    "description": "Fila que abre la exportación."
+  },
+  "bitacoraTipoGasolina": "Fuel",
+  "@bitacoraTipoGasolina": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoEstacionamiento": "Parking",
+  "@bitacoraTipoEstacionamiento": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoCasetas": "Tolls",
+  "@bitacoraTipoCasetas": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoLavado": "Car wash",
+  "@bitacoraTipoLavado": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoOtro": "Other",
+  "@bitacoraTipoOtro": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraDetalleCarga": "{fecha} · {litros} l · {km} km",
+  "@bitacoraDetalleCarga": {
+    "description": "Subtítulo de una carga de gasolina en la lista.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "litros": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraFormCargaTitulo": "New fill-up",
+  "@bitacoraFormCargaTitulo": {
+    "description": "Título del formulario de alta de una carga."
+  },
+  "bitacoraFormEditarCargaTitulo": "Edit fill-up",
+  "@bitacoraFormEditarCargaTitulo": {
+    "description": "Título del formulario de edición de una carga."
+  },
+  "bitacoraFormGastoTitulo": "New expense",
+  "@bitacoraFormGastoTitulo": {
+    "description": "Título del formulario de alta de otro gasto."
+  },
+  "bitacoraFormEditarGastoTitulo": "Edit expense",
+  "@bitacoraFormEditarGastoTitulo": {
+    "description": "Título del formulario de edición de otro gasto."
+  },
+  "bitacoraCampoTipo": "Expense type",
+  "@bitacoraCampoTipo": {
+    "description": "Etiqueta del selector de tipo."
+  },
+  "bitacoraCampoLitros": "Liters",
+  "@bitacoraCampoLitros": {
+    "description": "Etiqueta del campo de litros."
+  },
+  "bitacoraCampoMonto": "Total amount",
+  "@bitacoraCampoMonto": {
+    "description": "Etiqueta del campo de monto en pesos."
+  },
+  "bitacoraCampoKm": "Odometer reading",
+  "@bitacoraCampoKm": {
+    "description": "Etiqueta del campo de km."
+  },
+  "bitacoraAyudaKm": "Your last reading is {km} km.",
+  "@bitacoraAyudaKm": {
+    "description": "Ayuda bajo el campo de km con la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraCampoFecha": "Date",
+  "@bitacoraCampoFecha": {
+    "description": "Etiqueta del selector de fecha."
+  },
+  "bitacoraElegirFecha": "Pick a date",
+  "@bitacoraElegirFecha": {
+    "description": "Acción que abre el calendario del formulario."
+  },
+  "bitacoraCampoDescripcion": "Description",
+  "@bitacoraCampoDescripcion": {
+    "description": "Etiqueta del campo de descripción."
+  },
+  "bitacoraAyudaDescripcion": "Required for “Other”, up to 200 characters.",
+  "@bitacoraAyudaDescripcion": {
+    "description": "Ayuda del campo de descripción."
+  },
+  "bitacoraErrorMonto": "Enter an amount greater than 0.",
+  "@bitacoraErrorMonto": {
+    "description": "Error del campo de monto."
+  },
+  "bitacoraErrorLitros": "Enter the liters, greater than 0.",
+  "@bitacoraErrorLitros": {
+    "description": "Error del campo de litros."
+  },
+  "bitacoraErrorKm": "Enter the odometer reading as a whole number.",
+  "@bitacoraErrorKm": {
+    "description": "Error del campo de km cuando falta o no es entero."
+  },
+  "bitacoraErrorKmMenor": "It can't be lower than your last reading ({km} km).",
+  "@bitacoraErrorKmMenor": {
+    "description": "Error del campo de km cuando es menor a la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraErrorKmServidor": "The server rejected it: it is lower than your last reading. Check the odometer.",
+  "@bitacoraErrorKmServidor": {
+    "description": "Error del campo de km cuando el servidor contesta 422."
+  },
+  "bitacoraErrorFecha": "Pick a date that is not in the future.",
+  "@bitacoraErrorFecha": {
+    "description": "Error del campo de fecha."
+  },
+  "bitacoraErrorDescripcion": "Describe the expense, in up to 200 characters.",
+  "@bitacoraErrorDescripcion": {
+    "description": "Error del campo de descripción."
+  },
+  "bitacoraErrorGuardar": "It couldn't be saved. Try again.",
+  "@bitacoraErrorGuardar": {
+    "description": "Aviso de un fallo al guardar."
+  },
+  "bitacoraErrorBorrar": "It couldn't be deleted. Try again.",
+  "@bitacoraErrorBorrar": {
+    "description": "Aviso de un fallo al borrar."
+  },
+  "bitacoraErrorSinConexion": "No connection. Check your internet and try again.",
+  "@bitacoraErrorSinConexion": {
+    "description": "Aviso de falta de conexión al guardar o borrar."
+  },
+  "bitacoraGuardar": "Save",
+  "@bitacoraGuardar": {
+    "description": "Guarda el gasto."
+  },
+  "bitacoraBorrar": "Delete expense",
+  "@bitacoraBorrar": {
+    "description": "Borra el gasto que se edita."
+  },
+  "bitacoraBorrarTitulo": "Delete this expense?",
+  "@bitacoraBorrarTitulo": {
+    "description": "Título de la confirmación de borrado."
+  },
+  "bitacoraBorrarMensaje": "“{descripcion}” will be deleted. This can't be undone.",
+  "@bitacoraBorrarMensaje": {
+    "description": "Mensaje de la confirmación de borrado.",
+    "placeholders": {
+      "descripcion": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraBorrarConfirmar": "Delete",
+  "@bitacoraBorrarConfirmar": {
+    "description": "Confirma el borrado."
+  },
+  "bitacoraBorrarCancelar": "Cancel",
+  "@bitacoraBorrarCancelar": {
+    "description": "Cancela el borrado."
+  },
+  "bitacoraGastoGuardado": "Expense saved.",
+  "@bitacoraGastoGuardado": {
+    "description": "Aviso tras guardar."
+  },
+  "bitacoraGastoBorrado": "Expense deleted.",
+  "@bitacoraGastoBorrado": {
+    "description": "Aviso tras borrar."
+  },
+  "bitacoraTicketTitulo": "Fill in from the receipt",
+  "@bitacoraTicketTitulo": {
+    "description": "Encabezado de la sección que lee el ticket."
+  },
+  "bitacoraTicketPrivacidad": "The photo is read on your phone; it is not saved or uploaded.",
+  "@bitacoraTicketPrivacidad": {
+    "description": "Aclaración de privacidad de la lectura del ticket."
+  },
+  "bitacoraTicketTomar": "Take photo",
+  "@bitacoraTicketTomar": {
+    "description": "Abre la cámara para fotografiar el ticket."
+  },
+  "bitacoraTicketElegir": "Choose from photos",
+  "@bitacoraTicketElegir": {
+    "description": "Abre la galería para elegir la foto del ticket."
+  },
+  "bitacoraTicketLeyendo": "Reading the receipt…",
+  "@bitacoraTicketLeyendo": {
+    "description": "Se anuncia mientras se reconoce el texto."
+  },
+  "bitacoraTicketLeido": "This is what we read. Check it and fix anything that's off.",
+  "@bitacoraTicketLeido": {
+    "description": "Aviso tras leer el ticket."
+  },
+  "bitacoraTicketNoLeyo": "We couldn't read the receipt. Fill in the details by hand.",
+  "@bitacoraTicketNoLeyo": {
+    "description": "Aviso cuando no se leyó nada."
+  },
+  "bitacoraTicketSinPermiso": "We don't have permission to use the camera or your photos. Turn it on in settings or fill in the details by hand.",
+  "@bitacoraTicketSinPermiso": {
+    "description": "Aviso cuando se negó el permiso."
+  },
+  "bitacoraTicketError": "The photo couldn't be opened. Fill in the details by hand.",
+  "@bitacoraTicketError": {
+    "description": "Aviso de un fallo al leer la foto."
+  },
+  "bitacoraEstadisticasTitulo": "Fuel economy and spending",
+  "@bitacoraEstadisticasTitulo": {
+    "description": "Título de la pantalla de estadísticas."
+  },
+  "bitacoraGraficaTitulo": "Spending by month",
+  "@bitacoraGraficaTitulo": {
+    "description": "Título de la gráfica de gasto mensual."
+  },
+  "bitacoraGraficaVacia": "There are no expenses to chart yet.",
+  "@bitacoraGraficaVacia": {
+    "description": "Mensaje de la gráfica sin datos."
+  },
+  "bitacoraSinRendimientoTitulo": "No fuel economy yet",
+  "@bitacoraSinRendimientoTitulo": {
+    "description": "Título cuando no se puede calcular el rendimiento."
+  },
+  "bitacoraSinRendimientoMensaje": "To work out km/l and cost per km we need at least 2 fill-ups with their odometer reading. {cargas, plural, =0{You haven't logged any yet.} =1{You have 1 fill-up.} other{You have {cargas} fill-ups, but their odometer readings don't advance.}}",
+  "@bitacoraSinRendimientoMensaje": {
+    "description": "Explica por qué aún no hay rendimiento, según cuántas cargas hay.",
+    "placeholders": {
+      "cargas": {
+        "type": "int"
+      }
+    }
+  },
+  "bitacoraBaseDelCalculo": "Based on {km} km driven across {tramos, plural, =1{1 stretch} other{{tramos} stretches}} between fill-ups.",
+  "@bitacoraBaseDelCalculo": {
+    "description": "Base del cálculo del rendimiento.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      },
+      "tramos": {
+        "type": "int"
+      }
+    }
+  },
+  "bitacoraExportarTitulo": "Export logbook",
+  "@bitacoraExportarTitulo": {
+    "description": "Título de la pantalla de exportación."
+  },
+  "bitacoraExportarIntro": "Pick the months and share your logbook with the system sheet.",
+  "@bitacoraExportarIntro": {
+    "description": "Explicación de la pantalla de exportación."
+  },
+  "bitacoraExportarDesde": "From",
+  "@bitacoraExportarDesde": {
+    "description": "Selector del primer mes a exportar."
+  },
+  "bitacoraExportarHasta": "To",
+  "@bitacoraExportarHasta": {
+    "description": "Selector del último mes a exportar."
+  },
+  "bitacoraExportarCsv": "Share CSV",
+  "@bitacoraExportarCsv": {
+    "description": "Exporta la bitácora como CSV."
+  },
+  "bitacoraExportarPdf": "Share PDF",
+  "@bitacoraExportarPdf": {
+    "description": "Exporta la bitácora como PDF."
+  },
+  "bitacoraExportarVacio": "There are no expenses in those months.",
+  "@bitacoraExportarVacio": {
+    "description": "Aviso cuando el rango no tiene gastos."
+  },
+  "bitacoraExportarRangoInvalido": "The first month can't be after the last one.",
+  "@bitacoraExportarRangoInvalido": {
+    "description": "Aviso de un rango al revés."
+  },
+  "bitacoraExportarError": "The file couldn't be shared. Try again.",
+  "@bitacoraExportarError": {
+    "description": "Aviso de un fallo al exportar."
+  },
+  "bitacoraPdfTitulo": "Logbook for {vehiculo}",
+  "@bitacoraPdfTitulo": {
+    "description": "Título del PDF exportado.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraPdfPeriodo": "{desde} to {hasta}",
+  "@bitacoraPdfPeriodo": {
+    "description": "Periodo que cubre el PDF.",
+    "placeholders": {
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraPdfTotal": "Total: {monto}",
+  "@bitacoraPdfTotal": {
+    "description": "Total gastado en el PDF.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraColumnaFecha": "Date",
+  "@bitacoraColumnaFecha": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaTipo": "Type",
+  "@bitacoraColumnaTipo": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaMonto": "Amount",
+  "@bitacoraColumnaMonto": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaLitros": "Liters",
+  "@bitacoraColumnaLitros": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaKm": "Km",
+  "@bitacoraColumnaKm": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaDetalle": "Details",
+  "@bitacoraColumnaDetalle": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraAccesoFila": "Logbook",
+  "@bitacoraAccesoFila": {
+    "description": "Fila del detalle del vehículo que abre la bitácora."
+  },
   "asistenteSugerenciasTitulo": "Try one of these",
   "asistentePreguntaMantenimiento": "How often does it need service?",
   "asistentePreguntaLlantas": "What tire pressure should I use?",
