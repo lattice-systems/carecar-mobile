@@ -94,6 +94,7 @@ class _EstadoPantallaPlanMantenimiento
                 ),
                 child: _Plan(
                   plan: p,
+                  vehiculoId: widget.vehiculoId,
                   kmGuardado: _kmGuardado,
                   alCerrarAviso: () => setState(() => _kmGuardado = false),
                   alAgendar: _agendar,
@@ -108,6 +109,7 @@ class _EstadoPantallaPlanMantenimiento
 class _Plan extends StatelessWidget {
   const _Plan({
     required this.plan,
+    required this.vehiculoId,
     required this.kmGuardado,
     required this.alCerrarAviso,
     required this.alAgendar,
@@ -115,6 +117,9 @@ class _Plan extends StatelessWidget {
   });
 
   final PlanMantenimiento plan;
+
+  /// El vehículo de la ruta: de él cuelgan el detalle de cada servicio.
+  final int vehiculoId;
   final bool kmGuardado;
   final VoidCallback alCerrarAviso;
   final VoidCallback alAgendar;
@@ -257,8 +262,7 @@ class _Plan extends StatelessWidget {
       subtitulo: '$estado · $resumen',
       icono: icono,
       colorIcono: color,
-      alToque: () =>
-          context.push(rutaServicioMantenimiento(plan.vehiculoId, s.id)),
+      alToque: () => context.push(rutaServicioMantenimiento(vehiculoId, s.id)),
     );
   }
 }
