@@ -49,7 +49,7 @@
 - **Release:** `release.yml` firma con la llave de producción y las notas dicen con qué llave salió.
 - **APK por merge:** `apk-prueba.yml` compila el flavor `pruebas` en release con la llave de pruebas y lo publica en el pre-release fijo `prueba-main` (distribución interna gratis: el equipo lo descarga desde GitHub). Con su propio `run_number` y paquete `.pruebas`, no choca con la serie de los Release.
 - Probado en local: con una llave desechable, `flutter build apk --release --flavor pruebas` sale firmada con ella (`apksigner verify`).
-- **Pendiente:** que Daniel corra `scripts/crear-llaves-android.sh` (crea y sube las llaves; las de producción no deben pasar por un agente) y respalde la de producción. iOS sigue sin firma: no hay cuenta de Apple Developer de paga.
+- **Llaves creadas** (2026-11-24) con `scripts/crear-llaves-android.sh` en la computadora de Daniel (`~/.carecar-llaves/`), y sus seis secretos subidos al repo. **Pendiente:** respaldar `carecar-produccion.jks` y `carecar-produccion.contrasena` en el gestor de contraseñas del equipo. iOS sigue sin firma: no hay cuenta de Apple Developer de paga.
 
 ## Avance de V2-T04.03: IPA sin firmar para sideload
 
