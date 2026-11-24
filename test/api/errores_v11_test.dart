@@ -101,6 +101,7 @@ void main() {
         'ORDEN_CERRADA',
         'ADICIONAL_YA_RESPONDIDO',
         'KM_INVALIDO',
+        'TRANSICION_INVALIDA',
       };
 
       final queLaAppMapea = CodigoProblema.values
