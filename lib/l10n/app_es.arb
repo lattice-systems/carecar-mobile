@@ -1,5 +1,93 @@
 {
   "@@locale": "es",
+  "accesoBloqueoMinutos": "Espera {minutos} min para volver a intentar.",
+  "@accesoBloqueoMinutos": {
+    "description": "Cuenta regresiva del bloqueo por intentos, cuando falta más de un minuto.",
+    "placeholders": {
+      "minutos": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "accesoBloqueoSegundos": "Espera {segundos} s para volver a intentar.",
+  "@accesoBloqueoSegundos": {
+    "description": "Cuenta regresiva del bloqueo por intentos en su último minuto.",
+    "placeholders": {
+      "segundos": {
+        "type": "int",
+        "example": "45"
+      }
+    }
+  },
+  "accesoBloqueoTitulo": "Demasiados intentos",
+  "@accesoBloqueoTitulo": {
+    "description": "Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos."
+  },
+  "accesoContrasenaEtiqueta": "Contraseña",
+  "@accesoContrasenaEtiqueta": {
+    "description": "Etiqueta del campo de contraseña en la pantalla de acceso."
+  },
+  "accesoContrasenaVacia": "Escribe tu contraseña.",
+  "@accesoContrasenaVacia": {
+    "description": "Error bajo el campo cuando se intenta entrar sin contraseña."
+  },
+  "accesoCorreoAyuda": "El que le diste a la agencia",
+  "@accesoCorreoAyuda": {
+    "description": "Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente."
+  },
+  "accesoCorreoEtiqueta": "Correo",
+  "@accesoCorreoEtiqueta": {
+    "description": "Etiqueta del campo de correo en la pantalla de acceso."
+  },
+  "accesoCorreoInvalido": "Escribe un correo válido, como nombre@dominio.com.",
+  "@accesoCorreoInvalido": {
+    "description": "Error bajo el campo cuando el correo no tiene forma de correo."
+  },
+  "accesoCorreoVacio": "Escribe tu correo.",
+  "@accesoCorreoVacio": {
+    "description": "Error bajo el campo cuando se intenta entrar sin correo."
+  },
+  "accesoEntrando": "Entrando…",
+  "@accesoEntrando": {
+    "description": "Texto del botón mientras el servidor responde al inicio de sesión."
+  },
+  "accesoEntrar": "Iniciar sesión",
+  "@accesoEntrar": {
+    "description": "Botón principal de la pantalla de acceso."
+  },
+  "accesoFalloTitulo": "No pudimos iniciar sesión",
+  "@accesoFalloTitulo": {
+    "description": "Título del aviso cuando el acceso falla por credenciales u otro error."
+  },
+  "accesoMarca": "CareCar",
+  "@accesoMarca": {
+    "description": "Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce."
+  },
+  "accesoOlvide": "¿Olvidaste tu contraseña?",
+  "@accesoOlvide": {
+    "description": "Enlace a la recuperación de contraseña desde la pantalla de acceso."
+  },
+  "accesoServidorDespertandoMensaje": "La primera vez después de un rato puede tardar hasta un minuto.",
+  "@accesoServidorDespertandoMensaje": {
+    "description": "Detalle del aviso cuando el servidor está despertando y la petición sigue en curso."
+  },
+  "accesoServidorDespertandoTitulo": "Despertando el servidor…",
+  "@accesoServidorDespertandoTitulo": {
+    "description": "Título del aviso cuando el servidor tarda más de unos segundos en responder al acceso."
+  },
+  "accesoSinConexionTitulo": "Sin conexión",
+  "@accesoSinConexionTitulo": {
+    "description": "Título del aviso cuando no se pudo llegar al servidor al intentar entrar."
+  },
+  "accesoSinRegistro": "La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.",
+  "@accesoSinRegistro": {
+    "description": "Nota que explica por qué no hay registro: la cuenta la entrega la agencia."
+  },
+  "accesoSubtitulo": "Tu acceso a la agencia",
+  "@accesoSubtitulo": {
+    "description": "Frase bajo el nombre de la app en la pantalla de acceso."
+  },
   "asistenciaGuiaChoquePaso1": "Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.",
   "asistenciaGuiaChoquePaso2": "Revisa si hay personas heridas. Si las hay, llama al 911 de inmediato y no muevas a quien tenga dolor de cuello o espalda.",
   "asistenciaGuiaChoquePaso3": "Si puedes, baja del auto y ponte detrás de una barrera, lejos del tráfico. Coloca los triángulos de advertencia.",
