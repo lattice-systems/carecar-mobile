@@ -6,9 +6,10 @@ import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 
-/// Relleno del boton pildora: `lleno` para la accion principal y `tonal` para
-/// la secundaria.
-enum VarianteBotonPildora { lleno, tonal }
+/// Relleno del boton pildora: `lleno` para la accion principal, `tonal` para
+/// la secundaria y `vidrio` (V2-T02.19) para la secundaria con el estilo de
+/// vidrio liquido: translucido, con borde de luz.
+enum VarianteBotonPildora { lleno, tonal, vidrio }
 
 /// Boton en forma de pildora, para filas de acciones junto a una portada.
 ///
@@ -42,20 +43,28 @@ class _BotonPildoraState extends State<BotonPildora> {
 
   static const double _escalaPresionado = 0.975;
   static const double _tamanoIcono = 20;
+  static const double _alfaVidrio = 0.06;
+  static const double _alfaBordeVidrio = 0.14;
 
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final habilitado = widget.alPresionar != null;
-    final lleno = widget.variante == VarianteBotonPildora.lleno;
+    final vidrio = habilitado && widget.variante == VarianteBotonPildora.vidrio;
 
-    final fondo = !habilitado
-        ? c.superficieHundida
-        : (lleno ? c.acento : c.acentoSuave);
-    final frente = !habilitado
-        ? c.textoTerciario
-        : (lleno ? c.sobreAcento : c.acento);
+    final (fondo, frente) = !habilitado
+        ? (c.superficieHundida, c.textoTerciario)
+        : switch (widget.variante) {
+            VarianteBotonPildora.lleno => (c.acento, c.sobreAcento),
+            VarianteBotonPildora.tonal => (c.acentoSuave, c.acento),
+            VarianteBotonPildora.vidrio => (
+              c.texto.withValues(alpha: _alfaVidrio),
+              c.texto,
+            ),
+          };
+    // En vidrio el icono lleva el acento y el texto el color normal.
+    final colorIcono = vidrio ? c.acento : frente;
 
     final movimiento = context.movimiento(Movimiento.rapido);
     final reducir = MediaQuery.disableAnimationsOf(context);
@@ -67,7 +76,7 @@ class _BotonPildoraState extends State<BotonPildora> {
       children: [
         if (widget.icono != null) ...[
           ExcludeSemantics(
-            child: Icon(widget.icono, size: _tamanoIcono, color: frente),
+            child: Icon(widget.icono, size: _tamanoIcono, color: colorIcono),
           ),
           const SizedBox(width: Espaciado.e2),
         ],
@@ -87,7 +96,13 @@ class _BotonPildoraState extends State<BotonPildora> {
       curve: movimiento.curva,
       child: Material(
         color: fondo,
-        shape: const StadiumBorder(),
+        shape: vidrio
+            ? StadiumBorder(
+                side: BorderSide(
+                  color: c.texto.withValues(alpha: _alfaBordeVidrio),
+                ),
+              )
+            : const StadiumBorder(),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: widget.alPresionar,

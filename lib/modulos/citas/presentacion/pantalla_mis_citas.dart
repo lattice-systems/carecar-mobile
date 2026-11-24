@@ -194,7 +194,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                   child: Center(
                     child: BotonPildora(
                       texto: textos.citasCargarMas,
-                      variante: VarianteBotonPildora.tonal,
+                      variante: VarianteBotonPildora.vidrio,
                       icono: Icons.expand_more_rounded,
                       alPresionar: estado.cargandoMas
                           ? null
@@ -557,7 +557,7 @@ class _AccionesCita extends StatelessWidget {
             BotonPildora(
               texto: textos.citasReprogramar,
               icono: Icons.event_repeat_rounded,
-              variante: VarianteBotonPildora.tonal,
+              variante: VarianteBotonPildora.vidrio,
               alPresionar: ocupado
                   ? null
                   : () {

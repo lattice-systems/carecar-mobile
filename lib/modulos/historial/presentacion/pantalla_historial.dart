@@ -196,7 +196,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
                 const SizedBox(height: Espaciado.e2),
                 BotonPildora(
                   texto: textos.historialReintentar,
-                  variante: VarianteBotonPildora.tonal,
+                  variante: VarianteBotonPildora.vidrio,
                   icono: Icons.refresh_rounded,
                   alPresionar: () => ref
                       .read(historialProvider(_consulta).notifier)

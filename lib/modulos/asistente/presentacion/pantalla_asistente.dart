@@ -227,7 +227,7 @@ class _Mensaje extends StatelessWidget {
             BotonPildora(
               texto: textos.asistenteAgendarRevision,
               icono: Icons.event_available_outlined,
-              variante: VarianteBotonPildora.tonal,
+              variante: VarianteBotonPildora.vidrio,
               alPresionar: () => context.push(
                 rutaAgendarCitaCon(
                   vehiculoId: vehiculoId,

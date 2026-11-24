@@ -4,12 +4,14 @@ import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'rebote_tactil.dart';
 
-/// Relleno del boton circular: `tonal` para acciones secundarias (adjuntar,
-/// 👍/👎 sin marcar) y `acento` para la principal (enviar).
-enum VarianteBotonCircular { tonal, acento }
+/// Relleno del boton circular: `tonal` y `vidrio` (V2-T02.19, translucido con
+/// borde de luz) para acciones secundarias, y `acento` para la principal
+/// (enviar).
+enum VarianteBotonCircular { tonal, acento, vidrio }
 
 /// Boton redondo de 48 con un icono (V2-T02.17), del estilo vidrio liquido y
-/// pildora (V2-T02.16): rebota al tocarlo en vez de salpicar.
+/// pildora (V2-T02.16): rebota al tocarlo en vez de salpicar. Por omision es
+/// de vidrio (V2-T02.19).
 ///
 /// - `acento` habilitado o `marcado`: fondo `acentoSuave` e icono `acento`.
 /// - `tonal`: fondo `superficieHundida` e icono `textoSecundario`.
@@ -24,7 +26,7 @@ class BotonCircular extends StatelessWidget {
     required this.etiqueta,
     required this.alPresionar,
     super.key,
-    this.variante = VarianteBotonCircular.tonal,
+    this.variante = VarianteBotonCircular.vidrio,
     this.iconoMarcado,
     this.marcado = false,
   });
@@ -37,6 +39,8 @@ class BotonCircular extends StatelessWidget {
   final bool marcado;
 
   static const double _tamanoIcono = 20;
+  static const double _alfaVidrio = 0.06;
+  static const double _alfaBordeVidrio = 0.14;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +49,17 @@ class BotonCircular extends StatelessWidget {
     final resaltado =
         habilitado && (marcado || variante == VarianteBotonCircular.acento);
 
-    final fondo = resaltado ? c.acentoSuave : c.superficieHundida;
+    final vidrio =
+        habilitado && !resaltado && variante == VarianteBotonCircular.vidrio;
+
+    final fondo = resaltado
+        ? c.acentoSuave
+        : (vidrio
+              ? c.texto.withValues(alpha: _alfaVidrio)
+              : c.superficieHundida);
     final frente = !habilitado
         ? c.textoTerciario
-        : (resaltado ? c.acento : c.textoSecundario);
+        : (resaltado || vidrio ? c.acento : c.textoSecundario);
 
     return Semantics(
       container: true,
@@ -72,7 +83,15 @@ class BotonCircular extends StatelessWidget {
               key: const ValueKey('boton-circular-fondo'),
               width: Espaciado.objetivoTactilMinimo,
               height: Espaciado.objetivoTactilMinimo,
-              decoration: BoxDecoration(shape: BoxShape.circle, color: fondo),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: fondo,
+                border: vidrio
+                    ? Border.all(
+                        color: c.texto.withValues(alpha: _alfaBordeVidrio),
+                      )
+                    : null,
+              ),
               child: Icon(
                 marcado ? (iconoMarcado ?? icono) : icono,
                 size: _tamanoIcono,

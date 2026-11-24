@@ -107,6 +107,38 @@ void main() {
       expect(find.byIcon(Icons.thumb_up), findsOneWidget);
     });
 
+    testWidgets('vidrio es translucido con borde de luz (V2-T02.19)', (
+      tester,
+    ) async {
+      late TokensPista tokens;
+      await tester.pumpWidget(
+        conTemaPista(
+          Builder(
+            builder: (context) {
+              tokens = TokensPista.de(context);
+              return BotonCircular(
+                icono: Icons.attach_file,
+                etiqueta: 'Adjuntar',
+                variante: VarianteBotonCircular.vidrio,
+                alPresionar: () {},
+              );
+            },
+          ),
+          escenario: Escenario.oscuro,
+        ),
+      );
+      final caja = tester.widget<Container>(
+        find.byKey(const ValueKey('boton-circular-fondo')),
+      );
+      final deco = caja.decoration! as BoxDecoration;
+      expect(deco.color, tokens.colores.texto.withValues(alpha: 0.06));
+      expect(deco.border, isNotNull);
+      expect(
+        tester.widget<Icon>(find.byIcon(Icons.attach_file)).color,
+        tokens.colores.acento,
+      );
+    });
+
     testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
       for (final escenario in Escenario.values) {
         await tester.pumpWidget(
