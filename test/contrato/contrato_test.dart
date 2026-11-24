@@ -36,19 +36,13 @@ const _rutaContrato = 'api/agencia360-api-app-v1.yaml';
 /// rama principal del backend seria perseguir un blanco movil.
 const _versionEsperada = '1.5.0';
 
-/// Los 41 esquemas de la v1.5. La v1.3 sumo el detalle de un modelo del
+/// Los 29 esquemas de la v1.5. La v1.3 sumo el detalle de un modelo del
 /// catalogo (V2-M03.02): `DetalleModeloCatalogo`, `ImagenModelo`,
 /// `VersionModelo` y `EspecificacionModelo`. La v1.4 suma la toma a cuenta
 /// (V2-M03.04): `EstadoVehiculo`, `NuevaEstimacionTomaCuenta`,
 /// `SupuestosEstimacion`, `EstimacionTomaCuenta` y `PaginaEstimaciones`. La
 /// v1.5 suma el asistente (V2-M24.03): `PreguntaAsistente`,
 /// `RespuestaAsistente` y `FuenteAsistente`.
-/// Tambien de forma aditiva, la asistencia en camino (V2-M11.01):
-/// `TipoAsistencia`, `EstadoSolicitudAsistencia`, `NuevaSolicitudAsistencia` y
-/// `SolicitudAsistencia`.
-/// Y la recoleccion a domicilio (V2-M17.01 y V2-M17.02): `NuevaDireccion`,
-/// `Direccion`, `FranjaRecoleccion`, `CotizacionRecoleccion`, `EstadoTraslado`,
-/// `Traslado`, `RecoleccionCita` y `NuevaRecoleccion`.
 const _esquemasDelContrato = <String>{
   'LoginRequest',
   'LoginResponse',
@@ -78,18 +72,6 @@ const _esquemasDelContrato = <String>{
   'PreguntaAsistente',
   'RespuestaAsistente',
   'FuenteAsistente',
-  'TipoAsistencia',
-  'EstadoSolicitudAsistencia',
-  'NuevaSolicitudAsistencia',
-  'SolicitudAsistencia',
-  'NuevaDireccion',
-  'Direccion',
-  'FranjaRecoleccion',
-  'CotizacionRecoleccion',
-  'EstadoTraslado',
-  'Traslado',
-  'RecoleccionCita',
-  'NuevaRecoleccion',
   'Problema',
 };
 
@@ -98,23 +80,6 @@ const _esquemasDelContrato = <String>{
 /// `EstadoCita` no aparece porque es un enum de cadena y no tiene
 /// `properties`; se valida aparte, junto con el enum de la app.
 const _propiedadesDelContrato = <String, Set<String>>{
-  'NuevaSolicitudAsistencia': {
-    'vehiculoId',
-    'tipo',
-    'lat',
-    'lng',
-    'comentario',
-  },
-  'SolicitudAsistencia': {
-    'id',
-    'vehiculoId',
-    'tipo',
-    'lat',
-    'lng',
-    'comentario',
-    'estado',
-    'creadaEn',
-  },
   'LoginRequest': {'correo', 'contrasena'},
   'LoginResponse': {
     'accessToken',
@@ -157,7 +122,7 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'horaFin',
     'cupoDisponible',
   },
-  'NuevaCita': {'vehiculoId', 'franjaId', 'fecha', 'recoleccion'},
+  'NuevaCita': {'vehiculoId', 'franjaId', 'fecha'},
   'Cita': {
     'id',
     'vehiculoId',
@@ -167,7 +132,6 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'horaFin',
     'estado',
     'vehiculo',
-    'recoleccion',
   },
   'PaginaCitas': {
     'contenido',
@@ -244,27 +208,6 @@ const _propiedadesDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'NuevaDireccion': {'alias', 'calle', 'colonia', 'cp', 'ciudad', 'lat', 'lng'},
-  'FranjaRecoleccion': {'inicio', 'fin'},
-  'CotizacionRecoleccion': {
-    'direccionId',
-    'fecha',
-    'costoPorTraslado',
-    'costoTotal',
-    'recoleccion',
-    'entrega',
-  },
-  'Traslado': {
-    'id',
-    'tipo',
-    'estado',
-    'costo',
-    'fecha',
-    'ventanaInicio',
-    'ventanaFin',
-  },
-  'RecoleccionCita': {'direccionId', 'costoTotal', 'traslados'},
-  'NuevaRecoleccion': {'direccionId'},
   'Problema': {'timestamp', 'status', 'error', 'message', 'codigo', 'path'},
 };
 
@@ -357,34 +300,12 @@ const _obligatoriosDelContrato = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'NuevaDireccion': {'alias', 'calle', 'colonia', 'cp', 'ciudad', 'lat', 'lng'},
-  'FranjaRecoleccion': {'inicio', 'fin'},
-  'CotizacionRecoleccion': {
-    'direccionId',
-    'fecha',
-    'costoPorTraslado',
-    'costoTotal',
-    'recoleccion',
-    'entrega',
-  },
-  'Traslado': {
-    'id',
-    'tipo',
-    'estado',
-    'costo',
-    'fecha',
-    'ventanaInicio',
-    'ventanaFin',
-  },
-  'RecoleccionCita': {'direccionId', 'costoTotal', 'traslados'},
-  'NuevaRecoleccion': {'direccionId'},
   // `codigo` es opcional: la app decide por el, pero no puede exigirlo.
   'Problema': {'timestamp', 'status', 'error', 'message', 'path'},
 };
 
-/// Las 24 operaciones del contrato, como `METODO ruta`. La v1.3 suma el
-/// detalle de un modelo del catalogo, la v1.4 las dos de toma a cuenta y la
-/// v1.5 las cinco de recoleccion (direcciones y cotizacion).
+/// Las 19 operaciones del contrato, como `METODO ruta`. La v1.3 suma el
+/// detalle de un modelo del catalogo y la v1.4 las dos de toma a cuenta.
 const _operacionesDelContrato = <String>{
   'POST /auth/login',
   'POST /auth/refrescar',
@@ -406,13 +327,6 @@ const _operacionesDelContrato = <String>{
   'GET /toma-a-cuenta/estimaciones',
   'POST /toma-a-cuenta/estimaciones',
   'POST /asistente/preguntas',
-  'POST /asistencia',
-  'GET /asistencia',
-  'GET /direcciones',
-  'POST /direcciones',
-  'PUT /direcciones/{direccionId}',
-  'DELETE /direcciones/{direccionId}',
-  'GET /recoleccion/cotizacion',
 };
 
 /// Rutas que el contrato declara sin token.
@@ -631,7 +545,7 @@ void main() {
       expect(enElContrato, queLaAppMapea);
     });
 
-    test('las operaciones del contrato son las 27 que la prueba declara', () {
+    test('las operaciones del contrato son las 20 que la prueba declara', () {
       final rutas = contrato['paths'] as YamlMap;
       final enElContrato = <String>{};
 
