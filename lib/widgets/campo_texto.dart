@@ -88,7 +88,8 @@ class _CampoTextoState extends State<CampoTexto> {
   }
 
   void _alCambiarControlador() {
-    if (_campoEstado != null && _campoEstado!.value != widget.controlador.text) {
+    if (_campoEstado != null &&
+        _campoEstado!.value != widget.controlador.text) {
       _campoEstado!.didChange(widget.controlador.text);
     }
   }
@@ -107,29 +108,27 @@ class _CampoTextoState extends State<CampoTexto> {
 
         final colorFondo = !widget.habilitado
             ? (esOscuro
-                ? const Color(0xFF0F1116).withValues(alpha: 0.5)
-                : const Color(0xFFF0F2F6).withValues(alpha: 0.5))
+                  ? const Color(0xFF0F1116).withValues(alpha: 0.5)
+                  : const Color(0xFFF0F2F6).withValues(alpha: 0.5))
             : _conFoco
-                ? (esOscuro ? const Color(0xFF161A24) : Colors.white)
-                : (esOscuro
-                    ? Colors.white.withValues(alpha: 0.06)
-                    : const Color(0xFFF3F5F9));
+            ? (esOscuro ? const Color(0xFF161A24) : Colors.white)
+            : (esOscuro
+                  ? Colors.white.withValues(alpha: 0.06)
+                  : const Color(0xFFF3F5F9));
 
         final colorBorde = tieneError
             ? const Color(0xFFE54D2E)
             : _conFoco
-                ? const Color(0xFF5B8CFF)
-                : (esOscuro
-                    ? Colors.white.withValues(alpha: 0.12)
-                    : const Color(0xFFD4DAE4));
+            ? const Color(0xFF5B8CFF)
+            : (esOscuro
+                  ? Colors.white.withValues(alpha: 0.12)
+                  : const Color(0xFFD4DAE4));
 
         final colorIcono = tieneError
             ? const Color(0xFFE54D2E)
             : _conFoco
-                ? const Color(0xFF5B8CFF)
-                : (esOscuro
-                    ? const Color(0xFF8E9BAE)
-                    : const Color(0xFF6B7280));
+            ? const Color(0xFF5B8CFF)
+            : (esOscuro ? const Color(0xFF8E9BAE) : const Color(0xFF6B7280));
 
         final sombra = tieneError
             ? [
@@ -140,24 +139,22 @@ class _CampoTextoState extends State<CampoTexto> {
                 ),
               ]
             : _conFoco
-                ? [
-                    BoxShadow(
-                      color: const Color(0xFF2457F5).withValues(alpha: 0.22),
-                      blurRadius: 14,
-                      spreadRadius: 1,
-                    ),
-                  ]
-                : null;
+            ? [
+                BoxShadow(
+                  color: const Color(0xFF2457F5).withValues(alpha: 0.22),
+                  blurRadius: 14,
+                  spreadRadius: 1,
+                ),
+              ]
+            : null;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               widget.etiqueta,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.2,
-                  ),
+              style: Theme.of(context).textTheme.labelLarge
+                  ?.copyWith(fontWeight: FontWeight.w600, letterSpacing: -0.2),
             ),
             const SizedBox(height: 6),
             AnimatedContainer(

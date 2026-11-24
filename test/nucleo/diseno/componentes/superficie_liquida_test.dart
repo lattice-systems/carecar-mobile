@@ -5,13 +5,11 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
-  testWidgets('muestra su hijo y aplica desenfoque por defecto', (tester) async {
+  testWidgets('muestra su hijo y aplica desenfoque por defecto', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      conTemaPista(
-        const SuperficieLiquida(
-          child: Text('Contenido vítreo'),
-        ),
-      ),
+      conTemaPista(const SuperficieLiquida(child: Text('Contenido vítreo'))),
     );
 
     expect(find.text('Contenido vítreo'), findsOneWidget);

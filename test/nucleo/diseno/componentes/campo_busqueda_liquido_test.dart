@@ -8,9 +8,7 @@ void main() {
   testWidgets('muestra la sugerencia y el icono de busqueda', (tester) async {
     await tester.pumpWidget(
       conTemaPista(
-        const CampoBusquedaLiquido(
-          sugerencia: 'Buscar vehículo o servicio…',
-        ),
+        const CampoBusquedaLiquido(sugerencia: 'Buscar vehículo o servicio…'),
       ),
     );
 
@@ -18,7 +16,9 @@ void main() {
     expect(find.byIcon(Icons.search_rounded), findsOneWidget);
   });
 
-  testWidgets('al escribir muestra el boton de limpiar y responde', (tester) async {
+  testWidgets('al escribir muestra el boton de limpiar y responde', (
+    tester,
+  ) async {
     String? cambio;
     await tester.pumpWidget(
       conTemaPista(

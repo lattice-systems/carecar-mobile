@@ -7,11 +7,7 @@ import '../../../ayudas/tema_pista.dart';
 void main() {
   testWidgets('muestra el hijo correctamente', (tester) async {
     await tester.pumpWidget(
-      conTemaPista(
-        const ReboteTactil(
-          child: Text('Tócame'),
-        ),
-      ),
+      conTemaPista(const ReboteTactil(child: Text('Tócame'))),
     );
 
     expect(find.text('Tócame'), findsOneWidget);
@@ -20,13 +16,13 @@ void main() {
   testWidgets('al presionar y soltar regresa a escala normal', (tester) async {
     await tester.pumpWidget(
       conTemaPista(
-        const ReboteTactil(
-          child: SizedBox(width: 100, height: 100),
-        ),
+        const ReboteTactil(child: SizedBox(width: 100, height: 100)),
       ),
     );
 
-    final gesto = await tester.startGesture(tester.getCenter(find.byType(ReboteTactil)));
+    final gesto = await tester.startGesture(
+      tester.getCenter(find.byType(ReboteTactil)),
+    );
     await tester.pump(const Duration(milliseconds: 60));
     await gesto.up();
     await tester.pumpAndSettle();
@@ -43,10 +39,7 @@ void main() {
   testWidgets('deshabilitado no transforma', (tester) async {
     await tester.pumpWidget(
       conTemaPista(
-        const ReboteTactil(
-          habilitado: false,
-          child: Text('Deshabilitado'),
-        ),
+        const ReboteTactil(habilitado: false, child: Text('Deshabilitado')),
       ),
     );
 
