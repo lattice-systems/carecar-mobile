@@ -3105,6 +3105,42 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Manual, página {pagina}, abrir'**
   String asistenteFuenteLector(int pagina);
+
+  /// Encabezado de las preguntas sugeridas con la conversación vacía (V2-M24.08).
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con una de estas'**
+  String get asistenteSugerenciasTitulo;
+
+  /// Pregunta sugerida sobre el mantenimiento. Al tocarla se envía tal cual.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cada cuánto le toca servicio?'**
+  String get asistentePreguntaMantenimiento;
+
+  /// Pregunta sugerida sobre la presión de las llantas.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué presión llevan las llantas?'**
+  String get asistentePreguntaLlantas;
+
+  /// Pregunta sugerida sobre los testigos del tablero.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué significa una luz roja en el tablero?'**
+  String get asistentePreguntaTestigos;
+
+  /// Pregunta sugerida sobre la capacidad de aceite.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cuánto aceite le cabe al motor?'**
+  String get asistentePreguntaAceite;
+
+  /// Pregunta sugerida sobre el combustible recomendado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué gasolina le pongo?'**
+  String get asistentePreguntaGasolina;
 }
 
 class _AppLocalizationsDelegate

@@ -1853,4 +1853,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String asistenteFuenteLector(int pagina) {
     return 'Manual, page $pagina, open';
   }
+
+  @override
+  String get asistenteSugerenciasTitulo => 'Try one of these';
+
+  @override
+  String get asistentePreguntaMantenimiento =>
+      'How often does it need service?';
+
+  @override
+  String get asistentePreguntaLlantas => 'What tire pressure should I use?';
+
+  @override
+  String get asistentePreguntaTestigos =>
+      'What does a red light on the dashboard mean?';
+
+  @override
+  String get asistentePreguntaAceite => 'How much oil does the engine take?';
+
+  @override
+  String get asistentePreguntaGasolina => 'What fuel should I use?';
 }

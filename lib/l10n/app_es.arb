@@ -2325,5 +2325,29 @@
         "type": "int"
       }
     }
+  },
+  "asistenteSugerenciasTitulo": "Prueba con una de estas",
+  "@asistenteSugerenciasTitulo": {
+    "description": "Encabezado de las preguntas sugeridas con la conversación vacía (V2-M24.08)."
+  },
+  "asistentePreguntaMantenimiento": "¿Cada cuánto le toca servicio?",
+  "@asistentePreguntaMantenimiento": {
+    "description": "Pregunta sugerida sobre el mantenimiento. Al tocarla se envía tal cual."
+  },
+  "asistentePreguntaLlantas": "¿Qué presión llevan las llantas?",
+  "@asistentePreguntaLlantas": {
+    "description": "Pregunta sugerida sobre la presión de las llantas."
+  },
+  "asistentePreguntaTestigos": "¿Qué significa una luz roja en el tablero?",
+  "@asistentePreguntaTestigos": {
+    "description": "Pregunta sugerida sobre los testigos del tablero."
+  },
+  "asistentePreguntaAceite": "¿Cuánto aceite le cabe al motor?",
+  "@asistentePreguntaAceite": {
+    "description": "Pregunta sugerida sobre la capacidad de aceite."
+  },
+  "asistentePreguntaGasolina": "¿Qué gasolina le pongo?",
+  "@asistentePreguntaGasolina": {
+    "description": "Pregunta sugerida sobre el combustible recomendado."
   }
 }
