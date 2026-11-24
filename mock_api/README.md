@@ -191,6 +191,23 @@ y lo dejó marcado, para cambiarlo en un solo lugar cuando el equipo responda.
 | No hay reglas de contraseña | Exige 8 caracteres como mínimo | RIC-9 |
 | No se define la zona horaria de fechas y horas | Trata todo como fecha y hora local, sin zona | RIC-13 |
 
+## Eventos en vivo y emisor de prueba
+
+`GET /api/v1/app/eventos` es un canal Server-Sent Events (`event:` y `data:` JSON) con latido cada 25 s y cierre a los 30 min, como el backend. Solo llegan los eventos del cliente que escucha. Como no hay agencia ni chofer, el mock trae un emisor **fuera del contrato** (sin token) para provocar avances y verlos en la app:
+
+```bash
+# V2-M11.04 · la ayuda va en camino (id de la solicitud abierta)
+curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+# V2-M17.03 · el chofer sale, se mueve y recoge el auto
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"recogido"}'
+# V2-M17.04 · checklist a mano (al pasar a recogido o entregado se crea uno)
+curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+```
+
+Los traslados se crean agendando una cita con recolección desde la app. La ubicación del chofer solo se manda en `en_camino` y `de_regreso`; las fotos del checklist son de `picsum.photos` (hace falta internet) y su parámetro de firma cambia en cada petición.
+
 ## Rutas de inspección
 
 Además del contrato, json-server expone las colecciones en crudo, **sin el
