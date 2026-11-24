@@ -64,10 +64,10 @@ Total: **214 historias** + 4 de H0.
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
-| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | En curso | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` |
+| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
-| V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Lista | |
+| V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Descartada | sin tiendas: APK + Sideloadly |
 | V2-T05.01 | Módulos Modulith nuevos | Ricardo | B | — | Hecha | backend#83, #89 |
 | V2-T05.02 | El contrato `agencia360-api-app-v2.yaml` | Ricardo | B | — | Hecha | backend#75, #79 |
 | V2-T05.03 | `cuenta_app.usuario` como en la ficha | Ricardo | B | — | Hecha | backend#82, #88 |
@@ -273,6 +273,6 @@ Total: **214 historias** + 4 de H0.
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
 | V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
 
-## H7 · Lista para tiendas
+## H7 · Lista para entregar
 
 Se llena con las historias de endurecimiento que salgan de M20.07, M22.08, M23.06 y T04.06, más los hallazgos de las pruebas en celular de cada hito.
