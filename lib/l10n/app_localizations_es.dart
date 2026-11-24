@@ -10,6 +10,53 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String get accesoBloqueoTitulo => 'Demasiados intentos';
+
+  @override
+  String get accesoContrasenaEtiqueta => 'Contraseña';
+
+  @override
+  String get accesoContrasenaVacia => 'Escribe tu contraseña.';
+
+  @override
+  String get accesoCorreoAyuda => 'El que le diste a la agencia';
+
+  @override
+  String get accesoCorreoEtiqueta => 'Correo';
+
+  @override
+  String get accesoCorreoInvalido =>
+      'Escribe un correo válido, como nombre@dominio.com.';
+
+  @override
+  String get accesoCorreoVacio => 'Escribe tu correo.';
+
+  @override
+  String get accesoEntrando => 'Entrando…';
+
+  @override
+  String get accesoEntrar => 'Iniciar sesión';
+
+  @override
+  String get accesoFalloTitulo => 'No pudimos iniciar sesión';
+
+  @override
+  String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoOlvide => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get accesoSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String get accesoSinRegistro =>
+      'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.';
+
+  @override
+  String get accesoSubtitulo => 'Tu acceso a la agencia';
+
+  @override
   String get asistenciaGuiaChoquePaso1 =>
       'Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.';
 

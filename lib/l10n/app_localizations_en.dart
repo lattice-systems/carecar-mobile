@@ -10,6 +10,53 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get accesoBloqueoTitulo => 'Too many attempts';
+
+  @override
+  String get accesoContrasenaEtiqueta => 'Password';
+
+  @override
+  String get accesoContrasenaVacia => 'Enter your password.';
+
+  @override
+  String get accesoCorreoAyuda => 'The one you gave the dealership';
+
+  @override
+  String get accesoCorreoEtiqueta => 'Email';
+
+  @override
+  String get accesoCorreoInvalido =>
+      'Enter a valid email, like name@domain.com.';
+
+  @override
+  String get accesoCorreoVacio => 'Enter your email.';
+
+  @override
+  String get accesoEntrando => 'Signing in…';
+
+  @override
+  String get accesoEntrar => 'Sign in';
+
+  @override
+  String get accesoFalloTitulo => 'We couldn\'t sign you in';
+
+  @override
+  String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoOlvide => 'Forgot your password?';
+
+  @override
+  String get accesoSinConexionTitulo => 'No connection';
+
+  @override
+  String get accesoSinRegistro =>
+      'The dealership gives you your access when you pick up your vehicle. If you don\'t have it, get in touch with them.';
+
+  @override
+  String get accesoSubtitulo => 'Your access to the dealership';
+
+  @override
   String get asistenciaGuiaChoquePaso1 =>
       'Stop the car in a safe place, turn off the engine and switch on the hazard lights.';
 
