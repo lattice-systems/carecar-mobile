@@ -22,8 +22,45 @@ import 'proveedores_asistente.dart';
 /// Pregúntale a tu auto (V2-M24.03): chat con el asistente sobre el manual de
 /// un vehiculo. Las respuestas citan la pagina del manual; tocar la cita abre
 /// el manual. El aviso de IA esta siempre visible (ADR 0007).
-class PantallaAsistente extends ConsumerWidget {
-  const PantallaAsistente({required this.vehiculoId, super.key});
+class PantallaAsistente extends ConsumerStatefulWidget {
+  const PantallaAsistente({
+    required this.vehiculoId,
+    super.key,
+    this.preguntaInicial,
+  });
+
+  final int vehiculoId;
+
+  /// Pregunta que se envia al abrir (V2-M24.10, desde la tarjeta del detalle
+  /// del vehiculo). Solo si la conversacion esta vacia.
+  final String? preguntaInicial;
+
+  @override
+  ConsumerState<PantallaAsistente> createState() => _PantallaAsistenteState();
+}
+
+class _PantallaAsistenteState extends ConsumerState<PantallaAsistente> {
+  @override
+  void initState() {
+    super.initState();
+    final pregunta = widget.preguntaInicial?.trim();
+    if (pregunta == null || pregunta.isEmpty) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final proveedor = conversacionAsistenteProvider(widget.vehiculoId);
+      if (ref.read(proveedor).isEmpty) {
+        ref.read(proveedor.notifier).preguntar(pregunta);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      _ContenidoAsistente(vehiculoId: widget.vehiculoId);
+}
+
+class _ContenidoAsistente extends ConsumerWidget {
+  const _ContenidoAsistente({required this.vehiculoId});
 
   final int vehiculoId;
 

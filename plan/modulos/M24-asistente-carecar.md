@@ -56,6 +56,7 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 | V2-M24.07 | Como equipo queremos medir la calidad de respuestas para saber si el asistente ayuda y mejorarlo | 👍/👎 en cada respuesta guarda `util` en `consulta_asistente` · conjunto de evaluación de al menos 20 preguntas por modelo con su página esperada en `docs/asistente/evaluacion/` · script que corre el conjunto y reporta el % de respuestas con la cita correcta · umbral mínimo acordado en el ADR antes de cerrar H6 | ✅ | V2-M24.03 |
 | V2-M24.08 | Como cliente quiero ver preguntas sugeridas para empezar sin saber qué escribir | Con la conversación vacía se muestran de 4 a 6 sugerencias con `ChipPista` · tocar una la envía como pregunta · lista genérica en la app (mantenimiento, presión de llantas, testigos, capacidad de aceite) · textos traducidos (M20) | | V2-M24.03 |
 | V2-M24.09 | Como cliente quiero ver la respuesta mientras se escribe para no esperar en blanco | `POST /asistente/preguntas` responde en streaming (SSE) y las citas llegan al final · la app pinta el texto por partes y anuncia al lector de pantalla solo la respuesta completa · cortar la conexión a la mitad deja la respuesta parcial marcada con opción de reintentar | ✅ | V2-M24.03 |
+| V2-M24.10 | Como cliente quiero entrar al asistente desde mi auto con una pregunta lista para resolver mi duda en un toque | Tarjeta de vidrio con ✦ en el detalle del vehículo, con dos preguntas sugeridas · tocar la tarjeta abre el asistente; tocar una pregunta lo abre y la envía (`/asistente/:id?pregunta=`) · claro, oscuro y letra al 200 % | | V2-M24.08, V2-T02.19 |
 
 ## Avance de V2-M24.01
 
@@ -95,7 +96,7 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
   - reintento sin conexión;
   - límite y falta de manual explicados.
-- **Entrada:** desde el detalle del vehículo, en «Tu auto».
+- **Entrada:** `TarjetaAsistente` de vidrio con ✦ en el detalle del vehículo (V2-M24.10); sus preguntas sugeridas abren el asistente y la envían con `preguntaInicial`.
 - **API simulada:** responde con una cita de ejemplo.
 
 **Calidad (V2-M24.07):** el conjunto de 20 preguntas con su página esperada y el script que mide el % de citas correctas viven en el backend (`docs/asistente/evaluacion/preguntas.json` y `scripts/evaluar-asistente.py`, backend#87), junto al código que evalúan. Falta correrlo contra Azure y anotar el resultado en el ADR 0007 antes de cerrar H6.

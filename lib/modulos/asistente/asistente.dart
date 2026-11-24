@@ -7,3 +7,4 @@ export 'presentacion/pantalla_asistente.dart' show PantallaAsistente;
 export 'presentacion/proveedores_asistente.dart'
     show repositorioAsistenteProvider;
 export 'presentacion/rutas_asistente.dart' show rutaAsistente, rutasAsistente;
+export 'presentacion/tarjeta_asistente.dart' show TarjetaAsistente;

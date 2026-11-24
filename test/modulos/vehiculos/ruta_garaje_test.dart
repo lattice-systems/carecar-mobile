@@ -117,7 +117,7 @@ void main() {
     await _montar(tester);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Manuals'));
+    await tester.tap(find.text('Manual'));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaManual), findsOneWidget);
   });

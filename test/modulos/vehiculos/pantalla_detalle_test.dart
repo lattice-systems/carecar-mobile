@@ -1,9 +1,11 @@
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/modulos/asistente/asistente.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_detalle_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
@@ -117,14 +119,28 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('historial, manuales y ficha son accesos', (tester) async {
+  _prueba('Tu auto ofrece ficha e historial como pildoras de vidrio', (
+    tester,
+  ) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
-    expect(find.text('Historial de servicios'), findsOneWidget);
-    expect(find.text('Manuales'), findsOneWidget);
-    expect(find.text('Ficha técnica'), findsOneWidget);
+    for (final texto in ['Historial de servicios', 'Ficha técnica']) {
+      final boton = tester.widget<BotonPildora>(
+        find.widgetWithText(BotonPildora, texto),
+      );
+      expect(boton.variante, VarianteBotonPildora.vidrio);
+    }
+    // Manual y Agendar ya estan en la portada: no se repiten abajo.
+    expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);
     expect(find.bySemanticsLabel('Historial de servicios'), findsOneWidget);
+  });
+
+  _prueba('trae la tarjeta del asistente (V2-M24.10)', (tester) async {
+    await tester.pumpWidget(_app(RepositorioGarajeFake()));
+    await tester.pumpAndSettle();
+    expect(find.byType(TarjetaAsistente), findsOneWidget);
+    expect(find.text('Pregúntale a tu auto'), findsOneWidget);
   });
 
   _prueba('un id que no esta en el garaje explica y no deja en blanco', (
