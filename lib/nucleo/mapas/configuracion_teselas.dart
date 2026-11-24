@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 
+import '../../config/flavor.dart';
+
 /// De dónde salen las teselas del mapa y qué crédito se muestra.
 ///
 /// Decisión 0006: la URL y la atribución se configuran, no se escriben en las
@@ -44,6 +46,7 @@ class ConfiguracionTeselas {
         url: _urlDefinida,
         atribucion: _atribucionDefinida,
         produccion: _produccionDefinida,
+        permitirHttp: Flavor.actual.permiteHttpEnClaro,
       );
 
   /// Resuelve la configuración a partir de los valores del entorno.
@@ -53,7 +56,14 @@ class ConfiguracionTeselas {
     required String url,
     required String atribucion,
     required bool produccion,
+    bool permitirHttp = false,
   }) {
+    // V2-M22.09: fuera de desarrollo las teselas viajan por https.
+    if (url.startsWith('http://') && !permitirHttp) {
+      throw StateError(
+        'TILES_URL debe usar https fuera del flavor de desarrollo.',
+      );
+    }
     if (url.isEmpty) {
       if (produccion) {
         throw StateError(
