@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
+import '../dominio/motivo_cita.dart';
 import 'pantalla_agendar_cita.dart';
 import 'pantalla_comprobante_cita.dart';
 import 'pantalla_disponibilidad.dart';
@@ -13,6 +14,16 @@ const rutaDisponibilidad = '/citas/disponibilidad';
 
 /// Camino del flujo para agendar una cita.
 const rutaAgendarCita = '/citas/agendar';
+
+/// Agendar con el vehiculo y el motivo ya elegidos (V2-M24.06):
+/// `/citas/agendar?vehiculo=2&motivo=revision`.
+String rutaAgendarCitaCon({int? vehiculoId, MotivoCita? motivo}) => Uri(
+  path: rutaAgendarCita,
+  queryParameters: {
+    'vehiculo': ?vehiculoId?.toString(),
+    'motivo': ?motivo?.codigo,
+  },
+).toString();
 
 /// Camino de la lista de citas del cliente.
 const rutaMisCitas = '/citas';
@@ -61,8 +72,18 @@ final rutasCitas = <RouteBase>[
   GoRoute(
     path: rutaAgendarCita,
     name: 'citas-agendar',
-    builder: (context, state) =>
-        _conTemaPista(context, const PantallaAgendarCita()),
+    // Datos raros en la consulta se ignoran y el formulario abre vacio.
+    builder: (context, state) => _conTemaPista(
+      context,
+      PantallaAgendarCita(
+        vehiculoInicial: int.tryParse(
+          state.uri.queryParameters['vehiculo'] ?? '',
+        ),
+        motivoInicial: MotivoCita.desdeCodigo(
+          state.uri.queryParameters['motivo'],
+        ),
+      ),
+    ),
   ),
   GoRoute(
     path: '/citas/:citaId/comprobante',

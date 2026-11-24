@@ -40,4 +40,36 @@ void main() {
   test('agendar no es una ruta publica', () {
     expect(Rutas.publicas.contains(rutaAgendarCita), isFalse);
   });
+
+  testWidgets('la ruta con vehiculo y motivo los pasa a la pantalla', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester)
+        .go(rutaAgendarCitaCon(vehiculoId: 2, motivo: MotivoCita.revision));
+    await tester.pumpAndSettle();
+    final pantalla = tester.widget<PantallaAgendarCita>(
+      find.byType(PantallaAgendarCita),
+    );
+    expect(pantalla.vehiculoInicial, 2);
+    expect(pantalla.motivoInicial, MotivoCita.revision);
+  });
+
+  test('la ruta precargada lleva vehiculo y motivo en la consulta', () {
+    expect(
+      rutaAgendarCitaCon(vehiculoId: 2, motivo: MotivoCita.revision),
+      '/citas/agendar?vehiculo=2&motivo=revision',
+    );
+  });
+
+  testWidgets('datos raros en la consulta se ignoran', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go('$rutaAgendarCita?vehiculo=x&motivo=nada');
+    await tester.pumpAndSettle();
+    final pantalla = tester.widget<PantallaAgendarCita>(
+      find.byType(PantallaAgendarCita),
+    );
+    expect(pantalla.vehiculoInicial, isNull);
+    expect(pantalla.motivoInicial, isNull);
+  });
 }

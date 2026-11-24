@@ -46,7 +46,18 @@ enum _Fallo { sinCupo, duplicada, cobertura, direccion, generico }
 /// los cinco estados: cargando, datos, vacio (sin vehiculos o sin lugares),
 /// error con reintento y sin conexion.
 class PantallaAgendarCita extends ConsumerStatefulWidget {
-  const PantallaAgendarCita({super.key});
+  const PantallaAgendarCita({
+    super.key,
+    this.vehiculoInicial,
+    this.motivoInicial,
+  });
+
+  /// Vehiculo ya elegido al abrir (V2-M24.06, desde el asistente). Si no esta
+  /// en el garaje se ignora.
+  final int? vehiculoInicial;
+
+  /// Motivo ya elegido al abrir; la persona lo puede cambiar.
+  final MotivoCita? motivoInicial;
 
   @override
   ConsumerState<PantallaAgendarCita> createState() =>
@@ -70,6 +81,13 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
   List<FranjaDisponible> _cercanas = const [];
   CitaAgendada? _existente;
   CitaAgendada? _confirmada;
+
+  @override
+  void initState() {
+    super.initState();
+    _vehiculoId = widget.vehiculoInicial;
+    _motivo = widget.motivoInicial;
+  }
 
   bool get _completo =>
       _vehiculoId != null && _dia != null && _franja != null && _motivo != null;
@@ -119,6 +137,11 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     }
     if (!garaje.hasValue || !disponibilidad.hasValue) {
       return estado(const _Cargando());
+    }
+    // Un vehiculo precargado que ya no esta en el garaje no cuenta.
+    if (_vehiculoId != null &&
+        !garaje.requireValue.any((v) => v.id == _vehiculoId)) {
+      _vehiculoId = null;
     }
     if (garaje.requireValue.isEmpty) {
       return estado(
