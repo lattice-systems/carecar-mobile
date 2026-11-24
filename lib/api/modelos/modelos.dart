@@ -11,6 +11,7 @@ export 'detalle_modelo_catalogo.dart';
 export 'disponibilidad.dart';
 export 'estimacion_toma_cuenta.dart';
 export 'mantenimiento.dart';
+export 'gasto.dart';
 export 'manual.dart';
 export 'modelo_catalogo.dart';
 export 'pagina.dart';
