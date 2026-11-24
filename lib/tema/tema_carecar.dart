@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../nucleo/diseno/tokens/tokens_pista.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Tema de CareCar, derivado de la guia de estilos de Agencia360.
@@ -236,6 +238,7 @@ abstract final class TemaCareCar {
           side: const BorderSide(color: borde),
         ),
       ),
+      extensions: [TokensPista.claro],
     );
   }
 
