@@ -28,6 +28,7 @@ Especificación: [`../../docs/diseno/sistema-de-diseno-v2.md`](../../docs/diseno
 | V2-T02.13 | Como equipo queremos el componente `LineaDeTiempo` para mostrar etapas con su hora | Etapas pasadas, actual y futuras con su hora y un texto opcional · la actual se anima y respeta reducir movimiento · variante larga y paginada para el historial · el lector de pantalla anuncia "etapa 3 de 6, en curso" · pruebas en claro, oscuro y letra al 200 % · golden cuando V2-T03.02 lo permita · lo usan V2-M02.05, V2-M04.02, V2-M11.04 y V2-M17.03 | | V2-T02.04 |
 | V2-T02.14 | Como equipo queremos los componentes `Calendario` y `SelectorFranja` para elegir día y hora con cupo | `Calendario` mensual con los días sin cupo deshabilitados y explicados al lector de pantalla · cambio de mes y rango de fechas permitido · `SelectorFranja` con la hora y el cupo restante de cada franja, deshabilitada si no hay cupo · zonas táctiles de 48 · pruebas en claro, oscuro y letra al 200 % · golden cuando V2-T03.02 lo permita · lo usan V2-M02.07 y V2-M02.08 | | V2-T02.04 |
 | V2-T02.15 | Como equipo queremos los componentes `BurbujaMensaje` y `CampoMensaje` para que el asistente (M24) y la mensajería con el asesor (M07) se vean y se comporten igual | `BurbujaMensaje` propia y ajena (colores por token, radio y cola por lado), con hora y fuentes opcionales al pie ("Manual, pág. N" tocable con 48 de zona táctil) · estado enviando, enviado y fallido con reintentar · `CampoMensaje` multilínea que crece hasta 5 líneas, botón enviar deshabilitado sin texto y botón adjuntar opcional · lector de pantalla: "Tú: …" / "CareCar: …" · golden en claro, oscuro y letra al 200 % · documentado en `sistema-de-diseno-v2.md` | | V2-T02.04 |
+| V2-T02.16 | Como cliente quiero una app moderna y ligera al tacto para que se sienta de alta gama | Superficie de vidrio líquido con desenfoque recortado · buscador cápsula · botones y campos de una línea en píldora · rebote táctil en lugar de salpicadura (sin rebote con reducir movimiento) · login oscuro legible: logo, barra de estado y avisos · claro, oscuro y letra al 200 % sin desbordes | | V2-T02.04 |
 
 ## Avance de V2-T02.01
 
@@ -146,4 +147,21 @@ Se agregaron al sistema `BotonPildora`, `CabeceraPortada` (con `AccionPortada`),
   - sin desbordes en los tres escenarios.
 - Golden en claro, oscuro y letra al 200 %, a partir de la sección «Mensajes» de la galería.
 - Los textos («Enviando…», «Reintentar», «Escribe un mensaje», etc.) van en español por omisión y se pueden cambiar por parámetro, igual que `EstadoError`. Cada módulo los pasa traducidos (M20).
+
+## Avance de V2-T02.16
+
+Estilo de vidrio líquido y píldora, propuesto con Antigravity y terminado en este PR:
+- `SuperficieLiquida`, `CampoBusquedaLiquido` y `ReboteTactil`, con sus pruebas;
+- forma píldora en botones y campos;
+- login oscuro.
+
+Lo que se veía mal en el Xiaomi y se corrigió:
+- `superficieHundida` en oscuro era más negra que el fondo: desaparecían la burbuja del asistente, el campo de mensaje, el interruptor apagado y los botones deshabilitados;
+- el indicador de «Cargando» era invisible sobre el botón azul;
+- la firma vacía era una caja blanca en oscuro;
+- «Agendar cita» se partía en dos líneas;
+- el logo y la barra de estado no se leían en el login;
+- los avisos del login salían en cajas claras de la v1.
+
+Pendiente fuera de este PR: la gráfica de línea no ajusta su escala a los datos (la línea queda pegada arriba).
 

@@ -108,6 +108,21 @@ Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; c
 
 Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
 
+### Vidrio líquido y píldora (V2-T02.16)
+
+Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos, dibujados por Flutter, así que se ven igual en Android y en iOS.
+
+- **`SuperficieLiquida`:**
+  - desenfoque del fondo siempre recortado a su forma (sin recorte, el blur se sale y mancha);
+  - tinte translúcido y bisel de luz de 1 px.
+- **`CampoBusquedaLiquido`:** buscador en cápsula sobre esa superficie.
+- **Forma píldora:** botones y campos de una línea usan `Radios.bordePildora`. Los campos de varias líneas siguen con `bordeTarjeta`.
+- **`ReboteTactil`:**
+  - reemplaza la salpicadura de Material con un encogimiento corto al presionar (`Movimiento.toqueBajada` de 70 ms y `toqueSubida` de 100 ms);
+  - con reducir movimiento no se encoge;
+  - el interruptor además vibra levemente.
+- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.png`) y barra de estado en claro.
+
 ### Mensajes (chat)
 
 Para el asistente (M24) y la mensajería con el asesor (M07). Un solo par de componentes para que todos los chats de la app se vean igual.
