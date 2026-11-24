@@ -1894,6 +1894,8 @@ servidor.get('/api/v1/archivos/evidencias/:id', (req, res) => {
   res.set('Content-Type', 'image/png');
   res.set('Cache-Control', 'no-store');
   res.send(fotoDePrueba(Number(req.params.id) || 0));
+});
+
 // ── bitacora ──
 // V2-M18 · gastos del vehiculo (cargas de gasolina y otros). Las estadisticas
 // (km/l, $/km, gasto por mes) las calcula la app. Una carga de gasolina deberia
