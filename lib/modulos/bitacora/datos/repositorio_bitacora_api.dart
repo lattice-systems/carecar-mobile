@@ -1,5 +1,5 @@
 import '../../../api/excepciones.dart';
-import '../../../api/modelos/comun.dart';
+import '../../../api/modelos/gasto.dart';
 import '../../../nucleo/api/api_cliente.dart';
 import '../dominio/fallos_bitacora.dart';
 import '../dominio/gasto.dart';
@@ -68,28 +68,27 @@ class RepositorioBitacoraApi implements RepositorioBitacora {
   static Map<String, Object?> _cuerpo(BorradorGasto b) {
     final descripcion = b.descripcion?.trim() ?? '';
     final esCarga = b.tipo == TipoGasto.gasolina;
-    return {
-      'tipo': b.tipo.enContrato,
-      'monto': b.monto,
-      if (esCarga) 'litros': b.litros,
-      if (esCarga) 'km': b.km,
-      'fecha': escribirFecha(b.fecha!),
-      if (descripcion.isNotEmpty) 'descripcion': descripcion,
-    };
+    return NuevoGasto(
+      tipo: b.tipo.enContrato,
+      monto: b.monto!,
+      litros: esCarga ? b.litros : null,
+      km: esCarga ? b.km : null,
+      fecha: b.fecha!,
+      descripcion: descripcion.isEmpty ? null : descripcion,
+    ).toJson();
   }
 
-  static Gasto _leer(Map<String, Object?> json) => Gasto(
-    id: leerEntero(json['id'], 'id'),
-    vehiculoId: leerEntero(json['vehiculoId'], 'vehiculoId'),
-    tipo: TipoGasto.desde(leerTexto(json['tipo'], 'tipo')),
-    monto: leerDecimal(json['monto'], 'monto'),
-    litros: json['litros'] == null
-        ? null
-        : leerDecimal(json['litros'], 'litros'),
-    km: json['km'] == null ? null : leerEntero(json['km'], 'km'),
-    fecha: leerFecha(json['fecha'], 'fecha'),
-    descripcion: json['descripcion'] == null
-        ? null
-        : leerTexto(json['descripcion'], 'descripcion'),
-  );
+  static Gasto _leer(Map<String, Object?> json) {
+    final g = GastoVehiculo.fromJson(json);
+    return Gasto(
+      id: g.id,
+      vehiculoId: g.vehiculoId,
+      tipo: TipoGasto.desde(g.tipo),
+      monto: g.monto,
+      litros: g.litros,
+      km: g.km,
+      fecha: g.fecha,
+      descripcion: g.descripcion,
+    );
+  }
 }
