@@ -1882,4 +1882,272 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistenteNoMeSirvio => 'Not helpful';
+
+  @override
+  String tallerTarjetaTitulo(String vehiculo) {
+    return 'Your $vehiculo is at the shop';
+  }
+
+  @override
+  String tallerTarjetaEtapaYEntrega(String etapa, String hora) {
+    return '$etapa · pickup $hora';
+  }
+
+  @override
+  String tallerTarjetaPendientes(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad jobs to approve',
+      one: '1 job to approve',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tallerTarjetaAvance(int avance) {
+    return '$avance % done';
+  }
+
+  @override
+  String get tallerTarjetaAbrir => 'See your order progress';
+
+  @override
+  String get tallerEtapaRecibido => 'Received';
+
+  @override
+  String get tallerEtapaDiagnostico => 'Diagnosis';
+
+  @override
+  String get tallerEtapaEsperandoAprobacion => 'Waiting for approval';
+
+  @override
+  String get tallerEtapaEnReparacion => 'In repair';
+
+  @override
+  String get tallerEtapaControlDeCalidad => 'Quality check';
+
+  @override
+  String get tallerEtapaLavado => 'Car wash';
+
+  @override
+  String get tallerEtapaListoParaEntrega => 'Ready for pickup';
+
+  @override
+  String get tallerEtapaEntregado => 'Delivered';
+
+  @override
+  String get tallerOrdenTitulo => 'Your order';
+
+  @override
+  String get tallerOrdenEtapaActual => 'Current stage';
+
+  @override
+  String get tallerOrdenEntregaEstimada => 'Estimated pickup';
+
+  @override
+  String get tallerOrdenSinEntrega => 'Not estimated yet';
+
+  @override
+  String get tallerOrdenAsesor => 'Your advisor';
+
+  @override
+  String get tallerOrdenLineaDeTiempo => 'Timeline';
+
+  @override
+  String tallerOrdenNotaEntrega(String hora) {
+    return 'Estimated pickup $hora';
+  }
+
+  @override
+  String tallerOrdenNotaYEntrega(String nota, String hora) {
+    return '$nota · estimated pickup $hora';
+  }
+
+  @override
+  String get tallerOrdenInspeccion => 'Multi-point inspection';
+
+  @override
+  String tallerOrdenInspeccionResumen(int puntos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      puntos,
+      locale: localeName,
+      other: '$puntos points checked',
+      one: '1 point checked',
+      zero: 'No points checked yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tallerOrdenAdicionales => 'Extra work';
+
+  @override
+  String tallerOrdenAdicionalesResumen(int pendientes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pendientes,
+      locale: localeName,
+      other: '$pendientes to approve',
+      one: '1 to approve',
+      zero: 'Nothing to approve',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tallerOrdenAvisoPendientes(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: 'The shop suggests $cantidad extra jobs',
+      one: 'The shop suggests 1 extra job',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tallerOrdenAvisoMensaje =>
+      'Review them and approve or decline them with your signature.';
+
+  @override
+  String get tallerOrdenRevisar => 'Review';
+
+  @override
+  String get tallerReintentar => 'Try again';
+
+  @override
+  String get tallerInspeccionTitulo => 'Inspection';
+
+  @override
+  String get tallerInspeccionVacia => 'No inspection yet';
+
+  @override
+  String get tallerInspeccionVaciaMensaje =>
+      'The technician has not recorded the checked points yet.';
+
+  @override
+  String tallerInspeccionFotoDe(String punto) {
+    return 'Photo of $punto';
+  }
+
+  @override
+  String get tallerInspeccionDeLaOrden => 'From the order';
+
+  @override
+  String get tallerInspeccionFotoDeLaOrden => 'Order photo';
+
+  @override
+  String tallerInspeccionVerVideo(int numero) {
+    return 'Watch video $numero';
+  }
+
+  @override
+  String get tallerInspeccionVideoAbre => 'Opens in your phone player';
+
+  @override
+  String get tallerInspeccionVideoError =>
+      'The video could not be opened. Pull down to reload and try again.';
+
+  @override
+  String get tallerAdicionalesTitulo => 'Extra work';
+
+  @override
+  String get tallerAdicionalesVacio => 'No extra work';
+
+  @override
+  String get tallerAdicionalesVacioMensaje =>
+      'If the shop finds something else, it will suggest it here for you to decide.';
+
+  @override
+  String get tallerAdicionalManoDeObra => 'Labor';
+
+  @override
+  String get tallerAdicionalRefacciones => 'Parts';
+
+  @override
+  String get tallerAdicionalTotal => 'Total';
+
+  @override
+  String get tallerAdicionalPendiente => 'To approve';
+
+  @override
+  String get tallerAdicionalAprobado => 'Approved';
+
+  @override
+  String get tallerAdicionalRechazado => 'Declined';
+
+  @override
+  String tallerAdicionalRespondidoEl(String fecha) {
+    return 'Answered on $fecha';
+  }
+
+  @override
+  String get tallerAdicionalAprobar => 'Approve';
+
+  @override
+  String get tallerAdicionalRechazar => 'Decline';
+
+  @override
+  String get tallerTotales => 'Totals';
+
+  @override
+  String get tallerTotalOrden => 'Order total';
+
+  @override
+  String get tallerTotalAprobados => 'Approved extra work';
+
+  @override
+  String get tallerTotalPendientes => 'Extra work to approve';
+
+  @override
+  String get tallerTotalEstimado => 'Estimated total';
+
+  @override
+  String get tallerFirmaAprobarTitulo => 'Sign to approve';
+
+  @override
+  String get tallerFirmaRechazarTitulo => 'Sign to decline';
+
+  @override
+  String tallerFirmaInstruccion(String concepto, String total) {
+    return '$concepto for $total. Sign with your finger inside the box: your signature is saved with your answer.';
+  }
+
+  @override
+  String get tallerFirmaArea => 'Area to sign with your finger';
+
+  @override
+  String get tallerFirmaBorrar => 'Clear signature';
+
+  @override
+  String get tallerFirmaConfirmarAprobar => 'Approve with my signature';
+
+  @override
+  String get tallerFirmaConfirmarRechazar => 'Decline with my signature';
+
+  @override
+  String tallerRespuestaAprobada(String concepto) {
+    return 'You approved “$concepto”. The estimated total already includes it.';
+  }
+
+  @override
+  String tallerRespuestaRechazada(String concepto) {
+    return 'You declined “$concepto”.';
+  }
+
+  @override
+  String get tallerRespuestaYaRespondida =>
+      'That job was already answered. Reload to see its status.';
+
+  @override
+  String get tallerRespuestaOrdenCerrada =>
+      'The order is already finished. Talk to your advisor.';
+
+  @override
+  String get tallerRespuestaSinConexion =>
+      'No connection. Your answer was not sent.';
+
+  @override
+  String get tallerRespuestaError =>
+      'Your answer could not be sent. Try again.';
 }
