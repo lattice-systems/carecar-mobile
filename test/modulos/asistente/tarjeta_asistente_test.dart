@@ -22,6 +22,13 @@ class _Repo implements RepositorioAsistente {
   }
 
   @override
+  Future<TestigoDelTablero> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) async => const TestigoDelTablero(consultaId: 1, reconocido: false);
+
+  @override
   Future<void> calificar({required int consultaId, required bool util}) async {}
 }
 

@@ -1593,5 +1593,18 @@
   "tallerRespuestaYaRespondida": "That job was already answered. Reload to see its status.",
   "tallerRespuestaOrdenCerrada": "The order is already finished. Talk to your advisor.",
   "tallerRespuestaSinConexion": "No connection. Your answer was not sent.",
-  "tallerRespuestaError": "Your answer could not be sent. Try again."
+  "tallerRespuestaError": "Your answer could not be sent. Try again.",
+  "asistenteFotoAdjuntar": "Photo of a dashboard light",
+  "asistenteFotoTomar": "Take photo",
+  "asistenteFotoGaleria": "Choose from your photos",
+  "asistenteFotoEnviada": "Dashboard photo",
+  "asistenteRevisandoFoto": "Checking your photo…",
+  "asistenteTestigoRoja": "Stop",
+  "asistenteTestigoAmarilla": "Check soon",
+  "asistenteTestigoInformativa": "For your information",
+  "asistenteTestigoDetente": "Pull over somewhere safe as soon as you can and turn off the engine.",
+  "asistentePedirAyuda": "Get help",
+  "asistenteTestigoNoReconocido": "I couldn't recognize a light in the photo. Describe it in words: color, shape and whether it blinks.",
+  "asistentePermisoCamara": "To take the photo, allow access to the camera and your photos in your phone settings.",
+  "asistenteAbrirAjustes": "Open settings"
 }

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart' show MediaType;
 
 import 'api_config.dart';
 import 'excepciones.dart';
@@ -247,6 +248,33 @@ class ClienteApi {
       conToken: conToken,
     );
     _verificarEstado(respuesta);
+  }
+
+  /// POST `multipart/form-data` con un archivo y campos de texto, que devuelve
+  /// un objeto (V2-M24.05: la foto de un testigo).
+  Future<T> enviarArchivo<T>(
+    String camino, {
+    required Map<String, String> campos,
+    required String nombreArchivo,
+    required List<int> bytes,
+    required String tipo,
+    required T Function(Map<String, Object?>) leer,
+  }) async {
+    final respuesta = await _pedir(() async {
+      final peticion = http.MultipartRequest('POST', config.ruta(camino))
+        ..headers.addAll(await _encabezados())
+        ..fields.addAll(campos)
+        ..files.add(
+          http.MultipartFile.fromBytes(
+            nombreArchivo,
+            bytes,
+            filename: nombreArchivo,
+            contentType: MediaType.parse(tipo),
+          ),
+        );
+      return http.Response.fromStream(await _http.send(peticion));
+    }, conToken: true);
+    return _leerObjeto(respuesta, leer);
   }
 
   /// PUT que devuelve un objeto (editar un recurso propio).

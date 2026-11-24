@@ -2717,5 +2717,57 @@
   "tallerRespuestaError": "No se pudo enviar tu respuesta. Intenta de nuevo.",
   "@tallerRespuestaError": {
     "description": "Aviso cuando falla la respuesta por otro motivo."
+  },
+  "asistenteFotoAdjuntar": "Foto de una luz del tablero",
+  "@asistenteFotoAdjuntar": {
+    "description": "Botón de cámara junto al campo del asistente (V2-M24.05)."
+  },
+  "asistenteFotoTomar": "Tomar foto",
+  "@asistenteFotoTomar": {
+    "description": "Opción de la hoja para usar la cámara."
+  },
+  "asistenteFotoGaleria": "Elegir de tus fotos",
+  "@asistenteFotoGaleria": {
+    "description": "Opción de la hoja para elegir una foto guardada."
+  },
+  "asistenteFotoEnviada": "Foto del tablero",
+  "@asistenteFotoEnviada": {
+    "description": "Burbuja propia cuando se manda la foto de un testigo."
+  },
+  "asistenteRevisandoFoto": "Revisando tu foto…",
+  "@asistenteRevisandoFoto": {
+    "description": "Mientras el asistente identifica el testigo."
+  },
+  "asistenteTestigoRoja": "Detente",
+  "@asistenteTestigoRoja": {
+    "description": "Insignia de un testigo rojo."
+  },
+  "asistenteTestigoAmarilla": "Revisar pronto",
+  "@asistenteTestigoAmarilla": {
+    "description": "Insignia de un testigo amarillo."
+  },
+  "asistenteTestigoInformativa": "Informativa",
+  "@asistenteTestigoInformativa": {
+    "description": "Insignia de un testigo informativo."
+  },
+  "asistenteTestigoDetente": "Detente en un lugar seguro lo antes posible y apaga el motor.",
+  "@asistenteTestigoDetente": {
+    "description": "Aviso fijo de un testigo rojo."
+  },
+  "asistentePedirAyuda": "Pedir ayuda",
+  "@asistentePedirAyuda": {
+    "description": "Botón de un testigo rojo que abre Pedir ayuda (SOS)."
+  },
+  "asistenteTestigoNoReconocido": "No reconocí una luz en la foto. Descríbela con palabras: color, forma y si parpadea.",
+  "@asistenteTestigoNoReconocido": {
+    "description": "Cuando la foto no muestra un testigo claro."
+  },
+  "asistentePermisoCamara": "Para tomar la foto, permite el acceso a la cámara y a tus fotos en los ajustes del teléfono.",
+  "@asistentePermisoCamara": {
+    "description": "Aviso cuando se negó el permiso de cámara o fotos."
+  },
+  "asistenteAbrirAjustes": "Abrir ajustes",
+  "@asistenteAbrirAjustes": {
+    "description": "Botón del aviso de permiso."
   }
 }

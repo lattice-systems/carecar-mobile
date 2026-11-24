@@ -24,6 +24,7 @@ class CampoMensaje extends StatefulWidget {
     this.sugerencia = 'Escribe un mensaje',
     this.etiquetaEnviar = 'Enviar',
     this.etiquetaAdjuntar = 'Adjuntar',
+    this.iconoAdjuntar = Icons.attach_file,
   });
 
   final ValueChanged<String> alEnviar;
@@ -33,6 +34,9 @@ class CampoMensaje extends StatefulWidget {
   final String sugerencia;
   final String etiquetaEnviar;
   final String etiquetaAdjuntar;
+
+  /// Icono del boton de adjuntar; el asistente usa una camara (V2-M24.05).
+  final IconData iconoAdjuntar;
 
   static const int lineasMaximas = 5;
 
@@ -91,7 +95,7 @@ class _CampoMensajeState extends State<CampoMensaje> {
         if (widget.alAdjuntar != null) ...[
           BotonCircular(
             key: const ValueKey('campo-mensaje-adjuntar'),
-            icono: Icons.attach_file,
+            icono: widget.iconoAdjuntar,
             etiqueta: widget.etiquetaAdjuntar,
             alPresionar: widget.habilitado ? widget.alAdjuntar : null,
           ),

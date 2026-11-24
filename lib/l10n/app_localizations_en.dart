@@ -2150,4 +2150,46 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tallerRespuestaError =>
       'Your answer could not be sent. Try again.';
+
+  @override
+  String get asistenteFotoAdjuntar => 'Photo of a dashboard light';
+
+  @override
+  String get asistenteFotoTomar => 'Take photo';
+
+  @override
+  String get asistenteFotoGaleria => 'Choose from your photos';
+
+  @override
+  String get asistenteFotoEnviada => 'Dashboard photo';
+
+  @override
+  String get asistenteRevisandoFoto => 'Checking your photo…';
+
+  @override
+  String get asistenteTestigoRoja => 'Stop';
+
+  @override
+  String get asistenteTestigoAmarilla => 'Check soon';
+
+  @override
+  String get asistenteTestigoInformativa => 'For your information';
+
+  @override
+  String get asistenteTestigoDetente =>
+      'Pull over somewhere safe as soon as you can and turn off the engine.';
+
+  @override
+  String get asistentePedirAyuda => 'Get help';
+
+  @override
+  String get asistenteTestigoNoReconocido =>
+      'I couldn\'t recognize a light in the photo. Describe it in words: color, shape and whether it blinks.';
+
+  @override
+  String get asistentePermisoCamara =>
+      'To take the photo, allow access to the camera and your photos in your phone settings.';
+
+  @override
+  String get asistenteAbrirAjustes => 'Open settings';
 }
