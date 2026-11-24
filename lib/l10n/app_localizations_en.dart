@@ -2097,6 +2097,325 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get bitacoraTitulo => 'Logbook';
+
+  @override
+  String get bitacoraSubtituloSinNombre => 'Your car';
+
+  @override
+  String get bitacoraDescripcionPortada => 'Gas pump icon';
+
+  @override
+  String get bitacoraNuevaCarga => 'New fill-up';
+
+  @override
+  String get bitacoraOtroGasto => 'Other expense';
+
+  @override
+  String get bitacoraCerrar => 'Close';
+
+  @override
+  String get bitacoraCargando => 'Loading your logbook';
+
+  @override
+  String get bitacoraVacioTitulo => 'No expenses yet';
+
+  @override
+  String get bitacoraVacioMensaje =>
+      'Log your first fill-up to see your fuel economy and what your car costs you.';
+
+  @override
+  String get bitacoraResumenTitulo => 'Your numbers';
+
+  @override
+  String get bitacoraEtiquetaRendimiento => 'Fuel economy';
+
+  @override
+  String bitacoraCifraKmPorLitro(String valor) {
+    return '$valor km/l';
+  }
+
+  @override
+  String get bitacoraEtiquetaCostoPorKm => 'Cost per km';
+
+  @override
+  String bitacoraCifraCostoPorKm(String valor) {
+    return '$valor/km';
+  }
+
+  @override
+  String get bitacoraEtiquetaGastoMes => 'Spent this month';
+
+  @override
+  String get bitacoraCifraSinDatos => '—';
+
+  @override
+  String get bitacoraDetalleSinDatos => 'You need 2 fill-ups';
+
+  @override
+  String get bitacoraVerEstadisticas => 'Fuel economy and monthly spending';
+
+  @override
+  String get bitacoraExportar => 'Export logbook';
+
+  @override
+  String get bitacoraTipoGasolina => 'Fuel';
+
+  @override
+  String get bitacoraTipoEstacionamiento => 'Parking';
+
+  @override
+  String get bitacoraTipoCasetas => 'Tolls';
+
+  @override
+  String get bitacoraTipoLavado => 'Car wash';
+
+  @override
+  String get bitacoraTipoOtro => 'Other';
+
+  @override
+  String bitacoraDetalleCarga(String fecha, String litros, String km) {
+    return '$fecha · $litros l · $km km';
+  }
+
+  @override
+  String get bitacoraFormCargaTitulo => 'New fill-up';
+
+  @override
+  String get bitacoraFormEditarCargaTitulo => 'Edit fill-up';
+
+  @override
+  String get bitacoraFormGastoTitulo => 'New expense';
+
+  @override
+  String get bitacoraFormEditarGastoTitulo => 'Edit expense';
+
+  @override
+  String get bitacoraCampoTipo => 'Expense type';
+
+  @override
+  String get bitacoraCampoLitros => 'Liters';
+
+  @override
+  String get bitacoraCampoMonto => 'Total amount';
+
+  @override
+  String get bitacoraCampoKm => 'Odometer reading';
+
+  @override
+  String bitacoraAyudaKm(String km) {
+    return 'Your last reading is $km km.';
+  }
+
+  @override
+  String get bitacoraCampoFecha => 'Date';
+
+  @override
+  String get bitacoraElegirFecha => 'Pick a date';
+
+  @override
+  String get bitacoraCampoDescripcion => 'Description';
+
+  @override
+  String get bitacoraAyudaDescripcion =>
+      'Required for “Other”, up to 200 characters.';
+
+  @override
+  String get bitacoraErrorMonto => 'Enter an amount greater than 0.';
+
+  @override
+  String get bitacoraErrorLitros => 'Enter the liters, greater than 0.';
+
+  @override
+  String get bitacoraErrorKm => 'Enter the odometer reading as a whole number.';
+
+  @override
+  String bitacoraErrorKmMenor(String km) {
+    return 'It can\'t be lower than your last reading ($km km).';
+  }
+
+  @override
+  String get bitacoraErrorKmServidor =>
+      'The server rejected it: it is lower than your last reading. Check the odometer.';
+
+  @override
+  String get bitacoraErrorFecha => 'Pick a date that is not in the future.';
+
+  @override
+  String get bitacoraErrorDescripcion =>
+      'Describe the expense, in up to 200 characters.';
+
+  @override
+  String get bitacoraErrorGuardar => 'It couldn\'t be saved. Try again.';
+
+  @override
+  String get bitacoraErrorBorrar => 'It couldn\'t be deleted. Try again.';
+
+  @override
+  String get bitacoraErrorSinConexion =>
+      'No connection. Check your internet and try again.';
+
+  @override
+  String get bitacoraGuardar => 'Save';
+
+  @override
+  String get bitacoraBorrar => 'Delete expense';
+
+  @override
+  String get bitacoraBorrarTitulo => 'Delete this expense?';
+
+  @override
+  String bitacoraBorrarMensaje(String descripcion) {
+    return '“$descripcion” will be deleted. This can\'t be undone.';
+  }
+
+  @override
+  String get bitacoraBorrarConfirmar => 'Delete';
+
+  @override
+  String get bitacoraBorrarCancelar => 'Cancel';
+
+  @override
+  String get bitacoraGastoGuardado => 'Expense saved.';
+
+  @override
+  String get bitacoraGastoBorrado => 'Expense deleted.';
+
+  @override
+  String get bitacoraTicketTitulo => 'Fill in from the receipt';
+
+  @override
+  String get bitacoraTicketPrivacidad =>
+      'The photo is read on your phone; it is not saved or uploaded.';
+
+  @override
+  String get bitacoraTicketTomar => 'Take photo';
+
+  @override
+  String get bitacoraTicketElegir => 'Choose from photos';
+
+  @override
+  String get bitacoraTicketLeyendo => 'Reading the receipt…';
+
+  @override
+  String get bitacoraTicketLeido =>
+      'This is what we read. Check it and fix anything that\'s off.';
+
+  @override
+  String get bitacoraTicketNoLeyo =>
+      'We couldn\'t read the receipt. Fill in the details by hand.';
+
+  @override
+  String get bitacoraTicketSinPermiso =>
+      'We don\'t have permission to use the camera or your photos. Turn it on in settings or fill in the details by hand.';
+
+  @override
+  String get bitacoraTicketError =>
+      'The photo couldn\'t be opened. Fill in the details by hand.';
+
+  @override
+  String get bitacoraEstadisticasTitulo => 'Fuel economy and spending';
+
+  @override
+  String get bitacoraGraficaTitulo => 'Spending by month';
+
+  @override
+  String get bitacoraGraficaVacia => 'There are no expenses to chart yet.';
+
+  @override
+  String get bitacoraSinRendimientoTitulo => 'No fuel economy yet';
+
+  @override
+  String bitacoraSinRendimientoMensaje(int cargas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cargas,
+      locale: localeName,
+      other:
+          'You have $cargas fill-ups, but their odometer readings don\'t advance.',
+      one: 'You have 1 fill-up.',
+      zero: 'You haven\'t logged any yet.',
+    );
+    return 'To work out km/l and cost per km we need at least 2 fill-ups with their odometer reading. $_temp0';
+  }
+
+  @override
+  String bitacoraBaseDelCalculo(String km, int tramos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tramos,
+      locale: localeName,
+      other: '$tramos stretches',
+      one: '1 stretch',
+    );
+    return 'Based on $km km driven across $_temp0 between fill-ups.';
+  }
+
+  @override
+  String get bitacoraExportarTitulo => 'Export logbook';
+
+  @override
+  String get bitacoraExportarIntro =>
+      'Pick the months and share your logbook with the system sheet.';
+
+  @override
+  String get bitacoraExportarDesde => 'From';
+
+  @override
+  String get bitacoraExportarHasta => 'To';
+
+  @override
+  String get bitacoraExportarCsv => 'Share CSV';
+
+  @override
+  String get bitacoraExportarPdf => 'Share PDF';
+
+  @override
+  String get bitacoraExportarVacio => 'There are no expenses in those months.';
+
+  @override
+  String get bitacoraExportarRangoInvalido =>
+      'The first month can\'t be after the last one.';
+
+  @override
+  String get bitacoraExportarError =>
+      'The file couldn\'t be shared. Try again.';
+
+  @override
+  String bitacoraPdfTitulo(String vehiculo) {
+    return 'Logbook for $vehiculo';
+  }
+
+  @override
+  String bitacoraPdfPeriodo(String desde, String hasta) {
+    return '$desde to $hasta';
+  }
+
+  @override
+  String bitacoraPdfTotal(String monto) {
+    return 'Total: $monto';
+  }
+
+  @override
+  String get bitacoraColumnaFecha => 'Date';
+
+  @override
+  String get bitacoraColumnaTipo => 'Type';
+
+  @override
+  String get bitacoraColumnaMonto => 'Amount';
+
+  @override
+  String get bitacoraColumnaLitros => 'Liters';
+
+  @override
+  String get bitacoraColumnaKm => 'Km';
+
+  @override
+  String get bitacoraColumnaDetalle => 'Details';
+
+  @override
+  String get bitacoraAccesoFila => 'Logbook';
+
+  @override
   String get asistenteSugerenciasTitulo => 'Try one of these';
 
   @override
