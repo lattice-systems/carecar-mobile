@@ -2771,9 +2771,9 @@
       }
     }
   },
-  "recoleccionSeguimientoAbrir": "Seguir el traslado",
+  "recoleccionSeguimientoAbrir": "Toca un traslado para seguirlo en vivo.",
   "@recoleccionSeguimientoAbrir": {
-    "description": "Fila que abre el seguimiento desde la cita."
+    "description": "Pie del grupo de recolección: invita a abrir el seguimiento."
   },
   "recoleccionSeguimientoLineaEncabezado": "Avance",
   "@recoleccionSeguimientoLineaEncabezado": {
