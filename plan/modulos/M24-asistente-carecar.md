@@ -91,6 +91,7 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - aviso de IA fijo;
   - estado vacío con cinco preguntas sugeridas en `ChipPista` que se envían al tocarlas (V2-M24.08);
   - burbujas con la cita «Manual, pág. N», que abre el manual;
+  - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
   - reintento sin conexión;
   - límite y falta de manual explicados.
 - **Entrada:** desde el detalle del vehículo, en «Tu auto».
