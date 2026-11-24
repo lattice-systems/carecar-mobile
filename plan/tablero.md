@@ -158,12 +158,12 @@ Total: **218 historias** + 4 de H0.
 | V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | En revisión | backend#89, #109 |
 | V2-M04.06 | Saber cuándo mi auto está listo | Ricardo | B | V2-M04.03 | Lista | |
 | V2-M04.07 | Que la orden cerrada pase a mi historial con su ticket | Ricardo | B | V2-M04.06 | Lista | |
-| V2-M05.01 | Ver el plan de mantenimiento de mi modelo | Juan Pablo | B | V2-M02.05 | Lista | |
-| V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Lista | |
-| V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Lista | |
-| V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Lista | |
+| V2-M05.01 | Ver el plan de mantenimiento de mi modelo | Juan Pablo | B | V2-M02.05 | En revisión | #95, backend#87 |
+| V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | En revisión | #95, backend#87 |
+| V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | En revisión | #95, backend#87 |
+| V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | En revisión | #95 |
 | V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Lista | |
-| V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Lista | |
+| V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | En revisión | #95, backend#87 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 | Lista | |
@@ -237,6 +237,16 @@ Total: **218 historias** + 4 de H0.
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Lista | |
 | V2-M17.05 | Cancelar o reprogramar la cita mueve sus traslados | Juan Pablo | B | V2-M17.02 | En curso | |
 | V2-M17.06 | Entrar a «Mis direcciones» desde el perfil | Juan Pablo |  | V2-M17.01 | Lista | |
+| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Borrador | |
+| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Borrador | |
+| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Borrador | |
+| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Hecha | #94, backend#86 |
+| V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Hecha | #94, backend#86 |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | En revisión | #95, backend#87 |
+| V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | En revisión | #95, backend#87 |
+| V2-M17.05 | Cancelar o reprogramar la cita mueve sus traslados | Juan Pablo | B | V2-M17.02 | En revisión | backend#87 |
+| V2-M17.06 | Entrar a «Mis direcciones» desde el perfil | Juan Pablo |  | V2-M17.01 | En revisión | #95 |
 | V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
 | V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 | Borrador | |
 | V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01, V2-M02.08 | Borrador | |
@@ -247,15 +257,15 @@ Total: **218 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | En revisión | #94, backend#86 |
+| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Hecha | #94, backend#86 |
 | V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Hecha | #65 |
-| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Lista | |
-| V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Lista | |
-| V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | Lista | |
-| V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01, V2-T02.10 | Lista | |
-| V2-M18.04 | Registrar otros gastos | Juan Pablo | B | V2-M18.01 | Lista | |
-| V2-M18.05 | Exportar mi bitácora | Juan Pablo |  | V2-M18.03 | Lista | |
+| V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | En revisión | #95, backend#87 |
+| V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | En revisión | #95, backend#87 |
+| V2-M18.02 | Llenar la carga desde la foto del ticket | Juan Pablo |  | V2-M18.01 | En revisión | #95 |
+| V2-M18.03 | Ver mi rendimiento y gasto | Juan Pablo |  | V2-M18.01, V2-T02.10 | En revisión | #95 |
+| V2-M18.04 | Registrar otros gastos | Juan Pablo | B | V2-M18.01 | En revisión | #95, backend#87 |
+| V2-M18.05 | Exportar mi bitácora | Juan Pablo |  | V2-M18.03 | En revisión | #95 |
 | V2-M19.01 | Invitar a alguien a ver mi vehículo | Jael | B | V2-M01.04 | Borrador | |
 | V2-M19.02 | Aceptar y ver el vehículo compartido | Jael | B | V2-M19.01 | Borrador | |
 | V2-M19.03 | Limitar lo que puede hacer el invitado | Jael | B | V2-M19.02 | Borrador | |
