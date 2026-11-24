@@ -35,7 +35,7 @@ Total: **214 historias** + 4 de H0.
 | V2-T01.05 | Migrar módulo por módulo sin romper v1 | Daniel |  | V2-T01.03 | Hecha | #75 |
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Hecha | #74 |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
-| V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Lista | |
+| V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Hecha | #106 |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
@@ -62,8 +62,8 @@ Total: **214 historias** + 4 de H0.
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
-| V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Lista | |
-| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Lista | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)) |
+| V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
+| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | En curso | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
 | V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Lista | |
@@ -259,7 +259,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M24.01 | Elegir el proveedor de modelo y la arquitectura RAG | Daniel |  | — | Hecha | #81 |
 | V2-M24.02 | Indexar los manuales por página | Daniel | B | V2-M24.01, V2-T05.05 | Hecha | backend#79, #84 |
 | V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Hecha | backend#79, #84 |
-| V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |
+| V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Hecha | #101 |
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Hecha | #97 |
 | V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Hecha | #100, backend#87 |

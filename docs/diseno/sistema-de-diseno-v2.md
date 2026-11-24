@@ -110,6 +110,8 @@ Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa
 
 **`BotonCircular`** (V2-T02.17): botón de un ícono, círculo de 48 con `ReboteTactil`. Variante `tonal` (fondo `superficieHundida`, ícono `textoSecundario`) y `acento` (fondo `acentoSuave`, ícono `acento`). Con `iconoMarcado` es interruptor: marcado se ve como acento y el lector lo anuncia seleccionado. Deshabilitado: fondo hundido, ícono terciario, sin rebote. Lo usan enviar (acento) y adjuntar de `CampoMensaje`, y 👍/👎 del asistente.
 
+**`VisorPdf.paginaInicial`** (V2-M24.04): abre el documento en esa página (por omisión la 1) y el contador empieza ahí; si el documento tiene menos páginas, abre en la última. La fábrica del visor recibe la página para pasarla al motor nativo.
+
 ### Vidrio líquido y píldora (V2-T02.16)
 
 Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos, dibujados por Flutter, así que se ven igual en Android y en iOS.

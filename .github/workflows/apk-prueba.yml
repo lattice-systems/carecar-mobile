@@ -1,0 +1,91 @@
+name: APK de prueba
+
+# V2-T04.03 (Android): cada merge a main publica el APK del flavor pruebas,
+# firmado con la llave de pruebas (V2-T04.02), en un pre-release fijo
+# «prueba-main» que el equipo instala desde el enlace. Se reemplaza en cada
+# merge; las versiones estables siguen saliendo por release.yml.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "lib/**"
+      - "assets/**"
+      - "android/**"
+      - "pubspec.*"
+      - ".github/workflows/apk-prueba.yml"
+      - "scripts/preparar-firma-android.sh"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+# Solo importa el último merge: uno nuevo cancela el anterior.
+concurrency:
+  group: apk-prueba
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: "3.47.x"
+  ETIQUETA: prueba-main
+
+jobs:
+  apk:
+    name: APK de prueba (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Configurar JDK 17 (Temurin)
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+          cache-dependency-path: |
+            android/*.gradle*
+            android/gradle/wrapper/gradle-wrapper.properties
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      # Llave de pruebas, separada de la de producción: si se filtra no
+      # compromete la app de la tienda.
+      - name: Preparar la firma de pruebas
+        id: firma
+        env:
+          LLAVE_BASE64: ${{ secrets.ANDROID_PRUEBAS_LLAVE_BASE64 }}
+          LLAVE_CONTRASENA: ${{ secrets.ANDROID_PRUEBAS_LLAVE_CONTRASENA }}
+          LLAVE_ALIAS: ${{ secrets.ANDROID_PRUEBAS_LLAVE_ALIAS }}
+        run: scripts/preparar-firma-android.sh
+
+      # Flavor pruebas: backend de Azure, solo https (V2-M22.09), y un paquete
+      # distinto (.pruebas) para convivir con la app de producción.
+      - name: Compilar el APK (pruebas)
+        run: flutter build apk --release --flavor pruebas -t lib/main_pruebas.dart --build-number=${{ github.run_number }}
+
+      - name: Publicar en el pre-release «prueba-main»
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NUMERO: ${{ github.run_number }}
+          FIRMADO: ${{ steps.firma.outputs.firmado }}
+        run: |
+          cp build/app/outputs/flutter-apk/app-pruebas-release.apk carecar-pruebas.apk
+          corto=$(git rev-parse --short HEAD)
+          if [ "$FIRMADO" = true ]; then firma="Firmado con la llave de pruebas."; else firma="**Aviso:** firmado con la llave de debug (faltan los secretos ANDROID_PRUEBAS_*; ver scripts/crear-llaves-android.sh)."; fi
+          gh release delete "$ETIQUETA" --cleanup-tag --yes 2>/dev/null || true
+          gh release create "$ETIQUETA" carecar-pruebas.apk \
+            --prerelease --target "$GITHUB_SHA" \
+            --title "CareCar Pruebas · main ($corto)" \
+            --notes "APK de prueba del último merge a main ($corto, build $NUMERO). App «CareCar Pruebas», contra el backend de Azure; se instala junto a la de producción.
+
+          $firma
+
+          Se reemplaza en cada merge. Las versiones estables están en los Release vX.Y.Z."
