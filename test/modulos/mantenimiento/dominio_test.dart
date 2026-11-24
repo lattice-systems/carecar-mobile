@@ -65,10 +65,7 @@ void main() {
 
   group('PlanMantenimiento', () {
     PlanMantenimiento plan(List<ServicioMantenimiento> servicios) =>
-        PlanMantenimiento(
-          vehiculoId: 5,
-          servicios: servicios,
-        );
+        PlanMantenimiento(vehiculoId: 5, servicios: servicios);
 
     test('sin servicios no hay plan para el modelo', () {
       expect(plan(const []).sinPlan, isTrue);
