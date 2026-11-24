@@ -1692,9 +1692,9 @@
       }
     }
   },
-  "recoleccionSeguimientoAbrir": "Track the transfer",
+  "recoleccionSeguimientoAbrir": "Tap a transfer to follow it live.",
   "@recoleccionSeguimientoAbrir": {
-    "description": "Fila que abre el seguimiento desde la cita."
+    "description": "Pie del grupo de recolección: invita a abrir el seguimiento."
   },
   "recoleccionSeguimientoLineaEncabezado": "Progress",
   "@recoleccionSeguimientoLineaEncabezado": {
