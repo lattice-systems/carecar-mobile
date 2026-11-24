@@ -27,6 +27,8 @@ enum CodigoProblema {
   solicitudAbierta('SOLICITUD_ABIERTA'),
   fueraDeCobertura('FUERA_DE_COBERTURA'),
   direccionEnUso('DIRECCION_EN_USO'),
+  ordenCerrada('ORDEN_CERRADA'),
+  adicionalYaRespondido('ADICIONAL_YA_RESPONDIDO'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
