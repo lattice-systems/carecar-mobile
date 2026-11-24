@@ -2195,7 +2195,7 @@ abstract class AppLocalizations {
   /// Botón de la portada del detalle que abre el flujo de agendar cita.
   ///
   /// In es, this message translates to:
-  /// **'Agendar servicio'**
+  /// **'Agendar'**
   String get vehiculosAgendarServicio;
 
   /// Botón de la portada del detalle que abre el manual del vehículo.

@@ -1313,7 +1313,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get citasComprobanteRecepcion => 'En recepción';
 
   @override
-  String get vehiculosAgendarServicio => 'Agendar servicio';
+  String get vehiculosAgendarServicio => 'Agendar';
 
   @override
   String get vehiculosBotonManual => 'Manual';

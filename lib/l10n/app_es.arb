@@ -1645,7 +1645,7 @@
   "@citasComprobanteRecepcion": {
     "description": "Título de la indicación para recepción en el comprobante."
   },
-  "vehiculosAgendarServicio": "Agendar servicio",
+  "vehiculosAgendarServicio": "Agendar",
   "@vehiculosAgendarServicio": {
     "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
   },

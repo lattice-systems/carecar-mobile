@@ -1320,7 +1320,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasComprobanteRecepcion => 'At reception';
 
   @override
-  String get vehiculosAgendarServicio => 'Book a service';
+  String get vehiculosAgendarServicio => 'Book';
 
   @override
   String get vehiculosBotonManual => 'Manual';
