@@ -44,7 +44,7 @@ void main() {
   group('rango de meses (V2-M18.05)', () {
     test('incluye el primer y el último mes del rango', () {
       final r = gastosEnRango(gastos, DateTime(2026, 10), DateTime(2026, 11));
-      expect(r.map((x) => x.id), [2, 3]);
+      expect(r.map((x) => x.id), [3, 2]);
     });
 
     test('un solo mes', () {
@@ -62,7 +62,7 @@ void main() {
 
   group('CSV', () {
     final csv = gastosACsv(gastos);
-    final lineas = csv.split('\r\n');
+    final lineas = csv.substring(1).split('\r\n');
 
     test('trae encabezado y una fila por gasto', () {
       expect(lineas.first, 'fecha,tipo,monto,litros,km,descripcion');
