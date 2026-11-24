@@ -19,15 +19,27 @@ import '../../../../nucleo/mapas/mapas.dart';
 class MapaProvisional extends ConsumerStatefulWidget {
   const MapaProvisional({
     required this.pin,
-    required this.alElegir,
     super.key,
+    this.alElegir,
     this.alto = 260,
+    this.icono = Icons.location_on,
+    this.descripcion,
   });
 
   /// Dónde está el pin; nulo mientras no se ha puesto.
   final Coordenada? pin;
-  final ValueChanged<Coordenada> alElegir;
+
+  /// Se llama con la coordenada tocada; nulo hace el mapa de solo lectura
+  /// (el seguimiento del chofer).
+  final ValueChanged<Coordenada>? alElegir;
   final double alto;
+
+  /// Marcador; el seguimiento usa el del chofer.
+  final IconData icono;
+
+  /// Lo que lee el lector de pantalla. Por omision describe el pin del
+  /// formulario de direcciones.
+  final String? descripcion;
 
   /// Centro de la zona de cobertura de desarrollo: Ciudad de México.
   static const _centroInicial = LatLng(19.4326, -99.1332);
@@ -71,12 +83,14 @@ class _EstadoMapaProvisional extends ConsumerState<MapaProvisional> {
 
     return Semantics(
       container: true,
-      label: pin == null
-          ? textos.recoleccionFormMapaSinPin
-          : textos.recoleccionFormMapaDescripcion(
-              '${pin.latitud}',
-              '${pin.longitud}',
-            ),
+      label:
+          widget.descripcion ??
+          (pin == null
+              ? textos.recoleccionFormMapaSinPin
+              : textos.recoleccionFormMapaDescripcion(
+                  '${pin.latitud}',
+                  '${pin.longitud}',
+                )),
       child: ClipRRect(
         borderRadius: Radios.bordeTarjeta,
         child: SizedBox(
@@ -92,8 +106,10 @@ class _EstadoMapaProvisional extends ConsumerState<MapaProvisional> {
               interactionOptions: const InteractionOptions(
                 flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
               ),
-              onTap: (_, p) =>
-                  widget.alElegir(Coordenada(p.latitude, p.longitude)),
+              onTap: widget.alElegir == null
+                  ? null
+                  : (_, p) =>
+                        widget.alElegir!(Coordenada(p.latitude, p.longitude)),
             ),
             children: [
               TileLayer(
@@ -109,11 +125,7 @@ class _EstadoMapaProvisional extends ConsumerState<MapaProvisional> {
                       height: 48,
                       alignment: Alignment.topCenter,
                       child: ExcludeSemantics(
-                        child: Icon(
-                          Icons.location_on,
-                          size: 48,
-                          color: c.acento,
-                        ),
+                        child: Icon(widget.icono, size: 48, color: c.acento),
                       ),
                     ),
                   ],
