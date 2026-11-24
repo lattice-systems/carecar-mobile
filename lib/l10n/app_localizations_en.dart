@@ -10,6 +10,16 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String accesoBloqueoMinutos(int minutos) {
+    return 'Wait $minutos min before trying again.';
+  }
+
+  @override
+  String accesoBloqueoSegundos(int segundos) {
+    return 'Wait $segundos s before trying again.';
+  }
+
+  @override
   String get accesoBloqueoTitulo => 'Too many attempts';
 
   @override

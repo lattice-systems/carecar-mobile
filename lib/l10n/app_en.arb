@@ -1,5 +1,21 @@
 {
   "@@locale": "en",
+  "accesoBloqueoMinutos": "Wait {minutos} min before trying again.",
+  "@accesoBloqueoMinutos": {
+    "placeholders": {
+      "minutos": {
+        "type": "int"
+      }
+    }
+  },
+  "accesoBloqueoSegundos": "Wait {segundos} s before trying again.",
+  "@accesoBloqueoSegundos": {
+    "placeholders": {
+      "segundos": {
+        "type": "int"
+      }
+    }
+  },
   "accesoBloqueoTitulo": "Too many attempts",
   "accesoContrasenaEtiqueta": "Password",
   "accesoContrasenaVacia": "Enter your password.",

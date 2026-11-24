@@ -1,5 +1,7 @@
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/modulos/acceso/presentacion/aviso_bloqueo.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_acceso.dart';
+import 'package:carecar_mobile/modulos/acceso/presentacion/proveedores_acceso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
@@ -22,13 +24,19 @@ void main() {
   ControladorSesion controlador(ApiFalsa api) =>
       ControladorSesion(api, AlmacenEnMemoria());
 
-  Future<void> montar(WidgetTester tester, ControladorSesion sesion) =>
-      tester.pumpWidget(
-        ProviderScope(
-          overrides: [controladorSesionProvider.overrideWithValue(sesion)],
-          child: conTemaPista(const PantallaAcceso()),
-        ),
-      );
+  Future<void> montar(
+    WidgetTester tester,
+    ControladorSesion sesion, {
+    DateTime Function()? reloj,
+  }) => tester.pumpWidget(
+    ProviderScope(
+      overrides: [
+        controladorSesionProvider.overrideWithValue(sesion),
+        if (reloj != null) relojAccesoProvider.overrideWithValue(reloj),
+      ],
+      child: conTemaPista(const PantallaAcceso()),
+    ),
+  );
 
   Future<void> escribir(
     WidgetTester tester, {
@@ -148,7 +156,7 @@ void main() {
       expect(find.text('Sin conexión'), findsOneWidget);
     });
 
-    testWidgets('bloqueo por intentos: advertencia con su propio titulo', (
+    testWidgets('bloqueo por intentos: cuenta regresiva en minutos', (
       tester,
     ) async {
       await montar(
@@ -163,6 +171,61 @@ void main() {
       await escribir(tester);
       await entrar(tester);
 
+      expect(find.byType(AvisoBloqueo), findsOneWidget);
+      expect(find.text('Demasiados intentos'), findsOneWidget);
+      expect(find.textContaining('15 min'), findsOneWidget);
+      // No se usa el texto que armo el controlador: ese no baja.
+      expect(find.text('Espera 15 minutos.'), findsNothing);
+    });
+
+    testWidgets('la cuenta no se reinicia al reconstruir la pantalla', (
+      tester,
+    ) async {
+      var ahora = DateTime(2026, 11, 24, 10, 0);
+      await montar(
+        tester,
+        controlador(
+          ApiFalsa.queFalla(
+            const DemasiadosIntentos('Espera.', esperaSegundos: 900),
+          ),
+        ),
+        reloj: () => ahora,
+      );
+
+      await escribir(tester);
+      await entrar(tester);
+      expect(find.textContaining('15 min'), findsOneWidget);
+
+      // Pasan diez minutos y algo reconstruye la pantalla (escribir en un
+      // campo basta). Si el fin del bloqueo se recalculara en cada build,
+      // volveria a decir 15 y el usuario nunca veria bajar la cuenta.
+      ahora = ahora.add(const Duration(minutes: 10));
+      await tester.enterText(
+        find.byKey(PantallaAcceso.campoCorreo),
+        'otro@example.com',
+      );
+      await tester.pump(const Duration(seconds: 1));
+
+      expect(find.textContaining('5 min'), findsOneWidget);
+      expect(find.textContaining('15 min'), findsNothing);
+    });
+
+    testWidgets('un bloqueo sin Retry-After cae en el aviso generico', (
+      tester,
+    ) async {
+      // El encabezado es opcional en el contrato: sin el no hay cuenta que
+      // mostrar, pero el usuario igual tiene que saber que esta bloqueado.
+      await montar(
+        tester,
+        controlador(
+          ApiFalsa.queFalla(const DemasiadosIntentos('Demasiados intentos.')),
+        ),
+      );
+
+      await escribir(tester);
+      await entrar(tester);
+
+      expect(find.byType(AvisoBloqueo), findsNothing);
       final aviso = tester.widget<Aviso>(
         find.byKey(PantallaAcceso.avisoDeError),
       );

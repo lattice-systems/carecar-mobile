@@ -98,6 +98,18 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
+  /// Cuenta regresiva del bloqueo por intentos, cuando falta más de un minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {minutos} min para volver a intentar.'**
+  String accesoBloqueoMinutos(int minutos);
+
+  /// Cuenta regresiva del bloqueo por intentos en su último minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {segundos} s para volver a intentar.'**
+  String accesoBloqueoSegundos(int segundos);
+
   /// Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos.
   ///
   /// In es, this message translates to:

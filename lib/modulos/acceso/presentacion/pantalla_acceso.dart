@@ -11,6 +11,9 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../../sesion/controlador_sesion.dart';
+import '../dominio/bloqueo_por_intentos.dart';
+import 'aviso_bloqueo.dart';
+import 'proveedores_acceso.dart';
 
 /// Pantalla de acceso · V2-M01.01.
 ///
@@ -47,6 +50,30 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
   /// validador, asi que no hay `Form` ni `FormState` que los junte.
   String? _errorCorreo;
   String? _errorContrasena;
+
+  /// Hasta cuando dura el bloqueo por intentos, si hay uno.
+  ///
+  /// Se guarda en vez de calcularse en cada `build`: el `Retry-After` dice
+  /// cuantos segundos faltan **desde que fallo**, asi que recalcularlo
+  /// reiniciaria la cuenta cada vez que la pantalla se reconstruye -escribir
+  /// en un campo basta- y el usuario nunca la veria bajar.
+  BloqueoPorIntentos? _bloqueo;
+
+  /// Recuerda el bloqueo cuando aparece, y lo olvida al salir del fallo.
+  void _alCambiarLaSesion(EstadoSesion? _, EstadoSesion actual) {
+    if (actual is FalloDeSesion && actual.esBloqueoTemporal) {
+      final segundos = actual.esperaSegundos;
+      final nuevo = BloqueoPorIntentos.desde(
+        ahora: ref.read(relojAccesoProvider)(),
+        espera: segundos == null ? null : Duration(seconds: segundos),
+      );
+      if (nuevo != null) setState(() => _bloqueo = nuevo);
+      return;
+    }
+    if (actual is! FalloDeSesion && _bloqueo != null) {
+      setState(() => _bloqueo = null);
+    }
+  }
 
   @override
   void dispose() {
@@ -96,6 +123,7 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
+    ref.listen(estadoSesionProvider, _alCambiarLaSesion);
     final estado = ref.watch(estadoSesionProvider);
     final entrando = estado is Autenticando;
     final fallo = estado is FalloDeSesion ? estado : null;
@@ -120,7 +148,13 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
                     subtitulo: textos.accesoSubtitulo,
                   ),
                   const SizedBox(height: Espaciado.e6),
-                  if (fallo != null) ...[
+                  if (_bloqueo != null) ...[
+                    AvisoBloqueo(
+                      bloqueo: _bloqueo!,
+                      reloj: ref.watch(relojAccesoProvider),
+                    ),
+                    const SizedBox(height: Espaciado.e4),
+                  ] else if (fallo != null) ...[
                     Aviso(
                       key: PantallaAcceso.avisoDeError,
                       // Ni «sin conexion» ni «demasiados intentos» son errores

@@ -1,5 +1,25 @@
 {
   "@@locale": "es",
+  "accesoBloqueoMinutos": "Espera {minutos} min para volver a intentar.",
+  "@accesoBloqueoMinutos": {
+    "description": "Cuenta regresiva del bloqueo por intentos, cuando falta más de un minuto.",
+    "placeholders": {
+      "minutos": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "accesoBloqueoSegundos": "Espera {segundos} s para volver a intentar.",
+  "@accesoBloqueoSegundos": {
+    "description": "Cuenta regresiva del bloqueo por intentos en su último minuto.",
+    "placeholders": {
+      "segundos": {
+        "type": "int",
+        "example": "45"
+      }
+    }
+  },
   "accesoBloqueoTitulo": "Demasiados intentos",
   "@accesoBloqueoTitulo": {
     "description": "Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos."
