@@ -182,6 +182,18 @@ abstract class AppLocalizations {
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
 
+  /// Detalle del aviso cuando el servidor está despertando y la petición sigue en curso.
+  ///
+  /// In es, this message translates to:
+  /// **'La primera vez después de un rato puede tardar hasta un minuto.'**
+  String get accesoServidorDespertandoMensaje;
+
+  /// Título del aviso cuando el servidor tarda más de unos segundos en responder al acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Despertando el servidor…'**
+  String get accesoServidorDespertandoTitulo;
+
   /// Título del aviso cuando no se pudo llegar al servidor al intentar entrar.
   ///
   /// In es, this message translates to:

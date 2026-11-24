@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +15,7 @@ import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../../sesion/controlador_sesion.dart';
 import '../dominio/bloqueo_por_intentos.dart';
 import 'aviso_bloqueo.dart';
+import 'espera_servidor.dart';
 import 'proveedores_acceso.dart';
 
 /// Pantalla de acceso · V2-M01.01.
@@ -59,8 +62,29 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
   /// en un campo basta- y el usuario nunca la veria bajar.
   BloqueoPorIntentos? _bloqueo;
 
+  /// Arranca al empezar la peticion y avisa si el servidor tarda (V2-M01.12).
+  Timer? _esperaDelServidor;
+  bool _servidorTarda = false;
+
+  /// Vigila si el servidor tarda en contestar.
+  ///
+  /// El aviso se va en cuanto responde, con exito o con error: dejarlo haria
+  /// que el cliente leyera «despertando» junto a un mensaje de credenciales.
+  void _vigilarLaEspera(EstadoSesion actual) {
+    if (actual is Autenticando) {
+      _esperaDelServidor ??= Timer(umbralEsperaServidor, () {
+        if (mounted) setState(() => _servidorTarda = true);
+      });
+      return;
+    }
+    _esperaDelServidor?.cancel();
+    _esperaDelServidor = null;
+    if (_servidorTarda) setState(() => _servidorTarda = false);
+  }
+
   /// Recuerda el bloqueo cuando aparece, y lo olvida al salir del fallo.
   void _alCambiarLaSesion(EstadoSesion? _, EstadoSesion actual) {
+    _vigilarLaEspera(actual);
     if (actual is FalloDeSesion && actual.esBloqueoTemporal) {
       final segundos = actual.esperaSegundos;
       final nuevo = BloqueoPorIntentos.desde(
@@ -77,6 +101,7 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
 
   @override
   void dispose() {
+    _esperaDelServidor?.cancel();
     _correo.dispose();
     _contrasena.dispose();
     super.dispose();
@@ -148,6 +173,10 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
                     subtitulo: textos.accesoSubtitulo,
                   ),
                   const SizedBox(height: Espaciado.e6),
+                  if (_servidorTarda) ...[
+                    const AvisoEsperaServidor(),
+                    const SizedBox(height: Espaciado.e4),
+                  ],
                   if (_bloqueo != null) ...[
                     AvisoBloqueo(
                       bloqueo: _bloqueo!,

@@ -57,6 +57,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoOlvide => 'Forgot your password?';
 
   @override
+  String get accesoServidorDespertandoMensaje =>
+      'The first time after a while it can take up to a minute.';
+
+  @override
+  String get accesoServidorDespertandoTitulo => 'Waking up the server…';
+
+  @override
   String get accesoSinConexionTitulo => 'No connection';
 
   @override

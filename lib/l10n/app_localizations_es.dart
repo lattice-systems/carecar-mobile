@@ -57,6 +57,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
 
   @override
+  String get accesoServidorDespertandoMensaje =>
+      'La primera vez después de un rato puede tardar hasta un minuto.';
+
+  @override
+  String get accesoServidorDespertandoTitulo => 'Despertando el servidor…';
+
+  @override
   String get accesoSinConexionTitulo => 'Sin conexión';
 
   @override

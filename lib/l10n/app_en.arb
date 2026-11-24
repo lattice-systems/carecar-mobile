@@ -28,6 +28,8 @@
   "accesoFalloTitulo": "We couldn't sign you in",
   "accesoMarca": "CareCar",
   "accesoOlvide": "Forgot your password?",
+  "accesoServidorDespertandoMensaje": "The first time after a while it can take up to a minute.",
+  "accesoServidorDespertandoTitulo": "Waking up the server…",
   "accesoSinConexionTitulo": "No connection",
   "accesoSinRegistro": "The dealership gives you your access when you pick up your vehicle. If you don't have it, get in touch with them.",
   "accesoSubtitulo": "Your access to the dealership",
