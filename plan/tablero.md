@@ -97,8 +97,8 @@ Total: **213 historias** + 4 de H0.
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57 |
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | En revisión | #65 |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Hecha | #65, backend#70 |
-| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | En revisión | backend#85, #92 |
-| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | En revisión | backend#85, #92 |
+| V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Hecha | backend#85, #92 |
+| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92 |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58, backend#70 |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Hecha | #65 |

@@ -117,19 +117,14 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('historial sigue como "Disponible pronto"; manuales y ficha ya son '
-      'accesos', (tester) async {
+  _prueba('historial, manuales y ficha son accesos', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     expect(find.text('Historial de servicios'), findsOneWidget);
     expect(find.text('Manuales'), findsOneWidget);
     expect(find.text('Ficha técnica'), findsOneWidget);
-    expect(find.text('Disponible pronto'), findsOneWidget);
-    expect(
-      find.bySemanticsLabel('Historial de servicios. Disponible pronto'),
-      findsOneWidget,
-    );
-    expect(find.bySemanticsLabel('Manuales. Disponible pronto'), findsNothing);
+    expect(find.text('Disponible pronto'), findsNothing);
+    expect(find.bySemanticsLabel('Historial de servicios'), findsOneWidget);
   });
 
   _prueba('un id que no esta en el garaje explica y no deja en blanco', (
@@ -180,7 +175,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Vehicle details'), findsOneWidget);
     expect(find.text('Service history'), findsOneWidget);
-    expect(find.text('Coming soon'), findsOneWidget);
+    expect(find.text('Coming soon'), findsNothing);
     expect(find.textContaining('Updated by the workshop on'), findsOneWidget);
   });
 
