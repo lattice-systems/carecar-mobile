@@ -46,7 +46,9 @@ class Firma extends StatelessWidget {
           Container(
             height: alto,
             decoration: BoxDecoration(
-              color: Colors.white,
+              // Papel blanco solo con firma: la tinta es oscura. Vacio, una
+              // caja blanca deslumbra en modo oscuro.
+              color: imagen == null ? c.superficieHundida : Colors.white,
               borderRadius: Radios.bordeTarjeta,
               border: Border.all(color: c.borde),
             ),
@@ -55,9 +57,7 @@ class Firma extends StatelessWidget {
                 ? Center(
                     child: Text(
                       textos.firmaAunSinFirma,
-                      style: t.cuerpoChico.copyWith(
-                        color: const Color(0xFF5B6270),
-                      ),
+                      style: t.cuerpoChico.copyWith(color: c.textoSecundario),
                     ),
                   )
                 : Image(
