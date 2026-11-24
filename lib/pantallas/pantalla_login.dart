@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../nucleo/diseno/componentes/rebote_tactil.dart';
@@ -114,197 +115,212 @@ class _PantallaLoginState extends State<PantallaLogin> {
     final entrando = estado is Autenticando;
     final fallo = estado is FalloDeSesion ? estado : null;
 
-    return Theme(
-      data: TemaPista.oscuro(),
-      child: Scaffold(
-        backgroundColor: const Color(0xFF08090C),
-        body: Stack(
-          children: [
-            // 1. Atmósfera luminosa Liquid Glass: radial cobalto
-            Positioned(
-              top: -120,
-              left: -60,
-              right: -60,
-              height: 400,
-              child: IgnorePointer(
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        const Color(0xFF2457F5).withValues(alpha: 0.22),
-                        const Color(0xFF2457F5).withValues(alpha: 0.05),
-                        Colors.transparent,
-                      ],
-                      stops: const [0.0, 0.55, 1.0],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // 2. Contenido desplazable y protegido de SafeArea
-            SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: TemaCareCar.rellenoTarjeta,
-                    vertical: TemaCareCar.espacioSecciones,
-                  ),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 420),
-                    child: Form(
-                      key: _formulario,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          const _Encabezado(),
-                          const SizedBox(height: TemaCareCar.espacioSecciones),
-                          if (entrando && _servidorTarda) ...[
-                            const AvisoServidorDespertando(
-                              key: PantallaLogin.avisoServidorDespertando,
-                            ),
-                            const SizedBox(height: TemaCareCar.espacioCampos),
-                          ],
-                          if (fallo != null) ...[
-                            Aviso(
-                              key: PantallaLogin.avisoDeError,
-                              tono:
-                                  fallo.esFalloDeRed || fallo.esBloqueoTemporal
-                                  ? TonoAviso.advertencia
-                                  : TonoAviso.error,
-                              icono: switch (fallo) {
-                                _ when fallo.esFalloDeRed =>
-                                  Icons.wifi_off_outlined,
-                                _ when fallo.esBloqueoTemporal =>
-                                  Icons.lock_clock_outlined,
-                                _ => null,
-                              },
-                              titulo: switch (fallo) {
-                                _ when fallo.esFalloDeRed => 'Sin conexión',
-                                _ when fallo.esBloqueoTemporal =>
-                                  'Demasiados intentos',
-                                _ => 'No pudimos iniciar sesión',
-                              },
-                              detalle: fallo.mensaje,
-                            ),
-                            const SizedBox(height: TemaCareCar.espacioCampos),
-                          ],
-                          CampoTexto(
-                            llave: PantallaLogin.campoCorreo,
-                            controlador: _correo,
-                            etiqueta: 'Correo',
-                            ayuda: 'El que le diste a la agencia',
-                            habilitado: !entrando,
-                            icono: Icons.mail_outline_rounded,
-                            teclado: TextInputType.emailAddress,
-                            autocompletar: const [AutofillHints.email],
-                            textInputAction: TextInputAction.next,
-                            validar: _validarCorreo,
-                          ),
-                          const SizedBox(height: TemaCareCar.espacioCampos),
-                          CampoTexto(
-                            llave: PantallaLogin.campoContrasena,
-                            controlador: _contrasena,
-                            etiqueta: 'Contraseña',
-                            habilitado: !entrando,
-                            icono: Icons.lock_outline_rounded,
-                            ocultar: !_verContrasena,
-                            textInputAction: TextInputAction.done,
-                            alEnviar: entrando ? null : _entrar,
-                            sufijo: IconButton(
-                              key: PantallaLogin.botonVerContrasena,
-                              onPressed: entrando
-                                  ? null
-                                  : () => setState(
-                                      () => _verContrasena = !_verContrasena,
-                                    ),
-                              icon: Icon(
-                                _verContrasena
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.visibility_outlined,
-                                color: const Color(0xFF8E9BAE),
-                                size: 20,
-                              ),
-                              tooltip: _verContrasena
-                                  ? 'Ocultar la contraseña'
-                                  : 'Mostrar la contraseña',
-                            ),
-                            validar: (valor) => (valor == null || valor.isEmpty)
-                                ? 'Escribe tu contraseña.'
-                                : null,
-                          ),
-                          const SizedBox(height: TemaCareCar.espacioSecciones),
-                          ReboteTactil(
-                            habilitado: !entrando,
-                            child: ShadButton(
-                              key: PantallaLogin.botonEntrar,
-                              size: ShadButtonSize.lg,
-                              backgroundColor: const Color(0xFF2457F5),
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF2457F5), Color(0xFF3B72FF)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              decoration: const ShadDecoration(
-                                border: ShadBorder(radius: Radios.bordePildora),
-                              ),
-                              shadows: [
-                                BoxShadow(
-                                  color: const Color(0xFF2457F5)
-                                      .withValues(alpha: 0.35),
-                                  blurRadius: 18,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                              onPressed: entrando ? null : _entrar,
-                              child: Text(
-                                entrando
-                                    ? 'Entrando…'
-                                    : (fallo?.esFalloDeRed ?? false)
-                                    ? 'Reintentar'
-                                    : 'Iniciar sesión',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.2,
-                                ),
-                              ),
-                            ),
-                          ),
-                          if (widget.alOlvidarContrasena != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: ShadButton.link(
-                                key: PantallaLogin.botonOlvide,
-                                foregroundColor: const Color(0xFF5B8CFF),
-                                onPressed: entrando
-                                    ? null
-                                    : () => widget.alOlvidarContrasena!(
-                                        _correo.text.trim(),
-                                      ),
-                                child: const Text(
-                                  '¿Olvidaste tu contraseña?',
-                                  style: TextStyle(
-                                    color: Color(0xFF5B8CFF),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          const SizedBox(height: TemaCareCar.espacioCampos),
-                          const _NotaSinRegistro(),
+    // Fondo oscuro: hora, senal y bateria en claro para que se lean.
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Theme(
+        data: TemaPista.oscuro(),
+        child: Scaffold(
+          backgroundColor: const Color(0xFF08090C),
+          body: Stack(
+            children: [
+              // 1. Atmósfera luminosa Liquid Glass: radial cobalto
+              Positioned(
+                top: -120,
+                left: -60,
+                right: -60,
+                height: 400,
+                child: IgnorePointer(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: RadialGradient(
+                        colors: [
+                          const Color(0xFF2457F5).withValues(alpha: 0.22),
+                          const Color(0xFF2457F5).withValues(alpha: 0.05),
+                          Colors.transparent,
                         ],
+                        stops: const [0.0, 0.55, 1.0],
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+
+              // 2. Contenido desplazable y protegido de SafeArea
+              SafeArea(
+                child: Center(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: TemaCareCar.rellenoTarjeta,
+                      vertical: TemaCareCar.espacioSecciones,
+                    ),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
+                      child: Form(
+                        key: _formulario,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            const _Encabezado(),
+                            const SizedBox(
+                              height: TemaCareCar.espacioSecciones,
+                            ),
+                            if (entrando && _servidorTarda) ...[
+                              const AvisoServidorDespertando(
+                                key: PantallaLogin.avisoServidorDespertando,
+                              ),
+                              const SizedBox(height: TemaCareCar.espacioCampos),
+                            ],
+                            if (fallo != null) ...[
+                              Aviso(
+                                key: PantallaLogin.avisoDeError,
+                                tono:
+                                    fallo.esFalloDeRed ||
+                                        fallo.esBloqueoTemporal
+                                    ? TonoAviso.advertencia
+                                    : TonoAviso.error,
+                                icono: switch (fallo) {
+                                  _ when fallo.esFalloDeRed =>
+                                    Icons.wifi_off_outlined,
+                                  _ when fallo.esBloqueoTemporal =>
+                                    Icons.lock_clock_outlined,
+                                  _ => null,
+                                },
+                                titulo: switch (fallo) {
+                                  _ when fallo.esFalloDeRed => 'Sin conexión',
+                                  _ when fallo.esBloqueoTemporal =>
+                                    'Demasiados intentos',
+                                  _ => 'No pudimos iniciar sesión',
+                                },
+                                detalle: fallo.mensaje,
+                              ),
+                              const SizedBox(height: TemaCareCar.espacioCampos),
+                            ],
+                            CampoTexto(
+                              llave: PantallaLogin.campoCorreo,
+                              controlador: _correo,
+                              etiqueta: 'Correo',
+                              ayuda: 'El que le diste a la agencia',
+                              habilitado: !entrando,
+                              icono: Icons.mail_outline_rounded,
+                              teclado: TextInputType.emailAddress,
+                              autocompletar: const [AutofillHints.email],
+                              textInputAction: TextInputAction.next,
+                              validar: _validarCorreo,
+                            ),
+                            const SizedBox(height: TemaCareCar.espacioCampos),
+                            CampoTexto(
+                              llave: PantallaLogin.campoContrasena,
+                              controlador: _contrasena,
+                              etiqueta: 'Contraseña',
+                              habilitado: !entrando,
+                              icono: Icons.lock_outline_rounded,
+                              ocultar: !_verContrasena,
+                              textInputAction: TextInputAction.done,
+                              alEnviar: entrando ? null : _entrar,
+                              sufijo: IconButton(
+                                key: PantallaLogin.botonVerContrasena,
+                                onPressed: entrando
+                                    ? null
+                                    : () => setState(
+                                        () => _verContrasena = !_verContrasena,
+                                      ),
+                                icon: Icon(
+                                  _verContrasena
+                                      ? Icons.visibility_off_outlined
+                                      : Icons.visibility_outlined,
+                                  color: const Color(0xFF8E9BAE),
+                                  size: 20,
+                                ),
+                                tooltip: _verContrasena
+                                    ? 'Ocultar la contraseña'
+                                    : 'Mostrar la contraseña',
+                              ),
+                              validar: (valor) =>
+                                  (valor == null || valor.isEmpty)
+                                  ? 'Escribe tu contraseña.'
+                                  : null,
+                            ),
+                            const SizedBox(
+                              height: TemaCareCar.espacioSecciones,
+                            ),
+                            ReboteTactil(
+                              habilitado: !entrando,
+                              child: ShadButton(
+                                key: PantallaLogin.botonEntrar,
+                                size: ShadButtonSize.lg,
+                                backgroundColor: const Color(0xFF2457F5),
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFF2457F5),
+                                    Color(0xFF3B72FF),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                decoration: const ShadDecoration(
+                                  border: ShadBorder(
+                                    radius: Radios.bordePildora,
+                                  ),
+                                ),
+                                shadows: [
+                                  BoxShadow(
+                                    color: const Color(0xFF2457F5)
+                                        .withValues(alpha: 0.35),
+                                    blurRadius: 18,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
+                                onPressed: entrando ? null : _entrar,
+                                child: Text(
+                                  entrando
+                                      ? 'Entrando…'
+                                      : (fallo?.esFalloDeRed ?? false)
+                                      ? 'Reintentar'
+                                      : 'Iniciar sesión',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: -0.2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            if (widget.alOlvidarContrasena != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: ShadButton.link(
+                                  key: PantallaLogin.botonOlvide,
+                                  foregroundColor: const Color(0xFF5B8CFF),
+                                  onPressed: entrando
+                                      ? null
+                                      : () => widget.alOlvidarContrasena!(
+                                          _correo.text.trim(),
+                                        ),
+                                  child: const Text(
+                                    '¿Olvidaste tu contraseña?',
+                                    style: TextStyle(
+                                      color: Color(0xFF5B8CFF),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(height: TemaCareCar.espacioCampos),
+                            const _NotaSinRegistro(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -319,7 +335,9 @@ class _Encabezado extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/marca/agencia360-logo.png',
+          // Variante con letras claras: la original es azul marino y se pierde
+          // sobre el fondo oscuro del login.
+          'assets/marca/agencia360-logo-oscuro.png',
           key: PantallaLogin.logo,
           width: 180,
           semanticLabel: 'Agencia360',
