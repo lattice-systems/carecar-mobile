@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/campo_mensaje.dart';
 import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -236,19 +236,19 @@ class _Mensaje extends StatelessWidget {
               ),
             ),
             if (mensaje.consultaId != null) ...[
-              _BotonCalificar(
+              BotonCircular(
                 etiqueta: textos.asistenteMeSirvio,
                 icono: Icons.thumb_up_outlined,
                 iconoMarcado: Icons.thumb_up,
                 marcado: mensaje.util == true,
-                alPulsar: () => alCalificar(true),
+                alPresionar: () => alCalificar(true),
               ),
-              _BotonCalificar(
+              BotonCircular(
                 etiqueta: textos.asistenteNoMeSirvio,
                 icono: Icons.thumb_down_outlined,
                 iconoMarcado: Icons.thumb_down,
                 marcado: mensaje.util == false,
-                alPulsar: () => alCalificar(false),
+                alPresionar: () => alCalificar(false),
               ),
             ],
           ],
@@ -264,54 +264,4 @@ class _Mensaje extends StatelessWidget {
         AsistenteLimiteDiario() => textos.asistenteLimite,
         AsistenteNoDisponible() => textos.asistenteNoDisponible,
       };
-}
-
-/// 👍 o 👎 de una respuesta (V2-M24.07): círculo de 48 que se rellena con el
-/// acento al quedar marcado y rebota al tocarlo, como los controles del login.
-class _BotonCalificar extends StatelessWidget {
-  const _BotonCalificar({
-    required this.etiqueta,
-    required this.icono,
-    required this.iconoMarcado,
-    required this.marcado,
-    required this.alPulsar,
-  });
-
-  final String etiqueta;
-  final IconData icono;
-  final IconData iconoMarcado;
-  final bool marcado;
-  final VoidCallback alPulsar;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    return Semantics(
-      button: true,
-      selected: marcado,
-      label: etiqueta,
-      onTap: alPulsar,
-      excludeSemantics: true,
-      child: Tooltip(
-        message: etiqueta,
-        excludeFromSemantics: true,
-        child: ReboteTactil(
-          alPulsar: alPulsar,
-          child: Container(
-            width: Espaciado.objetivoTactilMinimo,
-            height: Espaciado.objetivoTactilMinimo,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: marcado ? c.acentoSuave : c.superficieHundida,
-            ),
-            child: Icon(
-              marcado ? iconoMarcado : icono,
-              size: 20,
-              color: marcado ? c.acento : c.textoSecundario,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
