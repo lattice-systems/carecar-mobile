@@ -2015,6 +2015,94 @@ servidor.delete(`${BASE}/gastos/:gastoId`, (req, res) => {
 // Cualquier otra ruta bajo la base no existe en el contrato
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Emisor de prueba (solo del mock; NO es parte del contrato)
+//
+// Simula lo que haria la agencia o el chofer para ver en la app los avances en
+// vivo (V2-M11.04, V2-M17.03 y V2-M17.04). No pide token: se usa desde curl.
+//
+//   curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+//   curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+// ---------------------------------------------------------------------------
+
+const sinContrato = (res, status, mensaje) => res.status(status).json({ error: mensaje });
+
+servidor.post('/__mock/asistencia/:id/estado', (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  const { estado } = req.body || {};
+  if (!registro) return sinContrato(res, 404, 'No existe la solicitud');
+  if (!['recibida', 'en_camino', 'atendida', 'cancelada'].includes(estado)) {
+    return sinContrato(res, 400, 'Estado invalido');
+  }
+  cambiarEstadoSolicitud(registro, estado);
+  res.json(registro.solicitud);
+});
+
+servidor.post('/__mock/traslados/:id/estado', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { estado } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!ESTADOS_TRASLADO.includes(estado)) return sinContrato(res, 400, 'Estado invalido');
+  cambiarEstadoTraslado(t, estado);
+  // Al recoger y al entregar el chofer deja su checklist.
+  if (estado === 'recogido' || estado === 'entregado') {
+    const base = `https://picsum.photos/seed/traslado${t.id}-${estado}`;
+    checklists.set(t.id, {
+      trasladoId: t.id,
+      km: 45200,
+      gasolina: 'medio',
+      notas: estado === 'recogido' ? 'Rayon leve en la salpicadera derecha.' : null,
+      fotos: [1, 2, 3].map((n) => `${base}-${n}/800/600`),
+      firmaUrl: `${base}-firma/400/200`,
+      registradoEn: new Date().toISOString(),
+    });
+  }
+  res.json(comoTraslado(db.get('traslados').find({ id: t.id }).value()));
+});
+
+servidor.post('/__mock/traslados/:id/ubicacion', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { lat, lng } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (typeof lat !== 'number' || typeof lng !== 'number') {
+    return sinContrato(res, 400, 'lat y lng son numeros');
+  }
+  const actualizadaEn = new Date().toISOString();
+  db.get('traslados').find({ id: t.id }).assign({ ubicacionChofer: { lat, lng, actualizadaEn } }).write();
+  // El chofer solo se comparte en en_camino y de_regreso.
+  if (['en_camino', 'de_regreso'].includes(t.estado)) {
+    emitirEvento(clienteDeTraslado(t), 'traslado.ubicacion', {
+      trasladoId: t.id,
+      lat,
+      lng,
+      actualizadaEn,
+    });
+  }
+  res.json({ trasladoId: t.id, lat, lng, actualizadaEn });
+});
+
+servidor.post('/__mock/traslados/:id/checklist', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { km, gasolina, notas } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!Number.isInteger(km) || !NIVELES_GASOLINA.includes(gasolina)) {
+    return sinContrato(res, 400, 'km entero y gasolina del contrato');
+  }
+  const base = `https://picsum.photos/seed/traslado${t.id}-manual`;
+  checklists.set(t.id, {
+    trasladoId: t.id,
+    km,
+    gasolina,
+    notas: notas ?? null,
+    fotos: [1, 2].map((n) => `${base}-${n}/800/600`),
+    firmaUrl: `${base}-firma/400/200`,
+    registradoEn: new Date().toISOString(),
+  });
+  res.status(201).json(checklists.get(t.id));
+});
+
 servidor.use(BASE, (req, res) => {
   problema(req, res, 404, 'Esa ruta no existe en el contrato');
 });
