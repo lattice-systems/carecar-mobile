@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
+
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 
-/// Relleno del boton pildora: `lleno` para la accion principal y `tonal` para
-/// la secundaria.
-enum VarianteBotonPildora { lleno, tonal }
+/// Relleno del boton pildora: `lleno` para la accion principal, `tonal` para
+/// la secundaria y `peligro` (tonal en rojo) para una accion destructiva como
+/// cancelar una cita.
+enum VarianteBotonPildora { lleno, tonal, peligro }
 
 /// Boton en forma de pildora, para filas de acciones junto a una portada.
 ///
@@ -25,6 +28,7 @@ class BotonPildora extends StatefulWidget {
     this.variante = VarianteBotonPildora.lleno,
     this.icono,
     this.expandido = false,
+    this.cargando = false,
   });
 
   final String texto;
@@ -32,6 +36,9 @@ class BotonPildora extends StatefulWidget {
   final VarianteBotonPildora variante;
   final IconData? icono;
   final bool expandido;
+
+  /// Muestra un indicador en lugar del icono, no responde y lo anuncia.
+  final bool cargando;
 
   @override
   State<BotonPildora> createState() => _BotonPildoraState();
@@ -48,14 +55,15 @@ class _BotonPildoraState extends State<BotonPildora> {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final habilitado = widget.alPresionar != null;
-    final lleno = widget.variante == VarianteBotonPildora.lleno;
+    final alToque = widget.cargando ? null : widget.alPresionar;
 
-    final fondo = !habilitado
-        ? c.superficieHundida
-        : (lleno ? c.acento : c.acentoSuave);
-    final frente = !habilitado
-        ? c.textoTerciario
-        : (lleno ? c.sobreAcento : c.acento);
+    final (fondo, frente) = !habilitado
+        ? (c.superficieHundida, c.textoTerciario)
+        : switch (widget.variante) {
+            VarianteBotonPildora.lleno => (c.acento, c.sobreAcento),
+            VarianteBotonPildora.tonal => (c.acentoSuave, c.acento),
+            VarianteBotonPildora.peligro => (c.peligroSuave, c.peligro),
+          };
 
     final movimiento = context.movimiento(Movimiento.rapido);
     final reducir = MediaQuery.disableAnimationsOf(context);
@@ -65,7 +73,13 @@ class _BotonPildoraState extends State<BotonPildora> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (widget.icono != null) ...[
+        if (widget.cargando) ...[
+          SizedBox.square(
+            dimension: _tamanoIcono,
+            child: CircularProgressIndicator(strokeWidth: 2, color: frente),
+          ),
+          const SizedBox(width: Espaciado.e2),
+        ] else if (widget.icono != null) ...[
           ExcludeSemantics(
             child: Icon(widget.icono, size: _tamanoIcono, color: frente),
           ),
@@ -90,7 +104,7 @@ class _BotonPildoraState extends State<BotonPildora> {
         shape: const StadiumBorder(),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: widget.alPresionar,
+          onTap: alToque,
           splashFactory: NoSplash.splashFactory,
           onHighlightChanged: (v) => setState(() => _presionado = v),
           customBorder: const RoundedRectangleBorder(
@@ -125,9 +139,11 @@ class _BotonPildoraState extends State<BotonPildora> {
     return Semantics(
       container: true,
       button: true,
-      enabled: habilitado,
-      label: widget.texto,
-      onTap: widget.alPresionar,
+      enabled: habilitado && !widget.cargando,
+      label: widget.cargando
+          ? AppLocalizations.of(context).botonCargando(widget.texto)
+          : widget.texto,
+      onTap: alToque,
       excludeSemantics: true,
       child: widget.expandido
           ? SizedBox(width: double.infinity, child: boton)
