@@ -266,7 +266,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Hecha | #100, backend#87 |
 | V2-M24.08 | Ver preguntas sugeridas | Daniel |  | V2-M24.03 | Hecha | #96 |
 | V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
-| V2-M24.10 | Entrar al asistente desde el detalle del auto con preguntas sugeridas | Daniel |  | V2-M24.08, V2-T02.19 | En revisión | |
+| V2-M24.10 | Entrar al asistente desde el detalle del auto con preguntas sugeridas | Daniel |  | V2-M24.08, V2-T02.19 | Hecha | #110 |
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Hecha | #68 |
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Hecha | #71, backend#73 |
