@@ -22,6 +22,14 @@ class _Repo implements RepositorioAsistente {
   }
 
   @override
+  Stream<AvanceRespuesta> preguntarEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  }) =>
+      Stream.fromFuture(preguntar(vehiculoId: vehiculoId, pregunta: pregunta))
+          .expand((r) => [AvanceTexto(r.texto), AvanceFin(r)]);
+
+  @override
   Future<TestigoDelTablero> identificarTestigo({
     required int vehiculoId,
     required List<int> imagen,

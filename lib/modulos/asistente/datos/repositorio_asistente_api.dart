@@ -1,5 +1,6 @@
 import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
+import '../../../api/modelos/asistente.dart';
 import '../../../api/modelos/problema.dart';
 import '../dominio/repositorio_asistente.dart';
 
@@ -40,6 +41,55 @@ class RepositorioAsistenteApi implements RepositorioAsistente {
       };
     }
   }
+
+  @override
+  Stream<AvanceRespuesta> preguntarEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  }) async* {
+    try {
+      var terminado = false;
+      await for (final evento in _api.preguntarAlAsistenteEnFlujo(
+        vehiculoId: vehiculoId,
+        pregunta: pregunta,
+      )) {
+        switch (evento) {
+          case TrozoAsistente(:final texto):
+            yield AvanceTexto(texto);
+          case FinAsistente(:final respuesta):
+            terminado = true;
+            yield AvanceFin(_respuestaDe(respuesta));
+          case ErrorAsistenteEnFlujo():
+            throw const AsistenteNoDisponible();
+        }
+      }
+      // El servidor cerro sin mandar el fin.
+      if (!terminado) throw const AsistenteSinConexion();
+    } on SinConexion {
+      throw const AsistenteSinConexion();
+    } on ExcepcionApi catch (e) {
+      throw _falloDe(e);
+    }
+  }
+
+  static RespuestaDelAsistente _respuestaDe(RespuestaAsistente r) =>
+      RespuestaDelAsistente(
+        consultaId: r.consultaId,
+        texto: r.respuesta,
+        encontrado: r.encontrado,
+        fuentes: [
+          for (final f in r.fuentes)
+            CitaDelManual(manualId: f.manualId, pagina: f.pagina),
+        ],
+      );
+
+  static FalloAsistente _falloDe(ExcepcionApi e) =>
+      switch (e.problema?.codigo) {
+        CodigoProblema.asistenteSinManual => const AsistenteSinManual(),
+        CodigoProblema.asistenteLimite => const AsistenteLimiteDiario(),
+        _ when e is DemasiadosIntentos => const AsistenteLimiteDiario(),
+        _ => const AsistenteNoDisponible(),
+      };
 
   @override
   Future<TestigoDelTablero> identificarTestigo({
