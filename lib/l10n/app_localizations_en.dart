@@ -1876,4 +1876,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistenteAgendarRevision => 'Book a check-up';
+
+  @override
+  String get asistenteMeSirvio => 'Helpful';
+
+  @override
+  String get asistenteNoMeSirvio => 'Not helpful';
 }

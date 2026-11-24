@@ -1872,4 +1872,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenteAgendarRevision => 'Agendar revisión';
+
+  @override
+  String get asistenteMeSirvio => 'Me sirvió';
+
+  @override
+  String get asistenteNoMeSirvio => 'No me sirvió';
 }

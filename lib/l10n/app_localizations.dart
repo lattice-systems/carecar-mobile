@@ -3147,6 +3147,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Agendar revisión'**
   String get asistenteAgendarRevision;
+
+  /// Botón 👍 bajo una respuesta del asistente; lo oye el lector de pantalla (V2-M24.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Me sirvió'**
+  String get asistenteMeSirvio;
+
+  /// Botón 👎 bajo una respuesta del asistente (V2-M24.07).
+  ///
+  /// In es, this message translates to:
+  /// **'No me sirvió'**
+  String get asistenteNoMeSirvio;
 }
 
 class _AppLocalizationsDelegate
