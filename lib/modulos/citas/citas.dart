@@ -31,5 +31,6 @@ export 'presentacion/rutas_citas.dart'
         rutaComprobanteCita,
         rutaDisponibilidad,
         rutaMisCitas,
+        localizacionAgendarCita,
         rutaReprogramarCita,
         rutasCitas;
