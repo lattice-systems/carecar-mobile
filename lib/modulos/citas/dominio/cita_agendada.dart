@@ -1,3 +1,4 @@
+import '../../recoleccion/recoleccion.dart' show RecoleccionAgendada;
 import 'motivo_cita.dart';
 
 /// Una cita ya confirmada por el taller.
@@ -12,6 +13,7 @@ class CitaAgendada {
     required this.horaInicio,
     required this.horaFin,
     this.motivo,
+    this.recoleccion,
   });
 
   final int id;
@@ -22,4 +24,8 @@ class CitaAgendada {
 
   /// Nulo si el backend aun no lo guarda o es un motivo desconocido.
   final MotivoCita? motivo;
+
+  /// Los traslados de recoger y entregar el auto (V2-M17.02); nulo si la cita
+  /// se agendó sin recolección.
+  final RecoleccionAgendada? recoleccion;
 }

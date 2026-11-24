@@ -45,7 +45,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Emergencias'), findsWidgets);
     expect(find.text('¿Necesitas ayuda ahora?'), findsOneWidget);
-    expect(find.textContaining('estará disponible pronto'), findsOneWidget);
+    expect(find.textContaining('comparte tu ubicación'), findsOneWidget);
     expect(find.text('Guías rápidas'), findsOneWidget);
   });
 

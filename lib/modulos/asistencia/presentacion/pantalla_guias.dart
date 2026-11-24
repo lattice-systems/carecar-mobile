@@ -92,8 +92,8 @@ class PantallaGuias extends StatelessWidget {
   }
 }
 
-/// Tarjeta protagonista: pedir ayuda. Mientras no exista la solicitud de
-/// V2-M11.01 el boton queda deshabilitado y el texto explica por que.
+/// Tarjeta protagonista: pedir ayuda (V2-M11.01). Su boton abre el flujo de
+/// la solicitud con ubicacion.
 class _TarjetaHeroe extends StatelessWidget {
   const _TarjetaHeroe();
 
@@ -129,7 +129,7 @@ class _TarjetaHeroe extends StatelessWidget {
               ),
               const SizedBox(height: Espaciado.e2),
               Text(
-                textos.asistenciaHeroeTexto,
+                textos.asistenciaHeroeTextoDisponible,
                 style: t.cuerpo.copyWith(color: c.textoSecundario),
               ),
               const SizedBox(height: Espaciado.e4),
@@ -137,7 +137,7 @@ class _TarjetaHeroe extends StatelessWidget {
                 texto: textos.asistenciaHeroeAccion,
                 icono: Icons.sos_outlined,
                 expandido: true,
-                alPresionar: null,
+                alPresionar: () => context.go(rutaPedirAyuda),
               ),
             ],
           ),

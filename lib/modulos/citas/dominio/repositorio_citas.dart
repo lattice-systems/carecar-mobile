@@ -16,12 +16,17 @@ abstract interface class RepositorioCitas {
 
   /// Agenda una cita en `franja` para el vehiculo.
   ///
-  /// Lanza `FranjaSinCupo` si la franja se lleno y `CitaDuplicada` si el
-  /// cliente ya tiene cita ese dia con ese vehiculo.
+  /// Con `direccionRecoleccionId` pide que recojan y entreguen el auto en esa
+  /// direccion guardada (V2-M17.02) y la cita trae los traslados.
+  ///
+  /// Lanza `FranjaSinCupo` si la franja se lleno, `CitaDuplicada` si el
+  /// cliente ya tiene cita ese dia con ese vehiculo y `FueraDeCobertura` si la
+  /// direccion de recoleccion ya no esta en la zona.
   Future<CitaAgendada> agendar({
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+    int? direccionRecoleccionId,
   });
 
   /// Una página de las citas del cliente, de la más reciente a la más antigua

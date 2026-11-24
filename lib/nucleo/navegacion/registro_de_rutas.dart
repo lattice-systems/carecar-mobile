@@ -8,6 +8,7 @@ import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/galeria/galeria.dart';
 import '../../modulos/historial/historial.dart';
+import '../../modulos/recoleccion/recoleccion.dart';
 import '../../modulos/vehiculos/vehiculos.dart';
 import '../migracion/interruptor_modulos.dart';
 import 'rutas_del_nucleo.dart';
@@ -40,6 +41,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   if (kDebugMode) ...rutasGaleria,
   // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
   ...rutasHistorial,
+  // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.
+  ...rutasRecoleccion,
   ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
 ];
 

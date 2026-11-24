@@ -4,6 +4,8 @@ import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/cita.dart';
 import '../../../api/modelos/problema.dart';
+import '../../../api/modelos/recoleccion_cita.dart';
+import '../../recoleccion/recoleccion.dart';
 import '../dominio/cita_agendada.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/comprobante_de_cita.dart';
@@ -46,6 +48,7 @@ class RepositorioCitasApi implements RepositorioCitas {
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+    int? direccionRecoleccionId,
   }) async {
     try {
       final cita = await _api.agendarCita(
@@ -54,9 +57,14 @@ class RepositorioCitasApi implements RepositorioCitas {
           franjaId: franja.franjaId,
           fecha: franja.fecha,
           motivo: motivo.codigo,
+          recoleccionDireccionId: direccionRecoleccionId,
         ),
       );
       return _aDominio(cita);
+    } on SinParametrosDeValuacion {
+      // El cliente HTTP convierte todo 422 en este tipo; en POST /citas solo
+      // puede ser «la direccion de recoleccion esta fuera de cobertura».
+      throw const FueraDeCobertura();
     } on Conflicto catch (conflicto) {
       if (conflicto.problema?.codigo == CodigoProblema.franjaSinCupo) {
         throw const FranjaSinCupo();
@@ -166,5 +174,33 @@ class RepositorioCitasApi implements RepositorioCitas {
     horaInicio: c.horaInicio,
     horaFin: c.horaFin,
     motivo: MotivoCita.desdeCodigo(c.motivo),
+    recoleccion: _aRecoleccion(c.recoleccion),
   );
+
+  static RecoleccionAgendada? _aRecoleccion(RecoleccionCita? r) {
+    if (r == null) return null;
+    return RecoleccionAgendada(
+      direccionId: r.direccionId,
+      costoTotal: r.costoTotal,
+      traslados: [
+        for (final t in r.traslados)
+          if (_tipo(t.tipo) case final tipo?)
+            TrasladoAgendado(
+              id: t.id,
+              tipo: tipo,
+              costo: t.costo,
+              fecha: t.fecha,
+              ventanaInicio: t.ventanaInicio,
+              ventanaFin: t.ventanaFin,
+            ),
+      ],
+    );
+  }
+
+  /// Un tipo que el contrato todavia no declara se descarta en vez de romper.
+  static TipoTraslado? _tipo(String valor) => switch (valor) {
+    'recoger' => TipoTraslado.recoger,
+    'entregar' => TipoTraslado.entregar,
+    _ => null,
+  };
 }

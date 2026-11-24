@@ -53,6 +53,10 @@ Riverpod sin generación de código. `lib/nucleo/api` y `lib/nucleo/sesion` expo
 
 `go_router` (ADR 0003). `lib/nucleo/navegacion/` expone `enrutadorProvider` (el `GoRouter`), las rutas del núcleo tipadas (`Rutas`, `NombresRuta`), la guardia de sesión (`redirigirPorSesion`, función pura) y la traducción de enlaces (`EnlacesApp`: `carecar://` y `https://<host>/app/...` a rutas internas). Cada módulo publica sus rutas en su `<modulo>.dart`; `registro_de_rutas.dart` solo las junta. Guía: [`lib/modulos/README.md`](../lib/modulos/README.md).
 
+## Mapas y ubicación (decisión 0006)
+
+`lib/nucleo/mapas/` define `ProveedorUbicacion` (permiso y posición única, solo primer plano), `Geocodificador` (dirección a coordenadas y al revés), `Coordenada`, errores tipados y `ConfiguracionTeselas` (URL y atribución por `--dart-define`). Las implementaciones sobre `geolocator` y `geocoding` están aisladas y los fakes (`UbicacionFalsa`, `GeocodificadorFalso`) sirven para pruebas. Los módulos importan solo `mapas.dart`, nunca los paquetes. El componente `Mapa` es V2-T02.09. Guía: [`lib/nucleo/mapas/README.md`](../lib/nucleo/mapas/README.md).
+
 ## Migración desde v1
 
 - La v1 vive en `lib/api`, `lib/sesion`, `lib/pantallas`, `lib/widgets`, `lib/tema`. Se migra **módulo por módulo** (M01 → M02 → M03) detrás de un interruptor de rutas por módulo ([guía](#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105), T01.05).

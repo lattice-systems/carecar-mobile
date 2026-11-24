@@ -29,7 +29,10 @@ GoRouter _enrutador() => GoRouter(
     GoRoute(path: '/', builder: (_, _) => const Text('inicio')),
     GoRoute(path: '/citas/agendar', builder: (_, _) => const Text('agendar')),
     GoRoute(path: '/garaje', builder: (_, _) => const Text('garaje')),
-    GoRoute(path: '/asistencia/guias', builder: (_, _) => const Text('guias')),
+    GoRoute(
+      path: '/asistencia/guias/pedir',
+      builder: (_, _) => const Text('pedir ayuda'),
+    ),
   ],
 );
 
@@ -100,12 +103,12 @@ void main() {
     expect(find.text('garaje'), findsOneWidget);
   });
 
-  testWidgets('tocar SOS abre la asistencia', (tester) async {
+  testWidgets('tocar SOS abre pedir ayuda', (tester) async {
     final puerto = _PuertoFalso();
     await _montar(tester, puerto);
     puerto.alElegirAcceso!(AccesoRapido.sos);
     await tester.pumpAndSettle();
-    expect(find.text('guias'), findsOneWidget);
+    expect(find.text('pedir ayuda'), findsOneWidget);
   });
 
   testWidgets('si el sistema no deja instalar atajos la app sigue igual', (

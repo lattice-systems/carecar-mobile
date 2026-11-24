@@ -8,6 +8,8 @@ import 'package:carecar_mobile/modulos/citas/dominio/disponibilidad_taller.dart'
 import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/motivo_cita.dart';
 import 'package:carecar_mobile/api/modelos/problema.dart';
+import 'package:carecar_mobile/api/modelos/recoleccion_cita.dart';
+import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
@@ -473,6 +475,140 @@ void main() {
       final repo = RepositorioCitasFake(error: const SinConexion());
       expect(repo.comprobante(1), throwsA(isA<SinConexion>()));
       expect(repo.ticketPdf(1), throwsA(isA<SinConexion>()));
+    });
+  });
+  group('agendar con recoleccion (V2-M17.02)', () {
+    final franja = FranjaDisponible(
+      franjaId: 6,
+      fecha: DateTime(2026, 11, 24),
+      horaInicio: '09:00',
+      horaFin: '10:00',
+      cupo: 2,
+    );
+    Cita citaConRecoleccion() => Cita(
+      id: 7,
+      vehiculoId: 1,
+      franjaId: 6,
+      fecha: DateTime(2026, 11, 24),
+      horaInicio: '09:00',
+      horaFin: '10:00',
+      estado: EstadoCita.confirmada,
+      recoleccion: RecoleccionCita(
+        direccionId: 3,
+        costoTotal: 300,
+        traslados: [
+          TrasladoCita(
+            id: 1,
+            tipo: 'recoger',
+            estado: 'programado',
+            costo: 150,
+            fecha: DateTime(2026, 11, 24),
+            ventanaInicio: '07:00',
+            ventanaFin: '09:00',
+          ),
+          TrasladoCita(
+            id: 2,
+            tipo: 'entregar',
+            estado: 'programado',
+            costo: 150,
+            fecha: DateTime(2026, 11, 24),
+            ventanaInicio: '17:00',
+            ventanaFin: '19:00',
+          ),
+        ],
+      ),
+    );
+
+    test('manda recoleccion.direccionId y traduce los traslados', () async {
+      final api = ApiFalsa()..alAgendar = (_) async => citaConRecoleccion();
+      final agendada = await RepositorioCitasApi(api).agendar(
+        vehiculoId: 1,
+        franja: franja,
+        motivo: MotivoCita.otro,
+        direccionRecoleccionId: 3,
+      );
+      expect(api.citasAgendadas.single.recoleccionDireccionId, 3);
+      final r = agendada.recoleccion!;
+      expect(r.direccionId, 3);
+      expect(r.costoTotal, 300);
+      expect(r.recoger!.ventanaFin, '09:00');
+      expect(r.entregar!.ventanaInicio, '17:00');
+    });
+
+    test('sin recoleccion no manda la clave y la cita no la trae', () async {
+      final api = ApiFalsa();
+      final agendada = await RepositorioCitasApi(api)
+          .agendar(vehiculoId: 1, franja: franja, motivo: MotivoCita.otro);
+      expect(api.citasAgendadas.single.recoleccionDireccionId, isNull);
+      expect(agendada.recoleccion, isNull);
+    });
+
+    test('un 422 se vuelve FueraDeCobertura', () {
+      final api = ApiFalsa()
+        ..alAgendar = (_) async =>
+            throw const SinParametrosDeValuacion('fuera');
+      expect(
+        RepositorioCitasApi(api).agendar(
+          vehiculoId: 1,
+          franja: franja,
+          motivo: MotivoCita.otro,
+          direccionRecoleccionId: 3,
+        ),
+        throwsA(isA<FueraDeCobertura>()),
+      );
+    });
+
+    test('un 404 de direccion ajena pasa como NoEncontrado', () {
+      final api = ApiFalsa()
+        ..alAgendar = (_) async => throw const NoEncontrado('no existe');
+      expect(
+        RepositorioCitasApi(api).agendar(
+          vehiculoId: 1,
+          franja: franja,
+          motivo: MotivoCita.otro,
+          direccionRecoleccionId: 99,
+        ),
+        throwsA(isA<NoEncontrado>()),
+      );
+    });
+
+    test('el fake crea los dos traslados con el costo configurado', () async {
+      final repo = RepositorioCitasFake(costoPorTraslado: 120);
+      final agendada = await repo.agendar(
+        vehiculoId: 1,
+        franja: FranjaDisponible(
+          franjaId: 1,
+          fecha: DateTime(2026, 11, 24),
+          horaInicio: '09:00',
+          horaFin: '10:00',
+          cupo: 2,
+        ),
+        motivo: MotivoCita.otro,
+        direccionRecoleccionId: 3,
+      );
+      final r = agendada.recoleccion!;
+      expect(r.traslados, hasLength(2));
+      expect(r.costoTotal, 240);
+      expect(r.recoger!.tipo, TipoTraslado.recoger);
+    });
+
+    test('el fake rechaza una direccion fuera de cobertura', () {
+      final repo = RepositorioCitasFake(direccionesFueraDeCobertura: const {5});
+      expect(
+        repo.agendar(
+          vehiculoId: 1,
+          franja: FranjaDisponible(
+            franjaId: 1,
+            fecha: DateTime(2026, 11, 24),
+            horaInicio: '09:00',
+            horaFin: '10:00',
+            cupo: 2,
+          ),
+          motivo: MotivoCita.otro,
+          direccionRecoleccionId: 5,
+        ),
+        throwsA(isA<FueraDeCobertura>()),
+      );
     });
   });
 }

@@ -138,6 +138,24 @@ class ClienteApi {
     return [for (final e in cuerpo) (e as num).toInt()];
   }
 
+  /// GET que devuelve un objeto, o `null` si el servidor contesta 204 porque
+  /// no hay nada que mostrar (por ejemplo `GET /asistencia?activa=true`).
+  Future<T?> obtenerOpcional<T>(
+    String camino,
+    T Function(Map<String, Object?>) leer, {
+    Map<String, String?>? consulta,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.get(
+        config.ruta(camino, consulta: consulta),
+        headers: await _encabezados(),
+      ),
+      conToken: true,
+    );
+    if (respuesta.statusCode == 204) return null;
+    return _leerObjeto(respuesta, leer);
+  }
+
   /// GET que devuelve una lista.
   Future<List<T>> obtenerLista<T>(
     String camino,
@@ -227,6 +245,33 @@ class ClienteApi {
         body: cuerpo == null ? null : jsonEncode(cuerpo),
       ),
       conToken: conToken,
+    );
+    _verificarEstado(respuesta);
+  }
+
+  /// PUT que devuelve un objeto (editar un recurso propio).
+  Future<T> actualizar<T>(
+    String camino, {
+    required Object? cuerpo,
+    required T Function(Map<String, Object?>) leer,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.put(
+        config.ruta(camino),
+        headers: await _encabezados(conCuerpo: cuerpo != null),
+        body: cuerpo == null ? null : jsonEncode(cuerpo),
+      ),
+      conToken: true,
+    );
+    return _leerObjeto(respuesta, leer);
+  }
+
+  /// DELETE de los endpoints que contestan 204 sin cuerpo.
+  Future<void> eliminar(String camino) async {
+    final respuesta = await _pedir(
+      () async =>
+          _http.delete(config.ruta(camino), headers: await _encabezados()),
+      conToken: true,
     );
     _verificarEstado(respuesta);
   }

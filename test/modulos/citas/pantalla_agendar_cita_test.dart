@@ -286,6 +286,7 @@ class _RepoQueSeLlena extends RepositorioCitasFake {
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+    int? direccionRecoleccionId,
   }) {
     if (!_yaFallo) {
       _yaFallo = true;
@@ -295,6 +296,7 @@ class _RepoQueSeLlena extends RepositorioCitasFake {
       vehiculoId: vehiculoId,
       franja: franja,
       motivo: motivo,
+      direccionRecoleccionId: direccionRecoleccionId,
     );
   }
 }
@@ -309,5 +311,6 @@ class _RepoQueFalla extends RepositorioCitasFake {
     required int vehiculoId,
     required FranjaDisponible franja,
     required MotivoCita motivo,
+    int? direccionRecoleccionId,
   }) => Future.error(_fallo);
 }

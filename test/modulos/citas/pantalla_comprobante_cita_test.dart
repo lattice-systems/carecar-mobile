@@ -9,6 +9,7 @@ import 'package:carecar_mobile/modulos/citas/presentacion/boton_agregar_a_wallet
 import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_wallet.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/repositorio_citas.dart';
+import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/cabecera_portada.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
@@ -37,7 +38,72 @@ Widget _app(RepositorioCitas repo, {Escenario escenario = Escenario.claro}) =>
       ),
     );
 
+final _recoleccion = RecoleccionAgendada(
+  direccionId: 3,
+  costoTotal: 300,
+  traslados: [
+    TrasladoAgendado(
+      id: 1,
+      tipo: TipoTraslado.recoger,
+      costo: 150,
+      fecha: DateTime(2026, 11, 26),
+      ventanaInicio: '07:00',
+      ventanaFin: '09:00',
+    ),
+    TrasladoAgendado(
+      id: 2,
+      tipo: TipoTraslado.entregar,
+      costo: 150,
+      fecha: DateTime(2026, 11, 26),
+      ventanaInicio: '17:00',
+      ventanaFin: '19:00',
+    ),
+  ],
+);
+
 void main() {
+  testWidgets('con recoleccion muestra cuando recogen y entregan el auto', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 4000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          repositorioCitasProvider.overrideWithValue(RepositorioCitasFake()),
+        ],
+        child: conTemaPista(
+          PantallaComprobanteCita(
+            citaId: 7,
+            fabricaVisorPdf: _visorFalso,
+            recoleccion: _recoleccion,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Recolección a domicilio'), findsOneWidget);
+    expect(
+      find.text('jueves, 26 de noviembre, de 07:00 a 09:00'),
+      findsOneWidget,
+    );
+    expect(
+      find.text('jueves, 26 de noviembre, de 17:00 a 19:00'),
+      findsOneWidget,
+    );
+    expect(find.text(r'$300.00'), findsOneWidget);
+  });
+
+  testWidgets('sin recoleccion el comprobante no la menciona', (tester) async {
+    tester.view.physicalSize = const Size(800, 4000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpWidget(_app(RepositorioCitasFake()));
+    await tester.pumpAndSettle();
+    expect(find.text('Recolección a domicilio'), findsNothing);
+  });
+
   testWidgets('mientras carga muestra esqueleto y lo anuncia', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     expect(find.byType(Esqueleto), findsWidgets);

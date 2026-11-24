@@ -1,4 +1,5 @@
 import 'comun.dart';
+import 'recoleccion_cita.dart';
 
 /// Estados de cita que declara el contrato.
 enum EstadoCita {
@@ -32,6 +33,7 @@ class NuevaCita {
     required this.franjaId,
     required this.fecha,
     this.motivo,
+    this.recoleccionDireccionId,
   });
 
   final int vehiculoId;
@@ -42,11 +44,17 @@ class NuevaCita {
   /// `cita.motivo`. Se omite del cuerpo si no se eligio.
   final String? motivo;
 
+  /// Dirección guardada donde recoger y entregar el auto (V2-M17.02); se
+  /// omite del cuerpo si no se pidió recolección.
+  final int? recoleccionDireccionId;
+
   Map<String, Object?> toJson() => {
     'vehiculoId': vehiculoId,
     'franjaId': franjaId,
     'fecha': escribirFecha(fecha),
     if (motivo != null) 'motivo': motivo,
+    if (recoleccionDireccionId != null)
+      'recoleccion': {'direccionId': recoleccionDireccionId},
   };
 }
 
@@ -62,6 +70,7 @@ class Cita {
     this.franjaId,
     this.vehiculoNombre,
     this.motivo,
+    this.recoleccion,
   });
 
   factory Cita.fromJson(Map<String, Object?> json) => Cita(
@@ -78,6 +87,11 @@ class Cita {
         : null,
     vehiculoNombre: _leerNombreVehiculo(json),
     motivo: json['motivo'] is String ? json['motivo']! as String : null,
+    recoleccion: json['recoleccion'] is Map
+        ? RecoleccionCita.fromJson(
+            (json['recoleccion']! as Map).cast<String, Object?>(),
+          )
+        : null,
   );
 
   /// Acepta `vehiculoNombre` o un objeto `vehiculo` con modelo/anio.
@@ -111,6 +125,9 @@ class Cita {
 
   /// Motivo de la cita si el backend ya lo guarda (V2-M02.08).
   final String? motivo;
+
+  /// Recolección a domicilio (V2-M17.02); solo viene al agendar con ella.
+  final RecoleccionCita? recoleccion;
 
   bool get sePuedeCancelar => estado == EstadoCita.confirmada;
 }

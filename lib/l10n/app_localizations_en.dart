@@ -1347,6 +1347,446 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosToqueCopiarVin => 'Tap to copy';
 
   @override
+  String get recoleccionCerrar => 'Close';
+
+  @override
+  String get recoleccionDireccionesTitulo => 'My addresses';
+
+  @override
+  String get recoleccionDireccionesAgregar => 'Add address';
+
+  @override
+  String get recoleccionDireccionesCargando => 'Loading your addresses';
+
+  @override
+  String get recoleccionDireccionesVacioTitulo => 'You have no addresses yet';
+
+  @override
+  String get recoleccionDireccionesVacioMensaje =>
+      'Save one so we can pick up your car without typing it every time.';
+
+  @override
+  String get recoleccionDireccionesEncabezado => 'Saved';
+
+  @override
+  String get recoleccionDireccionesPie => 'Tap one to edit or delete it.';
+
+  @override
+  String recoleccionDireccionEditar(String alias) {
+    return 'Edit $alias';
+  }
+
+  @override
+  String get recoleccionDireccionBorrada => 'Address deleted';
+
+  @override
+  String get recoleccionFormNuevaTitulo => 'New address';
+
+  @override
+  String get recoleccionFormEditarTitulo => 'Edit address';
+
+  @override
+  String get recoleccionFormUbicacionTitulo => 'Location on the map';
+
+  @override
+  String get recoleccionFormPinAyuda =>
+      'Tap the map to drop the pin where we will pick up your car.';
+
+  @override
+  String get recoleccionFormPinFalta => 'Drop the pin on the map.';
+
+  @override
+  String recoleccionFormMapaDescripcion(String latitud, String longitud) {
+    return 'Map to choose the location. Pin at $latitud, $longitud.';
+  }
+
+  @override
+  String get recoleccionFormMapaSinPin =>
+      'Map to choose the location. There is no pin yet.';
+
+  @override
+  String get recoleccionFormUsarUbicacion => 'Use my location';
+
+  @override
+  String get recoleccionFormBuscarEtiqueta => 'Search address';
+
+  @override
+  String get recoleccionFormBuscarSugerencia =>
+      'Street, number and neighborhood';
+
+  @override
+  String get recoleccionFormBuscarAccion => 'Search';
+
+  @override
+  String get recoleccionFormBuscando => 'Looking up the address';
+
+  @override
+  String get recoleccionFormAliasEtiqueta => 'Name';
+
+  @override
+  String get recoleccionFormAliasSugerencia => 'Home, office…';
+
+  @override
+  String get recoleccionFormCalleEtiqueta => 'Street and number';
+
+  @override
+  String get recoleccionFormColoniaEtiqueta => 'Neighborhood';
+
+  @override
+  String get recoleccionFormCpEtiqueta => 'Postal code';
+
+  @override
+  String get recoleccionFormCiudadEtiqueta => 'City';
+
+  @override
+  String get recoleccionErrorAlias => 'Enter a name of up to 40 characters.';
+
+  @override
+  String get recoleccionErrorCalle =>
+      'Enter the street and number, up to 120 characters.';
+
+  @override
+  String get recoleccionErrorColonia =>
+      'Enter the neighborhood, up to 80 characters.';
+
+  @override
+  String get recoleccionErrorCp => 'The postal code has 5 digits.';
+
+  @override
+  String get recoleccionErrorCiudad => 'Enter the city, up to 80 characters.';
+
+  @override
+  String get recoleccionGuardar => 'Save address';
+
+  @override
+  String get recoleccionBorrar => 'Delete address';
+
+  @override
+  String get recoleccionBorrarTitulo => 'Delete this address?';
+
+  @override
+  String recoleccionBorrarMensaje(String alias) {
+    return '“$alias” will be deleted. This can\'t be undone.';
+  }
+
+  @override
+  String get recoleccionBorrarConfirmar => 'Delete';
+
+  @override
+  String get recoleccionBorrarCancelar => 'Cancel';
+
+  @override
+  String get recoleccionErrorEnUso =>
+      'This address already has pick-ups and can\'t be deleted.';
+
+  @override
+  String get recoleccionCoberturaTitulo => 'Outside our coverage area';
+
+  @override
+  String get recoleccionCoberturaMensaje =>
+      'We don\'t pick up cars in that area yet. Move the pin or choose another address.';
+
+  @override
+  String get recoleccionErrorGuardar =>
+      'We couldn\'t save the address. Try again.';
+
+  @override
+  String get recoleccionErrorBorrar =>
+      'We couldn\'t delete the address. Try again.';
+
+  @override
+  String get recoleccionErrorSinConexion =>
+      'No connection. Check your network and try again.';
+
+  @override
+  String get recoleccionUbicacionDenegada =>
+      'We need your permission to use your location. You can also drop the pin by hand.';
+
+  @override
+  String get recoleccionUbicacionApagada =>
+      'Turn on your phone\'s location or drop the pin by hand.';
+
+  @override
+  String get recoleccionUbicacionTiempo =>
+      'We couldn\'t find you in time. Try again or drop the pin by hand.';
+
+  @override
+  String get recoleccionBusquedaSinResultados =>
+      'We couldn\'t find that address. Try another or drop the pin by hand.';
+
+  @override
+  String get recoleccionBusquedaError =>
+      'We couldn\'t look up the address. Drop the pin by hand.';
+
+  @override
+  String get recoleccionSelectorTitulo =>
+      'How does your car get to the workshop?';
+
+  @override
+  String get recoleccionSelectorLoLlevo => 'I\'ll bring it';
+
+  @override
+  String get recoleccionSelectorQueRecojan => 'Pick up my car';
+
+  @override
+  String get recoleccionSelectorDireccion => 'Pick-up address';
+
+  @override
+  String get recoleccionSelectorAdministrar => 'Manage my addresses';
+
+  @override
+  String get recoleccionSelectorSinDirecciones =>
+      'You have no saved addresses yet.';
+
+  @override
+  String get recoleccionSelectorElegirDia =>
+      'Choose a day and time to quote the pick-up.';
+
+  @override
+  String get recoleccionSelectorElegirDireccion =>
+      'Choose an address to see the cost.';
+
+  @override
+  String get recoleccionSelectorCotizando => 'Calculating the pick-up cost';
+
+  @override
+  String get recoleccionSelectorElegida => 'Selected';
+
+  @override
+  String get recoleccionCotizacionEncabezado => 'Cost and time';
+
+  @override
+  String get recoleccionCotizacionRecogemos => 'We pick up your car';
+
+  @override
+  String get recoleccionCotizacionEntregamos => 'We bring it back';
+
+  @override
+  String get recoleccionCotizacionPorTraslado => 'Each trip';
+
+  @override
+  String get recoleccionCotizacionTotal => 'Pick-up total';
+
+  @override
+  String recoleccionCotizacionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, $inicio to $fin';
+  }
+
+  @override
+  String get recoleccionCotizacionErrorTitulo =>
+      'We couldn\'t quote the pick-up';
+
+  @override
+  String get recoleccionCotizacionErrorMensaje =>
+      'Check your connection and try again. Meanwhile you can bring the car yourself.';
+
+  @override
+  String get recoleccionCotizacionReintentar => 'Try again';
+
+  @override
+  String get recoleccionCotizacionFueraDeCobertura =>
+      'That address is outside our coverage area. Choose another or bring the car yourself.';
+
+  @override
+  String get citasResumenRecoleccion => 'Pick-up';
+
+  @override
+  String citasResumenRecoleccionValor(String alias, String direccion) {
+    return '$alias · $direccion';
+  }
+
+  @override
+  String get citasResumenRecogemos => 'We pick up your car';
+
+  @override
+  String get citasResumenEntregamos => 'We bring it back';
+
+  @override
+  String citasResumenRecoleccionVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, $inicio to $fin';
+  }
+
+  @override
+  String get citasResumenRecoleccionCosto => 'Pick-up cost';
+
+  @override
+  String get citasResumenRecoleccionEncabezado => 'Home pick-up';
+
+  @override
+  String get citasErrorCobertura =>
+      'That address is no longer in our coverage area. Choose another or bring the car yourself.';
+
+  @override
+  String get citasErrorRecoleccion =>
+      'We couldn\'t find that address. Choose another and try again.';
+
+  @override
+  String get asistenciaHeroeTextoDisponible =>
+      'Tell us what happened and share your location so the agency can find you. While help arrives, these guides tell you what to do.';
+
+  @override
+  String get asistenciaPedirTitulo => 'Ask for help';
+
+  @override
+  String get asistenciaPedirCargando => 'Loading';
+
+  @override
+  String get asistenciaPedirVehiculoEncabezado => 'Which vehicle needs help?';
+
+  @override
+  String get asistenciaPedirSeleccionado => 'Selected';
+
+  @override
+  String get asistenciaPedirTipoEncabezado => 'What happened?';
+
+  @override
+  String get asistenciaTipoLlanta => 'Flat tire';
+
+  @override
+  String get asistenciaTipoBateria => 'Battery';
+
+  @override
+  String get asistenciaTipoChoque => 'Crash';
+
+  @override
+  String get asistenciaTipoSinGasolina => 'Out of fuel';
+
+  @override
+  String get asistenciaTipoOtro => 'Other';
+
+  @override
+  String get asistenciaUbicacionEncabezado => 'Your location';
+
+  @override
+  String get asistenciaUbicacionCompartir => 'Share my location';
+
+  @override
+  String get asistenciaUbicacionExplicacion =>
+      'The agency will know where you are. It is sent once, with the app open, and it is not used again when help ends.';
+
+  @override
+  String get asistenciaUbicacionObteniendo => 'Finding your location…';
+
+  @override
+  String get asistenciaUbicacionLista => 'Location ready to send';
+
+  @override
+  String get asistenciaUbicacionPermisoDenegado =>
+      'Location permission was not granted. You can try again or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionPermisoBloqueado =>
+      'Location permission is blocked. Turn it on in Settings or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionServicioApagado =>
+      'Location services are off. Turn them on or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionTiempoAgotado =>
+      'We could not find you in time. Try again or send the request without a location and write where you are.';
+
+  @override
+  String get asistenciaUbicacionReintentar => 'Try again';
+
+  @override
+  String get asistenciaUbicacionSinUbicacion => 'Send without location';
+
+  @override
+  String get asistenciaComentarioEtiqueta => 'Comment (optional)';
+
+  @override
+  String get asistenciaComentarioEtiquetaSinUbicacion =>
+      'Where you are and what happened';
+
+  @override
+  String get asistenciaComentarioAyuda => '500 characters at most';
+
+  @override
+  String get asistenciaConfirmarTexto => 'Slide to ask for help';
+
+  @override
+  String get asistenciaEnviando => 'Sending your request…';
+
+  @override
+  String get asistenciaErrorSinConexion =>
+      'No connection: we could not send your request. If it is urgent, call 911 or your insurer.';
+
+  @override
+  String get asistenciaErrorEnviar =>
+      'We could not send your request. Try again.';
+
+  @override
+  String get asistenciaErrorVehiculo =>
+      'We could not find that vehicle. Choose another and try again.';
+
+  @override
+  String get asistenciaGarajeVacioTitulo => 'You have no vehicles yet';
+
+  @override
+  String get asistenciaGarajeVacioMensaje =>
+      'To ask for help we need to know which vehicle it is. Ask the agency to register yours.';
+
+  @override
+  String asistenciaSolicitudFolio(int id) {
+    return 'Reference $id';
+  }
+
+  @override
+  String get asistenciaSolicitudRecibida => 'Request received';
+
+  @override
+  String get asistenciaSolicitudTexto =>
+      'The agency knows you need help. Keep your phone with you and stay somewhere safe.';
+
+  @override
+  String get asistenciaSolicitudYaAbierta =>
+      'You already had an open request. It is shown here.';
+
+  @override
+  String get asistenciaSolicitudVehiculo => 'Vehicle';
+
+  @override
+  String get asistenciaSolicitudProblema => 'Problem';
+
+  @override
+  String get asistenciaSolicitudUbicacion => 'Location';
+
+  @override
+  String get asistenciaSolicitudUbicacionCompartida => 'Shared with the agency';
+
+  @override
+  String get asistenciaSolicitudUbicacionNoCompartida => 'Not shared';
+
+  @override
+  String get asistenciaSolicitudComentario => 'Comment';
+
+  @override
+  String get asistenciaSolicitudPrivacidad =>
+      'Your location is only shared while the request is open.';
+
+  @override
+  String get asistenciaSolicitudVerGuias => 'See emergency guides';
+
+  @override
   String get seguridadEquipoComprometidoTitulo => 'This device looks modified';
 
   @override

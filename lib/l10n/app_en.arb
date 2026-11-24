@@ -933,6 +933,565 @@
   "@vehiculosToqueCopiarVin": {
     "description": "Pista bajo el VIN que indica que se puede copiar."
   },
+  "recoleccionCerrar": "Close",
+  "@recoleccionCerrar": {
+    "description": "Cierra una pantalla de direcciones."
+  },
+  "recoleccionDireccionesTitulo": "My addresses",
+  "@recoleccionDireccionesTitulo": {
+    "description": "Título de la lista de direcciones guardadas."
+  },
+  "recoleccionDireccionesAgregar": "Add address",
+  "@recoleccionDireccionesAgregar": {
+    "description": "Botón para guardar una dirección nueva."
+  },
+  "recoleccionDireccionesCargando": "Loading your addresses",
+  "@recoleccionDireccionesCargando": {
+    "description": "Anuncio mientras cargan las direcciones."
+  },
+  "recoleccionDireccionesVacioTitulo": "You have no addresses yet",
+  "@recoleccionDireccionesVacioTitulo": {
+    "description": "Título cuando no hay direcciones guardadas."
+  },
+  "recoleccionDireccionesVacioMensaje": "Save one so we can pick up your car without typing it every time.",
+  "@recoleccionDireccionesVacioMensaje": {
+    "description": "Mensaje cuando no hay direcciones guardadas."
+  },
+  "recoleccionDireccionesEncabezado": "Saved",
+  "@recoleccionDireccionesEncabezado": {
+    "description": "Encabezado del grupo de direcciones."
+  },
+  "recoleccionDireccionesPie": "Tap one to edit or delete it.",
+  "@recoleccionDireccionesPie": {
+    "description": "Pie de la lista de direcciones."
+  },
+  "recoleccionDireccionEditar": "Edit {alias}",
+  "@recoleccionDireccionEditar": {
+    "description": "Pista de la fila de una dirección.",
+    "placeholders": {
+      "alias": {
+        "type": "String",
+        "example": "Casa"
+      }
+    }
+  },
+  "recoleccionDireccionBorrada": "Address deleted",
+  "@recoleccionDireccionBorrada": {
+    "description": "Aviso tras borrar una dirección."
+  },
+  "recoleccionFormNuevaTitulo": "New address",
+  "@recoleccionFormNuevaTitulo": {
+    "description": "Título del formulario de alta."
+  },
+  "recoleccionFormEditarTitulo": "Edit address",
+  "@recoleccionFormEditarTitulo": {
+    "description": "Título del formulario de edición."
+  },
+  "recoleccionFormUbicacionTitulo": "Location on the map",
+  "@recoleccionFormUbicacionTitulo": {
+    "description": "Título de la sección del mapa."
+  },
+  "recoleccionFormPinAyuda": "Tap the map to drop the pin where we will pick up your car.",
+  "@recoleccionFormPinAyuda": {
+    "description": "Ayuda bajo el mapa."
+  },
+  "recoleccionFormPinFalta": "Drop the pin on the map.",
+  "@recoleccionFormPinFalta": {
+    "description": "Error cuando falta el pin."
+  },
+  "recoleccionFormMapaDescripcion": "Map to choose the location. Pin at {latitud}, {longitud}.",
+  "@recoleccionFormMapaDescripcion": {
+    "description": "Descripción del mapa para el lector de pantalla.",
+    "placeholders": {
+      "latitud": {
+        "type": "String",
+        "example": "19.4326"
+      },
+      "longitud": {
+        "type": "String",
+        "example": "-99.1332"
+      }
+    }
+  },
+  "recoleccionFormMapaSinPin": "Map to choose the location. There is no pin yet.",
+  "@recoleccionFormMapaSinPin": {
+    "description": "Descripción del mapa sin pin."
+  },
+  "recoleccionFormUsarUbicacion": "Use my location",
+  "@recoleccionFormUsarUbicacion": {
+    "description": "Botón que pone el pin donde está el teléfono."
+  },
+  "recoleccionFormBuscarEtiqueta": "Search address",
+  "@recoleccionFormBuscarEtiqueta": {
+    "description": "Etiqueta del campo de búsqueda."
+  },
+  "recoleccionFormBuscarSugerencia": "Street, number and neighborhood",
+  "@recoleccionFormBuscarSugerencia": {
+    "description": "Sugerencia del campo de búsqueda."
+  },
+  "recoleccionFormBuscarAccion": "Search",
+  "@recoleccionFormBuscarAccion": {
+    "description": "Acción de buscar la dirección escrita."
+  },
+  "recoleccionFormBuscando": "Looking up the address",
+  "@recoleccionFormBuscando": {
+    "description": "Anuncio mientras se busca."
+  },
+  "recoleccionFormAliasEtiqueta": "Name",
+  "@recoleccionFormAliasEtiqueta": {
+    "description": "Etiqueta del campo alias."
+  },
+  "recoleccionFormAliasSugerencia": "Home, office…",
+  "@recoleccionFormAliasSugerencia": {
+    "description": "Sugerencia del campo alias."
+  },
+  "recoleccionFormCalleEtiqueta": "Street and number",
+  "@recoleccionFormCalleEtiqueta": {
+    "description": "Etiqueta del campo calle."
+  },
+  "recoleccionFormColoniaEtiqueta": "Neighborhood",
+  "@recoleccionFormColoniaEtiqueta": {
+    "description": "Etiqueta del campo colonia."
+  },
+  "recoleccionFormCpEtiqueta": "Postal code",
+  "@recoleccionFormCpEtiqueta": {
+    "description": "Etiqueta del campo código postal."
+  },
+  "recoleccionFormCiudadEtiqueta": "City",
+  "@recoleccionFormCiudadEtiqueta": {
+    "description": "Etiqueta del campo ciudad."
+  },
+  "recoleccionErrorAlias": "Enter a name of up to 40 characters.",
+  "@recoleccionErrorAlias": {
+    "description": "Error del alias."
+  },
+  "recoleccionErrorCalle": "Enter the street and number, up to 120 characters.",
+  "@recoleccionErrorCalle": {
+    "description": "Error de la calle."
+  },
+  "recoleccionErrorColonia": "Enter the neighborhood, up to 80 characters.",
+  "@recoleccionErrorColonia": {
+    "description": "Error de la colonia."
+  },
+  "recoleccionErrorCp": "The postal code has 5 digits.",
+  "@recoleccionErrorCp": {
+    "description": "Error del código postal."
+  },
+  "recoleccionErrorCiudad": "Enter the city, up to 80 characters.",
+  "@recoleccionErrorCiudad": {
+    "description": "Error de la ciudad."
+  },
+  "recoleccionGuardar": "Save address",
+  "@recoleccionGuardar": {
+    "description": "Botón que guarda la dirección."
+  },
+  "recoleccionBorrar": "Delete address",
+  "@recoleccionBorrar": {
+    "description": "Botón que borra la dirección."
+  },
+  "recoleccionBorrarTitulo": "Delete this address?",
+  "@recoleccionBorrarTitulo": {
+    "description": "Título de la confirmación de borrado."
+  },
+  "recoleccionBorrarMensaje": "“{alias}” will be deleted. This can't be undone.",
+  "@recoleccionBorrarMensaje": {
+    "description": "Mensaje de la confirmación de borrado.",
+    "placeholders": {
+      "alias": {
+        "type": "String",
+        "example": "Casa"
+      }
+    }
+  },
+  "recoleccionBorrarConfirmar": "Delete",
+  "@recoleccionBorrarConfirmar": {
+    "description": "Confirma el borrado."
+  },
+  "recoleccionBorrarCancelar": "Cancel",
+  "@recoleccionBorrarCancelar": {
+    "description": "Descarta el borrado."
+  },
+  "recoleccionErrorEnUso": "This address already has pick-ups and can't be deleted.",
+  "@recoleccionErrorEnUso": {
+    "description": "Aviso de dirección en uso (409)."
+  },
+  "recoleccionCoberturaTitulo": "Outside our coverage area",
+  "@recoleccionCoberturaTitulo": {
+    "description": "Título del aviso de cobertura."
+  },
+  "recoleccionCoberturaMensaje": "We don't pick up cars in that area yet. Move the pin or choose another address.",
+  "@recoleccionCoberturaMensaje": {
+    "description": "Aviso de dirección fuera de cobertura (422)."
+  },
+  "recoleccionErrorGuardar": "We couldn't save the address. Try again.",
+  "@recoleccionErrorGuardar": {
+    "description": "Error genérico al guardar."
+  },
+  "recoleccionErrorBorrar": "We couldn't delete the address. Try again.",
+  "@recoleccionErrorBorrar": {
+    "description": "Error genérico al borrar."
+  },
+  "recoleccionErrorSinConexion": "No connection. Check your network and try again.",
+  "@recoleccionErrorSinConexion": {
+    "description": "Aviso sin conexión en el formulario."
+  },
+  "recoleccionUbicacionDenegada": "We need your permission to use your location. You can also drop the pin by hand.",
+  "@recoleccionUbicacionDenegada": {
+    "description": "Aviso de permiso de ubicación denegado."
+  },
+  "recoleccionUbicacionApagada": "Turn on your phone's location or drop the pin by hand.",
+  "@recoleccionUbicacionApagada": {
+    "description": "Aviso de ubicación apagada."
+  },
+  "recoleccionUbicacionTiempo": "We couldn't find you in time. Try again or drop the pin by hand.",
+  "@recoleccionUbicacionTiempo": {
+    "description": "Aviso de tiempo agotado."
+  },
+  "recoleccionBusquedaSinResultados": "We couldn't find that address. Try another or drop the pin by hand.",
+  "@recoleccionBusquedaSinResultados": {
+    "description": "Aviso de búsqueda sin resultados."
+  },
+  "recoleccionBusquedaError": "We couldn't look up the address. Drop the pin by hand.",
+  "@recoleccionBusquedaError": {
+    "description": "Aviso de error al buscar."
+  },
+  "recoleccionSelectorTitulo": "How does your car get to the workshop?",
+  "@recoleccionSelectorTitulo": {
+    "description": "Título de la sección de recolección al agendar."
+  },
+  "recoleccionSelectorLoLlevo": "I'll bring it",
+  "@recoleccionSelectorLoLlevo": {
+    "description": "Opción sin recolección."
+  },
+  "recoleccionSelectorQueRecojan": "Pick up my car",
+  "@recoleccionSelectorQueRecojan": {
+    "description": "Opción con recolección."
+  },
+  "recoleccionSelectorDireccion": "Pick-up address",
+  "@recoleccionSelectorDireccion": {
+    "description": "Encabezado de la lista de direcciones al agendar."
+  },
+  "recoleccionSelectorAdministrar": "Manage my addresses",
+  "@recoleccionSelectorAdministrar": {
+    "description": "Lleva a la lista de direcciones."
+  },
+  "recoleccionSelectorSinDirecciones": "You have no saved addresses yet.",
+  "@recoleccionSelectorSinDirecciones": {
+    "description": "Mensaje sin direcciones al agendar."
+  },
+  "recoleccionSelectorElegirDia": "Choose a day and time to quote the pick-up.",
+  "@recoleccionSelectorElegirDia": {
+    "description": "Pide elegir fecha antes de cotizar."
+  },
+  "recoleccionSelectorElegirDireccion": "Choose an address to see the cost.",
+  "@recoleccionSelectorElegirDireccion": {
+    "description": "Pide elegir dirección."
+  },
+  "recoleccionSelectorCotizando": "Calculating the pick-up cost",
+  "@recoleccionSelectorCotizando": {
+    "description": "Anuncio mientras se cotiza."
+  },
+  "recoleccionSelectorElegida": "Selected",
+  "@recoleccionSelectorElegida": {
+    "description": "Estado de la dirección elegida para el lector de pantalla."
+  },
+  "recoleccionCotizacionEncabezado": "Cost and time",
+  "@recoleccionCotizacionEncabezado": {
+    "description": "Encabezado de la cotización."
+  },
+  "recoleccionCotizacionRecogemos": "We pick up your car",
+  "@recoleccionCotizacionRecogemos": {
+    "description": "Fila de la franja de recoger."
+  },
+  "recoleccionCotizacionEntregamos": "We bring it back",
+  "@recoleccionCotizacionEntregamos": {
+    "description": "Fila de la franja de entregar."
+  },
+  "recoleccionCotizacionPorTraslado": "Each trip",
+  "@recoleccionCotizacionPorTraslado": {
+    "description": "Fila del costo por traslado."
+  },
+  "recoleccionCotizacionTotal": "Pick-up total",
+  "@recoleccionCotizacionTotal": {
+    "description": "Fila del costo total."
+  },
+  "recoleccionCotizacionVentana": "{fecha}, {inicio} to {fin}",
+  "@recoleccionCotizacionVentana": {
+    "description": "Día y franja de un traslado.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "07:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "recoleccionCotizacionErrorTitulo": "We couldn't quote the pick-up",
+  "@recoleccionCotizacionErrorTitulo": {
+    "description": "Título del error de cotización."
+  },
+  "recoleccionCotizacionErrorMensaje": "Check your connection and try again. Meanwhile you can bring the car yourself.",
+  "@recoleccionCotizacionErrorMensaje": {
+    "description": "Mensaje del error de cotización."
+  },
+  "recoleccionCotizacionReintentar": "Try again",
+  "@recoleccionCotizacionReintentar": {
+    "description": "Reintenta la cotización."
+  },
+  "recoleccionCotizacionFueraDeCobertura": "That address is outside our coverage area. Choose another or bring the car yourself.",
+  "@recoleccionCotizacionFueraDeCobertura": {
+    "description": "Aviso de cotización fuera de cobertura."
+  },
+  "citasResumenRecoleccion": "Pick-up",
+  "@citasResumenRecoleccion": {
+    "description": "Fila de la recolección en el resumen y el comprobante."
+  },
+  "citasResumenRecoleccionValor": "{alias} · {direccion}",
+  "@citasResumenRecoleccionValor": {
+    "description": "Alias y dirección de la recolección.",
+    "placeholders": {
+      "alias": {
+        "type": "String",
+        "example": "Casa"
+      },
+      "direccion": {
+        "type": "String",
+        "example": "Av. Reforma 100, Juárez, 06600 CDMX"
+      }
+    }
+  },
+  "citasResumenRecogemos": "We pick up your car",
+  "@citasResumenRecogemos": {
+    "description": "Franja en que recogemos el auto."
+  },
+  "citasResumenEntregamos": "We bring it back",
+  "@citasResumenEntregamos": {
+    "description": "Franja en que entregamos el auto."
+  },
+  "citasResumenRecoleccionVentana": "{fecha}, {inicio} to {fin}",
+  "@citasResumenRecoleccionVentana": {
+    "description": "Día y franja de un traslado en el resumen.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "07:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "citasResumenRecoleccionCosto": "Pick-up cost",
+  "@citasResumenRecoleccionCosto": {
+    "description": "Costo total de los dos traslados."
+  },
+  "citasResumenRecoleccionEncabezado": "Home pick-up",
+  "@citasResumenRecoleccionEncabezado": {
+    "description": "Encabezado del grupo de recolección."
+  },
+  "citasErrorCobertura": "That address is no longer in our coverage area. Choose another or bring the car yourself.",
+  "@citasErrorCobertura": {
+    "description": "Error al confirmar una cita con recolección fuera de cobertura."
+  },
+  "citasErrorRecoleccion": "We couldn't find that address. Choose another and try again.",
+  "@citasErrorRecoleccion": {
+    "description": "Error al confirmar una cita con una dirección que ya no existe."
+  },
+  "asistenciaHeroeTextoDisponible": "Tell us what happened and share your location so the agency can find you. While help arrives, these guides tell you what to do.",
+  "@asistenciaHeroeTextoDisponible": {
+    "description": "Texto de la tarjeta principal cuando pedir ayuda ya está disponible."
+  },
+  "asistenciaPedirTitulo": "Ask for help",
+  "@asistenciaPedirTitulo": {
+    "description": "Título de la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirCargando": "Loading",
+  "@asistenciaPedirCargando": {
+    "description": "Etiqueta de lector de pantalla mientras carga la pantalla de pedir ayuda."
+  },
+  "asistenciaPedirVehiculoEncabezado": "Which vehicle needs help?",
+  "@asistenciaPedirVehiculoEncabezado": {
+    "description": "Encabezado de la lista de vehículos."
+  },
+  "asistenciaPedirSeleccionado": "Selected",
+  "@asistenciaPedirSeleccionado": {
+    "description": "Etiqueta de lector de pantalla del vehículo elegido."
+  },
+  "asistenciaPedirTipoEncabezado": "What happened?",
+  "@asistenciaPedirTipoEncabezado": {
+    "description": "Encabezado de los tipos de problema."
+  },
+  "asistenciaTipoLlanta": "Flat tire",
+  "@asistenciaTipoLlanta": {
+    "description": "Tipo de problema: llanta."
+  },
+  "asistenciaTipoBateria": "Battery",
+  "@asistenciaTipoBateria": {
+    "description": "Tipo de problema: batería."
+  },
+  "asistenciaTipoChoque": "Crash",
+  "@asistenciaTipoChoque": {
+    "description": "Tipo de problema: choque."
+  },
+  "asistenciaTipoSinGasolina": "Out of fuel",
+  "@asistenciaTipoSinGasolina": {
+    "description": "Tipo de problema: sin gasolina."
+  },
+  "asistenciaTipoOtro": "Other",
+  "@asistenciaTipoOtro": {
+    "description": "Tipo de problema: otro."
+  },
+  "asistenciaUbicacionEncabezado": "Your location",
+  "@asistenciaUbicacionEncabezado": {
+    "description": "Encabezado de la sección de ubicación."
+  },
+  "asistenciaUbicacionCompartir": "Share my location",
+  "@asistenciaUbicacionCompartir": {
+    "description": "Interruptor para compartir la ubicación."
+  },
+  "asistenciaUbicacionExplicacion": "The agency will know where you are. It is sent once, with the app open, and it is not used again when help ends.",
+  "@asistenciaUbicacionExplicacion": {
+    "description": "Explica cómo se usa la ubicación."
+  },
+  "asistenciaUbicacionObteniendo": "Finding your location…",
+  "@asistenciaUbicacionObteniendo": {
+    "description": "Mientras se lee la ubicación."
+  },
+  "asistenciaUbicacionLista": "Location ready to send",
+  "@asistenciaUbicacionLista": {
+    "description": "Cuando ya se tiene la ubicación."
+  },
+  "asistenciaUbicacionPermisoDenegado": "Location permission was not granted. You can try again or send the request without a location and write where you are.",
+  "@asistenciaUbicacionPermisoDenegado": {
+    "description": "Permiso de ubicación negado."
+  },
+  "asistenciaUbicacionPermisoBloqueado": "Location permission is blocked. Turn it on in Settings or send the request without a location and write where you are.",
+  "@asistenciaUbicacionPermisoBloqueado": {
+    "description": "Permiso de ubicación negado para siempre."
+  },
+  "asistenciaUbicacionServicioApagado": "Location services are off. Turn them on or send the request without a location and write where you are.",
+  "@asistenciaUbicacionServicioApagado": {
+    "description": "Servicio de ubicación apagado."
+  },
+  "asistenciaUbicacionTiempoAgotado": "We could not find you in time. Try again or send the request without a location and write where you are.",
+  "@asistenciaUbicacionTiempoAgotado": {
+    "description": "Se agotó el tiempo para leer la ubicación."
+  },
+  "asistenciaUbicacionReintentar": "Try again",
+  "@asistenciaUbicacionReintentar": {
+    "description": "Reintenta leer la ubicación."
+  },
+  "asistenciaUbicacionSinUbicacion": "Send without location",
+  "@asistenciaUbicacionSinUbicacion": {
+    "description": "Apaga la ubicación y deja enviar sin ella."
+  },
+  "asistenciaComentarioEtiqueta": "Comment (optional)",
+  "@asistenciaComentarioEtiqueta": {
+    "description": "Etiqueta del comentario cuando se comparte la ubicación."
+  },
+  "asistenciaComentarioEtiquetaSinUbicacion": "Where you are and what happened",
+  "@asistenciaComentarioEtiquetaSinUbicacion": {
+    "description": "Etiqueta del comentario cuando no se comparte la ubicación."
+  },
+  "asistenciaComentarioAyuda": "500 characters at most",
+  "@asistenciaComentarioAyuda": {
+    "description": "Ayuda del campo de comentario."
+  },
+  "asistenciaConfirmarTexto": "Slide to ask for help",
+  "@asistenciaConfirmarTexto": {
+    "description": "Texto del control de deslizar para confirmar."
+  },
+  "asistenciaEnviando": "Sending your request…",
+  "@asistenciaEnviando": {
+    "description": "Mientras se envía la solicitud."
+  },
+  "asistenciaErrorSinConexion": "No connection: we could not send your request. If it is urgent, call 911 or your insurer.",
+  "@asistenciaErrorSinConexion": {
+    "description": "Error de red al pedir ayuda."
+  },
+  "asistenciaErrorEnviar": "We could not send your request. Try again.",
+  "@asistenciaErrorEnviar": {
+    "description": "Error genérico al pedir ayuda."
+  },
+  "asistenciaErrorVehiculo": "We could not find that vehicle. Choose another and try again.",
+  "@asistenciaErrorVehiculo": {
+    "description": "El vehículo no existe o no es del cliente."
+  },
+  "asistenciaGarajeVacioTitulo": "You have no vehicles yet",
+  "@asistenciaGarajeVacioTitulo": {
+    "description": "Título cuando el garaje está vacío."
+  },
+  "asistenciaGarajeVacioMensaje": "To ask for help we need to know which vehicle it is. Ask the agency to register yours.",
+  "@asistenciaGarajeVacioMensaje": {
+    "description": "Mensaje cuando el garaje está vacío."
+  },
+  "asistenciaSolicitudFolio": "Reference {id}",
+  "@asistenciaSolicitudFolio": {
+    "description": "Folio de la solicitud.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "asistenciaSolicitudRecibida": "Request received",
+  "@asistenciaSolicitudRecibida": {
+    "description": "Estado de la solicitud recién creada."
+  },
+  "asistenciaSolicitudTexto": "The agency knows you need help. Keep your phone with you and stay somewhere safe.",
+  "@asistenciaSolicitudTexto": {
+    "description": "Mensaje tras enviar la solicitud."
+  },
+  "asistenciaSolicitudYaAbierta": "You already had an open request. It is shown here.",
+  "@asistenciaSolicitudYaAbierta": {
+    "description": "Aviso cuando ya hay una solicitud abierta."
+  },
+  "asistenciaSolicitudVehiculo": "Vehicle",
+  "@asistenciaSolicitudVehiculo": {
+    "description": "Fila de vehículo en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudProblema": "Problem",
+  "@asistenciaSolicitudProblema": {
+    "description": "Fila de problema en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacion": "Location",
+  "@asistenciaSolicitudUbicacion": {
+    "description": "Fila de ubicación en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudUbicacionCompartida": "Shared with the agency",
+  "@asistenciaSolicitudUbicacionCompartida": {
+    "description": "La ubicación se envió."
+  },
+  "asistenciaSolicitudUbicacionNoCompartida": "Not shared",
+  "@asistenciaSolicitudUbicacionNoCompartida": {
+    "description": "La ubicación no se envió."
+  },
+  "asistenciaSolicitudComentario": "Comment",
+  "@asistenciaSolicitudComentario": {
+    "description": "Fila de comentario en el detalle de la solicitud."
+  },
+  "asistenciaSolicitudPrivacidad": "Your location is only shared while the request is open.",
+  "@asistenciaSolicitudPrivacidad": {
+    "description": "Recordatorio de privacidad."
+  },
+  "asistenciaSolicitudVerGuias": "See emergency guides",
+  "@asistenciaSolicitudVerGuias": {
+    "description": "Lleva a las guías."
+  },
   "seguridadEquipoComprometidoTitulo": "This device looks modified",
   "@seguridadEquipoComprometidoTitulo": {
     "description": "Title of the notice shown when root or jailbreak is detected. It does not block the app."

@@ -357,4 +357,64 @@ void main() {
       );
     });
   });
+  group('actualizar y eliminar (V2-M17.01)', () {
+    test(
+      'actualizar manda PUT con el cuerpo en JSON y lee el objeto',
+      () async {
+        String? metodo;
+        String? cuerpo;
+        final cliente = _clienteQueResponde((req) {
+          metodo = req.method;
+          cuerpo = req.body;
+          return http.Response(
+            jsonEncode({'id': 4}),
+            200,
+            headers: {'content-type': 'application/json'},
+          );
+        });
+
+        final id = await cliente.actualizar<int>(
+          '/direcciones/4',
+          cuerpo: {'alias': 'Casa'},
+          leer: (j) => j['id']! as int,
+        );
+
+        expect(id, 4);
+        expect(metodo, 'PUT');
+        expect(jsonDecode(cuerpo!), {'alias': 'Casa'});
+      },
+    );
+
+    test('actualizar mapea un 422 como el resto de los errores', () async {
+      final cliente = _clienteQueResponde((_) => _problema(422, 'Fuera'));
+      await expectLater(
+        cliente.actualizar<int>(
+          '/direcciones/4',
+          cuerpo: const {},
+          leer: (j) => 0,
+        ),
+        throwsA(isA<SinParametrosDeValuacion>()),
+      );
+    });
+
+    test('eliminar manda DELETE y acepta un 204 sin cuerpo', () async {
+      String? metodo;
+      final cliente = _clienteQueResponde((req) {
+        metodo = req.method;
+        return http.Response('', 204);
+      });
+
+      await cliente.eliminar('/direcciones/4');
+
+      expect(metodo, 'DELETE');
+    });
+
+    test('eliminar mapea un 409 a Conflicto', () async {
+      final cliente = _clienteQueResponde((_) => _problema(409, 'En uso'));
+      await expectLater(
+        cliente.eliminar('/direcciones/4'),
+        throwsA(isA<Conflicto>()),
+      );
+    });
+  });
 }
