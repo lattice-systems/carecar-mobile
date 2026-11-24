@@ -146,7 +146,7 @@ Para el asistente (M24) y la mensajería con el asesor (M07). Un solo par de com
 - **Lector de pantalla:** oye «Tú: texto, hora» o «CareCar: texto, hora» en un solo nodo.
 
 **`CampoMensaje`.**
-- **Forma:** campo sobre `superficieHundida` en píldora (`Radios.bordeCampoChat`); con foco, borde de `acento`.
+- **Forma:** campo sobre `superficieHundida` en píldora (`Radios.bordeCampoChat`); con foco, borde de `acento`. `iconoAdjuntar` cambia el ícono de adjuntar (el asistente usa una cámara, V2-M24.05).
 - **Alto:** crece con el texto hasta 5 líneas y después se desplaza por dentro.
 - **Enviar:** ícono en `acento`, deshabilitado mientras no haya texto, sin contar espacios. Al enviar entrega el texto recortado y se vacía.
 - **Adjuntar:** solo aparece si la pantalla lo pide.
