@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **213 historias** + 4 de H0.
+Total: **214 historias** + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -51,6 +51,7 @@ Total: **213 historias** + 4 de H0.
 | V2-T02.13 | Componente `LineaDeTiempo` | Cristian |  | V2-T02.04 | Hecha | #37, #42 |
 | V2-T02.14 | Componentes `Calendario` y `SelectorFranja` | Cristian |  | V2-T02.04 | Hecha | #37 |
 | V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | Hecha | #83 |
+| V2-T02.16 | Estilo vidrio líquido y píldora en componentes y login | Daniel |  | V2-T02.04 | En revisión | #95 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |

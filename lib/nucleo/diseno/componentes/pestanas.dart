@@ -87,6 +87,7 @@ class _Pestana extends StatelessWidget {
       onTap: alToque,
       child: InkWell(
         onTap: alToque,
+        splashFactory: NoSplash.splashFactory,
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             minHeight: Pestanas._altoMinimo,

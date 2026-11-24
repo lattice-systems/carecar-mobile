@@ -40,7 +40,7 @@ class BotonPildora extends StatefulWidget {
 class _BotonPildoraState extends State<BotonPildora> {
   bool _presionado = false;
 
-  static const double _escalaPresionado = 0.96;
+  static const double _escalaPresionado = 0.975;
   static const double _tamanoIcono = 20;
 
   @override
@@ -91,6 +91,7 @@ class _BotonPildoraState extends State<BotonPildora> {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: widget.alPresionar,
+          splashFactory: NoSplash.splashFactory,
           onHighlightChanged: (v) => setState(() => _presionado = v),
           customBorder: const RoundedRectangleBorder(
             borderRadius: Radios.bordePildora,
@@ -111,7 +112,7 @@ class _BotonPildoraState extends State<BotonPildora> {
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: Espaciado.e5,
+                horizontal: Espaciado.e4,
                 vertical: Espaciado.e2,
               ),
               child: Center(widthFactor: 1, child: contenido),

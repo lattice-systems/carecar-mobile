@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
+import 'rebote_tactil.dart';
 import 'tono.dart';
 
 /// Tarjeta tocable para una accion rapida: icono, titulo y descripcion corta.
@@ -52,57 +53,65 @@ class TarjetaAccion extends StatelessWidget {
       label: descripcion == null ? titulo : '$titulo. $descripcion',
       onTap: alToque,
       excludeSemantics: true,
-      child: Material(
-        color: c.superficie,
-        borderRadius: Radios.bordeTarjeta,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: alToque,
-          child: Ink(
-            decoration: BoxDecoration(
-              borderRadius: Radios.bordeTarjeta,
-              border: Border.all(color: c.borde),
-            ),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 48),
-              child: Padding(
-                padding: const EdgeInsets.all(Espaciado.e3),
-                child: Row(
-                  children: [
-                    Container(
-                      width: _medallon,
-                      height: _medallon,
-                      decoration: BoxDecoration(
-                        color: fondoMedallon,
-                        shape: BoxShape.circle,
+      child: ReboteTactil(
+        habilitado: habilitada,
+        child: Material(
+          color: c.superficie,
+          borderRadius: Radios.bordeTarjeta,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: alToque,
+            splashFactory: NoSplash.splashFactory,
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: Radios.bordeTarjeta,
+                border: Border.all(color: c.borde),
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 48),
+                child: Padding(
+                  padding: const EdgeInsets.all(Espaciado.e3),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: _medallon,
+                        height: _medallon,
+                        decoration: BoxDecoration(
+                          color: fondoMedallon,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          icono,
+                          size: _tamanoIcono,
+                          color: colorIcono,
+                        ),
                       ),
-                      child: Icon(icono, size: _tamanoIcono, color: colorIcono),
-                    ),
-                    const SizedBox(width: Espaciado.e3),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            titulo,
-                            style: t.cuerpoFuerte.copyWith(
-                              color: habilitada ? c.texto : c.textoTerciario,
-                            ),
-                          ),
-                          if (descripcion != null)
+                      const SizedBox(width: Espaciado.e3),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
                             Text(
-                              descripcion!,
-                              style: t.cuerpoChico.copyWith(
-                                color: habilitada
-                                    ? c.textoSecundario
-                                    : c.textoTerciario,
+                              titulo,
+                              style: t.cuerpoFuerte.copyWith(
+                                color: habilitada ? c.texto : c.textoTerciario,
                               ),
                             ),
-                        ],
+                            if (descripcion != null)
+                              Text(
+                                descripcion!,
+                                style: t.cuerpoChico.copyWith(
+                                  color: habilitada
+                                      ? c.textoSecundario
+                                      : c.textoTerciario,
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

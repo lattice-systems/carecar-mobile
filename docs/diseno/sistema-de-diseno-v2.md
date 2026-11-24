@@ -28,7 +28,7 @@ Tokens semánticos; ningún componente usa hexadecimales directos. Valores inici
 | `fondo` | `#F6F7F9` | `#0A0B0E` | Lienzo de la app |
 | `superficie` | `#FFFFFF` | `#14161B` | Tarjetas, hojas |
 | `superficieElevada` | `#FFFFFF` | `#1C1F26` | Menús, diálogos |
-| `superficieHundida` | `#EEF0F3` | `#07080A` | Campos, zonas secundarias |
+| `superficieHundida` | `#EEF0F3` | `#1A1D23` | Campos, zonas secundarias. En oscuro es un poco más clara que el fondo: si fuera más oscura, campos, burbujas e interruptores apagados desaparecen |
 | `borde` | `#E3E6EB` | `#262A33` | Divisores, contornos sutiles |
 | `contornoControl` | `#7C8391` | `#6B7280` | Contorno de campos, casillas, interruptores y chips (3 a 1 contra la superficie) |
 | `texto` | `#0B0D12` | `#F3F4F6` | Texto principal |
@@ -107,6 +107,21 @@ Barra inferior con 5 destinos: **Inicio · Mi auto · Servicio · Explorar · Cu
 Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; con carga), `CampoTexto`, `CampoContrasena`, `Selector`, `Casilla`, `Interruptor`, `Chip` (en código `ChipPista`, para no chocar con el `Chip` de Material), `Avatar`, `Insignia`, `Aviso` (info/éxito/advertencia/peligro), `Dialogo`, `HojaInferior`, `Menu`, `Pestanas`.
 
 Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
+
+### Vidrio líquido y píldora (V2-T02.16)
+
+Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos, dibujados por Flutter, así que se ven igual en Android y en iOS.
+
+- **`SuperficieLiquida`:**
+  - desenfoque del fondo siempre recortado a su forma (sin recorte, el blur se sale y mancha);
+  - tinte translúcido y bisel de luz de 1 px.
+- **`CampoBusquedaLiquido`:** buscador en cápsula sobre esa superficie.
+- **Forma píldora:** botones y campos de una línea usan `Radios.bordePildora`. Los campos de varias líneas siguen con `bordeTarjeta`.
+- **`ReboteTactil`:**
+  - reemplaza la salpicadura de Material con un encogimiento corto al presionar (`Movimiento.toqueBajada` de 70 ms y `toqueSubida` de 100 ms);
+  - con reducir movimiento no se encoge;
+  - el interruptor además vibra levemente.
+- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.png`) y barra de estado en claro.
 
 ### Mensajes (chat)
 

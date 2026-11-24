@@ -33,11 +33,13 @@ class CampoBase extends StatelessWidget {
     String? sugerencia,
     bool conError = false,
     Widget? sufijo,
+    bool pildora = true,
   }) {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
+    final radio = pildora ? Radios.bordePildora : Radios.bordeTarjeta;
     OutlineInputBorder borde(Color color, double ancho) => OutlineInputBorder(
-      borderRadius: Radios.bordeControl,
+      borderRadius: radio,
       borderSide: BorderSide(color: color, width: ancho),
     );
     return InputDecoration(
@@ -48,8 +50,8 @@ class CampoBase extends StatelessWidget {
       fillColor: c.superficie,
       isDense: false,
       constraints: const BoxConstraints(minHeight: 48),
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: Espaciado.e4,
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: pildora ? Espaciado.e5 : Espaciado.e4,
         vertical: Espaciado.e3,
       ),
       enabledBorder: borde(

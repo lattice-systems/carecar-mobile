@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../nucleo/diseno/componentes/tono.dart';
+import '../nucleo/diseno/tokens/colores.dart';
 import '../tema/tema_carecar.dart';
 
 /// Los cuatro tonos de aviso de la guia de estilos.
@@ -75,19 +77,30 @@ class Aviso extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final estilos = Theme.of(context).textTheme;
+    // En una pantalla oscura (el login v2) los colores claros de la v1
+    // deslumbran: se usan los del tono en la paleta oscura del sistema v2.
+    final oscuro = Theme.of(context).brightness == Brightness.dark;
+    final v2 = ColoresTono.de(switch (tono) {
+      TonoAviso.error => Tono.peligro,
+      TonoAviso.advertencia => Tono.advertencia,
+      TonoAviso.exito => Tono.exito,
+      TonoAviso.informacion => Tono.informacion,
+    }, PaletaColores.oscuro);
+    final texto = oscuro ? v2.frente : _texto;
+    final fondo = oscuro ? v2.fondo : _fondo;
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: _fondo,
+        color: fondo,
         borderRadius: BorderRadius.circular(TemaCareCar.radioControl),
-        border: Border.all(color: _texto.withValues(alpha: 0.35)),
+        border: Border.all(color: texto.withValues(alpha: 0.35)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(_icono, color: _texto, size: 20),
+          Icon(_icono, color: texto, size: 20),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -96,7 +109,7 @@ class Aviso extends StatelessWidget {
                 Text(
                   titulo,
                   style: estilos.labelLarge?.copyWith(
-                    color: _texto,
+                    color: texto,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -104,7 +117,7 @@ class Aviso extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     detalle!,
-                    style: estilos.bodyMedium?.copyWith(color: _texto),
+                    style: estilos.bodyMedium?.copyWith(color: texto),
                   ),
                 ],
               ],

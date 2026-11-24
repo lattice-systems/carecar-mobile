@@ -48,7 +48,7 @@ void main() {
       expect(logo.image, isA<AssetImage>());
       expect(
         (logo.image as AssetImage).assetName,
-        'assets/marca/agencia360-logo.png',
+        'assets/marca/agencia360-logo-oscuro.png',
       );
       // Un logotipo sin texto siempre lleva etiqueta accesible.
       expect(logo.semanticLabel, 'Agencia360');

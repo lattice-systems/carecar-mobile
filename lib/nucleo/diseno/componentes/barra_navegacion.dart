@@ -1,4 +1,7 @@
+import 'dart:ui' show ImageFilter;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 
 import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
@@ -6,6 +9,7 @@ import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
+import 'rebote_tactil.dart';
 
 /// Un destino de la [BarraNavegacion].
 ///
@@ -52,26 +56,39 @@ class BarraNavegacion extends StatelessWidget {
       container: true,
       explicitChildNodes: true,
       label: AppLocalizations.of(context).navegacionPrincipal,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.superficie,
-          border: Border(top: BorderSide(color: c.borde)),
-        ),
-        child: SafeArea(
-          top: false,
-          child: Row(
-            children: [
-              for (var i = 0; i < destinos.length; i++)
-                Expanded(
-                  child: _Destino(
-                    destino: destinos[i],
-                    posicion: i + 1,
-                    total: destinos.length,
-                    seleccionado: i == indice,
-                    alToque: () => alCambiar(i),
-                  ),
+      child: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: c.superficie.withValues(alpha: 0.82),
+              border: Border(
+                top: BorderSide(
+                  color: c.borde.withValues(alpha: 0.5),
+                  width: 0.5,
                 ),
-            ],
+              ),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Row(
+                children: [
+                  for (var i = 0; i < destinos.length; i++)
+                    Expanded(
+                      child: _Destino(
+                        destino: destinos[i],
+                        posicion: i + 1,
+                        total: destinos.length,
+                        seleccionado: i == indice,
+                        alToque: () {
+                          HapticFeedback.selectionClick();
+                          alCambiar(i);
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -117,57 +134,62 @@ class _Destino extends StatelessWidget {
       ].join(', '),
       onTap: alToque,
       excludeSemantics: true,
-      child: InkWell(
-        onTap: alToque,
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 64),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: Espaciado.e2),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
-                  children: [
-                    AnimatedContainer(
-                      duration: mov.duracion,
-                      curve: mov.curva,
-                      width: _anchoPildora,
-                      height: _altoPildora,
-                      decoration: BoxDecoration(
-                        color: seleccionado
-                            ? c.acentoSuave
-                            : Colors.transparent,
-                        borderRadius: Radios.bordePildora,
+      child: ReboteTactil(
+        escalaAlPresionar: 0.92,
+        activarHaptico:
+            false, // El háptico ya lo dispara alToque con selectionClick
+        child: InkWell(
+          onTap: alToque,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 64),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: Espaciado.e2),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      AnimatedContainer(
+                        duration: mov.duracion,
+                        curve: mov.curva,
+                        width: _anchoPildora,
+                        height: _altoPildora,
+                        decoration: BoxDecoration(
+                          color: seleccionado
+                              ? c.acentoSuave
+                              : Colors.transparent,
+                          borderRadius: Radios.bordePildora,
+                        ),
+                        child: Icon(
+                          seleccionado
+                              ? (destino.iconoActivo ?? destino.icono)
+                              : destino.icono,
+                          size: _tamanoIcono,
+                          color: color,
+                        ),
                       ),
-                      child: Icon(
-                        seleccionado
-                            ? (destino.iconoActivo ?? destino.icono)
-                            : destino.icono,
-                        size: _tamanoIcono,
-                        color: color,
-                      ),
-                    ),
-                    if (pendientes > 0)
-                      Positioned(
-                        top: -2,
-                        right: 2,
-                        child: _Globo(conteo: pendientes),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: Espaciado.e1),
-                Text(
-                  destino.etiqueta,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: t.micro.copyWith(
-                    color: color,
-                    fontWeight: seleccionado ? FontWeight.w700 : null,
+                      if (pendientes > 0)
+                        Positioned(
+                          top: -2,
+                          right: 2,
+                          child: _Globo(conteo: pendientes),
+                        ),
+                    ],
                   ),
-                ),
-              ],
+                  const SizedBox(height: Espaciado.e1),
+                  Text(
+                    destino.etiqueta,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: t.micro.copyWith(
+                      color: color,
+                      fontWeight: seleccionado ? FontWeight.w700 : null,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

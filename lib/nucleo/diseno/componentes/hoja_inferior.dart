@@ -34,6 +34,11 @@ class HojaInferior extends StatelessWidget {
         decoration: BoxDecoration(
           color: c.superficieElevada,
           borderRadius: Radios.bordeHoja,
+          border: Border(
+            top: BorderSide(color: c.borde, width: 0.8),
+            left: BorderSide(color: c.borde, width: 0.8),
+            right: BorderSide(color: c.borde, width: 0.8),
+          ),
         ),
         child: SafeArea(
           child: Column(

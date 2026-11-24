@@ -6,6 +6,7 @@ import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
+import 'rebote_tactil.dart';
 
 /// Peso visual del boton. Debe haber una sola accion principal por pantalla.
 enum VarianteBoton { principal, secundario, terciario, peligro }
@@ -69,21 +70,36 @@ class Boton extends StatelessWidget {
         ? SizedBox(width: double.infinity, child: boton)
         : boton;
 
-    if (!cargando) return dimensionado;
+    final conRebote = ReboteTactil(
+      habilitado: !cargando && alPresionar != null,
+      child: dimensionado,
+    );
+
+    if (!cargando) return conRebote;
     return Semantics(
       button: true,
       label: AppLocalizations.of(context).botonCargando(texto),
       excludeSemantics: true,
-      child: dimensionado,
+      child: conRebote,
     );
   }
 
   Widget _contenido(BuildContext context, TokensPista tokens) {
+    final c = tokens.colores;
+    // El indicador toma el color del texto: con el del tema (acento) se pierde
+    // sobre el boton principal, que tambien es acento.
+    final colorIndicador = switch (variante) {
+      VarianteBoton.principal || VarianteBoton.peligro => c.sobreAcento,
+      VarianteBoton.secundario || VarianteBoton.terciario => c.acento,
+    };
     final Widget? adorno = cargando
-        ? const SizedBox(
+        ? SizedBox(
             width: _tamanoIndicador,
             height: _tamanoIndicador,
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: colorIndicador,
+            ),
           )
         : (icono == null ? null : Icon(icono, size: _tamanoIndicador));
 
@@ -135,8 +151,9 @@ class Boton extends StatelessWidget {
       ),
       tapTargetSize: MaterialTapTargetSize.padded,
       elevation: const WidgetStatePropertyAll(0),
+      splashFactory: NoSplash.splashFactory,
       shape: const WidgetStatePropertyAll(
-        RoundedRectangleBorder(borderRadius: Radios.bordeControl),
+        RoundedRectangleBorder(borderRadius: Radios.bordePildora),
       ),
       textStyle: WidgetStatePropertyAll(letra),
       backgroundColor: WidgetStateProperty.resolveWith((e) {

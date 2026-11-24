@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
+import 'rebote_tactil.dart';
 
 /// Fila de una lista: titulo, subtitulo opcional, adorno al inicio y al final.
 ///
@@ -75,7 +76,14 @@ class FilaLista extends StatelessWidget {
     );
 
     final fila = tocable
-        ? InkWell(onTap: alToque, child: contenido)
+        ? ReboteTactil(
+            habilitado: true,
+            child: InkWell(
+              onTap: alToque,
+              splashFactory: NoSplash.splashFactory,
+              child: contenido,
+            ),
+          )
         : contenido;
 
     return Semantics(

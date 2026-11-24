@@ -51,8 +51,11 @@ void main() {
     ) async {
       await _montar(tester, ApiFalsa(), correoInicial: 'cliente1@example.com');
 
-      final campo = tester.widget<TextFormField>(
-        find.byKey(PantallaRecuperarContrasena.campoCorreo),
+      final campo = tester.widget<TextField>(
+        find.descendant(
+          of: find.byKey(PantallaRecuperarContrasena.campoCorreo),
+          matching: find.byType(TextField),
+        ),
       );
       expect(campo.controller?.text, 'cliente1@example.com');
     });
@@ -143,8 +146,11 @@ void main() {
       );
       await tester.pump();
 
-      final campo = tester.widget<TextFormField>(
-        find.byKey(PantallaRecuperarContrasena.campoCodigo),
+      final campo = tester.widget<TextField>(
+        find.descendant(
+          of: find.byKey(PantallaRecuperarContrasena.campoCodigo),
+          matching: find.byType(TextField),
+        ),
       );
       expect(campo.controller?.text, '123');
     });
@@ -229,8 +235,11 @@ void main() {
 
       // RIC-19: pedir uno nuevo invalida el anterior, asi que dejarlo escrito
       // solo serviria para que el cliente mande uno que ya no sirve.
-      final campo = tester.widget<TextFormField>(
-        find.byKey(PantallaRecuperarContrasena.campoCodigo),
+      final campo = tester.widget<TextField>(
+        find.descendant(
+          of: find.byKey(PantallaRecuperarContrasena.campoCodigo),
+          matching: find.byType(TextField),
+        ),
       );
       expect(campo.controller?.text, isEmpty);
       expect(api.llamadasAlRecuperar, 2);
