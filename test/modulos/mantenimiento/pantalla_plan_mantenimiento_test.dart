@@ -155,10 +155,7 @@ void main() {
     expect(find.text('Servicio de 5,000 km'), findsOneWidget);
     // El estado va en el texto de la fila para que lo lea el lector de
     // pantalla; el icono y su color lo refuerzan.
-    expect(
-      find.textContaining('Hecho el'),
-      findsOneWidget,
-    );
+    expect(find.textContaining('Hecho el'), findsOneWidget);
     expect(find.text('Próximo · 10,000 km · 12 meses'), findsOneWidget);
     expect(find.text('Pendiente · 15,000 km · 18 meses'), findsOneWidget);
   });
