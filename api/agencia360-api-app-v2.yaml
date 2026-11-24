@@ -1200,6 +1200,8 @@ paths:
         Los errores antes de empezar (400, 401, 403, 404, 409, 429, 503) responden igual que
         `POST /asistente/preguntas`, con JSON. Si la app cierra la conexión, el backend guarda lo que
         alcanzó a escribirse en `consulta_asistente` (proveedor con sufijo `-parcial`).
+        La app manda `Accept: text/event-stream, application/json` para poder leer tanto el flujo
+        como los errores en JSON.
       requestBody:
         required: true
         content:
