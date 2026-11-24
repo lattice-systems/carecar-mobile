@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import 'pantalla_plan_mantenimiento.dart';
+import 'pantalla_registrar_km.dart';
+import 'pantalla_servicio_mantenimiento.dart';
 
 /// Raíz de las rutas de mantenimiento.
 const rutaMantenimiento = '/mantenimiento';
@@ -42,5 +44,26 @@ final rutasMantenimiento = <RouteBase>[
       context,
       PantallaPlanMantenimiento(vehiculoId: _numero(state, 'vehiculoId')),
     ),
+    routes: [
+      GoRoute(
+        path: 'servicio/:servicioId',
+        name: 'mantenimiento-servicio',
+        builder: (context, state) => _conTemaPista(
+          context,
+          PantallaServicioMantenimiento(
+            vehiculoId: _numero(state, 'vehiculoId'),
+            servicioId: _numero(state, 'servicioId'),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: 'kilometraje',
+        name: 'mantenimiento-kilometraje',
+        builder: (context, state) => _conTemaPista(
+          context,
+          PantallaRegistrarKm(vehiculoId: _numero(state, 'vehiculoId')),
+        ),
+      ),
+    ],
   ),
 ];
