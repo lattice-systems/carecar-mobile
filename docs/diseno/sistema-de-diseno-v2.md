@@ -106,7 +106,9 @@ Barra inferior con 5 destinos: **Inicio · Mi auto · Servicio · Explorar · Cu
 
 Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; con carga), `CampoTexto`, `CampoContrasena`, `Selector`, `Casilla`, `Interruptor`, `Chip` (en código `ChipPista`, para no chocar con el `Chip` de Material), `Avatar`, `Insignia`, `Aviso` (info/éxito/advertencia/peligro), `Dialogo`, `HojaInferior`, `Menu`, `Pestanas`.
 
-Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
+Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `BotonCircular`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
+
+**`BotonCircular`** (V2-T02.17): botón de un ícono, círculo de 48 con `ReboteTactil`. Variante `tonal` (fondo `superficieHundida`, ícono `textoSecundario`) y `acento` (fondo `acentoSuave`, ícono `acento`). Con `iconoMarcado` es interruptor: marcado se ve como acento y el lector lo anuncia seleccionado. Deshabilitado: fondo hundido, ícono terciario, sin rebote. Lo usan enviar (acento) y adjuntar de `CampoMensaje`, y 👍/👎 del asistente.
 
 ### Vidrio líquido y píldora (V2-T02.16)
 
