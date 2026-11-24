@@ -7,6 +7,7 @@ import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/campo_mensaje.dart';
 import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
+import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -69,10 +70,16 @@ class PantallaAsistente extends ConsumerWidget {
             Expanded(
               child: mensajes.isEmpty
                   ? CentradoDesplazable(
-                      child: EstadoVacio(
-                        titulo: textos.asistenteVacioTitulo,
-                        mensaje: textos.asistenteVacioMensaje,
-                        icono: Icons.auto_awesome_outlined,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          EstadoVacio(
+                            titulo: textos.asistenteVacioTitulo,
+                            mensaje: textos.asistenteVacioMensaje,
+                            icono: Icons.auto_awesome_outlined,
+                          ),
+                          _PreguntasSugeridas(alElegir: conversacion.preguntar),
+                        ],
                       ),
                     )
                   : ListView.separated(
@@ -100,6 +107,57 @@ class PantallaAsistente extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Preguntas sugeridas con la conversacion vacia (V2-M24.08). La lista es
+/// generica y vive en la app; tocar una la envia como pregunta.
+class _PreguntasSugeridas extends StatelessWidget {
+  const _PreguntasSugeridas({required this.alElegir});
+
+  final ValueChanged<String> alElegir;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final tokens = TokensPista.de(context);
+    final preguntas = [
+      textos.asistentePreguntaMantenimiento,
+      textos.asistentePreguntaLlantas,
+      textos.asistentePreguntaTestigos,
+      textos.asistentePreguntaAceite,
+      textos.asistentePreguntaGasolina,
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              textos.asistenteSugerenciasTitulo,
+              style: tokens.tipografia.etiqueta.copyWith(
+                color: tokens.colores.textoSecundario,
+              ),
+            ),
+          ),
+          const SizedBox(height: Espaciado.e2),
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: Espaciado.e2,
+            children: [
+              for (final pregunta in preguntas)
+                ChipPista(
+                  texto: pregunta,
+                  seleccionado: false,
+                  alCambiar: (_) => alElegir(pregunta),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

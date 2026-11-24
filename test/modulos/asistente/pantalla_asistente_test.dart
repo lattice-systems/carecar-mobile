@@ -4,6 +4,7 @@ import 'package:carecar_mobile/modulos/asistente/dominio/repositorio_asistente.d
 import 'package:carecar_mobile/modulos/asistente/presentacion/pantalla_asistente.dart';
 import 'package:carecar_mobile/modulos/asistente/presentacion/proveedores_asistente.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_mensaje.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/chip_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -164,6 +165,48 @@ void main() {
         );
         await _preguntar(tester, '¿Qué presión llevan las llantas?');
         await tester.pump();
+        expect(tester.takeException(), isNull);
+      }
+    });
+  });
+
+  group('Preguntas sugeridas (V2-M24.08)', () {
+    _prueba('con la conversacion vacia muestra de 4 a 6 sugerencias', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_Repo((_) async => _conCita)));
+      await tester.pump();
+
+      final total = find.byType(ChipPista).evaluate().length;
+      expect(total, inInclusiveRange(4, 6));
+      expect(find.text('¿Qué presión llevan las llantas?'), findsOneWidget);
+    });
+
+    _prueba('tocar una la envia como pregunta y las sugerencias se van', (
+      tester,
+    ) async {
+      final repo = _Repo((_) async => _conCita);
+      await tester.pumpWidget(_app(repo));
+      await tester.pump();
+
+      await tester.tap(find.text('¿Cuánto aceite le cabe al motor?'));
+      await tester.pump();
+      await tester.pump();
+
+      expect(repo.preguntas, ['¿Cuánto aceite le cabe al motor?']);
+      expect(find.byType(ChipPista), findsNothing);
+      expect(find.text('Cada 10 000 km o un año.'), findsOneWidget);
+    });
+
+    _prueba('las sugerencias caben en claro, oscuro y letra grande', (
+      tester,
+    ) async {
+      for (final escenario in Escenario.values) {
+        await tester.pumpWidget(
+          _app(_Repo((_) async => _conCita), escenario: escenario),
+        );
+        await tester.pump();
+        expect(find.byType(ChipPista), findsWidgets);
         expect(tester.takeException(), isNull);
       }
     });
