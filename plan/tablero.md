@@ -260,7 +260,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M24.03 | Preguntar algo de mi auto y recibir una respuesta citada | Daniel | B | V2-M24.02 (simulable), V2-T02.15 (provisional) | Hecha | backend#79, #84 |
 | V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Lista | |
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
-| V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | En revisión | |
+| V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Hecha | #97 |
 | V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Lista | |
 | V2-M24.08 | Ver preguntas sugeridas | Daniel |  | V2-M24.03 | Hecha | #96 |
 | V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
