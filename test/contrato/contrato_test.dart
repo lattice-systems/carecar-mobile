@@ -542,7 +542,9 @@ void main() {
           .where((c) => c != CodigoProblema.desconocido)
           .map((c) => c.enElContrato)
           .toSet();
-      expect(enElContrato, queLaAppMapea);
+      // La app tambien mapea los codigos que solo declara el v2; el v1
+      // congelado no puede traer ninguno que la app desconozca.
+      expect(queLaAppMapea.containsAll(enElContrato), isTrue);
     });
 
     test('las operaciones del contrato son las 20 que la prueba declara', () {
