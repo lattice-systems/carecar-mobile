@@ -163,5 +163,7 @@ Lo que se veía mal en el Xiaomi y se corrigió:
 - el logo y la barra de estado no se leían en el login;
 - los avisos del login salían en cajas claras de la v1.
 
+Después (PR del campo de chat): `CampoMensaje` pasa a píldora con `Radios.campoChat` (24) para igualar los campos del login; con varias líneas queda como cápsula.
+
 Pendiente fuera de este PR: la gráfica de línea no ajusta su escala a los datos (la línea queda pegada arriba).
 

@@ -69,7 +69,7 @@ Reglas: máximo tres tamaños por pantalla; nunca menos de 11; todo escala con l
 ## 4. Espacio, forma y elevación
 
 - **Espaciado** (base 4): `1`=4, `2`=8, `3`=12, `4`=16, `5`=20, `6`=24, `8`=32, `10`=40, `14`=56, `18`=72. Margen lateral de pantalla: 16 (teléfono), 24 (tableta). Ancho máximo de contenido: 640.
-- **Radios:** `control` 10 · `tarjeta` 16 · `hoja` 28 (arriba) · `pildora` 999.
+- **Radios:** `control` 10 · `tarjeta` 16 · `hoja` 28 (arriba) · `campoChat` 24 · `pildora` 999.
 - **Elevación:** claro = sombra suave en dos capas (`0 1 2 / 6 %` + `0 8 24 / 6 %`); oscuro = sin sombra, se sube un tono de superficie. Bordes solo cuando no hay contraste de superficie.
 - **Objetivo táctil** mínimo 48 × 48.
 
@@ -116,7 +116,7 @@ Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos
   - desenfoque del fondo siempre recortado a su forma (sin recorte, el blur se sale y mancha);
   - tinte translúcido y bisel de luz de 1 px.
 - **`CampoBusquedaLiquido`:** buscador en cápsula sobre esa superficie.
-- **Forma píldora:** botones y campos de una línea usan `Radios.bordePildora`. Los campos de varias líneas siguen con `bordeTarjeta`.
+- **Forma píldora:** botones y campos de una línea usan `Radios.bordePildora`. Los campos de varias líneas siguen con `bordeTarjeta`, salvo `CampoMensaje`: usa `Radios.bordeCampoChat` (24, la mitad de su alto de una línea), así con una línea es píldora como el login y al crecer queda como cápsula sin cortar el texto.
 - **`ReboteTactil`:**
   - reemplaza la salpicadura de Material con un encogimiento corto al presionar (`Movimiento.toqueBajada` de 70 ms y `toqueSubida` de 100 ms);
   - con reducir movimiento no se encoge;
@@ -140,7 +140,7 @@ Para el asistente (M24) y la mensajería con el asesor (M07). Un solo par de com
 - **Lector de pantalla:** oye «Tú: texto, hora» o «CareCar: texto, hora» en un solo nodo.
 
 **`CampoMensaje`.**
-- **Forma:** campo sobre `superficieHundida` con radio `tarjeta`; con foco, borde de `acento`.
+- **Forma:** campo sobre `superficieHundida` en píldora (`Radios.bordeCampoChat`); con foco, borde de `acento`.
 - **Alto:** crece con el texto hasta 5 líneas y después se desplaza por dentro.
 - **Enviar:** ícono en `acento`, deshabilitado mientras no haya texto, sin contar espacios. Al enviar entrega el texto recortado y se vacía.
 - **Adjuntar:** solo aparece si la pantalla lo pide.
