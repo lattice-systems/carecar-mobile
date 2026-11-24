@@ -122,7 +122,7 @@ La cuota es **por proyecto**, compartida por todos los clientes, así que se rep
 
 ## Calidad
 
-Umbral para cerrar H6 (V2-M24.07): **al menos 80 %** de las preguntas del conjunto de evaluación con la página correcta entre las citas.
+Umbral para cerrar H6 (V2-M24.07): **al menos 80 %** de las preguntas del conjunto de evaluación con la página correcta entre las citas. El conjunto y el script están en el backend: `docs/asistente/evaluacion/preguntas.json` y `scripts/evaluar-asistente.py` (resultado pendiente de anotar aquí).
 
 ## Consecuencias
 

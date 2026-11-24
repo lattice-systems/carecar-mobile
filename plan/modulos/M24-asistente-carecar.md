@@ -91,11 +91,14 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - aviso de IA fijo;
   - estado vacío con cinco preguntas sugeridas en `ChipPista` que se envían al tocarlas (V2-M24.08);
   - burbujas con la cita «Manual, pág. N», que abre el manual;
+  - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
   - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
   - reintento sin conexión;
   - límite y falta de manual explicados.
 - **Entrada:** desde el detalle del vehículo, en «Tu auto».
 - **API simulada:** responde con una cita de ejemplo.
+
+**Calidad (V2-M24.07):** el conjunto de 20 preguntas con su página esperada y el script que mide el % de citas correctas viven en el backend (`docs/asistente/evaluacion/preguntas.json` y `scripts/evaluar-asistente.py`, backend#87), junto al código que evalúan. Falta correrlo contra Azure y anotar el resultado en el ADR 0007 antes de cerrar H6.
 
 **Pendiente:**
 - Abrir el manual justo en la página citada (V2-M24.04, necesita `VisorPdf.paginaInicial`).
