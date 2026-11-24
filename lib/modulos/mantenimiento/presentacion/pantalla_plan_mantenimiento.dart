@@ -52,7 +52,7 @@ class _EstadoPantallaPlanMantenimiento
   }
 
   void _agendar() => context.push(
-    localizacionAgendarCita(
+    rutaAgendarCitaCon(
       vehiculoId: widget.vehiculoId,
       motivo: MotivoCita.mantenimiento,
     ),
