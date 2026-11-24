@@ -226,10 +226,10 @@ Total: **214 historias** + 4 de H0.
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
 | V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Borrador | |
 | V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M06.02 | Borrador | |
-| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Lista | |
-| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Lista | |
-| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Lista | |
-| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Lista | |
+| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | En curso | backend#93 |
+| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | En curso | backend#93 |
+| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | En curso | backend#93 |
+| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | En curso | backend#93 |
 | V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | En revisión | #94, backend#86 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | En revisión | #94, backend#86 |
 | V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Lista | |
