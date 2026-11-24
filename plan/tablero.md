@@ -150,11 +150,11 @@ Total: **214 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M04.01 | Ver en Inicio que mi auto está en el taller | Ricardo | B | V2-M02.05 | En revisión | backend#89, #109 |
-| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01, V2-T02.13 (provisional) | En revisión | backend#89, #109 |
+| V2-M04.01 | Ver en Inicio que mi auto está en el taller | Ricardo | B | V2-M02.05 | Hecha | backend#89, #109, #111 |
+| V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01, V2-T02.13 (provisional) | Hecha | backend#89, #109 |
 | V2-M04.03 | Que la línea de tiempo se actualice sola | Ricardo | B | V2-M04.02, V2-M06.02 | Lista | |
-| V2-M04.04 | Ver la inspección multipunto con fotos | Ricardo | B | V2-M04.02 | En revisión | backend#89, #109 |
-| V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | En revisión | backend#89, #109 |
+| V2-M04.04 | Ver la inspección multipunto con fotos | Ricardo | B | V2-M04.02 | Hecha | backend#89, #109 |
+| V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | Hecha | backend#89, #109 |
 | V2-M04.06 | Saber cuándo mi auto está listo | Ricardo | B | V2-M04.03 | Lista | |
 | V2-M04.07 | Que la orden cerrada pase a mi historial con su ticket | Ricardo | B | V2-M04.06 | Lista | |
 | V2-M05.01 | Ver el plan de mantenimiento de mi modelo | Juan Pablo | B | V2-M02.05 | Lista | |
