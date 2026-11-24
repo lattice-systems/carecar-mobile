@@ -83,7 +83,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
                       icono: Icons.event_available_outlined,
                       expandido: true,
                       alPresionar: () => context.push(
-                        localizacionAgendarCita(
+                        rutaAgendarCitaCon(
                           vehiculoId: vehiculoId,
                           motivo: MotivoCita.mantenimiento,
                         ),
