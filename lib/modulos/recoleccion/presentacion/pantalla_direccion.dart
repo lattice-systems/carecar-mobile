@@ -14,6 +14,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/mapas/mapas.dart';
 import '../dominio/direccion_guardada.dart';
 import '../dominio/fallos_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'componentes/marco_pantalla_recoleccion.dart';
 import 'proveedores_recoleccion.dart';
 import 'provisional/mapa_provisional.dart';
@@ -318,14 +319,11 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                       controlador: _busqueda,
                       accionTeclado: TextInputAction.search,
                       alEnviar: (_) => _buscar(),
-                      sufijo: IconButton(
-                        tooltip: textos.recoleccionFormBuscarAccion,
-                        constraints: const BoxConstraints(
-                          minWidth: Espaciado.objetivoTactilMinimo,
-                          minHeight: Espaciado.objetivoTactilMinimo,
-                        ),
-                        icon: Icon(Icons.search_rounded, color: c.acento),
-                        onPressed: _ocupado ? null : _buscar,
+                      sufijo: BotonCircular(
+                        etiqueta: textos.recoleccionFormBuscarAccion,
+                        icono: Icons.search_rounded,
+                        variante: VarianteBotonCircular.acento,
+                        alPresionar: _ocupado ? null : _buscar,
                       ),
                     ),
                   ],

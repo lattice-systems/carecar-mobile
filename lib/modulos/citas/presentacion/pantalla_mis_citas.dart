@@ -20,6 +20,7 @@ import '../../vehiculos/vehiculos.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'componentes/grupo_citas.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'componentes/seccion_cita.dart';
@@ -120,14 +121,11 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     return MarcoPantallaCita(
       titulo: textos.citasMisCitasTitulo,
       acciones: [
-        IconButton(
-          tooltip: textos.citasMisCitasAgendar,
-          constraints: const BoxConstraints(
-            minWidth: Espaciado.objetivoTactilMinimo,
-            minHeight: Espaciado.objetivoTactilMinimo,
-          ),
-          icon: Icon(Icons.add_rounded, color: tokens.colores.acento),
-          onPressed: () => context.push(rutaAgendarCita),
+        BotonCircular(
+          etiqueta: textos.citasMisCitasAgendar,
+          icono: Icons.add_rounded,
+          variante: VarianteBotonCircular.acento,
+          alPresionar: () => context.push(rutaAgendarCita),
         ),
       ],
       alRefrescar: () async {
@@ -534,8 +532,6 @@ class _AccionesCita extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -570,31 +566,16 @@ class _AccionesCita extends StatelessWidget {
         const SizedBox(height: Espaciado.e2),
         Align(
           alignment: AlignmentDirectional.centerStart,
-          child: TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: c.peligro,
-              minimumSize: const Size(
-                Espaciado.objetivoTactilMinimo,
-                Espaciado.objetivoTactilMinimo,
-              ),
-              textStyle: tokens.tipografia.cuerpoFuerte,
-            ),
-            onPressed: ocupado
+          child: BotonPildora(
+            texto: textos.citasCancelar,
+            variante: VarianteBotonPildora.peligro,
+            cargando: cancelando,
+            alPresionar: ocupado
                 ? null
                 : () {
                     antes?.call();
                     alCancelar();
                   },
-            child: cancelando
-                ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: c.peligro,
-                    ),
-                  )
-                : Text(textos.citasCancelar),
           ),
         ),
       ],

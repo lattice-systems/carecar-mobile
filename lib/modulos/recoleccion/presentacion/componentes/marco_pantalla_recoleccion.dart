@@ -4,6 +4,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../../nucleo/diseno/componentes/boton_circular.dart';
 
 /// Marco de las pantallas de direcciones: título grande translúcido que se
 /// contrae, contenido que se desplaza y, si hace falta, una barra fija al pie.
@@ -92,15 +93,10 @@ class BotonCerrarRecoleccion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    return IconButton(
-      tooltip: AppLocalizations.of(context).recoleccionCerrar,
-      constraints: const BoxConstraints(
-        minWidth: Espaciado.objetivoTactilMinimo,
-        minHeight: Espaciado.objetivoTactilMinimo,
-      ),
-      icon: Icon(Icons.close_rounded, color: c.texto),
-      onPressed: () => Navigator.of(context).maybePop(),
+    return BotonCircular(
+      etiqueta: AppLocalizations.of(context).recoleccionCerrar,
+      icono: Icons.close_rounded,
+      alPresionar: () => Navigator.of(context).maybePop(),
     );
   }
 }
