@@ -1145,6 +1145,89 @@ servidor.get(`${BASE}/recoleccion/cotizacion`, (req, res) => {
 
 // Crea los dos traslados de una cita (recoger y entregar) y arma la
 // `RecoleccionCita` que devuelve POST /citas.
+// V2-M17.03 y V2-M17.04 · seguimiento del traslado y checklist. Un traslado
+// ajeno (de la cita de otro cliente) responde 404 como inexistente. La ubicacion
+// del chofer solo viaja en en_camino y de_regreso, igual que el backend real.
+const ESTADOS_TRASLADO = [
+  'programado',
+  'en_camino',
+  'recogido',
+  'en_taller',
+  'de_regreso',
+  'entregado',
+  'cancelado',
+];
+const checklists = new Map(); // trasladoId -> checklist
+const NIVELES_GASOLINA = ['vacio', 'un_cuarto', 'medio', 'tres_cuartos', 'lleno'];
+
+function trasladoDelCliente(req, id) {
+  const t = db.get('traslados').find({ id: Number(id) }).value();
+  if (!t) return null;
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita && cita.clienteId === req.sesion.clienteId ? t : null;
+}
+
+const comoTraslado = (t) => ({
+  id: t.id,
+  citaId: t.citaId,
+  tipo: t.tipo,
+  estado: t.estado,
+  costo: t.costo,
+  fecha: t.fecha,
+  ventanaInicio: t.ventanaInicio,
+  ventanaFin: t.ventanaFin,
+  ...(['en_camino', 'de_regreso'].includes(t.estado) && t.ubicacionChofer
+    ? { ubicacionChofer: t.ubicacionChofer }
+    : {}),
+});
+
+function clienteDeTraslado(t) {
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita ? cita.clienteId : null;
+}
+
+// Cambia el estado, descarta la ubicacion si ya no corresponde y avisa por SSE.
+function cambiarEstadoTraslado(t, estado) {
+  const cambios = { estado };
+  if (!['en_camino', 'de_regreso'].includes(estado)) cambios.ubicacionChofer = null;
+  db.get('traslados').find({ id: t.id }).assign(cambios).write();
+  emitirEvento(clienteDeTraslado(t), 'traslado.estado', {
+    trasladoId: t.id,
+    citaId: t.citaId,
+    tipo: t.tipo,
+    estado,
+  });
+}
+
+// Cancelar una cita cancela sus traslados que aun no salen.
+function cancelarTrasladosProgramados(cita) {
+  db.get('traslados')
+    .filter({ citaId: cita.id, estado: 'programado' })
+    .value()
+    .forEach((t) => cambiarEstadoTraslado(t, 'cancelado'));
+}
+
+servidor.get(`${BASE}/traslados/:id`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  res.jsonp(comoTraslado(t));
+});
+
+servidor.get(`${BASE}/traslados/:id/checklist`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  const checklist = checklists.get(t.id);
+  if (!checklist) return noEncontrado(req, res);
+  // Las URLs firmadas del backend real duran 15 minutos; aqui la firma es un
+  // parametro de relleno que cambia en cada peticion.
+  const firma = `firma=${Date.now().toString(36)}`;
+  res.jsonp({
+    ...checklist,
+    fotos: checklist.fotos.map((f) => `${f}?${firma}`),
+    ...(checklist.firmaUrl ? { firmaUrl: `${checklist.firmaUrl}?${firma}` } : {}),
+  });
+});
+
 function crearTraslados(cita, direccion) {
   const costo = costoPorTraslado(direccion);
   const ids = db.get('traslados').value().map((t) => t.id);
