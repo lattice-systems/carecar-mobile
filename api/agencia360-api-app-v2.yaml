@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.9.0
+  version: 2.10.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1046,6 +1046,102 @@ paths:
           $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
+
+  /estreno/cotizaciones/calculo:
+    post:
+      tags: [Estreno]
+      summary: Calcular la mensualidad estimada de un auto nuevo
+      description: |
+        V2-M16.02 · No guarda nada. Pago fijo con la tasa y plazos de `parametro_financiamiento`
+        sobre el `precioDesde` del modelo. Siempre trae la leyenda de estimación no vinculante.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculoEstreno'
+      responses:
+        '200':
+          description: Mensualidad estimada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CotizacionEstreno'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: El modelo no tiene precio publicado (`codigo` ESTRENO_SIN_PRECIO)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /estreno/solicitudes:
+    post:
+      tags: [Estreno]
+      summary: Pedir una prueba de manejo o una cotización
+      description: |
+        V2-M16.01, V2-M16.03 · Crea la solicitud; el CRM recibe un prospecto asignado a un vendedor
+        (de forma asíncrona). `estimacionTomaCuentaId` opcional liga una estimación del cliente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaSolicitudEstreno'
+      responses:
+        '201':
+          description: Solicitud creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudEstreno'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: Ya hay una solicitud abierta del mismo modelo y tipo (`ESTRENO_DUPLICADA`) o el modelo no tiene precio (`ESTRENO_SIN_PRECIO`)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+    get:
+      tags: [Estreno]
+      summary: Mis solicitudes de estreno con su estado
+      description: V2-M16.04 · Más recientes primero.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Página de solicitudes
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+                properties:
+                  contenido:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SolicitudEstreno'
+                  pagina:
+                    type: integer
+                  tamano:
+                    type: integer
+                  totalElementos:
+                    type: integer
+                  totalPaginas:
+                    type: integer
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
 
   /toma-a-cuenta/estimaciones:
     get:
@@ -2282,6 +2378,109 @@ components:
           description: Fracción que se resta y se suma al valor estimado para dar el rango
           example: 0.08
 
+    CalculoEstreno:
+      type: object
+      required: [modeloCatalogoId, enganche, plazoMeses]
+      properties:
+        modeloCatalogoId:
+          type: integer
+          format: int64
+        enganche:
+          type: number
+          description: En pesos; al menos el enganche mínimo de los parámetros
+        plazoMeses:
+          type: integer
+          description: Uno de los plazos permitidos (12, 24, 36, 48, 60)
+    CotizacionEstreno:
+      type: object
+      required: [precio, enganche, montoFinanciado, tasaAnual, plazoMeses, mensualidad, leyenda]
+      properties:
+        precio:
+          type: number
+        enganche:
+          type: number
+        montoFinanciado:
+          type: number
+        tasaAnual:
+          type: number
+          example: 0.1499
+        plazoMeses:
+          type: integer
+        mensualidad:
+          type: number
+        leyenda:
+          type: string
+    NuevaSolicitudEstreno:
+      type: object
+      required: [tipo, modeloCatalogoId]
+      properties:
+        tipo:
+          type: string
+          enum: [PRUEBA_MANEJO, COTIZACION]
+        modeloCatalogoId:
+          type: integer
+          format: int64
+        preferenciaFecha:
+          type: string
+          format: date
+          description: Solo PRUEBA_MANEJO (obligatoria); desde mañana
+        preferenciaFranja:
+          type: string
+          enum: [MANANA, TARDE]
+          description: Solo PRUEBA_MANEJO (obligatoria)
+        enganche:
+          type: number
+          description: Solo COTIZACION (obligatorio)
+        plazoMeses:
+          type: integer
+          description: Solo COTIZACION (obligatorio)
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+          nullable: true
+          description: V2-M16.03 · Una estimación del cliente
+    SolicitudEstreno:
+      type: object
+      required: [id, tipo, modeloCatalogoId, modelo, estado, creadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [PRUEBA_MANEJO, COTIZACION]
+        modeloCatalogoId:
+          type: integer
+          format: int64
+        modelo:
+          type: string
+          example: Nissan Kicks 2026 Advance
+        estado:
+          type: string
+          enum: [RECIBIDA, EN_ATENCION, CERRADA]
+        vendedor:
+          type: string
+          nullable: true
+          description: Nombre del vendedor asignado, cuando ya hay
+        preferenciaFecha:
+          type: string
+          format: date
+          nullable: true
+        preferenciaFranja:
+          type: string
+          nullable: true
+          enum: [MANANA, TARDE]
+        cotizacion:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/CotizacionEstreno'
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+          nullable: true
+        creadaEn:
+          type: string
+          format: date-time
     EstimacionTomaCuenta:
       type: object
       description: |
