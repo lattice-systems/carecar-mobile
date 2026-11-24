@@ -13,8 +13,10 @@ const rutaGaraje = '/garaje';
 /// Camino del detalle de un vehiculo: `/garaje/7`.
 String rutaDetalleVehiculo(int id) => '$rutaGaraje/$id';
 
-/// Camino del manual de un vehiculo: `/garaje/7/manual`.
-String rutaManualVehiculo(int id) => '${rutaDetalleVehiculo(id)}/manual';
+/// Camino del manual de un vehiculo: `/garaje/7/manual`; con [pagina] abre en
+/// esa pagina (V2-M24.04): `/garaje/7/manual?pagina=12`.
+String rutaManualVehiculo(int id, {int? pagina}) =>
+    '${rutaDetalleVehiculo(id)}/manual${pagina == null ? '' : '?pagina=$pagina'}';
 
 /// Camino de la ficha tecnica de un vehiculo: `/garaje/7/ficha-tecnica`.
 String rutaFichaTecnicaVehiculo(int id) =>
@@ -54,7 +56,13 @@ final rutasVehiculos = <RouteBase>[
             name: 'manual-vehiculo',
             builder: (context, state) => _conTemaPista(
               context,
-              PantallaManual(vehiculoId: _idDe(state)),
+              PantallaManual(
+                vehiculoId: _idDe(state),
+                // Una pagina que no es numero abre el manual desde el inicio.
+                paginaInicial: int.tryParse(
+                  state.uri.queryParameters['pagina'] ?? '',
+                ),
+              ),
             ),
           ),
           GoRoute(

@@ -117,6 +117,7 @@ void main() {
       Future<Uint8List> Function() cargar, {
       Escenario escenario = Escenario.claro,
       FabricaVisorPdf? fabrica,
+      int paginaInicial = 1,
     }) => conTemaPista(
       SizedBox(
         height: 600,
@@ -124,6 +125,7 @@ void main() {
           cargar: cargar,
           descripcion: 'Manual del Mazda CX-5',
           fabrica: fabrica ?? _fabricaFalsa(),
+          paginaInicial: paginaInicial,
         ),
       ),
       escenario: escenario,
@@ -146,6 +148,41 @@ void main() {
       await tester.pump();
       expect(find.text('visor falso'), findsOneWidget);
       expect(find.text('Página 1 de 5'), findsOneWidget);
+    });
+
+    testWidgets('abre en la pagina inicial pedida (V2-M24.04)', (tester) async {
+      int? pedida;
+      await tester.pumpWidget(
+        visor(
+          () async => Uint8List.fromList([1]),
+          paginaInicial: 3,
+          fabrica: (context, bytes, alCargar, alCambiarPagina, paginaInicial) {
+            pedida = paginaInicial;
+            return _fabricaFalsa()(
+              context,
+              bytes,
+              alCargar,
+              alCambiarPagina,
+              paginaInicial,
+            );
+          },
+        ),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(pedida, 3);
+      expect(find.text('Página 3 de 5'), findsOneWidget);
+    });
+
+    testWidgets('una pagina inicial fuera del documento se ajusta', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        visor(() async => Uint8List.fromList([1]), paginaInicial: 40),
+      );
+      await tester.pump();
+      await tester.pump();
+      expect(find.text('Página 5 de 5'), findsOneWidget);
     });
 
     testWidgets('el contador sigue el cambio de pagina', (tester) async {
@@ -202,7 +239,7 @@ void main() {
 FabricaVisorPdf _fabricaFalsa() {
   var cargado = false;
   var pagina = 1;
-  return (context, bytes, alCargar, alCambiarPagina) {
+  return (context, bytes, alCargar, alCambiarPagina, _) {
     if (!cargado) {
       cargado = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => alCargar(5));

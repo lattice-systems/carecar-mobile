@@ -17,6 +17,7 @@ typedef FabricaVisorPdf = Widget Function(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
+  int paginaInicial,
 );
 
 /// Visor de PDF del sistema de diseno v2: carga, error con reintento, zoom de
@@ -26,17 +27,22 @@ typedef FabricaVisorPdf = Widget Function(
 /// componente no sabe de donde vienen. `descripcion` nombra el documento para
 /// el lector de pantalla ("Manual del Mazda CX-5"). Esta primera version no
 /// busca texto dentro del PDF: eso lo resuelve V2-M02.03.
+///
+/// `paginaInicial` (V2-M24.04) abre el documento en esa página, por ejemplo la
+/// que citó el asistente; si el documento tiene menos, abre en la última.
 class VisorPdf extends StatefulWidget {
   const VisorPdf({
     required this.cargar,
     required this.descripcion,
     super.key,
     this.fabrica = _fabricaPdfx,
+    this.paginaInicial = 1,
   });
 
   final Future<Uint8List> Function() cargar;
   final String descripcion;
   final FabricaVisorPdf fabrica;
+  final int paginaInicial;
 
   @override
   State<VisorPdf> createState() => _VisorPdfState();
@@ -47,26 +53,36 @@ Widget _fabricaPdfx(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
+  int paginaInicial,
 ) {
   return _VisorPdfx(
     bytes: bytes,
     alCargar: alCargar,
     alCambiarPagina: alCambiarPagina,
+    paginaInicial: paginaInicial,
   );
 }
 
 class _VisorPdfState extends State<VisorPdf> {
   late Future<Uint8List> _bytes = widget.cargar();
-  int _pagina = 1;
+  late int _pagina = _inicial;
   int _total = 0;
+
+  int get _inicial => widget.paginaInicial < 1 ? 1 : widget.paginaInicial;
 
   void _reintentar() {
     setState(() {
       _bytes = widget.cargar();
-      _pagina = 1;
+      _pagina = _inicial;
       _total = 0;
     });
   }
+
+  void _alCargar(int total) => setState(() {
+    _total = total;
+    // Una pagina citada que no existe en este documento abre en la ultima.
+    if (_pagina > total) _pagina = total;
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +109,9 @@ class _VisorPdfState extends State<VisorPdf> {
                 child: widget.fabrica(
                   context,
                   instante.data!,
-                  (total) => setState(() => _total = total),
+                  _alCargar,
                   (pagina) => setState(() => _pagina = pagina),
+                  _inicial,
                 ),
               ),
               if (_total > 0)
@@ -163,11 +180,13 @@ class _VisorPdfx extends StatefulWidget {
     required this.bytes,
     required this.alCargar,
     required this.alCambiarPagina,
+    required this.paginaInicial,
   });
 
   final Uint8List bytes;
   final ValueChanged<int> alCargar;
   final ValueChanged<int> alCambiarPagina;
+  final int paginaInicial;
 
   @override
   State<_VisorPdfx> createState() => _VisorPdfxState();
@@ -176,6 +195,7 @@ class _VisorPdfx extends StatefulWidget {
 class _VisorPdfxState extends State<_VisorPdfx> {
   late final PdfControllerPinch _controlador = PdfControllerPinch(
     document: PdfDocument.openData(widget.bytes),
+    initialPage: widget.paginaInicial,
   );
 
   @override
