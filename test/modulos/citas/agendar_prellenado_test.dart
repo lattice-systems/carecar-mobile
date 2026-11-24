@@ -8,6 +8,7 @@ import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
@@ -143,11 +144,7 @@ void main() {
       addTearDown(sesion.dispose);
       await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
       await tester.pumpWidget(
-        AppEnrutadaDePrueba(
-          api: api,
-          controlador: sesion,
-          overrides: _repos(),
-        ),
+        AppEnrutadaDePrueba(api: api, controlador: sesion, overrides: _repos()),
       );
       await tester.pumpAndSettle();
 
