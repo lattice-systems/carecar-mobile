@@ -175,6 +175,21 @@ class ApiFalsa implements CarecarApi {
   Future<RespuestaAsistente> Function(int vehiculoId, String pregunta)?
   alPreguntarAlAsistente;
 
+  /// Calificaciones recibidas por `POST /asistente/consultas/{id}/calificacion`.
+  final calificaciones = <({int consultaId, bool util})>[];
+
+  /// Que hace al calificar; si es nulo, solo anota.
+  Future<void> Function(int consultaId, bool util)? alCalificar;
+
+  @override
+  Future<void> calificarRespuestaDelAsistente({
+    required int consultaId,
+    required bool util,
+  }) {
+    calificaciones.add((consultaId: consultaId, util: util));
+    return alCalificar?.call(consultaId, util) ?? Future.value();
+  }
+
   @override
   Future<RespuestaAsistente> preguntarAlAsistente({
     required int vehiculoId,
