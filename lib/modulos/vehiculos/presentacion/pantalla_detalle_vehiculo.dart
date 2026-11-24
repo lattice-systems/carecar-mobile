@@ -8,6 +8,7 @@ import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/barra_portada.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -147,6 +148,24 @@ class _DetalleState extends State<_Detalle> {
                   ),
                 ),
               const SizedBox(height: Espaciado.e4),
+              TarjetaAsistente(vehiculoId: v.id),
+              const SizedBox(height: Espaciado.e6),
+              _AccionesTuAuto(
+                titulo: textos.vehiculosEncabezadoTuAuto,
+                acciones: [
+                  (
+                    texto: textos.vehiculosAccesoFicha,
+                    icono: Icons.fact_check_outlined,
+                    ruta: rutaFichaTecnicaVehiculo(v.id),
+                  ),
+                  (
+                    texto: textos.vehiculosAccesoHistorial,
+                    icono: Icons.history,
+                    ruta: rutaHistorialVehiculo(v.id),
+                  ),
+                ],
+              ),
+              const SizedBox(height: Espaciado.e6),
               GrupoLista(
                 encabezado: textos.vehiculosEncabezadoDatos,
                 filas: [
@@ -176,36 +195,6 @@ class _DetalleState extends State<_Detalle> {
                       v.version!,
                       c.exito,
                     ),
-                ],
-              ),
-              const SizedBox(height: Espaciado.e4),
-              GrupoLista(
-                encabezado: textos.vehiculosEncabezadoTuAuto,
-                filas: [
-                  FilaGrupo(
-                    titulo: textos.vehiculosAccesoManuales,
-                    icono: Icons.menu_book_outlined,
-                    colorIcono: c.acento,
-                    alToque: () => context.push(rutaManualVehiculo(v.id)),
-                  ),
-                  FilaGrupo(
-                    titulo: textos.vehiculosAccesoFicha,
-                    icono: Icons.fact_check_outlined,
-                    colorIcono: c.exito,
-                    alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
-                  ),
-                  FilaGrupo(
-                    titulo: textos.asistenteTitulo,
-                    icono: Icons.auto_awesome_outlined,
-                    colorIcono: c.acento,
-                    alToque: () => context.push(rutaAsistente(v.id)),
-                  ),
-                  FilaGrupo(
-                    titulo: textos.vehiculosAccesoHistorial,
-                    icono: Icons.history,
-                    colorIcono: c.marca,
-                    alToque: () => context.push(rutaHistorialVehiculo(v.id)),
-                  ),
                 ],
               ),
             ],
@@ -384,6 +373,63 @@ class _Cargando extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// «Tu auto» como cuadricula de pildoras de vidrio de dos columnas
+/// (V2-M24.10), como las acciones rapidas de la propuesta.
+class _AccionesTuAuto extends StatelessWidget {
+  const _AccionesTuAuto({required this.titulo, required this.acciones});
+
+  final String titulo;
+  final List<({String texto, IconData icono, String ruta})> acciones;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final filas = <List<({String texto, IconData icono, String ruta})>>[
+      for (var i = 0; i < acciones.length; i += 2)
+        acciones.sublist(i, i + 2 > acciones.length ? acciones.length : i + 2),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          header: true,
+          child: Text(
+            titulo,
+            style: tokens.tipografia.titulo3.copyWith(
+              color: tokens.colores.texto,
+            ),
+          ),
+        ),
+        const SizedBox(height: Espaciado.e3),
+        for (final fila in filas) ...[
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < fila.length; i++) ...[
+                if (i > 0) const SizedBox(width: Espaciado.e2),
+                Expanded(
+                  child: BotonPildora(
+                    texto: fila[i].texto,
+                    icono: fila[i].icono,
+                    variante: VarianteBotonPildora.vidrio,
+                    expandido: true,
+                    alPresionar: () => context.push(fila[i].ruta),
+                  ),
+                ),
+              ],
+              if (fila.length == 1) ...[
+                const SizedBox(width: Espaciado.e2),
+                const Expanded(child: SizedBox()),
+              ],
+            ],
+          ),
+          const SizedBox(height: Espaciado.e2),
+        ],
+      ],
     );
   }
 }

@@ -897,7 +897,7 @@
   "citasCerrar": "Close",
   "citasComprobanteDetalles": "Appointment details",
   "citasComprobanteRecepcion": "At reception",
-  "vehiculosAgendarServicio": "Book a service",
+  "vehiculosAgendarServicio": "Book",
   "@vehiculosAgendarServicio": {
     "description": "Botón de la portada del detalle que abre el flujo de agendar cita."
   },
