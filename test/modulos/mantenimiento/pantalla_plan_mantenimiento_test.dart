@@ -153,10 +153,14 @@ void main() {
 
     expect(find.text('Plan de servicios'), findsOneWidget);
     expect(find.text('Servicio de 5,000 km'), findsOneWidget);
-    expect(find.text('Hecho'), findsOneWidget);
-    expect(find.text('Próximo'), findsOneWidget);
-    expect(find.text('Pendiente'), findsOneWidget);
-    expect(find.text('5,000 km · 6 meses'), findsOneWidget);
+    // El estado va en el texto de la fila para que lo lea el lector de
+    // pantalla; el icono y su color lo refuerzan.
+    expect(
+      find.textContaining('Hecho el'),
+      findsOneWidget,
+    );
+    expect(find.text('Próximo · 10,000 km · 12 meses'), findsOneWidget);
+    expect(find.text('Pendiente · 15,000 km · 18 meses'), findsOneWidget);
   });
 
   _prueba('un servicio vencido se marca como vencido', (tester) async {
@@ -179,7 +183,7 @@ void main() {
       _app(RepositorioMantenimientoFake(plan: _plan(servicios: servicios))),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Vencido'), findsOneWidget);
+    expect(find.text('Vencido · 10,000 km · 12 meses'), findsOneWidget);
   });
 
   _prueba('muestra el km vigente con quién lo registró', (tester) async {
