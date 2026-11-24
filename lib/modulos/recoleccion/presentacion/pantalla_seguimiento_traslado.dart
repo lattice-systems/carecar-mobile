@@ -154,7 +154,7 @@ class _Contenido extends StatelessWidget {
               CabeceraPortada(
                 titulo: titulo,
                 subtitulo: nombre,
-                descripcion: '$titulo, $nombre',
+                descripcion: [titulo, nombre].join(', '),
                 tinte: estado == EstadoTraslado.cancelado ? c.peligro : c.marca,
                 portada: ColoredBox(
                   color: c.superficieElevada,
