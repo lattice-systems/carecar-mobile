@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.8.0
+  version: 2.9.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1182,6 +1182,59 @@ paths:
                 $ref: '#/components/schemas/Problema'
         '503':
           description: Sin cuota del día o el proveedor de IA no responde (`codigo` ASISTENTE_NO_DISPONIBLE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /asistente/preguntas/flujo:
+    post:
+      tags: [Asistente]
+      summary: Preguntar y recibir la respuesta mientras se escribe (Server-Sent Events)
+      description: |
+        V2-M24.09 · Igual que `POST /asistente/preguntas`, pero responde con `text/event-stream`:
+        - `event: texto` con `data` `{"texto": "..."}` por cada parte que escribe el modelo (en orden;
+          la app las concatena);
+        - `event: fin` con `data` igual a `RespuestaAsistente` (consultaId, respuesta, encontrado, fuentes);
+        - `event: error` con `data` `{"codigo": "ASISTENTE_NO_DISPONIBLE"}` si el modelo falla a la mitad.
+        Los errores antes de empezar (400, 401, 403, 404, 409, 429, 503) responden igual que
+        `POST /asistente/preguntas`, con JSON. Si la app cierra la conexión, el backend guarda lo que
+        alcanzó a escribirse en `consulta_asistente` (proveedor con sufijo `-parcial`).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreguntaAsistente'
+      responses:
+        '200':
+          description: Flujo de eventos `texto`, `fin` o `error`
+          content:
+            text/event-stream:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: El modelo y año del vehículo no tienen un manual con texto (`codigo` ASISTENTE_SIN_MANUAL)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '429':
+          description: Ya hizo sus preguntas del día (`codigo` ASISTENTE_LIMITE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '503':
+          description: Sin cuota del día (`codigo` ASISTENTE_NO_DISPONIBLE)
           content:
             application/json:
               schema:
