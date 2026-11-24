@@ -3626,10 +3626,10 @@ abstract class AppLocalizations {
     String fin,
   );
 
-  /// Fila que abre el seguimiento desde la cita.
+  /// Pie del grupo de recolección: invita a abrir el seguimiento.
   ///
   /// In es, this message translates to:
-  /// **'Seguir el traslado'**
+  /// **'Toca un traslado para seguirlo en vivo.'**
   String get recoleccionSeguimientoAbrir;
 
   /// Encabezado de la línea de tiempo del traslado.
