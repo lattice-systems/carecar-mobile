@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.7.0
+  version: 2.8.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -68,6 +68,8 @@ tags:
     description: V2-M17.01 y V2-M17.02
   - name: En vivo
     description: V2-T05.08
+  - name: Taller en vivo
+    description: V2-M04.01, V2-M04.02, V2-M04.04 y V2-M04.05
 
 security:
   - bearerAuth: []
@@ -1240,6 +1242,101 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /ordenes/activas:
+    get:
+      tags: [Taller en vivo]
+      summary: Mis órdenes en el taller
+      description: |
+        V2-M04.01 · Las órdenes de los vehículos del cliente que siguen en el taller o listas
+        para entrega, la más reciente primero. Al entregarse dejan de aparecer: la tarjeta de
+        Inicio se muestra solo si la lista trae algo. Las órdenes registradas ya hechas en el
+        expediente no tienen línea de tiempo y no aparecen. Lista vacía si no hay ninguna.
+      responses:
+        '200':
+          description: Órdenes en curso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrdenEnCurso'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /ordenes/{ordenId}:
+    get:
+      tags: [Taller en vivo]
+      summary: Detalle de una orden en el taller
+      description: |
+        V2-M04.02 y V2-M04.04 · Las etapas que ya empezaron con su hora (la última es la
+        actual), la entrega estimada, el asesor, la inspección multipunto con sus fotos y
+        videos, y los trabajos adicionales con los totales. Las URL de las evidencias son
+        temporales y firmadas (vencen a los 15 minutos): si vencieron, la app vuelve a pedir la
+        orden.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      responses:
+        '200':
+          description: La orden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdenEnVivo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /ordenes/{ordenId}/adicionales/{adicionalId}/respuesta:
+    post:
+      tags: [Taller en vivo]
+      summary: Aprobar o rechazar un trabajo adicional
+      description: |
+        V2-M04.05 · Uno por uno y siempre con la firma en pantalla. La respuesta queda
+        registrada con quién, cuándo y la firma, y ya no cambia. Devuelve la orden con los
+        totales recalculados.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+        - name: adicionalId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RespuestaAdicional'
+      responses:
+        '200':
+          description: La orden con la respuesta y los totales recalculados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrdenEnVivo'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            El trabajo ya tiene respuesta (`codigo` ADICIONAL_YA_RESPONDIDO) o la orden ya está
+            terminada (`codigo` ORDEN_CERRADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1264,6 +1361,13 @@ components:
         format: int64
     VehiculoId:
       name: vehiculoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    OrdenId:
+      name: ordenId
       in: path
       required: true
       schema:
@@ -2291,6 +2395,216 @@ components:
           items:
             $ref: '#/components/schemas/Traslado'
 
+    EtapaTaller:
+      type: string
+      description: |
+        V2-M04.02 · Etapas de la orden en el orden en que pasan. El taller puede saltar una
+        (sin lavado, por ejemplo), nunca volver.
+      enum: [RECIBIDO, DIAGNOSTICO, ESPERANDO_APROBACION, EN_REPARACION, CONTROL_DE_CALIDAD,
+        LAVADO, LISTO_PARA_ENTREGA, ENTREGADO]
+
+    OrdenEnCurso:
+      type: object
+      description: V2-M04.01 · Orden sin entregar, para la tarjeta de Inicio
+      required: [id, vehiculoId, vehiculo, etapa, estatus, avance, adicionalesPendientes]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        vehiculo:
+          type: string
+          example: Nissan March 2026
+        etapa:
+          $ref: '#/components/schemas/EtapaTaller'
+        estatus:
+          type: string
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+        entregaEstimada:
+          type: string
+          nullable: true
+          example: '2026-11-24T18:00:00'
+          description: En hora de la agencia; nula si aún no se estima
+        asesor:
+          type: string
+          nullable: true
+          example: Laura Méndez
+        avance:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Según la etapa
+        adicionalesPendientes:
+          type: integer
+          minimum: 0
+          description: Trabajos adicionales que esperan la respuesta del cliente
+
+    OrdenEnVivo:
+      type: object
+      description: |
+        V2-M04.02, V2-M04.04 y V2-M04.05 · La orden en el taller. Los montos traen el IVA
+        incluido; `totalEstimado` es `totalOrden` más los adicionales aprobados.
+      required: [id, vehiculoId, vehiculo, estatus, etapa, avance, etapas, inspeccion, evidencias,
+        adicionales, totalOrden, totalAdicionalesAprobados, totalAdicionalesPendientes, totalEstimado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        vehiculo:
+          type: string
+          example: Nissan March 2026
+        estatus:
+          type: string
+          enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+        etapa:
+          $ref: '#/components/schemas/EtapaTaller'
+        entregaEstimada:
+          type: string
+          nullable: true
+          example: '2026-11-24T18:00:00'
+          description: En hora de la agencia; nula si aún no se estima
+        asesor:
+          type: string
+          nullable: true
+        avance:
+          type: integer
+          minimum: 0
+          maximum: 100
+        etapas:
+          type: array
+          description: Solo las que ya empezaron, en orden; la última es la actual
+          items:
+            $ref: '#/components/schemas/PasoEtapa'
+        inspeccion:
+          type: array
+          items:
+            $ref: '#/components/schemas/PuntoInspeccion'
+        evidencias:
+          type: array
+          description: Fotos y videos de la orden que no son de un punto revisado
+          items:
+            $ref: '#/components/schemas/Evidencia'
+        adicionales:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrabajoAdicional'
+        totalOrden:
+          type: number
+          format: double
+        totalAdicionalesAprobados:
+          type: number
+          format: double
+        totalAdicionalesPendientes:
+          type: number
+          format: double
+        totalEstimado:
+          type: number
+          format: double
+
+    PasoEtapa:
+      type: object
+      required: [etapa, inicio]
+      properties:
+        etapa:
+          $ref: '#/components/schemas/EtapaTaller'
+        inicio:
+          type: string
+          example: '2026-11-24T09:30:00'
+          description: En hora de la agencia
+        fin:
+          type: string
+          nullable: true
+          description: En hora de la agencia; nula mientras siga en curso
+        nota:
+          type: string
+          nullable: true
+          maxLength: 300
+
+    PuntoInspeccion:
+      type: object
+      description: V2-M04.04 · Un punto revisado con su semáforo
+      required: [id, punto, resultado, evidencias]
+      properties:
+        id:
+          type: integer
+          format: int64
+        punto:
+          type: string
+          example: Frenos
+        resultado:
+          type: string
+          enum: [VERDE, AMARILLO, ROJO]
+        comentario:
+          type: string
+          nullable: true
+          example: Balatas al 10 %
+        evidencias:
+          type: array
+          items:
+            $ref: '#/components/schemas/Evidencia'
+
+    Evidencia:
+      type: object
+      required: [id, tipo, url]
+      properties:
+        id:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [FOTO, VIDEO]
+        url:
+          type: string
+          description: |
+            URL temporal firmada fuera de `/api/v1/app` (`/api/v1/archivos/...`), sin token. Vence
+            a los 15 minutos. Foto JPEG, PNG o WebP; video MP4.
+          example: /api/v1/archivos/evidencias/0f8c2b6e-2f6d-4c1e-9c2a-1b2c3d4e5f60?expira=1764000000&firma=abc
+
+    TrabajoAdicional:
+      type: object
+      description: V2-M04.05 · Trabajo que el taller propone además de lo acordado
+      required: [id, concepto, manoDeObra, refacciones, total, estado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        concepto:
+          type: string
+          example: Cambio de balatas delanteras
+        manoDeObra:
+          type: number
+          format: double
+        refacciones:
+          type: number
+          format: double
+        total:
+          type: number
+          format: double
+          description: Mano de obra más refacciones, con IVA incluido
+        estado:
+          type: string
+          enum: [PENDIENTE, APROBADO, RECHAZADO]
+        respondidoEn:
+          type: string
+          nullable: true
+          description: En hora de la agencia; nula mientras esté pendiente
+
+    RespuestaAdicional:
+      type: object
+      required: [aprobado, firma]
+      properties:
+        aprobado:
+          type: boolean
+        firma:
+          type: string
+          format: byte
+          description: La firma en pantalla como PNG en Base64, de 1 MB como máximo
+
     Problema:
       type: object
       description: Formato de error del backend (ApiError en shared/exception).
@@ -2334,6 +2648,8 @@ components:
             - ASISTENTE_SIN_MANUAL
             - ASISTENTE_LIMITE
             - ASISTENTE_NO_DISPONIBLE
+            - ORDEN_CERRADA
+            - ADICIONAL_YA_RESPONDIDO
           example: FRANJA_SIN_CUPO
         path:
           type: string

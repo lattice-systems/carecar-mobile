@@ -2361,5 +2361,361 @@
   "asistenteNoMeSirvio": "No me sirvió",
   "@asistenteNoMeSirvio": {
     "description": "Botón 👎 bajo una respuesta del asistente (V2-M24.07)."
+  },
+  "tallerTarjetaTitulo": "Tu {vehiculo} está en el taller",
+  "@tallerTarjetaTitulo": {
+    "description": "Tarjeta de Inicio cuando hay una orden abierta (V2-M04.01).",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerTarjetaEtapaYEntrega": "{etapa} · entrega {hora}",
+  "@tallerTarjetaEtapaYEntrega": {
+    "description": "Etapa actual y entrega estimada en la tarjeta de Inicio.",
+    "placeholders": {
+      "etapa": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerTarjetaPendientes": "{cantidad, plural, =1{1 trabajo por aprobar} other{{cantidad} trabajos por aprobar}}",
+  "@tallerTarjetaPendientes": {
+    "description": "Insignia de la tarjeta de Inicio con los trabajos adicionales pendientes.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerTarjetaAvance": "Avance de {avance} %",
+  "@tallerTarjetaAvance": {
+    "description": "Lector de pantalla de la barra de avance de la orden.",
+    "placeholders": {
+      "avance": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerTarjetaAbrir": "Ver el avance de tu orden",
+  "@tallerTarjetaAbrir": {
+    "description": "Pista del lector de pantalla al tocar la tarjeta de la orden en Inicio."
+  },
+  "tallerEtapaRecibido": "Recibido",
+  "@tallerEtapaRecibido": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaDiagnostico": "Diagnóstico",
+  "@tallerEtapaDiagnostico": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaEsperandoAprobacion": "Esperando aprobación",
+  "@tallerEtapaEsperandoAprobacion": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaEnReparacion": "En reparación",
+  "@tallerEtapaEnReparacion": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaControlDeCalidad": "Control de calidad",
+  "@tallerEtapaControlDeCalidad": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaLavado": "Lavado",
+  "@tallerEtapaLavado": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaListoParaEntrega": "Listo para entrega",
+  "@tallerEtapaListoParaEntrega": {
+    "description": "Etapa de la orden."
+  },
+  "tallerEtapaEntregado": "Entregado",
+  "@tallerEtapaEntregado": {
+    "description": "Etapa de la orden."
+  },
+  "tallerOrdenTitulo": "Tu orden",
+  "@tallerOrdenTitulo": {
+    "description": "Título de la pantalla de la orden en el taller (V2-M04.02). Corto: con subtítulo, el encabezado grande reserva una sola línea."
+  },
+  "tallerOrdenEtapaActual": "Etapa actual",
+  "@tallerOrdenEtapaActual": {
+    "description": "Subtítulo de la fila con la etapa actual de la orden."
+  },
+  "tallerOrdenEntregaEstimada": "Entrega estimada",
+  "@tallerOrdenEntregaEstimada": {
+    "description": "Subtítulo de la fila con la hora estimada de entrega."
+  },
+  "tallerOrdenSinEntrega": "Aún sin estimar",
+  "@tallerOrdenSinEntrega": {
+    "description": "La orden todavía no tiene hora estimada de entrega."
+  },
+  "tallerOrdenAsesor": "Tu asesor",
+  "@tallerOrdenAsesor": {
+    "description": "Subtítulo de la fila con el nombre del asesor."
+  },
+  "tallerOrdenLineaDeTiempo": "Línea de tiempo",
+  "@tallerOrdenLineaDeTiempo": {
+    "description": "Encabezado de la línea de tiempo de la orden."
+  },
+  "tallerOrdenNotaEntrega": "Entrega estimada {hora}",
+  "@tallerOrdenNotaEntrega": {
+    "description": "Nota bajo la etapa actual con la hora estimada de entrega.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerOrdenNotaYEntrega": "{nota} · entrega estimada {hora}",
+  "@tallerOrdenNotaYEntrega": {
+    "description": "Nota del taller y hora estimada de entrega bajo la etapa actual.",
+    "placeholders": {
+      "nota": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerOrdenInspeccion": "Inspección multipunto",
+  "@tallerOrdenInspeccion": {
+    "description": "Fila que abre la inspección de la orden."
+  },
+  "tallerOrdenInspeccionResumen": "{puntos, plural, =0{Aún sin puntos revisados} =1{1 punto revisado} other{{puntos} puntos revisados}}",
+  "@tallerOrdenInspeccionResumen": {
+    "description": "Resumen de la inspección en la pantalla de la orden.",
+    "placeholders": {
+      "puntos": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerOrdenAdicionales": "Trabajos adicionales",
+  "@tallerOrdenAdicionales": {
+    "description": "Fila que abre los trabajos adicionales de la orden."
+  },
+  "tallerOrdenAdicionalesResumen": "{pendientes, plural, =0{Nada por aprobar} =1{1 por aprobar} other{{pendientes} por aprobar}}",
+  "@tallerOrdenAdicionalesResumen": {
+    "description": "Resumen de los trabajos adicionales pendientes.",
+    "placeholders": {
+      "pendientes": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerOrdenAvisoPendientes": "{cantidad, plural, =1{El taller te propone 1 trabajo adicional} other{El taller te propone {cantidad} trabajos adicionales}}",
+  "@tallerOrdenAvisoPendientes": {
+    "description": "Título del aviso cuando hay trabajos adicionales por aprobar.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerOrdenAvisoMensaje": "Revísalos y apruébalos o recházalos con tu firma.",
+  "@tallerOrdenAvisoMensaje": {
+    "description": "Mensaje del aviso de trabajos adicionales por aprobar."
+  },
+  "tallerOrdenRevisar": "Revisar",
+  "@tallerOrdenRevisar": {
+    "description": "Botón que abre los trabajos adicionales desde el aviso."
+  },
+  "tallerReintentar": "Reintentar",
+  "@tallerReintentar": {
+    "description": "Botón de reintento en las pantallas del taller."
+  },
+  "tallerInspeccionTitulo": "Inspección",
+  "@tallerInspeccionTitulo": {
+    "description": "Título de la pantalla de inspección multipunto (V2-M04.04). Corto: con subtítulo, el encabezado grande reserva una sola línea."
+  },
+  "tallerInspeccionVacia": "Aún sin inspección",
+  "@tallerInspeccionVacia": {
+    "description": "Título del estado vacío de la inspección."
+  },
+  "tallerInspeccionVaciaMensaje": "El técnico todavía no registra los puntos revisados.",
+  "@tallerInspeccionVaciaMensaje": {
+    "description": "Mensaje del estado vacío de la inspección."
+  },
+  "tallerInspeccionFotoDe": "Foto de {punto}",
+  "@tallerInspeccionFotoDe": {
+    "description": "Descripción de una foto de la inspección para el lector de pantalla.",
+    "placeholders": {
+      "punto": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerInspeccionDeLaOrden": "De la orden",
+  "@tallerInspeccionDeLaOrden": {
+    "description": "Encabezado de las fotos y videos que no son de un punto."
+  },
+  "tallerInspeccionFotoDeLaOrden": "Foto de la orden",
+  "@tallerInspeccionFotoDeLaOrden": {
+    "description": "Descripción de una foto general de la orden para el lector de pantalla."
+  },
+  "tallerInspeccionVerVideo": "Ver video {numero}",
+  "@tallerInspeccionVerVideo": {
+    "description": "Fila que abre un video del técnico en el reproductor del teléfono.",
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "tallerInspeccionVideoAbre": "Se abre en el reproductor del teléfono",
+  "@tallerInspeccionVideoAbre": {
+    "description": "Subtítulo de la fila de un video."
+  },
+  "tallerInspeccionVideoError": "No se pudo abrir el video. Jala hacia abajo para recargar e intenta de nuevo.",
+  "@tallerInspeccionVideoError": {
+    "description": "Aviso cuando el teléfono no puede abrir un video de la inspección."
+  },
+  "tallerAdicionalesTitulo": "Adicionales",
+  "@tallerAdicionalesTitulo": {
+    "description": "Título de la pantalla de trabajos adicionales (V2-M04.05). Corto: con subtítulo, el encabezado grande reserva una sola línea."
+  },
+  "tallerAdicionalesVacio": "Sin trabajos adicionales",
+  "@tallerAdicionalesVacio": {
+    "description": "Título del estado vacío de los trabajos adicionales."
+  },
+  "tallerAdicionalesVacioMensaje": "Si el taller encuentra algo más, aquí te lo propone para que decidas.",
+  "@tallerAdicionalesVacioMensaje": {
+    "description": "Mensaje del estado vacío de los trabajos adicionales."
+  },
+  "tallerAdicionalManoDeObra": "Mano de obra",
+  "@tallerAdicionalManoDeObra": {
+    "description": "Renglón de un trabajo adicional."
+  },
+  "tallerAdicionalRefacciones": "Refacciones",
+  "@tallerAdicionalRefacciones": {
+    "description": "Renglón de un trabajo adicional."
+  },
+  "tallerAdicionalTotal": "Total",
+  "@tallerAdicionalTotal": {
+    "description": "Total de un trabajo adicional."
+  },
+  "tallerAdicionalPendiente": "Por aprobar",
+  "@tallerAdicionalPendiente": {
+    "description": "Estado de un trabajo adicional sin respuesta."
+  },
+  "tallerAdicionalAprobado": "Aprobado",
+  "@tallerAdicionalAprobado": {
+    "description": "Estado de un trabajo adicional aprobado."
+  },
+  "tallerAdicionalRechazado": "Rechazado",
+  "@tallerAdicionalRechazado": {
+    "description": "Estado de un trabajo adicional rechazado."
+  },
+  "tallerAdicionalRespondidoEl": "Respondido el {fecha}",
+  "@tallerAdicionalRespondidoEl": {
+    "description": "Cuándo respondió el cliente un trabajo adicional.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerAdicionalAprobar": "Aprobar",
+  "@tallerAdicionalAprobar": {
+    "description": "Botón para aprobar un trabajo adicional."
+  },
+  "tallerAdicionalRechazar": "Rechazar",
+  "@tallerAdicionalRechazar": {
+    "description": "Botón para rechazar un trabajo adicional."
+  },
+  "tallerTotales": "Totales",
+  "@tallerTotales": {
+    "description": "Encabezado de los totales en los trabajos adicionales."
+  },
+  "tallerTotalOrden": "Total de la orden",
+  "@tallerTotalOrden": {
+    "description": "Total de la orden sin adicionales."
+  },
+  "tallerTotalAprobados": "Adicionales aprobados",
+  "@tallerTotalAprobados": {
+    "description": "Suma de los trabajos adicionales aprobados."
+  },
+  "tallerTotalPendientes": "Adicionales por aprobar",
+  "@tallerTotalPendientes": {
+    "description": "Suma de los trabajos adicionales sin respuesta."
+  },
+  "tallerTotalEstimado": "Total estimado",
+  "@tallerTotalEstimado": {
+    "description": "Total de la orden más los adicionales aprobados."
+  },
+  "tallerFirmaAprobarTitulo": "Firma para aprobar",
+  "@tallerFirmaAprobarTitulo": {
+    "description": "Título de la hoja de firma al aprobar."
+  },
+  "tallerFirmaRechazarTitulo": "Firma para rechazar",
+  "@tallerFirmaRechazarTitulo": {
+    "description": "Título de la hoja de firma al rechazar."
+  },
+  "tallerFirmaInstruccion": "{concepto} por {total}. Firma con el dedo dentro del recuadro: tu firma queda guardada con tu respuesta.",
+  "@tallerFirmaInstruccion": {
+    "description": "Instrucción de la hoja de firma.",
+    "placeholders": {
+      "concepto": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerFirmaArea": "Área para firmar con el dedo",
+  "@tallerFirmaArea": {
+    "description": "Lector de pantalla del recuadro de firma."
+  },
+  "tallerFirmaBorrar": "Borrar firma",
+  "@tallerFirmaBorrar": {
+    "description": "Botón que borra la firma dibujada."
+  },
+  "tallerFirmaConfirmarAprobar": "Aprobar con mi firma",
+  "@tallerFirmaConfirmarAprobar": {
+    "description": "Botón que confirma la aprobación."
+  },
+  "tallerFirmaConfirmarRechazar": "Rechazar con mi firma",
+  "@tallerFirmaConfirmarRechazar": {
+    "description": "Botón que confirma el rechazo."
+  },
+  "tallerRespuestaAprobada": "Aprobaste «{concepto}». El total estimado ya lo incluye.",
+  "@tallerRespuestaAprobada": {
+    "description": "Aviso después de aprobar un trabajo adicional.",
+    "placeholders": {
+      "concepto": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerRespuestaRechazada": "Rechazaste «{concepto}».",
+  "@tallerRespuestaRechazada": {
+    "description": "Aviso después de rechazar un trabajo adicional.",
+    "placeholders": {
+      "concepto": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerRespuestaYaRespondida": "Ese trabajo ya tenía respuesta. Recarga para ver su estado.",
+  "@tallerRespuestaYaRespondida": {
+    "description": "Aviso cuando el trabajo adicional ya tenía respuesta (409)."
+  },
+  "tallerRespuestaOrdenCerrada": "La orden ya está terminada. Habla con tu asesor.",
+  "@tallerRespuestaOrdenCerrada": {
+    "description": "Aviso cuando la orden ya no acepta respuestas (409)."
+  },
+  "tallerRespuestaSinConexion": "Sin conexión. Tu respuesta no se envió.",
+  "@tallerRespuestaSinConexion": {
+    "description": "Aviso cuando no hay red al responder."
+  },
+  "tallerRespuestaError": "No se pudo enviar tu respuesta. Intenta de nuevo.",
+  "@tallerRespuestaError": {
+    "description": "Aviso cuando falla la respuesta por otro motivo."
   }
 }
