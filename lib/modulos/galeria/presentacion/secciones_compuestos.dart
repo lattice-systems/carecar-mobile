@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../../nucleo/diseno/componentes/barra_navegacion.dart';
 import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/calendario.dart';
+import '../../../nucleo/diseno/componentes/campo_busqueda_liquido.dart';
 import '../../../nucleo/diseno/componentes/campo_mensaje.dart';
 import '../../../nucleo/diseno/componentes/comparacion_antes_despues.dart';
 import '../../../nucleo/diseno/componentes/deslizar_para_confirmar.dart';
@@ -19,6 +20,7 @@ import '../../../nucleo/diseno/componentes/grafica.dart';
 import '../../../nucleo/diseno/componentes/linea_de_tiempo.dart';
 import '../../../nucleo/diseno/componentes/selector_franja.dart';
 import '../../../nucleo/diseno/componentes/semaforo.dart';
+import '../../../nucleo/diseno/componentes/superficie_liquida.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_accion.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_metrica.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
@@ -318,6 +320,41 @@ List<SeccionGaleria> seccionesCompuestos() => [
         ),
         const SizedBox(height: Espaciado.e3),
         CampoMensaje(alEnviar: (_) {}, alAdjuntar: () {}),
+      ],
+    ),
+  ),
+  SeccionGaleria(
+    titulo: 'Superficie liquida y busqueda',
+    construir: (context) => Column(
+      children: [
+        const CampoBusquedaLiquido(
+          sugerencia: 'Buscar modelo, servicio o refacción…',
+        ),
+        const SizedBox(height: Espaciado.e4),
+        SuperficieLiquida(
+          padding: const EdgeInsets.all(Espaciado.e4),
+          child: Row(
+            children: [
+              const Icon(Icons.auto_awesome, color: Color(0xFF2457F5)),
+              const SizedBox(width: Espaciado.e3),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Efecto cristal líquido',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      'Desenfoque gaussiano dinámico con refracción y rebote elástico.',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     ),
   ),
