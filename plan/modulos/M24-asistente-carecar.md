@@ -90,7 +90,7 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
 - **Pantalla:**
   - aviso de IA fijo;
   - estado vacío con cinco preguntas sugeridas en `ChipPista` que se envían al tocarlas (V2-M24.08);
-  - burbujas con la cita «Manual, pág. N», que abre el manual;
+  - burbujas con la cita «Manual, pág. N», que abre el manual justo en esa página (`/garaje/:id/manual?pagina=N`, V2-M24.04);
   - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
   - reintento sin conexión;
   - límite y falta de manual explicados.
@@ -98,7 +98,6 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
 - **API simulada:** responde con una cita de ejemplo.
 
 **Pendiente:**
-- Abrir el manual justo en la página citada (V2-M24.04, necesita `VisorPdf.paginaInicial`).
 - Reserva con Gemma cuando se agote Flash-Lite (ADR 0007).
 - El id exacto del modelo de reserva.
 
