@@ -47,10 +47,6 @@ tags:
     description: V2-M24.02 y V2-M24.03 (ADR 0007)
   - name: Toma a cuenta
     description: V2-M03.04, V2-M03.06 y V2-M03.07
-  - name: Asistencia
-    description: V2-M11.01 (pedir ayuda con mi ubicación)
-  - name: Recolección
-    description: V2-M17.01 y V2-M17.02
 
 security:
   - bearerAuth: []
@@ -421,11 +417,7 @@ paths:
     post:
       tags: [Agenda]
       summary: Agendar una cita de servicio
-      description: |
-        APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
-        V2-M17.02 · Con `recoleccion.direccionId` crea también los traslados de recoger y entregar
-        en la misma transacción: si algo falla no queda ni cita ni traslados. Una dirección ajena
-        responde 404 y una fuera de cobertura, 422.
+      description: APP-3.3 · La cita descuenta capacidad de la franja y no se puede reservar dos veces.
       requestBody:
         required: true
         content:
@@ -453,8 +445,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
-        '422':
-          $ref: '#/components/responses/FueraDeCobertura'
 
   /citas/{citaId}/cancelar:
     post:
@@ -489,66 +479,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
-
-  /asistencia:
-    post:
-      tags: [Asistencia]
-      summary: Pedir ayuda en el camino
-      description: |
-        V2-M11.01 · Crea una solicitud de asistencia para un vehículo del cliente. `lat` y `lng`
-        van las dos o ninguna: sin ubicación la solicitud se crea igual y el cliente dice dónde está
-        en el comentario. Solo puede haber una solicitud abierta por cliente. La ubicación se
-        guarda únicamente mientras la solicitud está abierta.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NuevaSolicitudAsistencia'
-      responses:
-        '201':
-          description: Solicitud recibida
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolicitudAsistencia'
-        '400':
-          $ref: '#/components/responses/DatosInvalidos'
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
-        '404':
-          $ref: '#/components/responses/NoEncontrado'
-        '409':
-          description: Ya hay una solicitud abierta (`codigo` SOLICITUD_ABIERTA)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Problema'
-    get:
-      tags: [Asistencia]
-      summary: Solicitud de ayuda abierta del cliente
-      description: V2-M11.01 · Con `activa=true` devuelve la solicitud abierta, o 204 si no hay.
-      parameters:
-        - name: activa
-          in: query
-          required: false
-          schema:
-            type: boolean
-      responses:
-        '200':
-          description: Solicitud abierta
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SolicitudAsistencia'
-        '204':
-          description: No hay solicitud abierta
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
 
   /catalogo:
     get:
@@ -689,30 +619,6 @@ paths:
         Límites: 10 preguntas por cliente al día (`429` ASISTENTE_LIMITE, con `Retry-After`
         hasta la medianoche de la agencia) y un tope global diario (`503`
         ASISTENTE_NO_DISPONIBLE, igual que si el proveedor falla o se agota su cuota).
-  /direcciones:
-    get:
-      tags: [Recolección]
-      summary: Listar mis direcciones
-      description: V2-M17.01 · Las direcciones guardadas del cliente, por orden de alta.
-      responses:
-        '200':
-          description: Direcciones del cliente
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Direccion'
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
-    post:
-      tags: [Recolección]
-      summary: Guardar una dirección
-      description: |
-        V2-M17.01 · El pin del mapa (`lat`, `lng`) es obligatorio. Si queda fuera de la zona de
-        cobertura no se guarda y responde 422.
       requestBody:
         required: true
         content:
@@ -726,43 +632,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RespuestaAsistente'
-              $ref: '#/components/schemas/NuevaDireccion'
-      responses:
-        '201':
-          description: Dirección guardada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Direccion'
-        '400':
-          $ref: '#/components/responses/DatosInvalidos'
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
-        '422':
-          $ref: '#/components/responses/FueraDeCobertura'
-
-  /direcciones/{direccionId}:
-    put:
-      tags: [Recolección]
-      summary: Editar una dirección
-      description: V2-M17.01 · Reemplaza los datos de una dirección propia. Una ajena responde 404.
-      parameters:
-        - $ref: '#/components/parameters/DireccionId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NuevaDireccion'
-      responses:
-        '200':
-          description: Dirección actualizada
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Direccion'
         '400':
           $ref: '#/components/responses/DatosInvalidos'
         '401':
@@ -790,69 +659,10 @@ paths:
                 $ref: '#/components/schemas/Problema'
         '503':
           description: Sin cuota del día o el proveedor de IA no responde (`codigo` ASISTENTE_NO_DISPONIBLE)
-        '422':
-          $ref: '#/components/responses/FueraDeCobertura'
-    delete:
-      tags: [Recolección]
-      summary: Borrar una dirección
-      description: V2-M17.01 · Solo una propia y sin traslados.
-      parameters:
-        - $ref: '#/components/parameters/DireccionId'
-      responses:
-        '204':
-          description: Dirección borrada
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
-        '404':
-          $ref: '#/components/responses/NoEncontrado'
-        '409':
-          description: La dirección ya tiene traslados (`codigo` DIRECCION_EN_USO)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Problema'
-
-  /recoleccion/cotizacion:
-    get:
-      tags: [Recolección]
-      summary: Costo y franja de la recolección
-      description: |
-        V2-M17.02 · Para una dirección propia y un día en que el taller abre (hoy o después,
-        dentro del plazo de anticipación). El costo por traslado es la tarifa base más la tarifa
-        por kilómetro en línea recta al centro de la cobertura; el total son los dos traslados
-        (recoger y entregar).
-      parameters:
-        - name: direccionId
-          in: query
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: fecha
-          in: query
-          required: true
-          schema:
-            type: string
-            format: date
-      responses:
-        '200':
-          description: Cotización
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CotizacionRecoleccion'
-        '400':
-          $ref: '#/components/responses/DatosInvalidos'
-        '401':
-          $ref: '#/components/responses/NoAutenticado'
-        '403':
-          $ref: '#/components/responses/CuentaDesactivada'
-        '404':
-          $ref: '#/components/responses/NoEncontrado'
-        '422':
-          $ref: '#/components/responses/FueraDeCobertura'
 
 components:
   securitySchemes:
@@ -862,13 +672,6 @@ components:
       bearerFormat: JWT
 
   parameters:
-    DireccionId:
-      name: direccionId
-      in: path
-      required: true
-      schema:
-        type: integer
-        format: int64
     ModeloId:
       name: modeloId
       in: path
@@ -933,12 +736,6 @@ components:
             $ref: '#/components/schemas/Problema'
     NoEncontrado:
       description: No existe o no pertenece al cliente
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problema'
-    FueraDeCobertura:
-      description: La dirección queda fuera de la zona de cobertura (`codigo` FUERA_DE_COBERTURA)
       content:
         application/json:
           schema:
@@ -1217,78 +1014,6 @@ components:
         fecha:
           type: string
           format: date
-        recoleccion:
-          $ref: '#/components/schemas/NuevaRecoleccion'
-
-    NuevaRecoleccion:
-      type: object
-      nullable: true
-      description: V2-M17.02 · Pide que recojan y entreguen el vehículo en una dirección guardada.
-      required: [direccionId]
-      properties:
-        direccionId:
-          type: integer
-          format: int64
-
-    TipoAsistencia:
-      type: string
-      enum: [llanta, bateria, choque, sin_gasolina, otro]
-
-    EstadoSolicitudAsistencia:
-      type: string
-      enum: [recibida, en_camino, atendida, cancelada]
-
-    NuevaSolicitudAsistencia:
-      type: object
-      required: [vehiculoId, tipo]
-      properties:
-        vehiculoId:
-          type: integer
-          format: int64
-        tipo:
-          $ref: '#/components/schemas/TipoAsistencia'
-        lat:
-          type: number
-          format: double
-          nullable: true
-          description: Latitud; va junto con `lng` o ninguna de las dos.
-        lng:
-          type: number
-          format: double
-          nullable: true
-        comentario:
-          type: string
-          maxLength: 500
-          nullable: true
-
-    SolicitudAsistencia:
-      type: object
-      required: [id, vehiculoId, tipo, estado, creadaEn]
-      properties:
-        id:
-          type: integer
-          format: int64
-        vehiculoId:
-          type: integer
-          format: int64
-        tipo:
-          $ref: '#/components/schemas/TipoAsistencia'
-        lat:
-          type: number
-          format: double
-          nullable: true
-        lng:
-          type: number
-          format: double
-          nullable: true
-        comentario:
-          type: string
-          nullable: true
-        estado:
-          $ref: '#/components/schemas/EstadoSolicitudAsistencia'
-        creadaEn:
-          type: string
-          format: date-time
 
     EstadoCita:
       type: string
@@ -1320,12 +1045,6 @@ components:
           type: string
         estado:
           $ref: '#/components/schemas/EstadoCita'
-        recoleccion:
-          allOf:
-            - $ref: '#/components/schemas/RecoleccionCita'
-          nullable: true
-          description: |
-            V2-M17.02 · Solo viene al agendar con `recoleccion`; en el resto de las consultas es nula.
 
     PaginaCitas:
       type: object
@@ -1623,119 +1342,6 @@ components:
         totalPaginas:
           type: integer
 
-    NuevaDireccion:
-      type: object
-      required: [alias, calle, colonia, cp, ciudad, lat, lng]
-      properties:
-        alias:
-          type: string
-          maxLength: 40
-          example: Casa
-        calle:
-          type: string
-          maxLength: 120
-        colonia:
-          type: string
-          maxLength: 80
-        cp:
-          type: string
-          pattern: '^[0-9]{5}$'
-        ciudad:
-          type: string
-          maxLength: 80
-        lat:
-          type: number
-          minimum: -90
-          maximum: 90
-        lng:
-          type: number
-          minimum: -180
-          maximum: 180
-
-    Direccion:
-      allOf:
-        - type: object
-          required: [id]
-          properties:
-            id:
-              type: integer
-              format: int64
-        - $ref: '#/components/schemas/NuevaDireccion'
-
-    FranjaRecoleccion:
-      type: object
-      required: [inicio, fin]
-      properties:
-        inicio:
-          type: string
-          example: '07:00'
-        fin:
-          type: string
-          example: '09:00'
-
-    CotizacionRecoleccion:
-      type: object
-      required: [direccionId, fecha, costoPorTraslado, costoTotal, recoleccion, entrega]
-      properties:
-        direccionId:
-          type: integer
-          format: int64
-        fecha:
-          type: string
-          format: date
-        costoPorTraslado:
-          type: number
-          description: Pesos, a 2 decimales
-        costoTotal:
-          type: number
-          description: Los dos traslados, recoger y entregar
-        recoleccion:
-          $ref: '#/components/schemas/FranjaRecoleccion'
-        entrega:
-          $ref: '#/components/schemas/FranjaRecoleccion'
-
-    EstadoTraslado:
-      type: string
-      description: Nace `programado`; el resto lo agrega V2-M17.03.
-      enum: [programado, en_camino, recogido, en_taller, de_regreso, entregado, cancelado]
-
-    Traslado:
-      type: object
-      required: [id, tipo, estado, costo, fecha, ventanaInicio, ventanaFin]
-      properties:
-        id:
-          type: integer
-          format: int64
-        tipo:
-          type: string
-          enum: [recoger, entregar]
-        estado:
-          $ref: '#/components/schemas/EstadoTraslado'
-        costo:
-          type: number
-        fecha:
-          type: string
-          format: date
-        ventanaInicio:
-          type: string
-        ventanaFin:
-          type: string
-
-    RecoleccionCita:
-      type: object
-      required: [direccionId, costoTotal, traslados]
-      properties:
-        direccionId:
-          type: integer
-          format: int64
-        costoTotal:
-          type: number
-        traslados:
-          type: array
-          description: El de recoger y el de entregar
-          items:
-            $ref: '#/components/schemas/Traslado'
-
     Problema:
       type: object
       description: Formato de error del backend (ApiError en shared/exception).
@@ -1776,9 +1382,6 @@ components:
             - ASISTENTE_SIN_MANUAL
             - ASISTENTE_LIMITE
             - ASISTENTE_NO_DISPONIBLE
-            - SOLICITUD_ABIERTA
-            - FUERA_DE_COBERTURA
-            - DIRECCION_EN_USO
           example: FRANJA_SIN_CUPO
         path:
           type: string
