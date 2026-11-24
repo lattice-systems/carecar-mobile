@@ -1599,6 +1599,301 @@
   "asistenteLimite": "You've used today's questions. You can ask more tomorrow.",
   "asistenteFuente": "Manual, p. {pagina}",
   "asistenteFuenteLector": "Manual, page {pagina}, open",
+  "asistenciaSeguimientoEncabezado": "Your request status",
+  "@asistenciaSeguimientoEncabezado": {
+    "description": "Encabezado de la línea de tiempo de la solicitud."
+  },
+  "asistenciaEstadoRecibida": "Received",
+  "@asistenciaEstadoRecibida": {
+    "description": "Primer paso de la solicitud de ayuda."
+  },
+  "asistenciaEstadoEnCamino": "On the way",
+  "@asistenciaEstadoEnCamino": {
+    "description": "La ayuda va hacia el cliente."
+  },
+  "asistenciaEstadoAtendida": "Assisted",
+  "@asistenciaEstadoAtendida": {
+    "description": "La ayuda ya llegó y se atendió."
+  },
+  "asistenciaEstadoCancelada": "Cancelled",
+  "@asistenciaEstadoCancelada": {
+    "description": "La solicitud se canceló."
+  },
+  "asistenciaEstadoNotaRecibida": "The dealership has your request.",
+  "@asistenciaEstadoNotaRecibida": {
+    "description": "Nota del paso Recibida."
+  },
+  "asistenciaEstadoNotaEnCamino": "Help is on its way to you.",
+  "@asistenciaEstadoNotaEnCamino": {
+    "description": "Nota del paso En camino."
+  },
+  "asistenciaEstadoNotaAtendida": "Your request has been handled.",
+  "@asistenciaEstadoNotaAtendida": {
+    "description": "Nota del paso Atendida."
+  },
+  "asistenciaEstadoNotaCancelada": "The request was closed.",
+  "@asistenciaEstadoNotaCancelada": {
+    "description": "Nota del paso Cancelada."
+  },
+  "asistenciaEstadoActual": "Status: {estado}",
+  "@asistenciaEstadoActual": {
+    "description": "Estado actual que anuncia el lector de pantalla.",
+    "placeholders": {
+      "estado": {
+        "type": "String",
+        "example": "En camino"
+      }
+    }
+  },
+  "asistenciaSeguimientoActualizar": "Refresh status",
+  "@asistenciaSeguimientoActualizar": {
+    "description": "Botón para consultar de nuevo el estado."
+  },
+  "asistenciaSeguimientoActualizando": "Refreshing…",
+  "@asistenciaSeguimientoActualizando": {
+    "description": "Botón mientras consulta el estado."
+  },
+  "asistenciaSeguimientoFallo": "We couldn't refresh the status. Check your connection and try again.",
+  "@asistenciaSeguimientoFallo": {
+    "description": "Aviso cuando falla la consulta del estado."
+  },
+  "asistenciaSeguimientoUbicacionCerrada": "The request is closed: your location is no longer shared.",
+  "@asistenciaSeguimientoUbicacionCerrada": {
+    "description": "Aviso al quedar atendida o cancelada."
+  },
+  "recoleccionSeguimientoTitulo": "Transfer tracking",
+  "@recoleccionSeguimientoTitulo": {
+    "description": "Título de la pantalla de seguimiento."
+  },
+  "recoleccionSeguimientoRecoger": "We pick up your car",
+  "@recoleccionSeguimientoRecoger": {
+    "description": "Título del traslado de recoger."
+  },
+  "recoleccionSeguimientoEntregar": "We deliver your car",
+  "@recoleccionSeguimientoEntregar": {
+    "description": "Título del traslado de entregar."
+  },
+  "recoleccionSeguimientoVentana": "{fecha}, {inicio} to {fin}",
+  "@recoleccionSeguimientoVentana": {
+    "description": "Día y franja del traslado.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "07:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "recoleccionSeguimientoAbrir": "Track the transfer",
+  "@recoleccionSeguimientoAbrir": {
+    "description": "Fila que abre el seguimiento desde la cita."
+  },
+  "recoleccionSeguimientoLineaEncabezado": "Progress",
+  "@recoleccionSeguimientoLineaEncabezado": {
+    "description": "Encabezado de la línea de tiempo del traslado."
+  },
+  "recoleccionEstadoProgramado": "Scheduled",
+  "@recoleccionEstadoProgramado": {
+    "description": "Traslado agendado."
+  },
+  "recoleccionEstadoEnCamino": "Driver on the way",
+  "@recoleccionEstadoEnCamino": {
+    "description": "El chofer va al domicilio."
+  },
+  "recoleccionEstadoRecogido": "Car picked up",
+  "@recoleccionEstadoRecogido": {
+    "description": "El chofer ya tiene el auto."
+  },
+  "recoleccionEstadoEnTaller": "At the workshop",
+  "@recoleccionEstadoEnTaller": {
+    "description": "El auto está en el taller."
+  },
+  "recoleccionEstadoDeRegreso": "Heading back to you",
+  "@recoleccionEstadoDeRegreso": {
+    "description": "El chofer lleva el auto de vuelta."
+  },
+  "recoleccionEstadoEntregado": "Car delivered",
+  "@recoleccionEstadoEntregado": {
+    "description": "El auto ya se entregó."
+  },
+  "recoleccionEstadoCancelado": "Cancelled",
+  "@recoleccionEstadoCancelado": {
+    "description": "El traslado se canceló."
+  },
+  "recoleccionEstadoNotaEnCamino": "Follow its location on the map.",
+  "@recoleccionEstadoNotaEnCamino": {
+    "description": "Nota del paso en camino."
+  },
+  "recoleccionEstadoNotaDeRegreso": "Follow its location on the map.",
+  "@recoleccionEstadoNotaDeRegreso": {
+    "description": "Nota del paso de regreso."
+  },
+  "recoleccionSeguimientoMapaEncabezado": "Where the driver is",
+  "@recoleccionSeguimientoMapaEncabezado": {
+    "description": "Encabezado del mapa del chofer."
+  },
+  "recoleccionSeguimientoMapaDescripcion": "Map with the driver's location: latitude {latitud}, longitude {longitud}.",
+  "@recoleccionSeguimientoMapaDescripcion": {
+    "description": "Descripción del mapa para el lector de pantalla.",
+    "placeholders": {
+      "latitud": {
+        "type": "String",
+        "example": "19.4326"
+      },
+      "longitud": {
+        "type": "String",
+        "example": "-99.1332"
+      }
+    }
+  },
+  "recoleccionSeguimientoActualizadaEn": "Location updated at {hora}",
+  "@recoleccionSeguimientoActualizadaEn": {
+    "description": "Hora de la última ubicación del chofer.",
+    "placeholders": {
+      "hora": {
+        "type": "String",
+        "example": "10:30"
+      }
+    }
+  },
+  "recoleccionSeguimientoVerChecklist": "View car checklist",
+  "@recoleccionSeguimientoVerChecklist": {
+    "description": "Botón que abre el checklist del traslado."
+  },
+  "recoleccionSeguimientoActualizar": "Refresh",
+  "@recoleccionSeguimientoActualizar": {
+    "description": "Botón para volver a consultar el traslado."
+  },
+  "recoleccionSeguimientoCargando": "Loading the transfer tracking",
+  "@recoleccionSeguimientoCargando": {
+    "description": "Etiqueta del esqueleto de carga."
+  },
+  "recoleccionSeguimientoNoEncontradoTitulo": "We couldn't find this transfer",
+  "@recoleccionSeguimientoNoEncontradoTitulo": {
+    "description": "Título cuando el traslado no existe."
+  },
+  "recoleccionSeguimientoNoEncontradoMensaje": "It may no longer exist. Go back to your appointments and open it again.",
+  "@recoleccionSeguimientoNoEncontradoMensaje": {
+    "description": "Mensaje cuando el traslado no existe."
+  },
+  "recoleccionSeguimientoFalloAlActualizar": "We couldn't refresh. Showing the latest we know.",
+  "@recoleccionSeguimientoFalloAlActualizar": {
+    "description": "Aviso cuando falla recargar con datos ya visibles."
+  },
+  "recoleccionChecklistTitulo": "Car checklist",
+  "@recoleccionChecklistTitulo": {
+    "description": "Título de la pantalla del checklist."
+  },
+  "recoleccionChecklistKm": "Mileage",
+  "@recoleccionChecklistKm": {
+    "description": "Etiqueta del kilometraje."
+  },
+  "recoleccionChecklistKmValor": "{km} km",
+  "@recoleccionChecklistKmValor": {
+    "description": "Kilometraje con unidad.",
+    "placeholders": {
+      "km": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      }
+    }
+  },
+  "recoleccionChecklistGasolina": "Fuel",
+  "@recoleccionChecklistGasolina": {
+    "description": "Etiqueta del nivel de gasolina."
+  },
+  "recoleccionGasolinaVacio": "Empty",
+  "@recoleccionGasolinaVacio": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaUnCuarto": "A quarter",
+  "@recoleccionGasolinaUnCuarto": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaMedio": "Half a tank",
+  "@recoleccionGasolinaMedio": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaTresCuartos": "Three quarters",
+  "@recoleccionGasolinaTresCuartos": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaLleno": "Full",
+  "@recoleccionGasolinaLleno": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionChecklistGasolinaLector": "Fuel: {nivel}",
+  "@recoleccionChecklistGasolinaLector": {
+    "description": "Nivel de gasolina para el lector de pantalla.",
+    "placeholders": {
+      "nivel": {
+        "type": "String",
+        "example": "Medio tanque"
+      }
+    }
+  },
+  "recoleccionChecklistNotas": "Driver's notes",
+  "@recoleccionChecklistNotas": {
+    "description": "Etiqueta de las notas."
+  },
+  "recoleccionChecklistFotos": "Car photos",
+  "@recoleccionChecklistFotos": {
+    "description": "Encabezado de la galería."
+  },
+  "recoleccionChecklistFotoDescripcion": "Photo {numero} of {total} of the car's condition",
+  "@recoleccionChecklistFotoDescripcion": {
+    "description": "Descripción de cada foto para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionChecklistSinFotos": "This checklist has no photos.",
+  "@recoleccionChecklistSinFotos": {
+    "description": "Galería vacía."
+  },
+  "recoleccionChecklistFirmante": "Signature of acceptance",
+  "@recoleccionChecklistFirmante": {
+    "description": "Quien firma el checklist."
+  },
+  "recoleccionChecklistRegistrado": "Recorded on {fecha}",
+  "@recoleccionChecklistRegistrado": {
+    "description": "Fecha del checklist.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "23 de noviembre de 2026"
+      }
+    }
+  },
+  "recoleccionChecklistVacioTitulo": "No checklist yet",
+  "@recoleccionChecklistVacioTitulo": {
+    "description": "Título cuando no hay checklist."
+  },
+  "recoleccionChecklistVacioMensaje": "The driver records it when picking up and delivering your car. Once done, you'll see it here.",
+  "@recoleccionChecklistVacioMensaje": {
+    "description": "Mensaje cuando no hay checklist."
+  },
+  "recoleccionChecklistCargando": "Loading the car checklist",
+  "@recoleccionChecklistCargando": {
+    "description": "Etiqueta del esqueleto de carga."
+  },
   "bitacoraTitulo": "Logbook",
   "@bitacoraTitulo": {
     "description": "Título de la bitácora del conductor."
