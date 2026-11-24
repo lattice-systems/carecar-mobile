@@ -89,7 +89,9 @@ void main() {
     expect(find.text('Kilometraje actual'), findsOneWidget);
     expect(find.text('Tu último registro: 9,000 km'), findsOneWidget);
     expect(
-      find.textContaining('El kilometraje que registra el taller es el oficial'),
+      find.textContaining(
+        'El kilometraje que registra el taller es el oficial',
+      ),
       findsOneWidget,
     );
   });
