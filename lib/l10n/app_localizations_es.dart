@@ -1869,4 +1869,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistentePreguntaGasolina => '¿Qué gasolina le pongo?';
+
+  @override
+  String get asistenteAgendarRevision => 'Agendar revisión';
 }

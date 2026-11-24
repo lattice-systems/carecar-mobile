@@ -2349,5 +2349,9 @@
   "asistentePreguntaGasolina": "¿Qué gasolina le pongo?",
   "@asistentePreguntaGasolina": {
     "description": "Pregunta sugerida sobre el combustible recomendado."
+  },
+  "asistenteAgendarRevision": "Agendar revisión",
+  "@asistenteAgendarRevision": {
+    "description": "Botón bajo cada respuesta del asistente: abre Agendar cita con el vehículo y el motivo Revisión ya elegidos (V2-M24.06)."
   }
 }
