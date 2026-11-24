@@ -1,6 +1,7 @@
 import 'package:carecar_mobile/nucleo/diseno/componentes/burbuja_mensaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_mensaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/tokens/colores.dart';
+import 'package:carecar_mobile/nucleo/diseno/tokens/radios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -197,6 +198,17 @@ void main() {
   });
 
   group('CampoMensaje (V2-T02.15)', () {
+    testWidgets('con una linea es una pildora, como los campos del login', (
+      tester,
+    ) async {
+      await tester.pumpWidget(conTemaPista(CampoMensaje(alEnviar: (_) {})));
+      final campo = tester.widget<TextField>(find.byType(TextField));
+      final borde = campo.decoration!.border! as OutlineInputBorder;
+      final enfocado = campo.decoration!.focusedBorder! as OutlineInputBorder;
+      expect(borde.borderRadius, Radios.bordeCampoChat);
+      expect(enfocado.borderRadius, Radios.bordeCampoChat);
+    });
+
     Finder enviar() => find.byKey(const ValueKey('campo-mensaje-enviar'));
 
     testWidgets('sin texto no deja enviar', (tester) async {
