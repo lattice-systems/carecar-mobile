@@ -252,6 +252,18 @@ class CarecarApiConCache implements CarecarApi {
     required String pregunta,
   }) => _api.preguntarAlAsistente(vehiculoId: vehiculoId, pregunta: pregunta);
 
+  /// Sin copia: la foto y su respuesta no se guardan en el telefono.
+  @override
+  Future<TestigoAsistente> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) => _api.identificarTestigo(
+    vehiculoId: vehiculoId,
+    imagen: imagen,
+    tipo: tipo,
+  );
+
   @override
   Future<void> calificarRespuestaDelAsistente({
     required int consultaId,
