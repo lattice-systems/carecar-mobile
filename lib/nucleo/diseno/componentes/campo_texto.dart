@@ -78,6 +78,7 @@ class CampoTexto extends StatelessWidget {
           sugerencia: sugerencia,
           conError: error != null,
           sufijo: sufijo,
+          pildora: lineas <= 1,
         ),
       ),
     );

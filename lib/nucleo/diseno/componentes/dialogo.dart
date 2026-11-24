@@ -64,6 +64,7 @@ class Dialogo extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: Radios.bordeTarjeta,
+                  border: Border.all(color: c.borde),
                   boxShadow: Elevacion.sombras(tokens.brillo),
                 ),
                 child: Padding(

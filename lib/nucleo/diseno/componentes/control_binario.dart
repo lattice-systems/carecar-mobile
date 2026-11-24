@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
@@ -30,16 +31,23 @@ class _FilaBinaria extends StatelessWidget {
     final t = tokens.tipografia;
     final habilitado = alCambiar != null;
 
+    void alTocar() {
+      if (!habilitado) return;
+      HapticFeedback.lightImpact();
+      alCambiar!(!valor);
+    }
+
     return Semantics(
       container: true,
       label: descripcion == null ? etiqueta : '$etiqueta. $descripcion',
       checked: esInterruptor ? null : valor,
       toggled: esInterruptor ? valor : null,
       enabled: habilitado,
-      onTap: habilitado ? () => alCambiar!(!valor) : null,
+      onTap: habilitado ? alTocar : null,
       excludeSemantics: true,
       child: InkWell(
-        onTap: habilitado ? () => alCambiar!(!valor) : null,
+        onTap: habilitado ? alTocar : null,
+        splashFactory: NoSplash.splashFactory,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48),
           child: Padding(

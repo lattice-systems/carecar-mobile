@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
+import 'rebote_tactil.dart';
 
 /// Una fila de un [GrupoLista].
 ///
@@ -192,7 +193,14 @@ class _Fila extends StatelessWidget {
       onTap: fila.alToque,
       excludeSemantics: true,
       child: tocable
-          ? InkWell(onTap: fila.alToque, child: contenido)
+          ? ReboteTactil(
+              habilitado: true,
+              child: InkWell(
+                onTap: fila.alToque,
+                splashFactory: NoSplash.splashFactory,
+                child: contenido,
+              ),
+            )
           : contenido,
     );
   }
