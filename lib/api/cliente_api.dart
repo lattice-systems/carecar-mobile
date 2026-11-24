@@ -277,6 +277,70 @@ class ClienteApi {
     return _leerObjeto(respuesta, leer);
   }
 
+  /// POST que responde con Server-Sent Events (V2-M24.09). Cada evento llega
+  /// con su nombre y su `data` ya decodificada como JSON. Un error antes de
+  /// abrir el flujo (4xx/5xx con JSON) sale como la excepcion de siempre.
+  Stream<EventoServidor> enviarFlujo(
+    String camino, {
+    required Object cuerpo,
+  }) async* {
+    Future<http.StreamedResponse> abrir() async {
+      final peticion = http.Request('POST', config.ruta(camino))
+        ..headers.addAll(await _encabezados(conCuerpo: true))
+        ..headers['accept'] = 'text/event-stream, application/json'
+        ..body = jsonEncode(cuerpo);
+      try {
+        return await _http.send(peticion).timeout(tiempoLimite);
+      } on SocketException catch (e) {
+        throw SinConexion(e);
+      } on http.ClientException catch (e) {
+        throw SinConexion(e);
+      } on HandshakeException catch (e) {
+        throw SinConexion(e);
+      } on TimeoutException catch (e) {
+        throw SinConexion(e);
+      }
+    }
+
+    var respuesta = await abrir();
+    if (respuesta.statusCode == 401 && await _haySesion()) {
+      final renovar = renovarSesion;
+      if (renovar != null && await renovar()) respuesta = await abrir();
+    }
+    if (respuesta.statusCode != 200) {
+      _verificarEstado(await http.Response.fromStream(respuesta));
+    }
+
+    String? evento;
+    final datos = StringBuffer();
+    try {
+      await for (final linea
+          in respuesta.stream
+              .transform(utf8.decoder)
+              .transform(const LineSplitter())) {
+        if (linea.isEmpty) {
+          if (evento != null || datos.isNotEmpty) {
+            yield EventoServidor(
+              evento ?? 'message',
+              datos.isEmpty ? null : jsonDecode(datos.toString()),
+            );
+          }
+          evento = null;
+          datos.clear();
+        } else if (linea.startsWith('event:')) {
+          evento = linea.substring(6).trim();
+        } else if (linea.startsWith('data:')) {
+          if (datos.isNotEmpty) datos.write('\n');
+          datos.write(linea.substring(5).trimLeft());
+        }
+      }
+    } on http.ClientException catch (e) {
+      throw SinConexion(e);
+    } on SocketException catch (e) {
+      throw SinConexion(e);
+    }
+  }
+
   /// PUT que devuelve un objeto (editar un recurso propio).
   Future<T> actualizar<T>(
     String camino, {
@@ -482,4 +546,12 @@ class ClienteApi {
       throw RespuestaInvalida('El servidor no devolvio JSON valido.', causa: e);
     }
   }
+}
+
+/// Un evento de un flujo SSE: su nombre (`event:`) y su `data:` como JSON.
+class EventoServidor {
+  const EventoServidor(this.evento, this.datos);
+
+  final String evento;
+  final Object? datos;
 }
