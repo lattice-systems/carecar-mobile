@@ -224,6 +224,13 @@ void main() {
             builder: (_, _) => const PantallaAsistente(vehiculoId: 2),
           ),
           GoRoute(
+            path: '/garaje/:id/manual',
+            builder: (_, estado) {
+              visitadas.add(estado.uri);
+              return const Text('Manual');
+            },
+          ),
+          GoRoute(
             path: '/citas/agendar',
             builder: (_, estado) {
               visitadas.add(estado.uri);
@@ -264,6 +271,23 @@ void main() {
         'vehiculo': '2',
         'motivo': 'revision',
       });
+    });
+
+    _prueba('tocar la cita abre el manual en esa pagina (V2-M24.04)', (
+      tester,
+    ) async {
+      final visitadas = <Uri>[];
+      await tester.pumpWidget(
+        conRutas(_Repo((_) async => _conCita), visitadas),
+      );
+      await _preguntar(tester, '¿Aceite?');
+      await tester.pump();
+
+      await tester.tap(find.text('Manual, pág. 12'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Manual'), findsOneWidget);
+      expect(visitadas.single.toString(), '/garaje/2/manual?pagina=12');
     });
 
     _prueba('un fallo del asistente no ofrece agendar', (tester) async {
