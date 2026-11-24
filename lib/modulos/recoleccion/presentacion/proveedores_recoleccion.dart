@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../api/modelos/traslado.dart';
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_recoleccion_api.dart';
 import '../dominio/cotizacion_recoleccion.dart';
@@ -70,4 +71,15 @@ final cotizacionRecoleccionProvider = FutureProvider.autoDispose
           .cotizar(direccionId: clave.direccionId, fecha: clave.fecha),
       retry: (_, _) => null,
       name: 'cotizacionRecoleccionProvider',
+    );
+
+/// El checklist del traslado `trasladoId`, o `null` si aún no existe. Se
+/// descarta al salir de la pantalla: las URLs de las fotos vienen firmadas y
+/// duran 15 minutos, así que nunca se reutiliza un checklist viejo.
+final checklistTrasladoProvider = FutureProvider.autoDispose
+    .family<ChecklistTraslado?, int>(
+      (ref, trasladoId) =>
+          ref.watch(repositorioRecoleccionProvider).checklist(trasladoId),
+      retry: (_, _) => null,
+      name: 'checklistTrasladoProvider',
     );
