@@ -41,6 +41,7 @@ Widget _visor(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
+  int paginaInicial,
 ) => _VisorFalso(bytes: bytes, alCargar: alCargar);
 
 class _VisorFalso extends StatefulWidget {
@@ -70,8 +71,13 @@ Widget _app(
   Locale? idioma,
   Future<ResultadoGuardado> Function(Uint8List, String)? guardar,
   Future<void> Function(Uint8List, String)? compartir,
+  int? pagina,
 }) {
-  final pantalla = PantallaManual(vehiculoId: id, fabricaVisor: _visor);
+  final pantalla = PantallaManual(
+    vehiculoId: id,
+    fabricaVisor: _visor,
+    paginaInicial: pagina,
+  );
   return ProviderScope(
     overrides: [
       repositorioGarajeProvider.overrideWithValue(RepositorioGarajeFake()),
@@ -87,6 +93,12 @@ Widget _app(
 }
 
 void main() {
+  testWidgets('abre el manual en la pagina pedida (V2-M24.04)', (tester) async {
+    await tester.pumpWidget(_app(_Servicio(_manual), pagina: 3));
+    await tester.pumpAndSettle();
+    expect(find.text('Página 3 de 5'), findsOneWidget);
+  });
+
   testWidgets('abre el manual del modelo y año del vehículo', (tester) async {
     final servicio = _Servicio(_manual);
     await tester.pumpWidget(_app(servicio));

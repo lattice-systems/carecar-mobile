@@ -206,7 +206,9 @@ class _Mensaje extends StatelessWidget {
           FuenteMensaje(
             texto: textos.asistenteFuente(cita.pagina),
             etiquetaLector: textos.asistenteFuenteLector(cita.pagina),
-            alTocar: () => context.push(rutaManualVehiculo(vehiculoId)),
+            alTocar: () => context.push(
+              rutaManualVehiculo(vehiculoId, pagina: cita.pagina),
+            ),
           ),
       ],
     );

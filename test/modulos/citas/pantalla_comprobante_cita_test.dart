@@ -27,6 +27,7 @@ Widget _visorFalso(
   Uint8List bytes,
   ValueChanged<int> alCargar,
   ValueChanged<int> alCambiarPagina,
+  int paginaInicial,
 ) => const SizedBox(key: ValueKey('visor-falso'));
 
 Widget _app(RepositorioCitas repo, {Escenario escenario = Escenario.claro}) =>

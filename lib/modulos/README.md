@@ -15,7 +15,7 @@ lib/modulos/<modulo>/
 1. Copia `lib/modulos/ejemplo/` (modelo vivo con pruebas en `test/modulos/ejemplo/`) y renómbralo.
 2. **dominio/**: modelos y reglas sin importar Flutter ni `http`. Define ahí la interfaz del repositorio.
 3. **datos/**: el repositorio real recibe `CarecarApi` (ver abajo), traduce DTO a modelos y mapea errores. Nunca crees tu propio `http.Client`.
-4. **presentacion/**: un proveedor para el repositorio (sustituible en pruebas con `overrideWithValue`), uno por pantalla con `FutureProvider`/`AsyncNotifier`, y pantallas con `ConsumerWidget`. Resuelve los cinco estados (cargando con `Esqueleto`, datos, `EstadoVacio`, `EstadoError` con reintento, sin conexión) con componentes de `lib/nucleo/diseno`.
+4. **presentacion/**: un proveedor para el repositorio (sustituible en pruebas con `overrideWithValue`), uno por pantalla con `FutureProvider`/`AsyncNotifier`, y pantallas con `ConsumerWidget`. Los cinco estados los resuelve `VistaAsincrona` (ver "El núcleo de datos"); no los armes a mano.
 5. **Rutas**: declara las de tu módulo (ver "Registrar las rutas de tu módulo").
 6. **`<modulo>.dart`**: exporta solo lo que otros necesitan (pantalla raíz, modelos que viajan, proveedores públicos, la lista de rutas). Ver `ejemplo/ejemplo.dart`.
 
@@ -57,6 +57,86 @@ Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb`
 | Acciones de sesión (iniciar, cerrar) | `ref.read(controladorSesionProvider)` (`lib/nucleo/sesion/`) |
 | Reaccionar a la sesión | `ref.watch(estadoSesionProvider)` |
 | Componentes y tokens | `lib/nucleo/diseno/` |
+| Errores tipados | `Fallo` y sus preguntas (`lib/nucleo/datos/fallo.dart`) |
+| Base del repositorio | `with RepositorioBase` (`lib/nucleo/datos/repositorio_base.dart`) |
+| Los cinco estados | `VistaAsincrona` (`lib/nucleo/datos/vista_asincrona.dart`) |
+| Fakes para pruebas | `RepositorioFalso` y `Fallos` (`test/ayudas/`) |
+
+## El núcleo de datos
+
+Lo que da `lib/nucleo/datos/` (V2-T01.08) para que todos los módulos resuelvan igual los cinco estados y prueben sin red.
+
+### 1 · Los errores ya vienen tipados
+
+`Fallo` es la jerarquía sellada `ExcepcionApi`: `SinConexion`, `CredencialesInvalidas`, `CuentaDesactivada`, `NoEncontrado`, `Conflicto`, `DatosInvalidos`, `DemasiadosIntentos`, `ErrorDelServidor`. **Su `mensaje` siempre se le puede mostrar al usuario** (el cliente ya aplica RIC-14: no enseña el `message` del backend en 400 ni en 5xx).
+
+No preguntes por la clase: pregúntale al fallo.
+
+| Pregunta | Qué responde |
+| --- | --- |
+| `esSinConexion` | No se pudo llegar al servidor |
+| `sesionTerminada` | 401 o 403: hay que volver a entrar |
+| `esReintentable` | Repetir la petición puede dar otro resultado |
+| `codigo` | El código del contrato, **nunca nulo** (`CodigoProblema.desconocido` si no vino). Es con lo que se distinguen los dos 409 |
+| `status` | El código HTTP, si lo hubo |
+
+`falloDe(error)` convierte cualquier cosa en un `Fallo`, y deja pasar sin tocar las que ya lo son.
+
+### 2 · El repositorio convierte o propaga
+
+```dart
+class RepositorioCatalogoApi with RepositorioBase implements RepositorioCatalogo {
+  const RepositorioCatalogoApi(this._api);
+  final CarecarApi _api;
+
+  @override
+  Future<List<ModeloVigente>> modelos() => pedir(() async {
+    final dto = await _api.catalogo();
+    return dto.map(_aModelo).toList(growable: false);   // el mapeo va DENTRO
+  });
+}
+```
+
+El mapeo va dentro de `pedir` a propósito: el cliente ya tipa sus errores, pero **la traducción del DTO no estaba protegida** y un campo que cambia en el backend llegaba a la pantalla sin tipar. Los `Error` (un `TypeError`, un índice fuera de rango) se propagan tal cual: son bugs nuestros, no fallas previstas, y conviene que el reporte de fallos vea su tipo real.
+
+### 3 · La pantalla pinta los cinco estados
+
+```dart
+VistaAsincrona<List<VehiculoGaraje>>(
+  estado: ref.watch(garajeProvider),
+  cargando: (_) => const Column(children: [Esqueleto(alto: 120), Esqueleto(alto: 120)]),
+  datos: (_, vehiculos) => ListaDeVehiculos(vehiculos),
+  vacio: (_) => const EstadoVacio(titulo: 'Aún no tienes vehículos'),
+  alReintentar: () => ref.invalidate(garajeProvider),
+)
+```
+
+- **El esqueleto lo das tú**: la guía pide que tenga la forma del contenido, y esa forma solo la conoce tu pantalla.
+- **Sin `vacio`, una lista vacía pinta `datos`.** El núcleo no te inventa un estado: hay pantallas donde la lista vacía es un error de datos y no un estado normal.
+- Mientras recarga con un dato previo **sigue viéndose el dato**, para que la lista no parpadee en cada refresco.
+- La causa de `EstadoError` (genérico o sin conexión) y el texto los elige sola.
+
+### 4 · El reintento automático ya está resuelto
+
+Riverpod 3 reintenta solo cualquier proveedor que falle: hasta 10 veces, con espera que dobla de 200 ms a 6.4 s. Como todos nuestros fallos son `Exception`, sin política un 404 se pediría once veces y un 429 —que significa «deja de pedir»— otras once.
+
+`main.dart` instala `reintentoDelNucleo` en el `ProviderScope`, así que **tus proveedores ya están cubiertos sin que hagas nada**: insiste con sin conexión y 5xx (hasta 3 veces) y no insiste con 400, 401, 403, 404, 409 ni 429.
+
+El botón «Reintentar» sigue siendo necesario y es otra cosa: la política es lo que se arregla solo; el botón es la decisión del usuario cuando no se arregló.
+
+### 5 · Fakes para probar sin red
+
+```dart
+final repositorio = RepositorioFalso(vehiculos, latencia: const Duration(milliseconds: 60));
+repositorio.falla = Fallos.sinConexion();   // o .noEncontrado(), .conflicto(codigo), .servidor()…
+repositorio.fallarUnaVez(Fallos.noEncontrado());   // falla una vez y luego funciona
+```
+
+`RepositorioFalso` usa la misma `RepositorioBase` que los repositorios de verdad, así que una prueba no puede ver un error sin tipar que en producción sí vendría tipado. Tiene `latencia`, `falla`, `fallarUnaVez`, `reventarUnaVez` (para simular un bug de mapeo) y contador de `llamadas`. Se **compone** dentro del fake de tu módulo, que es el que respeta tu interfaz.
+
+`Fallos` arma un fallo por cada caso del contrato sin tener que construir un `Problema` a mano.
+
+Ejemplo completo de los cinco estados y los ocho tipos de error de punta a punta: `test/nucleo/datos/nucleo_de_datos_test.dart`. Es la prueba que puedes copiar para tu pantalla cambiando el tipo y el repositorio.
 
 ## Reglas de dependencia
 
@@ -73,7 +153,8 @@ Si la prueba falla verás `archivo:línea importa "<import>" -> R#: <qué hacer>
 
 - Dominio: prueba de Dart puro (`test/modulos/<modulo>/..._test.dart`).
 - Pantallas: `ProviderScope(overrides: [repositorioXProvider.overrideWithValue(fake)], child: ...)`.
-- Riverpod 3 **reintenta solo** los proveedores que fallan; si tu pantalla ofrece botón de reintento, pon `retry: (_, _) => null` en ese proveedor (como en `ejemplo`) para que el error se vea y el reintento sea del usuario.
+- Riverpod 3 **reintenta solo** los proveedores que fallan, pero desde V2-T01.08 la política de la app ya decide por tipo de error (ver "El núcleo de datos", punto 4): **ya no hace falta poner `retry: (_, _) => null` en cada proveedor.** Los que ya lo tienen siguen funcionando —el del proveedor manda sobre el de la app—, solo quedan redundantes y además se pierden los reintentos útiles; los puede quitar el dueño del módulo cuando toque el archivo.
+- Si tu prueba necesita ver un error que *sí* es reintentable (sin conexión, 5xx), monta el `ProviderScope` sin la política o pásale `retry: (_, _) => null`: con la política el fallo se cura solo y la pantalla pasa del error a los datos.
 
 ## Módulo `ejemplo`
 

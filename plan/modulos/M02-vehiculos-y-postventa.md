@@ -190,7 +190,7 @@ Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId
 
 ## Avance de V2-M02.03
 
-Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
+Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
 
 - **Por modelo y año:** `manualProvider(id)` toma el vehículo del garaje y pide el manual con `ManualesDeLaAgencia` (código v1): primero `GET /vehiculos/{id}/manuales` (que el backend filtra por modelo y año) y, si no hay o falla la red, el PDF empaquetado en `assets/Manuales/<marca>/<tipo>/<año>/` (respaldo local). Sin manual en ninguna parte: estado vacío que lo explica.
 - **Visor:** `VisorPdf` del sistema v2 con zoom de pellizco y contador «Página N de M». La pantalla le entrega los bytes ya descargados, así el respaldo local y el de la agencia se ven igual.
