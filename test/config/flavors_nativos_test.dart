@@ -86,4 +86,17 @@ void main() {
       });
     }
   });
+
+  group('CI (V2-M22.09)', () {
+    for (final archivo in [
+      '.github/workflows/release.yml',
+      '.github/workflows/ipa-sin-firma.yml',
+    ]) {
+      test('$archivo rechaza un API_BASE_URL que no sea https', () {
+        final flujo = File(archivo).readAsStringSync();
+        expect(flujo, contains('Exigir HTTPS en API_BASE_URL'));
+        expect(flujo, contains(r'"$API_BASE_URL" != https://*'));
+      });
+    }
+  });
 }

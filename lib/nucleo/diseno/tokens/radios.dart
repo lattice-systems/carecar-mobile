@@ -7,6 +7,11 @@ abstract final class Radios {
   static const double hoja = 28;
   static const double pildora = 999;
 
+  /// Campo de chat (V2-T02.16): la mitad de su alto de una linea, asi se ve
+  /// pildora y al crecer a varias lineas queda como capsula sin cortar el
+  /// texto en las esquinas.
+  static const double campoChat = 24;
+
   static const BorderRadius bordeControl = BorderRadius.all(
     Radius.circular(control),
   );
@@ -18,5 +23,8 @@ abstract final class Radios {
   );
   static const BorderRadius bordePildora = BorderRadius.all(
     Radius.circular(pildora),
+  );
+  static const BorderRadius bordeCampoChat = BorderRadius.all(
+    Radius.circular(campoChat),
   );
 }

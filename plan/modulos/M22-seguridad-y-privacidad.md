@@ -49,3 +49,11 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 - **Pendiente**: `LSApplicationQueriesSchemes` (cydia) en iOS mejora la detección de jailbreak; se deja a la historia que toque `Info.plist` (T01.04/M22.06) para no pisar su alcance. Registro de la detección en logs: ninguno (sin datos personales).
 
 - **V2-M22.06** (hecha, PR #77): `lib/nucleo/privacidad/` (`CubiertaEnSegundoPlano`, `PantallaSegura`, `ProteccionDeCaptura` con fake), canal Android `FLAG_SECURE` y cubierta nativa iOS. Diseño, límites (iOS no bloquea capturas) y uso en [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Pendiente como historia nueva (Borrador): detectar captura/grabación en iOS (`UIScreen.isCaptured`) y tapar o avisar en pantallas de pago y documentos.
+
+- **V2-M22.09 · HTTPS fuera de local**: solo el flavor `desarrollo` habla `http://` (el mock local). Capas:
+  - **Nativo** (V2-T01.04): `usesCleartextTraffic` por flavor en Android y ATS abierto solo en `Info-desarrollo.plist`.
+  - **API**: `ApiConfig` rechaza un `API_BASE_URL` con http en `pruebas` y `produccion`.
+  - **Manual del vehículo**: `ManualesDeLaAgencia` no baja una URL firmada por http fuera de desarrollo; usa el manual incluido en la app (la firma se podría leer en el camino).
+  - **Mapas**: `ConfiguracionTeselas` lanza si `TILES_URL` usa http fuera de desarrollo.
+  - **CI**: `release.yml` e `ipa-sin-firma.yml` fallan antes de compilar si la variable `API_BASE_URL` no empieza con `https://`.
+  - Pruebas: `test/config/`, `test/api/manuales_agencia_test.dart`, `test/nucleo/mapas/configuracion_teselas_test.dart`.

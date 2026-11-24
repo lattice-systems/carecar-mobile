@@ -72,6 +72,16 @@ jobs:
       - name: Instalar dependencias
         run: flutter pub get
 
+      # V2-M22.09: fuera de local solo https; falla antes de compilar.
+      - name: Exigir HTTPS en API_BASE_URL
+        env:
+          API_BASE_URL: ${{ vars.API_BASE_URL }}
+        run: |
+          if [ -n "$API_BASE_URL" ] && [[ "$API_BASE_URL" != https://* ]]; then
+            echo "::error::API_BASE_URL debe empezar con https:// (V2-M22.09)"
+            exit 1
+          fi
+
       # --no-codesign: sin certificados ni perfiles de Apple. Sideloadly firma
       # después con el Apple ID de quien instala.
       # Flavor produccion (V2-T01.04). Su dirección por omisión es el backend
