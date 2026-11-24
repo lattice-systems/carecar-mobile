@@ -2095,6 +2095,324 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get bitacoraTitulo => 'Bitácora';
+
+  @override
+  String get bitacoraSubtituloSinNombre => 'Tu auto';
+
+  @override
+  String get bitacoraDescripcionPortada => 'Ícono de una bomba de gasolina';
+
+  @override
+  String get bitacoraNuevaCarga => 'Nueva carga';
+
+  @override
+  String get bitacoraOtroGasto => 'Otro gasto';
+
+  @override
+  String get bitacoraCerrar => 'Cerrar';
+
+  @override
+  String get bitacoraCargando => 'Cargando tu bitácora';
+
+  @override
+  String get bitacoraVacioTitulo => 'Aún no hay gastos';
+
+  @override
+  String get bitacoraVacioMensaje =>
+      'Registra tu primera carga de gasolina para saber cuánto rinde y cuánto te cuesta tu auto.';
+
+  @override
+  String get bitacoraResumenTitulo => 'Tu rendimiento';
+
+  @override
+  String get bitacoraEtiquetaRendimiento => 'Rendimiento';
+
+  @override
+  String bitacoraCifraKmPorLitro(String valor) {
+    return '$valor km/l';
+  }
+
+  @override
+  String get bitacoraEtiquetaCostoPorKm => 'Costo por km';
+
+  @override
+  String bitacoraCifraCostoPorKm(String valor) {
+    return '$valor/km';
+  }
+
+  @override
+  String get bitacoraEtiquetaGastoMes => 'Gasto de este mes';
+
+  @override
+  String get bitacoraCifraSinDatos => '—';
+
+  @override
+  String get bitacoraDetalleSinDatos => 'Necesitas 2 cargas';
+
+  @override
+  String get bitacoraVerEstadisticas => 'Rendimiento y gasto por mes';
+
+  @override
+  String get bitacoraExportar => 'Exportar bitácora';
+
+  @override
+  String get bitacoraTipoGasolina => 'Gasolina';
+
+  @override
+  String get bitacoraTipoEstacionamiento => 'Estacionamiento';
+
+  @override
+  String get bitacoraTipoCasetas => 'Casetas';
+
+  @override
+  String get bitacoraTipoLavado => 'Lavado';
+
+  @override
+  String get bitacoraTipoOtro => 'Otro';
+
+  @override
+  String bitacoraDetalleCarga(String fecha, String litros, String km) {
+    return '$fecha · $litros l · $km km';
+  }
+
+  @override
+  String get bitacoraFormCargaTitulo => 'Nueva carga';
+
+  @override
+  String get bitacoraFormEditarCargaTitulo => 'Editar carga';
+
+  @override
+  String get bitacoraFormGastoTitulo => 'Nuevo gasto';
+
+  @override
+  String get bitacoraFormEditarGastoTitulo => 'Editar gasto';
+
+  @override
+  String get bitacoraCampoTipo => 'Tipo de gasto';
+
+  @override
+  String get bitacoraCampoLitros => 'Litros';
+
+  @override
+  String get bitacoraCampoMonto => 'Monto total';
+
+  @override
+  String get bitacoraCampoKm => 'Kilometraje del tablero';
+
+  @override
+  String bitacoraAyudaKm(String km) {
+    return 'Tu última lectura es de $km km.';
+  }
+
+  @override
+  String get bitacoraCampoFecha => 'Fecha';
+
+  @override
+  String get bitacoraElegirFecha => 'Elegir fecha';
+
+  @override
+  String get bitacoraCampoDescripcion => 'Descripción';
+
+  @override
+  String get bitacoraAyudaDescripcion =>
+      'Obligatoria en «Otro», máximo 200 caracteres.';
+
+  @override
+  String get bitacoraErrorMonto => 'Escribe un monto mayor a 0.';
+
+  @override
+  String get bitacoraErrorLitros => 'Escribe los litros, mayores a 0.';
+
+  @override
+  String get bitacoraErrorKm => 'Escribe el kilometraje como número entero.';
+
+  @override
+  String bitacoraErrorKmMenor(String km) {
+    return 'No puede ser menor a tu última lectura ($km km).';
+  }
+
+  @override
+  String get bitacoraErrorKmServidor =>
+      'El servidor lo rechazó: es menor a tu última lectura. Revisa el kilometraje.';
+
+  @override
+  String get bitacoraErrorFecha => 'Elige una fecha que no sea futura.';
+
+  @override
+  String get bitacoraErrorDescripcion =>
+      'Describe el gasto, en máximo 200 caracteres.';
+
+  @override
+  String get bitacoraErrorGuardar => 'No se pudo guardar. Intenta de nuevo.';
+
+  @override
+  String get bitacoraErrorBorrar => 'No se pudo borrar. Intenta de nuevo.';
+
+  @override
+  String get bitacoraErrorSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get bitacoraGuardar => 'Guardar';
+
+  @override
+  String get bitacoraBorrar => 'Borrar gasto';
+
+  @override
+  String get bitacoraBorrarTitulo => '¿Borrar este gasto?';
+
+  @override
+  String bitacoraBorrarMensaje(String descripcion) {
+    return 'Se borrará «$descripcion». No se puede deshacer.';
+  }
+
+  @override
+  String get bitacoraBorrarConfirmar => 'Borrar';
+
+  @override
+  String get bitacoraBorrarCancelar => 'Cancelar';
+
+  @override
+  String get bitacoraGastoGuardado => 'Gasto guardado.';
+
+  @override
+  String get bitacoraGastoBorrado => 'Gasto borrado.';
+
+  @override
+  String get bitacoraTicketTitulo => 'Llenar desde el ticket';
+
+  @override
+  String get bitacoraTicketPrivacidad =>
+      'La foto se lee en tu teléfono; no se guarda ni se sube.';
+
+  @override
+  String get bitacoraTicketTomar => 'Tomar foto';
+
+  @override
+  String get bitacoraTicketElegir => 'Elegir de fotos';
+
+  @override
+  String get bitacoraTicketLeyendo => 'Leyendo el ticket…';
+
+  @override
+  String get bitacoraTicketLeido =>
+      'Esto fue lo que leímos. Revísalo y corrige lo que haga falta.';
+
+  @override
+  String get bitacoraTicketNoLeyo =>
+      'No pudimos leer el ticket. Llena los datos a mano.';
+
+  @override
+  String get bitacoraTicketSinPermiso =>
+      'No tenemos permiso para usar la cámara o tus fotos. Actívalo en los ajustes o llena los datos a mano.';
+
+  @override
+  String get bitacoraTicketError =>
+      'No se pudo abrir la foto. Llena los datos a mano.';
+
+  @override
+  String get bitacoraEstadisticasTitulo => 'Rendimiento y gasto';
+
+  @override
+  String get bitacoraGraficaTitulo => 'Gasto por mes';
+
+  @override
+  String get bitacoraGraficaVacia => 'Aún no hay gastos que graficar.';
+
+  @override
+  String get bitacoraSinRendimientoTitulo => 'Aún no hay rendimiento';
+
+  @override
+  String bitacoraSinRendimientoMensaje(int cargas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cargas,
+      locale: localeName,
+      other: 'Tienes $cargas cargas, pero sus kilometrajes no avanzan.',
+      one: 'Tienes 1 carga.',
+      zero: 'Todavía no registras ninguna.',
+    );
+    return 'Para calcular los km/l y el costo por km necesitamos al menos 2 cargas con su kilometraje. $_temp0';
+  }
+
+  @override
+  String bitacoraBaseDelCalculo(String km, int tramos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tramos,
+      locale: localeName,
+      other: '$tramos tramos',
+      one: '1 tramo',
+    );
+    return 'Calculado con $km km recorridos en $_temp0 entre cargas.';
+  }
+
+  @override
+  String get bitacoraExportarTitulo => 'Exportar bitácora';
+
+  @override
+  String get bitacoraExportarIntro =>
+      'Elige los meses y comparte tu bitácora con la hoja del sistema.';
+
+  @override
+  String get bitacoraExportarDesde => 'Desde';
+
+  @override
+  String get bitacoraExportarHasta => 'Hasta';
+
+  @override
+  String get bitacoraExportarCsv => 'Compartir CSV';
+
+  @override
+  String get bitacoraExportarPdf => 'Compartir PDF';
+
+  @override
+  String get bitacoraExportarVacio => 'No hay gastos en esos meses.';
+
+  @override
+  String get bitacoraExportarRangoInvalido =>
+      'El mes inicial no puede ser posterior al final.';
+
+  @override
+  String get bitacoraExportarError =>
+      'No se pudo compartir el archivo. Intenta de nuevo.';
+
+  @override
+  String bitacoraPdfTitulo(String vehiculo) {
+    return 'Bitácora de $vehiculo';
+  }
+
+  @override
+  String bitacoraPdfPeriodo(String desde, String hasta) {
+    return '$desde a $hasta';
+  }
+
+  @override
+  String bitacoraPdfTotal(String monto) {
+    return 'Total: $monto';
+  }
+
+  @override
+  String get bitacoraColumnaFecha => 'Fecha';
+
+  @override
+  String get bitacoraColumnaTipo => 'Tipo';
+
+  @override
+  String get bitacoraColumnaMonto => 'Monto';
+
+  @override
+  String get bitacoraColumnaLitros => 'Litros';
+
+  @override
+  String get bitacoraColumnaKm => 'Km';
+
+  @override
+  String get bitacoraColumnaDetalle => 'Detalle';
+
+  @override
+  String get bitacoraAccesoFila => 'Bitácora';
+
+  @override
   String get asistenteSugerenciasTitulo => 'Prueba con una de estas';
 
   @override
