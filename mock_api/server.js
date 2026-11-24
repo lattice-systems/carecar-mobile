@@ -729,6 +729,7 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   }
 
   db.get('citas').find({ id: cita.id }).assign({ estado: 'CANCELADA' }).write();
+  cancelarTrasladosProgramados(cita);
   const franja = db.get('franjas').find({ id: cita.franjaId }).value();
   if (franja) {
     db.get('franjas')
