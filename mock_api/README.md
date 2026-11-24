@@ -147,6 +147,8 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/direcciones` | 201 · 400 `DATOS_INVALIDOS` · 422 `FUERA_DE_COBERTURA` (círculo de 40 km alrededor de la Ciudad de México) |
 | PUT | `/direcciones/{id}` | 200 · 400 · 404 si es ajena · 422 |
 | DELETE | `/direcciones/{id}` | 204 · 404 · 409 `DIRECCION_EN_USO` si ya tiene traslados |
+| GET | `/vehiculos/{id}/mantenimiento` | Plan de 8 servicios cada 5 000 km con su estado y el próximo servicio · 404 si el vehículo es ajeno · los de 2014 o anteriores no tienen plan (V2-M05.01) |
+| POST | `/vehiculos/{id}/lecturas-km` | `{ km }` · 201 lectura del cliente · 400 `DATOS_INVALIDOS` · 404 · 422 `KM_INVALIDO` si es menor a la última lectura (V2-M05.03) |
 | GET | `/recoleccion/cotizacion` | `direccionId` y `fecha` · costo por traslado (80 + 12 por km), total, y franjas 07:00-09:00 y 17:00-19:00 · 400 · 404 · 422 (V2-M17.02) |
 | GET | `/catalogo` | Solo modelos activos |
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
