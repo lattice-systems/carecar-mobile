@@ -2095,6 +2095,221 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get asistenciaSeguimientoEncabezado => 'Estado de tu solicitud';
+
+  @override
+  String get asistenciaEstadoRecibida => 'Recibida';
+
+  @override
+  String get asistenciaEstadoEnCamino => 'En camino';
+
+  @override
+  String get asistenciaEstadoAtendida => 'Atendida';
+
+  @override
+  String get asistenciaEstadoCancelada => 'Cancelada';
+
+  @override
+  String get asistenciaEstadoNotaRecibida =>
+      'La agencia ya tiene tu solicitud.';
+
+  @override
+  String get asistenciaEstadoNotaEnCamino => 'Hay ayuda en camino hacia ti.';
+
+  @override
+  String get asistenciaEstadoNotaAtendida => 'Tu solicitud ya fue atendida.';
+
+  @override
+  String get asistenciaEstadoNotaCancelada => 'La solicitud se cerró.';
+
+  @override
+  String asistenciaEstadoActual(String estado) {
+    return 'Estado: $estado';
+  }
+
+  @override
+  String get asistenciaSeguimientoActualizar => 'Actualizar estado';
+
+  @override
+  String get asistenciaSeguimientoActualizando => 'Actualizando…';
+
+  @override
+  String get asistenciaSeguimientoFallo =>
+      'No pudimos actualizar el estado. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get asistenciaSeguimientoUbicacionCerrada =>
+      'La solicitud ya está cerrada: tu ubicación dejó de compartirse.';
+
+  @override
+  String get recoleccionSeguimientoTitulo => 'Seguimiento del traslado';
+
+  @override
+  String get recoleccionSeguimientoRecoger => 'Recogemos tu auto';
+
+  @override
+  String get recoleccionSeguimientoEntregar => 'Entregamos tu auto';
+
+  @override
+  String recoleccionSeguimientoVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, de $inicio a $fin';
+  }
+
+  @override
+  String get recoleccionSeguimientoAbrir => 'Seguir el traslado';
+
+  @override
+  String get recoleccionSeguimientoLineaEncabezado => 'Avance';
+
+  @override
+  String get recoleccionEstadoProgramado => 'Programado';
+
+  @override
+  String get recoleccionEstadoEnCamino => 'Chofer en camino';
+
+  @override
+  String get recoleccionEstadoRecogido => 'Auto recogido';
+
+  @override
+  String get recoleccionEstadoEnTaller => 'En el taller';
+
+  @override
+  String get recoleccionEstadoDeRegreso => 'De regreso a tu domicilio';
+
+  @override
+  String get recoleccionEstadoEntregado => 'Auto entregado';
+
+  @override
+  String get recoleccionEstadoCancelado => 'Cancelado';
+
+  @override
+  String get recoleccionEstadoNotaEnCamino => 'Sigue su ubicación en el mapa.';
+
+  @override
+  String get recoleccionEstadoNotaDeRegreso => 'Sigue su ubicación en el mapa.';
+
+  @override
+  String get recoleccionSeguimientoMapaEncabezado => 'Dónde va el chofer';
+
+  @override
+  String recoleccionSeguimientoMapaDescripcion(
+    String latitud,
+    String longitud,
+  ) {
+    return 'Mapa con la ubicación del chofer: latitud $latitud, longitud $longitud.';
+  }
+
+  @override
+  String recoleccionSeguimientoActualizadaEn(String hora) {
+    return 'Ubicación actualizada a las $hora';
+  }
+
+  @override
+  String get recoleccionSeguimientoVerChecklist => 'Ver checklist del auto';
+
+  @override
+  String get recoleccionSeguimientoActualizar => 'Actualizar';
+
+  @override
+  String get recoleccionSeguimientoCargando =>
+      'Cargando el seguimiento del traslado';
+
+  @override
+  String get recoleccionSeguimientoNoEncontradoTitulo =>
+      'No encontramos este traslado';
+
+  @override
+  String get recoleccionSeguimientoNoEncontradoMensaje =>
+      'Puede que ya no exista. Vuelve a tus citas y ábrelo de nuevo.';
+
+  @override
+  String get recoleccionSeguimientoFalloAlActualizar =>
+      'No pudimos actualizar. Mostramos lo último que sabemos.';
+
+  @override
+  String get recoleccionChecklistTitulo => 'Checklist del auto';
+
+  @override
+  String get recoleccionChecklistKm => 'Kilometraje';
+
+  @override
+  String recoleccionChecklistKmValor(int km) {
+    final intl.NumberFormat kmNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String kmString = kmNumberFormat.format(km);
+
+    return '$kmString km';
+  }
+
+  @override
+  String get recoleccionChecklistGasolina => 'Gasolina';
+
+  @override
+  String get recoleccionGasolinaVacio => 'Vacío';
+
+  @override
+  String get recoleccionGasolinaUnCuarto => 'Un cuarto';
+
+  @override
+  String get recoleccionGasolinaMedio => 'Medio tanque';
+
+  @override
+  String get recoleccionGasolinaTresCuartos => 'Tres cuartos';
+
+  @override
+  String get recoleccionGasolinaLleno => 'Lleno';
+
+  @override
+  String recoleccionChecklistGasolinaLector(String nivel) {
+    return 'Gasolina: $nivel';
+  }
+
+  @override
+  String get recoleccionChecklistNotas => 'Notas del chofer';
+
+  @override
+  String get recoleccionChecklistFotos => 'Fotos del auto';
+
+  @override
+  String recoleccionChecklistFotoDescripcion(int numero, int total) {
+    return 'Foto $numero de $total del estado del auto';
+  }
+
+  @override
+  String get recoleccionChecklistSinFotos => 'Este checklist no trae fotos.';
+
+  @override
+  String get recoleccionChecklistFirmante => 'Firma de conformidad';
+
+  @override
+  String recoleccionChecklistRegistrado(DateTime fecha) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Registrado el $fechaString';
+  }
+
+  @override
+  String get recoleccionChecklistVacioTitulo => 'Aún no hay checklist';
+
+  @override
+  String get recoleccionChecklistVacioMensaje =>
+      'El chofer lo registra al recoger y al entregar tu auto. Cuando lo haga, lo verás aquí.';
+
+  @override
+  String get recoleccionChecklistCargando => 'Cargando el checklist del auto';
+
+  @override
   String get bitacoraTitulo => 'Bitácora';
 
   @override
