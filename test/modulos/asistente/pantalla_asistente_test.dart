@@ -22,6 +22,20 @@ class _Repo implements RepositorioAsistente {
   final calificaciones = <(int, bool)>[];
   Object? falloAlCalificar;
 
+  Future<TestigoDelTablero> Function(List<int> imagen)? alIdentificar;
+  final fotos = <List<int>>[];
+
+  @override
+  Future<TestigoDelTablero> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) {
+    fotos.add(imagen);
+    return alIdentificar?.call(imagen) ??
+        Future.value(const TestigoDelTablero(consultaId: 1, reconocido: false));
+  }
+
   @override
   Future<void> calificar({required int consultaId, required bool util}) async {
     calificaciones.add((consultaId, util));
