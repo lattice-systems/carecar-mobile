@@ -558,6 +558,184 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasVacioTitulo => 'No spots available';
 
   @override
+  String get mantenimientoAcceso => 'Maintenance';
+
+  @override
+  String get mantenimientoAgendar => 'Book this service';
+
+  @override
+  String get mantenimientoCargando => 'Loading your maintenance plan';
+
+  @override
+  String get mantenimientoCargandoServicio => 'Loading the service';
+
+  @override
+  String get mantenimientoCerrar => 'Close';
+
+  @override
+  String get mantenimientoDescripcionPortada =>
+      'Illustration of a service wrench';
+
+  @override
+  String get mantenimientoEncabezadoConceptos => 'What is included';
+
+  @override
+  String get mantenimientoEncabezadoKm => 'Your mileage';
+
+  @override
+  String get mantenimientoEncabezadoPlan => 'Service plan';
+
+  @override
+  String get mantenimientoEstadoHecho => 'Done';
+
+  @override
+  String get mantenimientoEstadoPendiente => 'Pending';
+
+  @override
+  String get mantenimientoEstadoProximo => 'Next';
+
+  @override
+  String get mantenimientoEstadoVencido => 'Overdue';
+
+  @override
+  String mantenimientoFaltan(String km, String fecha) {
+    return '$km km to go · around $fecha';
+  }
+
+  @override
+  String mantenimientoHechoEl(String fecha) {
+    return 'Done on $fecha';
+  }
+
+  @override
+  String mantenimientoKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String mantenimientoKmAyuda(String km) {
+    return 'Your last reading: $km km';
+  }
+
+  @override
+  String get mantenimientoKmAyudaSinRegistro =>
+      'Enter the number your dashboard shows.';
+
+  @override
+  String get mantenimientoKmCampo => 'Current mileage';
+
+  @override
+  String mantenimientoKmDelCliente(String fecha) {
+    return 'Logged by you on $fecha';
+  }
+
+  @override
+  String mantenimientoKmDelTaller(String fecha) {
+    return 'Logged by the workshop on $fecha';
+  }
+
+  @override
+  String get mantenimientoKmErrorFormato =>
+      'Use whole numbers greater than zero.';
+
+  @override
+  String mantenimientoKmErrorMenor(String km) {
+    return 'It cannot be lower than $km km, the last one we have.';
+  }
+
+  @override
+  String get mantenimientoKmErrorRed =>
+      'We could not save your mileage. Check your connection and try again.';
+
+  @override
+  String get mantenimientoKmErrorServidor =>
+      'That mileage is lower than the last one logged. Check your dashboard.';
+
+  @override
+  String get mantenimientoKmErrorVacio => 'Enter your mileage.';
+
+  @override
+  String get mantenimientoKmGuardado =>
+      'Mileage saved. We updated your next service.';
+
+  @override
+  String get mantenimientoKmGuardando => 'Saving mileage';
+
+  @override
+  String get mantenimientoKmGuardar => 'Save mileage';
+
+  @override
+  String get mantenimientoKmNota =>
+      'The mileage the workshop logs is the official one: your entry does not replace it.';
+
+  @override
+  String get mantenimientoKmSinDato => 'Not logged';
+
+  @override
+  String get mantenimientoKmSinFuente => 'There is no reading for your car yet';
+
+  @override
+  String get mantenimientoKmTitulo => 'Log mileage';
+
+  @override
+  String get mantenimientoMotivoKm => 'Due by mileage';
+
+  @override
+  String get mantenimientoMotivoTiempo => 'Due by elapsed time';
+
+  @override
+  String get mantenimientoPrecioEtiqueta => 'Estimated price';
+
+  @override
+  String get mantenimientoPrecioLeyenda => 'Non-binding estimate';
+
+  @override
+  String mantenimientoPromedio(String km) {
+    return 'Average: $km km per day';
+  }
+
+  @override
+  String get mantenimientoRegistrarKm => 'Log mileage';
+
+  @override
+  String mantenimientoResumenServicio(String km, String meses) {
+    return '$km km · $meses months';
+  }
+
+  @override
+  String get mantenimientoServicioNoEncontradoMensaje =>
+      'The plan may have changed. Go back to the plan and try again.';
+
+  @override
+  String get mantenimientoServicioNoEncontradoTitulo =>
+      'We could not find this service';
+
+  @override
+  String get mantenimientoSinConceptos => 'This service has no detailed items.';
+
+  @override
+  String get mantenimientoSinProximoMensaje =>
+      'Log your mileage to estimate when your next service is due.';
+
+  @override
+  String get mantenimientoSinProximoTitulo => 'No next service estimated';
+
+  @override
+  String get mantenimientoTitulo => 'Maintenance';
+
+  @override
+  String get mantenimientoVacioMensaje =>
+      'We do not have the service plan for this model yet. Ask your advisor at the dealership.';
+
+  @override
+  String get mantenimientoVacioTitulo => 'There is no plan for your car yet';
+
+  @override
+  String mantenimientoYaToca(String km) {
+    return 'Due now · past $km km';
+  }
+
+  @override
   String precioDesde(String precio) {
     return 'From $precio';
   }
