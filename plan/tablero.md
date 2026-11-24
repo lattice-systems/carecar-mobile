@@ -227,8 +227,8 @@ Total: **213 historias** + 4 de H0.
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Borrador | |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Borrador | |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Borrador | |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Lista | |
-| V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Lista | |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | En revisión | #94, backend#86 |
+| V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | En revisión | #94, backend#86 |
 | V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Lista | |
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Lista | |
 | V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
@@ -241,7 +241,7 @@ Total: **213 historias** + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Lista | |
+| V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | En revisión | #94, backend#86 |
 | V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Lista | |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Hecha | #65 |
 | V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Lista | |
@@ -265,7 +265,7 @@ Total: **213 historias** + 4 de H0.
 | V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Hecha | #68 |
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Lista | |
-| V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | En revisión | #71, backend#73 |
+| V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Hecha | #71, backend#73 |
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
 | V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
 
