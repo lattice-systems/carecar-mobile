@@ -40,6 +40,9 @@ class _CarreraConAbierta implements RepositorioAsistencia {
     }
     return existente;
   }
+
+  @override
+  Future<SolicitudAsistencia> obtener(int id) async => existente;
 }
 
 Future<void> _montar(
