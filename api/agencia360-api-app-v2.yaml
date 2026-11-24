@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.6.0
+  version: 2.7.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1185,6 +1185,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /asistente/consultas/{consultaId}/calificacion:
+    post:
+      tags: [Asistente]
+      summary: Calificar una respuesta del asistente
+      description: |
+        V2-M24.07 · Guarda si la respuesta fue útil (👍 `true`, 👎 `false`) en
+        `consulta_asistente.util` para medir la calidad del asistente. Calificar otra vez
+        reemplaza la calificación.
+      parameters:
+        - name: consultaId
+          in: path
+          required: true
+          description: El `consultaId` de la respuesta
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalificacionAsistente'
+      responses:
+        '204':
+          description: Calificación guardada
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /eventos:
     get:
       tags: [En vivo]
@@ -1333,6 +1367,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FuenteAsistente'
+    CalificacionAsistente:
+      type: object
+      required: [util]
+      properties:
+        util:
+          type: boolean
+          description: true si la respuesta sirvió (👍), false si no (👎)
     FuenteAsistente:
       type: object
       required: [manualId, pagina, titulo]

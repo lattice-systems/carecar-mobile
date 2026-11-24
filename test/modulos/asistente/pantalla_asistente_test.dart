@@ -1,3 +1,4 @@
+import 'dart:ui' show Tristate;
 import 'dart:async';
 
 import 'package:carecar_mobile/l10n/idiomas.dart';
@@ -18,6 +19,15 @@ class _Repo implements RepositorioAsistente {
   _Repo(this.alPreguntar);
   Future<RespuestaDelAsistente> Function(String pregunta) alPreguntar;
   final preguntas = <String>[];
+  final calificaciones = <(int, bool)>[];
+  Object? falloAlCalificar;
+
+  @override
+  Future<void> calificar({required int consultaId, required bool util}) async {
+    calificaciones.add((consultaId, util));
+    final fallo = falloAlCalificar;
+    if (fallo != null) throw fallo;
+  }
 
   @override
   Future<RespuestaDelAsistente> preguntar({
@@ -30,6 +40,7 @@ class _Repo implements RepositorioAsistente {
 }
 
 const _conCita = RespuestaDelAsistente(
+  consultaId: 7,
   texto: 'Cada 10 000 km o un año.',
   encontrado: true,
   fuentes: [CitaDelManual(manualId: 26, pagina: 12)],
@@ -297,6 +308,57 @@ void main() {
       await _preguntar(tester, 'Uno');
       await tester.pump();
       expect(find.text('Agendar revisión'), findsNothing);
+    });
+  });
+
+  group('Calificar la respuesta (V2-M24.07)', () {
+    bool marcado(WidgetTester tester, String etiqueta) =>
+        tester
+            .getSemantics(find.bySemanticsLabel(etiqueta))
+            .flagsCollection
+            .isSelected ==
+        Tristate.isTrue;
+
+    _prueba('👍 y 👎 guardan la calificacion y la dejan marcada', (
+      tester,
+    ) async {
+      final repo = _Repo((_) async => _conCita);
+      await tester.pumpWidget(_app(repo));
+      await _preguntar(tester, '¿Aceite?');
+      await tester.pump();
+
+      await tester.tap(find.bySemanticsLabel('Me sirvió'));
+      await tester.pump();
+      expect(repo.calificaciones, [(7, true)]);
+      expect(marcado(tester, 'Me sirvió'), isTrue);
+
+      await tester.tap(find.bySemanticsLabel('No me sirvió'));
+      await tester.pump();
+      expect(repo.calificaciones.last, (7, false));
+      expect(marcado(tester, 'No me sirvió'), isTrue);
+      expect(marcado(tester, 'Me sirvió'), isFalse);
+    });
+
+    _prueba('si no se pudo guardar, la marca se quita', (tester) async {
+      final repo = _Repo((_) async => _conCita)
+        ..falloAlCalificar = const AsistenteSinConexion();
+      await tester.pumpWidget(_app(repo));
+      await _preguntar(tester, '¿Aceite?');
+      await tester.pump();
+
+      await tester.tap(find.bySemanticsLabel('Me sirvió'));
+      await tester.pump();
+      await tester.pump();
+      expect(marcado(tester, 'Me sirvió'), isFalse);
+    });
+
+    _prueba('un fallo del asistente no se califica', (tester) async {
+      await tester.pumpWidget(
+        _app(_Repo((_) async => throw const AsistenteLimiteDiario())),
+      );
+      await _preguntar(tester, 'Uno');
+      await tester.pump();
+      expect(find.bySemanticsLabel('Me sirvió'), findsNothing);
     });
   });
 }

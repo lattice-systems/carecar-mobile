@@ -1255,6 +1255,15 @@ servidor.post(`${BASE}/asistente/preguntas`, (req, res) => {
   });
 });
 
+// V2-M24.07: la calificacion solo se acepta; el simulador no guarda consultas.
+servidor.post(`${BASE}/asistente/consultas/:consultaId/calificacion`, (req, res) => {
+  const { util } = req.body || {};
+  if (typeof util !== 'boolean') {
+    return problema(req, res, 400, 'Indica si la respuesta te sirvió', 'DATOS_INVALIDOS');
+  }
+  res.status(204).end();
+});
+
 servidor.get(`${BASE}/toma-a-cuenta/estimaciones`, (req, res) => {
   const propias = db
     .get('estimacionesTomaCuenta')

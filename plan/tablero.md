@@ -136,7 +136,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
-| V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Lista | |
+| V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
 | V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Lista | |
 | V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Lista | |
@@ -261,7 +261,7 @@ Total: **214 historias** + 4 de H0.
 | V2-M24.04 | Abrir el manual en la página citada | Daniel |  | V2-M24.03, V2-M02.03 | Hecha | #101 |
 | V2-M24.05 | Fotografiar una luz del tablero y saber qué significa | Daniel | B | V2-M24.01, V2-T02.15 (provisional) | Lista | |
 | V2-M24.06 | Agendar desde la respuesta | Daniel |  | V2-M24.03, V2-M02.08 | Hecha | #97 |
-| V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Lista | |
+| V2-M24.07 | Medir la calidad de respuestas | Daniel | B | V2-M24.03 | Hecha | #100, backend#87 |
 | V2-M24.08 | Ver preguntas sugeridas | Daniel |  | V2-M24.03 | Hecha | #96 |
 | V2-M24.09 | Ver la respuesta mientras se escribe | Daniel | B | V2-M24.03 | Lista | |
 | V2-M25.01 | Un widget con mi próxima cita | Juan Pablo |  | V2-M02.09, V2-T01.03 | Hecha | #68 |

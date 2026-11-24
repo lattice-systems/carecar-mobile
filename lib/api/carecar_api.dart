@@ -86,6 +86,13 @@ abstract interface class CarecarApi {
     required String pregunta,
   });
 
+  /// `POST /asistente/consultas/{consultaId}/calificacion` (V2-M24.07): si la
+  /// respuesta sirvio. 404 si la consulta no es del cliente.
+  Future<void> calificarRespuestaDelAsistente({
+    required int consultaId,
+    required bool util,
+  });
+
   // --- Servicios y tickets · APP-3.2 ---
 
   /// `GET /vehiculos/{id}/servicios`, del mas reciente al mas antiguo.

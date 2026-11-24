@@ -1523,5 +1523,7 @@
   "asistentePreguntaTestigos": "What does a red light on the dashboard mean?",
   "asistentePreguntaAceite": "How much oil does the engine take?",
   "asistentePreguntaGasolina": "What fuel should I use?",
-  "asistenteAgendarRevision": "Book a check-up"
+  "asistenteAgendarRevision": "Book a check-up",
+  "asistenteMeSirvio": "Helpful",
+  "asistenteNoMeSirvio": "Not helpful"
 }

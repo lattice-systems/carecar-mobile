@@ -21,6 +21,7 @@ class RepositorioAsistenteApi implements RepositorioAsistente {
         pregunta: pregunta,
       );
       return RespuestaDelAsistente(
+        consultaId: r.consultaId,
         texto: r.respuesta,
         encontrado: r.encontrado,
         fuentes: [
@@ -37,6 +38,20 @@ class RepositorioAsistenteApi implements RepositorioAsistente {
         _ when e is DemasiadosIntentos => const AsistenteLimiteDiario(),
         _ => const AsistenteNoDisponible(),
       };
+    }
+  }
+
+  @override
+  Future<void> calificar({required int consultaId, required bool util}) async {
+    try {
+      await _api.calificarRespuestaDelAsistente(
+        consultaId: consultaId,
+        util: util,
+      );
+    } on SinConexion {
+      throw const AsistenteSinConexion();
+    } on ExcepcionApi {
+      throw const AsistenteNoDisponible();
     }
   }
 }

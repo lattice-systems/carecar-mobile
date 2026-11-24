@@ -7,6 +7,11 @@ abstract interface class RepositorioAsistente {
     required int vehiculoId,
     required String pregunta,
   });
+
+  /// Guarda si la respuesta [consultaId] le sirvio (V2-M24.07).
+  ///
+  /// Falla con un [FalloAsistente].
+  Future<void> calificar({required int consultaId, required bool util});
 }
 
 /// Respuesta del asistente, con las paginas del manual que cito.
@@ -15,9 +20,13 @@ class RespuestaDelAsistente {
     required this.texto,
     required this.encontrado,
     this.fuentes = const [],
+    this.consultaId,
   });
 
   final String texto;
+
+  /// Id con el que se califica la respuesta (V2-M24.07).
+  final int? consultaId;
 
   /// `false` si el manual no tiene la respuesta; entonces no hay fuentes.
   final bool encontrado;

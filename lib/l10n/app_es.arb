@@ -2353,5 +2353,13 @@
   "asistenteAgendarRevision": "Agendar revisión",
   "@asistenteAgendarRevision": {
     "description": "Botón bajo cada respuesta del asistente: abre Agendar cita con el vehículo y el motivo Revisión ya elegidos (V2-M24.06)."
+  },
+  "asistenteMeSirvio": "Me sirvió",
+  "@asistenteMeSirvio": {
+    "description": "Botón 👍 bajo una respuesta del asistente; lo oye el lector de pantalla (V2-M24.07)."
+  },
+  "asistenteNoMeSirvio": "No me sirvió",
+  "@asistenteNoMeSirvio": {
+    "description": "Botón 👎 bajo una respuesta del asistente (V2-M24.07)."
   }
 }

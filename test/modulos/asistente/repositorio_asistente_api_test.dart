@@ -84,4 +84,34 @@ void main() {
       expect(const AsistenteLimiteDiario().sePuedeReintentar, isFalse);
     });
   });
+
+  group('Calificar (V2-M24.07)', () {
+    test('la respuesta trae su consultaId', () async {
+      final api = ApiFalsa()
+        ..alPreguntarAlAsistente = (_, _) async => const RespuestaAsistente(
+          consultaId: 42,
+          respuesta: 'x',
+          encontrado: false,
+          fuentes: [],
+        );
+      final r = await RepositorioAsistenteApi(api)
+          .preguntar(vehiculoId: 1, pregunta: 'x');
+      expect(r.consultaId, 42);
+    });
+
+    test('manda la calificacion de la consulta', () async {
+      final api = ApiFalsa();
+      await RepositorioAsistenteApi(api).calificar(consultaId: 42, util: true);
+      expect(api.calificaciones, [(consultaId: 42, util: true)]);
+    });
+
+    test('un error al calificar llega como fallo del asistente', () async {
+      final api = ApiFalsa()
+        ..alCalificar = (_, _) => Future.error(const SinConexion());
+      expect(
+        RepositorioAsistenteApi(api).calificar(consultaId: 42, util: false),
+        throwsA(isA<AsistenteSinConexion>()),
+      );
+    });
+  });
 }

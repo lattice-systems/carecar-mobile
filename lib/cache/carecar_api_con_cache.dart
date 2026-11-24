@@ -253,6 +253,12 @@ class CarecarApiConCache implements CarecarApi {
   }) => _api.preguntarAlAsistente(vehiculoId: vehiculoId, pregunta: pregunta);
 
   @override
+  Future<void> calificarRespuestaDelAsistente({
+    required int consultaId,
+    required bool util,
+  }) => _api.calificarRespuestaDelAsistente(consultaId: consultaId, util: util);
+
+  @override
   Future<Uint8List> ticketDe(int servicioId) => _api.ticketDe(servicioId);
 
   @override
