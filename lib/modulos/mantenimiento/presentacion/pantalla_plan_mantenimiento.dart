@@ -250,6 +250,8 @@ class _Plan extends StatelessWidget {
     final estado = s.estado == EstadoServicio.hecho && s.hechoEn != null
         ? textos.mantenimientoHechoEl(formatearFecha(context, s.hechoEn!))
         : textoEstado(textos, s.estado);
+    // El estado va en el texto: el lector de pantalla no lee el adorno final.
+    final lineaDeEstado = '$estado · $resumen';
     final (icono, color) = switch (s.estado) {
       EstadoServicio.hecho => (Icons.check_rounded, c.exito),
       EstadoServicio.pendiente => (Icons.schedule_outlined, c.marca),
@@ -258,7 +260,7 @@ class _Plan extends StatelessWidget {
     };
     return FilaGrupo(
       titulo: s.nombre,
-      subtitulo: '$estado · $resumen',
+      subtitulo: lineaDeEstado,
       icono: icono,
       colorIcono: color,
       alToque: () => context.push(rutaServicioMantenimiento(vehiculoId, s.id)),
