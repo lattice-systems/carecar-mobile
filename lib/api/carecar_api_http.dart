@@ -147,6 +147,15 @@ class CarecarApiHttp implements CarecarApi {
   );
 
   @override
+  Future<void> calificarRespuestaDelAsistente({
+    required int consultaId,
+    required bool util,
+  }) => _cliente.enviarSinRespuesta(
+    '/asistente/consultas/$consultaId/calificacion',
+    cuerpo: {'util': util},
+  );
+
+  @override
   Future<Cita> agendarCita(NuevaCita nueva) =>
       _cliente.enviar('/citas', cuerpo: nueva.toJson(), leer: Cita.fromJson);
 

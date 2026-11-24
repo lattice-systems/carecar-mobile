@@ -25,6 +25,8 @@ class MensajeConversacion {
     this.fuentes = const [],
     this.envio = EnvioPregunta.enviada,
     this.fallo,
+    this.consultaId,
+    this.util,
   });
 
   final AutorConversacion autor;
@@ -36,12 +38,29 @@ class MensajeConversacion {
   final EnvioPregunta envio;
   final FalloAsistente? fallo;
 
-  MensajeConversacion conEnvio(EnvioPregunta nuevo) => MensajeConversacion(
+  /// Id de la respuesta para calificarla; nulo en preguntas y fallos.
+  final int? consultaId;
+
+  /// Calificacion del cliente (V2-M24.07): `true` 👍, `false` 👎, nula sin
+  /// calificar.
+  final bool? util;
+
+  MensajeConversacion conEnvio(EnvioPregunta nuevo) => _copia(envio: nuevo);
+
+  MensajeConversacion conUtil(bool? nuevo) =>
+      _copia(envio: envio, util: () => nuevo);
+
+  MensajeConversacion _copia({
+    required EnvioPregunta envio,
+    bool? Function()? util,
+  }) => MensajeConversacion(
     autor: autor,
     texto: texto,
     fuentes: fuentes,
-    envio: nuevo,
+    envio: envio,
     fallo: fallo,
+    consultaId: consultaId,
+    util: util == null ? this.util : util(),
   );
 }
 
@@ -84,6 +103,29 @@ class ConversacionAsistente extends Notifier<List<MensajeConversacion>> {
     await _resolver(indice);
   }
 
+  /// Califica la respuesta en [indice] (V2-M24.07). Se marca al momento; si
+  /// no se pudo guardar, vuelve a como estaba.
+  Future<void> calificar(int indice, bool util) async {
+    final mensaje = state[indice];
+    final consultaId = mensaje.consultaId;
+    if (consultaId == null || mensaje.util == util) return;
+    final anterior = mensaje.util;
+    _ponerUtil(indice, util);
+    try {
+      await ref
+          .read(repositorioAsistenteProvider)
+          .calificar(consultaId: consultaId, util: util);
+    } on FalloAsistente {
+      if (ref.mounted) _ponerUtil(indice, anterior);
+    }
+  }
+
+  void _ponerUtil(int indice, bool? util) {
+    final mensajes = [...state];
+    mensajes[indice] = mensajes[indice].conUtil(util);
+    state = mensajes;
+  }
+
   Future<void> _resolver(int indice) async {
     final pregunta = state[indice].texto;
     MensajeConversacion respuesta;
@@ -96,6 +138,7 @@ class ConversacionAsistente extends Notifier<List<MensajeConversacion>> {
         autor: AutorConversacion.asistente,
         texto: r.texto,
         fuentes: r.encontrado ? r.fuentes : const [],
+        consultaId: r.consultaId,
       );
     } on FalloAsistente catch (fallo) {
       if (fallo.sePuedeReintentar) envio = EnvioPregunta.fallida;
