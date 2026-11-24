@@ -108,6 +108,8 @@ Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; c
 
 Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `BotonCircular`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
 
+**Vidrio (V2-T02.19):** `BotonPildora` y `BotonCircular` tienen variante `vidrio`: fondo del color del texto al 6 %, borde de luz al 14 %, texto `texto` e ícono `acento`, con rebote. Es el estilo de las acciones secundarias de toda la app (la propuesta «Liquid Glass»); `BotonCircular` es de vidrio por omisión.
+
 **`BotonCircular`** (V2-T02.17): botón de un ícono, círculo de 48 con `ReboteTactil`. Variante `tonal` (fondo `superficieHundida`, ícono `textoSecundario`) y `acento` (fondo `acentoSuave`, ícono `acento`). Con `iconoMarcado` es interruptor: marcado se ve como acento y el lector lo anuncia seleccionado. Deshabilitado: fondo hundido, ícono terciario, sin rebote. Lo usan enviar (acento) y adjuntar de `CampoMensaje`, y 👍/👎 del asistente.
 
 ### Vidrio líquido y píldora (V2-T02.16)
