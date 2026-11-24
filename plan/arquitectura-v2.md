@@ -10,6 +10,7 @@ lib/
 ├── app.dart                         # MaterialApp.router + tema v2 + localización
 ├── nucleo/                          # compartido por todos los módulos; no conoce módulos
 │   ├── api/                         # ApiCliente (http + tokens + refresco), errores, idempotencia
+│   ├── datos/                       # Fallo, base de repositorio, cinco estados, reintento (T01.08)
 │   ├── sesion/                      # sesión, biometría, almacén seguro
 │   ├── datos_locales/               # base local cifrada y cola sin conexión (M21)
 │   ├── navegacion/                  # rutas, deep links, guardias de sesión
@@ -30,7 +31,7 @@ lib/
 2. `dominio/` es Dart puro: se prueba sin Flutter.
 3. Toda llamada de red pasa por `nucleo/api`; ningún módulo crea su propio `http.Client`.
 4. Toda pantalla usa componentes de `nucleo/diseno`. Prohibido `Color(0x…)`, tamaños de letra o `EdgeInsets` mágicos fuera de los tokens.
-5. Cada pantalla resuelve cinco estados: cargando (esqueleto), con datos, vacío, error con reintento, sin conexión.
+5. Cada pantalla resuelve cinco estados: cargando (esqueleto), con datos, vacío, error con reintento, sin conexión. No se arman a mano: los pinta `VistaAsincrona` de `nucleo/datos` (T01.08), y los repositorios usan `RepositorioBase` para que de ellos salga un dato o un `Fallo` tipado. Guía en [`lib/modulos/README.md`](../lib/modulos/README.md#el-núcleo-de-datos).
 6. Cadenas visibles solo en ARB.
 
 ## Reglas de dependencia verificadas (V2-T01.06)
