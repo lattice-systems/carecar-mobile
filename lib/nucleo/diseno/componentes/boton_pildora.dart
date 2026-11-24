@@ -112,7 +112,7 @@ class _BotonPildoraState extends State<BotonPildora> {
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: Espaciado.e5,
+                horizontal: Espaciado.e4,
                 vertical: Espaciado.e2,
               ),
               child: Center(widthFactor: 1, child: contenido),
