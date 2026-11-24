@@ -255,7 +255,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
             BotonPildora(
               texto: textos.recoleccionBorrar,
               icono: Icons.delete_outline,
-              variante: VarianteBotonPildora.tonal,
+              variante: VarianteBotonPildora.vidrio,
               expandido: true,
               alPresionar: _ocupado ? null : _confirmarBorrado,
             ),
@@ -307,7 +307,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                     BotonPildora(
                       texto: textos.recoleccionFormUsarUbicacion,
                       icono: Icons.my_location_outlined,
-                      variante: VarianteBotonPildora.tonal,
+                      variante: VarianteBotonPildora.vidrio,
                       expandido: true,
                       alPresionar: _ocupado ? null : _usarUbicacion,
                     ),

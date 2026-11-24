@@ -391,7 +391,7 @@ class _EstadoUbicacion extends StatelessWidget {
               BotonPildora(
                 texto: textos.asistenciaUbicacionReintentar,
                 icono: Icons.refresh,
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alReintentar,
               ),
@@ -399,7 +399,7 @@ class _EstadoUbicacion extends StatelessWidget {
               BotonPildora(
                 texto: textos.asistenciaUbicacionSinUbicacion,
                 icono: Icons.location_off_outlined,
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alEnviarSin,
               ),

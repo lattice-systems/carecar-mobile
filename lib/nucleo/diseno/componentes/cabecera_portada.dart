@@ -94,7 +94,7 @@ class CabeceraPortada extends StatelessWidget {
           texto: secundaria!.texto,
           icono: secundaria!.icono,
           alPresionar: secundaria!.alPresionar,
-          variante: VarianteBotonPildora.tonal,
+          variante: VarianteBotonPildora.vidrio,
           expandido: true,
         ),
     ];

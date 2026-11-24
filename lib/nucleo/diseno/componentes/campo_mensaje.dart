@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
+import 'boton_circular.dart';
 
 /// Campo para escribir un mensaje de chat (V2-T02.15), compartido por el
 /// asistente (M24) y la mensajería con el asesor (M07).
@@ -11,8 +12,8 @@ import '../tokens/tokens_pista.dart';
 /// texto hasta cinco líneas y después se desplaza por dentro.
 /// Enviar queda deshabilitado mientras no haya texto (sin contar espacios);
 /// al enviar entrega el texto recortado y se vacía. Adjuntar solo aparece si
-/// hay [alAdjuntar]. Los dos botones miden al menos 48 y tienen nombre para
-/// el lector de pantalla.
+/// hay [alAdjuntar]. Los dos botones son [BotonCircular] (V2-T02.17): miden
+/// 48, rebotan y tienen nombre para el lector de pantalla; enviar va en acento.
 class CampoMensaje extends StatefulWidget {
   const CampoMensaje({
     required this.alEnviar,
@@ -84,27 +85,18 @@ class _CampoMensajeState extends State<CampoMensaje> {
     final c = tokens.colores;
     final t = tokens.tipografia;
 
-    const tamBoton = BoxConstraints(
-      minWidth: Espaciado.objetivoTactilMinimo,
-      minHeight: Espaciado.objetivoTactilMinimo,
-    );
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        if (widget.alAdjuntar != null)
-          _BotonConNombre(
+        if (widget.alAdjuntar != null) ...[
+          BotonCircular(
+            key: const ValueKey('campo-mensaje-adjuntar'),
+            icono: Icons.attach_file,
             etiqueta: widget.etiquetaAdjuntar,
             alPresionar: widget.habilitado ? widget.alAdjuntar : null,
-            child: IconButton(
-              key: const ValueKey('campo-mensaje-adjuntar'),
-              onPressed: widget.habilitado ? widget.alAdjuntar : null,
-              constraints: tamBoton,
-              tooltip: widget.etiquetaAdjuntar,
-              color: c.textoSecundario,
-              icon: const Icon(Icons.attach_file),
-            ),
           ),
+          const SizedBox(width: Espaciado.e2),
+        ],
         Expanded(
           child: TextField(
             controller: _controlador,
@@ -135,46 +127,15 @@ class _CampoMensajeState extends State<CampoMensaje> {
             ),
           ),
         ),
-        const SizedBox(width: Espaciado.e1),
-        _BotonConNombre(
+        const SizedBox(width: Espaciado.e2),
+        BotonCircular(
+          key: const ValueKey('campo-mensaje-enviar'),
+          icono: Icons.send,
           etiqueta: widget.etiquetaEnviar,
+          variante: VarianteBotonCircular.acento,
           alPresionar: _puedeEnviar ? _enviar : null,
-          child: IconButton(
-            key: const ValueKey('campo-mensaje-enviar'),
-            onPressed: _puedeEnviar ? _enviar : null,
-            constraints: tamBoton,
-            tooltip: widget.etiquetaEnviar,
-            color: c.acento,
-            disabledColor: c.textoTerciario,
-            icon: const Icon(Icons.send),
-          ),
         ),
       ],
     );
   }
-}
-
-/// Da al botón de ícono un nombre propio para el lector de pantalla (el
-/// tooltip solo se anuncia como pista) y su estado habilitado.
-class _BotonConNombre extends StatelessWidget {
-  const _BotonConNombre({
-    required this.etiqueta,
-    required this.alPresionar,
-    required this.child,
-  });
-
-  final String etiqueta;
-  final VoidCallback? alPresionar;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) => Semantics(
-    container: true,
-    button: true,
-    enabled: alPresionar != null,
-    label: etiqueta,
-    onTap: alPresionar,
-    excludeSemantics: true,
-    child: child,
-  );
 }
