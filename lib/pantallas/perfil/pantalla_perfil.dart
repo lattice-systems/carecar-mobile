@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../notificaciones/servicio_notificaciones.dart';
 
@@ -13,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
+import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../tema/tema_carecar.dart';
 import '../pantalla_cambiar_contrasena.dart';
 import '../../widgets/dialogos.dart';
@@ -36,6 +38,7 @@ class PantallaPerfil extends StatefulWidget {
   static const botonReintentar = Key('perfil_reintentar');
   static const avatar = Key('perfil_avatar');
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
+  static const botonMisDirecciones = Key('perfil_mis_direcciones');
   static const botonContactar = Key('perfil_contactar');
   static const botonPrivacidad = Key('perfil_privacidad');
   static const botonConfirmarCierre = Key('perfil_confirmar_cierre');
@@ -104,6 +107,10 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     );
   }
 
+  /// Abre «Mis direcciones» (V2-M17.06). Solo se ofrece dentro de la app
+  /// enrutada: sin enrutador no habria a donde ir.
+  void _abrirDirecciones() => GoRouter.of(context).push(rutaMisDirecciones);
+
   void _contactar() {
     showShadSheet<void>(
       context: context,
@@ -168,6 +175,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                   subtitulo: 'Actualiza la contraseña con la que entras',
                   alTocar: _cambiarContrasena,
                 ),
+                if (GoRouter.maybeOf(context) != null)
+                  _Opcion(
+                    llave: PantallaPerfil.botonMisDirecciones,
+                    icono: Icons.place_outlined,
+                    titulo: 'Mis direcciones',
+                    subtitulo: 'Donde recogemos y entregamos tu auto',
+                    alTocar: _abrirDirecciones,
+                  ),
               ],
             ),
             _Seccion(
