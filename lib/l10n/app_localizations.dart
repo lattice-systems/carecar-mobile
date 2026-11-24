@@ -3567,6 +3567,84 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo enviar tu respuesta. Intenta de nuevo.'**
   String get tallerRespuestaError;
+
+  /// Botón de cámara junto al campo del asistente (V2-M24.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de una luz del tablero'**
+  String get asistenteFotoAdjuntar;
+
+  /// Opción de la hoja para usar la cámara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get asistenteFotoTomar;
+
+  /// Opción de la hoja para elegir una foto guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de tus fotos'**
+  String get asistenteFotoGaleria;
+
+  /// Burbuja propia cuando se manda la foto de un testigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto del tablero'**
+  String get asistenteFotoEnviada;
+
+  /// Mientras el asistente identifica el testigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisando tu foto…'**
+  String get asistenteRevisandoFoto;
+
+  /// Insignia de un testigo rojo.
+  ///
+  /// In es, this message translates to:
+  /// **'Detente'**
+  String get asistenteTestigoRoja;
+
+  /// Insignia de un testigo amarillo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar pronto'**
+  String get asistenteTestigoAmarilla;
+
+  /// Insignia de un testigo informativo.
+  ///
+  /// In es, this message translates to:
+  /// **'Informativa'**
+  String get asistenteTestigoInformativa;
+
+  /// Aviso fijo de un testigo rojo.
+  ///
+  /// In es, this message translates to:
+  /// **'Detente en un lugar seguro lo antes posible y apaga el motor.'**
+  String get asistenteTestigoDetente;
+
+  /// Botón de un testigo rojo que abre Pedir ayuda (SOS).
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda'**
+  String get asistentePedirAyuda;
+
+  /// Cuando la foto no muestra un testigo claro.
+  ///
+  /// In es, this message translates to:
+  /// **'No reconocí una luz en la foto. Descríbela con palabras: color, forma y si parpadea.'**
+  String get asistenteTestigoNoReconocido;
+
+  /// Aviso cuando se negó el permiso de cámara o fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Para tomar la foto, permite el acceso a la cámara y a tus fotos en los ajustes del teléfono.'**
+  String get asistentePermisoCamara;
+
+  /// Botón del aviso de permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get asistenteAbrirAjustes;
 }
 
 class _AppLocalizationsDelegate

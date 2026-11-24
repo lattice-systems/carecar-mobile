@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
+import '../../../nucleo/camara/selector_foto.dart';
 import '../datos/repositorio_asistente_api.dart';
 import '../dominio/repositorio_asistente.dart';
 
@@ -9,6 +10,12 @@ import '../dominio/repositorio_asistente.dart';
 final repositorioAsistenteProvider = Provider<RepositorioAsistente>(
   (ref) => RepositorioAsistenteApi(ref.watch(carecarApiProvider)),
   name: 'repositorioAsistenteProvider',
+);
+
+/// Toma o elige la foto de un testigo (V2-M24.05). En pruebas se reemplaza.
+final selectorFotoProvider = Provider<SelectorFoto>(
+  (ref) => SelectorFotoDelSistema(),
+  name: 'selectorFotoProvider',
 );
 
 /// Quien escribio un mensaje de la conversacion.
@@ -27,6 +34,8 @@ class MensajeConversacion {
     this.fallo,
     this.consultaId,
     this.util,
+    this.foto,
+    this.testigo,
   });
 
   final AutorConversacion autor;
@@ -45,6 +54,13 @@ class MensajeConversacion {
   /// calificar.
   final bool? util;
 
+  /// Foto de un testigo que mando el cliente (V2-M24.05). Solo en memoria,
+  /// para poder reintentar; no se guarda.
+  final FotoElegida? foto;
+
+  /// Lo que dijo el asistente de esa foto.
+  final TestigoDelTablero? testigo;
+
   MensajeConversacion conEnvio(EnvioPregunta nuevo) => _copia(envio: nuevo);
 
   MensajeConversacion conUtil(bool? nuevo) =>
@@ -61,6 +77,8 @@ class MensajeConversacion {
     fallo: fallo,
     consultaId: consultaId,
     util: util == null ? this.util : util(),
+    foto: foto,
+    testigo: testigo,
   );
 }
 
@@ -85,6 +103,20 @@ class ConversacionAsistente extends Notifier<List<MensajeConversacion>> {
         autor: AutorConversacion.cliente,
         texto: pregunta,
         envio: EnvioPregunta.enviando,
+      ),
+    ];
+    await _resolver(state.length - 1);
+  }
+
+  /// Manda la foto de un testigo del tablero (V2-M24.05).
+  Future<void> identificar(FotoElegida foto) async {
+    if (esperando) return;
+    state = [
+      ...state,
+      MensajeConversacion(
+        autor: AutorConversacion.cliente,
+        envio: EnvioPregunta.enviando,
+        foto: foto,
       ),
     ];
     await _resolver(state.length - 1);
@@ -128,9 +160,32 @@ class ConversacionAsistente extends Notifier<List<MensajeConversacion>> {
 
   Future<void> _resolver(int indice) async {
     final pregunta = state[indice].texto;
+    final foto = state[indice].foto;
     MensajeConversacion respuesta;
     var envio = EnvioPregunta.enviada;
     try {
+      if (foto != null) {
+        final t = await ref
+            .read(repositorioAsistenteProvider)
+            .identificarTestigo(
+              vehiculoId: vehiculoId,
+              imagen: foto.bytes,
+              tipo: foto.tipo,
+            );
+        respuesta = MensajeConversacion(
+          autor: AutorConversacion.asistente,
+          texto: t.queHacer ?? '',
+          fuentes: t.reconocido ? t.fuentes : const [],
+          consultaId: t.reconocido ? t.consultaId : null,
+          testigo: t,
+        );
+        if (!ref.mounted) return;
+        final mensajes = [...state];
+        mensajes[indice] = mensajes[indice].conEnvio(envio);
+        mensajes.insert(indice + 1, respuesta);
+        state = mensajes;
+        return;
+      }
       final r = await ref
           .read(repositorioAsistenteProvider)
           .preguntar(vehiculoId: vehiculoId, pregunta: pregunta);

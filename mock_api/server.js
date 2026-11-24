@@ -1256,6 +1256,30 @@ servidor.post(`${BASE}/asistente/preguntas`, (req, res) => {
   });
 });
 
+// V2-M24.05: sin IA ni multer; lee el multipart a mano solo para sacar
+// vehiculoId y responde siempre el mismo testigo rojo con cita a la pag. 12.
+servidor.post(`${BASE}/asistente/testigos`, (req, res) => {
+  const partes = [];
+  req.on('data', (parte) => partes.push(parte));
+  req.on('end', () => {
+    const cuerpo = Buffer.concat(partes).toString('latin1');
+    const id = /name="vehiculoId"\r\n\r\n(\d+)/.exec(cuerpo);
+    const conImagen = /name="imagen"/.test(cuerpo) && cuerpo.length > 200;
+    if (!id || !conImagen) {
+      return problema(req, res, 400, 'La foto debe ser una imagen JPEG o PNG de hasta 5 MB', 'DATOS_INVALIDOS');
+    }
+    if (!vehiculoDelCliente(req, Number(id[1]))) return noEncontrado(req, res);
+    res.json({
+      consultaId: Date.now(),
+      reconocido: true,
+      testigo: 'Presión de aceite',
+      gravedad: 'roja',
+      queHacer: 'Detente en un lugar seguro, apaga el motor y revisa el nivel de aceite. No sigas manejando si sigue encendida.',
+      fuentes: [{ manualId: 1, pagina: 12, titulo: 'Manual, pág. 12' }],
+    });
+  });
+});
+
 // V2-M24.07: la calificacion solo se acepta; el simulador no guarda consultas.
 servidor.post(`${BASE}/asistente/consultas/:consultaId/calificacion`, (req, res) => {
   const { util } = req.body || {};

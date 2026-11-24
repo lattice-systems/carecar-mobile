@@ -1187,6 +1187,66 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /asistente/testigos:
+    post:
+      tags: [Asistente]
+      summary: Identificar una luz del tablero con una foto
+      description: |
+        V2-M24.05 · El cliente fotografía un testigo del tablero. El backend re-codifica la imagen
+        (sin EXIF ni ubicación), la manda a Gemini y no la guarda. Responde qué testigo es, su
+        gravedad y qué hacer; si el manual del vehículo lo menciona, cita la página. Si no lo
+        reconoce, `reconocido` es false y la app propone describirlo por texto.
+
+        Cuenta para el mismo límite diario que las preguntas (`429` ASISTENTE_LIMITE) y queda en
+        `consulta_asistente`, así se puede calificar con `/asistente/consultas/{id}/calificacion`.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [vehiculoId, imagen]
+              properties:
+                vehiculoId:
+                  type: integer
+                  format: int64
+                imagen:
+                  type: string
+                  format: binary
+                  description: JPEG o PNG de hasta 5 MB
+      responses:
+        '200':
+          description: Lo que dice la foto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestigoAsistente'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '429':
+          description: Ya hizo sus preguntas del día (`codigo` ASISTENTE_LIMITE)
+          headers:
+            Retry-After:
+              description: Segundos que faltan para la medianoche de la agencia
+              schema:
+                type: integer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '503':
+          description: Sin cuota del día o el proveedor de IA no responde (`codigo` ASISTENTE_NO_DISPONIBLE)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
   /asistente/consultas/{consultaId}/calificacion:
     post:
       tags: [Asistente]
@@ -1467,6 +1527,33 @@ components:
         encontrado:
           type: boolean
           description: false si el manual no tiene la respuesta; entonces no hay fuentes
+        fuentes:
+          type: array
+          items:
+            $ref: '#/components/schemas/FuenteAsistente'
+    TestigoAsistente:
+      type: object
+      required: [consultaId, reconocido, fuentes]
+      properties:
+        consultaId:
+          type: integer
+          format: int64
+        reconocido:
+          type: boolean
+          description: false si la foto no muestra un testigo que se pueda identificar
+        testigo:
+          type: string
+          nullable: true
+          example: Presión de aceite
+        gravedad:
+          type: string
+          nullable: true
+          enum: [roja, amarilla, informativa]
+          description: roja = detenerse en un lugar seguro; amarilla = agendar revisión pronto
+        queHacer:
+          type: string
+          nullable: true
+          example: Detente en un lugar seguro, apaga el motor y revisa el nivel de aceite.
         fuentes:
           type: array
           items:

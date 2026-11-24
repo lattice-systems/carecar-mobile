@@ -94,10 +94,13 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
   - burbujas con la cita «Manual, pág. N», que abre el manual justo en esa página (`/garaje/:id/manual?pagina=N`, V2-M24.04);
   - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
   - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
+  - botón de cámara en el campo (V2-M24.05): hoja «Tomar foto» / «Elegir de tus fotos»; la respuesta muestra el testigo con su gravedad en una insignia con texto, el aviso «Detente…» y «Pedir ayuda» (SOS) si es roja, «Agendar revisión» si es roja o amarilla, y la cita del manual; si no lo reconoce pide describirlo; sin permiso explica y ofrece «Abrir ajustes»;
   - reintento sin conexión;
   - límite y falta de manual explicados.
 - **Entrada:** `TarjetaAsistente` de vidrio con ✦ en el detalle del vehículo (V2-M24.10); sus preguntas sugeridas abren el asistente y la envían con `preguntaInicial`.
 - **API simulada:** responde con una cita de ejemplo.
+
+**Testigos (V2-M24.05):** `SelectorFoto` en `lib/nucleo/camara/` envuelve `image_picker` (foto de máximo 1600 px, sin metadatos completos, se borra el temporal); la foto vive solo en memoria para reintentar. El backend la limpia de nuevo (sin EXIF, 1024 px) y no la guarda (backend#90, contrato 2.8.0). `mock_api` responde siempre «Presión de aceite», roja.
 
 **Calidad (V2-M24.07):** el conjunto de 20 preguntas con su página esperada y el script que mide el % de citas correctas viven en el backend (`docs/asistente/evaluacion/preguntas.json` y `scripts/evaluar-asistente.py`, backend#87), junto al código que evalúan. Falta correrlo contra Azure y anotar el resultado en el ADR 0007 antes de cerrar H6.
 

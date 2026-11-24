@@ -147,6 +147,20 @@ class CarecarApiHttp implements CarecarApi {
   );
 
   @override
+  Future<TestigoAsistente> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) => _cliente.enviarArchivo(
+    '/asistente/testigos',
+    campos: {'vehiculoId': '$vehiculoId'},
+    nombreArchivo: 'imagen',
+    bytes: imagen,
+    tipo: tipo,
+    leer: TestigoAsistente.fromJson,
+  );
+
+  @override
   Future<void> calificarRespuestaDelAsistente({
     required int consultaId,
     required bool util,

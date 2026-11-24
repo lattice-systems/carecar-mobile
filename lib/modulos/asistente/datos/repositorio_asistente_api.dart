@@ -42,6 +42,40 @@ class RepositorioAsistenteApi implements RepositorioAsistente {
   }
 
   @override
+  Future<TestigoDelTablero> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) async {
+    try {
+      final r = await _api.identificarTestigo(
+        vehiculoId: vehiculoId,
+        imagen: imagen,
+        tipo: tipo,
+      );
+      return TestigoDelTablero(
+        consultaId: r.consultaId,
+        reconocido: r.reconocido,
+        nombre: r.testigo,
+        gravedad: GravedadTestigo.desdeCodigo(r.gravedad),
+        queHacer: r.queHacer,
+        fuentes: [
+          for (final f in r.fuentes)
+            CitaDelManual(manualId: f.manualId, pagina: f.pagina),
+        ],
+      );
+    } on SinConexion {
+      throw const AsistenteSinConexion();
+    } on ExcepcionApi catch (e) {
+      throw switch (e.problema?.codigo) {
+        CodigoProblema.asistenteLimite => const AsistenteLimiteDiario(),
+        _ when e is DemasiadosIntentos => const AsistenteLimiteDiario(),
+        _ => const AsistenteNoDisponible(),
+      };
+    }
+  }
+
+  @override
   Future<void> calificar({required int consultaId, required bool util}) async {
     try {
       await _api.calificarRespuestaDelAsistente(

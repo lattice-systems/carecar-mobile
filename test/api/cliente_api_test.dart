@@ -46,6 +46,42 @@ void main() {
   );
 
   group('armado de la peticion', () {
+    test(
+      'manda un archivo como multipart con sus campos (V2-M24.05)',
+      () async {
+        http.Request? pedida;
+        final cliente = _clienteQueResponde((req) {
+          pedida = req;
+          return http.Response(
+            '{"ok":true}',
+            200,
+            headers: {'content-type': 'application/json'},
+          );
+        }, token: () async => 't');
+
+        final r = await cliente.enviarArchivo(
+          '/asistente/testigos',
+          campos: {'vehiculoId': '7'},
+          nombreArchivo: 'imagen',
+          bytes: [1, 2, 3],
+          tipo: 'image/jpeg',
+          leer: (j) => j['ok'],
+        );
+
+        expect(r, true);
+        expect(pedida!.method, 'POST');
+        expect(
+          pedida!.headers['content-type'],
+          startsWith('multipart/form-data'),
+        );
+        expect(pedida!.headers['authorization'], 'Bearer t');
+        final cuerpo = latin1.decode(pedida!.bodyBytes);
+        expect(cuerpo, contains('name="vehiculoId"'));
+        expect(cuerpo, contains('name="imagen"'));
+        expect(cuerpo, contains('content-type: image/jpeg'));
+      },
+    );
+
     test('pega la ruta a la direccion configurada', () async {
       Uri? pedida;
       final cliente = _clienteQueResponde((req) {

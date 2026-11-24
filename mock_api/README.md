@@ -154,6 +154,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | GET | `/toma-a-cuenta/estimaciones` | Las del cliente, la más reciente primero, con `pagina` y `tamano` |
 | POST | `/asistente/preguntas` | Sin IA (V2-M24.03): si la pregunta toca un tema del manual (aceite, llantas, testigos, frenos…) responde con una cita de ejemplo a la página 12; si no, `encontrado: false` sin fuentes · 400 sin pregunta · 404 vehículo ajeno |
 | POST | `/asistente/consultas/{id}/calificacion` | V2-M24.07: 204 con `{"util": true}` o `false` (no se guarda) · 400 sin `util` |
+| POST | `/asistente/testigos` | V2-M24.05 (multipart `vehiculoId`, `imagen`): siempre «Presión de aceite», roja, con cita a la pág. 12 · 400 sin imagen · 404 vehículo ajeno |
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
