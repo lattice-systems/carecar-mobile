@@ -51,6 +51,19 @@ Que el cliente sepa en todo momento qué le están haciendo a su auto, cuánto f
 | V2-M04.06 | Como cliente quiero saber cuándo mi auto está listo | Push + tarjeta "Listo" con total y horario de entrega | ✅ | V2-M04.03 |
 | V2-M04.07 | Como cliente quiero que la orden cerrada pase a mi historial con su ticket | Al cerrar, aparece en historial (M02) con ticket | ✅ | V2-M04.06 |
 
+## Avance
+
+**Lote D (V2-M04.01, V2-M04.02, V2-M04.04 y V2-M04.05) · En revisión.** Backend en `agencia-360-backend` (diseño en `plan/historias-backend.md`, contrato v2 2.8.0). App en `lib/modulos/taller/`:
+
+- **Inicio (V2-M04.01):** `TarjetaOrdenEnCurso` dice que el auto está en el taller con la etapa, la entrega estimada, la barra de avance y cuántos trabajos esperan respuesta. Solo aparece con una orden sin entregar; si falla o la orden se entrega, no ocupa lugar. Al tocarla abre `/taller/:ordenId` y al volver se recarga. Va en Inicio v1 (`lib/pantallas/pantalla_inicio.dart`) en un PR aparte, porque esa pantalla no es de este módulo.
+- **Línea de tiempo (V2-M04.02):** `/taller/:ordenId` con la etapa actual, su avance, la entrega estimada y el asesor; la `LineaDeTiempo` del sistema con la hora de cada etapa recorrida y las que faltan (la actual respira y lleva la entrega estimada). Las etapas que el taller salta no aparecen. Un aviso lleva a los trabajos por aprobar.
+- **Inspección (V2-M04.04):** `/taller/:ordenId/inspeccion` con un `Semaforo` por punto, sus fotos en `GaleriaFotos` (zoom al tocar) y sus videos, que se abren en el reproductor del teléfono; al final, las fotos y videos de la orden. Las URL vencen a los 15 minutos: jalar para recargar las renueva.
+- **Adicionales (V2-M04.05):** `/taller/:ordenId/adicionales` con la cotización de cada trabajo (mano de obra, refacciones y total), aprobar o rechazar uno por uno con la firma en pantalla y los totales (orden, aprobados, por aprobar y estimado) que devuelve el backend. La firma usa `LienzoFirmaProvisional` (`presentacion/provisional/`): el sistema solo tiene `Firma` de lectura (V2-T02.12); falta la historia del componente para capturarla.
+- **Datos:** `RepositorioTallerApi` con el cliente del núcleo (sin caché) y `RepositorioTallerFake` con la orden de ejemplo; `mock_api` sirve la orden 41 de `cliente1` con fotos de prueba.
+- **Pruebas:** `test/modulos/taller/` (dominio y lectura del contrato, repositorio, las tres pantallas, la tarjeta y las rutas), `test/pantallas/inicio_taller_test.dart` y `test/contrato/contrato_taller_test.dart`.
+
+Mientras el ERP siga congelado, el taller abre la orden, la pasa de etapa, registra la inspección y propone adicionales con las rutas `/api/v1/taller/ordenes/...` del backend (rol `SERVICIO`).
+
 ## Fuera de alcance / notas
 
 - Captura de etapas y evidencias la hace el taller desde el ERP (congelado) → **dependencia externa**: mientras tanto, endpoints internos y datos de ejemplo en backend.

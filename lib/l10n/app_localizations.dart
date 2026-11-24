@@ -3159,6 +3159,414 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No me sirvió'**
   String get asistenteNoMeSirvio;
+
+  /// Tarjeta de Inicio cuando hay una orden abierta (V2-M04.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu {vehiculo} está en el taller'**
+  String tallerTarjetaTitulo(String vehiculo);
+
+  /// Etapa actual y entrega estimada en la tarjeta de Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{etapa} · entrega {hora}'**
+  String tallerTarjetaEtapaYEntrega(String etapa, String hora);
+
+  /// Insignia de la tarjeta de Inicio con los trabajos adicionales pendientes.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{1 trabajo por aprobar} other{{cantidad} trabajos por aprobar}}'**
+  String tallerTarjetaPendientes(int cantidad);
+
+  /// Lector de pantalla de la barra de avance de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance de {avance} %'**
+  String tallerTarjetaAvance(int avance);
+
+  /// Pista del lector de pantalla al tocar la tarjeta de la orden en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el avance de tu orden'**
+  String get tallerTarjetaAbrir;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibido'**
+  String get tallerEtapaRecibido;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Diagnóstico'**
+  String get tallerEtapaDiagnostico;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando aprobación'**
+  String get tallerEtapaEsperandoAprobacion;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'En reparación'**
+  String get tallerEtapaEnReparacion;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Control de calidad'**
+  String get tallerEtapaControlDeCalidad;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Lavado'**
+  String get tallerEtapaLavado;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo para entrega'**
+  String get tallerEtapaListoParaEntrega;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregado'**
+  String get tallerEtapaEntregado;
+
+  /// Título de la pantalla de la orden en el taller (V2-M04.02). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu orden'**
+  String get tallerOrdenTitulo;
+
+  /// Subtítulo de la fila con la etapa actual de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Etapa actual'**
+  String get tallerOrdenEtapaActual;
+
+  /// Subtítulo de la fila con la hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada'**
+  String get tallerOrdenEntregaEstimada;
+
+  /// La orden todavía no tiene hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún sin estimar'**
+  String get tallerOrdenSinEntrega;
+
+  /// Subtítulo de la fila con el nombre del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor'**
+  String get tallerOrdenAsesor;
+
+  /// Encabezado de la línea de tiempo de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Línea de tiempo'**
+  String get tallerOrdenLineaDeTiempo;
+
+  /// Nota bajo la etapa actual con la hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada {hora}'**
+  String tallerOrdenNotaEntrega(String hora);
+
+  /// Nota del taller y hora estimada de entrega bajo la etapa actual.
+  ///
+  /// In es, this message translates to:
+  /// **'{nota} · entrega estimada {hora}'**
+  String tallerOrdenNotaYEntrega(String nota, String hora);
+
+  /// Fila que abre la inspección de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección multipunto'**
+  String get tallerOrdenInspeccion;
+
+  /// Resumen de la inspección en la pantalla de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos, plural, =0{Aún sin puntos revisados} =1{1 punto revisado} other{{puntos} puntos revisados}}'**
+  String tallerOrdenInspeccionResumen(int puntos);
+
+  /// Fila que abre los trabajos adicionales de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Trabajos adicionales'**
+  String get tallerOrdenAdicionales;
+
+  /// Resumen de los trabajos adicionales pendientes.
+  ///
+  /// In es, this message translates to:
+  /// **'{pendientes, plural, =0{Nada por aprobar} =1{1 por aprobar} other{{pendientes} por aprobar}}'**
+  String tallerOrdenAdicionalesResumen(int pendientes);
+
+  /// Título del aviso cuando hay trabajos adicionales por aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{El taller te propone 1 trabajo adicional} other{El taller te propone {cantidad} trabajos adicionales}}'**
+  String tallerOrdenAvisoPendientes(int cantidad);
+
+  /// Mensaje del aviso de trabajos adicionales por aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'Revísalos y apruébalos o recházalos con tu firma.'**
+  String get tallerOrdenAvisoMensaje;
+
+  /// Botón que abre los trabajos adicionales desde el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar'**
+  String get tallerOrdenRevisar;
+
+  /// Botón de reintento en las pantallas del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get tallerReintentar;
+
+  /// Título de la pantalla de inspección multipunto (V2-M04.04). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get tallerInspeccionTitulo;
+
+  /// Título del estado vacío de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún sin inspección'**
+  String get tallerInspeccionVacia;
+
+  /// Mensaje del estado vacío de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'El técnico todavía no registra los puntos revisados.'**
+  String get tallerInspeccionVaciaMensaje;
+
+  /// Descripción de una foto de la inspección para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de {punto}'**
+  String tallerInspeccionFotoDe(String punto);
+
+  /// Encabezado de las fotos y videos que no son de un punto.
+  ///
+  /// In es, this message translates to:
+  /// **'De la orden'**
+  String get tallerInspeccionDeLaOrden;
+
+  /// Descripción de una foto general de la orden para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de la orden'**
+  String get tallerInspeccionFotoDeLaOrden;
+
+  /// Fila que abre un video del técnico en el reproductor del teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver video {numero}'**
+  String tallerInspeccionVerVideo(int numero);
+
+  /// Subtítulo de la fila de un video.
+  ///
+  /// In es, this message translates to:
+  /// **'Se abre en el reproductor del teléfono'**
+  String get tallerInspeccionVideoAbre;
+
+  /// Aviso cuando el teléfono no puede abrir un video de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el video. Jala hacia abajo para recargar e intenta de nuevo.'**
+  String get tallerInspeccionVideoError;
+
+  /// Título de la pantalla de trabajos adicionales (V2-M04.05). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales'**
+  String get tallerAdicionalesTitulo;
+
+  /// Título del estado vacío de los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin trabajos adicionales'**
+  String get tallerAdicionalesVacio;
+
+  /// Mensaje del estado vacío de los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Si el taller encuentra algo más, aquí te lo propone para que decidas.'**
+  String get tallerAdicionalesVacioMensaje;
+
+  /// Renglón de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get tallerAdicionalManoDeObra;
+
+  /// Renglón de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get tallerAdicionalRefacciones;
+
+  /// Total de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get tallerAdicionalTotal;
+
+  /// Estado de un trabajo adicional sin respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Por aprobar'**
+  String get tallerAdicionalPendiente;
+
+  /// Estado de un trabajo adicional aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get tallerAdicionalAprobado;
+
+  /// Estado de un trabajo adicional rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazado'**
+  String get tallerAdicionalRechazado;
+
+  /// Cuándo respondió el cliente un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Respondido el {fecha}'**
+  String tallerAdicionalRespondidoEl(String fecha);
+
+  /// Botón para aprobar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar'**
+  String get tallerAdicionalAprobar;
+
+  /// Botón para rechazar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar'**
+  String get tallerAdicionalRechazar;
+
+  /// Encabezado de los totales en los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Totales'**
+  String get tallerTotales;
+
+  /// Total de la orden sin adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de la orden'**
+  String get tallerTotalOrden;
+
+  /// Suma de los trabajos adicionales aprobados.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales aprobados'**
+  String get tallerTotalAprobados;
+
+  /// Suma de los trabajos adicionales sin respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales por aprobar'**
+  String get tallerTotalPendientes;
+
+  /// Total de la orden más los adicionales aprobados.
+  ///
+  /// In es, this message translates to:
+  /// **'Total estimado'**
+  String get tallerTotalEstimado;
+
+  /// Título de la hoja de firma al aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma para aprobar'**
+  String get tallerFirmaAprobarTitulo;
+
+  /// Título de la hoja de firma al rechazar.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma para rechazar'**
+  String get tallerFirmaRechazarTitulo;
+
+  /// Instrucción de la hoja de firma.
+  ///
+  /// In es, this message translates to:
+  /// **'{concepto} por {total}. Firma con el dedo dentro del recuadro: tu firma queda guardada con tu respuesta.'**
+  String tallerFirmaInstruccion(String concepto, String total);
+
+  /// Lector de pantalla del recuadro de firma.
+  ///
+  /// In es, this message translates to:
+  /// **'Área para firmar con el dedo'**
+  String get tallerFirmaArea;
+
+  /// Botón que borra la firma dibujada.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar firma'**
+  String get tallerFirmaBorrar;
+
+  /// Botón que confirma la aprobación.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar con mi firma'**
+  String get tallerFirmaConfirmarAprobar;
+
+  /// Botón que confirma el rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar con mi firma'**
+  String get tallerFirmaConfirmarRechazar;
+
+  /// Aviso después de aprobar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobaste «{concepto}». El total estimado ya lo incluye.'**
+  String tallerRespuestaAprobada(String concepto);
+
+  /// Aviso después de rechazar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazaste «{concepto}».'**
+  String tallerRespuestaRechazada(String concepto);
+
+  /// Aviso cuando el trabajo adicional ya tenía respuesta (409).
+  ///
+  /// In es, this message translates to:
+  /// **'Ese trabajo ya tenía respuesta. Recarga para ver su estado.'**
+  String get tallerRespuestaYaRespondida;
+
+  /// Aviso cuando la orden ya no acepta respuestas (409).
+  ///
+  /// In es, this message translates to:
+  /// **'La orden ya está terminada. Habla con tu asesor.'**
+  String get tallerRespuestaOrdenCerrada;
+
+  /// Aviso cuando no hay red al responder.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Tu respuesta no se envió.'**
+  String get tallerRespuestaSinConexion;
+
+  /// Aviso cuando falla la respuesta por otro motivo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar tu respuesta. Intenta de nuevo.'**
+  String get tallerRespuestaError;
 }
 
 class _AppLocalizationsDelegate

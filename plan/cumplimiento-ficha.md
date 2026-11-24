@@ -49,9 +49,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | ⬜ | Ver M04 |
-| Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | ⬜ | Ver M04 |
-| Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | ⬜ | Ver M04 |
+| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | 🟡 backend con `etapa_orden` y `orden_servicio.cita_id`, `asesor_id` y `entrega_estimada` (`TallerAppIntegrationTest`); app con la tarjeta de Inicio y la línea de tiempo con la hora de cada etapa y la entrega estimada (`test/modulos/taller/`); falta que se actualice sola (V2-M04.03) y demostrar en celular | V2-M04.01, V2-M04.02, V2-M04.03 |
+| Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | 🟡 backend con `punto_inspeccion` y `evidencia_orden` (fotos y videos en `archivos`, URL firmada) (`TallerAppIntegrationTest`); app con semáforo, fotos con zoom y video en el reproductor del teléfono (`test/modulos/taller/`); falta demostrar en celular | V2-M04.04 |
+| Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | 🟡 backend con `trabajo_adicional` y su auditoría (quién, cuándo y firma) (`TallerAppIntegrationTest`); app aprueba o rechaza uno por uno con firma en pantalla y recalcula el total (`test/modulos/taller/`); la firma usa un lienzo provisional; falta demostrar en celular | V2-M04.05 |
 
 ### 5. Mantenimiento inteligente — plan [M05](modulos/M05-mantenimiento-inteligente.md)
 

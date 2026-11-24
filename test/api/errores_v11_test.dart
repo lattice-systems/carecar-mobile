@@ -98,6 +98,8 @@ void main() {
         'SOLICITUD_ABIERTA',
         'FUERA_DE_COBERTURA',
         'DIRECCION_EN_USO',
+        'ORDEN_CERRADA',
+        'ADICIONAL_YA_RESPONDIDO',
       };
 
       final queLaAppMapea = CodigoProblema.values
