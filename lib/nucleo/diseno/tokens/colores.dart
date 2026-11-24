@@ -100,7 +100,7 @@ class PaletaColores {
     fondo: const Color(0xFF0A0B0E),
     superficie: const Color(0xFF14161B),
     superficieElevada: const Color(0xFF1C1F26),
-    superficieHundida: const Color(0xFF07080A),
+    superficieHundida: const Color(0xFF1A1D23),
     borde: const Color(0xFF262A33),
     contornoControl: const Color(0xFF6B7280),
     texto: const Color(0xFFF3F4F6),

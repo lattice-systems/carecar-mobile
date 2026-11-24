@@ -28,7 +28,7 @@ Tokens semánticos; ningún componente usa hexadecimales directos. Valores inici
 | `fondo` | `#F6F7F9` | `#0A0B0E` | Lienzo de la app |
 | `superficie` | `#FFFFFF` | `#14161B` | Tarjetas, hojas |
 | `superficieElevada` | `#FFFFFF` | `#1C1F26` | Menús, diálogos |
-| `superficieHundida` | `#EEF0F3` | `#07080A` | Campos, zonas secundarias |
+| `superficieHundida` | `#EEF0F3` | `#1A1D23` | Campos, zonas secundarias. En oscuro es un poco más clara que el fondo: si fuera más oscura, campos, burbujas e interruptores apagados desaparecen |
 | `borde` | `#E3E6EB` | `#262A33` | Divisores, contornos sutiles |
 | `contornoControl` | `#7C8391` | `#6B7280` | Contorno de campos, casillas, interruptores y chips (3 a 1 contra la superficie) |
 | `texto` | `#0B0D12` | `#F3F4F6` | Texto principal |
