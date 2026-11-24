@@ -854,7 +854,60 @@ servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
 // Una sola abierta por cliente: otra responde 409 SOLICITUD_ABIERTA.
 const TIPOS_ASISTENCIA = ['llanta', 'bateria', 'choque', 'sin_gasolina', 'otro'];
 const solicitudesAsistencia = new Map(); // clienteId -> solicitud abierta
+const historialAsistencia = new Map(); // id -> { clienteId, solicitud } (tambien las cerradas)
 let ultimoIdAsistencia = 0;
+
+// V2-M11.04 · Eventos en vivo (SSE). `GET /eventos` deja la conexion abierta y
+// manda `event: <nombre>` + `data: <json>`; el servidor real hace lo mismo con
+// el token de la app. Solo llegan los eventos del cliente que escucha.
+const clientesEventos = new Set(); // { res, clienteId }
+const LATIDO_MS = 25 * 1000;
+const VIDA_CANAL_MS = 30 * 60 * 1000;
+
+function emitirEvento(clienteId, nombre, datos) {
+  for (const c of clientesEventos) {
+    if (c.clienteId !== clienteId) continue;
+    c.res.write(`event: ${nombre}\ndata: ${JSON.stringify(datos)}\n\n`);
+    if (typeof c.res.flush === 'function') c.res.flush();
+  }
+}
+
+servidor.get(`${BASE}/eventos`, (req, res) => {
+  res.status(200).set({
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+  });
+  res.flushHeaders();
+  res.write(': conectado\n\n');
+  const cliente = { res, clienteId: req.sesion.clienteId };
+  clientesEventos.add(cliente);
+  const latido = setInterval(() => {
+    res.write(': latido\n\n');
+    if (typeof res.flush === 'function') res.flush();
+  }, LATIDO_MS);
+  // Como el servidor real: a los 30 min se cierra para que la app reconecte
+  // con un token vigente.
+  const vida = setTimeout(() => res.end(), VIDA_CANAL_MS);
+  req.on('close', () => {
+    clearInterval(latido);
+    clearTimeout(vida);
+    clientesEventos.delete(cliente);
+  });
+});
+
+// Mueve una solicitud a otro estado y avisa. Atendida o cancelada la cierran:
+// se descartan lat y lng (la ubicacion deja de compartirse).
+function cambiarEstadoSolicitud(registro, estado) {
+  const { clienteId, solicitud } = registro;
+  solicitud.estado = estado;
+  if (estado === 'atendida' || estado === 'cancelada') {
+    solicitud.lat = null;
+    solicitud.lng = null;
+    solicitudesAsistencia.delete(clienteId);
+  }
+  emitirEvento(clienteId, 'asistencia.estado', { solicitudId: solicitud.id, estado });
+}
 
 servidor.post(`${BASE}/asistencia`, (req, res) => {
   const { vehiculoId, tipo, lat, lng, comentario } = req.body || {};
@@ -886,7 +939,15 @@ servidor.post(`${BASE}/asistencia`, (req, res) => {
     creadaEn: new Date().toISOString(),
   };
   solicitudesAsistencia.set(req.sesion.clienteId, solicitud);
+  historialAsistencia.set(solicitud.id, { clienteId: req.sesion.clienteId, solicitud });
   res.status(201).jsonp(solicitud);
+});
+
+// V2-M11.04 · estado de una solicitud. Una ajena responde 404 como inexistente.
+servidor.get(`${BASE}/asistencia/:id`, (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  if (!registro || registro.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
+  res.jsonp(registro.solicitud);
 });
 
 servidor.get(`${BASE}/asistencia`, (req, res) => {
