@@ -3514,6 +3514,352 @@ abstract class AppLocalizations {
   /// **'Manual, página {pagina}, abrir'**
   String asistenteFuenteLector(int pagina);
 
+  /// Encabezado de la línea de tiempo de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado de tu solicitud'**
+  String get asistenciaSeguimientoEncabezado;
+
+  /// Primer paso de la solicitud de ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibida'**
+  String get asistenciaEstadoRecibida;
+
+  /// La ayuda va hacia el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'En camino'**
+  String get asistenciaEstadoEnCamino;
+
+  /// La ayuda ya llegó y se atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get asistenciaEstadoAtendida;
+
+  /// La solicitud se canceló.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelada'**
+  String get asistenciaEstadoCancelada;
+
+  /// Nota del paso Recibida.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia ya tiene tu solicitud.'**
+  String get asistenciaEstadoNotaRecibida;
+
+  /// Nota del paso En camino.
+  ///
+  /// In es, this message translates to:
+  /// **'Hay ayuda en camino hacia ti.'**
+  String get asistenciaEstadoNotaEnCamino;
+
+  /// Nota del paso Atendida.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu solicitud ya fue atendida.'**
+  String get asistenciaEstadoNotaAtendida;
+
+  /// Nota del paso Cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud se cerró.'**
+  String get asistenciaEstadoNotaCancelada;
+
+  /// Estado actual que anuncia el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado: {estado}'**
+  String asistenciaEstadoActual(String estado);
+
+  /// Botón para consultar de nuevo el estado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar estado'**
+  String get asistenciaSeguimientoActualizar;
+
+  /// Botón mientras consulta el estado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizando…'**
+  String get asistenciaSeguimientoActualizando;
+
+  /// Aviso cuando falla la consulta del estado.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos actualizar el estado. Revisa tu conexión e inténtalo de nuevo.'**
+  String get asistenciaSeguimientoFallo;
+
+  /// Aviso al quedar atendida o cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud ya está cerrada: tu ubicación dejó de compartirse.'**
+  String get asistenciaSeguimientoUbicacionCerrada;
+
+  /// Título de la pantalla de seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguimiento del traslado'**
+  String get recoleccionSeguimientoTitulo;
+
+  /// Título del traslado de recoger.
+  ///
+  /// In es, this message translates to:
+  /// **'Recogemos tu auto'**
+  String get recoleccionSeguimientoRecoger;
+
+  /// Título del traslado de entregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregamos tu auto'**
+  String get recoleccionSeguimientoEntregar;
+
+  /// Día y franja del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String recoleccionSeguimientoVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  );
+
+  /// Fila que abre el seguimiento desde la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir el traslado'**
+  String get recoleccionSeguimientoAbrir;
+
+  /// Encabezado de la línea de tiempo del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get recoleccionSeguimientoLineaEncabezado;
+
+  /// Traslado agendado.
+  ///
+  /// In es, this message translates to:
+  /// **'Programado'**
+  String get recoleccionEstadoProgramado;
+
+  /// El chofer va al domicilio.
+  ///
+  /// In es, this message translates to:
+  /// **'Chofer en camino'**
+  String get recoleccionEstadoEnCamino;
+
+  /// El chofer ya tiene el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto recogido'**
+  String get recoleccionEstadoRecogido;
+
+  /// El auto está en el taller.
+  ///
+  /// In es, this message translates to:
+  /// **'En el taller'**
+  String get recoleccionEstadoEnTaller;
+
+  /// El chofer lleva el auto de vuelta.
+  ///
+  /// In es, this message translates to:
+  /// **'De regreso a tu domicilio'**
+  String get recoleccionEstadoDeRegreso;
+
+  /// El auto ya se entregó.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto entregado'**
+  String get recoleccionEstadoEntregado;
+
+  /// El traslado se canceló.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelado'**
+  String get recoleccionEstadoCancelado;
+
+  /// Nota del paso en camino.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue su ubicación en el mapa.'**
+  String get recoleccionEstadoNotaEnCamino;
+
+  /// Nota del paso de regreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue su ubicación en el mapa.'**
+  String get recoleccionEstadoNotaDeRegreso;
+
+  /// Encabezado del mapa del chofer.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde va el chofer'**
+  String get recoleccionSeguimientoMapaEncabezado;
+
+  /// Descripción del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con la ubicación del chofer: latitud {latitud}, longitud {longitud}.'**
+  String recoleccionSeguimientoMapaDescripcion(String latitud, String longitud);
+
+  /// Hora de la última ubicación del chofer.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación actualizada a las {hora}'**
+  String recoleccionSeguimientoActualizadaEn(String hora);
+
+  /// Botón que abre el checklist del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver checklist del auto'**
+  String get recoleccionSeguimientoVerChecklist;
+
+  /// Botón para volver a consultar el traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar'**
+  String get recoleccionSeguimientoActualizar;
+
+  /// Etiqueta del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el seguimiento del traslado'**
+  String get recoleccionSeguimientoCargando;
+
+  /// Título cuando el traslado no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este traslado'**
+  String get recoleccionSeguimientoNoEncontradoTitulo;
+
+  /// Mensaje cuando el traslado no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no exista. Vuelve a tus citas y ábrelo de nuevo.'**
+  String get recoleccionSeguimientoNoEncontradoMensaje;
+
+  /// Aviso cuando falla recargar con datos ya visibles.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos actualizar. Mostramos lo último que sabemos.'**
+  String get recoleccionSeguimientoFalloAlActualizar;
+
+  /// Título de la pantalla del checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist del auto'**
+  String get recoleccionChecklistTitulo;
+
+  /// Etiqueta del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje'**
+  String get recoleccionChecklistKm;
+
+  /// Kilometraje con unidad.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String recoleccionChecklistKmValor(int km);
+
+  /// Etiqueta del nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina'**
+  String get recoleccionChecklistGasolina;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Vacío'**
+  String get recoleccionGasolinaVacio;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Un cuarto'**
+  String get recoleccionGasolinaUnCuarto;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Medio tanque'**
+  String get recoleccionGasolinaMedio;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tres cuartos'**
+  String get recoleccionGasolinaTresCuartos;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Lleno'**
+  String get recoleccionGasolinaLleno;
+
+  /// Nivel de gasolina para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina: {nivel}'**
+  String recoleccionChecklistGasolinaLector(String nivel);
+
+  /// Etiqueta de las notas.
+  ///
+  /// In es, this message translates to:
+  /// **'Notas del chofer'**
+  String get recoleccionChecklistNotas;
+
+  /// Encabezado de la galería.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos del auto'**
+  String get recoleccionChecklistFotos;
+
+  /// Descripción de cada foto para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} del estado del auto'**
+  String recoleccionChecklistFotoDescripcion(int numero, int total);
+
+  /// Galería vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Este checklist no trae fotos.'**
+  String get recoleccionChecklistSinFotos;
+
+  /// Quien firma el checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma de conformidad'**
+  String get recoleccionChecklistFirmante;
+
+  /// Fecha del checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado el {fecha}'**
+  String recoleccionChecklistRegistrado(DateTime fecha);
+
+  /// Título cuando no hay checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay checklist'**
+  String get recoleccionChecklistVacioTitulo;
+
+  /// Mensaje cuando no hay checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer lo registra al recoger y al entregar tu auto. Cuando lo haga, lo verás aquí.'**
+  String get recoleccionChecklistVacioMensaje;
+
+  /// Etiqueta del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el checklist del auto'**
+  String get recoleccionChecklistCargando;
+
   /// Título de la bitácora del conductor.
   ///
   /// In es, this message translates to:
