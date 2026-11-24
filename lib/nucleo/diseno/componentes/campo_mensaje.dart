@@ -7,7 +7,8 @@ import '../tokens/tokens_pista.dart';
 /// Campo para escribir un mensaje de chat (V2-T02.15), compartido por el
 /// asistente (M24) y la mensajería con el asesor (M07).
 ///
-/// Crece con el texto hasta cinco líneas y después se desplaza por dentro.
+/// Forma de píldora (V2-T02.16) con [Radios.bordeCampoChat]. Crece con el
+/// texto hasta cinco líneas y después se desplaza por dentro.
 /// Enviar queda deshabilitado mientras no haya texto (sin contar espacios);
 /// al enviar entrega el texto recortado y se vacía. Adjuntar solo aparece si
 /// hay [alAdjuntar]. Los dos botones miden al menos 48 y tienen nombre para
@@ -124,11 +125,11 @@ class _CampoMensajeState extends State<CampoMensaje> {
                 vertical: Espaciado.e3,
               ),
               border: const OutlineInputBorder(
-                borderRadius: Radios.bordeTarjeta,
+                borderRadius: Radios.bordeCampoChat,
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: Radios.bordeTarjeta,
+                borderRadius: Radios.bordeCampoChat,
                 borderSide: BorderSide(color: c.acento, width: 2),
               ),
             ),
