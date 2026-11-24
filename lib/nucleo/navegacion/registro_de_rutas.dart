@@ -7,6 +7,7 @@ import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/galeria/galeria.dart';
+import '../../modulos/historial/historial.dart';
 import '../../modulos/vehiculos/vehiculos.dart';
 import '../migracion/interruptor_modulos.dart';
 import 'rutas_del_nucleo.dart';
@@ -37,6 +38,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   // La galeria del sistema de diseno es solo para desarrollo (V2-T02.06).
   // Cuando exista el flavor `desarrollo` (V2-T01.04) se condiciona a el.
   if (kDebugMode) ...rutasGaleria,
+  // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
+  ...rutasHistorial,
   ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
 ];
 

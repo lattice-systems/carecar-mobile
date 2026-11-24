@@ -554,6 +554,81 @@
   "@deslizarMensajeConfirmacion": {
     "description": "Mensaje por defecto del diálogo de confirmación."
   },
+  "historialCargandoMas": "Loading more services",
+  "historialCerradaEl": "Closed on {fecha}",
+  "@historialCerradaEl": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "historialErrorMas": "We couldn't load more services.",
+  "historialEstatusEnProceso": "In progress",
+  "historialEstatusEntregado": "Delivered",
+  "historialEstatusOtro": "No status",
+  "historialEstatusRecibido": "Received",
+  "historialEstatusTerminado": "Finished",
+  "historialEstatusYCierre": "{estatus} · {cierre}",
+  "@historialEstatusYCierre": {
+    "placeholders": {
+      "estatus": {
+        "type": "String"
+      },
+      "cierre": {
+        "type": "String"
+      }
+    }
+  },
+  "historialFiltroEtiqueta": "Filter by year",
+  "historialFiltroTodos": "All",
+  "historialReintentar": "Try again",
+  "historialSinCierre": "Open order",
+  "historialTicketCantidadPorPrecio": "{cantidad} × {precio}",
+  "@historialTicketCantidadPorPrecio": {
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      },
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketCierre": "Closing date",
+  "historialTicketCompartir": "Share PDF",
+  "historialTicketCompartirError": "We couldn't download the PDF. Please try again.",
+  "historialTicketFecha": "Service date",
+  "historialTicketIva": "VAT",
+  "historialTicketKilometraje": "Mileage",
+  "historialTicketKilometrajeValor": "{km} km",
+  "@historialTicketKilometrajeValor": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketManoDeObra": "Labor",
+  "historialTicketNoCuadra": "The amounts on this ticket don't add up. Ask the dealership to review it.",
+  "historialTicketPreciosConIva": "Prices include VAT.",
+  "historialTicketRefacciones": "Parts",
+  "historialTicketSinRenglones": "No items",
+  "historialTicketSubtotal": "Subtotal before VAT",
+  "historialTicketTitulo": "Ticket",
+  "historialTicketTotal": "Total",
+  "historialTicketTotales": "Totals",
+  "historialTitulo": "History",
+  "historialVacioAnioMensaje": "There are no services in {anio}.",
+  "@historialVacioAnioMensaje": {
+    "placeholders": {
+      "anio": {
+        "type": "String"
+      }
+    }
+  },
+  "historialVacioMensaje": "When the shop closes an order for this car, it will show up here.",
+  "historialVacioTitulo": "No services yet",
   "idiomaEtiqueta": "Language",
   "@idiomaEtiqueta": {
     "description": "Etiqueta del selector de idioma de la app."

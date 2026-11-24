@@ -873,6 +873,121 @@ class AppLocalizationsEs extends AppLocalizations {
   String get deslizarMensajeConfirmacion => 'Confirma que quieres continuar.';
 
   @override
+  String get historialCargandoMas => 'Cargando más servicios';
+
+  @override
+  String historialCerradaEl(String fecha) {
+    return 'Cerrada el $fecha';
+  }
+
+  @override
+  String get historialErrorMas => 'No pudimos cargar más servicios.';
+
+  @override
+  String get historialEstatusEnProceso => 'En proceso';
+
+  @override
+  String get historialEstatusEntregado => 'Entregado';
+
+  @override
+  String get historialEstatusOtro => 'Sin estatus';
+
+  @override
+  String get historialEstatusRecibido => 'Recibido';
+
+  @override
+  String get historialEstatusTerminado => 'Terminado';
+
+  @override
+  String historialEstatusYCierre(String estatus, String cierre) {
+    return '$estatus · $cierre';
+  }
+
+  @override
+  String get historialFiltroEtiqueta => 'Filtrar por año';
+
+  @override
+  String get historialFiltroTodos => 'Todos';
+
+  @override
+  String get historialReintentar => 'Reintentar';
+
+  @override
+  String get historialSinCierre => 'Orden abierta';
+
+  @override
+  String historialTicketCantidadPorPrecio(int cantidad, String precio) {
+    return '$cantidad × $precio';
+  }
+
+  @override
+  String get historialTicketCierre => 'Fecha de cierre';
+
+  @override
+  String get historialTicketCompartir => 'Compartir PDF';
+
+  @override
+  String get historialTicketCompartirError =>
+      'No pudimos descargar el PDF. Intenta de nuevo.';
+
+  @override
+  String get historialTicketFecha => 'Fecha del servicio';
+
+  @override
+  String get historialTicketIva => 'IVA';
+
+  @override
+  String get historialTicketKilometraje => 'Kilometraje';
+
+  @override
+  String historialTicketKilometrajeValor(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get historialTicketManoDeObra => 'Mano de obra';
+
+  @override
+  String get historialTicketNoCuadra =>
+      'Los importes de este ticket no cuadran. Pide a la agencia que lo revise.';
+
+  @override
+  String get historialTicketPreciosConIva => 'Los precios incluyen IVA.';
+
+  @override
+  String get historialTicketRefacciones => 'Refacciones';
+
+  @override
+  String get historialTicketSinRenglones => 'Sin renglones';
+
+  @override
+  String get historialTicketSubtotal => 'Subtotal sin IVA';
+
+  @override
+  String get historialTicketTitulo => 'Ticket';
+
+  @override
+  String get historialTicketTotal => 'Total';
+
+  @override
+  String get historialTicketTotales => 'Totales';
+
+  @override
+  String get historialTitulo => 'Historial';
+
+  @override
+  String historialVacioAnioMensaje(String anio) {
+    return 'No hay servicios en $anio.';
+  }
+
+  @override
+  String get historialVacioMensaje =>
+      'Cuando el taller cierre una orden de este auto, aparecerá aquí.';
+
+  @override
+  String get historialVacioTitulo => 'Aún no hay servicios';
+
+  @override
   String get idiomaEtiqueta => 'Idioma';
 
   @override
