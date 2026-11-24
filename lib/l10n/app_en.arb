@@ -1,5 +1,38 @@
 {
   "@@locale": "en",
+  "accesoBloqueoMinutos": "Wait {minutos} min before trying again.",
+  "@accesoBloqueoMinutos": {
+    "placeholders": {
+      "minutos": {
+        "type": "int"
+      }
+    }
+  },
+  "accesoBloqueoSegundos": "Wait {segundos} s before trying again.",
+  "@accesoBloqueoSegundos": {
+    "placeholders": {
+      "segundos": {
+        "type": "int"
+      }
+    }
+  },
+  "accesoBloqueoTitulo": "Too many attempts",
+  "accesoContrasenaEtiqueta": "Password",
+  "accesoContrasenaVacia": "Enter your password.",
+  "accesoCorreoAyuda": "The one you gave the dealership",
+  "accesoCorreoEtiqueta": "Email",
+  "accesoCorreoInvalido": "Enter a valid email, like name@domain.com.",
+  "accesoCorreoVacio": "Enter your email.",
+  "accesoEntrando": "Signing in…",
+  "accesoEntrar": "Sign in",
+  "accesoFalloTitulo": "We couldn't sign you in",
+  "accesoMarca": "CareCar",
+  "accesoOlvide": "Forgot your password?",
+  "accesoServidorDespertandoMensaje": "The first time after a while it can take up to a minute.",
+  "accesoServidorDespertandoTitulo": "Waking up the server…",
+  "accesoSinConexionTitulo": "No connection",
+  "accesoSinRegistro": "The dealership gives you your access when you pick up your vehicle. If you don't have it, get in touch with them.",
+  "accesoSubtitulo": "Your access to the dealership",
   "asistenciaGuiaChoquePaso1": "Stop the car in a safe place, turn off the engine and switch on the hazard lights.",
   "asistenciaGuiaChoquePaso2": "Check for injured people. If there are any, call 911 right away and do not move anyone with neck or back pain.",
   "asistenciaGuiaChoquePaso3": "If you can, get out and stand behind a barrier, away from traffic. Set out the warning triangles.",

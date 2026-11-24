@@ -98,6 +98,120 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
+  /// Cuenta regresiva del bloqueo por intentos, cuando falta más de un minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {minutos} min para volver a intentar.'**
+  String accesoBloqueoMinutos(int minutos);
+
+  /// Cuenta regresiva del bloqueo por intentos en su último minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {segundos} s para volver a intentar.'**
+  String accesoBloqueoSegundos(int segundos);
+
+  /// Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos'**
+  String get accesoBloqueoTitulo;
+
+  /// Etiqueta del campo de contraseña en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña'**
+  String get accesoContrasenaEtiqueta;
+
+  /// Error bajo el campo cuando se intenta entrar sin contraseña.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu contraseña.'**
+  String get accesoContrasenaVacia;
+
+  /// Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'El que le diste a la agencia'**
+  String get accesoCorreoAyuda;
+
+  /// Etiqueta del campo de correo en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get accesoCorreoEtiqueta;
+
+  /// Error bajo el campo cuando el correo no tiene forma de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un correo válido, como nombre@dominio.com.'**
+  String get accesoCorreoInvalido;
+
+  /// Error bajo el campo cuando se intenta entrar sin correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu correo.'**
+  String get accesoCorreoVacio;
+
+  /// Texto del botón mientras el servidor responde al inicio de sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrando…'**
+  String get accesoEntrando;
+
+  /// Botón principal de la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar sesión'**
+  String get accesoEntrar;
+
+  /// Título del aviso cuando el acceso falla por credenciales u otro error.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos iniciar sesión'**
+  String get accesoFalloTitulo;
+
+  /// Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce.
+  ///
+  /// In es, this message translates to:
+  /// **'CareCar'**
+  String get accesoMarca;
+
+  /// Enlace a la recuperación de contraseña desde la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Olvidaste tu contraseña?'**
+  String get accesoOlvide;
+
+  /// Detalle del aviso cuando el servidor está despertando y la petición sigue en curso.
+  ///
+  /// In es, this message translates to:
+  /// **'La primera vez después de un rato puede tardar hasta un minuto.'**
+  String get accesoServidorDespertandoMensaje;
+
+  /// Título del aviso cuando el servidor tarda más de unos segundos en responder al acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Despertando el servidor…'**
+  String get accesoServidorDespertandoTitulo;
+
+  /// Título del aviso cuando no se pudo llegar al servidor al intentar entrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get accesoSinConexionTitulo;
+
+  /// Nota que explica por qué no hay registro: la cuenta la entrega la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.'**
+  String get accesoSinRegistro;
+
+  /// Frase bajo el nombre de la app en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu acceso a la agencia'**
+  String get accesoSubtitulo;
+
   /// No description provided for @asistenciaGuiaChoquePaso1.
   ///
   /// In es, this message translates to:
