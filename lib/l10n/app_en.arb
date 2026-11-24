@@ -1516,5 +1516,11 @@
   "asistenteSinManual": "Your car doesn't have a manual I can read yet. Ask your advisor at the dealership.",
   "asistenteLimite": "You've used today's questions. You can ask more tomorrow.",
   "asistenteFuente": "Manual, p. {pagina}",
-  "asistenteFuenteLector": "Manual, page {pagina}, open"
+  "asistenteFuenteLector": "Manual, page {pagina}, open",
+  "asistenteSugerenciasTitulo": "Try one of these",
+  "asistentePreguntaMantenimiento": "How often does it need service?",
+  "asistentePreguntaLlantas": "What tire pressure should I use?",
+  "asistentePreguntaTestigos": "What does a red light on the dashboard mean?",
+  "asistentePreguntaAceite": "How much oil does the engine take?",
+  "asistentePreguntaGasolina": "What fuel should I use?"
 }
