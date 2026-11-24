@@ -71,4 +71,57 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('con icono y descripcion propios dibuja al chofer', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          configuracionTeselasProvider.overrideWithValue(
+            const ConfiguracionTeselas(
+              urlPlantilla: 'http://localhost:1/{z}/{x}/{y}.png',
+              atribucion: '© Mapas de prueba',
+            ),
+          ),
+        ],
+        child: conTemaPista(
+          const MapaProvisional(
+            pin: Coordenada(19.43, -99.13),
+            icono: Icons.local_shipping,
+            descripcion: 'El chofer va aquí',
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    expect(find.byIcon(Icons.local_shipping), findsOneWidget);
+    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.bySemanticsLabel(RegExp('El chofer va aquí')), findsOneWidget);
+  });
+
+  testWidgets('sin alElegir el mapa es de solo lectura', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          configuracionTeselasProvider.overrideWithValue(
+            const ConfiguracionTeselas(
+              urlPlantilla: 'http://localhost:1/{z}/{x}/{y}.png',
+              atribucion: '© Mapas de prueba',
+            ),
+          ),
+        ],
+        child: conTemaPista(
+          const MapaProvisional(pin: Coordenada(19.43, -99.13)),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tapAt(tester.getCenter(find.byType(MapaProvisional)));
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(tester.takeException(), isNull);
+  });
 }
