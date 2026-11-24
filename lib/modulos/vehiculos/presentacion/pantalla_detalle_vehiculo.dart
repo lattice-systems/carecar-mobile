@@ -21,6 +21,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../asistente/asistente.dart';
 import '../../citas/citas.dart';
 import '../../historial/historial.dart';
+import '../../mantenimiento/mantenimiento.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
@@ -162,6 +163,11 @@ class _DetalleState extends State<_Detalle> {
                     texto: textos.vehiculosAccesoHistorial,
                     icono: Icons.history,
                     ruta: rutaHistorialVehiculo(v.id),
+                  ),
+                  (
+                    texto: textos.mantenimientoAcceso,
+                    icono: Icons.build_circle_outlined,
+                    ruta: rutaMantenimientoVehiculo(v.id),
                   ),
                 ],
               ),
