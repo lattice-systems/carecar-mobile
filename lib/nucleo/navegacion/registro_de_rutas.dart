@@ -41,9 +41,9 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   if (kDebugMode) ...rutasGaleria,
   // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
   ...rutasHistorial,
-  ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
+  // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.
   ...rutasRecoleccion,
-  ...rutasVehiculos,
+  ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
 ];
 
 /// A que ruta v2 lleva cada tarjeta del menu v1 cuando su modulo esta en v2.
