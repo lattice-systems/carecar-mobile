@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/burbuja_mensaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_mensaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/tokens/colores.dart';
@@ -213,11 +214,11 @@ void main() {
 
     testWidgets('sin texto no deja enviar', (tester) async {
       await tester.pumpWidget(conTemaPista(CampoMensaje(alEnviar: (_) {})));
-      expect(tester.widget<IconButton>(enviar()).onPressed, isNull);
+      expect(tester.widget<BotonCircular>(enviar()).alPresionar, isNull);
 
       await tester.enterText(find.byType(TextField), '   ');
       await tester.pump();
-      expect(tester.widget<IconButton>(enviar()).onPressed, isNull);
+      expect(tester.widget<BotonCircular>(enviar()).alPresionar, isNull);
     });
 
     testWidgets('envía el texto sin espacios de más y se vacía', (
@@ -277,7 +278,12 @@ void main() {
         conTemaPista(CampoMensaje(alEnviar: (_) {}, alAdjuntar: () {})),
       );
       for (final clave in ['campo-mensaje-enviar', 'campo-mensaje-adjuntar']) {
-        final tam = tester.getSize(find.byKey(ValueKey(clave)));
+        final tam = tester.getSize(
+          find.descendant(
+            of: find.byKey(ValueKey(clave)),
+            matching: find.byKey(const ValueKey('boton-circular-fondo')),
+          ),
+        );
         expect(tam.width, greaterThanOrEqualTo(48));
         expect(tam.height, greaterThanOrEqualTo(48));
       }
@@ -291,7 +297,7 @@ void main() {
         conTemaPista(CampoMensaje(alEnviar: (_) {}, habilitado: false)),
       );
       expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
-      expect(tester.widget<IconButton>(enviar()).onPressed, isNull);
+      expect(tester.widget<BotonCircular>(enviar()).alPresionar, isNull);
     });
 
     testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
