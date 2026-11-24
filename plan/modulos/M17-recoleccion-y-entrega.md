@@ -46,6 +46,8 @@ Que el cliente no tenga que llevar su auto: la agencia lo recoge y lo devuelve. 
 | V2-M17.02 | Como cliente quiero pedir que recojan mi auto al agendar para no tener que llevarlo | En la confirmación de la cita, opción "Recoger en mi domicilio" con una dirección guardada · costo y franja visibles antes de confirmar · se crean los traslados de recoger y entregar ligados a la cita · fuera de cobertura la opción no aparece | ✅ | V2-M02.08, V2-M17.01 |
 | V2-M17.03 | Como cliente quiero seguir al chofer para saber cuándo llega | Estados `en_camino`, `recogido`, `en_taller`, `de_regreso`, `entregado` en una línea de tiempo con push · el mapa con el chofer solo aparece en `en_camino` y `de_regreso` | ✅ | V2-M17.02, V2-M06.02, V2-T02.09, V2-T02.13 |
 | V2-M17.04 | Como cliente quiero ver el checklist con fotos del estado de mi auto para comprobar cómo lo recogieron y cómo me lo entregaron | Al recoger y al entregar: fotos, km, gasolina y firma · el cliente compara ambas entregas · fotos servidas con URL firmada de vida corta | ✅ | V2-M17.03, V2-T05.09, V2-T02.12 |
+| V2-M17.05 | Como cliente quiero que al cancelar o reprogramar mi cita también se cancele o se mueva la recolección para no recibir al chofer en una fecha que ya no sirve | Cancelar la cita cancela sus traslados programados · reprogramar los mueve a la nueva fecha con sus ventanas · en la misma transacción que la cita · traslados ya en curso no se tocan | ✅ | V2-M17.02 |
+| V2-M17.06 | Como cliente quiero entrar a «Mis direcciones» desde mi perfil para administrarlas sin tener que agendar | Fila «Mis direcciones» en el perfil o ajustes que abre `/recoleccion/direcciones` · respeta el interruptor v1/v2 | | V2-M17.01 |
 
 ## Fuera de alcance / notas
 
