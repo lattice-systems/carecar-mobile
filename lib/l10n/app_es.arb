@@ -531,6 +531,270 @@
   },
   "citasVacioMensaje": "Por ahora el taller no tiene lugares en los próximos días. Vuelve a revisar pronto.",
   "citasVacioTitulo": "Sin lugares disponibles",
+  "mantenimientoAcceso": "Mantenimiento",
+  "@mantenimientoAcceso": {
+    "description": "Fila del detalle del vehículo que abre el plan."
+  },
+  "mantenimientoAgendar": "Agendar este servicio",
+  "@mantenimientoAgendar": {
+    "description": "Abre agendar cita con el servicio."
+  },
+  "mantenimientoCargando": "Cargando tu plan de mantenimiento",
+  "@mantenimientoCargando": {
+    "description": "Anuncio mientras carga el plan."
+  },
+  "mantenimientoCargandoServicio": "Cargando el servicio",
+  "@mantenimientoCargandoServicio": {
+    "description": "Anuncio mientras carga un servicio."
+  },
+  "mantenimientoCerrar": "Cerrar",
+  "@mantenimientoCerrar": {
+    "description": "Cerrar una pantalla de mantenimiento."
+  },
+  "mantenimientoDescripcionPortada": "Ilustración de una llave de servicio",
+  "@mantenimientoDescripcionPortada": {
+    "description": "Descripción de la portada del plan para el lector de pantalla."
+  },
+  "mantenimientoEncabezadoConceptos": "Qué incluye",
+  "@mantenimientoEncabezadoConceptos": {
+    "description": "Encabezado de los conceptos del servicio."
+  },
+  "mantenimientoEncabezadoKm": "Tu kilometraje",
+  "@mantenimientoEncabezadoKm": {
+    "description": "Encabezado del grupo de kilometraje."
+  },
+  "mantenimientoEncabezadoPlan": "Plan de servicios",
+  "@mantenimientoEncabezadoPlan": {
+    "description": "Encabezado de la lista de servicios."
+  },
+  "mantenimientoEstadoHecho": "Hecho",
+  "@mantenimientoEstadoHecho": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoPendiente": "Pendiente",
+  "@mantenimientoEstadoPendiente": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoProximo": "Próximo",
+  "@mantenimientoEstadoProximo": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoVencido": "Vencido",
+  "@mantenimientoEstadoVencido": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoFaltan": "Faltan {km} km · hacia el {fecha}",
+  "@mantenimientoFaltan": {
+    "description": "Cuánto falta y la fecha estimada.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "1,200"
+      },
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoHechoEl": "Hecho el {fecha}",
+  "@mantenimientoHechoEl": {
+    "description": "Cuándo se hizo el servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKilometros": "{km} km",
+  "@mantenimientoKilometros": {
+    "description": "Kilometraje.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmAyuda": "Tu último registro: {km} km",
+  "@mantenimientoKmAyuda": {
+    "description": "Ayuda con el último kilometraje.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmAyudaSinRegistro": "Escribe el número que marca el tablero de tu auto.",
+  "@mantenimientoKmAyudaSinRegistro": {
+    "description": "Ayuda sin lectura previa."
+  },
+  "mantenimientoKmCampo": "Kilometraje actual",
+  "@mantenimientoKmCampo": {
+    "description": "Etiqueta del campo."
+  },
+  "mantenimientoKmDelCliente": "Registrado por ti el {fecha}",
+  "@mantenimientoKmDelCliente": {
+    "description": "Fuente cliente del kilometraje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKmDelTaller": "Registrado por el taller el {fecha}",
+  "@mantenimientoKmDelTaller": {
+    "description": "Fuente taller del kilometraje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKmErrorFormato": "Usa solo números enteros mayores que cero.",
+  "@mantenimientoKmErrorFormato": {
+    "description": "Validación."
+  },
+  "mantenimientoKmErrorMenor": "No puede ser menor a {km} km, el último que tenemos.",
+  "@mantenimientoKmErrorMenor": {
+    "description": "Validación contra la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmErrorRed": "No pudimos guardar tu kilometraje. Revisa tu internet y vuelve a intentarlo.",
+  "@mantenimientoKmErrorRed": {
+    "description": "Fallo al guardar."
+  },
+  "mantenimientoKmErrorServidor": "Ese kilometraje es menor al último registrado. Revísalo en tu tablero.",
+  "@mantenimientoKmErrorServidor": {
+    "description": "Respuesta 422 KM_INVALIDO."
+  },
+  "mantenimientoKmErrorVacio": "Escribe tu kilometraje.",
+  "@mantenimientoKmErrorVacio": {
+    "description": "Validación."
+  },
+  "mantenimientoKmGuardado": "Kilometraje guardado. Actualizamos tu próximo servicio.",
+  "@mantenimientoKmGuardado": {
+    "description": "Aviso de éxito."
+  },
+  "mantenimientoKmGuardando": "Guardando kilometraje",
+  "@mantenimientoKmGuardando": {
+    "description": "Anuncio al guardar."
+  },
+  "mantenimientoKmGuardar": "Guardar kilometraje",
+  "@mantenimientoKmGuardar": {
+    "description": "Botón de guardar."
+  },
+  "mantenimientoKmNota": "El kilometraje que registra el taller es el oficial: tu registro no lo reemplaza.",
+  "@mantenimientoKmNota": {
+    "description": "Nota sobre el km oficial."
+  },
+  "mantenimientoKmSinDato": "Sin registrar",
+  "@mantenimientoKmSinDato": {
+    "description": "Aún no hay kilometraje."
+  },
+  "mantenimientoKmSinFuente": "Aún no hay una lectura de tu auto",
+  "@mantenimientoKmSinFuente": {
+    "description": "Sin fuente del kilometraje."
+  },
+  "mantenimientoKmTitulo": "Registrar kilometraje",
+  "@mantenimientoKmTitulo": {
+    "description": "Título del formulario de kilometraje."
+  },
+  "mantenimientoMotivoKm": "Te toca por kilometraje",
+  "@mantenimientoMotivoKm": {
+    "description": "Motivo del próximo servicio: kilómetros."
+  },
+  "mantenimientoMotivoTiempo": "Te toca por tiempo transcurrido",
+  "@mantenimientoMotivoTiempo": {
+    "description": "Motivo del próximo servicio: meses."
+  },
+  "mantenimientoPrecioEtiqueta": "Precio estimado",
+  "@mantenimientoPrecioEtiqueta": {
+    "description": "Etiqueta del precio."
+  },
+  "mantenimientoPrecioLeyenda": "Estimación no vinculante",
+  "@mantenimientoPrecioLeyenda": {
+    "description": "Leyenda obligatoria junto a todo precio estimado."
+  },
+  "mantenimientoPromedio": "Promedio: {km} km al día",
+  "@mantenimientoPromedio": {
+    "description": "Promedio de kilómetros diarios.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "38"
+      }
+    }
+  },
+  "mantenimientoRegistrarKm": "Registrar km",
+  "@mantenimientoRegistrarKm": {
+    "description": "Abre el registro de kilometraje."
+  },
+  "mantenimientoResumenServicio": "{km} km · {meses} meses",
+  "@mantenimientoResumenServicio": {
+    "description": "Resumen de un servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "10,000"
+      },
+      "meses": {
+        "type": "String",
+        "example": "12"
+      }
+    }
+  },
+  "mantenimientoServicioNoEncontradoMensaje": "Puede que el plan haya cambiado. Vuelve al plan e inténtalo de nuevo.",
+  "@mantenimientoServicioNoEncontradoMensaje": {
+    "description": "Servicio ausente del plan."
+  },
+  "mantenimientoServicioNoEncontradoTitulo": "No encontramos este servicio",
+  "@mantenimientoServicioNoEncontradoTitulo": {
+    "description": "Servicio ausente del plan."
+  },
+  "mantenimientoSinConceptos": "Este servicio no trae conceptos detallados.",
+  "@mantenimientoSinConceptos": {
+    "description": "Servicio sin conceptos."
+  },
+  "mantenimientoSinProximoMensaje": "Registra tu kilometraje para calcular cuándo te toca el siguiente servicio.",
+  "@mantenimientoSinProximoMensaje": {
+    "description": "Invita a registrar el kilometraje."
+  },
+  "mantenimientoSinProximoTitulo": "Sin próximo servicio estimado",
+  "@mantenimientoSinProximoTitulo": {
+    "description": "Héroe cuando no se puede estimar el próximo servicio."
+  },
+  "mantenimientoTitulo": "Mantenimiento",
+  "@mantenimientoTitulo": {
+    "description": "Título de la pantalla del plan de mantenimiento."
+  },
+  "mantenimientoVacioMensaje": "Todavía no tenemos el plan de servicios de este modelo. Pregunta a tu asesor en la agencia.",
+  "@mantenimientoVacioMensaje": {
+    "description": "Mensaje cuando el modelo no tiene plan."
+  },
+  "mantenimientoVacioTitulo": "Aún no hay plan para tu auto",
+  "@mantenimientoVacioTitulo": {
+    "description": "Título cuando el modelo no tiene plan."
+  },
+  "mantenimientoYaToca": "Ya te toca · pasó de los {km} km",
+  "@mantenimientoYaToca": {
+    "description": "El servicio ya llegó o pasó.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "10,000"
+      }
+    }
+  },
   "precioDesde": "Desde {precio}",
   "@precioDesde": {
     "description": "Precio de entrada de un modelo.",
