@@ -85,11 +85,21 @@ class Boton extends StatelessWidget {
   }
 
   Widget _contenido(BuildContext context, TokensPista tokens) {
+    final c = tokens.colores;
+    // El indicador toma el color del texto: con el del tema (acento) se pierde
+    // sobre el boton principal, que tambien es acento.
+    final colorIndicador = switch (variante) {
+      VarianteBoton.principal || VarianteBoton.peligro => c.sobreAcento,
+      VarianteBoton.secundario || VarianteBoton.terciario => c.acento,
+    };
     final Widget? adorno = cargando
-        ? const SizedBox(
+        ? SizedBox(
             width: _tamanoIndicador,
             height: _tamanoIndicador,
-            child: CircularProgressIndicator(strokeWidth: 2),
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: colorIndicador,
+            ),
           )
         : (icono == null ? null : Icon(icono, size: _tamanoIndicador));
 
