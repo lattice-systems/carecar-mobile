@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **231 historias** (una descartada) + 4 de H0.
+Total: **227 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -282,14 +282,10 @@ Total: **231 historias** (una descartada) + 4 de H0.
 
 Se llena con las historias de endurecimiento que salgan de M20.07, M22.08, M23.06 y T04.06, más los hallazgos de las pruebas en celular de cada hito.
 
-Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-masvs-l1.md`](../docs/seguridad/revision-masvs-l1.md)). Son propuestas: las prioriza el equipo.
+Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-masvs-l1.md`](../docs/seguridad/revision-masvs-l1.md)). Las otras cuatro propuestas (escaneo semanal, Keychain de iOS, enlaces universales y ofuscación) se quitaron para esta entrega y quedan como riesgos aceptados en esa revisión: las prioriza el equipo.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M22.10 | Decir en el aviso de privacidad qué proveedores externos reciben datos | Daniel | B | V2-M22.01 | Hecha | #137, backend#100 |
-| V2-M22.11 | Escaneo periódico de dependencias (`pubspec.lock`, Gradle y Pods) | Daniel |  | V2-M22.08 | Borrador | |
-| V2-M22.12 | Keychain de iOS solo de este dispositivo, sin cerrar sesiones | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.13 | Cifrar la caché de la API en el teléfono | Daniel |  | V2-M22.08 | Hecha | #138 |
-| V2-M22.14 | Enlaces universales con el dominio real | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.15 | Aviso propio cuando falla un pin de certificado | Daniel |  | V2-M22.04 | Hecha | #139 |
-| V2-M22.16 | Ofuscar el código de release y subir símbolos | Daniel |  | V2-M23.01 | Borrador | |
