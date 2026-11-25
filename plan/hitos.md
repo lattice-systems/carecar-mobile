@@ -13,7 +13,7 @@ Los hitos ordenan prioridades, no bloquean a nadie: si una persona no tiene hist
 | H4 | Cliente conectado | M07, M12, M13, M15, M27 | O4, O7 |
 | H5 | Comercio | M08, M14, M16, M17, M26 | O5 |
 | H6 | Inteligencia y extras | M11, M18, M19, M24, M25 | O4, O6 |
-| H7 | Lista para tiendas | Endurecimiento de todos + M20, M21, M22, M23 completos | O8, O9 |
+| H7 | Lista para entregar | Endurecimiento de todos + M20, M21, M22, M23 completos | O8, O9 |
 
 ---
 
@@ -97,9 +97,9 @@ Criterios de salida:
 - [ ] Asistencia en camino (SOS) con ubicación.
 - [ ] Widgets de inicio y pase de cita en Google Wallet / Apple Wallet.
 
-## H7 · Lista para tiendas
+## H7 · Lista para entregar
 
-**Propósito:** publicar en Google Play y App Store con calidad de producto comercial.
+**Propósito:** entregar la app con calidad de producto comercial. **Decisión (Daniel):** no se publica en Google Play ni en App Store; Android se instala con el APK firmado de los Release y el iPhone con el IPA sin firmar y Sideloadly (firma de 7 días con Apple ID gratis).
 
 Criterios de salida:
 - [ ] `plan/cumplimiento-ficha.md` completa: las 58 funcionalidades de la ficha v2.1 en ✅ con prueba enlazada.
@@ -107,4 +107,4 @@ Criterios de salida:
 - [ ] Revisión OWASP MASVS L1 aprobada; derechos ARCO funcionando (exportar y borrar cuenta).
 - [ ] Métricas de producto (O1–O10) en un tablero de analítica.
 - [ ] Presupuestos de rendimiento cumplidos (arranque, memoria, tamaño de instalación).
-- [ ] Fichas de tienda, capturas, política de privacidad y builds firmados en pista interna de ambas tiendas.
+- [ ] APK firmado con la llave de producción en un Release `vX.Y.Z`, IPA sin firmar adjunto y guía de instalación vigente; política de privacidad dentro de la app.

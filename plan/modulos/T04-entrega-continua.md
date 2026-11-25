@@ -2,10 +2,18 @@
 
 | Campo | Valor |
 | --- | --- |
-| Hito | H1 (interna) → H7 (tiendas) |
+| Hito | H1 (interna) → H7 (entrega) |
 | Dueño | Daniel |
 | Revisa | Ricardo |
 | Estado | Listo para historias |
+
+## Decisión: sin tiendas
+
+Daniel decidió que la app **no se publica en Google Play ni en App Store**. La entrega es:
+- **Android:** APK firmado con la llave de producción en cada Release `vX.Y.Z` y el APK de pruebas en el pre-release `prueba-main` (V2-T04.02, V2-T04.03).
+- **iPhone:** IPA sin firmar adjunto al Release, que se instala con Sideloadly y un Apple ID gratis; la firma dura 7 días y hay que reinstalar ([guía](../../docs/guia-instalar-ios-sin-mac.md)).
+
+Por eso V2-T04.06 queda descartada y V2-T04.03 se cierra con el APK por merge y el IPA para sideload.
 
 ## Historias
 
@@ -16,7 +24,7 @@
 | V2-T04.03 | Como equipo queremos un APK/IPA de prueba por cada merge a `main` | Distribución interna (p. ej. Firebase App Distribution / TestFlight) para las 6 personas | | V2-T04.02 |
 | V2-T04.04 | Como equipo queremos el check `Autoría` requerido | Agregado a la protección de `main` · **Hecha con V2-H0.03**: `Sin co-autor de IA` es check requerido del ruleset de `main` | | — |
 | V2-T04.05 | Como equipo queremos notas de versión automáticas | Generadas de los commits convencionales entre etiquetas | | V2-T04.01 |
-| V2-T04.06 | Como equipo queremos publicar en pista interna de Google Play y App Store | Fichas, capturas, política de privacidad | | H6 |
+| V2-T04.06 | ~~Como equipo queremos publicar en pista interna de Google Play y App Store~~ **Descartada:** no se publica en tiendas | — | | H6 |
 
 ## Avance de V2-T04.01
 
