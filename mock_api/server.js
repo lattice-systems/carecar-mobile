@@ -10,6 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const zlib = require('zlib');
 const jsonServer = require('json-server');
 
 const PUERTO = Number(process.env.PORT) || 3000;
@@ -399,8 +400,9 @@ const comoVehiculo = (v) => ({
   color: v.color ?? null,
   placas: v.placas ?? null,
   kilometraje: v.kilometraje ?? null,
-  // Simulada hasta V2-T05.06: fecha de cierre de la orden que dejo el km.
-  kilometrajeActualizadoEn: v.kilometrajeActualizadoEn ?? null,
+  // La fecha del km NO viaja aqui: el contrato 2.11.0 la trae en el plan de
+  // mantenimiento (`kmActualizadoEn` y `kmFuente`), no en el vehiculo. El seed
+  // la guarda como `kilometrajeActualizadoEn` solo para armar ese plan.
 });
 
 // Devuelve el vehiculo solo si es del cliente de la sesion.
@@ -631,7 +633,33 @@ const comoCita = (c) => ({
   horaFin: c.horaFin,
   estado: c.estado,
   ...(c.motivo ? { motivo: c.motivo } : {}),
+  // V2-M17.03 · GET /citas trae la recoleccion de cada cita (o nada si no la
+  // lleva), con el estado vigente de sus traslados, igual que POST /citas.
+  ...recoleccionDeCita(c),
 });
+
+// `{ recoleccion: RecoleccionCita }` con los traslados de la cita tal como estan
+// ahora, o `{}` si la cita no tiene recoleccion. `traslados` solo existe cuando
+// el seed de recoleccion ya corrio.
+function recoleccionDeCita(cita) {
+  const traslados = (db.get('traslados').value() || []).filter((t) => t.citaId === cita.id);
+  if (traslados.length === 0) return {};
+  return {
+    recoleccion: {
+      direccionId: traslados[0].direccionId,
+      costoTotal: Math.round(traslados.reduce((suma, t) => suma + t.costo, 0) * 100) / 100,
+      traslados: traslados.map((t) => ({
+        id: t.id,
+        tipo: t.tipo,
+        estado: t.estado,
+        costo: t.costo,
+        fecha: t.fecha,
+        ventanaInicio: t.ventanaInicio,
+        ventanaFin: t.ventanaFin,
+      })),
+    },
+  };
+}
 
 servidor.get(`${BASE}/citas`, (req, res) => {
   const propias = db.get('citas').filter({ clienteId: req.sesion.clienteId }).value();
@@ -728,6 +756,7 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   }
 
   db.get('citas').find({ id: cita.id }).assign({ estado: 'CANCELADA' }).write();
+  cancelarTrasladosProgramados(cita);
   const franja = db.get('franjas').find({ id: cita.franjaId }).value();
   if (franja) {
     db.get('franjas')
@@ -853,7 +882,60 @@ servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
 // Una sola abierta por cliente: otra responde 409 SOLICITUD_ABIERTA.
 const TIPOS_ASISTENCIA = ['llanta', 'bateria', 'choque', 'sin_gasolina', 'otro'];
 const solicitudesAsistencia = new Map(); // clienteId -> solicitud abierta
+const historialAsistencia = new Map(); // id -> { clienteId, solicitud } (tambien las cerradas)
 let ultimoIdAsistencia = 0;
+
+// V2-M11.04 · Eventos en vivo (SSE). `GET /eventos` deja la conexion abierta y
+// manda `event: <nombre>` + `data: <json>`; el servidor real hace lo mismo con
+// el token de la app. Solo llegan los eventos del cliente que escucha.
+const clientesEventos = new Set(); // { res, clienteId }
+const LATIDO_MS = 25 * 1000;
+const VIDA_CANAL_MS = 30 * 60 * 1000;
+
+function emitirEvento(clienteId, nombre, datos) {
+  for (const c of clientesEventos) {
+    if (c.clienteId !== clienteId) continue;
+    c.res.write(`event: ${nombre}\ndata: ${JSON.stringify(datos)}\n\n`);
+    if (typeof c.res.flush === 'function') c.res.flush();
+  }
+}
+
+servidor.get(`${BASE}/eventos`, (req, res) => {
+  res.status(200).set({
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+  });
+  res.flushHeaders();
+  res.write(': conectado\n\n');
+  const cliente = { res, clienteId: req.sesion.clienteId };
+  clientesEventos.add(cliente);
+  const latido = setInterval(() => {
+    res.write(': latido\n\n');
+    if (typeof res.flush === 'function') res.flush();
+  }, LATIDO_MS);
+  // Como el servidor real: a los 30 min se cierra para que la app reconecte
+  // con un token vigente.
+  const vida = setTimeout(() => res.end(), VIDA_CANAL_MS);
+  req.on('close', () => {
+    clearInterval(latido);
+    clearTimeout(vida);
+    clientesEventos.delete(cliente);
+  });
+});
+
+// Mueve una solicitud a otro estado y avisa. Atendida o cancelada la cierran:
+// se descartan lat y lng (la ubicacion deja de compartirse).
+function cambiarEstadoSolicitud(registro, estado) {
+  const { clienteId, solicitud } = registro;
+  solicitud.estado = estado;
+  if (estado === 'atendida' || estado === 'cancelada') {
+    solicitud.lat = null;
+    solicitud.lng = null;
+    solicitudesAsistencia.delete(clienteId);
+  }
+  emitirEvento(clienteId, 'asistencia.estado', { solicitudId: solicitud.id, estado });
+}
 
 servidor.post(`${BASE}/asistencia`, (req, res) => {
   const { vehiculoId, tipo, lat, lng, comentario } = req.body || {};
@@ -885,7 +967,15 @@ servidor.post(`${BASE}/asistencia`, (req, res) => {
     creadaEn: new Date().toISOString(),
   };
   solicitudesAsistencia.set(req.sesion.clienteId, solicitud);
+  historialAsistencia.set(solicitud.id, { clienteId: req.sesion.clienteId, solicitud });
   res.status(201).jsonp(solicitud);
+});
+
+// V2-M11.04 · estado de una solicitud. Una ajena responde 404 como inexistente.
+servidor.get(`${BASE}/asistencia/:id`, (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  if (!registro || registro.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
+  res.jsonp(registro.solicitud);
 });
 
 servidor.get(`${BASE}/asistencia`, (req, res) => {
@@ -923,14 +1013,14 @@ servidor.get(`${BASE}/citas/:citaId/pase`, (req, res) => {
 // ── recoleccion ──
 // V2-M17.01 y V2-M17.02 · direcciones guardadas, cotizacion y traslados.
 // El backend real decide la cobertura con la geometria de la agencia; aqui es
-// un circulo de 40 km alrededor del centro de la Ciudad de Mexico, suficiente
-// para probar el 422 desde la app (un pin en Monterrey queda fuera).
+// un circulo de 15 km alrededor del centro de Leon, Guanajuato, suficiente
+// para probar el 422 desde la app (un pin en la Ciudad de Mexico queda fuera).
 db.defaults({ direcciones: [], traslados: [] }).write();
 
-const CENTRO_COBERTURA = { lat: 19.4326, lng: -99.1332 };
-const RADIO_COBERTURA_KM = 40;
+const CENTRO_COBERTURA = { lat: 21.125, lng: -101.686 };
+const RADIO_COBERTURA_KM = 15;
 const TARIFA_BASE = 80;
-const TARIFA_POR_KM = 12;
+const TARIFA_POR_KM = 8;
 const VENTANA_RECOGER = { inicio: '07:00', fin: '09:00' };
 const VENTANA_ENTREGAR = { inicio: '17:00', fin: '19:00' };
 
@@ -1083,6 +1173,89 @@ servidor.get(`${BASE}/recoleccion/cotizacion`, (req, res) => {
 
 // Crea los dos traslados de una cita (recoger y entregar) y arma la
 // `RecoleccionCita` que devuelve POST /citas.
+// V2-M17.03 y V2-M17.04 · seguimiento del traslado y checklist. Un traslado
+// ajeno (de la cita de otro cliente) responde 404 como inexistente. La ubicacion
+// del chofer solo viaja en en_camino y de_regreso, igual que el backend real.
+const ESTADOS_TRASLADO = [
+  'programado',
+  'en_camino',
+  'recogido',
+  'en_taller',
+  'de_regreso',
+  'entregado',
+  'cancelado',
+];
+const checklists = new Map(); // trasladoId -> checklist
+const NIVELES_GASOLINA = ['vacio', 'un_cuarto', 'medio', 'tres_cuartos', 'lleno'];
+
+function trasladoDelCliente(req, id) {
+  const t = db.get('traslados').find({ id: Number(id) }).value();
+  if (!t) return null;
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita && cita.clienteId === req.sesion.clienteId ? t : null;
+}
+
+const comoTraslado = (t) => ({
+  id: t.id,
+  citaId: t.citaId,
+  tipo: t.tipo,
+  estado: t.estado,
+  costo: t.costo,
+  fecha: t.fecha,
+  ventanaInicio: t.ventanaInicio,
+  ventanaFin: t.ventanaFin,
+  ...(['en_camino', 'de_regreso'].includes(t.estado) && t.ubicacionChofer
+    ? { ubicacionChofer: t.ubicacionChofer }
+    : {}),
+});
+
+function clienteDeTraslado(t) {
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita ? cita.clienteId : null;
+}
+
+// Cambia el estado, descarta la ubicacion si ya no corresponde y avisa por SSE.
+function cambiarEstadoTraslado(t, estado) {
+  const cambios = { estado };
+  if (!['en_camino', 'de_regreso'].includes(estado)) cambios.ubicacionChofer = null;
+  db.get('traslados').find({ id: t.id }).assign(cambios).write();
+  emitirEvento(clienteDeTraslado(t), 'traslado.estado', {
+    trasladoId: t.id,
+    citaId: t.citaId,
+    tipo: t.tipo,
+    estado,
+  });
+}
+
+// Cancelar una cita cancela sus traslados que aun no salen.
+function cancelarTrasladosProgramados(cita) {
+  db.get('traslados')
+    .filter({ citaId: cita.id, estado: 'programado' })
+    .value()
+    .forEach((t) => cambiarEstadoTraslado(t, 'cancelado'));
+}
+
+servidor.get(`${BASE}/traslados/:id`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  res.jsonp(comoTraslado(t));
+});
+
+servidor.get(`${BASE}/traslados/:id/checklist`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  const checklist = checklists.get(t.id);
+  if (!checklist) return noEncontrado(req, res);
+  // Las URLs firmadas del backend real duran 15 minutos; aqui la firma es un
+  // parametro de relleno que cambia en cada peticion.
+  const firma = `firma=${Date.now().toString(36)}`;
+  res.jsonp({
+    ...checklist,
+    fotos: checklist.fotos.map((f) => `${f}?${firma}`),
+    ...(checklist.firmaUrl ? { firmaUrl: `${checklist.firmaUrl}?${firma}` } : {}),
+  });
+});
+
 function crearTraslados(cita, direccion) {
   const costo = costoPorTraslado(direccion);
   const ids = db.get('traslados').value().map((t) => t.id);
@@ -1116,6 +1289,177 @@ function crearTraslados(cita, direccion) {
     })),
   };
 }
+
+// ── mantenimiento ──
+// V2-M05 · plan de mantenimiento por modelo, estado de cada servicio y
+// lecturas de kilometraje del cliente. El backend real cruza el plan con el
+// historial (orden_servicio); aqui el estado sale solo del km vigente:
+//   hecho   = el km vigente ya paso 1,000 km del servicio
+//   vencido = el km vigente ya llego al servicio y aun no esta hecho
+//   proximo = el primero que falta; pendiente = los demas.
+// El km oficial es el del taller (`vehiculo.kilometraje`): una lectura del
+// cliente nunca lo sobrescribe, solo se suma, y no puede ser menor a ninguna.
+// Vehiculos de 2014 o anteriores no tienen plan (200 con servicios vacios).
+db.defaults({ lecturasKm: [] }).write();
+
+const PASO_SERVICIO_KM = 5000;
+const SERVICIOS_DEL_PLAN = 8;
+const MARGEN_HECHO_KM = 1000;
+const PROMEDIO_KM_DIARIO_POR_OMISION = 35;
+const ANIO_MINIMO_CON_PLAN = 2015;
+
+function conceptosDelServicio(n) {
+  const conceptos = ['Cambio de aceite y filtro', 'Revisión de niveles'];
+  if (n % 2 === 0) conceptos.push('Revisión de frenos', 'Rotación de llantas');
+  if (n % 4 === 0) conceptos.push('Filtro de aire', 'Bujías');
+  return conceptos;
+}
+
+function serviciosDelPlan() {
+  return Array.from({ length: SERVICIOS_DEL_PLAN }, (_, i) => {
+    const n = i + 1;
+    const km = PASO_SERVICIO_KM * n;
+    return {
+      id: n,
+      nombre: `Servicio de ${km.toLocaleString('en-US')} km`,
+      km,
+      meses: 6 * n,
+      precioEstimado: 1200 + (n % 2 === 0 ? 650 : 0) + (n % 4 === 0 ? 900 : 0),
+      conceptos: conceptosDelServicio(n),
+    };
+  });
+}
+
+function sumarDias(fecha, dias) {
+  const d = new Date(fecha);
+  d.setDate(d.getDate() + dias);
+  return d.toISOString().slice(0, 10);
+}
+
+// Lecturas del cliente de un vehiculo, de la mas vieja a la mas nueva.
+function lecturasDelCliente(vehiculoId) {
+  return db
+    .get('lecturasKm')
+    .filter({ vehiculoId })
+    .sortBy('id')
+    .value();
+}
+
+function planDeMantenimiento(vehiculo) {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const lecturas = lecturasDelCliente(vehiculo.id);
+  const ultimaDelCliente = lecturas.length ? lecturas[lecturas.length - 1] : null;
+  const kmTaller = vehiculo.kilometraje ?? null;
+
+  let kmActual = kmTaller;
+  let kmFuente = kmTaller == null ? null : 'taller';
+  let kmActualizadoEn = kmTaller == null ? null : (vehiculo.kilometrajeActualizadoEn ?? hoy);
+  if (ultimaDelCliente && ultimaDelCliente.km >= (kmTaller ?? 0)) {
+    kmActual = ultimaDelCliente.km;
+    kmFuente = 'cliente';
+    kmActualizadoEn = ultimaDelCliente.registradaEn.slice(0, 10);
+  }
+
+  const base = {
+    vehiculoId: vehiculo.id,
+    kmActual,
+    kmActualizadoEn,
+    kmFuente,
+    promedioKmDiario: null,
+    servicios: [],
+    proximo: null,
+  };
+  if (vehiculo.anio < ANIO_MINIMO_CON_PLAN) return base;
+
+  // Promedio diario con las lecturas del cliente; sin historial suficiente se
+  // usa un valor por omision.
+  let promedio = kmActual == null ? null : PROMEDIO_KM_DIARIO_POR_OMISION;
+  if (lecturas.length >= 2) {
+    const primera = lecturas[0];
+    const ultima = lecturas[lecturas.length - 1];
+    const dias = Math.max(
+      1,
+      Math.round((new Date(ultima.registradaEn) - new Date(primera.registradaEn)) / 86400000)
+    );
+    promedio = Math.max(1, Math.round((ultima.km - primera.km) / dias));
+  }
+  base.promedioKmDiario = promedio;
+
+  let yaHayProximo = false;
+  base.servicios = serviciosDelPlan().map((s) => {
+    let estado = 'pendiente';
+    let hechoEn = null;
+    if (kmActual != null && s.km + MARGEN_HECHO_KM <= kmActual) {
+      estado = 'hecho';
+      hechoEn = sumarDias(hoy, -Math.round((kmActual - s.km) / (promedio || 1)));
+    } else if (kmActual != null && !yaHayProximo) {
+      estado = s.km <= kmActual ? 'vencido' : 'proximo';
+      yaHayProximo = true;
+    }
+    return { ...s, estado, hechoEn };
+  });
+
+  const siguiente = base.servicios.find((s) => s.estado === 'vencido' || s.estado === 'proximo');
+  if (siguiente && kmActual != null) {
+    const faltanKm = siguiente.km - kmActual;
+    const faltanDias = Math.max(0, Math.ceil(faltanKm / promedio));
+    base.proximo = {
+      servicioId: siguiente.id,
+      nombre: siguiente.nombre,
+      kmObjetivo: siguiente.km,
+      fechaEstimada: sumarDias(hoy, faltanDias),
+      faltanKm,
+      faltanDias,
+      motivo: 'km',
+    };
+  }
+  return base;
+}
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/mantenimiento`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  res.jsonp(planDeMantenimiento(vehiculo));
+});
+
+servidor.post(`${BASE}/vehiculos/:vehiculoId/lecturas-km`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+
+  const km = req.body ? req.body.km : undefined;
+  if (!Number.isInteger(km) || km <= 0) {
+    return problema(req, res, 400, 'km debe ser un entero mayor que cero', 'DATOS_INVALIDOS');
+  }
+
+  const lecturas = lecturasDelCliente(vehiculo.id);
+  const ultimoDelCliente = lecturas.length ? lecturas[lecturas.length - 1].km : 0;
+  const ultimoOficial = vehiculo.kilometraje ?? 0;
+  if (km < ultimoOficial || km < ultimoDelCliente) {
+    return problema(
+      req,
+      res,
+      422,
+      'El kilometraje es menor a la ultima lectura registrada',
+      'KM_INVALIDO'
+    );
+  }
+
+  const ids = db.get('lecturasKm').value().map((l) => l.id);
+  const lectura = {
+    id: ids.length ? Math.max(...ids) + 1 : 1,
+    vehiculoId: vehiculo.id,
+    km,
+    fuente: 'cliente',
+    registradaEn: new Date().toISOString(),
+  };
+  db.get('lecturasKm').push(lectura).write();
+  res.status(201).jsonp({
+    id: lectura.id,
+    km: lectura.km,
+    fuente: lectura.fuente,
+    registradaEn: lectura.registradaEn,
+  });
+});
 
 // ---------------------------------------------------------------------------
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
@@ -1255,6 +1599,30 @@ servidor.post(`${BASE}/asistente/preguntas`, (req, res) => {
   });
 });
 
+// V2-M24.05: sin IA ni multer; lee el multipart a mano solo para sacar
+// vehiculoId y responde siempre el mismo testigo rojo con cita a la pag. 12.
+servidor.post(`${BASE}/asistente/testigos`, (req, res) => {
+  const partes = [];
+  req.on('data', (parte) => partes.push(parte));
+  req.on('end', () => {
+    const cuerpo = Buffer.concat(partes).toString('latin1');
+    const id = /name="vehiculoId"\r\n\r\n(\d+)/.exec(cuerpo);
+    const conImagen = /name="imagen"/.test(cuerpo) && cuerpo.length > 200;
+    if (!id || !conImagen) {
+      return problema(req, res, 400, 'La foto debe ser una imagen JPEG o PNG de hasta 5 MB', 'DATOS_INVALIDOS');
+    }
+    if (!vehiculoDelCliente(req, Number(id[1]))) return noEncontrado(req, res);
+    res.json({
+      consultaId: Date.now(),
+      reconocido: true,
+      testigo: 'Presión de aceite',
+      gravedad: 'roja',
+      queHacer: 'Detente en un lugar seguro, apaga el motor y revisa el nivel de aceite. No sigas manejando si sigue encendida.',
+      fuentes: [{ manualId: 1, pagina: 12, titulo: 'Manual, pág. 12' }],
+    });
+  });
+});
+
 // V2-M24.07: la calificacion solo se acepta; el simulador no guarda consultas.
 servidor.post(`${BASE}/asistente/consultas/:consultaId/calificacion`, (req, res) => {
   const { util } = req.body || {};
@@ -1262,6 +1630,36 @@ servidor.post(`${BASE}/asistente/consultas/:consultaId/calificacion`, (req, res)
     return problema(req, res, 400, 'Indica si la respuesta te sirvió', 'DATOS_INVALIDOS');
   }
   res.status(204).end();
+});
+
+// V2-M24.09: misma respuesta que /asistente/preguntas, palabra por palabra.
+servidor.post(`${BASE}/asistente/preguntas/flujo`, (req, res) => {
+  const { vehiculoId, pregunta } = req.body || {};
+  if (typeof pregunta !== 'string' || !pregunta.trim() || pregunta.length > 500) {
+    return problema(req, res, 400, 'Escribe una pregunta de hasta 500 caracteres', 'DATOS_INVALIDOS');
+  }
+  if (!vehiculoDelCliente(req, vehiculoId)) return noEncontrado(req, res);
+  const encontrado = TEMAS_DEL_MANUAL.test(pregunta.toLowerCase());
+  const respuesta = encontrado
+    ? 'Respuesta de ejemplo de la API simulada: en el manual de tu auto viene en la página 12.'
+    : 'No encontré eso en el manual de tu auto. Puedes preguntarle a tu asesor en la agencia.';
+  res.writeHead(200, { 'content-type': 'text/event-stream', 'cache-control': 'no-cache' });
+  const palabras = respuesta.split(/(?<= )/);
+  let i = 0;
+  const enviar = () => {
+    if (i < palabras.length) {
+      res.write(`event:texto\ndata:${JSON.stringify({ texto: palabras[i++] })}\n\n`);
+      return setTimeout(enviar, 70);
+    }
+    res.write(`event:fin\ndata:${JSON.stringify({
+      consultaId: Date.now(),
+      respuesta,
+      encontrado,
+      fuentes: encontrado ? [{ manualId: 1, pagina: 12, titulo: 'Manual, pág. 12' }] : [],
+    })}\n\n`);
+    res.end();
+  };
+  enviar();
 });
 
 servidor.get(`${BASE}/toma-a-cuenta/estimaciones`, (req, res) => {
@@ -1343,9 +1741,396 @@ servidor.post(`${BASE}/toma-a-cuenta/estimaciones`, (req, res) => {
   res.status(201).jsonp(comoEstimacion(estimacion));
 });
 
+const ETAPAS_TALLER = [
+  'RECIBIDO',
+  'DIAGNOSTICO',
+  'ESPERANDO_APROBACION',
+  'EN_REPARACION',
+  'CONTROL_DE_CALIDAD',
+  'LAVADO',
+  'LISTO_PARA_ENTREGA',
+  'ENTREGADO',
+];
+
+function etapaActual(orden) {
+  return orden.etapas[orden.etapas.length - 1].etapa;
+}
+
+function avanceDe(etapa) {
+  return Math.round((ETAPAS_TALLER.indexOf(etapa) * 100) / (ETAPAS_TALLER.length - 1));
+}
+
+function estatusDe(etapa) {
+  if (etapa === 'RECIBIDO') return 'RECIBIDO';
+  if (etapa === 'LISTO_PARA_ENTREGA') return 'TERMINADO';
+  if (etapa === 'ENTREGADO') return 'ENTREGADO';
+  return 'EN_PROCESO';
+}
+
+function descripcionVehiculo(vehiculo) {
+  return [vehiculo.marca, vehiculo.tipo, vehiculo.anio].filter(Boolean).join(' ');
+}
+
+function sumaAdicionales(orden, estado) {
+  const total = orden.adicionales
+    .filter((a) => a.estado === estado)
+    .reduce((t, a) => t + a.total, 0);
+  return Math.round(total * 100) / 100;
+}
+
+function comoOrdenEnCurso(orden, vehiculo) {
+  const etapa = etapaActual(orden);
+  return {
+    id: orden.id,
+    vehiculoId: orden.vehiculoId,
+    vehiculo: descripcionVehiculo(vehiculo),
+    etapa,
+    estatus: estatusDe(etapa),
+    entregaEstimada: orden.entregaEstimada ?? null,
+    asesor: orden.asesor ?? null,
+    avance: avanceDe(etapa),
+    adicionalesPendientes: orden.adicionales.filter((a) => a.estado === 'PENDIENTE').length,
+  };
+}
+
+function comoOrdenEnVivo(orden, vehiculo) {
+  const aprobados = sumaAdicionales(orden, 'APROBADO');
+  return {
+    ...comoOrdenEnCurso(orden, vehiculo),
+    etapas: orden.etapas,
+    inspeccion: orden.inspeccion,
+    evidencias: orden.evidencias,
+    adicionales: orden.adicionales.map((a) => ({
+      id: a.id,
+      concepto: a.concepto,
+      manoDeObra: a.manoDeObra,
+      refacciones: a.refacciones,
+      total: a.total,
+      estado: a.estado,
+      respondidoEn: a.respondidoEn ?? null,
+    })),
+    totalOrden: orden.totalOrden,
+    totalAdicionalesAprobados: aprobados,
+    totalAdicionalesPendientes: sumaAdicionales(orden, 'PENDIENTE'),
+    totalEstimado: Math.round((orden.totalOrden + aprobados) * 100) / 100,
+  };
+}
+
+function ordenDelCliente(req, id) {
+  const orden = db.get('ordenesTaller').find({ id: Number(id) }).value();
+  if (!orden) return null;
+  const vehiculo = vehiculoDelCliente(req, orden.vehiculoId);
+  return vehiculo ? { orden, vehiculo } : null;
+}
+
+servidor.get(`${BASE}/ordenes/activas`, (req, res) => {
+  const propias = db
+    .get('ordenesTaller')
+    .value()
+    .map((orden) => ({ orden, vehiculo: vehiculoDelCliente(req, orden.vehiculoId) }))
+    .filter(({ orden, vehiculo }) => vehiculo && etapaActual(orden) !== 'ENTREGADO')
+    .sort((a, b) => b.orden.id - a.orden.id);
+  res.jsonp(propias.map(({ orden, vehiculo }) => comoOrdenEnCurso(orden, vehiculo)));
+});
+
+servidor.get(`${BASE}/ordenes/:ordenId`, (req, res) => {
+  const encontrada = ordenDelCliente(req, req.params.ordenId);
+  if (!encontrada) return noEncontrado(req, res);
+  res.jsonp(comoOrdenEnVivo(encontrada.orden, encontrada.vehiculo));
+});
+
+servidor.post(`${BASE}/ordenes/:ordenId/adicionales/:adicionalId/respuesta`, (req, res) => {
+  const encontrada = ordenDelCliente(req, req.params.ordenId);
+  if (!encontrada) return noEncontrado(req, res);
+  const { orden, vehiculo } = encontrada;
+  const adicional = orden.adicionales.find((a) => a.id === Number(req.params.adicionalId));
+  if (!adicional) return noEncontrado(req, res);
+
+  const { aprobado, firma } = req.body || {};
+  if (typeof aprobado !== 'boolean' || typeof firma !== 'string' || !firma.startsWith('iVBORw0KGgo')) {
+    return problema(req, res, 400, 'La firma debe ser una imagen PNG en Base64', 'DATOS_INVALIDOS');
+  }
+  if (adicional.estado !== 'PENDIENTE') {
+    return problema(req, res, 409, 'Ya respondiste este trabajo adicional', 'ADICIONAL_YA_RESPONDIDO');
+  }
+  if (['LISTO_PARA_ENTREGA', 'ENTREGADO'].includes(etapaActual(orden))) {
+    return problema(req, res, 409, 'La orden ya está terminada; habla con tu asesor', 'ORDEN_CERRADA');
+  }
+
+  adicional.estado = aprobado ? 'APROBADO' : 'RECHAZADO';
+  adicional.respondidoEn = new Date().toISOString().slice(0, 19);
+  db.get('ordenesTaller').find({ id: orden.id }).assign(orden).write();
+  res.jsonp(comoOrdenEnVivo(orden, vehiculo));
+});
+
+const TABLA_CRC = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+
+function crc32(buffer) {
+  let c = 0xffffffff;
+  for (const byte of buffer) c = TABLA_CRC[(c ^ byte) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+function bloquePng(tipo, datos) {
+  const largo = Buffer.alloc(4);
+  largo.writeUInt32BE(datos.length);
+  const cuerpo = Buffer.concat([Buffer.from(tipo, 'latin1'), datos]);
+  const crc = Buffer.alloc(4);
+  crc.writeUInt32BE(crc32(cuerpo));
+  return Buffer.concat([largo, cuerpo, crc]);
+}
+
+function fotoDePrueba(semilla) {
+  const ancho = 320;
+  const alto = 200;
+  const tonos = [
+    [11, 92, 173],
+    [190, 61, 52],
+    [24, 128, 94],
+  ];
+  const [r, g, b] = tonos[semilla % tonos.length];
+  const filas = [];
+  for (let y = 0; y < alto; y++) {
+    const fila = Buffer.alloc(1 + ancho * 3);
+    for (let x = 0; x < ancho; x++) {
+      const luz = ((x + y) >> 4) % 2 === 0 ? 1 : 0.8;
+      fila[1 + x * 3] = Math.round(r * luz);
+      fila[2 + x * 3] = Math.round(g * luz);
+      fila[3 + x * 3] = Math.round(b * luz);
+    }
+    filas.push(fila);
+  }
+  const cabecera = Buffer.alloc(13);
+  cabecera.writeUInt32BE(ancho, 0);
+  cabecera.writeUInt32BE(alto, 4);
+  cabecera[8] = 8;
+  cabecera[9] = 2;
+  return Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    bloquePng('IHDR', cabecera),
+    bloquePng('IDAT', zlib.deflateSync(Buffer.concat(filas))),
+    bloquePng('IEND', Buffer.alloc(0)),
+  ]);
+}
+
+servidor.get('/api/v1/archivos/evidencias/:id', (req, res) => {
+  res.set('Content-Type', 'image/png');
+  res.set('Cache-Control', 'no-store');
+  res.send(fotoDePrueba(Number(req.params.id) || 0));
+});
+
+// ── bitacora ──
+// V2-M18 · gastos del vehiculo (cargas de gasolina y otros). Las estadisticas
+// (km/l, $/km, gasto por mes) las calcula la app. Una carga de gasolina deberia
+// crear tambien una lectura de km de fuente cliente; el mock solo valida el km.
+db.defaults({ gastos: [] }).write();
+
+const TIPOS_GASTO = ['gasolina', 'estacionamiento', 'casetas', 'lavado', 'otro'];
+
+const comoGasto = (g) => ({
+  id: g.id,
+  vehiculoId: g.vehiculoId,
+  tipo: g.tipo,
+  monto: g.monto,
+  litros: g.litros ?? null,
+  km: g.km ?? null,
+  fecha: g.fecha,
+  descripcion: g.descripcion ?? null,
+});
+
+// El gasto solo si su vehiculo es del cliente de la sesion.
+function gastoDelCliente(req, id) {
+  const gasto = db.get('gastos').find({ id: Number(id) }).value();
+  return gasto && vehiculoDelCliente(req, gasto.vehiculoId) ? gasto : null;
+}
+
+// Valida NuevoGasto con las reglas del contrato; devuelve el gasto limpio o null.
+function validarGasto(cuerpo) {
+  const c = cuerpo || {};
+  const positivo = (v) => typeof v === 'number' && Number.isFinite(v) && v > 0;
+  if (!TIPOS_GASTO.includes(c.tipo) || !positivo(c.monto)) return null;
+  if (typeof c.fecha !== 'string' || !ES_FECHA.test(c.fecha)) return null;
+  if (c.fecha > new Date().toISOString().slice(0, 10)) return null;
+  const descripcion = typeof c.descripcion === 'string' ? c.descripcion.trim() : '';
+  if (descripcion.length > 200) return null;
+  if (c.tipo === 'otro' && descripcion.length === 0) return null;
+  const gasto = { tipo: c.tipo, monto: c.monto, fecha: c.fecha };
+  if (descripcion) gasto.descripcion = descripcion;
+  if (c.tipo === 'gasolina') {
+    if (!positivo(c.litros) || !Number.isInteger(c.km) || c.km < 0) return null;
+    gasto.litros = c.litros;
+    gasto.km = c.km;
+  }
+  return gasto;
+}
+
+// Ultima lectura de km conocida: la del taller o la de la ultima carga.
+function ultimaLecturaKm(vehiculo, ignorandoId) {
+  const delCliente = db
+    .get('gastos')
+    .filter((g) => g.vehiculoId === vehiculo.id && g.id !== ignorandoId && g.km != null)
+    .map('km')
+    .value();
+  return Math.max(vehiculo.kilometraje ?? 0, ...delCliente);
+}
+
+const kmInvalido = (req, res) =>
+  problema(req, res, 422, 'El km es menor a la ultima lectura del vehiculo', 'KM_INVALIDO');
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/gastos`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  const { mes } = req.query;
+  if (mes !== undefined && !/^\d{4}-(0[1-9]|1[0-2])$/.test(mes)) {
+    return problema(req, res, 400, 'mes debe ser AAAA-MM', 'DATOS_INVALIDOS');
+  }
+  const pagina = Math.max(0, parseInt(req.query.pagina ?? '0', 10) || 0);
+  const tamano = Math.min(100, Math.max(1, parseInt(req.query.tamano ?? '20', 10) || 20));
+  const todos = db
+    .get('gastos')
+    .filter((g) => g.vehiculoId === vehiculo.id && (!mes || g.fecha.startsWith(mes)))
+    .value()
+    .sort((a, b) => (a.fecha === b.fecha ? b.id - a.id : a.fecha < b.fecha ? 1 : -1));
+  res.jsonp({
+    contenido: todos.slice(pagina * tamano, (pagina + 1) * tamano).map(comoGasto),
+    pagina,
+    totalPaginas: Math.max(1, Math.ceil(todos.length / tamano)),
+  });
+});
+
+servidor.post(`${BASE}/vehiculos/:vehiculoId/gastos`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  const datos = validarGasto(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de gasto invalidos', 'DATOS_INVALIDOS');
+  if (datos.km !== undefined && datos.km < ultimaLecturaKm(vehiculo)) return kmInvalido(req, res);
+
+  const ids = db.get('gastos').value().map((g) => g.id);
+  const gasto = { id: ids.length ? Math.max(...ids) + 1 : 1, vehiculoId: vehiculo.id, ...datos };
+  db.get('gastos').push(gasto).write();
+  res.status(201).jsonp(comoGasto(gasto));
+});
+
+servidor.put(`${BASE}/gastos/:gastoId`, (req, res) => {
+  const existente = gastoDelCliente(req, req.params.gastoId);
+  if (!existente) return noEncontrado(req, res);
+  const datos = validarGasto(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de gasto invalidos', 'DATOS_INVALIDOS');
+  const vehiculo = vehiculoDelCliente(req, existente.vehiculoId);
+  if (datos.km !== undefined && datos.km < ultimaLecturaKm(vehiculo, existente.id)) {
+    return kmInvalido(req, res);
+  }
+  // PUT reemplaza el gasto: se quitan los campos que ya no vienen.
+  db.get('gastos')
+    .remove({ id: existente.id })
+    .write();
+  const gasto = { id: existente.id, vehiculoId: existente.vehiculoId, ...datos };
+  db.get('gastos').push(gasto).write();
+  res.jsonp(comoGasto(gasto));
+});
+
+servidor.delete(`${BASE}/gastos/:gastoId`, (req, res) => {
+  const existente = gastoDelCliente(req, req.params.gastoId);
+  if (!existente) return noEncontrado(req, res);
+  db.get('gastos').remove({ id: existente.id }).write();
+  res.status(204).end();
+});
+
 // ---------------------------------------------------------------------------
 // Cualquier otra ruta bajo la base no existe en el contrato
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Emisor de prueba (solo del mock; NO es parte del contrato)
+//
+// Simula lo que haria la agencia o el chofer para ver en la app los avances en
+// vivo (V2-M11.04, V2-M17.03 y V2-M17.04). No pide token: se usa desde curl.
+//
+//   curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+//   curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+// ---------------------------------------------------------------------------
+
+const sinContrato = (res, status, mensaje) => res.status(status).json({ error: mensaje });
+
+servidor.post('/__mock/asistencia/:id/estado', (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  const { estado } = req.body || {};
+  if (!registro) return sinContrato(res, 404, 'No existe la solicitud');
+  if (!['recibida', 'en_camino', 'atendida', 'cancelada'].includes(estado)) {
+    return sinContrato(res, 400, 'Estado invalido');
+  }
+  cambiarEstadoSolicitud(registro, estado);
+  res.json(registro.solicitud);
+});
+
+servidor.post('/__mock/traslados/:id/estado', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { estado } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!ESTADOS_TRASLADO.includes(estado)) return sinContrato(res, 400, 'Estado invalido');
+  cambiarEstadoTraslado(t, estado);
+  // Al recoger y al entregar el chofer deja su checklist.
+  if (estado === 'recogido' || estado === 'entregado') {
+    const base = `https://picsum.photos/seed/traslado${t.id}-${estado}`;
+    checklists.set(t.id, {
+      trasladoId: t.id,
+      km: 45200,
+      gasolina: 'medio',
+      notas: estado === 'recogido' ? 'Rayon leve en la salpicadera derecha.' : null,
+      fotos: [1, 2, 3].map((n) => `${base}-${n}/800/600`),
+      firmaUrl: `${base}-firma/400/200`,
+      registradoEn: new Date().toISOString(),
+    });
+  }
+  res.json(comoTraslado(db.get('traslados').find({ id: t.id }).value()));
+});
+
+servidor.post('/__mock/traslados/:id/ubicacion', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { lat, lng } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (typeof lat !== 'number' || typeof lng !== 'number') {
+    return sinContrato(res, 400, 'lat y lng son numeros');
+  }
+  const actualizadaEn = new Date().toISOString();
+  db.get('traslados').find({ id: t.id }).assign({ ubicacionChofer: { lat, lng, actualizadaEn } }).write();
+  // El chofer solo se comparte en en_camino y de_regreso.
+  if (['en_camino', 'de_regreso'].includes(t.estado)) {
+    emitirEvento(clienteDeTraslado(t), 'traslado.ubicacion', {
+      trasladoId: t.id,
+      lat,
+      lng,
+      actualizadaEn,
+    });
+  }
+  res.json({ trasladoId: t.id, lat, lng, actualizadaEn });
+});
+
+servidor.post('/__mock/traslados/:id/checklist', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { km, gasolina, notas } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!Number.isInteger(km) || !NIVELES_GASOLINA.includes(gasolina)) {
+    return sinContrato(res, 400, 'km entero y gasolina del contrato');
+  }
+  const base = `https://picsum.photos/seed/traslado${t.id}-manual`;
+  checklists.set(t.id, {
+    trasladoId: t.id,
+    km,
+    gasolina,
+    notas: notas ?? null,
+    fotos: [1, 2].map((n) => `${base}-${n}/800/600`),
+    firmaUrl: `${base}-firma/400/200`,
+    registradoEn: new Date().toISOString(),
+  });
+  res.status(201).json(checklists.get(t.id));
+});
 
 servidor.use(BASE, (req, res) => {
   problema(req, res, 404, 'Esa ruta no existe en el contrato');

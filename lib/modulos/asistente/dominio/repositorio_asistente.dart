@@ -8,6 +8,25 @@ abstract interface class RepositorioAsistente {
     required String pregunta,
   });
 
+  /// Pregunta y entrega la respuesta mientras se escribe (V2-M24.09): varios
+  /// [AvanceTexto] y al final un [AvanceFin].
+  ///
+  /// El flujo falla con un [FalloAsistente].
+  Stream<AvanceRespuesta> preguntarEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  });
+
+  /// Identifica el testigo del tablero en una foto (V2-M24.05). La foto solo
+  /// viaja; no se guarda en el telefono.
+  ///
+  /// Falla con un [FalloAsistente].
+  Future<TestigoDelTablero> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  });
+
   /// Guarda si la respuesta [consultaId] le sirvio (V2-M24.07).
   ///
   /// Falla con un [FalloAsistente].
@@ -76,4 +95,58 @@ class AsistenteNoDisponible extends FalloAsistente {
   const AsistenteNoDisponible();
   @override
   bool get sePuedeReintentar => true;
+}
+
+/// Que tan grave es un testigo del tablero (V2-M24.05).
+enum GravedadTestigo {
+  /// Detenerse en un lugar seguro.
+  roja,
+
+  /// Agendar una revision pronto.
+  amarilla,
+
+  /// Solo informa.
+  informativa;
+
+  static GravedadTestigo desdeCodigo(String? codigo) => switch (codigo) {
+    'roja' => roja,
+    'amarilla' => amarilla,
+    _ => informativa,
+  };
+}
+
+/// Lo que dice la foto de un testigo. Sin reconocer, solo trae [consultaId].
+class TestigoDelTablero {
+  const TestigoDelTablero({
+    required this.consultaId,
+    required this.reconocido,
+    this.nombre,
+    this.gravedad = GravedadTestigo.informativa,
+    this.queHacer,
+    this.fuentes = const [],
+  });
+
+  final int consultaId;
+  final bool reconocido;
+  final String? nombre;
+  final GravedadTestigo gravedad;
+  final String? queHacer;
+  final List<CitaDelManual> fuentes;
+}
+
+/// Lo que llega de una respuesta en flujo (V2-M24.09).
+sealed class AvanceRespuesta {
+  const AvanceRespuesta();
+}
+
+/// Una parte mas del texto.
+class AvanceTexto extends AvanceRespuesta {
+  const AvanceTexto(this.texto);
+  final String texto;
+}
+
+/// La respuesta terminada, con sus fuentes.
+class AvanceFin extends AvanceRespuesta {
+  const AvanceFin(this.respuesta);
+  final RespuestaDelAsistente respuesta;
 }

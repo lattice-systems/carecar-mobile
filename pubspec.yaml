@@ -75,6 +75,14 @@ dependencies:
   latlong2: ^0.10.1
   geolocator: ^14.0.1
   geocoding: ^5.0.1
+  image_picker: ^1.2.4
+  http_parser: ^4.1.2
+
+  # Bitacora del conductor (V2-M18): lectura del ticket en el dispositivo
+  # (ML Kit, la foto no sale del telefono), toma de la foto y PDF de la
+  # exportacion.
+  google_mlkit_text_recognition: ^1.0.3
+  pdf: ^3.8.4
 
 dev_dependencies:
   flutter_test:

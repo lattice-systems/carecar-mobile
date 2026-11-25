@@ -264,7 +264,7 @@ class _EstadoPantallaReprogramarCita
               ),
               child: BotonPildora(
                 texto: textos.citasFranjaCercana(f.fecha, f.horaInicio),
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => setState(() {
                   _franja = f;

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/api/modelos/problema.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -46,6 +47,98 @@ void main() {
   );
 
   group('armado de la peticion', () {
+    test(
+      'lee un flujo SSE en eventos con su nombre y datos (V2-M24.09)',
+      () async {
+        final cliente = ClienteApi(
+          config: _config,
+          obtenerToken: () async => 't',
+          http: MockClient.streaming((req, _) async {
+            expect(
+              req.headers['accept'],
+              'text/event-stream, application/json',
+            );
+            expect(req.headers['authorization'], 'Bearer t');
+            return http.StreamedResponse(
+              Stream.fromIterable([
+                utf8.encode('event:texto\ndata:{"texto":"Ho"}\n\n'),
+                utf8.encode('event:texto\ndata:{"texto":"la"}\n\nevent:fin\n'),
+                utf8.encode('data:{"ok":true}\n\n'),
+              ]),
+              200,
+              headers: {'content-type': 'text/event-stream'},
+            );
+          }),
+        );
+
+        final eventos = await cliente
+            .enviarFlujo('/asistente/preguntas/flujo', cuerpo: {'a': 1})
+            .toList();
+
+        expect(eventos.map((e) => e.evento), ['texto', 'texto', 'fin']);
+        expect(eventos.first.datos, {'texto': 'Ho'});
+        expect(eventos.last.datos, {'ok': true});
+      },
+    );
+
+    test('un error antes del flujo llega como su excepcion', () async {
+      final cliente = ClienteApi(
+        config: _config,
+        http: MockClient.streaming(
+          (_, _) async => http.StreamedResponse(
+            Stream.value(
+              utf8.encode(
+                '{"timestamp":"x","status":409,"error":"x","message":"Sin manual",'
+                '"path":"/x","codigo":"ASISTENTE_SIN_MANUAL"}',
+              ),
+            ),
+            409,
+            headers: {'content-type': 'application/json'},
+          ),
+        ),
+      );
+      expect(
+        cliente.enviarFlujo('/x', cuerpo: const {}).toList(),
+        throwsA(isA<Conflicto>()),
+      );
+    });
+
+    test(
+      'manda un archivo como multipart con sus campos (V2-M24.05)',
+      () async {
+        http.Request? pedida;
+        final cliente = _clienteQueResponde((req) {
+          pedida = req;
+          return http.Response(
+            '{"ok":true}',
+            200,
+            headers: {'content-type': 'application/json'},
+          );
+        }, token: () async => 't');
+
+        final r = await cliente.enviarArchivo(
+          '/asistente/testigos',
+          campos: {'vehiculoId': '7'},
+          nombreArchivo: 'imagen',
+          bytes: [1, 2, 3],
+          tipo: 'image/jpeg',
+          leer: (j) => j['ok'],
+        );
+
+        expect(r, true);
+        expect(pedida!.method, 'POST');
+        expect(
+          pedida!.headers['content-type'],
+          startsWith('multipart/form-data'),
+        );
+        expect(pedida!.headers['authorization'], 'Bearer t');
+        final cuerpo = latin1.decode(pedida!.bodyBytes);
+        expect(cuerpo, contains('name="vehiculoId"'));
+        expect(cuerpo, contains('name="imagen"'));
+        expect(cuerpo, contains('content-type: image/jpeg'));
+      },
+    );
+
     test('pega la ruta a la direccion configurada', () async {
       Uri? pedida;
       final cliente = _clienteQueResponde((req) {
@@ -385,7 +478,7 @@ void main() {
       },
     );
 
-    test('actualizar mapea un 422 como el resto de los errores', () async {
+    test('un 422 sin codigo es una SolicitudRechazada desconocida', () async {
       final cliente = _clienteQueResponde((_) => _problema(422, 'Fuera'));
       await expectLater(
         cliente.actualizar<int>(
@@ -393,7 +486,52 @@ void main() {
           cuerpo: const {},
           leer: (j) => 0,
         ),
-        throwsA(isA<SinParametrosDeValuacion>()),
+        throwsA(
+          isA<SolicitudRechazada>()
+              .having(
+                (e) => e is SinParametrosDeValuacion,
+                'sin parametros',
+                false,
+              )
+              .having((e) => e.codigo, 'codigo', CodigoProblema.desconocido),
+        ),
+      );
+    });
+
+    test('un 422 se distingue por su codigo', () async {
+      Future<Object?> pedir(String codigo) async {
+        final cliente = _clienteQueResponde(
+          (_) => http.Response(
+            jsonEncode({
+              'timestamp': 't',
+              'status': 422,
+              'error': 'Error',
+              'message': 'm',
+              'path': '/p',
+              'codigo': codigo,
+            }),
+            422,
+            headers: {'content-type': 'application/json'},
+          ),
+        );
+        try {
+          await cliente.actualizar<int>('/x', cuerpo: const {}, leer: (j) => 0);
+        } on Object catch (e) {
+          return e;
+        }
+        return null;
+      }
+
+      final cobertura = await pedir('FUERA_DE_COBERTURA');
+      expect(cobertura, isA<SolicitudRechazada>());
+      expect(cobertura, isNot(isA<SinParametrosDeValuacion>()));
+      expect(
+        (cobertura! as SolicitudRechazada).codigo,
+        CodigoProblema.fueraDeCobertura,
+      );
+      expect(
+        await pedir('SIN_PARAMETROS_DE_VALUACION'),
+        isA<SinParametrosDeValuacion>(),
       );
     });
 

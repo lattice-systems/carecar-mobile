@@ -2,10 +2,18 @@
 
 | Campo | Valor |
 | --- | --- |
-| Hito | H1 (interna) → H7 (tiendas) |
+| Hito | H1 (interna) → H7 (entrega) |
 | Dueño | Daniel |
 | Revisa | Ricardo |
 | Estado | Listo para historias |
+
+## Decisión: sin tiendas
+
+Daniel decidió que la app **no se publica en Google Play ni en App Store**. La entrega es:
+- **Android:** APK firmado con la llave de producción en cada Release `vX.Y.Z` y el APK de pruebas en el pre-release `prueba-main` (V2-T04.02, V2-T04.03).
+- **iPhone:** IPA sin firmar adjunto al Release, que se instala con Sideloadly y un Apple ID gratis; la firma dura 7 días y hay que reinstalar ([guía](../../docs/guia-instalar-ios-sin-mac.md)).
+
+Por eso V2-T04.06 queda descartada y V2-T04.03 se cierra con el APK por merge y el IPA para sideload.
 
 ## Historias
 
@@ -16,7 +24,7 @@
 | V2-T04.03 | Como equipo queremos un APK/IPA de prueba por cada merge a `main` | Distribución interna (p. ej. Firebase App Distribution / TestFlight) para las 6 personas | | V2-T04.02 |
 | V2-T04.04 | Como equipo queremos el check `Autoría` requerido | Agregado a la protección de `main` · **Hecha con V2-H0.03**: `Sin co-autor de IA` es check requerido del ruleset de `main` | | — |
 | V2-T04.05 | Como equipo queremos notas de versión automáticas | Generadas de los commits convencionales entre etiquetas | | V2-T04.01 |
-| V2-T04.06 | Como equipo queremos publicar en pista interna de Google Play y App Store | Fichas, capturas, política de privacidad | | H6 |
+| V2-T04.06 | ~~Como equipo queremos publicar en pista interna de Google Play y App Store~~ **Descartada:** no se publica en tiendas | — | | H6 |
 
 ## Avance de V2-T04.01
 
@@ -37,11 +45,19 @@
 
 **Límites conocidos**
 
-- Mientras no exista V2-T04.02 el APK va firmado con la **llave de debug** (el `build.gradle.kts` ya cae a debug si no hay `key.properties`); el Release lo dice. No sirve para tiendas.
+- Sin los secretos de V2-T04.02 el APK va firmado con la **llave de debug** (el `build.gradle.kts` ya cae a debug si no hay `key.properties`); el Release lo dice. No sirve para tiendas.
 - `github.run_number` cuenta por workflow: el número de build de `ci.yml` y el de `release.yml` son series distintas. Para el APK de prueba por merge (V2-T04.03) habrá que decidir una sola serie si ambos se instalan sobre el mismo teléfono.
 - iOS: el equipo no tiene Mac; el Release adjunta un IPA **sin firmar** para sideload (ver "Avance de V2-T04.03" abajo).
 - Las notas del Release son fijas; las automáticas son V2-T04.05.
 
+
+## Avance de V2-T04.02 y V2-T04.03 (Android)
+
+- **Firma sin secretos en el repo:** dos keystores, `pruebas` y `produccion`, en GitHub Secrets (`ANDROID_{PRUEBAS,PRODUCCION}_LLAVE_{BASE64,CONTRASENA,ALIAS}`). `scripts/preparar-firma-android.sh` los escribe en `$RUNNER_TEMP` y genera `android/key.properties`; sin secretos se firma con debug y se avisa. Detalle y cómo crear las llaves: [`docs/publicacion.md`](../../docs/publicacion.md).
+- **Release:** `release.yml` firma con la llave de producción y las notas dicen con qué llave salió.
+- **APK por merge:** `apk-prueba.yml` compila el flavor `pruebas` en release con la llave de pruebas y lo publica en el pre-release fijo `prueba-main` (distribución interna gratis: el equipo lo descarga desde GitHub). Con su propio `run_number` y paquete `.pruebas`, no choca con la serie de los Release.
+- Probado en local: con una llave desechable, `flutter build apk --release --flavor pruebas` sale firmada con ella (`apksigner verify`).
+- **Llaves creadas** (2026-11-24) con `scripts/crear-llaves-android.sh` en la computadora de Daniel (`~/.carecar-llaves/`), y sus seis secretos subidos al repo. **Pendiente:** respaldar `carecar-produccion.jks` y `carecar-produccion.contrasena` en el gestor de contraseñas del equipo. iOS sigue sin firma: no hay cuenta de Apple Developer de paga.
 
 ## Avance de V2-T04.03: IPA sin firmar para sideload
 

@@ -117,7 +117,7 @@ void main() {
     await _montar(tester);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Manuals'));
+    await tester.tap(find.text('Manual'));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaManual), findsOneWidget);
   });
@@ -148,8 +148,27 @@ void main() {
     expect(find.byType(PantallaFichaTecnica), findsOneWidget);
   });
 
+  testWidgets('/garaje/:id/manual?pagina=N abre en esa pagina (V2-M24.04)', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaManualVehiculo(1, pagina: 12));
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<PantallaManual>(find.byType(PantallaManual)).paginaInicial,
+      12,
+    );
+    enrutadorDe(tester).go('${rutaManualVehiculo(1)}?pagina=x');
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<PantallaManual>(find.byType(PantallaManual)).paginaInicial,
+      isNull,
+    );
+  });
+
   test('exporta su ruta', () {
     expect(rutaManualVehiculo(7), '/garaje/7/manual');
+    expect(rutaManualVehiculo(7, pagina: 12), '/garaje/7/manual?pagina=12');
     expect(rutaFichaTecnicaVehiculo(7), '/garaje/7/ficha-tecnica');
     expect(rutaDetalleVehiculo(7), '/garaje/7');
     expect(rutaGaraje, '/garaje');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../tokens/tokens_pista.dart';
+import 'boton_regresar.dart';
 
 /// Barra superior de las pantallas con [CabeceraPortada] a pantalla completa.
 ///
@@ -21,6 +22,8 @@ class BarraPortada extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
     return AppBar(
+      automaticallyImplyLeading: false,
+      leading: const BotonRegresar(),
       title: titulo == null ? null : Text(titulo!),
       elevation: 0,
       scrolledUnderElevation: 0,

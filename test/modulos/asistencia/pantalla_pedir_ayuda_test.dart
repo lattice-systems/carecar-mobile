@@ -10,6 +10,8 @@ import 'package:carecar_mobile/modulos/asistencia/presentacion/proveedores_asist
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
+import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
+import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,6 +42,9 @@ class _CarreraConAbierta implements RepositorioAsistencia {
     }
     return existente;
   }
+
+  @override
+  Future<SolicitudAsistencia> obtener(int id) async => existente;
 }
 
 Future<void> _montar(
@@ -56,6 +61,7 @@ Future<void> _montar(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        eventosEnVivoProvider.overrideWithValue(EventosEnVivoFake()),
         repositorioAsistenciaProvider.overrideWithValue(
           repo ?? RepositorioAsistenciaFake(),
         ),
@@ -72,8 +78,10 @@ Future<void> _montar(
         localizationsDelegates: delegadasDeIdioma,
         supportedLocales: idiomasSoportados,
         builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context)
-              .copyWith(textScaler: TextScaler.linear(escala)),
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(escala),
+            disableAnimations: true,
+          ),
           child: child!,
         ),
         home: const PantallaPedirAyuda(),

@@ -1,8 +1,9 @@
+import '../../../api/modelos/traslado.dart';
 import 'cotizacion_recoleccion.dart';
 import 'direccion_guardada.dart';
 
-/// Contrato que la presentación usa para las direcciones y la cotización de
-/// recolección (V2-M17.01 y V2-M17.02).
+/// Contrato que la presentación usa para las direcciones, la cotización y el
+/// seguimiento de recolección (V2-M17.01 a V2-M17.04).
 abstract interface class RepositorioRecoleccion {
   /// Las direcciones del cliente, por orden de alta. Solo las propias.
   Future<List<DireccionGuardada>> direcciones();
@@ -29,4 +30,16 @@ abstract interface class RepositorioRecoleccion {
     required int direccionId,
     required DateTime fecha,
   });
+
+  /// El traslado `id` con su estado y, si va en camino o de regreso, la
+  /// ubicación del chofer (`GET /traslados/{id}`).
+  ///
+  /// Un traslado ajeno o inexistente lanza `NoEncontrado`: el servidor no
+  /// distingue los dos casos.
+  Future<TrasladoDetalle> traslado(int id);
+
+  /// El checklist del traslado `trasladoId`, o `null` si el chofer aún no lo
+  /// registra (404). Las URLs de fotos y firma vienen firmadas y duran 15
+  /// minutos: no se guardan, cada llamada pide un checklist nuevo.
+  Future<ChecklistTraslado?> checklist(int trasladoId);
 }

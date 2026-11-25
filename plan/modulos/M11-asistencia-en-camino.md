@@ -128,3 +128,23 @@ Rediseño visual de `PantallaGuias` y `PantallaGuia` (V2-M11.03) según el estil
 ### Correcciones del rediseño (barras al desplazar)
 
 `PantallaGuia` usa `BarraPortada` (transparente arriba, opaca al desplazar) y `PantallaGuias` hereda el encabezado translúcido más opaco de `EncabezadoGrande`: ningún paso o tarjeta se ve a través del título ni del botón de regreso. Hay pruebas de widget que desplazan ambas pantallas.
+
+## Avance de V2-M11.04
+
+Parte de la app de «ver el estado de mi solicitud». El backend (`GET /asistencia/{id}`, `GET /app/eventos` con `asistencia.estado`, contrato 2.8.0) ya está implementado; esta parte solo lo consume.
+
+**Qué quedó**
+
+- **Línea de tiempo** (`LineaDeTiempo` del sistema) en la solicitud enviada o ya abierta (`VistaSolicitud`): recibida → en camino → atendida; una cancelada corta la línea en «Cancelada». Cada paso lleva su estado (hecho, actual, pendiente) y una nota; el primero muestra la hora en que se recibió. El estado actual se anuncia como región viva para el lector de pantalla y, al quedar atendida o cancelada, un aviso explica que la ubicación dejó de compartirse.
+- **En vivo:** `asistencia.estado` de esa solicitud cambia la línea sin recargar (`seguimientoSolicitudProvider`, familia `autoDispose` por id). Al reconectar el canal se consulta de nuevo `GET /asistencia/{id}` por si se perdió un evento.
+- **A pedido:** jalar para recargar y el botón «Actualizar estado» consultan `GET /asistencia/{id}` (`RepositorioAsistencia.obtener`). Si falla, se conserva el último estado y se avisa con «No pudimos actualizar…».
+- **Cliente de eventos en vivo del núcleo** (`lib/nucleo/eventos/`, no existía uno): `EventosEnVivo` (interfaz), `EventosEnVivoHttp` (SSE con el token de la sesión, renovación ante 401, reconexión con esperas de 1 s hasta 30 s y el evento sintético `conexion.restablecida`), `AnalizadorSse`, `EventosEnVivoFake` y los proveedores `eventosEnVivoProvider` y `eventosProvider` (`autoDispose`). La conexión solo está abierta mientras una pantalla escucha `eventosProvider` y se cierra al salir; no se guarda nada. Lo reutiliza V2-M17.03.
+- **Mock** (`mock_api/server.js`): `GET /eventos` (SSE), `GET /asistencia/{id}` y un emisor de prueba (`POST /__mock/asistencia/{id}/estado`) para ver el avance en la app.
+- **Código nuevo `TRANSICION_INVALIDA`** reconocido en `CodigoProblema` (solo la devuelven endpoints internos).
+- **Pruebas:** `test/nucleo/eventos/`, `test/modulos/asistencia/seguimiento_solicitud_test.dart`, `vista_solicitud_seguimiento_test.dart` (cuatro estados, refresco, fallo, canal solo con la pantalla puesta, lector de pantalla, oscuro y letra al 200 % en 320 × 568).
+
+**Pendiente / fuera de alcance**
+
+- **Push con la app cerrada** («push en cada cambio»): depende de V2-M06.02 (notificaciones push). Hoy el estado solo se actualiza en vivo mientras la pantalla está abierta o al volver a ella.
+- La solicitud no se lista en un historial: solo se ve la abierta (`GET /asistencia?activa=true`); una cerrada se consulta por id.
+- Tablero y `plan/cumplimiento-ficha.md` los actualiza quien integra.

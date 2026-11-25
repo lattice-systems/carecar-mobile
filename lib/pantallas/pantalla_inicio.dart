@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 import '../api/carecar_api.dart';
 import '../api/modelos/perfil.dart';
+import '../modulos/taller/taller.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
 import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
@@ -101,69 +102,78 @@ class _PantallaInicioState extends State<PantallaInicio> {
             },
           ),
           alCerrarSesion: _cerrarSesion,
-          contenido: RejillaMenu(
-            tarjetas: [
-              TarjetaMenu(
-                titulo: 'Mis vehículos',
-                subtitulo: 'Tus autos, fichas y manuales',
-                icono: IconoMenu.vehiculos.icono,
-                colores: [TemaCareCar.azulAgencia, TemaCareCar.azulProfundo],
-                indice: 0,
-                alPulsar:
-                    widget.abrirEnV2[ModuloMigrable.vehiculos] ??
-                    () => abrirPantalla(
-                      context,
-                      PantallaVehiculos(
-                        api: widget.api,
-                        alCerrarSesion: _cerrarSesion,
-                      ),
-                    ),
-              ),
-              TarjetaMenu(
-                titulo: 'Citas',
-                subtitulo: 'Agenda y revisa tus citas',
-                icono: IconoMenu.cita.icono,
-                colores: [TemaCareCar.turquesaOscuro, Color(0xFF0E6B63)],
-                indice: 1,
-                alPulsar:
-                    widget.abrirEnV2[ModuloMigrable.citas] ??
-                    () => abrirPantalla(
-                      context,
-                      PantallaMisCitas(
-                        api: widget.api,
-                        alCerrarSesion: _cerrarSesion,
-                      ),
-                    ),
-              ),
-              TarjetaMenu(
-                titulo: 'Catálogo',
-                subtitulo: 'Conoce los modelos Nissan',
-                icono: IconoMenu.catalogo.icono,
-                colores: [Color(0xFF3D5A9E), Color(0xFF283C7A)],
-                indice: 2,
-                alPulsar:
-                    widget.abrirEnV2[ModuloMigrable.catalogo] ??
-                    () => abrirPantalla(
-                      context,
-                      PantallaCatalogo(
-                        api: widget.api,
-                        alCerrarSesion: _cerrarSesion,
-                      ),
-                    ),
-              ),
-              TarjetaMenu(
-                titulo: 'Ajustes',
-                subtitulo: 'Perfil, contraseña y ayuda',
-                icono: IconoMenu.ajustes.icono,
-                colores: [Color(0xFF52606D), Color(0xFF334155)],
-                indice: 3,
-                alPulsar: () => abrirPantalla(
-                  context,
-                  PantallaAjustes(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
+          contenido: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const TarjetaOrdenEnCurso(),
+              RejillaMenu(
+                tarjetas: [
+                  TarjetaMenu(
+                    titulo: 'Mis vehículos',
+                    subtitulo: 'Tus autos, fichas y manuales',
+                    icono: IconoMenu.vehiculos.icono,
+                    colores: [
+                      TemaCareCar.azulAgencia,
+                      TemaCareCar.azulProfundo,
+                    ],
+                    indice: 0,
+                    alPulsar:
+                        widget.abrirEnV2[ModuloMigrable.vehiculos] ??
+                        () => abrirPantalla(
+                          context,
+                          PantallaVehiculos(
+                            api: widget.api,
+                            alCerrarSesion: _cerrarSesion,
+                          ),
+                        ),
                   ),
-                ),
+                  TarjetaMenu(
+                    titulo: 'Citas',
+                    subtitulo: 'Agenda y revisa tus citas',
+                    icono: IconoMenu.cita.icono,
+                    colores: [TemaCareCar.turquesaOscuro, Color(0xFF0E6B63)],
+                    indice: 1,
+                    alPulsar:
+                        widget.abrirEnV2[ModuloMigrable.citas] ??
+                        () => abrirPantalla(
+                          context,
+                          PantallaMisCitas(
+                            api: widget.api,
+                            alCerrarSesion: _cerrarSesion,
+                          ),
+                        ),
+                  ),
+                  TarjetaMenu(
+                    titulo: 'Catálogo',
+                    subtitulo: 'Conoce los modelos Nissan',
+                    icono: IconoMenu.catalogo.icono,
+                    colores: [Color(0xFF3D5A9E), Color(0xFF283C7A)],
+                    indice: 2,
+                    alPulsar:
+                        widget.abrirEnV2[ModuloMigrable.catalogo] ??
+                        () => abrirPantalla(
+                          context,
+                          PantallaCatalogo(
+                            api: widget.api,
+                            alCerrarSesion: _cerrarSesion,
+                          ),
+                        ),
+                  ),
+                  TarjetaMenu(
+                    titulo: 'Ajustes',
+                    subtitulo: 'Perfil, contraseña y ayuda',
+                    icono: IconoMenu.ajustes.icono,
+                    colores: [Color(0xFF52606D), Color(0xFF334155)],
+                    indice: 3,
+                    alPulsar: () => abrirPantalla(
+                      context,
+                      PantallaAjustes(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

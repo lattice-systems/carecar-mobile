@@ -114,4 +114,108 @@ void main() {
       );
     });
   });
+
+  group('Testigos del tablero (V2-M24.05)', () {
+    test('traduce el testigo con su gravedad y pagina', () async {
+      final api = ApiFalsa()
+        ..alIdentificarTestigo = (vehiculoId, imagen) async {
+          expect(vehiculoId, 7);
+          expect(imagen, [1, 2]);
+          return const TestigoAsistente(
+            consultaId: 5,
+            reconocido: true,
+            testigo: 'Presión de aceite',
+            gravedad: 'roja',
+            queHacer: 'Detente.',
+            fuentes: [FuenteAsistente(manualId: 1, pagina: 5)],
+          );
+        };
+      final t = await RepositorioAsistenteApi(
+        api,
+      ).identificarTestigo(vehiculoId: 7, imagen: [1, 2], tipo: 'image/jpeg');
+      expect(t.reconocido, isTrue);
+      expect(t.nombre, 'Presión de aceite');
+      expect(t.gravedad, GravedadTestigo.roja);
+      expect(t.fuentes.single.pagina, 5);
+    });
+
+    test('sin red y el limite del dia llegan como fallos', () async {
+      for (final (error, esperado) in <(ExcepcionApi, Type)>[
+        (const SinConexion(), AsistenteSinConexion),
+        (
+          DemasiadosIntentos('x', problema: _problema('ASISTENTE_LIMITE', 429)),
+          AsistenteLimiteDiario,
+        ),
+      ]) {
+        final api = ApiFalsa()
+          ..alIdentificarTestigo = (_, _) => Future.error(error);
+        Object? fallo;
+        try {
+          await RepositorioAsistenteApi(
+            api,
+          ).identificarTestigo(vehiculoId: 1, imagen: [1], tipo: 'image/png');
+        } on FalloAsistente catch (e) {
+          fallo = e;
+        }
+        expect(fallo.runtimeType, esperado);
+      }
+    });
+  });
+
+  group('Respuesta en flujo (V2-M24.09)', () {
+    test('traduce los trozos y el fin con sus fuentes', () async {
+      final api = ApiFalsa()
+        ..alPreguntarEnFlujo = (_, _) => Stream.fromIterable(const [
+          TrozoAsistente('Cada '),
+          TrozoAsistente('10 000 km.'),
+          FinAsistente(
+            RespuestaAsistente(
+              consultaId: 3,
+              respuesta: 'Cada 10 000 km.',
+              encontrado: true,
+              fuentes: [FuenteAsistente(manualId: 1, pagina: 12)],
+            ),
+          ),
+        ]);
+      final avances = await RepositorioAsistenteApi(api)
+          .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+          .toList();
+      expect(avances.whereType<AvanceTexto>().map((a) => a.texto), [
+        'Cada ',
+        '10 000 km.',
+      ]);
+      final fin = avances.last as AvanceFin;
+      expect(fin.respuesta.consultaId, 3);
+      expect(fin.respuesta.fuentes.single.pagina, 12);
+    });
+
+    test('un error a la mitad o un corte sin fin son fallos', () async {
+      for (final eventos in <List<EventoAsistente>>[
+        const [TrozoAsistente('Ca'), ErrorAsistenteEnFlujo('X')],
+        const [TrozoAsistente('Ca')],
+      ]) {
+        final api = ApiFalsa()
+          ..alPreguntarEnFlujo = (_, _) => Stream.fromIterable(eventos);
+        expect(
+          RepositorioAsistenteApi(api)
+              .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+              .toList(),
+          throwsA(isA<FalloAsistente>()),
+        );
+      }
+    });
+
+    test('el limite antes de empezar llega como su fallo', () async {
+      final api = ApiFalsa()
+        ..alPreguntarEnFlujo = (_, _) => Stream.error(
+          DemasiadosIntentos('x', problema: _problema('ASISTENTE_LIMITE', 429)),
+        );
+      expect(
+        RepositorioAsistenteApi(api)
+            .preguntarEnFlujo(vehiculoId: 1, pregunta: 'x')
+            .toList(),
+        throwsA(isA<AsistenteLimiteDiario>()),
+      );
+    });
+  });
 }

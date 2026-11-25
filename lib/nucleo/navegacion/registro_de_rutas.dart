@@ -3,12 +3,15 @@ import 'package:go_router/go_router.dart';
 
 import '../../modulos/asistencia/asistencia.dart';
 import '../../modulos/asistente/asistente.dart';
+import '../../modulos/bitacora/bitacora.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/galeria/galeria.dart';
 import '../../modulos/historial/historial.dart';
+import '../../modulos/mantenimiento/mantenimiento.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
+import '../../modulos/taller/taller.dart';
 import '../../modulos/vehiculos/vehiculos.dart';
 import '../migracion/interruptor_modulos.dart';
 import 'rutas_del_nucleo.dart';
@@ -32,6 +35,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
   // El asistente (M24) es nuevo en v2: no pasa por el interruptor.
   ...rutasAsistente,
+  // La bitacora (M18) es nueva en v2: no pasa por el interruptor.
+  ...rutasBitacora,
   ...interruptor.rutas(ModuloMigrable.catalogo, rutasCatalogo),
   ...interruptor.rutas(ModuloMigrable.citas, rutasCitas),
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.
@@ -41,8 +46,11 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   if (kDebugMode) ...rutasGaleria,
   // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
   ...rutasHistorial,
+  // El mantenimiento (M05) es nuevo en v2: no pasa por el interruptor.
+  ...rutasMantenimiento,
   // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.
   ...rutasRecoleccion,
+  ...rutasTaller,
   ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
 ];
 

@@ -108,7 +108,11 @@ Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; c
 
 Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `BotonCircular`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
 
+**Vidrio (V2-T02.19):** `BotonPildora` y `BotonCircular` tienen variante `vidrio`: fondo del color del texto al 6 %, borde de luz al 14 %, texto `texto` e ícono `acento`, con rebote. Es el estilo de las acciones secundarias de toda la app (la propuesta «Liquid Glass»); `BotonCircular` es de vidrio por omisión.
+
 **`BotonCircular`** (V2-T02.17): botón de un ícono, círculo de 48 con `ReboteTactil`. Variante `tonal` (fondo `superficieHundida`, ícono `textoSecundario`) y `acento` (fondo `acentoSuave`, ícono `acento`). Con `iconoMarcado` es interruptor: marcado se ve como acento y el lector lo anuncia seleccionado. Deshabilitado: fondo hundido, ícono terciario, sin rebote. Lo usan enviar (acento) y adjuntar de `CampoMensaje`, y 👍/👎 del asistente.
+
+**`VisorPdf.paginaInicial`** (V2-M24.04): abre el documento en esa página (por omisión la 1) y el contador empieza ahí; si el documento tiene menos páginas, abre en la última. La fábrica del visor recibe la página para pasarla al motor nativo.
 
 ### Vidrio líquido y píldora (V2-T02.16)
 
@@ -142,7 +146,7 @@ Para el asistente (M24) y la mensajería con el asesor (M07). Un solo par de com
 - **Lector de pantalla:** oye «Tú: texto, hora» o «CareCar: texto, hora» en un solo nodo.
 
 **`CampoMensaje`.**
-- **Forma:** campo sobre `superficieHundida` en píldora (`Radios.bordeCampoChat`); con foco, borde de `acento`.
+- **Forma:** campo sobre `superficieHundida` en píldora (`Radios.bordeCampoChat`); con foco, borde de `acento`. `iconoAdjuntar` cambia el ícono de adjuntar (el asistente usa una cámara, V2-M24.05).
 - **Alto:** crece con el texto hasta 5 líneas y después se desplaza por dentro.
 - **Enviar:** ícono en `acento`, deshabilitado mientras no haya texto, sin contar espacios. Al enviar entrega el texto recortado y se vacía.
 - **Adjuntar:** solo aparece si la pantalla lo pide.
@@ -160,7 +164,9 @@ Para pantallas con aire, esquinas generosas y una pieza protagonista (referencia
 
 **`BotonPildora`.** Píldora de ancho flexible con ícono opcional y texto. Variantes: `lleno` (acción principal, `acento`), `tonal` (secundaria, `acentoSuave`) y `peligro` (destructiva como cancelar una cita: `peligroSuave` con texto `peligro`, V2-T02.18). Con `cargando` muestra un indicador en lugar del ícono, no responde y el lector oye «<texto>, cargando». Estados: normal, presionado (se encoge a 96 % con `rapido`; con reducir movimiento no se encoge), foco y hover (velo del 10 %), deshabilitado (`superficieHundida` y `textoTerciario`). Mínimo 48 de alto; el texto se parte en líneas con letra al 200 %. Semántica: botón con el texto como etiqueta y estado habilitado.
 
-**`CabeceraPortada`.** Pieza cuadrada con radio `hoja` y sombra suave (foto, silueta o ícono grande) sobre un fondo hecho con la misma pieza desenfocada (σ 40) y un degradado del `tinte` (por defecto `acento`, 42 % en claro y 55 % en oscuro) que termina en `fondo`, sin borde duro. Debajo: título (`titulo1`), subtítulo y hasta dos `BotonPildora` (principal llena, secundaria tonal; `AccionPortada`). Con letra grande los botones se apilan. Semántica: la pieza es una imagen con `descripcion`, el título es encabezado, el fondo se excluye.
+**`CabeceraPortada`.** Pieza cuadrada con radio `hoja` y sombra suave (foto, silueta o ícono grande) sobre un fondo hecho con la misma pieza desenfocada (σ 40) y un degradado del `tinte` (por defecto `acento`, 42 % en claro y 55 % en oscuro) que termina en `fondo`, sin borde duro. Debajo: título (`titulo1`), subtítulo y hasta dos `BotonPildora` (principal llena, secundaria tonal; `AccionPortada`). Con letra grande los botones se apilan. Semántica: la pieza es una imagen con `descripcion`, el título es encabezado, el fondo se excluye. Si el `Scaffold` que la contiene usa `extendBodyBehindAppBar`, reserva la altura de la barra (más la zona del reloj) arriba de la pieza, así la portada empieza debajo de la barra y no queda detrás del título.
+
+**`BotonRegresar`.** Botón circular de vidrio para volver: hace `pop` si hay historial y, si no, va al inicio. Semántica «Regresar», zona táctil de 48. Lo llevan `BarraPortada` y, con `conRegreso: true`, `EncabezadoGrande` (pantallas raíz abiertas desde el menú: garaje, mis citas, emergencias, mis direcciones).
 
 **`BarraPortada`.** Barra superior (`AppBar`) de las pantallas con `CabeceraPortada` a pantalla completa (`Scaffold(extendBodyBehindAppBar: true)`). Arriba del todo es transparente para que el fondo de la portada llegue al borde; al desplazar (`scrolledUnder`) pasa a `fondo` opaco, así ninguna tarjeta se ve a través del título ni del botón de regreso. Título opcional.
 

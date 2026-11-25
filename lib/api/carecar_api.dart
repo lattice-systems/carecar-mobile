@@ -86,6 +86,23 @@ abstract interface class CarecarApi {
     required String pregunta,
   });
 
+  /// `POST /asistente/preguntas/flujo` (V2-M24.09): la respuesta mientras se
+  /// escribe. Los errores de antes de empezar llegan como en
+  /// [preguntarAlAsistente].
+  Stream<EventoAsistente> preguntarAlAsistenteEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  });
+
+  /// `POST /asistente/testigos` (V2-M24.05): identifica el testigo del tablero
+  /// en una foto JPEG o PNG. Mismos errores que [preguntarAlAsistente], mas 400
+  /// si no es una imagen.
+  Future<TestigoAsistente> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  });
+
   /// `POST /asistente/consultas/{consultaId}/calificacion` (V2-M24.07): si la
   /// respuesta sirvio. 404 si la consulta no es del cliente.
   Future<void> calificarRespuestaDelAsistente({

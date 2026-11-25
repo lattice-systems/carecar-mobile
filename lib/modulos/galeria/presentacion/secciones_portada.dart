@@ -31,7 +31,7 @@ List<SeccionGaleria> seccionesPortada() => [
             Expanded(
               child: BotonPildora(
                 texto: 'Detalle',
-                variante: VarianteBotonPildora.tonal,
+                variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () {},
               ),

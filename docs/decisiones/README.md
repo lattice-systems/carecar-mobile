@@ -13,3 +13,4 @@ Las acepta el equipo en el PR (aprobación de SM y PO). Las propone normalmente 
 | [0005](0005-base-local-drift.md) | Base local con drift (SQLite) cifrada | Aceptada |
 | [0006](0006-mapas-y-geocodificacion.md) | Mapas, ubicación y geocodificación | Aceptada |
 | [0007](0007-asistente-ia.md) | Proveedor de IA y búsqueda en manuales del asistente | Aceptada |
+| [0008](0008-reintento-por-tipo-de-error.md) | Reintento automático decidido por tipo de error | Propuesta |

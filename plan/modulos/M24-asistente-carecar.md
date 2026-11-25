@@ -56,6 +56,7 @@ Errores nuevos del contrato (en el `Problema`): `ASISTENTE_LIMITE` (se pasó del
 | V2-M24.07 | Como equipo queremos medir la calidad de respuestas para saber si el asistente ayuda y mejorarlo | 👍/👎 en cada respuesta guarda `util` en `consulta_asistente` · conjunto de evaluación de al menos 20 preguntas por modelo con su página esperada en `docs/asistente/evaluacion/` · script que corre el conjunto y reporta el % de respuestas con la cita correcta · umbral mínimo acordado en el ADR antes de cerrar H6 | ✅ | V2-M24.03 |
 | V2-M24.08 | Como cliente quiero ver preguntas sugeridas para empezar sin saber qué escribir | Con la conversación vacía se muestran de 4 a 6 sugerencias con `ChipPista` · tocar una la envía como pregunta · lista genérica en la app (mantenimiento, presión de llantas, testigos, capacidad de aceite) · textos traducidos (M20) | | V2-M24.03 |
 | V2-M24.09 | Como cliente quiero ver la respuesta mientras se escribe para no esperar en blanco | `POST /asistente/preguntas` responde en streaming (SSE) y las citas llegan al final · la app pinta el texto por partes y anuncia al lector de pantalla solo la respuesta completa · cortar la conexión a la mitad deja la respuesta parcial marcada con opción de reintentar | ✅ | V2-M24.03 |
+| V2-M24.10 | Como cliente quiero entrar al asistente desde mi auto con una pregunta lista para resolver mi duda en un toque | Tarjeta de vidrio con ✦ en el detalle del vehículo, con dos preguntas sugeridas · tocar la tarjeta abre el asistente; tocar una pregunta lo abre y la envía (`/asistente/:id?pregunta=`) · claro, oscuro y letra al 200 % | | V2-M24.08, V2-T02.19 |
 
 ## Avance de V2-M24.01
 
@@ -90,18 +91,23 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
 - **Pantalla:**
   - aviso de IA fijo;
   - estado vacío con cinco preguntas sugeridas en `ChipPista` que se envían al tocarlas (V2-M24.08);
-  - burbujas con la cita «Manual, pág. N», que abre el manual;
-  - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
+  - burbujas con la cita «Manual, pág. N», que abre el manual justo en esa página (`/garaje/:id/manual?pagina=N`, V2-M24.04);
+  - la respuesta aparece mientras se escribe (V2-M24.09): «Buscando en tu manual…» hasta el primer trozo, luego una burbuja que crece; las acciones (agendar, 👍/👎) y la cita salen al terminar; si se corta a la mitad se quita lo parcial y se deja reintentar;
   - píldora «Agendar revisión» bajo cada respuesta, que abre Agendar cita con el vehículo y el motivo Revisión precargados (V2-M24.06);
+  - 👍/👎 junto a esa píldora (V2-M24.07): círculos de 48 con rebote; se marcan al tocar, guardan `util` con `POST /asistente/consultas/{id}/calificacion` y se desmarcan si no se pudo guardar;
+  - botón de cámara en el campo (V2-M24.05): hoja «Tomar foto» / «Elegir de tus fotos»; la respuesta muestra el testigo con su gravedad en una insignia con texto, el aviso «Detente…» y «Pedir ayuda» (SOS) si es roja, «Agendar revisión» si es roja o amarilla, y la cita del manual; si no lo reconoce pide describirlo; sin permiso explica y ofrece «Abrir ajustes»;
   - reintento sin conexión;
   - límite y falta de manual explicados.
-- **Entrada:** desde el detalle del vehículo, en «Tu auto».
+- **Entrada:** `TarjetaAsistente` de vidrio con ✦ en el detalle del vehículo (V2-M24.10); sus preguntas sugeridas abren el asistente y la envían con `preguntaInicial`.
 - **API simulada:** responde con una cita de ejemplo.
+
+**Flujo (V2-M24.09):** `ClienteApi.enviarFlujo` lee SSE (`Accept: text/event-stream, application/json`, así los errores previos llegan en JSON); `ConversacionAsistente` pone un borrador `escribiendo` justo después de la pregunta y le agrega cada trozo. Backend: backend#91, contrato 2.9.0. `mock_api` manda una palabra cada 70 ms.
+
+**Testigos (V2-M24.05):** `SelectorFoto` en `lib/nucleo/camara/` envuelve `image_picker` (foto de máximo 1600 px, sin metadatos completos, se borra el temporal); la foto vive solo en memoria para reintentar. El backend la limpia de nuevo (sin EXIF, 1024 px) y no la guarda (backend#90, contrato 2.8.0). `mock_api` responde siempre «Presión de aceite», roja.
 
 **Calidad (V2-M24.07):** el conjunto de 20 preguntas con su página esperada y el script que mide el % de citas correctas viven en el backend (`docs/asistente/evaluacion/preguntas.json` y `scripts/evaluar-asistente.py`, backend#87), junto al código que evalúan. Falta correrlo contra Azure y anotar el resultado en el ADR 0007 antes de cerrar H6.
 
 **Pendiente:**
-- Abrir el manual justo en la página citada (V2-M24.04, necesita `VisorPdf.paginaInicial`).
 - Reserva con Gemma cuando se agote Flash-Lite (ADR 0007).
 - El id exacto del modelo de reserva.
 

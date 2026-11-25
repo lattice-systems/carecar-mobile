@@ -12,7 +12,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 | V2-M01.01, V2-M01.11 |
+| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01); su ruta **no está encendida** hasta V2-M01.03 y V2-M01.04, y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
 | Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 | V2-M01.03 |
 | Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); falta la pantalla de la app (V2-M01.04) | V2-M01.04, V2-T05.04 |
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
@@ -49,16 +49,16 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | ⬜ | Ver M04 |
-| Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | ⬜ | Ver M04 |
-| Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | ⬜ | Ver M04 |
+| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | 🟡 backend con `etapa_orden` y `orden_servicio.cita_id`, `asesor_id` y `entrega_estimada` (`TallerAppIntegrationTest`); app con la tarjeta de Inicio y la línea de tiempo con la hora de cada etapa y la entrega estimada (`test/modulos/taller/`); falta que se actualice sola (V2-M04.03) y demostrar en celular | V2-M04.01, V2-M04.02, V2-M04.03 |
+| Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | 🟡 backend con `punto_inspeccion` y `evidencia_orden` (fotos y videos en `archivos`, URL firmada) (`TallerAppIntegrationTest`); app con semáforo, fotos con zoom y video en el reproductor del teléfono (`test/modulos/taller/`); falta demostrar en celular | V2-M04.04 |
+| Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | 🟡 backend con `trabajo_adicional` y su auditoría (quién, cuándo y firma) (`TallerAppIntegrationTest`); app aprueba o rechaza uno por uno con firma en pantalla y recalcula el total (`test/modulos/taller/`); la firma usa un lienzo provisional; falta demostrar en celular | V2-M04.05 |
 
 ### 5. Mantenimiento inteligente — plan [M05](modulos/M05-mantenimiento-inteligente.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | ⬜ | Ver M05 |
-| Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | ⬜ | Ver M05 |
+| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); falta el recordatorio (V2-M05.05) y demostrar en celular | Ver M05 |
+| Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | 🟡 app y backend, con foto opcional; falta demostrar en celular | Ver M05 |
 
 ### 6. Notificaciones — plan [M06](modulos/M06-notificaciones.md)
 
@@ -100,7 +100,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías sin conexión y solicitud con ubicación (`solicitud_asistencia`) en app y backend; falta seguir el estado (V2-M11.04) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
@@ -139,13 +139,13 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones y recolección al agendar en app y backend (`direccion_cliente`, `traslado`); faltan seguir al chofer (V2-M17.03), `checklist_traslado` (V2-M17.04) y el componente Mapa (hoy provisional) | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; faltan el componente Mapa (hoy provisional), el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | ⬜ | V2-M18.01, V2-M18.02, V2-M18.03, V2-M18.04, V2-M18.05, V2-M05.03 |
+| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | 🟡 app y backend: cargas desde la foto del ticket, otros gastos, rendimiento y exportación; falta demostrar en celular | V2-M18.01, V2-M18.02, V2-M18.03, V2-M18.04, V2-M18.05, V2-M05.03 |
 
 ### 19. Cuentas familiares — plan [M19](modulos/M19-cuentas-familiares.md)
 
@@ -165,7 +165,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Preguntas sobre el manual del vehículo | `manual`, `fragmento_manual`, `consulta_asistente` | ✅ | V2-M24.02 y V2-M24.03: tablas en `V27`, pruebas `AsistenteIntegrationTest` (backend) y `test/modulos/asistente/` (app); demostrado en un Xiaomi contra Azure con Gemini |
-| Identificación de testigos del tablero | `consulta_asistente`, `vehiculo_cliente` | ⬜ | Ver M24 |
+| Identificación de testigos del tablero | `consulta_asistente`, `vehiculo_cliente` | ✅ | V2-M24.05: `POST /asistente/testigos` (backend#90) con foto sin EXIF que no se guarda, registro en `consulta_asistente`; pruebas `AsistenteIntegrationTest`, `LimpiadorImagenTest` (backend) y `test/modulos/asistente/` (app) |
 
 ### 22. Valuación formal — plan [M26](modulos/M26-valuacion.md)
 

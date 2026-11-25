@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_api.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/direccion_guardada.dart';
@@ -21,8 +22,8 @@ const _direccionJson = {
   'colonia': 'Juárez',
   'cp': '06600',
   'ciudad': 'Ciudad de México',
-  'lat': 19.4326,
-  'lng': -99.1332,
+  'lat': 21.125,
+  'lng': -101.686,
 };
 
 http.Response _problema(int status, [String? codigo]) => http.Response(
@@ -44,7 +45,7 @@ const _borrador = BorradorDireccion(
   colonia: 'Juárez',
   cp: '06600',
   ciudad: 'Ciudad de México',
-  ubicacion: Coordenada(19.4326, -99.1332),
+  ubicacion: Coordenada(21.1250, -101.6860),
 );
 
 ({RepositorioRecoleccionApi repo, List<http.Request> pedidas}) _api(
@@ -61,7 +62,111 @@ const _borrador = BorradorDireccion(
   return (repo: RepositorioRecoleccionApi(cliente), pedidas: pedidas);
 }
 
+const _trasladoJson = {
+  'id': 5,
+  'citaId': 9,
+  'tipo': 'recoger',
+  'estado': 'en_camino',
+  'costo': 150,
+  'fecha': '2026-12-01',
+  'ventanaInicio': '07:00',
+  'ventanaFin': '09:00',
+  'ubicacionChofer': {
+    'lat': 19.43,
+    'lng': -99.13,
+    'actualizadaEn': '2026-12-01T13:00:00Z',
+  },
+};
+
+const _checklistJson = {
+  'trasladoId': 5,
+  'km': 45200,
+  'gasolina': 'medio',
+  'fotos': ['https://x/f1.jpg?firma=a'],
+  'registradoEn': '2026-12-01T13:10:00Z',
+};
+
 void main() {
+  group('RepositorioRecoleccionApi seguimiento', () {
+    test('traslado lee GET /traslados/{id}', () async {
+      final api = _api(
+        (_) => http.Response(jsonEncode(_trasladoJson), 200, headers: _json),
+      );
+
+      final t = await api.repo.traslado(5);
+
+      expect(api.pedidas.single.url.path, endsWith('/traslados/5'));
+      expect(t.estado, EstadoTraslado.enCamino);
+      expect(t.ubicacionChofer?.lat, 19.43);
+    });
+
+    test('un traslado ajeno es NoEncontrado', () async {
+      final api = _api((_) => _problema(404));
+
+      await expectLater(api.repo.traslado(5), throwsA(isA<NoEncontrado>()));
+    });
+
+    test('checklist lee GET /traslados/{id}/checklist', () async {
+      final api = _api(
+        (_) => http.Response(jsonEncode(_checklistJson), 200, headers: _json),
+      );
+
+      final c = await api.repo.checklist(5);
+
+      expect(api.pedidas.single.url.path, endsWith('/traslados/5/checklist'));
+      expect(c?.km, 45200);
+      expect(c?.fotos, hasLength(1));
+    });
+
+    test('un 404 del checklist significa que aun no hay', () async {
+      final api = _api((_) => _problema(404));
+
+      expect(await api.repo.checklist(5), isNull);
+    });
+
+    test('otros errores del checklist pasan tal cual', () async {
+      final api = _api((_) => _problema(500));
+
+      await expectLater(
+        api.repo.checklist(5),
+        throwsA(isA<ErrorDelServidor>()),
+      );
+    });
+
+    test(
+      'no reutiliza las URLs firmadas: cada llamada pide de nuevo',
+      () async {
+        final api = _api(
+          (_) => http.Response(jsonEncode(_checklistJson), 200, headers: _json),
+        );
+
+        await api.repo.checklist(5);
+        await api.repo.checklist(5);
+
+        expect(api.pedidas, hasLength(2));
+      },
+    );
+  });
+
+  group('RepositorioRecoleccionFake seguimiento', () {
+    test('devuelve traslados y checklists configurados', () async {
+      final repo = RepositorioRecoleccionFake(
+        traslados: [TrasladoDetalle.fromJson(_trasladoJson)],
+        checklists: {5: ChecklistTraslado.fromJson(_checklistJson)},
+      );
+
+      expect((await repo.traslado(5)).id, 5);
+      expect((await repo.checklist(5))?.km, 45200);
+      expect(await repo.checklist(6), isNull);
+    });
+
+    test('un traslado que no existe es NoEncontrado', () async {
+      final repo = RepositorioRecoleccionFake();
+
+      await expectLater(repo.traslado(1), throwsA(isA<NoEncontrado>()));
+    });
+  });
+
   group('RepositorioRecoleccionApi', () {
     test('direcciones lee el arreglo de GET /direcciones', () async {
       final api = _api(
@@ -73,7 +178,7 @@ void main() {
       expect(api.pedidas.single.url.path, endsWith('/direcciones'));
       expect(lista.single.alias, 'Casa');
       expect(lista.single.cp, '06600');
-      expect(lista.single.ubicacion, const Coordenada(19.4326, -99.1332));
+      expect(lista.single.ubicacion, const Coordenada(21.1250, -101.6860));
     });
 
     test(
@@ -88,8 +193,8 @@ void main() {
         final req = api.pedidas.single;
         expect(req.method, 'POST');
         final cuerpo = jsonDecode(req.body) as Map<String, Object?>;
-        expect(cuerpo['lat'], 19.4326);
-        expect(cuerpo['lng'], -99.1332);
+        expect(cuerpo['lat'], 21.125);
+        expect(cuerpo['lng'], -101.686);
         expect(cuerpo['cp'], '06600');
         expect(cuerpo.containsKey('id'), isFalse);
         expect(d.id, 3);
@@ -116,7 +221,7 @@ void main() {
     });
 
     test('un 422 al editar es FueraDeCobertura', () async {
-      final api = _api((_) => _problema(422));
+      final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
       await expectLater(
         api.repo.editar(3, _borrador),
         throwsA(isA<FueraDeCobertura>()),
@@ -170,10 +275,22 @@ void main() {
     });
 
     test('un 422 al cotizar es FueraDeCobertura', () async {
-      final api = _api((_) => _problema(422));
+      final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
       await expectLater(
         api.repo.cotizar(direccionId: 3, fecha: DateTime(2026, 11, 26)),
         throwsA(isA<FueraDeCobertura>()),
+      );
+    });
+
+    test('un 422 con otro codigo no se confunde con la cobertura', () async {
+      final api = _api((_) => _problema(422, 'KM_INVALIDO'));
+      await expectLater(
+        api.repo.guardar(_borrador),
+        throwsA(isA<SolicitudRechazada>()),
+      );
+      await expectLater(
+        api.repo.cotizar(direccionId: 3, fecha: DateTime(2026, 11, 26)),
+        throwsA(isA<SolicitudRechazada>()),
       );
     });
 
@@ -203,7 +320,7 @@ void main() {
           colonia: 'Roma',
           cp: '06700',
           ciudad: 'CDMX',
-          ubicacion: Coordenada(19.42, -99.16),
+          ubicacion: Coordenada(21.13, -101.68),
         ),
       );
       expect(editada.alias, 'Oficina');

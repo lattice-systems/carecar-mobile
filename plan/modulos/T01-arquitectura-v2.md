@@ -129,3 +129,33 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - `pruebas` apunta al mismo backend de Azure que `produccion` porque no existe un ambiente de pruebas separado; cuando exista, solo cambia `Flavor.pruebas` (o se pasa `API_BASE_URL`).
 - iOS se configuró sin Mac: la validación es el job `Build iOS (sin firma)` de CI.
 - Pendiente de otras historias: la galería de diseño (V2-T02.06) debe condicionarse a `Flavor.actual == Flavor.desarrollo` en vez de `kDebugMode`; V2-M22.09 (HTTPS fuera de local) completó el bloqueo: nativo, `ApiConfig`, manuales, teselas y CI.
+
+## Avance de V2-T01.08
+
+**Qué quedó**
+
+- `lib/nucleo/datos/fallo.dart`: `Fallo` es la sellada `ExcepcionApi` renombrada (`typedef`, mismo patrón que `ApiCliente`), que ya cubre los seis casos que pide la historia. Encima, la extensión `CaraDelFallo` con `esSinConexion`, `sesionTerminada`, `esReintentable`, `codigo` (**nunca nulo**: `CodigoProblema.desconocido` si no vino, que es la regla RIC-15) y `status`. `falloDe(Object)` tipa cualquier cosa lanzada; una `ExcepcionApi` pasa idéntica, sin envolverse.
+- `lib/nucleo/datos/repositorio_base.dart`: `mixin RepositorioBase` con `pedir<T>()`. De un repositorio sale un dato o un `Fallo`. Conserva la pila del error original con `Error.throwWithStackTrace`.
+- `lib/nucleo/datos/vista_asincrona.dart`: `VistaAsincrona<T>` pinta los cinco estados desde un `AsyncValue` con `Esqueleto`, `EstadoVacio` y `EstadoError`, eligiendo sola la `CausaError`. Absorbe el ternario `error is SinConexion ? … : …` que estaba copiado en cada pantalla de `citas`, `catalogo` y `vehiculos`.
+- `lib/nucleo/datos/reintento.dart`: `reintentoDelNucleo`, instalada en el `ProviderScope` de `main.dart`.
+- `test/ayudas/repositorio_falso.dart` y `test/ayudas/fallos_de_prueba.dart`: repositorio en memoria con `latencia`, `falla`, `fallarUnaVez`, `reventarUnaVez` y contador de `llamadas`, y un constructor de `Fallo` por cada caso del contrato.
+- **75 pruebas**: los cinco estados, los ocho tipos de error de punta a punta hasta lo que el usuario lee, el no-parpadeo al recargar, la pila preservada y tres de que no se filtra detalle técnico. `test/nucleo/datos/nucleo_de_datos_test.dart` es la que un módulo copia para su pantalla.
+- Guía de uso en [`lib/modulos/README.md`](../../lib/modulos/README.md#el-núcleo-de-datos) y carpeta `datos/` agregada al árbol de [`../arquitectura-v2.md`](../arquitectura-v2.md).
+
+**Hallazgos en el árbol actual**
+
+- **La historia llega después de que los módulos ya resolvieron esto cinco veces.** `citas`, `catalogo`, `vehiculos` y `asistente` tienen repositorios, fakes y fallos tipados propios, y cada pantalla pinta sus estados a mano. El criterio «sin tocar las carpetas de los módulos» se respetó, así que **el núcleo queda construido y sin adoptar**: hace falta una historia de migración, o que cada dueño lo adopte al tocar su módulo. Adoptarlo es `with RepositorioBase` y envolver el cuerpo; no cambia firmas ni llamadores.
+- **Riverpod 3 reintenta solo cualquier proveedor que falle** (hasta 10 veces, espera que dobla de 200 ms a 6.4 s; `ProviderContainer.defaultRetry` solo se salta los `Error`). El equipo ya lo sabía y lo documentó en `lib/modulos/README.md`, con `retry: (_, _) => null` por proveedor. Al revisar el árbol, **`vehiculoProvider` de `vehiculos` es el único que se quedó sin él**: hoy un 404 de un vehículo ajeno se pide once veces. Con la política en el `ProviderScope` queda cubierto sin tocar esa carpeta.
+- `lib/api/excepciones.dart` (código v1): la clase `SinParametrosDeValuacion` quedó insertada **dentro del comentario de documentación de `DemasiadosIntentos`**, así que `DemasiadosIntentos` está sin documentar y la otra arrastra un párrafo sobre el 429 que no le toca. Solo cosmético; no se tocó por no mezclarlo con esta historia.
+
+**Decisiones**
+
+- **`Fallo` reutiliza `ExcepcionApi` en vez de ser una jerarquía nueva.** Las reglas de dependencia lo permiten explícitamente (`lib/api` y `lib/sesion` siguen autorizadas a través del núcleo hasta T01.05), los módulos ya cachan `SinConexion`, y una taxonomía paralela los obligaría a mapear dos veces. Cuando T01.05 mueva el código v1, cambia el `typedef` y ninguna pantalla.
+- **El núcleo no repite la regla RIC-14.** `ClienteApi` ya elige entre el `message` del backend y un texto propio según el código, así que `ExcepcionApi.mensaje` siempre se puede mostrar. Un segundo lugar que decidiera lo mismo sería una segunda fuente de verdad.
+- **Los `Error` se propagan sin convertir.** Un `TypeError` del mapeo es un bug nuestro, no una falla prevista: convertirlo haría que el reporte de fallos viera «error del servidor» en vez del tipo real y, peor, que Riverpod lo reintentara (no reintenta los `Error` pero sí las `Exception`), ejecutando el bug cuatro veces. La vista sigue protegida porque `VistaAsincrona` convierte al pintar. Consecuencia: un `FormatException` del mapeo sí se convierte y un `TypeError` no, aunque los dos puedan salir de la misma línea; se siguió la convención de Dart.
+- **El reintento automático se decide por tipo de error, no todo o nada.** `retry: (_, _) => null` por proveedor funciona pero tira también los reintentos útiles y hay que acordarse en cada proveedor. La política del núcleo insiste con sin conexión y 5xx, y no con 400, 401, 403, 404, 409 ni 429 (insistir en un 429 alarga el bloqueo). Tope de **3** intentos y no 10: con la espera que dobla, diez dejan al usuario mirando un error más de medio minuto.
+- **El esqueleto lo da el módulo**, no el núcleo: la guía de estilos pide que tenga la forma del contenido, y esa forma solo la conoce la pantalla.
+- **Sin `vacio`, una lista vacía pinta `datos`.** El núcleo no inventa un estado que nadie pidió: en el garaje una lista vacía es un error de datos, porque no puede haber un cliente sin vehículo.
+- **En «sin conexión» manda el texto del sistema de diseño**, no el del fallo: es una condición del teléfono y no una respuesta del servidor, y el componente ya dice qué hacer.
+
+**Pendiente / fuera de alcance:** migrar los módulos que ya existen (historia nueva; `vehiculoProvider` es el caso con efecto hoy); que `lib/nucleo/datos_locales/` del árbol lo cree M21; reconocer TLS (`HandshakeException`) como sin conexión, que no entró por no agregar código sin prueba; y el comentario desacomodado de `lib/api/excepciones.dart`.

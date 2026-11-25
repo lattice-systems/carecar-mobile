@@ -12,6 +12,7 @@ import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
+import 'nucleo/datos/reintento.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
@@ -175,6 +176,11 @@ class _AppCareCarState extends State<AppCareCar> {
     // estado (V2-T01.02): los modulos v2 los leen con `ref.watch`, y la v1
     // sigue recibiendolos por constructor sin cambios.
     return ProviderScope(
+      // Politica de reintento de toda la app (V2-T01.08). Sin ella rige la de
+      // Riverpod, que reintenta cualquier fallo hasta 10 veces: un 404 se
+      // pediria once veces, y un 429 —que significa «deja de pedir»— otras
+      // once. Ver `nucleo/datos/reintento.dart`.
+      retry: reintentoDelNucleo,
       overrides: [
         preferenciasProvider.overrideWithValue(widget.prefs),
         if (widget.politica != null)
@@ -227,7 +233,7 @@ class _AppCareCarState extends State<AppCareCar> {
             // tapar tambien la cortina y los dialogos en el selector de apps.
             builder: (context, child) => CubiertaEnSegundoPlano(
               child: InstaladorDeAccesosRapidos(
-                child: SincronizadorDelWidgetDeCita(
+                child: SincronizadorDeWidgets(
                   child: ShadAppBuilder(
                     child: AvisoEquipoComprometido(
                       child: CortinaArranque(

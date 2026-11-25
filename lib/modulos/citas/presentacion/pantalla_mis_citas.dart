@@ -22,6 +22,7 @@ import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'componentes/grupo_citas.dart';
+import 'componentes/grupo_recoleccion_cita.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'componentes/seccion_cita.dart';
 import 'componentes/vacio_ilustrado.dart';
@@ -56,6 +57,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.hasError && !citas.hasValue) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: EstadoError(
           causa: citas.error is SinConexion
@@ -68,6 +70,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (!citas.hasValue) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: const _Cargando(),
       );
@@ -75,6 +78,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.requireValue.citas.isEmpty) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: VacioIlustrado(
           titulo: textos.citasMisCitasVacioTitulo,
@@ -120,6 +124,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
 
     return MarcoPantallaCita(
       titulo: textos.citasMisCitasTitulo,
+      conRegreso: true,
       acciones: [
         BotonCircular(
           etiqueta: textos.citasMisCitasAgendar,
@@ -169,6 +174,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                       ),
                   ],
                 ),
+              ..._traslados(textos, proximas),
               if (pasadas.isEmpty)
                 seccionVacia(textos.citasPasadas, textos.citasPasadasVacio)
               else
@@ -178,6 +184,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                     for (final c in pasadas) _fila(context, c, vehiculos),
                   ],
                 ),
+              ..._traslados(textos, pasadas),
               if (estado.errorAlCargarMas)
                 Padding(
                   padding: const EdgeInsets.all(Espaciado.e4),
@@ -192,7 +199,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                   child: Center(
                     child: BotonPildora(
                       texto: textos.citasCargarMas,
-                      variante: VarianteBotonPildora.tonal,
+                      variante: VarianteBotonPildora.vidrio,
                       icono: Icons.expand_more_rounded,
                       alPresionar: estado.cargandoMas
                           ? null
@@ -207,6 +214,20 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ],
     );
   }
+
+  /// Un grupo de traslados por cada cita que lleva recolección y sigue en pie
+  /// (V2-M17.03): desde aquí se abre el seguimiento del chofer y su checklist.
+  /// Una cita cancelada ya no tiene a quién seguir.
+  List<Widget> _traslados(AppLocalizations textos, List<CitaCliente> citas) => [
+    for (final c in citas)
+      if (c.recoleccion != null && c.estado != EstadoDeCita.cancelada)
+        GrupoRecoleccionCita(
+          recoleccion: c.recoleccion!,
+          encabezado: textos.citasMisCitasRecoleccionEncabezado(
+            textos.citasFilaTitulo(c.fecha, c.horaInicio),
+          ),
+        ),
+  ];
 
   String _nombreVehiculo(
     AppLocalizations textos,
@@ -553,7 +574,7 @@ class _AccionesCita extends StatelessWidget {
             BotonPildora(
               texto: textos.citasReprogramar,
               icono: Icons.event_repeat_rounded,
-              variante: VarianteBotonPildora.tonal,
+              variante: VarianteBotonPildora.vidrio,
               alPresionar: ocupado
                   ? null
                   : () {

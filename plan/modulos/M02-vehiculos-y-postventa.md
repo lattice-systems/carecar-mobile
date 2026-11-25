@@ -38,7 +38,7 @@ Tablas de la ficha: `vehiculo_cliente`, `manual`, `orden_servicio`, `orden_refac
 
 | Método | Ruta | Uso |
 | --- | --- | --- |
-| GET | `/vehiculos` · `/vehiculos/{id}/manuales` | Existen. `/vehiculos` suma `kilometrajeActualizadoEn` (fecha `AAAA-MM-DD`, opcional, nula si no hay): fecha de cierre de la orden de servicio que dejó el km (V2-T05.06). Simulado en `mock_api`. |
+| GET | `/vehiculos` · `/vehiculos/{id}/manuales` | Existen. `/vehiculos` **no** trae la fecha del km (el contrato 2.11.0 no la declara en `Vehiculo`): la app la lee de `kmActualizadoEn` y `kmFuente` del plan de mantenimiento (`GET /vehiculos/{id}/mantenimiento`), ver «Fecha real del km». |
 | GET | `/vehiculos/{id}/ficha-tecnica` | Nuevo (V2-M02.04; backend en la rama `feat/v2-juan-pablo-citas-b`, migración `V25`, y simulado en `mock_api`). Responde `{vehiculoId, marca, modelo, anio, version, secciones: [{nombre, especificaciones: [{nombre, valor}]}]}` según marca, modelo y año (tabla `ficha_tecnica_modelo`). Sin datos de ese modelo y año responde **200 con `secciones: []`** y la app usa su respaldo local; 404 si el vehículo no es del cliente. La tabla aún no tiene datos cargados. |
 | GET | `/vehiculos/{id}/servicios?pagina=&tamano=&anio=` | Existe con `pagina` y `tamano`; el filtro `anio` es nuevo. |
 | GET | `/servicios/{id}` · `/servicios/{id}/ticket` | Detalle nuevo; ticket existe. |
@@ -114,12 +114,27 @@ El detalle vive en `lib/modulos/vehiculos/` (`PantallaDetalleVehiculo`, ruta `/g
 - **Datos:** no hay `GET /vehiculos/{id}` en el contrato v1, así que `vehiculoProvider(id)` busca el vehículo en la misma lectura del garaje (comparte copia guardada y recarga). `VehiculoGaraje` suma `vin`, `color`, `version` y `kilometrajeActualizadoEn`.
 - **VIN copiable:** en cifras (monoespaciado), con botón «Copiar VIN» (zona táctil de 48) y un `Aviso` «VIN copiado» que el lector de pantalla anuncia.
 - **Kilometraje:** «12,500 km» y debajo «Actualizado por el taller el <fecha completa>». Sin fecha de cierre dice «Aún sin actualización del taller»; sin km dice «Sin kilometraje registrado». Nunca inventa la fecha.
-- **Fecha de cierre (V2-T05.06, simulable):** el campo `kilometrajeActualizadoEn` se agregó a `GET /vehiculos` en `mock_api` (bloque de vehículos de `server.js` y semilla de los autos con km) y a la tabla API de arriba. Cuando Ricardo integre T05.06, la app solo cambia de URL; si el backend usa otro nombre o formato, se ajusta el DTO `Vehiculo`.
+- **Fecha de cierre (V2-T05.06, simulable):** el campo `kilometrajeActualizadoEn` se agregó a `GET /vehiculos` en `mock_api` (bloque de vehículos de `server.js` y semilla de los autos con km) y a la tabla API de arriba. Cuando Ricardo integre T05.06, la app solo cambia de URL; si el backend usa otro nombre o formato, se ajusta el DTO `Vehiculo`. **Revisado tras T05.06: el nombre sí difiere, ver «Fecha real del km» abajo.**
 - **Accesos:** historial (V2-M02.05), manuales (V2-M02.03) y ficha técnica (V2-M02.04) son filas que abren su pantalla; ya no queda ninguna con «Disponible pronto».
 - **Estados:** esqueleto, datos, vehículo no encontrado (estado vacío con explicación, también para un id que no es número), error con reintento y sin conexión (copia guardada de la API del núcleo, o aviso si nunca hubo datos); se recarga jalando hacia abajo.
 - **Textos:** claves `vehiculos*` en `app_es.arb` y `app_en.arb`.
 - **Pruebas:** `test/modulos/vehiculos/pantalla_detalle_test.dart` (datos, copiar con portapapeles simulado, fecha, accesos, cinco estados, inglés, claro/oscuro/letra al 200 %), `ruta_garaje_test.dart` (tarjeta abre el detalle, `/garaje/:id`, id inválido, sin sesión), `garaje_test.dart`, `modelos_test.dart` y `vehiculos_semilla_test.dart`.
 - **Pendientes:** el golden de la pantalla espera a V2-T03.02; sin foto del auto (el contrato no la trae); `plan/cumplimiento-ficha.md` no cambia: la fila «Detalle del vehículo y kilometraje» sigue en 🟡 hasta que exista T05.06 con `orden_servicio` real.
+
+### Fecha real del km (revisión tras V2-T05.06)
+
+Se comprobó contra `api/agencia360-api-app-v2.yaml` (2.11.0) y contra el backend (`VehiculoApp`): **`GET /vehiculos` no trae `kilometrajeActualizadoEn`**; el esquema `Vehiculo` solo tiene `kilometraje`. La fecha de cierre de la orden que dejó el km sale en otro lado:
+
+- `GET /vehiculos/{id}/mantenimiento` (`PlanMantenimiento`) trae `kmActual`, `kmActualizadoEn` (fecha `AAAA-MM-DD`) y `kmFuente` (`taller` o `cliente`). El backend arma el km oficial con el mayor entre el del vehículo, el de las órdenes cerradas y las lecturas del taller, y `kmActualizadoEn` es la fecha de esa fuente.
+- `fechaCierre` (fecha y hora, `2026-10-20T13:45:00`) es de la orden de servicio (`Servicio` y `ServicioDetalle`, historial V2-M02.05); no se usa aquí: el plan ya entrega el día.
+
+Ajustes:
+
+- **App:** `kmDelTallerProvider(id)` (en `proveedores_vehiculos.dart`) lee el plan y devuelve `(km, fecha)` solo si `kmFuente == taller`: una lectura del cliente no se presenta como «actualizado por el taller». Si el plan falla o no hay fecha, devuelve nulo y el detalle sigue con el km del vehículo y «Aún sin actualización del taller» (no se inventa nada). `PantallaDetalleVehiculo` usa el km y la fecha del taller cuando el vehículo no trae fecha propia; si algún día el backend suma `kilometrajeActualizadoEn` a `Vehiculo`, esa fecha manda y no se consulta el plan. `FuenteKm` se exporta en el contrato del módulo `mantenimiento`.
+- **DTO:** `Vehiculo.kilometrajeActualizadoEn` se conserva (tolerante, opcional) con un comentario que dice dónde está la fecha real.
+- **Mock:** `GET /vehiculos` ya no manda `kilometrajeActualizadoEn` (no está en el contrato); el seed lo conserva solo para armar el plan, que sí trae `kmActualizadoEn` y `kmFuente` como el backend.
+- **Pruebas:** `test/modulos/vehiculos/km_del_taller_test.dart` (proveedor con fuente taller, cliente, sin km y con error; detalle con la fecha del plan, con lectura del cliente, sin conexión al plan, fecha propia que manda, oscuro y letra al 200 %). Las pruebas anteriores del detalle y del DTO siguen igual.
+- **Costo:** el detalle pide además el plan; la petición es independiente (si falla no afecta la pantalla) y un `autoDispose` evita guardar el plan fuera de ella.
 
 ## Avance de V2-M02.08
 
@@ -190,7 +205,7 @@ Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId
 
 ## Avance de V2-M02.03
 
-Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
+Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
 
 - **Por modelo y año:** `manualProvider(id)` toma el vehículo del garaje y pide el manual con `ManualesDeLaAgencia` (código v1): primero `GET /vehiculos/{id}/manuales` (que el backend filtra por modelo y año) y, si no hay o falla la red, el PDF empaquetado en `assets/Manuales/<marca>/<tipo>/<año>/` (respaldo local). Sin manual en ninguna parte: estado vacío que lo explica.
 - **Visor:** `VisorPdf` del sistema v2 con zoom de pellizco y contador «Página N de M». La pantalla le entrega los bytes ya descargados, así el respaldo local y el de la agencia se ven igual.
@@ -222,7 +237,7 @@ Pantalla `PantallaFichaTecnica` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/f
 Rama local `local/rediseno-vehiculos`. Las cuatro pantallas del módulo se rehicieron con el estilo portada del sistema de diseño v2 (§8), sin cambiar lógica, proveedores, rutas ni criterios de aceptación.
 
 - **Garaje `/garaje`**: título grande translúcido «Mi garaje» (`EncabezadoGrande`). Con un vehículo, `CabeceraPortada` protagonista (portada con el tinte del color del auto, subtítulo con placas y km, píldora «Ver detalle»). Con varios, un `Estante` de portadas tipo álbum (cuadro redondeado con el tinte y el modelo debajo) y un `GrupoLista` «Datos rápidos». Cinco estados dentro del mismo scroll, con recarga jalando.
-- **Detalle `/garaje/:id`**: `CabeceraPortada` con el auto, título modelo y año, subtítulo placas y píldoras «Agendar servicio» (principal, `/citas/agendar`) y «Manual» (secundaria). Tarjeta de cifras con el km grande y «Actualizado por el taller el…» y el VIN en monoespaciado que se copia al tocarlo. `GrupoLista` «Datos» (placas, año, color, versión) y «Tu auto» (Manual, Ficha técnica, Historial «Disponible pronto») con íconos en cuadros de color.
+- **Detalle `/garaje/:id`**: `CabeceraPortada` con el auto, título modelo y año, subtítulo placas y píldoras «Agendar servicio» (principal, `/citas/agendar`) y «Manual» (secundaria). Tarjeta de cifras con el km grande y «Actualizado por el taller el…» y el VIN en monoespaciado que se copia al tocarlo. Debajo, la tarjeta de vidrio del asistente con ✦ (V2-M24.10); «Tu auto» como cuadrícula de píldoras de vidrio de dos columnas (Ficha técnica, Historial; Manual y Agendar ya van en la portada, cuyo botón principal dice «Agendar» para caber en una línea); y `GrupoLista` «Datos» (placas, año, color, versión).
 - **Manual `/garaje/:id/manual`**: `CabeceraPortada` pequeña con la portada del manual y píldoras «Descargar» y «Compartir» (antes íconos en la barra); el visor PDF ocupa el resto.
 - **Ficha técnica `/garaje/:id/ficha-tecnica`**: título grande translúcido y una `GrupoLista` plegable por sección (la fila de título despliega las especificaciones con su valor al final). Se eliminó el provisional `SeccionPlegable`.
 - **Tinte**: `tinteDeColor` mapea el nombre del color del auto a tokens (rojo `peligro`, verde `exito`, amarillo/naranja `advertencia`, azul `acento`, neutros `textoSecundario`, otro `marca`).
@@ -250,3 +265,9 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 - Garaje, «Datos rápidos»: título = modelo y año («Nissan Versa 2024»), subtítulo = placas · km («Sin placas» si no hay).
 - Detalle: usa `BarraPortada` (transparente arriba, opaca al desplazar) y el fondo difuminado de `CabeceraPortada` lleva más color.
 - `EncabezadoGrande(translucido)` sube su opacidad contraída a 92 %: en garaje, ficha técnica, mis citas, agendar, disponibilidad, reprogramar y comprobante ya no se lee contenido a través del título. Pruebas de widget desplazan cada pantalla y verifican que el título recibe el toque.
+
+## Ajustes visuales (rama `fix/v2-juan-pablo-ajustes-visuales`)
+
+- **Detalle del vehículo:** la portada ya no se mete bajo la barra. `CabeceraPortada` reserva la altura de la barra cuando el `Scaffold` usa `extendBodyBehindAppBar`, y al desplazar la barra se vuelve opaca, así nada atraviesa el título.
+- **«Tu auto»:** las acciones van en cuadrícula 2×2 de tarjetas iguales (una columna con letra grande).
+- **Regresar:** `BotonRegresar` (cierra con `pop` si se puede; si no, va al inicio; semántica «Regresar») en Mi garaje, y en las barras de portada del detalle, manual y ficha.

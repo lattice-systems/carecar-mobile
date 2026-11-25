@@ -98,6 +98,120 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
+  /// Cuenta regresiva del bloqueo por intentos, cuando falta más de un minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {minutos} min para volver a intentar.'**
+  String accesoBloqueoMinutos(int minutos);
+
+  /// Cuenta regresiva del bloqueo por intentos en su último minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Espera {segundos} s para volver a intentar.'**
+  String accesoBloqueoSegundos(int segundos);
+
+  /// Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos'**
+  String get accesoBloqueoTitulo;
+
+  /// Etiqueta del campo de contraseña en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña'**
+  String get accesoContrasenaEtiqueta;
+
+  /// Error bajo el campo cuando se intenta entrar sin contraseña.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu contraseña.'**
+  String get accesoContrasenaVacia;
+
+  /// Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'El que le diste a la agencia'**
+  String get accesoCorreoAyuda;
+
+  /// Etiqueta del campo de correo en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get accesoCorreoEtiqueta;
+
+  /// Error bajo el campo cuando el correo no tiene forma de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un correo válido, como nombre@dominio.com.'**
+  String get accesoCorreoInvalido;
+
+  /// Error bajo el campo cuando se intenta entrar sin correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu correo.'**
+  String get accesoCorreoVacio;
+
+  /// Texto del botón mientras el servidor responde al inicio de sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrando…'**
+  String get accesoEntrando;
+
+  /// Botón principal de la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar sesión'**
+  String get accesoEntrar;
+
+  /// Título del aviso cuando el acceso falla por credenciales u otro error.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos iniciar sesión'**
+  String get accesoFalloTitulo;
+
+  /// Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce.
+  ///
+  /// In es, this message translates to:
+  /// **'CareCar'**
+  String get accesoMarca;
+
+  /// Enlace a la recuperación de contraseña desde la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Olvidaste tu contraseña?'**
+  String get accesoOlvide;
+
+  /// Detalle del aviso cuando el servidor está despertando y la petición sigue en curso.
+  ///
+  /// In es, this message translates to:
+  /// **'La primera vez después de un rato puede tardar hasta un minuto.'**
+  String get accesoServidorDespertandoMensaje;
+
+  /// Título del aviso cuando el servidor tarda más de unos segundos en responder al acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Despertando el servidor…'**
+  String get accesoServidorDespertandoTitulo;
+
+  /// Título del aviso cuando no se pudo llegar al servidor al intentar entrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get accesoSinConexionTitulo;
+
+  /// Nota que explica por qué no hay registro: la cuenta la entrega la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.'**
+  String get accesoSinRegistro;
+
+  /// Frase bajo el nombre de la app en la pantalla de acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu acceso a la agencia'**
+  String get accesoSubtitulo;
+
   /// No description provided for @asistenciaGuiaChoquePaso1.
   ///
   /// In es, this message translates to:
@@ -847,6 +961,300 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin lugares disponibles'**
   String get citasVacioTitulo;
+
+  /// Fila del detalle del vehículo que abre el plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get mantenimientoAcceso;
+
+  /// Abre agendar cita con el servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar este servicio'**
+  String get mantenimientoAgendar;
+
+  /// Anuncio mientras carga el plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu plan de mantenimiento'**
+  String get mantenimientoCargando;
+
+  /// Anuncio mientras carga un servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el servicio'**
+  String get mantenimientoCargandoServicio;
+
+  /// Cerrar una pantalla de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get mantenimientoCerrar;
+
+  /// Descripción de la portada del plan para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Ilustración de una llave de servicio'**
+  String get mantenimientoDescripcionPortada;
+
+  /// Encabezado de los conceptos del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué incluye'**
+  String get mantenimientoEncabezadoConceptos;
+
+  /// Encabezado del grupo de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu kilometraje'**
+  String get mantenimientoEncabezadoKm;
+
+  /// Encabezado de la lista de servicios.
+  ///
+  /// In es, this message translates to:
+  /// **'Plan de servicios'**
+  String get mantenimientoEncabezadoPlan;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hecho'**
+  String get mantenimientoEstadoHecho;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get mantenimientoEstadoPendiente;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Próximo'**
+  String get mantenimientoEstadoProximo;
+
+  /// Estado del servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get mantenimientoEstadoVencido;
+
+  /// Cuánto falta y la fecha estimada.
+  ///
+  /// In es, this message translates to:
+  /// **'Faltan {km} km · hacia el {fecha}'**
+  String mantenimientoFaltan(String km, String fecha);
+
+  /// Cuándo se hizo el servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hecho el {fecha}'**
+  String mantenimientoHechoEl(String fecha);
+
+  /// Kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String mantenimientoKilometros(String km);
+
+  /// Ayuda con el último kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu último registro: {km} km'**
+  String mantenimientoKmAyuda(String km);
+
+  /// Ayuda sin lectura previa.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el número que marca el tablero de tu auto.'**
+  String get mantenimientoKmAyudaSinRegistro;
+
+  /// Etiqueta del campo.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje actual'**
+  String get mantenimientoKmCampo;
+
+  /// Fuente cliente del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado por ti el {fecha}'**
+  String mantenimientoKmDelCliente(String fecha);
+
+  /// Fuente taller del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado por el taller el {fecha}'**
+  String mantenimientoKmDelTaller(String fecha);
+
+  /// Validación.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa solo números enteros mayores que cero.'**
+  String get mantenimientoKmErrorFormato;
+
+  /// Validación contra la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'No puede ser menor a {km} km, el último que tenemos.'**
+  String mantenimientoKmErrorMenor(String km);
+
+  /// Fallo al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu kilometraje. Revisa tu internet y vuelve a intentarlo.'**
+  String get mantenimientoKmErrorRed;
+
+  /// Respuesta 422 KM_INVALIDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese kilometraje es menor al último registrado. Revísalo en tu tablero.'**
+  String get mantenimientoKmErrorServidor;
+
+  /// Validación.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu kilometraje.'**
+  String get mantenimientoKmErrorVacio;
+
+  /// Aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje guardado. Actualizamos tu próximo servicio.'**
+  String get mantenimientoKmGuardado;
+
+  /// Anuncio al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando kilometraje'**
+  String get mantenimientoKmGuardando;
+
+  /// Botón de guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar kilometraje'**
+  String get mantenimientoKmGuardar;
+
+  /// Nota sobre el km oficial.
+  ///
+  /// In es, this message translates to:
+  /// **'El kilometraje que registra el taller es el oficial: tu registro no lo reemplaza.'**
+  String get mantenimientoKmNota;
+
+  /// Aún no hay kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin registrar'**
+  String get mantenimientoKmSinDato;
+
+  /// Sin fuente del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay una lectura de tu auto'**
+  String get mantenimientoKmSinFuente;
+
+  /// Título del formulario de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar kilometraje'**
+  String get mantenimientoKmTitulo;
+
+  /// Motivo del próximo servicio: kilómetros.
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca por kilometraje'**
+  String get mantenimientoMotivoKm;
+
+  /// Motivo del próximo servicio: meses.
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca por tiempo transcurrido'**
+  String get mantenimientoMotivoTiempo;
+
+  /// Etiqueta del precio.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio estimado'**
+  String get mantenimientoPrecioEtiqueta;
+
+  /// Leyenda obligatoria junto a todo precio estimado.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación no vinculante'**
+  String get mantenimientoPrecioLeyenda;
+
+  /// Promedio de kilómetros diarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Promedio: {km} km al día'**
+  String mantenimientoPromedio(String km);
+
+  /// Abre el registro de kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar km'**
+  String get mantenimientoRegistrarKm;
+
+  /// Resumen de un servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km · {meses} meses'**
+  String mantenimientoResumenServicio(String km, String meses);
+
+  /// Servicio ausente del plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que el plan haya cambiado. Vuelve al plan e inténtalo de nuevo.'**
+  String get mantenimientoServicioNoEncontradoMensaje;
+
+  /// Servicio ausente del plan.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este servicio'**
+  String get mantenimientoServicioNoEncontradoTitulo;
+
+  /// Servicio sin conceptos.
+  ///
+  /// In es, this message translates to:
+  /// **'Este servicio no trae conceptos detallados.'**
+  String get mantenimientoSinConceptos;
+
+  /// Invita a registrar el kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu kilometraje para calcular cuándo te toca el siguiente servicio.'**
+  String get mantenimientoSinProximoMensaje;
+
+  /// Héroe cuando no se puede estimar el próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin próximo servicio estimado'**
+  String get mantenimientoSinProximoTitulo;
+
+  /// Título de la pantalla del plan de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get mantenimientoTitulo;
+
+  /// Mensaje cuando el modelo no tiene plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tenemos el plan de servicios de este modelo. Pregunta a tu asesor en la agencia.'**
+  String get mantenimientoVacioMensaje;
+
+  /// Título cuando el modelo no tiene plan.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay plan para tu auto'**
+  String get mantenimientoVacioTitulo;
+
+  /// El servicio ya llegó o pasó.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya te toca · pasó de los {km} km'**
+  String mantenimientoYaToca(String km);
 
   /// Precio de entrada de un modelo.
   ///
@@ -2114,6 +2522,126 @@ abstract class AppLocalizations {
   /// **'No tienes citas próximas'**
   String get widgetsSinCitaMensaje;
 
+  /// Encabezado del widget de inicio cuando el auto está en el taller (V2-M25.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto en el taller'**
+  String get widgetsTallerTitulo;
+
+  /// Hora estimada de entrega en el widget de inicio con el auto en el taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada: {hora}'**
+  String widgetsTallerEntrega(String hora);
+
+  /// Botón corto del estado vacío de los widgets de inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar'**
+  String get widgetsAgendar;
+
+  /// Encabezado del widget de inicio del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Taller en vivo'**
+  String get widgetsTallerEncabezado;
+
+  /// Estado vacío del widget del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto no está en el taller'**
+  String get widgetsTallerVacioMensaje;
+
+  /// Avance de etapas del widget del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Paso {actual} de {total}'**
+  String widgetsTallerPaso(int actual, int total);
+
+  /// Encabezado del widget de inicio de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get widgetsMantenimientoTitulo;
+
+  /// Kilómetros que faltan para el próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Faltan {km} km'**
+  String widgetsMantenimientoFaltanKm(String km);
+
+  /// El próximo servicio ya toca por km o por fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya toca'**
+  String get widgetsMantenimientoYaToca;
+
+  /// Fecha estimada del próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hacia el {fecha}'**
+  String widgetsMantenimientoFecha(String fecha);
+
+  /// Estado vacío del widget de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay un plan para tu auto'**
+  String get widgetsMantenimientoVacioMensaje;
+
+  /// Botón del estado vacío del widget de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver plan'**
+  String get widgetsMantenimientoAccion;
+
+  /// Encabezado del widget de inicio de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get widgetsBitacoraTitulo;
+
+  /// Unidad del rendimiento en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'km/l'**
+  String get widgetsBitacoraRendimientoUnidad;
+
+  /// Etiqueta del gasto del mes en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto de {mes}'**
+  String widgetsBitacoraGastoMes(String mes);
+
+  /// Etiqueta del rendimiento en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento'**
+  String get widgetsBitacoraRendimientoEtiqueta;
+
+  /// Estado vacío del widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu primera carga'**
+  String get widgetsBitacoraVacioMensaje;
+
+  /// Botón del estado vacío del widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar'**
+  String get widgetsBitacoraAccion;
+
+  /// Encabezado del widget de accesos rápidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesos rápidos'**
+  String get widgetsAccesosTitulo;
+
+  /// Acceso rápido al comprobante de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante'**
+  String get widgetsAccesoComprobante;
+
   /// Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet.
   ///
   /// In es, this message translates to:
@@ -2174,6 +2702,12 @@ abstract class AppLocalizations {
   /// **'Opciones de tu cita'**
   String get citasAccionesCita;
 
+  /// Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior.
+  ///
+  /// In es, this message translates to:
+  /// **'Regresar'**
+  String get regresar;
+
   /// Acción para cerrar una pantalla del flujo de citas.
   ///
   /// In es, this message translates to:
@@ -2195,7 +2729,7 @@ abstract class AppLocalizations {
   /// Botón de la portada del detalle que abre el flujo de agendar cita.
   ///
   /// In es, this message translates to:
-  /// **'Agendar servicio'**
+  /// **'Agendar'**
   String get vehiculosAgendarServicio;
 
   /// Botón de la portada del detalle que abre el manual del vehículo.
@@ -3106,6 +3640,892 @@ abstract class AppLocalizations {
   /// **'Manual, página {pagina}, abrir'**
   String asistenteFuenteLector(int pagina);
 
+  /// Encabezado de la línea de tiempo de la solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado de tu solicitud'**
+  String get asistenciaSeguimientoEncabezado;
+
+  /// Primer paso de la solicitud de ayuda.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibida'**
+  String get asistenciaEstadoRecibida;
+
+  /// La ayuda va hacia el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'En camino'**
+  String get asistenciaEstadoEnCamino;
+
+  /// La ayuda ya llegó y se atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get asistenciaEstadoAtendida;
+
+  /// La solicitud se canceló.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelada'**
+  String get asistenciaEstadoCancelada;
+
+  /// Nota del paso Recibida.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia ya tiene tu solicitud.'**
+  String get asistenciaEstadoNotaRecibida;
+
+  /// Nota del paso En camino.
+  ///
+  /// In es, this message translates to:
+  /// **'Hay ayuda en camino hacia ti.'**
+  String get asistenciaEstadoNotaEnCamino;
+
+  /// Nota del paso Atendida.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu solicitud ya fue atendida.'**
+  String get asistenciaEstadoNotaAtendida;
+
+  /// Nota del paso Cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud se cerró.'**
+  String get asistenciaEstadoNotaCancelada;
+
+  /// Estado actual que anuncia el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Estado: {estado}'**
+  String asistenciaEstadoActual(String estado);
+
+  /// Botón para consultar de nuevo el estado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar estado'**
+  String get asistenciaSeguimientoActualizar;
+
+  /// Botón mientras consulta el estado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizando…'**
+  String get asistenciaSeguimientoActualizando;
+
+  /// Aviso cuando falla la consulta del estado.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos actualizar el estado. Revisa tu conexión e inténtalo de nuevo.'**
+  String get asistenciaSeguimientoFallo;
+
+  /// Aviso al quedar atendida o cancelada.
+  ///
+  /// In es, this message translates to:
+  /// **'La solicitud ya está cerrada: tu ubicación dejó de compartirse.'**
+  String get asistenciaSeguimientoUbicacionCerrada;
+
+  /// Título de la pantalla de seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguimiento del traslado'**
+  String get recoleccionSeguimientoTitulo;
+
+  /// Título del traslado de recoger.
+  ///
+  /// In es, this message translates to:
+  /// **'Recogemos tu auto'**
+  String get recoleccionSeguimientoRecoger;
+
+  /// Título del traslado de entregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregamos tu auto'**
+  String get recoleccionSeguimientoEntregar;
+
+  /// Día y franja del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha}, de {inicio} a {fin}'**
+  String recoleccionSeguimientoVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  );
+
+  /// Pie del grupo de recolección: invita a abrir el seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca un traslado para seguirlo en vivo.'**
+  String get recoleccionSeguimientoAbrir;
+
+  /// Encabezado de la línea de tiempo del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get recoleccionSeguimientoLineaEncabezado;
+
+  /// Traslado agendado.
+  ///
+  /// In es, this message translates to:
+  /// **'Programado'**
+  String get recoleccionEstadoProgramado;
+
+  /// El chofer va al domicilio.
+  ///
+  /// In es, this message translates to:
+  /// **'Chofer en camino'**
+  String get recoleccionEstadoEnCamino;
+
+  /// El chofer ya tiene el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto recogido'**
+  String get recoleccionEstadoRecogido;
+
+  /// El auto está en el taller.
+  ///
+  /// In es, this message translates to:
+  /// **'En el taller'**
+  String get recoleccionEstadoEnTaller;
+
+  /// El chofer lleva el auto de vuelta.
+  ///
+  /// In es, this message translates to:
+  /// **'De regreso a tu domicilio'**
+  String get recoleccionEstadoDeRegreso;
+
+  /// El auto ya se entregó.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto entregado'**
+  String get recoleccionEstadoEntregado;
+
+  /// El traslado se canceló.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelado'**
+  String get recoleccionEstadoCancelado;
+
+  /// Nota del paso en camino.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue su ubicación en el mapa.'**
+  String get recoleccionEstadoNotaEnCamino;
+
+  /// Nota del paso de regreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue su ubicación en el mapa.'**
+  String get recoleccionEstadoNotaDeRegreso;
+
+  /// Encabezado del mapa del chofer.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde va el chofer'**
+  String get recoleccionSeguimientoMapaEncabezado;
+
+  /// Descripción del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con la ubicación del chofer: latitud {latitud}, longitud {longitud}.'**
+  String recoleccionSeguimientoMapaDescripcion(String latitud, String longitud);
+
+  /// Hora de la última ubicación del chofer.
+  ///
+  /// In es, this message translates to:
+  /// **'Ubicación actualizada a las {hora}'**
+  String recoleccionSeguimientoActualizadaEn(String hora);
+
+  /// Botón que abre el checklist del traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver checklist del auto'**
+  String get recoleccionSeguimientoVerChecklist;
+
+  /// Botón para volver a consultar el traslado.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar'**
+  String get recoleccionSeguimientoActualizar;
+
+  /// Etiqueta del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el seguimiento del traslado'**
+  String get recoleccionSeguimientoCargando;
+
+  /// Título cuando el traslado no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este traslado'**
+  String get recoleccionSeguimientoNoEncontradoTitulo;
+
+  /// Mensaje cuando el traslado no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no exista. Vuelve a tus citas y ábrelo de nuevo.'**
+  String get recoleccionSeguimientoNoEncontradoMensaje;
+
+  /// Aviso cuando falla recargar con datos ya visibles.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos actualizar. Mostramos lo último que sabemos.'**
+  String get recoleccionSeguimientoFalloAlActualizar;
+
+  /// Título de la pantalla del checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist del auto'**
+  String get recoleccionChecklistTitulo;
+
+  /// Etiqueta del kilometraje.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje'**
+  String get recoleccionChecklistKm;
+
+  /// Kilometraje con unidad.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String recoleccionChecklistKmValor(int km);
+
+  /// Etiqueta del nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina'**
+  String get recoleccionChecklistGasolina;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Vacío'**
+  String get recoleccionGasolinaVacio;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Un cuarto'**
+  String get recoleccionGasolinaUnCuarto;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Medio tanque'**
+  String get recoleccionGasolinaMedio;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tres cuartos'**
+  String get recoleccionGasolinaTresCuartos;
+
+  /// Nivel de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Lleno'**
+  String get recoleccionGasolinaLleno;
+
+  /// Nivel de gasolina para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina: {nivel}'**
+  String recoleccionChecklistGasolinaLector(String nivel);
+
+  /// Etiqueta de las notas.
+  ///
+  /// In es, this message translates to:
+  /// **'Notas del chofer'**
+  String get recoleccionChecklistNotas;
+
+  /// Encabezado de la galería.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos del auto'**
+  String get recoleccionChecklistFotos;
+
+  /// Descripción de cada foto para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} del estado del auto'**
+  String recoleccionChecklistFotoDescripcion(int numero, int total);
+
+  /// Galería vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Este checklist no trae fotos.'**
+  String get recoleccionChecklistSinFotos;
+
+  /// Quien firma el checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma de conformidad'**
+  String get recoleccionChecklistFirmante;
+
+  /// Fecha del checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado el {fecha}'**
+  String recoleccionChecklistRegistrado(DateTime fecha);
+
+  /// Título cuando no hay checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay checklist'**
+  String get recoleccionChecklistVacioTitulo;
+
+  /// Mensaje cuando no hay checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer lo registra al recoger y al entregar tu auto. Cuando lo haga, lo verás aquí.'**
+  String get recoleccionChecklistVacioMensaje;
+
+  /// Etiqueta del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el checklist del auto'**
+  String get recoleccionChecklistCargando;
+
+  /// Título de la bitácora del conductor.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get bitacoraTitulo;
+
+  /// Subtítulo de la portada cuando no se conoce el nombre del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto'**
+  String get bitacoraSubtituloSinNombre;
+
+  /// Descripción para el lector de pantalla del arte de la portada de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Ícono de una bomba de gasolina'**
+  String get bitacoraDescripcionPortada;
+
+  /// Botón que abre el alta de una carga de gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva carga'**
+  String get bitacoraNuevaCarga;
+
+  /// Botón que abre el alta de un gasto que no es gasolina.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro gasto'**
+  String get bitacoraOtroGasto;
+
+  /// Cierra la pantalla de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get bitacoraCerrar;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu bitácora'**
+  String get bitacoraCargando;
+
+  /// Título de la bitácora sin gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay gastos'**
+  String get bitacoraVacioTitulo;
+
+  /// Mensaje de la bitácora sin gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu primera carga de gasolina para saber cuánto rinde y cuánto te cuesta tu auto.'**
+  String get bitacoraVacioMensaje;
+
+  /// Encabezado del estante con las cifras de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu rendimiento'**
+  String get bitacoraResumenTitulo;
+
+  /// Etiqueta de la cifra de kilómetros por litro.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento'**
+  String get bitacoraEtiquetaRendimiento;
+
+  /// Rendimiento en kilómetros por litro.
+  ///
+  /// In es, this message translates to:
+  /// **'{valor} km/l'**
+  String bitacoraCifraKmPorLitro(String valor);
+
+  /// Etiqueta de la cifra de pesos por kilómetro.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo por km'**
+  String get bitacoraEtiquetaCostoPorKm;
+
+  /// Costo en pesos por kilómetro.
+  ///
+  /// In es, this message translates to:
+  /// **'{valor}/km'**
+  String bitacoraCifraCostoPorKm(String valor);
+
+  /// Etiqueta de la cifra del gasto del mes en curso.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto de este mes'**
+  String get bitacoraEtiquetaGastoMes;
+
+  /// Cifra cuando todavía no se puede calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'—'**
+  String get bitacoraCifraSinDatos;
+
+  /// Detalle de una cifra que aún no se puede calcular.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitas 2 cargas'**
+  String get bitacoraDetalleSinDatos;
+
+  /// Fila que abre las estadísticas.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento y gasto por mes'**
+  String get bitacoraVerEstadisticas;
+
+  /// Fila que abre la exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportar bitácora'**
+  String get bitacoraExportar;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasolina'**
+  String get bitacoraTipoGasolina;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Estacionamiento'**
+  String get bitacoraTipoEstacionamiento;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Casetas'**
+  String get bitacoraTipoCasetas;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Lavado'**
+  String get bitacoraTipoLavado;
+
+  /// Tipo de gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro'**
+  String get bitacoraTipoOtro;
+
+  /// Subtítulo de una carga de gasolina en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {litros} l · {km} km'**
+  String bitacoraDetalleCarga(String fecha, String litros, String km);
+
+  /// Título del formulario de alta de una carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva carga'**
+  String get bitacoraFormCargaTitulo;
+
+  /// Título del formulario de edición de una carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar carga'**
+  String get bitacoraFormEditarCargaTitulo;
+
+  /// Título del formulario de alta de otro gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevo gasto'**
+  String get bitacoraFormGastoTitulo;
+
+  /// Título del formulario de edición de otro gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar gasto'**
+  String get bitacoraFormEditarGastoTitulo;
+
+  /// Etiqueta del selector de tipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de gasto'**
+  String get bitacoraCampoTipo;
+
+  /// Etiqueta del campo de litros.
+  ///
+  /// In es, this message translates to:
+  /// **'Litros'**
+  String get bitacoraCampoLitros;
+
+  /// Etiqueta del campo de monto en pesos.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto total'**
+  String get bitacoraCampoMonto;
+
+  /// Etiqueta del campo de km.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje del tablero'**
+  String get bitacoraCampoKm;
+
+  /// Ayuda bajo el campo de km con la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu última lectura es de {km} km.'**
+  String bitacoraAyudaKm(String km);
+
+  /// Etiqueta del selector de fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get bitacoraCampoFecha;
+
+  /// Acción que abre el calendario del formulario.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir fecha'**
+  String get bitacoraElegirFecha;
+
+  /// Etiqueta del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get bitacoraCampoDescripcion;
+
+  /// Ayuda del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Obligatoria en «Otro», máximo 200 caracteres.'**
+  String get bitacoraAyudaDescripcion;
+
+  /// Error del campo de monto.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un monto mayor a 0.'**
+  String get bitacoraErrorMonto;
+
+  /// Error del campo de litros.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los litros, mayores a 0.'**
+  String get bitacoraErrorLitros;
+
+  /// Error del campo de km cuando falta o no es entero.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el kilometraje como número entero.'**
+  String get bitacoraErrorKm;
+
+  /// Error del campo de km cuando es menor a la última lectura.
+  ///
+  /// In es, this message translates to:
+  /// **'No puede ser menor a tu última lectura ({km} km).'**
+  String bitacoraErrorKmMenor(String km);
+
+  /// Error del campo de km cuando el servidor contesta 422.
+  ///
+  /// In es, this message translates to:
+  /// **'El servidor lo rechazó: es menor a tu última lectura. Revisa el kilometraje.'**
+  String get bitacoraErrorKmServidor;
+
+  /// Error del campo de fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una fecha que no sea futura.'**
+  String get bitacoraErrorFecha;
+
+  /// Error del campo de descripción.
+  ///
+  /// In es, this message translates to:
+  /// **'Describe el gasto, en máximo 200 caracteres.'**
+  String get bitacoraErrorDescripcion;
+
+  /// Aviso de un fallo al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar. Intenta de nuevo.'**
+  String get bitacoraErrorGuardar;
+
+  /// Aviso de un fallo al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo borrar. Intenta de nuevo.'**
+  String get bitacoraErrorBorrar;
+
+  /// Aviso de falta de conexión al guardar o borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get bitacoraErrorSinConexion;
+
+  /// Guarda el gasto.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get bitacoraGuardar;
+
+  /// Borra el gasto que se edita.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar gasto'**
+  String get bitacoraBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar este gasto?'**
+  String get bitacoraBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borrará «{descripcion}». No se puede deshacer.'**
+  String bitacoraBorrarMensaje(String descripcion);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get bitacoraBorrarConfirmar;
+
+  /// Cancela el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get bitacoraBorrarCancelar;
+
+  /// Aviso tras guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto guardado.'**
+  String get bitacoraGastoGuardado;
+
+  /// Aviso tras borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto borrado.'**
+  String get bitacoraGastoBorrado;
+
+  /// Encabezado de la sección que lee el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Llenar desde el ticket'**
+  String get bitacoraTicketTitulo;
+
+  /// Aclaración de privacidad de la lectura del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'La foto se lee en tu teléfono; no se guarda ni se sube.'**
+  String get bitacoraTicketPrivacidad;
+
+  /// Abre la cámara para fotografiar el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get bitacoraTicketTomar;
+
+  /// Abre la galería para elegir la foto del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de fotos'**
+  String get bitacoraTicketElegir;
+
+  /// Se anuncia mientras se reconoce el texto.
+  ///
+  /// In es, this message translates to:
+  /// **'Leyendo el ticket…'**
+  String get bitacoraTicketLeyendo;
+
+  /// Aviso tras leer el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Esto fue lo que leímos. Revísalo y corrige lo que haga falta.'**
+  String get bitacoraTicketLeido;
+
+  /// Aviso cuando no se leyó nada.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos leer el ticket. Llena los datos a mano.'**
+  String get bitacoraTicketNoLeyo;
+
+  /// Aviso cuando se negó el permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'No tenemos permiso para usar la cámara o tus fotos. Actívalo en los ajustes o llena los datos a mano.'**
+  String get bitacoraTicketSinPermiso;
+
+  /// Aviso de un fallo al leer la foto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir la foto. Llena los datos a mano.'**
+  String get bitacoraTicketError;
+
+  /// Título de la pantalla de estadísticas.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento y gasto'**
+  String get bitacoraEstadisticasTitulo;
+
+  /// Título de la gráfica de gasto mensual.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto por mes'**
+  String get bitacoraGraficaTitulo;
+
+  /// Mensaje de la gráfica sin datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay gastos que graficar.'**
+  String get bitacoraGraficaVacia;
+
+  /// Título cuando no se puede calcular el rendimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay rendimiento'**
+  String get bitacoraSinRendimientoTitulo;
+
+  /// Explica por qué aún no hay rendimiento, según cuántas cargas hay.
+  ///
+  /// In es, this message translates to:
+  /// **'Para calcular los km/l y el costo por km necesitamos al menos 2 cargas con su kilometraje. {cargas, plural, =0{Todavía no registras ninguna.} =1{Tienes 1 carga.} other{Tienes {cargas} cargas, pero sus kilometrajes no avanzan.}}'**
+  String bitacoraSinRendimientoMensaje(int cargas);
+
+  /// Base del cálculo del rendimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Calculado con {km} km recorridos en {tramos, plural, =1{1 tramo} other{{tramos} tramos}} entre cargas.'**
+  String bitacoraBaseDelCalculo(String km, int tramos);
+
+  /// Título de la pantalla de exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Exportar bitácora'**
+  String get bitacoraExportarTitulo;
+
+  /// Explicación de la pantalla de exportación.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige los meses y comparte tu bitácora con la hoja del sistema.'**
+  String get bitacoraExportarIntro;
+
+  /// Selector del primer mes a exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'Desde'**
+  String get bitacoraExportarDesde;
+
+  /// Selector del último mes a exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'Hasta'**
+  String get bitacoraExportarHasta;
+
+  /// Exporta la bitácora como CSV.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir CSV'**
+  String get bitacoraExportarCsv;
+
+  /// Exporta la bitácora como PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir PDF'**
+  String get bitacoraExportarPdf;
+
+  /// Aviso cuando el rango no tiene gastos.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay gastos en esos meses.'**
+  String get bitacoraExportarVacio;
+
+  /// Aviso de un rango al revés.
+  ///
+  /// In es, this message translates to:
+  /// **'El mes inicial no puede ser posterior al final.'**
+  String get bitacoraExportarRangoInvalido;
+
+  /// Aviso de un fallo al exportar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo compartir el archivo. Intenta de nuevo.'**
+  String get bitacoraExportarError;
+
+  /// Título del PDF exportado.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora de {vehiculo}'**
+  String bitacoraPdfTitulo(String vehiculo);
+
+  /// Periodo que cubre el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String bitacoraPdfPeriodo(String desde, String hasta);
+
+  /// Total gastado en el PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Total: {monto}'**
+  String bitacoraPdfTotal(String monto);
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Fecha'**
+  String get bitacoraColumnaFecha;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo'**
+  String get bitacoraColumnaTipo;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto'**
+  String get bitacoraColumnaMonto;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Litros'**
+  String get bitacoraColumnaLitros;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Km'**
+  String get bitacoraColumnaKm;
+
+  /// Encabezado de columna del PDF.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalle'**
+  String get bitacoraColumnaDetalle;
+
+  /// Fila del detalle del vehículo que abre la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get bitacoraAccesoFila;
+
   /// Encabezado de las preguntas sugeridas con la conversación vacía (V2-M24.08).
   ///
   /// In es, this message translates to:
@@ -3159,6 +4579,622 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No me sirvió'**
   String get asistenteNoMeSirvio;
+
+  /// Tarjeta de Inicio cuando hay una orden abierta (V2-M04.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu {vehiculo} está en el taller'**
+  String tallerTarjetaTitulo(String vehiculo);
+
+  /// Etapa actual y entrega estimada en la tarjeta de Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{etapa} · entrega {hora}'**
+  String tallerTarjetaEtapaYEntrega(String etapa, String hora);
+
+  /// Insignia de la tarjeta de Inicio con los trabajos adicionales pendientes.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{1 trabajo por aprobar} other{{cantidad} trabajos por aprobar}}'**
+  String tallerTarjetaPendientes(int cantidad);
+
+  /// Lector de pantalla de la barra de avance de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance de {avance} %'**
+  String tallerTarjetaAvance(int avance);
+
+  /// Pista del lector de pantalla al tocar la tarjeta de la orden en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el avance de tu orden'**
+  String get tallerTarjetaAbrir;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibido'**
+  String get tallerEtapaRecibido;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Diagnóstico'**
+  String get tallerEtapaDiagnostico;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando aprobación'**
+  String get tallerEtapaEsperandoAprobacion;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'En reparación'**
+  String get tallerEtapaEnReparacion;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Control de calidad'**
+  String get tallerEtapaControlDeCalidad;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Lavado'**
+  String get tallerEtapaLavado;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo para entrega'**
+  String get tallerEtapaListoParaEntrega;
+
+  /// Etapa de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregado'**
+  String get tallerEtapaEntregado;
+
+  /// Título de la pantalla de la orden en el taller (V2-M04.02). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu orden'**
+  String get tallerOrdenTitulo;
+
+  /// Subtítulo de la fila con la etapa actual de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Etapa actual'**
+  String get tallerOrdenEtapaActual;
+
+  /// Subtítulo de la fila con la hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada'**
+  String get tallerOrdenEntregaEstimada;
+
+  /// La orden todavía no tiene hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún sin estimar'**
+  String get tallerOrdenSinEntrega;
+
+  /// Subtítulo de la fila con el nombre del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor'**
+  String get tallerOrdenAsesor;
+
+  /// Encabezado de la línea de tiempo de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Línea de tiempo'**
+  String get tallerOrdenLineaDeTiempo;
+
+  /// Nota bajo la etapa actual con la hora estimada de entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada {hora}'**
+  String tallerOrdenNotaEntrega(String hora);
+
+  /// Nota del taller y hora estimada de entrega bajo la etapa actual.
+  ///
+  /// In es, this message translates to:
+  /// **'{nota} · entrega estimada {hora}'**
+  String tallerOrdenNotaYEntrega(String nota, String hora);
+
+  /// Fila que abre la inspección de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección multipunto'**
+  String get tallerOrdenInspeccion;
+
+  /// Resumen de la inspección en la pantalla de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos, plural, =0{Aún sin puntos revisados} =1{1 punto revisado} other{{puntos} puntos revisados}}'**
+  String tallerOrdenInspeccionResumen(int puntos);
+
+  /// Fila que abre los trabajos adicionales de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Trabajos adicionales'**
+  String get tallerOrdenAdicionales;
+
+  /// Resumen de los trabajos adicionales pendientes.
+  ///
+  /// In es, this message translates to:
+  /// **'{pendientes, plural, =0{Nada por aprobar} =1{1 por aprobar} other{{pendientes} por aprobar}}'**
+  String tallerOrdenAdicionalesResumen(int pendientes);
+
+  /// Título del aviso cuando hay trabajos adicionales por aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{El taller te propone 1 trabajo adicional} other{El taller te propone {cantidad} trabajos adicionales}}'**
+  String tallerOrdenAvisoPendientes(int cantidad);
+
+  /// Mensaje del aviso de trabajos adicionales por aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'Revísalos y apruébalos o recházalos con tu firma.'**
+  String get tallerOrdenAvisoMensaje;
+
+  /// Botón que abre los trabajos adicionales desde el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar'**
+  String get tallerOrdenRevisar;
+
+  /// Botón de reintento en las pantallas del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get tallerReintentar;
+
+  /// Título de la pantalla de inspección multipunto (V2-M04.04). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get tallerInspeccionTitulo;
+
+  /// Título del estado vacío de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún sin inspección'**
+  String get tallerInspeccionVacia;
+
+  /// Mensaje del estado vacío de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'El técnico todavía no registra los puntos revisados.'**
+  String get tallerInspeccionVaciaMensaje;
+
+  /// Descripción de una foto de la inspección para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de {punto}'**
+  String tallerInspeccionFotoDe(String punto);
+
+  /// Encabezado de las fotos y videos que no son de un punto.
+  ///
+  /// In es, this message translates to:
+  /// **'De la orden'**
+  String get tallerInspeccionDeLaOrden;
+
+  /// Descripción de una foto general de la orden para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de la orden'**
+  String get tallerInspeccionFotoDeLaOrden;
+
+  /// Fila que abre un video del técnico en el reproductor del teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver video {numero}'**
+  String tallerInspeccionVerVideo(int numero);
+
+  /// Subtítulo de la fila de un video.
+  ///
+  /// In es, this message translates to:
+  /// **'Se abre en el reproductor del teléfono'**
+  String get tallerInspeccionVideoAbre;
+
+  /// Aviso cuando el teléfono no puede abrir un video de la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir el video. Jala hacia abajo para recargar e intenta de nuevo.'**
+  String get tallerInspeccionVideoError;
+
+  /// Título de la pantalla de trabajos adicionales (V2-M04.05). Corto: con subtítulo, el encabezado grande reserva una sola línea.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales'**
+  String get tallerAdicionalesTitulo;
+
+  /// Título del estado vacío de los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin trabajos adicionales'**
+  String get tallerAdicionalesVacio;
+
+  /// Mensaje del estado vacío de los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Si el taller encuentra algo más, aquí te lo propone para que decidas.'**
+  String get tallerAdicionalesVacioMensaje;
+
+  /// Renglón de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get tallerAdicionalManoDeObra;
+
+  /// Renglón de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get tallerAdicionalRefacciones;
+
+  /// Total de un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get tallerAdicionalTotal;
+
+  /// Estado de un trabajo adicional sin respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Por aprobar'**
+  String get tallerAdicionalPendiente;
+
+  /// Estado de un trabajo adicional aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobado'**
+  String get tallerAdicionalAprobado;
+
+  /// Estado de un trabajo adicional rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazado'**
+  String get tallerAdicionalRechazado;
+
+  /// Cuándo respondió el cliente un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Respondido el {fecha}'**
+  String tallerAdicionalRespondidoEl(String fecha);
+
+  /// Botón para aprobar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar'**
+  String get tallerAdicionalAprobar;
+
+  /// Botón para rechazar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar'**
+  String get tallerAdicionalRechazar;
+
+  /// Encabezado de los totales en los trabajos adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Totales'**
+  String get tallerTotales;
+
+  /// Total de la orden sin adicionales.
+  ///
+  /// In es, this message translates to:
+  /// **'Total de la orden'**
+  String get tallerTotalOrden;
+
+  /// Suma de los trabajos adicionales aprobados.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales aprobados'**
+  String get tallerTotalAprobados;
+
+  /// Suma de los trabajos adicionales sin respuesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Adicionales por aprobar'**
+  String get tallerTotalPendientes;
+
+  /// Total de la orden más los adicionales aprobados.
+  ///
+  /// In es, this message translates to:
+  /// **'Total estimado'**
+  String get tallerTotalEstimado;
+
+  /// Título de la hoja de firma al aprobar.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma para aprobar'**
+  String get tallerFirmaAprobarTitulo;
+
+  /// Título de la hoja de firma al rechazar.
+  ///
+  /// In es, this message translates to:
+  /// **'Firma para rechazar'**
+  String get tallerFirmaRechazarTitulo;
+
+  /// Instrucción de la hoja de firma.
+  ///
+  /// In es, this message translates to:
+  /// **'{concepto} por {total}. Firma con el dedo dentro del recuadro: tu firma queda guardada con tu respuesta.'**
+  String tallerFirmaInstruccion(String concepto, String total);
+
+  /// Lector de pantalla del recuadro de firma.
+  ///
+  /// In es, this message translates to:
+  /// **'Área para firmar con el dedo'**
+  String get tallerFirmaArea;
+
+  /// Botón que borra la firma dibujada.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar firma'**
+  String get tallerFirmaBorrar;
+
+  /// Botón que confirma la aprobación.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobar con mi firma'**
+  String get tallerFirmaConfirmarAprobar;
+
+  /// Botón que confirma el rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar con mi firma'**
+  String get tallerFirmaConfirmarRechazar;
+
+  /// Aviso después de aprobar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Aprobaste «{concepto}». El total estimado ya lo incluye.'**
+  String tallerRespuestaAprobada(String concepto);
+
+  /// Aviso después de rechazar un trabajo adicional.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazaste «{concepto}».'**
+  String tallerRespuestaRechazada(String concepto);
+
+  /// Aviso cuando el trabajo adicional ya tenía respuesta (409).
+  ///
+  /// In es, this message translates to:
+  /// **'Ese trabajo ya tenía respuesta. Recarga para ver su estado.'**
+  String get tallerRespuestaYaRespondida;
+
+  /// Aviso cuando la orden ya no acepta respuestas (409).
+  ///
+  /// In es, this message translates to:
+  /// **'La orden ya está terminada. Habla con tu asesor.'**
+  String get tallerRespuestaOrdenCerrada;
+
+  /// Aviso cuando no hay red al responder.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Tu respuesta no se envió.'**
+  String get tallerRespuestaSinConexion;
+
+  /// Aviso cuando falla la respuesta por otro motivo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar tu respuesta. Intenta de nuevo.'**
+  String get tallerRespuestaError;
+
+  /// Botón de cámara junto al campo del asistente (V2-M24.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de una luz del tablero'**
+  String get asistenteFotoAdjuntar;
+
+  /// Opción de la hoja para usar la cámara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get asistenteFotoTomar;
+
+  /// Opción de la hoja para elegir una foto guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de tus fotos'**
+  String get asistenteFotoGaleria;
+
+  /// Burbuja propia cuando se manda la foto de un testigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto del tablero'**
+  String get asistenteFotoEnviada;
+
+  /// Mientras el asistente identifica el testigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisando tu foto…'**
+  String get asistenteRevisandoFoto;
+
+  /// Insignia de un testigo rojo.
+  ///
+  /// In es, this message translates to:
+  /// **'Detente'**
+  String get asistenteTestigoRoja;
+
+  /// Insignia de un testigo amarillo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisar pronto'**
+  String get asistenteTestigoAmarilla;
+
+  /// Insignia de un testigo informativo.
+  ///
+  /// In es, this message translates to:
+  /// **'Informativa'**
+  String get asistenteTestigoInformativa;
+
+  /// Aviso fijo de un testigo rojo.
+  ///
+  /// In es, this message translates to:
+  /// **'Detente en un lugar seguro lo antes posible y apaga el motor.'**
+  String get asistenteTestigoDetente;
+
+  /// Botón de un testigo rojo que abre Pedir ayuda (SOS).
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir ayuda'**
+  String get asistentePedirAyuda;
+
+  /// Cuando la foto no muestra un testigo claro.
+  ///
+  /// In es, this message translates to:
+  /// **'No reconocí una luz en la foto. Descríbela con palabras: color, forma y si parpadea.'**
+  String get asistenteTestigoNoReconocido;
+
+  /// Aviso cuando se negó el permiso de cámara o fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Para tomar la foto, permite el acceso a la cámara y a tus fotos en los ajustes del teléfono.'**
+  String get asistentePermisoCamara;
+
+  /// Botón del aviso de permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get asistenteAbrirAjustes;
+
+  /// Encabezado del grupo de traslados de una cita en Mis citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recolección · {cita}'**
+  String citasMisCitasRecoleccionEncabezado(String cita);
+
+  /// Fila que abre el checklist del chofer al recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist al recoger'**
+  String get citasChecklistRecoger;
+
+  /// Fila que abre el checklist del chofer al entregar el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist al entregar'**
+  String get citasChecklistEntregar;
+
+  /// Subtítulo de las filas de checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje, gasolina y fotos'**
+  String get citasChecklistSubtitulo;
+
+  /// Fila que abre el checklist con la comparación activa.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar recoger y entregar'**
+  String get citasChecklistComparar;
+
+  /// Subtítulo de la fila de comparación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que cambió entre una y otra'**
+  String get citasChecklistCompararSubtitulo;
+
+  /// Pestaña del checklist al recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Al recoger'**
+  String get recoleccionChecklistPestanaRecoger;
+
+  /// Pestaña del checklist al entregar el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Al entregar'**
+  String get recoleccionChecklistPestanaEntregar;
+
+  /// Pestaña que pone lado a lado los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar'**
+  String get recoleccionChecklistPestanaComparar;
+
+  /// Kilometraje de los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'{recoger} km al recoger, {entregar} km al entregar'**
+  String recoleccionComparacionKmDetalle(int recoger, int entregar);
+
+  /// Nivel de gasolina de los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'{recoger} al recoger, {entregar} al entregar'**
+  String recoleccionComparacionGasolinaDetalle(String recoger, String entregar);
+
+  /// Encabezado de la comparación de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos al recoger y al entregar'**
+  String get recoleccionComparacionFotosTitulo;
+
+  /// Cómo se usa la comparación de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.'**
+  String get recoleccionComparacionFotosAyuda;
+
+  /// Descripción de la foto de recoger para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} al recoger'**
+  String recoleccionComparacionFotoRecoger(int numero, int total);
+
+  /// Descripción de la foto de entregar para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} al entregar'**
+  String recoleccionComparacionFotoEntregar(int numero, int total);
+
+  /// Aviso cuando los checklists traen distinto número de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Hay {recoger} fotos al recoger y {entregar} al entregar; se comparan las primeras {comparadas}.'**
+  String recoleccionComparacionFotosDesiguales(
+    int recoger,
+    int entregar,
+    int comparadas,
+  );
+
+  /// Aviso cuando no hay fotos que comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'Alguno de los dos checklists no trae fotos para comparar.'**
+  String get recoleccionComparacionSinFotos;
+
+  /// Título cuando falta un checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no se puede comparar'**
+  String get recoleccionComparacionFaltaTitulo;
+
+  /// Falta el checklist de recoger.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra el checklist de recoger.'**
+  String get recoleccionComparacionFaltaRecoger;
+
+  /// Falta el checklist de entregar.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.'**
+  String get recoleccionComparacionFaltaEntregar;
+
+  /// Faltan los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra ningún checklist de esta recolección.'**
+  String get recoleccionComparacionFaltaAmbos;
 }
 
 class _AppLocalizationsDelegate

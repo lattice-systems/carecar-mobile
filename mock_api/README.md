@@ -139,7 +139,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
-| GET | `/citas` | Solo las del cliente |
+| GET | `/citas` | Solo las del cliente · cada cita con recolección trae `recoleccion` (traslados con su estado vigente, V2-M17.03) |
 | POST | `/citas` | 201 · 409 sin cupo o doble reserva · con `recoleccion: { direccionId }` crea los traslados de recoger y entregar y los devuelve en `recoleccion` · 404 si la dirección es ajena · 422 `FUERA_DE_COBERTURA` |
 | POST | `/citas/{id}/cancelar` | 200 · 409 si ya no está confirmada |
 | POST | `/citas/{id}/reprogramar` | 200 · 409 `FRANJA_SIN_CUPO`, `CITA_NO_REPROGRAMABLE` o `FUERA_DE_PLAZO` (propuesto en V2-M02.13; no está en el contrato v1) |
@@ -147,13 +147,21 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/direcciones` | 201 · 400 `DATOS_INVALIDOS` · 422 `FUERA_DE_COBERTURA` (círculo de 40 km alrededor de la Ciudad de México) |
 | PUT | `/direcciones/{id}` | 200 · 400 · 404 si es ajena · 422 |
 | DELETE | `/direcciones/{id}` | 204 · 404 · 409 `DIRECCION_EN_USO` si ya tiene traslados |
+| GET | `/vehiculos/{id}/mantenimiento` | Plan de 8 servicios cada 5 000 km con su estado y el próximo servicio · 404 si el vehículo es ajeno · los de 2014 o anteriores no tienen plan (V2-M05.01) |
+| POST | `/vehiculos/{id}/lecturas-km` | `{ km }` · 201 lectura del cliente · 400 `DATOS_INVALIDOS` · 404 · 422 `KM_INVALIDO` si es menor a la última lectura (V2-M05.03) |
 | GET | `/recoleccion/cotizacion` | `direccionId` y `fecha` · costo por traslado (80 + 12 por km), total, y franjas 07:00-09:00 y 17:00-19:00 · 400 · 404 · 422 (V2-M17.02) |
 | GET | `/catalogo` | Solo modelos activos |
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
 | POST | `/toma-a-cuenta/estimaciones` | 201 con el rango y los supuestos, y la guarda · 400 si el auto no viene de una sola forma o km, año o estado no sirven · 404 si el vehículo es ajeno o el modelo está retirado · 422 `SIN_PARAMETROS_DE_VALUACION` si no hay parámetros para ese auto |
 | GET | `/toma-a-cuenta/estimaciones` | Las del cliente, la más reciente primero, con `pagina` y `tamano` |
 | POST | `/asistente/preguntas` | Sin IA (V2-M24.03): si la pregunta toca un tema del manual (aceite, llantas, testigos, frenos…) responde con una cita de ejemplo a la página 12; si no, `encontrado: false` sin fuentes · 400 sin pregunta · 404 vehículo ajeno |
+| POST | `/asistente/preguntas/flujo` | V2-M24.09: SSE con la misma respuesta palabra por palabra (eventos `texto` cada 70 ms y `fin`) · 400 · 404 |
 | POST | `/asistente/consultas/{id}/calificacion` | V2-M24.07: 204 con `{"util": true}` o `false` (no se guarda) · 400 sin `util` |
+| POST | `/asistente/testigos` | V2-M24.05 (multipart `vehiculoId`, `imagen`): siempre «Presión de aceite», roja, con cita a la pág. 12 · 400 sin imagen · 404 vehículo ajeno |
+| GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
+| GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
+| POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
+| GET | `/api/v1/archivos/evidencias/{id}` | Fuera de la base y sin token: una foto PNG de prueba. El video de la orden apunta a un MP4 público, así que se ve con internet |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
 
@@ -182,6 +190,23 @@ y lo dejó marcado, para cambiarlo en un solo lugar cuando el equipo responda.
 | Los valores de `Servicio.estatus` no están definidos | Usa `Terminado` y `En proceso` como provisionales | PO-5 |
 | No hay reglas de contraseña | Exige 8 caracteres como mínimo | RIC-9 |
 | No se define la zona horaria de fechas y horas | Trata todo como fecha y hora local, sin zona | RIC-13 |
+
+## Eventos en vivo y emisor de prueba
+
+`GET /api/v1/app/eventos` es un canal Server-Sent Events (`event:` y `data:` JSON) con latido cada 25 s y cierre a los 30 min, como el backend. Solo llegan los eventos del cliente que escucha. Como no hay agencia ni chofer, el mock trae un emisor **fuera del contrato** (sin token) para provocar avances y verlos en la app:
+
+```bash
+# V2-M11.04 · la ayuda va en camino (id de la solicitud abierta)
+curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+# V2-M17.03 · el chofer sale, se mueve y recoge el auto
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"recogido"}'
+# V2-M17.04 · checklist a mano (al pasar a recogido o entregado se crea uno)
+curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+```
+
+Los traslados se crean agendando una cita con recolección desde la app. La ubicación del chofer solo se manda en `en_camino` y `de_regreso`; las fotos del checklist son de `picsum.photos` (hace falta internet) y su parámetro de firma cambia en cada petición.
 
 ## Rutas de inspección
 

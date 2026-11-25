@@ -30,10 +30,14 @@ class PantallaManual extends ConsumerStatefulWidget {
     required this.vehiculoId,
     super.key,
     this.fabricaVisor,
+    this.paginaInicial,
   });
 
   final int vehiculoId;
   final FabricaVisorPdf? fabricaVisor;
+
+  /// Pagina en la que abre el manual (V2-M24.04, la que cito el asistente).
+  final int? paginaInicial;
 
   @override
   ConsumerState<PantallaManual> createState() => _PantallaManualState();
@@ -147,9 +151,19 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
     final descripcion = textos.vehiculosManualDescripcion(m.titulo);
     Future<Uint8List> cargar() async => m.bytes;
     final fabrica = widget.fabricaVisor;
+    final pagina = widget.paginaInicial ?? 1;
     return fabrica == null
-        ? VisorPdf(cargar: cargar, descripcion: descripcion)
-        : VisorPdf(cargar: cargar, descripcion: descripcion, fabrica: fabrica);
+        ? VisorPdf(
+            cargar: cargar,
+            descripcion: descripcion,
+            paginaInicial: pagina,
+          )
+        : VisorPdf(
+            cargar: cargar,
+            descripcion: descripcion,
+            fabrica: fabrica,
+            paginaInicial: pagina,
+          );
   }
 }
 

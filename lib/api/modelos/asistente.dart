@@ -41,3 +41,60 @@ class FuenteAsistente {
   final int manualId;
   final int pagina;
 }
+
+/// Respuesta de `POST /asistente/testigos` (V2-M24.05).
+class TestigoAsistente {
+  const TestigoAsistente({
+    required this.consultaId,
+    required this.reconocido,
+    required this.fuentes,
+    this.testigo,
+    this.gravedad,
+    this.queHacer,
+  });
+
+  factory TestigoAsistente.fromJson(Map<String, Object?> json) =>
+      TestigoAsistente(
+        consultaId: leerEntero(json['consultaId'], 'consultaId'),
+        reconocido: json['reconocido'] == true,
+        testigo: json['testigo'] as String?,
+        gravedad: json['gravedad'] as String?,
+        queHacer: json['queHacer'] as String?,
+        fuentes: [
+          for (final f in (json['fuentes'] as List<Object?>? ?? const []))
+            FuenteAsistente.fromJson(f! as Map<String, Object?>),
+        ],
+      );
+
+  final int consultaId;
+  final bool reconocido;
+  final String? testigo;
+
+  /// `roja`, `amarilla` o `informativa`; nula sin reconocer.
+  final String? gravedad;
+  final String? queHacer;
+  final List<FuenteAsistente> fuentes;
+}
+
+/// Evento de `POST /asistente/preguntas/flujo` (V2-M24.09).
+sealed class EventoAsistente {
+  const EventoAsistente();
+}
+
+/// Una parte del texto, en orden.
+class TrozoAsistente extends EventoAsistente {
+  const TrozoAsistente(this.texto);
+  final String texto;
+}
+
+/// La respuesta completa, con sus fuentes.
+class FinAsistente extends EventoAsistente {
+  const FinAsistente(this.respuesta);
+  final RespuestaAsistente respuesta;
+}
+
+/// El modelo fallo a la mitad (`codigo`, p. ej. ASISTENTE_NO_DISPONIBLE).
+class ErrorAsistenteEnFlujo extends EventoAsistente {
+  const ErrorAsistenteEnFlujo(this.codigo);
+  final String? codigo;
+}

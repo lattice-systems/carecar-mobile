@@ -1,5 +1,6 @@
 import 'dart:ui' show ImageFilter;
 
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_portada.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/cabecera_portada.dart';
 import 'package:flutter/material.dart';
@@ -107,5 +108,95 @@ void main() {
       );
       expect(tester.takeException(), isNull);
     }
+  });
+
+  group('bajo una barra translucida', () {
+    // Pantalla con zona de reloj de 30 para comprobar que la reserva suma la
+    // barra y esa zona, no solo el alto de la barra.
+    Widget pantalla(Widget cuerpo, {double escala = 1}) => conTemaPista(
+      MediaQuery(
+        data: MediaQueryData(
+          size: const Size(360, 800),
+          padding: const EdgeInsets.only(top: 30),
+          textScaler: TextScaler.linear(escala),
+        ),
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: const BarraPortada(titulo: 'Detalle'),
+          body: cuerpo,
+        ),
+      ),
+    );
+
+    Future<void> comprobar(WidgetTester tester, Widget cuerpo) async {
+      await tester.pumpWidget(pantalla(cuerpo));
+      final barra = tester.getRect(find.byType(AppBar));
+      final pieza = tester.getRect(
+        find.byIcon(Icons.directions_car_filled).last,
+      );
+      expect(pieza.top, greaterThanOrEqualTo(barra.bottom));
+      // El fondo de la portada si llega hasta arriba.
+      expect(tester.getRect(find.byType(CabeceraPortada)).top, 0);
+    }
+
+    testWidgets('en un ListView con relleno propio', (tester) async {
+      await comprobar(
+        tester,
+        ListView(
+          padding: const EdgeInsets.only(bottom: 24),
+          children: [_cabecera()],
+        ),
+      );
+    });
+
+    testWidgets('en un SingleChildScrollView', (tester) async {
+      await comprobar(tester, SingleChildScrollView(child: _cabecera()));
+    });
+
+    testWidgets('con la letra al 200 % la reserva sigue siendo la barra', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        pantalla(SingleChildScrollView(child: _cabecera()), escala: 2),
+      );
+      final barra = tester.getRect(find.byType(AppBar));
+      final pieza = tester.getRect(
+        find.byIcon(Icons.directions_car_filled).last,
+      );
+      expect(pieza.top, greaterThanOrEqualTo(barra.bottom));
+    });
+
+    testWidgets('al desplazar la barra es opaca y tapa lo que sube', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        pantalla(
+          ListView(
+            padding: const EdgeInsets.only(bottom: 24),
+            children: [_cabecera(), const SizedBox(height: 1200)],
+          ),
+        ),
+      );
+      await tester.drag(find.byType(ListView), const Offset(0, -300));
+      await tester.pumpAndSettle();
+      final material = tester.widget<Material>(
+        find
+            .descendant(
+              of: find.byType(AppBar),
+              matching: find.byType(Material),
+            )
+            .first,
+      );
+      expect(material.color?.a, 1);
+    });
+
+    testWidgets('sin barra extendida no agrega reserva', (tester) async {
+      await tester.pumpWidget(conTemaPista(_cabecera()));
+      final pieza = tester.getRect(
+        find.byIcon(Icons.directions_car_filled).last,
+      );
+      final cabecera = tester.getRect(find.byType(CabeceraPortada));
+      expect(pieza.top - cabecera.top, lessThan(30));
+    });
   });
 }

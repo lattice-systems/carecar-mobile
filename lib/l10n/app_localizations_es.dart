@@ -10,6 +10,70 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
+  String accesoBloqueoMinutos(int minutos) {
+    return 'Espera $minutos min para volver a intentar.';
+  }
+
+  @override
+  String accesoBloqueoSegundos(int segundos) {
+    return 'Espera $segundos s para volver a intentar.';
+  }
+
+  @override
+  String get accesoBloqueoTitulo => 'Demasiados intentos';
+
+  @override
+  String get accesoContrasenaEtiqueta => 'Contraseña';
+
+  @override
+  String get accesoContrasenaVacia => 'Escribe tu contraseña.';
+
+  @override
+  String get accesoCorreoAyuda => 'El que le diste a la agencia';
+
+  @override
+  String get accesoCorreoEtiqueta => 'Correo';
+
+  @override
+  String get accesoCorreoInvalido =>
+      'Escribe un correo válido, como nombre@dominio.com.';
+
+  @override
+  String get accesoCorreoVacio => 'Escribe tu correo.';
+
+  @override
+  String get accesoEntrando => 'Entrando…';
+
+  @override
+  String get accesoEntrar => 'Iniciar sesión';
+
+  @override
+  String get accesoFalloTitulo => 'No pudimos iniciar sesión';
+
+  @override
+  String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoOlvide => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get accesoServidorDespertandoMensaje =>
+      'La primera vez después de un rato puede tardar hasta un minuto.';
+
+  @override
+  String get accesoServidorDespertandoTitulo => 'Despertando el servidor…';
+
+  @override
+  String get accesoSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String get accesoSinRegistro =>
+      'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.';
+
+  @override
+  String get accesoSubtitulo => 'Tu acceso a la agencia';
+
+  @override
   String get asistenciaGuiaChoquePaso1 =>
       'Detén el auto en un lugar seguro, apaga el motor y enciende las luces intermitentes.';
 
@@ -489,6 +553,185 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get citasVacioTitulo => 'Sin lugares disponibles';
+
+  @override
+  String get mantenimientoAcceso => 'Mantenimiento';
+
+  @override
+  String get mantenimientoAgendar => 'Agendar este servicio';
+
+  @override
+  String get mantenimientoCargando => 'Cargando tu plan de mantenimiento';
+
+  @override
+  String get mantenimientoCargandoServicio => 'Cargando el servicio';
+
+  @override
+  String get mantenimientoCerrar => 'Cerrar';
+
+  @override
+  String get mantenimientoDescripcionPortada =>
+      'Ilustración de una llave de servicio';
+
+  @override
+  String get mantenimientoEncabezadoConceptos => 'Qué incluye';
+
+  @override
+  String get mantenimientoEncabezadoKm => 'Tu kilometraje';
+
+  @override
+  String get mantenimientoEncabezadoPlan => 'Plan de servicios';
+
+  @override
+  String get mantenimientoEstadoHecho => 'Hecho';
+
+  @override
+  String get mantenimientoEstadoPendiente => 'Pendiente';
+
+  @override
+  String get mantenimientoEstadoProximo => 'Próximo';
+
+  @override
+  String get mantenimientoEstadoVencido => 'Vencido';
+
+  @override
+  String mantenimientoFaltan(String km, String fecha) {
+    return 'Faltan $km km · hacia el $fecha';
+  }
+
+  @override
+  String mantenimientoHechoEl(String fecha) {
+    return 'Hecho el $fecha';
+  }
+
+  @override
+  String mantenimientoKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String mantenimientoKmAyuda(String km) {
+    return 'Tu último registro: $km km';
+  }
+
+  @override
+  String get mantenimientoKmAyudaSinRegistro =>
+      'Escribe el número que marca el tablero de tu auto.';
+
+  @override
+  String get mantenimientoKmCampo => 'Kilometraje actual';
+
+  @override
+  String mantenimientoKmDelCliente(String fecha) {
+    return 'Registrado por ti el $fecha';
+  }
+
+  @override
+  String mantenimientoKmDelTaller(String fecha) {
+    return 'Registrado por el taller el $fecha';
+  }
+
+  @override
+  String get mantenimientoKmErrorFormato =>
+      'Usa solo números enteros mayores que cero.';
+
+  @override
+  String mantenimientoKmErrorMenor(String km) {
+    return 'No puede ser menor a $km km, el último que tenemos.';
+  }
+
+  @override
+  String get mantenimientoKmErrorRed =>
+      'No pudimos guardar tu kilometraje. Revisa tu internet y vuelve a intentarlo.';
+
+  @override
+  String get mantenimientoKmErrorServidor =>
+      'Ese kilometraje es menor al último registrado. Revísalo en tu tablero.';
+
+  @override
+  String get mantenimientoKmErrorVacio => 'Escribe tu kilometraje.';
+
+  @override
+  String get mantenimientoKmGuardado =>
+      'Kilometraje guardado. Actualizamos tu próximo servicio.';
+
+  @override
+  String get mantenimientoKmGuardando => 'Guardando kilometraje';
+
+  @override
+  String get mantenimientoKmGuardar => 'Guardar kilometraje';
+
+  @override
+  String get mantenimientoKmNota =>
+      'El kilometraje que registra el taller es el oficial: tu registro no lo reemplaza.';
+
+  @override
+  String get mantenimientoKmSinDato => 'Sin registrar';
+
+  @override
+  String get mantenimientoKmSinFuente => 'Aún no hay una lectura de tu auto';
+
+  @override
+  String get mantenimientoKmTitulo => 'Registrar kilometraje';
+
+  @override
+  String get mantenimientoMotivoKm => 'Te toca por kilometraje';
+
+  @override
+  String get mantenimientoMotivoTiempo => 'Te toca por tiempo transcurrido';
+
+  @override
+  String get mantenimientoPrecioEtiqueta => 'Precio estimado';
+
+  @override
+  String get mantenimientoPrecioLeyenda => 'Estimación no vinculante';
+
+  @override
+  String mantenimientoPromedio(String km) {
+    return 'Promedio: $km km al día';
+  }
+
+  @override
+  String get mantenimientoRegistrarKm => 'Registrar km';
+
+  @override
+  String mantenimientoResumenServicio(String km, String meses) {
+    return '$km km · $meses meses';
+  }
+
+  @override
+  String get mantenimientoServicioNoEncontradoMensaje =>
+      'Puede que el plan haya cambiado. Vuelve al plan e inténtalo de nuevo.';
+
+  @override
+  String get mantenimientoServicioNoEncontradoTitulo =>
+      'No encontramos este servicio';
+
+  @override
+  String get mantenimientoSinConceptos =>
+      'Este servicio no trae conceptos detallados.';
+
+  @override
+  String get mantenimientoSinProximoMensaje =>
+      'Registra tu kilometraje para calcular cuándo te toca el siguiente servicio.';
+
+  @override
+  String get mantenimientoSinProximoTitulo => 'Sin próximo servicio estimado';
+
+  @override
+  String get mantenimientoTitulo => 'Mantenimiento';
+
+  @override
+  String get mantenimientoVacioMensaje =>
+      'Todavía no tenemos el plan de servicios de este modelo. Pregunta a tu asesor en la agencia.';
+
+  @override
+  String get mantenimientoVacioTitulo => 'Aún no hay plan para tu auto';
+
+  @override
+  String mantenimientoYaToca(String km) {
+    return 'Ya te toca · pasó de los $km km';
+  }
 
   @override
   String precioDesde(String precio) {
@@ -1270,6 +1513,77 @@ class AppLocalizationsEs extends AppLocalizations {
   String get widgetsSinCitaMensaje => 'No tienes citas próximas';
 
   @override
+  String get widgetsTallerTitulo => 'Tu auto en el taller';
+
+  @override
+  String widgetsTallerEntrega(String hora) {
+    return 'Entrega estimada: $hora';
+  }
+
+  @override
+  String get widgetsAgendar => 'Agendar';
+
+  @override
+  String get widgetsTallerEncabezado => 'Taller en vivo';
+
+  @override
+  String get widgetsTallerVacioMensaje => 'Tu auto no está en el taller';
+
+  @override
+  String widgetsTallerPaso(int actual, int total) {
+    return 'Paso $actual de $total';
+  }
+
+  @override
+  String get widgetsMantenimientoTitulo => 'Mantenimiento';
+
+  @override
+  String widgetsMantenimientoFaltanKm(String km) {
+    return 'Faltan $km km';
+  }
+
+  @override
+  String get widgetsMantenimientoYaToca => 'Ya toca';
+
+  @override
+  String widgetsMantenimientoFecha(String fecha) {
+    return 'Hacia el $fecha';
+  }
+
+  @override
+  String get widgetsMantenimientoVacioMensaje =>
+      'Aún no hay un plan para tu auto';
+
+  @override
+  String get widgetsMantenimientoAccion => 'Ver plan';
+
+  @override
+  String get widgetsBitacoraTitulo => 'Bitácora';
+
+  @override
+  String get widgetsBitacoraRendimientoUnidad => 'km/l';
+
+  @override
+  String widgetsBitacoraGastoMes(String mes) {
+    return 'Gasto de $mes';
+  }
+
+  @override
+  String get widgetsBitacoraRendimientoEtiqueta => 'Rendimiento';
+
+  @override
+  String get widgetsBitacoraVacioMensaje => 'Registra tu primera carga';
+
+  @override
+  String get widgetsBitacoraAccion => 'Registrar';
+
+  @override
+  String get widgetsAccesosTitulo => 'Accesos rápidos';
+
+  @override
+  String get widgetsAccesoComprobante => 'Comprobante';
+
+  @override
   String get citasWalletAgregar => 'Agregar a Wallet';
 
   @override
@@ -1304,6 +1618,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get citasAccionesCita => 'Opciones de tu cita';
 
   @override
+  String get regresar => 'Regresar';
+
+  @override
   String get citasCerrar => 'Cerrar';
 
   @override
@@ -1313,7 +1630,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get citasComprobanteRecepcion => 'En recepción';
 
   @override
-  String get vehiculosAgendarServicio => 'Agendar servicio';
+  String get vehiculosAgendarServicio => 'Agendar';
 
   @override
   String get vehiculosBotonManual => 'Manual';
@@ -1852,6 +2169,540 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get asistenciaSeguimientoEncabezado => 'Estado de tu solicitud';
+
+  @override
+  String get asistenciaEstadoRecibida => 'Recibida';
+
+  @override
+  String get asistenciaEstadoEnCamino => 'En camino';
+
+  @override
+  String get asistenciaEstadoAtendida => 'Atendida';
+
+  @override
+  String get asistenciaEstadoCancelada => 'Cancelada';
+
+  @override
+  String get asistenciaEstadoNotaRecibida =>
+      'La agencia ya tiene tu solicitud.';
+
+  @override
+  String get asistenciaEstadoNotaEnCamino => 'Hay ayuda en camino hacia ti.';
+
+  @override
+  String get asistenciaEstadoNotaAtendida => 'Tu solicitud ya fue atendida.';
+
+  @override
+  String get asistenciaEstadoNotaCancelada => 'La solicitud se cerró.';
+
+  @override
+  String asistenciaEstadoActual(String estado) {
+    return 'Estado: $estado';
+  }
+
+  @override
+  String get asistenciaSeguimientoActualizar => 'Actualizar estado';
+
+  @override
+  String get asistenciaSeguimientoActualizando => 'Actualizando…';
+
+  @override
+  String get asistenciaSeguimientoFallo =>
+      'No pudimos actualizar el estado. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get asistenciaSeguimientoUbicacionCerrada =>
+      'La solicitud ya está cerrada: tu ubicación dejó de compartirse.';
+
+  @override
+  String get recoleccionSeguimientoTitulo => 'Seguimiento del traslado';
+
+  @override
+  String get recoleccionSeguimientoRecoger => 'Recogemos tu auto';
+
+  @override
+  String get recoleccionSeguimientoEntregar => 'Entregamos tu auto';
+
+  @override
+  String recoleccionSeguimientoVentana(
+    DateTime fecha,
+    String inicio,
+    String fin,
+  ) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return '$fechaString, de $inicio a $fin';
+  }
+
+  @override
+  String get recoleccionSeguimientoAbrir =>
+      'Toca un traslado para seguirlo en vivo.';
+
+  @override
+  String get recoleccionSeguimientoLineaEncabezado => 'Avance';
+
+  @override
+  String get recoleccionEstadoProgramado => 'Programado';
+
+  @override
+  String get recoleccionEstadoEnCamino => 'Chofer en camino';
+
+  @override
+  String get recoleccionEstadoRecogido => 'Auto recogido';
+
+  @override
+  String get recoleccionEstadoEnTaller => 'En el taller';
+
+  @override
+  String get recoleccionEstadoDeRegreso => 'De regreso a tu domicilio';
+
+  @override
+  String get recoleccionEstadoEntregado => 'Auto entregado';
+
+  @override
+  String get recoleccionEstadoCancelado => 'Cancelado';
+
+  @override
+  String get recoleccionEstadoNotaEnCamino => 'Sigue su ubicación en el mapa.';
+
+  @override
+  String get recoleccionEstadoNotaDeRegreso => 'Sigue su ubicación en el mapa.';
+
+  @override
+  String get recoleccionSeguimientoMapaEncabezado => 'Dónde va el chofer';
+
+  @override
+  String recoleccionSeguimientoMapaDescripcion(
+    String latitud,
+    String longitud,
+  ) {
+    return 'Mapa con la ubicación del chofer: latitud $latitud, longitud $longitud.';
+  }
+
+  @override
+  String recoleccionSeguimientoActualizadaEn(String hora) {
+    return 'Ubicación actualizada a las $hora';
+  }
+
+  @override
+  String get recoleccionSeguimientoVerChecklist => 'Ver checklist del auto';
+
+  @override
+  String get recoleccionSeguimientoActualizar => 'Actualizar';
+
+  @override
+  String get recoleccionSeguimientoCargando =>
+      'Cargando el seguimiento del traslado';
+
+  @override
+  String get recoleccionSeguimientoNoEncontradoTitulo =>
+      'No encontramos este traslado';
+
+  @override
+  String get recoleccionSeguimientoNoEncontradoMensaje =>
+      'Puede que ya no exista. Vuelve a tus citas y ábrelo de nuevo.';
+
+  @override
+  String get recoleccionSeguimientoFalloAlActualizar =>
+      'No pudimos actualizar. Mostramos lo último que sabemos.';
+
+  @override
+  String get recoleccionChecklistTitulo => 'Checklist del auto';
+
+  @override
+  String get recoleccionChecklistKm => 'Kilometraje';
+
+  @override
+  String recoleccionChecklistKmValor(int km) {
+    final intl.NumberFormat kmNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String kmString = kmNumberFormat.format(km);
+
+    return '$kmString km';
+  }
+
+  @override
+  String get recoleccionChecklistGasolina => 'Gasolina';
+
+  @override
+  String get recoleccionGasolinaVacio => 'Vacío';
+
+  @override
+  String get recoleccionGasolinaUnCuarto => 'Un cuarto';
+
+  @override
+  String get recoleccionGasolinaMedio => 'Medio tanque';
+
+  @override
+  String get recoleccionGasolinaTresCuartos => 'Tres cuartos';
+
+  @override
+  String get recoleccionGasolinaLleno => 'Lleno';
+
+  @override
+  String recoleccionChecklistGasolinaLector(String nivel) {
+    return 'Gasolina: $nivel';
+  }
+
+  @override
+  String get recoleccionChecklistNotas => 'Notas del chofer';
+
+  @override
+  String get recoleccionChecklistFotos => 'Fotos del auto';
+
+  @override
+  String recoleccionChecklistFotoDescripcion(int numero, int total) {
+    return 'Foto $numero de $total del estado del auto';
+  }
+
+  @override
+  String get recoleccionChecklistSinFotos => 'Este checklist no trae fotos.';
+
+  @override
+  String get recoleccionChecklistFirmante => 'Firma de conformidad';
+
+  @override
+  String recoleccionChecklistRegistrado(DateTime fecha) {
+    final intl.DateFormat fechaDateFormat = intl.DateFormat.yMMMMd(localeName);
+    final String fechaString = fechaDateFormat.format(fecha);
+
+    return 'Registrado el $fechaString';
+  }
+
+  @override
+  String get recoleccionChecklistVacioTitulo => 'Aún no hay checklist';
+
+  @override
+  String get recoleccionChecklistVacioMensaje =>
+      'El chofer lo registra al recoger y al entregar tu auto. Cuando lo haga, lo verás aquí.';
+
+  @override
+  String get recoleccionChecklistCargando => 'Cargando el checklist del auto';
+
+  @override
+  String get bitacoraTitulo => 'Bitácora';
+
+  @override
+  String get bitacoraSubtituloSinNombre => 'Tu auto';
+
+  @override
+  String get bitacoraDescripcionPortada => 'Ícono de una bomba de gasolina';
+
+  @override
+  String get bitacoraNuevaCarga => 'Nueva carga';
+
+  @override
+  String get bitacoraOtroGasto => 'Otro gasto';
+
+  @override
+  String get bitacoraCerrar => 'Cerrar';
+
+  @override
+  String get bitacoraCargando => 'Cargando tu bitácora';
+
+  @override
+  String get bitacoraVacioTitulo => 'Aún no hay gastos';
+
+  @override
+  String get bitacoraVacioMensaje =>
+      'Registra tu primera carga de gasolina para saber cuánto rinde y cuánto te cuesta tu auto.';
+
+  @override
+  String get bitacoraResumenTitulo => 'Tu rendimiento';
+
+  @override
+  String get bitacoraEtiquetaRendimiento => 'Rendimiento';
+
+  @override
+  String bitacoraCifraKmPorLitro(String valor) {
+    return '$valor km/l';
+  }
+
+  @override
+  String get bitacoraEtiquetaCostoPorKm => 'Costo por km';
+
+  @override
+  String bitacoraCifraCostoPorKm(String valor) {
+    return '$valor/km';
+  }
+
+  @override
+  String get bitacoraEtiquetaGastoMes => 'Gasto de este mes';
+
+  @override
+  String get bitacoraCifraSinDatos => '—';
+
+  @override
+  String get bitacoraDetalleSinDatos => 'Necesitas 2 cargas';
+
+  @override
+  String get bitacoraVerEstadisticas => 'Rendimiento y gasto por mes';
+
+  @override
+  String get bitacoraExportar => 'Exportar bitácora';
+
+  @override
+  String get bitacoraTipoGasolina => 'Gasolina';
+
+  @override
+  String get bitacoraTipoEstacionamiento => 'Estacionamiento';
+
+  @override
+  String get bitacoraTipoCasetas => 'Casetas';
+
+  @override
+  String get bitacoraTipoLavado => 'Lavado';
+
+  @override
+  String get bitacoraTipoOtro => 'Otro';
+
+  @override
+  String bitacoraDetalleCarga(String fecha, String litros, String km) {
+    return '$fecha · $litros l · $km km';
+  }
+
+  @override
+  String get bitacoraFormCargaTitulo => 'Nueva carga';
+
+  @override
+  String get bitacoraFormEditarCargaTitulo => 'Editar carga';
+
+  @override
+  String get bitacoraFormGastoTitulo => 'Nuevo gasto';
+
+  @override
+  String get bitacoraFormEditarGastoTitulo => 'Editar gasto';
+
+  @override
+  String get bitacoraCampoTipo => 'Tipo de gasto';
+
+  @override
+  String get bitacoraCampoLitros => 'Litros';
+
+  @override
+  String get bitacoraCampoMonto => 'Monto total';
+
+  @override
+  String get bitacoraCampoKm => 'Kilometraje del tablero';
+
+  @override
+  String bitacoraAyudaKm(String km) {
+    return 'Tu última lectura es de $km km.';
+  }
+
+  @override
+  String get bitacoraCampoFecha => 'Fecha';
+
+  @override
+  String get bitacoraElegirFecha => 'Elegir fecha';
+
+  @override
+  String get bitacoraCampoDescripcion => 'Descripción';
+
+  @override
+  String get bitacoraAyudaDescripcion =>
+      'Obligatoria en «Otro», máximo 200 caracteres.';
+
+  @override
+  String get bitacoraErrorMonto => 'Escribe un monto mayor a 0.';
+
+  @override
+  String get bitacoraErrorLitros => 'Escribe los litros, mayores a 0.';
+
+  @override
+  String get bitacoraErrorKm => 'Escribe el kilometraje como número entero.';
+
+  @override
+  String bitacoraErrorKmMenor(String km) {
+    return 'No puede ser menor a tu última lectura ($km km).';
+  }
+
+  @override
+  String get bitacoraErrorKmServidor =>
+      'El servidor lo rechazó: es menor a tu última lectura. Revisa el kilometraje.';
+
+  @override
+  String get bitacoraErrorFecha => 'Elige una fecha que no sea futura.';
+
+  @override
+  String get bitacoraErrorDescripcion =>
+      'Describe el gasto, en máximo 200 caracteres.';
+
+  @override
+  String get bitacoraErrorGuardar => 'No se pudo guardar. Intenta de nuevo.';
+
+  @override
+  String get bitacoraErrorBorrar => 'No se pudo borrar. Intenta de nuevo.';
+
+  @override
+  String get bitacoraErrorSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get bitacoraGuardar => 'Guardar';
+
+  @override
+  String get bitacoraBorrar => 'Borrar gasto';
+
+  @override
+  String get bitacoraBorrarTitulo => '¿Borrar este gasto?';
+
+  @override
+  String bitacoraBorrarMensaje(String descripcion) {
+    return 'Se borrará «$descripcion». No se puede deshacer.';
+  }
+
+  @override
+  String get bitacoraBorrarConfirmar => 'Borrar';
+
+  @override
+  String get bitacoraBorrarCancelar => 'Cancelar';
+
+  @override
+  String get bitacoraGastoGuardado => 'Gasto guardado.';
+
+  @override
+  String get bitacoraGastoBorrado => 'Gasto borrado.';
+
+  @override
+  String get bitacoraTicketTitulo => 'Llenar desde el ticket';
+
+  @override
+  String get bitacoraTicketPrivacidad =>
+      'La foto se lee en tu teléfono; no se guarda ni se sube.';
+
+  @override
+  String get bitacoraTicketTomar => 'Tomar foto';
+
+  @override
+  String get bitacoraTicketElegir => 'Elegir de fotos';
+
+  @override
+  String get bitacoraTicketLeyendo => 'Leyendo el ticket…';
+
+  @override
+  String get bitacoraTicketLeido =>
+      'Esto fue lo que leímos. Revísalo y corrige lo que haga falta.';
+
+  @override
+  String get bitacoraTicketNoLeyo =>
+      'No pudimos leer el ticket. Llena los datos a mano.';
+
+  @override
+  String get bitacoraTicketSinPermiso =>
+      'No tenemos permiso para usar la cámara o tus fotos. Actívalo en los ajustes o llena los datos a mano.';
+
+  @override
+  String get bitacoraTicketError =>
+      'No se pudo abrir la foto. Llena los datos a mano.';
+
+  @override
+  String get bitacoraEstadisticasTitulo => 'Rendimiento y gasto';
+
+  @override
+  String get bitacoraGraficaTitulo => 'Gasto por mes';
+
+  @override
+  String get bitacoraGraficaVacia => 'Aún no hay gastos que graficar.';
+
+  @override
+  String get bitacoraSinRendimientoTitulo => 'Aún no hay rendimiento';
+
+  @override
+  String bitacoraSinRendimientoMensaje(int cargas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cargas,
+      locale: localeName,
+      other: 'Tienes $cargas cargas, pero sus kilometrajes no avanzan.',
+      one: 'Tienes 1 carga.',
+      zero: 'Todavía no registras ninguna.',
+    );
+    return 'Para calcular los km/l y el costo por km necesitamos al menos 2 cargas con su kilometraje. $_temp0';
+  }
+
+  @override
+  String bitacoraBaseDelCalculo(String km, int tramos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      tramos,
+      locale: localeName,
+      other: '$tramos tramos',
+      one: '1 tramo',
+    );
+    return 'Calculado con $km km recorridos en $_temp0 entre cargas.';
+  }
+
+  @override
+  String get bitacoraExportarTitulo => 'Exportar bitácora';
+
+  @override
+  String get bitacoraExportarIntro =>
+      'Elige los meses y comparte tu bitácora con la hoja del sistema.';
+
+  @override
+  String get bitacoraExportarDesde => 'Desde';
+
+  @override
+  String get bitacoraExportarHasta => 'Hasta';
+
+  @override
+  String get bitacoraExportarCsv => 'Compartir CSV';
+
+  @override
+  String get bitacoraExportarPdf => 'Compartir PDF';
+
+  @override
+  String get bitacoraExportarVacio => 'No hay gastos en esos meses.';
+
+  @override
+  String get bitacoraExportarRangoInvalido =>
+      'El mes inicial no puede ser posterior al final.';
+
+  @override
+  String get bitacoraExportarError =>
+      'No se pudo compartir el archivo. Intenta de nuevo.';
+
+  @override
+  String bitacoraPdfTitulo(String vehiculo) {
+    return 'Bitácora de $vehiculo';
+  }
+
+  @override
+  String bitacoraPdfPeriodo(String desde, String hasta) {
+    return '$desde a $hasta';
+  }
+
+  @override
+  String bitacoraPdfTotal(String monto) {
+    return 'Total: $monto';
+  }
+
+  @override
+  String get bitacoraColumnaFecha => 'Fecha';
+
+  @override
+  String get bitacoraColumnaTipo => 'Tipo';
+
+  @override
+  String get bitacoraColumnaMonto => 'Monto';
+
+  @override
+  String get bitacoraColumnaLitros => 'Litros';
+
+  @override
+  String get bitacoraColumnaKm => 'Km';
+
+  @override
+  String get bitacoraColumnaDetalle => 'Detalle';
+
+  @override
+  String get bitacoraAccesoFila => 'Bitácora';
+
+  @override
   String get asistenteSugerenciasTitulo => 'Prueba con una de estas';
 
   @override
@@ -1878,4 +2729,411 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenteNoMeSirvio => 'No me sirvió';
+
+  @override
+  String tallerTarjetaTitulo(String vehiculo) {
+    return 'Tu $vehiculo está en el taller';
+  }
+
+  @override
+  String tallerTarjetaEtapaYEntrega(String etapa, String hora) {
+    return '$etapa · entrega $hora';
+  }
+
+  @override
+  String tallerTarjetaPendientes(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad trabajos por aprobar',
+      one: '1 trabajo por aprobar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tallerTarjetaAvance(int avance) {
+    return 'Avance de $avance %';
+  }
+
+  @override
+  String get tallerTarjetaAbrir => 'Ver el avance de tu orden';
+
+  @override
+  String get tallerEtapaRecibido => 'Recibido';
+
+  @override
+  String get tallerEtapaDiagnostico => 'Diagnóstico';
+
+  @override
+  String get tallerEtapaEsperandoAprobacion => 'Esperando aprobación';
+
+  @override
+  String get tallerEtapaEnReparacion => 'En reparación';
+
+  @override
+  String get tallerEtapaControlDeCalidad => 'Control de calidad';
+
+  @override
+  String get tallerEtapaLavado => 'Lavado';
+
+  @override
+  String get tallerEtapaListoParaEntrega => 'Listo para entrega';
+
+  @override
+  String get tallerEtapaEntregado => 'Entregado';
+
+  @override
+  String get tallerOrdenTitulo => 'Tu orden';
+
+  @override
+  String get tallerOrdenEtapaActual => 'Etapa actual';
+
+  @override
+  String get tallerOrdenEntregaEstimada => 'Entrega estimada';
+
+  @override
+  String get tallerOrdenSinEntrega => 'Aún sin estimar';
+
+  @override
+  String get tallerOrdenAsesor => 'Tu asesor';
+
+  @override
+  String get tallerOrdenLineaDeTiempo => 'Línea de tiempo';
+
+  @override
+  String tallerOrdenNotaEntrega(String hora) {
+    return 'Entrega estimada $hora';
+  }
+
+  @override
+  String tallerOrdenNotaYEntrega(String nota, String hora) {
+    return '$nota · entrega estimada $hora';
+  }
+
+  @override
+  String get tallerOrdenInspeccion => 'Inspección multipunto';
+
+  @override
+  String tallerOrdenInspeccionResumen(int puntos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      puntos,
+      locale: localeName,
+      other: '$puntos puntos revisados',
+      one: '1 punto revisado',
+      zero: 'Aún sin puntos revisados',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tallerOrdenAdicionales => 'Trabajos adicionales';
+
+  @override
+  String tallerOrdenAdicionalesResumen(int pendientes) {
+    String _temp0 = intl.Intl.pluralLogic(
+      pendientes,
+      locale: localeName,
+      other: '$pendientes por aprobar',
+      one: '1 por aprobar',
+      zero: 'Nada por aprobar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String tallerOrdenAvisoPendientes(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: 'El taller te propone $cantidad trabajos adicionales',
+      one: 'El taller te propone 1 trabajo adicional',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tallerOrdenAvisoMensaje =>
+      'Revísalos y apruébalos o recházalos con tu firma.';
+
+  @override
+  String get tallerOrdenRevisar => 'Revisar';
+
+  @override
+  String get tallerReintentar => 'Reintentar';
+
+  @override
+  String get tallerInspeccionTitulo => 'Inspección';
+
+  @override
+  String get tallerInspeccionVacia => 'Aún sin inspección';
+
+  @override
+  String get tallerInspeccionVaciaMensaje =>
+      'El técnico todavía no registra los puntos revisados.';
+
+  @override
+  String tallerInspeccionFotoDe(String punto) {
+    return 'Foto de $punto';
+  }
+
+  @override
+  String get tallerInspeccionDeLaOrden => 'De la orden';
+
+  @override
+  String get tallerInspeccionFotoDeLaOrden => 'Foto de la orden';
+
+  @override
+  String tallerInspeccionVerVideo(int numero) {
+    return 'Ver video $numero';
+  }
+
+  @override
+  String get tallerInspeccionVideoAbre =>
+      'Se abre en el reproductor del teléfono';
+
+  @override
+  String get tallerInspeccionVideoError =>
+      'No se pudo abrir el video. Jala hacia abajo para recargar e intenta de nuevo.';
+
+  @override
+  String get tallerAdicionalesTitulo => 'Adicionales';
+
+  @override
+  String get tallerAdicionalesVacio => 'Sin trabajos adicionales';
+
+  @override
+  String get tallerAdicionalesVacioMensaje =>
+      'Si el taller encuentra algo más, aquí te lo propone para que decidas.';
+
+  @override
+  String get tallerAdicionalManoDeObra => 'Mano de obra';
+
+  @override
+  String get tallerAdicionalRefacciones => 'Refacciones';
+
+  @override
+  String get tallerAdicionalTotal => 'Total';
+
+  @override
+  String get tallerAdicionalPendiente => 'Por aprobar';
+
+  @override
+  String get tallerAdicionalAprobado => 'Aprobado';
+
+  @override
+  String get tallerAdicionalRechazado => 'Rechazado';
+
+  @override
+  String tallerAdicionalRespondidoEl(String fecha) {
+    return 'Respondido el $fecha';
+  }
+
+  @override
+  String get tallerAdicionalAprobar => 'Aprobar';
+
+  @override
+  String get tallerAdicionalRechazar => 'Rechazar';
+
+  @override
+  String get tallerTotales => 'Totales';
+
+  @override
+  String get tallerTotalOrden => 'Total de la orden';
+
+  @override
+  String get tallerTotalAprobados => 'Adicionales aprobados';
+
+  @override
+  String get tallerTotalPendientes => 'Adicionales por aprobar';
+
+  @override
+  String get tallerTotalEstimado => 'Total estimado';
+
+  @override
+  String get tallerFirmaAprobarTitulo => 'Firma para aprobar';
+
+  @override
+  String get tallerFirmaRechazarTitulo => 'Firma para rechazar';
+
+  @override
+  String tallerFirmaInstruccion(String concepto, String total) {
+    return '$concepto por $total. Firma con el dedo dentro del recuadro: tu firma queda guardada con tu respuesta.';
+  }
+
+  @override
+  String get tallerFirmaArea => 'Área para firmar con el dedo';
+
+  @override
+  String get tallerFirmaBorrar => 'Borrar firma';
+
+  @override
+  String get tallerFirmaConfirmarAprobar => 'Aprobar con mi firma';
+
+  @override
+  String get tallerFirmaConfirmarRechazar => 'Rechazar con mi firma';
+
+  @override
+  String tallerRespuestaAprobada(String concepto) {
+    return 'Aprobaste «$concepto». El total estimado ya lo incluye.';
+  }
+
+  @override
+  String tallerRespuestaRechazada(String concepto) {
+    return 'Rechazaste «$concepto».';
+  }
+
+  @override
+  String get tallerRespuestaYaRespondida =>
+      'Ese trabajo ya tenía respuesta. Recarga para ver su estado.';
+
+  @override
+  String get tallerRespuestaOrdenCerrada =>
+      'La orden ya está terminada. Habla con tu asesor.';
+
+  @override
+  String get tallerRespuestaSinConexion =>
+      'Sin conexión. Tu respuesta no se envió.';
+
+  @override
+  String get tallerRespuestaError =>
+      'No se pudo enviar tu respuesta. Intenta de nuevo.';
+
+  @override
+  String get asistenteFotoAdjuntar => 'Foto de una luz del tablero';
+
+  @override
+  String get asistenteFotoTomar => 'Tomar foto';
+
+  @override
+  String get asistenteFotoGaleria => 'Elegir de tus fotos';
+
+  @override
+  String get asistenteFotoEnviada => 'Foto del tablero';
+
+  @override
+  String get asistenteRevisandoFoto => 'Revisando tu foto…';
+
+  @override
+  String get asistenteTestigoRoja => 'Detente';
+
+  @override
+  String get asistenteTestigoAmarilla => 'Revisar pronto';
+
+  @override
+  String get asistenteTestigoInformativa => 'Informativa';
+
+  @override
+  String get asistenteTestigoDetente =>
+      'Detente en un lugar seguro lo antes posible y apaga el motor.';
+
+  @override
+  String get asistentePedirAyuda => 'Pedir ayuda';
+
+  @override
+  String get asistenteTestigoNoReconocido =>
+      'No reconocí una luz en la foto. Descríbela con palabras: color, forma y si parpadea.';
+
+  @override
+  String get asistentePermisoCamara =>
+      'Para tomar la foto, permite el acceso a la cámara y a tus fotos en los ajustes del teléfono.';
+
+  @override
+  String get asistenteAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String citasMisCitasRecoleccionEncabezado(String cita) {
+    return 'Recolección · $cita';
+  }
+
+  @override
+  String get citasChecklistRecoger => 'Checklist al recoger';
+
+  @override
+  String get citasChecklistEntregar => 'Checklist al entregar';
+
+  @override
+  String get citasChecklistSubtitulo => 'Kilometraje, gasolina y fotos';
+
+  @override
+  String get citasChecklistComparar => 'Comparar recoger y entregar';
+
+  @override
+  String get citasChecklistCompararSubtitulo =>
+      'Lo que cambió entre una y otra';
+
+  @override
+  String get recoleccionChecklistPestanaRecoger => 'Al recoger';
+
+  @override
+  String get recoleccionChecklistPestanaEntregar => 'Al entregar';
+
+  @override
+  String get recoleccionChecklistPestanaComparar => 'Comparar';
+
+  @override
+  String recoleccionComparacionKmDetalle(int recoger, int entregar) {
+    final intl.NumberFormat recogerNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String recogerString = recogerNumberFormat.format(recoger);
+    final intl.NumberFormat entregarNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String entregarString = entregarNumberFormat.format(entregar);
+
+    return '$recogerString km al recoger, $entregarString km al entregar';
+  }
+
+  @override
+  String recoleccionComparacionGasolinaDetalle(
+    String recoger,
+    String entregar,
+  ) {
+    return '$recoger al recoger, $entregar al entregar';
+  }
+
+  @override
+  String get recoleccionComparacionFotosTitulo =>
+      'Fotos al recoger y al entregar';
+
+  @override
+  String get recoleccionComparacionFotosAyuda =>
+      'Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.';
+
+  @override
+  String recoleccionComparacionFotoRecoger(int numero, int total) {
+    return 'Foto $numero de $total al recoger';
+  }
+
+  @override
+  String recoleccionComparacionFotoEntregar(int numero, int total) {
+    return 'Foto $numero de $total al entregar';
+  }
+
+  @override
+  String recoleccionComparacionFotosDesiguales(
+    int recoger,
+    int entregar,
+    int comparadas,
+  ) {
+    return 'Hay $recoger fotos al recoger y $entregar al entregar; se comparan las primeras $comparadas.';
+  }
+
+  @override
+  String get recoleccionComparacionSinFotos =>
+      'Alguno de los dos checklists no trae fotos para comparar.';
+
+  @override
+  String get recoleccionComparacionFaltaTitulo => 'Aún no se puede comparar';
+
+  @override
+  String get recoleccionComparacionFaltaRecoger =>
+      'El chofer todavía no registra el checklist de recoger.';
+
+  @override
+  String get recoleccionComparacionFaltaEntregar =>
+      'El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.';
+
+  @override
+  String get recoleccionComparacionFaltaAmbos =>
+      'El chofer todavía no registra ningún checklist de esta recolección.';
 }

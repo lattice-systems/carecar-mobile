@@ -88,10 +88,12 @@ void main() {
         expect(find.text('Detalle del vehículo').hitTestable(), findsOneWidget);
         // La barra ya es opaca: nada se lee a traves del titulo.
         final barra = tester.widget<Material>(
-          find.descendant(
-            of: find.byType(AppBar),
-            matching: find.byType(Material),
-          ),
+          find
+              .descendant(
+                of: find.byType(AppBar),
+                matching: find.byType(Material),
+              )
+              .first,
         );
         expect(barra.color!.a, 1);
       },

@@ -147,6 +147,33 @@ void main() {
     });
   });
 
+  group('RepositorioAsistenciaApi.obtener', () {
+    test('pide GET /asistencia/{id} y lee la solicitud', () async {
+      Uri? url;
+      final repo = _repo((req) {
+        url = req.url;
+        return _json(200, {..._solicitud, 'estado': 'en_camino'});
+      });
+      final s = await repo.obtener(9);
+      expect(url?.path, '/api/v1/app/asistencia/9');
+      expect(s.estado, EstadoSolicitud.enCamino);
+    });
+
+    test('una solicitud ajena o inexistente es NoEncontrado', () async {
+      final repo = _repo((_) => _problema(404, null));
+      await expectLater(repo.obtener(9), throwsA(isA<NoEncontrado>()));
+    });
+  });
+
+  group('RepositorioAsistenciaFake.obtener', () {
+    test('devuelve la solicitud abierta y falla con otra', () async {
+      final fake = RepositorioAsistenciaFake();
+      final s = await fake.pedirAyuda(vehiculoId: 1, tipo: TipoAsistencia.otro);
+      expect((await fake.obtener(s.id)).id, s.id);
+      await expectLater(fake.obtener(99), throwsA(isA<NoEncontrado>()));
+    });
+  });
+
   group('RepositorioAsistenciaFake', () {
     test('crea, recuerda la abierta y rechaza una segunda', () async {
       final fake = RepositorioAsistenciaFake();

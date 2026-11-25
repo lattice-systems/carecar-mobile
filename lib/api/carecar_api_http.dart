@@ -147,6 +147,43 @@ class CarecarApiHttp implements CarecarApi {
   );
 
   @override
+  Stream<EventoAsistente> preguntarAlAsistenteEnFlujo({
+    required int vehiculoId,
+    required String pregunta,
+  }) => _cliente
+      .enviarFlujo(
+        '/asistente/preguntas/flujo',
+        cuerpo: {'vehiculoId': vehiculoId, 'pregunta': pregunta},
+      )
+      .map(
+        (e) => switch (e.evento) {
+          'texto' => TrozoAsistente(
+            ((e.datos as Map<String, Object?>?)?['texto'] as String?) ?? '',
+          ),
+          'fin' => FinAsistente(
+            RespuestaAsistente.fromJson(e.datos! as Map<String, Object?>),
+          ),
+          _ => ErrorAsistenteEnFlujo(
+            (e.datos as Map<String, Object?>?)?['codigo'] as String?,
+          ),
+        },
+      );
+
+  @override
+  Future<TestigoAsistente> identificarTestigo({
+    required int vehiculoId,
+    required List<int> imagen,
+    required String tipo,
+  }) => _cliente.enviarArchivo(
+    '/asistente/testigos',
+    campos: {'vehiculoId': '$vehiculoId'},
+    nombreArchivo: 'imagen',
+    bytes: imagen,
+    tipo: tipo,
+    leer: TestigoAsistente.fromJson,
+  );
+
+  @override
   Future<void> calificarRespuestaDelAsistente({
     required int consultaId,
     required bool util,

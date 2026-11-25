@@ -114,6 +114,36 @@ void main() {
     expect(find.bySemanticsLabel(RegExp('Cancelar cita')), findsOneWidget);
   });
 
+  testWidgets('vidrio es translucido con borde de luz (V2-T02.19)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      conTemaPista(
+        BotonPildora(
+          texto: 'Reprogramar',
+          icono: Icons.event_repeat,
+          variante: VarianteBotonPildora.vidrio,
+          alPresionar: () {},
+        ),
+        escenario: Escenario.oscuro,
+      ),
+    );
+    final material = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(BotonPildora),
+        matching: find.byType(Material),
+      ),
+    );
+    final c = PaletaColores.oscuro;
+    expect(material.color, c.texto.withValues(alpha: 0.06));
+    expect((material.shape! as StadiumBorder).side.width, greaterThan(0));
+    expect(tester.widget<Text>(find.text('Reprogramar')).style?.color, c.texto);
+    expect(
+      tester.widget<Icon>(find.byIcon(Icons.event_repeat)).color,
+      c.acento,
+    );
+  });
+
   testWidgets('expandido llena el ancho disponible', (tester) async {
     await tester.pumpWidget(
       conTemaPista(

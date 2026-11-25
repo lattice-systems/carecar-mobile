@@ -16,7 +16,9 @@ Widget _pantalla() => Scaffold(
 
 Color _fondoBarra(WidgetTester tester) {
   final material = tester.widget<Material>(
-    find.descendant(of: find.byType(AppBar), matching: find.byType(Material)),
+    find
+        .descendant(of: find.byType(AppBar), matching: find.byType(Material))
+        .first,
   );
   return material.color ?? Colors.transparent;
 }
