@@ -543,10 +543,19 @@ void main() {
       expect(agendada.recoleccion, isNull);
     });
 
-    test('un 422 se vuelve FueraDeCobertura', () {
+    test('un 422 FUERA_DE_COBERTURA se vuelve FueraDeCobertura', () {
       final api = ApiFalsa()
-        ..alAgendar = (_) async =>
-            throw const SinParametrosDeValuacion('fuera');
+        ..alAgendar = (_) async => throw const SolicitudRechazada(
+          'fuera',
+          problema: Problema(
+            timestamp: 't',
+            status: 422,
+            error: 'Error',
+            message: 'fuera',
+            path: '/citas',
+            codigo: CodigoProblema.fueraDeCobertura,
+          ),
+        );
       expect(
         RepositorioCitasApi(api).agendar(
           vehiculoId: 1,
@@ -555,6 +564,20 @@ void main() {
           direccionRecoleccionId: 3,
         ),
         throwsA(isA<FueraDeCobertura>()),
+      );
+    });
+
+    test('un 422 de otro codigo pasa como SolicitudRechazada', () {
+      final api = ApiFalsa()
+        ..alAgendar = (_) async => throw const SolicitudRechazada('otro');
+      expect(
+        RepositorioCitasApi(api).agendar(
+          vehiculoId: 1,
+          franja: franja,
+          motivo: MotivoCita.otro,
+          direccionRecoleccionId: 3,
+        ),
+        throwsA(isA<SolicitudRechazada>()),
       );
     });
 
