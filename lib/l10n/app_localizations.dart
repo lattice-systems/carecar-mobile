@@ -2534,6 +2534,114 @@ abstract class AppLocalizations {
   /// **'Entrega estimada: {hora}'**
   String widgetsTallerEntrega(String hora);
 
+  /// Botón corto del estado vacío de los widgets de inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar'**
+  String get widgetsAgendar;
+
+  /// Encabezado del widget de inicio del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Taller en vivo'**
+  String get widgetsTallerEncabezado;
+
+  /// Estado vacío del widget del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto no está en el taller'**
+  String get widgetsTallerVacioMensaje;
+
+  /// Avance de etapas del widget del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Paso {actual} de {total}'**
+  String widgetsTallerPaso(int actual, int total);
+
+  /// Encabezado del widget de inicio de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get widgetsMantenimientoTitulo;
+
+  /// Kilómetros que faltan para el próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Faltan {km} km'**
+  String widgetsMantenimientoFaltanKm(String km);
+
+  /// El próximo servicio ya toca por km o por fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya toca'**
+  String get widgetsMantenimientoYaToca;
+
+  /// Fecha estimada del próximo servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hacia el {fecha}'**
+  String widgetsMantenimientoFecha(String fecha);
+
+  /// Estado vacío del widget de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay un plan para tu auto'**
+  String get widgetsMantenimientoVacioMensaje;
+
+  /// Botón del estado vacío del widget de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver plan'**
+  String get widgetsMantenimientoAccion;
+
+  /// Encabezado del widget de inicio de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Bitácora'**
+  String get widgetsBitacoraTitulo;
+
+  /// Unidad del rendimiento en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'km/l'**
+  String get widgetsBitacoraRendimientoUnidad;
+
+  /// Etiqueta del gasto del mes en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Gasto de {mes}'**
+  String widgetsBitacoraGastoMes(String mes);
+
+  /// Etiqueta del rendimiento en el widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Rendimiento'**
+  String get widgetsBitacoraRendimientoEtiqueta;
+
+  /// Estado vacío del widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra tu primera carga'**
+  String get widgetsBitacoraVacioMensaje;
+
+  /// Botón del estado vacío del widget de la bitácora.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrar'**
+  String get widgetsBitacoraAccion;
+
+  /// Encabezado del widget de accesos rápidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesos rápidos'**
+  String get widgetsAccesosTitulo;
+
+  /// Acceso rápido al comprobante de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Comprobante'**
+  String get widgetsAccesoComprobante;
+
   /// Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet.
   ///
   /// In es, this message translates to:
