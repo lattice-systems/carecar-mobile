@@ -114,6 +114,33 @@ class ConfirmacionEstreno extends StatelessWidget {
   }
 }
 
+/// Una fila al final de los formularios para ver lo que ya se pidio
+/// (V2-M16.04). Cuando exista el Perfil (V2-M01.06) tendra tambien su acceso.
+class AccesoMisSolicitudes extends StatelessWidget {
+  const AccesoMisSolicitudes({required this.alToque, super.key});
+
+  final VoidCallback alToque;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final c = TokensPista.de(context).colores;
+    return Padding(
+      padding: const EdgeInsets.only(top: Espaciado.e5),
+      child: GrupoLista(
+        filas: [
+          FilaGrupo(
+            titulo: textos.estrenoMisSolicitudes,
+            icono: Icons.history,
+            colorIcono: c.acento,
+            alToque: alToque,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Titulo de seccion de los formularios de estreno.
 class SeccionEstreno extends StatelessWidget {
   const SeccionEstreno({required this.titulo, required this.hijo, super.key});

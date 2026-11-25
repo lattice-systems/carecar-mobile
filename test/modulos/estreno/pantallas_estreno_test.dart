@@ -781,6 +781,23 @@ void main() {
       expect(find.byType(EstadoVacio), findsOneWidget);
     });
 
+    _prueba('desde la prueba y desde la cotizacion se llega a la lista', (
+      tester,
+    ) async {
+      for (final inicial in [rutaPruebaManejo(7), rutaCotizarEstreno(7)]) {
+        await tester.pumpWidget(_appConRutas(_Repo(), inicial));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Mis solicitudes'));
+        await tester.pumpAndSettle();
+        expect(
+          find.byType(PantallaMisSolicitudes),
+          findsOneWidget,
+          reason: inicial,
+        );
+      }
+    });
+
     _prueba('desde la confirmacion se llega a la lista', (tester) async {
       await tester.pumpWidget(_appConRutas(_Repo(), rutaPruebaManejo(7)));
       await tester.pumpAndSettle();

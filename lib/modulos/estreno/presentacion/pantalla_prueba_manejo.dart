@@ -155,6 +155,9 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
                     ? null
                     : _enviar,
               ),
+              AccesoMisSolicitudes(
+                alToque: () => context.push(rutaMisSolicitudesEstreno),
+              ),
             ],
           ],
         ),

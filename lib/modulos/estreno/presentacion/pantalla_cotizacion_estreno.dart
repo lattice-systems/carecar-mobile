@@ -307,6 +307,9 @@ class _PantallaCotizacionEstrenoState
             expandido: true,
             alPresionar: _enviando || calculo == null ? null : _enviar,
           ),
+          AccesoMisSolicitudes(
+            alToque: () => context.push(rutaMisSolicitudesEstreno),
+          ),
         ],
       ],
     );
