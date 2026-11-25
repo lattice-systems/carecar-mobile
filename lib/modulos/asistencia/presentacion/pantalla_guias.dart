@@ -36,6 +36,7 @@ class PantallaGuias extends StatelessWidget {
           EncabezadoGrande(
             titulo: textos.asistenciaListaTitulo,
             translucido: true,
+            conRegreso: true,
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -59,7 +60,9 @@ class PantallaGuias extends StatelessWidget {
             child: Estante(
               titulo: textos.asistenciaEstanteGuias,
               anchoTarjeta: 168,
-              alto: 236,
+              // Con letra grande la portada crece con el texto: sin esto el
+              // titulo y los pasos desbordan la tarjeta.
+              alto: 236 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
               hijos: [
                 for (final guia in guiasDeEmergencia) _PortadaGuia(guia: guia),
               ],
