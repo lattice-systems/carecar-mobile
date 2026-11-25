@@ -3538,6 +3538,18 @@ abstract class AppLocalizations {
   /// **'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.'**
   String get seguridadEquipoComprometidoMensaje;
 
+  /// Título del aviso cuando el certificado del servidor no valida (certificados fijados). No bloquea la app.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos verificar que la conexión sea segura'**
+  String get seguridadConexionNoSeguraTitulo;
+
+  /// Explica por qué se cortó la conexión y qué hacer: cambiar de red.
+  ///
+  /// In es, this message translates to:
+  /// **'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.'**
+  String get seguridadConexionNoSeguraMensaje;
+
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
   /// In es, this message translates to:
