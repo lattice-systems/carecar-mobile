@@ -1,3 +1,4 @@
+import '../../recoleccion/recoleccion.dart' show RecoleccionAgendada;
 import 'motivo_cita.dart';
 
 /// Estado de una cita tal como lo ve el cliente (V2-M02.09).
@@ -18,6 +19,7 @@ class CitaCliente {
     this.franjaId,
     this.vehiculoNombre,
     this.motivo,
+    this.recoleccion,
   });
 
   final int id;
@@ -35,6 +37,10 @@ class CitaCliente {
 
   /// Nulo si el backend aún no lo guarda o es un motivo desconocido.
   final MotivoCita? motivo;
+
+  /// Los traslados de recoger y entregar con su estado (V2-M17.03); nulo si la
+  /// cita no lleva recolección.
+  final RecoleccionAgendada? recoleccion;
 
   /// Momento en que empieza la cita: la fecha más la hora de inicio. Una hora
   /// que no se puede leer cuenta como el inicio del día.

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Esquinas grandes y margenes de los widgets de inicio (V2-M25). El padding
+         crece con el tamano del widget: chico, mediano y grande. -->
+    <dimen name="widget_radio">24dp</dimen>
+    <dimen name="widget_pad_s">14dp</dimen>
+    <dimen name="widget_pad_m">16dp</dimen>
+    <dimen name="widget_pad_l">20dp</dimen>
+</resources>

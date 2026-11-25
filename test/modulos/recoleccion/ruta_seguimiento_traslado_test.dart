@@ -1,6 +1,8 @@
 import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/pestanas.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
@@ -75,6 +77,44 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PantallaChecklistTraslado), findsOneWidget);
+  });
+
+  testWidgets('el checklist acepta el traslado contrario y abre en Comparar', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester)
+        .go(rutaChecklistTraslado(5, contrario: 6, comparar: true));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Pestanas), findsOneWidget);
+    // Abre en «Comparar»: falta el checklist de entregar y se explica.
+    expect(find.byType(EstadoVacio), findsOneWidget);
+  });
+
+  testWidgets('el traslado de entregar abre en su pestana', (tester) async {
+    await _montar(tester);
+    enrutadorDe(
+      tester,
+    ).go(rutaChecklistTraslado(6, contrario: 5, tipo: TipoTraslado.entregar));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Pestanas), findsOneWidget);
+    // Abre en «Al entregar», que aun no tiene checklist.
+    expect(find.byType(EstadoVacio), findsOneWidget);
+  });
+
+  test('la ruta del checklist arma sus parametros', () {
+    expect(rutaChecklistTraslado(5), '/recoleccion/traslados/5/checklist');
+    expect(
+      rutaChecklistTraslado(
+        6,
+        contrario: 5,
+        tipo: TipoTraslado.entregar,
+        comparar: true,
+      ),
+      '/recoleccion/traslados/6/checklist?contrario=5&tipo=entregar&ver=comparar',
+    );
   });
 
   testWidgets('un id que no es numero vuelve al inicio', (tester) async {

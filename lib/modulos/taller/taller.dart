@@ -4,6 +4,9 @@
 /// Otros modulos y la app solo importan este archivo.
 library;
 
+export 'dominio/etapa_taller.dart' show EtapaTaller;
+export 'dominio/orden_taller.dart' show OrdenEnCurso;
+export 'presentacion/formato_taller.dart' show horaTaller, textoEtapa;
 export 'presentacion/proveedores_taller.dart'
     show ordenTallerProvider, ordenesEnCursoProvider, repositorioTallerProvider;
 export 'presentacion/rutas_taller.dart'

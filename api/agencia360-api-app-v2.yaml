@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.11.1
+  version: 2.12.1
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -2662,7 +2662,10 @@ components:
             - $ref: '#/components/schemas/RecoleccionCita'
           nullable: true
           description: |
-            V2-M17.02 · Solo viene al agendar con `recoleccion`; en el resto de las consultas es nula.
+            V2-M17.02 · Traslados de recoger y entregar con su estado actual. Viene en `POST /citas`
+            (cuando se agenda con `recoleccion`), en `GET /citas`, en cancelar y en reprogramar
+            (V2-M17.03). Es nula si la cita no tiene recolección; un traslado cancelado sigue en la
+            lista con `estado: cancelado`.
 
     PaginaCitas:
       type: object

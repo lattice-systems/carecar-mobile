@@ -5,7 +5,6 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_detalle_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
-import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
@@ -119,17 +118,13 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('Tu auto ofrece ficha e historial como pildoras de vidrio', (
-    tester,
-  ) async {
+  _prueba('Tu auto ofrece ficha e historial como tarjetas', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
-      final boton = tester.widget<BotonPildora>(
-        find.widgetWithText(BotonPildora, texto),
-      );
-      expect(boton.variante, VarianteBotonPildora.vidrio);
+      expect(find.text(texto), findsOneWidget);
     }
+    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(4));
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);

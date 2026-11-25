@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/traslado.dart';
 import '../../../nucleo/mapas/mapas.dart';
@@ -8,8 +10,8 @@ import '../dominio/repositorio_recoleccion.dart';
 
 /// Repositorio con datos en memoria para pruebas y desarrollo.
 ///
-/// La zona de cobertura es un cuadro de medio grado alrededor de la Ciudad de
-/// México; fuera de él `guardar`, `editar` y `cotizar` lanzan
+/// La zona de cobertura es la del backend: 15 km alrededor de León, Guanajuato
+/// (21.1250, -101.6860); fuera de ella `guardar`, `editar` y `cotizar` lanzan
 /// `FueraDeCobertura`. `idsEnUso` son direcciones con traslados: no se pueden
 /// borrar. Con `error` todo falla a pedido, como lo haría la red.
 class RepositorioRecoleccionFake implements RepositorioRecoleccion {
@@ -27,8 +29,11 @@ class RepositorioRecoleccionFake implements RepositorioRecoleccion {
        _siguienteId =
            direcciones.fold<int>(0, (m, d) => d.id > m ? d.id : m) + 1;
 
-  /// Centro de la zona de cobertura del fake.
-  static const centro = Coordenada(19.4326, -99.1332);
+  /// Centro de la zona de cobertura del fake: el mismo del backend (León).
+  static const centro = Coordenada(21.1250, -101.6860);
+
+  /// Radio de cobertura en kilómetros, igual al del backend.
+  static const radioKm = 15.0;
 
   /// Si no es nulo, todas las operaciones lo lanzan.
   final Object? error;
@@ -53,9 +58,17 @@ class RepositorioRecoleccionFake implements RepositorioRecoleccion {
   final List<DireccionGuardada> _direcciones;
   int _siguienteId;
 
-  static bool _dentro(Coordenada c) =>
-      (c.latitud - centro.latitud).abs() <= 0.5 &&
-      (c.longitud - centro.longitud).abs() <= 0.5;
+  static bool _dentro(Coordenada c) {
+    double rad(double g) => g * math.pi / 180;
+    final dLat = rad(c.latitud - centro.latitud);
+    final dLng = rad(c.longitud - centro.longitud);
+    final a =
+        math.pow(math.sin(dLat / 2), 2) +
+        math.cos(rad(centro.latitud)) *
+            math.cos(rad(c.latitud)) *
+            math.pow(math.sin(dLng / 2), 2);
+    return 6371 * 2 * math.asin(math.sqrt(a)) <= radioKm;
+  }
 
   void _fallaSiHayError() {
     final e = error;

@@ -966,6 +966,115 @@
     }
   },
   "widgetsSinCitaMensaje": "You have no upcoming appointments",
+  "widgetsTallerTitulo": "Your car at the workshop",
+  "widgetsTallerEntrega": "Estimated pickup: {hora}",
+  "@widgetsTallerEntrega": {
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "widgetsAgendar": "Book",
+  "@widgetsAgendar": {
+    "description": "Botón corto del estado vacío de los widgets de inicio."
+  },
+  "widgetsTallerEncabezado": "Live workshop",
+  "@widgetsTallerEncabezado": {
+    "description": "Encabezado del widget de inicio del taller."
+  },
+  "widgetsTallerVacioMensaje": "Your car is not at the workshop",
+  "@widgetsTallerVacioMensaje": {
+    "description": "Estado vacío del widget del taller."
+  },
+  "widgetsTallerPaso": "Step {actual} of {total}",
+  "@widgetsTallerPaso": {
+    "description": "Avance de etapas del widget del taller.",
+    "placeholders": {
+      "actual": {
+        "type": "int",
+        "example": "4"
+      },
+      "total": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "widgetsMantenimientoTitulo": "Maintenance",
+  "@widgetsMantenimientoTitulo": {
+    "description": "Encabezado del widget de inicio de mantenimiento."
+  },
+  "widgetsMantenimientoFaltanKm": "{km} km to go",
+  "@widgetsMantenimientoFaltanKm": {
+    "description": "Kilómetros que faltan para el próximo servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "2,300"
+      }
+    }
+  },
+  "widgetsMantenimientoYaToca": "Due now",
+  "@widgetsMantenimientoYaToca": {
+    "description": "El próximo servicio ya toca por km o por fecha."
+  },
+  "widgetsMantenimientoFecha": "Around {fecha}",
+  "@widgetsMantenimientoFecha": {
+    "description": "Fecha estimada del próximo servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 ene"
+      }
+    }
+  },
+  "widgetsMantenimientoVacioMensaje": "There is no plan for your car yet",
+  "@widgetsMantenimientoVacioMensaje": {
+    "description": "Estado vacío del widget de mantenimiento."
+  },
+  "widgetsMantenimientoAccion": "View plan",
+  "@widgetsMantenimientoAccion": {
+    "description": "Botón del estado vacío del widget de mantenimiento."
+  },
+  "widgetsBitacoraTitulo": "Logbook",
+  "@widgetsBitacoraTitulo": {
+    "description": "Encabezado del widget de inicio de la bitácora."
+  },
+  "widgetsBitacoraRendimientoUnidad": "km/l",
+  "@widgetsBitacoraRendimientoUnidad": {
+    "description": "Unidad del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraGastoMes": "{mes} spending",
+  "@widgetsBitacoraGastoMes": {
+    "description": "Etiqueta del gasto del mes en el widget de la bitácora.",
+    "placeholders": {
+      "mes": {
+        "type": "String",
+        "example": "noviembre"
+      }
+    }
+  },
+  "widgetsBitacoraRendimientoEtiqueta": "Fuel economy",
+  "@widgetsBitacoraRendimientoEtiqueta": {
+    "description": "Etiqueta del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraVacioMensaje": "Log your first fill-up",
+  "@widgetsBitacoraVacioMensaje": {
+    "description": "Estado vacío del widget de la bitácora."
+  },
+  "widgetsBitacoraAccion": "Log it",
+  "@widgetsBitacoraAccion": {
+    "description": "Botón del estado vacío del widget de la bitácora."
+  },
+  "widgetsAccesosTitulo": "Quick actions",
+  "@widgetsAccesosTitulo": {
+    "description": "Encabezado del widget de accesos rápidos."
+  },
+  "widgetsAccesoComprobante": "Receipt",
+  "@widgetsAccesoComprobante": {
+    "description": "Acceso rápido al comprobante de la próxima cita."
+  },
   "citasWalletAgregar": "Add to Wallet",
   "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
   "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
@@ -976,6 +1085,7 @@
   "citasMisCitasProximaEtiqueta": "Your next appointment",
   "citasHeroComprobante": "Receipt",
   "citasAccionesCita": "Appointment options",
+  "regresar": "Back",
   "citasCerrar": "Close",
   "citasComprobanteDetalles": "Appointment details",
   "citasComprobanteRecepcion": "At reception",
@@ -2447,5 +2557,100 @@
   "estrenoVerMas": "Show more",
   "estrenoCargandoMas": "Loading…",
   "estrenoErrorMas": "We could not load more requests. Please try again.",
-  "estrenoCargando": "Loading your requests"
+  "estrenoCargando": "Loading your requests",
+  "citasMisCitasRecoleccionEncabezado": "Pickup · {cita}",
+  "@citasMisCitasRecoleccionEncabezado": {
+    "placeholders": {
+      "cita": {
+        "type": "String",
+        "example": "lun, 23 nov · 09:00"
+      }
+    }
+  },
+  "citasChecklistRecoger": "Checklist at pickup",
+  "citasChecklistEntregar": "Checklist at delivery",
+  "citasChecklistSubtitulo": "Mileage, fuel and photos",
+  "citasChecklistComparar": "Compare pickup and delivery",
+  "citasChecklistCompararSubtitulo": "What changed between the two",
+  "recoleccionChecklistPestanaRecoger": "At pickup",
+  "recoleccionChecklistPestanaEntregar": "At delivery",
+  "recoleccionChecklistPestanaComparar": "Compare",
+  "recoleccionComparacionKmDetalle": "{recoger} km at pickup, {entregar} km at delivery",
+  "@recoleccionComparacionKmDetalle": {
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      },
+      "entregar": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,210"
+      }
+    }
+  },
+  "recoleccionComparacionGasolinaDetalle": "{recoger} at pickup, {entregar} at delivery",
+  "@recoleccionComparacionGasolinaDetalle": {
+    "placeholders": {
+      "recoger": {
+        "type": "String",
+        "example": "Medio tanque"
+      },
+      "entregar": {
+        "type": "String",
+        "example": "Tanque lleno"
+      }
+    }
+  },
+  "recoleccionComparacionFotosTitulo": "Photos at pickup and delivery",
+  "recoleccionComparacionFotosAyuda": "Drag the bar: on the left you see the photo at pickup and on the right the photo at delivery.",
+  "recoleccionComparacionFotoRecoger": "Photo {numero} of {total} at pickup",
+  "@recoleccionComparacionFotoRecoger": {
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotoEntregar": "Photo {numero} of {total} at delivery",
+  "@recoleccionComparacionFotoEntregar": {
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotosDesiguales": "There are {recoger} photos at pickup and {entregar} at delivery; the first {comparadas} are compared.",
+  "@recoleccionComparacionFotosDesiguales": {
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "example": "4"
+      },
+      "entregar": {
+        "type": "int",
+        "example": "3"
+      },
+      "comparadas": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "recoleccionComparacionSinFotos": "One of the two checklists has no photos to compare.",
+  "recoleccionComparacionFaltaTitulo": "Can't compare yet",
+  "recoleccionComparacionFaltaRecoger": "The driver hasn't recorded the pickup checklist yet.",
+  "recoleccionComparacionFaltaEntregar": "The driver hasn't recorded the delivery checklist yet. You can compare once your car is returned.",
+  "recoleccionComparacionFaltaAmbos": "The driver hasn't recorded any checklist for this pickup yet."
 }

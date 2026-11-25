@@ -1,4 +1,10 @@
+import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
+import 'package:carecar_mobile/modulos/bitacora/bitacora.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
+import 'package:carecar_mobile/modulos/mantenimiento/mantenimiento.dart';
+import 'package:carecar_mobile/modulos/taller/taller.dart';
+import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/modulos/widgets/dominio/contenido_widgets.dart';
 import 'package:carecar_mobile/modulos/widgets/dominio/proxima_cita_widget.dart';
 import 'package:carecar_mobile/nucleo/navegacion/enlaces.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -65,30 +71,19 @@ void main() {
     });
   });
 
-  group('ContenidoWidgetCita', () {
-    test('con cita trae los datos y el enlace a su comprobante', () {
-      const contenido = ContenidoWidgetCita.conCita(
-        titulo: 'Próxima cita',
-        fecha: 'lun, 23 nov',
-        horario: '09:00 a 10:00',
-        vehiculo: 'Aveo 2021',
-        citaId: 7,
-      );
-      expect(contenido.hayCita, isTrue);
-      expect(contenido.enlace, 'carecar://citas/7/comprobante');
-      expect(contenido.vehiculo, 'Aveo 2021');
-    });
+  group('enlaces de los demas widgets', () {
+    Uri? ruta(String enlace) => EnlacesApp.aRutaInterna(Uri.parse(enlace));
 
-    test('sin cita invita a agendar y no lleva datos de cita', () {
-      const contenido = ContenidoWidgetCita.sinCita(
-        titulo: 'Próxima cita',
-        mensaje: 'No tienes citas próximas',
-        accion: 'Agendar cita',
+    test('cada enlace es una ruta que existe en su modulo', () {
+      expect(ruta(enlaceDeRuta(rutaOrdenTaller(41)))?.path, '/taller/41');
+      expect(
+        ruta(enlaceDeRuta(rutaMantenimientoVehiculo(7)))?.path,
+        rutaMantenimientoVehiculo(7),
       );
-      expect(contenido.hayCita, isFalse);
-      expect(contenido.enlace, enlaceAgendarWidget);
-      expect(contenido.fecha, isNull);
-      expect(contenido.vehiculo, isNull);
+      expect(ruta(enlaceDeRuta('/bitacora/7'))?.path, rutaBitacoraVehiculo(7));
+      expect(ruta(enlaceDeRuta(rutaGaraje))?.path, rutaGaraje);
+      expect(ruta(enlaceDeRuta(rutaSos))?.path, rutaSos);
+      expect(ruta(enlaceDeRuta(rutaMisCitas))?.path, rutaMisCitas);
     });
   });
 }

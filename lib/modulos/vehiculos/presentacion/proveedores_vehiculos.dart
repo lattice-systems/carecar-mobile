@@ -6,6 +6,7 @@ import '../../../api/modelos/vehiculo.dart';
 import '../../../manuales/guardar_pdf.dart';
 import '../../../manuales/servicio_manuales.dart';
 import '../../../nucleo/api/proveedores_api.dart';
+import '../../mantenimiento/mantenimiento.dart';
 import '../datos/compartir_manual.dart';
 import '../datos/repositorio_ficha_tecnica_api.dart';
 import '../datos/repositorio_garaje_api.dart';
@@ -41,6 +42,32 @@ final vehiculoProvider = FutureProvider.family<VehiculoGaraje?, int>((
   }
   return null;
 }, name: 'vehiculoProvider');
+
+/// El km que dejo el taller y cuando: lo que el detalle muestra como
+/// «actualizado por el taller el ...».
+typedef KmDelTaller = ({int km, DateTime fecha});
+
+/// El km oficial del taller del vehiculo `id` con su fecha, o `null` si no lo
+/// hay.
+///
+/// Desde V2-T05.06 `GET /vehiculos` no trae la fecha: viene en el plan de
+/// mantenimiento (`kmActualizadoEn` y `kmFuente`). Una lectura del cliente no
+/// se atribuye al taller, y si el plan falla simplemente no hay fecha: el
+/// detalle sigue mostrando el km que ya tiene.
+final kmDelTallerProvider = FutureProvider.autoDispose
+    .family<KmDelTaller?, int>((ref, id) async {
+      try {
+        final plan = await ref.watch(planMantenimientoProvider(id).future);
+        final km = plan.kmActual;
+        final fecha = plan.kmActualizadoEn;
+        if (plan.kmFuente != FuenteKm.taller || km == null || fecha == null) {
+          return null;
+        }
+        return (km: km, fecha: fecha);
+      } on Object {
+        return null;
+      }
+    }, name: 'kmDelTallerProvider');
 
 /// Repositorio de la ficha tecnica (V2-M02.04): API con respaldo local.
 final repositorioFichaTecnicaProvider = Provider<RepositorioFichaTecnica>(

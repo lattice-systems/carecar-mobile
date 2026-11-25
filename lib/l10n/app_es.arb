@@ -1945,6 +1945,120 @@
   "@widgetsSinCitaMensaje": {
     "description": "Texto del widget de inicio cuando no hay una cita confirmada por venir."
   },
+  "widgetsTallerTitulo": "Tu auto en el taller",
+  "@widgetsTallerTitulo": {
+    "description": "Encabezado del widget de inicio cuando el auto está en el taller (V2-M25.02)."
+  },
+  "widgetsTallerEntrega": "Entrega estimada: {hora}",
+  "@widgetsTallerEntrega": {
+    "description": "Hora estimada de entrega en el widget de inicio con el auto en el taller.",
+    "placeholders": {
+      "hora": {
+        "type": "String",
+        "example": "24 nov, 18:00"
+      }
+    }
+  },
+  "widgetsAgendar": "Agendar",
+  "@widgetsAgendar": {
+    "description": "Botón corto del estado vacío de los widgets de inicio."
+  },
+  "widgetsTallerEncabezado": "Taller en vivo",
+  "@widgetsTallerEncabezado": {
+    "description": "Encabezado del widget de inicio del taller."
+  },
+  "widgetsTallerVacioMensaje": "Tu auto no está en el taller",
+  "@widgetsTallerVacioMensaje": {
+    "description": "Estado vacío del widget del taller."
+  },
+  "widgetsTallerPaso": "Paso {actual} de {total}",
+  "@widgetsTallerPaso": {
+    "description": "Avance de etapas del widget del taller.",
+    "placeholders": {
+      "actual": {
+        "type": "int",
+        "example": "4"
+      },
+      "total": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "widgetsMantenimientoTitulo": "Mantenimiento",
+  "@widgetsMantenimientoTitulo": {
+    "description": "Encabezado del widget de inicio de mantenimiento."
+  },
+  "widgetsMantenimientoFaltanKm": "Faltan {km} km",
+  "@widgetsMantenimientoFaltanKm": {
+    "description": "Kilómetros que faltan para el próximo servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "2,300"
+      }
+    }
+  },
+  "widgetsMantenimientoYaToca": "Ya toca",
+  "@widgetsMantenimientoYaToca": {
+    "description": "El próximo servicio ya toca por km o por fecha."
+  },
+  "widgetsMantenimientoFecha": "Hacia el {fecha}",
+  "@widgetsMantenimientoFecha": {
+    "description": "Fecha estimada del próximo servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 ene"
+      }
+    }
+  },
+  "widgetsMantenimientoVacioMensaje": "Aún no hay un plan para tu auto",
+  "@widgetsMantenimientoVacioMensaje": {
+    "description": "Estado vacío del widget de mantenimiento."
+  },
+  "widgetsMantenimientoAccion": "Ver plan",
+  "@widgetsMantenimientoAccion": {
+    "description": "Botón del estado vacío del widget de mantenimiento."
+  },
+  "widgetsBitacoraTitulo": "Bitácora",
+  "@widgetsBitacoraTitulo": {
+    "description": "Encabezado del widget de inicio de la bitácora."
+  },
+  "widgetsBitacoraRendimientoUnidad": "km/l",
+  "@widgetsBitacoraRendimientoUnidad": {
+    "description": "Unidad del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraGastoMes": "Gasto de {mes}",
+  "@widgetsBitacoraGastoMes": {
+    "description": "Etiqueta del gasto del mes en el widget de la bitácora.",
+    "placeholders": {
+      "mes": {
+        "type": "String",
+        "example": "noviembre"
+      }
+    }
+  },
+  "widgetsBitacoraRendimientoEtiqueta": "Rendimiento",
+  "@widgetsBitacoraRendimientoEtiqueta": {
+    "description": "Etiqueta del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraVacioMensaje": "Registra tu primera carga",
+  "@widgetsBitacoraVacioMensaje": {
+    "description": "Estado vacío del widget de la bitácora."
+  },
+  "widgetsBitacoraAccion": "Registrar",
+  "@widgetsBitacoraAccion": {
+    "description": "Botón del estado vacío del widget de la bitácora."
+  },
+  "widgetsAccesosTitulo": "Accesos rápidos",
+  "@widgetsAccesosTitulo": {
+    "description": "Encabezado del widget de accesos rápidos."
+  },
+  "widgetsAccesoComprobante": "Comprobante",
+  "@widgetsAccesoComprobante": {
+    "description": "Acceso rápido al comprobante de la próxima cita."
+  },
   "citasWalletAgregar": "Agregar a Wallet",
   "@citasWalletAgregar": {
     "description": "Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet."
@@ -1984,6 +2098,10 @@
   "citasAccionesCita": "Opciones de tu cita",
   "@citasAccionesCita": {
     "description": "Título de la hoja con las acciones de una cita próxima."
+  },
+  "regresar": "Regresar",
+  "@regresar": {
+    "description": "Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior."
   },
   "citasCerrar": "Cerrar",
   "@citasCerrar": {
@@ -4011,5 +4129,151 @@
   "estrenoCargando": "Cargando tus solicitudes",
   "@estrenoCargando": {
     "description": "Lector de pantalla mientras carga."
+  },
+  "citasMisCitasRecoleccionEncabezado": "Recolección · {cita}",
+  "@citasMisCitasRecoleccionEncabezado": {
+    "description": "Encabezado del grupo de traslados de una cita en Mis citas.",
+    "placeholders": {
+      "cita": {
+        "type": "String",
+        "example": "lun, 23 nov · 09:00"
+      }
+    }
+  },
+  "citasChecklistRecoger": "Checklist al recoger",
+  "@citasChecklistRecoger": {
+    "description": "Fila que abre el checklist del chofer al recoger el auto."
+  },
+  "citasChecklistEntregar": "Checklist al entregar",
+  "@citasChecklistEntregar": {
+    "description": "Fila que abre el checklist del chofer al entregar el auto."
+  },
+  "citasChecklistSubtitulo": "Kilometraje, gasolina y fotos",
+  "@citasChecklistSubtitulo": {
+    "description": "Subtítulo de las filas de checklist."
+  },
+  "citasChecklistComparar": "Comparar recoger y entregar",
+  "@citasChecklistComparar": {
+    "description": "Fila que abre el checklist con la comparación activa."
+  },
+  "citasChecklistCompararSubtitulo": "Lo que cambió entre una y otra",
+  "@citasChecklistCompararSubtitulo": {
+    "description": "Subtítulo de la fila de comparación."
+  },
+  "recoleccionChecklistPestanaRecoger": "Al recoger",
+  "@recoleccionChecklistPestanaRecoger": {
+    "description": "Pestaña del checklist al recoger el auto."
+  },
+  "recoleccionChecklistPestanaEntregar": "Al entregar",
+  "@recoleccionChecklistPestanaEntregar": {
+    "description": "Pestaña del checklist al entregar el auto."
+  },
+  "recoleccionChecklistPestanaComparar": "Comparar",
+  "@recoleccionChecklistPestanaComparar": {
+    "description": "Pestaña que pone lado a lado los dos checklists."
+  },
+  "recoleccionComparacionKmDetalle": "{recoger} km al recoger, {entregar} km al entregar",
+  "@recoleccionComparacionKmDetalle": {
+    "description": "Kilometraje de los dos checklists.",
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      },
+      "entregar": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,210"
+      }
+    }
+  },
+  "recoleccionComparacionGasolinaDetalle": "{recoger} al recoger, {entregar} al entregar",
+  "@recoleccionComparacionGasolinaDetalle": {
+    "description": "Nivel de gasolina de los dos checklists.",
+    "placeholders": {
+      "recoger": {
+        "type": "String",
+        "example": "Medio tanque"
+      },
+      "entregar": {
+        "type": "String",
+        "example": "Tanque lleno"
+      }
+    }
+  },
+  "recoleccionComparacionFotosTitulo": "Fotos al recoger y al entregar",
+  "@recoleccionComparacionFotosTitulo": {
+    "description": "Encabezado de la comparación de fotos."
+  },
+  "recoleccionComparacionFotosAyuda": "Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.",
+  "@recoleccionComparacionFotosAyuda": {
+    "description": "Cómo se usa la comparación de fotos."
+  },
+  "recoleccionComparacionFotoRecoger": "Foto {numero} de {total} al recoger",
+  "@recoleccionComparacionFotoRecoger": {
+    "description": "Descripción de la foto de recoger para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotoEntregar": "Foto {numero} de {total} al entregar",
+  "@recoleccionComparacionFotoEntregar": {
+    "description": "Descripción de la foto de entregar para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotosDesiguales": "Hay {recoger} fotos al recoger y {entregar} al entregar; se comparan las primeras {comparadas}.",
+  "@recoleccionComparacionFotosDesiguales": {
+    "description": "Aviso cuando los checklists traen distinto número de fotos.",
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "example": "4"
+      },
+      "entregar": {
+        "type": "int",
+        "example": "3"
+      },
+      "comparadas": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "recoleccionComparacionSinFotos": "Alguno de los dos checklists no trae fotos para comparar.",
+  "@recoleccionComparacionSinFotos": {
+    "description": "Aviso cuando no hay fotos que comparar."
+  },
+  "recoleccionComparacionFaltaTitulo": "Aún no se puede comparar",
+  "@recoleccionComparacionFaltaTitulo": {
+    "description": "Título cuando falta un checklist."
+  },
+  "recoleccionComparacionFaltaRecoger": "El chofer todavía no registra el checklist de recoger.",
+  "@recoleccionComparacionFaltaRecoger": {
+    "description": "Falta el checklist de recoger."
+  },
+  "recoleccionComparacionFaltaEntregar": "El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.",
+  "@recoleccionComparacionFaltaEntregar": {
+    "description": "Falta el checklist de entregar."
+  },
+  "recoleccionComparacionFaltaAmbos": "El chofer todavía no registra ningún checklist de esta recolección.",
+  "@recoleccionComparacionFaltaAmbos": {
+    "description": "Faltan los dos checklists."
   }
 }

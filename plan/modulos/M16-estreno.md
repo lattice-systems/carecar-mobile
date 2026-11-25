@@ -36,7 +36,7 @@ Reutiliza `prospecto` del módulo `ventascrm` (origen = `APP_CARECAR`, cliente e
 
 ## Diseño técnico
 
-Contrato 2.10.1 (2.10.0 no declaraba `ESTRENO_SIN_PRECIO` ni `ESTRENO_DUPLICADA` en `Problema.codigo`; lo corrige agencia-360-backend#94) y backend en [`historias-backend.md`](https://github.com/lattice-systems/agencia-360-backend/blob/main/plan/historias-backend.md) (sección M16): `POST /estreno/cotizaciones/calculo`, `POST /estreno/solicitudes`, `GET /estreno/solicitudes`. App: módulo `lib/modulos/estreno/` con `RepositorioEstreno` (API y falso) y `mock_api` primero. Pruebas: `test/modulos/estreno/` (repositorio y pantallas, con la auditoría de accesibilidad), `test/api/estreno_modelos_test.dart`, `test/api/estreno_http_test.dart` y `test/contrato/contrato_estreno_test.dart`.
+Contrato 2.12.1 (de la 2.10.0 a la 2.12.0 no se declaraban `ESTRENO_SIN_PRECIO` ni `ESTRENO_DUPLICADA` en `Problema.codigo`; lo corrige agencia-360-backend#94) y backend en [`historias-backend.md`](https://github.com/lattice-systems/agencia-360-backend/blob/main/plan/historias-backend.md) (sección M16): `POST /estreno/cotizaciones/calculo`, `POST /estreno/solicitudes`, `GET /estreno/solicitudes`. App: módulo `lib/modulos/estreno/` con `RepositorioEstreno` (API y falso) y `mock_api` primero. Pruebas: `test/modulos/estreno/` (repositorio y pantallas, con la auditoría de accesibilidad), `test/api/estreno_modelos_test.dart`, `test/api/estreno_http_test.dart` y `test/contrato/contrato_estreno_test.dart`.
 
 ## Fuera de alcance / notas
 

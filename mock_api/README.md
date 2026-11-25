@@ -139,7 +139,7 @@ Los 13 endpoints del contrato, con sus casos de error:
 | GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
-| GET | `/citas` | Solo las del cliente |
+| GET | `/citas` | Solo las del cliente · cada cita con recolección trae `recoleccion` (traslados con su estado vigente, V2-M17.03) |
 | POST | `/citas` | 201 · 409 sin cupo o doble reserva · con `recoleccion: { direccionId }` crea los traslados de recoger y entregar y los devuelve en `recoleccion` · 404 si la dirección es ajena · 422 `FUERA_DE_COBERTURA` |
 | POST | `/citas/{id}/cancelar` | 200 · 409 si ya no está confirmada |
 | POST | `/citas/{id}/reprogramar` | 200 · 409 `FRANJA_SIN_CUPO`, `CITA_NO_REPROGRAMABLE` o `FUERA_DE_PLAZO` (propuesto en V2-M02.13; no está en el contrato v1) |

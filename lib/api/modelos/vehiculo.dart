@@ -56,6 +56,9 @@ class Vehiculo {
   final String? color;
 
   /// Fecha de cierre de la orden de servicio que dejo el kilometraje.
-  /// Depende de V2-T05.06; mientras tanto la simula el `mock_api`.
+  ///
+  /// El contrato 2.11.0 (V2-T05.06) no la declara en `Vehiculo`: la fecha llega
+  /// en el plan de mantenimiento (`kmActualizadoEn`, con `kmFuente`). Se sigue
+  /// leyendo por si el backend la suma algun dia, y entonces manda sobre el plan.
   final DateTime? kilometrajeActualizadoEn;
 }

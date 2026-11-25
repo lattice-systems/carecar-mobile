@@ -159,7 +159,7 @@ void main() {
       final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
       await expectLater(
         api.repo.registrarKm(5, 100),
-        throwsA(isA<SinParametrosDeValuacion>()),
+        throwsA(isA<SolicitudRechazada>()),
       );
     });
 

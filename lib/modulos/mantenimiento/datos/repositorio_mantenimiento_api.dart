@@ -10,8 +10,8 @@ import '../dominio/repositorio_mantenimiento.dart';
 ///
 /// Las excepciones de la API (`SinConexion`, `NoEncontrado`…) pasan tal cual:
 /// la presentación decide cómo mostrarlas. Solo se traduce el 422
-/// `KM_INVALIDO`, que el cliente HTTP entrega como `SinParametrosDeValuacion`
-/// (todo 422 cae ahí); un 422 con otro código no se confunde con él.
+/// `KM_INVALIDO`, que el cliente HTTP entrega como `SolicitudRechazada` con su
+/// código; un 422 con otro código no se confunde con él.
 class RepositorioMantenimientoApi implements RepositorioMantenimiento {
   const RepositorioMantenimientoApi(this._cliente);
 
@@ -43,7 +43,7 @@ class RepositorioMantenimientoApi implements RepositorioMantenimiento {
         leer: LecturaKmDto.fromJson,
       );
       return LecturaKm(id: dto.id, km: dto.km, registradaEn: dto.registradaEn);
-    } on SinParametrosDeValuacion catch (e) {
+    } on SolicitudRechazada catch (e) {
       if (e.problema?.codigo == CodigoProblema.kmInvalido) {
         throw const KmInvalido();
       }

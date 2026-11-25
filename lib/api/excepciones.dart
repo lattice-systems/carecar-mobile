@@ -58,19 +58,32 @@ class Conflicto extends ExcepcionApi {
   const Conflicto(super.mensaje, {super.problema});
 }
 
-/// 429 · Cinco intentos fallidos seguidos: el login se bloquea 15 minutos.
+/// 422 · El servidor entendio la peticion pero la rechaza por una regla de
+/// negocio. Cual regla lo dice [codigo] (`FUERA_DE_COBERTURA`, `KM_INVALIDO`,
+/// `SIN_PARAMETROS_DE_VALUACION`…), no el endpoint ni el texto.
 ///
-/// RIC-5. Sin este caso, un bloqueo se veria como «ocurrio un error
-/// inesperado», que es justo lo contrario de lo que el usuario necesita saber.
+/// Cada repositorio traduce el codigo que le toca a su fallo de dominio; un
+/// 422 con otro codigo pasa tal cual en lugar de confundirse con el suyo.
+class SolicitudRechazada extends ExcepcionApi {
+  const SolicitudRechazada(super.mensaje, {super.problema});
+
+  /// El codigo del contrato, o `desconocido` si el servidor no mando uno.
+  CodigoProblema get codigo => problema?.codigo ?? CodigoProblema.desconocido;
+}
+
 /// 422 de `POST /toma-a-cuenta/estimaciones`: la agencia todavia no tiene
 /// parametros para esa marca, modelo y anio (`SIN_PARAMETROS_DE_VALUACION`).
 ///
 /// No es un fallo de la app ni del cliente: la app lo explica y ofrece pedir
 /// una valuacion formal.
-class SinParametrosDeValuacion extends ExcepcionApi {
+class SinParametrosDeValuacion extends SolicitudRechazada {
   const SinParametrosDeValuacion(super.mensaje, {super.problema});
 }
 
+/// 429 · Cinco intentos fallidos seguidos: el login se bloquea 15 minutos.
+///
+/// RIC-5. Sin este caso, un bloqueo se veria como «ocurrio un error
+/// inesperado», que es justo lo contrario de lo que el usuario necesita saber.
 class DemasiadosIntentos extends ExcepcionApi {
   const DemasiadosIntentos(
     super.mensaje, {

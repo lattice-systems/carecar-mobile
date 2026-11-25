@@ -400,8 +400,9 @@ const comoVehiculo = (v) => ({
   color: v.color ?? null,
   placas: v.placas ?? null,
   kilometraje: v.kilometraje ?? null,
-  // Simulada hasta V2-T05.06: fecha de cierre de la orden que dejo el km.
-  kilometrajeActualizadoEn: v.kilometrajeActualizadoEn ?? null,
+  // La fecha del km NO viaja aqui: el contrato 2.11.0 la trae en el plan de
+  // mantenimiento (`kmActualizadoEn` y `kmFuente`), no en el vehiculo. El seed
+  // la guarda como `kilometrajeActualizadoEn` solo para armar ese plan.
 });
 
 // Devuelve el vehiculo solo si es del cliente de la sesion.
@@ -632,7 +633,33 @@ const comoCita = (c) => ({
   horaFin: c.horaFin,
   estado: c.estado,
   ...(c.motivo ? { motivo: c.motivo } : {}),
+  // V2-M17.03 · GET /citas trae la recoleccion de cada cita (o nada si no la
+  // lleva), con el estado vigente de sus traslados, igual que POST /citas.
+  ...recoleccionDeCita(c),
 });
+
+// `{ recoleccion: RecoleccionCita }` con los traslados de la cita tal como estan
+// ahora, o `{}` si la cita no tiene recoleccion. `traslados` solo existe cuando
+// el seed de recoleccion ya corrio.
+function recoleccionDeCita(cita) {
+  const traslados = (db.get('traslados').value() || []).filter((t) => t.citaId === cita.id);
+  if (traslados.length === 0) return {};
+  return {
+    recoleccion: {
+      direccionId: traslados[0].direccionId,
+      costoTotal: Math.round(traslados.reduce((suma, t) => suma + t.costo, 0) * 100) / 100,
+      traslados: traslados.map((t) => ({
+        id: t.id,
+        tipo: t.tipo,
+        estado: t.estado,
+        costo: t.costo,
+        fecha: t.fecha,
+        ventanaInicio: t.ventanaInicio,
+        ventanaFin: t.ventanaFin,
+      })),
+    },
+  };
+}
 
 servidor.get(`${BASE}/citas`, (req, res) => {
   const propias = db.get('citas').filter({ clienteId: req.sesion.clienteId }).value();
@@ -986,14 +1013,14 @@ servidor.get(`${BASE}/citas/:citaId/pase`, (req, res) => {
 // ── recoleccion ──
 // V2-M17.01 y V2-M17.02 · direcciones guardadas, cotizacion y traslados.
 // El backend real decide la cobertura con la geometria de la agencia; aqui es
-// un circulo de 40 km alrededor del centro de la Ciudad de Mexico, suficiente
-// para probar el 422 desde la app (un pin en Monterrey queda fuera).
+// un circulo de 15 km alrededor del centro de Leon, Guanajuato, suficiente
+// para probar el 422 desde la app (un pin en la Ciudad de Mexico queda fuera).
 db.defaults({ direcciones: [], traslados: [] }).write();
 
-const CENTRO_COBERTURA = { lat: 19.4326, lng: -99.1332 };
-const RADIO_COBERTURA_KM = 40;
+const CENTRO_COBERTURA = { lat: 21.125, lng: -101.686 };
+const RADIO_COBERTURA_KM = 15;
 const TARIFA_BASE = 80;
-const TARIFA_POR_KM = 12;
+const TARIFA_POR_KM = 8;
 const VENTANA_RECOGER = { inicio: '07:00', fin: '09:00' };
 const VENTANA_ENTREGAR = { inicio: '17:00', fin: '19:00' };
 

@@ -1519,6 +1519,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get widgetsSinCitaMensaje => 'You have no upcoming appointments';
 
   @override
+  String get widgetsTallerTitulo => 'Your car at the workshop';
+
+  @override
+  String widgetsTallerEntrega(String hora) {
+    return 'Estimated pickup: $hora';
+  }
+
+  @override
+  String get widgetsAgendar => 'Book';
+
+  @override
+  String get widgetsTallerEncabezado => 'Live workshop';
+
+  @override
+  String get widgetsTallerVacioMensaje => 'Your car is not at the workshop';
+
+  @override
+  String widgetsTallerPaso(int actual, int total) {
+    return 'Step $actual of $total';
+  }
+
+  @override
+  String get widgetsMantenimientoTitulo => 'Maintenance';
+
+  @override
+  String widgetsMantenimientoFaltanKm(String km) {
+    return '$km km to go';
+  }
+
+  @override
+  String get widgetsMantenimientoYaToca => 'Due now';
+
+  @override
+  String widgetsMantenimientoFecha(String fecha) {
+    return 'Around $fecha';
+  }
+
+  @override
+  String get widgetsMantenimientoVacioMensaje =>
+      'There is no plan for your car yet';
+
+  @override
+  String get widgetsMantenimientoAccion => 'View plan';
+
+  @override
+  String get widgetsBitacoraTitulo => 'Logbook';
+
+  @override
+  String get widgetsBitacoraRendimientoUnidad => 'km/l';
+
+  @override
+  String widgetsBitacoraGastoMes(String mes) {
+    return '$mes spending';
+  }
+
+  @override
+  String get widgetsBitacoraRendimientoEtiqueta => 'Fuel economy';
+
+  @override
+  String get widgetsBitacoraVacioMensaje => 'Log your first fill-up';
+
+  @override
+  String get widgetsBitacoraAccion => 'Log it';
+
+  @override
+  String get widgetsAccesosTitulo => 'Quick actions';
+
+  @override
+  String get widgetsAccesoComprobante => 'Receipt';
+
+  @override
   String get citasWalletAgregar => 'Add to Wallet';
 
   @override
@@ -1551,6 +1622,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get citasAccionesCita => 'Appointment options';
+
+  @override
+  String get regresar => 'Back';
 
   @override
   String get citasCerrar => 'Close';
@@ -3091,4 +3165,99 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get estrenoCargando => 'Loading your requests';
+
+  @override
+  String citasMisCitasRecoleccionEncabezado(String cita) {
+    return 'Pickup · $cita';
+  }
+
+  @override
+  String get citasChecklistRecoger => 'Checklist at pickup';
+
+  @override
+  String get citasChecklistEntregar => 'Checklist at delivery';
+
+  @override
+  String get citasChecklistSubtitulo => 'Mileage, fuel and photos';
+
+  @override
+  String get citasChecklistComparar => 'Compare pickup and delivery';
+
+  @override
+  String get citasChecklistCompararSubtitulo => 'What changed between the two';
+
+  @override
+  String get recoleccionChecklistPestanaRecoger => 'At pickup';
+
+  @override
+  String get recoleccionChecklistPestanaEntregar => 'At delivery';
+
+  @override
+  String get recoleccionChecklistPestanaComparar => 'Compare';
+
+  @override
+  String recoleccionComparacionKmDetalle(int recoger, int entregar) {
+    final intl.NumberFormat recogerNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String recogerString = recogerNumberFormat.format(recoger);
+    final intl.NumberFormat entregarNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String entregarString = entregarNumberFormat.format(entregar);
+
+    return '$recogerString km at pickup, $entregarString km at delivery';
+  }
+
+  @override
+  String recoleccionComparacionGasolinaDetalle(
+    String recoger,
+    String entregar,
+  ) {
+    return '$recoger at pickup, $entregar at delivery';
+  }
+
+  @override
+  String get recoleccionComparacionFotosTitulo =>
+      'Photos at pickup and delivery';
+
+  @override
+  String get recoleccionComparacionFotosAyuda =>
+      'Drag the bar: on the left you see the photo at pickup and on the right the photo at delivery.';
+
+  @override
+  String recoleccionComparacionFotoRecoger(int numero, int total) {
+    return 'Photo $numero of $total at pickup';
+  }
+
+  @override
+  String recoleccionComparacionFotoEntregar(int numero, int total) {
+    return 'Photo $numero of $total at delivery';
+  }
+
+  @override
+  String recoleccionComparacionFotosDesiguales(
+    int recoger,
+    int entregar,
+    int comparadas,
+  ) {
+    return 'There are $recoger photos at pickup and $entregar at delivery; the first $comparadas are compared.';
+  }
+
+  @override
+  String get recoleccionComparacionSinFotos =>
+      'One of the two checklists has no photos to compare.';
+
+  @override
+  String get recoleccionComparacionFaltaTitulo => 'Can\'t compare yet';
+
+  @override
+  String get recoleccionComparacionFaltaRecoger =>
+      'The driver hasn\'t recorded the pickup checklist yet.';
+
+  @override
+  String get recoleccionComparacionFaltaEntregar =>
+      'The driver hasn\'t recorded the delivery checklist yet. You can compare once your car is returned.';
+
+  @override
+  String get recoleccionComparacionFaltaAmbos =>
+      'The driver hasn\'t recorded any checklist for this pickup yet.';
 }

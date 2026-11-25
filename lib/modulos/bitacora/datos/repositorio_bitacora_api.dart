@@ -1,5 +1,6 @@
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/gasto.dart';
+import '../../../api/modelos/problema.dart';
 import '../../../nucleo/api/api_cliente.dart';
 import '../dominio/fallos_bitacora.dart';
 import '../dominio/gasto.dart';
@@ -8,9 +9,8 @@ import '../dominio/repositorio_bitacora.dart';
 /// Bitácora con el cliente HTTP del núcleo (`/vehiculos/{id}/gastos`,
 /// `/gastos/{id}`).
 ///
-/// Los errores de la API pasan tal cual. Solo se traduce el 422: el cliente
-/// HTTP convierte todo 422 en `SinParametrosDeValuacion`, y en estos caminos
-/// solo puede significar `KM_INVALIDO`.
+/// Los errores de la API pasan tal cual. Solo se traduce el 422 con código
+/// `KM_INVALIDO`; uno con otro código pasa como `SolicitudRechazada`.
 class RepositorioBitacoraApi implements RepositorioBitacora {
   const RepositorioBitacoraApi(this._cliente);
 
@@ -43,8 +43,9 @@ class RepositorioBitacoraApi implements RepositorioBitacora {
         cuerpo: _cuerpo(borrador),
         leer: _leer,
       );
-    } on SinParametrosDeValuacion {
-      throw const KmInvalido();
+    } on SolicitudRechazada catch (e) {
+      if (e.codigo == CodigoProblema.kmInvalido) throw const KmInvalido();
+      rethrow;
     }
   }
 
@@ -56,8 +57,9 @@ class RepositorioBitacoraApi implements RepositorioBitacora {
         cuerpo: _cuerpo(borrador),
         leer: _leer,
       );
-    } on SinParametrosDeValuacion {
-      throw const KmInvalido();
+    } on SolicitudRechazada catch (e) {
+      if (e.codigo == CodigoProblema.kmInvalido) throw const KmInvalido();
+      rethrow;
     }
   }
 
