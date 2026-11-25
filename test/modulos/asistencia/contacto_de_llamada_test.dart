@@ -7,10 +7,11 @@ void main() {
       telefonoAgencia: '+52 477 123 4567',
       aseguradora: null,
     );
-    expect(
-      contactos.map((c) => c.tipo),
-      [TipoContacto.emergencias, TipoContacto.agencia, TipoContacto.aseguradora],
-    );
+    expect(contactos.map((c) => c.tipo), [
+      TipoContacto.emergencias,
+      TipoContacto.agencia,
+      TipoContacto.aseguradora,
+    ]);
     expect(contactos.first.telefono, '911');
   });
 
@@ -26,7 +27,10 @@ void main() {
   test('con aseguradora registrada se puede llamar y trae su nombre', () {
     final aseguradora = contactosDeLlamada(
       telefonoAgencia: '+52 477 123 4567',
-      aseguradora: const Aseguradora(nombre: 'Seguros Sol', telefono: '800 111 2222'),
+      aseguradora: const Aseguradora(
+        nombre: 'Seguros Sol',
+        telefono: '800 111 2222',
+      ),
     ).last;
     expect(aseguradora.nombre, 'Seguros Sol');
     expect(aseguradora.puedeLlamar, isTrue);
