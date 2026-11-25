@@ -57,7 +57,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
-| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
+| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | En revisión | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
 | V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
