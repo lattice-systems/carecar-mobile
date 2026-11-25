@@ -5,14 +5,14 @@ import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 import 'rebote_tactil.dart';
 
-/// La acción principal de una pantalla, en una píldora oscura con icono y texto
-/// que flota sobre el contenido (rediseño de navegación), como «Nueva sesión»
-/// en la app de Claude.
+/// La acción principal de una pantalla, en una píldora con icono y texto que
+/// flota sobre el contenido (rediseño de navegación).
 ///
-/// Solo una por pantalla. Va arriba de la [BarraFlotante] y, como flota, el
-/// contenido necesita margen inferior para que no tape el último renglón. Usa
-/// `texto` como fondo y `fondo` como frente: oscura en claro y clara en oscuro,
-/// siempre con contraste.
+/// Es del color de acento del sistema, con un degradado hacia el marino de
+/// marca y un resplandor del mismo color; el texto usa `sobreAcento`, que el
+/// sistema define para leer sobre el acento. Solo una por pantalla. Va arriba de
+/// la [BarraFlotante] y, como flota, el contenido necesita margen inferior para
+/// que no tape el último renglón.
 class BotonAccionFlotante extends StatelessWidget {
   const BotonAccionFlotante({
     required this.texto,
@@ -30,8 +30,7 @@ class BotonAccionFlotante extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final habilitado = alPresionar != null;
-    final fondo = habilitado ? c.texto : c.superficieHundida;
-    final frente = habilitado ? c.fondo : c.textoTerciario;
+    final frente = habilitado ? c.sobreAcento : c.textoTerciario;
     return Semantics(
       button: true,
       enabled: habilitado,
@@ -43,11 +42,20 @@ class BotonAccionFlotante extends StatelessWidget {
         habilitado: habilitado,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: fondo,
+            color: habilitado ? null : c.superficieHundida,
+            gradient: habilitado
+                ? LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [c.acento, Color.lerp(c.acento, c.marca, 0.45)!],
+                  )
+                : null,
             borderRadius: Radios.bordePildora,
             boxShadow: [
               BoxShadow(
-                color: c.texto.withValues(alpha: 0.22),
+                color: (habilitado ? c.acento : c.texto).withValues(
+                  alpha: habilitado ? 0.40 : 0.10,
+                ),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
