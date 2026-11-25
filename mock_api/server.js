@@ -400,8 +400,9 @@ const comoVehiculo = (v) => ({
   color: v.color ?? null,
   placas: v.placas ?? null,
   kilometraje: v.kilometraje ?? null,
-  // Simulada hasta V2-T05.06: fecha de cierre de la orden que dejo el km.
-  kilometrajeActualizadoEn: v.kilometrajeActualizadoEn ?? null,
+  // La fecha del km NO viaja aqui: el contrato 2.11.0 la trae en el plan de
+  // mantenimiento (`kmActualizadoEn` y `kmFuente`), no en el vehiculo. El seed
+  // la guarda como `kilometrajeActualizadoEn` solo para armar ese plan.
 });
 
 // Devuelve el vehiculo solo si es del cliente de la sesion.
