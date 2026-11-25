@@ -1999,6 +1999,10 @@
   "@citasAccionesCita": {
     "description": "Título de la hoja con las acciones de una cita próxima."
   },
+  "regresar": "Regresar",
+  "@regresar": {
+    "description": "Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior."
+  },
   "citasCerrar": "Cerrar",
   "@citasCerrar": {
     "description": "Acción para cerrar una pantalla del flujo de citas."
