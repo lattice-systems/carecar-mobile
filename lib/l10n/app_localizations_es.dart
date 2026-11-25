@@ -2162,6 +2162,50 @@ class AppLocalizationsEs extends AppLocalizations {
       'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.';
 
   @override
+  String inicioSaludo(String nombre) {
+    return 'Hola, $nombre';
+  }
+
+  @override
+  String get inicioAccesos => 'Accesos';
+
+  @override
+  String get inicioAgendarCita => 'Agendar cita';
+
+  @override
+  String get inicioPerfilYAjustes => 'Perfil y ajustes';
+
+  @override
+  String get inicioDestinoInicio => 'Inicio';
+
+  @override
+  String get inicioDestinoVehiculos => 'Vehículos';
+
+  @override
+  String get inicioDestinoCitas => 'Citas';
+
+  @override
+  String get inicioDestinoCatalogo => 'Catálogo';
+
+  @override
+  String get inicioAccesoVehiculosTitulo => 'Mis vehículos';
+
+  @override
+  String get inicioAccesoVehiculosSubtitulo => 'Tus autos, fichas y manuales';
+
+  @override
+  String get inicioAccesoCitasTitulo => 'Citas';
+
+  @override
+  String get inicioAccesoCitasSubtitulo => 'Agenda y revisa tus citas';
+
+  @override
+  String get inicioAccesoCatalogoTitulo => 'Catálogo';
+
+  @override
+  String get inicioAccesoCatalogoSubtitulo => 'Conoce los modelos Nissan';
+
+  @override
   String get asistenteTitulo => 'Pregúntale a tu auto';
 
   @override

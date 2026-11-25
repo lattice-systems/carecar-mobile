@@ -8,6 +8,9 @@ import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
+import 'package:carecar_mobile/pantallas/perfil/pantalla_perfil.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -45,6 +48,7 @@ Future<ControladorSesion> _montar(
       api: api,
       controlador: sesion,
       interruptor: InterruptorModulos.porDefecto,
+      idioma: const Locale('es'),
     ),
   );
   await tester.pumpAndSettle();
@@ -52,11 +56,53 @@ Future<ControladorSesion> _montar(
 }
 
 Future<void> _tocar(WidgetTester tester, String texto) async {
+  // Ajustes ya no es una tarjeta: se abre con el avatar (rediseño de navegación).
+  if (texto == 'Ajustes') {
+    if (_botonPerfil().evaluate().isEmpty) {
+      await tester.scrollUntilVisible(
+        _botonPerfil(),
+        -300,
+        scrollable: find.byType(Scrollable).first,
+      );
+    }
+    await tester.tap(_botonPerfil());
+    await tester.pumpAndSettle();
+    return;
+  }
+  // En el inicio los destinos se tocan en la barra flotante, que siempre está a
+  // la vista; la lista de accesos queda debajo de ella con letra grande.
+  // (la arnés usa el idioma por omisión, inglés: se acepta el nombre en ambos)
+  const enLaBarra = {
+    'Mis vehículos': ['Vehículos', 'Vehicles'],
+    'Citas': ['Citas', 'Appointments'],
+    'Catálogo': ['Catálogo', 'Catalog'],
+  };
+  if (find.byType(InicioNuevo).evaluate().isNotEmpty &&
+      enLaBarra.containsKey(texto)) {
+    await tester.tap(
+      find.descendant(
+        of: find.byType(BarraFlotante),
+        matching: find.byWidgetPredicate(
+          (w) => w is Text && enLaBarra[texto]!.contains(w.data),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    return;
+  }
   final elemento = find.text(texto).last;
   await tester.ensureVisible(elemento);
   await tester.tap(elemento);
   await tester.pumpAndSettle();
 }
+
+/// El avatar del inicio. La arnés de prueba usa el idioma por omisión (inglés),
+/// así que se acepta el nombre en cualquiera de los dos idiomas.
+Finder _botonPerfil() => find.byWidgetPredicate(
+  (w) =>
+      w is Tooltip &&
+      (w.message == 'Perfil y ajustes' || w.message == 'Profile and settings'),
+);
 
 void main() {
   testWidgets('la sesion restaurada abre el menu y conserva los vehiculos', (
@@ -83,7 +129,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('Menú'), findsOneWidget);
+    expect(find.byType(InicioNuevo), findsOneWidget);
     await _tocar(tester, 'Mis vehículos');
     expect(find.text('${_march.modelo} 2020'), findsOneWidget);
     expect(find.text('${_jetta.modelo} 2018'), findsOneWidget);
@@ -119,7 +165,7 @@ void main() {
       contrasena: 'Temporal123',
     );
     await tester.pumpAndSettle();
-    expect(find.text('Menú'), findsNothing);
+    expect(find.byType(InicioNuevo), findsNothing);
     expect(find.text('Cambia tu contraseña'), findsOneWidget);
   });
 
@@ -138,12 +184,29 @@ void main() {
       );
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
-      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo', 'Ajustes']) {
-        expect(find.text(opcion), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
+      // Cada acceso sale en la lista y, salvo vehículos, también en la barra.
+      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo']) {
+        expect(find.text(opcion), findsWidgets);
       }
+      expect(_botonPerfil(), findsOneWidget);
       expect(api.llamadasAlLogin, 1);
-      await tester.tap(find.byKey(PantallaInicio.botonCerrarSesion));
+      await tester.tap(_botonPerfil());
+      await tester.pumpAndSettle();
+      final cerrar = find.byKey(PantallaInicio.botonCerrarSesion).last;
+      if (cerrar.evaluate().isEmpty) {
+        await tester.scrollUntilVisible(
+          find.byKey(PantallaInicio.botonCerrarSesion),
+          300,
+          scrollable: find.byType(Scrollable).first,
+        );
+      }
+      await tester.ensureVisible(cerrar);
+      await tester.pumpAndSettle();
+      await tester.tap(cerrar);
+      await tester.pumpAndSettle();
+      // En Ajustes cerrar sesión pide confirmar.
+      await tester.tap(find.byKey(PantallaPerfil.botonConfirmarCierre));
       await tester.pumpAndSettle();
       expect(sesion.haySesion, isFalse);
       expect(await sesion.obtenerToken(), isNull);
@@ -176,7 +239,7 @@ void main() {
       }
       expect(api.llamadasAVehiculos, 1);
       await _tocar(tester, 'Regresar');
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
       expect(sesion.haySesion, isTrue);
     },
   );
@@ -217,7 +280,7 @@ void main() {
       expect(find.text('${_march.modelo} 2020'), findsOneWidget);
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
       expect(sesion.haySesion, isTrue);
       expect(api.llamadasAlLogin, 1);
     },
@@ -237,7 +300,7 @@ void main() {
     // Una del saludo del menu y otra de Ajustes.
     expect(api.llamadasAPerfil, 2);
     await _tocar(tester, 'Regresar');
-    expect(find.text('Menú'), findsOneWidget);
+    expect(find.byType(InicioNuevo), findsOneWidget);
   });
 
   testWidgets('perfil en carga, error y datos ausentes sin inventar valores', (
@@ -246,7 +309,7 @@ void main() {
     final espera = Completer<Perfil>();
     final api = ApiFalsa()..alPedirPerfil = () => espera.future;
     await _montar(tester, api);
-    await tester.tap(find.text('Ajustes'));
+    await tester.tap(_botonPerfil());
     await tester.pump();
     // Mientras carga se ve el esqueleto, no un texto de espera.
     expect(find.text('Nombre del cliente'), findsOneWidget);
@@ -328,12 +391,6 @@ void main() {
               ),
           ];
           await _montar(tester, api);
-          if (escala == 1.0) {
-            // En tablet y escritorio el menu se reparte en columnas.
-            final misVehiculos = tester.getTopLeft(find.text('Mis vehículos'));
-            final citas = tester.getTopLeft(find.text('Citas'));
-            expect((misVehiculos.dy - citas.dy).abs() < 1, tamano.width >= 768);
-          }
           await _tocar(tester, 'Mis vehículos');
           await _tocar(tester, '${_jetta.modelo} 2018');
           expect(find.text(_jetta.vin), findsOneWidget);
@@ -347,7 +404,7 @@ void main() {
             findsOneWidget,
           );
           // En escritorio la ficha va junto a la lista: hay una ruta menos.
-          while (find.text('Menú').evaluate().isEmpty) {
+          while (find.byType(InicioNuevo).evaluate().isEmpty) {
             await _regresar(tester);
           }
           await _tocar(tester, 'Citas');
@@ -367,7 +424,7 @@ void main() {
           await _regresar(tester);
           await _tocar(tester, 'Catálogo');
           await _regresar(tester);
-          expect(find.text('Menú'), findsOneWidget);
+          expect(find.byType(InicioNuevo), findsOneWidget);
           expect(tester.takeException(), isNull);
         },
       );

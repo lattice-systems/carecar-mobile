@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart' show Locale;
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
@@ -28,6 +30,8 @@ Future<void> _montar(
       api: api,
       controlador: sesion,
       interruptor: interruptor,
+
+      idioma: const Locale('es'),
     ),
   );
   await tester.pumpAndSettle();
@@ -65,7 +69,7 @@ void main() {
       ) async {
         await _montar(tester, InterruptorModulos.todoV2);
         await _ir(tester, e.value);
-        expect(find.text('Menú'), findsNothing);
+        expect(find.byType(InicioNuevo), findsNothing);
       });
 
       testWidgets('${e.key.name} en v1: ${e.value} cae en el inicio', (
@@ -73,7 +77,7 @@ void main() {
       ) async {
         await _montar(tester, InterruptorModulos.porDefecto);
         await _ir(tester, e.value);
-        expect(find.text('Menú'), findsOneWidget);
+        expect(find.byType(InicioNuevo), findsOneWidget);
       });
     }
 
@@ -83,9 +87,9 @@ void main() {
         InterruptorModulos.desdeValores(v2: 'todos', v1: 'citas'),
       );
       await _ir(tester, rutaMisCitas);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
       await _ir(tester, rutaGaraje);
-      expect(find.text('Menú'), findsNothing);
+      expect(find.byType(InicioNuevo), findsNothing);
     });
   });
 
@@ -111,7 +115,7 @@ void main() {
 
     testWidgets('citas en v2: la tarjeta lleva a mis citas v2', (tester) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'citas'));
-      await tester.tap(find.text('Citas'));
+      await tester.tap(find.text('Citas').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaMisCitas), findsNothing);
       expect(find.byType(PantallaMisCitas), findsOneWidget);
@@ -121,7 +125,7 @@ void main() {
       tester,
     ) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'catalogo'));
-      await tester.tap(find.text('Catálogo'));
+      await tester.tap(find.text('Catálogo').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaCatalogo), findsNothing);
       expect(find.byType(PantallaCatalogo), findsOneWidget);
@@ -131,7 +135,7 @@ void main() {
       tester,
     ) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'vehiculos'));
-      await tester.tap(find.text('Citas'));
+      await tester.tap(find.text('Citas').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaMisCitas), findsOneWidget);
     });

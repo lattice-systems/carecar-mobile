@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_animate/flutter_animate.dart';
-
 import '../api/carecar_api.dart';
+import '../l10n/app_localizations.dart';
 import '../api/modelos/perfil.dart';
 import '../modulos/taller/taller.dart';
+import '../nucleo/inicio/inicio_nuevo.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
 import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
-import '../tema/tema_carecar.dart';
-import '../widgets/menu_carecar.dart';
+import '../widgets/menu_carecar.dart' show abrirPantalla;
 import '../widgets/pagina_carecar.dart';
 import 'citas/pantalla_mis_citas.dart';
 import 'pantalla_ajustes.dart';
@@ -90,158 +89,69 @@ class _PantallaInicioState extends State<PantallaInicio> {
     child: Navigator(
       key: _navegador,
       onGenerateRoute: (_) => MaterialPageRoute<void>(
-        builder: (context) => PaginaCareCar(
-          titulo: 'Menú',
-          regresar: false,
-          cabecera: FutureBuilder<Perfil>(
-            future: _perfil,
-            builder: (context, snap) {
-              final nombre = snap.data?.nombre.trim() ?? '';
-              if (nombre.isEmpty) return const SizedBox.shrink();
-              return _Saludo(nombre: nombre);
-            },
-          ),
-          alCerrarSesion: _cerrarSesion,
-          contenido: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const TarjetaOrdenEnCurso(),
-              RejillaMenu(
-                tarjetas: [
-                  TarjetaMenu(
-                    titulo: 'Mis vehículos',
-                    subtitulo: 'Tus autos, fichas y manuales',
-                    icono: IconoMenu.vehiculos.icono,
-                    colores: [
-                      TemaCareCar.azulAgencia,
-                      TemaCareCar.azulProfundo,
-                    ],
-                    indice: 0,
-                    alPulsar:
-                        widget.abrirEnV2[ModuloMigrable.vehiculos] ??
-                        () => abrirPantalla(
-                          context,
-                          PantallaVehiculos(
-                            api: widget.api,
-                            alCerrarSesion: _cerrarSesion,
-                          ),
-                        ),
+        builder: (context) => FutureBuilder<Perfil>(
+          future: _perfil,
+          builder: (context, snap) {
+            final alVehiculos =
+                widget.abrirEnV2[ModuloMigrable.vehiculos] ??
+                () => abrirPantalla(
+                  context,
+                  PantallaVehiculos(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
                   ),
-                  TarjetaMenu(
-                    titulo: 'Citas',
-                    subtitulo: 'Agenda y revisa tus citas',
-                    icono: IconoMenu.cita.icono,
-                    colores: [TemaCareCar.turquesaOscuro, Color(0xFF0E6B63)],
-                    indice: 1,
-                    alPulsar:
-                        widget.abrirEnV2[ModuloMigrable.citas] ??
-                        () => abrirPantalla(
-                          context,
-                          PantallaMisCitas(
-                            api: widget.api,
-                            alCerrarSesion: _cerrarSesion,
-                          ),
-                        ),
+                );
+            final alCitas =
+                widget.abrirEnV2[ModuloMigrable.citas] ??
+                () => abrirPantalla(
+                  context,
+                  PantallaMisCitas(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
                   ),
-                  TarjetaMenu(
-                    titulo: 'Catálogo',
-                    subtitulo: 'Conoce los modelos Nissan',
-                    icono: IconoMenu.catalogo.icono,
-                    colores: [Color(0xFF3D5A9E), Color(0xFF283C7A)],
-                    indice: 2,
-                    alPulsar:
-                        widget.abrirEnV2[ModuloMigrable.catalogo] ??
-                        () => abrirPantalla(
-                          context,
-                          PantallaCatalogo(
-                            api: widget.api,
-                            alCerrarSesion: _cerrarSesion,
-                          ),
-                        ),
+                );
+            final alCatalogo =
+                widget.abrirEnV2[ModuloMigrable.catalogo] ??
+                () => abrirPantalla(
+                  context,
+                  PantallaCatalogo(
+                    api: widget.api,
+                    alCerrarSesion: _cerrarSesion,
                   ),
-                  TarjetaMenu(
-                    titulo: 'Ajustes',
-                    subtitulo: 'Perfil, contraseña y ayuda',
-                    icono: IconoMenu.ajustes.icono,
-                    colores: [Color(0xFF52606D), Color(0xFF334155)],
-                    indice: 3,
-                    alPulsar: () => abrirPantalla(
-                      context,
-                      PantallaAjustes(
-                        api: widget.api,
-                        alCerrarSesion: _cerrarSesion,
-                      ),
-                    ),
-                  ),
-                ],
+                );
+            final textos = AppLocalizations.of(context);
+            return InicioNuevo(
+              nombre: snap.data?.nombre,
+              ordenEnCurso: const TarjetaOrdenEnCurso(),
+              alAgendar: alCitas,
+              alAbrirAjustes: () => abrirPantalla(
+                context,
+                PantallaAjustes(api: widget.api, alCerrarSesion: _cerrarSesion),
               ),
-            ],
-          ),
+              accesos: [
+                AccesoInicio(
+                  titulo: textos.inicioAccesoVehiculosTitulo,
+                  subtitulo: textos.inicioAccesoVehiculosSubtitulo,
+                  icono: Icons.directions_car_outlined,
+                  alPulsar: alVehiculos,
+                ),
+                AccesoInicio(
+                  titulo: textos.inicioAccesoCitasTitulo,
+                  subtitulo: textos.inicioAccesoCitasSubtitulo,
+                  icono: Icons.calendar_month_outlined,
+                  alPulsar: alCitas,
+                ),
+                AccesoInicio(
+                  titulo: textos.inicioAccesoCatalogoTitulo,
+                  subtitulo: textos.inicioAccesoCatalogoSubtitulo,
+                  icono: Icons.grid_view_outlined,
+                  alPulsar: alCatalogo,
+                ),
+              ],
+            );
+          },
         ),
       ),
     ),
   );
-}
-
-String _iniciales(String nombre) {
-  final partes = nombre.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty);
-  return partes.take(2).map((p) => p[0].toUpperCase()).join();
-}
-
-/// Saludo con pastilla de iniciales y nombre completo.
-class _Saludo extends StatelessWidget {
-  const _Saludo({required this.nombre});
-  final String nombre;
-
-  @override
-  Widget build(BuildContext context) {
-    final primero = nombre.split(RegExp(r'\s+')).first;
-    // A la derecha del encabezado: textos alineados al borde derecho y la
-    // pastilla de iniciales al final.
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                'Hola, $primero',
-                maxLines: 1,
-                textAlign: TextAlign.right,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
-                ),
-              ),
-              Text(
-                nombre,
-                maxLines: 1,
-                textAlign: TextAlign.right,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: Colors.white.withValues(alpha: 0.75),
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 10),
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: Colors.white.withValues(alpha: 0.2),
-          child: Text(
-            _iniciales(nombre),
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-              fontSize: 13,
-            ),
-          ),
-        ),
-      ],
-    ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.2);
-  }
 }

@@ -23,6 +23,7 @@ class AppEnrutadaDePrueba extends StatelessWidget {
     this.overrides = const [],
     this.interruptor,
     this.envolver,
+    this.idioma,
     super.key,
   });
 
@@ -41,6 +42,10 @@ class AppEnrutadaDePrueba extends StatelessWidget {
   /// verificador del aviso de privacidad, por ejemplo).
   final Widget Function(Widget app)? envolver;
 
+  /// Idioma fijo. Por omisión el de la prueba (inglés); las que miran textos
+  /// del inicio en español lo piden.
+  final Locale? idioma;
+
   @override
   Widget build(BuildContext context) => ProviderScope(
     overrides: [
@@ -58,6 +63,7 @@ class AppEnrutadaDePrueba extends StatelessWidget {
           theme: TemaCareCar.claro,
           localizationsDelegates: delegadasDeIdioma,
           supportedLocales: idiomasSoportados,
+          locale: idioma,
           localeResolutionCallback: resolverIdioma,
           routerConfig: ref.watch(enrutadorProvider),
           builder: (context, child) {
