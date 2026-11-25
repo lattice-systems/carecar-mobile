@@ -147,10 +147,7 @@ void main() {
     });
 
     test('se queda entre 0 y 1', () {
-      expect(
-        plan(kmActual: 12000, proximo: proximo()).avanceDelProximo,
-        1.0,
-      );
+      expect(plan(kmActual: 12000, proximo: proximo()).avanceDelProximo, 1.0);
       expect(plan(kmActual: 3000, proximo: proximo()).avanceDelProximo, 0.0);
     });
 
