@@ -111,15 +111,20 @@ void main() {
       expect(proximas, lessThan(pasadas));
     });
 
-    _prueba('la heroe ofrece comprobante y reprogramar como pildoras', (
-      tester,
-    ) async {
-      await tester.pumpWidget(_app(_repo()));
-      await tester.pumpAndSettle();
-      expect(find.byType(BotonPildora), findsNWidgets(2));
-      expect(find.text('Comprobante'), findsOneWidget);
-      expect(find.text('Reprogramar'), findsOneWidget);
-    });
+    _prueba(
+      'la heroe ofrece comprobante, reprogramar y cancelar como pildoras',
+      (tester) async {
+        await tester.pumpWidget(_app(_repo()));
+        await tester.pumpAndSettle();
+        expect(find.byType(BotonPildora), findsNWidgets(3));
+        expect(find.text('Comprobante'), findsOneWidget);
+        expect(find.text('Reprogramar'), findsOneWidget);
+        final cancelar = tester.widget<BotonPildora>(
+          find.widgetWithText(BotonPildora, 'Cancelar cita'),
+        );
+        expect(cancelar.variante, VarianteBotonPildora.peligro);
+      },
+    );
 
     _prueba('las otras proximas abren una hoja con sus acciones', (
       tester,
