@@ -146,3 +146,30 @@ Parte de **app** de «Guardar mi cita en Wallet». Estado: **En curso**; el pase
 - `queries` de Android 11+ para `url_launcher` (`https`) no se tocaron: el enlace se abre con `launchUrl`, que no depende de `canLaunchUrl`.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
 - V2-M25.02 y V2-M25.05 siguen sin empezar.
+
+## Avance de widgets múltiples
+
+Rediseño de los widgets de inicio: cinco widgets independientes que se agregan por separado desde el selector, con estilo tipo widgets de iOS (esquinas grandes, cifras grandes, degradado sutil de marca, mucho aire; sin assets de Apple) y responsivos.
+
+**Qué quedó**
+
+- **Dart** (`lib/modulos/widgets/`): `TipoWidget` (cita, taller, mantenimiento, bitácora, accesos) con su prefijo de claves, `ContenidoWidget` por widget, `PuertoWidgets` y un sincronizador de los cinco (sesión, datos, idioma, primer plano y eventos). Cerrar sesión borra los cinco. Textos en los ARB es y en. Los contratos de mantenimiento y bitácora exportan lo necesario.
+- **Android:** un `AppWidgetProvider` por widget sobre la base `WidgetCarecar`; layouts `widget_{cita,taller,mant,bit,acc}_{s,m,l}.xml` (2x2, 4x2, 4x4). En API 31 o más se entrega un mapa de tamaños y el lanzador elige; antes se elige por el ancho y alto mínimos y se repinta al redimensionar. Claro y oscuro, es y en, vistas previas y `contentDescription`. Accesos rápidos abre `carecar://` y no depende de datos.
+- **iOS:** `ios/CareCarWidgets/` con cinco widgets y `WidgetBundle`, cada uno en `.systemSmall`, `.systemMedium` y `.systemLarge` (5 x 3).
+- Enlaces: cita abre el comprobante, taller la orden, mantenimiento el plan, bitácora la bitácora, accesos los destinos de Agendar, Mi auto, SOS y Comprobante.
+
+**iOS: el target sigue sin enlazar en Xcode.** Falta: (1) File > New > Target > Widget Extension llamado `CareCarWidgets`, borrar lo que genere y agregar todos los `.swift` de `ios/CareCarWidgets/`; (2) App Group `group.com.carecar.carecarMobile` en `Runner` y en la extensión; (3) iOS 17 o superior; (4) probar en dispositivo. El Swift no se compiló aquí (sin Xcode).
+
+**Propuesta de historias nuevas** (no se tocó `plan/tablero.md`; la integra quien mueve el tablero)
+
+| ID propuesto | Historia | Criterios de aceptación |
+| --- | --- | --- |
+| V2-M25.07 | Como cliente quiero un widget de mantenimiento para ver cuánto falta para mi próximo servicio | Próximo servicio, km faltantes, fecha estimada y avance · en rojo cuando ya toca · un toque abre el plan · sin plan invita a abrir el garaje · 2x2, 4x2 y 4x4 · claro, oscuro, es y en |
+| V2-M25.08 | Como cliente quiero un widget de bitácora para ver mi rendimiento y gasto del mes | Rendimiento en km/l y gasto del mes · raya si hay menos de dos cargas · un toque abre la bitácora · tres tamaños |
+| V2-M25.09 | Como cliente quiero un widget de accesos rápidos para ir directo a Agendar, Mi auto, SOS y Comprobante | Cuatro botones con enlace `carecar://` · funciona sin datos · tres tamaños |
+
+**Pendiente**
+
+- Probar en teléfono real tamaños, redimensión, tema oscuro y toque con la app cerrada.
+- Revisión de diseño de Cristian y pase por la guardia de sesión en arranque en frío.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
