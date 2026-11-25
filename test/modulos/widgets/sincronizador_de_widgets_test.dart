@@ -9,7 +9,6 @@ import 'package:carecar_mobile/modulos/taller/datos/repositorio_taller_fake.dart
 import 'package:carecar_mobile/modulos/taller/taller.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
-import 'package:carecar_mobile/modulos/widgets/dominio/contenido_widgets.dart';
 import 'package:carecar_mobile/modulos/widgets/widgets.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
@@ -141,7 +140,6 @@ Future<_Escenario> _montar(
   List<OrdenEnCurso> ordenes = const [],
   List<VehiculoGaraje> autos = _autos,
   List<Gasto>? gastos,
-  bool conPlan = true,
   Object? falloCitas,
   Object? falloTaller,
   Object? falloGaraje,
