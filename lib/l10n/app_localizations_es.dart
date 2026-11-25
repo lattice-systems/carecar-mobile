@@ -3309,4 +3309,89 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get privacidadSinConexionAceptar =>
       'Sin conexión. Conéctate para guardar tu aceptación.';
+
+  @override
+  String get privacidadHubTitulo => 'Privacidad y mis datos';
+
+  @override
+  String get privacidadHubAviso => 'Aviso de privacidad';
+
+  @override
+  String get privacidadHubAvisoDetalle => 'Qué hacemos con tus datos';
+
+  @override
+  String get privacidadHubDatos => 'Descargar mis datos';
+
+  @override
+  String get privacidadHubDatosDetalle => 'Una copia de tus datos personales';
+
+  @override
+  String get arcoTitulo => 'Mis datos';
+
+  @override
+  String get arcoIntro =>
+      'Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.';
+
+  @override
+  String get arcoAlcance =>
+      'No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.';
+
+  @override
+  String get arcoPedir => 'Pedir una copia de mis datos';
+
+  @override
+  String get arcoPidiendo => 'Pidiendo…';
+
+  @override
+  String get arcoPreparando => 'Estamos preparando tu archivo';
+
+  @override
+  String get arcoPreparandoDetalle =>
+      'Tarda unos segundos. Puedes quedarte en esta pantalla.';
+
+  @override
+  String get arcoLista => 'Tu archivo está listo';
+
+  @override
+  String arcoVence(String fecha) {
+    return 'Disponible hasta el $fecha';
+  }
+
+  @override
+  String get arcoCuidado =>
+      'Contiene información personal: guárdalo en un lugar seguro y no lo compartas.';
+
+  @override
+  String get arcoDescargar => 'Descargar mi archivo';
+
+  @override
+  String get arcoDescargando => 'Preparando…';
+
+  @override
+  String get arcoPedirOtra => 'Pedir una copia nueva';
+
+  @override
+  String get arcoFallida => 'No pudimos preparar tu archivo. Intenta de nuevo.';
+
+  @override
+  String get arcoVencida =>
+      'Tu archivo ya no está disponible. Pide una copia nueva.';
+
+  @override
+  String get arcoErrorPedir => 'No pudimos pedir tu copia. Intenta de nuevo.';
+
+  @override
+  String get arcoSinConexionPedir =>
+      'Sin conexión. Conéctate para pedir tu copia.';
+
+  @override
+  String get arcoErrorDescarga =>
+      'No pudimos descargar tu archivo. Intenta de nuevo.';
+
+  @override
+  String get arcoArchivoNoDisponible =>
+      'El archivo ya no está disponible. Pide una copia nueva.';
+
+  @override
+  String get arcoCargando => 'Cargando tus solicitudes';
 }

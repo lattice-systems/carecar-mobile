@@ -5495,6 +5495,156 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin conexión. Conéctate para guardar tu aceptación.'**
   String get privacidadSinConexionAceptar;
+
+  /// Título de la pantalla que reúne el aviso de privacidad y los derechos sobre los datos (V2-M22.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Privacidad y mis datos'**
+  String get privacidadHubTitulo;
+
+  /// Fila del aviso de privacidad en Privacidad y mis datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get privacidadHubAviso;
+
+  /// Detalle de la fila del aviso de privacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacemos con tus datos'**
+  String get privacidadHubAvisoDetalle;
+
+  /// Fila que abre la copia de los datos personales.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar mis datos'**
+  String get privacidadHubDatos;
+
+  /// Detalle de la fila de descargar mis datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Una copia de tus datos personales'**
+  String get privacidadHubDatosDetalle;
+
+  /// Título de la pantalla para pedir y descargar la copia de los datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis datos'**
+  String get arcoTitulo;
+
+  /// Explica qué es la copia de los datos (acceso ARCO).
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.'**
+  String get arcoIntro;
+
+  /// Aclara lo que la copia no incluye.
+  ///
+  /// In es, this message translates to:
+  /// **'No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.'**
+  String get arcoAlcance;
+
+  /// Botón que pide la copia de los datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir una copia de mis datos'**
+  String get arcoPedir;
+
+  /// Texto del botón mientras se pide la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pidiendo…'**
+  String get arcoPidiendo;
+
+  /// Título mientras la copia se prepara.
+  ///
+  /// In es, this message translates to:
+  /// **'Estamos preparando tu archivo'**
+  String get arcoPreparando;
+
+  /// Detalle mientras la copia se prepara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarda unos segundos. Puedes quedarte en esta pantalla.'**
+  String get arcoPreparandoDetalle;
+
+  /// Título cuando la copia ya se puede descargar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu archivo está listo'**
+  String get arcoLista;
+
+  /// Hasta cuándo se puede descargar la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible hasta el {fecha}'**
+  String arcoVence(String fecha);
+
+  /// Recordatorio de cuidado del archivo descargado.
+  ///
+  /// In es, this message translates to:
+  /// **'Contiene información personal: guárdalo en un lugar seguro y no lo compartas.'**
+  String get arcoCuidado;
+
+  /// Botón que abre la hoja de compartir con la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar mi archivo'**
+  String get arcoDescargar;
+
+  /// Texto del botón mientras se baja el archivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Preparando…'**
+  String get arcoDescargando;
+
+  /// Botón para pedir otra copia cuando ya hay una.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir una copia nueva'**
+  String get arcoPedirOtra;
+
+  /// Aviso cuando la copia no se pudo preparar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos preparar tu archivo. Intenta de nuevo.'**
+  String get arcoFallida;
+
+  /// Aviso cuando la copia venció.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu archivo ya no está disponible. Pide una copia nueva.'**
+  String get arcoVencida;
+
+  /// Fallo al pedir la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir tu copia. Intenta de nuevo.'**
+  String get arcoErrorPedir;
+
+  /// Falta de conexión al pedir la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Conéctate para pedir tu copia.'**
+  String get arcoSinConexionPedir;
+
+  /// Fallo al descargar la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos descargar tu archivo. Intenta de nuevo.'**
+  String get arcoErrorDescarga;
+
+  /// Aviso cuando al descargar ya no estaba.
+  ///
+  /// In es, this message translates to:
+  /// **'El archivo ya no está disponible. Pide una copia nueva.'**
+  String get arcoArchivoNoDisponible;
+
+  /// Lector de pantalla mientras carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus solicitudes'**
+  String get arcoCargando;
 }
 
 class _AppLocalizationsDelegate
