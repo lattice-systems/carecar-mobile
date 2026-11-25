@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -115,6 +116,9 @@ class InicioNuevo extends StatelessWidget {
 const BorderRadius _bordeTarjetaGrande = BorderRadius.all(
   Radius.circular(Radios.hoja),
 );
+
+/// Alto que se deja bajo la tarjeta del auto para que se vea su sombra.
+const double _huecoDeSombra = 20;
 
 /// Por encima de esta escala de letra el botón flotante se esconde.
 const double _escalaMaximaDelBoton = 1.5;
@@ -349,21 +353,30 @@ class _SeccionAutosState extends State<_SeccionAutos> {
     }
     return Column(
       children: [
+        // Debajo de cada tarjeta queda un hueco para su sombra: el PageView
+        // recorta lo que se sale de él.
         SizedBox(
-          height: alto,
-          child: PageView.builder(
-            controller: _controlador,
-            itemCount: autos.length,
-            onPageChanged: (i) => setState(() => _pagina = i),
-            itemBuilder: (context, i) => Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: autos.length > 1 ? Espaciado.e1 : 0,
-              ),
-              child: _TarjetaAuto(
-                auto: autos[i],
-                posicion: autos.length > 1 ? (i + 1, autos.length) : null,
-                alToque: widget.alToque,
-                placasAbajo: widget.escala > 1.3,
+          height: alto + _huecoDeSombra,
+          // Con ratón o lápiz también se desliza (tabletas, escritorio, web).
+          child: ScrollConfiguration(
+            behavior: ScrollConfiguration.of(context)
+                .copyWith(dragDevices: PointerDeviceKind.values.toSet()),
+            child: PageView.builder(
+              controller: _controlador,
+              itemCount: autos.length,
+              onPageChanged: (i) => setState(() => _pagina = i),
+              itemBuilder: (context, i) => Padding(
+                padding: EdgeInsets.only(
+                  left: autos.length > 1 ? Espaciado.e1 : 0,
+                  right: autos.length > 1 ? Espaciado.e1 : 0,
+                  bottom: _huecoDeSombra,
+                ),
+                child: _TarjetaAuto(
+                  auto: autos[i],
+                  posicion: autos.length > 1 ? (i + 1, autos.length) : null,
+                  alToque: widget.alToque,
+                  placasAbajo: widget.escala > 1.3,
+                ),
               ),
             ),
           ),
@@ -457,7 +470,8 @@ class _TarjetaAuto extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: c.acento.withValues(alpha: 0.34),
-                blurRadius: 28,
+                blurRadius: 24,
+                spreadRadius: -12,
                 offset: const Offset(0, 14),
               ),
             ],
