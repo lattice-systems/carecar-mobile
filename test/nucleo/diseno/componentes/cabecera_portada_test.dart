@@ -180,10 +180,12 @@ void main() {
       await tester.drag(find.byType(ListView), const Offset(0, -300));
       await tester.pumpAndSettle();
       final material = tester.widget<Material>(
-        find.descendant(
-          of: find.byType(AppBar),
-          matching: find.byType(Material),
-        ),
+        find
+            .descendant(
+              of: find.byType(AppBar),
+              matching: find.byType(Material),
+            )
+            .first,
       );
       expect(material.color?.a, 1);
     });
