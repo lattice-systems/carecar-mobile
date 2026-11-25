@@ -15,6 +15,7 @@ import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 
 /// Repositorio cuyo POST responde 409 y cuyo GET ya trae la solicitud abierta
@@ -54,6 +55,7 @@ Future<void> _montar(
   UbicacionFalsa? ubicacion,
   Size tamano = const Size(800, 1800),
   double escala = 1,
+  List<Override> overrides = const [],
 }) async {
   tester.view.physicalSize = tamano;
   tester.view.devicePixelRatio = 1;
@@ -71,6 +73,7 @@ Future<void> _montar(
         proveedorUbicacionProvider.overrideWithValue(
           ubicacion ?? UbicacionFalsa(),
         ),
+        ...overrides,
       ],
       child: MaterialApp(
         theme: TemaPista.claro(),
@@ -241,10 +244,33 @@ void main() {
     await _deslizar(tester);
     expect(find.textContaining('Sin conexión'), findsOneWidget);
     expect(find.textContaining('911'), findsOneWidget);
+    expect(find.text('Llamar a Emergencias'), findsOneWidget);
+    expect(find.text('Llamar a La agencia'), findsOneWidget);
     expect(find.text('Desliza para pedir ayuda'), findsOneWidget);
     repo.fallo = null;
     await _deslizar(tester);
     expect(find.text('Folio 1'), findsOneWidget);
+  });
+
+  testWidgets('sin conexion el atajo llama al 911 con el marcador', (
+    tester,
+  ) async {
+    final llamadas = <Uri>[];
+    final repo = RepositorioAsistenciaFake(fallo: const SinConexion());
+    await _montar(
+      tester,
+      repo: repo,
+      overrides: [
+        abrirLlamadaProvider.overrideWithValue((uri) async {
+          llamadas.add(uri);
+          return true;
+        }),
+      ],
+    );
+    await _llenarLoBasico(tester);
+    await _deslizar(tester);
+    await _tocar(tester, 'Llamar a Emergencias');
+    expect(llamadas, [Uri.parse('tel:911')]);
   });
 
   testWidgets('vehiculo ajeno (404) explica y deja elegir otro', (
