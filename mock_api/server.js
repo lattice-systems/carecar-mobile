@@ -25,7 +25,7 @@ require('./modulos/mantenimiento')(servidor, db, vehiculoDelCliente);
 require('./modulos/catalogo')(servidor, db, vehiculoDelCliente);
 require('./modulos/asistente')(servidor, vehiculoDelCliente);
 require('./modulos/estreno')(servidor, db);
-require('./modulos/privacidad')(servidor);
+require('./modulos/privacidad')(servidor, db, emitirEvento);
 require('./modulos/taller')(servidor, db, vehiculoDelCliente);
 require('./modulos/bitacora')(servidor, db, vehiculoDelCliente);
 
