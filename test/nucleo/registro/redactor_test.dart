@@ -85,6 +85,8 @@ void main() {
         'Fallo una notificacion: 42 intentos',
         'cita 118 del vehiculo 7 el 2026-11-24T10:20:30Z',
         'INTERNACIONALIZAR es una palabra larga',
+        // 17 letras sin digitos (y sin I, O ni Q) tampoco es un VIN.
+        'clave ABCDEFGHJKLMNPRST sola',
         'precio 1299900.50 en 48 meses',
         '',
       ]) {

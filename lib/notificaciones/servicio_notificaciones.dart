@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/modelos/cita.dart';
+import '../nucleo/registro/registro.dart';
 import 'recordatorios.dart';
 
 /// Lo minimo que se le pide al sistema de notificaciones.
@@ -64,7 +65,7 @@ class ServicioNotificaciones {
       _listo = true;
     } catch (e) {
       // Sin notificaciones la app sigue funcionando.
-      debugPrint('No se pudieron iniciar las notificaciones: $e');
+      Registro.depurar('No se pudieron iniciar las notificaciones', error: e);
     }
   }
 
@@ -158,7 +159,7 @@ class ServicioNotificaciones {
     try {
       return await accion();
     } catch (e) {
-      debugPrint('Fallo una notificacion: $e');
+      Registro.depurar('Fallo una notificacion', error: e);
       return null;
     }
   }
