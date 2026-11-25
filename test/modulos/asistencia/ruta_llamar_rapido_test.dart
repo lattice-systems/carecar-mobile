@@ -1,9 +1,7 @@
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
-import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
