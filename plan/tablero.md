@@ -68,7 +68,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
-| V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Lista | |
+| V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Hecha | #115 |
 | V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Descartada | sin tiendas: APK + Sideloadly |
 | V2-T05.01 | Módulos Modulith nuevos | Ricardo | B | — | Hecha | backend#83, #89 |
 | V2-T05.02 | El contrato `agencia360-api-app-v2.yaml` | Ricardo | B | — | Hecha | backend#75, #79 |
