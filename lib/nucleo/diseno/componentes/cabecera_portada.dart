@@ -74,6 +74,7 @@ class CabeceraPortada extends StatelessWidget {
     final color = tinte ?? c.acento;
     final oscuro = tokens.brillo == Brightness.dark;
     final letraGrande = MediaQuery.textScalerOf(context).scale(1) > 1.3;
+    final reserva = _reservaDeBarra(context);
 
     final pieza = Semantics(
       image: true,
@@ -146,7 +147,7 @@ class CabeceraPortada extends StatelessWidget {
         Padding(
           padding: EdgeInsets.fromLTRB(
             Espaciado.e4,
-            _reservaDeBarra(context) + Espaciado.e4,
+            reserva > 0 ? reserva + Espaciado.e4 : Espaciado.e6,
             Espaciado.e4,
             Espaciado.e6,
           ),
