@@ -1513,6 +1513,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get widgetsSinCitaMensaje => 'No tienes citas próximas';
 
   @override
+  String get widgetsTallerTitulo => 'Tu auto en el taller';
+
+  @override
+  String widgetsTallerEntrega(String hora) {
+    return 'Entrega estimada: $hora';
+  }
+
+  @override
   String get citasWalletAgregar => 'Agregar a Wallet';
 
   @override
