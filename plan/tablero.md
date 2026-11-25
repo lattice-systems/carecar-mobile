@@ -135,7 +135,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Hecha | #127, backend#96 |
 | V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Hecha | #129, backend#97 |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Hecha | #131, backend#99 |
-| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | En curso | |
+| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | En revisión | #132 |
 | V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Hecha | #76 |
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
