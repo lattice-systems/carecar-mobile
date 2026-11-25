@@ -1,5 +1,4 @@
-/// Contrato publico del modulo `taller` (V2-M04.01, V2-M04.02, V2-M04.04 y
-/// V2-M04.05).
+/// Contrato publico del modulo `taller` (V2-M04.01 a V2-M04.07).
 ///
 /// Otros modulos y la app solo importan este archivo.
 library;

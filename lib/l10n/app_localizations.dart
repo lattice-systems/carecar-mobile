@@ -5090,6 +5090,72 @@ abstract class AppLocalizations {
   /// **'No se pudo enviar tu respuesta. Intenta de nuevo.'**
   String get tallerRespuestaError;
 
+  /// Tarjeta de Inicio cuando la orden está lista para entrega (V2-M04.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu {vehiculo} está listo'**
+  String tallerTarjetaListoTitulo(String vehiculo);
+
+  /// Total de la orden lista en la tarjeta de Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Total a pagar {total}'**
+  String tallerTarjetaListoTotal(String total);
+
+  /// Horario para recoger el auto listo, en hora de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Recógelo el {fecha} de {desde} a {hasta}'**
+  String tallerHorarioEntrega(String fecha, String desde, String hasta);
+
+  /// El taller no tiene horario cargado para recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor te dirá cuándo recogerlo.'**
+  String get tallerHorarioSinFranjas;
+
+  /// Título del aviso de la orden lista para entrega (V2-M04.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto está listo'**
+  String get tallerOrdenListoTitulo;
+
+  /// Subtítulo de la fila con el total de la orden lista o entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'Total a pagar'**
+  String get tallerOrdenTotalAPagar;
+
+  /// Título del aviso de la orden entregada (V2-M04.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Ya recogiste tu auto'**
+  String get tallerOrdenEntregadaTitulo;
+
+  /// Mensaje del aviso de la orden entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'La orden quedó en el historial de tu vehículo con su ticket.'**
+  String get tallerOrdenEntregadaMensaje;
+
+  /// Fila que abre el ticket de la orden lista o entregada (V2-M04.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Ver ticket'**
+  String get tallerOrdenVerTicket;
+
+  /// Subtítulo de la fila que abre el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra y refacciones de la orden'**
+  String get tallerOrdenVerTicketResumen;
+
+  /// Fila que abre el historial del vehículo desde la orden entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver historial del vehículo'**
+  String get tallerOrdenVerHistorial;
+
   /// Botón de cámara junto al campo del asistente (V2-M24.05).
   ///
   /// In es, this message translates to:

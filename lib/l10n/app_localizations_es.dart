@@ -3054,6 +3054,47 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo enviar tu respuesta. Intenta de nuevo.';
 
   @override
+  String tallerTarjetaListoTitulo(String vehiculo) {
+    return 'Tu $vehiculo está listo';
+  }
+
+  @override
+  String tallerTarjetaListoTotal(String total) {
+    return 'Total a pagar $total';
+  }
+
+  @override
+  String tallerHorarioEntrega(String fecha, String desde, String hasta) {
+    return 'Recógelo el $fecha de $desde a $hasta';
+  }
+
+  @override
+  String get tallerHorarioSinFranjas => 'Tu asesor te dirá cuándo recogerlo.';
+
+  @override
+  String get tallerOrdenListoTitulo => 'Tu auto está listo';
+
+  @override
+  String get tallerOrdenTotalAPagar => 'Total a pagar';
+
+  @override
+  String get tallerOrdenEntregadaTitulo => 'Ya recogiste tu auto';
+
+  @override
+  String get tallerOrdenEntregadaMensaje =>
+      'La orden quedó en el historial de tu vehículo con su ticket.';
+
+  @override
+  String get tallerOrdenVerTicket => 'Ver ticket';
+
+  @override
+  String get tallerOrdenVerTicketResumen =>
+      'Mano de obra y refacciones de la orden';
+
+  @override
+  String get tallerOrdenVerHistorial => 'Ver historial del vehículo';
+
+  @override
   String get asistenteFotoAdjuntar => 'Foto de una luz del tablero';
 
   @override

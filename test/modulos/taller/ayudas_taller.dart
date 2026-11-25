@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/taller/datos/repositorio_taller_fake.dart';
 import 'package:carecar_mobile/modulos/taller/presentacion/proveedores_taller.dart';
+import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
+import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,17 +20,20 @@ final Uint8List pngDePrueba = base64Decode(
 /// Videos que la pantalla pidio abrir.
 final videosAbiertos = <Uri>[];
 
-/// La pantalla del taller con su fake, el tema Pista y sin movimiento, para
-/// que la etapa actual no respire y `pumpAndSettle` termine.
+/// La pantalla del taller con su fake, el canal de eventos en memoria, el tema
+/// Pista y sin movimiento, para que la etapa actual no respire y
+/// `pumpAndSettle` termine.
 Widget appTaller(
   Widget pantalla,
   RepositorioTallerFake repo, {
   Escenario escenario = Escenario.claro,
   bool abreVideo = true,
   Locale idioma = idiomaBase,
+  EventosEnVivoFake? eventos,
 }) => ProviderScope(
   overrides: [
     repositorioTallerProvider.overrideWithValue(repo),
+    eventosEnVivoProvider.overrideWithValue(eventos ?? EventosEnVivoFake()),
     imagenEvidenciaProvider.overrideWithValue((_) => MemoryImage(pngDePrueba)),
     abrirVideoProvider.overrideWithValue((url) async {
       videosAbiertos.add(url);
@@ -68,3 +73,6 @@ String hora(DateTime momento) => DateFormat.MMMd('es').add_Hm().format(momento);
 
 /// Solo la hora, como la linea de tiempo.
 String horaCorta(DateTime momento) => DateFormat.Hm('es').format(momento);
+
+/// El dia con su nombre, como el horario para recoger el auto.
+String dia(DateTime fecha) => DateFormat.MMMEd('es').format(fecha);
