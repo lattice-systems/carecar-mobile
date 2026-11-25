@@ -4357,5 +4357,9 @@
   "citasCalendarioError": "No pudimos abrir tu calendario. Intenta de nuevo.",
   "@citasCalendarioError": {
     "description": "Error al entregar el evento."
+  },
+  "mantenimientoRecordatorioEnVivo": "Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.",
+  "@mantenimientoRecordatorioEnVivo": {
+    "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
   }
 }
