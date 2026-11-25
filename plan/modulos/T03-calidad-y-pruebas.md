@@ -23,3 +23,7 @@
 ## V2-T03.02 · Pruebas golden
 
 Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Inter, JetBrains Mono y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
+
+## V2-T03.08 · Mock por módulo
+
+`server.js` arranca json-server, registra guardia y módulos, y devuelve `Problema` en las rutas desconocidas. Las rutas y sus datos persistentes viven en `modulos/` y `semillas/`. `npm run reset` reúne las colecciones de todas las semillas y vuelve a crear `db.json`. Los módulos con colecciones incorporadas tras el primer MVP conservan la inicialización de los archivos persistidos anteriores. [Guía del mock](../../mock_api/README.md#agregar-un-módulo)

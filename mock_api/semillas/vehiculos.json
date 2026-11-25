@@ -1,0 +1,97 @@
+{
+  "vehiculos": [
+    {
+      "id": 5,
+      "clienteId": 1,
+      "vin": "3N1CK3CD0LL123456",
+      "modelo": "Nissan March Sense",
+      "anio": 2020,
+      "placas": null,
+      "kilometraje": null,
+      "marca": "Nissan",
+      "tipo": "March",
+      "version": "Sense",
+      "color": "Blanco"
+    },
+    {
+      "id": 6,
+      "clienteId": 1,
+      "vin": "3VWDB7AJ0JM654321",
+      "modelo": "Volkswagen Jetta Comfortline",
+      "anio": 2018,
+      "placas": null,
+      "kilometraje": null,
+      "marca": "Volkswagen",
+      "tipo": "Jetta",
+      "version": "Comfortline",
+      "color": "Gris"
+    },
+    {
+      "id": 1,
+      "clienteId": 1,
+      "vin": "3N1CN7AD5ML000111",
+      "modelo": "Versa",
+      "anio": 2024,
+      "placas": "ABC-12-34",
+      "kilometraje": 18450,
+      "kilometrajeActualizadoEn": "2026-09-18",
+      "marca": "Nissan",
+      "tipo": "Versa",
+      "version": "Sense",
+      "color": "Blanco"
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "vin": "3N1CP5CD8ML000222",
+      "modelo": "Kicks",
+      "anio": 2023,
+      "placas": null,
+      "kilometraje": null,
+      "marca": "Nissan",
+      "tipo": "Kicks",
+      "version": "Advance",
+      "color": "Gris"
+    },
+    {
+      "id": 3,
+      "clienteId": 2,
+      "vin": "MAJ6S3KL9NC000333",
+      "modelo": "Sentra",
+      "anio": 2025,
+      "placas": "XYZ-98-76",
+      "kilometraje": 3200,
+      "kilometrajeActualizadoEn": "2026-10-05"
+    },
+    {
+      "id": 4,
+      "clienteId": 3,
+      "vin": "1N4BL4BV6NN000444",
+      "modelo": "Versa",
+      "anio": 2022,
+      "placas": "QRS-55-11",
+      "kilometraje": 61000,
+      "kilometrajeActualizadoEn": "2026-10-20"
+    }
+  ],
+  "manuales": [
+    {
+      "id": 1,
+      "modelo": "Versa",
+      "anio": 2024,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-versa-2024.pdf"
+    },
+    {
+      "id": 2,
+      "modelo": "Kicks",
+      "anio": 2023,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-kicks-2023.pdf"
+    },
+    {
+      "id": 3,
+      "modelo": "Sentra",
+      "anio": 2025,
+      "url": "http://localhost:3000/api/v1/app/archivos/manual-sentra-2025.pdf"
+    }
+  ]
+}

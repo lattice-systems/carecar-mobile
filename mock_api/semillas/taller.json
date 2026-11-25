@@ -1,0 +1,111 @@
+{
+  "ordenesTaller": [
+    {
+      "id": 41,
+      "vehiculoId": 5,
+      "entregaEstimada": "2026-11-24T18:00:00",
+      "asesor": "Laura Méndez",
+      "totalOrden": 1282,
+      "etapas": [
+        {
+          "etapa": "RECIBIDO",
+          "inicio": "2026-11-24T09:30:00",
+          "fin": "2026-11-24T10:05:00",
+          "nota": null
+        },
+        {
+          "etapa": "DIAGNOSTICO",
+          "inicio": "2026-11-24T10:05:00",
+          "fin": "2026-11-24T11:20:00",
+          "nota": "Revisión de frenos y suspensión"
+        },
+        {
+          "etapa": "ESPERANDO_APROBACION",
+          "inicio": "2026-11-24T11:20:00",
+          "fin": "2026-11-24T11:45:00",
+          "nota": null
+        },
+        {
+          "etapa": "EN_REPARACION",
+          "inicio": "2026-11-24T11:45:00",
+          "fin": null,
+          "nota": "Cambio de aceite y filtro"
+        }
+      ],
+      "inspeccion": [
+        {
+          "id": 1,
+          "punto": "Frenos",
+          "resultado": "ROJO",
+          "comentario": "Balatas delanteras al 10 %",
+          "evidencias": [
+            {
+              "id": 1,
+              "tipo": "FOTO",
+              "url": "/api/v1/archivos/evidencias/1?expira=0&firma=mock"
+            },
+            {
+              "id": 2,
+              "tipo": "FOTO",
+              "url": "/api/v1/archivos/evidencias/2?expira=0&firma=mock"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "punto": "Llantas",
+          "resultado": "AMARILLO",
+          "comentario": "Desgaste parejo; cambiar en 5,000 km",
+          "evidencias": []
+        },
+        {
+          "id": 3,
+          "punto": "Luces",
+          "resultado": "VERDE",
+          "comentario": null,
+          "evidencias": []
+        },
+        {
+          "id": 4,
+          "punto": "Niveles de fluidos",
+          "resultado": "VERDE",
+          "comentario": null,
+          "evidencias": [
+            {
+              "id": 3,
+              "tipo": "FOTO",
+              "url": "/api/v1/archivos/evidencias/3?expira=0&firma=mock"
+            }
+          ]
+        }
+      ],
+      "evidencias": [
+        {
+          "id": 4,
+          "tipo": "VIDEO",
+          "url": "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+        }
+      ],
+      "adicionales": [
+        {
+          "id": 11,
+          "concepto": "Cambio de balatas delanteras",
+          "manoDeObra": 450,
+          "refacciones": 1200.5,
+          "total": 1650.5,
+          "estado": "PENDIENTE",
+          "respondidoEn": null
+        },
+        {
+          "id": 12,
+          "concepto": "Lavado de motor",
+          "manoDeObra": 200,
+          "refacciones": 0,
+          "total": 200,
+          "estado": "PENDIENTE",
+          "respondidoEn": null
+        }
+      ]
+    }
+  ]
+}

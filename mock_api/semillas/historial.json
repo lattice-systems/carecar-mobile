@@ -1,0 +1,184 @@
+{
+  "servicios": [
+    {
+      "id": 1,
+      "vehiculoId": 1,
+      "fecha": "2026-09-18",
+      "kilometraje": 30200,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-09-18T17:30:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 30,000 km",
+          "cantidad": 1,
+          "precio": 2400,
+          "importe": 2400
+        },
+        {
+          "concepto": "Rotación de llantas",
+          "cantidad": 1,
+          "precio": 350,
+          "importe": 350
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Aceite sintético 0W-20",
+          "cantidad": 5,
+          "precio": 240.1,
+          "importe": 1200.5
+        },
+        {
+          "concepto": "Filtro de aceite",
+          "cantidad": 1,
+          "precio": 300,
+          "importe": 300
+        }
+      ],
+      "total": 4250.5
+    },
+    {
+      "id": 2,
+      "vehiculoId": 1,
+      "fecha": "2026-05-04",
+      "kilometraje": 20100,
+      "estatus": "ENTREGADO",
+      "fechaCierre": "2026-05-04T13:15:00",
+      "manoDeObra": [
+        {
+          "concepto": "Cambio de balatas delanteras",
+          "cantidad": 1,
+          "precio": 900,
+          "importe": 900
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Juego de balatas delanteras",
+          "cantidad": 1,
+          "precio": 1400,
+          "importe": 1400
+        }
+      ],
+      "total": 2300
+    },
+    {
+      "id": 3,
+      "vehiculoId": 1,
+      "fecha": "2026-01-22",
+      "kilometraje": 10050,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-01-22T16:40:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 10,000 km",
+          "cantidad": 1,
+          "precio": 2950,
+          "importe": 2950
+        },
+        {
+          "concepto": "Alineación y balanceo",
+          "cantidad": 1,
+          "precio": 870,
+          "importe": 870
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Aceite sintético 0W-20",
+          "cantidad": 5,
+          "precio": 240.1,
+          "importe": 1200.5
+        },
+        {
+          "concepto": "Filtro de aire",
+          "cantidad": 1,
+          "precio": 450,
+          "importe": 450
+        },
+        {
+          "concepto": "Filtro de cabina",
+          "cantidad": 1,
+          "precio": 649.25,
+          "importe": 649.25
+        }
+      ],
+      "total": 6119.75
+    },
+    {
+      "id": 6,
+      "vehiculoId": 1,
+      "fecha": "2025-07-15",
+      "kilometraje": 5000,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2025-07-15T12:05:00",
+      "manoDeObra": [
+        {
+          "concepto": "Servicio de 5,000 km",
+          "cantidad": 1,
+          "precio": 1200,
+          "importe": 1200
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Filtro de aceite",
+          "cantidad": 1,
+          "precio": 300,
+          "importe": 300
+        }
+      ],
+      "total": 1500
+    },
+    {
+      "id": 4,
+      "vehiculoId": 2,
+      "fecha": "2026-08-30",
+      "kilometraje": 45100,
+      "estatus": "EN_PROCESO",
+      "fechaCierre": null,
+      "manoDeObra": [
+        {
+          "concepto": "Diagnóstico de suspensión",
+          "cantidad": 1,
+          "precio": 640,
+          "importe": 640
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Bujes de horquilla",
+          "cantidad": 2,
+          "precio": 450,
+          "importe": 900
+        }
+      ],
+      "total": 1540
+    },
+    {
+      "id": 5,
+      "vehiculoId": 3,
+      "fecha": "2026-10-02",
+      "kilometraje": 8200,
+      "estatus": "TERMINADO",
+      "fechaCierre": "2026-10-02T11:20:00",
+      "manoDeObra": [
+        {
+          "concepto": "Revisión de garantía",
+          "cantidad": 1,
+          "precio": 0,
+          "importe": 0
+        }
+      ],
+      "refacciones": [
+        {
+          "concepto": "Limpiaparabrisas",
+          "cantidad": 2,
+          "precio": 490,
+          "importe": 980
+        }
+      ],
+      "total": 980
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "catalogo": [
+    {
+      "id": 1,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2025,
+      "version": "Sense",
+      "precioDesde": 329900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Versa+Sense",
+      "descripcion": "Sedán compacto con buen rendimiento de combustible.",
+      "activo": true
+    },
+    {
+      "id": 2,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2025,
+      "version": "Advance",
+      "precioDesde": 369900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Versa+Advance",
+      "descripcion": "Sedán compacto con buen rendimiento de combustible.",
+      "activo": true
+    },
+    {
+      "id": 3,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2025,
+      "version": "Exclusive",
+      "precioDesde": 419900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Versa+Exclusive",
+      "descripcion": "Sedán compacto con buen rendimiento de combustible.",
+      "activo": true
+    },
+    {
+      "id": 4,
+      "marca": "Nissan",
+      "modelo": "Kicks",
+      "anio": 2025,
+      "version": "Advance",
+      "precioDesde": 459900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Kicks+Advance",
+      "descripcion": "Crossover urbana con cámara de 360 grados.",
+      "activo": true
+    },
+    {
+      "id": 5,
+      "marca": "Nissan",
+      "modelo": "Kicks",
+      "anio": 2025,
+      "version": "Exclusive",
+      "precioDesde": 519900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Kicks+Exclusive",
+      "descripcion": "Crossover urbana con cámara de 360 grados.",
+      "activo": true
+    },
+    {
+      "id": 6,
+      "marca": "Nissan",
+      "modelo": "Sentra",
+      "anio": 2025,
+      "version": null,
+      "precioDesde": 449900,
+      "imagenUrl": "https://placehold.co/960x640/png?text=Sentra",
+      "descripcion": null,
+      "activo": true
+    },
+    {
+      "id": 7,
+      "marca": "Nissan",
+      "modelo": "Tsuru",
+      "anio": 2017,
+      "version": "GSI",
+      "precioDesde": null,
+      "imagenUrl": null,
+      "descripcion": null,
+      "activo": false
+    }
+  ],
+  "catalogoImagenes": [
+    {
+      "id": 1,
+      "modeloId": 1,
+      "url": "https://placehold.co/960x640/png?text=Versa+Sense+frente+blanco",
+      "color": "Blanco",
+      "descripcion": "Versa Sense frente blanco",
+      "orden": 0
+    },
+    {
+      "id": 2,
+      "modeloId": 1,
+      "url": "https://placehold.co/960x640/png?text=Versa+Sense+lateral+blanco",
+      "color": "Blanco",
+      "descripcion": "Versa Sense lateral blanco",
+      "orden": 1
+    },
+    {
+      "id": 3,
+      "modeloId": 1,
+      "url": "https://placehold.co/960x640/png?text=Versa+Sense+frente+rojo",
+      "color": "Rojo",
+      "descripcion": "Versa Sense frente rojo",
+      "orden": 2
+    },
+    {
+      "id": 4,
+      "modeloId": 2,
+      "url": "https://placehold.co/960x640/png?text=Versa+Advance+frente+gris",
+      "color": "Gris",
+      "descripcion": "Versa Advance frente gris",
+      "orden": 0
+    },
+    {
+      "id": 5,
+      "modeloId": 4,
+      "url": "https://placehold.co/960x640/png?text=Kicks+Advance+frente+azul",
+      "color": "Azul",
+      "descripcion": "Kicks Advance frente azul",
+      "orden": 0
+    },
+    {
+      "id": 6,
+      "modeloId": 4,
+      "url": "https://placehold.co/960x640/png?text=Kicks+Advance+interior",
+      "color": "Azul",
+      "descripcion": "Kicks Advance interior",
+      "orden": 1
+    }
+  ],
+  "catalogoEspecificaciones": [
+    {
+      "id": 1,
+      "modeloId": 1,
+      "etiqueta": "Motor",
+      "valor": "1.6 L, 4 cilindros",
+      "orden": 0
+    },
+    {
+      "id": 2,
+      "modeloId": 1,
+      "etiqueta": "Potencia",
+      "valor": "106 hp",
+      "orden": 1
+    },
+    {
+      "id": 3,
+      "modeloId": 1,
+      "etiqueta": "Transmisión",
+      "valor": "Manual de 5 velocidades",
+      "orden": 2
+    },
+    {
+      "id": 4,
+      "modeloId": 1,
+      "etiqueta": "Rendimiento",
+      "valor": "17.5 km por litro",
+      "orden": 3
+    },
+    {
+      "id": 5,
+      "modeloId": 4,
+      "etiqueta": "Motor",
+      "valor": "1.6 L, 4 cilindros",
+      "orden": 0
+    },
+    {
+      "id": 6,
+      "modeloId": 4,
+      "etiqueta": "Transmisión",
+      "valor": "Automática CVT",
+      "orden": 1
+    }
+  ],
+  "parametrosTomaCuenta": [
+    {
+      "id": 1,
+      "marca": "Nissan",
+      "modelo": "March",
+      "anio": 2020,
+      "valorBase": 260000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 2,
+      "marca": "Volkswagen",
+      "modelo": "Jetta",
+      "anio": 2018,
+      "valorBase": 420000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 3,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2024,
+      "valorBase": 380000,
+      "depreciacionAnual": 0.12,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 4,
+      "marca": "Nissan",
+      "modelo": "Kicks",
+      "anio": 2023,
+      "valorBase": 450000,
+      "depreciacionAnual": 0.11,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 5,
+      "marca": "Nissan",
+      "modelo": "Versa",
+      "anio": 2021,
+      "valorBase": 330000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    },
+    {
+      "id": 6,
+      "marca": "Nissan",
+      "modelo": "Sentra",
+      "anio": 2022,
+      "valorBase": 400000,
+      "depreciacionAnual": 0.1,
+      "factorKm": 0.02,
+      "factorEstado": 0.05,
+      "activo": true
+    }
+  ],
+  "estimacionesTomaCuenta": []
+}

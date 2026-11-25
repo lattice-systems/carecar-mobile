@@ -6,13 +6,16 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('March y Jetta tienen VIN de 17 caracteres y pertenecen a cliente1', () {
-    final semilla = jsonDecode(
-      File('mock_api/db.seed.json').readAsStringSync(),
+    final cuentas = jsonDecode(
+      File('mock_api/semillas/acceso.json').readAsStringSync(),
     ) as Map<String, dynamic>;
-    final cliente = (semilla['cuentas'] as List)
+    final vehiculos = jsonDecode(
+      File('mock_api/semillas/vehiculos.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    final cliente = (cuentas['cuentas'] as List)
         .cast<Map<String, dynamic>>()
         .singleWhere((c) => c['usuario'] == 'cliente1');
-    final autos = (semilla['vehiculos'] as List).cast<Map<String, dynamic>>();
+    final autos = (vehiculos['vehiculos'] as List).cast<Map<String, dynamic>>();
     final esperados = {
       'Nissan March Sense': (2020, 'Blanco'),
       'Volkswagen Jetta Comfortline': (2018, 'Gris'),
@@ -32,7 +35,7 @@ void main() {
 
   test('todo vehiculo con km trae la fecha de cierre que lo dejo', () {
     final semilla = jsonDecode(
-      File('mock_api/db.seed.json').readAsStringSync(),
+      File('mock_api/semillas/vehiculos.json').readAsStringSync(),
     ) as Map<String, dynamic>;
     final autos = (semilla['vehiculos'] as List).cast<Map<String, dynamic>>();
     final conKm = autos.where((v) => v['kilometraje'] != null);
