@@ -173,3 +173,7 @@ Llamar con un toque al 911, a la agencia o a la aseguradora, sin depender de la 
 - Píldora «Llamar a la agencia» dentro de cada guía (quedó anotada en el rediseño de V2-M11.03): no se agregó para no duplicar el acceso que ya está en Emergencias.
 - Probar el marcador real en un teléfono. En pruebas solo se comprueba el `tel:`.
 - La historia no pasa a `Hecha` hasta tener la aseguradora real: queda `En revisión`.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+`PantallaGuia` y la solicitud enviada (`VistaSolicitud`) usan `MarcoPantalla`: el título de la guía o el folio y su estado en el encabezado grande, los pasos o la línea de tiempo debajo y, en la solicitud, `FilaAcciones` («Ver guías», «Actualizar»). Sin portada con icono grande; los pasos conservan el color de la guía.

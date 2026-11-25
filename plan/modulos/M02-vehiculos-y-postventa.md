@@ -292,3 +292,14 @@ Agregar la cita al calendario del teléfono, desde el comprobante. Solo la parte
 - Probar en un teléfono real que la hoja de compartir ofrece el calendario (Android e iOS); en pruebas solo se comprueba el contenido del `.ics`.
 - Desde «Mis citas» (V2-M02.09) no hay acceso al calendario: solo desde el comprobante.
 - Tablero: queda `En revisión` hasta integrar el PR; no pasa a `Hecha` mientras no se pruebe en celular.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+Se retiró el estilo portada de las pantallas del módulo, sin cambiar lógica, rutas ni criterios de aceptación:
+
+- **Garaje:** `MarcoPantalla` con una `TarjetaAuto` por vehículo (modelo, placas, km; tocarla abre el detalle). Reemplaza al estante de portadas y a «Datos rápidos».
+- **Detalle:** el encabezado grande dice el modelo y las placas; debajo, `TarjetaAuto` con el tinte del color del auto, `FilaAcciones` («Agendar», «Manual») y el resto como antes.
+- **Manual:** `BarraPantalla` con «Descargar» y «Compartir» como acciones de icono; el visor ocupa el resto.
+- **Comprobante de cita:** el QR en su tarjeta blanca (negro sobre blanco, lo exige el escáner) bajo el encabezado «Folio N»; sin fondo difuminado.
+- **Agendar, resumen y confirmación:** el resumen usa el encabezado; «Cita confirmada» y «Cita reprogramada» son un `ResultadoPantalla`.
+- Los autos de color neutro o desconocido usan el acento (antes el marino de marca).
