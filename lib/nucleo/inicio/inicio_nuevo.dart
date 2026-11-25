@@ -5,9 +5,10 @@ import '../diseno/componentes/avatar.dart';
 import '../diseno/componentes/barra_flotante.dart';
 import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
-import '../diseno/componentes/grupo_lista.dart';
+import '../diseno/componentes/rebote_tactil.dart';
 import '../diseno/tema_pista.dart';
 import '../diseno/tokens/espaciado.dart';
+import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
 
 /// Un acceso de la lista del inicio.
@@ -25,7 +26,8 @@ class AccesoInicio {
   final VoidCallback alPulsar;
 }
 
-/// Pantalla de inicio rediseñada: sin héroe ni tarjetas de color, con aire.
+/// Pantalla de inicio rediseñada: color del sistema (azul de acento, turquesa y
+/// marino), un resplandor de fondo como el del login y mosaicos con degradado.
 ///
 /// Arriba, el avatar (abre perfil y ajustes) y el saludo; luego lo que está en
 /// curso y una lista limpia de accesos. Abajo flotan la acción principal («Agendar
@@ -68,7 +70,8 @@ class InicioNuevo extends StatelessWidget {
   }
 }
 
-/// Por encima de esta escala de letra el botón flotante se esconde.
+/// Por encima de esta escala de letra el botón flotante se esconde y los
+/// accesos pasan a una sola columna.
 const double _escalaMaximaDelBoton = 1.5;
 
 class _Cuerpo extends StatelessWidget {
@@ -98,6 +101,7 @@ class _Cuerpo extends StatelessWidget {
       backgroundColor: c.fondo,
       body: Stack(
         children: [
+          const Positioned.fill(child: _Aurora()),
           SafeArea(
             bottom: false,
             child: ListView(
@@ -117,10 +121,12 @@ class _Cuerpo extends StatelessWidget {
                   ),
                 ),
                 if (primero.isNotEmpty) ...[
-                  const SizedBox(height: Espaciado.e6),
-                  Text(
-                    textos.inicioSaludo(primero),
-                    style: t.display.copyWith(color: c.texto),
+                  const SizedBox(height: Espaciado.e5),
+                  _Saludo(
+                    saludo: textos.inicioSaludo(primero),
+                    nombre: primero,
+                    estilo: t.display.copyWith(color: c.texto),
+                    colorNombre: c.acento,
                   ),
                 ],
                 if (inicio.ordenEnCurso != null) ...[
@@ -128,18 +134,15 @@ class _Cuerpo extends StatelessWidget {
                   inicio.ordenEnCurso!,
                 ],
                 const SizedBox(height: Espaciado.e8),
-                GrupoLista(
-                  encabezado: textos.inicioAccesos,
-                  filas: [
-                    for (final a in inicio.accesos)
-                      FilaGrupo(
-                        titulo: a.titulo,
-                        subtitulo: a.subtitulo,
-                        icono: a.icono,
-                        alToque: a.alPulsar,
-                      ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: Espaciado.e1),
+                  child: Text(
+                    textos.inicioAccesos,
+                    style: t.etiqueta.copyWith(color: c.textoSecundario),
+                  ),
                 ),
+                const SizedBox(height: Espaciado.e3),
+                _Accesos(accesos: inicio.accesos, enColumna: escala > 1.3),
               ],
             ),
           ),
@@ -195,6 +198,242 @@ class _Cuerpo extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Resplandor de fondo, como el del login: un halo azul arriba a la izquierda
+/// y otro turquesa arriba a la derecha, que se funden con la superficie.
+class _Aurora extends StatelessWidget {
+  const _Aurora();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TokensPista.de(context).colores;
+    final oscuro = Theme.of(context).brightness == Brightness.dark;
+    final fuerza = oscuro ? 0.30 : 0.20;
+    Widget halo(
+      Color color, {
+      double? izquierda,
+      double? derecha,
+      required double arriba,
+      required double lado,
+    }) => Positioned(
+      left: izquierda,
+      right: derecha,
+      top: arriba,
+      width: lado,
+      height: lado,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: [
+              color.withValues(alpha: fuerza),
+              color.withValues(alpha: 0),
+            ],
+          ),
+        ),
+      ),
+    );
+    return IgnorePointer(
+      child: ExcludeSemantics(
+        child: Stack(
+          children: [
+            halo(c.acento, izquierda: -140, arriba: -170, lado: 460),
+            halo(c.exito, derecha: -160, arriba: 40, lado: 360),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Los accesos como mosaicos de color: el primero, ancho; los otros dos, uno
+/// junto al otro (o todos en columna con letra grande).
+class _Accesos extends StatelessWidget {
+  const _Accesos({required this.accesos, required this.enColumna});
+
+  final List<AccesoInicio> accesos;
+  final bool enColumna;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TokensPista.de(context).colores;
+    // Tres colores del sistema: acento, éxito (turquesa) y marca (marino).
+    final colores = [c.acento, c.exito, c.marca];
+    Widget mosaico(int i, {bool ancho = false}) =>
+        _Mosaico(acceso: accesos[i], color: colores[i], ancho: ancho);
+    if (enColumna) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (var i = 0; i < accesos.length; i++) ...[
+            if (i > 0) const SizedBox(height: Espaciado.e3),
+            mosaico(i, ancho: true),
+          ],
+        ],
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        mosaico(0, ancho: true),
+        const SizedBox(height: Espaciado.e3),
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: mosaico(1)),
+              const SizedBox(width: Espaciado.e3),
+              Expanded(child: mosaico(2)),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Mosaico extends StatelessWidget {
+  const _Mosaico({
+    required this.acceso,
+    required this.color,
+    required this.ancho,
+  });
+
+  final AccesoInicio acceso;
+  final Color color;
+  final bool ancho;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final t = tokens.tipografia;
+    // `sobreAcento` es el color que el sistema define para leer sobre el relleno
+    // saturado: blanco en claro, casi negro en oscuro.
+    final frente = c.sobreAcento;
+    final etiqueta = [acceso.titulo, acceso.subtitulo].join(', ');
+    final fin = Color.lerp(color, c.marca, 0.5)!;
+    return Semantics(
+      button: true,
+      label: etiqueta,
+      excludeSemantics: true,
+      onTap: acceso.alPulsar,
+      child: ReboteTactil(
+        alPulsar: acceso.alPulsar,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: Radios.bordeHoja,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [color, fin],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.30),
+                blurRadius: 22,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: Radios.bordeHoja,
+            child: Stack(
+              children: [
+                // Marca de agua del icono, cortada por la esquina.
+                Positioned(
+                  right: -18,
+                  bottom: -22,
+                  child: Icon(
+                    acceso.icono,
+                    size: ancho ? 120 : 96,
+                    color: frente.withValues(alpha: 0.16),
+                  ),
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: ancho ? 120 : 148),
+                  child: Padding(
+                    padding: const EdgeInsets.all(Espaciado.e5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: frente.withValues(alpha: 0.18),
+                            border: Border.all(
+                              color: frente.withValues(alpha: 0.28),
+                            ),
+                          ),
+                          child: SizedBox(
+                            width: 44,
+                            height: 44,
+                            child: Icon(acceso.icono, size: 22, color: frente),
+                          ),
+                        ),
+                        const SizedBox(height: Espaciado.e4),
+                        Text(
+                          acceso.titulo,
+                          style: t.titulo3.copyWith(
+                            color: frente,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: Espaciado.e1),
+                        Text(
+                          acceso.subtitulo,
+                          style: t.cuerpoChico.copyWith(
+                            color: frente.withValues(alpha: 0.88),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// «Hola, María» con el nombre en el color de acento. El saludo viene ya
+/// traducido y se parte alrededor del nombre, sea cual sea su lugar en la frase.
+class _Saludo extends StatelessWidget {
+  const _Saludo({
+    required this.saludo,
+    required this.nombre,
+    required this.estilo,
+    required this.colorNombre,
+  });
+
+  final String saludo;
+  final String nombre;
+  final TextStyle estilo;
+  final Color colorNombre;
+
+  @override
+  Widget build(BuildContext context) {
+    final i = saludo.indexOf(nombre);
+    if (i < 0) return Text(saludo, style: estilo);
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: saludo.substring(0, i)),
+          TextSpan(
+            text: nombre,
+            style: TextStyle(color: colorNombre),
+          ),
+          TextSpan(text: saludo.substring(i + nombre.length)),
+        ],
+      ),
+      style: estilo,
     );
   }
 }
