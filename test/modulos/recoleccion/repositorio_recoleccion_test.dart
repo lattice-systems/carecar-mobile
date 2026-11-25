@@ -221,7 +221,7 @@ void main() {
     });
 
     test('un 422 al editar es FueraDeCobertura', () async {
-      final api = _api((_) => _problema(422));
+      final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
       await expectLater(
         api.repo.editar(3, _borrador),
         throwsA(isA<FueraDeCobertura>()),
@@ -275,10 +275,22 @@ void main() {
     });
 
     test('un 422 al cotizar es FueraDeCobertura', () async {
-      final api = _api((_) => _problema(422));
+      final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
       await expectLater(
         api.repo.cotizar(direccionId: 3, fecha: DateTime(2026, 11, 26)),
         throwsA(isA<FueraDeCobertura>()),
+      );
+    });
+
+    test('un 422 con otro codigo no se confunde con la cobertura', () async {
+      final api = _api((_) => _problema(422, 'KM_INVALIDO'));
+      await expectLater(
+        api.repo.guardar(_borrador),
+        throwsA(isA<SolicitudRechazada>()),
+      );
+      await expectLater(
+        api.repo.cotizar(direccionId: 3, fecha: DateTime(2026, 11, 26)),
+        throwsA(isA<SolicitudRechazada>()),
       );
     });
 
