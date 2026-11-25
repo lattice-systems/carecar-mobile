@@ -127,6 +127,26 @@ void main() {
       },
     );
 
+    test(
+      'un flujo de eventos que abre avisa que el certificado valió',
+      () async {
+        final verificaciones = <bool>[];
+        final cliente = ClienteApi(
+          config: _config,
+          http: MockClient.streaming(
+            (_, _) async => http.StreamedResponse(const Stream.empty(), 200),
+          ),
+          alVerificarCertificado: verificaciones.add,
+        );
+
+        await cliente
+            .enviarFlujo('/asistente/preguntas', cuerpo: const {})
+            .toList();
+
+        expect(verificaciones, [true]);
+      },
+    );
+
     test('también en el flujo de eventos (SSE)', () async {
       final verificaciones = <bool>[];
       final cliente = ClienteApi(

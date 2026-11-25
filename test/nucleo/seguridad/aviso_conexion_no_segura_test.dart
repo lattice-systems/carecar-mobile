@@ -110,6 +110,39 @@ void main() {
       expect(find.text('contenido de la app 1'), findsOneWidget);
     });
 
+    testWidgets('el contenido no repite el margen de la barra de estado', (
+      tester,
+    ) async {
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      tester.view.padding = const FakeViewPadding(top: 40);
+      addTearDown(tester.view.resetPadding);
+      double? margen;
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [estadoConexionSeguraProvider.overrideWithValue(estado)],
+          child: MaterialApp(
+            localizationsDelegates: delegadasDeIdioma,
+            supportedLocales: idiomasSoportados,
+            locale: const Locale('es'),
+            builder: (context, child) => AvisoConexionNoSegura(child: child!),
+            home: Builder(
+              builder: (context) {
+                margen = MediaQuery.paddingOf(context).top;
+                return const Scaffold(body: Text('contenido de la app'));
+              },
+            ),
+          ),
+        ),
+      );
+      expect(margen, 40, reason: 'sin aviso, la app ve el margen del sistema');
+
+      estado.actualizar(false);
+      await tester.pumpAndSettle();
+
+      expect(margen, 0, reason: 'el aviso ya cubrió la barra de estado');
+    });
+
     testWidgets('se anuncia al lector de pantalla', (tester) async {
       await _montar(tester, estado);
       estado.actualizar(false);
