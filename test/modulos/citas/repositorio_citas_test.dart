@@ -9,6 +9,7 @@ import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/motivo_cita.dart';
 import 'package:carecar_mobile/api/modelos/problema.dart';
 import 'package:carecar_mobile/api/modelos/recoleccion_cita.dart';
+import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -220,6 +221,54 @@ void main() {
       expect(todas.citas.first.motivo, MotivoCita.revision);
       expect(todas.citas.first.franjaId, 6);
     });
+
+    test(
+      'trae la recoleccion de la cita con el estado de cada traslado',
+      () async {
+        TrasladoCita traslado(int id, String tipo, String estado) =>
+            TrasladoCita(
+              id: id,
+              tipo: tipo,
+              estado: estado,
+              costo: 150,
+              fecha: DateTime(2026, 11, 24),
+              ventanaInicio: '07:00',
+              ventanaFin: '09:00',
+            );
+        final api = ApiFalsa()
+          ..alPedirCitas = () async => [
+            Cita(
+              id: 1,
+              vehiculoId: 1,
+              fecha: DateTime(2026, 11, 24),
+              horaInicio: '09:00',
+              horaFin: '10:00',
+              estado: EstadoCita.confirmada,
+              recoleccion: RecoleccionCita(
+                direccionId: 3,
+                costoTotal: 300,
+                traslados: [
+                  traslado(7, 'recoger', 'en_camino'),
+                  traslado(8, 'entregar', 'programado'),
+                  traslado(9, 'otro', 'programado'),
+                ],
+              ),
+            ),
+            cita(2, EstadoCita.confirmada),
+          ];
+
+        final todas = await RepositorioCitasApi(api).misCitas(tamano: 10);
+
+        final recoleccion = todas.citas.first.recoleccion!;
+        expect(recoleccion.direccionId, 3);
+        expect(recoleccion.costoTotal, 300);
+        expect(recoleccion.recoger!.id, 7);
+        expect(recoleccion.recoger!.estado, EstadoTraslado.enCamino);
+        expect(recoleccion.entregar!.estado, EstadoTraslado.programado);
+        expect(recoleccion.traslados, hasLength(2));
+        expect(todas.citas.last.recoleccion, isNull);
+      },
+    );
 
     test('deja pasar SinConexion', () {
       final api = ApiFalsa()
