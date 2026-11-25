@@ -1521,6 +1521,69 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get widgetsAgendar => 'Agendar';
+
+  @override
+  String get widgetsTallerEncabezado => 'Taller en vivo';
+
+  @override
+  String get widgetsTallerVacioMensaje => 'Tu auto no está en el taller';
+
+  @override
+  String widgetsTallerPaso(int actual, int total) {
+    return 'Paso $actual de $total';
+  }
+
+  @override
+  String get widgetsMantenimientoTitulo => 'Mantenimiento';
+
+  @override
+  String widgetsMantenimientoFaltanKm(String km) {
+    return 'Faltan $km km';
+  }
+
+  @override
+  String get widgetsMantenimientoYaToca => 'Ya toca';
+
+  @override
+  String widgetsMantenimientoFecha(String fecha) {
+    return 'Hacia el $fecha';
+  }
+
+  @override
+  String get widgetsMantenimientoVacioMensaje =>
+      'Aún no hay un plan para tu auto';
+
+  @override
+  String get widgetsMantenimientoAccion => 'Ver plan';
+
+  @override
+  String get widgetsBitacoraTitulo => 'Bitácora';
+
+  @override
+  String get widgetsBitacoraRendimientoUnidad => 'km/l';
+
+  @override
+  String widgetsBitacoraGastoMes(String mes) {
+    return 'Gasto de $mes';
+  }
+
+  @override
+  String get widgetsBitacoraRendimientoEtiqueta => 'Rendimiento';
+
+  @override
+  String get widgetsBitacoraVacioMensaje => 'Registra tu primera carga';
+
+  @override
+  String get widgetsBitacoraAccion => 'Registrar';
+
+  @override
+  String get widgetsAccesosTitulo => 'Accesos rápidos';
+
+  @override
+  String get widgetsAccesoComprobante => 'Comprobante';
+
+  @override
   String get citasWalletAgregar => 'Agregar a Wallet';
 
   @override
