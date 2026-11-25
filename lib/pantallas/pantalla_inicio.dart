@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../api/carecar_api.dart';
-import '../l10n/app_localizations.dart';
 import '../api/modelos/cita.dart';
 import '../api/modelos/perfil.dart';
 import '../api/modelos/vehiculo.dart';
+import '../modulos/mantenimiento/mantenimiento.dart';
 import '../modulos/taller/taller.dart';
 import '../nucleo/inicio/inicio_nuevo.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
@@ -137,12 +137,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
                         alCerrarSesion: _cerrarSesion,
                       ),
                     );
-                final textos = AppLocalizations.of(context);
                 return InicioNuevo(
                   nombre: perfil?.nombre,
                   autos: vehiculos
                       ?.map(
                         (v) => AutoInicio(
+                          id: v.id,
                           modelo: v.modelo,
                           anio: v.anio,
                           marca: v.marca,
@@ -154,7 +154,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
                       .toList(),
                   proximaCita: _proximaCita(citas, vehiculos ?? const []),
                   ordenEnCurso: const TarjetaOrdenEnCurso(),
+                  servicioDelAuto: (id) =>
+                      TarjetaProximoServicioDelAuto(vehiculoId: id),
                   alAgendar: alCitas,
+                  alAbrirVehiculos: alVehiculos,
+                  alAbrirCitas: alCitas,
+                  alAbrirCatalogo: alCatalogo,
                   alAbrirAjustes: () => abrirPantalla(
                     context,
                     PantallaAjustes(
@@ -162,26 +167,6 @@ class _PantallaInicioState extends State<PantallaInicio> {
                       alCerrarSesion: _cerrarSesion,
                     ),
                   ),
-                  accesos: [
-                    AccesoInicio(
-                      titulo: textos.inicioAccesoVehiculosTitulo,
-                      subtitulo: textos.inicioAccesoVehiculosSubtitulo,
-                      icono: Icons.directions_car_outlined,
-                      alPulsar: alVehiculos,
-                    ),
-                    AccesoInicio(
-                      titulo: textos.inicioAccesoCitasTitulo,
-                      subtitulo: textos.inicioAccesoCitasSubtitulo,
-                      icono: Icons.calendar_month_outlined,
-                      alPulsar: alCitas,
-                    ),
-                    AccesoInicio(
-                      titulo: textos.inicioAccesoCatalogoTitulo,
-                      subtitulo: textos.inicioAccesoCatalogoSubtitulo,
-                      icono: Icons.grid_view_outlined,
-                      alPulsar: alCatalogo,
-                    ),
-                  ],
                 );
               },
             ),

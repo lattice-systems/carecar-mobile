@@ -8,7 +8,6 @@ import '../diseno/componentes/barra_flotante.dart';
 import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
 import '../diseno/componentes/esqueleto.dart';
-import '../diseno/componentes/rebote_tactil.dart';
 import '../diseno/componentes/tarjeta_auto.dart';
 import '../diseno/componentes/tarjeta_resumen.dart';
 import '../diseno/componentes/tinte_auto.dart';
@@ -18,24 +17,10 @@ import '../diseno/tokens/espaciado.dart';
 import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
 
-/// Un acceso de la lista del inicio.
-class AccesoInicio {
-  const AccesoInicio({
-    required this.titulo,
-    required this.subtitulo,
-    required this.icono,
-    required this.alPulsar,
-  });
-
-  final String titulo;
-  final String subtitulo;
-  final IconData icono;
-  final VoidCallback alPulsar;
-}
-
 /// Un auto del cliente, como lo muestra el inicio.
 class AutoInicio {
   const AutoInicio({
+    required this.id,
     required this.modelo,
     required this.anio,
     this.marca,
@@ -44,6 +29,9 @@ class AutoInicio {
     this.color,
   });
 
+  /// El vehículo en el servidor: de él cuelgan los datos que el inicio pide
+  /// según el auto que se está viendo (el próximo servicio, por ejemplo).
+  final int id;
   final String modelo;
   final int anio;
   final String? marca;
@@ -52,6 +40,17 @@ class AutoInicio {
 
   /// Nombre del color del auto; tiñe su tarjeta (ver `tinteDeColorAuto`).
   final String? color;
+
+  /// La marca para mostrarla aparte, o `null` si falta o el modelo ya la trae
+  /// («Nissan March» no se vuelve «Nissan / Nissan March»). Es la misma regla
+  /// del garaje.
+  String? get marcaAparte {
+    final m = marca;
+    if (m == null || modelo.toLowerCase().startsWith(m.toLowerCase())) {
+      return null;
+    }
+    return m;
+  }
 }
 
 /// La próxima cita del cliente, como la muestra el inicio.
@@ -69,17 +68,23 @@ class CitaInicio {
 ///
 /// Arriba, el saludo y el avatar (abre perfil y ajustes). Luego el auto como
 /// protagonista (una tarjeta de color con su silueta, placas y kilometraje; se
-/// desliza si hay varios), lo que el taller tiene en curso, la próxima cita y
-/// tres accesos redondos. Abajo flotan la acción principal («Agendar cita») y la
-/// [BarraFlotante] con los destinos. Mientras la v1 conviva, los destinos de la
-/// barra abren su pantalla encima del inicio (`accesos[i]`) y el inicio sigue
-/// siendo el destino activo.
+/// desliza si hay varios) y, debajo, lo que le importa de él: lo que el taller
+/// tiene en curso, la próxima cita y el próximo servicio del auto que se está
+/// viendo. Abajo flotan la acción principal («Agendar cita») y la
+/// [BarraFlotante] con los destinos.
+///
+/// Los destinos viven solo en la barra: el cuerpo no los repite con accesos,
+/// sino que muestra datos. Mientras la v1 conviva, los destinos de la barra
+/// abren su pantalla encima del inicio y el inicio sigue siendo el destino
+/// activo.
 ///
 /// Lleva su propio tema Pista (claro u oscuro según el sistema) porque el
 /// inicio v1 aún no está bajo el tema v2 global (V2-T01.05).
 class InicioNuevo extends StatelessWidget {
   const InicioNuevo({
-    required this.accesos,
+    required this.alAbrirVehiculos,
+    required this.alAbrirCitas,
+    required this.alAbrirCatalogo,
     required this.alAbrirAjustes,
     required this.alAgendar,
     super.key,
@@ -87,17 +92,21 @@ class InicioNuevo extends StatelessWidget {
     this.ordenEnCurso,
     this.autos,
     this.proximaCita,
-  }) : assert(accesos.length == 3, 'El inicio lleva tres accesos');
+    this.servicioDelAuto,
+  });
 
-  /// Vehículos, citas y catálogo, en ese orden.
-  final List<AccesoInicio> accesos;
+  /// Destinos de la barra (y de las tarjetas que llevan a ellos).
+  final VoidCallback alAbrirVehiculos;
+  final VoidCallback alAbrirCitas;
+  final VoidCallback alAbrirCatalogo;
   final VoidCallback alAbrirAjustes;
   final VoidCallback alAgendar;
 
   /// Nombre completo del cliente; hasta que llega no se muestra saludo.
   final String? nombre;
 
-  /// Tarjeta de lo que el taller tiene en curso, si hay.
+  /// Tarjeta de lo que el taller tiene en curso, si hay. Lleva su propia
+  /// separación inferior y no ocupa lugar cuando no hay orden.
   final Widget? ordenEnCurso;
 
   /// Autos del cliente; `null` mientras cargan.
@@ -105,6 +114,11 @@ class InicioNuevo extends StatelessWidget {
 
   /// Próxima cita confirmada, si hay.
   final CitaInicio? proximaCita;
+
+  /// Tarjeta con el próximo servicio del auto cuyo `id` recibe, la del que se
+  /// está viendo en el carrusel. Igual que [ordenEnCurso], lleva su propia
+  /// separación inferior y no ocupa lugar si no hay qué mostrar.
+  final Widget Function(int vehiculoId)? servicioDelAuto;
 
   @override
   Widget build(BuildContext context) {
@@ -124,21 +138,34 @@ const double _huecoDeSombra = 28;
 /// Por encima de esta escala de letra el botón flotante se esconde.
 const double _escalaMaximaDelBoton = 1.5;
 
-class _Cuerpo extends StatelessWidget {
+class _Cuerpo extends StatefulWidget {
   const _Cuerpo({required this.inicio});
 
   final InicioNuevo inicio;
 
   @override
+  State<_Cuerpo> createState() => _CuerpoState();
+}
+
+class _CuerpoState extends State<_Cuerpo> {
+  /// Posición en el carrusel del auto que se está viendo.
+  int _auto = 0;
+
+  @override
   Widget build(BuildContext context) {
+    final inicio = widget.inicio;
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
     final primero = (inicio.nombre ?? '').trim().split(RegExp(r'\s+')).first;
+    final autos = inicio.autos;
+    final enPantalla = autos == null || autos.isEmpty
+        ? null
+        : autos[_auto.clamp(0, autos.length - 1)];
     // Con letra grande la barra crece y el botón flotante taparía media
-    // pantalla: se esconde (Citas sigue en los accesos y en la barra) y la
-    // reserva del final de la lista crece con la letra.
+    // pantalla: se esconde (Citas sigue en la barra) y la reserva del final de
+    // la lista crece con la letra.
     final escala = MediaQuery.textScalerOf(context).scale(1);
     final conBotonFlotante = escala <= _escalaMaximaDelBoton;
     final reservaInferior =
@@ -183,24 +210,34 @@ class _Cuerpo extends StatelessWidget {
                 ),
                 const SizedBox(height: Espaciado.e4),
                 _SeccionAutos(
-                  autos: inicio.autos,
-                  alToque: inicio.accesos[0].alPulsar,
+                  autos: autos,
+                  alToque: inicio.alAbrirVehiculos,
                   escala: escala,
+                  alCambiarDeAuto: (i) => setState(() => _auto = i),
                 ),
-                if (inicio.ordenEnCurso != null) ...[
-                  const SizedBox(height: Espaciado.e4),
-                  inicio.ordenEnCurso!,
+                const SizedBox(height: Espaciado.e4),
+                // Lo que importa del auto, de lo más concreto a lo más
+                // estimado. Cada tarjeta lleva su separación inferior, así que
+                // no sobran huecos cuando alguna no se ve. Lo vacío (la
+                // invitación a agendar) va al final: nunca por encima de lo
+                // que sí hay.
+                ?inicio.ordenEnCurso,
+                if (autos != null) ...[
+                  if (inicio.proximaCita != null)
+                    _TarjetaCita(
+                      cita: inicio.proximaCita,
+                      alAbrirCitas: inicio.alAbrirCitas,
+                      alAgendar: inicio.alAgendar,
+                    ),
+                  if (enPantalla != null)
+                    ?inicio.servicioDelAuto?.call(enPantalla.id),
+                  if (inicio.proximaCita == null)
+                    _TarjetaCita(
+                      cita: null,
+                      alAbrirCitas: inicio.alAbrirCitas,
+                      alAgendar: inicio.alAgendar,
+                    ),
                 ],
-                if (inicio.autos != null) ...[
-                  const SizedBox(height: Espaciado.e4),
-                  _TarjetaCita(
-                    cita: inicio.proximaCita,
-                    alAbrirCitas: inicio.accesos[1].alPulsar,
-                    alAgendar: inicio.alAgendar,
-                  ),
-                ],
-                const SizedBox(height: Espaciado.e6),
-                _Accesos(accesos: inicio.accesos),
               ],
             ),
           ),
@@ -225,8 +262,11 @@ class _Cuerpo extends StatelessWidget {
                 ],
                 BarraFlotante(
                   indice: 0,
-                  alCambiar: (i) {
-                    if (i > 0) inicio.accesos[i - 1].alPulsar();
+                  alCambiar: (i) => switch (i) {
+                    1 => inicio.alAbrirVehiculos(),
+                    2 => inicio.alAbrirCitas(),
+                    3 => inicio.alAbrirCatalogo(),
+                    _ => null,
                   },
                   destinos: [
                     DestinoNavegacion(
@@ -271,11 +311,15 @@ class _SeccionAutos extends StatefulWidget {
     required this.autos,
     required this.alToque,
     required this.escala,
+    required this.alCambiarDeAuto,
   });
 
   final List<AutoInicio>? autos;
   final VoidCallback alToque;
   final double escala;
+
+  /// Se llama con la posición del auto al que se desliza.
+  final ValueChanged<int> alCambiarDeAuto;
 
   @override
   State<_SeccionAutos> createState() => _SeccionAutosState();
@@ -323,7 +367,10 @@ class _SeccionAutosState extends State<_SeccionAutos> {
             child: PageView.builder(
               controller: _controlador,
               itemCount: autos.length,
-              onPageChanged: (i) => setState(() => _pagina = i),
+              onPageChanged: (i) {
+                setState(() => _pagina = i);
+                widget.alCambiarDeAuto(i);
+              },
               itemBuilder: (context, i) => Padding(
                 padding: EdgeInsets.only(
                   left: autos.length > 1 ? Espaciado.e1 : 0,
@@ -394,7 +441,7 @@ class _TarjetaDelAuto extends StatelessWidget {
           );
     final titulo = '${auto.modelo} ${auto.anio}';
     final etiqueta = [
-      ?auto.marca,
+      ?auto.marcaAparte,
       titulo,
       ?auto.placas,
       ?km,
@@ -402,7 +449,7 @@ class _TarjetaDelAuto extends StatelessWidget {
         textos.inicioAutoDeTotal(posicion!.$1, posicion!.$2),
     ].join(', ');
     return TarjetaAuto(
-      marca: auto.marca,
+      marca: auto.marcaAparte,
       titulo: titulo,
       placas: auto.placas,
       kilometraje: km,
@@ -434,12 +481,15 @@ class _TarjetaCita extends StatelessWidget {
     final textos = AppLocalizations.of(context);
     final cita = this.cita;
     if (cita == null) {
-      return TarjetaResumen(
-        titulo: textos.inicioSinCitas,
-        subtitulo: textos.inicioSinCitasDetalle,
-        icono: Icons.event_available_outlined,
-        tono: Tono.exito,
-        alToque: alAgendar,
+      return Padding(
+        padding: const EdgeInsets.only(bottom: Espaciado.e4),
+        child: TarjetaResumen(
+          titulo: textos.inicioSinCitas,
+          subtitulo: textos.inicioSinCitasDetalle,
+          icono: Icons.event_available_outlined,
+          tono: Tono.exito,
+          alToque: alAgendar,
+        ),
       );
     }
     final idioma = Localizations.localeOf(context).toLanguageTag();
@@ -447,15 +497,18 @@ class _TarjetaCita extends StatelessWidget {
     final diaCapital = dia.isEmpty
         ? dia
         : '${dia[0].toUpperCase()}${dia.substring(1)}';
-    return TarjetaResumen(
-      titulo: textos.inicioProximaCita,
-      subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
-      detalle: cita.vehiculo,
-      visual: _BloqueFecha(
-        dia: cita.fecha.day.toString(),
-        mes: DateFormat.MMM(idioma).format(cita.fecha),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Espaciado.e4),
+      child: TarjetaResumen(
+        titulo: textos.inicioProximaCita,
+        subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
+        detalle: cita.vehiculo,
+        visual: _BloqueFecha(
+          dia: cita.fecha.day.toString(),
+          mes: DateFormat.MMM(idioma).format(cita.fecha),
+        ),
+        alToque: alAbrirCitas,
       ),
-      alToque: alAbrirCitas,
     );
   }
 }
@@ -496,82 +549,6 @@ class _BloqueFecha extends StatelessWidget {
               Text(mes, style: t.micro.copyWith(color: c.sobreAcento)),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Accesos
-// ---------------------------------------------------------------------------
-
-/// Tres accesos redondos (acento, éxito y marca), planos como los iconos de
-/// las listas, con su nombre debajo.
-class _Accesos extends StatelessWidget {
-  const _Accesos({required this.accesos});
-
-  final List<AccesoInicio> accesos;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    final colores = [c.acento, c.exito, c.marca];
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (var i = 0; i < accesos.length; i++)
-          Expanded(
-            child: _Acceso(acceso: accesos[i], color: colores[i]),
-          ),
-      ],
-    );
-  }
-}
-
-class _Acceso extends StatelessWidget {
-  const _Acceso({required this.acceso, required this.color});
-
-  final AccesoInicio acceso;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    final frente = c.sobreAcento;
-    final etiqueta = [acceso.titulo, acceso.subtitulo].join(', ');
-    return Semantics(
-      button: true,
-      label: etiqueta,
-      excludeSemantics: true,
-      onTap: acceso.alPulsar,
-      child: ReboteTactil(
-        alPulsar: acceso.alPulsar,
-        child: Column(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-              child: SizedBox(
-                width: 64,
-                height: 64,
-                child: Icon(acceso.icono, size: 28, color: frente),
-              ),
-            ),
-            const SizedBox(height: Espaciado.e2),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Espaciado.e1),
-              child: Text(
-                acceso.titulo,
-                textAlign: TextAlign.center,
-                style: t.cuerpoChico.copyWith(
-                  color: c.texto,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );
