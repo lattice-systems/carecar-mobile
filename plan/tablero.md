@@ -58,7 +58,7 @@ Total: **230 historias** (una descartada) + 4 de H0.
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T02.21 | Navegación en píldora, inicio nuevo y encabezados ligeros (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148, #151, #153, #154 |
 | V2-T02.22 | Inicio con datos del auto: sin accesos repetidos, próximo servicio y tarjetas con un solo estilo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.21 | En revisión | #155 |
-| V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | En curso | |
+| V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | En revisión | #156 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
