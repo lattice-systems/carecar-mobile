@@ -26,7 +26,7 @@ require('./modulos/catalogo')(servidor, db, vehiculoDelCliente);
 require('./modulos/asistente')(servidor, vehiculoDelCliente);
 require('./modulos/estreno')(servidor, db);
 require('./modulos/privacidad')(servidor, db, emitirEvento);
-require('./modulos/taller')(servidor, db, vehiculoDelCliente);
+require('./modulos/taller')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/bitacora')(servidor, db, vehiculoDelCliente);
 
 // Devuelve Problema para cualquier otra ruta de la app.

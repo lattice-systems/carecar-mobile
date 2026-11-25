@@ -234,7 +234,12 @@ curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: appli
 curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"recogido"}'
 # V2-M17.04 · checklist a mano (al pasar a recogido o entregado se crea uno)
 curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+# V2-M04.03, V2-M04.06 y V2-M04.07 · el taller pasa la orden 41 a lista y luego la entrega
+curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"LISTO_PARA_ENTREGA"}'
+curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"ENTREGADO"}'
 ```
+
+Cada cambio de la orden (etapa nueva o respuesta a un adicional) llega como evento `orden` con `ordenId`, `vehiculoId`, `estatus`, `etapa` y `motivo`. Lista o entregada, la orden suma los adicionales aprobados, trae `horarioEntrega` de 09:00 a 17:00 y queda en el historial (`/servicios/{id}` con el mismo id). La etapa debe ir después de la actual (400) y una orden entregada ya no cambia (409 `ORDEN_CERRADA`).
 
 Los traslados se crean agendando una cita con recolección desde la app. La ubicación del chofer solo se manda en `en_camino` y `de_regreso`; las fotos del checklist son de `picsum.photos` (hace falta internet) y su parámetro de firma cambia en cada petición.
 

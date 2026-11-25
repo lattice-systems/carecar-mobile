@@ -15,6 +15,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../historial/historial.dart';
 import '../dominio/etapa_taller.dart';
 import '../dominio/orden_taller.dart';
 import 'formato_taller.dart';
@@ -24,8 +25,11 @@ import 'rutas_taller.dart';
 /// La orden en el taller (V2-M04.02): etapa actual con su avance, entrega
 /// estimada y asesor, la linea de tiempo con la hora de cada etapa (la actual
 /// respira) y los accesos a la inspeccion y a los trabajos adicionales. Si hay
-/// trabajos por aprobar lo avisa arriba. Resuelve esqueleto, datos, error y sin
-/// conexion; se recarga jalando hacia abajo.
+/// trabajos por aprobar lo avisa arriba. Se actualiza sola con los avisos en
+/// vivo (V2-M04.03). Lista para entrega avisa con el total y el horario para
+/// recogerla (V2-M04.06); lista o entregada abre su ticket y el historial
+/// (V2-M04.07). Resuelve esqueleto, datos, error y sin conexion; se recarga
+/// jalando hacia abajo.
 class PantallaOrden extends ConsumerWidget {
   const PantallaOrden({required this.ordenId, super.key});
 
@@ -85,13 +89,30 @@ class _Orden extends StatelessWidget {
     final t = tokens.tipografia;
     final pendientes = orden.pendientes.length;
     final entrega = orden.entregaEstimada;
+    final cerrada = orden.lista || orden.entregada;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Espaciado.margenTelefono),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (pendientes > 0) ...[
+          if (orden.lista) ...[
+            Aviso(
+              titulo: textos.tallerOrdenListoTitulo,
+              mensaje: textoHorarioEntrega(context, orden.horarioEntrega),
+              tono: Tono.exito,
+            ),
+            const SizedBox(height: Espaciado.e4),
+          ],
+          if (orden.entregada) ...[
+            Aviso(
+              titulo: textos.tallerOrdenEntregadaTitulo,
+              mensaje: textos.tallerOrdenEntregadaMensaje,
+              tono: Tono.exito,
+            ),
+            const SizedBox(height: Espaciado.e4),
+          ],
+          if (pendientes > 0 && !cerrada) ...[
             Aviso(
               titulo: textos.tallerOrdenAvisoPendientes(pendientes),
               mensaje: textos.tallerOrdenAvisoMensaje,
@@ -136,6 +157,13 @@ class _Orden extends StatelessWidget {
                   icono: Icons.support_agent_rounded,
                   colorIcono: c.exito,
                 ),
+              if (cerrada)
+                FilaGrupo(
+                  titulo: monedaTaller(context, orden.totalEstimado),
+                  subtitulo: textos.tallerOrdenTotalAPagar,
+                  icono: Icons.payments_outlined,
+                  colorIcono: c.exito,
+                ),
             ],
           ),
           const SizedBox(height: Espaciado.e3),
@@ -163,6 +191,24 @@ class _Orden extends StatelessWidget {
                 colorIcono: pendientes > 0 ? c.advertencia : c.marca,
                 alToque: () => context.push(rutaAdicionalesTaller(orden.id)),
               ),
+              if (cerrada)
+                FilaGrupo(
+                  titulo: textos.tallerOrdenVerTicket,
+                  subtitulo: textos.tallerOrdenVerTicketResumen,
+                  icono: Icons.receipt_long_outlined,
+                  colorIcono: c.marca,
+                  alToque: () => context.push(
+                    rutaTicketServicio(orden.vehiculoId, orden.id),
+                  ),
+                ),
+              if (orden.entregada)
+                FilaGrupo(
+                  titulo: textos.tallerOrdenVerHistorial,
+                  icono: Icons.history_rounded,
+                  colorIcono: c.marca,
+                  alToque: () =>
+                      context.push(rutaHistorialVehiculo(orden.vehiculoId)),
+                ),
             ],
           ),
         ],
