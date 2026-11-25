@@ -2,9 +2,11 @@ const { BASE, problema, noEncontrado } = require('../comun/http');
 
 module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
   // --- Aviso de privacidad (V2-M22.01) ---
-  // La versión 1 es el texto que la app traía incluido. `POST /api/v1/avisos-privacidad`
-  // (del personal, sin sesión en el simulador) publica la versión siguiente para
-  // probar «una versión nueva vuelve a pedir la aceptación».
+  // La versión 1 es el texto que la app traía incluido y la 2 (V2-M22.10) nombra a
+  // los proveedores externos, como `V45` del backend; la vigente es la 2.
+  // `POST /api/v1/avisos-privacidad` (del personal, sin sesión en el simulador)
+  // publica la versión siguiente para probar «una versión nueva vuelve a pedir la
+  // aceptación».
   const TEXTO_AVISO_V1 = [
     'Agencia360, con domicilio en el indicado en esta app, es responsable del tratamiento de tus datos personales.',
     'Datos que usamos: nombre, correo electrónico, teléfono y los datos de tus vehículos (marca, modelo, placas, número de serie y kilometraje), así como el historial de servicios y citas.',
@@ -15,8 +17,24 @@ module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
     'Cambios: cualquier modificación a este aviso se publicará en esta misma sección de la app.',
     'Última actualización: noviembre de 2026.',
   ].join('\n\n');
+  const TEXTO_AVISO_V2 = [
+    'Agencia360, con domicilio en el indicado en esta app, es responsable del tratamiento de tus datos personales.',
+    'Datos que usamos: nombre, correo electrónico, teléfono y los datos de tus vehículos (marca, modelo, placas, número de serie y kilometraje), así como el historial de servicios y citas.',
+    'Finalidades: identificarte al iniciar sesión, mostrarte tus vehículos, manuales, servicios y tickets, agendar y recordarte tus citas en el taller y atender tus solicitudes. No usamos tus datos con fines publicitarios ni los vendemos a terceros.',
+    'Proveedores externos: para darte el servicio, parte de tus datos llega a estos proveedores.',
+    'Alojamiento: Microsoft Azure y Neon guardan y procesan tu información en sus servidores, por cuenta de la agencia.',
+    'Mapa: OpenStreetMap, el proveedor del mapa, recibe tu dirección IP y la zona que estás viendo cuando abres un mapa.',
+    'Direcciones: al buscar una dirección o ubicarla en el mapa, el servicio de ubicación de tu teléfono (por lo general Google en Android y Apple en iPhone) recibe el texto de la dirección o las coordenadas.',
+    'Asistente CareCar: solo si lo usas, Gemini (de Google) recibe tu pregunta (le quitamos lo que parezca correo, teléfono, placas o número de serie), el modelo y el año de tu auto y, si la mandas, la foto del tablero sin ubicación ni datos de la cámara. Google puede usar ese contenido para mejorar sus productos.',
+    'Transferencias: fuera de estos proveedores, solo compartimos tus datos con autoridades cuando la ley lo exige.',
+    'Derechos ARCO: puedes acceder, rectificar, cancelar u oponerte al uso de tus datos, o revocar tu consentimiento, escribiendo al correo de contacto de la agencia. Te responderemos en un plazo máximo de 20 días hábiles.',
+    'Seguridad: tu sesión se guarda cifrada en tu dispositivo y la comunicación con la agencia requiere autenticación.',
+    'Cambios: cualquier modificación a este aviso se publicará en esta misma sección de la app.',
+    'Última actualización: noviembre de 2026.',
+  ].join('\n\n');
   const avisosPrivacidad = [
     { id: 1, version: 1, texto: TEXTO_AVISO_V1, vigenteDesde: '2026-11-01T00:00:00.000Z' },
+    { id: 2, version: 2, texto: TEXTO_AVISO_V2, vigenteDesde: '2026-11-25T00:00:00.000Z' },
   ];
   const aceptacionesAviso = [];
 
