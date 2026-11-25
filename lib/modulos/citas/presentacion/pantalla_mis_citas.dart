@@ -56,6 +56,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.hasError && !citas.hasValue) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: EstadoError(
           causa: citas.error is SinConexion
@@ -68,6 +69,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (!citas.hasValue) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: const _Cargando(),
       );
@@ -75,6 +77,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.requireValue.citas.isEmpty) {
       return MarcoPantallaCita.estado(
         titulo: textos.citasMisCitasTitulo,
+        conRegreso: true,
         acciones: const [],
         estado: VacioIlustrado(
           titulo: textos.citasMisCitasVacioTitulo,
@@ -120,6 +123,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
 
     return MarcoPantallaCita(
       titulo: textos.citasMisCitasTitulo,
+      conRegreso: true,
       acciones: [
         IconButton(
           tooltip: textos.citasMisCitasAgendar,
