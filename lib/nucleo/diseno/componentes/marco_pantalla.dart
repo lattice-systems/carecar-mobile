@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 
-import '../../../../l10n/app_localizations.dart';
-import '../../../../nucleo/diseno/componentes/encabezado_grande.dart';
-import '../../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
-import '../../../../nucleo/diseno/componentes/boton_circular.dart';
+import '../tokens/espaciado.dart';
+import '../tokens/tokens_pista.dart';
+import 'boton_cerrar.dart';
+import 'encabezado_grande.dart';
 
-/// Marco de las pantallas de direcciones: título grande translúcido que se
-/// contrae, contenido que se desplaza y, si hace falta, una barra fija al pie.
+/// El marco de toda pantalla de detalle o de formulario: encabezado grande que
+/// se recoge, contenido que se desplaza sin atravesar el título y, si hace
+/// falta, una barra fija al pie.
+///
+/// Es la única implementación: ningún módulo arma su propio `Scaffold` con
+/// encabezado. El contenido va en `slivers`; el ancho se limita a
+/// [Espaciado.anchoMaximoContenido] y se centra en pantallas anchas.
+///
+/// - `conRegreso`: pone «Regresar» en la barra; para las raíces de un módulo.
+/// - `acciones`: botones al final de la barra. Si no se pasan y no hay regreso,
+///   la barra lleva «Cerrar» (la pantalla se abrió encima de otra).
+/// - `alRefrescar`: jalar para recargar; nulo lo desactiva.
+/// - `barraInferior`: ver [BarraInferior].
 ///
 /// Los estados de pantalla completa (cargando, vacío, error) se pasan con
-/// [MarcoPantallaRecoleccion.estado]: conservan el título y se centran en el
-/// resto. Mismo ritmo que el resto de las pantallas «Estilo portada».
-class MarcoPantallaRecoleccion extends StatelessWidget {
-  const MarcoPantallaRecoleccion({
+/// [MarcoPantalla.estado]: conservan el título y se centran en el resto.
+class MarcoPantalla extends StatelessWidget {
+  const MarcoPantalla({
     required this.titulo,
     required this.slivers,
     super.key,
+    this.subtitulo,
     this.acciones,
     this.conRegreso = false,
     this.barraInferior,
@@ -24,27 +34,25 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
   });
 
   /// Marco con un solo estado que ocupa el resto de la pantalla.
-  MarcoPantallaRecoleccion.estado({
+  MarcoPantalla.estado({
     required this.titulo,
     required Widget estado,
     super.key,
+    this.subtitulo,
     this.acciones,
     this.conRegreso = false,
-  }) : slivers = [SliverFillRemaining(child: estado)],
+  }) : // El estado se centra y se desplaza solo (CentradoDesplazable), así que
+       // ocupa el resto con alto fijo en vez de medirse con intrínsecos.
+       slivers = [SliverFillRemaining(child: estado)],
        barraInferior = null,
        alRefrescar = null;
 
   final String titulo;
+  final String? subtitulo;
   final List<Widget> slivers;
-
-  /// Botones al final del encabezado; por defecto, «Cerrar».
   final List<Widget>? acciones;
-
-  /// Pone «Regresar» antes del título; para las pantallas raíz del módulo.
   final bool conRegreso;
   final Widget? barraInferior;
-
-  /// Jalar para recargar; nulo lo desactiva.
   final Future<void> Function()? alRefrescar;
 
   @override
@@ -56,9 +64,10 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
       slivers: [
         EncabezadoGrande(
           titulo: titulo,
+          subtitulo: subtitulo,
           translucido: true,
           conRegreso: conRegreso,
-          acciones: acciones ?? [BotonCerrarRecoleccion()],
+          acciones: acciones ?? (conRegreso ? const [] : const [BotonCerrar()]),
         ),
         ...slivers,
         const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
@@ -93,24 +102,10 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
   }
 }
 
-/// Botón «Cerrar» del encabezado: sale de la pantalla actual.
-class BotonCerrarRecoleccion extends StatelessWidget {
-  const BotonCerrarRecoleccion({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BotonCircular(
-      etiqueta: AppLocalizations.of(context).recoleccionCerrar,
-      icono: Icons.close_rounded,
-      alPresionar: () => Navigator.of(context).maybePop(),
-    );
-  }
-}
-
-/// Barra fija al pie con las acciones del paso; respeta el área segura y el
-/// ancho máximo del contenido. Los hijos van apilados.
-class BarraInferiorRecoleccion extends StatelessWidget {
-  const BarraInferiorRecoleccion({required this.hijos, super.key});
+/// Barra fija al pie de un [MarcoPantalla] con las acciones del paso; respeta
+/// el área segura y el ancho máximo del contenido. Los hijos van apilados.
+class BarraInferior extends StatelessWidget {
+  const BarraInferior({required this.hijos, super.key});
 
   final List<Widget> hijos;
 
@@ -132,7 +127,10 @@ class BarraInferiorRecoleccion extends StatelessWidget {
               maxWidth: Espaciado.anchoMaximoContenido,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(Espaciado.e4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: Espaciado.e4,
+                vertical: Espaciado.e3,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -146,18 +144,22 @@ class BarraInferiorRecoleccion extends StatelessWidget {
   }
 }
 
-/// Sección grande de una pantalla: título en negrita y su contenido, con el
-/// título como encabezado para el lector de pantalla.
-class SeccionRecoleccion extends StatelessWidget {
-  const SeccionRecoleccion({
+/// Sección de una pantalla: título (encabezado para el lector de pantalla) y
+/// su contenido, con el margen lateral estándar. `conMargen: false` deja que el
+/// contenido llegue a los bordes (carruseles, mapas). `nota` es un texto de
+/// apoyo debajo del contenido.
+class SeccionPantalla extends StatelessWidget {
+  const SeccionPantalla({
     required this.titulo,
     required this.hijo,
     super.key,
+    this.nota,
     this.conMargen = true,
   });
 
   final String titulo;
   final Widget hijo;
+  final String? nota;
   final bool conMargen;
 
   @override
@@ -189,6 +191,21 @@ class SeccionRecoleccion extends StatelessWidget {
           ),
           child: hijo,
         ),
+        if (nota != null)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Espaciado.e4,
+              Espaciado.e2,
+              Espaciado.e4,
+              0,
+            ),
+            child: Text(
+              nota!,
+              style: tokens.tipografia.cuerpoChico.copyWith(
+                color: c.textoSecundario,
+              ),
+            ),
+          ),
       ],
     );
   }

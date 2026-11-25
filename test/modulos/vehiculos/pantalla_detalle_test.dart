@@ -51,8 +51,9 @@ void main() {
   _prueba('muestra vin, placas, anio, color, version y km', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
-    expect(find.text('Detalle del vehículo'), findsOneWidget);
+    // El auto es el titulo del encabezado; las placas, su subtitulo.
     expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+    expect(find.text('Placas ABC-123'), findsOneWidget);
     expect(find.text('JM3KFBDM0R0123456'), findsOneWidget);
     expect(find.text('ABC-123'), findsOneWidget);
     expect(find.text('Rojo'), findsOneWidget);
@@ -191,7 +192,7 @@ void main() {
       _app(RepositorioGarajeFake(), idioma: const Locale('en')),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Vehicle details'), findsOneWidget);
+    expect(find.text('Plates ABC-123'), findsOneWidget);
     expect(find.text('Service history'), findsOneWidget);
     expect(find.text('Coming soon'), findsNothing);
     expect(find.textContaining('Updated by the workshop on'), findsOneWidget);

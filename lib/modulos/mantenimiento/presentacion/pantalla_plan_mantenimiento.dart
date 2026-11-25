@@ -5,27 +5,28 @@ import 'package:go_router/go_router.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/barra_portada.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/eventos/proveedores_eventos.dart';
 import '../../citas/citas.dart';
 import '../dominio/plan_mantenimiento.dart';
-import 'componentes/portada_mantenimiento.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 import 'rutas_mantenimiento.dart';
 
-/// Plan de mantenimiento de un vehículo en estilo portada (V2-M05.01 y
-/// V2-M05.02): el próximo servicio como héroe (cuánto falta, fecha estimada y
-/// por qué toca), el kilometraje vigente y la lista de servicios del modelo
-/// con su estado (hecho, pendiente, próximo o vencido).
+/// Plan de mantenimiento de un vehículo (V2-M05.01 y V2-M05.02): el próximo
+/// servicio en una tarjeta de resumen (cuánto falta, fecha estimada y por qué
+/// toca, con una barra del avance de kilometraje), el kilometraje vigente y la
+/// lista de servicios del modelo con su estado (hecho, pendiente, próximo o
+/// vencido).
 ///
 /// «Agendar este servicio» abre Agendar cita con el vehículo y el motivo
 /// mantenimiento ya elegidos (V2-M05.04). Resuelve los cinco estados:
@@ -76,47 +77,49 @@ class _EstadoPantallaPlanMantenimiento
       }
     });
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      appBar: BarraPortada(titulo: textos.mantenimientoTitulo),
-      body: plan.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => SafeArea(
-          child: EstadoError(
-            causa: error is SinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () =>
-                ref.invalidate(planMantenimientoProvider(widget.vehiculoId)),
-          ),
-        ),
-        data: (p) => p.sinPlan
-            ? SafeArea(
-                child: EstadoVacio(
-                  titulo: textos.mantenimientoVacioTitulo,
-                  mensaje: textos.mantenimientoVacioMensaje,
-                  icono: Icons.build_circle_outlined,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => ref.refresh(
-                  planMantenimientoProvider(widget.vehiculoId).future,
-                ),
-                child: _Plan(
-                  plan: p,
-                  vehiculoId: widget.vehiculoId,
-                  kmGuardado: _kmGuardado,
-                  alCerrarAviso: () => setState(() => _kmGuardado = false),
-                  recordatorio: _recordatorio,
-                  alCerrarRecordatorio: () =>
-                      setState(() => _recordatorio = false),
-                  alAgendar: _agendar,
-                  alRegistrarKm: _registrarKm,
-                ),
-              ),
+    final titulo = textos.mantenimientoTitulo;
+
+    return plan.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
       ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
+          causa: error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () =>
+              ref.invalidate(planMantenimientoProvider(widget.vehiculoId)),
+        ),
+      ),
+      data: (p) => p.sinPlan
+          ? MarcoPantalla.estado(
+              titulo: titulo,
+              conRegreso: true,
+              estado: EstadoVacio(
+                titulo: textos.mantenimientoVacioTitulo,
+                mensaje: textos.mantenimientoVacioMensaje,
+                icono: Icons.build_circle_outlined,
+              ),
+            )
+          : _Plan(
+              plan: p,
+              vehiculoId: widget.vehiculoId,
+              alRefrescar: () => ref.refresh(
+                planMantenimientoProvider(widget.vehiculoId).future,
+              ),
+              kmGuardado: _kmGuardado,
+              alCerrarAviso: () => setState(() => _kmGuardado = false),
+              recordatorio: _recordatorio,
+              alCerrarRecordatorio: () => setState(() => _recordatorio = false),
+              alAgendar: _agendar,
+              alRegistrarKm: _registrarKm,
+            ),
     );
   }
 }
@@ -125,6 +128,7 @@ class _Plan extends StatelessWidget {
   const _Plan({
     required this.plan,
     required this.vehiculoId,
+    required this.alRefrescar,
     required this.kmGuardado,
     required this.alCerrarAviso,
     required this.recordatorio,
@@ -137,6 +141,7 @@ class _Plan extends StatelessWidget {
 
   /// El vehículo de la ruta: de él cuelgan el detalle de cada servicio.
   final int vehiculoId;
+  final Future<void> Function() alRefrescar;
   final bool kmGuardado;
   final VoidCallback alCerrarAviso;
   final bool recordatorio;
@@ -150,40 +155,14 @@ class _Plan extends StatelessWidget {
     final c = TokensPista.de(context).colores;
     final proximo = plan.proximo;
 
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: Espaciado.e8),
-      children: [
-        CabeceraPortada(
-          titulo: proximo?.nombre ?? textos.mantenimientoSinProximoTitulo,
-          subtitulo: proximo == null
-              ? textos.mantenimientoSinProximoMensaje
-              : _subtituloProximo(context, proximo),
-          descripcion: textos.mantenimientoDescripcionPortada,
-          portada: PortadaMantenimiento(tinte: c.acento),
-          principal: proximo == null
-              ? AccionPortada(
-                  texto: textos.mantenimientoRegistrarKm,
-                  icono: Icons.speed_outlined,
-                  alPresionar: alRegistrarKm,
-                )
-              : AccionPortada(
-                  texto: textos.mantenimientoAgendar,
-                  icono: Icons.event_available_outlined,
-                  alPresionar: alAgendar,
-                ),
-          secundaria: proximo == null
-              ? null
-              : AccionPortada(
-                  texto: textos.mantenimientoRegistrarKm,
-                  icono: Icons.speed_outlined,
-                  alPresionar: alRegistrarKm,
-                ),
-        ),
-        Padding(
+    return MarcoPantalla(
+      titulo: textos.mantenimientoTitulo,
+      conRegreso: true,
+      alRefrescar: alRefrescar,
+      slivers: [
+        SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          sliver: SliverList.list(
             children: [
               if (recordatorio) ...[
                 const SizedBox(height: Espaciado.e2),
@@ -192,16 +171,38 @@ class _Plan extends StatelessWidget {
                   tono: Tono.advertencia,
                   alCerrar: alCerrarRecordatorio,
                 ),
-                const SizedBox(height: Espaciado.e4),
               ] else if (kmGuardado) ...[
+                const SizedBox(height: Espaciado.e2),
                 Aviso(
                   mensaje: textos.mantenimientoKmGuardado,
                   tono: Tono.exito,
                   alCerrar: alCerrarAviso,
                 ),
-                const SizedBox(height: Espaciado.e4),
-              ] else
-                const SizedBox(height: Espaciado.e2),
+              ],
+              const SizedBox(height: Espaciado.e2),
+              _resumenProximo(context, proximo),
+              const SizedBox(height: Espaciado.e4),
+              FilaAcciones(
+                principal: proximo == null
+                    ? AccionPantalla(
+                        texto: textos.mantenimientoRegistrarKm,
+                        icono: Icons.speed_outlined,
+                        alPresionar: alRegistrarKm,
+                      )
+                    : AccionPantalla(
+                        texto: textos.mantenimientoAgendar,
+                        icono: Icons.event_available_outlined,
+                        alPresionar: alAgendar,
+                      ),
+                secundaria: proximo == null
+                    ? null
+                    : AccionPantalla(
+                        texto: textos.mantenimientoRegistrarKm,
+                        icono: Icons.speed_outlined,
+                        alPresionar: alRegistrarKm,
+                      ),
+              ),
+              const SizedBox(height: Espaciado.e6),
               GrupoLista(
                 encabezado: textos.mantenimientoEncabezadoKm,
                 filas: [
@@ -238,9 +239,19 @@ class _Plan extends StatelessWidget {
     );
   }
 
-  /// Línea del héroe: por qué toca y cuánto falta, o que ya toca.
-  String _subtituloProximo(BuildContext context, ProximoServicio proximo) {
+  /// La tarjeta del próximo servicio: qué toca, por qué y cuánto falta. Cuando
+  /// toca por kilometraje lleva una barra del avance desde el último servicio
+  /// hecho; sin ella (toca por tiempo) el «cuánto falta» va como detalle.
+  Widget _resumenProximo(BuildContext context, ProximoServicio? proximo) {
     final textos = AppLocalizations.of(context);
+    if (proximo == null) {
+      return TarjetaResumen(
+        titulo: textos.mantenimientoSinProximoTitulo,
+        subtitulo: textos.mantenimientoSinProximoMensaje,
+        icono: Icons.check_rounded,
+        tono: Tono.exito,
+      );
+    }
     final motivo = switch (proximo.motivo) {
       MotivoProximo.km => textos.mantenimientoMotivoKm,
       MotivoProximo.tiempo => textos.mantenimientoMotivoTiempo,
@@ -251,7 +262,34 @@ class _Plan extends StatelessWidget {
             formatearKm(context, proximo.faltanKm),
             formatearFecha(context, proximo.fechaEstimada),
           );
-    return '$motivo\n$falta';
+    final progreso = _progresoKm(proximo);
+    return TarjetaResumen(
+      titulo: proximo.nombre,
+      subtitulo: motivo,
+      detalle: progreso == null ? falta : null,
+      icono: Icons.build_circle_outlined,
+      tono: proximo.yaToca ? Tono.advertencia : Tono.informacion,
+      progreso: progreso,
+      etiquetaProgreso: progreso == null ? null : falta,
+    );
+  }
+
+  /// Avance del kilometraje entre el último servicio hecho (o el cero) y el
+  /// que toca; `null` si toca por tiempo o no hay kilometraje vigente.
+  double? _progresoKm(ProximoServicio proximo) {
+    final km = plan.kmActual;
+    if (proximo.motivo != MotivoProximo.km || km == null) return null;
+    var base = 0;
+    for (final s in plan.servicios) {
+      if (s.estado == EstadoServicio.hecho &&
+          s.km < proximo.kmObjetivo &&
+          s.km > base) {
+        base = s.km;
+      }
+    }
+    final total = proximo.kmObjetivo - base;
+    if (total <= 0) return null;
+    return ((km - base) / total).clamp(0.0, 1.0);
   }
 
   /// Quién dejó el km vigente y cuándo; sin dato lo dice.
@@ -304,18 +342,17 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).mantenimientoCargando,
       liveRegion: true,
-      child: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(Espaciado.e4),
-          child: Column(
-            children: [
-              Esqueleto(alto: 240),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-            ],
-          ),
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(Espaciado.e4),
+        child: Column(
+          children: [
+            Esqueleto(alto: 120),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+          ],
         ),
       ),
     );

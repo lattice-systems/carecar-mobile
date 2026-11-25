@@ -525,7 +525,11 @@
   "@citasReprogramarError": {
     "description": "Fallo al reprogramar."
   },
-  "citasReprogramarListo": "Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.",
+  "citasReprogramadaTitulo": "Cita reprogramada",
+  "@citasReprogramadaTitulo": {
+    "description": "Título de la pantalla que confirma que la cita se movió a otro horario."
+  },
+  "citasReprogramarListo": "Te esperamos el {fecha} a las {hora}. El horario anterior quedó libre.",
   "@citasReprogramarListo": {
     "description": "Aviso tras reprogramar.",
     "placeholders": {
@@ -2158,6 +2162,10 @@
   "citasAccionesCita": "Opciones de tu cita",
   "@citasAccionesCita": {
     "description": "Título de la hoja con las acciones de una cita próxima."
+  },
+  "cerrarPantalla": "Cerrar",
+  "@cerrarPantalla": {
+    "description": "Nombre del botón que cierra la pantalla actual (X de los encabezados)."
   },
   "regresar": "Regresar",
   "@regresar": {

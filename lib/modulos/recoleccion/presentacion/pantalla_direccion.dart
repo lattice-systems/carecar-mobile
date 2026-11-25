@@ -15,7 +15,7 @@ import '../../../nucleo/mapas/mapas.dart';
 import '../dominio/direccion_guardada.dart';
 import '../dominio/fallos_recoleccion.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
-import 'componentes/marco_pantalla_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'proveedores_recoleccion.dart';
 import 'provisional/mapa_provisional.dart';
 
@@ -240,11 +240,11 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
     final c = tokens.colores;
     final editando = widget.editando != null;
 
-    return MarcoPantallaRecoleccion(
+    return MarcoPantalla(
       titulo: editando
           ? textos.recoleccionFormEditarTitulo
           : textos.recoleccionFormNuevaTitulo,
-      barraInferior: BarraInferiorRecoleccion(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.recoleccionGuardar,
@@ -278,7 +278,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                   ),
                   child: _avisoWidget(textos, _aviso!),
                 ),
-              SeccionRecoleccion(
+              SeccionPantalla(
                 titulo: textos.recoleccionFormUbicacionTitulo,
                 hijo: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -329,7 +329,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                   ],
                 ),
               ),
-              SeccionRecoleccion(
+              SeccionPantalla(
                 titulo: textos.recoleccionSelectorDireccion,
                 hijo: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

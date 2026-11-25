@@ -152,7 +152,8 @@
   "citasReprogramarCargando": "Loading your appointment and the workshop times",
   "citasReprogramarConfirmar": "Move to this time",
   "citasReprogramarError": "We could not reschedule your appointment. Try again.",
-  "citasReprogramarListo": "Appointment moved to {fecha} at {hora}. The previous time slot is free again.",
+  "citasReprogramadaTitulo": "Appointment rescheduled",
+  "citasReprogramarListo": "We will see you on {fecha} at {hora}. The previous time slot is free again.",
   "citasReprogramarNoDisponible": "This appointment can no longer be changed.",
   "citasReprogramarNoEncontradaMensaje": "It may no longer be available to change.",
   "citasReprogramarNoEncontradaTitulo": "We could not find this appointment",
@@ -1100,6 +1101,10 @@
   "citasMisCitasProximaEtiqueta": "Your next appointment",
   "citasHeroComprobante": "Receipt",
   "citasAccionesCita": "Appointment options",
+  "cerrarPantalla": "Close",
+  "@cerrarPantalla": {
+    "description": "Name of the button that closes the current screen (the X in headers)."
+  },
   "regresar": "Back",
   "citasCerrar": "Close",
   "citasComprobanteDetalles": "Appointment details",

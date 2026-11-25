@@ -18,7 +18,7 @@ import '../dominio/fallos_bitacora.dart';
 import '../dominio/gasto.dart';
 import '../dominio/lector_ticket.dart';
 import '../dominio/parser_ticket.dart';
-import 'componentes/marco_bitacora.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_bitacora.dart';
 import 'proveedores_bitacora.dart';
 
@@ -306,9 +306,9 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
         if (t != TipoGasto.gasolina) t,
     ];
 
-    return MarcoBitacora(
+    return MarcoPantalla(
       titulo: _titulo(textos),
-      barraInferior: BarraInferiorBitacora(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.bitacoraGuardar,
@@ -343,7 +343,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                   child: _avisoWidget(textos, _aviso!),
                 ),
               if (_esCarga && !editando)
-                SeccionBitacora(
+                SeccionPantalla(
                   titulo: textos.bitacoraTicketTitulo,
                   hijo: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -387,7 +387,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                     ],
                   ),
                 ),
-              SeccionBitacora(
+              SeccionPantalla(
                 titulo: _esCarga
                     ? textos.bitacoraTipoGasolina
                     : textos.bitacoraCampoTipo,

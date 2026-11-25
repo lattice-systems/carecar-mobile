@@ -11,7 +11,7 @@ import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/direccion_guardada.dart';
-import 'componentes/marco_pantalla_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'pantalla_direccion.dart';
 import 'proveedores_recoleccion.dart';
 
@@ -28,7 +28,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final direcciones = ref.watch(direccionesProvider);
 
-    Widget estado(Widget hijo) => MarcoPantallaRecoleccion.estado(
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       estado: hijo,
@@ -90,14 +90,14 @@ class _Lista extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
 
-    return MarcoPantallaRecoleccion(
+    return MarcoPantalla(
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       alRefrescar: () async {
         ref.invalidate(direccionesProvider);
         await ref.read(direccionesProvider.future);
       },
-      barraInferior: BarraInferiorRecoleccion(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.recoleccionDireccionesAgregar,

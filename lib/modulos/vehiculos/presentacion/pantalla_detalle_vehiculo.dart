@@ -9,13 +9,15 @@ import 'package:intl/intl.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/barra_portada.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
+import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -26,14 +28,12 @@ import '../../citas/citas.dart';
 import '../../historial/historial.dart';
 import '../../mantenimiento/mantenimiento.dart';
 import '../dominio/vehiculo_garaje.dart';
-import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
 import 'rutas_vehiculos.dart';
 
-/// Detalle de un vehiculo del garaje en estilo portada (V2-M02.02): el auto
-/// como portada con sus acciones, VIN copiable y kilometraje con la fecha en
-/// que el taller lo actualizo, datos del auto y accesos a manual, ficha tecnica
-/// e historial.
+/// Detalle de un vehiculo del garaje (V2-M02.02): el auto en su tarjeta con las
+/// acciones debajo, VIN copiable y kilometraje con la fecha en que el taller lo
+/// actualizo, datos del auto y accesos a manual, ficha tecnica e historial.
 ///
 /// Manual (V2-M02.03), ficha tecnica (V2-M02.04) e historial (V2-M02.05) abren
 /// su pantalla. Resuelve los cinco estados; si el id ya no esta en el garaje
@@ -48,50 +48,58 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
     final vehiculo = ref.watch(vehiculoProvider(vehiculoId));
     final textos = AppLocalizations.of(context);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      appBar: BarraPortada(titulo: textos.vehiculosDetalleTitulo),
-      body: vehiculo.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => SafeArea(
-          child: EstadoError(
-            causa: error is SinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(garajeProvider),
-          ),
-        ),
-        data: (v) => v == null
-            ? SafeArea(
-                child: EstadoVacio(
-                  titulo: textos.vehiculosNoEncontradoTitulo,
-                  mensaje: textos.vehiculosNoEncontradoMensaje,
-                  icono: Icons.directions_car_outlined,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => ref.refresh(garajeProvider.future),
-                child: _Detalle(
-                  vehiculo: v,
-                  // La fecha del km ya no viene en GET /vehiculos (V2-T05.06):
-                  // se lee del plan, y solo si el vehiculo no trae la suya.
-                  kmDelTaller: v.kilometrajeActualizadoEn == null
-                      ? ref.watch(kmDelTallerProvider(v.id)).value
-                      : null,
-                ),
-              ),
+    final titulo = textos.vehiculosDetalleTitulo;
+
+    return vehiculo.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
       ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
+          causa: error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(garajeProvider),
+        ),
+      ),
+      data: (v) => v == null
+          ? MarcoPantalla.estado(
+              titulo: titulo,
+              conRegreso: true,
+              estado: EstadoVacio(
+                titulo: textos.vehiculosNoEncontradoTitulo,
+                mensaje: textos.vehiculosNoEncontradoMensaje,
+                icono: Icons.directions_car_outlined,
+              ),
+            )
+          : _Detalle(
+              vehiculo: v,
+              // La fecha del km ya no viene en GET /vehiculos (V2-T05.06): se
+              // lee del plan, y solo si el vehiculo no trae la suya.
+              kmDelTaller: v.kilometrajeActualizadoEn == null
+                  ? ref.watch(kmDelTallerProvider(v.id)).value
+                  : null,
+              alRefrescar: () => ref.refresh(garajeProvider.future),
+            ),
     );
   }
 }
 
 class _Detalle extends StatefulWidget {
-  const _Detalle({required this.vehiculo, this.kmDelTaller});
+  const _Detalle({
+    required this.vehiculo,
+    required this.alRefrescar,
+    this.kmDelTaller,
+  });
 
   final VehiculoGaraje vehiculo;
   final KmDelTaller? kmDelTaller;
+  final Future<void> Function() alRefrescar;
 
   @override
   State<_Detalle> createState() => _DetalleState();
@@ -111,38 +119,38 @@ class _DetalleState extends State<_Detalle> {
     final textos = AppLocalizations.of(context);
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
-    final tinte = tinteDeColor(tokens, v.color);
+    final tinte = tinteDeColorAuto(c, v.color);
     final vin = v.vin;
     final placas = v.placas;
     final sinPlacas = placas == null || placas.isEmpty;
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: Espaciado.e8),
-      children: [
-        CabeceraPortada(
-          titulo: v.titulo,
-          subtitulo: sinPlacas
-              ? textos.vehiculosSinPlacas
-              : textos.vehiculosPlacas(placas),
-          descripcion: textos.fotoDeModelo(v.titulo),
-          tinte: tinte,
-          portada: PortadaVehiculo(tinte: tinte),
-          principal: AccionPortada(
-            texto: textos.vehiculosAgendarServicio,
-            icono: Icons.event_available_outlined,
-            alPresionar: () => context.push(rutaAgendarCita),
-          ),
-          secundaria: AccionPortada(
-            texto: textos.vehiculosBotonManual,
-            icono: Icons.menu_book_outlined,
-            alPresionar: () => context.push(rutaManualVehiculo(v.id)),
-          ),
-        ),
-        Padding(
+    return MarcoPantalla(
+      titulo: v.titulo,
+      subtitulo: sinPlacas
+          ? textos.vehiculosSinPlacas
+          : textos.vehiculosPlacas(placas),
+      conRegreso: true,
+      alRefrescar: widget.alRefrescar,
+      slivers: [
+        SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          sliver: SliverList.list(
             children: [
+              const SizedBox(height: Espaciado.e2),
+              TarjetaAuto(tinte: tinte, alto: 150),
+              const SizedBox(height: Espaciado.e4),
+              FilaAcciones(
+                principal: AccionPantalla(
+                  texto: textos.vehiculosAgendarServicio,
+                  icono: Icons.event_available_outlined,
+                  alPresionar: () => context.push(rutaAgendarCita),
+                ),
+                secundaria: AccionPantalla(
+                  texto: textos.vehiculosBotonManual,
+                  icono: Icons.menu_book_outlined,
+                  alPresionar: () => context.push(rutaManualVehiculo(v.id)),
+                ),
+              ),
               const SizedBox(height: Espaciado.e4),
               _TarjetaCifras(
                 vehiculo: v,
@@ -390,18 +398,17 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).vehiculosCargando,
       liveRegion: true,
-      child: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(Espaciado.e4),
-          child: Column(
-            children: [
-              Esqueleto(alto: 240),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-            ],
-          ),
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(Espaciado.e4),
+        child: Column(
+          children: [
+            Esqueleto(alto: 188, radio: 28),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+          ],
         ),
       ),
     );

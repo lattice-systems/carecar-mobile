@@ -5,9 +5,8 @@ import 'package:intl/intl.dart';
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/traslado.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../nucleo/diseno/componentes/barra_portada.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/comparacion_antes_despues.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -15,6 +14,7 @@ import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/firma.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/pestanas.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -87,9 +87,9 @@ class _EstadoPantallaChecklist
 
     return Scaffold(
       backgroundColor: c.fondo,
-      appBar: BarraPortada(titulo: textos.recoleccionChecklistTitulo),
       body: Column(
         children: [
+          BarraPantalla(titulo: textos.recoleccionChecklistTitulo),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
             child: Pestanas(
@@ -142,10 +142,10 @@ class _VistaChecklist extends ConsumerWidget {
     final checklist = ref.watch(proveedor);
 
     Widget marco(Widget hijo) => conMarco
-        ? Scaffold(
-            backgroundColor: TokensPista.de(context).colores.fondo,
-            appBar: BarraPortada(titulo: textos.recoleccionChecklistTitulo),
-            body: hijo,
+        ? MarcoPantalla.estado(
+            titulo: textos.recoleccionChecklistTitulo,
+            conRegreso: true,
+            estado: hijo,
           )
         : hijo;
 
@@ -185,8 +185,6 @@ class _Cargando extends StatelessWidget {
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [
-            Esqueleto(alto: 240, radio: 28),
-            SizedBox(height: Espaciado.e4),
             Esqueleto(alto: 72, radio: 16),
             SizedBox(height: Espaciado.e3),
             Esqueleto(alto: 160, radio: 16),
@@ -217,113 +215,85 @@ class _Datos extends ConsumerWidget {
     final localidad = Localizations.localeOf(context).toString();
     final total = checklist.fotos.length;
 
-    final cuerpo = SingleChildScrollView(
+    final contenido = Padding(
+      padding: const EdgeInsets.all(Espaciado.e4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (conMarco)
-            CabeceraPortada(
-              titulo: textos.recoleccionChecklistTitulo,
-              subtitulo: textos.recoleccionChecklistRegistrado(registrado),
-              descripcion: textos.recoleccionChecklistTitulo,
-              tinte: c.marca,
-              portada: ColoredBox(
-                color: c.superficieElevada,
-                child: Icon(
-                  Icons.fact_check_outlined,
-                  size: 120,
-                  color: c.marca,
+          if (!conMarco) ...[
+            Text(
+              textos.recoleccionChecklistRegistrado(registrado),
+              style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+            ),
+            const SizedBox(height: Espaciado.e3),
+          ],
+          GrupoLista(
+            filas: [
+              FilaGrupo(
+                titulo: textos.recoleccionChecklistKm,
+                subtitulo: textos.recoleccionChecklistKmValor(checklist.km),
+                icono: Icons.speed_outlined,
+                colorIcono: c.marca,
+              ),
+              FilaGrupo(
+                titulo: textos.recoleccionChecklistGasolina,
+                subtitulo: nivel,
+                icono: Icons.local_gas_station_outlined,
+                colorIcono: c.advertencia,
+                fin: IndicadorGasolina(
+                  cuartos: checklist.gasolina.cuartos,
+                  descripcion: textos.recoleccionChecklistGasolinaLector(nivel),
                 ),
               ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (!conMarco) ...[
-                  Text(
-                    textos.recoleccionChecklistRegistrado(registrado),
-                    style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                  ),
-                  const SizedBox(height: Espaciado.e3),
-                ],
-                GrupoLista(
-                  filas: [
-                    FilaGrupo(
-                      titulo: textos.recoleccionChecklistKm,
-                      subtitulo: textos.recoleccionChecklistKmValor(
-                        checklist.km,
-                      ),
-                      icono: Icons.speed_outlined,
-                      colorIcono: c.marca,
-                    ),
-                    FilaGrupo(
-                      titulo: textos.recoleccionChecklistGasolina,
-                      subtitulo: nivel,
-                      icono: Icons.local_gas_station_outlined,
-                      colorIcono: c.advertencia,
-                      fin: IndicadorGasolina(
-                        cuartos: checklist.gasolina.cuartos,
-                        descripcion: textos.recoleccionChecklistGasolinaLector(
-                          nivel,
-                        ),
-                      ),
-                    ),
-                    if (notas != null)
-                      FilaGrupo(
-                        titulo: textos.recoleccionChecklistNotas,
-                        subtitulo: notas,
-                        icono: Icons.notes_outlined,
-                        colorIcono: c.acento,
-                      ),
-                  ],
+              if (notas != null)
+                FilaGrupo(
+                  titulo: textos.recoleccionChecklistNotas,
+                  subtitulo: notas,
+                  icono: Icons.notes_outlined,
+                  colorIcono: c.acento,
                 ),
-                const SizedBox(height: Espaciado.e5),
-                Semantics(
-                  header: true,
-                  child: Text(
-                    textos.recoleccionChecklistFotos,
-                    style: t.titulo3.copyWith(color: c.texto),
-                  ),
-                ),
-                const SizedBox(height: Espaciado.e3),
-                GaleriaFotos(
-                  mensajeVacio: textos.recoleccionChecklistSinFotos,
-                  fotos: [
-                    for (var i = 0; i < total; i++)
-                      FotoGaleria(
-                        imagen: imagen(checklist.fotos[i]),
-                        descripcion: textos.recoleccionChecklistFotoDescripcion(
-                          i + 1,
-                          total,
-                        ),
-                      ),
-                  ],
-                ),
-                if (firmaUrl != null) ...[
-                  const SizedBox(height: Espaciado.e5),
-                  Firma(
-                    firmante: textos.recoleccionChecklistFirmante,
-                    imagen: imagen(firmaUrl),
-                    fecha: DateFormat.yMMMd(localidad)
-                        .add_Hm()
-                        .format(registrado),
-                  ),
-                ],
-                const SizedBox(height: Espaciado.e6),
-              ],
+            ],
+          ),
+          const SizedBox(height: Espaciado.e5),
+          Semantics(
+            header: true,
+            child: Text(
+              textos.recoleccionChecklistFotos,
+              style: t.titulo3.copyWith(color: c.texto),
             ),
           ),
+          const SizedBox(height: Espaciado.e3),
+          GaleriaFotos(
+            mensajeVacio: textos.recoleccionChecklistSinFotos,
+            fotos: [
+              for (var i = 0; i < total; i++)
+                FotoGaleria(
+                  imagen: imagen(checklist.fotos[i]),
+                  descripcion: textos.recoleccionChecklistFotoDescripcion(
+                    i + 1,
+                    total,
+                  ),
+                ),
+            ],
+          ),
+          if (firmaUrl != null) ...[
+            const SizedBox(height: Espaciado.e5),
+            Firma(
+              firmante: textos.recoleccionChecklistFirmante,
+              imagen: imagen(firmaUrl),
+              fecha: DateFormat.yMMMd(localidad).add_Hm().format(registrado),
+            ),
+          ],
+          const SizedBox(height: Espaciado.e6),
         ],
       ),
     );
-    if (!conMarco) return cuerpo;
-    return Scaffold(
-      backgroundColor: c.fondo,
-      extendBodyBehindAppBar: true,
-      appBar: const BarraPortada(),
-      body: cuerpo,
+    if (!conMarco) return SingleChildScrollView(child: contenido);
+    return MarcoPantalla(
+      titulo: textos.recoleccionChecklistTitulo,
+      subtitulo: textos.recoleccionChecklistRegistrado(registrado),
+      conRegreso: true,
+      slivers: [SliverToBoxAdapter(child: contenido)],
     );
   }
 }

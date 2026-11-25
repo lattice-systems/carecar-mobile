@@ -10,7 +10,6 @@ import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_walle
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/repositorio_citas.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
-import 'package:carecar_mobile/nucleo/diseno/componentes/cabecera_portada.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/visor_pdf.dart';
@@ -143,12 +142,11 @@ void main() {
     );
   });
 
-  testWidgets('el QR es la portada y los detalles van en una lista', (
+  testWidgets('el QR va en su tarjeta y los detalles en una lista', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
     await tester.pumpAndSettle();
-    expect(find.byType(CabeceraPortada), findsOneWidget);
     expect(find.byType(QrImageView), findsOneWidget);
     expect(find.text('Detalles de la cita'), findsOneWidget);
     expect(find.text('En recepción'), findsOneWidget);

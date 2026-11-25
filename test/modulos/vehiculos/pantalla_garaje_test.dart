@@ -37,21 +37,25 @@ void main() {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     expect(find.text('Mi garaje'), findsOneWidget);
-    // Cada auto sale en el estante y en «Datos rapidos» (titulo = modelo y
-    // anio; subtitulo = placas y km, o «Sin placas»).
-    expect(find.text('Mazda CX-5 2024'), findsNWidgets(2));
-    expect(find.text('Placas ABC-123 · 12,500 km'), findsOneWidget);
-    expect(find.text('Mazda 3 2022'), findsNWidgets(2));
-    expect(find.text('Sin placas'), findsOneWidget);
+    // Una tarjeta por auto: la marca aparte, el modelo y el anio como titulo,
+    // y las placas y el km (lo que haya) como datos.
+    expect(find.text('Mazda'), findsOneWidget);
+    expect(find.text('CX-5 2024'), findsOneWidget);
+    expect(find.text('ABC-123'), findsOneWidget);
+    expect(find.text('12,500 km'), findsOneWidget);
+    // El segundo auto trae el modelo con la marca y sin placas ni km.
+    expect(find.text('Mazda 3 2022'), findsOneWidget);
+    expect(find.text('Sin placas'), findsNothing);
   });
 
-  testWidgets('en ingles traduce titulo y detalle', (tester) async {
+  testWidgets('en ingles traduce el titulo y el kilometraje', (tester) async {
     await tester.pumpWidget(
       _app(RepositorioGarajeFake(), idioma: const Locale('en')),
     );
     await tester.pumpAndSettle();
     expect(find.text('My garage'), findsOneWidget);
-    expect(find.text('Plates ABC-123 · 12,500 km'), findsOneWidget);
+    expect(find.text('12,500 km'), findsOneWidget);
+    expect(find.bySemanticsLabel(RegExp('ABC-123')), findsOneWidget);
   });
 
   testWidgets('vacio explica que la agencia registra los autos', (
@@ -93,7 +97,7 @@ void main() {
     await tester.tap(find.text('Reintentar'));
     await tester.pumpAndSettle();
     expect(intentos, 2);
-    expect(find.text('Mazda CX-5 2024'), findsNWidgets(2));
+    expect(find.text('CX-5 2024'), findsOneWidget);
   });
 
   testWidgets('sin conexion y sin copia guardada lo dice distinto', (

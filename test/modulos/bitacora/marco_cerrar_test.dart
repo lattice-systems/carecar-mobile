@@ -1,4 +1,4 @@
-import 'package:carecar_mobile/modulos/bitacora/presentacion/componentes/marco_bitacora.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -16,7 +16,7 @@ void main() {
               onPressed: () => Navigator.of(context).push<void>(
                 MaterialPageRoute(
                   builder: (_) =>
-                      const MarcoBitacora(titulo: 'Gasto', slivers: []),
+                      const MarcoPantalla(titulo: 'Gasto', slivers: []),
                 ),
               ),
               child: const Text('abrir'),
@@ -34,6 +34,6 @@ void main() {
     await tester.tap(find.byType(BotonCircular));
     await tester.pumpAndSettle();
     expect(find.text('abrir'), findsOneWidget);
-    expect(find.byType(MarcoBitacora), findsNothing);
+    expect(find.byType(MarcoPantalla), findsNothing);
   });
 }

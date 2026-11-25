@@ -32,12 +32,19 @@ class VehiculoGaraje {
   /// el detalle no dice quien ni cuando lo actualizo.
   final DateTime? kilometrajeActualizadoEn;
 
+  bool get _modeloTraeLaMarca {
+    final m = marca;
+    return m != null && modelo.toLowerCase().startsWith(m.toLowerCase());
+  }
+
   /// Nombre completo para la tarjeta: "Mazda CX-5 2024". Si el modelo ya
   /// empieza con la marca ("Nissan March"), no la repite.
-  String get titulo {
-    final m = marca;
-    final repetida =
-        m != null && modelo.toLowerCase().startsWith(m.toLowerCase());
-    return [if (m != null && !repetida) m, modelo, anio].join(' ');
-  }
+  String get titulo =>
+      [if (marca != null && !_modeloTraeLaMarca) marca, modelo, anio].join(' ');
+
+  /// Modelo y año sin la marca ("CX-5 2024"), para cuando la marca va aparte.
+  String get modeloYAnio => '$modelo $anio';
+
+  /// La marca para mostrarla aparte, o `null` si falta o el modelo ya la trae.
+  String? get marcaAparte => _modeloTraeLaMarca ? null : marca;
 }

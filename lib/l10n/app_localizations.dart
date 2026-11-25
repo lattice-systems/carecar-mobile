@@ -926,10 +926,16 @@ abstract class AppLocalizations {
   /// **'No pudimos reprogramar tu cita. Intenta de nuevo.'**
   String get citasReprogramarError;
 
+  /// Título de la pantalla que confirma que la cita se movió a otro horario.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita reprogramada'**
+  String get citasReprogramadaTitulo;
+
   /// Aviso tras reprogramar.
   ///
   /// In es, this message translates to:
-  /// **'Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.'**
+  /// **'Te esperamos el {fecha} a las {hora}. El horario anterior quedó libre.'**
   String citasReprogramarListo(DateTime fecha, String hora);
 
   /// 409: la cita ya no está confirmada o pasó el plazo.
@@ -2791,6 +2797,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Opciones de tu cita'**
   String get citasAccionesCita;
+
+  /// Nombre del botón que cierra la pantalla actual (X de los encabezados).
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get cerrarPantalla;
 
   /// Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior.
   ///

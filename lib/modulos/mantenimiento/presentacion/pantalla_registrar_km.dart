@@ -10,7 +10,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/fallos_mantenimiento.dart';
-import 'componentes/marco_pantalla_mantenimiento.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 
@@ -98,9 +98,9 @@ class _EstadoPantallaRegistrarKm extends ConsumerState<PantallaRegistrarKm> {
       _Fallo.red || null => null,
     };
 
-    return MarcoPantallaMantenimiento(
+    return MarcoPantalla(
       titulo: textos.mantenimientoKmTitulo,
-      barraInferior: BarraInferiorMantenimiento(
+      barraInferior: BarraInferior(
         hijos: [
           if (_fallo == _Fallo.red) ...[
             Aviso(mensaje: textos.mantenimientoKmErrorRed, tono: Tono.peligro),

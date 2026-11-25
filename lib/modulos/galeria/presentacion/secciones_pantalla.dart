@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/estante.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
+import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/colores.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'seccion_galeria.dart';
 
-/// Secciones de los componentes de estilo portada: boton pildora, cabecera de
-/// portada, estante y grupo de lista.
-List<SeccionGaleria> seccionesPortada() => [
+/// Secciones de los componentes con los que se arma una pantalla: boton
+/// pildora, tarjeta del auto con sus acciones, tarjeta de resumen, estante y
+/// grupo de lista.
+List<SeccionGaleria> seccionesPantalla() => [
   SeccionGaleria(
     titulo: 'Boton pildora',
     construir: (context) => Column(
@@ -44,25 +48,50 @@ List<SeccionGaleria> seccionesPortada() => [
     ),
   ),
   SeccionGaleria(
-    titulo: 'Cabecera de portada',
-    construir: (context) => CabeceraPortada(
-      titulo: 'Mi Kicks',
-      subtitulo: 'Nissan Kicks 2023 · 24,300 km',
-      descripcion: 'Silueta de tu auto',
-      portada: ColoredBox(
-        color: TokensPista.de(context).colores.superficieHundida,
-        child: Icon(
-          Icons.directions_car_filled_outlined,
-          size: 120,
-          color: TokensPista.de(context).colores.textoTerciario,
+    titulo: 'Tarjeta del auto',
+    construir: (context) => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const TarjetaAuto(
+          marca: 'Nissan',
+          titulo: 'Kicks 2023',
+          placas: 'ABC-12-34',
+          kilometraje: '24,300 km',
         ),
-      ),
-      principal: AccionPortada(
-        texto: 'Agendar cita',
-        icono: Icons.event,
-        alPresionar: () {},
-      ),
-      secundaria: AccionPortada(texto: 'Ver detalle', alPresionar: () {}),
+        const SizedBox(height: 16),
+        FilaAcciones(
+          principal: AccionPantalla(
+            texto: 'Agendar cita',
+            icono: Icons.event,
+            alPresionar: () {},
+          ),
+          secundaria: AccionPantalla(texto: 'Ver detalle', alPresionar: () {}),
+        ),
+      ],
+    ),
+  ),
+  SeccionGaleria(
+    titulo: 'Tarjeta de resumen',
+    construir: (context) => const Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TarjetaResumen(
+          titulo: 'Servicio de 20,000 km',
+          subtitulo: 'Te toca por kilometraje',
+          icono: Icons.build_circle_outlined,
+          progreso: 0.84,
+          etiquetaProgreso: 'Faltan 1,550 km · hacia el sáb, 9 ene',
+        ),
+        SizedBox(height: 12),
+        TarjetaResumen(
+          titulo: 'Folio 1042',
+          subtitulo: 'Jueves 3 de diciembre, 09:00',
+          icono: Icons.event_available_outlined,
+          tono: Tono.exito,
+          estado: 'Confirmada',
+          tonoEstado: Tono.exito,
+        ),
+      ],
     ),
   ),
   SeccionGaleria(

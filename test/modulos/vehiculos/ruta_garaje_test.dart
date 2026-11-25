@@ -4,6 +4,7 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/ficha_tecnica_vehiculo.
 import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_ficha_tecnica.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_auto.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -63,7 +64,7 @@ void main() {
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();
     expect(find.byType(PantallaGaraje), findsOneWidget);
-    expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+    expect(find.text('CX-5 2024'), findsOneWidget);
   });
 
   testWidgets('/garaje sin sesion manda al inicio de sesion', (tester) async {
@@ -73,14 +74,13 @@ void main() {
     expect(find.byType(PantallaLogin), findsOneWidget);
   });
 
-  testWidgets('tocar la portada del garaje abre su detalle', (tester) async {
+  testWidgets('tocar la tarjeta del auto abre su detalle', (tester) async {
     await _montar(tester);
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('View details'));
+    await tester.tap(find.byType(TarjetaAuto));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaDetalleVehiculo), findsOneWidget);
-    expect(find.text('Vehicle details'), findsOneWidget);
     expect(find.text('VIN1'), findsOneWidget);
   });
 

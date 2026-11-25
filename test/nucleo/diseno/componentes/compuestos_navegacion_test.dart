@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_navegacion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/encabezado_grande.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_accion.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/silueta_auto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:flutter/material.dart';
@@ -184,7 +185,7 @@ void main() {
       await tester.pumpWidget(
         conTemaPista(const TarjetaVehiculo(nombre: 'Mazda CX-5')),
       );
-      expect(find.byIcon(Icons.directions_car_filled_outlined), findsOneWidget);
+      expect(find.byType(SiluetaAuto), findsOneWidget);
     });
 
     testWidgets('con heroTag envuelve la foto en un Hero', (tester) async {

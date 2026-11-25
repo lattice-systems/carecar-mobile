@@ -1,19 +1,20 @@
 import 'package:carecar_mobile/modulos/galeria/presentacion/seccion_galeria.dart';
-import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_portada.dart';
+import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_pantalla.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../ayudas/fuentes_golden.dart';
 import '../../../ayudas/tema_pista.dart';
 
-/// Golden de los componentes de estilo portada en claro, oscuro y letra al 200 %.
+/// Golden de los componentes de pantalla en claro, oscuro y letra al 200 %.
 void main() {
   prepararFuentesGolden();
 
-  final secciones = seccionesPortada();
+  final secciones = seccionesPantalla();
   const nombres = {
     'Boton pildora': 'boton_pildora',
-    'Cabecera de portada': 'cabecera_portada',
+    'Tarjeta del auto': 'tarjeta_auto',
+    'Tarjeta de resumen': 'tarjeta_resumen',
     'Estante': 'estante',
     'Grupo de lista': 'grupo_lista',
   };
