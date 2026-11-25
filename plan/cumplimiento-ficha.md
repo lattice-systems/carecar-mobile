@@ -35,7 +35,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app y backend (`cita.motivo`, `CITA_DUPLICADA`) listos; falta demostrar en celular | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app v2 lista con estados y paginación; falta demostrar en celular | V2-M02.09 |
 | Cancelar y reprogramar cita | `cita`, `franja_horario` | 🟡 app y backend de cancelar y reprogramar listos; falta demostrar en celular | V2-M02.10, V2-M02.13 |
-| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; falta agregar al calendario (V2-M02.12) | V2-M02.11, V2-M02.12 |
+| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; agregar al calendario como `.ics` hecho (V2-M02.12, falta la dirección de la sucursal de V2-M27.02 y probar en celular) | V2-M02.11, V2-M02.12 |
 
 ### 3. Catálogo y calculadora — plan [M03](modulos/M03-catalogo-y-calculadora.md)
 
@@ -57,7 +57,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); falta el recordatorio (V2-M05.05) y demostrar en celular | Ver M05 |
+| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); recordatorio por el canal en vivo hecho (V2-M05.05, falta el push de V2-M06.02) y falta demostrar en celular | Ver M05 |
 | Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | 🟡 app y backend, con foto opcional; falta demostrar en celular | Ver M05 |
 
 ### 6. Notificaciones — plan [M06](modulos/M06-notificaciones.md)
@@ -100,7 +100,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia y la aseguradora hechas (V2-M11.02, la aseguradora espera a V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
