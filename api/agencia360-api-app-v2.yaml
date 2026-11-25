@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.16.0
+  version: 2.17.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1883,8 +1883,8 @@ paths:
       description: |
         V2-T05.08 · Conexión abierta con `Accept: text/event-stream`. Cuando cambia una orden de
         servicio de un vehículo del cliente llega el evento `orden` con `data` en JSON
-        (`AvisoOrden`); la app vuelve a consultar la orden. Llega un comentario de latido cada
-        25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
+        (`AvisoOrden`); la app vuelve a consultar la orden, también la que muestra en ese momento
+        (V2-M04.03). Llega un comentario de latido cada 25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
 
         Eventos de asistencia y traslados (solo al cliente dueño, `data` en JSON):
         - `asistencia.estado` (V2-M11.04), `AvisoAsistencia`: cada vez que el personal cambia el
@@ -1934,6 +1934,7 @@ paths:
         para entrega, la más reciente primero. Al entregarse dejan de aparecer: la tarjeta de
         Inicio se muestra solo si la lista trae algo. Las órdenes registradas ya hechas en el
         expediente no tienen línea de tiempo y no aparecen. Lista vacía si no hay ninguna.
+        V2-M04.06 · La orden lista para entrega trae su total y `horarioEntrega`.
       responses:
         '200':
           description: Órdenes en curso
@@ -1958,6 +1959,11 @@ paths:
         videos, y los trabajos adicionales con los totales. Las URL de las evidencias son
         temporales y firmadas (vencen a los 15 minutos): si vencieron, la app vuelve a pedir la
         orden.
+
+        V2-M04.06 y V2-M04.07 · Lista para entrega trae `horarioEntrega`. Al quedar lista, los
+        adicionales aprobados pasan a ser renglones de la orden: su ticket es el de
+        `GET /servicios/{servicioId}` con el mismo id, y al entregarse aparece en el historial del
+        vehículo.
       parameters:
         - $ref: '#/components/parameters/OrdenId'
       responses:
@@ -3334,7 +3340,7 @@ components:
     AvisoOrden:
       type: object
       description: V2-T05.08 · `data` del evento `orden`
-      required: [ordenId, vehiculoId, estatus]
+      required: [ordenId, vehiculoId, estatus, motivo]
       properties:
         ordenId:
           type: integer
@@ -3345,6 +3351,18 @@ components:
         estatus:
           type: string
           enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+        etapa:
+          allOf:
+            - $ref: '#/components/schemas/EtapaTaller'
+          nullable: true
+          description: V2-M04.03 · Nula si la orden se registró ya hecha, sin línea de tiempo
+        motivo:
+          type: string
+          description: |
+            V2-M04.03 · Qué cambió: `REGISTRO` (servicio registrado ya hecho), `APERTURA`,
+            `ETAPA`, `INSPECCION` (punto o evidencia), `ADICIONAL` (propuesto), `RESPUESTA` (del
+            cliente) o `RENGLON` (cargado al ticket).
+          enum: [REGISTRO, APERTURA, ETAPA, INSPECCION, ADICIONAL, RESPUESTA, RENGLON]
 
     AvisoAsistencia:
       type: object
@@ -3719,12 +3737,40 @@ components:
           type: integer
           minimum: 0
           description: Trabajos adicionales que esperan la respuesta del cliente
+        totalEstimado:
+          type: number
+          format: double
+          description: V2-M04.06 · Con IVA; el de la orden más los adicionales aprobados
+        horarioEntrega:
+          allOf:
+            - $ref: '#/components/schemas/HorarioEntrega'
+          nullable: true
+          description: V2-M04.06 · Solo cuando está lista para entrega
+
+    HorarioEntrega:
+      type: object
+      description: |
+        V2-M04.06 · Cuándo recoger el auto: el primer día desde hoy con horario del taller, de la
+        primera hora a la última. Hoy cuenta solo si aún no cierra. Hora local de la agencia.
+      required: [fecha, desde, hasta]
+      properties:
+        fecha:
+          type: string
+          format: date
+          example: '2026-11-24'
+        desde:
+          type: string
+          example: '09:00'
+        hasta:
+          type: string
+          example: '17:00'
 
     OrdenEnVivo:
       type: object
       description: |
-        V2-M04.02, V2-M04.04 y V2-M04.05 · La orden en el taller. Los montos traen el IVA
-        incluido; `totalEstimado` es `totalOrden` más los adicionales aprobados.
+        V2-M04.02, V2-M04.04 a V2-M04.07 · La orden en el taller. Los montos traen el IVA
+        incluido; `totalEstimado` es `totalOrden` más los adicionales aprobados que aún no se
+        suman a la orden (se suman como renglones al quedar lista para entrega).
       required: [id, vehiculoId, vehiculo, estatus, etapa, avance, etapas, inspeccion, evidencias,
         adicionales, totalOrden, totalAdicionalesAprobados, totalAdicionalesPendientes, totalEstimado]
       properties:
@@ -3784,6 +3830,11 @@ components:
         totalEstimado:
           type: number
           format: double
+        horarioEntrega:
+          allOf:
+            - $ref: '#/components/schemas/HorarioEntrega'
+          nullable: true
+          description: V2-M04.06 · Solo cuando está lista para entrega
 
     PasoEtapa:
       type: object
