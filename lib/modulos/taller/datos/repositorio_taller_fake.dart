@@ -26,7 +26,7 @@ class RepositorioTallerFake implements RepositorioTaller {
   final respuestas = <(int, int, bool, Uint8List)>[];
 
   /// Cuantas veces se pidio la orden, para saber si la pantalla recargo.
-  var consultas = 0;
+  var ordenesPedidas = 0;
 
   /// Reemplaza la orden, como cuando el taller la pasa de etapa.
   void actualizar(OrdenEnVivo orden) => _ordenes[orden.id] = orden;
@@ -54,7 +54,7 @@ class RepositorioTallerFake implements RepositorioTaller {
 
   @override
   Future<OrdenEnVivo> orden(int ordenId) async {
-    consultas++;
+    ordenesPedidas++;
     if (falla != null) throw falla!;
     final orden = _ordenes[ordenId];
     if (orden == null) throw StateError('No existe la orden $ordenId');

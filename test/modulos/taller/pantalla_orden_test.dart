@@ -190,14 +190,14 @@ void main() {
     final eventos = EventosEnVivoFake();
     await tester.pumpWidget(_app(repo, eventos: eventos));
     await tester.pumpAndSettle();
-    final consultas = repo.consultas;
+    final consultas = repo.ordenesPedidas;
 
     eventos
       ..emitir('orden', {'ordenId': 99, 'vehiculoId': 1})
       ..emitir('asistencia.estado', {'solicitudId': 41});
     await tester.pumpAndSettle();
 
-    expect(repo.consultas, consultas);
+    expect(repo.ordenesPedidas, consultas);
   });
 
   pruebaTaller('al volver el canal tras una caida la vuelve a pedir', (
@@ -207,12 +207,12 @@ void main() {
     final eventos = EventosEnVivoFake();
     await tester.pumpWidget(_app(repo, eventos: eventos));
     await tester.pumpAndSettle();
-    final consultas = repo.consultas;
+    final consultas = repo.ordenesPedidas;
 
     eventos.emitir(eventoReconectado);
     await tester.pumpAndSettle();
 
-    expect(repo.consultas, consultas + 1);
+    expect(repo.ordenesPedidas, consultas + 1);
   });
 
   pruebaTaller('si la recarga en vivo falla se queda la orden que se ve', (
@@ -222,13 +222,13 @@ void main() {
     final eventos = EventosEnVivoFake();
     await tester.pumpWidget(_app(repo, eventos: eventos));
     await tester.pumpAndSettle();
-    final consultas = repo.consultas;
+    final consultas = repo.ordenesPedidas;
 
     repo.falla = const SinConexion();
     eventos.emitir('orden', {'ordenId': 41, 'vehiculoId': 1});
     await tester.pumpAndSettle();
 
-    expect(repo.consultas, consultas + 1);
+    expect(repo.ordenesPedidas, consultas + 1);
     expect(find.byType(EstadoError), findsNothing);
     expect(find.byType(LineaDeTiempo), findsOneWidget);
   });
