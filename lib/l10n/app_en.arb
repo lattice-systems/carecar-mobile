@@ -975,6 +975,106 @@
       }
     }
   },
+  "widgetsAgendar": "Book",
+  "@widgetsAgendar": {
+    "description": "Botón corto del estado vacío de los widgets de inicio."
+  },
+  "widgetsTallerEncabezado": "Live workshop",
+  "@widgetsTallerEncabezado": {
+    "description": "Encabezado del widget de inicio del taller."
+  },
+  "widgetsTallerVacioMensaje": "Your car is not at the workshop",
+  "@widgetsTallerVacioMensaje": {
+    "description": "Estado vacío del widget del taller."
+  },
+  "widgetsTallerPaso": "Step {actual} of {total}",
+  "@widgetsTallerPaso": {
+    "description": "Avance de etapas del widget del taller.",
+    "placeholders": {
+      "actual": {
+        "type": "int",
+        "example": "4"
+      },
+      "total": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "widgetsMantenimientoTitulo": "Maintenance",
+  "@widgetsMantenimientoTitulo": {
+    "description": "Encabezado del widget de inicio de mantenimiento."
+  },
+  "widgetsMantenimientoFaltanKm": "{km} km to go",
+  "@widgetsMantenimientoFaltanKm": {
+    "description": "Kilómetros que faltan para el próximo servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "2,300"
+      }
+    }
+  },
+  "widgetsMantenimientoYaToca": "Due now",
+  "@widgetsMantenimientoYaToca": {
+    "description": "El próximo servicio ya toca por km o por fecha."
+  },
+  "widgetsMantenimientoFecha": "Around {fecha}",
+  "@widgetsMantenimientoFecha": {
+    "description": "Fecha estimada del próximo servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 ene"
+      }
+    }
+  },
+  "widgetsMantenimientoVacioMensaje": "There is no plan for your car yet",
+  "@widgetsMantenimientoVacioMensaje": {
+    "description": "Estado vacío del widget de mantenimiento."
+  },
+  "widgetsMantenimientoAccion": "View plan",
+  "@widgetsMantenimientoAccion": {
+    "description": "Botón del estado vacío del widget de mantenimiento."
+  },
+  "widgetsBitacoraTitulo": "Logbook",
+  "@widgetsBitacoraTitulo": {
+    "description": "Encabezado del widget de inicio de la bitácora."
+  },
+  "widgetsBitacoraRendimientoUnidad": "km/l",
+  "@widgetsBitacoraRendimientoUnidad": {
+    "description": "Unidad del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraGastoMes": "{mes} spending",
+  "@widgetsBitacoraGastoMes": {
+    "description": "Etiqueta del gasto del mes en el widget de la bitácora.",
+    "placeholders": {
+      "mes": {
+        "type": "String",
+        "example": "noviembre"
+      }
+    }
+  },
+  "widgetsBitacoraRendimientoEtiqueta": "Fuel economy",
+  "@widgetsBitacoraRendimientoEtiqueta": {
+    "description": "Etiqueta del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraVacioMensaje": "Log your first fill-up",
+  "@widgetsBitacoraVacioMensaje": {
+    "description": "Estado vacío del widget de la bitácora."
+  },
+  "widgetsBitacoraAccion": "Log it",
+  "@widgetsBitacoraAccion": {
+    "description": "Botón del estado vacío del widget de la bitácora."
+  },
+  "widgetsAccesosTitulo": "Quick actions",
+  "@widgetsAccesosTitulo": {
+    "description": "Encabezado del widget de accesos rápidos."
+  },
+  "widgetsAccesoComprobante": "Receipt",
+  "@widgetsAccesoComprobante": {
+    "description": "Acceso rápido al comprobante de la próxima cita."
+  },
   "citasWalletAgregar": "Add to Wallet",
   "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
   "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
