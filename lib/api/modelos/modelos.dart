@@ -17,6 +17,7 @@ export 'manual.dart';
 export 'modelo_catalogo.dart';
 export 'pagina.dart';
 export 'perfil.dart';
+export 'privacidad.dart';
 export 'problema.dart';
 export 'recoleccion_cita.dart';
 export 'sesion.dart';

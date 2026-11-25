@@ -6,7 +6,7 @@
 | Dueño | Daniel |
 | Revisa | Ricardo |
 | Ficha técnica | ✅ Sección 20. Seguridad y privacidad |
-| Estado | Listo para historias |
+| Estado | En curso: M22.01 implementada (falta demostrarla en celular); M22.05, M22.06 y M22.09 hechas |
 
 ## Propósito
 
@@ -57,3 +57,5 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
   - **Mapas**: `ConfiguracionTeselas` lanza si `TILES_URL` usa http fuera de desarrollo.
   - **CI**: `release.yml` e `ipa-sin-firma.yml` fallan antes de compilar si la variable `API_BASE_URL` no empieza con `https://`.
   - Pruebas: `test/config/`, `test/api/manuales_agencia_test.dart`, `test/nucleo/mapas/configuracion_teselas_test.dart`.
+
+- **V2-M22.01 · Aviso de privacidad versionado** (PR #127, backend#96, contrato 2.13.0): el backend guarda cada versión del aviso (inmutable por disparador) y una aceptación por cuenta y versión; `GET /privacidad/aviso` y `POST /privacidad/aceptaciones` (idempotente, 409 `AVISO_NO_VIGENTE`). En la app, `VerificadorDeAviso` pregunta con cada sesión, la guardia del enrutador lleva a la puerta (`/privacidad/aceptar`) si falta aceptar, y «Aviso de privacidad» del perfil abre el texto del servidor. Sin conexión no se bloquea a nadie. Diseño, decisiones y límites en [`docs/seguridad/aviso-de-privacidad.md`](../../docs/seguridad/aviso-de-privacidad.md). Pendiente: que la agencia publique su texto definitivo como versión 2 (`POST /api/v1/avisos-privacidad`).

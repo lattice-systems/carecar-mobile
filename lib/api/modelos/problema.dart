@@ -38,6 +38,10 @@ enum CodigoProblema {
   estrenoSinPrecio('ESTRENO_SIN_PRECIO'),
   estrenoDuplicada('ESTRENO_DUPLICADA'),
 
+  /// V2-M22.01: se quiso aceptar un aviso de privacidad que ya no es el
+  /// vigente; hay que leer el nuevo.
+  avisoNoVigente('AVISO_NO_VIGENTE'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

@@ -3260,4 +3260,53 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'The driver hasn\'t recorded any checklist for this pickup yet.';
+
+  @override
+  String get privacidadTitulo => 'Privacy notice';
+
+  @override
+  String privacidadVersion(int version) {
+    return 'Version $version';
+  }
+
+  @override
+  String privacidadVigenteDesde(String fecha) {
+    return 'In effect since $fecha';
+  }
+
+  @override
+  String privacidadAceptadoEl(String fecha) {
+    return 'You accepted it on $fecha';
+  }
+
+  @override
+  String get privacidadCargando => 'Loading the privacy notice';
+
+  @override
+  String get privacidadAntesDeContinuar => 'Before you continue';
+
+  @override
+  String get privacidadIntro =>
+      'Read the privacy notice. You need to accept it to use CareCar.';
+
+  @override
+  String get privacidadAceptar => 'I accept the privacy notice';
+
+  @override
+  String get privacidadGuardando => 'Saving…';
+
+  @override
+  String get privacidadNoAcepto => 'I don\'t accept, sign out';
+
+  @override
+  String get privacidadCambio =>
+      'The notice changed while you were reading. The new one is up: read it and accept it if you agree.';
+
+  @override
+  String get privacidadErrorAceptar =>
+      'We couldn\'t save your acceptance. Try again.';
+
+  @override
+  String get privacidadSinConexionAceptar =>
+      'You\'re offline. Connect to save your acceptance.';
 }

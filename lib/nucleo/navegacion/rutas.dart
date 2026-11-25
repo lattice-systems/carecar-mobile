@@ -23,6 +23,10 @@ abstract final class Rutas {
   /// Cambio obligatorio de la contrasena temporal (APP-2.3).
   static const cambiarContrasena = '/cambiar-contrasena';
 
+  /// Puerta del aviso de privacidad (V2-M22.01): se lee y se acepta antes de
+  /// usar la app en el primer ingreso y cuando hay una version nueva.
+  static const aceptarAviso = '/privacidad/aceptar';
+
   /// Parametro con la ruta a la que se vuelve tras iniciar sesion.
   static const parametroDesde = 'desde';
 
@@ -37,6 +41,10 @@ abstract final class Rutas {
   /// Cambio obligatorio, con la ruta a la que volver despues de cambiar.
   static String localizacionCambiarContrasena({String? desde}) =>
       _con(cambiarContrasena, {parametroDesde: desde});
+
+  /// Puerta del aviso, con la ruta a la que volver despues de aceptar.
+  static String localizacionAceptarAviso({String? desde}) =>
+      _con(aceptarAviso, {parametroDesde: desde});
 
   static String localizacionRecuperar({String? correo}) =>
       _con(recuperar, {'correo': correo});
@@ -65,4 +73,5 @@ abstract final class NombresRuta {
   static const recuperar = 'recuperar';
   static const restablecer = 'restablecer';
   static const cambiarContrasena = 'cambiar-contrasena';
+  static const aceptarAviso = 'aceptar-aviso';
 }

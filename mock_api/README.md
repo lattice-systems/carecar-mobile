@@ -181,6 +181,9 @@ Operaciones de la app y casos de error:
 | POST | `/estreno/cotizaciones/calculo` | V2-M16.02: mensualidad con 14.99 %, enganche mínimo 10 % y plazos 12–60 · 409 `ESTRENO_SIN_PRECIO` · 400 |
 | POST | `/estreno/solicitudes` | V2-M16.01: prueba o cotización; el simulador asigna a «Vera Vendedora» al instante (`EN_ATENCION`) · 409 `ESTRENO_DUPLICADA` · 400 · 404 |
 | GET | `/estreno/solicitudes` | V2-M16.04: paginado, solo en memoria (se pierde al reiniciar) |
+| GET | `/privacidad/aviso` | V2-M22.01: el aviso vigente (versión 1 = el texto que la app traía) con `aceptado` de tu cuenta |
+| POST | `/privacidad/aceptaciones` | V2-M22.01: `{avisoId}` · idempotente · 404 · 409 `AVISO_NO_VIGENTE` si ya hay una versión más nueva · en memoria |
+| POST | `/api/v1/avisos-privacidad` | Solo del simulador (en el backend es del Gerente de marketing): publica la versión siguiente con `{texto}` para probar que una versión nueva vuelve a pedir la aceptación |
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
