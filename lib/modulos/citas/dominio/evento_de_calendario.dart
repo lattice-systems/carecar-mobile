@@ -84,3 +84,9 @@ String _escapar(String texto) => texto
     .replaceAll(',', r'\,')
     .replaceAll(';', r'\;')
     .replaceAll(RegExp(r'\r?\n'), r'\n');
+
+/// Entrega el `.ics` al sistema (hoja de compartir). Se sustituye en pruebas
+/// por `EntregaDeEventoFake`.
+abstract interface class EntregaDeEvento {
+  Future<void> entregar(String ics, {required int citaId});
+}
