@@ -96,6 +96,31 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 - V2-M25.02 (estado del taller en el widget) reutiliza este widget y el puerto.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
 
+## Avance de V2-M25.02
+
+**Qué quedó**
+
+- El widget de V2-M25.01 ahora muestra el estado del auto cuando hay una **orden abierta**; sin orden vuelve a la próxima cita. Con orden: título «Tu auto en el taller», etapa actual, hora estimada de entrega (si el taller ya la estimó) y el auto. Al tocarlo abre `carecar://taller/<ordenId>` (la ruta `/taller/:ordenId` de V2-M04.02).
+- **Sin duplicar el repositorio del taller:** `SincronizadorDelWidgetDeCita` lee `ordenesEnCursoProvider` (`GET /ordenes/activas`) por el contrato `taller.dart`, que ahora también publica `OrdenEnCurso`, `EtapaTaller`, `textoEtapa` y `horaTaller`. Si hay varias órdenes abiertas se muestra la primera que devuelve el backend.
+- **Dominio:** `ContenidoWidgetCita.enTaller` y `enlaceDeOrdenWidget` (`dominio/proxima_cita_widget.dart`). Reutiliza las mismas claves del almacén (la etapa va en `proxima_cita_fecha`, la entrega en `proxima_cita_horario`, el auto en `proxima_cita_vehiculo`), así que **no cambió el contrato nativo**: el proveedor Kotlin, el layout y el Swift pintan igual; solo se actualizaron sus comentarios.
+- **Cuándo se actualiza:** al cambiar la sesión (cerrar sesión borra todo), las órdenes o las citas, el idioma, al volver la app a primer plano (se vuelven a consultar las órdenes) y con la app abierta por el canal en vivo: el evento `orden` de `GET /eventos` (V2-T05.08) y `conexion.restablecida` invalidan `ordenesEnCursoProvider`. El canal solo se abre con sesión y se cierra al salir.
+- **Si falla la red:** sin orden cargada nunca, el widget cae a la cita; si ya mostraba una orden, la conserva. Mientras las órdenes cargan por primera vez no se publica la cita para no parpadear.
+- Textos con prefijo `widgets` en es y en (`widgetsTallerTitulo`, `widgetsTallerEntrega`) y `app_localizations*.dart` regenerados.
+- Pruebas en `test/modulos/widgets/` (`contenido_widget_taller_test.dart` y casos nuevos en `sincronizador_widget_cita_test.dart`): orden con auto, etapa, entrega y enlace; sin hora estimada; idioma; regreso a la cita al entregarse; evento `orden`, reconexión y primer plano; borrado al cerrar sesión; equipo comprometido; fallos de red.
+
+**Datos y seguridad (OWASP Mobile)**
+
+- Al widget solo viajan textos de pantalla: etapa, hora de entrega, nombre del vehículo y el id de la orden dentro del enlace. No viajan asesor, montos, adicionales, placas, VIN ni datos del cliente. No se escribe nada en logs.
+- Cerrar sesión (o equipo comprometido, V2-M22.05) publica el estado sin datos y no consulta órdenes ni abre el canal. Lo mismo que M25.01: el widget puede verse con el teléfono bloqueado en algunos lanzadores.
+
+**Pendiente / fuera de alcance**
+
+- **iOS (falta Xcode):** igual que M25.01; sin cambios en el Swift más que comentarios. Al enlazar el target se prueba también con orden abierta.
+- Probar en teléfono real que el toque abra la orden con la app cerrada (pasa por la guardia de sesión) y que el evento `orden` repinte con la app abierta.
+- Con la app cerrada el widget no se repinta solo (igual que M25.01); el refresco en segundo plano sería una historia aparte.
+- El widget usa los mismos tamaños y tipografía de M25.01; pedir revisión de diseño a Cristian.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
+
 ## Avance de V2-M25.03
 
 Parte de **app** de «Guardar mi cita en Wallet». Estado: **En curso**; el pase firmado depende de la historia `Backend:` (otro agente la implementa contra el mismo contrato) y de los certificados de Apple y Google (ver notas de arriba).
