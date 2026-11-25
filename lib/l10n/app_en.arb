@@ -1653,6 +1653,8 @@
   "estrenoSinTomaACuenta": "No",
   "estrenoEnviar": "Send request",
   "estrenoEnviarCotizacion": "Send quote",
+  "estrenoEnviando": "Sending…",
+  "estrenoCalculando": "Working out your monthly payment…",
   "estrenoListo": "Done! An advisor will contact you soon.",
   "estrenoVerSolicitudes": "See my requests",
   "estrenoDuplicada": "You already asked for this model; an advisor will contact you.",

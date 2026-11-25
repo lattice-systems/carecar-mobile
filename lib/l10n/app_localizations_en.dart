@@ -2297,6 +2297,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get estrenoEnviarCotizacion => 'Send quote';
 
   @override
+  String get estrenoEnviando => 'Sending…';
+
+  @override
+  String get estrenoCalculando => 'Working out your monthly payment…';
+
+  @override
   String get estrenoListo => 'Done! An advisor will contact you soon.';
 
   @override

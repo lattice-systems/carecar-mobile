@@ -147,7 +147,9 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
               ],
               const SizedBox(height: Espaciado.e5),
               BotonPildora(
-                texto: textos.estrenoEnviar,
+                texto: _enviando
+                    ? textos.estrenoEnviando
+                    : textos.estrenoEnviar,
                 expandido: true,
                 alPresionar: _enviando || _dia == null || _franja == null
                     ? null

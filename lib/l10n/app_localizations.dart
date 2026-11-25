@@ -3838,6 +3838,18 @@ abstract class AppLocalizations {
   /// **'Enviar cotización'**
   String get estrenoEnviarCotizacion;
 
+  /// Texto del botón mientras la solicitud viaja al servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get estrenoEnviando;
+
+  /// Se muestra en lugar de la mensualidad mientras el servidor la calcula.
+  ///
+  /// In es, this message translates to:
+  /// **'Calculando tu mensualidad…'**
+  String get estrenoCalculando;
+
   /// Confirmación al enviar.
   ///
   /// In es, this message translates to:

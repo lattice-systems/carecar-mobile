@@ -10,6 +10,7 @@ import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
+import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_metrica.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -42,6 +43,10 @@ class _PantallaCotizacionEstrenoState
   int? _estimacion;
   MensualidadEstimada? _calculo;
   FalloEstreno? _falloCalculo;
+  bool _calculando = false;
+
+  /// Numero del ultimo calculo pedido: solo su respuesta se muestra.
+  int _pedido = 0;
   FalloEstreno? _falloEnvio;
   bool _enviando = false;
   SolicitudDeEstreno? _solicitud;
@@ -60,12 +65,30 @@ class _PantallaCotizacionEstrenoState
 
   void _programarCalculo() {
     _demora?.cancel();
+    // Lo que se mostraba deja de valer apenas cambia el enganche, y una
+    // respuesta que ya venia en camino tampoco debe pintarse.
+    _pedido++;
+    setState(() {
+      _calculo = null;
+      _falloCalculo = null;
+      _calculando = true;
+    });
     _demora = Timer(_espera, _calcular);
   }
 
   Future<void> _calcular() async {
+    if (!mounted) return;
     final enganche = _engancheCapturado;
-    if (enganche == null) return;
+    if (enganche == null) {
+      setState(() => _calculando = false);
+      return;
+    }
+    final pedido = ++_pedido;
+    setState(() {
+      _calculo = null;
+      _falloCalculo = null;
+      _calculando = true;
+    });
     try {
       final c = await ref
           .read(repositorioEstrenoProvider)
@@ -74,19 +97,18 @@ class _PantallaCotizacionEstrenoState
             enganche: enganche,
             plazoMeses: _plazo,
           );
-      if (mounted) {
-        setState(() {
-          _calculo = c;
-          _falloCalculo = null;
-        });
-      }
+      // Una respuesta que llega tarde no pisa a la del ultimo cambio.
+      if (!mounted || pedido != _pedido) return;
+      setState(() {
+        _calculo = c;
+        _calculando = false;
+      });
     } on FalloEstreno catch (fallo) {
-      if (mounted) {
-        setState(() {
-          _calculo = null;
-          _falloCalculo = fallo;
-        });
-      }
+      if (!mounted || pedido != _pedido) return;
+      setState(() {
+        _falloCalculo = fallo;
+        _calculando = false;
+      });
     }
   }
 
@@ -205,7 +227,23 @@ class _PantallaCotizacionEstrenoState
                 ),
                 const SizedBox(height: Espaciado.e2),
                 Aviso(mensaje: calculo.leyenda, tono: Tono.informacion),
-              ] else if (_falloCalculo != null)
+              ] else if (_calculando)
+                Semantics(
+                  liveRegion: true,
+                  child: Column(
+                    children: [
+                      const Esqueleto(alto: 96),
+                      const SizedBox(height: Espaciado.e2),
+                      Text(
+                        textos.estrenoCalculando,
+                        style: tokens.tipografia.cuerpo.copyWith(
+                          color: c.textoSecundario,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else if (_falloCalculo != null)
                 Aviso(
                   mensaje: textoDeFalloEstreno(textos, _falloCalculo!),
                   tono: Tono.advertencia,
@@ -225,7 +263,9 @@ class _PantallaCotizacionEstrenoState
               ],
               const SizedBox(height: Espaciado.e5),
               BotonPildora(
-                texto: textos.estrenoEnviarCotizacion,
+                texto: _enviando
+                    ? textos.estrenoEnviando
+                    : textos.estrenoEnviarCotizacion,
                 expandido: true,
                 alPresionar: _enviando || calculo == null ? null : _enviar,
               ),

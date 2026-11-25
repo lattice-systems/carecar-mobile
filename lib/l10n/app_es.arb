@@ -2910,6 +2910,14 @@
   "@estrenoEnviarCotizacion": {
     "description": "Botón para mandar la cotización a un asesor."
   },
+  "estrenoEnviando": "Enviando…",
+  "@estrenoEnviando": {
+    "description": "Texto del botón mientras la solicitud viaja al servidor."
+  },
+  "estrenoCalculando": "Calculando tu mensualidad…",
+  "@estrenoCalculando": {
+    "description": "Se muestra en lugar de la mensualidad mientras el servidor la calcula."
+  },
   "estrenoListo": "¡Listo! Un asesor te contactará pronto.",
   "@estrenoListo": {
     "description": "Confirmación al enviar."

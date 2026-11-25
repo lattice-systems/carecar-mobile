@@ -2294,6 +2294,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get estrenoEnviarCotizacion => 'Enviar cotización';
 
   @override
+  String get estrenoEnviando => 'Enviando…';
+
+  @override
+  String get estrenoCalculando => 'Calculando tu mensualidad…';
+
+  @override
   String get estrenoListo => '¡Listo! Un asesor te contactará pronto.';
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/estreno/dominio/estreno.dart';
@@ -41,6 +43,13 @@ class _Repo implements RepositorioEstreno {
 
   /// Fallos al listar, uno por intento y en orden.
   final fallosAlListar = <FalloEstreno>[];
+
+  /// Si se asigna, pedir (prueba o cotización) espera a que se complete.
+  Completer<void>? esperaAlPedir;
+
+  /// Cada cálculo espera a su Completer, en orden de llegada; sin ellos
+  /// responde de inmediato.
+  final esperasAlCalcular = <Completer<MensualidadEstimada>>[];
   FalloEstreno? falloAlCalcular;
   PaginaDeSolicitudes pagina = const PaginaDeSolicitudes(
     solicitudes: [],
@@ -73,6 +82,9 @@ class _Repo implements RepositorioEstreno {
     required int plazoMeses,
   }) async {
     calculos.add((enganche: enganche, plazo: plazoMeses));
+    if (esperasAlCalcular.isNotEmpty) {
+      return esperasAlCalcular.removeAt(0).future;
+    }
     final fallo = falloAlCalcular;
     if (fallo != null) throw fallo;
     return _mensualidad;
@@ -85,6 +97,7 @@ class _Repo implements RepositorioEstreno {
     required FranjaPreferida franja,
     int? estimacionId,
   }) async {
+    await esperaAlPedir?.future;
     if (fallosAlPedir.isNotEmpty) throw fallosAlPedir.removeAt(0);
     pruebas.add((fecha: fecha, franja: franja, estimacion: estimacionId));
     return _solicitud(TipoSolicitud.pruebaManejo, fecha: fecha, franja: franja);
@@ -97,6 +110,7 @@ class _Repo implements RepositorioEstreno {
     required int plazoMeses,
     int? estimacionId,
   }) async {
+    await esperaAlPedir?.future;
     if (fallosAlPedir.isNotEmpty) throw fallosAlPedir.removeAt(0);
     cotizaciones.add((
       enganche: enganche,
@@ -187,6 +201,22 @@ void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) =>
       await cuerpo(tester);
     });
 
+/// Deja correr los cuadros que hacen falta para que se vea lo que ya llegó,
+/// sin esperar a lo que sigue pendiente (un esqueleto nunca "se asienta").
+Future<void> _dejarCorrer(WidgetTester tester) async {
+  for (var i = 0; i < 3; i++) {
+    await tester.pump();
+  }
+}
+
+BotonPildora _botonEnviarCotizacion(WidgetTester tester) =>
+    tester.widget<BotonPildora>(
+      find.ancestor(
+        of: find.textContaining(RegExp('Enviar cotización|Enviando')),
+        matching: find.byType(BotonPildora),
+      ),
+    );
+
 /// Elige el 26 de noviembre en la tarde, lo que casi todas las pruebas piden.
 Future<void> _elegirDiaYTarde(WidgetTester tester) async {
   await tester.tap(find.textContaining('26 nov'));
@@ -269,6 +299,29 @@ void main() {
       await tester.pumpAndSettle();
       expect(repo.pruebas, hasLength(1));
       expect(find.textContaining('Un asesor te contactará'), findsOneWidget);
+    });
+
+    _prueba('mientras envia lo dice y no deja volver a enviar', (tester) async {
+      final repo = _Repo()..esperaAlPedir = Completer<void>();
+      await tester.pumpWidget(
+        _app(const PantallaPruebaManejo(modeloId: 7), repo),
+      );
+      await tester.pumpAndSettle();
+      await _elegirDiaYTarde(tester);
+      await tester.tap(find.text('Enviar solicitud'));
+      await tester.pump();
+
+      expect(find.text('Enviando…'), findsOneWidget);
+      expect(find.text('Enviar solicitud'), findsNothing);
+      final boton = tester.widget<BotonPildora>(
+        find.widgetWithText(BotonPildora, 'Enviando…'),
+      );
+      expect(boton.alPresionar, isNull);
+
+      repo.esperaAlPedir!.complete();
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Un asesor te contactará'), findsOneWidget);
+      expect(repo.pruebas, hasLength(1));
     });
   });
 
@@ -405,6 +458,118 @@ void main() {
       await tester.tap(find.text('Enviar cotización'));
       await tester.pumpAndSettle();
       expect(find.textContaining('Ya pediste esto'), findsOneWidget);
+    });
+
+    _prueba('mientras envia lo dice y no deja volver a enviar', (tester) async {
+      final repo = _Repo()..esperaAlPedir = Completer<void>();
+      await tester.pumpWidget(
+        _app(const PantallaCotizacionEstreno(modeloId: 7), repo),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Enviar cotización'));
+      await tester.pump();
+
+      expect(find.text('Enviando…'), findsOneWidget);
+      expect(find.text('Enviar cotización'), findsNothing);
+      final boton = tester.widget<BotonPildora>(
+        find.widgetWithText(BotonPildora, 'Enviando…'),
+      );
+      expect(boton.alPresionar, isNull);
+
+      repo.esperaAlPedir!.complete();
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Un asesor te contactará'), findsOneWidget);
+      expect(repo.cotizaciones, hasLength(1));
+    });
+
+    _prueba('mientras calcula lo dice y no deja enviar', (tester) async {
+      final calculo = Completer<MensualidadEstimada>();
+      final repo = _Repo()..esperasAlCalcular.add(calculo);
+      await tester.pumpWidget(
+        _app(const PantallaCotizacionEstreno(modeloId: 7), repo),
+      );
+      await _dejarCorrer(tester);
+
+      expect(find.text('Calculando tu mensualidad…'), findsOneWidget);
+      expect(find.text('\$7,513'), findsNothing);
+      expect(_botonEnviarCotizacion(tester).alPresionar, isNull);
+
+      calculo.complete(_mensualidad);
+      await tester.pumpAndSettle();
+      expect(find.text('Calculando tu mensualidad…'), findsNothing);
+      expect(find.text('\$7,513'), findsOneWidget);
+      expect(_botonEnviarCotizacion(tester).alPresionar, isNotNull);
+    });
+
+    _prueba('al cambiar el plazo no se queda la mensualidad anterior', (
+      tester,
+    ) async {
+      final repo = _Repo();
+      await tester.pumpWidget(
+        _app(const PantallaCotizacionEstreno(modeloId: 7), repo),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('\$7,513'), findsOneWidget);
+
+      repo.esperasAlCalcular.add(Completer<MensualidadEstimada>());
+      await tester.tap(find.text('24 meses').first);
+      await _dejarCorrer(tester);
+      expect(find.text('\$7,513'), findsNothing);
+      expect(_botonEnviarCotizacion(tester).alPresionar, isNull);
+    });
+
+    _prueba(
+      'al escribir el enganche se oculta la mensualidad hasta recalcular',
+      (tester) async {
+        final repo = _Repo();
+        await tester.pumpWidget(
+          _app(const PantallaCotizacionEstreno(modeloId: 7), repo),
+        );
+        await tester.pumpAndSettle();
+        expect(repo.calculos, hasLength(1));
+
+        await tester.enterText(find.byType(TextField), '40000');
+        await tester.pump();
+        expect(find.text('\$7,513'), findsNothing);
+        expect(_botonEnviarCotizacion(tester).alPresionar, isNull);
+
+        await tester.pumpAndSettle(const Duration(milliseconds: 500));
+        expect(repo.calculos.last.enganche, 40000);
+        expect(find.text('\$7,513'), findsOneWidget);
+      },
+    );
+
+    _prueba('una respuesta vieja no pisa a la nueva', (tester) async {
+      final primera = Completer<MensualidadEstimada>();
+      final segunda = Completer<MensualidadEstimada>();
+      final repo = _Repo()..esperasAlCalcular.addAll([primera, segunda]);
+      await tester.pumpWidget(
+        _app(const PantallaCotizacionEstreno(modeloId: 7), repo),
+      );
+      await _dejarCorrer(tester);
+      await tester.tap(find.text('24 meses').first);
+      await _dejarCorrer(tester);
+      expect(repo.calculos.map((c) => c.plazo), [48, 24]);
+
+      segunda.complete(
+        const MensualidadEstimada(
+          precio: 300000,
+          enganche: 30000,
+          montoFinanciado: 270000,
+          tasaAnual: 0.1499,
+          plazoMeses: 24,
+          mensualidad: 5000,
+          leyenda: 'Estimación no vinculante.',
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('\$5,000'), findsOneWidget);
+
+      // Llega tarde la del plazo anterior: no debe sustituir a la nueva.
+      primera.complete(_mensualidad);
+      await tester.pumpAndSettle();
+      expect(find.text('\$5,000'), findsOneWidget);
+      expect(find.text('\$7,513'), findsNothing);
     });
   });
 
