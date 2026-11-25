@@ -4335,5 +4335,27 @@
   "asistenciaLlamarAtajo": "Llamar a la agencia o al 911",
   "@asistenciaLlamarAtajo": {
     "description": "Atajo a las llamadas rápidas desde otras pantallas."
+  },
+  "citasCalendarioAgregar": "Agregar al calendario",
+  "@citasCalendarioAgregar": {
+    "description": "Botón del comprobante que guarda la cita en el calendario del teléfono."
+  },
+  "citasCalendarioTitulo": "Cita en la agencia",
+  "@citasCalendarioTitulo": {
+    "description": "Título del evento de calendario."
+  },
+  "citasCalendarioDescripcion": "Vehículo: {vehiculo}",
+  "@citasCalendarioDescripcion": {
+    "description": "Descripción del evento de calendario.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String",
+        "example": "Nissan Versa 2024"
+      }
+    }
+  },
+  "citasCalendarioError": "No pudimos abrir tu calendario. Intenta de nuevo.",
+  "@citasCalendarioError": {
+    "description": "Error al entregar el evento."
   }
 }
