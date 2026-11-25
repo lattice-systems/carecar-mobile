@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
-import '../../modulos/privacidad/privacidad.dart' show rutaAvisoPrivacidad;
+import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../tema/tema_carecar.dart';
 import '../pantalla_cambiar_contrasena.dart';
@@ -120,12 +120,12 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     );
   }
 
-  /// El aviso vigente del servidor, con su version y cuando se acepto
-  /// (V2-M22.01). Sin enrutador (la v1 suelta, en pruebas) queda el texto que
-  /// la app trae incluido.
+  /// Privacidad y mis datos (V2-M22.01 y V2-M22.02): el aviso vigente del
+  /// servidor y la copia de mis datos. Sin enrutador (la v1 suelta, en pruebas)
+  /// queda el texto del aviso que la app trae incluido.
   void _privacidad() {
     if (GoRouter.maybeOf(context) != null) {
-      GoRouter.of(context).push(rutaAvisoPrivacidad);
+      GoRouter.of(context).push(rutaPrivacidad);
       return;
     }
     showShadDialog<void>(
@@ -223,7 +223,8 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                 _Opcion(
                   llave: PantallaPerfil.botonPrivacidad,
                   icono: Icons.privacy_tip_outlined,
-                  titulo: 'Aviso de privacidad',
+                  titulo: 'Privacidad y mis datos',
+                  subtitulo: 'Aviso de privacidad y copia de tus datos',
                   alTocar: _privacidad,
                 ),
               ],

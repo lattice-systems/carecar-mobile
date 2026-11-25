@@ -14,5 +14,5 @@ export 'dominio/privacidad.dart'
 export 'presentacion/proveedores_privacidad.dart'
     show avisoVigenteProvider, repositorioPrivacidadProvider;
 export 'presentacion/rutas_privacidad.dart'
-    show rutaAvisoPrivacidad, rutasPrivacidad;
+    show rutaAvisoPrivacidad, rutaMisDatos, rutaPrivacidad, rutasPrivacidad;
 export 'presentacion/verificador_aviso.dart' show VerificadorDeAviso;

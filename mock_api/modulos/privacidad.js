@@ -1,6 +1,6 @@
 const { BASE, problema, noEncontrado } = require('../comun/http');
 
-module.exports = function registrarPrivacidad(servidor) {
+module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
   // --- Aviso de privacidad (V2-M22.01) ---
   // La versión 1 es el texto que la app traía incluido. `POST /api/v1/avisos-privacidad`
   // (del personal, sin sesión en el simulador) publica la versión siguiente para
@@ -66,5 +66,94 @@ module.exports = function registrarPrivacidad(servidor) {
     };
     avisosPrivacidad.push(nuevo);
     return res.status(201).json({ ...nuevo, aceptado: false, aceptadoEn: null });
+  });
+
+  // --- Derechos ARCO: acceso a mis datos (V2-M22.02) ---
+  // Como el backend: la solicitud nace PENDIENTE (202), el archivo se prepara
+  // aparte y al estar listo llega el evento `arco.estado`. Dura 7 dias. El
+  // retraso (2 s) se cambia con RETRASO_ARCO_MS; con 0 queda lista al instante.
+  const VIGENCIA_ARCO_MS = 7 * 24 * 60 * 60 * 1000;
+  const RETRASO_ARCO_MS = Number(process.env.RETRASO_ARCO_MS ?? 2000);
+  const solicitudesArco = [];
+
+  function comoSolicitudArco(s) {
+    const vence = s.resueltaEn ? new Date(new Date(s.resueltaEn).getTime() + VIGENCIA_ARCO_MS) : null;
+    const vencida = s.estado === 'RESUELTA' && vence && vence <= new Date();
+    return {
+      id: s.id,
+      tipo: s.tipo,
+      estado: vencida ? 'VENCIDA' : s.estado,
+      creadaEn: s.creadaEn,
+      resueltaEn: s.resueltaEn ?? null,
+      venceEn: s.estado === 'RESUELTA' && vence ? vence.toISOString() : null,
+    };
+  }
+
+  function archivoDeDatos(clienteId) {
+    const cuenta = db.get('cuentas').find({ clienteId }).value() || {};
+    return {
+      generadoEn: new Date().toISOString(),
+      descripcion: 'Copia de los datos personales que CareCar guarda de tu cuenta (derecho de acceso). '
+        + 'Contiene información personal: guárdala en un lugar seguro y no la compartas.',
+      alcance: {
+        incluye: ['Tus datos de contacto', 'Tu cuenta de la app (sin contraseña)'],
+        noIncluye: [
+          'Los datos fiscales y comerciales que la agencia conserva por obligación legal '
+            + '(ventas, pagos y facturas): pídelos en la agencia',
+        ],
+      },
+      cliente: { id: clienteId, nombre: cuenta.nombre ?? null, correo: cuenta.correo ?? null },
+      cuentaApp: { usuario: cuenta.usuario ?? null, activa: cuenta.activa ?? true },
+    };
+  }
+
+  function resolverArco(solicitud) {
+    solicitud.estado = 'RESUELTA';
+    solicitud.resueltaEn = new Date().toISOString();
+    emitirEvento(solicitud.clienteId, 'arco.estado', {
+      solicitudId: solicitud.id,
+      tipo: solicitud.tipo,
+      estado: 'RESUELTA',
+    });
+  }
+
+  servidor.get(`${BASE}/privacidad/arco`, (req, res) => {
+    const propias = solicitudesArco
+      .filter((s) => s.clienteId === req.sesion.clienteId)
+      .sort((a, b) => b.id - a.id)
+      .slice(0, 20)
+      .map(comoSolicitudArco);
+    res.json(propias);
+  });
+
+  servidor.post(`${BASE}/privacidad/arco/acceso`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const pendiente = solicitudesArco.find((s) => s.clienteId === clienteId && s.tipo === 'ACCESO'
+      && s.estado === 'PENDIENTE');
+    if (pendiente) return res.status(200).json(comoSolicitudArco(pendiente));
+    const solicitud = {
+      id: solicitudesArco.length + 1,
+      clienteId,
+      tipo: 'ACCESO',
+      estado: 'PENDIENTE',
+      creadaEn: new Date().toISOString(),
+      resueltaEn: null,
+    };
+    solicitudesArco.push(solicitud);
+    if (RETRASO_ARCO_MS > 0) setTimeout(() => resolverArco(solicitud), RETRASO_ARCO_MS);
+    else resolverArco(solicitud);
+    return res.status(202).json(comoSolicitudArco(solicitud));
+  });
+
+  servidor.get(`${BASE}/privacidad/arco/:id/archivo`, (req, res) => {
+    const solicitud = solicitudesArco.find((s) => s.id === Number(req.params.id)
+      && s.clienteId === req.sesion.clienteId);
+    if (!solicitud || comoSolicitudArco(solicitud).estado !== 'RESUELTA') return noEncontrado(req, res);
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition': 'attachment; filename="mis-datos-carecar.json"',
+      'Cache-Control': 'no-store',
+    });
+    return res.status(200).send(JSON.stringify(archivoDeDatos(solicitud.clienteId), null, 2));
   });
 };

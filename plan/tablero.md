@@ -132,13 +132,13 @@ Total: **218 historias** + 4 de H0.
 | V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | Lista | |
 | V2-M21.05 | Resolver conflictos de forma predecible | Jael | B | V2-M21.03 | Lista | |
 | V2-M21.06 | Que la app sincronice en segundo plano | Jael |  | V2-M21.02 | Lista | |
-| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | En revisión | #127, backend#96 |
-| V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Lista | |
+| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Hecha | #127, backend#96 |
+| V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | En revisión | #129, backend#97 |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Lista | |
 | V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Hecha | #76 |
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
-| V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | En revisión | #126 |
+| V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
 | V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |

@@ -3309,4 +3309,88 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get privacidadSinConexionAceptar =>
       'You\'re offline. Connect to save your acceptance.';
+
+  @override
+  String get privacidadHubTitulo => 'Privacy and my data';
+
+  @override
+  String get privacidadHubAviso => 'Privacy notice';
+
+  @override
+  String get privacidadHubAvisoDetalle => 'What we do with your data';
+
+  @override
+  String get privacidadHubDatos => 'Download my data';
+
+  @override
+  String get privacidadHubDatosDetalle => 'A copy of your personal data';
+
+  @override
+  String get arcoTitulo => 'My data';
+
+  @override
+  String get arcoIntro =>
+      'You can ask for a copy of the personal data CareCar keeps for your account. It\'s a file you can save or share.';
+
+  @override
+  String get arcoAlcance =>
+      'It doesn\'t include the tax and commercial records the dealership keeps by law (sales, payments and invoices): ask for them at the dealership.';
+
+  @override
+  String get arcoPedir => 'Ask for a copy of my data';
+
+  @override
+  String get arcoPidiendo => 'Requesting…';
+
+  @override
+  String get arcoPreparando => 'We\'re preparing your file';
+
+  @override
+  String get arcoPreparandoDetalle =>
+      'It takes a few seconds. You can stay on this screen.';
+
+  @override
+  String get arcoLista => 'Your file is ready';
+
+  @override
+  String arcoVence(String fecha) {
+    return 'Available until $fecha';
+  }
+
+  @override
+  String get arcoCuidado =>
+      'It contains personal information: keep it somewhere safe and don\'t share it.';
+
+  @override
+  String get arcoDescargar => 'Download my file';
+
+  @override
+  String get arcoDescargando => 'Preparing…';
+
+  @override
+  String get arcoPedirOtra => 'Ask for a new copy';
+
+  @override
+  String get arcoFallida => 'We couldn\'t prepare your file. Try again.';
+
+  @override
+  String get arcoVencida =>
+      'Your file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoErrorPedir => 'We couldn\'t request your copy. Try again.';
+
+  @override
+  String get arcoSinConexionPedir =>
+      'You\'re offline. Connect to request your copy.';
+
+  @override
+  String get arcoErrorDescarga => 'We couldn\'t download your file. Try again.';
+
+  @override
+  String get arcoArchivoNoDisponible =>
+      'The file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoCargando => 'Loading your requests';
 }

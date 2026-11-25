@@ -4342,5 +4342,110 @@
   "privacidadSinConexionAceptar": "Sin conexión. Conéctate para guardar tu aceptación.",
   "@privacidadSinConexionAceptar": {
     "description": "Fallo de red al registrar la aceptación."
+  },
+  "privacidadHubTitulo": "Privacidad y mis datos",
+  "@privacidadHubTitulo": {
+    "description": "Título de la pantalla que reúne el aviso de privacidad y los derechos sobre los datos (V2-M22.02)."
+  },
+  "privacidadHubAviso": "Aviso de privacidad",
+  "@privacidadHubAviso": {
+    "description": "Fila del aviso de privacidad en Privacidad y mis datos."
+  },
+  "privacidadHubAvisoDetalle": "Qué hacemos con tus datos",
+  "@privacidadHubAvisoDetalle": {
+    "description": "Detalle de la fila del aviso de privacidad."
+  },
+  "privacidadHubDatos": "Descargar mis datos",
+  "@privacidadHubDatos": {
+    "description": "Fila que abre la copia de los datos personales."
+  },
+  "privacidadHubDatosDetalle": "Una copia de tus datos personales",
+  "@privacidadHubDatosDetalle": {
+    "description": "Detalle de la fila de descargar mis datos."
+  },
+  "arcoTitulo": "Mis datos",
+  "@arcoTitulo": {
+    "description": "Título de la pantalla para pedir y descargar la copia de los datos."
+  },
+  "arcoIntro": "Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.",
+  "@arcoIntro": {
+    "description": "Explica qué es la copia de los datos (acceso ARCO)."
+  },
+  "arcoAlcance": "No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.",
+  "@arcoAlcance": {
+    "description": "Aclara lo que la copia no incluye."
+  },
+  "arcoPedir": "Pedir una copia de mis datos",
+  "@arcoPedir": {
+    "description": "Botón que pide la copia de los datos."
+  },
+  "arcoPidiendo": "Pidiendo…",
+  "@arcoPidiendo": {
+    "description": "Texto del botón mientras se pide la copia."
+  },
+  "arcoPreparando": "Estamos preparando tu archivo",
+  "@arcoPreparando": {
+    "description": "Título mientras la copia se prepara."
+  },
+  "arcoPreparandoDetalle": "Tarda unos segundos. Puedes quedarte en esta pantalla.",
+  "@arcoPreparandoDetalle": {
+    "description": "Detalle mientras la copia se prepara."
+  },
+  "arcoLista": "Tu archivo está listo",
+  "@arcoLista": {
+    "description": "Título cuando la copia ya se puede descargar."
+  },
+  "arcoVence": "Disponible hasta el {fecha}",
+  "@arcoVence": {
+    "description": "Hasta cuándo se puede descargar la copia.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "arcoCuidado": "Contiene información personal: guárdalo en un lugar seguro y no lo compartas.",
+  "@arcoCuidado": {
+    "description": "Recordatorio de cuidado del archivo descargado."
+  },
+  "arcoDescargar": "Descargar mi archivo",
+  "@arcoDescargar": {
+    "description": "Botón que abre la hoja de compartir con la copia."
+  },
+  "arcoDescargando": "Preparando…",
+  "@arcoDescargando": {
+    "description": "Texto del botón mientras se baja el archivo."
+  },
+  "arcoPedirOtra": "Pedir una copia nueva",
+  "@arcoPedirOtra": {
+    "description": "Botón para pedir otra copia cuando ya hay una."
+  },
+  "arcoFallida": "No pudimos preparar tu archivo. Intenta de nuevo.",
+  "@arcoFallida": {
+    "description": "Aviso cuando la copia no se pudo preparar."
+  },
+  "arcoVencida": "Tu archivo ya no está disponible. Pide una copia nueva.",
+  "@arcoVencida": {
+    "description": "Aviso cuando la copia venció."
+  },
+  "arcoErrorPedir": "No pudimos pedir tu copia. Intenta de nuevo.",
+  "@arcoErrorPedir": {
+    "description": "Fallo al pedir la copia."
+  },
+  "arcoSinConexionPedir": "Sin conexión. Conéctate para pedir tu copia.",
+  "@arcoSinConexionPedir": {
+    "description": "Falta de conexión al pedir la copia."
+  },
+  "arcoErrorDescarga": "No pudimos descargar tu archivo. Intenta de nuevo.",
+  "@arcoErrorDescarga": {
+    "description": "Fallo al descargar la copia."
+  },
+  "arcoArchivoNoDisponible": "El archivo ya no está disponible. Pide una copia nueva.",
+  "@arcoArchivoNoDisponible": {
+    "description": "Aviso cuando al descargar ya no estaba."
+  },
+  "arcoCargando": "Cargando tus solicitudes",
+  "@arcoCargando": {
+    "description": "Lector de pantalla mientras carga."
   }
 }

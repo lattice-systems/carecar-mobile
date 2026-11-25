@@ -287,4 +287,19 @@ class CarecarApiHttp implements CarecarApi {
         cuerpo: {'avisoId': avisoId},
         leer: AceptacionAviso.fromJson,
       );
+
+  @override
+  Future<List<SolicitudArco>> misSolicitudesArco() =>
+      _cliente.obtenerLista('/privacidad/arco', SolicitudArco.fromJson);
+
+  @override
+  Future<SolicitudArco> pedirAccesoArco() => _cliente.enviar(
+    '/privacidad/arco/acceso',
+    cuerpo: const {},
+    leer: SolicitudArco.fromJson,
+  );
+
+  @override
+  Future<Uint8List> descargarArchivoArco(int solicitudId) =>
+      _cliente.descargar('/privacidad/arco/$solicitudId/archivo');
 }

@@ -341,4 +341,16 @@ class CarecarApiConCache implements CarecarApi {
   @override
   Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
       _api.aceptarAvisoDePrivacidad(avisoId);
+
+  // Derechos ARCO (V2-M22.02): sin copia, y menos que nada el archivo: es una
+  // copia de los datos de la persona y no se deja en el telefono.
+  @override
+  Future<List<SolicitudArco>> misSolicitudesArco() => _api.misSolicitudesArco();
+
+  @override
+  Future<SolicitudArco> pedirAccesoArco() => _api.pedirAccesoArco();
+
+  @override
+  Future<Uint8List> descargarArchivoArco(int solicitudId) =>
+      _api.descargarArchivoArco(solicitudId);
 }
