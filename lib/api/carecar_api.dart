@@ -235,4 +235,18 @@ abstract interface class CarecarApi {
   /// idempotente. 404 si el aviso no existe; 409 `AVISO_NO_VIGENTE` si ya hay
   /// una version mas nueva.
   Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId);
+
+  // --- Derechos ARCO · V2-M22.02 ---
+
+  /// `GET /privacidad/arco`: las ultimas solicitudes de esta cuenta, mas
+  /// recientes primero.
+  Future<List<SolicitudArco>> misSolicitudesArco();
+
+  /// `POST /privacidad/arco/acceso`: pide una copia de mis datos. El archivo se
+  /// prepara aparte; si ya habia una pendiente devuelve esa.
+  Future<SolicitudArco> pedirAccesoArco();
+
+  /// `GET /privacidad/arco/{id}/archivo`: el JSON con los datos. 404 si no es
+  /// de esta cuenta, no esta lista o ya vencio.
+  Future<Uint8List> descargarArchivoArco(int solicitudId);
 }

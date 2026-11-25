@@ -519,4 +519,23 @@ class ApiFalsa implements CarecarApi {
   Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
       alAceptarAvisoDePrivacidad?.call(avisoId) ??
       Future.error(UnimplementedError('aceptarAvisoDePrivacidad'));
+
+  // --- Derechos ARCO (V2-M22.02) ---
+  Future<List<SolicitudArco>> Function()? alPedirSolicitudesArco;
+  Future<SolicitudArco> Function()? alPedirAccesoArco;
+  Future<Uint8List> Function(int solicitudId)? alDescargarArchivoArco;
+
+  @override
+  Future<List<SolicitudArco>> misSolicitudesArco() =>
+      alPedirSolicitudesArco?.call() ?? Future.value(const []);
+
+  @override
+  Future<SolicitudArco> pedirAccesoArco() =>
+      alPedirAccesoArco?.call() ??
+      Future.error(UnimplementedError('pedirAccesoArco'));
+
+  @override
+  Future<Uint8List> descargarArchivoArco(int solicitudId) =>
+      alDescargarArchivoArco?.call(solicitudId) ??
+      Future.error(UnimplementedError('descargarArchivoArco'));
 }
