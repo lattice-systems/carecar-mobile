@@ -4951,6 +4951,136 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Abrir ajustes'**
   String get asistenteAbrirAjustes;
+
+  /// Encabezado del grupo de traslados de una cita en Mis citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recolección · {cita}'**
+  String citasMisCitasRecoleccionEncabezado(String cita);
+
+  /// Fila que abre el checklist del chofer al recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist al recoger'**
+  String get citasChecklistRecoger;
+
+  /// Fila que abre el checklist del chofer al entregar el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Checklist al entregar'**
+  String get citasChecklistEntregar;
+
+  /// Subtítulo de las filas de checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Kilometraje, gasolina y fotos'**
+  String get citasChecklistSubtitulo;
+
+  /// Fila que abre el checklist con la comparación activa.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar recoger y entregar'**
+  String get citasChecklistComparar;
+
+  /// Subtítulo de la fila de comparación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que cambió entre una y otra'**
+  String get citasChecklistCompararSubtitulo;
+
+  /// Pestaña del checklist al recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Al recoger'**
+  String get recoleccionChecklistPestanaRecoger;
+
+  /// Pestaña del checklist al entregar el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Al entregar'**
+  String get recoleccionChecklistPestanaEntregar;
+
+  /// Pestaña que pone lado a lado los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparar'**
+  String get recoleccionChecklistPestanaComparar;
+
+  /// Kilometraje de los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'{recoger} km al recoger, {entregar} km al entregar'**
+  String recoleccionComparacionKmDetalle(int recoger, int entregar);
+
+  /// Nivel de gasolina de los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'{recoger} al recoger, {entregar} al entregar'**
+  String recoleccionComparacionGasolinaDetalle(String recoger, String entregar);
+
+  /// Encabezado de la comparación de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos al recoger y al entregar'**
+  String get recoleccionComparacionFotosTitulo;
+
+  /// Cómo se usa la comparación de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.'**
+  String get recoleccionComparacionFotosAyuda;
+
+  /// Descripción de la foto de recoger para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} al recoger'**
+  String recoleccionComparacionFotoRecoger(int numero, int total);
+
+  /// Descripción de la foto de entregar para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto {numero} de {total} al entregar'**
+  String recoleccionComparacionFotoEntregar(int numero, int total);
+
+  /// Aviso cuando los checklists traen distinto número de fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Hay {recoger} fotos al recoger y {entregar} al entregar; se comparan las primeras {comparadas}.'**
+  String recoleccionComparacionFotosDesiguales(
+    int recoger,
+    int entregar,
+    int comparadas,
+  );
+
+  /// Aviso cuando no hay fotos que comparar.
+  ///
+  /// In es, this message translates to:
+  /// **'Alguno de los dos checklists no trae fotos para comparar.'**
+  String get recoleccionComparacionSinFotos;
+
+  /// Título cuando falta un checklist.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no se puede comparar'**
+  String get recoleccionComparacionFaltaTitulo;
+
+  /// Falta el checklist de recoger.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra el checklist de recoger.'**
+  String get recoleccionComparacionFaltaRecoger;
+
+  /// Falta el checklist de entregar.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.'**
+  String get recoleccionComparacionFaltaEntregar;
+
+  /// Faltan los dos checklists.
+  ///
+  /// In es, this message translates to:
+  /// **'El chofer todavía no registra ningún checklist de esta recolección.'**
+  String get recoleccionComparacionFaltaAmbos;
 }
 
 class _AppLocalizationsDelegate
