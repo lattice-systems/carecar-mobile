@@ -80,7 +80,7 @@ El próximo servicio es el héroe del plan: título con el nombre del servicio, 
 
 Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (ver su `plan/historias-backend.md`, «Diseño técnico — V2-M05.05») y un aviso en la app.
 
-- **Backend:** un job diario avisa a 1 000 km o 14 días del próximo servicio (umbrales por entorno), una sola vez por vehículo y servicio (`recordatorio_mantenimiento`, migración `V44`), y publica el evento en vivo `mantenimiento.recordatorio` (contrato 2.14.0, copiado a `api/`).
+- **Backend:** un job diario avisa a 1 000 km o 14 días del próximo servicio (umbrales por entorno), una sola vez por vehículo y servicio (`recordatorio_mantenimiento`, migración `V44`), y publica el evento en vivo `mantenimiento.recordatorio` (contrato 2.14.0 del backend; a `api/` solo se copió este evento, porque el resto trae `AVISO_NO_VIGENTE` de V2-M22 que la app aún no mapea).
 - **App:** `PantallaPlanMantenimiento` escucha el canal en vivo; si llega el recordatorio de **ese** vehículo muestra «Tu próximo servicio ya se acerca…» (aviso cerrable) y vuelve a pedir el plan. Pruebas: `test/modulos/mantenimiento/recordatorio_en_vivo_test.dart` (este vehículo, otro vehículo y otro tipo de evento).
 
 **Decisiones sobre trabajo de otras personas**
