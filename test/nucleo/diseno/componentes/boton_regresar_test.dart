@@ -80,7 +80,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       tester.getSemantics(find.byType(BotonRegresar)),
-      containsSemantics(label: 'Regresar', isButton: true, isEnabled: true),
+      isSemantics(label: 'Regresar', isButton: true, isEnabled: true),
     );
     semantica.dispose();
   });
