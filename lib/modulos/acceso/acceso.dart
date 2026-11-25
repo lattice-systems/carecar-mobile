@@ -3,7 +3,14 @@
 /// Otros modulos y la app solo importan este archivo (regla R1).
 library;
 
+export 'datos/repositorio_acceso_fake.dart' show RepositorioAccesoFake;
 export 'dominio/bloqueo_por_intentos.dart' show BloqueoPorIntentos;
+export 'dominio/reglas_contrasena.dart'
+    show ReglasContrasena, RevisionContrasena;
+export 'dominio/repositorio_acceso.dart' show RepositorioAcceso;
 export 'presentacion/pantalla_acceso.dart' show PantallaAcceso;
-export 'presentacion/proveedores_acceso.dart' show relojAccesoProvider;
+export 'presentacion/pantalla_cambiar_contrasena.dart'
+    show PantallaCambiarContrasena;
+export 'presentacion/proveedores_acceso.dart'
+    show relojAccesoProvider, repositorioAccesoProvider;
 export 'presentacion/rutas_acceso.dart' show rutasAcceso;
