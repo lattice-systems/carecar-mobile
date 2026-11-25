@@ -178,7 +178,7 @@ Cada componente documenta: anatomía, variantes, estados (normal, presionado, fo
 
 ### Pruebas golden
 
-Las pruebas de Portada y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` carga las fuentes del manifiesto de la app, incluidos sus íconos. Si Geist y Geist Mono aún no están empaquetadas, registra Inter y JetBrains Mono como las fuentes de respaldo que usan los tokens. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+Las pruebas de Portada y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee Inter y JetBrains Mono desde `assets/fonts/` y Material Icons desde el directorio de recursos que prepara `flutter test`. Registra las fuentes de respaldo con los nombres tipográficos de los tokens mientras Geist y Geist Mono estén pendientes en V2-T02.02. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
 
 Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
 
