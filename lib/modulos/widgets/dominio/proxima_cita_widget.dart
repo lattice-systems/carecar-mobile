@@ -1,4 +1,5 @@
-/// Contenido del widget de pantalla de inicio con la proxima cita (V2-M25.01).
+/// Contenido del widget de pantalla de inicio: la proxima cita (V2-M25.01) o,
+/// si hay una orden abierta, el estado del auto en el taller (V2-M25.02).
 ///
 /// Dart puro. Dice que cita se muestra y que texto y enlace viajan al widget
 /// nativo; como se entrega al sistema (Android, iOS) vive detras de
@@ -12,6 +13,11 @@ import '../../citas/citas.dart' show CitaCliente;
 /// widget al tocarlo. Es la misma ruta `/citas/:id/comprobante` de la app.
 String enlaceDeCitaWidget(int citaId) =>
     '${EnlacesApp.esquema}://citas/$citaId/comprobante';
+
+/// Enlace `carecar://` de la orden [ordenId] en el taller: lo que abre el
+/// widget con el auto en el taller. Es la misma ruta `/taller/:id` de la app.
+String enlaceDeOrdenWidget(int ordenId) =>
+    '${EnlacesApp.esquema}://taller/$ordenId';
 
 /// Enlace `carecar://` del flujo de agendar: lo que abre el widget sin cita.
 const enlaceAgendarWidget = '${EnlacesApp.esquema}://citas/agendar';
@@ -45,6 +51,22 @@ class ContenidoWidgetCita {
        mensaje = null,
        accion = null;
 
+  /// El auto en el taller. Usa el mismo bloque del widget que la cita: [etapa]
+  /// ocupa el lugar del dia, [entrega] el del horario y [vehiculo] el del auto.
+  /// Solo viajan textos de pantalla y el id de la orden dentro del enlace.
+  const ContenidoWidgetCita.enTaller({
+    required this.titulo,
+    required String etapa,
+    required String this.vehiculo,
+    required int ordenId,
+    String? entrega,
+  }) : hayCita = true,
+       fecha = etapa,
+       horario = entrega,
+       enlace = '${EnlacesApp.esquema}://taller/$ordenId',
+       mensaje = null,
+       accion = null;
+
   const ContenidoWidgetCita.sinCita({
     required this.titulo,
     required String this.mensaje,
@@ -55,6 +77,8 @@ class ContenidoWidgetCita {
        horario = null,
        vehiculo = null;
 
+  /// Si el widget muestra un bloque con datos (cita o auto en el taller) y no la
+  /// invitacion a agendar.
   final bool hayCita;
   final String titulo;
   final String? fecha;
