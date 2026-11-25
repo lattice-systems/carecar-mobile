@@ -2522,6 +2522,18 @@ abstract class AppLocalizations {
   /// **'No tienes citas próximas'**
   String get widgetsSinCitaMensaje;
 
+  /// Encabezado del widget de inicio cuando el auto está en el taller (V2-M25.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto en el taller'**
+  String get widgetsTallerTitulo;
+
+  /// Hora estimada de entrega en el widget de inicio con el auto en el taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega estimada: {hora}'**
+  String widgetsTallerEntrega(String hora);
+
   /// Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet.
   ///
   /// In es, this message translates to:
