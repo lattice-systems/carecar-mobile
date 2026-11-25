@@ -147,6 +147,8 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/direcciones` | 201 · 400 `DATOS_INVALIDOS` · 422 `FUERA_DE_COBERTURA` (círculo de 40 km alrededor de la Ciudad de México) |
 | PUT | `/direcciones/{id}` | 200 · 400 · 404 si es ajena · 422 |
 | DELETE | `/direcciones/{id}` | 204 · 404 · 409 `DIRECCION_EN_USO` si ya tiene traslados |
+| GET | `/vehiculos/{id}/mantenimiento` | Plan de 8 servicios cada 5 000 km con su estado y el próximo servicio · 404 si el vehículo es ajeno · los de 2014 o anteriores no tienen plan (V2-M05.01) |
+| POST | `/vehiculos/{id}/lecturas-km` | `{ km }` · 201 lectura del cliente · 400 `DATOS_INVALIDOS` · 404 · 422 `KM_INVALIDO` si es menor a la última lectura (V2-M05.03) |
 | GET | `/recoleccion/cotizacion` | `direccionId` y `fecha` · costo por traslado (80 + 12 por km), total, y franjas 07:00-09:00 y 17:00-19:00 · 400 · 404 · 422 (V2-M17.02) |
 | GET | `/catalogo` | Solo modelos activos |
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
@@ -188,6 +190,23 @@ y lo dejó marcado, para cambiarlo en un solo lugar cuando el equipo responda.
 | Los valores de `Servicio.estatus` no están definidos | Usa `Terminado` y `En proceso` como provisionales | PO-5 |
 | No hay reglas de contraseña | Exige 8 caracteres como mínimo | RIC-9 |
 | No se define la zona horaria de fechas y horas | Trata todo como fecha y hora local, sin zona | RIC-13 |
+
+## Eventos en vivo y emisor de prueba
+
+`GET /api/v1/app/eventos` es un canal Server-Sent Events (`event:` y `data:` JSON) con latido cada 25 s y cierre a los 30 min, como el backend. Solo llegan los eventos del cliente que escucha. Como no hay agencia ni chofer, el mock trae un emisor **fuera del contrato** (sin token) para provocar avances y verlos en la app:
+
+```bash
+# V2-M11.04 · la ayuda va en camino (id de la solicitud abierta)
+curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+# V2-M17.03 · el chofer sale, se mueve y recoge el auto
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"recogido"}'
+# V2-M17.04 · checklist a mano (al pasar a recogido o entregado se crea uno)
+curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+```
+
+Los traslados se crean agendando una cita con recolección desde la app. La ubicación del chofer solo se manda en `en_camino` y `de_regreso`; las fotos del checklist son de `picsum.photos` (hace falta internet) y su parámetro de firma cambia en cada petición.
 
 ## Rutas de inspección
 

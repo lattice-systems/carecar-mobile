@@ -32,6 +32,8 @@ Especificación: [`../../docs/diseno/sistema-de-diseno-v2.md`](../../docs/diseno
 | V2-T02.17 | Como cliente quiero que los botones redondos de la app se vean y respondan igual para que se sienta una sola app | `BotonCircular` de 48 con variante tonal y acento, estado marcado opcional, rebote táctil y nombre para el lector · lo usan enviar y adjuntar de `CampoMensaje` y 👍/👎 del asistente · claro, oscuro y letra al 200 % | | V2-T02.16 |
 | V2-T02.19 | Como cliente quiero los botones de vidrio de la propuesta para que la app se sienta ligera y de alta gama | Variante `vidrio` en `BotonPildora` y `BotonCircular`: fondo translúcido del color del texto al 6 %, borde de luz al 14 %, texto `texto` e ícono `acento`, rebote · legible en claro y oscuro · se usa en acciones secundarias (Reprogramar, Agendar revisión, adjuntar, 👍/👎 sin marcar) | | V2-T02.17 |
 
+| V2-T02.20 | Como equipo queremos componentes de estilo portada para que las pantallas de detalle tengan un protagonista visual y no se vean genéricas | `CabeceraPortada` (portada grande sobre fondo difuminado y teñido, con acción principal y secundaria) · `Estante` (carrusel horizontal con «Ver todo») · `GrupoLista`/`FilaGrupo` (lista agrupada con ícono en cuadro de color) · `BotonPildora` (lleno y tonal) · `BarraPortada` (transparente arriba, opaca al desplazar) · `EncabezadoGrande(translucido: true)` · ningún contenido atraviesa el título al desplazar · golden en claro, oscuro y 200 % · en la galería | | V2-T02.04 |
+
 ## Avance de V2-T02.01
 
 Los tokens viven en `lib/nucleo/diseno/tokens/` y el tema en `lib/nucleo/diseno/tema_pista.dart`. Pruebas en `test/nucleo/diseno/`.

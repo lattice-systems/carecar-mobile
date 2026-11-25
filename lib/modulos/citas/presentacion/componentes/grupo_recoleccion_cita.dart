@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/componentes/grupo_lista.dart';
@@ -7,7 +8,8 @@ import '../../../recoleccion/recoleccion.dart';
 
 /// Los traslados de recoger y entregar el auto que trae una cita agendada con
 /// recolección (V2-M17.02): cuándo llega el chofer, cuándo devuelve el auto y
-/// cuánto cuesta en total. Lo usan la confirmación y el comprobante.
+/// cuánto cuesta en total. Lo usan la confirmación y el comprobante. Tocar un
+/// traslado abre su seguimiento (V2-M17.03).
 class GrupoRecoleccionCita extends StatelessWidget {
   const GrupoRecoleccionCita({required this.recoleccion, super.key});
 
@@ -28,6 +30,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
 
     return GrupoLista(
       encabezado: textos.citasResumenRecoleccionEncabezado,
+      pie: textos.recoleccionSeguimientoAbrir,
       filas: [
         if (recoger != null)
           FilaGrupo(
@@ -35,6 +38,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
             subtitulo: ventana(recoger),
             icono: Icons.local_shipping_outlined,
             colorIcono: c.marca,
+            alToque: () => context.push(rutaSeguimientoTraslado(recoger.id)),
           ),
         if (entregar != null)
           FilaGrupo(
@@ -42,6 +46,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
             subtitulo: ventana(entregar),
             icono: Icons.home_outlined,
             colorIcono: c.exito,
+            alToque: () => context.push(rutaSeguimientoTraslado(entregar.id)),
           ),
         FilaGrupo(
           titulo: textos.citasResumenRecoleccionCosto,

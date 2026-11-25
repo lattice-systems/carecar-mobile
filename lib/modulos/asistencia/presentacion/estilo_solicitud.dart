@@ -26,6 +26,20 @@ extension TextosDeAsistencia on AppLocalizations {
     TipoAsistencia.otro => asistenciaTipoOtro,
   };
 
+  String nombreDeEstado(EstadoSolicitud estado) => switch (estado) {
+    EstadoSolicitud.recibida => asistenciaEstadoRecibida,
+    EstadoSolicitud.enCamino => asistenciaEstadoEnCamino,
+    EstadoSolicitud.atendida => asistenciaEstadoAtendida,
+    EstadoSolicitud.cancelada => asistenciaEstadoCancelada,
+  };
+
+  String notaDeEstado(EstadoSolicitud estado) => switch (estado) {
+    EstadoSolicitud.recibida => asistenciaEstadoNotaRecibida,
+    EstadoSolicitud.enCamino => asistenciaEstadoNotaEnCamino,
+    EstadoSolicitud.atendida => asistenciaEstadoNotaAtendida,
+    EstadoSolicitud.cancelada => asistenciaEstadoNotaCancelada,
+  };
+
   String mensajeSinUbicacion(MotivoSinUbicacion motivo) => switch (motivo) {
     MotivoSinUbicacion.permisoDenegado => asistenciaUbicacionPermisoDenegado,
     MotivoSinUbicacion.permisoBloqueado => asistenciaUbicacionPermisoBloqueado,

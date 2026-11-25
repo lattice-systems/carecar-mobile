@@ -38,6 +38,7 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 | V2-M25.03 | Como cliente quiero guardar mi cita en Wallet para presentarla en recepción | Botón en el comprobante · pase firmado por el backend con el QR · si la cita se cancela, el pase queda vencido | ✅ | V2-M02.11 |
 | V2-M25.04 | Como cliente quiero accesos rápidos desde el ícono para ir directo a lo que más uso | Mantener presionado el ícono muestra Agendar, Mi auto y SOS · cada uno abre su pantalla | | V2-T01.03 |
 | V2-M25.05 | Como cliente de iPhone quiero ver el estado del taller en la pantalla bloqueada para seguir mi servicio | Live Activity con la etapa actual mientras la orden esté abierta · termina al entregar el auto · se actualiza por push desde el backend | ✅ | V2-M04.03 |
+| V2-M25.06 | Como cliente quiero que el pase de Wallet de una cita cancelada o reprogramada deje de servir para no presentarme con un pase viejo | Apple: servicio de actualización (`webServiceURL`, registro de dispositivos, APNs) marca el pase `voided` · Google: el objeto pasa a `EXPIRED` · al reprogramar se actualiza fecha y horario · llaves fuera del repo (R8) | ✅ | V2-M25.03 |
 
 ## Fuera de alcance / notas
 

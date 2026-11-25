@@ -1,3 +1,4 @@
+import '../../../api/excepciones.dart';
 import '../../../nucleo/mapas/mapas.dart';
 import '../dominio/repositorio_asistencia.dart';
 import '../dominio/solicitud_asistencia.dart';
@@ -75,5 +76,21 @@ class RepositorioAsistenciaFake implements RepositorioAsistencia {
     final error = falloAlConsultar;
     if (error != null) throw error;
     return abierta;
+  }
+
+  /// Cuantas veces se consulto una solicitud por id.
+  int consultas = 0;
+
+  @override
+  Future<SolicitudAsistencia> obtener(int id) async {
+    consultas++;
+    await espera;
+    final error = falloAlConsultar;
+    if (error != null) throw error;
+    final solicitud = abierta;
+    if (solicitud == null || solicitud.id != id) {
+      throw const NoEncontrado('No existe la solicitud');
+    }
+    return solicitud;
   }
 }

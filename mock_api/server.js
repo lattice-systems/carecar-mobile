@@ -729,6 +729,7 @@ servidor.post(`${BASE}/citas/:citaId/cancelar`, (req, res) => {
   }
 
   db.get('citas').find({ id: cita.id }).assign({ estado: 'CANCELADA' }).write();
+  cancelarTrasladosProgramados(cita);
   const franja = db.get('franjas').find({ id: cita.franjaId }).value();
   if (franja) {
     db.get('franjas')
@@ -854,7 +855,60 @@ servidor.get(`${BASE}/citas/:citaId/ticket`, (req, res) => {
 // Una sola abierta por cliente: otra responde 409 SOLICITUD_ABIERTA.
 const TIPOS_ASISTENCIA = ['llanta', 'bateria', 'choque', 'sin_gasolina', 'otro'];
 const solicitudesAsistencia = new Map(); // clienteId -> solicitud abierta
+const historialAsistencia = new Map(); // id -> { clienteId, solicitud } (tambien las cerradas)
 let ultimoIdAsistencia = 0;
+
+// V2-M11.04 · Eventos en vivo (SSE). `GET /eventos` deja la conexion abierta y
+// manda `event: <nombre>` + `data: <json>`; el servidor real hace lo mismo con
+// el token de la app. Solo llegan los eventos del cliente que escucha.
+const clientesEventos = new Set(); // { res, clienteId }
+const LATIDO_MS = 25 * 1000;
+const VIDA_CANAL_MS = 30 * 60 * 1000;
+
+function emitirEvento(clienteId, nombre, datos) {
+  for (const c of clientesEventos) {
+    if (c.clienteId !== clienteId) continue;
+    c.res.write(`event: ${nombre}\ndata: ${JSON.stringify(datos)}\n\n`);
+    if (typeof c.res.flush === 'function') c.res.flush();
+  }
+}
+
+servidor.get(`${BASE}/eventos`, (req, res) => {
+  res.status(200).set({
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    Connection: 'keep-alive',
+  });
+  res.flushHeaders();
+  res.write(': conectado\n\n');
+  const cliente = { res, clienteId: req.sesion.clienteId };
+  clientesEventos.add(cliente);
+  const latido = setInterval(() => {
+    res.write(': latido\n\n');
+    if (typeof res.flush === 'function') res.flush();
+  }, LATIDO_MS);
+  // Como el servidor real: a los 30 min se cierra para que la app reconecte
+  // con un token vigente.
+  const vida = setTimeout(() => res.end(), VIDA_CANAL_MS);
+  req.on('close', () => {
+    clearInterval(latido);
+    clearTimeout(vida);
+    clientesEventos.delete(cliente);
+  });
+});
+
+// Mueve una solicitud a otro estado y avisa. Atendida o cancelada la cierran:
+// se descartan lat y lng (la ubicacion deja de compartirse).
+function cambiarEstadoSolicitud(registro, estado) {
+  const { clienteId, solicitud } = registro;
+  solicitud.estado = estado;
+  if (estado === 'atendida' || estado === 'cancelada') {
+    solicitud.lat = null;
+    solicitud.lng = null;
+    solicitudesAsistencia.delete(clienteId);
+  }
+  emitirEvento(clienteId, 'asistencia.estado', { solicitudId: solicitud.id, estado });
+}
 
 servidor.post(`${BASE}/asistencia`, (req, res) => {
   const { vehiculoId, tipo, lat, lng, comentario } = req.body || {};
@@ -886,7 +940,15 @@ servidor.post(`${BASE}/asistencia`, (req, res) => {
     creadaEn: new Date().toISOString(),
   };
   solicitudesAsistencia.set(req.sesion.clienteId, solicitud);
+  historialAsistencia.set(solicitud.id, { clienteId: req.sesion.clienteId, solicitud });
   res.status(201).jsonp(solicitud);
+});
+
+// V2-M11.04 · estado de una solicitud. Una ajena responde 404 como inexistente.
+servidor.get(`${BASE}/asistencia/:id`, (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  if (!registro || registro.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
+  res.jsonp(registro.solicitud);
 });
 
 servidor.get(`${BASE}/asistencia`, (req, res) => {
@@ -1084,6 +1146,89 @@ servidor.get(`${BASE}/recoleccion/cotizacion`, (req, res) => {
 
 // Crea los dos traslados de una cita (recoger y entregar) y arma la
 // `RecoleccionCita` que devuelve POST /citas.
+// V2-M17.03 y V2-M17.04 · seguimiento del traslado y checklist. Un traslado
+// ajeno (de la cita de otro cliente) responde 404 como inexistente. La ubicacion
+// del chofer solo viaja en en_camino y de_regreso, igual que el backend real.
+const ESTADOS_TRASLADO = [
+  'programado',
+  'en_camino',
+  'recogido',
+  'en_taller',
+  'de_regreso',
+  'entregado',
+  'cancelado',
+];
+const checklists = new Map(); // trasladoId -> checklist
+const NIVELES_GASOLINA = ['vacio', 'un_cuarto', 'medio', 'tres_cuartos', 'lleno'];
+
+function trasladoDelCliente(req, id) {
+  const t = db.get('traslados').find({ id: Number(id) }).value();
+  if (!t) return null;
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita && cita.clienteId === req.sesion.clienteId ? t : null;
+}
+
+const comoTraslado = (t) => ({
+  id: t.id,
+  citaId: t.citaId,
+  tipo: t.tipo,
+  estado: t.estado,
+  costo: t.costo,
+  fecha: t.fecha,
+  ventanaInicio: t.ventanaInicio,
+  ventanaFin: t.ventanaFin,
+  ...(['en_camino', 'de_regreso'].includes(t.estado) && t.ubicacionChofer
+    ? { ubicacionChofer: t.ubicacionChofer }
+    : {}),
+});
+
+function clienteDeTraslado(t) {
+  const cita = db.get('citas').find({ id: t.citaId }).value();
+  return cita ? cita.clienteId : null;
+}
+
+// Cambia el estado, descarta la ubicacion si ya no corresponde y avisa por SSE.
+function cambiarEstadoTraslado(t, estado) {
+  const cambios = { estado };
+  if (!['en_camino', 'de_regreso'].includes(estado)) cambios.ubicacionChofer = null;
+  db.get('traslados').find({ id: t.id }).assign(cambios).write();
+  emitirEvento(clienteDeTraslado(t), 'traslado.estado', {
+    trasladoId: t.id,
+    citaId: t.citaId,
+    tipo: t.tipo,
+    estado,
+  });
+}
+
+// Cancelar una cita cancela sus traslados que aun no salen.
+function cancelarTrasladosProgramados(cita) {
+  db.get('traslados')
+    .filter({ citaId: cita.id, estado: 'programado' })
+    .value()
+    .forEach((t) => cambiarEstadoTraslado(t, 'cancelado'));
+}
+
+servidor.get(`${BASE}/traslados/:id`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  res.jsonp(comoTraslado(t));
+});
+
+servidor.get(`${BASE}/traslados/:id/checklist`, (req, res) => {
+  const t = trasladoDelCliente(req, req.params.id);
+  if (!t) return noEncontrado(req, res);
+  const checklist = checklists.get(t.id);
+  if (!checklist) return noEncontrado(req, res);
+  // Las URLs firmadas del backend real duran 15 minutos; aqui la firma es un
+  // parametro de relleno que cambia en cada peticion.
+  const firma = `firma=${Date.now().toString(36)}`;
+  res.jsonp({
+    ...checklist,
+    fotos: checklist.fotos.map((f) => `${f}?${firma}`),
+    ...(checklist.firmaUrl ? { firmaUrl: `${checklist.firmaUrl}?${firma}` } : {}),
+  });
+});
+
 function crearTraslados(cita, direccion) {
   const costo = costoPorTraslado(direccion);
   const ids = db.get('traslados').value().map((t) => t.id);
@@ -1117,6 +1262,177 @@ function crearTraslados(cita, direccion) {
     })),
   };
 }
+
+// ── mantenimiento ──
+// V2-M05 · plan de mantenimiento por modelo, estado de cada servicio y
+// lecturas de kilometraje del cliente. El backend real cruza el plan con el
+// historial (orden_servicio); aqui el estado sale solo del km vigente:
+//   hecho   = el km vigente ya paso 1,000 km del servicio
+//   vencido = el km vigente ya llego al servicio y aun no esta hecho
+//   proximo = el primero que falta; pendiente = los demas.
+// El km oficial es el del taller (`vehiculo.kilometraje`): una lectura del
+// cliente nunca lo sobrescribe, solo se suma, y no puede ser menor a ninguna.
+// Vehiculos de 2014 o anteriores no tienen plan (200 con servicios vacios).
+db.defaults({ lecturasKm: [] }).write();
+
+const PASO_SERVICIO_KM = 5000;
+const SERVICIOS_DEL_PLAN = 8;
+const MARGEN_HECHO_KM = 1000;
+const PROMEDIO_KM_DIARIO_POR_OMISION = 35;
+const ANIO_MINIMO_CON_PLAN = 2015;
+
+function conceptosDelServicio(n) {
+  const conceptos = ['Cambio de aceite y filtro', 'Revisión de niveles'];
+  if (n % 2 === 0) conceptos.push('Revisión de frenos', 'Rotación de llantas');
+  if (n % 4 === 0) conceptos.push('Filtro de aire', 'Bujías');
+  return conceptos;
+}
+
+function serviciosDelPlan() {
+  return Array.from({ length: SERVICIOS_DEL_PLAN }, (_, i) => {
+    const n = i + 1;
+    const km = PASO_SERVICIO_KM * n;
+    return {
+      id: n,
+      nombre: `Servicio de ${km.toLocaleString('en-US')} km`,
+      km,
+      meses: 6 * n,
+      precioEstimado: 1200 + (n % 2 === 0 ? 650 : 0) + (n % 4 === 0 ? 900 : 0),
+      conceptos: conceptosDelServicio(n),
+    };
+  });
+}
+
+function sumarDias(fecha, dias) {
+  const d = new Date(fecha);
+  d.setDate(d.getDate() + dias);
+  return d.toISOString().slice(0, 10);
+}
+
+// Lecturas del cliente de un vehiculo, de la mas vieja a la mas nueva.
+function lecturasDelCliente(vehiculoId) {
+  return db
+    .get('lecturasKm')
+    .filter({ vehiculoId })
+    .sortBy('id')
+    .value();
+}
+
+function planDeMantenimiento(vehiculo) {
+  const hoy = new Date().toISOString().slice(0, 10);
+  const lecturas = lecturasDelCliente(vehiculo.id);
+  const ultimaDelCliente = lecturas.length ? lecturas[lecturas.length - 1] : null;
+  const kmTaller = vehiculo.kilometraje ?? null;
+
+  let kmActual = kmTaller;
+  let kmFuente = kmTaller == null ? null : 'taller';
+  let kmActualizadoEn = kmTaller == null ? null : (vehiculo.kilometrajeActualizadoEn ?? hoy);
+  if (ultimaDelCliente && ultimaDelCliente.km >= (kmTaller ?? 0)) {
+    kmActual = ultimaDelCliente.km;
+    kmFuente = 'cliente';
+    kmActualizadoEn = ultimaDelCliente.registradaEn.slice(0, 10);
+  }
+
+  const base = {
+    vehiculoId: vehiculo.id,
+    kmActual,
+    kmActualizadoEn,
+    kmFuente,
+    promedioKmDiario: null,
+    servicios: [],
+    proximo: null,
+  };
+  if (vehiculo.anio < ANIO_MINIMO_CON_PLAN) return base;
+
+  // Promedio diario con las lecturas del cliente; sin historial suficiente se
+  // usa un valor por omision.
+  let promedio = kmActual == null ? null : PROMEDIO_KM_DIARIO_POR_OMISION;
+  if (lecturas.length >= 2) {
+    const primera = lecturas[0];
+    const ultima = lecturas[lecturas.length - 1];
+    const dias = Math.max(
+      1,
+      Math.round((new Date(ultima.registradaEn) - new Date(primera.registradaEn)) / 86400000)
+    );
+    promedio = Math.max(1, Math.round((ultima.km - primera.km) / dias));
+  }
+  base.promedioKmDiario = promedio;
+
+  let yaHayProximo = false;
+  base.servicios = serviciosDelPlan().map((s) => {
+    let estado = 'pendiente';
+    let hechoEn = null;
+    if (kmActual != null && s.km + MARGEN_HECHO_KM <= kmActual) {
+      estado = 'hecho';
+      hechoEn = sumarDias(hoy, -Math.round((kmActual - s.km) / (promedio || 1)));
+    } else if (kmActual != null && !yaHayProximo) {
+      estado = s.km <= kmActual ? 'vencido' : 'proximo';
+      yaHayProximo = true;
+    }
+    return { ...s, estado, hechoEn };
+  });
+
+  const siguiente = base.servicios.find((s) => s.estado === 'vencido' || s.estado === 'proximo');
+  if (siguiente && kmActual != null) {
+    const faltanKm = siguiente.km - kmActual;
+    const faltanDias = Math.max(0, Math.ceil(faltanKm / promedio));
+    base.proximo = {
+      servicioId: siguiente.id,
+      nombre: siguiente.nombre,
+      kmObjetivo: siguiente.km,
+      fechaEstimada: sumarDias(hoy, faltanDias),
+      faltanKm,
+      faltanDias,
+      motivo: 'km',
+    };
+  }
+  return base;
+}
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/mantenimiento`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  res.jsonp(planDeMantenimiento(vehiculo));
+});
+
+servidor.post(`${BASE}/vehiculos/:vehiculoId/lecturas-km`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+
+  const km = req.body ? req.body.km : undefined;
+  if (!Number.isInteger(km) || km <= 0) {
+    return problema(req, res, 400, 'km debe ser un entero mayor que cero', 'DATOS_INVALIDOS');
+  }
+
+  const lecturas = lecturasDelCliente(vehiculo.id);
+  const ultimoDelCliente = lecturas.length ? lecturas[lecturas.length - 1].km : 0;
+  const ultimoOficial = vehiculo.kilometraje ?? 0;
+  if (km < ultimoOficial || km < ultimoDelCliente) {
+    return problema(
+      req,
+      res,
+      422,
+      'El kilometraje es menor a la ultima lectura registrada',
+      'KM_INVALIDO'
+    );
+  }
+
+  const ids = db.get('lecturasKm').value().map((l) => l.id);
+  const lectura = {
+    id: ids.length ? Math.max(...ids) + 1 : 1,
+    vehiculoId: vehiculo.id,
+    km,
+    fuente: 'cliente',
+    registradaEn: new Date().toISOString(),
+  };
+  db.get('lecturasKm').push(lectura).write();
+  res.status(201).jsonp({
+    id: lectura.id,
+    km: lectura.km,
+    fuente: lectura.fuente,
+    registradaEn: lectura.registradaEn,
+  });
+});
 
 // ---------------------------------------------------------------------------
 // Catalogo · APP-4.1 (fuera del MVP, pero el contrato lo incluye)
@@ -1580,9 +1896,214 @@ servidor.get('/api/v1/archivos/evidencias/:id', (req, res) => {
   res.send(fotoDePrueba(Number(req.params.id) || 0));
 });
 
+// ── bitacora ──
+// V2-M18 · gastos del vehiculo (cargas de gasolina y otros). Las estadisticas
+// (km/l, $/km, gasto por mes) las calcula la app. Una carga de gasolina deberia
+// crear tambien una lectura de km de fuente cliente; el mock solo valida el km.
+db.defaults({ gastos: [] }).write();
+
+const TIPOS_GASTO = ['gasolina', 'estacionamiento', 'casetas', 'lavado', 'otro'];
+
+const comoGasto = (g) => ({
+  id: g.id,
+  vehiculoId: g.vehiculoId,
+  tipo: g.tipo,
+  monto: g.monto,
+  litros: g.litros ?? null,
+  km: g.km ?? null,
+  fecha: g.fecha,
+  descripcion: g.descripcion ?? null,
+});
+
+// El gasto solo si su vehiculo es del cliente de la sesion.
+function gastoDelCliente(req, id) {
+  const gasto = db.get('gastos').find({ id: Number(id) }).value();
+  return gasto && vehiculoDelCliente(req, gasto.vehiculoId) ? gasto : null;
+}
+
+// Valida NuevoGasto con las reglas del contrato; devuelve el gasto limpio o null.
+function validarGasto(cuerpo) {
+  const c = cuerpo || {};
+  const positivo = (v) => typeof v === 'number' && Number.isFinite(v) && v > 0;
+  if (!TIPOS_GASTO.includes(c.tipo) || !positivo(c.monto)) return null;
+  if (typeof c.fecha !== 'string' || !ES_FECHA.test(c.fecha)) return null;
+  if (c.fecha > new Date().toISOString().slice(0, 10)) return null;
+  const descripcion = typeof c.descripcion === 'string' ? c.descripcion.trim() : '';
+  if (descripcion.length > 200) return null;
+  if (c.tipo === 'otro' && descripcion.length === 0) return null;
+  const gasto = { tipo: c.tipo, monto: c.monto, fecha: c.fecha };
+  if (descripcion) gasto.descripcion = descripcion;
+  if (c.tipo === 'gasolina') {
+    if (!positivo(c.litros) || !Number.isInteger(c.km) || c.km < 0) return null;
+    gasto.litros = c.litros;
+    gasto.km = c.km;
+  }
+  return gasto;
+}
+
+// Ultima lectura de km conocida: la del taller o la de la ultima carga.
+function ultimaLecturaKm(vehiculo, ignorandoId) {
+  const delCliente = db
+    .get('gastos')
+    .filter((g) => g.vehiculoId === vehiculo.id && g.id !== ignorandoId && g.km != null)
+    .map('km')
+    .value();
+  return Math.max(vehiculo.kilometraje ?? 0, ...delCliente);
+}
+
+const kmInvalido = (req, res) =>
+  problema(req, res, 422, 'El km es menor a la ultima lectura del vehiculo', 'KM_INVALIDO');
+
+servidor.get(`${BASE}/vehiculos/:vehiculoId/gastos`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  const { mes } = req.query;
+  if (mes !== undefined && !/^\d{4}-(0[1-9]|1[0-2])$/.test(mes)) {
+    return problema(req, res, 400, 'mes debe ser AAAA-MM', 'DATOS_INVALIDOS');
+  }
+  const pagina = Math.max(0, parseInt(req.query.pagina ?? '0', 10) || 0);
+  const tamano = Math.min(100, Math.max(1, parseInt(req.query.tamano ?? '20', 10) || 20));
+  const todos = db
+    .get('gastos')
+    .filter((g) => g.vehiculoId === vehiculo.id && (!mes || g.fecha.startsWith(mes)))
+    .value()
+    .sort((a, b) => (a.fecha === b.fecha ? b.id - a.id : a.fecha < b.fecha ? 1 : -1));
+  res.jsonp({
+    contenido: todos.slice(pagina * tamano, (pagina + 1) * tamano).map(comoGasto),
+    pagina,
+    totalPaginas: Math.max(1, Math.ceil(todos.length / tamano)),
+  });
+});
+
+servidor.post(`${BASE}/vehiculos/:vehiculoId/gastos`, (req, res) => {
+  const vehiculo = vehiculoDelCliente(req, req.params.vehiculoId);
+  if (!vehiculo) return noEncontrado(req, res);
+  const datos = validarGasto(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de gasto invalidos', 'DATOS_INVALIDOS');
+  if (datos.km !== undefined && datos.km < ultimaLecturaKm(vehiculo)) return kmInvalido(req, res);
+
+  const ids = db.get('gastos').value().map((g) => g.id);
+  const gasto = { id: ids.length ? Math.max(...ids) + 1 : 1, vehiculoId: vehiculo.id, ...datos };
+  db.get('gastos').push(gasto).write();
+  res.status(201).jsonp(comoGasto(gasto));
+});
+
+servidor.put(`${BASE}/gastos/:gastoId`, (req, res) => {
+  const existente = gastoDelCliente(req, req.params.gastoId);
+  if (!existente) return noEncontrado(req, res);
+  const datos = validarGasto(req.body);
+  if (!datos) return problema(req, res, 400, 'Datos de gasto invalidos', 'DATOS_INVALIDOS');
+  const vehiculo = vehiculoDelCliente(req, existente.vehiculoId);
+  if (datos.km !== undefined && datos.km < ultimaLecturaKm(vehiculo, existente.id)) {
+    return kmInvalido(req, res);
+  }
+  // PUT reemplaza el gasto: se quitan los campos que ya no vienen.
+  db.get('gastos')
+    .remove({ id: existente.id })
+    .write();
+  const gasto = { id: existente.id, vehiculoId: existente.vehiculoId, ...datos };
+  db.get('gastos').push(gasto).write();
+  res.jsonp(comoGasto(gasto));
+});
+
+servidor.delete(`${BASE}/gastos/:gastoId`, (req, res) => {
+  const existente = gastoDelCliente(req, req.params.gastoId);
+  if (!existente) return noEncontrado(req, res);
+  db.get('gastos').remove({ id: existente.id }).write();
+  res.status(204).end();
+});
+
 // ---------------------------------------------------------------------------
 // Cualquier otra ruta bajo la base no existe en el contrato
 // ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// Emisor de prueba (solo del mock; NO es parte del contrato)
+//
+// Simula lo que haria la agencia o el chofer para ver en la app los avances en
+// vivo (V2-M11.04, V2-M17.03 y V2-M17.04). No pide token: se usa desde curl.
+//
+//   curl -X POST localhost:3000/__mock/asistencia/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"en_camino"}'
+//   curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: application/json' -d '{"lat":19.43,"lng":-99.13}'
+//   curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+// ---------------------------------------------------------------------------
+
+const sinContrato = (res, status, mensaje) => res.status(status).json({ error: mensaje });
+
+servidor.post('/__mock/asistencia/:id/estado', (req, res) => {
+  const registro = historialAsistencia.get(Number(req.params.id));
+  const { estado } = req.body || {};
+  if (!registro) return sinContrato(res, 404, 'No existe la solicitud');
+  if (!['recibida', 'en_camino', 'atendida', 'cancelada'].includes(estado)) {
+    return sinContrato(res, 400, 'Estado invalido');
+  }
+  cambiarEstadoSolicitud(registro, estado);
+  res.json(registro.solicitud);
+});
+
+servidor.post('/__mock/traslados/:id/estado', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { estado } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!ESTADOS_TRASLADO.includes(estado)) return sinContrato(res, 400, 'Estado invalido');
+  cambiarEstadoTraslado(t, estado);
+  // Al recoger y al entregar el chofer deja su checklist.
+  if (estado === 'recogido' || estado === 'entregado') {
+    const base = `https://picsum.photos/seed/traslado${t.id}-${estado}`;
+    checklists.set(t.id, {
+      trasladoId: t.id,
+      km: 45200,
+      gasolina: 'medio',
+      notas: estado === 'recogido' ? 'Rayon leve en la salpicadera derecha.' : null,
+      fotos: [1, 2, 3].map((n) => `${base}-${n}/800/600`),
+      firmaUrl: `${base}-firma/400/200`,
+      registradoEn: new Date().toISOString(),
+    });
+  }
+  res.json(comoTraslado(db.get('traslados').find({ id: t.id }).value()));
+});
+
+servidor.post('/__mock/traslados/:id/ubicacion', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { lat, lng } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (typeof lat !== 'number' || typeof lng !== 'number') {
+    return sinContrato(res, 400, 'lat y lng son numeros');
+  }
+  const actualizadaEn = new Date().toISOString();
+  db.get('traslados').find({ id: t.id }).assign({ ubicacionChofer: { lat, lng, actualizadaEn } }).write();
+  // El chofer solo se comparte en en_camino y de_regreso.
+  if (['en_camino', 'de_regreso'].includes(t.estado)) {
+    emitirEvento(clienteDeTraslado(t), 'traslado.ubicacion', {
+      trasladoId: t.id,
+      lat,
+      lng,
+      actualizadaEn,
+    });
+  }
+  res.json({ trasladoId: t.id, lat, lng, actualizadaEn });
+});
+
+servidor.post('/__mock/traslados/:id/checklist', (req, res) => {
+  const t = db.get('traslados').find({ id: Number(req.params.id) }).value();
+  const { km, gasolina, notas } = req.body || {};
+  if (!t) return sinContrato(res, 404, 'No existe el traslado');
+  if (!Number.isInteger(km) || !NIVELES_GASOLINA.includes(gasolina)) {
+    return sinContrato(res, 400, 'km entero y gasolina del contrato');
+  }
+  const base = `https://picsum.photos/seed/traslado${t.id}-manual`;
+  checklists.set(t.id, {
+    trasladoId: t.id,
+    km,
+    gasolina,
+    notas: notas ?? null,
+    fotos: [1, 2].map((n) => `${base}-${n}/800/600`),
+    firmaUrl: `${base}-firma/400/200`,
+    registradoEn: new Date().toISOString(),
+  });
+  res.status(201).json(checklists.get(t.id));
+});
 
 servidor.use(BASE, (req, res) => {
   problema(req, res, 404, 'Esa ruta no existe en el contrato');
