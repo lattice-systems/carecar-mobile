@@ -3,14 +3,13 @@ import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_portada.da
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../ayudas/fuentes_golden.dart';
 import '../../../ayudas/tema_pista.dart';
 
-/// Golden de los componentes de estilo portada en claro, oscuro y letra al
-/// 200 %. Usan la fuente de prueba de Flutter (cuadros), asi que sirven para
-/// vigilar estructura, color y espacio; los golden con la fuente real llegan
-/// con V2-T03.02. Para regenerarlos: `flutter test --update-goldens
-/// test/nucleo/diseno/componentes/portada_golden_test.dart`.
+/// Golden de los componentes de estilo portada en claro, oscuro y letra al 200 %.
 void main() {
+  prepararFuentesGolden();
+
   final secciones = seccionesPortada();
   const nombres = {
     'Boton pildora': 'boton_pildora',
