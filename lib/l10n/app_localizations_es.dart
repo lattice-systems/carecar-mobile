@@ -3304,4 +3304,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaLlamarAtajo => 'Llamar a la agencia o al 911';
+
+  @override
+  String get citasCalendarioAgregar => 'Agregar al calendario';
+
+  @override
+  String get citasCalendarioTitulo => 'Cita en la agencia';
+
+  @override
+  String citasCalendarioDescripcion(String vehiculo) {
+    return 'Vehículo: $vehiculo';
+  }
+
+  @override
+  String get citasCalendarioError =>
+      'No pudimos abrir tu calendario. Intenta de nuevo.';
 }
