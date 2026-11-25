@@ -1527,6 +1527,69 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get widgetsAgendar => 'Book';
+
+  @override
+  String get widgetsTallerEncabezado => 'Live workshop';
+
+  @override
+  String get widgetsTallerVacioMensaje => 'Your car is not at the workshop';
+
+  @override
+  String widgetsTallerPaso(int actual, int total) {
+    return 'Step $actual of $total';
+  }
+
+  @override
+  String get widgetsMantenimientoTitulo => 'Maintenance';
+
+  @override
+  String widgetsMantenimientoFaltanKm(String km) {
+    return '$km km to go';
+  }
+
+  @override
+  String get widgetsMantenimientoYaToca => 'Due now';
+
+  @override
+  String widgetsMantenimientoFecha(String fecha) {
+    return 'Around $fecha';
+  }
+
+  @override
+  String get widgetsMantenimientoVacioMensaje =>
+      'There is no plan for your car yet';
+
+  @override
+  String get widgetsMantenimientoAccion => 'View plan';
+
+  @override
+  String get widgetsBitacoraTitulo => 'Logbook';
+
+  @override
+  String get widgetsBitacoraRendimientoUnidad => 'km/l';
+
+  @override
+  String widgetsBitacoraGastoMes(String mes) {
+    return '$mes spending';
+  }
+
+  @override
+  String get widgetsBitacoraRendimientoEtiqueta => 'Fuel economy';
+
+  @override
+  String get widgetsBitacoraVacioMensaje => 'Log your first fill-up';
+
+  @override
+  String get widgetsBitacoraAccion => 'Log it';
+
+  @override
+  String get widgetsAccesosTitulo => 'Quick actions';
+
+  @override
+  String get widgetsAccesoComprobante => 'Receipt';
+
+  @override
   String get citasWalletAgregar => 'Add to Wallet';
 
   @override
