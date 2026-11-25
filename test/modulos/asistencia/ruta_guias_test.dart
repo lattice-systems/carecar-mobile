@@ -49,6 +49,18 @@ void main() {
     expect(find.text('Guías rápidas'), findsOneWidget);
   });
 
+  testWidgets('la tarjeta de ayuda lleva a las llamadas rapidas', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Llamar a la agencia o al 911'));
+    await tester.tap(find.text('Llamar a la agencia o al 911'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaLlamarRapido), findsOneWidget);
+  });
+
   testWidgets('al tocar una portada del estante se abre su guia', (
     tester,
   ) async {

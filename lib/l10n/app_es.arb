@@ -4552,5 +4552,91 @@
   "eliminarCuentaError": "No pudimos eliminar tu cuenta. Inténtalo de nuevo.",
   "@eliminarCuentaError": {
     "description": "Error genérico al eliminar la cuenta."
+  },
+  "asistenciaLlamarTitulo": "Llamar ahora",
+  "@asistenciaLlamarTitulo": {
+    "description": "Título de la pantalla de llamadas rápidas."
+  },
+  "asistenciaLlamarIntro": "Un toque abre el marcador de tu teléfono con el número. Funciona aunque no tengas datos.",
+  "@asistenciaLlamarIntro": {
+    "description": "Explica las llamadas rápidas."
+  },
+  "asistenciaLlamarGrupo": "A quién llamar",
+  "@asistenciaLlamarGrupo": {
+    "description": "Encabezado de la lista de contactos."
+  },
+  "asistenciaLlamarEmergencias": "Emergencias",
+  "@asistenciaLlamarEmergencias": {
+    "description": "Contacto: número de emergencias."
+  },
+  "asistenciaLlamarEmergenciasDetalle": "911 · policía, ambulancia y bomberos",
+  "@asistenciaLlamarEmergenciasDetalle": {
+    "description": "Detalle del contacto de emergencias."
+  },
+  "asistenciaLlamarAgencia": "La agencia",
+  "@asistenciaLlamarAgencia": {
+    "description": "Contacto: la agencia."
+  },
+  "asistenciaLlamarAseguradora": "Mi aseguradora",
+  "@asistenciaLlamarAseguradora": {
+    "description": "Contacto: la aseguradora del cliente."
+  },
+  "asistenciaLlamarAseguradoraFalta": "Aún no registras tu aseguradora",
+  "@asistenciaLlamarAseguradoraFalta": {
+    "description": "Detalle cuando no hay aseguradora."
+  },
+  "asistenciaLlamarAseguradoraComoAgregar": "Aún no registras tu aseguradora. Agrégala en los documentos de tu auto (póliza) y aparecerá aquí para llamarla con un toque.",
+  "@asistenciaLlamarAseguradoraComoAgregar": {
+    "description": "Aviso que explica cómo agregar la aseguradora."
+  },
+  "asistenciaLlamarAccion": "Llamar a {contacto}",
+  "@asistenciaLlamarAccion": {
+    "description": "Etiqueta de lector de pantalla del botón de llamar.",
+    "placeholders": {
+      "contacto": {
+        "type": "String",
+        "example": "La agencia"
+      }
+    }
+  },
+  "asistenciaLlamarNoSePudo": "No pudimos abrir el marcador. Marca {numero} a mano.",
+  "@asistenciaLlamarNoSePudo": {
+    "description": "Error al abrir el marcador.",
+    "placeholders": {
+      "numero": {
+        "type": "String",
+        "example": "911"
+      }
+    }
+  },
+  "asistenciaLlamarAtajo": "Llamar a la agencia o al 911",
+  "@asistenciaLlamarAtajo": {
+    "description": "Atajo a las llamadas rápidas desde otras pantallas."
+  },
+  "citasCalendarioAgregar": "Agregar al calendario",
+  "@citasCalendarioAgregar": {
+    "description": "Botón del comprobante que guarda la cita en el calendario del teléfono."
+  },
+  "citasCalendarioTitulo": "Cita en la agencia",
+  "@citasCalendarioTitulo": {
+    "description": "Título del evento de calendario."
+  },
+  "citasCalendarioDescripcion": "Vehículo: {vehiculo}",
+  "@citasCalendarioDescripcion": {
+    "description": "Descripción del evento de calendario.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String",
+        "example": "Nissan Versa 2024"
+      }
+    }
+  },
+  "citasCalendarioError": "No pudimos abrir tu calendario. Intenta de nuevo.",
+  "@citasCalendarioError": {
+    "description": "Error al entregar el evento."
+  },
+  "mantenimientoRecordatorioEnVivo": "Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.",
+  "@mantenimientoRecordatorioEnVivo": {
+    "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
   }
 }

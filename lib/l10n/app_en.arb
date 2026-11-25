@@ -2721,5 +2721,91 @@
   "eliminarCuentaBloqueada": "Too many attempts. Try again in {minutos, plural, =1{1 minute} other{{minutos} minutes}}.",
   "eliminarCuentaBloqueadaSinEspera": "Too many attempts. Try again later.",
   "eliminarCuentaSinConexion": "You're offline. Check your connection and try again.",
-  "eliminarCuentaError": "We couldn't delete your account. Try again."
+  "eliminarCuentaError": "We couldn't delete your account. Try again.",
+  "asistenciaLlamarTitulo": "Call now",
+  "@asistenciaLlamarTitulo": {
+    "description": "Título de la pantalla de llamadas rápidas."
+  },
+  "asistenciaLlamarIntro": "One tap opens your phone's dialer with the number. It works even without data.",
+  "@asistenciaLlamarIntro": {
+    "description": "Explica las llamadas rápidas."
+  },
+  "asistenciaLlamarGrupo": "Who to call",
+  "@asistenciaLlamarGrupo": {
+    "description": "Encabezado de la lista de contactos."
+  },
+  "asistenciaLlamarEmergencias": "Emergencies",
+  "@asistenciaLlamarEmergencias": {
+    "description": "Contacto: número de emergencias."
+  },
+  "asistenciaLlamarEmergenciasDetalle": "911 · police, ambulance and fire",
+  "@asistenciaLlamarEmergenciasDetalle": {
+    "description": "Detalle del contacto de emergencias."
+  },
+  "asistenciaLlamarAgencia": "The dealership",
+  "@asistenciaLlamarAgencia": {
+    "description": "Contacto: la agencia."
+  },
+  "asistenciaLlamarAseguradora": "My insurer",
+  "@asistenciaLlamarAseguradora": {
+    "description": "Contacto: la aseguradora del cliente."
+  },
+  "asistenciaLlamarAseguradoraFalta": "You haven't added your insurer yet",
+  "@asistenciaLlamarAseguradoraFalta": {
+    "description": "Detalle cuando no hay aseguradora."
+  },
+  "asistenciaLlamarAseguradoraComoAgregar": "You haven't added your insurer yet. Add it in your car's documents (policy) and it will show up here to call with one tap.",
+  "@asistenciaLlamarAseguradoraComoAgregar": {
+    "description": "Aviso que explica cómo agregar la aseguradora."
+  },
+  "asistenciaLlamarAccion": "Call {contacto}",
+  "@asistenciaLlamarAccion": {
+    "description": "Etiqueta de lector de pantalla del botón de llamar.",
+    "placeholders": {
+      "contacto": {
+        "type": "String",
+        "example": "The dealership"
+      }
+    }
+  },
+  "asistenciaLlamarNoSePudo": "We couldn't open the dialer. Dial {numero} by hand.",
+  "@asistenciaLlamarNoSePudo": {
+    "description": "Error al abrir el marcador.",
+    "placeholders": {
+      "numero": {
+        "type": "String",
+        "example": "911"
+      }
+    }
+  },
+  "asistenciaLlamarAtajo": "Call the dealership or 911",
+  "@asistenciaLlamarAtajo": {
+    "description": "Atajo a las llamadas rápidas desde otras pantallas."
+  },
+  "citasCalendarioAgregar": "Add to calendar",
+  "@citasCalendarioAgregar": {
+    "description": "Botón del comprobante que guarda la cita en el calendario del teléfono."
+  },
+  "citasCalendarioTitulo": "Dealership appointment",
+  "@citasCalendarioTitulo": {
+    "description": "Título del evento de calendario."
+  },
+  "citasCalendarioDescripcion": "Vehicle: {vehiculo}",
+  "@citasCalendarioDescripcion": {
+    "description": "Descripción del evento de calendario.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String",
+        "example": "Nissan Versa 2024"
+      }
+    }
+  },
+  "citasCalendarioError": "We couldn't open your calendar. Try again.",
+  "@citasCalendarioError": {
+    "description": "Error al entregar el evento."
+  },
+  "mantenimientoRecordatorioEnVivo": "Your next service is coming up. You can book it whenever you like.",
+  "@mantenimientoRecordatorioEnVivo": {
+    "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
+  }
 }

@@ -5,6 +5,7 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import '../dominio/guia_emergencia.dart';
 import 'pantalla_guia.dart';
 import 'pantalla_guias.dart';
+import 'pantalla_llamar_rapido.dart';
 import 'pantalla_pedir_ayuda.dart';
 
 /// Camino de la lista de guias de emergencia.
@@ -13,6 +14,9 @@ const rutaAsistenciaGuias = '/asistencia/guias';
 /// Camino de «Pedir ayuda» (V2-M11.01). Cuelga de las guias: regresar lleva a
 /// la lista de emergencias.
 const rutaPedirAyuda = '$rutaAsistenciaGuias/pedir';
+
+/// Camino de las llamadas rapidas (V2-M11.02): 911, agencia y aseguradora.
+const rutaLlamarRapido = '$rutaAsistenciaGuias/llamar';
 
 /// Pantalla a la que lleva el acceso rapido SOS del icono (V2-M25.04): pedir
 /// ayuda. Las guias de emergencia quedan a un toque desde ahi.
@@ -37,12 +41,18 @@ final rutasAsistencia = <RouteBase>[
     name: 'asistencia-guias',
     builder: (context, state) => _conTemaPista(context, const PantallaGuias()),
     routes: [
-      // Va antes de ':tipo' para que 'pedir' no se lea como una guia.
+      // Van antes de ':tipo' para que 'pedir' y 'llamar' no se lean como guia.
       GoRoute(
         path: 'pedir',
         name: 'asistencia-pedir',
         builder: (context, state) =>
             _conTemaPista(context, const PantallaPedirAyuda()),
+      ),
+      GoRoute(
+        path: 'llamar',
+        name: 'asistencia-llamar',
+        builder: (context, state) =>
+            _conTemaPista(context, const PantallaLlamarRapido()),
       ),
       GoRoute(
         path: ':tipo',

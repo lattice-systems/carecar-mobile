@@ -16,6 +16,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../recoleccion/recoleccion.dart';
 import '../dominio/comprobante_de_cita.dart';
 import 'boton_agregar_a_wallet.dart';
+import 'boton_agregar_al_calendario.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'proveedores_citas.dart';
@@ -147,6 +148,8 @@ class _Comprobante extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               BotonAgregarAWallet(citaId: datos.citaId, pildora: true),
+              const SizedBox(height: Espaciado.e2),
+              BotonAgregarAlCalendario(cita: datos),
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: textos.citasComprobanteVerPdf,

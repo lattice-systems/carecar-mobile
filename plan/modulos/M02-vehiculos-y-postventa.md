@@ -271,3 +271,24 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 - **Detalle del vehículo:** la portada ya no se mete bajo la barra. `CabeceraPortada` reserva la altura de la barra cuando el `Scaffold` usa `extendBodyBehindAppBar`, y al desplazar la barra se vuelve opaca, así nada atraviesa el título.
 - **«Tu auto»:** las acciones van en cuadrícula 2×2 de tarjetas iguales (una columna con letra grande).
 - **Regresar:** `BotonRegresar` (cierra con `pop` si se puede; si no, va al inicio; semántica «Regresar») en Mi garaje, y en las barras de portada del detalle, manual y ficha.
+
+## Avance de V2-M02.12
+
+Agregar la cita al calendario del teléfono, desde el comprobante. Solo la parte de la app: no hay backend nuevo.
+
+- **Botón «Agregar al calendario»** (`BotonAgregarAlCalendario`) en el comprobante, debajo de «Agregar a Wallet». Arma el evento y lo entrega al sistema; un fallo se avisa en línea («No pudimos abrir tu calendario…») y se puede reintentar.
+- **Evento** (`EventoDeCalendario`, Dart puro): título «Cita en la agencia», descripción con el vehículo, **dirección del taller** y **recordatorio una hora antes** (`VALARM`, `minutosAntesDeLaCita`). Hora flotante (sin zona) para que no se corra si el teléfono cambia de zona.
+- **Entrega:** archivo `.ics` por la hoja de compartir (`share_plus`, ya estaba en el proyecto), con el nombre `cita-<id>.ics`. Los bytes viajan en memoria; no se guardan.
+- **Textos:** `citasCalendario*` en los ARB es y en.
+- **Pruebas:** `evento_de_calendario_test.dart` (formato, escapado, hora flotante, recordatorio) y `boton_agregar_al_calendario_test.dart` (el comprobante lo ofrece, entrega el `.ics`, fallo con reintento).
+
+**Decisiones sobre trabajo de otras personas**
+
+- **Dirección del taller (V2-M27.02, Haziel):** las sucursales no están integradas. Se usa `Agencia.direccion` (`lib/config/agencia.dart`, hoy un valor de ejemplo que hay que reemplazar antes de entregar). Al integrar V2-M27.02, `BotonAgregarAlCalendario` debe tomar la dirección de la sucursal de la cita; el único sitio a cambiar es el comentario `SUPUESTO` de ese widget.
+- **Por qué `.ics` y no un paquete de calendario:** un paquete como `add_2_calendar` pide permisos de calendario y cambia el manifiesto de Android y el `Info.plist` de iOS; el `.ics` abre Google Calendar y el de Apple sin permisos ni código nativo. Si Diseño prefiere el alta directa, solo se cambia la entrega (`EntregaDeEvento`).
+
+**Pendiente**
+
+- Probar en un teléfono real que la hoja de compartir ofrece el calendario (Android e iOS); en pruebas solo se comprueba el contenido del `.ics`.
+- Desde «Mis citas» (V2-M02.09) no hay acceso al calendario: solo desde el comprobante.
+- Tablero: queda `En revisión` hasta integrar el PR; no pasa a `Hecha` mientras no se pruebe en celular.

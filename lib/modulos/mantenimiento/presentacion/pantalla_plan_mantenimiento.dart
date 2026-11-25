@@ -14,6 +14,7 @@ import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../nucleo/eventos/proveedores_eventos.dart';
 import '../../citas/citas.dart';
 import '../dominio/plan_mantenimiento.dart';
 import 'componentes/portada_mantenimiento.dart';
@@ -44,6 +45,9 @@ class _EstadoPantallaPlanMantenimiento
     extends ConsumerState<PantallaPlanMantenimiento> {
   bool _kmGuardado = false;
 
+  /// Llego `mantenimiento.recordatorio` de este vehiculo (V2-M05.05).
+  bool _recordatorio = false;
+
   Future<void> _registrarKm() async {
     final guardado = await context.push<bool>(
       rutaKilometraje(widget.vehiculoId),
@@ -62,6 +66,15 @@ class _EstadoPantallaPlanMantenimiento
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final plan = ref.watch(planMantenimientoProvider(widget.vehiculoId));
+    ref.listen(eventosProvider, (_, evento) {
+      final datos = evento.value;
+      if (datos?.nombre == 'mantenimiento.recordatorio' &&
+          datos?.datos['vehiculoId'] == widget.vehiculoId) {
+        setState(() => _recordatorio = true);
+        // El plan cambio de fondo (km o fecha): se vuelve a pedir.
+        ref.invalidate(planMantenimientoProvider(widget.vehiculoId));
+      }
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -96,6 +109,9 @@ class _EstadoPantallaPlanMantenimiento
                   vehiculoId: widget.vehiculoId,
                   kmGuardado: _kmGuardado,
                   alCerrarAviso: () => setState(() => _kmGuardado = false),
+                  recordatorio: _recordatorio,
+                  alCerrarRecordatorio: () =>
+                      setState(() => _recordatorio = false),
                   alAgendar: _agendar,
                   alRegistrarKm: _registrarKm,
                 ),
@@ -111,6 +127,8 @@ class _Plan extends StatelessWidget {
     required this.vehiculoId,
     required this.kmGuardado,
     required this.alCerrarAviso,
+    required this.recordatorio,
+    required this.alCerrarRecordatorio,
     required this.alAgendar,
     required this.alRegistrarKm,
   });
@@ -121,6 +139,8 @@ class _Plan extends StatelessWidget {
   final int vehiculoId;
   final bool kmGuardado;
   final VoidCallback alCerrarAviso;
+  final bool recordatorio;
+  final VoidCallback alCerrarRecordatorio;
   final VoidCallback alAgendar;
   final VoidCallback alRegistrarKm;
 
@@ -165,7 +185,15 @@ class _Plan extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (kmGuardado) ...[
+              if (recordatorio) ...[
+                const SizedBox(height: Espaciado.e2),
+                Aviso(
+                  mensaje: textos.mantenimientoRecordatorioEnVivo,
+                  tono: Tono.advertencia,
+                  alCerrar: alCerrarRecordatorio,
+                ),
+                const SizedBox(height: Espaciado.e4),
+              ] else if (kmGuardado) ...[
                 Aviso(
                   mensaje: textos.mantenimientoKmGuardado,
                   tono: Tono.exito,

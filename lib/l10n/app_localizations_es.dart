@@ -3492,4 +3492,67 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get eliminarCuentaError =>
       'No pudimos eliminar tu cuenta. Inténtalo de nuevo.';
+
+  @override
+  String get asistenciaLlamarTitulo => 'Llamar ahora';
+
+  @override
+  String get asistenciaLlamarIntro =>
+      'Un toque abre el marcador de tu teléfono con el número. Funciona aunque no tengas datos.';
+
+  @override
+  String get asistenciaLlamarGrupo => 'A quién llamar';
+
+  @override
+  String get asistenciaLlamarEmergencias => 'Emergencias';
+
+  @override
+  String get asistenciaLlamarEmergenciasDetalle =>
+      '911 · policía, ambulancia y bomberos';
+
+  @override
+  String get asistenciaLlamarAgencia => 'La agencia';
+
+  @override
+  String get asistenciaLlamarAseguradora => 'Mi aseguradora';
+
+  @override
+  String get asistenciaLlamarAseguradoraFalta =>
+      'Aún no registras tu aseguradora';
+
+  @override
+  String get asistenciaLlamarAseguradoraComoAgregar =>
+      'Aún no registras tu aseguradora. Agrégala en los documentos de tu auto (póliza) y aparecerá aquí para llamarla con un toque.';
+
+  @override
+  String asistenciaLlamarAccion(String contacto) {
+    return 'Llamar a $contacto';
+  }
+
+  @override
+  String asistenciaLlamarNoSePudo(String numero) {
+    return 'No pudimos abrir el marcador. Marca $numero a mano.';
+  }
+
+  @override
+  String get asistenciaLlamarAtajo => 'Llamar a la agencia o al 911';
+
+  @override
+  String get citasCalendarioAgregar => 'Agregar al calendario';
+
+  @override
+  String get citasCalendarioTitulo => 'Cita en la agencia';
+
+  @override
+  String citasCalendarioDescripcion(String vehiculo) {
+    return 'Vehículo: $vehiculo';
+  }
+
+  @override
+  String get citasCalendarioError =>
+      'No pudimos abrir tu calendario. Intenta de nuevo.';
+
+  @override
+  String get mantenimientoRecordatorioEnVivo =>
+      'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.';
 }

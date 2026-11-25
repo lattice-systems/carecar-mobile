@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.15.0
+  version: 2.16.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -1894,6 +1894,10 @@ paths:
         - `traslado.ubicacion` (V2-M17.03), `AvisoTrasladoUbicacion`: cada vez que el chofer
           reporta su posición en `en_camino` o `de_regreso`; trae el punto, sin necesidad de
           consultar.
+        - `mantenimiento.recordatorio` (V2-M05.05), `AvisoMantenimientoRecordatorio`: una vez por
+          servicio del plan, cuando el próximo servicio de un vehículo del cliente está a 1 000 km
+          o 14 días (configurable en el servidor). La app muestra el aviso; el push (V2-M06.07)
+          escuchará este mismo evento.
         - `arco.estado` (V2-M22.02), `AvisoArco`: cuando una solicitud de derechos ARCO cambia de
           estado (el archivo de acceso quedó listo, o falló). La app vuelve a consultar
           `GET /privacidad/arco`.
@@ -1914,6 +1918,7 @@ paths:
                   - $ref: '#/components/schemas/AvisoAsistencia'
                   - $ref: '#/components/schemas/AvisoTrasladoEstado'
                   - $ref: '#/components/schemas/AvisoTrasladoUbicacion'
+                  - $ref: '#/components/schemas/AvisoMantenimientoRecordatorio'
                   - $ref: '#/components/schemas/AvisoArco'
         '401':
           $ref: '#/components/responses/NoAutenticado'
@@ -3351,6 +3356,29 @@ components:
           format: int64
         estado:
           $ref: '#/components/schemas/EstadoAsistencia'
+
+    AvisoMantenimientoRecordatorio:
+      type: object
+      description: V2-M05.05 · `data` del evento `mantenimiento.recordatorio`
+      required: [vehiculoId, servicioId, nombre, faltanKm, faltanDias, motivo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        servicioId:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Servicio de 20 000 km
+        faltanKm:
+          type: integer
+          description: Puede ser negativo si el servicio ya se pasó.
+        faltanDias:
+          type: integer
+        motivo:
+          type: string
+          enum: [km, tiempo]
 
     AvisoTrasladoEstado:
       type: object

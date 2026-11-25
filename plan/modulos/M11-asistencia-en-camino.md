@@ -148,3 +148,28 @@ Parte de la app de «ver el estado de mi solicitud». El backend (`GET /asistenc
 - **Push con la app cerrada** («push en cada cambio»): depende de V2-M06.02 (notificaciones push). Hoy el estado solo se actualiza en vivo mientras la pantalla está abierta o al volver a ella.
 - La solicitud no se lista en un historial: solo se ve la abierta (`GET /asistencia?activa=true`); una cerrada se consulta por id.
 - Tablero y `plan/cumplimiento-ficha.md` los actualiza quien integra.
+
+## Avance de V2-M11.02
+
+Llamar con un toque al 911, a la agencia o a la aseguradora, sin depender de la red. Solo la parte de la app: no hay backend nuevo.
+
+**Qué quedó**
+
+- **Pantalla** `PantallaLlamarRapido` (`/asistencia/guias/llamar`, `rutaLlamarRapido`, exige sesión): tres filas (Emergencias 911, la agencia, mi aseguradora). Un toque abre el marcador con `tel:` (`url_launcher`, inyectado en `abrirLlamadaProvider` para que las pruebas no salgan de la app). Si el marcador no abre, un aviso dice el número para marcarlo a mano.
+- **Dominio** `contacto_de_llamada.dart`: `ContactoDeLlamada`, `Aseguradora`, `contactosDeLlamada(...)`. El enlace `tel:` se limpia de espacios y guiones y conserva el `+`.
+- **Accesos:** botón «Llamar a la agencia o al 911» en la tarjeta de Emergencias, y, cuando «Pedir ayuda» falla por falta de conexión, los botones «Llamar a Emergencias» y «Llamar a La agencia» debajo del aviso (cierra el «atajo a llamar» que pedía V2-M11.01).
+- **Textos:** claves `asistenciaLlamar*` en los ARB es y en. `asistenciaLlamarAtajo` y `asistenciaLlamarAccion` están en uso; no quedó ninguna sin usar.
+- **Pruebas:** `contacto_de_llamada_test.dart`, `ruta_llamar_rapido_test.dart` (911, aseguradora con y sin registro, marcador que falla, letra al 200 % en 320 × 568), el atajo sin conexión en `pantalla_pedir_ayuda_test.dart` y el acceso en `ruta_guias_test.dart`.
+
+**Decisiones sobre trabajo de otras personas** (para reconciliar al integrar sus historias)
+
+- **Aseguradora (V2-M09.01, Haziel):** esa historia no está integrada y aún no define dónde vive la aseguradora. Se asumió que la póliza vigente del vehículo trae nombre y teléfono de siniestros. `aseguradoraProvider` (en el contrato público del módulo) devuelve `null` hoy; cuando exista, Haziel o quien integre solo cambia el cuerpo de ese proveedor para leer la póliza. Mientras sea `null`, el botón explica cómo agregarla y no llama.
+- **Número de la agencia (V2-M27.02, Haziel):** se usa `Agencia.telefono` (`lib/config/agencia.dart`, hoy un valor de ejemplo) en vez del teléfono de la sucursal más cercana. Al integrar las sucursales, sustituir por la principal o la más cercana. Hay que reemplazar el valor de ejemplo antes de entregar.
+- No se agregó ningún campo ni endpoint al contrato: no hay nada que coordinar con el backend.
+
+**Pendiente**
+
+- Conectar la aseguradora real cuando exista V2-M09.01 (ver arriba) y el teléfono de V2-M27.02.
+- Píldora «Llamar a la agencia» dentro de cada guía (quedó anotada en el rediseño de V2-M11.03): no se agregó para no duplicar el acceso que ya está en Emergencias.
+- Probar el marcador real en un teléfono. En pruebas solo se comprueba el `tel:`.
+- La historia no pasa a `Hecha` hasta tener la aseguradora real: queda `En revisión`.
