@@ -632,7 +632,33 @@ const comoCita = (c) => ({
   horaFin: c.horaFin,
   estado: c.estado,
   ...(c.motivo ? { motivo: c.motivo } : {}),
+  // V2-M17.03 · GET /citas trae la recoleccion de cada cita (o nada si no la
+  // lleva), con el estado vigente de sus traslados, igual que POST /citas.
+  ...recoleccionDeCita(c),
 });
+
+// `{ recoleccion: RecoleccionCita }` con los traslados de la cita tal como estan
+// ahora, o `{}` si la cita no tiene recoleccion. `traslados` solo existe cuando
+// el seed de recoleccion ya corrio.
+function recoleccionDeCita(cita) {
+  const traslados = (db.get('traslados').value() || []).filter((t) => t.citaId === cita.id);
+  if (traslados.length === 0) return {};
+  return {
+    recoleccion: {
+      direccionId: traslados[0].direccionId,
+      costoTotal: Math.round(traslados.reduce((suma, t) => suma + t.costo, 0) * 100) / 100,
+      traslados: traslados.map((t) => ({
+        id: t.id,
+        tipo: t.tipo,
+        estado: t.estado,
+        costo: t.costo,
+        fecha: t.fecha,
+        ventanaInicio: t.ventanaInicio,
+        ventanaFin: t.ventanaFin,
+      })),
+    },
+  };
+}
 
 servidor.get(`${BASE}/citas`, (req, res) => {
   const propias = db.get('citas').filter({ clienteId: req.sesion.clienteId }).value();
