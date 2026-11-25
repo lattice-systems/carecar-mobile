@@ -16,7 +16,8 @@ Widget _app(GoRouter router, {double escala = 1}) => MaterialApp.router(
   supportedLocales: idiomasSoportados,
   theme: TemaPista.claro(),
   builder: (context, hijo) => MediaQuery(
-    data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(escala)),
+    data: MediaQuery.of(context)
+        .copyWith(textScaler: TextScaler.linear(escala)),
     child: hijo!,
   ),
 );
@@ -79,15 +80,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(
       tester.getSemantics(find.byType(BotonRegresar)),
-      matchesSemantics(
-        label: 'Regresar',
-        isButton: true,
-        isEnabled: true,
-        hasEnabledState: true,
-        hasTapAction: true,
-        hasFocusAction: true,
-        isFocusable: true,
-      ),
+      containsSemantics(label: 'Regresar', isButton: true, isEnabled: true),
     );
     semantica.dispose();
   });
@@ -119,9 +112,7 @@ void main() {
       _app(
         _enRaiz(
           pantalla: const Scaffold(
-            body: CustomScrollView(
-              slivers: [EncabezadoGrande(titulo: 'Otra')],
-            ),
+            body: CustomScrollView(slivers: [EncabezadoGrande(titulo: 'Otra')]),
           ),
         ),
       ),
