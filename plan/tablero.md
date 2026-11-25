@@ -289,7 +289,7 @@ Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-
 | V2-M22.10 | Decir en el aviso de privacidad qué proveedores externos reciben datos | Daniel | B | V2-M22.01 | Hecha | #137, backend#100 |
 | V2-M22.11 | Escaneo periódico de dependencias (`pubspec.lock`, Gradle y Pods) | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.12 | Keychain de iOS solo de este dispositivo, sin cerrar sesiones | Daniel |  | V2-M22.08 | Borrador | |
-| V2-M22.13 | Caché de la API sin lo que identifica (VIN, placas) o cifrada | Daniel |  | V2-M22.08 | Borrador | |
+| V2-M22.13 | Cifrar la caché de la API en el teléfono | Daniel |  | V2-M22.08 | Hecha | #138 |
 | V2-M22.14 | Enlaces universales con el dominio real | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.15 | Pines de certificados: mensaje propio e imágenes con el cliente fijado | Daniel |  | V2-M22.04 | Borrador | |
 | V2-M22.16 | Ofuscar el código de release y subir símbolos | Daniel |  | V2-M23.01 | Borrador | |
