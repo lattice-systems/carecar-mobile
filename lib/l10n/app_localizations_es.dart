@@ -100,7 +100,65 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'El enlace ya no sirve';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Pedir otro enlace';
+
+  @override
+  String get accesoNuevaExplicacion =>
+      'Elige una contraseña nueva. Este enlace sirve una sola vez.';
+
+  @override
+  String get accesoNuevaFalloTitulo => 'No pudimos guardar tu contraseña';
+
+  @override
+  String get accesoNuevaGuardando => 'Guardando…';
+
+  @override
+  String get accesoNuevaGuardar => 'Guardar contraseña';
+
+  @override
+  String get accesoNuevaIrAlAcceso => 'Iniciar sesión';
+
+  @override
+  String get accesoNuevaListoMensaje => 'Ya puedes iniciar sesión con ella.';
+
+  @override
+  String get accesoNuevaListoTitulo => 'Tu contraseña quedó lista';
+
+  @override
+  String get accesoNuevaTitulo => 'Elige tu contraseña nueva';
+
+  @override
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get accesoRecuperarEnviado => 'Revisa tu correo';
+
+  @override
+  String get accesoRecuperarEnviadoMensaje =>
+      'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.';
+
+  @override
+  String get accesoRecuperarEnviando => 'Enviando…';
+
+  @override
+  String get accesoRecuperarEnviar => 'Enviarme el enlace';
+
+  @override
+  String get accesoRecuperarExplicacion =>
+      'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.';
+
+  @override
+  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el enlace';
+
+  @override
+  String get accesoRecuperarTitulo => 'Recupera tu contraseña';
 
   @override
   String get accesoServidorDespertandoMensaje =>

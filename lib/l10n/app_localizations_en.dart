@@ -100,7 +100,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Links expire soon and work only once. Ask for a new one and check your email.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'This link no longer works';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Ask for another link';
+
+  @override
+  String get accesoNuevaExplicacion =>
+      'Choose a new password. This link works only once.';
+
+  @override
+  String get accesoNuevaFalloTitulo => 'We couldn\'t save your password';
+
+  @override
+  String get accesoNuevaGuardando => 'Saving…';
+
+  @override
+  String get accesoNuevaGuardar => 'Save password';
+
+  @override
+  String get accesoNuevaIrAlAcceso => 'Sign in';
+
+  @override
+  String get accesoNuevaListoMensaje => 'You can sign in with it now.';
+
+  @override
+  String get accesoNuevaListoTitulo => 'Your password is ready';
+
+  @override
+  String get accesoNuevaTitulo => 'Choose your new password';
+
+  @override
   String get accesoOlvide => 'Forgot your password?';
+
+  @override
+  String get accesoRecuperarEnviado => 'Check your email';
+
+  @override
+  String get accesoRecuperarEnviadoMensaje =>
+      'If that email has an account, you\'ll get a link to choose a new password. It expires soon and works only once.';
+
+  @override
+  String get accesoRecuperarEnviando => 'Sending…';
+
+  @override
+  String get accesoRecuperarEnviar => 'Send me the link';
+
+  @override
+  String get accesoRecuperarExplicacion =>
+      'Enter your email and we\'ll send you a link to choose a new password.';
+
+  @override
+  String get accesoRecuperarFalloTitulo => 'We couldn\'t send the link';
+
+  @override
+  String get accesoRecuperarTitulo => 'Recover your password';
 
   @override
   String get accesoServidorDespertandoMensaje =>

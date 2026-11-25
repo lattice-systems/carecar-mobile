@@ -19,22 +19,44 @@ class PeticionLogin {
 
 /// Cuerpo de `POST /auth/restablecer-contrasena`.
 ///
-/// En la v1.1 ya no hay enlace: llega un codigo de 6 digitos al correo y se
-/// captura en la app (RIC-18).
+/// El contrato v2 (2.1.0) declara solo `contrasenaNueva` como obligatoria:
+/// «Con `token`, o con `correo` y `codigo` (app v1). Si llega `token`, se usa
+/// ese». Por eso hay **dos formas** y no una:
+///
+/// - [PeticionRestablecer.conEnlace] para el enlace de un solo uso que abre
+///   la app (V2-M01.04 y V2-T05.04). Es la que pide la ficha.
+/// - El constructor normal, con el codigo de 6 digitos de la v1.1 (RIC-18),
+///   que la pantalla v1 sigue usando sin cambios.
+///
+/// Cada forma manda **solo sus campos**. Mandar un `correo` vacio junto al
+/// token haria que el backend intentara la forma v1 y respondiera 400 por
+/// datos invalidos en vez de usar el token.
 class PeticionRestablecer {
   const PeticionRestablecer({
     required this.correo,
     required this.codigo,
     required this.contrasenaNueva,
-  });
+  }) : token = null;
 
-  final String correo;
-  final String codigo;
+  /// Restablecer con el token del enlace que llego al correo.
+  const PeticionRestablecer.conEnlace({
+    required this.token,
+    required this.contrasenaNueva,
+  }) : correo = null,
+       codigo = null;
+
+  /// Token del enlace de un solo uso, cuando se restablece por enlace.
+  final String? token;
+
+  final String? correo;
+  final String? codigo;
   final String contrasenaNueva;
 
   Map<String, Object?> toJson() => {
-    'correo': correo.trim(),
-    'codigo': codigo.trim(),
+    // La contrasena no se recorta: un espacio puede ser parte de ella.
+    if (token != null) 'token': token!.trim(),
+    if (correo != null) 'correo': correo!.trim(),
+    if (codigo != null) 'codigo': codigo!.trim(),
     'contrasenaNueva': contrasenaNueva,
   };
 }
