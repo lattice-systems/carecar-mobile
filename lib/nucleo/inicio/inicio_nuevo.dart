@@ -7,6 +7,7 @@ import '../diseno/componentes/avatar.dart';
 import '../diseno/componentes/barra_flotante.dart';
 import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
+import '../diseno/componentes/cuadro_fecha.dart';
 import '../diseno/componentes/esqueleto.dart';
 import '../diseno/componentes/tarjeta_auto.dart';
 import '../diseno/componentes/tarjeta_resumen.dart';
@@ -501,53 +502,8 @@ class _TarjetaCita extends StatelessWidget {
         titulo: textos.inicioProximaCita,
         subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
         detalle: cita.vehiculo,
-        visual: _BloqueFecha(
-          dia: cita.fecha.day.toString(),
-          mes: DateFormat.MMM(idioma).format(cita.fecha),
-        ),
+        visual: CuadroFecha(fecha: cita.fecha),
         alToque: alAbrirCitas,
-      ),
-    );
-  }
-}
-
-/// El día y el mes de la cita en un cuadro pleno del acento, del mismo estilo
-/// y ancho que el icono de las demás tarjetas de resumen.
-class _BloqueFecha extends StatelessWidget {
-  const _BloqueFecha({required this.dia, required this.mes});
-
-  final String dia;
-  final String mes;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: c.acento,
-        borderRadius: Radios.bordeControl,
-      ),
-      child: SizedBox(
-        width: 40,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: Espaciado.e1),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                dia,
-                style: t.titulo3.copyWith(
-                  color: c.sobreAcento,
-                  fontWeight: FontWeight.w700,
-                  height: 1.1,
-                ),
-              ),
-              Text(mes, style: t.micro.copyWith(color: c.sobreAcento)),
-            ],
-          ),
-        ),
       ),
     );
   }

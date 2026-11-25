@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../../../nucleo/diseno/componentes/cuadro_fecha.dart';
 import '../../../../nucleo/diseno/componentes/tono.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/radios.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
-import 'cuadro_fecha.dart';
 
 /// Una fila de [GrupoCitas].
 class FilaCita {
@@ -44,8 +44,6 @@ class GrupoCitas extends StatelessWidget {
   final List<FilaCita> filas;
   final String? encabezado;
 
-  static const double _anchoCuadro = 52;
-
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
@@ -59,7 +57,7 @@ class GrupoCitas extends StatelessWidget {
         hijos.add(
           Padding(
             padding: const EdgeInsetsDirectional.only(
-              start: Espaciado.e4 + _anchoCuadro + Espaciado.e3,
+              start: Espaciado.e4 + CuadroFecha.ancho + Espaciado.e3,
             ),
             child: Divider(height: 1, thickness: 1, color: c.borde),
           ),
