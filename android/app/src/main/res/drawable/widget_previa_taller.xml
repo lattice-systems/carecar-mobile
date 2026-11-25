@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vista previa del widget del taller en vivo: etapa y barra de avance. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="220dp"
+    android:height="110dp"
+    android:viewportWidth="220"
+    android:viewportHeight="110">
+    <path
+        android:fillColor="#FFE8EEFF"
+        android:pathData="M24,0h172a24,24 0 0 1 24,24v62a24,24 0 0 1 -24,24h-172a24,24 0 0 1 -24,-24v-62a24,24 0 0 1 24,-24z" />
+    <path
+        android:fillColor="#0B0D12"
+        android:pathData="M20,22h90a4,4 0 0 1 0,8h-90a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#5B6270"
+        android:pathData="M20,42h60a4,4 0 0 1 0,8h-60a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#1F0B0D12"
+        android:pathData="M20,70h180a4,4 0 0 1 0,8h-180a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#2457F5"
+        android:pathData="M20,70h110a4,4 0 0 1 0,8h-110a4,4 0 0 1 0,-8z" />
+</vector>

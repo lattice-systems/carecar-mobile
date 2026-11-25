@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="widget_proxima_cita_nombre">Next appointment</string>
-    <string name="widget_proxima_cita_descripcion">Your next workshop appointment, without opening the app.</string>
-    <string name="widget_proxima_cita_vacio">Open CareCar to see your appointment</string>
-</resources>

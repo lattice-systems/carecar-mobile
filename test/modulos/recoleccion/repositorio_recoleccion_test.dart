@@ -22,8 +22,8 @@ const _direccionJson = {
   'colonia': 'Juárez',
   'cp': '06600',
   'ciudad': 'Ciudad de México',
-  'lat': 19.4326,
-  'lng': -99.1332,
+  'lat': 21.125,
+  'lng': -101.686,
 };
 
 http.Response _problema(int status, [String? codigo]) => http.Response(
@@ -45,7 +45,7 @@ const _borrador = BorradorDireccion(
   colonia: 'Juárez',
   cp: '06600',
   ciudad: 'Ciudad de México',
-  ubicacion: Coordenada(19.4326, -99.1332),
+  ubicacion: Coordenada(21.1250, -101.6860),
 );
 
 ({RepositorioRecoleccionApi repo, List<http.Request> pedidas}) _api(
@@ -178,7 +178,7 @@ void main() {
       expect(api.pedidas.single.url.path, endsWith('/direcciones'));
       expect(lista.single.alias, 'Casa');
       expect(lista.single.cp, '06600');
-      expect(lista.single.ubicacion, const Coordenada(19.4326, -99.1332));
+      expect(lista.single.ubicacion, const Coordenada(21.1250, -101.6860));
     });
 
     test(
@@ -193,8 +193,8 @@ void main() {
         final req = api.pedidas.single;
         expect(req.method, 'POST');
         final cuerpo = jsonDecode(req.body) as Map<String, Object?>;
-        expect(cuerpo['lat'], 19.4326);
-        expect(cuerpo['lng'], -99.1332);
+        expect(cuerpo['lat'], 21.125);
+        expect(cuerpo['lng'], -101.686);
         expect(cuerpo['cp'], '06600');
         expect(cuerpo.containsKey('id'), isFalse);
         expect(d.id, 3);
@@ -320,7 +320,7 @@ void main() {
           colonia: 'Roma',
           cp: '06700',
           ciudad: 'CDMX',
-          ubicacion: Coordenada(19.42, -99.16),
+          ubicacion: Coordenada(21.13, -101.68),
         ),
       );
       expect(editada.alias, 'Oficina');

@@ -30,6 +30,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
 
     Widget estado(Widget hijo) => MarcoPantallaRecoleccion.estado(
       titulo: textos.recoleccionDireccionesTitulo,
+      conRegreso: true,
       estado: hijo,
     );
 
@@ -91,6 +92,7 @@ class _Lista extends ConsumerWidget {
 
     return MarcoPantallaRecoleccion(
       titulo: textos.recoleccionDireccionesTitulo,
+      conRegreso: true,
       alRefrescar: () async {
         ref.invalidate(direccionesProvider);
         await ref.read(direccionesProvider.future);

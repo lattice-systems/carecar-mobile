@@ -265,3 +265,9 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 - Garaje, «Datos rápidos»: título = modelo y año («Nissan Versa 2024»), subtítulo = placas · km («Sin placas» si no hay).
 - Detalle: usa `BarraPortada` (transparente arriba, opaca al desplazar) y el fondo difuminado de `CabeceraPortada` lleva más color.
 - `EncabezadoGrande(translucido)` sube su opacidad contraída a 92 %: en garaje, ficha técnica, mis citas, agendar, disponibilidad, reprogramar y comprobante ya no se lee contenido a través del título. Pruebas de widget desplazan cada pantalla y verifican que el título recibe el toque.
+
+## Ajustes visuales (rama `fix/v2-juan-pablo-ajustes-visuales`)
+
+- **Detalle del vehículo:** la portada ya no se mete bajo la barra. `CabeceraPortada` reserva la altura de la barra cuando el `Scaffold` usa `extendBodyBehindAppBar`, y al desplazar la barra se vuelve opaca, así nada atraviesa el título.
+- **«Tu auto»:** las acciones van en cuadrícula 2×2 de tarjetas iguales (una columna con letra grande).
+- **Regresar:** `BotonRegresar` (cierra con `pop` si se puede; si no, va al inicio; semántica «Regresar») en Mi garaje, y en las barras de portada del detalle, manual y ficha.

@@ -41,8 +41,8 @@ class MapaProvisional extends ConsumerStatefulWidget {
   /// formulario de direcciones.
   final String? descripcion;
 
-  /// Centro de la zona de cobertura de desarrollo: Ciudad de México.
-  static const _centroInicial = LatLng(19.4326, -99.1332);
+  /// Centro de la zona de cobertura, igual al del backend: León, Guanajuato.
+  static const _centroInicial = LatLng(21.1250, -101.6860);
 
   @override
   ConsumerState<MapaProvisional> createState() => _EstadoMapaProvisional();

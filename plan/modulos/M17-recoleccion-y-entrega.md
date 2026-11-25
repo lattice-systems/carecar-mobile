@@ -136,3 +136,9 @@ Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis 
 - Pruebas: `test/modulos/recoleccion/comparacion_checklist_test.dart` y `ruta_seguimiento_traslado_test.dart`.
 
 **3. Fin del rodeo del 422.** `ClienteApi` ya no convierte todo 422 en `SinParametrosDeValuacion`: lo entrega como `SolicitudRechazada` con su `Problema.codigo` (`FUERA_DE_COBERTURA`, `KM_INVALIDO`, …) y solo `SIN_PARAMETROS_DE_VALUACION` sigue siendo `SinParametrosDeValuacion` (ahora subclase de `SolicitudRechazada`; la calculadora de toma a cuenta no cambia). Los repositorios de recolección (guardar, editar, cotizar), citas (agendar), mantenimiento y bitácora atrapan `SolicitudRechazada` y traducen **solo su código**; un 422 con otro código pasa tal cual en vez de disfrazarse. Un 422 sin `codigo` queda `desconocido` y también pasa. Pruebas en `test/api/cliente_api_test.dart` y en los tests de repositorio de cada módulo.
+
+## Ajustes visuales y de cobertura (rama `fix/v2-juan-pablo-ajustes-visuales`)
+
+- **Regresar** en Mis direcciones (pantalla raíz) mediante `conRegreso` en `MarcoPantallaRecoleccion`; seguimiento y checklist lo traen por `BarraPortada`.
+- **Cobertura alineada con el backend:** centro de León (21.1250, -101.6860), radio 15 km, tarifa 80 + 8/km y ventanas 07:00–09:00 y 17:00–19:00. Se actualizaron `mock_api/server.js`, `RepositorioRecoleccionFake` (distancia real en vez de cuadro de medio grado) y el centro inicial del mapa. Antes el mock cubría 40 km de la CDMX y guardar una dirección fallaba contra el backend.
+- **422 `FUERA_DE_COBERTURA`:** el formulario muestra «Fuera de cobertura» y pide mover el pin; probado con Monterrey y con la CDMX.

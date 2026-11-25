@@ -1013,14 +1013,14 @@ servidor.get(`${BASE}/citas/:citaId/pase`, (req, res) => {
 // ── recoleccion ──
 // V2-M17.01 y V2-M17.02 · direcciones guardadas, cotizacion y traslados.
 // El backend real decide la cobertura con la geometria de la agencia; aqui es
-// un circulo de 40 km alrededor del centro de la Ciudad de Mexico, suficiente
-// para probar el 422 desde la app (un pin en Monterrey queda fuera).
+// un circulo de 15 km alrededor del centro de Leon, Guanajuato, suficiente
+// para probar el 422 desde la app (un pin en la Ciudad de Mexico queda fuera).
 db.defaults({ direcciones: [], traslados: [] }).write();
 
-const CENTRO_COBERTURA = { lat: 19.4326, lng: -99.1332 };
-const RADIO_COBERTURA_KM = 40;
+const CENTRO_COBERTURA = { lat: 21.125, lng: -101.686 };
+const RADIO_COBERTURA_KM = 15;
 const TARIFA_BASE = 80;
-const TARIFA_POR_KM = 12;
+const TARIFA_POR_KM = 8;
 const VENTANA_RECOGER = { inicio: '07:00', fin: '09:00' };
 const VENTANA_ENTREGAR = { inicio: '17:00', fin: '19:00' };
 

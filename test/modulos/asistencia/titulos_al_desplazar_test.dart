@@ -38,10 +38,12 @@ void main() {
       await tester.pumpAndSettle();
       Color barra() => tester
           .widget<Material>(
-            find.descendant(
-              of: find.byType(AppBar),
-              matching: find.byType(Material),
-            ),
+            find
+                .descendant(
+                  of: find.byType(AppBar),
+                  matching: find.byType(Material),
+                )
+                .first,
           )
           .color!;
       expect(barra().a, 0);

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ficha del widget de accesos rapidos: 4x2 por defecto, redimensionable de 2x2 a 4x4. -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_acc_descripcion"
+    android:initialLayout="@layout/widget_acc_m"
+    android:maxResizeHeight="400dp"
+    android:maxResizeWidth="400dp"
+    android:minHeight="110dp"
+    android:minResizeHeight="110dp"
+    android:minResizeWidth="110dp"
+    android:minWidth="250dp"
+    android:previewImage="@drawable/widget_previa_accesos"
+    android:previewLayout="@layout/widget_acc_m"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="2"
+    android:targetCellWidth="4"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

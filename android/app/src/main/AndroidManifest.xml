@@ -57,18 +57,63 @@
                 <data android:scheme="https" android:host="carecar.example.com" android:pathPrefix="/app" />
             </intent-filter>
         </activity>
-        <!-- Widget de pantalla de inicio con la proxima cita (V2-M25.01). Lo
-             pinta ProximaCitaWidgetProvider con datos que deja Flutter. -->
+        <!-- Widgets de pantalla de inicio (V2-M25). Cada uno se agrega por separado
+             desde el selector del lanzador; los pinta un proveedor que hereda de
+             WidgetCarecar con los datos que deja Flutter. -->
         <receiver
             android:name=".ProximaCitaWidgetProvider"
             android:exported="false"
-            android:label="@string/widget_proxima_cita_nombre">
+            android:label="@string/widget_cita_nombre">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_proxima_cita_info" />
+        </receiver>
+        <receiver
+            android:name=".TallerWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_taller_nombre">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_taller_info" />
+        </receiver>
+        <receiver
+            android:name=".MantenimientoWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_mant_nombre">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_mantenimiento_info" />
+        </receiver>
+        <receiver
+            android:name=".BitacoraWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_bit_nombre">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_bitacora_info" />
+        </receiver>
+        <receiver
+            android:name=".AccesosWidgetProvider"
+            android:exported="false"
+            android:label="@string/widget_acc_nombre">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_accesos_info" />
         </receiver>
         <!-- Receptores de flutter_local_notifications: disparan los avisos
              programados y los vuelven a programar tras reiniciar. -->
