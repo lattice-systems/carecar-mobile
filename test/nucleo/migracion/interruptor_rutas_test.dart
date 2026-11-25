@@ -93,27 +93,24 @@ void main() {
     });
   });
 
+  // Los destinos del inicio viven en la barra flotante (V2-T02.22).
   group('el menu v1 abre la version que dice el interruptor', () {
-    testWidgets('todo en v1: las tarjetas abren las pantallas v1', (
-      tester,
-    ) async {
+    testWidgets('todo en v1: la barra abre las pantallas v1', (tester) async {
       await _montar(tester, InterruptorModulos.porDefecto);
-      await tester.tap(find.text('Mis vehículos'));
+      await tester.tap(find.text('Vehículos'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsOneWidget);
     });
 
-    testWidgets('vehiculos en v2: la tarjeta lleva al garaje v2', (
-      tester,
-    ) async {
+    testWidgets('vehiculos en v2: la barra lleva al garaje v2', (tester) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'vehiculos'));
-      await tester.tap(find.text('Mis vehículos'));
+      await tester.tap(find.text('Vehículos'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsNothing);
       expect(find.byType(PantallaGaraje), findsOneWidget);
     });
 
-    testWidgets('citas en v2: la tarjeta lleva a mis citas v2', (tester) async {
+    testWidgets('citas en v2: la barra lleva a mis citas v2', (tester) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'citas'));
       await tester.tap(find.text('Citas').last);
       await tester.pumpAndSettle();
@@ -121,7 +118,7 @@ void main() {
       expect(find.byType(PantallaMisCitas), findsOneWidget);
     });
 
-    testWidgets('catalogo en v2: la tarjeta lleva al catalogo v2', (
+    testWidgets('catalogo en v2: la barra lleva al catalogo v2', (
       tester,
     ) async {
       await _montar(tester, InterruptorModulos.desdeValores(v2: 'catalogo'));

@@ -1,6 +1,7 @@
 import 'package:carecar_mobile/modulos/taller/datos/repositorio_taller_fake.dart';
 import 'package:carecar_mobile/modulos/taller/presentacion/pantalla_orden.dart';
 import 'package:carecar_mobile/modulos/taller/taller.dart';
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -57,6 +58,7 @@ void main() {
     );
 
     expect(find.textContaining('está en el taller'), findsNothing);
-    expect(find.text('Mis vehículos'), findsOneWidget);
+    // El resto del inicio sí se pinta.
+    expect(find.byType(InicioNuevo), findsOneWidget);
   });
 }
