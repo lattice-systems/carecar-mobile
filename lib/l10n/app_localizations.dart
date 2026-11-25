@@ -3646,11 +3646,53 @@ abstract class AppLocalizations {
   /// **'Hola, {nombre}'**
   String inicioSaludo(String nombre);
 
-  /// Encabezado de la lista de accesos del inicio.
+  /// Rótulo de la tarjeta de la próxima cita en el inicio.
   ///
   /// In es, this message translates to:
-  /// **'Accesos'**
-  String get inicioAccesos;
+  /// **'Próxima cita'**
+  String get inicioProximaCita;
+
+  /// Título de la tarjeta de citas cuando no hay ninguna.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas por venir'**
+  String get inicioSinCitas;
+
+  /// Detalle de la tarjeta de citas vacía; al tocarla se abre la agenda.
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda la próxima revisión de tu auto'**
+  String get inicioSinCitasDetalle;
+
+  /// Título de la tarjeta de autos cuando el cliente no tiene ninguno.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes autos registrados'**
+  String get inicioSinAutos;
+
+  /// Detalle de la tarjeta de autos vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia registre tu auto, lo verás aquí'**
+  String get inicioSinAutosDetalle;
+
+  /// Kilometraje del auto en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String inicioKilometros(String km);
+
+  /// Posición del auto en el carrusel del inicio, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto {n} de {total}'**
+  String inicioAutoDeTotal(int n, int total);
+
+  /// Día de la semana y hora de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'{dia}, {hora}'**
+  String inicioCitaCuando(String dia, String hora);
 
   /// Botón flotante del inicio: la acción principal.
   ///

@@ -2169,7 +2169,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get inicioAccesos => 'Shortcuts';
+  String get inicioProximaCita => 'Next appointment';
+
+  @override
+  String get inicioSinCitas => 'No upcoming appointments';
+
+  @override
+  String get inicioSinCitasDetalle => 'Book your car\'s next service';
+
+  @override
+  String get inicioSinAutos => 'No cars registered yet';
+
+  @override
+  String get inicioSinAutosDetalle =>
+      'Once the dealership registers your car, you\'ll see it here';
+
+  @override
+  String inicioKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String inicioAutoDeTotal(int n, int total) {
+    return 'Car $n of $total';
+  }
+
+  @override
+  String inicioCitaCuando(String dia, String hora) {
+    return '$dia, $hora';
+  }
 
   @override
   String get inicioAgendarCita => 'Book appointment';

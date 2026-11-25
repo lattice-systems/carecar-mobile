@@ -5,11 +5,22 @@ import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+const _march = AutoInicio(
+  modelo: 'March',
+  anio: 2020,
+  marca: 'Nissan',
+  placas: 'XYZ-123',
+  kilometraje: 24300,
+);
+
 Future<List<String>> _montar(
   WidgetTester tester, {
   Brightness brillo = Brightness.light,
   double letra = 1,
   String? nombre = 'Maria Elena Robles',
+  List<AutoInicio>? autos = const [_march],
+  CitaInicio? cita,
+  bool esperar = true,
 }) async {
   final toques = <String>[];
   tester.platformDispatcher.platformBrightnessTestValue = brillo;
@@ -25,6 +36,8 @@ Future<List<String>> _montar(
       locale: const Locale('es'),
       home: InicioNuevo(
         nombre: nombre,
+        autos: autos,
+        proximaCita: cita,
         alAbrirAjustes: () => toques.add('ajustes'),
         alAgendar: () => toques.add('agendar'),
         accesos: [
@@ -51,8 +64,16 @@ Future<List<String>> _montar(
       ),
     ),
   );
-  await tester.pumpAndSettle();
+  // Con el esqueleto de carga la animación no termina nunca.
+  await (esperar ? tester.pumpAndSettle() : tester.pump());
   return toques;
+}
+
+/// Desliza la lista para sacar el contenido de detrás del botón y la barra
+/// flotantes (en pruebas la letra es más ancha que la real).
+Future<void> _subir(WidgetTester tester) async {
+  await tester.drag(find.byType(ListView), const Offset(0, -260));
+  await tester.pumpAndSettle();
 }
 
 void main() {
@@ -63,8 +84,8 @@ void main() {
       await _montar(tester);
 
       expect(find.text('Hola, Maria'), findsOneWidget);
-      expect(find.text('Tus autos, fichas y manuales'), findsOneWidget);
-      expect(find.text('Agenda y revisa tus citas'), findsOneWidget);
+      expect(find.text('Mis vehículos'), findsOneWidget);
+      expect(find.text('Catálogo'), findsWidgets);
       expect(find.byKey(const Key('orden')), findsOneWidget);
     });
 
@@ -120,10 +141,84 @@ void main() {
     testWidgets('los accesos de la lista abren su destino', (tester) async {
       final toques = await _montar(tester);
 
-      await tester.tap(find.text('Tus autos, fichas y manuales'));
-      await tester.tap(find.text('Conoce los modelos Nissan'));
+      await _subir(tester);
+      await tester.tap(find.text('Mis vehículos'));
+      await tester.tap(find.text('Catálogo').first);
 
       expect(toques, ['vehiculos', 'catalogo']);
+    });
+
+    testWidgets('el auto del cliente es el protagonista y abre sus vehículos', (
+      tester,
+    ) async {
+      final toques = await _montar(tester);
+
+      expect(find.text('March 2020'), findsOneWidget);
+      expect(find.text('Nissan'), findsOneWidget);
+      expect(find.text('XYZ-123'), findsOneWidget);
+      expect(find.text('24.300 km'), findsOneWidget);
+
+      await tester.tap(find.text('March 2020'));
+      expect(toques, ['vehiculos']);
+    });
+
+    testWidgets('con varios autos se desliza y avisa la posición', (
+      tester,
+    ) async {
+      await _montar(
+        tester,
+        autos: const [
+          _march,
+          AutoInicio(modelo: 'Versa', anio: 2022),
+        ],
+      );
+
+      expect(find.bySemanticsLabel(RegExp('Auto 1 de 2')), findsOneWidget);
+      await tester.drag(find.text('March 2020'), const Offset(-300, 0));
+      await tester.pumpAndSettle();
+      expect(find.text('Versa 2022'), findsOneWidget);
+    });
+
+    testWidgets('mientras cargan los autos no muestra vacío ni cita', (
+      tester,
+    ) async {
+      await _montar(tester, autos: null, esperar: false);
+
+      expect(find.text('Aún no tienes autos registrados'), findsNothing);
+      expect(find.text('No tienes citas por venir'), findsNothing);
+    });
+
+    testWidgets(
+      'sin autos invita a esperar el registro; sin citas, a agendar',
+      (tester) async {
+        final toques = await _montar(tester, autos: const []);
+
+        expect(find.text('Aún no tienes autos registrados'), findsOneWidget);
+        expect(find.text('No tienes citas por venir'), findsOneWidget);
+        await _subir(tester);
+        await tester.tap(find.text('Agenda la próxima revisión de tu auto'));
+        expect(toques, ['agendar']);
+      },
+    );
+
+    testWidgets('la próxima cita muestra día, hora y auto y abre Citas', (
+      tester,
+    ) async {
+      final toques = await _montar(
+        tester,
+        cita: CitaInicio(
+          fecha: DateTime(2026, 11, 28),
+          hora: '10:00',
+          vehiculo: 'March 2020',
+        ),
+      );
+
+      expect(find.text('Próxima cita'), findsOneWidget);
+      expect(find.text('Sábado, 10:00'), findsOneWidget);
+      expect(find.text('28'), findsOneWidget);
+      await _subir(tester);
+      await tester.tap(find.text('Sábado, 10:00'));
+      expect(toques, ['citas']);
     });
 
     testWidgets('el botón flotante agenda y el avatar abre ajustes', (
