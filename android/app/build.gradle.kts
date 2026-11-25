@@ -100,6 +100,11 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+            // Reglas propias de R8 (ML Kit): ver proguard-rules.pro.
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }

@@ -37,3 +37,7 @@ Abre en el teléfono Android la página de Releases del repositorio, entra a **C
 ## Firmar en local
 
 Copia `android/key.properties.example` a `android/key.properties` y apunta `storeFile` a tu `.jks` fuera del repo. Sin ese archivo, `flutter run --release` firma con la llave de debug.
+
+## R8 y los plugins con clases opcionales
+
+Los builds de release (APK de prueba y Release) pasan por R8. Si un plugin nombra clases que la app no incluye, R8 aborta con `Missing classes` y el APK no se genera; los builds de CI de PR son de depuración y no lo detectan. Las reglas propias viven en `android/app/proguard-rules.pro` (hoy, los reconocedores de chino, devanagari, japonés y coreano de ML Kit, que la bitácora no usa). Al agregar un plugin con código nativo, compila una vez `flutter build apk --release --flavor pruebas -t lib/main_pruebas.dart`; R8 deja las reglas que faltan en `build/app/outputs/mapping/pruebasRelease/missing_rules.txt`.
