@@ -50,4 +50,8 @@ class RepositorioAsistenciaApi implements RepositorioAsistencia {
     SolicitudAsistencia.desdeJson,
     consulta: const {'activa': 'true'},
   );
+
+  @override
+  Future<SolicitudAsistencia> obtener(int id) =>
+      _cliente.obtener('/asistencia/$id', SolicitudAsistencia.desdeJson);
 }

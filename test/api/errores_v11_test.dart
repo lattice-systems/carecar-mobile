@@ -100,6 +100,10 @@ void main() {
         'DIRECCION_EN_USO',
         'ORDEN_CERRADA',
         'ADICIONAL_YA_RESPONDIDO',
+        'KM_INVALIDO',
+        'TRANSICION_INVALIDA',
+        'ESTRENO_SIN_PRECIO',
+        'ESTRENO_DUPLICADA',
       };
 
       final queLaAppMapea = CodigoProblema.values

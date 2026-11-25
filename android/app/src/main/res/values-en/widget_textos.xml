@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- English version of the home screen widget texts. -->
+    <string name="widget_cita_nombre">Next appointment</string>
+    <string name="widget_cita_descripcion">Your next workshop appointment at a glance.</string>
+    <string name="widget_taller_nombre">Live workshop</string>
+    <string name="widget_taller_descripcion">Your car\'s stage and estimated pickup time.</string>
+    <string name="widget_mant_nombre">Maintenance</string>
+    <string name="widget_mant_descripcion">Your next service, the km left and its date.</string>
+    <string name="widget_bit_nombre">Logbook</string>
+    <string name="widget_bit_descripcion">Fuel economy in km/l and this month\'s spending.</string>
+    <string name="widget_acc_nombre">Quick actions</string>
+    <string name="widget_acc_descripcion">Book, My car, SOS and Receipt in one tap.</string>
+    <string name="widget_vacio_cita">Open CareCar to see your appointment</string>
+    <string name="widget_vacio_taller">Open CareCar to see your car at the workshop</string>
+    <string name="widget_vacio_mant">Open CareCar to see your maintenance</string>
+    <string name="widget_vacio_bit">Open CareCar to see your logbook</string>
+    <string name="widget_accion_abrir">Open</string>
+    <string name="widget_acc_agendar">Book</string>
+    <string name="widget_acc_mi_auto">My car</string>
+    <string name="widget_acc_sos">SOS</string>
+    <string name="widget_acc_comprobante">Receipt</string>
+    <string name="widget_demo_dia">24</string>
+    <string name="widget_demo_mes">nov</string>
+    <string name="widget_demo_semana">tue</string>
+    <string name="widget_demo_horario">09:00 to 10:00</string>
+    <string name="widget_demo_auto">Aveo 2021</string>
+    <string name="widget_demo_etapa">In repair</string>
+    <string name="widget_demo_paso">Step 4 of 7</string>
+    <string name="widget_demo_entrega">Estimated pickup: 18:00</string>
+    <string name="widget_demo_servicio">20,000 km service</string>
+    <string name="widget_demo_faltan">2,500 km to go</string>
+    <string name="widget_demo_fecha">Around Jan 15</string>
+    <string name="widget_demo_rend">12.4</string>
+    <string name="widget_demo_unidad">km/l</string>
+    <string name="widget_demo_gasto">$1,450</string>
+    <string name="widget_demo_etq_gasto">November spending</string>
+    <string name="widget_demo_etq_rend">Fuel economy</string>
+</resources>

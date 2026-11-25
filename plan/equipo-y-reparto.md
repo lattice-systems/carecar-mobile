@@ -10,7 +10,7 @@
 | Haziel Orlando Gutierrez Hernandez | Product Owner | `UncrownedRex` | T03 Calidad y aceptación · M09 Documentos · M13 Promociones · M15 Encuestas · M23 Analítica · M27 Ayuda | 33 |
 | Cristian Veuliah Mares Cerda | Desarrollo | `CristianMares` | T02 Sistema de diseño · M03 Catálogo y calculadora · M14 Tienda · M20 Accesibilidad · M26 Valuación | 39 |
 | Ricardo Garnica Mejia | Desarrollo | `RichiGM` | T05 Contrato API y backend · M02 historial y tickets · M04 Taller en vivo · M08 Pagos · M10 Garantía · M12 Lealtad | 36 |
-| Juan Pablo Rea Cano | Desarrollo | `PabloDev24` | M02 garaje, manuales y citas · M05 Mantenimiento · M11 SOS · M17 Recolección · M18 Bitácora · M25 Widgets y Wallet | 35 |
+| Juan Pablo Rea Cano | Desarrollo | `PabloDev24` | M02 garaje, manuales y citas · M05 Mantenimiento · M11 SOS · M17 Recolección · M18 Bitácora · M25 Widgets y Wallet | 39 |
 | Jael Neftali Vargas Grijalva | Desarrollo | `Jael-Vargas` | T01 núcleo de datos · M01 Acceso y perfil · M06 Notificaciones · M07 Mensajería · M19 Familia · M21 Sin conexión | 34 |
 
 El conteo sale de [`tablero.md`](tablero.md); si cambia el reparto, se actualizan las dos tablas en el mismo PR.

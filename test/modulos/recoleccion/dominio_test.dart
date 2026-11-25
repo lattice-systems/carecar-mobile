@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/cotizacion_recoleccion.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/direccion_guardada.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/recoleccion_agendada.dart';
@@ -131,6 +132,64 @@ void main() {
       );
       expect(r.recoger!.ventanaInicio, '07:00');
       expect(r.entregar!.ventanaFin, '19:00');
+    });
+  });
+
+  group('TrasladoAgendado.tieneChecklist', () {
+    TrasladoAgendado traslado(TipoTraslado tipo, EstadoTraslado estado) =>
+        TrasladoAgendado(
+          id: 1,
+          tipo: tipo,
+          costo: 150,
+          fecha: DateTime(2026, 12, 1),
+          ventanaInicio: '07:00',
+          ventanaFin: '09:00',
+          estado: estado,
+        );
+
+    test('nace programado y sin checklist', () {
+      final t = TrasladoAgendado(
+        id: 1,
+        tipo: TipoTraslado.recoger,
+        costo: 150,
+        fecha: DateTime(2026, 12, 1),
+        ventanaInicio: '07:00',
+        ventanaFin: '09:00',
+      );
+      expect(t.estado, EstadoTraslado.programado);
+      expect(t.tieneChecklist, isFalse);
+    });
+
+    test('el de recoger lo tiene desde que recogen el auto', () {
+      expect(
+        traslado(TipoTraslado.recoger, EstadoTraslado.enCamino).tieneChecklist,
+        isFalse,
+      );
+      for (final e in [
+        EstadoTraslado.recogido,
+        EstadoTraslado.enTaller,
+        EstadoTraslado.deRegreso,
+        EstadoTraslado.entregado,
+      ]) {
+        expect(traslado(TipoTraslado.recoger, e).tieneChecklist, isTrue);
+      }
+    });
+
+    test('el de entregar lo tiene hasta que devuelven el auto', () {
+      expect(
+        traslado(
+          TipoTraslado.entregar,
+          EstadoTraslado.deRegreso,
+        ).tieneChecklist,
+        isFalse,
+      );
+      expect(
+        traslado(
+          TipoTraslado.entregar,
+          EstadoTraslado.entregado,
+        ).tieneChecklist,
+        isTrue,
+      );
     });
   });
 }

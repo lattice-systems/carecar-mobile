@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vista previa del widget de la proxima cita: dia grande, horario y auto. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="220dp"
+    android:height="110dp"
+    android:viewportWidth="220"
+    android:viewportHeight="110">
+    <path
+        android:fillColor="#FFE8EEFF"
+        android:pathData="M24,0h172a24,24 0 0 1 24,24v62a24,24 0 0 1 -24,24h-172a24,24 0 0 1 -24,-24v-62a24,24 0 0 1 24,-24z" />
+    <path
+        android:fillColor="#2457F5"
+        android:pathData="M20,22h40a4,4 0 0 1 0,8h-40a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#0B0D12"
+        android:pathData="M20,40h52a4,4 0 0 1 0,8h-52a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#0B0D12"
+        android:pathData="M20,66h100a4,4 0 0 1 0,8h-100a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#5B6270"
+        android:pathData="M20,82h70a4,4 0 0 1 0,8h-70a4,4 0 0 1 0,-8z" />
+</vector>

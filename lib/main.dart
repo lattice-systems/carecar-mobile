@@ -233,7 +233,7 @@ class _AppCareCarState extends State<AppCareCar> {
             // tapar tambien la cortina y los dialogos en el selector de apps.
             builder: (context, child) => CubiertaEnSegundoPlano(
               child: InstaladorDeAccesosRapidos(
-                child: SincronizadorDelWidgetDeCita(
+                child: SincronizadorDeWidgets(
                   child: ShadAppBuilder(
                     child: AvisoEquipoComprometido(
                       child: CortinaArranque(

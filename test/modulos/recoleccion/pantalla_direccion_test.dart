@@ -18,7 +18,7 @@ const _casa = DireccionGuardada(
   colonia: 'Juárez',
   cp: '06600',
   ciudad: 'CDMX',
-  ubicacion: Coordenada(19.4326, -99.1332),
+  ubicacion: Coordenada(21.1250, -101.6860),
 );
 
 const _direccionDelPin = Direccion(
@@ -174,14 +174,39 @@ void main() {
     await _guardar(tester);
 
     expect(find.text('Fuera de cobertura'), findsOneWidget);
+    expect(find.textContaining('Todavía no recogemos autos'), findsOneWidget);
     expect(await repo.direcciones(), isEmpty);
     expect(find.byType(PantallaDireccion), findsOneWidget);
+  });
+
+  _prueba('un pin en la Ciudad de México queda fuera de los 15 km de León', (
+    tester,
+  ) async {
+    final repo = RepositorioRecoleccionFake();
+    await tester.pumpWidget(
+      _app(
+        repo,
+        ubicacion: UbicacionFalsa(
+          posicion: const Coordenada(19.4326, -99.1332),
+        ),
+      ),
+    );
+    await _abrir(tester);
+    await _llenar(tester);
+    await tester.tap(find.text('Usar mi ubicación'));
+    await tester.pumpAndSettle();
+
+    await _guardar(tester);
+
+    expect(find.text('Fuera de cobertura'), findsOneWidget);
+    expect(find.textContaining('Todavía no recogemos autos'), findsOneWidget);
+    expect(await repo.direcciones(), isEmpty);
   });
 
   _prueba('Usar mi ubicación pone el pin y completa los campos vacíos', (
     tester,
   ) async {
-    const punto = Coordenada(19.4326, -99.1332);
+    const punto = Coordenada(21.1250, -101.6860);
     await tester.pumpWidget(
       _app(
         RepositorioRecoleccionFake(),
@@ -241,7 +266,7 @@ void main() {
   });
 
   _prueba('buscar una dirección pone el pin y autocompleta', (tester) async {
-    const punto = Coordenada(19.4326, -99.1332);
+    const punto = Coordenada(21.1250, -101.6860);
     await tester.pumpWidget(
       _app(
         RepositorioRecoleccionFake(),

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vista previa del widget de accesos rapidos: cuatro botones. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="220dp"
+    android:height="110dp"
+    android:viewportWidth="220"
+    android:viewportHeight="110">
+    <path
+        android:fillColor="#FFE8EEFF"
+        android:pathData="M24,0h172a24,24 0 0 1 24,24v62a24,24 0 0 1 -24,24h-172a24,24 0 0 1 -24,-24v-62a24,24 0 0 1 24,-24z" />
+    <path
+        android:fillColor="#2457F5"
+        android:pathData="M20,40h36a4,4 0 0 1 0,8h-36a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#2457F5"
+        android:pathData="M64,40h36a4,4 0 0 1 0,8h-36a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#C6291D"
+        android:pathData="M108,40h36a4,4 0 0 1 0,8h-36a4,4 0 0 1 0,-8z" />
+    <path
+        android:fillColor="#2457F5"
+        android:pathData="M152,40h36a4,4 0 0 1 0,8h-36a4,4 0 0 1 0,-8z" />
+</vector>

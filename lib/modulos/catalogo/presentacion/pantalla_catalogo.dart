@@ -14,6 +14,7 @@ import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../dominio/comparativa.dart';
 import '../dominio/modelo_vigente.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
 
@@ -64,12 +65,12 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
         title: Text(textos.catalogoTitulo),
         actions: [
           if (comparables >= minimoComparables)
-            IconButton(
-              tooltip: _comparando
+            BotonCircular(
+              etiqueta: _comparando
                   ? textos.catalogoSalirDeComparar
                   : textos.catalogoComparar,
-              icon: Icon(_comparando ? Icons.close : Icons.compare_arrows),
-              onPressed: _alternarModo,
+              icono: _comparando ? Icons.close : Icons.compare_arrows,
+              alPresionar: _alternarModo,
             ),
         ],
       ),

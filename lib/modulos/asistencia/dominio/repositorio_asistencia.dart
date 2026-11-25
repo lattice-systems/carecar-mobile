@@ -29,4 +29,10 @@ abstract interface class RepositorioAsistencia {
 
   /// La solicitud abierta del cliente, o `null` si no tiene ninguna.
   Future<SolicitudAsistencia?> activa();
+
+  /// La solicitud `id` con su estado actual (`GET /asistencia/{id}`).
+  ///
+  /// Una solicitud ajena o inexistente lanza `NoEncontrado`: el servidor no
+  /// distingue los dos casos. Sirve para refrescar el seguimiento (V2-M11.04).
+  Future<SolicitudAsistencia> obtener(int id);
 }

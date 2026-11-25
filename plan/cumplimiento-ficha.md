@@ -57,8 +57,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | ⬜ | Ver M05 |
-| Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | ⬜ | Ver M05 |
+| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); falta el recordatorio (V2-M05.05) y demostrar en celular | Ver M05 |
+| Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | 🟡 app y backend, con foto opcional; falta demostrar en celular | Ver M05 |
 
 ### 6. Notificaciones — plan [M06](modulos/M06-notificaciones.md)
 
@@ -100,7 +100,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías sin conexión y solicitud con ubicación (`solicitud_asistencia`) en app y backend; falta seguir el estado (V2-M11.04) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
@@ -133,19 +133,19 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Prueba de manejo y cotización de auto nuevo | `solicitud_estreno`, `prospecto`, `modelo_catalogo`, `estimacion_toma_cuenta` | ⬜ | Ver M16 |
+| Prueba de manejo y cotización de auto nuevo | `solicitud_estreno`, `prospecto`, `modelo_catalogo`, `estimacion_toma_cuenta` | 🟡 backend con `solicitud_estreno` y prospecto de origen `APP` (`EstrenoIntegrationTest`, backend#93); app con las tres pantallas, el repositorio y el contrato 2.12.1 probados (`test/modulos/estreno/`, `test/api/estreno_*_test.dart`, `test/contrato/contrato_estreno_test.dart`); falta demostrarla en celular | V2-M16.01, V2-M16.02, V2-M16.03, V2-M16.04 |
 
 ### 17. Recolección y entrega a domicilio — plan [M17](modulos/M17-recoleccion-y-entrega.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones y recolección al agendar en app y backend (`direccion_cliente`, `traslado`); faltan seguir al chofer (V2-M17.03), `checklist_traslado` (V2-M17.04) y el componente Mapa (hoy provisional) | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; faltan el componente Mapa (hoy provisional), el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | ⬜ | V2-M18.01, V2-M18.02, V2-M18.03, V2-M18.04, V2-M18.05, V2-M05.03 |
+| Registro de gastos y rendimiento | `gasto_vehiculo`, `lectura_km`, `vehiculo_cliente` | 🟡 app y backend: cargas desde la foto del ticket, otros gastos, rendimiento y exportación; falta demostrar en celular | V2-M18.01, V2-M18.02, V2-M18.03, V2-M18.04, V2-M18.05, V2-M05.03 |
 
 ### 19. Cuentas familiares — plan [M19](modulos/M19-cuentas-familiares.md)
 

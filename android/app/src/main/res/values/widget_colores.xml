@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores de los widgets de inicio (V2-M25). Texto, acento y estados con los
+         mismos valores que los tokens de Pista (claro) de
+         lib/nucleo/diseno/tokens/colores.dart; el fondo es un degradado sutil
+         de la marca (blanco a azul muy claro). -->
+    <color name="widget_fondo_inicio">#FFFFFFFF</color>
+    <color name="widget_fondo_fin">#FFE8EEFF</color>
+    <color name="widget_texto">#FF0B0D12</color>
+    <color name="widget_texto_secundario">#FF5B6270</color>
+    <color name="widget_acento">#FF2457F5</color>
+    <color name="widget_sobre_acento">#FFFFFFFF</color>
+    <color name="widget_peligro">#FFC6291D</color>
+    <!-- Superficies translucidas sobre el degradado (tarjetas, botones, pista). -->
+    <color name="widget_chip">#0F2457F5</color>
+    <color name="widget_pista">#1F0B0D12</color>
+</resources>

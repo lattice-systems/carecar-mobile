@@ -4,6 +4,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../../nucleo/diseno/componentes/boton_circular.dart';
 
 /// Marco de las pantallas de direcciones: título grande translúcido que se
 /// contrae, contenido que se desplaza y, si hace falta, una barra fija al pie.
@@ -17,6 +18,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
     required this.slivers,
     super.key,
     this.acciones,
+    this.conRegreso = false,
     this.barraInferior,
     this.alRefrescar,
   });
@@ -27,6 +29,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
     required Widget estado,
     super.key,
     this.acciones,
+    this.conRegreso = false,
   }) : slivers = [SliverFillRemaining(child: estado)],
        barraInferior = null,
        alRefrescar = null;
@@ -36,6 +39,9 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
 
   /// Botones al final del encabezado; por defecto, «Cerrar».
   final List<Widget>? acciones;
+
+  /// Pone «Regresar» antes del título; para las pantallas raíz del módulo.
+  final bool conRegreso;
   final Widget? barraInferior;
 
   /// Jalar para recargar; nulo lo desactiva.
@@ -51,6 +57,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
         EncabezadoGrande(
           titulo: titulo,
           translucido: true,
+          conRegreso: conRegreso,
           acciones: acciones ?? [BotonCerrarRecoleccion()],
         ),
         ...slivers,
@@ -92,15 +99,10 @@ class BotonCerrarRecoleccion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    return IconButton(
-      tooltip: AppLocalizations.of(context).recoleccionCerrar,
-      constraints: const BoxConstraints(
-        minWidth: Espaciado.objetivoTactilMinimo,
-        minHeight: Espaciado.objetivoTactilMinimo,
-      ),
-      icon: Icon(Icons.close_rounded, color: c.texto),
-      onPressed: () => Navigator.of(context).maybePop(),
+    return BotonCircular(
+      etiqueta: AppLocalizations.of(context).recoleccionCerrar,
+      icono: Icons.close_rounded,
+      alPresionar: () => Navigator.of(context).maybePop(),
     );
   }
 }

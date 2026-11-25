@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ficha del widget de la bitacora: 2x2 por defecto, redimensionable a 4x2 y 4x4. -->
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/widget_bit_descripcion"
+    android:initialLayout="@layout/widget_bit_s"
+    android:maxResizeHeight="400dp"
+    android:maxResizeWidth="400dp"
+    android:minHeight="110dp"
+    android:minResizeHeight="110dp"
+    android:minResizeWidth="110dp"
+    android:minWidth="110dp"
+    android:previewImage="@drawable/widget_previa_bitacora"
+    android:previewLayout="@layout/widget_bit_m"
+    android:resizeMode="horizontal|vertical"
+    android:targetCellHeight="2"
+    android:targetCellWidth="2"
+    android:updatePeriodMillis="0"
+    android:widgetCategory="home_screen" />

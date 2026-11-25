@@ -439,7 +439,9 @@ class ClienteApi {
       403 => CuentaDesactivada(mensaje, problema: problema),
       404 => NoEncontrado(mensaje, problema: problema),
       409 => Conflicto(mensaje, problema: problema),
-      422 => SinParametrosDeValuacion(mensaje, problema: problema),
+      422 when problema?.codigo == CodigoProblema.sinParametrosDeValuacion =>
+        SinParametrosDeValuacion(mensaje, problema: problema),
+      422 => SolicitudRechazada(mensaje, problema: problema),
       _ => ErrorDelServidor(mensaje, problema: problema, status: status),
     };
   }

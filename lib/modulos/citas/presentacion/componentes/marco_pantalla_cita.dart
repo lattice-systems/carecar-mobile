@@ -4,6 +4,7 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../../nucleo/diseno/componentes/boton_circular.dart';
 
 /// Marco de las pantallas de citas: título grande translúcido que se contrae,
 /// contenido que se desplaza y, si hace falta, una barra fija al pie.
@@ -17,6 +18,7 @@ class MarcoPantallaCita extends StatelessWidget {
     super.key,
     this.subtitulo,
     this.acciones,
+    this.conRegreso = false,
     this.barraInferior,
     this.alRefrescar,
   });
@@ -28,6 +30,7 @@ class MarcoPantallaCita extends StatelessWidget {
     super.key,
     this.subtitulo,
     this.acciones,
+    this.conRegreso = false,
   }) : // El estado se centra y se desplaza solo (CentradoDesplazable), así
        // que ocupa el resto con alto fijo en vez de medirse con intrínsecos.
        slivers = [SliverFillRemaining(child: estado)],
@@ -40,6 +43,9 @@ class MarcoPantallaCita extends StatelessWidget {
 
   /// Botones al final del encabezado; por defecto, «Cerrar».
   final List<Widget>? acciones;
+
+  /// Pone «Regresar» antes del título; para las pantallas raíz del módulo.
+  final bool conRegreso;
   final Widget? barraInferior;
 
   /// Jalar para recargar; nulo lo desactiva.
@@ -56,6 +62,7 @@ class MarcoPantallaCita extends StatelessWidget {
           titulo: titulo,
           subtitulo: subtitulo,
           translucido: true,
+          conRegreso: conRegreso,
           acciones: acciones ?? [BotonCerrarCita()],
         ),
         ...slivers,
@@ -97,15 +104,10 @@ class BotonCerrarCita extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    return IconButton(
-      tooltip: AppLocalizations.of(context).citasCerrar,
-      constraints: const BoxConstraints(
-        minWidth: Espaciado.objetivoTactilMinimo,
-        minHeight: Espaciado.objetivoTactilMinimo,
-      ),
-      icon: Icon(Icons.close_rounded, color: c.texto),
-      onPressed: () => Navigator.of(context).maybePop(),
+    return BotonCircular(
+      etiqueta: AppLocalizations.of(context).citasCerrar,
+      icono: Icons.close_rounded,
+      alPresionar: () => Navigator.of(context).maybePop(),
     );
   }
 }

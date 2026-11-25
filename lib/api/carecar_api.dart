@@ -205,4 +205,24 @@ abstract interface class CarecarApi {
     int pagina = 0,
     int tamano = 20,
   });
+
+  // --- Estreno · V2-M16 ---
+
+  /// `POST /estreno/cotizaciones/calculo`: mensualidad estimada, no guarda.
+  /// 409 `ESTRENO_SIN_PRECIO`; 400 enganche o plazo no permitidos.
+  Future<CotizacionEstreno> calcularMensualidad({
+    required int modeloCatalogoId,
+    required double enganche,
+    required int plazoMeses,
+  });
+
+  /// `POST /estreno/solicitudes`: prueba de manejo o cotizacion.
+  /// 409 `ESTRENO_DUPLICADA` o `ESTRENO_SIN_PRECIO`; 404 estimacion ajena.
+  Future<SolicitudEstreno> crearSolicitudEstreno(NuevaSolicitudEstreno nueva);
+
+  /// `GET /estreno/solicitudes`, mas recientes primero.
+  Future<Pagina<SolicitudEstreno>> paginaDeSolicitudesEstreno({
+    int pagina = 0,
+    int tamano = 20,
+  });
 }
