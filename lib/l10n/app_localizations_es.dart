@@ -1555,6 +1555,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get citasAccionesCita => 'Opciones de tu cita';
 
   @override
+  String get regresar => 'Regresar';
+
+  @override
   String get citasCerrar => 'Cerrar';
 
   @override
