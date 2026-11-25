@@ -2712,5 +2712,27 @@
   "asistenciaLlamarAtajo": "Call the dealership or 911",
   "@asistenciaLlamarAtajo": {
     "description": "Atajo a las llamadas rápidas desde otras pantallas."
+  },
+  "citasCalendarioAgregar": "Add to calendar",
+  "@citasCalendarioAgregar": {
+    "description": "Botón del comprobante que guarda la cita en el calendario del teléfono."
+  },
+  "citasCalendarioTitulo": "Dealership appointment",
+  "@citasCalendarioTitulo": {
+    "description": "Título del evento de calendario."
+  },
+  "citasCalendarioDescripcion": "Vehicle: {vehiculo}",
+  "@citasCalendarioDescripcion": {
+    "description": "Descripción del evento de calendario.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String",
+        "example": "Nissan Versa 2024"
+      }
+    }
+  },
+  "citasCalendarioError": "We couldn't open your calendar. Try again.",
+  "@citasCalendarioError": {
+    "description": "Error al entregar el evento."
   }
 }
