@@ -9,25 +9,41 @@ import '../api/excepciones.dart';
 import '../api/modelos/comun.dart';
 import '../api/modelos/modelos.dart';
 import '../nucleo/seguridad/politica_datos_locales.dart';
+import 'cifrador_de_cache.dart';
 
 /// Decorador de [CarecarApi] que guarda la ultima respuesta buena de las
 /// lecturas y la devuelve cuando no hay conexion.
 ///
 /// Los demas metodos delegan sin cambio. La cache se limpia al cerrar sesion
 /// y al iniciar una nueva, para que otro usuario nunca vea datos ajenos.
+///
+/// V2-M22.13: las copias se guardan **cifradas** (AES-GCM, ver
+/// [CifradorDeCache]) y atadas a su clave, porque llevan correo, VIN y placas.
+/// Si no se puede cifrar, no se guarda copia: nunca se guarda en claro.
 class CarecarApiConCache implements CarecarApi {
   /// Con [politica] (V2-M22.05), en un equipo con root o jailbreak no se
   /// guarda ni se lee ninguna copia, y las que hubiera se borran.
-  CarecarApiConCache(this._api, this._prefs, {PoliticaDatosLocales? politica})
-    : _politica = politica {
+  CarecarApiConCache(
+    this._api,
+    this._prefs,
+    this._cifrador, {
+    PoliticaDatosLocales? politica,
+  }) : _politica = politica {
     politica?.addListener(_purgarSiNoSePermite);
     _purgarSiNoSePermite();
+    unawaited(_borrarCopiasSinCifrar());
   }
 
-  static const _prefijo = 'cache_carecar_';
+  /// Todas las claves de la caché, de cualquier versión.
+  static const _prefijoBase = 'cache_carecar_';
+
+  /// Las copias cifradas. Las de antes (`cache_carecar_vehiculos`...) estaban en
+  /// claro y por eso cambia el prefijo: así no se confunden ni se leen.
+  static const _prefijo = '${_prefijoBase}v2_';
 
   final CarecarApi _api;
   final SharedPreferences _prefs;
+  final CifradorDeCache _cifrador;
   final PoliticaDatosLocales? _politica;
 
   bool get _permiteCopias => _politica?.permiteCacheLocal ?? true;
@@ -50,32 +66,65 @@ class CarecarApiConCache implements CarecarApi {
       sinConexion.value = false;
       if (!_permiteCopias) return datos;
       try {
-        await _prefs.setString('$_prefijo$clave', jsonEncode(aJson(datos)));
+        final cifrada = await _cifrador.cifrar(
+          jsonEncode(aJson(datos)),
+          contexto: clave,
+        );
+        await _prefs.setString('$_prefijo$clave', cifrada);
       } catch (_) {
-        // Si no se puede guardar, la lectura buena igual se entrega.
+        // Si no se puede cifrar o guardar, la lectura buena igual se entrega.
       }
       return datos;
     } on SinConexion {
       if (!_permiteCopias) rethrow;
-      final guardado = _prefs.getString('$_prefijo$clave');
-      if (guardado == null) rethrow;
-      final T datos;
-      try {
-        datos = deJson(jsonDecode(guardado));
-      } catch (_) {
-        rethrow;
-      }
+      final datos = await _copia<T>(clave, deJson);
+      if (datos == null) rethrow;
       sinConexion.value = true;
       return datos;
     }
   }
 
-  /// Borra todas las copias guardadas.
+  /// La copia guardada de [clave], o `null` si no hay o no se puede usar: ya no
+  /// descifra (alterada, de una llave que se olvidó) o tiene otra forma que la
+  /// de ahora. Una copia inservible se borra para no volver a intentarla.
+  Future<T?> _copia<T>(String clave, T Function(Object?) deJson) async {
+    final guardado = _prefs.getString('$_prefijo$clave');
+    if (guardado == null) return null;
+    final claro = await _cifrador.descifrar(guardado, contexto: clave);
+    if (claro != null) {
+      try {
+        return deJson(jsonDecode(claro));
+      } catch (_) {
+        // Con otra forma que la que lee esta versión: se descarta abajo.
+      }
+    }
+    await _prefs.remove('$_prefijo$clave');
+    return null;
+  }
+
+  /// Borra las copias en claro que dejaron las versiones anteriores a V2-M22.13.
+  Future<void> _borrarCopiasSinCifrar() async {
+    final viejas = _prefs.getKeys().where(
+      (k) => k.startsWith(_prefijoBase) && !k.startsWith(_prefijo),
+    );
+    for (final clave in viejas.toList()) {
+      await _prefs.remove(clave);
+    }
+  }
+
+  /// Borra todas las copias guardadas y olvida la llave con la que se cifraron.
   Future<void> limpiar() async {
-    for (final clave in _prefs.getKeys().where((k) => k.startsWith(_prefijo))) {
+    for (final clave
+        in _prefs.getKeys().where((k) => k.startsWith(_prefijoBase)).toList()) {
       await _prefs.remove(clave);
     }
     sinConexion.value = false;
+    try {
+      await _cifrador.olvidar();
+    } catch (_) {
+      // Sin copias no hay nada que descifrar; cerrar sesión no debe fallar si
+      // el almacenamiento seguro no responde.
+    }
   }
 
   static List<T> _lista<T>(Object? json, T Function(Map<String, Object?>) f) =>
