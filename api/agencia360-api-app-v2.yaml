@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.10.0
+  version: 2.10.1
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -2991,6 +2991,8 @@ components:
             - ASISTENTE_NO_DISPONIBLE
             - ORDEN_CERRADA
             - ADICIONAL_YA_RESPONDIDO
+            - ESTRENO_SIN_PRECIO
+            - ESTRENO_DUPLICADA
           example: FRANJA_SIN_CUPO
         path:
           type: string
