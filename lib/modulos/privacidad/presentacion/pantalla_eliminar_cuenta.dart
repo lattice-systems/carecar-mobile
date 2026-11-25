@@ -45,11 +45,12 @@ class _PantallaEliminarCuentaState
     super.dispose();
   }
 
-  bool get _puedeEliminar => _contrasena.text.isNotEmpty && !_eliminando;
+  /// El control de deslizar solo se ofrece con una contraseña escrita; mientras
+  /// se elimina ni siquiera se muestra, así que no hace falta comprobar más.
+  bool get _puedeEliminar => _contrasena.text.isNotEmpty;
 
   Future<void> _eliminar() async {
     final contrasena = _contrasena.text;
-    if (contrasena.isEmpty || _eliminando) return;
     // Todo lo que hace falta después de esperar se toma antes: la cuenta se
     // elimina en el servidor aunque la persona salga de la pantalla, y la
     // sesión tiene que cerrarse con ella.
@@ -91,9 +92,14 @@ class _PantallaEliminarCuentaState
 
   String _textoDelBloqueo(AppLocalizations textos) {
     final espera = _espera;
-    if (espera == null) return textos.eliminarCuentaBloqueadaSinEspera;
-    final minutos = (espera.inSeconds / 60).ceil();
-    return textos.eliminarCuentaBloqueada(minutos < 1 ? 1 : minutos);
+    if (espera == null || espera <= Duration.zero) {
+      return textos.eliminarCuentaBloqueadaSinEspera;
+    }
+    // Hacia arriba y sobre el tiempo exacto: 61 s son 2 minutos y medio segundo,
+    // uno; nunca «0 minutos».
+    final minutos = (espera.inMicroseconds / Duration.microsecondsPerMinute)
+        .ceil();
+    return textos.eliminarCuentaBloqueada(minutos);
   }
 
   @override

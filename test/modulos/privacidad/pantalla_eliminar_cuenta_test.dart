@@ -107,6 +107,12 @@ void main() {
 
       expect(find.byType(CampoContrasena), findsOneWidget);
       expect(_sePuedeEliminar(tester), isFalse);
+      expect(
+        tester
+            .widget<DeslizarParaConfirmar>(find.byType(DeslizarParaConfirmar))
+            .peligro,
+        isTrue,
+      );
 
       await _escribir(tester, 'Secreta123');
       expect(_sePuedeEliminar(tester), isTrue);
@@ -159,6 +165,7 @@ void main() {
 
       expect(find.text('Eliminando tu cuenta…'), findsOneWidget);
       expect(find.byType(DeslizarParaConfirmar), findsNothing);
+      expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
       expect(repo.cancelaciones, ['Secreta123']);
       expect(_sesion.estado, isA<Autenticada>());
 
@@ -237,6 +244,10 @@ void main() {
             'Demasiados intentos. Intenta de nuevo en 2 minutos.',
         const Duration(seconds: 45):
             'Demasiados intentos. Intenta de nuevo en 1 minuto.',
+        // Medio segundo no es «0 minutos»; un tiempo que no corre, tampoco.
+        const Duration(milliseconds: 500):
+            'Demasiados intentos. Intenta de nuevo en 1 minuto.',
+        Duration.zero: 'Demasiados intentos. Intenta de nuevo más tarde.',
         null: 'Demasiados intentos. Intenta de nuevo más tarde.',
       };
       for (final MapEntry(key: espera, value: texto) in casos.entries) {
@@ -250,6 +261,8 @@ void main() {
 
         expect(find.text(texto), findsOneWidget, reason: '$espera');
         expect(_sesion.estado, isA<Autenticada>(), reason: '$espera');
+        // El bloqueo no es una contraseña equivocada: el campo no lo dice.
+        expect(find.text('La contraseña no es correcta.'), findsNothing);
       }
     });
 
@@ -278,6 +291,20 @@ void main() {
         expect(tester.widget<Aviso>(find.byType(Aviso).last).tono, tono);
         expect(_sesion.estado, isA<Autenticada>(), reason: '$fallo');
         expect(_sePuedeEliminar(tester), isTrue, reason: '$fallo');
+        expect(find.text('La contraseña no es correcta.'), findsNothing);
+
+        // Al reintentar, el aviso anterior se quita mientras se vuelve a pedir.
+        repo
+          ..alCancelar = null
+          ..esperaAlCancelar = Completer<void>();
+        await _deslizar(tester);
+
+        expect(find.text(texto), findsNothing, reason: '$fallo');
+        expect(find.text('Eliminando tu cuenta…'), findsOneWidget);
+        repo.esperaAlCancelar!.complete();
+        await _dejarCorrer(tester);
+        expect(_sesion.estado, isA<SinSesion>(), reason: '$fallo');
+        await _sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'x');
       }
     });
 
