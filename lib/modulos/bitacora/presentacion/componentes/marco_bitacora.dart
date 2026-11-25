@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
+import '../../../../nucleo/diseno/componentes/boton_circular.dart';
 import '../../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -46,14 +47,10 @@ class MarcoBitacora extends StatelessWidget {
           titulo: titulo,
           translucido: true,
           acciones: [
-            IconButton(
-              tooltip: textos.bitacoraCerrar,
-              constraints: const BoxConstraints(
-                minWidth: Espaciado.objetivoTactilMinimo,
-                minHeight: Espaciado.objetivoTactilMinimo,
-              ),
-              icon: Icon(Icons.close_rounded, color: c.texto),
-              onPressed: () => Navigator.of(context).maybePop(),
+            BotonCircular(
+              icono: Icons.close_rounded,
+              etiqueta: textos.bitacoraCerrar,
+              alPresionar: () => Navigator.of(context).maybePop(),
             ),
           ],
         ),

@@ -53,6 +53,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | Hecha | #83 |
 | V2-T02.16 | Estilo vidrio líquido y píldora en componentes y login | Daniel |  | V2-T02.04 | Hecha | #95, #98 |
 | V2-T02.17 | `BotonCircular`: enviar, adjuntar y 👍/👎 con el mismo botón | Daniel |  | V2-T02.16 | Hecha | #103 |
+| V2-T02.18 | Los módulos v2 solo usan controles del sistema de diseño (regla en CI) | Daniel |  | V2-T02.17 | Hecha | #105 |
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
@@ -227,10 +228,10 @@ Total: **218 historias** + 4 de H0.
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
 | V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Borrador | |
 | V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M06.02 | Borrador | |
-| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | En revisión | #118, backend#93, backend#94 |
-| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | En revisión | #118, backend#93, backend#94 |
-| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | En revisión | #118, backend#93, backend#94 |
-| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | En revisión | #118, backend#93, backend#94 |
+| V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
+| V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
+| V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Hecha | #118, backend#93, backend#94 |
+| V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Hecha | #118, backend#93, backend#94 |
 | V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Hecha | #94, backend#86, #121 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Hecha | #94, backend#86 |
 | V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95 |

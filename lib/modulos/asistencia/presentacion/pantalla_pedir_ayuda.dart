@@ -11,6 +11,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../vehiculos/vehiculos.dart' show garajeProvider;
 import '../dominio/solicitud_asistencia.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'formulario_pedir_ayuda.dart';
 import 'proveedores_asistencia.dart';
 import 'vista_solicitud.dart';
@@ -176,15 +177,11 @@ class _Marco extends StatelessWidget {
                 titulo: titulo,
                 translucido: true,
                 acciones: [
-                  IconButton(
-                    tooltip: MaterialLocalizations.of(context)
+                  BotonCircular(
+                    etiqueta: MaterialLocalizations.of(context)
                         .closeButtonTooltip,
-                    constraints: const BoxConstraints(
-                      minWidth: Espaciado.objetivoTactilMinimo,
-                      minHeight: Espaciado.objetivoTactilMinimo,
-                    ),
-                    icon: Icon(Icons.close_rounded, color: c.texto),
-                    onPressed: () => Navigator.of(context).maybePop(),
+                    icono: Icons.close_rounded,
+                    alPresionar: () => Navigator.of(context).maybePop(),
                   ),
                 ],
               ),
