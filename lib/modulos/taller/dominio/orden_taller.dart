@@ -52,7 +52,22 @@ enum EstadoAdicional {
   }
 }
 
-/// Una orden sin entregar, para la tarjeta de Inicio (V2-M04.01).
+/// Cuando recoger el auto listo (V2-M04.06): el dia y las horas del taller,
+/// en hora de la agencia y tal como las manda el contrato (`09:00`).
+class HorarioEntrega {
+  const HorarioEntrega({
+    required this.fecha,
+    required this.desde,
+    required this.hasta,
+  });
+
+  final DateTime fecha;
+  final String desde;
+  final String hasta;
+}
+
+/// Una orden sin entregar, para la tarjeta de Inicio (V2-M04.01). Lista para
+/// entrega trae su total y el horario para recogerla (V2-M04.06).
 class OrdenEnCurso {
   const OrdenEnCurso({
     required this.id,
@@ -63,6 +78,8 @@ class OrdenEnCurso {
     required this.adicionalesPendientes,
     this.entregaEstimada,
     this.asesor,
+    this.totalEstimado,
+    this.horarioEntrega,
   });
 
   final int id;
@@ -77,6 +94,12 @@ class OrdenEnCurso {
   /// Hora de la agencia; nula si aun no se estima.
   final DateTime? entregaEstimada;
   final String? asesor;
+
+  /// Con IVA; nulo si el servidor aun no lo manda.
+  final double? totalEstimado;
+  final HorarioEntrega? horarioEntrega;
+
+  bool get lista => etapa == EtapaTaller.listoParaEntrega;
 }
 
 /// Una etapa que ya empezo; `fin` es nulo mientras siga en curso.
@@ -160,7 +183,7 @@ class TrabajoAdicional {
   bool get pendiente => estado == EstadoAdicional.pendiente;
 }
 
-/// La orden en el taller (V2-M04.02, V2-M04.04 y V2-M04.05).
+/// La orden en el taller (V2-M04.02 y V2-M04.04 a V2-M04.07).
 class OrdenEnVivo {
   const OrdenEnVivo({
     required this.id,
@@ -178,6 +201,7 @@ class OrdenEnVivo {
     required this.totalEstimado,
     this.entregaEstimada,
     this.asesor,
+    this.horarioEntrega,
   });
 
   final int id;
@@ -199,8 +223,16 @@ class OrdenEnVivo {
   final double totalAdicionalesAprobados;
   final double totalAdicionalesPendientes;
 
-  /// Total de la orden mas los adicionales aprobados.
+  /// Total de la orden mas los adicionales aprobados que aun no pasan a ella;
+  /// al quedar lista, es lo que se paga.
   final double totalEstimado;
+
+  /// Solo cuando la orden esta lista para entrega.
+  final HorarioEntrega? horarioEntrega;
+
+  bool get lista => etapa == EtapaTaller.listoParaEntrega;
+
+  bool get entregada => etapa == EtapaTaller.entregado;
 
   List<TrabajoAdicional> get pendientes =>
       adicionales.where((a) => a.pendiente).toList();

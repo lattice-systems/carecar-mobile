@@ -6,7 +6,8 @@ import '../dominio/repositorio_taller.dart';
 
 /// Repositorio en memoria para pruebas y para la galeria. Responde como la
 /// API: aprobar suma el trabajo al total estimado y responder dos veces lanza
-/// [AdicionalYaRespondido].
+/// [AdicionalYaRespondido]. [actualizar] cambia una orden como lo haria el
+/// taller; el aviso en vivo lo manda la prueba por el canal de eventos.
 class RepositorioTallerFake implements RepositorioTaller {
   RepositorioTallerFake({List<OrdenEnVivo>? ordenes, this.falla})
     : _ordenes = {
@@ -24,6 +25,12 @@ class RepositorioTallerFake implements RepositorioTaller {
   /// Lo que se respondio, en orden: (ordenId, adicionalId, aprobado, firma).
   final respuestas = <(int, int, bool, Uint8List)>[];
 
+  /// Cuantas veces se pidio la orden, para saber si la pantalla recargo.
+  var consultas = 0;
+
+  /// Reemplaza la orden, como cuando el taller la pasa de etapa.
+  void actualizar(OrdenEnVivo orden) => _ordenes[orden.id] = orden;
+
   @override
   Future<List<OrdenEnCurso>> enCurso() async {
     if (falla != null) throw falla!;
@@ -39,12 +46,15 @@ class RepositorioTallerFake implements RepositorioTaller {
             adicionalesPendientes: orden.pendientes.length,
             entregaEstimada: orden.entregaEstimada,
             asesor: orden.asesor,
+            totalEstimado: orden.totalEstimado,
+            horarioEntrega: orden.horarioEntrega,
           ),
     ];
   }
 
   @override
   Future<OrdenEnVivo> orden(int ordenId) async {
+    consultas++;
     if (falla != null) throw falla!;
     final orden = _ordenes[ordenId];
     if (orden == null) throw StateError('No existe la orden $ordenId');
@@ -99,6 +109,7 @@ class RepositorioTallerFake implements RepositorioTaller {
       totalEstimado: orden.totalOrden + aprobados,
       entregaEstimada: orden.entregaEstimada,
       asesor: orden.asesor,
+      horarioEntrega: orden.horarioEntrega,
     );
     _ordenes[ordenId] = respondida;
     return respondida;
@@ -106,7 +117,8 @@ class RepositorioTallerFake implements RepositorioTaller {
 }
 
 /// Una orden en reparacion con inspeccion, foto, video y dos trabajos
-/// adicionales pendientes.
+/// adicionales pendientes. Lista para entrega trae el horario para recogerla
+/// el 25 de noviembre de 09:00 a 17:00.
 OrdenEnVivo ordenDeEjemplo({
   int id = 41,
   EtapaTaller etapa = EtapaTaller.enReparacion,
@@ -187,5 +199,12 @@ OrdenEnVivo ordenDeEjemplo({
     totalAdicionalesAprobados: 0,
     totalAdicionalesPendientes: 1850.5,
     totalEstimado: 1282,
+    horarioEntrega: etapa == EtapaTaller.listoParaEntrega
+        ? HorarioEntrega(
+            fecha: DateTime(2026, 11, 25),
+            desde: '09:00',
+            hasta: '17:00',
+          )
+        : null,
   );
 }
