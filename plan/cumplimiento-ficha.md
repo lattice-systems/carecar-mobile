@@ -133,7 +133,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Prueba de manejo y cotización de auto nuevo | `solicitud_estreno`, `prospecto`, `modelo_catalogo`, `estimacion_toma_cuenta` | ⬜ | Ver M16 |
+| Prueba de manejo y cotización de auto nuevo | `solicitud_estreno`, `prospecto`, `modelo_catalogo`, `estimacion_toma_cuenta` | 🟡 backend con `solicitud_estreno` y prospecto de origen `APP` (`EstrenoIntegrationTest`, backend#93); app con las tres pantallas, el repositorio y el contrato 2.12.1 probados (`test/modulos/estreno/`, `test/api/estreno_*_test.dart`, `test/contrato/contrato_estreno_test.dart`); falta demostrarla en celular | V2-M16.01, V2-M16.02, V2-M16.03, V2-M16.04 |
 
 ### 17. Recolección y entrega a domicilio — plan [M17](modulos/M17-recoleccion-y-entrega.md)
 

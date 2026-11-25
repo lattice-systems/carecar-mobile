@@ -7,6 +7,7 @@ import '../../modulos/bitacora/bitacora.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
+import '../../modulos/estreno/estreno.dart';
 import '../../modulos/galeria/galeria.dart';
 import '../../modulos/historial/historial.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
@@ -37,6 +38,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasAsistente,
   // La bitacora (M18) es nueva en v2: no pasa por el interruptor.
   ...rutasBitacora,
+  // El estreno (M16) es nuevo en v2: no pasa por el interruptor.
+  ...rutasEstreno,
   ...interruptor.rutas(ModuloMigrable.catalogo, rutasCatalogo),
   ...interruptor.rutas(ModuloMigrable.citas, rutasCitas),
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.

@@ -241,4 +241,38 @@ class CarecarApiHttp implements CarecarApi {
     pagina: pagina,
     tamano: tamano,
   );
+
+  @override
+  Future<CotizacionEstreno> calcularMensualidad({
+    required int modeloCatalogoId,
+    required double enganche,
+    required int plazoMeses,
+  }) => _cliente.enviar(
+    '/estreno/cotizaciones/calculo',
+    cuerpo: {
+      'modeloCatalogoId': modeloCatalogoId,
+      'enganche': enganche,
+      'plazoMeses': plazoMeses,
+    },
+    leer: CotizacionEstreno.fromJson,
+  );
+
+  @override
+  Future<SolicitudEstreno> crearSolicitudEstreno(NuevaSolicitudEstreno nueva) =>
+      _cliente.enviar(
+        '/estreno/solicitudes',
+        cuerpo: nueva.toJson(),
+        leer: SolicitudEstreno.fromJson,
+      );
+
+  @override
+  Future<Pagina<SolicitudEstreno>> paginaDeSolicitudesEstreno({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _cliente.obtenerPagina(
+    '/estreno/solicitudes',
+    SolicitudEstreno.fromJson,
+    pagina: pagina,
+    tamano: tamano,
+  );
 }
