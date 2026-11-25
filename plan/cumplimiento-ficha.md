@@ -158,7 +158,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Aviso de privacidad | `aviso_privacidad`, `aceptacion_aviso`, `cuenta_app` | 🟡 backend con las dos tablas de la ficha (`V43`), aviso inmutable por disparador, aceptación idempotente y publicación de versiones (`PrivacidadIntegrationTest`, `PrivacidadServiceTest`, backend#96); app con la puerta, el verificador, la guardia y el perfil probados de punta a punta (`test/modulos/privacidad/`, `test/nucleo/navegacion/`); falta demostrarlo en celular contra el backend real y que la agencia publique su texto definitivo | V2-M22.01 |
-| Derechos ARCO (descargar datos y borrar cuenta) | `solicitud_arco`, `cliente`, `cuenta_app` | ⬜ | Ver M22 |
+| Derechos ARCO (descargar datos y borrar cuenta) | `solicitud_arco`, `cliente`, `cuenta_app` | 🟡 acceso (descargar mis datos): backend con `solicitud_arco` (`V44`), la copia armada fuera de la petición, entregada solo con sesión y vigente 7 días (`ArcoIntegrationTest`, `ArcoServiceTest`, backend#97); app con «Privacidad y mis datos» y «Mis datos», el seguimiento por aviso en vivo y la descarga probados (`test/modulos/privacidad/`); falta demostrarlo en celular y la cancelación de la cuenta (V2-M22.03) | V2-M22.02 |
 
 ### 21. Asistente CareCar (IA) — plan [M24](modulos/M24-asistente-carecar.md)
 

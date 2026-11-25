@@ -9,7 +9,7 @@ Historia [V2-M22.01](../../plan/modulos/M22-seguridad-y-privacidad.md). Backend:
 | Texto versionado del backend | `GET /privacidad/aviso` devuelve la versión vigente (la mayor cuyo `vigente_desde` ya llegó) con `aceptado` y `aceptadoEn` de esta cuenta. Un aviso publicado no se edita: una versión nueva es otro aviso. | `lib/modulos/privacidad/` |
 | Aceptación en el primer ingreso | Con cada sesión nueva, `VerificadorDeAviso` pregunta al servidor y avisa a la guardia del enrutador; si falta aceptar, la persona ve la puerta antes que el inicio. | `verificador_aviso.dart`, `lib/nucleo/privacidad/estado_aviso.dart` |
 | Aceptación al cambiar de versión | Una versión nueva tiene otro `id` y nadie la ha aceptado: la puerta vuelve a aparecer. Aceptar la vieja responde 409 `AVISO_NO_VIGENTE` y la puerta enseña la nueva. | `pantalla_aceptar_aviso.dart` |
-| Leerlo cuando se quiera | «Aviso de privacidad» del perfil abre el aviso del servidor con su versión y la fecha en que se aceptó. | `pantalla_aviso_privacidad.dart` |
+| Leerlo cuando se quiera | «Privacidad y mis datos» del perfil (V2-M22.02) lleva a «Aviso de privacidad», con la versión y la fecha en que se aceptó. | `pantalla_aviso_privacidad.dart` |
 
 ## Cómo está armado
 
