@@ -3393,4 +3393,94 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get arcoCargando => 'Loading your requests';
+
+  @override
+  String get privacidadHubEliminar => 'Delete my account';
+
+  @override
+  String get privacidadHubEliminarDetalle =>
+      'Deletes your account and your personal data';
+
+  @override
+  String get eliminarCuentaTitulo => 'Delete my account';
+
+  @override
+  String get eliminarCuentaAdvertenciaTitulo => 'This can\'t be undone';
+
+  @override
+  String get eliminarCuentaAdvertencia =>
+      'Your account is closed right away and we won\'t be able to recover it.';
+
+  @override
+  String get eliminarCuentaSeBorraTitulo => 'What gets deleted';
+
+  @override
+  String get eliminarCuentaBorra1 => 'Your name, email and phone number.';
+
+  @override
+  String get eliminarCuentaBorra2 =>
+      'Your addresses, your questions to the assistant, your quotes and your new-car requests.';
+
+  @override
+  String get eliminarCuentaBorra3 =>
+      'Your expense and mileage log, with its photos and receipts.';
+
+  @override
+  String get eliminarCuentaBorra4 =>
+      'Your location and comments in roadside assistance requests.';
+
+  @override
+  String get eliminarCuentaConservaTitulo => 'What we keep';
+
+  @override
+  String get eliminarCuentaConserva =>
+      'What we must keep for tax, commercial or warranty reasons: your vehicles\' service history, your purchases, payments and invoices, and the record that you accepted the privacy notice.';
+
+  @override
+  String get eliminarCuentaContrasena => 'Your password';
+
+  @override
+  String get eliminarCuentaContrasenaAyuda =>
+      'We ask for it to confirm it\'s you.';
+
+  @override
+  String get eliminarCuentaDeslizar => 'Slide to delete my account';
+
+  @override
+  String get eliminarCuentaConfirmarMensaje =>
+      'Your personal data is deleted and you won\'t be able to sign in with this account again. This can\'t be undone.';
+
+  @override
+  String get eliminarCuentaEliminando => 'Deleting your account…';
+
+  @override
+  String get eliminarCuentaListo =>
+      'Your account was deleted. Thanks for using CareCar.';
+
+  @override
+  String get eliminarCuentaContrasenaIncorrecta =>
+      'The password isn\'t correct.';
+
+  @override
+  String eliminarCuentaBloqueada(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutes',
+      one: '1 minute',
+    );
+    return 'Too many attempts. Try again in $_temp0.';
+  }
+
+  @override
+  String get eliminarCuentaBloqueadaSinEspera =>
+      'Too many attempts. Try again later.';
+
+  @override
+  String get eliminarCuentaSinConexion =>
+      'You\'re offline. Check your connection and try again.';
+
+  @override
+  String get eliminarCuentaError =>
+      'We couldn\'t delete your account. Try again.';
 }

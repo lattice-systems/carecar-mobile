@@ -123,4 +123,42 @@ void main() {
       expect(descripcion, contains('arco.estado'));
     });
   });
+
+  group('el contrato v2 trae la cancelacion ARCO (M22.03)', () {
+    late YamlMap operacion;
+
+    setUpAll(() {
+      operacion =
+          contrato['paths']['/privacidad/arco/cancelacion']['post'] as YamlMap;
+    });
+
+    test('la version es 2.15.0 o posterior', () {
+      final partes = (contrato['info']['version'] as String)
+          .split('.')
+          .map(int.parse)
+          .toList();
+      expect(partes[0], 2);
+      expect(partes[1], greaterThanOrEqualTo(15));
+    });
+
+    test('pide solo la contrasena, y como contrasena', () {
+      final esquema = esquemas['CancelarCuenta'] as YamlMap;
+      expect((esquema['properties'] as YamlMap).keys.toSet(), {'contrasena'});
+      expect((esquema['required'] as YamlList).cast<String>(), ['contrasena']);
+      expect(esquema['properties']['contrasena']['format'], 'password');
+      expect(
+        operacion['requestBody']['content']['application/json']['schema']['\$ref'],
+        '#/components/schemas/CancelarCuenta',
+      );
+    });
+
+    test('responde la solicitud, y un 400 o un 429 si la contrasena falla', () {
+      final respuestas = operacion['responses'] as YamlMap;
+      expect(respuestas.keys.toSet(), {'200', '400', '401', '429'});
+      expect(
+        respuestas['200']['content']['application/json']['schema']['\$ref'],
+        '#/components/schemas/SolicitudArco',
+      );
+    });
+  });
 }

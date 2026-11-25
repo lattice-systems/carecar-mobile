@@ -77,7 +77,10 @@ module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
   const solicitudesArco = [];
 
   function comoSolicitudArco(s) {
-    const vence = s.resueltaEn ? new Date(new Date(s.resueltaEn).getTime() + VIGENCIA_ARCO_MS) : null;
+    // Solo el acceso deja un archivo que vence; la cancelación no.
+    const vence = s.tipo === 'ACCESO' && s.resueltaEn
+      ? new Date(new Date(s.resueltaEn).getTime() + VIGENCIA_ARCO_MS)
+      : null;
     const vencida = s.estado === 'RESUELTA' && vence && vence <= new Date();
     return {
       id: s.id,
@@ -148,12 +151,85 @@ module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
   servidor.get(`${BASE}/privacidad/arco/:id/archivo`, (req, res) => {
     const solicitud = solicitudesArco.find((s) => s.id === Number(req.params.id)
       && s.clienteId === req.sesion.clienteId);
-    if (!solicitud || comoSolicitudArco(solicitud).estado !== 'RESUELTA') return noEncontrado(req, res);
+    if (!solicitud || solicitud.tipo !== 'ACCESO' || comoSolicitudArco(solicitud).estado !== 'RESUELTA') {
+      return noEncontrado(req, res);
+    }
     res.set({
       'Content-Type': 'application/json',
       'Content-Disposition': 'attachment; filename="mis-datos-carecar.json"',
       'Cache-Control': 'no-store',
     });
     return res.status(200).send(JSON.stringify(archivoDeDatos(solicitud.clienteId), null, 2));
+  });
+
+  // --- Derechos ARCO: borrar mi cuenta (V2-M22.03) ---
+  // Como el backend: pide la contraseña. Una equivocada responde 400 y no 401
+  // (la app lee un 401 como sesión vencida y cerraría la sesión sin decir nada);
+  // a los 5 fallos seguidos, 429 con Retry-After durante 15 minutos. Al terminar,
+  // la cuenta queda desactivada y con otros datos: el middleware de `acceso`
+  // contesta 403 a cualquier token suyo y el login con la contraseña vieja da 401.
+  //
+  // Diferencias con el backend: aquí el contador de fallos es solo de la
+  // cancelación (allá es el mismo del login), y los datos del cliente en las
+  // demás colecciones no se borran: nadie puede llegar a ellos sin sesión. Se
+  // guarda en db.json como cualquier cambio; `npm run reset` devuelve la cuenta.
+  const MAX_FALLOS_CANCELACION = 5;
+  const BLOQUEO_CANCELACION_MS = 15 * 60 * 1000;
+  const fallosDeCancelacion = new Map();
+
+  function segundosBloqueadoParaCancelar(clienteId) {
+    const registro = fallosDeCancelacion.get(clienteId);
+    if (!registro || registro.fallos < MAX_FALLOS_CANCELACION) return 0;
+    const restante = registro.hasta - Date.now();
+    if (restante <= 0) {
+      fallosDeCancelacion.delete(clienteId);
+      return 0;
+    }
+    return Math.ceil(restante / 1000);
+  }
+
+  servidor.post(`${BASE}/privacidad/arco/cancelacion`, (req, res) => {
+    const { contrasena } = req.body || {};
+    if (typeof contrasena !== 'string' || !contrasena.trim()) {
+      return problema(req, res, 400, 'Escribe tu contraseña para confirmar', 'DATOS_INVALIDOS');
+    }
+    const { clienteId, cuenta } = req.sesion;
+
+    const espera = segundosBloqueadoParaCancelar(clienteId);
+    if (espera > 0) {
+      res.set('Retry-After', String(espera));
+      return problema(req, res, 429, 'Demasiados intentos. Intenta de nuevo más tarde.', 'DEMASIADOS_INTENTOS');
+    }
+    if (cuenta.contrasena !== contrasena) {
+      const registro = fallosDeCancelacion.get(clienteId) || { fallos: 0, hasta: 0 };
+      registro.fallos += 1;
+      if (registro.fallos >= MAX_FALLOS_CANCELACION) registro.hasta = Date.now() + BLOQUEO_CANCELACION_MS;
+      fallosDeCancelacion.set(clienteId, registro);
+      return problema(req, res, 400, 'La contraseña no es correcta', 'DATOS_INVALIDOS');
+    }
+    fallosDeCancelacion.delete(clienteId);
+
+    const ahora = new Date().toISOString();
+    const solicitud = {
+      id: solicitudesArco.length + 1,
+      clienteId,
+      tipo: 'CANCELACION',
+      estado: 'RESUELTA',
+      creadaEn: ahora,
+      resueltaEn: ahora,
+    };
+    solicitudesArco.push(solicitud);
+    db.get('cuentas')
+      .find({ id: cuenta.id })
+      .assign({
+        activa: false,
+        usuario: `eliminada-${cuenta.id}`,
+        nombre: 'Cliente eliminado',
+        correo: `eliminada-${cuenta.id}`,
+        // Una contraseña que nadie conoce: no vuelve a entrar con la de antes.
+        contrasena: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      })
+      .write();
+    return res.status(200).json(comoSolicitudArco(solicitud));
   });
 };

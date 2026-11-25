@@ -353,4 +353,10 @@ class CarecarApiConCache implements CarecarApi {
   @override
   Future<Uint8List> descargarArchivoArco(int solicitudId) =>
       _api.descargarArchivoArco(solicitudId);
+
+  // La cancelacion no se guarda: la cache se limpia al cerrar la sesion que
+  // viene despues.
+  @override
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena) =>
+      _api.cancelarCuentaArco(contrasena);
 }
