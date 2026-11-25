@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
+import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/cliente_http_fijado.dart';
 import 'package:carecar_mobile/config/flavor.dart';
 import 'package:carecar_mobile/config/pines_tls.dart';
@@ -323,6 +324,48 @@ subjectAltName = DNS:localhost
         throwsA(predicate((e) => '$e'.contains('CERTIFICATE_VERIFY_FAILED'))),
       );
     }, skip: omitir);
+
+    test('ClienteApi lo reporta como conexion no segura y avisa', () async {
+      // El mismo cliente fijado a otra autoridad, pero por ClienteApi: lo que
+      // ve la app ante un certificado de un tercero (V2-M22.15).
+      final verificaciones = <bool>[];
+      final cliente = ClienteApi(
+        config: ApiConfig.para('https://localhost:${servidor.port}/api/v1/app'),
+        http: crearClienteHttp(ConfianzaFijada([caB])),
+        alVerificarCertificado: verificaciones.add,
+      );
+      addTearDown(cliente.cerrar);
+
+      await expectLater(
+        cliente.obtener<Object?>('/perfil', (json) => json),
+        throwsA(isA<ConexionNoSegura>()),
+      );
+
+      expect(verificaciones, [false]);
+    }, skip: omitir);
+
+    test(
+      'con la autoridad fijada ClienteApi avisa que el certificado valio',
+      () async {
+        final verificaciones = <bool>[];
+        final cliente = ClienteApi(
+          config: ApiConfig.para(
+            'https://localhost:${servidor.port}/api/v1/app',
+          ),
+          http: crearClienteHttp(ConfianzaFijada([caA])),
+          alVerificarCertificado: verificaciones.add,
+        );
+        addTearDown(cliente.cerrar);
+
+        // El servidor de prueba no habla JSON: solo importa que el saludo TLS pasó.
+        await cliente
+            .obtener<Object?>('/perfil', (json) => json)
+            .then<void>((_) {}, onError: (Object _) {});
+
+        expect(verificaciones, [true]);
+      },
+      skip: omitir,
+    );
 
     test(
       'la tienda del sistema tampoco confia en la autoridad de prueba',
