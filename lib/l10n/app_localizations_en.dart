@@ -1561,6 +1561,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasAccionesCita => 'Appointment options';
 
   @override
+  String get regresar => 'Back';
+
+  @override
   String get citasCerrar => 'Close';
 
   @override
