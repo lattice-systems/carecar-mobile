@@ -8,6 +8,7 @@ import 'package:carecar_mobile/modulos/widgets/dominio/contenido_widgets.dart';
 import 'package:carecar_mobile/modulos/widgets/presentacion/constructores_de_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 CitaCliente _cita({int id = 7, String? vehiculo = 'Aveo 2021'}) => CitaCliente(
   id: id,
@@ -87,6 +88,8 @@ void main() {
 
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
+    await initializeDateFormatting('es');
+    await initializeDateFormatting('en');
     es = await AppLocalizations.delegate.load(const Locale('es'));
     en = await AppLocalizations.delegate.load(const Locale('en'));
   });
