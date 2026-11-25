@@ -1,0 +1,57 @@
+{
+  "cuentas": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "usuario": "cliente1",
+      "contrasena": "CareCar2026",
+      "debeCambiarContrasena": false,
+      "activa": true,
+      "nombre": "Maria Elena Robles",
+      "correo": "cliente1@example.com"
+    },
+    {
+      "id": 2,
+      "clienteId": 2,
+      "usuario": "cliente2",
+      "contrasena": "Temporal123",
+      "debeCambiarContrasena": true,
+      "activa": true,
+      "nombre": "Jorge Alberto Fuentes",
+      "correo": "cliente2@example.com"
+    },
+    {
+      "id": 3,
+      "clienteId": 3,
+      "usuario": "cliente3",
+      "contrasena": "CareCar2026",
+      "debeCambiarContrasena": false,
+      "activa": false,
+      "nombre": "Cuenta desactivada",
+      "correo": "cliente3@example.com"
+    }
+  ],
+  "tokensRecuperacion": [
+    {
+      "id": 1,
+      "token": "123456",
+      "correo": "cliente1@example.com",
+      "usado": false,
+      "expira": "2099-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "token": "222222",
+      "correo": "cliente1@example.com",
+      "usado": true,
+      "expira": "2099-01-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "token": "333333",
+      "correo": "cliente1@example.com",
+      "usado": false,
+      "expira": "2020-01-01T00:00:00Z"
+    }
+  ]
+}
