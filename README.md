@@ -295,16 +295,16 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 | `Análisis estático (flutter analyze)`       | CI                | Cada PR y cada push a `main`         |
 | `Pruebas (flutter test)`                    | CI                | Cada PR y cada push a `main`         |
 | `Build Android (APK)`                       | CI                | Cada PR y cada push a `main`         |
-| `Build iOS (sin firma)`                     | CI (macOS)        | Cada PR y cada push a `main`         |
+| `Build iOS (sin firma)`                     | CI (macOS)        | En pausa: se salta ([cómo activarlo](docs/pausa-de-macos.md)) |
 | `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
 | `Revisión de dependencias nuevas/cambiadas` | Dependency Review | Solo en PR                            |
 | `Sin co-autor de IA`                        | Autoría           | Solo en PR                            |
 
-Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos (5-6 y unos 3 minutos); el de iOS corre en un runner de macOS y compila sin firmar. Para no gastar tiempo: el push a una rama no dispara CI (lo cubre su PR; ábrelo temprano, aunque sea en borrador) y si el PR solo cambia documentación (`docs/`, `plan/`, `.claude/`, `.githooks/` o `.md`) los cinco jobs se saltan y cuentan como aprobados.
+Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los más lentos (5-6 y unos 3 minutos); el de iOS corre en un runner de macOS y compila sin firmar, **pero hoy está en pausa**: se salta mientras la variable de repositorio `MACOS_ACTIVO` no valga `true` ([`docs/pausa-de-macos.md`](docs/pausa-de-macos.md)). Para no gastar tiempo: el push a una rama no dispara CI (lo cubre su PR; ábrelo temprano, aunque sea en borrador) y si el PR solo cambia documentación (`docs/`, `plan/`, `.claude/`, `.githooks/` o `.md`) los cinco jobs se saltan y cuentan como aprobados.
 
-**Versión y releases.** La versión vive solo en `version:` de `pubspec.yaml`; el número de build lo pone CI (`github.run_number`). Para sacar una versión: sube la versión en `pubspec.yaml` por PR, intégrala a `main` y corre `git tag vX.Y.Z && git push origin vX.Y.Z`. El workflow `Release` verifica que la etiqueta coincida con el pubspec y publica un GitHub Release con el APK, apuntando al servidor de la variable de repositorio `API_BASE_URL` (si falta, el workflow falla; hoy firmado con la llave de debug; detalle en [`plan/modulos/T04-entrega-continua.md`](plan/modulos/T04-entrega-continua.md)). Después le adjunta el IPA sin firmar de iOS.
+**Versión y releases.** La versión vive solo en `version:` de `pubspec.yaml`; el número de build lo pone CI (`github.run_number`). Para sacar una versión: sube la versión en `pubspec.yaml` por PR, intégrala a `main` y corre `git tag vX.Y.Z && git push origin vX.Y.Z`. El workflow `Release` verifica que la etiqueta coincida con el pubspec y publica un GitHub Release con el APK, apuntando al servidor de la variable de repositorio `API_BASE_URL` (si falta, el workflow falla; hoy firmado con la llave de debug; detalle en [`plan/modulos/T04-entrega-continua.md`](plan/modulos/T04-entrega-continua.md)). Después le adjunta el IPA sin firmar de iOS (solo con macOS activo: en pausa, el Release sale solo con el APK).
 
-**iPhone sin Mac.** El workflow `IPA sin firma` (solo a mano: Actions → IPA sin firma → Run workflow, o `gh workflow run ipa-sin-firma.yml --ref main`) compila en macOS un IPA sin firmar y lo deja 30 días como artefacto de la corrida. Se instala desde Windows con Sideloadly y un Apple ID gratis: paso a paso, límites (7 días, 3 apps) y capacidades que no funcionan en [`docs/guia-instalar-ios-sin-mac.md`](docs/guia-instalar-ios-sin-mac.md). No corre en cada push porque los minutos de macOS son caros.
+**iPhone sin Mac.** El workflow `IPA sin firma` (solo a mano: Actions → IPA sin firma → Run workflow, o `gh workflow run ipa-sin-firma.yml --ref main`) compila en macOS un IPA sin firmar y lo deja 30 días como artefacto de la corrida. Se instala desde Windows con Sideloadly y un Apple ID gratis: paso a paso, límites (7 días, 3 apps) y capacidades que no funcionan en [`docs/guia-instalar-ios-sin-mac.md`](docs/guia-instalar-ios-sin-mac.md). No corre en cada push porque los minutos de macOS son caros; la pausa de macOS no lo afecta porque es a mano.
 
 Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
 
@@ -372,6 +372,7 @@ Los pendientes ya no viven aquí: todo está en el [plan maestro v2](plan/README
 - **Decisiones de arquitectura:** [`docs/decisiones/`](docs/decisiones/README.md)
 - **Convenciones de ramas, commits y PR:** [`docs/convenciones-commits.md`](docs/convenciones-commits.md)
 - **Instalar en iPhone sin Mac (Sideloadly):** [`docs/guia-instalar-ios-sin-mac.md`](docs/guia-instalar-ios-sin-mac.md)
+- **Pausa de los runners de macOS (y cómo activarlos):** [`docs/pausa-de-macos.md`](docs/pausa-de-macos.md)
 - **Backend:** [`agencia-360-backend`](https://github.com/lattice-systems/agencia-360-backend)
 - **CRM frontend:** [`agencia-360-crm-frontend`](https://github.com/lattice-systems/agencia-360-crm-frontend)
 - **ERP frontend:** [`agencia-360-erp-frontend`](https://github.com/lattice-systems/agencia-360-erp-frontend)

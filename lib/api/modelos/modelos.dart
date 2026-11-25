@@ -5,6 +5,7 @@
 /// «corrigen»: cualquier diferencia rompe la deserializacion en silencio.
 library;
 
+export 'arco.dart';
 export 'asistente.dart';
 export 'cita.dart';
 export 'detalle_modelo_catalogo.dart';
@@ -17,6 +18,7 @@ export 'manual.dart';
 export 'modelo_catalogo.dart';
 export 'pagina.dart';
 export 'perfil.dart';
+export 'privacidad.dart';
 export 'problema.dart';
 export 'recoleccion_cita.dart';
 export 'sesion.dart';

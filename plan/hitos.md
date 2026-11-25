@@ -107,4 +107,4 @@ Criterios de salida:
 - [ ] Revisión OWASP MASVS L1 aprobada; derechos ARCO funcionando (exportar y borrar cuenta).
 - [ ] Métricas de producto (O1–O10) en un tablero de analítica.
 - [ ] Presupuestos de rendimiento cumplidos (arranque, memoria, tamaño de instalación).
-- [ ] APK firmado con la llave de producción en un Release `vX.Y.Z`, IPA sin firmar adjunto y guía de instalación vigente; política de privacidad dentro de la app.
+- [ ] APK firmado con la llave de producción en un Release `vX.Y.Z`, IPA sin firmar adjunto y guía de instalación vigente; política de privacidad dentro de la app. **Antes de etiquetar hay que activar los runners de macOS** (hoy en pausa: [`docs/pausa-de-macos.md`](../docs/pausa-de-macos.md)).

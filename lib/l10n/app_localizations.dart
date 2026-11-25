@@ -3538,6 +3538,18 @@ abstract class AppLocalizations {
   /// **'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.'**
   String get seguridadEquipoComprometidoMensaje;
 
+  /// Título del aviso cuando el certificado del servidor no valida (certificados fijados). No bloquea la app.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos verificar que la conexión sea segura'**
+  String get seguridadConexionNoSeguraTitulo;
+
+  /// Explica por qué se cortó la conexión y qué hacer: cambiar de red.
+  ///
+  /// In es, this message translates to:
+  /// **'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.'**
+  String get seguridadConexionNoSeguraMensaje;
+
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
   /// In es, this message translates to:
@@ -5417,6 +5429,372 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'El chofer todavía no registra ningún checklist de esta recolección.'**
   String get recoleccionComparacionFaltaAmbos;
+
+  /// Título de la pantalla del aviso de privacidad (V2-M22.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get privacidadTitulo;
+
+  /// Etiqueta con el número de versión del aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión {version}'**
+  String privacidadVersion(int version);
+
+  /// Desde cuándo rige la versión del aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente desde el {fecha}'**
+  String privacidadVigenteDesde(String fecha);
+
+  /// Cuándo aceptó la persona esta versión.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo aceptaste el {fecha}'**
+  String privacidadAceptadoEl(String fecha);
+
+  /// Lector de pantalla mientras carga el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el aviso de privacidad'**
+  String get privacidadCargando;
+
+  /// Encabezado de la puerta que pide aceptar el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Antes de continuar'**
+  String get privacidadAntesDeContinuar;
+
+  /// Explica por qué se pide aceptar el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Lee el aviso de privacidad. Para usar CareCar necesitas aceptarlo.'**
+  String get privacidadIntro;
+
+  /// Botón que registra la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'Acepto el aviso de privacidad'**
+  String get privacidadAceptar;
+
+  /// Texto del botón de aceptar mientras se registra.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get privacidadGuardando;
+
+  /// Salida de la puerta para quien no acepta el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'No acepto, cerrar sesión'**
+  String get privacidadNoAcepto;
+
+  /// Aviso cuando la agencia publica otra versión mientras se lee (409).
+  ///
+  /// In es, this message translates to:
+  /// **'El aviso cambió mientras lo leías. Ya está el nuevo: léelo y acéptalo si estás de acuerdo.'**
+  String get privacidadCambio;
+
+  /// Fallo al registrar la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu aceptación. Intenta de nuevo.'**
+  String get privacidadErrorAceptar;
+
+  /// Fallo de red al registrar la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Conéctate para guardar tu aceptación.'**
+  String get privacidadSinConexionAceptar;
+
+  /// Título de la pantalla que reúne el aviso de privacidad y los derechos sobre los datos (V2-M22.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Privacidad y mis datos'**
+  String get privacidadHubTitulo;
+
+  /// Fila del aviso de privacidad en Privacidad y mis datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get privacidadHubAviso;
+
+  /// Detalle de la fila del aviso de privacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacemos con tus datos'**
+  String get privacidadHubAvisoDetalle;
+
+  /// Fila que abre la copia de los datos personales.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar mis datos'**
+  String get privacidadHubDatos;
+
+  /// Detalle de la fila de descargar mis datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Una copia de tus datos personales'**
+  String get privacidadHubDatosDetalle;
+
+  /// Título de la pantalla para pedir y descargar la copia de los datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis datos'**
+  String get arcoTitulo;
+
+  /// Explica qué es la copia de los datos (acceso ARCO).
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.'**
+  String get arcoIntro;
+
+  /// Aclara lo que la copia no incluye.
+  ///
+  /// In es, this message translates to:
+  /// **'No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.'**
+  String get arcoAlcance;
+
+  /// Botón que pide la copia de los datos.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir una copia de mis datos'**
+  String get arcoPedir;
+
+  /// Texto del botón mientras se pide la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pidiendo…'**
+  String get arcoPidiendo;
+
+  /// Título mientras la copia se prepara.
+  ///
+  /// In es, this message translates to:
+  /// **'Estamos preparando tu archivo'**
+  String get arcoPreparando;
+
+  /// Detalle mientras la copia se prepara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarda unos segundos. Puedes quedarte en esta pantalla.'**
+  String get arcoPreparandoDetalle;
+
+  /// Título cuando la copia ya se puede descargar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu archivo está listo'**
+  String get arcoLista;
+
+  /// Hasta cuándo se puede descargar la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible hasta el {fecha}'**
+  String arcoVence(String fecha);
+
+  /// Recordatorio de cuidado del archivo descargado.
+  ///
+  /// In es, this message translates to:
+  /// **'Contiene información personal: guárdalo en un lugar seguro y no lo compartas.'**
+  String get arcoCuidado;
+
+  /// Botón que abre la hoja de compartir con la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar mi archivo'**
+  String get arcoDescargar;
+
+  /// Texto del botón mientras se baja el archivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Preparando…'**
+  String get arcoDescargando;
+
+  /// Botón para pedir otra copia cuando ya hay una.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir una copia nueva'**
+  String get arcoPedirOtra;
+
+  /// Aviso cuando la copia no se pudo preparar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos preparar tu archivo. Intenta de nuevo.'**
+  String get arcoFallida;
+
+  /// Aviso cuando la copia venció.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu archivo ya no está disponible. Pide una copia nueva.'**
+  String get arcoVencida;
+
+  /// Fallo al pedir la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir tu copia. Intenta de nuevo.'**
+  String get arcoErrorPedir;
+
+  /// Falta de conexión al pedir la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Conéctate para pedir tu copia.'**
+  String get arcoSinConexionPedir;
+
+  /// Fallo al descargar la copia.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos descargar tu archivo. Intenta de nuevo.'**
+  String get arcoErrorDescarga;
+
+  /// Aviso cuando al descargar ya no estaba.
+  ///
+  /// In es, this message translates to:
+  /// **'El archivo ya no está disponible. Pide una copia nueva.'**
+  String get arcoArchivoNoDisponible;
+
+  /// Lector de pantalla mientras carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus solicitudes'**
+  String get arcoCargando;
+
+  /// Fila del centro de privacidad que abre la cancelación de la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar mi cuenta'**
+  String get privacidadHubEliminar;
+
+  /// Detalle de la fila de eliminar mi cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Borra tu cuenta y tus datos personales'**
+  String get privacidadHubEliminarDetalle;
+
+  /// Título de la pantalla para eliminar la cuenta (cancelación ARCO).
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar mi cuenta'**
+  String get eliminarCuentaTitulo;
+
+  /// Título del aviso de peligro al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'No se puede deshacer'**
+  String get eliminarCuentaAdvertenciaTitulo;
+
+  /// Mensaje del aviso de peligro al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta se cierra de inmediato y no podremos recuperarla.'**
+  String get eliminarCuentaAdvertencia;
+
+  /// Encabezado de la lista de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué se borra'**
+  String get eliminarCuentaSeBorraTitulo;
+
+  /// Primer elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu nombre, correo y teléfono.'**
+  String get eliminarCuentaBorra1;
+
+  /// Segundo elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.'**
+  String get eliminarCuentaBorra2;
+
+  /// Tercer elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu bitácora de gastos y kilometraje, con sus fotos y tickets.'**
+  String get eliminarCuentaBorra3;
+
+  /// Cuarto elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.'**
+  String get eliminarCuentaBorra4;
+
+  /// Encabezado de lo que se conserva.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué conservamos'**
+  String get eliminarCuentaConservaTitulo;
+
+  /// Explica lo que no se borra al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.'**
+  String get eliminarCuentaConserva;
+
+  /// Etiqueta del campo de contraseña al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get eliminarCuentaContrasena;
+
+  /// Ayuda del campo de contraseña al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'La pedimos para confirmar que eres tú.'**
+  String get eliminarCuentaContrasenaAyuda;
+
+  /// Texto del control de deslizar que elimina la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Desliza para eliminar mi cuenta'**
+  String get eliminarCuentaDeslizar;
+
+  /// Mensaje del diálogo de confirmación cuando se usa lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.'**
+  String get eliminarCuentaConfirmarMensaje;
+
+  /// Mientras se elimina la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminando tu cuenta…'**
+  String get eliminarCuentaEliminando;
+
+  /// Aviso al terminar de eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta se eliminó. Gracias por usar CareCar.'**
+  String get eliminarCuentaListo;
+
+  /// Error del campo cuando la contraseña es equivocada.
+  ///
+  /// In es, this message translates to:
+  /// **'La contraseña no es correcta.'**
+  String get eliminarCuentaContrasenaIncorrecta;
+
+  /// Bloqueo por contraseñas equivocadas, con los minutos de espera.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Intenta de nuevo en {minutos, plural, =1{1 minuto} other{{minutos} minutos}}.'**
+  String eliminarCuentaBloqueada(int minutos);
+
+  /// Bloqueo por contraseñas equivocadas, sin tiempo conocido.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Intenta de nuevo más tarde.'**
+  String get eliminarCuentaBloqueadaSinEspera;
+
+  /// Sin red al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e inténtalo de nuevo.'**
+  String get eliminarCuentaSinConexion;
+
+  /// Error genérico al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos eliminar tu cuenta. Inténtalo de nuevo.'**
+  String get eliminarCuentaError;
 
   /// Título de la pantalla de llamadas rápidas.
   ///

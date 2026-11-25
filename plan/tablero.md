@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **218 historias** + 4 de H0.
+Total: **227 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -57,16 +57,16 @@ Total: **218 historias** + 4 de H0.
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
-| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | En revisión | |
+| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
 | V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
-| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | En curso | |
+| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Hecha | #128 |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
-| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |
+| V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73, #135 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas); runners de macOS en pausa desde 2026-11-25, [cómo activarlos](../docs/pausa-de-macos.md) |
 | V2-T04.04 | El check `Autoría` requerido | Daniel |  | — | Hecha | (V2-H0.03) |
 | V2-T04.05 | Notas de versión automáticas | Daniel |  | V2-T04.01 | Hecha | #115 |
 | V2-T04.06 | Publicar en pista interna de Google Play y App Store | Daniel |  | H6 | Descartada | sin tiendas: APK + Sideloadly |
@@ -132,14 +132,14 @@ Total: **218 historias** + 4 de H0.
 | V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | Lista | |
 | V2-M21.05 | Resolver conflictos de forma predecible | Jael | B | V2-M21.03 | Lista | |
 | V2-M21.06 | Que la app sincronice en segundo plano | Jael |  | V2-M21.02 | Lista | |
-| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Lista | |
-| V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Lista | |
-| V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Lista | |
-| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Lista | |
+| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Hecha | #127, backend#96 |
+| V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Hecha | #129, backend#97 |
+| V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Hecha | #131, backend#99 |
+| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Hecha | #132 |
 | V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Hecha | #76 |
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
-| V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
-| V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
+| V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
+| V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
 | V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Lista | |
@@ -281,3 +281,11 @@ Total: **218 historias** + 4 de H0.
 ## H7 · Lista para entregar
 
 Se llena con las historias de endurecimiento que salgan de M20.07, M22.08, M23.06 y T04.06, más los hallazgos de las pruebas en celular de cada hito.
+
+Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-masvs-l1.md`](../docs/seguridad/revision-masvs-l1.md)). Las otras cuatro propuestas (escaneo semanal, Keychain de iOS, enlaces universales y ofuscación) se quitaron para esta entrega y quedan como riesgos aceptados en esa revisión: las prioriza el equipo.
+
+| ID | Historia | Dueño | B | Depende de | Estado | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| V2-M22.10 | Decir en el aviso de privacidad qué proveedores externos reciben datos | Daniel | B | V2-M22.01 | Hecha | #137, backend#100 |
+| V2-M22.13 | Cifrar la caché de la API en el teléfono | Daniel |  | V2-M22.08 | Hecha | #138 |
+| V2-M22.15 | Aviso propio cuando falla un pin de certificado | Daniel |  | V2-M22.04 | Hecha | #139 |

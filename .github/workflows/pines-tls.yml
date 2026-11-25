@@ -1,0 +1,41 @@
+name: Pines TLS
+
+# V2-M22.04: vigila que el servidor real siga validando contra los certificados
+# fijados de la app (lib/config/pines_tls.dart). Si Azure cambia de jerarquía de
+# certificados, una app con pines viejos dejaría de conectarse; esto lo avisa
+# semanas antes y no cuando lo note un usuario.
+#
+# - Cada semana (y a mano): comprueba las anclas, que no venzan pronto y que el
+#   servidor real valide solo contra ellas.
+# - En cada PR que toque los pines o el host: lo mismo, para no integrar pines
+#   que el servidor real no valida.
+#
+# No usa secretos: solo abre una conexión TLS pública, como un navegador. Qué
+# hacer si falla: docs/seguridad/fijar-certificados.md, «Si algo se rompe».
+on:
+  schedule:
+    # Lunes, 14:17 UTC (fuera de la hora en punto, que es cuando más se satura).
+    - cron: "17 14 * * 1"
+  workflow_dispatch: {}
+  pull_request:
+    branches: [main]
+    paths:
+      - "lib/config/pines_tls.dart"
+      - "lib/config/flavor.dart"
+      - "scripts/verificar-pines-tls.sh"
+      - ".github/workflows/pines-tls.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    name: Vigilar los certificados fijados
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Descargar el código
+        uses: actions/checkout@v7
+
+      - name: Comprobar las anclas y el servidor real
+        run: ./scripts/verificar-pines-tls.sh

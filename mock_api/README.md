@@ -181,6 +181,13 @@ Operaciones de la app y casos de error:
 | POST | `/estreno/cotizaciones/calculo` | V2-M16.02: mensualidad con 14.99 %, enganche mínimo 10 % y plazos 12–60 · 409 `ESTRENO_SIN_PRECIO` · 400 |
 | POST | `/estreno/solicitudes` | V2-M16.01: prueba o cotización; el simulador asigna a «Vera Vendedora» al instante (`EN_ATENCION`) · 409 `ESTRENO_DUPLICADA` · 400 · 404 |
 | GET | `/estreno/solicitudes` | V2-M16.04: paginado, solo en memoria (se pierde al reiniciar) |
+| GET | `/privacidad/aviso` | V2-M22.01: el aviso vigente (la versión 2 nombra a los proveedores externos; la 1 es el texto que la app traía) con `aceptado` de tu cuenta |
+| POST | `/privacidad/aceptaciones` | V2-M22.01: `{avisoId}` · idempotente · 404 · 409 `AVISO_NO_VIGENTE` si ya hay una versión más nueva · en memoria |
+| GET | `/privacidad/arco` | V2-M22.02: mis solicitudes de derechos ARCO (las últimas 20) |
+| POST | `/privacidad/arco/acceso` | V2-M22.02: 202 y la solicitud `PENDIENTE`; a los 2 s (`RETRASO_ARCO_MS`, 0 = al instante) queda `RESUELTA` y llega el evento `arco.estado`; si ya había una pendiente, 200 con esa · en memoria |
+| GET | `/privacidad/arco/{id}/archivo` | V2-M22.02: el JSON como adjunto, sin caché · 404 si no es tuya o no está lista |
+| POST | `/privacidad/arco/cancelacion` | V2-M22.03: `{contrasena}` borra tu cuenta · 200 con la solicitud `CANCELACION` `RESUELTA` · contraseña equivocada o ausente: 400 `DATOS_INVALIDOS` (no 401) · a los 5 fallos, 429 con `Retry-After` 15 min · después cualquier token suyo recibe 403 y el login con la contraseña vieja, 401 · se guarda en `db.json`: `npm run reset` la devuelve |
+| POST | `/api/v1/avisos-privacidad` | Solo del simulador (en el backend es del Gerente de marketing): publica la versión siguiente con `{texto}` para probar que una versión nueva vuelve a pedir la aceptación |
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |

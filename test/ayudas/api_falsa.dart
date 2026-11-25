@@ -505,4 +505,45 @@ class ApiFalsa implements CarecarApi {
   }) =>
       alPedirSolicitudesEstreno?.call(pagina) ??
       Future.value(const Pagina(contenido: [], totalPaginas: 0));
+
+  // --- Privacidad (V2-M22.01) ---
+  Future<AvisoPrivacidad> Function()? alPedirAvisoDePrivacidad;
+  Future<AceptacionAviso> Function(int avisoId)? alAceptarAvisoDePrivacidad;
+
+  @override
+  Future<AvisoPrivacidad> avisoDePrivacidad() =>
+      alPedirAvisoDePrivacidad?.call() ??
+      Future.error(UnimplementedError('avisoDePrivacidad'));
+
+  @override
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
+      alAceptarAvisoDePrivacidad?.call(avisoId) ??
+      Future.error(UnimplementedError('aceptarAvisoDePrivacidad'));
+
+  // --- Derechos ARCO (V2-M22.02) ---
+  Future<List<SolicitudArco>> Function()? alPedirSolicitudesArco;
+  Future<SolicitudArco> Function()? alPedirAccesoArco;
+  Future<Uint8List> Function(int solicitudId)? alDescargarArchivoArco;
+
+  @override
+  Future<List<SolicitudArco>> misSolicitudesArco() =>
+      alPedirSolicitudesArco?.call() ?? Future.value(const []);
+
+  @override
+  Future<SolicitudArco> pedirAccesoArco() =>
+      alPedirAccesoArco?.call() ??
+      Future.error(UnimplementedError('pedirAccesoArco'));
+
+  @override
+  Future<Uint8List> descargarArchivoArco(int solicitudId) =>
+      alDescargarArchivoArco?.call(solicitudId) ??
+      Future.error(UnimplementedError('descargarArchivoArco'));
+
+  // --- Cancelacion de la cuenta (V2-M22.03) ---
+  Future<SolicitudArco> Function(String contrasena)? alCancelarCuentaArco;
+
+  @override
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena) =>
+      alCancelarCuentaArco?.call(contrasena) ??
+      Future.error(UnimplementedError('cancelarCuentaArco'));
 }

@@ -2110,6 +2110,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can keep using CareCar, but for your safety we do not store your data on this device. Offline, you will not see saved information.';
 
   @override
+  String get seguridadConexionNoSeguraTitulo =>
+      'We could not verify that the connection is secure';
+
+  @override
+  String get seguridadConexionNoSeguraMensaje =>
+      'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
+
+  @override
   String get asistenteTitulo => 'Ask your car';
 
   @override
@@ -3260,6 +3268,229 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'The driver hasn\'t recorded any checklist for this pickup yet.';
+
+  @override
+  String get privacidadTitulo => 'Privacy notice';
+
+  @override
+  String privacidadVersion(int version) {
+    return 'Version $version';
+  }
+
+  @override
+  String privacidadVigenteDesde(String fecha) {
+    return 'In effect since $fecha';
+  }
+
+  @override
+  String privacidadAceptadoEl(String fecha) {
+    return 'You accepted it on $fecha';
+  }
+
+  @override
+  String get privacidadCargando => 'Loading the privacy notice';
+
+  @override
+  String get privacidadAntesDeContinuar => 'Before you continue';
+
+  @override
+  String get privacidadIntro =>
+      'Read the privacy notice. You need to accept it to use CareCar.';
+
+  @override
+  String get privacidadAceptar => 'I accept the privacy notice';
+
+  @override
+  String get privacidadGuardando => 'Saving…';
+
+  @override
+  String get privacidadNoAcepto => 'I don\'t accept, sign out';
+
+  @override
+  String get privacidadCambio =>
+      'The notice changed while you were reading. The new one is up: read it and accept it if you agree.';
+
+  @override
+  String get privacidadErrorAceptar =>
+      'We couldn\'t save your acceptance. Try again.';
+
+  @override
+  String get privacidadSinConexionAceptar =>
+      'You\'re offline. Connect to save your acceptance.';
+
+  @override
+  String get privacidadHubTitulo => 'Privacy and my data';
+
+  @override
+  String get privacidadHubAviso => 'Privacy notice';
+
+  @override
+  String get privacidadHubAvisoDetalle => 'What we do with your data';
+
+  @override
+  String get privacidadHubDatos => 'Download my data';
+
+  @override
+  String get privacidadHubDatosDetalle => 'A copy of your personal data';
+
+  @override
+  String get arcoTitulo => 'My data';
+
+  @override
+  String get arcoIntro =>
+      'You can ask for a copy of the personal data CareCar keeps for your account. It\'s a file you can save or share.';
+
+  @override
+  String get arcoAlcance =>
+      'It doesn\'t include the tax and commercial records the dealership keeps by law (sales, payments and invoices): ask for them at the dealership.';
+
+  @override
+  String get arcoPedir => 'Ask for a copy of my data';
+
+  @override
+  String get arcoPidiendo => 'Requesting…';
+
+  @override
+  String get arcoPreparando => 'We\'re preparing your file';
+
+  @override
+  String get arcoPreparandoDetalle =>
+      'It takes a few seconds. You can stay on this screen.';
+
+  @override
+  String get arcoLista => 'Your file is ready';
+
+  @override
+  String arcoVence(String fecha) {
+    return 'Available until $fecha';
+  }
+
+  @override
+  String get arcoCuidado =>
+      'It contains personal information: keep it somewhere safe and don\'t share it.';
+
+  @override
+  String get arcoDescargar => 'Download my file';
+
+  @override
+  String get arcoDescargando => 'Preparing…';
+
+  @override
+  String get arcoPedirOtra => 'Ask for a new copy';
+
+  @override
+  String get arcoFallida => 'We couldn\'t prepare your file. Try again.';
+
+  @override
+  String get arcoVencida =>
+      'Your file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoErrorPedir => 'We couldn\'t request your copy. Try again.';
+
+  @override
+  String get arcoSinConexionPedir =>
+      'You\'re offline. Connect to request your copy.';
+
+  @override
+  String get arcoErrorDescarga => 'We couldn\'t download your file. Try again.';
+
+  @override
+  String get arcoArchivoNoDisponible =>
+      'The file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoCargando => 'Loading your requests';
+
+  @override
+  String get privacidadHubEliminar => 'Delete my account';
+
+  @override
+  String get privacidadHubEliminarDetalle =>
+      'Deletes your account and your personal data';
+
+  @override
+  String get eliminarCuentaTitulo => 'Delete my account';
+
+  @override
+  String get eliminarCuentaAdvertenciaTitulo => 'This can\'t be undone';
+
+  @override
+  String get eliminarCuentaAdvertencia =>
+      'Your account is closed right away and we won\'t be able to recover it.';
+
+  @override
+  String get eliminarCuentaSeBorraTitulo => 'What gets deleted';
+
+  @override
+  String get eliminarCuentaBorra1 => 'Your name, email and phone number.';
+
+  @override
+  String get eliminarCuentaBorra2 =>
+      'Your addresses, your questions to the assistant, your quotes and your new-car requests.';
+
+  @override
+  String get eliminarCuentaBorra3 =>
+      'Your expense and mileage log, with its photos and receipts.';
+
+  @override
+  String get eliminarCuentaBorra4 =>
+      'Your location and comments in roadside assistance requests.';
+
+  @override
+  String get eliminarCuentaConservaTitulo => 'What we keep';
+
+  @override
+  String get eliminarCuentaConserva =>
+      'What we must keep for tax, commercial or warranty reasons: your vehicles\' service history, your purchases, payments and invoices, and the record that you accepted the privacy notice.';
+
+  @override
+  String get eliminarCuentaContrasena => 'Your password';
+
+  @override
+  String get eliminarCuentaContrasenaAyuda =>
+      'We ask for it to confirm it\'s you.';
+
+  @override
+  String get eliminarCuentaDeslizar => 'Slide to delete my account';
+
+  @override
+  String get eliminarCuentaConfirmarMensaje =>
+      'Your personal data is deleted and you won\'t be able to sign in with this account again. This can\'t be undone.';
+
+  @override
+  String get eliminarCuentaEliminando => 'Deleting your account…';
+
+  @override
+  String get eliminarCuentaListo =>
+      'Your account was deleted. Thanks for using CareCar.';
+
+  @override
+  String get eliminarCuentaContrasenaIncorrecta =>
+      'The password isn\'t correct.';
+
+  @override
+  String eliminarCuentaBloqueada(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutes',
+      one: '1 minute',
+    );
+    return 'Too many attempts. Try again in $_temp0.';
+  }
+
+  @override
+  String get eliminarCuentaBloqueadaSinEspera =>
+      'Too many attempts. Try again later.';
+
+  @override
+  String get eliminarCuentaSinConexion =>
+      'You\'re offline. Check your connection and try again.';
+
+  @override
+  String get eliminarCuentaError =>
+      'We couldn\'t delete your account. Try again.';
 
   @override
   String get asistenciaLlamarTitulo => 'Call now';

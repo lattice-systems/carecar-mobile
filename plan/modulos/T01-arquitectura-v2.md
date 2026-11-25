@@ -127,7 +127,7 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 **Decisiones**
 
 - `pruebas` apunta al mismo backend de Azure que `produccion` porque no existe un ambiente de pruebas separado; cuando exista, solo cambia `Flavor.pruebas` (o se pasa `API_BASE_URL`).
-- iOS se configuró sin Mac: la validación es el job `Build iOS (sin firma)` de CI.
+- iOS se configuró sin Mac: la validación es el job `Build iOS (sin firma)` de CI, hoy en pausa (desde 2026-11-25 no corre salvo que la variable `MACOS_ACTIVO` valga `true`; ver [`docs/pausa-de-macos.md`](../../docs/pausa-de-macos.md)).
 - Pendiente de otras historias: la galería de diseño (V2-T02.06) debe condicionarse a `Flavor.actual == Flavor.desarrollo` en vez de `kDebugMode`; V2-M22.09 (HTTPS fuera de local) completó el bloqueo: nativo, `ApiConfig`, manuales, teselas y CI.
 
 ## Avance de V2-T01.08

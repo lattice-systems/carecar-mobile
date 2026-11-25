@@ -2718,6 +2718,14 @@
   "@seguridadEquipoComprometidoMensaje": {
     "description": "Explica que la app sigue funcionando pero no deja copias locales de los datos del cliente."
   },
+  "seguridadConexionNoSeguraTitulo": "No pudimos verificar que la conexión sea segura",
+  "@seguridadConexionNoSeguraTitulo": {
+    "description": "Título del aviso cuando el certificado del servidor no valida (certificados fijados). No bloquea la app."
+  },
+  "seguridadConexionNoSeguraMensaje": "El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.",
+  "@seguridadConexionNoSeguraMensaje": {
+    "description": "Explica por qué se cortó la conexión y qué hacer: cambiar de red."
+  },
   "asistenteTitulo": "Pregúntale a tu auto",
   "@asistenteTitulo": {
     "description": "Título de la pantalla del asistente y acceso desde el detalle del vehículo."
@@ -4275,6 +4283,275 @@
   "recoleccionComparacionFaltaAmbos": "El chofer todavía no registra ningún checklist de esta recolección.",
   "@recoleccionComparacionFaltaAmbos": {
     "description": "Faltan los dos checklists."
+  },
+  "privacidadTitulo": "Aviso de privacidad",
+  "@privacidadTitulo": {
+    "description": "Título de la pantalla del aviso de privacidad (V2-M22.01)."
+  },
+  "privacidadVersion": "Versión {version}",
+  "@privacidadVersion": {
+    "description": "Etiqueta con el número de versión del aviso.",
+    "placeholders": {
+      "version": {
+        "type": "int"
+      }
+    }
+  },
+  "privacidadVigenteDesde": "Vigente desde el {fecha}",
+  "@privacidadVigenteDesde": {
+    "description": "Desde cuándo rige la versión del aviso.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "privacidadAceptadoEl": "Lo aceptaste el {fecha}",
+  "@privacidadAceptadoEl": {
+    "description": "Cuándo aceptó la persona esta versión.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "privacidadCargando": "Cargando el aviso de privacidad",
+  "@privacidadCargando": {
+    "description": "Lector de pantalla mientras carga el aviso."
+  },
+  "privacidadAntesDeContinuar": "Antes de continuar",
+  "@privacidadAntesDeContinuar": {
+    "description": "Encabezado de la puerta que pide aceptar el aviso."
+  },
+  "privacidadIntro": "Lee el aviso de privacidad. Para usar CareCar necesitas aceptarlo.",
+  "@privacidadIntro": {
+    "description": "Explica por qué se pide aceptar el aviso."
+  },
+  "privacidadAceptar": "Acepto el aviso de privacidad",
+  "@privacidadAceptar": {
+    "description": "Botón que registra la aceptación."
+  },
+  "privacidadGuardando": "Guardando…",
+  "@privacidadGuardando": {
+    "description": "Texto del botón de aceptar mientras se registra."
+  },
+  "privacidadNoAcepto": "No acepto, cerrar sesión",
+  "@privacidadNoAcepto": {
+    "description": "Salida de la puerta para quien no acepta el aviso."
+  },
+  "privacidadCambio": "El aviso cambió mientras lo leías. Ya está el nuevo: léelo y acéptalo si estás de acuerdo.",
+  "@privacidadCambio": {
+    "description": "Aviso cuando la agencia publica otra versión mientras se lee (409)."
+  },
+  "privacidadErrorAceptar": "No pudimos guardar tu aceptación. Intenta de nuevo.",
+  "@privacidadErrorAceptar": {
+    "description": "Fallo al registrar la aceptación."
+  },
+  "privacidadSinConexionAceptar": "Sin conexión. Conéctate para guardar tu aceptación.",
+  "@privacidadSinConexionAceptar": {
+    "description": "Fallo de red al registrar la aceptación."
+  },
+  "privacidadHubTitulo": "Privacidad y mis datos",
+  "@privacidadHubTitulo": {
+    "description": "Título de la pantalla que reúne el aviso de privacidad y los derechos sobre los datos (V2-M22.02)."
+  },
+  "privacidadHubAviso": "Aviso de privacidad",
+  "@privacidadHubAviso": {
+    "description": "Fila del aviso de privacidad en Privacidad y mis datos."
+  },
+  "privacidadHubAvisoDetalle": "Qué hacemos con tus datos",
+  "@privacidadHubAvisoDetalle": {
+    "description": "Detalle de la fila del aviso de privacidad."
+  },
+  "privacidadHubDatos": "Descargar mis datos",
+  "@privacidadHubDatos": {
+    "description": "Fila que abre la copia de los datos personales."
+  },
+  "privacidadHubDatosDetalle": "Una copia de tus datos personales",
+  "@privacidadHubDatosDetalle": {
+    "description": "Detalle de la fila de descargar mis datos."
+  },
+  "arcoTitulo": "Mis datos",
+  "@arcoTitulo": {
+    "description": "Título de la pantalla para pedir y descargar la copia de los datos."
+  },
+  "arcoIntro": "Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.",
+  "@arcoIntro": {
+    "description": "Explica qué es la copia de los datos (acceso ARCO)."
+  },
+  "arcoAlcance": "No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.",
+  "@arcoAlcance": {
+    "description": "Aclara lo que la copia no incluye."
+  },
+  "arcoPedir": "Pedir una copia de mis datos",
+  "@arcoPedir": {
+    "description": "Botón que pide la copia de los datos."
+  },
+  "arcoPidiendo": "Pidiendo…",
+  "@arcoPidiendo": {
+    "description": "Texto del botón mientras se pide la copia."
+  },
+  "arcoPreparando": "Estamos preparando tu archivo",
+  "@arcoPreparando": {
+    "description": "Título mientras la copia se prepara."
+  },
+  "arcoPreparandoDetalle": "Tarda unos segundos. Puedes quedarte en esta pantalla.",
+  "@arcoPreparandoDetalle": {
+    "description": "Detalle mientras la copia se prepara."
+  },
+  "arcoLista": "Tu archivo está listo",
+  "@arcoLista": {
+    "description": "Título cuando la copia ya se puede descargar."
+  },
+  "arcoVence": "Disponible hasta el {fecha}",
+  "@arcoVence": {
+    "description": "Hasta cuándo se puede descargar la copia.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "arcoCuidado": "Contiene información personal: guárdalo en un lugar seguro y no lo compartas.",
+  "@arcoCuidado": {
+    "description": "Recordatorio de cuidado del archivo descargado."
+  },
+  "arcoDescargar": "Descargar mi archivo",
+  "@arcoDescargar": {
+    "description": "Botón que abre la hoja de compartir con la copia."
+  },
+  "arcoDescargando": "Preparando…",
+  "@arcoDescargando": {
+    "description": "Texto del botón mientras se baja el archivo."
+  },
+  "arcoPedirOtra": "Pedir una copia nueva",
+  "@arcoPedirOtra": {
+    "description": "Botón para pedir otra copia cuando ya hay una."
+  },
+  "arcoFallida": "No pudimos preparar tu archivo. Intenta de nuevo.",
+  "@arcoFallida": {
+    "description": "Aviso cuando la copia no se pudo preparar."
+  },
+  "arcoVencida": "Tu archivo ya no está disponible. Pide una copia nueva.",
+  "@arcoVencida": {
+    "description": "Aviso cuando la copia venció."
+  },
+  "arcoErrorPedir": "No pudimos pedir tu copia. Intenta de nuevo.",
+  "@arcoErrorPedir": {
+    "description": "Fallo al pedir la copia."
+  },
+  "arcoSinConexionPedir": "Sin conexión. Conéctate para pedir tu copia.",
+  "@arcoSinConexionPedir": {
+    "description": "Falta de conexión al pedir la copia."
+  },
+  "arcoErrorDescarga": "No pudimos descargar tu archivo. Intenta de nuevo.",
+  "@arcoErrorDescarga": {
+    "description": "Fallo al descargar la copia."
+  },
+  "arcoArchivoNoDisponible": "El archivo ya no está disponible. Pide una copia nueva.",
+  "@arcoArchivoNoDisponible": {
+    "description": "Aviso cuando al descargar ya no estaba."
+  },
+  "arcoCargando": "Cargando tus solicitudes",
+  "@arcoCargando": {
+    "description": "Lector de pantalla mientras carga."
+  },
+  "privacidadHubEliminar": "Eliminar mi cuenta",
+  "@privacidadHubEliminar": {
+    "description": "Fila del centro de privacidad que abre la cancelación de la cuenta."
+  },
+  "privacidadHubEliminarDetalle": "Borra tu cuenta y tus datos personales",
+  "@privacidadHubEliminarDetalle": {
+    "description": "Detalle de la fila de eliminar mi cuenta."
+  },
+  "eliminarCuentaTitulo": "Eliminar mi cuenta",
+  "@eliminarCuentaTitulo": {
+    "description": "Título de la pantalla para eliminar la cuenta (cancelación ARCO)."
+  },
+  "eliminarCuentaAdvertenciaTitulo": "No se puede deshacer",
+  "@eliminarCuentaAdvertenciaTitulo": {
+    "description": "Título del aviso de peligro al eliminar la cuenta."
+  },
+  "eliminarCuentaAdvertencia": "Tu cuenta se cierra de inmediato y no podremos recuperarla.",
+  "@eliminarCuentaAdvertencia": {
+    "description": "Mensaje del aviso de peligro al eliminar la cuenta."
+  },
+  "eliminarCuentaSeBorraTitulo": "Qué se borra",
+  "@eliminarCuentaSeBorraTitulo": {
+    "description": "Encabezado de la lista de lo que se borra."
+  },
+  "eliminarCuentaBorra1": "Tu nombre, correo y teléfono.",
+  "@eliminarCuentaBorra1": {
+    "description": "Primer elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra2": "Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.",
+  "@eliminarCuentaBorra2": {
+    "description": "Segundo elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra3": "Tu bitácora de gastos y kilometraje, con sus fotos y tickets.",
+  "@eliminarCuentaBorra3": {
+    "description": "Tercer elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra4": "Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.",
+  "@eliminarCuentaBorra4": {
+    "description": "Cuarto elemento de lo que se borra."
+  },
+  "eliminarCuentaConservaTitulo": "Qué conservamos",
+  "@eliminarCuentaConservaTitulo": {
+    "description": "Encabezado de lo que se conserva."
+  },
+  "eliminarCuentaConserva": "Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.",
+  "@eliminarCuentaConserva": {
+    "description": "Explica lo que no se borra al eliminar la cuenta."
+  },
+  "eliminarCuentaContrasena": "Tu contraseña",
+  "@eliminarCuentaContrasena": {
+    "description": "Etiqueta del campo de contraseña al eliminar la cuenta."
+  },
+  "eliminarCuentaContrasenaAyuda": "La pedimos para confirmar que eres tú.",
+  "@eliminarCuentaContrasenaAyuda": {
+    "description": "Ayuda del campo de contraseña al eliminar la cuenta."
+  },
+  "eliminarCuentaDeslizar": "Desliza para eliminar mi cuenta",
+  "@eliminarCuentaDeslizar": {
+    "description": "Texto del control de deslizar que elimina la cuenta."
+  },
+  "eliminarCuentaConfirmarMensaje": "Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.",
+  "@eliminarCuentaConfirmarMensaje": {
+    "description": "Mensaje del diálogo de confirmación cuando se usa lector de pantalla."
+  },
+  "eliminarCuentaEliminando": "Eliminando tu cuenta…",
+  "@eliminarCuentaEliminando": {
+    "description": "Mientras se elimina la cuenta."
+  },
+  "eliminarCuentaListo": "Tu cuenta se eliminó. Gracias por usar CareCar.",
+  "@eliminarCuentaListo": {
+    "description": "Aviso al terminar de eliminar la cuenta."
+  },
+  "eliminarCuentaContrasenaIncorrecta": "La contraseña no es correcta.",
+  "@eliminarCuentaContrasenaIncorrecta": {
+    "description": "Error del campo cuando la contraseña es equivocada."
+  },
+  "eliminarCuentaBloqueada": "Demasiados intentos. Intenta de nuevo en {minutos, plural, =1{1 minuto} other{{minutos} minutos}}.",
+  "@eliminarCuentaBloqueada": {
+    "description": "Bloqueo por contraseñas equivocadas, con los minutos de espera.",
+    "placeholders": {
+      "minutos": {
+        "type": "int"
+      }
+    }
+  },
+  "eliminarCuentaBloqueadaSinEspera": "Demasiados intentos. Intenta de nuevo más tarde.",
+  "@eliminarCuentaBloqueadaSinEspera": {
+    "description": "Bloqueo por contraseñas equivocadas, sin tiempo conocido."
+  },
+  "eliminarCuentaSinConexion": "Sin conexión. Revisa tu internet e inténtalo de nuevo.",
+  "@eliminarCuentaSinConexion": {
+    "description": "Sin red al eliminar la cuenta."
+  },
+  "eliminarCuentaError": "No pudimos eliminar tu cuenta. Inténtalo de nuevo.",
+  "@eliminarCuentaError": {
+    "description": "Error genérico al eliminar la cuenta."
   },
   "asistenciaLlamarTitulo": "Llamar ahora",
   "@asistenciaLlamarTitulo": {

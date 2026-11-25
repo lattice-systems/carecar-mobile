@@ -2108,6 +2108,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.';
 
   @override
+  String get seguridadConexionNoSeguraTitulo =>
+      'No pudimos verificar que la conexión sea segura';
+
+  @override
+  String get seguridadConexionNoSeguraMensaje =>
+      'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.';
+
+  @override
   String get asistenteTitulo => 'Pregúntale a tu auto';
 
   @override
@@ -3260,6 +3268,230 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'El chofer todavía no registra ningún checklist de esta recolección.';
+
+  @override
+  String get privacidadTitulo => 'Aviso de privacidad';
+
+  @override
+  String privacidadVersion(int version) {
+    return 'Versión $version';
+  }
+
+  @override
+  String privacidadVigenteDesde(String fecha) {
+    return 'Vigente desde el $fecha';
+  }
+
+  @override
+  String privacidadAceptadoEl(String fecha) {
+    return 'Lo aceptaste el $fecha';
+  }
+
+  @override
+  String get privacidadCargando => 'Cargando el aviso de privacidad';
+
+  @override
+  String get privacidadAntesDeContinuar => 'Antes de continuar';
+
+  @override
+  String get privacidadIntro =>
+      'Lee el aviso de privacidad. Para usar CareCar necesitas aceptarlo.';
+
+  @override
+  String get privacidadAceptar => 'Acepto el aviso de privacidad';
+
+  @override
+  String get privacidadGuardando => 'Guardando…';
+
+  @override
+  String get privacidadNoAcepto => 'No acepto, cerrar sesión';
+
+  @override
+  String get privacidadCambio =>
+      'El aviso cambió mientras lo leías. Ya está el nuevo: léelo y acéptalo si estás de acuerdo.';
+
+  @override
+  String get privacidadErrorAceptar =>
+      'No pudimos guardar tu aceptación. Intenta de nuevo.';
+
+  @override
+  String get privacidadSinConexionAceptar =>
+      'Sin conexión. Conéctate para guardar tu aceptación.';
+
+  @override
+  String get privacidadHubTitulo => 'Privacidad y mis datos';
+
+  @override
+  String get privacidadHubAviso => 'Aviso de privacidad';
+
+  @override
+  String get privacidadHubAvisoDetalle => 'Qué hacemos con tus datos';
+
+  @override
+  String get privacidadHubDatos => 'Descargar mis datos';
+
+  @override
+  String get privacidadHubDatosDetalle => 'Una copia de tus datos personales';
+
+  @override
+  String get arcoTitulo => 'Mis datos';
+
+  @override
+  String get arcoIntro =>
+      'Puedes pedir una copia de los datos personales que CareCar guarda de tu cuenta. Es un archivo que podrás guardar o compartir.';
+
+  @override
+  String get arcoAlcance =>
+      'No incluye lo fiscal y comercial que la agencia conserva por ley (ventas, pagos y facturas): pídelo en la agencia.';
+
+  @override
+  String get arcoPedir => 'Pedir una copia de mis datos';
+
+  @override
+  String get arcoPidiendo => 'Pidiendo…';
+
+  @override
+  String get arcoPreparando => 'Estamos preparando tu archivo';
+
+  @override
+  String get arcoPreparandoDetalle =>
+      'Tarda unos segundos. Puedes quedarte en esta pantalla.';
+
+  @override
+  String get arcoLista => 'Tu archivo está listo';
+
+  @override
+  String arcoVence(String fecha) {
+    return 'Disponible hasta el $fecha';
+  }
+
+  @override
+  String get arcoCuidado =>
+      'Contiene información personal: guárdalo en un lugar seguro y no lo compartas.';
+
+  @override
+  String get arcoDescargar => 'Descargar mi archivo';
+
+  @override
+  String get arcoDescargando => 'Preparando…';
+
+  @override
+  String get arcoPedirOtra => 'Pedir una copia nueva';
+
+  @override
+  String get arcoFallida => 'No pudimos preparar tu archivo. Intenta de nuevo.';
+
+  @override
+  String get arcoVencida =>
+      'Tu archivo ya no está disponible. Pide una copia nueva.';
+
+  @override
+  String get arcoErrorPedir => 'No pudimos pedir tu copia. Intenta de nuevo.';
+
+  @override
+  String get arcoSinConexionPedir =>
+      'Sin conexión. Conéctate para pedir tu copia.';
+
+  @override
+  String get arcoErrorDescarga =>
+      'No pudimos descargar tu archivo. Intenta de nuevo.';
+
+  @override
+  String get arcoArchivoNoDisponible =>
+      'El archivo ya no está disponible. Pide una copia nueva.';
+
+  @override
+  String get arcoCargando => 'Cargando tus solicitudes';
+
+  @override
+  String get privacidadHubEliminar => 'Eliminar mi cuenta';
+
+  @override
+  String get privacidadHubEliminarDetalle =>
+      'Borra tu cuenta y tus datos personales';
+
+  @override
+  String get eliminarCuentaTitulo => 'Eliminar mi cuenta';
+
+  @override
+  String get eliminarCuentaAdvertenciaTitulo => 'No se puede deshacer';
+
+  @override
+  String get eliminarCuentaAdvertencia =>
+      'Tu cuenta se cierra de inmediato y no podremos recuperarla.';
+
+  @override
+  String get eliminarCuentaSeBorraTitulo => 'Qué se borra';
+
+  @override
+  String get eliminarCuentaBorra1 => 'Tu nombre, correo y teléfono.';
+
+  @override
+  String get eliminarCuentaBorra2 =>
+      'Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.';
+
+  @override
+  String get eliminarCuentaBorra3 =>
+      'Tu bitácora de gastos y kilometraje, con sus fotos y tickets.';
+
+  @override
+  String get eliminarCuentaBorra4 =>
+      'Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.';
+
+  @override
+  String get eliminarCuentaConservaTitulo => 'Qué conservamos';
+
+  @override
+  String get eliminarCuentaConserva =>
+      'Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.';
+
+  @override
+  String get eliminarCuentaContrasena => 'Tu contraseña';
+
+  @override
+  String get eliminarCuentaContrasenaAyuda =>
+      'La pedimos para confirmar que eres tú.';
+
+  @override
+  String get eliminarCuentaDeslizar => 'Desliza para eliminar mi cuenta';
+
+  @override
+  String get eliminarCuentaConfirmarMensaje =>
+      'Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.';
+
+  @override
+  String get eliminarCuentaEliminando => 'Eliminando tu cuenta…';
+
+  @override
+  String get eliminarCuentaListo =>
+      'Tu cuenta se eliminó. Gracias por usar CareCar.';
+
+  @override
+  String get eliminarCuentaContrasenaIncorrecta =>
+      'La contraseña no es correcta.';
+
+  @override
+  String eliminarCuentaBloqueada(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutos',
+      one: '1 minuto',
+    );
+    return 'Demasiados intentos. Intenta de nuevo en $_temp0.';
+  }
+
+  @override
+  String get eliminarCuentaBloqueadaSinEspera =>
+      'Demasiados intentos. Intenta de nuevo más tarde.';
+
+  @override
+  String get eliminarCuentaSinConexion =>
+      'Sin conexión. Revisa tu internet e inténtalo de nuevo.';
+
+  @override
+  String get eliminarCuentaError =>
+      'No pudimos eliminar tu cuenta. Inténtalo de nuevo.';
 
   @override
   String get asistenciaLlamarTitulo => 'Llamar ahora';

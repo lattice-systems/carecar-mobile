@@ -107,7 +107,7 @@ class SolicitudEstreno {
                 json['cotizacion']! as Map<String, Object?>,
               ),
         estimacionTomaCuentaId: json['estimacionTomaCuentaId'] as int?,
-        creadaEn: _leerMomento(json['creadaEn']),
+        creadaEn: leerMomentoUtc(json['creadaEn'], 'creadaEn'),
       );
 
   final int id;
@@ -123,24 +123,4 @@ class SolicitudEstreno {
   final CotizacionEstreno? cotizacion;
   final int? estimacionTomaCuentaId;
   final DateTime creadaEn;
-}
-
-/// Lee el `date-time` de creación; sin zona se toma como UTC, que es lo que
-/// el contrato declara. Una fecha rota falla: no se inventa una.
-DateTime _leerMomento(Object? valor) {
-  final texto = leerTexto(valor, 'creadaEn');
-  final momento = DateTime.tryParse(texto);
-  if (momento == null) {
-    throw FormatException('El campo «creadaEn» no es una fecha: $texto');
-  }
-  return momento.isUtc
-      ? momento
-      : DateTime.utc(
-          momento.year,
-          momento.month,
-          momento.day,
-          momento.hour,
-          momento.minute,
-          momento.second,
-        );
 }

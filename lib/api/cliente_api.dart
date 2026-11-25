@@ -6,7 +6,9 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' show MediaType;
 
+import '../config/flavor.dart';
 import 'api_config.dart';
+import 'cliente_http_fijado.dart';
 import 'excepciones.dart';
 import 'modelos/pagina.dart';
 import 'modelos/problema.dart';
@@ -25,16 +27,35 @@ const tiempoLimitePorOmision = Duration(seconds: 60);
 /// Es la unica clase que sabe que detras hay HTTP. La interfaz que usan las
 /// pantallas es `CarecarApi`, asi que cambiar de la API simulada a la real, o
 /// incluso de cliente HTTP, no toca la interfaz.
+/// ¿El fallo del saludo TLS es porque el certificado no valida? (V2-M22.15)
+///
+/// Dart no distingue el motivo con un tipo: viene en el texto del sistema.
+/// `CERTIFICATE_VERIFY_FAILED` cubre una cadena que no llega a lo fijado, un
+/// certificado vencido y un nombre que no coincide;
+/// `cliente_http_fijado_test.dart` lo comprueba con un servidor real.
+bool esCertificadoRechazado(HandshakeException e) =>
+    '$e'.contains('CERTIFICATE_VERIFY_FAILED');
+
 class ClienteApi {
   ClienteApi({
     required this.config,
     http.Client? http,
     this.obtenerToken,
     this.renovarSesion,
+    this.alVerificarCertificado,
     this.tiempoLimite = tiempoLimitePorOmision,
-  }) : _http = http ?? _crearCliente();
+  }) : _http = http ?? _crearCliente(config);
 
-  static http.Client _crearCliente() => http.Client();
+  /// Avisa si el certificado del servidor se pudo verificar (`true`) o no
+  /// (`false`), cada vez que hay respuesta o un rechazo del certificado.
+  final void Function(bool verificado)? alVerificarCertificado;
+
+  /// El cliente por omisión confía en lo que dice el flavor para la dirección de
+  /// [config] (V2-M22.04): fija los certificados de Azure en `pruebas` y
+  /// `produccion`.
+  static http.Client _crearCliente(ApiConfig config) => crearClienteHttp(
+    decidirConfianza(flavor: Flavor.actual, servidor: config.base),
+  );
 
   final ApiConfig config;
   final http.Client _http;
@@ -290,13 +311,15 @@ class ClienteApi {
         ..headers['accept'] = 'text/event-stream, application/json'
         ..body = jsonEncode(cuerpo);
       try {
-        return await _http.send(peticion).timeout(tiempoLimite);
+        final abierta = await _http.send(peticion).timeout(tiempoLimite);
+        alVerificarCertificado?.call(true);
+        return abierta;
       } on SocketException catch (e) {
         throw SinConexion(e);
       } on http.ClientException catch (e) {
         throw SinConexion(e);
       } on HandshakeException catch (e) {
-        throw SinConexion(e);
+        throw _porHandshake(e);
       } on TimeoutException catch (e) {
         throw SinConexion(e);
       }
@@ -390,16 +413,27 @@ class ClienteApi {
     Future<http.Response> Function() llamada,
   ) async {
     try {
-      return await llamada().timeout(tiempoLimite);
+      final respuesta = await llamada().timeout(tiempoLimite);
+      alVerificarCertificado?.call(true);
+      return respuesta;
     } on SocketException catch (e) {
       throw SinConexion(e);
     } on http.ClientException catch (e) {
       throw SinConexion(e);
     } on HandshakeException catch (e) {
-      throw SinConexion(e);
+      throw _porHandshake(e);
     } on TimeoutException catch (e) {
       throw SinConexion(e);
     }
+  }
+
+  /// Un fallo del saludo TLS es una [SinConexion], salvo que sea porque el
+  /// certificado no valida (V2-M22.15): entonces es [ConexionNoSegura] y se
+  /// avisa, para que la app lo explique en vez de decir «sin conexión».
+  SinConexion _porHandshake(HandshakeException e) {
+    if (!esCertificadoRechazado(e)) return SinConexion(e);
+    alVerificarCertificado?.call(false);
+    return ConexionNoSegura(e);
   }
 
   void _verificarEstado(http.Response respuesta) {
