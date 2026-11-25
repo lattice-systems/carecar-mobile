@@ -475,4 +475,34 @@ class ApiFalsa implements CarecarApi {
     int pagina = 0,
     int tamano = 20,
   }) async => _rebanar(estimaciones, pagina, tamano);
+
+  // --- Estreno (V2-M16) ---
+  Future<CotizacionEstreno> Function(int modeloId, double enganche, int plazo)?
+  alCalcularMensualidad;
+  Future<SolicitudEstreno> Function(NuevaSolicitudEstreno nueva)?
+  alCrearSolicitudEstreno;
+  Future<Pagina<SolicitudEstreno>> Function(int pagina)?
+  alPedirSolicitudesEstreno;
+
+  @override
+  Future<CotizacionEstreno> calcularMensualidad({
+    required int modeloCatalogoId,
+    required double enganche,
+    required int plazoMeses,
+  }) =>
+      alCalcularMensualidad?.call(modeloCatalogoId, enganche, plazoMeses) ??
+      Future.error(UnimplementedError('calcularMensualidad'));
+
+  @override
+  Future<SolicitudEstreno> crearSolicitudEstreno(NuevaSolicitudEstreno nueva) =>
+      alCrearSolicitudEstreno?.call(nueva) ??
+      Future.error(UnimplementedError('crearSolicitudEstreno'));
+
+  @override
+  Future<Pagina<SolicitudEstreno>> paginaDeSolicitudesEstreno({
+    int pagina = 0,
+    int tamano = 20,
+  }) =>
+      alPedirSolicitudesEstreno?.call(pagina) ??
+      Future.value(const Pagina(contenido: [], totalPaginas: 0));
 }

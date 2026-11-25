@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -14,6 +15,7 @@ import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../estreno/estreno.dart';
 import '../dominio/detalle_modelo.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
@@ -128,6 +130,31 @@ class _Detalle extends StatelessWidget {
           ),
         ],
         const SizedBox(height: Espaciado.e4),
+        // V2-M16: del interes a una solicitud que llega al CRM.
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: BotonPildora(
+                texto: textos.estrenoQuieroProbarlo,
+                icono: Icons.directions_car_outlined,
+                expandido: true,
+                alPresionar: () => context.push(rutaPruebaManejo(modeloId)),
+              ),
+            ),
+            const SizedBox(width: Espaciado.e2),
+            Expanded(
+              child: BotonPildora(
+                texto: textos.estrenoCotizar,
+                icono: Icons.request_quote_outlined,
+                variante: VarianteBotonPildora.vidrio,
+                expandido: true,
+                alPresionar: () => context.push(rutaCotizarEstreno(modeloId)),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: Espaciado.e2),
         Boton(
           texto: textos.catalogoCalcularTomaACuenta,
           variante: VarianteBoton.secundario,
