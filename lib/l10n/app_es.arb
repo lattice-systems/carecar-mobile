@@ -4009,6 +4009,71 @@
   "@tallerRespuestaError": {
     "description": "Aviso cuando falla la respuesta por otro motivo."
   },
+  "tallerTarjetaListoTitulo": "Tu {vehiculo} está listo",
+  "@tallerTarjetaListoTitulo": {
+    "description": "Tarjeta de Inicio cuando la orden está lista para entrega (V2-M04.06).",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerTarjetaListoTotal": "Total a pagar {total}",
+  "@tallerTarjetaListoTotal": {
+    "description": "Total de la orden lista en la tarjeta de Inicio.",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerHorarioEntrega": "Recógelo el {fecha} de {desde} a {hasta}",
+  "@tallerHorarioEntrega": {
+    "description": "Horario para recoger el auto listo, en hora de la agencia.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
+  "tallerHorarioSinFranjas": "Tu asesor te dirá cuándo recogerlo.",
+  "@tallerHorarioSinFranjas": {
+    "description": "El taller no tiene horario cargado para recoger el auto."
+  },
+  "tallerOrdenListoTitulo": "Tu auto está listo",
+  "@tallerOrdenListoTitulo": {
+    "description": "Título del aviso de la orden lista para entrega (V2-M04.06)."
+  },
+  "tallerOrdenTotalAPagar": "Total a pagar",
+  "@tallerOrdenTotalAPagar": {
+    "description": "Subtítulo de la fila con el total de la orden lista o entregada."
+  },
+  "tallerOrdenEntregadaTitulo": "Ya recogiste tu auto",
+  "@tallerOrdenEntregadaTitulo": {
+    "description": "Título del aviso de la orden entregada (V2-M04.07)."
+  },
+  "tallerOrdenEntregadaMensaje": "La orden quedó en el historial de tu vehículo con su ticket.",
+  "@tallerOrdenEntregadaMensaje": {
+    "description": "Mensaje del aviso de la orden entregada."
+  },
+  "tallerOrdenVerTicket": "Ver ticket",
+  "@tallerOrdenVerTicket": {
+    "description": "Fila que abre el ticket de la orden lista o entregada (V2-M04.07)."
+  },
+  "tallerOrdenVerTicketResumen": "Mano de obra y refacciones de la orden",
+  "@tallerOrdenVerTicketResumen": {
+    "description": "Subtítulo de la fila que abre el ticket."
+  },
+  "tallerOrdenVerHistorial": "Ver historial del vehículo",
+  "@tallerOrdenVerHistorial": {
+    "description": "Fila que abre el historial del vehículo desde la orden entregada."
+  },
   "asistenteFotoAdjuntar": "Foto de una luz del tablero",
   "@asistenteFotoAdjuntar": {
     "description": "Botón de cámara junto al campo del asistente (V2-M24.05)."

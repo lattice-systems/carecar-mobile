@@ -25,6 +25,22 @@ String horaTaller(BuildContext context, DateTime momento) =>
 String horaCortaTaller(BuildContext context, DateTime momento) =>
     DateFormat.Hm(_idioma(context)).format(momento);
 
+/// Dia de la agencia con su nombre: `mié, 25 nov`.
+String diaTaller(BuildContext context, DateTime fecha) =>
+    DateFormat.MMMEd(_idioma(context)).format(fecha);
+
+/// Cuando recoger el auto listo (V2-M04.06). Las horas van tal como las manda
+/// el contrato; sin horario, que el asesor avisara.
+String textoHorarioEntrega(BuildContext context, HorarioEntrega? horario) {
+  final textos = AppLocalizations.of(context);
+  if (horario == null) return textos.tallerHorarioSinFranjas;
+  return textos.tallerHorarioEntrega(
+    diaTaller(context, horario.fecha),
+    horario.desde,
+    horario.hasta,
+  );
+}
+
 String textoEtapa(AppLocalizations textos, EtapaTaller etapa) =>
     switch (etapa) {
       EtapaTaller.recibido => textos.tallerEtapaRecibido,

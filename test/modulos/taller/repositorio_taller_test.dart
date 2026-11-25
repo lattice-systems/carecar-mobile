@@ -166,6 +166,86 @@ void main() {
       await expectLater(responder('OTRO'), throwsA(isA<Conflicto>()));
     });
 
+    test('lista para entrega trae el total y el horario (V2-M04.06)', () async {
+      final repo = _repo(
+        (_) => _json(200, [
+          {
+            'id': 41,
+            'vehiculoId': 5,
+            'vehiculo': 'Nissan March 2026',
+            'etapa': 'LISTO_PARA_ENTREGA',
+            'estatus': 'TERMINADO',
+            'entregaEstimada': null,
+            'asesor': null,
+            'avance': 86,
+            'adicionalesPendientes': 0,
+            'totalEstimado': 2932.5,
+            'horarioEntrega': {
+              'fecha': '2026-11-25',
+              'desde': '09:00',
+              'hasta': '17:00',
+            },
+          },
+        ]),
+      );
+
+      final orden = (await repo.enCurso()).single;
+
+      expect(orden.lista, isTrue);
+      expect(orden.totalEstimado, 2932.5);
+      expect(orden.horarioEntrega?.fecha, DateTime(2026, 11, 25));
+      expect(orden.horarioEntrega?.desde, '09:00');
+      expect(orden.horarioEntrega?.hasta, '17:00');
+    });
+
+    test('sin total ni horario, la orden en curso los deja nulos', () async {
+      final repo = _repo(
+        (_) => _json(200, [
+          {
+            'id': 41,
+            'vehiculoId': 5,
+            'vehiculo': 'Nissan March 2026',
+            'etapa': 'EN_REPARACION',
+            'estatus': 'EN_PROCESO',
+            'avance': 43,
+            'adicionalesPendientes': 0,
+          },
+        ]),
+      );
+
+      final orden = (await repo.enCurso()).single;
+
+      expect(orden.lista, isFalse);
+      expect(orden.totalEstimado, isNull);
+      expect(orden.horarioEntrega, isNull);
+    });
+
+    test('la orden lista trae su horario y la entregada no', () async {
+      final lista = await _repo(
+        (_) => _json(200, {
+          ..._orden,
+          'etapa': 'LISTO_PARA_ENTREGA',
+          'horarioEntrega': {
+            'fecha': '2026-11-25',
+            'desde': '09:00',
+            'hasta': '17:00',
+          },
+        }),
+      ).orden(41);
+      final entregada = await _repo(
+        (_) => _json(200, {
+          ..._orden,
+          'etapa': 'ENTREGADO',
+          'horarioEntrega': null,
+        }),
+      ).orden(41);
+
+      expect(lista.lista, isTrue);
+      expect(lista.horarioEntrega?.hasta, '17:00');
+      expect(entregada.entregada, isTrue);
+      expect(entregada.horarioEntrega, isNull);
+    });
+
     test('una orden ajena es NoEncontrado', () async {
       final repo = _repo(
         (_) => _json(404, {
@@ -209,6 +289,17 @@ void main() {
         );
       },
     );
+
+    test('la orden lista trae su total y su horario en curso', () async {
+      final repo = RepositorioTallerFake();
+
+      repo.actualizar(ordenDeEjemplo(etapa: EtapaTaller.listoParaEntrega));
+
+      final enCurso = (await repo.enCurso()).single;
+      expect(enCurso.lista, isTrue);
+      expect(enCurso.totalEstimado, 1282);
+      expect(enCurso.horarioEntrega?.desde, '09:00');
+    });
 
     test('una orden entregada ya no esta en curso', () async {
       final repo = RepositorioTallerFake(

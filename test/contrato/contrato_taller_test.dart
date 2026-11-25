@@ -17,6 +17,8 @@ const _propiedades = <String, Set<String>>{
     'asesor',
     'avance',
     'adicionalesPendientes',
+    'totalEstimado',
+    'horarioEntrega',
   },
   'OrdenEnVivo': {
     'id',
@@ -35,7 +37,10 @@ const _propiedades = <String, Set<String>>{
     'totalAdicionalesAprobados',
     'totalAdicionalesPendientes',
     'totalEstimado',
+    'horarioEntrega',
   },
+  'HorarioEntrega': {'fecha', 'desde', 'hasta'},
+  'AvisoOrden': {'ordenId', 'vehiculoId', 'estatus', 'etapa', 'motivo'},
   'PasoEtapa': {'etapa', 'inicio', 'fin', 'nota'},
   'PuntoInspeccion': {'id', 'punto', 'resultado', 'comentario', 'evidencias'},
   'Evidencia': {'id', 'tipo', 'url'},
@@ -55,6 +60,7 @@ const _operaciones = <String>{
   'GET /ordenes/activas',
   'GET /ordenes/{ordenId}',
   'POST /ordenes/{ordenId}/adicionales/{adicionalId}/respuesta',
+  'GET /eventos',
 };
 
 void main() {
@@ -67,13 +73,13 @@ void main() {
   });
 
   group('el contrato v2 trae el taller en vivo (V2-M04)', () {
-    test('la version es 2.8.0 o posterior', () {
+    test('la version es 2.11.0 o posterior', () {
       final partes = (contrato['info']['version'] as String)
           .split('.')
           .map(int.parse)
           .toList();
       expect(partes[0], 2);
-      expect(partes[1], greaterThanOrEqualTo(8));
+      expect(partes[1], greaterThanOrEqualTo(11));
     });
 
     test('cada esquema tiene exactamente sus propiedades', () {
@@ -96,7 +102,28 @@ void main() {
       ]);
     });
 
-    test('declara las tres operaciones', () {
+    test('el aviso en vivo dice que cambio (V2-M04.03)', () {
+      expect(
+        (esquemas['AvisoOrden']['properties']['motivo']['enum'] as YamlList)
+            .toList(),
+        [
+          'REGISTRO',
+          'APERTURA',
+          'ETAPA',
+          'INSPECCION',
+          'ADICIONAL',
+          'RESPUESTA',
+          'RENGLON',
+        ],
+      );
+      expect((esquemas['HorarioEntrega']['required'] as YamlList).toList(), [
+        'fecha',
+        'desde',
+        'hasta',
+      ]);
+    });
+
+    test('declara sus operaciones', () {
       final enElContrato = <String>{};
       (contrato['paths'] as YamlMap).forEach((ruta, operaciones) {
         (operaciones as YamlMap).forEach((metodo, _) {

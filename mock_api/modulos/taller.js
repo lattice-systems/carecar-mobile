@@ -1,7 +1,7 @@
 const zlib = require('node:zlib');
 const { BASE, problema, noEncontrado } = require('../comun/http');
 
-module.exports = function registrarTaller(servidor, db, vehiculoDelCliente) {
+module.exports = function registrarTaller(servidor, db, vehiculoDelCliente, emitirEvento) {
   const ETAPAS_TALLER = [
     'RECIBIDO',
     'DIAGNOSTICO',
@@ -39,6 +39,30 @@ module.exports = function registrarTaller(servidor, db, vehiculoDelCliente) {
     return Math.round(total * 100) / 100;
   }
 
+  // V2-M04.06: aprobados que aun no pasan a la orden; al quedar lista se suman.
+  function aprobadosSinIncorporar(orden) {
+    const total = orden.adicionales
+      .filter((a) => a.estado === 'APROBADO' && !a.incorporadoEn)
+      .reduce((t, a) => t + a.total, 0);
+    return Math.round(total * 100) / 100;
+  }
+
+  // V2-M04.06: como el backend, el primer dia desde hoy con horario del taller
+  // (lunes a sabado de 09:00 a 17:00); hoy solo si aun no cierra.
+  function horarioEntrega() {
+    const ahora = new Date();
+    for (let dias = 0; dias < 8; dias++) {
+      const dia = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate() + dias);
+      if (dia.getDay() === 0) continue;
+      if (dias === 0 && ahora.getHours() >= 17) continue;
+      const fecha = [dia.getFullYear(), dia.getMonth() + 1, dia.getDate()]
+        .map((n, i) => String(n).padStart(i === 0 ? 4 : 2, '0'))
+        .join('-');
+      return { fecha, desde: '09:00', hasta: '17:00' };
+    }
+    return null;
+  }
+
   function comoOrdenEnCurso(orden, vehiculo) {
     const etapa = etapaActual(orden);
     return {
@@ -51,6 +75,8 @@ module.exports = function registrarTaller(servidor, db, vehiculoDelCliente) {
       asesor: orden.asesor ?? null,
       avance: avanceDe(etapa),
       adicionalesPendientes: orden.adicionales.filter((a) => a.estado === 'PENDIENTE').length,
+      totalEstimado: Math.round((orden.totalOrden + aprobadosSinIncorporar(orden)) * 100) / 100,
+      horarioEntrega: etapa === 'LISTO_PARA_ENTREGA' ? horarioEntrega() : null,
     };
   }
 
@@ -73,8 +99,52 @@ module.exports = function registrarTaller(servidor, db, vehiculoDelCliente) {
       totalOrden: orden.totalOrden,
       totalAdicionalesAprobados: aprobados,
       totalAdicionalesPendientes: sumaAdicionales(orden, 'PENDIENTE'),
-      totalEstimado: Math.round((orden.totalOrden + aprobados) * 100) / 100,
+      totalEstimado: Math.round((orden.totalOrden + aprobadosSinIncorporar(orden)) * 100) / 100,
     };
+  }
+
+  // V2-M04.03: el mismo aviso `orden` del backend por el canal de eventos.
+  function avisarOrden(clienteId, orden, motivo) {
+    const etapa = etapaActual(orden);
+    emitirEvento(clienteId, 'orden', {
+      ordenId: orden.id,
+      vehiculoId: orden.vehiculoId,
+      estatus: estatusDe(etapa),
+      etapa,
+      motivo,
+    });
+  }
+
+  // V2-M04.07: al quedar lista, los aprobados pasan a la orden y la orden queda
+  // en el historial (`servicios`) con su ticket y el mismo id. El backend la
+  // tiene en el historial desde que se abre; el simulador la agrega al cerrar.
+  function cerrarEnHistorial(orden, vehiculo) {
+    const ahora = new Date().toISOString().slice(0, 19);
+    for (const adicional of orden.adicionales) {
+      if (adicional.estado === 'APROBADO' && !adicional.incorporadoEn) {
+        adicional.incorporadoEn = ahora;
+        orden.totalOrden = Math.round((orden.totalOrden + adicional.total) * 100) / 100;
+      }
+    }
+    const renglon = (concepto, importe) => ({ concepto, cantidad: 1, precio: importe, importe });
+    const aprobados = orden.adicionales.filter((a) => a.estado === 'APROBADO');
+    const servicio = {
+      id: orden.id,
+      vehiculoId: orden.vehiculoId,
+      fecha: ahora.slice(0, 10),
+      kilometraje: vehiculo.kilometraje ?? 0,
+      estatus: estatusDe(etapaActual(orden)),
+      fechaCierre: ahora,
+      manoDeObra: [
+        renglon('Servicio de la orden', orden.totalOrden - aprobados.reduce((t, a) => t + a.total, 0)),
+        ...aprobados.filter((a) => a.manoDeObra > 0).map((a) => renglon(a.concepto, a.manoDeObra)),
+      ],
+      refacciones: aprobados.filter((a) => a.refacciones > 0).map((a) => renglon(a.concepto, a.refacciones)),
+      total: orden.totalOrden,
+    };
+    const existente = db.get('servicios').find({ id: orden.id });
+    if (existente.value()) existente.assign(servicio).write();
+    else db.get('servicios').push(servicio).write();
   }
 
   function ordenDelCliente(req, id) {
@@ -121,6 +191,30 @@ module.exports = function registrarTaller(servidor, db, vehiculoDelCliente) {
     adicional.estado = aprobado ? 'APROBADO' : 'RECHAZADO';
     adicional.respondidoEn = new Date().toISOString().slice(0, 19);
     db.get('ordenesTaller').find({ id: orden.id }).assign(orden).write();
+    avisarOrden(vehiculo.clienteId, orden, 'RESPUESTA');
+    res.jsonp(comoOrdenEnVivo(orden, vehiculo));
+  });
+
+  // Emisor de prueba fuera del contrato (sin token): hace de taller mientras el
+  // ERP no tenga pantalla. Pasa la orden de etapa y avisa en vivo.
+  servidor.post('/__mock/ordenes/:ordenId/etapa', (req, res) => {
+    const orden = db.get('ordenesTaller').find({ id: Number(req.params.ordenId) }).value();
+    if (!orden) return noEncontrado(req, res);
+    const { etapa, nota } = req.body || {};
+    const actual = etapaActual(orden);
+    if (actual === 'ENTREGADO') {
+      return problema(req, res, 409, 'La orden ya se entregó', 'ORDEN_CERRADA');
+    }
+    if (ETAPAS_TALLER.indexOf(etapa) <= ETAPAS_TALLER.indexOf(actual)) {
+      return problema(req, res, 400, 'La etapa debe ir después de la actual', 'DATOS_INVALIDOS');
+    }
+    const ahora = new Date().toISOString().slice(0, 19);
+    orden.etapas[orden.etapas.length - 1].fin = ahora;
+    orden.etapas.push({ etapa, inicio: ahora, fin: null, nota: typeof nota === 'string' ? nota : null });
+    const vehiculo = db.get('vehiculos').find({ id: orden.vehiculoId }).value();
+    if (['LISTO_PARA_ENTREGA', 'ENTREGADO'].includes(etapa)) cerrarEnHistorial(orden, vehiculo);
+    db.get('ordenesTaller').find({ id: orden.id }).assign(orden).write();
+    avisarOrden(vehiculo.clienteId, orden, 'ETAPA');
     res.jsonp(comoOrdenEnVivo(orden, vehiculo));
   });
 
