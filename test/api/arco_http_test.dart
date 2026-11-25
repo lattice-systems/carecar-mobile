@@ -4,6 +4,7 @@ import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/carecar_api.dart';
 import 'package:carecar_mobile/api/carecar_api_http.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
+import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -93,5 +94,79 @@ void main() {
     expect(espia.metodo, 'GET');
     expect(espia.url!.path, '/api/v1/app/privacidad/arco/4/archivo');
     expect(utf8.decode(bytes), '{"cliente":{}}');
+  });
+
+  group('cancelarCuentaArco (V2-M22.03)', () {
+    test('llama POST /privacidad/arco/cancelacion con la contrasena', () async {
+      final api = _api(
+        espia,
+        () => _json({
+          ..._solicitud,
+          'tipo': 'CANCELACION',
+          'estado': 'RESUELTA',
+          'venceEn': null,
+        }),
+      );
+
+      final s = await api.cancelarCuentaArco('Secreta123');
+
+      expect(espia.metodo, 'POST');
+      expect(espia.url!.path, '/api/v1/app/privacidad/arco/cancelacion');
+      expect(jsonDecode(espia.cuerpo!), {'contrasena': 'Secreta123'});
+      expect(s.tipo, 'CANCELACION');
+      expect(s.estado, 'RESUELTA');
+      expect(s.venceEn, isNull);
+    });
+
+    test(
+      'una contrasena equivocada es un 400, no una sesion vencida',
+      () async {
+        final api = _api(
+          espia,
+          () => _json({
+            'timestamp': '2026-11-25T18:30:00Z',
+            'status': 400,
+            'error': 'Bad Request',
+            'codigo': 'DATOS_INVALIDOS',
+            'message': 'La contraseña no es correcta',
+            'path': '/api/v1/app/privacidad/arco/cancelacion',
+          }, 400),
+        );
+
+        await expectLater(
+          api.cancelarCuentaArco('mala'),
+          throwsA(isA<DatosInvalidos>()),
+        );
+      },
+    );
+
+    test('el bloqueo por intentos trae cuanto esperar', () async {
+      final api = _api(
+        espia,
+        () => http.Response(
+          jsonEncode({
+            'timestamp': '2026-11-25T18:30:00Z',
+            'status': 429,
+            'error': 'Too Many Requests',
+            'codigo': 'DEMASIADOS_INTENTOS',
+            'message': 'Demasiados intentos. Intenta de nuevo más tarde.',
+            'path': '/api/v1/app/privacidad/arco/cancelacion',
+          }),
+          429,
+          headers: {'content-type': 'application/json', 'retry-after': '900'},
+        ),
+      );
+
+      await expectLater(
+        api.cancelarCuentaArco('mala'),
+        throwsA(
+          isA<DemasiadosIntentos>().having(
+            (e) => e.esperaSegundos,
+            'segundos',
+            900,
+          ),
+        ),
+      );
+    });
   });
 }

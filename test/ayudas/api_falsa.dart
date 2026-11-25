@@ -538,4 +538,12 @@ class ApiFalsa implements CarecarApi {
   Future<Uint8List> descargarArchivoArco(int solicitudId) =>
       alDescargarArchivoArco?.call(solicitudId) ??
       Future.error(UnimplementedError('descargarArchivoArco'));
+
+  // --- Cancelacion de la cuenta (V2-M22.03) ---
+  Future<SolicitudArco> Function(String contrasena)? alCancelarCuentaArco;
+
+  @override
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena) =>
+      alCancelarCuentaArco?.call(contrasena) ??
+      Future.error(UnimplementedError('cancelarCuentaArco'));
 }
