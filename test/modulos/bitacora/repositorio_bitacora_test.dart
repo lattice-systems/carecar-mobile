@@ -156,6 +156,14 @@ void main() {
       expect(api2.repo.editar(9, _carga), throwsA(isA<KmInvalido>()));
     });
 
+    test('un 422 con otro código no se confunde con KmInvalido', () async {
+      final api = _api((_) => _problema(422, 'FUERA_DE_COBERTURA'));
+      await expectLater(
+        api.repo.registrar(4, _carga),
+        throwsA(isA<SolicitudRechazada>()),
+      );
+    });
+
     test('los demás errores pasan tal cual', () async {
       expect(
         _api((_) => _problema(404)).repo.borrar(9),
