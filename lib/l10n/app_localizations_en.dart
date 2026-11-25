@@ -2282,24 +2282,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inicioDestinoCatalogo => 'Catalog';
 
   @override
-  String get inicioAccesoVehiculosTitulo => 'My vehicles';
-
-  @override
-  String get inicioAccesoVehiculosSubtitulo => 'Your cars, specs and manuals';
-
-  @override
-  String get inicioAccesoCitasTitulo => 'Appointments';
-
-  @override
-  String get inicioAccesoCitasSubtitulo => 'Book and review your appointments';
-
-  @override
-  String get inicioAccesoCatalogoTitulo => 'Catalog';
-
-  @override
-  String get inicioAccesoCatalogoSubtitulo => 'Explore the Nissan models';
-
-  @override
   String get asistenteTitulo => 'Ask your car';
 
   @override
