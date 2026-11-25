@@ -314,10 +314,11 @@ class _Mosaico extends StatelessWidget {
     // `sobreAcento` es el color que el sistema define para leer sobre el relleno
     // saturado: blanco en claro, casi negro en oscuro.
     final frente = c.sobreAcento;
+    final etiqueta = [acceso.titulo, acceso.subtitulo].join(', ');
     final fin = Color.lerp(color, c.marca, 0.5)!;
     return Semantics(
       button: true,
-      label: '${acceso.titulo}, ${acceso.subtitulo}',
+      label: etiqueta,
       excludeSemantics: true,
       onTap: acceso.alPulsar,
       child: ReboteTactil(
