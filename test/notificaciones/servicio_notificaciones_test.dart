@@ -1,4 +1,5 @@
 import 'package:carecar_mobile/api/modelos/cita.dart';
+import 'package:carecar_mobile/nucleo/registro/registro.dart';
 import 'package:carecar_mobile/notificaciones/recordatorios.dart';
 import 'package:carecar_mobile/notificaciones/servicio_notificaciones.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -36,6 +37,26 @@ class _PluginFalso implements PluginNotificaciones {
   Future<void> cancelarTodas() async => programadas.clear();
   @override
   Future<List<int>> pendientes() async => programadas.keys.toList();
+}
+
+/// Plugin que falla con un mensaje que trae datos de una persona.
+class _PluginQueFalla extends _PluginFalso {
+  _PluginQueFalla(super.ahora, {this.alIniciar = false});
+
+  final bool alIniciar;
+
+  @override
+  Future<void> inicializar() async {
+    if (alIniciar) throw Exception('sin permiso para ana@correo.mx');
+  }
+
+  @override
+  Future<void> programar(
+    int id,
+    DateTime cuando,
+    String titulo,
+    String cuerpo,
+  ) async => throw Exception('rechazo 55 1234 5678');
 }
 
 Cita _cita(int id, DateTime dia, {EstadoCita estado = EstadoCita.confirmada}) =>
@@ -128,6 +149,46 @@ void main() {
       expect(plugin.programadas, isEmpty);
       await servicio.sincronizar([_cita(2, DateTime(2026, 11, 26))]);
       expect(plugin.programadas, isEmpty);
+    });
+  });
+
+  group('fallos que se registran (V2-M22.07)', () {
+    late List<String> escrito;
+
+    setUp(() {
+      SharedPreferences.setMockInitialValues({});
+      escrito = [];
+      Registro.salida = escrito.add;
+      addTearDown(Registro.restaurarSalida);
+    });
+
+    test(
+      'si no inicia, la app sigue y el registro sale sin el correo',
+      () async {
+        final servicio = ServicioNotificaciones(
+          _PluginQueFalla(ahora, alIniciar: true),
+          await SharedPreferences.getInstance(),
+        );
+        await servicio.iniciar();
+        expect(escrito, [
+          'No se pudieron iniciar las notificaciones: '
+              'Exception: sin permiso para [correo]',
+        ]);
+      },
+    );
+
+    test('si falla programar, el registro sale sin el telefono', () async {
+      final servicio = ServicioNotificaciones(
+        _PluginQueFalla(ahora),
+        await SharedPreferences.getInstance(),
+      );
+      await servicio.iniciar();
+      await servicio.alAgendar(_cita(5, DateTime(2026, 11, 25)));
+      expect(escrito, isNotEmpty);
+      expect(
+        escrito,
+        everyElement('Fallo una notificacion: Exception: rechazo [telefono]'),
+      );
     });
   });
 }
