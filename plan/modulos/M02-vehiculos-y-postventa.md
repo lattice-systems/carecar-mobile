@@ -80,7 +80,7 @@ El garaje vive en `lib/modulos/vehiculos/` y se abre en la ruta `/garaje` (exige
 
 - **Tarjeta por vehículo:** `TarjetaVehiculo` con el título ("Mazda CX-5 2024") y el detalle ("Placas ABC-123 · 12,500 km"). Sin placas dice "Sin placas"; sin kilometraje omite ese dato. El kilometraje se escribe con coma de millares también en español, igual que los precios del catálogo.
 - **Vacío:** explica que la agencia registra los autos al entregarlos.
-- **Sin conexión:** la API del núcleo (`CarecarApiConCache`) devuelve la última copia guardada de `GET /vehiculos`, así que el garaje se ve con lo guardado; solo si nunca hubo datos aparece el estado "Sin conexión" con reintento.
+- **Sin conexión:** la API del núcleo (`CarecarApiConCache`) devuelve la última copia guardada de `GET /vehiculos` (cifrada desde V2-M22.13), así que el garaje se ve con lo guardado; solo si nunca hubo datos aparece el estado "Sin conexión" con reintento.
 - **Estados:** cargando con esqueleto, datos, vacío, error con reintento y sin conexión, más recargar jalando hacia abajo. `V2-T01.08` no está integrada: se usó el patrón del módulo `ejemplo` y se pasará a las piezas comunes cuando llegue.
 - **Pendiente:** la tarjeta ya abre el detalle (V2-M02.02). La foto sigue siendo la silueta del sistema porque el contrato de vehículos no trae imagen. En `plan/cumplimiento-ficha.md` la fila "Mis vehículos (garaje)" sigue en 🟡 hasta demostrarla en celular con el backend real.
 
