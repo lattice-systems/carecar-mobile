@@ -96,7 +96,24 @@ void main() {
     testWidgets('el contenido conserva su estado al aparecer y quitarse', (
       tester,
     ) async {
-      await _montar(tester, estado);
+      // Sin el Navigator de MaterialApp.builder, que ya se protege solo con una
+      // llave global: aquí el contenido no tiene ninguna que lo salve.
+      tester.view.physicalSize = const Size(360, 640);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [estadoConexionSeguraProvider.overrideWithValue(estado)],
+          child: MaterialApp(
+            localizationsDelegates: delegadasDeIdioma,
+            supportedLocales: idiomasSoportados,
+            locale: const Locale('es'),
+            home: const AvisoConexionNoSegura(
+              child: Scaffold(body: Center(child: _Contador())),
+            ),
+          ),
+        ),
+      );
       await tester.tap(find.text('contenido de la app 0'));
       await tester.pump();
       expect(find.text('contenido de la app 1'), findsOneWidget);

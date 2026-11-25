@@ -16,24 +16,17 @@ import 'proveedores_seguridad.dart';
 /// conexión» y la persona no sabría por qué. Este aviso va una sola vez, por
 /// encima de la navegación (en el `builder` de la app), y se quita solo con la
 /// siguiente respuesta del servidor.
-class AvisoConexionNoSegura extends ConsumerStatefulWidget {
+class AvisoConexionNoSegura extends ConsumerWidget {
   const AvisoConexionNoSegura({required this.child, super.key});
 
   final Widget child;
 
   @override
-  ConsumerState<AvisoConexionNoSegura> createState() =>
-      _AvisoConexionNoSeguraState();
-}
-
-class _AvisoConexionNoSeguraState extends ConsumerState<AvisoConexionNoSegura> {
-  /// Mantiene el estado de la navegación al aparecer o quitarse el aviso: sin
-  /// la llave, cambiar la cantidad de hijos de la columna la reconstruiría.
-  final _llaveDelHijo = GlobalKey();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final estado = ref.watch(estadoConexionSeguraProvider);
+    // Con el aviso la columna tiene un hijo más al principio: Flutter empareja
+    // los hijos también desde el final, así que lo de abajo conserva su estado
+    // sin llave (lo comprueba la prueba del contador).
     return ListenableBuilder(
       listenable: estado,
       builder: (context, _) {
@@ -46,7 +39,7 @@ class _AvisoConexionNoSeguraState extends ConsumerState<AvisoConexionNoSegura> {
               child: MediaQuery.removePadding(
                 context: context,
                 removeTop: mostrar,
-                child: KeyedSubtree(key: _llaveDelHijo, child: widget.child),
+                child: child,
               ),
             ),
           ],
