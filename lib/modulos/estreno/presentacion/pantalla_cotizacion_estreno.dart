@@ -5,12 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
+import '../../../nucleo/diseno/componentes/estado_error.dart';
+import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_metrica.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -140,139 +143,172 @@ class _PantallaCotizacionEstrenoState
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final modelo = ref.watch(detalleModeloProvider(widget.modeloId)).value;
-    final precio = modelo?.modelo.precioDesde;
+    final c = TokensPista.de(context).colores;
+    final detalle = ref.watch(detalleModeloProvider(widget.modeloId));
+    final precio = detalle.value?.modelo.precioDesde;
     if (!_inicializado && precio != null) {
       _inicializado = true;
       // Arranca con el enganche minimo sugerido y calcula de una vez.
       _enganche.text = (precio * engancheMinimoPct).ceil().toString();
       WidgetsBinding.instance.addPostFrameCallback((_) => _calcular());
     }
-    final calculo = _calculo;
 
     return Scaffold(
       backgroundColor: c.fondo,
       appBar: AppBar(title: Text(textos.estrenoCotizacionTitulo)),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(Espaciado.e4),
-          children: [
-            if (modelo != null) ...[
-              Text(
-                modelo.modelo.titulo,
-                style: tokens.tipografia.titulo2.copyWith(color: c.texto),
+        child: detalle.when(
+          skipLoadingOnReload: true,
+          loading: () => Semantics(
+            label: textos.catalogoDetalleCargando,
+            liveRegion: true,
+            child: const Padding(
+              padding: EdgeInsets.all(Espaciado.e4),
+              child: Column(
+                children: [
+                  Esqueleto(alto: 56),
+                  SizedBox(height: Espaciado.e3),
+                  Esqueleto(alto: 56),
+                ],
               ),
-              if (precio != null)
-                Text(
-                  textos.estrenoPrecioDesde(pesosEstreno.format(precio)),
-                  style: tokens.tipografia.cuerpo.copyWith(
-                    color: c.textoSecundario,
-                  ),
-                ),
-            ],
-            if (modelo != null && precio == null) ...[
-              const SizedBox(height: Espaciado.e4),
-              Aviso(mensaje: textos.estrenoSinPrecio, tono: Tono.informacion),
-            ] else if (_solicitud case final solicitud?) ...[
-              const SizedBox(height: Espaciado.e4),
-              ConfirmacionEstreno(
-                solicitud: solicitud,
-                alVerSolicitudes: () =>
-                    context.pushReplacement(rutaMisSolicitudesEstreno),
-              ),
-            ] else ...[
-              SeccionEstreno(
-                titulo: textos.estrenoEnganche,
-                hijo: CampoTexto(
-                  etiqueta: textos.estrenoEnganche,
-                  controlador: _enganche,
-                  teclado: TextInputType.number,
-                  formatos: [FilteringTextInputFormatter.digitsOnly],
-                  ayuda: precio == null
-                      ? null
-                      : textos.estrenoEngancheAyuda(
-                          pesosEstreno.format(
-                            (precio * engancheMinimoPct).ceil(),
-                          ),
-                        ),
-                  alCambiar: (_) => _programarCalculo(),
-                ),
-              ),
-              SeccionEstreno(
-                titulo: textos.estrenoPlazo,
-                hijo: Wrap(
-                  spacing: Espaciado.e2,
-                  runSpacing: Espaciado.e1,
-                  children: [
-                    for (final meses in plazosPermitidos)
-                      ChipPista(
-                        texto: textos.estrenoMeses(meses),
-                        seleccionado: _plazo == meses,
-                        alCambiar: (_) {
-                          setState(() => _plazo = meses);
-                          _calcular();
-                        },
-                      ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: Espaciado.e5),
-              if (calculo != null) ...[
-                TarjetaMetrica(
-                  cifra: pesosEstreno.format(calculo.mensualidad),
-                  etiqueta: textos.estrenoMensualidad,
-                  detalle: textos.estrenoMeses(calculo.plazoMeses),
-                ),
-                const SizedBox(height: Espaciado.e2),
-                Aviso(mensaje: calculo.leyenda, tono: Tono.informacion),
-              ] else if (_calculando)
-                Semantics(
-                  liveRegion: true,
-                  child: Column(
-                    children: [
-                      const Esqueleto(alto: 96),
-                      const SizedBox(height: Espaciado.e2),
-                      Text(
-                        textos.estrenoCalculando,
-                        style: tokens.tipografia.cuerpo.copyWith(
-                          color: c.textoSecundario,
-                        ),
-                      ),
-                    ],
-                  ),
+            ),
+          ),
+          error: (error, _) => error is NoEncontrado
+              ? EstadoVacio(
+                  titulo: textos.catalogoNoEncontradoTitulo,
+                  mensaje: textos.catalogoNoEncontradoMensaje,
+                  icono: Icons.directions_car_outlined,
                 )
-              else if (_falloCalculo != null)
-                Aviso(
-                  mensaje: textoDeFalloEstreno(textos, _falloCalculo!),
-                  tono: Tono.advertencia,
+              : EstadoError(
+                  causa: error is SinConexion
+                      ? CausaError.sinConexion
+                      : CausaError.generico,
+                  alReintentar: () =>
+                      ref.invalidate(detalleModeloProvider(widget.modeloId)),
                 ),
-              SelectorEstimacion(
-                elegida: _estimacion,
-                alElegir: (id) => setState(() => _estimacion = id),
-              ),
-              if (_falloEnvio != null) ...[
-                const SizedBox(height: Espaciado.e4),
-                Aviso(
-                  mensaje: textoDeFalloEstreno(textos, _falloEnvio!),
-                  tono: _falloEnvio is EstrenoDuplicada
-                      ? Tono.informacion
-                      : Tono.peligro,
-                ),
-              ],
-              const SizedBox(height: Espaciado.e5),
-              BotonPildora(
-                texto: _enviando
-                    ? textos.estrenoEnviando
-                    : textos.estrenoEnviarCotizacion,
-                expandido: true,
-                alPresionar: _enviando || calculo == null ? null : _enviar,
-              ),
-            ],
-          ],
+          data: (d) => _formulario(context, textos, d.modelo),
         ),
       ),
+    );
+  }
+
+  Widget _formulario(
+    BuildContext context,
+    AppLocalizations textos,
+    ModeloVigente modelo,
+  ) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final precio = modelo.precioDesde;
+    final calculo = _calculo;
+
+    return ListView(
+      padding: const EdgeInsets.all(Espaciado.e4),
+      children: [
+        Text(
+          modelo.titulo,
+          style: tokens.tipografia.titulo2.copyWith(color: c.texto),
+        ),
+        if (precio != null)
+          Text(
+            textos.estrenoPrecioDesde(pesosEstreno.format(precio)),
+            style: tokens.tipografia.cuerpo.copyWith(color: c.textoSecundario),
+          ),
+        if (precio == null) ...[
+          const SizedBox(height: Espaciado.e4),
+          Aviso(mensaje: textos.estrenoSinPrecio, tono: Tono.informacion),
+        ] else if (_solicitud case final solicitud?) ...[
+          const SizedBox(height: Espaciado.e4),
+          ConfirmacionEstreno(
+            solicitud: solicitud,
+            alVerSolicitudes: () =>
+                context.pushReplacement(rutaMisSolicitudesEstreno),
+          ),
+        ] else ...[
+          SeccionEstreno(
+            titulo: textos.estrenoEnganche,
+            hijo: CampoTexto(
+              etiqueta: textos.estrenoEnganche,
+              controlador: _enganche,
+              teclado: TextInputType.number,
+              formatos: [FilteringTextInputFormatter.digitsOnly],
+              ayuda: textos.estrenoEngancheAyuda(
+                pesosEstreno.format((precio * engancheMinimoPct).ceil()),
+              ),
+              alCambiar: (_) => _programarCalculo(),
+            ),
+          ),
+          SeccionEstreno(
+            titulo: textos.estrenoPlazo,
+            hijo: Wrap(
+              spacing: Espaciado.e2,
+              runSpacing: Espaciado.e1,
+              children: [
+                for (final meses in plazosPermitidos)
+                  ChipPista(
+                    texto: textos.estrenoMeses(meses),
+                    seleccionado: _plazo == meses,
+                    alCambiar: (_) {
+                      setState(() => _plazo = meses);
+                      _calcular();
+                    },
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: Espaciado.e5),
+          if (calculo != null) ...[
+            TarjetaMetrica(
+              cifra: pesosEstreno.format(calculo.mensualidad),
+              etiqueta: textos.estrenoMensualidad,
+              detalle: textos.estrenoMeses(calculo.plazoMeses),
+            ),
+            const SizedBox(height: Espaciado.e2),
+            Aviso(mensaje: calculo.leyenda, tono: Tono.informacion),
+          ] else if (_calculando)
+            Semantics(
+              liveRegion: true,
+              child: Column(
+                children: [
+                  const Esqueleto(alto: 96),
+                  const SizedBox(height: Espaciado.e2),
+                  Text(
+                    textos.estrenoCalculando,
+                    style: tokens.tipografia.cuerpo.copyWith(
+                      color: c.textoSecundario,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else if (_falloCalculo != null)
+            Aviso(
+              mensaje: textoDeFalloEstreno(textos, _falloCalculo!),
+              tono: Tono.advertencia,
+            ),
+          SelectorEstimacion(
+            elegida: _estimacion,
+            alElegir: (id) => setState(() => _estimacion = id),
+          ),
+          if (_falloEnvio != null) ...[
+            const SizedBox(height: Espaciado.e4),
+            Aviso(
+              mensaje: textoDeFalloEstreno(textos, _falloEnvio!),
+              tono: _falloEnvio is EstrenoDuplicada
+                  ? Tono.informacion
+                  : Tono.peligro,
+            ),
+          ],
+          const SizedBox(height: Espaciado.e5),
+          BotonPildora(
+            texto: _enviando
+                ? textos.estrenoEnviando
+                : textos.estrenoEnviarCotizacion,
+            expandido: true,
+            alPresionar: _enviando || calculo == null ? null : _enviar,
+          ),
+        ],
+      ],
     );
   }
 }

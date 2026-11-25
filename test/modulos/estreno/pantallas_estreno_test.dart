@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/estreno/dominio/estreno.dart';
@@ -157,11 +158,13 @@ ProviderScope _escena(
   Widget hijo, {
   double? precio = 300000,
   List<Estimacion> estimaciones = const [],
+  Future<DetalleModelo> Function()? detalle,
 }) => ProviderScope(
   overrides: [
     repositorioEstrenoProvider.overrideWithValue(repo),
-    detalleModeloProvider(7)
-        .overrideWith((_) async => _detalle(precio: precio)),
+    detalleModeloProvider(7).overrideWith(
+      (_) => detalle?.call() ?? Future.value(_detalle(precio: precio)),
+    ),
     estimacionesParaAdjuntarProvider.overrideWith((_) async => estimaciones),
     relojEstrenoProvider.overrideWithValue(() => DateTime(2026, 11, 24, 10)),
   ],
@@ -173,12 +176,14 @@ Widget _app(
   _Repo repo, {
   double? precio = 300000,
   List<Estimacion> estimaciones = const [],
+  Future<DetalleModelo> Function()? detalle,
   Escenario escenario = Escenario.claro,
 }) => _escena(
   repo,
   conTemaPista(pantalla, escenario: escenario),
   precio: precio,
   estimaciones: estimaciones,
+  detalle: detalle,
 );
 
 /// Con las rutas reales del módulo, para probar a dónde lleva cada toque.
@@ -447,6 +452,62 @@ void main() {
         find.widgetWithText(BotonPildora, 'Enviar cotización'),
       );
       expect(boton.alPresionar, isNull);
+    });
+
+    _prueba('mientras carga el modelo lo anuncia', (tester) async {
+      final carga = Completer<DetalleModelo>();
+      await tester.pumpWidget(
+        _app(
+          const PantallaCotizacionEstreno(modeloId: 7),
+          _Repo(),
+          detalle: () => carga.future,
+        ),
+      );
+      await _dejarCorrer(tester);
+      expect(find.bySemanticsLabel('Cargando el modelo'), findsOneWidget);
+      expect(find.text('Enviar cotización'), findsNothing);
+
+      carga.complete(_detalle());
+      await tester.pumpAndSettle();
+      expect(find.text('Enviar cotización'), findsOneWidget);
+    });
+
+    _prueba('si el modelo no carga ofrece reintentar y recupera', (
+      tester,
+    ) async {
+      var cae = true;
+      await tester.pumpWidget(
+        _app(
+          const PantallaCotizacionEstreno(modeloId: 7),
+          _Repo(),
+          detalle: () async {
+            if (cae) throw const SinConexion();
+            return _detalle();
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(EstadoError), findsOneWidget);
+      expect(find.text('Enviar cotización'), findsNothing);
+
+      cae = false;
+      await tester.tap(find.text('Reintentar'));
+      await tester.pumpAndSettle();
+      expect(find.byType(EstadoError), findsNothing);
+      expect(find.text('Enviar cotización'), findsOneWidget);
+    });
+
+    _prueba('un modelo que ya no existe lo explica', (tester) async {
+      await tester.pumpWidget(
+        _app(
+          const PantallaCotizacionEstreno(modeloId: 7),
+          _Repo(),
+          detalle: () async => throw const NoEncontrado('x'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('No encontramos el modelo'), findsOneWidget);
+      expect(find.text('Enviar cotización'), findsNothing);
     });
 
     _prueba('una cotizacion repetida se explica', (tester) async {
