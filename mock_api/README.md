@@ -181,7 +181,7 @@ Operaciones de la app y casos de error:
 | POST | `/estreno/cotizaciones/calculo` | V2-M16.02: mensualidad con 14.99 %, enganche mínimo 10 % y plazos 12–60 · 409 `ESTRENO_SIN_PRECIO` · 400 |
 | POST | `/estreno/solicitudes` | V2-M16.01: prueba o cotización; el simulador asigna a «Vera Vendedora» al instante (`EN_ATENCION`) · 409 `ESTRENO_DUPLICADA` · 400 · 404 |
 | GET | `/estreno/solicitudes` | V2-M16.04: paginado, solo en memoria (se pierde al reiniciar) |
-| GET | `/privacidad/aviso` | V2-M22.01: el aviso vigente (versión 1 = el texto que la app traía) con `aceptado` de tu cuenta |
+| GET | `/privacidad/aviso` | V2-M22.01: el aviso vigente (la versión 2 nombra a los proveedores externos; la 1 es el texto que la app traía) con `aceptado` de tu cuenta |
 | POST | `/privacidad/aceptaciones` | V2-M22.01: `{avisoId}` · idempotente · 404 · 409 `AVISO_NO_VIGENTE` si ya hay una versión más nueva · en memoria |
 | GET | `/privacidad/arco` | V2-M22.02: mis solicitudes de derechos ARCO (las últimas 20) |
 | POST | `/privacidad/arco/acceso` | V2-M22.02: 202 y la solicitud `PENDIENTE`; a los 2 s (`RETRASO_ARCO_MS`, 0 = al instante) queda `RESUELTA` y llega el evento `arco.estado`; si ya había una pendiente, 200 con esa · en memoria |

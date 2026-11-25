@@ -68,7 +68,7 @@ Se elige por configuración: `asistente.proveedor=gemini|falso`. Si la cuota de 
 
 **Lo que cuesta no pagar** (se acepta a sabiendas):
 
-- **Google usa lo que se le manda para mejorar sus productos** (términos del nivel gratis). Por eso al modelo solo le llegan la pregunta ya limpia de datos personales, el modelo y año, y fragmentos del manual (público). El aviso de privacidad (V2-M22.01) lo dice con claridad.
+- **Google usa lo que se le manda para mejorar sus productos** (términos del nivel gratis). Por eso al modelo solo le llegan la pregunta ya limpia de datos personales, el modelo y año, y fragmentos del manual (público). El aviso de privacidad lo dice con claridad desde su versión 2 (V2-M22.10).
 - **Cuota diaria baja y que Google puede cambiar.** Se consulta por proyecto en Google AI Studio. Cuando se agota, el asistente responde `ASISTENTE_NO_DISPONIBLE` hasta el día siguiente (se reinicia a medianoche, hora del Pacífico).
 - **Sin garantía de servicio.** Para un proyecto escolar con pocos usuarios alcanza; si algún día tuviera clientes reales en volumen, se reemplaza esta decisión.
 

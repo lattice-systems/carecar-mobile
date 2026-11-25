@@ -286,7 +286,7 @@ Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M22.10 | Decir en el aviso de privacidad que el mapa y la dirección usan proveedores externos | Daniel |  | V2-M22.01 | Borrador | |
+| V2-M22.10 | Decir en el aviso de privacidad qué proveedores externos reciben datos | Daniel | B | V2-M22.01 | Hecha | #137, backend#100 |
 | V2-M22.11 | Escaneo periódico de dependencias (`pubspec.lock`, Gradle y Pods) | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.12 | Keychain de iOS solo de este dispositivo, sin cerrar sesiones | Daniel |  | V2-M22.08 | Borrador | |
 | V2-M22.13 | Caché de la API sin lo que identifica (VIN, placas) o cifrada | Daniel |  | V2-M22.08 | Borrador | |

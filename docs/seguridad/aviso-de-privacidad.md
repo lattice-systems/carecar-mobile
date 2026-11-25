@@ -33,7 +33,18 @@ sesión nueva ─► VerificadorDeAviso ─► estadoAvisoProvider (núcleo) ─
 - **Sin conexión no se bloquea a nadie** (`noRequerido`). El aviso se pide después de autenticarse, así que en el primer ingreso la red ya funcionó; en un ingreso posterior, dejar a una persona fuera de su auto por falta de datos es peor que preguntar de nuevo la próxima vez. La puerta vuelve en cuanto se pueda leer el aviso (también al abrirlo desde el perfil).
 - **Sin copia en caché**: «aceptado» tiene que ser lo que el servidor sabe ahora; una copia vieja dejaría pasar una versión nueva sin aceptar. Se limpia con la sesión, nunca se reutiliza la lectura de la cuenta anterior.
 - **El servidor no bloquea el resto de la API** por no haber aceptado: la app v1 instalada no conoce el aviso. La puerta es de la app v2; lo que queda registrado, con fecha, es lo que cuenta ante una reclamación.
-- **El texto vive en el backend**: la versión 1 es el texto que la app traía incluido (`Agencia.avisoPrivacidad`). El texto definitivo es de la agencia: lo publica el Gerente de marketing como versión 2 con `POST /api/v1/avisos-privacidad`, sin publicar una versión nueva de la app. Para probarlo con el simulador (`mock_api`), el mismo `POST` publica una versión nueva.
+- **El texto vive en el backend**: la versión 1 es el texto que la app traía incluido y la versión 2 (V2-M22.10, migración `V45`) nombra a los proveedores externos y es la vigente; `Agencia.avisoPrivacidad` (lo que muestra el perfil v1) y el simulador dicen lo mismo. El texto definitivo es de la agencia: lo publica el Gerente de marketing como versión 3 con `POST /api/v1/avisos-privacidad`, sin publicar una versión nueva de la app. Para probarlo con el simulador (`mock_api`), el mismo `POST` publica una versión nueva.
+
+## Versión 2: quién recibe datos (V2-M22.10)
+
+| Proveedor | Qué recibe | De dónde sale |
+| --- | --- | --- |
+| Microsoft Azure y Neon | Todo lo que la app guarda (servidor y base de datos) | ADR 0007: el backend corre en Azure Container Apps con PostgreSQL en Neon |
+| OpenStreetMap | Dirección IP y zona del mapa que se mira | `lib/nucleo/mapas/configuracion_teselas.dart`; los workflows no pasan `TILES_URL`, así que se usa el servidor público |
+| Geocodificador del sistema (Google en Android, Apple en iPhone) | Texto de la dirección o coordenadas | `lib/nucleo/mapas/geocodificador_nativo.dart` (`geocoding`) |
+| Gemini (Google), solo con el asistente | La pregunta sin correo, teléfono, placas ni VIN, el modelo y año, y la foto del tablero sin EXIF ni GPS; Google puede usarlo en el nivel gratuito | ADR 0007, `LimpiadorDatosPersonales` y `LimpiadorImagen` del backend |
+
+Si cambia un proveedor (por ejemplo, teselas propias con `TILES_URL`) hay que publicar otra versión del aviso. El texto es técnico: la revisión legal es de la agencia.
 
 ## Límites
 

@@ -18,7 +18,7 @@ Leyenda: ✅ cumple · 🟡 cumple en parte o con un pendiente · ⬜ no aplica 
 | --- | --- | --- | --- |
 | 8 | 9 | 7 | 0 |
 
-La revisión encontró **una brecha real, corregida en el mismo PR** (copias de seguridad de Android, F1) y **siete hallazgos para seguimiento** (F2–F8, más abajo). Ninguno es crítico; el más importante para el negocio es F3 (el aviso de privacidad no menciona a los proveedores de mapas).
+La revisión encontró **una brecha real, corregida en el mismo PR** (copias de seguridad de Android, F1) y **siete hallazgos para seguimiento** (F2–F8, más abajo). Ninguno es crítico; el más importante para el negocio era F3 (el aviso de privacidad no mencionaba a los proveedores de mapas) y se cerró con la versión 2 del aviso (V2-M22.10).
 
 ## Controles
 
@@ -82,8 +82,8 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | Control | Estado | Evidencia | Pendiente |
 | --- | --- | --- | --- |
 | **PRIVACY-1** Minimiza el acceso a datos y recursos sensibles | ✅ | Permisos de Android revisados, cada uno con su motivo, y una prueba que falla si aparece uno nuevo: red, notificaciones, reinicio (recordatorios) y ubicación precisa y aproximada (ayuda en carretera y recolección). La cámara y las fotos van por el selector del sistema, sin el permiso `CAMERA`; en iOS cada uso tiene su descripción. | — |
-| **PRIVACY-2** Evita identificar a la persona | 🟡 | Sin SDK de analítica ni publicidad; registros redactados (M22.07). | Las teselas de OpenStreetMap reciben la IP y la zona que se mira, y el geocodificador del sistema recibe direcciones y coordenadas: F3. |
-| **PRIVACY-3** Es transparente sobre qué datos usa y para qué | 🟡 | Aviso de privacidad versionado, con aceptación obligatoria al entrar y al cambiar de versión (M22.01). | La versión 1 dice que solo se comparte con autoridades y **no menciona a los proveedores de mapas**: F3. Falta publicar el texto definitivo de la agencia. |
+| **PRIVACY-2** Evita identificar a la persona | 🟡 | Sin SDK de analítica ni publicidad; registros redactados (M22.07). | Las teselas de OpenStreetMap reciben la IP y la zona que se mira, y el geocodificador del sistema recibe direcciones y coordenadas. Desde la versión 2 del aviso (V2-M22.10) se le dice a la persona (F3). |
+| **PRIVACY-3** Es transparente sobre qué datos usa y para qué | 🟡 | Aviso de privacidad versionado, con aceptación obligatoria al entrar y al cambiar de versión (M22.01). | Desde la versión 2 (V2-M22.10) el aviso nombra a quién recibe datos: Azure, Neon, OpenStreetMap, el geocodificador del teléfono y Gemini (F3). Falta la revisión legal del texto y que la agencia publique el definitivo. |
 | **PRIVACY-4** Da control sobre los datos | ✅ | Descargar mis datos (M22.02) y eliminar mi cuenta (M22.03). La rectificación y la oposición se atienden en la agencia. | — |
 
 ## Hallazgos y seguimiento
@@ -92,7 +92,7 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | --- | --- | --- | --- |
 | **F1** | Android dejaba encendidas las copias de seguridad: la caché con VIN, placas y citas, y los datos cifrados de la sesión, viajaban a la copia de Google y salían por `adb`. | STORAGE-2 | **Corregido aquí**: `allowBackup="false"` y una prueba que vigila el manifiesto. |
 | **F2** | El Keychain de iOS guarda los tokens con la accesibilidad por omisión (`unlocked`), que se incluye en las copias cifradas y puede restaurarse en otro equipo. | STORAGE-1 | V2-M22.12: `first_unlock_this_device`, migrando sin cerrar la sesión de nadie. |
-| **F3** | Las teselas del mapa (OpenStreetMap) y el geocodificador del sistema reciben datos de ubicación; el aviso de privacidad dice que solo se comparte con autoridades. | PRIVACY-2/3, STORAGE-2 | V2-M22.10: que la agencia decida el texto, o servir las teselas desde el backend. **La más importante.** |
+| **F3** | Las teselas del mapa (OpenStreetMap) y el geocodificador del sistema reciben datos de ubicación; el aviso de privacidad dice que solo se comparte con autoridades. | PRIVACY-2/3, STORAGE-2 | **Cerrado** con la versión 2 del aviso (V2-M22.10, backend#100): nombra a Azure y Neon, OpenStreetMap, el geocodificador del teléfono y Gemini, y todas las cuentas deben aceptarla. Falta la revisión legal del texto. |
 | **F4** | Los App Links (`autoVerify`) apuntan a `carecar.example.com`, que no sirve `assetlinks.json`. | PLATFORM-1 | V2-M22.14: dominio real o quitar el `autoVerify`. |
 | **F5** | La caché de la API guarda datos personales sin cifrar, y en iOS entra en las copias cifradas. | STORAGE-1 | V2-M22.13: no guardar lo que identifica (VIN, placas) o cifrarla. |
 | **F6** | No hay escaneo periódico de dependencias. | CODE-3 | V2-M22.11: un escaneo semanal de `pubspec.lock`, Gradle y Pods. |
