@@ -90,7 +90,7 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Hecha | #107 |
 | V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Lista | |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Hecha | #143 |
-| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | En revisión | |
+| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | En revisión | #152 |
 | V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.06 | Ver mi perfil | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | Lista | |
