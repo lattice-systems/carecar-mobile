@@ -35,6 +35,8 @@ enum CodigoProblema {
   /// solicitud o un traslado a un estado que no corresponde; la app no los
   /// llama, pero reconoce el codigo si algun dia llega.
   transicionInvalida('TRANSICION_INVALIDA'),
+  estrenoSinPrecio('ESTRENO_SIN_PRECIO'),
+  estrenoDuplicada('ESTRENO_DUPLICADA'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

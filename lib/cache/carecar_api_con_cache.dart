@@ -309,4 +309,26 @@ class CarecarApiConCache implements CarecarApi {
     required int franjaId,
     required DateTime fecha,
   }) => _api.reprogramarCita(citaId, franjaId: franjaId, fecha: fecha);
+
+  // Estreno (V2-M16): sin copia; las solicitudes cambian en el CRM.
+  @override
+  Future<CotizacionEstreno> calcularMensualidad({
+    required int modeloCatalogoId,
+    required double enganche,
+    required int plazoMeses,
+  }) => _api.calcularMensualidad(
+    modeloCatalogoId: modeloCatalogoId,
+    enganche: enganche,
+    plazoMeses: plazoMeses,
+  );
+
+  @override
+  Future<SolicitudEstreno> crearSolicitudEstreno(NuevaSolicitudEstreno nueva) =>
+      _api.crearSolicitudEstreno(nueva);
+
+  @override
+  Future<Pagina<SolicitudEstreno>> paginaDeSolicitudesEstreno({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _api.paginaDeSolicitudesEstreno(pagina: pagina, tamano: tamano);
 }

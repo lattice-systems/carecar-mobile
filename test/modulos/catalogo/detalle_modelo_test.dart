@@ -2,6 +2,9 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/datos/repositorio_catalogo_api.dart';
+import 'package:carecar_mobile/modulos/estreno/estreno.dart';
+import 'package:carecar_mobile/modulos/estreno/presentacion/pantalla_cotizacion_estreno.dart';
+import 'package:carecar_mobile/modulos/estreno/presentacion/pantalla_prueba_manejo.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
@@ -122,6 +125,9 @@ void main() {
     expect(find.text('Precio por confirmar'), findsOneWidget);
     expect(find.text('Motor'), findsOneWidget);
     expect(find.text('1.6 L'), findsOneWidget);
+    // V2-M16: del interes a una solicitud.
+    expect(find.text('Quiero probarlo'), findsOneWidget);
+    expect(find.text('Cotizar'), findsOneWidget);
   });
 
   testWidgets('sin galeria, versiones ni ficha no muestra esas secciones', (
@@ -224,6 +230,38 @@ void main() {
       await tester.tap(find.text('Sense'));
       await tester.pumpAndSettle();
       expect(enrutadorDe(tester).state.uri.toString(), rutaDetalleModelo(1));
+    });
+
+    testWidgets('el detalle ofrece probar y cotizar, y cada uno abre lo suyo', (
+      tester,
+    ) async {
+      _pantallaAlta(tester);
+      final api = await montar(tester);
+      api.alCalcularMensualidad = (_, enganche, plazo) async =>
+          CotizacionEstreno(
+            precio: 369900,
+            enganche: enganche,
+            montoFinanciado: 369900 - enganche,
+            tasaAnual: 0.1499,
+            plazoMeses: plazo,
+            mensualidad: 9265,
+            leyenda: 'Estimación no vinculante.',
+          );
+      enrutadorDe(tester).go(rutaDetalleModelo(2));
+      await tester.pumpAndSettle();
+
+      // El enrutador de prueba sigue el idioma del sistema, que aqui es ingles.
+      await tester.tap(find.text('Test drive'));
+      await tester.pumpAndSettle();
+      expect(enrutadorDe(tester).state.uri.toString(), rutaPruebaManejo(2));
+      expect(find.byType(PantallaPruebaManejo), findsOneWidget);
+
+      enrutadorDe(tester).pop();
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Get a quote'));
+      await tester.pumpAndSettle();
+      expect(enrutadorDe(tester).state.uri.toString(), rutaCotizarEstreno(2));
+      expect(find.byType(PantallaCotizacionEstreno), findsOneWidget);
     });
 
     testWidgets('un id que no es numero cae en no encontrado', (tester) async {

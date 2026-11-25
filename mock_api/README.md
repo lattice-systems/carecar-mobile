@@ -158,6 +158,9 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/asistente/preguntas/flujo` | V2-M24.09: SSE con la misma respuesta palabra por palabra (eventos `texto` cada 70 ms y `fin`) · 400 · 404 |
 | POST | `/asistente/consultas/{id}/calificacion` | V2-M24.07: 204 con `{"util": true}` o `false` (no se guarda) · 400 sin `util` |
 | POST | `/asistente/testigos` | V2-M24.05 (multipart `vehiculoId`, `imagen`): siempre «Presión de aceite», roja, con cita a la pág. 12 · 400 sin imagen · 404 vehículo ajeno |
+| POST | `/estreno/cotizaciones/calculo` | V2-M16.02: mensualidad con 14.99 %, enganche mínimo 10 % y plazos 12–60 · 409 `ESTRENO_SIN_PRECIO` · 400 |
+| POST | `/estreno/solicitudes` | V2-M16.01: prueba o cotización; el simulador asigna a «Vera Vendedora» al instante (`EN_ATENCION`) · 409 `ESTRENO_DUPLICADA` · 400 · 404 |
+| GET | `/estreno/solicitudes` | V2-M16.04: paginado, solo en memoria (se pierde al reiniciar) |
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
