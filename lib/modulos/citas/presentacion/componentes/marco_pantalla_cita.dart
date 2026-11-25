@@ -17,6 +17,7 @@ class MarcoPantallaCita extends StatelessWidget {
     super.key,
     this.subtitulo,
     this.acciones,
+    this.conRegreso = false,
     this.barraInferior,
     this.alRefrescar,
   });
@@ -28,6 +29,7 @@ class MarcoPantallaCita extends StatelessWidget {
     super.key,
     this.subtitulo,
     this.acciones,
+    this.conRegreso = false,
   }) : // El estado se centra y se desplaza solo (CentradoDesplazable), así
        // que ocupa el resto con alto fijo en vez de medirse con intrínsecos.
        slivers = [SliverFillRemaining(child: estado)],
@@ -40,6 +42,9 @@ class MarcoPantallaCita extends StatelessWidget {
 
   /// Botones al final del encabezado; por defecto, «Cerrar».
   final List<Widget>? acciones;
+
+  /// Pone «Regresar» antes del título; para las pantallas raíz del módulo.
+  final bool conRegreso;
   final Widget? barraInferior;
 
   /// Jalar para recargar; nulo lo desactiva.
@@ -56,6 +61,7 @@ class MarcoPantallaCita extends StatelessWidget {
           titulo: titulo,
           subtitulo: subtitulo,
           translucido: true,
+          conRegreso: conRegreso,
           acciones: acciones ?? [BotonCerrarCita()],
         ),
         ...slivers,
