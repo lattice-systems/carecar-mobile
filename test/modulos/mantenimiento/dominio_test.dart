@@ -88,6 +88,95 @@ void main() {
     });
   });
 
+  group('PlanMantenimiento.avanceDelProximo', () {
+    ProximoServicio proximo({
+      int kmObjetivo = 10000,
+      MotivoProximo motivo = MotivoProximo.km,
+    }) => ProximoServicio(
+      servicioId: 2,
+      nombre: 'Servicio 2',
+      kmObjetivo: kmObjetivo,
+      fechaEstimada: DateTime(2026, 12, 1),
+      faltanKm: 100,
+      faltanDias: 20,
+      motivo: motivo,
+    );
+
+    PlanMantenimiento plan({
+      int? kmActual,
+      ProximoServicio? proximo,
+      List<ServicioMantenimiento>? servicios,
+    }) => PlanMantenimiento(
+      vehiculoId: 5,
+      kmActual: kmActual,
+      proximo: proximo,
+      servicios:
+          servicios ??
+          [_servicio(1, estado: EstadoServicio.hecho), _servicio(2)],
+    );
+
+    test('va desde el último servicio hecho hasta el que toca', () {
+      // Hecho a los 5,000 km; toca a los 10,000; hoy 9,000: van 4,000 de 5,000.
+      final p = plan(kmActual: 9000, proximo: proximo());
+
+      expect(p.avanceDelProximo, closeTo(0.8, 1e-9));
+    });
+
+    test('sin servicio hecho parte de cero', () {
+      final p = plan(
+        kmActual: 2500,
+        proximo: proximo(kmObjetivo: 5000),
+        servicios: [_servicio(1)],
+      );
+
+      expect(p.avanceDelProximo, closeTo(0.5, 1e-9));
+    });
+
+    test('ignora un servicio hecho que ya pasó del objetivo', () {
+      // Un hecho a los 15,000 no es la base de uno que toca a los 10,000.
+      final p = plan(
+        kmActual: 7500,
+        proximo: proximo(),
+        servicios: [
+          _servicio(1, estado: EstadoServicio.hecho),
+          _servicio(3, estado: EstadoServicio.hecho),
+        ],
+      );
+
+      expect(p.avanceDelProximo, closeTo(0.5, 1e-9));
+    });
+
+    test('se queda entre 0 y 1', () {
+      expect(
+        plan(kmActual: 12000, proximo: proximo()).avanceDelProximo,
+        1.0,
+      );
+      expect(plan(kmActual: 3000, proximo: proximo()).avanceDelProximo, 0.0);
+    });
+
+    test('sin avance cuando toca por tiempo, sin km o sin próximo', () {
+      expect(
+        plan(
+          kmActual: 9000,
+          proximo: proximo(motivo: MotivoProximo.tiempo),
+        ).avanceDelProximo,
+        isNull,
+      );
+      expect(plan(proximo: proximo()).avanceDelProximo, isNull);
+      expect(plan(kmActual: 9000).avanceDelProximo, isNull);
+    });
+
+    test('sin avance si el objetivo no deja un tramo que recorrer', () {
+      final p = plan(
+        kmActual: 100,
+        proximo: proximo(kmObjetivo: 0),
+        servicios: const [],
+      );
+
+      expect(p.avanceDelProximo, isNull);
+    });
+  });
+
   group('ServicioMantenimiento', () {
     test('solo los hechos no se pueden agendar', () {
       expect(_servicio(1).sePuedeAgendar, isTrue);
