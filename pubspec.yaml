@@ -83,6 +83,7 @@ dependencies:
   # exportacion.
   google_mlkit_text_recognition: ^1.0.3
   pdf: ^3.8.4
+  cryptography: ^2.9.0
 
 dev_dependencies:
   flutter_test:
