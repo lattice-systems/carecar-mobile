@@ -275,4 +275,16 @@ class CarecarApiHttp implements CarecarApi {
     pagina: pagina,
     tamano: tamano,
   );
+
+  @override
+  Future<AvisoPrivacidad> avisoDePrivacidad() =>
+      _cliente.obtener('/privacidad/aviso', AvisoPrivacidad.fromJson);
+
+  @override
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
+      _cliente.enviar(
+        '/privacidad/aceptaciones',
+        cuerpo: {'avisoId': avisoId},
+        leer: AceptacionAviso.fromJson,
+      );
 }

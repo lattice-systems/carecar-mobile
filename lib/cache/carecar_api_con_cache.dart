@@ -331,4 +331,14 @@ class CarecarApiConCache implements CarecarApi {
     int pagina = 0,
     int tamano = 20,
   }) => _api.paginaDeSolicitudesEstreno(pagina: pagina, tamano: tamano);
+
+  // Privacidad (V2-M22.01): sin copia. «Aceptado» tiene que ser lo que el
+  // servidor sabe ahora; una copia vieja dejaria pasar sin aceptar una version
+  // nueva.
+  @override
+  Future<AvisoPrivacidad> avisoDePrivacidad() => _api.avisoDePrivacidad();
+
+  @override
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
+      _api.aceptarAvisoDePrivacidad(avisoId);
 }
