@@ -115,47 +115,54 @@ class _PantallaAceptarAvisoState extends ConsumerState<PantallaAceptarAviso> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Espaciado.e4,
-                Espaciado.e2,
-                Espaciado.e4,
-                Espaciado.e4,
+            // La barra de abajo se separa del texto que se desplaza por detrás.
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: c.fondo,
+                border: Border(top: BorderSide(color: c.borde)),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  if (_fallo case final fallo?) ...[
-                    Aviso(
-                      mensaje: _textoDeFallo(textos, fallo),
-                      tono: fallo is AvisoNoVigente
-                          ? Tono.informacion
-                          : fallo is PrivacidadSinConexion
-                          ? Tono.advertencia
-                          : Tono.peligro,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Espaciado.e4,
+                  Espaciado.e3,
+                  Espaciado.e4,
+                  Espaciado.e4,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_fallo case final fallo?) ...[
+                      Aviso(
+                        mensaje: _textoDeFallo(textos, fallo),
+                        tono: fallo is AvisoNoVigente
+                            ? Tono.informacion
+                            : fallo is PrivacidadSinConexion
+                            ? Tono.advertencia
+                            : Tono.peligro,
+                      ),
+                      const SizedBox(height: Espaciado.e3),
+                    ],
+                    BotonPildora(
+                      texto: _aceptando
+                          ? textos.privacidadGuardando
+                          : textos.privacidadAceptar,
+                      expandido: true,
+                      alPresionar: puedeAceptar ? () => _aceptar(datos) : null,
                     ),
-                    const SizedBox(height: Espaciado.e3),
+                    const SizedBox(height: Espaciado.e2),
+                    BotonPildora(
+                      texto: textos.privacidadNoAcepto,
+                      variante: VarianteBotonPildora.vidrio,
+                      expandido: true,
+                      alPresionar: _aceptando
+                          ? null
+                          : () => ref
+                                .read(controladorSesionProvider)
+                                .cerrarSesion(),
+                    ),
                   ],
-                  BotonPildora(
-                    texto: _aceptando
-                        ? textos.privacidadGuardando
-                        : textos.privacidadAceptar,
-                    expandido: true,
-                    alPresionar: puedeAceptar ? () => _aceptar(datos) : null,
-                  ),
-                  const SizedBox(height: Espaciado.e2),
-                  BotonPildora(
-                    texto: textos.privacidadNoAcepto,
-                    variante: VarianteBotonPildora.vidrio,
-                    expandido: true,
-                    alPresionar: _aceptando
-                        ? null
-                        : () => ref
-                              .read(controladorSesionProvider)
-                              .cerrarSesion(),
-                  ),
-                ],
+                ),
               ),
             ),
           ],

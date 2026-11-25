@@ -73,16 +73,18 @@ class _PantallaAvisoPrivacidadState
           data: (a) => ListView(
             padding: const EdgeInsets.all(Espaciado.e4),
             children: [
-              TextoDelAviso(aviso: a),
+              // Lo primero que se busca aquí es si ya se aceptó, no el final
+              // de un texto largo.
               if (a.aceptadoEn case final cuando?) ...[
-                const SizedBox(height: Espaciado.e4),
                 Aviso(
                   mensaje: textos.privacidadAceptadoEl(
                     diaDelAviso(context, cuando),
                   ),
                   tono: Tono.exito,
                 ),
+                const SizedBox(height: Espaciado.e4),
               ],
+              TextoDelAviso(aviso: a),
             ],
           ),
         ),
