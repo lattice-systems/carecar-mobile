@@ -7,6 +7,7 @@ import 'api/api_config.dart';
 import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
+import 'api/cliente_http_fijado.dart';
 import 'cache/carecar_api_con_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
@@ -145,6 +146,10 @@ class _AppCareCarState extends State<AppCareCar> {
     } on ApiConfigInvalida catch (e) {
       // Falta --dart-define=API_BASE_URL. Es preferible decirlo con el comando
       // exacto que arrancar apuntando a ningun lado.
+      _errorDeArranque = e;
+    } on ConfianzaTlsInvalida catch (e) {
+      // V2-M22.04: la direccion no tiene certificados fijados. Se prefiere no
+      // arrancar a conectarse sin fijar sin que nadie lo note.
       _errorDeArranque = e;
     }
   }

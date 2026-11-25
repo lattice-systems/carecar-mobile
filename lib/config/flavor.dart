@@ -5,11 +5,11 @@
 /// así `flutter run --flavor desarrollo -t lib/main_desarrollo.dart` apunta a
 /// lo mismo en las tres capas.
 ///
-/// | Flavor | Nombre | Dirección por omisión | HTTP en claro |
-/// | --- | --- | --- | --- |
-/// | `desarrollo` | CareCar Dev | mock local (`mock_api`, :3000) | sí |
-/// | `pruebas` | CareCar Pruebas | backend en Azure | no |
-/// | `produccion` | CareCar | backend en Azure | no |
+/// | Flavor | Nombre | Dirección por omisión | HTTP en claro | Certificados fijados |
+/// | --- | --- | --- | --- | --- |
+/// | `desarrollo` | CareCar Dev | mock local (`mock_api`, :3000) | sí | no |
+/// | `pruebas` | CareCar Pruebas | backend en Azure | no | sí |
+/// | `produccion` | CareCar | backend en Azure | no | sí |
 ///
 /// `--dart-define=API_BASE_URL=...` sigue sobrescribiendo la dirección.
 library;
@@ -18,18 +18,21 @@ enum Flavor {
   desarrollo(
     nombreApp: 'CareCar Dev',
     permiteHttpEnClaro: true,
+    fijaCertificados: false,
     urlAndroid: 'http://10.0.2.2:3000/api/v1/app',
     urlOtras: 'http://localhost:3000/api/v1/app',
   ),
   pruebas(
     nombreApp: 'CareCar Pruebas',
     permiteHttpEnClaro: false,
+    fijaCertificados: true,
     urlAndroid: _backendAzure,
     urlOtras: _backendAzure,
   ),
   produccion(
     nombreApp: 'CareCar',
     permiteHttpEnClaro: false,
+    fijaCertificados: true,
     urlAndroid: _backendAzure,
     urlOtras: _backendAzure,
   );
@@ -37,6 +40,7 @@ enum Flavor {
   const Flavor({
     required this.nombreApp,
     required this.permiteHttpEnClaro,
+    required this.fijaCertificados,
     required this._urlAndroid,
     required this._urlOtras,
   });
@@ -47,6 +51,11 @@ enum Flavor {
   /// Si el flavor puede hablar `http://`. Es lo mismo que el permiso nativo
   /// (`usesCleartextTraffic` en Android, ATS en iOS): solo `desarrollo`.
   final bool permiteHttpEnClaro;
+
+  /// Si la app solo confía en los certificados fijados del servidor (V2-M22.04,
+  /// `lib/config/pines_tls.dart`) en vez de en los del teléfono. `desarrollo`
+  /// habla `http` con el simulador, así que no hay nada que fijar.
+  final bool fijaCertificados;
 
   final String _urlAndroid;
   final String _urlOtras;

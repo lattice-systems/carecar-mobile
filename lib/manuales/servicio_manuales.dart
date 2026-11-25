@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import '../api/carecar_api.dart';
+import '../api/cliente_http_fijado.dart';
 import '../api/excepciones.dart';
 import '../api/modelos/vehiculo.dart';
 import '../config/flavor.dart';
@@ -94,7 +95,8 @@ class ManualesDeLaAgencia implements ServicioManuales {
     http.Client? cliente,
     bool? permitirHttp,
   }) : _respaldo = respaldo ?? ManualesLocales(),
-       _cliente = cliente ?? http.Client(),
+       // Fija los certificados del servidor en pruebas y produccion (V2-M22.04).
+       _cliente = cliente ?? clienteHttpDelAmbiente(),
        _permitirHttp = permitirHttp ?? Flavor.actual.permiteHttpEnClaro;
 
   final CarecarApi api;
