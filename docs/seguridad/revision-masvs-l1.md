@@ -18,7 +18,7 @@ Leyenda: ✅ cumple · 🟡 cumple en parte o con un pendiente · ⬜ no aplica 
 | --- | --- | --- | --- |
 | 8 | 9 | 7 | 0 |
 
-La revisión encontró **una brecha real, corregida en el mismo PR** (copias de seguridad de Android, F1) y **siete hallazgos para seguimiento** (F2–F8, más abajo). Ninguno es crítico; el más importante para el negocio era F3 (el aviso de privacidad no mencionaba a los proveedores de mapas) y se cerró con la versión 2 del aviso (V2-M22.10).
+La revisión encontró **una brecha real, corregida en el mismo PR** (copias de seguridad de Android, F1) y **siete hallazgos para seguimiento** (F2–F8, más abajo): F3 y F5 se cerraron, F7 se cerró a medias y F2, F4, F6 y F8 quedaron como **riesgo aceptado** para esta entrega, cada uno con su razón. Ninguno es crítico; el más importante para el negocio era F3 (el aviso de privacidad no mencionaba a los proveedores de mapas) y se cerró con la versión 2 del aviso (V2-M22.10).
 
 ## Controles
 
@@ -91,15 +91,15 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | # | Hallazgo | Control | Qué se hizo o se propone |
 | --- | --- | --- | --- |
 | **F1** | Android dejaba encendidas las copias de seguridad: la caché con VIN, placas y citas, y los datos cifrados de la sesión, viajaban a la copia de Google y salían por `adb`. | STORAGE-2 | **Corregido aquí**: `allowBackup="false"` y una prueba que vigila el manifiesto. |
-| **F2** | El Keychain de iOS guarda los tokens con la accesibilidad por omisión (`unlocked`), que se incluye en las copias cifradas y puede restaurarse en otro equipo. | STORAGE-1 | V2-M22.12: `first_unlock_this_device`, migrando sin cerrar la sesión de nadie. |
+| **F2** | El Keychain de iOS guarda los tokens con la accesibilidad por omisión (`unlocked`), que se incluye en las copias cifradas y puede restaurarse en otro equipo. | STORAGE-1 | **Riesgo aceptado** (V2-M22.12 se quitó): no hay Mac ni runners de macOS para probar el cambio, y migrar el Keychain sin cerrar sesiones sin poder probarlo es peor que el riesgo. La llave de la caché cifrada vive ahí también ([detalle](cache-cifrada.md)). |
 | **F3** | Las teselas del mapa (OpenStreetMap) y el geocodificador del sistema reciben datos de ubicación; el aviso de privacidad dice que solo se comparte con autoridades. | PRIVACY-2/3, STORAGE-2 | **Cerrado** con la versión 2 del aviso (V2-M22.10, backend#100): nombra a Azure y Neon, OpenStreetMap, el geocodificador del teléfono y Gemini, y todas las cuentas deben aceptarla. Falta la revisión legal del texto. |
-| **F4** | Los App Links (`autoVerify`) apuntan a `carecar.example.com`, que no sirve `assetlinks.json`. | PLATFORM-1 | V2-M22.14: dominio real o quitar el `autoVerify`. |
+| **F4** | Los App Links (`autoVerify`) apuntan a `carecar.example.com`, que no sirve `assetlinks.json`. | PLATFORM-1 | **Riesgo aceptado** (V2-M22.14 se quitó): hoy nada manda enlaces `https` a la app; el correo de recuperación usa por omisión `carecar://`, que no necesita dominio. Cuando se haga el flujo por enlace (V2-M01.04) puede usarse el dominio de Azure del backend sirviendo `/.well-known/assetlinks.json` con las huellas de las firmas (solo Android: en iOS los Associated Domains piden cuenta de Apple de pago). |
 | **F5** | La caché de la API guarda datos personales sin cifrar, y en iOS entra en las copias cifradas. | STORAGE-1 | **Cerrado** con V2-M22.13: las copias se guardan cifradas (AES-256-GCM, llave en el Keystore o el Keychain) y se descartan si no se pueden descifrar. [Detalle](cache-cifrada.md). |
-| **F6** | No hay escaneo periódico de dependencias. | CODE-3 | V2-M22.11: un escaneo semanal de `pubspec.lock`, Gradle y Pods. |
+| **F6** | No hay escaneo periódico de dependencias. | CODE-3 | **Riesgo aceptado** (V2-M22.11 se quitó): cada PR pasa por Revisión de dependencias y el backend ya corre Trivy cada semana. Un escaneo semanal del móvil se agrega copiando `trivy.yml` del backend (binario con checksum fijo) y apuntándolo a `pubspec.lock`; sin `gradle.lockfile` ni `Podfile.lock` no hay Gradle ni Pods que escanear. |
 | **F7** | Los pines de certificados no cubren las imágenes y un fallo se ve como «sin conexión». | NETWORK-2 | **Cerrado a medias** con V2-M22.15: un certificado rechazado sale como `ConexionNoSegura` y un aviso global lo explica («No pudimos verificar que la conexión sea segura»). Las imágenes (`NetworkImage`) siguen con la tienda del sistema: **riesgo aceptado**, vienen de dominios de terceros y las del catálogo son públicas. [Detalle](fijar-certificados.md). |
-| **F8** | Los builds de release no se ofuscan. | RESILIENCE-3 | V2-M22.16, junto con M23.01. |
+| **F8** | Los builds de release no se ofuscan. | RESILIENCE-3 | **Riesgo aceptado** (V2-M22.16 se quitó): la ofuscación es del perfil de resiliencia (R), no de L1, y sin reportes de fallos (V2-M23.01) los símbolos no tendrían dónde subirse. |
 
-Los números de historia son propuestas (estado `Borrador` en el [tablero](../../plan/tablero.md)): las prioriza el equipo.
+Las historias que se hicieron (M22.10, M22.13 y M22.15) están en el [tablero](../../plan/tablero.md); las otras cuatro propuestas se quitaron y su razón es la de esta tabla.
 
 ## Qué vigilan las pruebas
 
