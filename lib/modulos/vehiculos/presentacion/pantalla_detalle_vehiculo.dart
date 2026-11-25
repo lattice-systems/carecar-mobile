@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,12 +10,12 @@ import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/barra_portada.dart';
-import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -406,8 +408,10 @@ class _Cargando extends StatelessWidget {
   }
 }
 
-/// «Tu auto» como cuadricula de pildoras de vidrio de dos columnas
-/// (V2-M24.10), como las acciones rapidas de la propuesta.
+/// «Tu auto» como cuadricula de tarjetas iguales de dos columnas (V2-M24.10):
+/// cada una con su icono en un medallon y el nombre centrado debajo. Las dos
+/// de una fila miden lo mismo; con letra al 200 % pasa a una sola columna para
+/// que el texto no se parta ni desborde.
 class _AccionesTuAuto extends StatelessWidget {
   const _AccionesTuAuto({required this.titulo, required this.acciones});
 
@@ -417,10 +421,8 @@ class _AccionesTuAuto extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
-    final filas = <List<({String texto, IconData icono, String ruta})>>[
-      for (var i = 0; i < acciones.length; i += 2)
-        acciones.sublist(i, i + 2 > acciones.length ? acciones.length : i + 2),
-    ];
+    final escala = MediaQuery.textScalerOf(context);
+    final columnas = escala.scale(1) > 1.3 ? 1 : 2;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -434,31 +436,133 @@ class _AccionesTuAuto extends StatelessWidget {
           ),
         ),
         const SizedBox(height: Espaciado.e3),
-        for (final fila in filas) ...[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < fila.length; i++) ...[
-                if (i > 0) const SizedBox(width: Espaciado.e2),
-                Expanded(
-                  child: BotonPildora(
-                    texto: fila[i].texto,
-                    icono: fila[i].icono,
-                    variante: VarianteBotonPildora.vidrio,
-                    expandido: true,
-                    alPresionar: () => context.push(fila[i].ruta),
+        LayoutBuilder(
+          builder: (context, caja) {
+            // Alto unico de todas las tarjetas: se mide el nombre que mas
+            // lineas ocupa (hasta tres) con el ancho real de la tarjeta, para
+            // que un nombre largo no haga mas alta a una que a otra.
+            final ancho =
+                (caja.maxWidth - Espaciado.e3 * (columnas - 1)) / columnas -
+                _TarjetaTuAuto.relleno * 2 -
+                2;
+            var texto = 0.0;
+            for (final accion in acciones) {
+              final medida = TextPainter(
+                text: TextSpan(
+                  text: accion.texto,
+                  style: tokens.tipografia.cuerpoFuerte,
+                ),
+                textAlign: TextAlign.center,
+                textDirection: Directionality.of(context),
+                textScaler: escala,
+                maxLines: _TarjetaTuAuto.lineasMaximas,
+              )..layout(maxWidth: ancho);
+              texto = math.max(texto, medida.height);
+              medida.dispose();
+            }
+            final alto =
+                _TarjetaTuAuto.medallon +
+                Espaciado.e2 +
+                texto +
+                _TarjetaTuAuto.relleno * 2 +
+                2;
+            return GridView.count(
+              crossAxisCount: columnas,
+              mainAxisSpacing: Espaciado.e3,
+              crossAxisSpacing: Espaciado.e3,
+              mainAxisExtent: alto,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                for (final accion in acciones)
+                  _TarjetaTuAuto(
+                    texto: accion.texto,
+                    icono: accion.icono,
+                    alToque: () => context.push(accion.ruta),
+                  ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _TarjetaTuAuto extends StatelessWidget {
+  const _TarjetaTuAuto({
+    required this.texto,
+    required this.icono,
+    required this.alToque,
+  });
+
+  final String texto;
+  final IconData icono;
+  final VoidCallback alToque;
+
+  static const double medallon = 44;
+  static const double relleno = Espaciado.e4;
+  static const int lineasMaximas = 3;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    return Semantics(
+      key: const Key('accion-tu-auto'),
+      container: true,
+      button: true,
+      label: texto,
+      onTap: alToque,
+      excludeSemantics: true,
+      child: ReboteTactil(
+        child: Material(
+          color: c.superficie,
+          borderRadius: Radios.bordeTarjeta,
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: alToque,
+            splashFactory: NoSplash.splashFactory,
+            child: Ink(
+              decoration: BoxDecoration(
+                borderRadius: Radios.bordeTarjeta,
+                border: Border.all(color: c.borde),
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minHeight: 48),
+                child: Padding(
+                  padding: const EdgeInsets.all(relleno),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: medallon,
+                        height: medallon,
+                        decoration: BoxDecoration(
+                          color: c.acentoSuave,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(icono, size: 24, color: c.acento),
+                      ),
+                      const SizedBox(height: Espaciado.e2),
+                      Text(
+                        texto,
+                        maxLines: lineasMaximas,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: tokens.tipografia.cuerpoFuerte.copyWith(
+                          color: c.texto,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-              if (fila.length == 1) ...[
-                const SizedBox(width: Espaciado.e2),
-                const Expanded(child: SizedBox()),
-              ],
-            ],
+              ),
+            ),
           ),
-          const SizedBox(height: Espaciado.e2),
-        ],
-      ],
+        ),
+      ),
     );
   }
 }
