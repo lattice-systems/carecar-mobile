@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
+import '../../modulos/privacidad/privacidad.dart' show rutaAvisoPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../tema/tema_carecar.dart';
 import '../pantalla_cambiar_contrasena.dart';
@@ -119,7 +120,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     );
   }
 
+  /// El aviso vigente del servidor, con su version y cuando se acepto
+  /// (V2-M22.01). Sin enrutador (la v1 suelta, en pruebas) queda el texto que
+  /// la app trae incluido.
   void _privacidad() {
+    if (GoRouter.maybeOf(context) != null) {
+      GoRouter.of(context).push(rutaAvisoPrivacidad);
+      return;
+    }
     showShadDialog<void>(
       context: context,
       builder: (contexto) => ShadDialog(

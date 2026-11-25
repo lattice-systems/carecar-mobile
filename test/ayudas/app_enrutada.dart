@@ -22,6 +22,7 @@ class AppEnrutadaDePrueba extends StatelessWidget {
     required this.controlador,
     this.overrides = const [],
     this.interruptor,
+    this.envolver,
     super.key,
   });
 
@@ -35,6 +36,10 @@ class AppEnrutadaDePrueba extends StatelessWidget {
   /// pruebas de rutas de los modulos v2 no dependan del valor por defecto de
   /// la app (todo en v1).
   final InterruptorModulos? interruptor;
+
+  /// Envuelve la app como lo hace `main.dart` con lo que no pinta nada (el
+  /// verificador del aviso de privacidad, por ejemplo).
+  final Widget Function(Widget app)? envolver;
 
   @override
   Widget build(BuildContext context) => ProviderScope(
@@ -55,7 +60,10 @@ class AppEnrutadaDePrueba extends StatelessWidget {
           supportedLocales: idiomasSoportados,
           localeResolutionCallback: resolverIdioma,
           routerConfig: ref.watch(enrutadorProvider),
-          builder: (context, child) => ShadAppBuilder(child: child!),
+          builder: (context, child) {
+            final app = ShadAppBuilder(child: child!);
+            return envolver?.call(app) ?? app;
+          },
         ),
       ),
     ),
