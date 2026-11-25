@@ -1,5 +1,6 @@
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/comun.dart';
+import '../../../api/modelos/traslado.dart';
 import '../../../nucleo/api/api_cliente.dart';
 import '../../../nucleo/mapas/mapas.dart';
 import '../dominio/cotizacion_recoleccion.dart';
@@ -74,6 +75,23 @@ class RepositorioRecoleccionApi implements RepositorioRecoleccion {
       );
     } on SinParametrosDeValuacion {
       throw const FueraDeCobertura();
+    }
+  }
+
+  @override
+  Future<TrasladoDetalle> traslado(int id) =>
+      _cliente.obtener('/traslados/$id', TrasladoDetalle.fromJson);
+
+  @override
+  Future<ChecklistTraslado?> checklist(int trasladoId) async {
+    try {
+      return await _cliente.obtener(
+        '/traslados/$trasladoId/checklist',
+        ChecklistTraslado.fromJson,
+      );
+    } on NoEncontrado {
+      // Aun no hay checklist: no es un fallo.
+      return null;
     }
   }
 

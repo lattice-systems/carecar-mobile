@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/direccion_guardada.dart';
 import 'package:carecar_mobile/modulos/recoleccion/dominio/fallos_recoleccion.dart';
@@ -91,4 +92,29 @@ void main() {
 
     expect(cot.costoTotal, 180);
   });
+
+  test(
+    'el checklist no se guarda: se pide de nuevo al volver a abrir',
+    () async {
+      final repo = RepositorioRecoleccionFake(
+        checklists: {
+          5: ChecklistTraslado(
+            trasladoId: 5,
+            km: 100,
+            gasolina: NivelGasolina.lleno,
+            registradoEn: DateTime.utc(2026, 12),
+          ),
+        },
+      );
+      final c = _contenedor(repo);
+
+      final sub = c.listen(checklistTrasladoProvider(5), (_, _) {});
+      expect((await c.read(checklistTrasladoProvider(5).future))?.km, 100);
+      sub.close();
+      await Future<void>.delayed(Duration.zero);
+      await c.read(checklistTrasladoProvider(5).future);
+
+      expect(repo.consultasChecklist, 2);
+    },
+  );
 }

@@ -143,6 +143,13 @@ void main() {
     expect(find.text('Pregúntale a tu auto'), findsOneWidget);
   });
 
+  _prueba('mantenimiento es un acceso del grupo Tu auto', (tester) async {
+    await tester.pumpWidget(_app(RepositorioGarajeFake()));
+    await tester.pumpAndSettle();
+    expect(find.text('Mantenimiento'), findsOneWidget);
+    expect(find.bySemanticsLabel('Mantenimiento'), findsOneWidget);
+  });
+
   _prueba('un id que no esta en el garaje explica y no deja en blanco', (
     tester,
   ) async {

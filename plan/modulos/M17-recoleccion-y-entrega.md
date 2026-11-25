@@ -46,6 +46,8 @@ Que el cliente no tenga que llevar su auto: la agencia lo recoge y lo devuelve. 
 | V2-M17.02 | Como cliente quiero pedir que recojan mi auto al agendar para no tener que llevarlo | En la confirmación de la cita, opción "Recoger en mi domicilio" con una dirección guardada · costo y franja visibles antes de confirmar · se crean los traslados de recoger y entregar ligados a la cita · fuera de cobertura la opción no aparece | ✅ | V2-M02.08, V2-M17.01 |
 | V2-M17.03 | Como cliente quiero seguir al chofer para saber cuándo llega | Estados `en_camino`, `recogido`, `en_taller`, `de_regreso`, `entregado` en una línea de tiempo con push · el mapa con el chofer solo aparece en `en_camino` y `de_regreso` | ✅ | V2-M17.02, V2-M06.02, V2-T02.09, V2-T02.13 |
 | V2-M17.04 | Como cliente quiero ver el checklist con fotos del estado de mi auto para comprobar cómo lo recogieron y cómo me lo entregaron | Al recoger y al entregar: fotos, km, gasolina y firma · el cliente compara ambas entregas · fotos servidas con URL firmada de vida corta | ✅ | V2-M17.03, V2-T05.09, V2-T02.12 |
+| V2-M17.05 | Como cliente quiero que al cancelar o reprogramar mi cita también se cancele o se mueva la recolección para no recibir al chofer en una fecha que ya no sirve | Cancelar la cita cancela sus traslados programados · reprogramar los mueve a la nueva fecha con sus ventanas · en la misma transacción que la cita · traslados ya en curso no se tocan | ✅ | V2-M17.02 |
+| V2-M17.06 | Como cliente quiero entrar a «Mis direcciones» desde mi perfil para administrarlas sin tener que agendar | Fila «Mis direcciones» en el perfil o ajustes que abre `/recoleccion/direcciones` · respeta el interruptor v1/v2 | | V2-M17.01 |
 
 ## Fuera de alcance / notas
 
@@ -78,3 +80,41 @@ El módulo vive en `lib/modulos/recoleccion/` (`dominio/`, `datos/`, `presentaci
 - **Mock:** `mock_api/server.js` (bloque `// ── recoleccion ──`) simula el CRUD, la cotización (80 más 12 por km, cobertura de 40 km) y los traslados del 201.
 - **Pruebas:** `test/modulos/recoleccion/seleccion_recoleccion_test.dart`, `test/modulos/citas/agendar_con_recoleccion_test.dart`, el repositorio de citas (API y fake) y el comprobante.
 - **Fuera de esta historia:** el seguimiento del chofer y el checklist son V2-M17.03 y V2-M17.04; los traslados nacen `programado` y la app aún no los consulta.
+
+## Avance de V2-M17.03/.04/.06
+
+Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis direcciones» desde el perfil. El backend (`GET /traslados/{id}`, `GET /traslados/{id}/checklist`, eventos `traslado.estado` y `traslado.ubicacion`, contrato 2.8.0) ya está implementado.
+
+**V2-M17.03 · Seguir al chofer** (`/recoleccion/traslados/:id`, `PantallaSeguimientoTraslado`)
+
+- «Estilo portada»: `CabeceraPortada` con el traslado («Recogemos tu auto» o «Entregamos tu auto») y su estado, `LineaDeTiempo` con programado → en camino → recogido → en taller → de regreso → entregado (cancelado corta la línea), franja del traslado y «Actualizar».
+- **Mapa del chofer solo en `en_camino` y `de_regreso`:** usa el mapa PROVISIONAL del módulo (`MapaProvisional`, ahora de solo lectura, con ícono y descripción propios). Fuera de esos estados la ubicación se descarta aunque llegue.
+- **En vivo:** `seguimientoTrasladoProvider` aplica `traslado.estado` y `traslado.ubicacion`, consulta de nuevo al reconectar y a pedido (jalar o «Actualizar»); si falla, conserva lo mostrado y avisa. El canal solo está abierto mientras la pantalla está puesta (cliente de eventos del núcleo, ver V2-M11.04).
+- **Acceso:** desde el comprobante de la cita, cada traslado de «Recolección a domicilio» (`GrupoRecoleccionCita`) abre su seguimiento.
+- Cinco estados: cargando (esqueleto anunciado), datos, no encontrado (404), error con reintento y sin conexión.
+
+**V2-M17.04 · Checklist con fotos** (`/recoleccion/traslados/:id/checklist`, `PantallaChecklistTraslado`)
+
+- Kilometraje, gasolina (indicador de cuatro segmentos más el nombre del nivel; no depende del color), notas del chofer, `GaleriaFotos` con una descripción por foto y `Firma` del sistema.
+- **URLs firmadas:** el checklist se pide de nuevo cada vez que se abre (`checklistTrasladoProvider` es `autoDispose`; el repositorio no guarda nada) y las imágenes se descargan sin escribirlas a disco; la caché de imágenes de Flutter es solo en memoria.
+- **404 = aún no hay checklist:** estado vacío que explica que el chofer lo registra al recoger y al entregar.
+- Se llega desde el seguimiento con «Ver checklist del auto» (visible desde que el traslado sale: no en programado ni cancelado).
+
+**V2-M17.06 · «Mis direcciones» desde el perfil**
+
+- `PantallaPerfil` (v1, ruta de Ajustes) suma la fila «Mis direcciones» en «Cuenta», que abre `/recoleccion/direcciones` con `GoRouter`; regresar vuelve al perfil. La fila solo se ofrece dentro de la app enrutada. El módulo `recoleccion` es nuevo en v2 y no pasa por el interruptor v1/v2, así que no hay condición por módulo.
+
+**Contrato, DTOs y mock**
+
+- DTOs en `lib/api/modelos/traslado.dart` (`TrasladoDetalle`, `UbicacionChofer`, `ChecklistTraslado`, `EstadoTraslado`, `NivelGasolina`). El 404 del checklist se traduce a `null` en `RepositorioRecoleccionApi.checklist`. Código `TRANSICION_INVALIDA` agregado a `CodigoProblema` y a `test/api/errores_v11_test.dart`. `api/*.yaml` y `test/contrato` los integra quien integra.
+- `mock_api/server.js`: `GET /traslados/{id}` (ubicación solo en `en_camino` y `de_regreso`), `GET /traslados/{id}/checklist` (404 si no hay; URLs con firma que cambia en cada petición), cancelar una cita cancela sus traslados programados y un emisor de prueba (`POST /__mock/traslados/{id}/estado|ubicacion|checklist`, ver `mock_api/README.md`).
+- **Pruebas:** `test/api/traslado_modelos_test.dart`, repositorio, proveedores y fake de recolección, `seguimiento_traslado_test.dart`, `pantalla_seguimiento_traslado_test.dart`, `pantalla_checklist_traslado_test.dart`, `ruta_seguimiento_traslado_test.dart`, `mapa_provisional_test.dart`, `test/modulos/citas/grupo_recoleccion_cita_test.dart` y `test/pantallas/perfil/pantalla_perfil_direcciones_test.dart`.
+
+**Pendiente / fuera de alcance**
+
+- **Mapa PROVISIONAL:** sigue `// PROVISIONAL: se reemplaza por Mapa de V2-T02.09`; este hito no cierra con él.
+- **Push** de cada cambio de estado (criterio de V2-M17.03): depende de V2-M06.02. Hoy el seguimiento solo se actualiza en vivo con la pantalla abierta.
+- **Acceso desde «Mis citas»:** la lista de citas (`GET /citas`) no trae los traslados, solo la respuesta de agendar; sin un endpoint que los dé, solo se llega desde el comprobante de la confirmación. Pedir al backend que `GET /citas` incluya `recoleccion` (o `GET /citas/{id}/traslados`) y agregar la entrada en `PantallaMisCitas`.
+- **Comparar recoger y entregar** (criterio de V2-M17.04, «el cliente compara ambas entregas»): hoy se ve el checklist de un traslado a la vez. La comparación con `ComparacionAntesDespues` necesita los ids de los dos traslados de la cita y fotos comparables; queda como historia nueva.
+- Fotos y firma con `NetworkImage`; si más adelante se quiere caché en disco, debe respetar la vida de 15 minutos de las URLs.
+- Tablero y `plan/cumplimiento-ficha.md` los actualiza quien integra.

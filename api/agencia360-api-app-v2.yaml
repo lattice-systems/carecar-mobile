@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.10.1
+  version: 2.11.1
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -70,6 +70,10 @@ tags:
     description: V2-T05.08
   - name: Taller en vivo
     description: V2-M04.01, V2-M04.02, V2-M04.04 y V2-M04.05
+  - name: Mantenimiento
+    description: V2-M05.01, V2-M05.02, V2-M05.03 y V2-M05.06
+  - name: Bitácora
+    description: V2-M18.01 y V2-M18.04
 
 security:
   - bearerAuth: []
@@ -580,7 +584,10 @@ paths:
     post:
       tags: [Agenda]
       summary: Cancelar una cita
-      description: APP-3.3 · El cliente puede cancelar hasta X horas antes. **El valor de X está pendiente del PO.**
+      description: |
+        APP-3.3 · El cliente puede cancelar hasta X horas antes. **El valor de X está pendiente del PO.**
+        Los traslados de la cita que siguen `programado` pasan a `cancelado` en la misma
+        operación; los que ya salieron no cambian (V2-M17.05).
       parameters:
         - name: citaId
           in: path
@@ -618,6 +625,8 @@ paths:
         V2-M02.13 · Mueve la cita a otra franja (y opcionalmente otro día): libera la franja
         anterior y ocupa la nueva en la misma operación. Solo citas confirmadas que no han empezado.
         La franja debe ser del día de la cita, o del día de `fecha` si viene; si no, responde 400.
+        Los traslados de la cita que siguen `programado` toman el día nuevo con la misma ventana
+        horaria, en la misma operación; los que ya salieron no cambian (V2-M17.05).
       parameters:
         - name: citaId
           in: path
@@ -865,6 +874,37 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /asistencia/{solicitudId}:
+    get:
+      tags: [Asistencia]
+      summary: Una solicitud de asistencia mía
+      description: |
+        V2-M11.04 · Devuelve la solicitud con su estado actual (`recibida`, `en_camino`,
+        `atendida` o `cancelada`). Al cerrarse (`atendida` o `cancelada`) el backend borra la
+        ubicación y `lat` y `lng` vienen nulas. Cada cambio de estado llega en vivo por el
+        evento `asistencia.estado` de `GET /eventos`. Una solicitud inexistente o de otro
+        cliente responde 404.
+      parameters:
+        - name: solicitudId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: La solicitud
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudAsistencia'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /direcciones:
     get:
       tags: [Recolección]
@@ -1002,6 +1042,58 @@ paths:
           $ref: '#/components/responses/NoEncontrado'
         '422':
           $ref: '#/components/responses/FueraDeCobertura'
+
+  /traslados/{trasladoId}:
+    get:
+      tags: [Recolección]
+      summary: Estado de un traslado mío
+      description: |
+        V2-M17.03 · Estado del traslado de recoger o entregar. `ubicacionChofer` solo viene
+        mientras el estado es `en_camino` o `de_regreso` y el chofer ya reportó su posición; en
+        cualquier otro estado se omite. Los cambios llegan en vivo por los eventos
+        `traslado.estado` y `traslado.ubicacion` de `GET /eventos`. Un traslado inexistente o de
+        una cita de otro cliente responde 404.
+      parameters:
+        - $ref: '#/components/parameters/TrasladoId'
+      responses:
+        '200':
+          description: El traslado con su seguimiento
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SeguimientoTraslado'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /traslados/{trasladoId}/checklist:
+    get:
+      tags: [Recolección]
+      summary: Checklist de un traslado mío
+      description: |
+        V2-M17.04 · Lo que anotó el chofer al recoger o entregar: kilometraje, gasolina, notas,
+        fotos y firma. `fotos` y `firmaUrl` son URL temporales firmadas
+        (`/api/v1/archivos/{carpeta}/{id}?expira=&firma=`) que vencen a los 15 minutos; si
+        vencen, la app vuelve a pedir el checklist. Responde 404 si el traslado es de otro
+        cliente o todavía no tiene checklist.
+      parameters:
+        - $ref: '#/components/parameters/TrasladoId'
+      responses:
+        '200':
+          description: El checklist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChecklistTraslado'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
 
   /catalogo:
     get:
@@ -1283,6 +1375,200 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /vehiculos/{vehiculoId}/mantenimiento:
+    get:
+      tags: [Mantenimiento]
+      summary: Plan de mantenimiento del vehículo
+      description: |
+        V2-M05.01, V2-M05.02 y V2-M05.06 · El plan del modelo y año del vehículo, con lo que
+        incluye cada servicio y su precio estimado (estimación no vinculante). `hecho` se cruza
+        con las órdenes cerradas del historial. `proximo` estima cuándo toca el siguiente por
+        km (promedio diario de las lecturas) y por tiempo (meses); gana lo que llegue primero.
+        Sin plan para ese modelo y año responde 200 con `servicios` vacío y `proximo` nulo.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Plan del vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanMantenimiento'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/lecturas-km:
+    post:
+      tags: [Mantenimiento]
+      summary: Registrar mi kilometraje actual
+      description: |
+        V2-M05.03 · Guarda una lectura de fuente `cliente`. El kilometraje oficial del taller
+        no se sobrescribe. Un `km` menor a la última lectura oficial o a la última del cliente
+        responde 422 con `codigo` KM_INVALIDO; igual sí se acepta.
+
+        Con `multipart/form-data` se puede adjuntar una `foto` opcional del tablero (imagen JPEG,
+        PNG o WebP). El `km` se valida primero y solo después se guarda la foto; una foto que no es
+        imagen responde 400. La respuesta trae `fotoUrl`, una URL temporal firmada que vence a los
+        15 minutos. El cuerpo JSON de siempre sigue funcionando igual y no trae `fotoUrl`.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaLecturaKm'
+          multipart/form-data:
+            schema:
+              type: object
+              required: [km]
+              properties:
+                km:
+                  type: integer
+                  minimum: 1
+                  maximum: 2000000
+                foto:
+                  type: string
+                  format: binary
+                  description: Imagen JPEG, PNG o WebP del tablero
+      responses:
+        '201':
+          description: Lectura registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LecturaKm'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '422':
+          $ref: '#/components/responses/KmInvalido'
+
+  /vehiculos/{vehiculoId}/gastos:
+    get:
+      tags: [Bitácora]
+      summary: Gastos del vehículo
+      description: |
+        V2-M18.01 y V2-M18.04 · Más recientes primero. Con `mes` (`YYYY-MM`) solo los de ese
+        mes; sin él, todos. Paginado. Las estadísticas (km/l, $/km, gasto por mes) las calcula
+        la app.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - name: mes
+          in: query
+          required: false
+          schema:
+            type: string
+            pattern: '^\d{4}-(0[1-9]|1[0-2])$'
+            example: 2026-11
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Página de gastos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaGastos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    post:
+      tags: [Bitácora]
+      summary: Registrar un gasto
+      description: |
+        V2-M18.01 y V2-M18.04 · `gasolina` exige `litros` y `km`; `otro` exige `descripcion`;
+        la `fecha` no puede ser futura. Una carga de gasolina también crea una lectura de km
+        de fuente `cliente` y responde 422 KM_INVALIDO si el km es menor a la última lectura.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoGasto'
+      responses:
+        '201':
+          description: Gasto registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gasto'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '422':
+          $ref: '#/components/responses/KmInvalido'
+
+  /gastos/{gastoId}:
+    put:
+      tags: [Bitácora]
+      summary: Corregir un gasto
+      description: |
+        V2-M18.04 · Reemplaza el gasto con las mismas reglas que al crearlo. Solo del dueño;
+        uno ajeno responde 404.
+      parameters:
+        - $ref: '#/components/parameters/GastoId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoGasto'
+      responses:
+        '200':
+          description: Gasto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gasto'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '422':
+          $ref: '#/components/responses/KmInvalido'
+    delete:
+      tags: [Bitácora]
+      summary: Borrar un gasto
+      description: |
+        V2-M18.04 · Solo del dueño. La lectura de km que creó una carga de gasolina se conserva.
+      parameters:
+        - $ref: '#/components/parameters/GastoId'
+      responses:
+        '204':
+          description: Gasto borrado
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /asistente/preguntas/flujo:
     post:
       tags: [Asistente]
@@ -1441,13 +1727,32 @@ paths:
         servicio de un vehículo del cliente llega el evento `orden` con `data` en JSON
         (`AvisoOrden`); la app vuelve a consultar la orden. Llega un comentario de latido cada
         25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
+
+        Eventos de asistencia y traslados (solo al cliente dueño, `data` en JSON):
+        - `asistencia.estado` (V2-M11.04), `AvisoAsistencia`: cada vez que el personal cambia el
+          estado de la solicitud. La app vuelve a consultar `GET /asistencia/{solicitudId}`.
+        - `traslado.estado` (V2-M17.03), `AvisoTrasladoEstado`: cada vez que el chofer cambia el
+          estado del traslado. La app vuelve a consultar `GET /traslados/{trasladoId}`.
+        - `traslado.ubicacion` (V2-M17.03), `AvisoTrasladoUbicacion`: cada vez que el chofer
+          reporta su posición en `en_camino` o `de_regreso`; trae el punto, sin necesidad de
+          consultar.
+
+        Ejemplo en el flujo:
+        ```
+        event: asistencia.estado
+        data: {"solicitudId":12,"estado":"en_camino"}
+        ```
       responses:
         '200':
           description: Flujo de eventos
           content:
             text/event-stream:
               schema:
-                $ref: '#/components/schemas/AvisoOrden'
+                oneOf:
+                  - $ref: '#/components/schemas/AvisoOrden'
+                  - $ref: '#/components/schemas/AvisoAsistencia'
+                  - $ref: '#/components/schemas/AvisoTrasladoEstado'
+                  - $ref: '#/components/schemas/AvisoTrasladoUbicacion'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -1570,6 +1875,13 @@ components:
       schema:
         type: integer
         format: int64
+    TrasladoId:
+      name: trasladoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
     VehiculoId:
       name: vehiculoId
       in: path
@@ -1593,6 +1905,13 @@ components:
         type: integer
         minimum: 0
         default: 0
+    GastoId:
+      name: gastoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
     Tamano:
       name: tamano
       in: query
@@ -1640,6 +1959,12 @@ components:
             $ref: '#/components/schemas/Problema'
     FueraDeCobertura:
       description: La dirección queda fuera de la zona de cobertura (`codigo` FUERA_DE_COBERTURA)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+    KmInvalido:
+      description: El kilometraje es menor a la última lectura oficial o del cliente (`codigo` KM_INVALIDO)
       content:
         application/json:
           schema:
@@ -1981,6 +2306,197 @@ components:
           type: number
           format: double
           description: cantidad × precio
+
+    PlanMantenimiento:
+      type: object
+      required: [vehiculoId, kmActual, kmActualizadoEn, kmFuente, promedioKmDiario, servicios, proximo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        kmActual:
+          type: integer
+          nullable: true
+          description: El mayor entre el km oficial del vehículo y la última lectura del cliente
+        kmActualizadoEn:
+          type: string
+          format: date
+          nullable: true
+        kmFuente:
+          type: string
+          nullable: true
+          enum: [taller, cliente]
+        promedioKmDiario:
+          type: number
+          nullable: true
+          description: Con las lecturas; nulo si hay menos de dos
+        servicios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServicioMantenimiento'
+        proximo:
+          allOf:
+            - $ref: '#/components/schemas/ProximoServicio'
+          nullable: true
+
+    ServicioMantenimiento:
+      type: object
+      required: [id, nombre, km, meses, precioEstimado, conceptos, estado, hechoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Servicio de 10,000 km
+        km:
+          type: integer
+        meses:
+          type: integer
+        precioEstimado:
+          type: number
+          description: Estimación no vinculante; la app muestra la leyenda de estimado
+        conceptos:
+          type: array
+          items:
+            type: string
+        estado:
+          type: string
+          enum: [hecho, pendiente, proximo, vencido]
+        hechoEn:
+          type: string
+          format: date
+          nullable: true
+
+    ProximoServicio:
+      type: object
+      required: [servicioId, nombre, kmObjetivo, fechaEstimada, faltanKm, faltanDias, motivo]
+      properties:
+        servicioId:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        kmObjetivo:
+          type: integer
+        fechaEstimada:
+          type: string
+          format: date
+        faltanKm:
+          type: integer
+        faltanDias:
+          type: integer
+        motivo:
+          type: string
+          description: Lo que llega primero
+          enum: [km, tiempo]
+
+    NuevaLecturaKm:
+      type: object
+      required: [km]
+      properties:
+        km:
+          type: integer
+          minimum: 1
+
+    LecturaKm:
+      type: object
+      required: [id, km, fuente, registradaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        km:
+          type: integer
+        fuente:
+          type: string
+          enum: [cliente]
+        registradaEn:
+          type: string
+          format: date-time
+        fotoUrl:
+          type: string
+          description: |
+            URL temporal firmada de la foto del tablero (vence a los 15 minutos). Solo viene si
+            la lectura se registró con foto (V2-M05.03).
+
+    Gasto:
+      type: object
+      required: [id, vehiculoId, tipo, monto, litros, km, fecha, descripcion]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        tipo:
+          $ref: '#/components/schemas/TipoGasto'
+        monto:
+          type: number
+        litros:
+          type: number
+          nullable: true
+        km:
+          type: integer
+          nullable: true
+        fecha:
+          type: string
+          format: date
+        descripcion:
+          type: string
+          nullable: true
+          maxLength: 200
+
+    NuevoGasto:
+      type: object
+      required: [tipo, monto, fecha]
+      properties:
+        tipo:
+          $ref: '#/components/schemas/TipoGasto'
+        monto:
+          type: number
+          exclusiveMinimum: true
+          minimum: 0
+        litros:
+          type: number
+          nullable: true
+          description: Obligatorio y mayor a 0 en `gasolina`
+        km:
+          type: integer
+          nullable: true
+          description: Obligatorio en `gasolina`
+        fecha:
+          type: string
+          format: date
+          description: No puede ser futura
+        descripcion:
+          type: string
+          nullable: true
+          maxLength: 200
+          description: Obligatoria en `otro`
+
+    TipoGasto:
+      type: string
+      enum: [gasolina, estacionamiento, casetas, lavado, otro]
+
+    PaginaGastos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Gasto'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
 
     PaginaServicios:
       type: object
@@ -2562,6 +3078,51 @@ components:
           type: string
           enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
 
+    AvisoAsistencia:
+      type: object
+      description: V2-M11.04 · `data` del evento `asistencia.estado`
+      required: [solicitudId, estado]
+      properties:
+        solicitudId:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoAsistencia'
+
+    AvisoTrasladoEstado:
+      type: object
+      description: V2-M17.03 · `data` del evento `traslado.estado`
+      required: [trasladoId, citaId, tipo, estado]
+      properties:
+        trasladoId:
+          type: integer
+          format: int64
+        citaId:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [recoger, entregar]
+        estado:
+          $ref: '#/components/schemas/EstadoTraslado'
+
+    AvisoTrasladoUbicacion:
+      type: object
+      description: V2-M17.03 · `data` del evento `traslado.ubicacion`
+      required: [trasladoId, lat, lng, actualizadaEn]
+      properties:
+        trasladoId:
+          type: integer
+          format: int64
+        lat:
+          type: number
+        lng:
+          type: number
+        actualizadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
     TipoAsistencia:
       type: string
       description: Se acepta sin importar mayúsculas y siempre se devuelve en minúsculas.
@@ -2610,9 +3171,11 @@ components:
         lat:
           type: number
           nullable: true
+          description: Nula si no se compartió o si la solicitud ya se cerró (V2-M11.04)
         lng:
           type: number
           nullable: true
+          description: Nula si no se compartió o si la solicitud ya se cerró (V2-M11.04)
         comentario:
           type: string
           nullable: true
@@ -2696,7 +3259,10 @@ components:
 
     EstadoTraslado:
       type: string
-      description: Nace `programado`; el resto lo agrega V2-M17.03.
+      description: |
+        Nace `programado`. Recoger: `programado` → `en_camino` → `recogido` → `en_taller`.
+        Entregar: `programado` → `de_regreso` → `entregado`. `cancelado` solo desde `programado`,
+        cuando se cancela la cita (V2-M17.03 y V2-M17.05).
       enum: [programado, en_camino, recogido, en_taller, de_regreso, entregado, cancelado]
 
     Traslado:
@@ -2720,6 +3286,87 @@ components:
           type: string
         ventanaFin:
           type: string
+
+    UbicacionChofer:
+      type: object
+      required: [lat, lng, actualizadaEn]
+      properties:
+        lat:
+          type: number
+          minimum: -90
+          maximum: 90
+        lng:
+          type: number
+          minimum: -180
+          maximum: 180
+        actualizadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
+    SeguimientoTraslado:
+      type: object
+      description: V2-M17.03 · El traslado con su estado y la ubicación del chofer
+      required: [id, citaId, tipo, estado, costo, fecha, ventanaInicio, ventanaFin]
+      properties:
+        id:
+          type: integer
+          format: int64
+        citaId:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [recoger, entregar]
+        estado:
+          $ref: '#/components/schemas/EstadoTraslado'
+        costo:
+          type: number
+        fecha:
+          type: string
+          format: date
+        ventanaInicio:
+          type: string
+        ventanaFin:
+          type: string
+        ubicacionChofer:
+          allOf:
+            - $ref: '#/components/schemas/UbicacionChofer'
+          description: Solo en `en_camino` o `de_regreso` y con al menos un reporte; si no, se omite
+
+    GasolinaChecklist:
+      type: string
+      enum: [vacio, un_cuarto, medio, tres_cuartos, lleno]
+
+    ChecklistTraslado:
+      type: object
+      description: V2-M17.04 · Checklist que llenó el chofer al recoger o entregar
+      required: [trasladoId, km, gasolina, fotos, registradoEn]
+      properties:
+        trasladoId:
+          type: integer
+          format: int64
+        km:
+          type: integer
+          minimum: 1
+        gasolina:
+          $ref: '#/components/schemas/GasolinaChecklist'
+        notas:
+          type: string
+          maxLength: 500
+          description: Se omite si no hay
+        fotos:
+          type: array
+          description: URL temporales firmadas, vencen a los 15 minutos
+          items:
+            type: string
+        firmaUrl:
+          type: string
+          description: URL temporal firmada de la firma; se omite si no hay
+        registradoEn:
+          type: string
+          format: date-time
+          description: En UTC
 
     RecoleccionCita:
       type: object
@@ -2991,6 +3638,8 @@ components:
             - ASISTENTE_NO_DISPONIBLE
             - ORDEN_CERRADA
             - ADICIONAL_YA_RESPONDIDO
+            - KM_INVALIDO
+            - TRANSICION_INVALIDA
             - ESTRENO_SIN_PRECIO
             - ESTRENO_DUPLICADA
           example: FRANJA_SIN_CUPO

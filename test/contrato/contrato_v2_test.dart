@@ -101,12 +101,23 @@ const _operaciones = <String>{
   'PUT /direcciones/{direccionId}',
   'DELETE /direcciones/{direccionId}',
   'GET /recoleccion/cotizacion',
+  'GET /asistencia/{solicitudId}',
+  'GET /traslados/{trasladoId}',
+  'GET /traslados/{trasladoId}/checklist',
+  'GET /vehiculos/{vehiculoId}/mantenimiento',
+  'POST /vehiculos/{vehiculoId}/lecturas-km',
+  'GET /vehiculos/{vehiculoId}/gastos',
+  'POST /vehiculos/{vehiculoId}/gastos',
+  'PUT /gastos/{gastoId}',
+  'DELETE /gastos/{gastoId}',
 };
 
 const _codigosNuevos = <String>{
   'SOLICITUD_ABIERTA',
   'FUERA_DE_COBERTURA',
   'DIRECCION_EN_USO',
+  'KM_INVALIDO',
+  'TRANSICION_INVALIDA',
 };
 
 void main() {
@@ -119,13 +130,13 @@ void main() {
   });
 
   group('el contrato v2 trae asistencia y recoleccion', () {
-    test('la version es 2.6.0 o posterior', () {
+    test('la version es 2.8.0 o posterior', () {
       final partes = (contrato['info']['version'] as String)
           .split('.')
           .map(int.parse)
           .toList();
       expect(partes[0], 2);
-      expect(partes[1], greaterThanOrEqualTo(6));
+      expect(partes[1], greaterThanOrEqualTo(8));
     });
 
     test('declara los esquemas nuevos', () {
@@ -164,7 +175,7 @@ void main() {
       }
     });
 
-    test('declara las siete operaciones nuevas', () {
+    test('declara las operaciones nuevas de asistencia, recoleccion, mantenimiento y bitacora', () {
       final enElContrato = <String>{};
       (contrato['paths'] as YamlMap).forEach((ruta, operaciones) {
         (operaciones as YamlMap).forEach((metodo, _) {
