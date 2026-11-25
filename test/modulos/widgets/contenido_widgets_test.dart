@@ -21,25 +21,28 @@ void main() {
   });
 
   group('proxima cita', () {
-    test('con cita trae dia grande, horario, vehiculo y enlace al comprobante', () {
-      final c = ContenidoWidget.proximaCita(
-        titulo: 'Próxima cita',
-        dia: '24',
-        mes: 'NOV',
-        semana: 'mar',
-        horario: '09:00 a 10:00',
-        vehiculo: 'Aveo 2021',
-        descripcion: 'Próxima cita, martes 24 de noviembre',
-        citaId: 7,
-      );
-      expect(c.tipo, TipoWidget.proximaCita);
-      expect(c.hayDatos, isTrue);
-      expect(c.enlace, 'carecar://citas/7/comprobante');
-      expect(c.almacen['cita_dia'], '24');
-      expect(c.almacen['cita_mes'], 'NOV');
-      expect(c.almacen['cita_vehiculo'], 'Aveo 2021');
-      expect(c.almacen['cita_hay'], isTrue);
-    });
+    test(
+      'con cita trae dia grande, horario, vehiculo y enlace al comprobante',
+      () {
+        final c = ContenidoWidget.proximaCita(
+          titulo: 'Próxima cita',
+          dia: '24',
+          mes: 'NOV',
+          semana: 'mar',
+          horario: '09:00 a 10:00',
+          vehiculo: 'Aveo 2021',
+          descripcion: 'Próxima cita, martes 24 de noviembre',
+          citaId: 7,
+        );
+        expect(c.tipo, TipoWidget.proximaCita);
+        expect(c.hayDatos, isTrue);
+        expect(c.enlace, 'carecar://citas/7/comprobante');
+        expect(c.almacen['cita_dia'], '24');
+        expect(c.almacen['cita_mes'], 'NOV');
+        expect(c.almacen['cita_vehiculo'], 'Aveo 2021');
+        expect(c.almacen['cita_hay'], isTrue);
+      },
+    );
 
     test('sin cita invita a agendar y no lleva datos de una cita', () {
       final c = ContenidoWidget.proximaCitaVacia(
