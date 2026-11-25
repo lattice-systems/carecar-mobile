@@ -121,10 +121,23 @@ class _Repo implements RepositorioEstreno {
     return _solicitud(TipoSolicitud.cotizacion, cotizacion: _mensualidad);
   }
 
+  /// Páginas por número; la que falte se responde con [pagina].
+  final paginas = <int, PaginaDeSolicitudes>{};
+
+  /// Páginas que fallan hasta que se quiten de aquí.
+  final fallosEnPagina = <int, FalloEstreno>{};
+
+  /// Si se asigna, pedir una página después de la primera espera a que se
+  /// complete.
+  Completer<void>? esperaAlListarMas;
+
   @override
   Future<PaginaDeSolicitudes> solicitudes({int pagina = 0}) async {
     if (fallosAlListar.isNotEmpty) throw fallosAlListar.removeAt(0);
-    return this.pagina;
+    final fallo = fallosEnPagina[pagina];
+    if (fallo != null) throw fallo;
+    if (pagina > 0) await esperaAlListarMas?.future;
+    return paginas[pagina] ?? this.pagina;
   }
 }
 
@@ -663,6 +676,96 @@ void main() {
       expect(find.text('Nissan Kicks 2026'), findsOneWidget);
       expect(find.widgetWithText(Insignia, 'En atención'), findsOneWidget);
       expect(find.textContaining('Te atiende Vera'), findsOneWidget);
+    });
+
+    SolicitudDeEstreno solicitud(int id, String modelo) => SolicitudDeEstreno(
+      id: id,
+      tipo: TipoSolicitud.pruebaManejo,
+      modelo: modelo,
+      estado: EstadoSolicitud.recibida,
+      creadaEn: DateTime(2026, 11, 24),
+    );
+
+    /// Dos páginas de una solicitud cada una; la primera dice que hay más.
+    _Repo dosPaginas() => _Repo()
+      ..paginas[0] = PaginaDeSolicitudes(
+        solicitudes: [solicitud(1, 'Nissan Kicks 2026')],
+        pagina: 0,
+        hayMas: true,
+      )
+      ..paginas[1] = PaginaDeSolicitudes(
+        solicitudes: [solicitud(2, 'Nissan Versa 2025')],
+        pagina: 1,
+        hayMas: false,
+      );
+
+    _prueba('con mas paginas ofrece Ver mas y agrega la siguiente', (
+      tester,
+    ) async {
+      final repo = dosPaginas();
+      await tester.pumpWidget(_app(const PantallaMisSolicitudes(), repo));
+      await tester.pumpAndSettle();
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+      expect(find.text('Nissan Versa 2025'), findsNothing);
+
+      await tester.tap(find.text('Ver más'));
+      await tester.pumpAndSettle();
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+      expect(find.text('Nissan Versa 2025'), findsOneWidget);
+      expect(find.text('Ver más'), findsNothing);
+    });
+
+    _prueba('sin mas paginas no ofrece Ver mas', (tester) async {
+      final repo = _Repo()
+        ..pagina = PaginaDeSolicitudes(
+          solicitudes: [solicitud(1, 'Nissan Kicks 2026')],
+          pagina: 0,
+          hayMas: false,
+        );
+      await tester.pumpWidget(_app(const PantallaMisSolicitudes(), repo));
+      await tester.pumpAndSettle();
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+      expect(find.text('Ver más'), findsNothing);
+    });
+
+    _prueba('mientras trae mas lo dice y no deja pedir otra vez', (
+      tester,
+    ) async {
+      final repo = dosPaginas()..esperaAlListarMas = Completer<void>();
+      await tester.pumpWidget(_app(const PantallaMisSolicitudes(), repo));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Ver más'));
+      await tester.pump();
+      expect(find.text('Cargando…'), findsOneWidget);
+      final boton = tester.widget<BotonPildora>(
+        find.widgetWithText(BotonPildora, 'Cargando…'),
+      );
+      expect(boton.alPresionar, isNull);
+
+      repo.esperaAlListarMas!.complete();
+      await tester.pumpAndSettle();
+      expect(find.text('Nissan Versa 2025'), findsOneWidget);
+    });
+
+    _prueba('si Ver mas falla lo dice, conserva la lista y deja reintentar', (
+      tester,
+    ) async {
+      final repo = dosPaginas()..fallosEnPagina[1] = const EstrenoSinConexion();
+      await tester.pumpWidget(_app(const PantallaMisSolicitudes(), repo));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Ver más'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('No pudimos traer más'), findsOneWidget);
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+      expect(find.text('Ver más'), findsOneWidget);
+
+      repo.fallosEnPagina.remove(1);
+      await tester.tap(find.text('Ver más'));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('No pudimos traer más'), findsNothing);
+      expect(find.text('Nissan Versa 2025'), findsOneWidget);
     });
 
     _prueba('sin conexion ofrece reintentar y recupera', (tester) async {

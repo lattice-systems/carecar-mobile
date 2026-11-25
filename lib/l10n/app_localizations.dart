@@ -3958,6 +3958,24 @@ abstract class AppLocalizations {
   /// **'Desde el catálogo puedes pedir una prueba de manejo o cotizar un auto nuevo.'**
   String get estrenoVacioMensaje;
 
+  /// Botón al final de Mis solicitudes para traer la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get estrenoVerMas;
+
+  /// Texto del botón Ver más mientras llega la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando…'**
+  String get estrenoCargandoMas;
+
+  /// Aviso cuando falla Ver más; la lista que ya se veía se conserva.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos traer más solicitudes. Intenta de nuevo.'**
+  String get estrenoErrorMas;
+
   /// Lector de pantalla mientras carga.
   ///
   /// In es, this message translates to:

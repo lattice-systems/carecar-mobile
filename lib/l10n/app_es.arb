@@ -3010,6 +3010,18 @@
   "@estrenoVacioMensaje": {
     "description": "Lista vacía."
   },
+  "estrenoVerMas": "Ver más",
+  "@estrenoVerMas": {
+    "description": "Botón al final de Mis solicitudes para traer la siguiente página."
+  },
+  "estrenoCargandoMas": "Cargando…",
+  "@estrenoCargandoMas": {
+    "description": "Texto del botón Ver más mientras llega la siguiente página."
+  },
+  "estrenoErrorMas": "No pudimos traer más solicitudes. Intenta de nuevo.",
+  "@estrenoErrorMas": {
+    "description": "Aviso cuando falla Ver más; la lista que ya se veía se conserva."
+  },
   "estrenoCargando": "Cargando tus solicitudes",
   "@estrenoCargando": {
     "description": "Lector de pantalla mientras carga."

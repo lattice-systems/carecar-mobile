@@ -1673,5 +1673,8 @@
   "estrenoTeAtiende": "{nombre} is helping you",
   "estrenoVacioTitulo": "You have no requests yet",
   "estrenoVacioMensaje": "From the catalog you can book a test drive or get a quote.",
+  "estrenoVerMas": "Show more",
+  "estrenoCargandoMas": "Loading…",
+  "estrenoErrorMas": "We could not load more requests. Please try again.",
   "estrenoCargando": "Loading your requests"
 }

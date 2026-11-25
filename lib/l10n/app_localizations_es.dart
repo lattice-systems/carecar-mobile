@@ -2366,5 +2366,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Desde el catálogo puedes pedir una prueba de manejo o cotizar un auto nuevo.';
 
   @override
+  String get estrenoVerMas => 'Ver más';
+
+  @override
+  String get estrenoCargandoMas => 'Cargando…';
+
+  @override
+  String get estrenoErrorMas =>
+      'No pudimos traer más solicitudes. Intenta de nuevo.';
+
+  @override
   String get estrenoCargando => 'Cargando tus solicitudes';
 }

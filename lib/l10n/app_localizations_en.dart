@@ -2369,5 +2369,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'From the catalog you can book a test drive or get a quote.';
 
   @override
+  String get estrenoVerMas => 'Show more';
+
+  @override
+  String get estrenoCargandoMas => 'Loading…';
+
+  @override
+  String get estrenoErrorMas =>
+      'We could not load more requests. Please try again.';
+
+  @override
   String get estrenoCargando => 'Loading your requests';
 }
