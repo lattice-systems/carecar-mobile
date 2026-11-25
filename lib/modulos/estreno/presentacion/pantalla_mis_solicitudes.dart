@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -82,13 +81,12 @@ class PantallaMisSolicitudes extends ConsumerWidget {
     SolicitudDeEstreno s,
   ) {
     final c = TokensPista.de(context).colores;
-    final idioma = Localizations.localeOf(context).toLanguageTag();
     final tipo = s.tipo == TipoSolicitud.pruebaManejo
         ? textos.estrenoPruebaTitulo
         : textos.estrenoCotizacionTitulo;
     final detalle = [
       tipo,
-      if (s.fecha != null) DateFormat('EEE d MMM', idioma).format(s.fecha!),
+      if (s.fecha != null) diaCortoEstreno(context, s.fecha!),
       if (s.cotizacion != null)
         '${pesosEstreno.format(s.cotizacion!.mensualidad)} · '
             '${textos.estrenoMeses(s.cotizacion!.plazoMeses)}',

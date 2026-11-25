@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -35,7 +34,7 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
   FranjaPreferida? _franja;
   int? _estimacion;
   bool _enviando = false;
-  bool _listo = false;
+  SolicitudDeEstreno? _solicitud;
   FalloEstreno? _fallo;
 
   Future<void> _enviar() async {
@@ -47,7 +46,7 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
       _fallo = null;
     });
     try {
-      await ref
+      final solicitud = await ref
           .read(repositorioEstrenoProvider)
           .pedirPrueba(
             modeloId: widget.modeloId,
@@ -56,7 +55,7 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
             estimacionId: _estimacion,
           );
       ref.invalidate(misSolicitudesProvider);
-      if (mounted) setState(() => _listo = true);
+      if (mounted) setState(() => _solicitud = solicitud);
     } on FalloEstreno catch (fallo) {
       if (mounted) setState(() => _fallo = fallo);
     } finally {
@@ -68,7 +67,6 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
-    final idioma = Localizations.localeOf(context).toLanguageTag();
     final hoy = ref.watch(relojEstrenoProvider)();
     final manana = DateTime(hoy.year, hoy.month, hoy.day + 1);
     final dias = [
@@ -90,15 +88,11 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
                 style: TokensPista.de(context).tipografia.titulo2
                     .copyWith(color: c.texto),
               ),
-            if (_listo) ...[
+            if (_solicitud case final solicitud?) ...[
               const SizedBox(height: Espaciado.e4),
-              Aviso(mensaje: textos.estrenoListo, tono: Tono.exito),
-              const SizedBox(height: Espaciado.e3),
-              BotonPildora(
-                texto: textos.estrenoVerSolicitudes,
-                variante: VarianteBotonPildora.vidrio,
-                expandido: true,
-                alPresionar: () =>
+              ConfirmacionEstreno(
+                solicitud: solicitud,
+                alVerSolicitudes: () =>
                     context.pushReplacement(rutaMisSolicitudesEstreno),
               ),
             ] else ...[
@@ -110,7 +104,7 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
                   children: [
                     for (final d in dias)
                       ChipPista(
-                        texto: DateFormat('EEE d MMM', idioma).format(d),
+                        texto: diaCortoEstreno(context, d),
                         seleccionado: _dia == d,
                         alCambiar: (_) => setState(() => _dia = d),
                       ),

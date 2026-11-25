@@ -48,11 +48,21 @@ class _Repo implements RepositorioEstreno {
     hayMas: false,
   );
 
-  SolicitudDeEstreno _solicitud(TipoSolicitud tipo) => SolicitudDeEstreno(
+  /// Lo que devuelve el servidor: repite lo pedido y ya trae vendedor.
+  SolicitudDeEstreno _solicitud(
+    TipoSolicitud tipo, {
+    DateTime? fecha,
+    FranjaPreferida? franja,
+    MensualidadEstimada? cotizacion,
+  }) => SolicitudDeEstreno(
     id: 1,
     tipo: tipo,
     modelo: 'Nissan Kicks 2026',
-    estado: EstadoSolicitud.recibida,
+    estado: EstadoSolicitud.enAtencion,
+    vendedor: 'Vera',
+    fecha: fecha,
+    franja: franja,
+    cotizacion: cotizacion,
     creadaEn: DateTime(2026, 11, 24),
   );
 
@@ -77,7 +87,7 @@ class _Repo implements RepositorioEstreno {
   }) async {
     if (fallosAlPedir.isNotEmpty) throw fallosAlPedir.removeAt(0);
     pruebas.add((fecha: fecha, franja: franja, estimacion: estimacionId));
-    return _solicitud(TipoSolicitud.pruebaManejo);
+    return _solicitud(TipoSolicitud.pruebaManejo, fecha: fecha, franja: franja);
   }
 
   @override
@@ -93,7 +103,7 @@ class _Repo implements RepositorioEstreno {
       plazo: plazoMeses,
       estimacion: estimacionId,
     ));
-    return _solicitud(TipoSolicitud.cotizacion);
+    return _solicitud(TipoSolicitud.cotizacion, cotizacion: _mensualidad);
   }
 
   @override
@@ -215,6 +225,10 @@ void main() {
       expect(pedida.estimacion, isNull);
       expect(find.textContaining('Un asesor te contactará'), findsOneWidget);
       expect(find.text('Ver mis solicitudes'), findsOneWidget);
+      // La confirmación repite lo pedido y dice quién atiende.
+      expect(find.textContaining('26 nov'), findsOneWidget);
+      expect(find.text('Tarde (13 a 18 h)'), findsOneWidget);
+      expect(find.textContaining('Te atiende Vera'), findsOneWidget);
     });
 
     _prueba('los dias empiezan mañana', (tester) async {
@@ -327,6 +341,10 @@ void main() {
       final pedida = repo.cotizaciones.single;
       expect((pedida.enganche, pedida.plazo), (30000.0, 48));
       expect(find.textContaining('Un asesor te contactará'), findsOneWidget);
+      // La confirmación repite la mensualidad y el plazo, y dice quién atiende.
+      expect(find.text('\$7,513'), findsOneWidget);
+      expect(find.textContaining('48 meses'), findsOneWidget);
+      expect(find.textContaining('Te atiende Vera'), findsOneWidget);
     });
 
     _prueba('ofrece los cinco plazos y vuelve a calcular con el elegido', (

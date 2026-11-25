@@ -44,7 +44,7 @@ class _PantallaCotizacionEstrenoState
   FalloEstreno? _falloCalculo;
   FalloEstreno? _falloEnvio;
   bool _enviando = false;
-  bool _listo = false;
+  SolicitudDeEstreno? _solicitud;
   Timer? _demora;
   bool _inicializado = false;
 
@@ -98,7 +98,7 @@ class _PantallaCotizacionEstrenoState
       _falloEnvio = null;
     });
     try {
-      await ref
+      final solicitud = await ref
           .read(repositorioEstrenoProvider)
           .pedirCotizacion(
             modeloId: widget.modeloId,
@@ -107,7 +107,7 @@ class _PantallaCotizacionEstrenoState
             estimacionId: _estimacion,
           );
       ref.invalidate(misSolicitudesProvider);
-      if (mounted) setState(() => _listo = true);
+      if (mounted) setState(() => _solicitud = solicitud);
     } on FalloEstreno catch (fallo) {
       if (mounted) setState(() => _falloEnvio = fallo);
     } finally {
@@ -153,15 +153,11 @@ class _PantallaCotizacionEstrenoState
             if (modelo != null && precio == null) ...[
               const SizedBox(height: Espaciado.e4),
               Aviso(mensaje: textos.estrenoSinPrecio, tono: Tono.informacion),
-            ] else if (_listo) ...[
+            ] else if (_solicitud case final solicitud?) ...[
               const SizedBox(height: Espaciado.e4),
-              Aviso(mensaje: textos.estrenoListo, tono: Tono.exito),
-              const SizedBox(height: Espaciado.e3),
-              BotonPildora(
-                texto: textos.estrenoVerSolicitudes,
-                variante: VarianteBotonPildora.vidrio,
-                expandido: true,
-                alPresionar: () =>
+              ConfirmacionEstreno(
+                solicitud: solicitud,
+                alVerSolicitudes: () =>
                     context.pushReplacement(rutaMisSolicitudesEstreno),
               ),
             ] else ...[

@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/estreno.dart';
@@ -25,6 +29,90 @@ String textoDeFalloEstreno(AppLocalizations textos, FalloEstreno fallo) =>
       EstrenoDatosInvalidos(:final mensaje) => mensaje,
       EstrenoNoDisponible() => textos.estrenoNoDisponible,
     };
+
+/// El dia corto («jue 26 nov») en el idioma de la app.
+String diaCortoEstreno(BuildContext context, DateTime dia) => DateFormat(
+  'EEE d MMM',
+  Localizations.localeOf(context).toLanguageTag(),
+).format(dia);
+
+/// Lo que se pidio y quien atiende (V2-M16.01 y V2-M16.02): la persona ve que
+/// quedo registrado y con que datos antes de irse.
+class ConfirmacionEstreno extends StatelessWidget {
+  const ConfirmacionEstreno({
+    required this.solicitud,
+    required this.alVerSolicitudes,
+    super.key,
+  });
+
+  final SolicitudDeEstreno solicitud;
+  final VoidCallback alVerSolicitudes;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final c = TokensPista.de(context).colores;
+    final esPrueba = solicitud.tipo == TipoSolicitud.pruebaManejo;
+    final fecha = solicitud.fecha;
+    final cotizacion = solicitud.cotizacion;
+    final vendedor = solicitud.vendedor;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Aviso(mensaje: textos.estrenoListo, tono: Tono.exito),
+        const SizedBox(height: Espaciado.e3),
+        GrupoLista(
+          filas: [
+            FilaGrupo(
+              titulo: solicitud.modelo,
+              subtitulo: esPrueba
+                  ? textos.estrenoPruebaTitulo
+                  : textos.estrenoCotizacionTitulo,
+              icono: esPrueba
+                  ? Icons.directions_car_outlined
+                  : Icons.request_quote_outlined,
+              colorIcono: c.acento,
+            ),
+            if (fecha != null)
+              FilaGrupo(
+                titulo: diaCortoEstreno(context, fecha),
+                subtitulo: switch (solicitud.franja) {
+                  FranjaPreferida.manana => textos.estrenoManana,
+                  FranjaPreferida.tarde => textos.estrenoTarde,
+                  null => null,
+                },
+                icono: Icons.event_outlined,
+                colorIcono: c.acento,
+              ),
+            if (cotizacion != null)
+              FilaGrupo(
+                titulo: pesosEstreno.format(cotizacion.mensualidad),
+                subtitulo: [
+                  textos.estrenoMensualidad,
+                  textos.estrenoMeses(cotizacion.plazoMeses),
+                ].join(' · '),
+                icono: Icons.payments_outlined,
+                colorIcono: c.acento,
+              ),
+            if (vendedor != null)
+              FilaGrupo(
+                titulo: textos.estrenoTeAtiende(vendedor),
+                icono: Icons.person_outline,
+                colorIcono: c.acento,
+              ),
+          ],
+        ),
+        const SizedBox(height: Espaciado.e3),
+        BotonPildora(
+          texto: textos.estrenoVerSolicitudes,
+          variante: VarianteBotonPildora.vidrio,
+          expandido: true,
+          alPresionar: alVerSolicitudes,
+        ),
+      ],
+    );
+  }
+}
 
 /// Titulo de seccion de los formularios de estreno.
 class SeccionEstreno extends StatelessWidget {
