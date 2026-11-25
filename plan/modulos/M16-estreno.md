@@ -6,7 +6,7 @@
 | Dueño | Daniel |
 | Revisa | Haziel |
 | Ficha técnica | ✅ Sección 16. Estreno |
-| Estado | Implementado en la app y en el backend; falta demostrarlo en celular |
+| Estado | Integrado en la app (#118) y en el backend (backend#93, backend#94); falta demostrarlo en celular |
 
 ## Propósito
 
