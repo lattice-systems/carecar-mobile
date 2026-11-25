@@ -65,7 +65,7 @@ void main() {
     await _tarjetas(tester, Escenario.claro);
     for (final nombre in [
       'Ficha técnica',
-      'Historial',
+      'Historial de servicios',
       'Mantenimiento',
       'Bitácora',
     ]) {
