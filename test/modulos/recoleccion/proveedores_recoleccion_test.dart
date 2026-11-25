@@ -13,7 +13,7 @@ const _borrador = BorradorDireccion(
   colonia: 'Juárez',
   cp: '06600',
   ciudad: 'CDMX',
-  ubicacion: Coordenada(19.4326, -99.1332),
+  ubicacion: Coordenada(21.1250, -101.6860),
 );
 
 ProviderContainer _contenedor(RepositorioRecoleccionFake repo) {
@@ -57,7 +57,7 @@ void main() {
         colonia: 'Roma',
         cp: '06700',
         ciudad: 'CDMX',
-        ubicacion: Coordenada(19.42, -99.16),
+        ubicacion: Coordenada(21.13, -101.68),
       ),
     );
 
