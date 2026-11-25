@@ -1,7 +1,5 @@
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/acceso/acceso.dart';
-import 'package:carecar_mobile/modulos/acceso/presentacion/proveedores_acceso.dart'
-    show repositorioAccesoProvider;
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
@@ -163,10 +161,7 @@ void main() {
     );
     expect(pantalla.token, 'abc123');
     // Y por tanto pide la contrasena en vez de decir que el enlace no sirve.
-    expect(
-      find.byKey(PantallaNuevaContrasena.campoNueva),
-      findsOneWidget,
-    );
+    expect(find.byKey(PantallaNuevaContrasena.campoNueva), findsOneWidget);
   });
 
   testWidgets('la pantalla llega con el tema Pista, no con el de la v1', (
