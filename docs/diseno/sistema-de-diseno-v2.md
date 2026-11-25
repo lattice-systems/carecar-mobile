@@ -108,6 +108,16 @@ Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; c
 
 Compuestos: `TarjetaVehiculo` (héroe), `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `CabeceraPortada`, `BarraPortada`, `Estante`, `GrupoLista`, `BotonPildora`, `BotonCircular`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
 
+**Navegación en píldora (rediseño del inicio, V2-T02.21).** Inspirada en la app móvil de Claude: menos héroes y tarjetas de color, más aire y listas limpias.
+
+| Componente | Qué es |
+| --- | --- |
+| `BarraFlotante` | Barra inferior que flota con margen, de vidrio y con sombra; el destino activo va en una píldora más oscura y siempre se ve icono y texto. Reutiliza `DestinoNavegacion`. Cada destino mide al menos 48 y anuncia su posición. `BarraFlotante.altoReservado` dice cuánto margen inferior necesita el contenido. |
+| `GrupoAccionesPildora` | De una a tres acciones de icono dentro de una misma píldora de vidrio (la de la derecha del encabezado). Cada acción mide 48 × 48. |
+| `BotonAccionFlotante` | La acción principal de la pantalla, en píldora oscura con icono y texto sobre el contenido. Una por pantalla. |
+
+El inicio (`lib/nucleo/inicio/inicio_nuevo.dart`) los junta: avatar arriba (abre perfil y ajustes), saludo grande, lo que el taller tiene en curso, lista de accesos y, abajo, el botón flotante y la barra. Con letra a más de 150 % el botón flotante se esconde y la reserva del final de la lista crece, para que nada quede tapado. Por ahora los destinos de la barra abren su pantalla encima del inicio; convertirlos en pestañas reales (cada una con su propio navegador) es el siguiente paso. `BarraNavegacion` (ancha, pegada al borde) sigue en el sistema para quien la necesite.
+
 **Vidrio (V2-T02.19):** `BotonPildora` y `BotonCircular` tienen variante `vidrio`: fondo del color del texto al 6 %, borde de luz al 14 %, texto `texto` e ícono `acento`, con rebote. Es el estilo de las acciones secundarias de toda la app (la propuesta «Liquid Glass»); `BotonCircular` es de vidrio por omisión.
 
 **`BotonCircular`** (V2-T02.17): botón de un ícono, círculo de 48 con `ReboteTactil`. Variante `tonal` (fondo `superficieHundida`, ícono `textoSecundario`) y `acento` (fondo `acentoSuave`, ícono `acento`). Con `iconoMarcado` es interruptor: marcado se ve como acento y el lector lo anuncia seleccionado. Deshabilitado: fondo hundido, ícono terciario, sin rebote. Lo usan enviar (acento) y adjuntar de `CampoMensaje`, y 👍/👎 del asistente.

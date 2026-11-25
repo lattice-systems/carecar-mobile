@@ -4,6 +4,7 @@ import 'package:carecar_mobile/modulos/privacidad/privacidad.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -85,7 +86,7 @@ void main() {
 
       expect(_ubicacion(tester), Rutas.aceptarAviso);
       expect(find.text('Acepto el aviso de privacidad'), findsOneWidget);
-      expect(find.text('Menú'), findsNothing);
+      expect(find.byType(InicioNuevo), findsNothing);
 
       aceptado = true;
       await tester.tap(find.text('Acepto el aviso de privacidad'));
@@ -93,7 +94,7 @@ void main() {
 
       expect(escena.aceptados, [3]);
       expect(_ubicacion(tester), Rutas.inicio);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
 
     testWidgets('con una sesion restaurada tambien se pide, y se vuelve al '
@@ -131,7 +132,7 @@ void main() {
       );
 
       expect(_ubicacion(tester), Rutas.inicio);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
 
     testWidgets('sin conexion no deja a nadie fuera de la app', (tester) async {
@@ -142,7 +143,7 @@ void main() {
       );
 
       expect(_ubicacion(tester), Rutas.inicio);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
 
     testWidgets('quien no acepta cierra la sesion y vuelve al acceso', (
