@@ -1,5 +1,4 @@
 import 'package:carecar_mobile/modulos/mantenimiento/datos/repositorio_mantenimiento_fake.dart';
-import 'package:carecar_mobile/modulos/mantenimiento/dominio/plan_mantenimiento.dart';
 import 'package:carecar_mobile/modulos/mantenimiento/mantenimiento.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,7 +101,9 @@ void main() {
     await tester.pumpAndSettle();
 
     final barra = tester.widget<Material>(
-      find.descendant(of: find.byType(AppBar), matching: find.byType(Material)),
+      find
+          .descendant(of: find.byType(AppBar), matching: find.byType(Material))
+          .first,
     );
     expect(barra.color!.a, 1);
   });

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Lo que ve quien elige un widget en el selector del lanzador y los textos por defecto cuando aun no hay datos; el contenido real llega traducido desde Flutter (lib/l10n, prefijo widgets). -->
+    <string name="widget_cita_nombre">Próxima cita</string>
+    <string name="widget_cita_descripcion">Tu próxima cita en el taller, de un vistazo.</string>
+    <string name="widget_taller_nombre">Taller en vivo</string>
+    <string name="widget_taller_descripcion">La etapa de tu auto y la hora estimada de entrega.</string>
+    <string name="widget_mant_nombre">Mantenimiento</string>
+    <string name="widget_mant_descripcion">Tu próximo servicio, los km que faltan y su fecha.</string>
+    <string name="widget_bit_nombre">Bitácora</string>
+    <string name="widget_bit_descripcion">Rendimiento en km/l y gasto del mes.</string>
+    <string name="widget_acc_nombre">Accesos rápidos</string>
+    <string name="widget_acc_descripcion">Agendar, Mi auto, SOS y Comprobante a un toque.</string>
+    <string name="widget_vacio_cita">Abre CareCar para ver tu cita</string>
+    <string name="widget_vacio_taller">Abre CareCar para ver tu auto en el taller</string>
+    <string name="widget_vacio_mant">Abre CareCar para ver tu mantenimiento</string>
+    <string name="widget_vacio_bit">Abre CareCar para ver tu bitácora</string>
+    <string name="widget_accion_abrir">Abrir</string>
+    <string name="widget_acc_agendar">Agendar</string>
+    <string name="widget_acc_mi_auto">Mi auto</string>
+    <string name="widget_acc_sos">SOS</string>
+    <string name="widget_acc_comprobante">Comprobante</string>
+    <string name="widget_demo_dia">24</string>
+    <string name="widget_demo_mes">nov</string>
+    <string name="widget_demo_semana">mar</string>
+    <string name="widget_demo_horario">09:00 a 10:00</string>
+    <string name="widget_demo_auto">Aveo 2021</string>
+    <string name="widget_demo_etapa">En reparación</string>
+    <string name="widget_demo_paso">Paso 4 de 7</string>
+    <string name="widget_demo_entrega">Entrega estimada: 18:00</string>
+    <string name="widget_demo_servicio">Servicio de 20,000 km</string>
+    <string name="widget_demo_faltan">Faltan 2,500 km</string>
+    <string name="widget_demo_fecha">Hacia el 15 ene</string>
+    <string name="widget_demo_rend">12.4</string>
+    <string name="widget_demo_unidad">km/l</string>
+    <string name="widget_demo_gasto">$1,450</string>
+    <string name="widget_demo_etq_gasto">Gasto de noviembre</string>
+    <string name="widget_demo_etq_rend">Rendimiento</string>
+</resources>

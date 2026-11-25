@@ -69,7 +69,11 @@ class PantallaGaraje extends ConsumerWidget {
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: [
-            EncabezadoGrande(titulo: textos.vehiculosTitulo, translucido: true),
+            EncabezadoGrande(
+              titulo: textos.vehiculosTitulo,
+              translucido: true,
+              conRegreso: true,
+            ),
             contenido,
             const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
           ],

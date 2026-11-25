@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
+import 'boton_regresar.dart';
 
 /// Encabezado de pantalla que empieza grande y se encoge al desplazar.
 ///
@@ -24,6 +25,7 @@ class EncabezadoGrande extends StatelessWidget {
     this.subtitulo,
     this.acciones = const [],
     this.translucido = false,
+    this.conRegreso = false,
   });
 
   final String titulo;
@@ -35,6 +37,10 @@ class EncabezadoGrande extends StatelessWidget {
   /// Barra contraida translucida con desenfoque.
   final bool translucido;
 
+  /// Pone un [BotonRegresar] antes del titulo; para las pantallas raiz de un
+  /// modulo, que se abren desde el menu o un enlace.
+  final bool conRegreso;
+
   @override
   Widget build(BuildContext context) {
     final escala = MediaQuery.textScalerOf(context);
@@ -45,6 +51,7 @@ class EncabezadoGrande extends StatelessWidget {
         subtitulo: subtitulo,
         acciones: acciones,
         translucido: translucido,
+        conRegreso: conRegreso,
         escala: escala,
         tokens: TokensPista.de(context),
         arriba: MediaQuery.paddingOf(context).top,
@@ -59,6 +66,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     required this.subtitulo,
     required this.acciones,
     required this.translucido,
+    required this.conRegreso,
     required this.escala,
     required this.tokens,
     required this.arriba,
@@ -68,6 +76,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
   final String? subtitulo;
   final List<Widget> acciones;
   final bool translucido;
+  final bool conRegreso;
   final TextScaler escala;
   final TokensPista tokens;
   final double arriba;
@@ -131,7 +140,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(
-          Espaciado.e4,
+          conRegreso ? Espaciado.e1 : Espaciado.e4,
           arriba,
           Espaciado.e2,
           Espaciado.e2,
@@ -139,6 +148,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            if (conRegreso) const BotonRegresar(),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -194,6 +204,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       anterior.subtitulo != subtitulo ||
       anterior.acciones != acciones ||
       anterior.translucido != translucido ||
+      anterior.conRegreso != conRegreso ||
       anterior.escala != escala ||
       anterior.tokens != tokens ||
       anterior.arriba != arriba;

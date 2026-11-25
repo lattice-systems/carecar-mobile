@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Version oscura: mismos tokens de Pista (oscuro), con el degradado hacia
+         un azul muy profundo. -->
+    <color name="widget_fondo_inicio">#FF1C2230</color>
+    <color name="widget_fondo_fin">#FF0D1220</color>
+    <color name="widget_texto">#FFF3F4F6</color>
+    <color name="widget_texto_secundario">#FFA3A9B5</color>
+    <color name="widget_acento">#FF5B8CFF</color>
+    <color name="widget_sobre_acento">#FF0A0B0E</color>
+    <color name="widget_peligro">#FFF97066</color>
+    <color name="widget_chip">#1AFFFFFF</color>
+    <color name="widget_pista">#33FFFFFF</color>
+</resources>

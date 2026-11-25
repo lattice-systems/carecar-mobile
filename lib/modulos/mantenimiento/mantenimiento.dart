@@ -4,7 +4,14 @@
 /// Otros modulos y la app solo importan este archivo.
 library;
 
-export 'dominio/plan_mantenimiento.dart' show FuenteKm;
+export 'dominio/plan_mantenimiento.dart'
+    show
+        EstadoServicio,
+        FuenteKm,
+        MotivoProximo,
+        PlanMantenimiento,
+        ProximoServicio,
+        ServicioMantenimiento;
 export 'presentacion/pantalla_plan_mantenimiento.dart'
     show PantallaPlanMantenimiento;
 export 'presentacion/pantalla_registrar_km.dart' show PantallaRegistrarKm;

@@ -3,6 +3,8 @@
 /// Otros modulos y la app solo importan este archivo.
 library;
 
+export 'dominio/estadisticas.dart'
+    show Rendimiento, calcularRendimiento, gastoDelMes;
 export 'dominio/gasto.dart' show BorradorGasto, Gasto, TipoGasto;
 export 'presentacion/caminos_bitacora.dart'
     show

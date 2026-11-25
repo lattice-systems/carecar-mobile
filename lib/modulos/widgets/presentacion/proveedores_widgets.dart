@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../datos/accesos_rapidos_quick_actions.dart';
-import '../datos/widget_cita_home_widget.dart';
+import '../datos/widgets_home_widget.dart';
 import '../dominio/acceso_rapido.dart';
-import '../dominio/proxima_cita_widget.dart';
+import '../dominio/contenido_widgets.dart';
 
 /// El puerto con el sistema operativo para los accesos del icono. Las pruebas
 /// lo sustituyen con `overrideWithValue`.
@@ -12,9 +12,10 @@ final puertoAccesosRapidosProvider = Provider<PuertoAccesosRapidos>(
   name: 'puertoAccesosRapidosProvider',
 );
 
-/// El puerto con el widget de pantalla de inicio de la proxima cita
-/// (V2-M25.01). Las pruebas lo sustituyen con `overrideWithValue`.
-final puertoWidgetCitaProvider = Provider<PuertoWidgetCita>(
-  (ref) => WidgetCitaHomeWidget(),
-  name: 'puertoWidgetCitaProvider',
+/// El puerto con los widgets de pantalla de inicio (V2-M25): próxima cita,
+/// taller en vivo, mantenimiento, bitácora y accesos rápidos. Las pruebas lo
+/// sustituyen con `overrideWithValue`.
+final puertoWidgetsProvider = Provider<PuertoWidgets>(
+  (ref) => WidgetsHomeWidget(),
+  name: 'puertoWidgetsProvider',
 );
