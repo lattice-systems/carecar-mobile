@@ -403,6 +403,8 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text('Precio desde \$300,000'), findsOneWidget);
+      // El campo se llama una sola vez: sin un título que repita su etiqueta.
+      expect(find.text('Enganche'), findsOneWidget);
       expect(find.text('Mínimo \$30,000'), findsOneWidget);
       expect(find.text('\$7,513'), findsOneWidget);
       expect(find.text('Estimación no vinculante.'), findsOneWidget);
@@ -675,7 +677,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Nissan Kicks 2026'), findsOneWidget);
       expect(find.widgetWithText(Insignia, 'En atención'), findsOneWidget);
-      expect(find.textContaining('Te atiende Vera'), findsOneWidget);
+      // Quién atiende va en su propia línea, no pegado al resto.
+      expect(
+        find.text('Cotización · \$7,513 · 48 meses\nTe atiende Vera'),
+        findsOneWidget,
+      );
     });
 
     SolicitudDeEstreno solicitud(int id, String modelo) => SolicitudDeEstreno(

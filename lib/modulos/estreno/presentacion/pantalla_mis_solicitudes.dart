@@ -158,14 +158,18 @@ class _PantallaMisSolicitudesState
     final tipo = s.tipo == TipoSolicitud.pruebaManejo
         ? textos.estrenoPruebaTitulo
         : textos.estrenoCotizacionTitulo;
-    final detalle = [
+    final datos = [
       tipo,
       if (s.fecha != null) diaCortoEstreno(context, s.fecha!),
       if (s.cotizacion != null)
         '${pesosEstreno.format(s.cotizacion!.mensualidad)} · '
             '${textos.estrenoMeses(s.cotizacion!.plazoMeses)}',
-      if (s.vendedor != null) textos.estrenoTeAtiende(s.vendedor!),
     ].join(' · ');
+    // Quien atiende va en su propia linea, no pegado al resto.
+    final detalle = [
+      datos,
+      if (s.vendedor != null) textos.estrenoTeAtiende(s.vendedor!),
+    ].join('\n');
     final (estado, tono) = switch (s.estado) {
       EstadoSolicitud.recibida => (
         textos.estrenoEstadoRecibida,

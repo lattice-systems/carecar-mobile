@@ -225,9 +225,10 @@ class _PantallaCotizacionEstrenoState
                 context.pushReplacement(rutaMisSolicitudesEstreno),
           ),
         ] else ...[
-          SeccionEstreno(
-            titulo: textos.estrenoEnganche,
-            hijo: CampoTexto(
+          // Sin titulo de seccion: el campo ya se llama «Enganche».
+          Padding(
+            padding: const EdgeInsets.only(top: Espaciado.e5),
+            child: CampoTexto(
               etiqueta: textos.estrenoEnganche,
               controlador: _enganche,
               teclado: TextInputType.number,
