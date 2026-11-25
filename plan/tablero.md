@@ -163,7 +163,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
-| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #129, backend#97 |
+| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #129, backend#98 |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
@@ -276,7 +276,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Hecha | #71, backend#73 |
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
 | V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
-| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | En curso | backend#97, #129 |
+| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | En curso | backend#98, #129 |
 
 ## H7 · Lista para entregar
 
