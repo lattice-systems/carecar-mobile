@@ -2974,4 +2974,100 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenteAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String citasMisCitasRecoleccionEncabezado(String cita) {
+    return 'Recolección · $cita';
+  }
+
+  @override
+  String get citasChecklistRecoger => 'Checklist al recoger';
+
+  @override
+  String get citasChecklistEntregar => 'Checklist al entregar';
+
+  @override
+  String get citasChecklistSubtitulo => 'Kilometraje, gasolina y fotos';
+
+  @override
+  String get citasChecklistComparar => 'Comparar recoger y entregar';
+
+  @override
+  String get citasChecklistCompararSubtitulo =>
+      'Lo que cambió entre una y otra';
+
+  @override
+  String get recoleccionChecklistPestanaRecoger => 'Al recoger';
+
+  @override
+  String get recoleccionChecklistPestanaEntregar => 'Al entregar';
+
+  @override
+  String get recoleccionChecklistPestanaComparar => 'Comparar';
+
+  @override
+  String recoleccionComparacionKmDetalle(int recoger, int entregar) {
+    final intl.NumberFormat recogerNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String recogerString = recogerNumberFormat.format(recoger);
+    final intl.NumberFormat entregarNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String entregarString = entregarNumberFormat.format(entregar);
+
+    return '$recogerString km al recoger, $entregarString km al entregar';
+  }
+
+  @override
+  String recoleccionComparacionGasolinaDetalle(
+    String recoger,
+    String entregar,
+  ) {
+    return '$recoger al recoger, $entregar al entregar';
+  }
+
+  @override
+  String get recoleccionComparacionFotosTitulo =>
+      'Fotos al recoger y al entregar';
+
+  @override
+  String get recoleccionComparacionFotosAyuda =>
+      'Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.';
+
+  @override
+  String recoleccionComparacionFotoRecoger(int numero, int total) {
+    return 'Foto $numero de $total al recoger';
+  }
+
+  @override
+  String recoleccionComparacionFotoEntregar(int numero, int total) {
+    return 'Foto $numero de $total al entregar';
+  }
+
+  @override
+  String recoleccionComparacionFotosDesiguales(
+    int recoger,
+    int entregar,
+    int comparadas,
+  ) {
+    return 'Hay $recoger fotos al recoger y $entregar al entregar; se comparan las primeras $comparadas.';
+  }
+
+  @override
+  String get recoleccionComparacionSinFotos =>
+      'Alguno de los dos checklists no trae fotos para comparar.';
+
+  @override
+  String get recoleccionComparacionFaltaTitulo => 'Aún no se puede comparar';
+
+  @override
+  String get recoleccionComparacionFaltaRecoger =>
+      'El chofer todavía no registra el checklist de recoger.';
+
+  @override
+  String get recoleccionComparacionFaltaEntregar =>
+      'El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.';
+
+  @override
+  String get recoleccionComparacionFaltaAmbos =>
+      'El chofer todavía no registra ningún checklist de esta recolección.';
 }
