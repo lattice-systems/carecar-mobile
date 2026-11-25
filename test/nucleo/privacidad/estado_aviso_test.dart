@@ -22,21 +22,25 @@ void main() {
 
   group('EstadoAviso (V2-M22.01)', () {
     test('solo bloquea mientras se verifica o falta aceptar', () {
-      expect({
-        for (final e in EstadoAviso.values) e: e.porAceptar,
-      }, {
-        EstadoAviso.noRequerido: false,
-        EstadoAviso.verificando: true,
-        EstadoAviso.pendiente: true,
-        EstadoAviso.aceptado: false,
-      });
+      expect(
+        {for (final e in EstadoAviso.values) e: e.porAceptar},
+        {
+          EstadoAviso.noRequerido: false,
+          EstadoAviso.verificando: true,
+          EstadoAviso.pendiente: true,
+          EstadoAviso.aceptado: false,
+        },
+      );
     });
   });
 
   group('estadoAvisoProvider', () {
-    test('arranca sin requerir nada: sin verificador no se bloquea a nadie', () {
-      expect(c.read(estadoAvisoProvider), EstadoAviso.noRequerido);
-    });
+    test(
+      'arranca sin requerir nada: sin verificador no se bloquea a nadie',
+      () {
+        expect(c.read(estadoAvisoProvider), EstadoAviso.noRequerido);
+      },
+    );
 
     test('cada paso del verificador queda en el estado', () {
       final notificador = c.read(estadoAvisoProvider.notifier);
