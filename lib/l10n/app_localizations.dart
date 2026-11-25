@@ -5645,6 +5645,144 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando tus solicitudes'**
   String get arcoCargando;
+
+  /// Fila del centro de privacidad que abre la cancelación de la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar mi cuenta'**
+  String get privacidadHubEliminar;
+
+  /// Detalle de la fila de eliminar mi cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Borra tu cuenta y tus datos personales'**
+  String get privacidadHubEliminarDetalle;
+
+  /// Título de la pantalla para eliminar la cuenta (cancelación ARCO).
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminar mi cuenta'**
+  String get eliminarCuentaTitulo;
+
+  /// Título del aviso de peligro al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'No se puede deshacer'**
+  String get eliminarCuentaAdvertenciaTitulo;
+
+  /// Mensaje del aviso de peligro al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta se cierra de inmediato y no podremos recuperarla.'**
+  String get eliminarCuentaAdvertencia;
+
+  /// Encabezado de la lista de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué se borra'**
+  String get eliminarCuentaSeBorraTitulo;
+
+  /// Primer elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu nombre, correo y teléfono.'**
+  String get eliminarCuentaBorra1;
+
+  /// Segundo elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.'**
+  String get eliminarCuentaBorra2;
+
+  /// Tercer elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu bitácora de gastos y kilometraje, con sus fotos y tickets.'**
+  String get eliminarCuentaBorra3;
+
+  /// Cuarto elemento de lo que se borra.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.'**
+  String get eliminarCuentaBorra4;
+
+  /// Encabezado de lo que se conserva.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué conservamos'**
+  String get eliminarCuentaConservaTitulo;
+
+  /// Explica lo que no se borra al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.'**
+  String get eliminarCuentaConserva;
+
+  /// Etiqueta del campo de contraseña al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get eliminarCuentaContrasena;
+
+  /// Ayuda del campo de contraseña al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'La pedimos para confirmar que eres tú.'**
+  String get eliminarCuentaContrasenaAyuda;
+
+  /// Texto del control de deslizar que elimina la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Desliza para eliminar mi cuenta'**
+  String get eliminarCuentaDeslizar;
+
+  /// Mensaje del diálogo de confirmación cuando se usa lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.'**
+  String get eliminarCuentaConfirmarMensaje;
+
+  /// Mientras se elimina la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Eliminando tu cuenta…'**
+  String get eliminarCuentaEliminando;
+
+  /// Aviso al terminar de eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta se eliminó. Gracias por usar CareCar.'**
+  String get eliminarCuentaListo;
+
+  /// Error del campo cuando la contraseña es equivocada.
+  ///
+  /// In es, this message translates to:
+  /// **'La contraseña no es correcta.'**
+  String get eliminarCuentaContrasenaIncorrecta;
+
+  /// Bloqueo por contraseñas equivocadas, con los minutos de espera.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Intenta de nuevo en {minutos, plural, =1{1 minuto} other{{minutos} minutos}}.'**
+  String eliminarCuentaBloqueada(int minutos);
+
+  /// Bloqueo por contraseñas equivocadas, sin tiempo conocido.
+  ///
+  /// In es, this message translates to:
+  /// **'Demasiados intentos. Intenta de nuevo más tarde.'**
+  String get eliminarCuentaBloqueadaSinEspera;
+
+  /// Sin red al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e inténtalo de nuevo.'**
+  String get eliminarCuentaSinConexion;
+
+  /// Error genérico al eliminar la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos eliminar tu cuenta. Inténtalo de nuevo.'**
+  String get eliminarCuentaError;
 }
 
 class _AppLocalizationsDelegate

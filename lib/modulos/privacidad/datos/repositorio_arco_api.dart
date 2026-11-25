@@ -5,7 +5,7 @@ import '../../../api/excepciones.dart';
 import '../../../api/modelos/arco.dart';
 import '../dominio/arco.dart';
 
-/// [RepositorioArco] contra el contrato 2.14.0 (V2-M22.02).
+/// [RepositorioArco] contra el contrato 2.15.0 (V2-M22.02 y V2-M22.03).
 class RepositorioArcoApi implements RepositorioArco {
   const RepositorioArcoApi(this._api);
 
@@ -31,6 +31,24 @@ class RepositorioArcoApi implements RepositorioArco {
     () => _api.descargarArchivoArco(solicitudId),
     noEncontrado: const ArchivoArcoNoDisponible(),
   );
+
+  @override
+  Future<void> cancelarCuenta(String contrasena) => _traducir(() async {
+    try {
+      await _api.cancelarCuentaArco(contrasena);
+    } on DatosInvalidos {
+      // El servidor responde 400 y no 401 a proposito: un 401 se leeria como
+      // sesion vencida y cerraria la sesion sin decirle nada a la persona.
+      throw const ContrasenaIncorrecta();
+    } on DemasiadosIntentos catch (e) {
+      final segundos = e.esperaSegundos;
+      throw CancelacionBloqueada(
+        segundos == null || segundos <= 0 ? null : Duration(seconds: segundos),
+      );
+    } on CuentaDesactivada {
+      throw const CuentaYaCerrada();
+    }
+  });
 
   /// [noEncontrado] es lo que significa un 404 en esa operacion: solo al
   /// descargar quiere decir «ya no esta».

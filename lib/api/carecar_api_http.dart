@@ -302,4 +302,12 @@ class CarecarApiHttp implements CarecarApi {
   @override
   Future<Uint8List> descargarArchivoArco(int solicitudId) =>
       _cliente.descargar('/privacidad/arco/$solicitudId/archivo');
+
+  @override
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena) =>
+      _cliente.enviar(
+        '/privacidad/arco/cancelacion',
+        cuerpo: {'contrasena': contrasena},
+        leer: SolicitudArco.fromJson,
+      );
 }

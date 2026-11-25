@@ -470,6 +470,10 @@ void main() {
               path: rutaMisDatos,
               builder: (_, _) => const Scaffold(body: Text('datos abiertos')),
             ),
+            GoRoute(
+              path: rutaEliminarCuenta,
+              builder: (_, _) => const Scaffold(body: Text('eliminar abierto')),
+            ),
           ],
         ),
       ),
@@ -490,6 +494,11 @@ void main() {
       expect(find.text('Qué hacemos con tus datos'), findsOneWidget);
       expect(find.text('Descargar mis datos'), findsOneWidget);
       expect(find.text('Una copia de tus datos personales'), findsOneWidget);
+      expect(find.text('Eliminar mi cuenta'), findsOneWidget);
+      expect(
+        find.text('Borra tu cuenta y tus datos personales'),
+        findsOneWidget,
+      );
     });
 
     _prueba('cada fila lleva a su pantalla', (tester) async {
@@ -505,6 +514,12 @@ void main() {
       await tester.tap(find.text('Aviso de privacidad'));
       await tester.pumpAndSettle();
       expect(find.text('aviso abierto'), findsOneWidget);
+
+      GoRouter.of(tester.element(find.text('aviso abierto'))).pop();
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Eliminar mi cuenta'));
+      await tester.pumpAndSettle();
+      expect(find.text('eliminar abierto'), findsOneWidget);
     });
 
     _prueba('pasa la auditoria de accesibilidad', (tester) async {

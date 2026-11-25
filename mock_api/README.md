@@ -186,6 +186,7 @@ Operaciones de la app y casos de error:
 | GET | `/privacidad/arco` | V2-M22.02: mis solicitudes de derechos ARCO (las últimas 20) |
 | POST | `/privacidad/arco/acceso` | V2-M22.02: 202 y la solicitud `PENDIENTE`; a los 2 s (`RETRASO_ARCO_MS`, 0 = al instante) queda `RESUELTA` y llega el evento `arco.estado`; si ya había una pendiente, 200 con esa · en memoria |
 | GET | `/privacidad/arco/{id}/archivo` | V2-M22.02: el JSON como adjunto, sin caché · 404 si no es tuya o no está lista |
+| POST | `/privacidad/arco/cancelacion` | V2-M22.03: `{contrasena}` borra tu cuenta · 200 con la solicitud `CANCELACION` `RESUELTA` · contraseña equivocada o ausente: 400 `DATOS_INVALIDOS` (no 401) · a los 5 fallos, 429 con `Retry-After` 15 min · después cualquier token suyo recibe 403 y el login con la contraseña vieja, 401 · se guarda en `db.json`: `npm run reset` la devuelve |
 | POST | `/api/v1/avisos-privacidad` | Solo del simulador (en el backend es del Gerente de marketing): publica la versión siguiente con `{texto}` para probar que una versión nueva vuelve a pedir la aceptación |
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
