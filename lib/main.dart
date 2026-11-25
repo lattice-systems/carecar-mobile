@@ -9,6 +9,7 @@ import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
 import 'api/cliente_http_fijado.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'cache/cifrador_de_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/privacidad/privacidad.dart';
@@ -134,6 +135,9 @@ class _AppCareCarState extends State<AppCareCar> {
           : CarecarApiConCache(
               CarecarApiHttp(cliente),
               prefs,
+              // V2-M22.13: la llave de las copias vive en el Keystore o el
+              // Keychain, igual que la sesión.
+              CifradorAesGcm(AlmacenamientoDelSistema()),
               politica: widget.politica,
             );
       sesion = ControladorSesion(api, almacen);
