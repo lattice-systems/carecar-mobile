@@ -24,6 +24,66 @@
   "@accesoBloqueoTitulo": {
     "description": "Título del aviso cuando el servidor bloqueó el acceso por demasiados intentos fallidos."
   },
+  "accesoCambiarActualEtiqueta": "Contraseña temporal",
+  "@accesoCambiarActualEtiqueta": {
+    "description": "Etiqueta del campo donde se escribe la contraseña temporal que dio la agencia."
+  },
+  "accesoCambiarCerrarSesion": "Cerrar sesión",
+  "@accesoCambiarCerrarSesion": {
+    "description": "Única salida de la pantalla de cambio obligatorio."
+  },
+  "accesoCambiarConfirmarEtiqueta": "Confirma la contraseña nueva",
+  "@accesoCambiarConfirmarEtiqueta": {
+    "description": "Etiqueta del campo de confirmación."
+  },
+  "accesoCambiarExplicacion": "La agencia te dio una contraseña temporal. Elige una nueva para continuar.",
+  "@accesoCambiarExplicacion": {
+    "description": "Explica por qué no se puede seguir sin cambiarla."
+  },
+  "accesoCambiarFalloTitulo": "No pudimos cambiar tu contraseña",
+  "@accesoCambiarFalloTitulo": {
+    "description": "Título del aviso cuando el servidor rechaza el cambio."
+  },
+  "accesoCambiarGuardando": "Guardando…",
+  "@accesoCambiarGuardando": {
+    "description": "Texto del botón mientras el servidor responde."
+  },
+  "accesoCambiarGuardar": "Guardar",
+  "@accesoCambiarGuardar": {
+    "description": "Botón principal de la pantalla de cambio."
+  },
+  "accesoCambiarNoCoincide": "Las dos contraseñas no son iguales.",
+  "@accesoCambiarNoCoincide": {
+    "description": "Error cuando la confirmación no coincide con la contraseña nueva."
+  },
+  "accesoCambiarNuevaEtiqueta": "Contraseña nueva",
+  "@accesoCambiarNuevaEtiqueta": {
+    "description": "Etiqueta del campo de la contraseña nueva."
+  },
+  "accesoCambiarReglaDistinta": "Distinta de la temporal",
+  "@accesoCambiarReglaDistinta": {
+    "description": "Regla en vivo: la nueva no puede ser la temporal."
+  },
+  "accesoCambiarReglaLargo": "De 8 a 72 caracteres",
+  "@accesoCambiarReglaLargo": {
+    "description": "Regla en vivo del largo de la contraseña."
+  },
+  "accesoCambiarReglaLetra": "Al menos una letra",
+  "@accesoCambiarReglaLetra": {
+    "description": "Regla en vivo: debe tener una letra."
+  },
+  "accesoCambiarReglaNumero": "Al menos un número",
+  "@accesoCambiarReglaNumero": {
+    "description": "Regla en vivo: debe tener un número."
+  },
+  "accesoCambiarReglasTitulo": "Tu contraseña nueva debe tener:",
+  "@accesoCambiarReglasTitulo": {
+    "description": "Encabezado de la lista de reglas en vivo."
+  },
+  "accesoCambiarTitulo": "Cambia tu contraseña",
+  "@accesoCambiarTitulo": {
+    "description": "Título de la pantalla de cambio obligatorio."
+  },
   "accesoContrasenaEtiqueta": "Contraseña",
   "@accesoContrasenaEtiqueta": {
     "description": "Etiqueta del campo de contraseña en la pantalla de acceso."
