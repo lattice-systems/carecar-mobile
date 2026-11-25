@@ -15,6 +15,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/toma_a_cuenta.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
 import 'tarjetas_estimacion.dart';
@@ -200,10 +201,10 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
       appBar: AppBar(
         title: Text(t.calculadoraTitulo),
         actions: [
-          IconButton(
-            tooltip: t.misEstimacionesTitulo,
-            icon: const Icon(Icons.history),
-            onPressed: () => context.push(rutaMisEstimaciones),
+          BotonCircular(
+            etiqueta: t.misEstimacionesTitulo,
+            icono: Icons.history,
+            alPresionar: () => context.push(rutaMisEstimaciones),
           ),
         ],
       ),

@@ -15,6 +15,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/ticket_servicio.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'formato_historial.dart';
 import 'proveedores_historial.dart';
 
@@ -95,14 +96,10 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
               translucido: true,
               acciones: [
                 if (datos != null)
-                  IconButton(
-                    tooltip: textos.historialTicketCompartir,
-                    constraints: const BoxConstraints(
-                      minWidth: Espaciado.objetivoTactilMinimo,
-                      minHeight: Espaciado.objetivoTactilMinimo,
-                    ),
-                    icon: const Icon(Icons.ios_share_rounded),
-                    onPressed: _compartiendo ? null : () => _compartir(datos),
+                  BotonCircular(
+                    etiqueta: textos.historialTicketCompartir,
+                    icono: Icons.ios_share_rounded,
+                    alPresionar: _compartiendo ? null : () => _compartir(datos),
                   ),
               ],
             ),

@@ -53,6 +53,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T02.15 | Componentes `BurbujaMensaje` y `CampoMensaje` | Daniel |  | V2-T02.04 | Hecha | #83 |
 | V2-T02.16 | Estilo vidrio líquido y píldora en componentes y login | Daniel |  | V2-T02.04 | Hecha | #95, #98 |
 | V2-T02.17 | `BotonCircular`: enviar, adjuntar y 👍/👎 con el mismo botón | Daniel |  | V2-T02.16 | Hecha | #103 |
+| V2-T02.18 | Los módulos v2 solo usan controles del sistema de diseño (regla en CI) | Daniel |  | V2-T02.17 | Hecha | #105 |
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
