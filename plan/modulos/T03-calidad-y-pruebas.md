@@ -22,4 +22,4 @@
 
 ## V2-T03.02 · Pruebas golden
 
-Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan las fuentes de la app y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. La comparación corre en el job de pruebas de Linux. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
+Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Inter, JetBrains Mono y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
