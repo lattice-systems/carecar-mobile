@@ -1,6 +1,5 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/mantenimiento/datos/repositorio_mantenimiento_fake.dart';
-import 'package:carecar_mobile/modulos/mantenimiento/dominio/plan_mantenimiento.dart';
 import 'package:carecar_mobile/modulos/mantenimiento/mantenimiento.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
