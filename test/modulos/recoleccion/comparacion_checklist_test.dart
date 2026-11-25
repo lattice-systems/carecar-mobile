@@ -126,7 +126,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('45.230 km'), findsOneWidget);
-    expect(find.text('Tanque lleno'), findsOneWidget);
+    expect(find.text('Lleno'), findsOneWidget);
   });
 
   testWidgets('Comparar pone km, gasolina y fotos lado a lado', (tester) async {
@@ -141,7 +141,7 @@ void main() {
     );
     expect(find.text('30 km'), findsOneWidget);
     expect(
-      find.text('Medio tanque al recoger, Tanque lleno al entregar'),
+      find.text('Medio tanque al recoger, Lleno al entregar'),
       findsOneWidget,
     );
     expect(find.byType(ComparacionAntesDespues), findsNWidgets(2));
