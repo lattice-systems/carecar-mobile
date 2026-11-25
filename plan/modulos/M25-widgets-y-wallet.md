@@ -173,3 +173,18 @@ Rediseño de los widgets de inicio: cinco widgets independientes que se agregan 
 - Probar en teléfono real tamaños, redimensión, tema oscuro y toque con la app cerrada.
 - Revisión de diseño de Cristian y pase por la guardia de sesión en arranque en frío.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
+
+## Avance de V2-M25.06 y diseño de V2-M25.05
+
+**V2-M25.06 (pases que siguen a la cita) — Google hecho en el backend, Apple pendiente.** No hay cambio en la app: el pase se actualiza o expira desde el servidor.
+
+- **Backend:** al cancelar o reprogramar, `AgendaAppService` publica `CambioDePaseDeCita`; `ActualizadorDePasesGoogle` marca el objeto `EXPIRED` (cancelada) o le pone fecha y horario nuevos (reprogramada), tras confirmar la transacción y sin poder revertirla. Detalle y diseño de Apple en `agencia-360-backend/plan/historias-backend.md` («Diseño técnico — V2-M25.06»).
+- **Decisiones y supuestos:** (1) Apple (`webServiceURL`, registro de dispositivos y APNs) exige certificado del Pass Type ID y un dominio HTTPS público, que no hay: queda diseñado, no implementado. (2) Mientras tanto un pase de Apple viejo sigue en el teléfono, pero recepción lo rechaza porque valida el QR contra la cita. (3) Lo de Google se probó con un transporte falso, no contra Google. Por eso la historia queda `En curso` y **no** pasa a `Hecha`.
+
+**V2-M25.05 (Live Activity en pantalla bloqueada) — solo diseño, sin código.** Sigue `Lista`; depende de V2-M04.03 (Ricardo) y de V2-M06.02 (Jael), que no están integradas. Lo que se decide aquí para no frenar a nadie:
+
+- **Solo iPhone** (criterio de la historia). Una Live Activity es una extensión nativa SwiftUI (`ActivityKit`) dentro del target de widgets de iOS, que sigue sin enlazarse en Xcode (ver «Avance de widgets múltiples»); sin eso no se puede construir ni probar.
+- **Arranque y fin:** la app inicia la actividad al abrir una orden en curso (`orden` del canal en vivo, V2-M04.02) y el backend la termina al entregar el auto.
+- **Actualización por push:** ActivityKit actualiza por APNs con un `push token` por actividad. Eso necesita el mismo certificado y servicio de envío que V2-M06.02/V2-M06.07; la app solo debe mandar ese token al backend (endpoint nuevo a definir con Ricardo/Jael, p. ej. `PUT /ordenes/{id}/actividad-en-vivo`).
+- **Contenido:** etapa actual y progreso de `OrdenEnVivo` (el mismo contrato de V2-M04.02 que ya usa el widget del taller, V2-M25.02), para no inventar otro modelo.
+- **Pendiente para tomarla:** que M04.03 y M06.02 estén integradas, enlazar el target en Xcode y definir el endpoint del token.
