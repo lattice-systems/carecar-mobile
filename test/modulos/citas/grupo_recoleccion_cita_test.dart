@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/api/modelos/traslado.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/componentes/grupo_recoleccion_cita.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
@@ -29,14 +30,55 @@ final _recoleccion = RecoleccionAgendada(
   ],
 );
 
-Future<GoRouter> _montar(WidgetTester tester) async {
+RecoleccionAgendada _con(EstadoTraslado recoger, EstadoTraslado entregar) =>
+    RecoleccionAgendada(
+      direccionId: 1,
+      costoTotal: 300,
+      traslados: [
+        TrasladoAgendado(
+          id: 5,
+          tipo: TipoTraslado.recoger,
+          costo: 150,
+          fecha: DateTime(2026, 12, 1),
+          ventanaInicio: '07:00',
+          ventanaFin: '09:00',
+          estado: recoger,
+        ),
+        TrasladoAgendado(
+          id: 6,
+          tipo: TipoTraslado.entregar,
+          costo: 150,
+          fecha: DateTime(2026, 12, 1),
+          ventanaInicio: '17:00',
+          ventanaFin: '19:00',
+          estado: entregar,
+        ),
+      ],
+    );
+
+Future<GoRouter> _montar(
+  WidgetTester tester, {
+  RecoleccionAgendada? recoleccion,
+  String? encabezado,
+}) async {
   final enrutador = GoRouter(
     routes: [
       GoRoute(
         path: '/',
         builder: (_, _) => Scaffold(
           body: SingleChildScrollView(
-            child: GrupoRecoleccionCita(recoleccion: _recoleccion),
+            child: GrupoRecoleccionCita(
+              recoleccion: recoleccion ?? _recoleccion,
+              encabezado: encabezado,
+            ),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: '/recoleccion/traslados/:id/checklist',
+        builder: (_, estado) => Scaffold(
+          body: Text(
+            'checklist ${estado.pathParameters['id']} ${estado.uri.query}',
           ),
         ),
       ),
@@ -96,5 +138,85 @@ void main() {
     await tester.tap(find.text('Costo de la recolección'));
     await tester.pumpAndSettle();
     expect(find.textContaining('seguimiento'), findsNothing);
+  });
+
+  testWidgets('sin checklist del chofer no ofrece filas de checklist', (
+    tester,
+  ) async {
+    await _montar(
+      tester,
+      recoleccion: _con(EstadoTraslado.enCamino, EstadoTraslado.programado),
+    );
+
+    expect(find.text('Checklist al recoger'), findsNothing);
+    expect(find.text('Checklist al entregar'), findsNothing);
+    expect(find.text('Comparar recoger y entregar'), findsNothing);
+  });
+
+  testWidgets('recogido ofrece el checklist de recoger con el contrario', (
+    tester,
+  ) async {
+    await _montar(
+      tester,
+      recoleccion: _con(EstadoTraslado.recogido, EstadoTraslado.programado),
+    );
+
+    expect(find.text('Checklist al entregar'), findsNothing);
+    await tester.tap(find.text('Checklist al recoger'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('checklist 5 contrario=6'), findsOneWidget);
+  });
+
+  testWidgets('entregado ofrece los dos checklists y la comparacion', (
+    tester,
+  ) async {
+    await _montar(
+      tester,
+      recoleccion: _con(EstadoTraslado.entregado, EstadoTraslado.entregado),
+    );
+
+    expect(find.text('Checklist al recoger'), findsOneWidget);
+    expect(find.text('Checklist al entregar'), findsOneWidget);
+
+    await tester.tap(find.text('Checklist al entregar'));
+    await tester.pumpAndSettle();
+    expect(find.text('checklist 6 contrario=5&tipo=entregar'), findsOneWidget);
+  });
+
+  testWidgets('Comparar abre el checklist directo en la comparacion', (
+    tester,
+  ) async {
+    await _montar(
+      tester,
+      recoleccion: _con(EstadoTraslado.entregado, EstadoTraslado.entregado),
+    );
+
+    await tester.tap(find.text('Comparar recoger y entregar'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('checklist 5 contrario=6&ver=comparar'), findsOneWidget);
+  });
+
+  testWidgets('acepta un encabezado propio para distinguir cada cita', (
+    tester,
+  ) async {
+    await _montar(tester, encabezado: 'Recolección · lun, 1 dic · 09:00');
+
+    expect(find.text('Recolección · lun, 1 dic · 09:00'), findsOneWidget);
+    expect(find.text('Recolección a domicilio'), findsNothing);
+  });
+
+  testWidgets('las filas de checklist se anuncian como botones', (
+    tester,
+  ) async {
+    final manejador = tester.ensureSemantics();
+    await _montar(
+      tester,
+      recoleccion: _con(EstadoTraslado.entregado, EstadoTraslado.entregado),
+    );
+
+    expect(find.bySemanticsLabel(RegExp('Checklist al recoger')), findsWidgets);
+    manejador.dispose();
   });
 }
