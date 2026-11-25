@@ -52,7 +52,7 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 | --- | --- | --- | --- | --- |
 | V2-M01.01 | Como cliente quiero iniciar sesión con la cuenta que me dio la agencia para entrar a mi app | Dado correo y contraseña válidos, cuando inicio sesión, entonces veo Inicio en menos de 2 s con red normal · credenciales malas → mensaje sin revelar si el correo existe · no hay botón de registro en ninguna pantalla · bloqueo por intentos muestra minutos restantes | | V2-T01.02, V2-T02.04 |
 | V2-M01.02 | Como cliente quiero ver una bienvenida la primera vez para entender qué puedo hacer | Solo aparece en el primer arranque · se puede saltar · accesible con lector de pantalla | | V2-T02.04 |
-| V2-M01.03 | Como cliente con contraseña temporal quiero cambiarla obligatoriamente para proteger mi cuenta | Dado `debe_cambiar_contrasena`, no puedo navegar a otra pantalla hasta cambiarla · reglas en vivo (largo, número, mayúscula) · no acepta la temporal como nueva | | V2-M01.01 |
+| V2-M01.03 | Como cliente con contraseña temporal quiero cambiarla obligatoriamente para proteger mi cuenta | Dado `debe_cambiar_contrasena`, no puedo navegar a otra pantalla hasta cambiarla · reglas en vivo (largo, letra, número) · no acepta la temporal como nueva | | V2-M01.01 |
 | V2-M01.04 | Como cliente quiero recuperar mi contraseña con un enlace de un solo uso enviado a mi correo para volver a entrar | Enlace abre la app (deep link) en Nueva contraseña · expira y sirve una sola vez (`usado`) · enlace vencido/usado → pantalla con opción de pedir otro · respuesta igual exista o no el correo | ✅ | V2-T05.04, V2-T01.03 |
 | V2-M01.05 | Como cliente quiero desbloquear con huella o rostro para no escribir mi contraseña cada vez | Opt-in tras primer login · si cambia la biometría del equipo se pide contraseña · se puede apagar en Seguridad | | V2-M01.01 |
 | V2-M01.06 | Como cliente quiero ver mi perfil para confirmar mis datos | Muestra nombre, correo, teléfono, cliente desde, vehículos · estados de carga/error/sin conexión | | V2-M01.01 |
@@ -96,3 +96,43 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 - **El dominio no escribe textos.** Al contrario del `esperaLegible` de la v1, que devolvía «15 minutos» en español. Lo exige la regla del módulo y lo vigila `test/l10n/sin_cadenas_en_codigo_test.dart`, que de hecho rechazó un `Text('CareCar')` escrito a mano: la marca también vive en el ARB, con la nota de que es nombre propio y no se traduce.
 
 **Pendiente / fuera de alcance:** encender la ruta (pide V2-M01.03 y V2-M01.04); subir el reloj y la espera del servidor a `lib/nucleo/` (historia del núcleo); demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y una captura en claro, oscuro y letra grande para el PR.
+
+## Avance de V2-M01.03
+
+**Qué quedó**
+
+- `dominio/reglas_contrasena.dart` — las reglas de la contraseña, una respuesta por regla para poder marcarlas en vivo. Dart puro, cero imports.
+- `dominio/repositorio_acceso.dart` y `datos/repositorio_acceso_api.dart` — la frontera del módulo con el servidor. **Primer uso real de `RepositorioBase`** (V2-T01.08), que había quedado construido y sin adoptar.
+- `datos/repositorio_acceso_fake.dart` — el fake, que usa la misma base que el de verdad.
+- `presentacion/pantalla_cambiar_contrasena.dart` — la pantalla, con `ListaDeReglas` marcándose al escribir.
+- `presentacion/rutas_acceso.dart` — la ruta del cambio, **declarada y no registrada**.
+- **29 pruebas** y 15 claves nuevas en `app_es.arb` y `app_en.arb`.
+
+**El criterio decía «mayúscula» y se corrigió**
+
+El criterio pedía «reglas en vivo (largo, número, **mayúscula**)». Se verificó en las cuatro fuentes y la mayúscula no está en ninguna:
+
+| Fuente | Qué dice |
+| --- | --- |
+| **Ficha v2.1** (`.docx`) | Solo «Cambio obligatorio de la contraseña temporal». No define reglas de composición, y la palabra «mayúscula» **no aparece en todo el documento** |
+| **Contrato v1 (1.5.0) y v2 (2.1.0)** | `minLength 8`, `maxLength 72`, «Al menos una letra y un número; distinta de la actual» |
+| **`ReglasContrasena.java` del backend** | 8 a 72, `isLetter` y `isDigit`. **Sin mayúscula** |
+| Pantalla v1 | «Al menos 8 caracteres, con letra y número» |
+
+Pedirla habría rechazado contraseñas que el servidor acepta —`carecar2026`, que tiene su propia prueba— y habría mostrado una regla que nadie hace cumplir. Confirmado con el equipo: **manda lo que implementó Ricardo**. El criterio de arriba quedó corregido a «largo, letra, número».
+
+**Hallazgos**
+
+- **`contrasenaCambiadaProvider` no tenía ninguna prueba**, pese a que esta historia depende de él. Su comentario dice que se apaga al cerrar sesión y nada lo garantizaba: si se quedara encendido, **el siguiente cliente que entrara en ese teléfono con una contraseña temporal se saltaría el cambio obligatorio**. Funciona; ahora queda fijado desde `test/modulos/acceso/cambio_obligatorio_test.dart`.
+- **El backend usa `Character::isLetter` y `isDigit`, que son Unicode.** Con una expresión ASCII, `mañana2026` fallaría en la app y pasaría en el servidor. La app usa `\p{L}` y `\p{Nd}` para espejearlo, con prueba.
+- **Una de mis pruebas pasaba sin probar nada**: el `tap` del botón no lo alcanzaba porque la pantalla es más alta que el viewport de 360×800 y quedaba bajo el pliegue. Se arregla con `ensureVisible`, y queda comentado en el ayudante.
+
+**Decisiones**
+
+- **El botón se bloquea también tras un cambio exitoso**, no solo mientras guarda. Lo encontró la prueba del doble toque, y aquí es peor que en el login: el segundo intento manda la contraseña temporal, que ya dejó de ser válida, y el servidor responde un 401 sobre una operación que sí funcionó.
+- **Las reglas se muestran todas desde el principio**, no solo las que faltan, para que nadie descubra a base de errores qué se le pide. Y `estaVacia` se distingue de «mal»: a quien acaba de abrir la pantalla no se le reclaman tres reglas incumplidas.
+- **No se le pide al servidor lo que ya sabemos que va a rechazar**: sin reglas cumplidas o sin confirmación coincidente, no hay petición.
+- **La contraseña actual es opcional en las reglas**, porque en la recuperación por enlace (V2-M01.04) no se conoce y esa historia reutiliza esta clase.
+- **No se repitieron las pruebas del guardia.** Sus casos ya están en `test/nucleo/navegacion/guardia_sesion_test.dart`; lo que se fijó aquí es el apretón de manos, que la pantalla ponga exactamente la bandera que el guardia lee.
+
+**Pendiente / fuera de alcance:** encender las rutas del módulo, que ahora solo espera a **V2-M01.04** y a actualizar las trece pruebas ajenas; demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y las capturas en claro, oscuro y letra grande.
