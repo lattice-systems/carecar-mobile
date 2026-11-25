@@ -5,6 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -214,17 +215,23 @@ class _Comprobante extends ConsumerWidget {
     Navigator.of(context).push<void>(
       MaterialPageRoute(
         builder: (_) => Scaffold(
-          appBar: AppBar(title: Text(textos.citasComprobanteTitulo)),
-          body: fabrica == null
-              ? VisorPdf(
-                  cargar: () => repositorio.ticketPdf(datos.citaId),
-                  descripcion: textos.citasComprobanteVerPdfDescripcion,
-                )
-              : VisorPdf(
-                  cargar: () => repositorio.ticketPdf(datos.citaId),
-                  descripcion: textos.citasComprobanteVerPdfDescripcion,
-                  fabrica: fabrica,
-                ),
+          body: Column(
+            children: [
+              BarraPantalla(titulo: textos.citasComprobanteTitulo),
+              Expanded(
+                child: fabrica == null
+                    ? VisorPdf(
+                        cargar: () => repositorio.ticketPdf(datos.citaId),
+                        descripcion: textos.citasComprobanteVerPdfDescripcion,
+                      )
+                    : VisorPdf(
+                        cargar: () => repositorio.ticketPdf(datos.citaId),
+                        descripcion: textos.citasComprobanteVerPdfDescripcion,
+                        fabrica: fabrica,
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );

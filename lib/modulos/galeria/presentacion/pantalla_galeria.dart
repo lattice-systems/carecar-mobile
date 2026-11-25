@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -44,16 +45,9 @@ class _PantallaGaleriaState extends State<PantallaGaleria> {
             final t = tokens.tipografia;
             return Scaffold(
               backgroundColor: c.fondo,
-              appBar: AppBar(
-                backgroundColor: c.fondo,
-                foregroundColor: c.texto,
-                title: Text(
-                  'Galeria del sistema',
-                  style: t.titulo3.copyWith(color: c.texto),
-                ),
-              ),
               body: Column(
                 children: [
+                  const BarraPantalla(titulo: 'Galeria del sistema'),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Espaciado.e4,

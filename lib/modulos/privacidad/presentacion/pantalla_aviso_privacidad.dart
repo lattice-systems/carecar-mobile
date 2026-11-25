@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/privacidad/estado_aviso.dart';
 import '../dominio/privacidad.dart';
 import 'componentes_privacidad.dart';
@@ -51,43 +51,55 @@ class _PantallaAvisoPrivacidadState
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
     final aviso = ref.watch(avisoVigenteProvider);
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.privacidadTitulo)),
-      body: SafeArea(
-        child: aviso.when(
-          skipLoadingOnReload: true,
-          loading: () => const Padding(
-            padding: EdgeInsets.all(Espaciado.e4),
-            child: CargandoAviso(),
-          ),
-          error: (error, _) => EstadoError(
-            causa: error is PrivacidadSinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(avisoVigenteProvider),
-          ),
-          data: (a) => ListView(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            children: [
-              // Lo primero que se busca aquí es si ya se aceptó, no el final
-              // de un texto largo.
-              if (a.aceptadoEn case final cuando?) ...[
-                Aviso(
-                  mensaje: textos.privacidadAceptadoEl(
-                    diaDelAviso(context, cuando),
-                  ),
-                  tono: Tono.exito,
-                ),
-                const SizedBox(height: Espaciado.e4),
-              ],
-              TextoDelAviso(aviso: a),
-            ],
-          ),
+    final titulo = textos.privacidadTitulo;
+
+    return aviso.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.all(Espaciado.e4),
+          child: CargandoAviso(),
         ),
+      ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
+          causa: error is PrivacidadSinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(avisoVigenteProvider),
+        ),
+      ),
+      data: (a) => MarcoPantalla(
+        titulo: titulo,
+        conRegreso: true,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(Espaciado.e4),
+            sliver: SliverList.list(
+              children: [
+                // Lo primero que se busca aquí es si ya se aceptó, no el final
+                // de un texto largo.
+                if (a.aceptadoEn case final cuando?) ...[
+                  Aviso(
+                    mensaje: textos.privacidadAceptadoEl(
+                      diaDelAviso(context, cuando),
+                    ),
+                    tono: Tono.exito,
+                  ),
+                  const SizedBox(height: Espaciado.e4),
+                ],
+                TextoDelAviso(aviso: a),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

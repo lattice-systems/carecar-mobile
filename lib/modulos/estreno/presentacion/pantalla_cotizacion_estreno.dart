@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
@@ -155,39 +156,47 @@ class _PantallaCotizacionEstrenoState
 
     return Scaffold(
       backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.estrenoCotizacionTitulo)),
-      body: SafeArea(
-        child: detalle.when(
-          skipLoadingOnReload: true,
-          loading: () => Semantics(
-            label: textos.catalogoDetalleCargando,
-            liveRegion: true,
-            child: const Padding(
-              padding: EdgeInsets.all(Espaciado.e4),
-              child: Column(
-                children: [
-                  Esqueleto(alto: 56),
-                  SizedBox(height: Espaciado.e3),
-                  Esqueleto(alto: 56),
-                ],
+      body: Column(
+        children: [
+          BarraPantalla(titulo: textos.estrenoCotizacionTitulo),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: detalle.when(
+                skipLoadingOnReload: true,
+                loading: () => Semantics(
+                  label: textos.catalogoDetalleCargando,
+                  liveRegion: true,
+                  child: const Padding(
+                    padding: EdgeInsets.all(Espaciado.e4),
+                    child: Column(
+                      children: [
+                        Esqueleto(alto: 56),
+                        SizedBox(height: Espaciado.e3),
+                        Esqueleto(alto: 56),
+                      ],
+                    ),
+                  ),
+                ),
+                error: (error, _) => error is NoEncontrado
+                    ? EstadoVacio(
+                        titulo: textos.catalogoNoEncontradoTitulo,
+                        mensaje: textos.catalogoNoEncontradoMensaje,
+                        icono: Icons.directions_car_outlined,
+                      )
+                    : EstadoError(
+                        causa: error is SinConexion
+                            ? CausaError.sinConexion
+                            : CausaError.generico,
+                        alReintentar: () => ref.invalidate(
+                          detalleModeloProvider(widget.modeloId),
+                        ),
+                      ),
+                data: (d) => _formulario(context, textos, d.modelo),
               ),
             ),
           ),
-          error: (error, _) => error is NoEncontrado
-              ? EstadoVacio(
-                  titulo: textos.catalogoNoEncontradoTitulo,
-                  mensaje: textos.catalogoNoEncontradoMensaje,
-                  icono: Icons.directions_car_outlined,
-                )
-              : EstadoError(
-                  causa: error is SinConexion
-                      ? CausaError.sinConexion
-                      : CausaError.generico,
-                  alReintentar: () =>
-                      ref.invalidate(detalleModeloProvider(widget.modeloId)),
-                ),
-          data: (d) => _formulario(context, textos, d.modelo),
-        ),
+        ],
       ),
     );
   }

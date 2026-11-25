@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
@@ -197,136 +198,150 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
     final cargandoAutos = garaje.isLoading && _vehiculoId == null;
     final capturando = _vehiculoId == _otroAuto;
 
+    final c = TokensPista.de(context).colores;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(t.calculadoraTitulo),
-        actions: [
-          BotonCircular(
-            etiqueta: t.misEstimacionesTitulo,
-            icono: Icons.history,
-            alPresionar: () => context.push(rutaMisEstimaciones),
-          ),
-        ],
-      ),
-      body: ListView(
-        controller: _scroll,
-        padding: const EdgeInsets.all(Espaciado.e4),
+      body: Column(
         children: [
-          // Siempre visible: antes, durante y despues del resultado.
-          Aviso(mensaje: t.calculadoraLeyenda),
-          if (_estimacion != null) ...[
-            const SizedBox(height: Espaciado.e4),
-            ResultadoEstimacion(estimacion: _estimacion!),
-            if (diferenciaAPagar(_estimacion!) case final diferencia?) ...[
-              const SizedBox(height: Espaciado.e3),
-              DiferenciaEstimacion(
-                modelo: _estimacion!.modeloDestino,
-                precio: _estimacion!.precioDestino!,
-                diferencia: diferencia,
+          BarraPantalla(
+            titulo: t.calculadoraTitulo,
+            acciones: [
+              BotonCircular(
+                etiqueta: t.misEstimacionesTitulo,
+                icono: Icons.history,
+                colorIcono: c.texto,
+                alPresionar: () => context.push(rutaMisEstimaciones),
               ),
             ],
-          ],
-          if (_falla != null) ...[
-            const SizedBox(height: Espaciado.e4),
-            _AvisoDeFalla(falla: _falla!),
-          ],
-          if (destino != null) ...[
-            const SizedBox(height: Espaciado.e4),
-            Text(
-              t.calculadoraContra(destino),
-              style: tokens.tipografia.cuerpoFuerte.copyWith(
-                color: tokens.colores.texto,
-              ),
-            ),
-          ],
-          const SizedBox(height: Espaciado.e4),
-          if (cargandoAutos)
-            Semantics(
-              label: t.calculadoraCargandoAutos,
-              liveRegion: true,
-              child: const Esqueleto(alto: 56),
-            )
-          else
-            Selector<int>(
-              etiqueta: t.calculadoraAuto,
-              valor: _vehiculoId == null ? _otroAuto : elegido,
-              opciones: [
-                for (final v in vehiculos)
-                  OpcionSelector(valor: v.id, texto: v.titulo),
-                OpcionSelector(valor: _otroAuto, texto: t.calculadoraOtroAuto),
-              ],
-              alCambiar: _calculando
-                  ? null
-                  : (id) => _elegirVehiculo(id ?? _otroAuto, vehiculos),
-            ),
-          if (capturando) ...[
-            const SizedBox(height: Espaciado.e3),
-            CampoTexto(
-              etiqueta: t.calculadoraMarca,
-              controlador: _marca,
-              error: _errorMarca(t),
-              alCambiar: (_) => setState(() {}),
-              accionTeclado: TextInputAction.next,
-              habilitado: !_calculando,
-            ),
-            const SizedBox(height: Espaciado.e3),
-            CampoTexto(
-              etiqueta: t.calculadoraModelo,
-              controlador: _modelo,
-              error: _errorModelo(t),
-              alCambiar: (_) => setState(() {}),
-              accionTeclado: TextInputAction.next,
-              habilitado: !_calculando,
-            ),
-            const SizedBox(height: Espaciado.e3),
-            CampoTexto(
-              etiqueta: t.calculadoraAnio,
-              controlador: _anio,
-              error: _errorAnio(t),
-              alCambiar: (_) => setState(() {}),
-              teclado: TextInputType.number,
-              accionTeclado: TextInputAction.next,
-              formatos: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(4),
-              ],
-              habilitado: !_calculando,
-            ),
-          ],
-          const SizedBox(height: Espaciado.e3),
-          CampoTexto(
-            etiqueta: t.calculadoraKm,
-            controlador: _km,
-            ayuda: t.calculadoraKmAyuda,
-            error: _errorKm(t),
-            alCambiar: (_) => setState(() {}),
-            teclado: TextInputType.number,
-            formatos: [FilteringTextInputFormatter.allow(RegExp(r'[0-9,. ]'))],
-            habilitado: !_calculando,
           ),
-          const SizedBox(height: Espaciado.e3),
-          Selector<EstadoAuto>(
-            etiqueta: t.calculadoraEstado,
-            valor: _estado,
-            opciones: [
-              for (final e in EstadoAuto.values)
-                OpcionSelector(valor: e, texto: _textoDeEstado(t, e)),
-            ],
-            alCambiar: _calculando
-                ? null
-                : (e) => setState(() {
-                    _estado = e ?? _estado;
-                    _estimacion = null;
-                  }),
-          ),
-          const SizedBox(height: Espaciado.e5),
-          Boton(
-            texto: t.calculadoraCalcular,
-            anchoCompleto: true,
-            cargando: _calculando,
-            alPresionar: cargandoAutos || _vehiculoId == null
-                ? null
-                : _calcular,
+          Expanded(
+            child: ListView(
+              controller: _scroll,
+              padding: const EdgeInsets.all(Espaciado.e4),
+              children: [
+                // Siempre visible: antes, durante y despues del resultado.
+                Aviso(mensaje: t.calculadoraLeyenda),
+                if (_estimacion != null) ...[
+                  const SizedBox(height: Espaciado.e4),
+                  ResultadoEstimacion(estimacion: _estimacion!),
+                  if (diferenciaAPagar(_estimacion!)
+                      case final diferencia?) ...[
+                    const SizedBox(height: Espaciado.e3),
+                    DiferenciaEstimacion(
+                      modelo: _estimacion!.modeloDestino,
+                      precio: _estimacion!.precioDestino!,
+                      diferencia: diferencia,
+                    ),
+                  ],
+                ],
+                if (_falla != null) ...[
+                  const SizedBox(height: Espaciado.e4),
+                  _AvisoDeFalla(falla: _falla!),
+                ],
+                if (destino != null) ...[
+                  const SizedBox(height: Espaciado.e4),
+                  Text(
+                    t.calculadoraContra(destino),
+                    style: tokens.tipografia.cuerpoFuerte.copyWith(
+                      color: tokens.colores.texto,
+                    ),
+                  ),
+                ],
+                const SizedBox(height: Espaciado.e4),
+                if (cargandoAutos)
+                  Semantics(
+                    label: t.calculadoraCargandoAutos,
+                    liveRegion: true,
+                    child: const Esqueleto(alto: 56),
+                  )
+                else
+                  Selector<int>(
+                    etiqueta: t.calculadoraAuto,
+                    valor: _vehiculoId == null ? _otroAuto : elegido,
+                    opciones: [
+                      for (final v in vehiculos)
+                        OpcionSelector(valor: v.id, texto: v.titulo),
+                      OpcionSelector(
+                        valor: _otroAuto,
+                        texto: t.calculadoraOtroAuto,
+                      ),
+                    ],
+                    alCambiar: _calculando
+                        ? null
+                        : (id) => _elegirVehiculo(id ?? _otroAuto, vehiculos),
+                  ),
+                if (capturando) ...[
+                  const SizedBox(height: Espaciado.e3),
+                  CampoTexto(
+                    etiqueta: t.calculadoraMarca,
+                    controlador: _marca,
+                    error: _errorMarca(t),
+                    alCambiar: (_) => setState(() {}),
+                    accionTeclado: TextInputAction.next,
+                    habilitado: !_calculando,
+                  ),
+                  const SizedBox(height: Espaciado.e3),
+                  CampoTexto(
+                    etiqueta: t.calculadoraModelo,
+                    controlador: _modelo,
+                    error: _errorModelo(t),
+                    alCambiar: (_) => setState(() {}),
+                    accionTeclado: TextInputAction.next,
+                    habilitado: !_calculando,
+                  ),
+                  const SizedBox(height: Espaciado.e3),
+                  CampoTexto(
+                    etiqueta: t.calculadoraAnio,
+                    controlador: _anio,
+                    error: _errorAnio(t),
+                    alCambiar: (_) => setState(() {}),
+                    teclado: TextInputType.number,
+                    accionTeclado: TextInputAction.next,
+                    formatos: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(4),
+                    ],
+                    habilitado: !_calculando,
+                  ),
+                ],
+                const SizedBox(height: Espaciado.e3),
+                CampoTexto(
+                  etiqueta: t.calculadoraKm,
+                  controlador: _km,
+                  ayuda: t.calculadoraKmAyuda,
+                  error: _errorKm(t),
+                  alCambiar: (_) => setState(() {}),
+                  teclado: TextInputType.number,
+                  formatos: [
+                    FilteringTextInputFormatter.allow(RegExp(r'[0-9,. ]')),
+                  ],
+                  habilitado: !_calculando,
+                ),
+                const SizedBox(height: Espaciado.e3),
+                Selector<EstadoAuto>(
+                  etiqueta: t.calculadoraEstado,
+                  valor: _estado,
+                  opciones: [
+                    for (final e in EstadoAuto.values)
+                      OpcionSelector(valor: e, texto: _textoDeEstado(t, e)),
+                  ],
+                  alCambiar: _calculando
+                      ? null
+                      : (e) => setState(() {
+                          _estado = e ?? _estado;
+                          _estimacion = null;
+                        }),
+                ),
+                const SizedBox(height: Espaciado.e5),
+                Boton(
+                  texto: t.calculadoraCalcular,
+                  anchoCompleto: true,
+                  cargando: _calculando,
+                  alPresionar: cargandoAutos || _vehiculoId == null
+                      ? null
+                      : _calcular,
+                ),
+              ],
+            ),
           ),
         ],
       ),

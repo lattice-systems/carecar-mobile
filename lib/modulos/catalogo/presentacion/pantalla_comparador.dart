@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -38,8 +39,12 @@ class PantallaComparador extends ConsumerWidget {
         : _Cuerpo(clave: ids.join(','));
 
     return Scaffold(
-      appBar: AppBar(title: Text(textos.catalogoComparadorTitulo)),
-      body: cuerpo,
+      body: Column(
+        children: [
+          BarraPantalla(titulo: textos.catalogoComparadorTitulo),
+          Expanded(child: cuerpo),
+        ],
+      ),
     );
   }
 }
