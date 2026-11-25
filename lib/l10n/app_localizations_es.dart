@@ -3260,4 +3260,53 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'El chofer todavía no registra ningún checklist de esta recolección.';
+
+  @override
+  String get privacidadTitulo => 'Aviso de privacidad';
+
+  @override
+  String privacidadVersion(int version) {
+    return 'Versión $version';
+  }
+
+  @override
+  String privacidadVigenteDesde(String fecha) {
+    return 'Vigente desde el $fecha';
+  }
+
+  @override
+  String privacidadAceptadoEl(String fecha) {
+    return 'Lo aceptaste el $fecha';
+  }
+
+  @override
+  String get privacidadCargando => 'Cargando el aviso de privacidad';
+
+  @override
+  String get privacidadAntesDeContinuar => 'Antes de continuar';
+
+  @override
+  String get privacidadIntro =>
+      'Lee el aviso de privacidad. Para usar CareCar necesitas aceptarlo.';
+
+  @override
+  String get privacidadAceptar => 'Acepto el aviso de privacidad';
+
+  @override
+  String get privacidadGuardando => 'Guardando…';
+
+  @override
+  String get privacidadNoAcepto => 'No acepto, cerrar sesión';
+
+  @override
+  String get privacidadCambio =>
+      'El aviso cambió mientras lo leías. Ya está el nuevo: léelo y acéptalo si estás de acuerdo.';
+
+  @override
+  String get privacidadErrorAceptar =>
+      'No pudimos guardar tu aceptación. Intenta de nuevo.';
+
+  @override
+  String get privacidadSinConexionAceptar =>
+      'Sin conexión. Conéctate para guardar tu aceptación.';
 }

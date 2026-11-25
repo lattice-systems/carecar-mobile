@@ -2652,5 +2652,18 @@
   "recoleccionComparacionFaltaTitulo": "Can't compare yet",
   "recoleccionComparacionFaltaRecoger": "The driver hasn't recorded the pickup checklist yet.",
   "recoleccionComparacionFaltaEntregar": "The driver hasn't recorded the delivery checklist yet. You can compare once your car is returned.",
-  "recoleccionComparacionFaltaAmbos": "The driver hasn't recorded any checklist for this pickup yet."
+  "recoleccionComparacionFaltaAmbos": "The driver hasn't recorded any checklist for this pickup yet.",
+  "privacidadTitulo": "Privacy notice",
+  "privacidadVersion": "Version {version}",
+  "privacidadVigenteDesde": "In effect since {fecha}",
+  "privacidadAceptadoEl": "You accepted it on {fecha}",
+  "privacidadCargando": "Loading the privacy notice",
+  "privacidadAntesDeContinuar": "Before you continue",
+  "privacidadIntro": "Read the privacy notice. You need to accept it to use CareCar.",
+  "privacidadAceptar": "I accept the privacy notice",
+  "privacidadGuardando": "Saving…",
+  "privacidadNoAcepto": "I don't accept, sign out",
+  "privacidadCambio": "The notice changed while you were reading. The new one is up: read it and accept it if you agree.",
+  "privacidadErrorAceptar": "We couldn't save your acceptance. Try again.",
+  "privacidadSinConexionAceptar": "You're offline. Connect to save your acceptance."
 }

@@ -5417,6 +5417,84 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'El chofer todavía no registra ningún checklist de esta recolección.'**
   String get recoleccionComparacionFaltaAmbos;
+
+  /// Título de la pantalla del aviso de privacidad (V2-M22.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get privacidadTitulo;
+
+  /// Etiqueta con el número de versión del aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión {version}'**
+  String privacidadVersion(int version);
+
+  /// Desde cuándo rige la versión del aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente desde el {fecha}'**
+  String privacidadVigenteDesde(String fecha);
+
+  /// Cuándo aceptó la persona esta versión.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo aceptaste el {fecha}'**
+  String privacidadAceptadoEl(String fecha);
+
+  /// Lector de pantalla mientras carga el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando el aviso de privacidad'**
+  String get privacidadCargando;
+
+  /// Encabezado de la puerta que pide aceptar el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Antes de continuar'**
+  String get privacidadAntesDeContinuar;
+
+  /// Explica por qué se pide aceptar el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Lee el aviso de privacidad. Para usar CareCar necesitas aceptarlo.'**
+  String get privacidadIntro;
+
+  /// Botón que registra la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'Acepto el aviso de privacidad'**
+  String get privacidadAceptar;
+
+  /// Texto del botón de aceptar mientras se registra.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get privacidadGuardando;
+
+  /// Salida de la puerta para quien no acepta el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'No acepto, cerrar sesión'**
+  String get privacidadNoAcepto;
+
+  /// Aviso cuando la agencia publica otra versión mientras se lee (409).
+  ///
+  /// In es, this message translates to:
+  /// **'El aviso cambió mientras lo leías. Ya está el nuevo: léelo y acéptalo si estás de acuerdo.'**
+  String get privacidadCambio;
+
+  /// Fallo al registrar la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu aceptación. Intenta de nuevo.'**
+  String get privacidadErrorAceptar;
+
+  /// Fallo de red al registrar la aceptación.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Conéctate para guardar tu aceptación.'**
+  String get privacidadSinConexionAceptar;
 }
 
 class _AppLocalizationsDelegate
