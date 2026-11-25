@@ -1,4 +1,4 @@
-// V2-M22.01 · «Aviso de privacidad» desde el perfil.
+// V2-M22.01 y V2-M22.02 · «Privacidad y mis datos» desde el perfil.
 import 'package:carecar_mobile/config/agencia.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/privacidad/privacidad.dart';
@@ -23,8 +23,8 @@ Future<void> _abrirAviso(WidgetTester tester) async {
 }
 
 void main() {
-  testWidgets('con enrutador abre el aviso del servidor, no el que trae la '
-      'app', (tester) async {
+  testWidgets('con enrutador abre Privacidad y mis datos, no el texto que trae '
+      'la app', (tester) async {
     final enrutador = GoRouter(
       routes: [
         GoRoute(
@@ -33,8 +33,9 @@ void main() {
               PantallaAjustes(api: ApiFalsa(), alCerrarSesion: () {}),
         ),
         GoRoute(
-          path: rutaAvisoPrivacidad,
-          builder: (_, _) => const Scaffold(body: Text('aviso del servidor')),
+          path: rutaPrivacidad,
+          builder: (_, _) =>
+              const Scaffold(body: Text('privacidad y mis datos')),
         ),
       ],
     );
@@ -58,7 +59,7 @@ void main() {
 
     await _abrirAviso(tester);
 
-    expect(find.text('aviso del servidor'), findsOneWidget);
+    expect(find.text('privacidad y mis datos'), findsOneWidget);
     expect(find.text(Agencia.avisoPrivacidad), findsNothing);
   });
 
