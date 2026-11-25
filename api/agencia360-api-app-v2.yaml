@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.13.0
+  version: 2.14.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -75,7 +75,7 @@ tags:
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
-    description: V2-M22.01
+    description: V2-M22.01 y V2-M22.02
 
 security:
   - bearerAuth: []
@@ -1288,6 +1288,78 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /privacidad/arco:
+    get:
+      tags: [Privacidad]
+      summary: Mis solicitudes de derechos ARCO
+      description: |
+        V2-M22.02 · Las últimas 20, más recientes primero, con su estado. Una solicitud de acceso
+        `RESUELTA` trae su archivo hasta `venceEn`; después pasa a `VENCIDA` y hay que pedir otra.
+      responses:
+        '200':
+          description: Solicitudes de la cuenta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolicitudArco'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/arco/acceso:
+    post:
+      tags: [Privacidad]
+      summary: Pedir una copia de mis datos (acceso ARCO)
+      description: |
+        V2-M22.02 · Sin cuerpo. Responde 202 y prepara el archivo (JSON con los datos personales de la
+        cuenta) sin hacer esperar; al estar listo llega el evento `arco.estado` de `GET /eventos` y la
+        app consulta `GET /privacidad/arco`. Si ya hay una solicitud de acceso `PENDIENTE` la devuelve
+        con 200 en vez de abrir otra. Pedir una nueva borra el archivo de la anterior.
+      responses:
+        '200':
+          description: Ya había una solicitud de acceso pendiente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '202':
+          description: Solicitud recibida; el archivo se prepara
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/arco/{solicitudId}/archivo:
+    get:
+      tags: [Privacidad]
+      summary: Descargar el archivo de una solicitud de acceso
+      description: |
+        V2-M22.02 · Solo la cuenta dueña, con su sesión; no hay enlace público. Responde el JSON como
+        adjunto y sin caché. 404 si la solicitud no existe, es de otra cuenta, no está `RESUELTA` o ya
+        venció.
+      parameters:
+        - name: solicitudId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Archivo con los datos de la cuenta
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /toma-a-cuenta/estimaciones:
     get:
       tags: [Toma a cuenta]
@@ -1789,6 +1861,9 @@ paths:
         - `traslado.ubicacion` (V2-M17.03), `AvisoTrasladoUbicacion`: cada vez que el chofer
           reporta su posición en `en_camino` o `de_regreso`; trae el punto, sin necesidad de
           consultar.
+        - `arco.estado` (V2-M22.02), `AvisoArco`: cuando una solicitud de derechos ARCO cambia de
+          estado (el archivo de acceso quedó listo, o falló). La app vuelve a consultar
+          `GET /privacidad/arco`.
 
         Ejemplo en el flujo:
         ```
@@ -1806,6 +1881,7 @@ paths:
                   - $ref: '#/components/schemas/AvisoAsistencia'
                   - $ref: '#/components/schemas/AvisoTrasladoEstado'
                   - $ref: '#/components/schemas/AvisoTrasladoUbicacion'
+                  - $ref: '#/components/schemas/AvisoArco'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -3096,6 +3172,52 @@ components:
         aceptadoEn:
           type: string
           format: date-time
+    SolicitudArco:
+      type: object
+      description: V2-M22.02 · Una solicitud de derechos ARCO de esta cuenta
+      required: [id, tipo, estado, creadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [ACCESO, RECTIFICACION, CANCELACION, OPOSICION]
+        estado:
+          type: string
+          enum: [PENDIENTE, RESUELTA, FALLIDA, VENCIDA]
+          description: |
+            `PENDIENTE` se está preparando; `RESUELTA` ya se atendió (en el acceso, el archivo se puede
+            descargar); `FALLIDA` no se pudo preparar y hay que pedirla otra vez; `VENCIDA` el archivo
+            ya no está disponible.
+        creadaEn:
+          type: string
+          format: date-time
+        resueltaEn:
+          type: string
+          format: date-time
+          nullable: true
+        venceEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: Hasta cuándo se puede descargar el archivo (7 días después de resolverse)
+
+    AvisoArco:
+      type: object
+      description: V2-M22.02 · `data` del evento `arco.estado`
+      required: [solicitudId, tipo, estado]
+      properties:
+        solicitudId:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [ACCESO, RECTIFICACION, CANCELACION, OPOSICION]
+        estado:
+          type: string
+          enum: [PENDIENTE, RESUELTA, FALLIDA, VENCIDA]
+
     EstimacionTomaCuenta:
       type: object
       description: |
