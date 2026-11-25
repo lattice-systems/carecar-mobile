@@ -2419,5 +2419,100 @@
   "asistentePedirAyuda": "Get help",
   "asistenteTestigoNoReconocido": "I couldn't recognize a light in the photo. Describe it in words: color, shape and whether it blinks.",
   "asistentePermisoCamara": "To take the photo, allow access to the camera and your photos in your phone settings.",
-  "asistenteAbrirAjustes": "Open settings"
+  "asistenteAbrirAjustes": "Open settings",
+  "citasMisCitasRecoleccionEncabezado": "Pickup · {cita}",
+  "@citasMisCitasRecoleccionEncabezado": {
+    "placeholders": {
+      "cita": {
+        "type": "String",
+        "example": "lun, 23 nov · 09:00"
+      }
+    }
+  },
+  "citasChecklistRecoger": "Checklist at pickup",
+  "citasChecklistEntregar": "Checklist at delivery",
+  "citasChecklistSubtitulo": "Mileage, fuel and photos",
+  "citasChecklistComparar": "Compare pickup and delivery",
+  "citasChecklistCompararSubtitulo": "What changed between the two",
+  "recoleccionChecklistPestanaRecoger": "At pickup",
+  "recoleccionChecklistPestanaEntregar": "At delivery",
+  "recoleccionChecklistPestanaComparar": "Compare",
+  "recoleccionComparacionKmDetalle": "{recoger} km at pickup, {entregar} km at delivery",
+  "@recoleccionComparacionKmDetalle": {
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      },
+      "entregar": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,210"
+      }
+    }
+  },
+  "recoleccionComparacionGasolinaDetalle": "{recoger} at pickup, {entregar} at delivery",
+  "@recoleccionComparacionGasolinaDetalle": {
+    "placeholders": {
+      "recoger": {
+        "type": "String",
+        "example": "Medio tanque"
+      },
+      "entregar": {
+        "type": "String",
+        "example": "Tanque lleno"
+      }
+    }
+  },
+  "recoleccionComparacionFotosTitulo": "Photos at pickup and delivery",
+  "recoleccionComparacionFotosAyuda": "Drag the bar: on the left you see the photo at pickup and on the right the photo at delivery.",
+  "recoleccionComparacionFotoRecoger": "Photo {numero} of {total} at pickup",
+  "@recoleccionComparacionFotoRecoger": {
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotoEntregar": "Photo {numero} of {total} at delivery",
+  "@recoleccionComparacionFotoEntregar": {
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotosDesiguales": "There are {recoger} photos at pickup and {entregar} at delivery; the first {comparadas} are compared.",
+  "@recoleccionComparacionFotosDesiguales": {
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "example": "4"
+      },
+      "entregar": {
+        "type": "int",
+        "example": "3"
+      },
+      "comparadas": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "recoleccionComparacionSinFotos": "One of the two checklists has no photos to compare.",
+  "recoleccionComparacionFaltaTitulo": "Can't compare yet",
+  "recoleccionComparacionFaltaRecoger": "The driver hasn't recorded the pickup checklist yet.",
+  "recoleccionComparacionFaltaEntregar": "The driver hasn't recorded the delivery checklist yet. You can compare once your car is returned.",
+  "recoleccionComparacionFaltaAmbos": "The driver hasn't recorded any checklist for this pickup yet."
 }
