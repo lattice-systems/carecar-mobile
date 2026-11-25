@@ -3319,4 +3319,8 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get citasCalendarioError =>
       'No pudimos abrir tu calendario. Intenta de nuevo.';
+
+  @override
+  String get mantenimientoRecordatorioEnVivo =>
+      'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.';
 }
