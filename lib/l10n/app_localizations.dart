@@ -5513,6 +5513,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos abrir tu calendario. Intenta de nuevo.'**
   String get citasCalendarioError;
+
+  /// Aviso en vivo de V2-M05.05: el servicio está por tocar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.'**
+  String get mantenimientoRecordatorioEnVivo;
 }
 
 class _AppLocalizationsDelegate
