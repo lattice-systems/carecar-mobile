@@ -2594,6 +2594,12 @@ abstract class AppLocalizations {
   /// **'Opciones de tu cita'**
   String get citasAccionesCita;
 
+  /// Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior.
+  ///
+  /// In es, this message translates to:
+  /// **'Regresar'**
+  String get regresar;
+
   /// Acción para cerrar una pantalla del flujo de citas.
   ///
   /// In es, this message translates to:
