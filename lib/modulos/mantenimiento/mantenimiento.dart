@@ -6,7 +6,9 @@ library;
 
 export 'dominio/plan_mantenimiento.dart'
     show
+        EstadoServicio,
         FuenteKm,
+        MotivoProximo,
         PlanMantenimiento,
         ProximoServicio,
         ServicioMantenimiento;
