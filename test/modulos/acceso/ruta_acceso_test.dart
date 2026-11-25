@@ -82,6 +82,42 @@ void main() {
     expect(find.byType(PantallaAcceso), findsOneWidget);
   });
 
+  testWidgets('el camino del cambio obligatorio es el que espera el guardia', (
+    tester,
+  ) async {
+    // Si este camino no coincidiera con `Rutas.cambiarContrasena`, el guardia
+    // mandaria a una ruta que no existe y el cliente quedaria en blanco con
+    // la contrasena temporal sin cambiar.
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          controladorSesionProvider.overrideWithValue(
+            ControladorSesion(ApiFalsa(), AlmacenEnMemoria()),
+          ),
+          repositorioAccesoProvider.overrideWithValue(RepositorioAccesoFake()),
+        ],
+        child: MaterialApp.router(
+          locale: idiomaBase,
+          localizationsDelegates: delegadasDeIdioma,
+          supportedLocales: idiomasSoportados,
+          routerConfig: GoRouter(
+            initialLocation: Rutas.cambiarContrasena,
+            routes: rutasAcceso,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PantallaCambiarContrasena), findsOneWidget);
+  });
+
+  testWidgets('las dos rutas del modulo no comparten camino', (tester) async {
+    final caminos = rutasAcceso.whereType<GoRoute>().map((r) => r.path);
+    expect(caminos.toSet().length, caminos.length);
+    expect(caminos, containsAll([Rutas.acceso, Rutas.cambiarContrasena]));
+  });
+
   testWidgets('la pantalla llega con el tema Pista, no con el de la v1', (
     tester,
   ) async {
