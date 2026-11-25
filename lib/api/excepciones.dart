@@ -21,10 +21,30 @@ sealed class ExcepcionApi implements Exception {
 ///
 /// Es el caso que APP-2.1 pide distinguir de «credenciales invalidas».
 class SinConexion extends ExcepcionApi {
-  const SinConexion([this.causa])
-    : super('No se pudo conectar con el servidor. Intenta de nuevo.');
+  const SinConexion([this.causa, String mensaje = mensajePorOmision])
+    : super(mensaje);
+
+  /// Lo que dice la excepcion cuando no hay una causa mas precisa.
+  static const mensajePorOmision =
+      'No se pudo conectar con el servidor. Intenta de nuevo.';
 
   final Object? causa;
+}
+
+/// El certificado del servidor no se pudo verificar (V2-M22.15).
+///
+/// Con los certificados fijados (V2-M22.04) pasa si una red con filtros
+/// (WiFi público, escuela, trabajo) presenta otro certificado, o si el servidor
+/// cambió de autoridad. La conexión se corta para no hablar con quien no es el
+/// servidor. Es una [SinConexion]: la caché y las pantallas la tratan igual y
+/// solo el aviso global la distingue.
+class ConexionNoSegura extends SinConexion {
+  const ConexionNoSegura([Object? causa])
+    : super(
+        causa,
+        'No pudimos verificar que la conexión sea segura. Prueba con otra '
+        'red o con datos móviles.',
+      );
 }
 
 /// 401 · Sin token, token invalido o credenciales incorrectas.

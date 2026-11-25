@@ -49,7 +49,7 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | Control | Estado | Evidencia | Pendiente |
 | --- | --- | --- | --- |
 | **NETWORK-1** Todo el tráfico va por canal seguro | ✅ | `https` obligatorio fuera de desarrollo: `ApiConfig` rechaza `http` en `pruebas` y `produccion`; `usesCleartextTraffic` y ATS dependen del flavor (`flavors_nativos_test.dart`, `api_config_test.dart`); la URL firmada de los manuales solo se baja por `https` (M22.09). | — |
-| **NETWORK-2** *(L2)* Fija la identidad de los servidores propios | 🟡 | [V2-M22.04](fijar-certificados.md) (PR #132): en `pruebas` y `produccion` solo se confía en cinco raíces de Azure; con pruebas de TLS real y vigilancia semanal. | Instalar el APK de `pruebas` en un teléfono y entrar. No cubre las imágenes ni los plugins; un fallo de pines se ve como «sin conexión»: F7. |
+| **NETWORK-2** *(L2)* Fija la identidad de los servidores propios | 🟡 | [V2-M22.04](fijar-certificados.md) (PR #132): en `pruebas` y `produccion` solo se confía en cinco raíces de Azure; con pruebas de TLS real y vigilancia semanal. | Instalar el APK de `pruebas` en un teléfono y entrar. No cubre las imágenes ni los plugins (riesgo aceptado, F7). Un fallo de pines se explica con un aviso propio (V2-M22.15). |
 
 ### PLATFORM · Interacción con la plataforma
 
@@ -96,7 +96,7 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | **F4** | Los App Links (`autoVerify`) apuntan a `carecar.example.com`, que no sirve `assetlinks.json`. | PLATFORM-1 | V2-M22.14: dominio real o quitar el `autoVerify`. |
 | **F5** | La caché de la API guarda datos personales sin cifrar, y en iOS entra en las copias cifradas. | STORAGE-1 | **Cerrado** con V2-M22.13: las copias se guardan cifradas (AES-256-GCM, llave en el Keystore o el Keychain) y se descartan si no se pueden descifrar. [Detalle](cache-cifrada.md). |
 | **F6** | No hay escaneo periódico de dependencias. | CODE-3 | V2-M22.11: un escaneo semanal de `pubspec.lock`, Gradle y Pods. |
-| **F7** | Los pines de certificados no cubren las imágenes y un fallo se ve como «sin conexión». | NETWORK-2 | V2-M22.15. |
+| **F7** | Los pines de certificados no cubren las imágenes y un fallo se ve como «sin conexión». | NETWORK-2 | **Cerrado a medias** con V2-M22.15: un certificado rechazado sale como `ConexionNoSegura` y un aviso global lo explica («No pudimos verificar que la conexión sea segura»). Las imágenes (`NetworkImage`) siguen con la tienda del sistema: **riesgo aceptado**, vienen de dominios de terceros y las del catálogo son públicas. [Detalle](fijar-certificados.md). |
 | **F8** | Los builds de release no se ofuscan. | RESILIENCE-3 | V2-M22.16, junto con M23.01. |
 
 Los números de historia son propuestas (estado `Borrador` en el [tablero](../../plan/tablero.md)): las prioriza el equipo.
@@ -108,7 +108,7 @@ Los números de historia son propuestas (estado `Borrador` en el [tablero](../..
 | `test/arquitectura/superficie_nativa_test.dart` | STORAGE-2 (copias), PLATFORM-1 (componentes accesibles), PLATFORM-2 (sin WebViews), PRIVACY-1 (permisos) |
 | `test/arquitectura/registro_sin_datos_personales_test.dart` | STORAGE-2, PRIVACY-2 (registros) |
 | `test/config/flavors_nativos_test.dart`, `test/api/api_config_test.dart` | NETWORK-1 |
-| `test/api/cliente_http_fijado_test.dart`, `test/config/pines_tls_test.dart` | NETWORK-2 |
+| `test/api/cliente_http_fijado_test.dart`, `test/config/pines_tls_test.dart`, `test/api/conexion_no_segura_test.dart`, `test/nucleo/seguridad/aviso_conexion_no_segura_test.dart` | NETWORK-2 |
 | `test/nucleo/navegacion/guardia_sesion_test.dart`, `enlaces_test.dart` | PLATFORM-1, CODE-4 |
 | `test/sesion/` | AUTH-1 |
 

@@ -2110,6 +2110,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can keep using CareCar, but for your safety we do not store your data on this device. Offline, you will not see saved information.';
 
   @override
+  String get seguridadConexionNoSeguraTitulo =>
+      'We could not verify that the connection is secure';
+
+  @override
+  String get seguridadConexionNoSeguraMensaje =>
+      'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
+
+  @override
   String get asistenteTitulo => 'Ask your car';
 
   @override

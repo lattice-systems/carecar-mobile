@@ -2108,6 +2108,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Puedes seguir usando CareCar, pero por tu seguridad no guardamos tus datos en este equipo. Sin internet no verás información guardada.';
 
   @override
+  String get seguridadConexionNoSeguraTitulo =>
+      'No pudimos verificar que la conexión sea segura';
+
+  @override
+  String get seguridadConexionNoSeguraMensaje =>
+      'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.';
+
+  @override
   String get asistenteTitulo => 'Pregúntale a tu auto';
 
   @override

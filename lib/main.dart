@@ -19,8 +19,10 @@ import 'nucleo/datos/reintento.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
+import 'nucleo/seguridad/aviso_conexion_no_segura.dart';
 import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
 import 'nucleo/seguridad/detector_integridad.dart';
+import 'nucleo/seguridad/estado_de_conexion_segura.dart';
 import 'nucleo/seguridad/politica_datos_locales.dart';
 import 'nucleo/seguridad/proveedores_seguridad.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
@@ -95,6 +97,10 @@ class _AppCareCarState extends State<AppCareCar> {
   ControladorSesion? _sesion;
   ClienteApi? _cliente;
   CarecarApi? _api;
+
+  /// Si el certificado del servidor se rechazó (V2-M22.15): lo escribe el
+  /// cliente de la API y lo lee el aviso global.
+  EstadoDeConexionSegura? _conexionSegura;
   Object? _errorDeArranque;
 
   /// Mientras se lee la sesion guardada no se sabe si hay que mostrar el login.
@@ -122,9 +128,13 @@ class _AppCareCarState extends State<AppCareCar> {
 
       // El cliente pide el token al almacen en cada peticion, asi que iniciar
       // o cerrar sesion no obliga a reconstruirlo.
+      final conexionSegura = EstadoDeConexionSegura();
       final cliente = ClienteApi(
         config: ApiConfig.desdeEntorno(),
         obtenerToken: () async => (await almacen.leer())?.accessToken,
+        // V2-M22.15: un certificado rechazado se explica en vez de decir
+        // «sin conexión» en cada pantalla.
+        alVerificarCertificado: conexionSegura.actualizar,
         // RIC-3: ante un 401 se intenta refrescar una vez.
         renovarSesion: () => sesion.renovar(),
       );
@@ -143,6 +153,7 @@ class _AppCareCarState extends State<AppCareCar> {
       sesion = ControladorSesion(api, almacen);
 
       _cliente = cliente;
+      _conexionSegura = conexionSegura;
       _api = api;
       _sesion = sesion;
 
@@ -172,6 +183,7 @@ class _AppCareCarState extends State<AppCareCar> {
   @override
   void dispose() {
     _cliente?.cerrar();
+    _conexionSegura?.dispose();
     _sesion?.dispose();
     super.dispose();
   }
@@ -196,6 +208,8 @@ class _AppCareCarState extends State<AppCareCar> {
         if (widget.politica != null)
           politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
+        if (_conexionSegura != null)
+          estadoConexionSeguraProvider.overrideWithValue(_conexionSegura!),
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
           controladorSesionProvider.overrideWithValue(_sesion!),
@@ -246,14 +260,19 @@ class _AppCareCarState extends State<AppCareCar> {
                 child: SincronizadorDeWidgets(
                   child: ShadAppBuilder(
                     child: AvisoEquipoComprometido(
-                      // El aviso de privacidad (V2-M22.01) se verifica con
-                      // cada sesion; la guardia del enrutador lleva a la
-                      // puerta si falta aceptarlo.
-                      child: VerificadorDeAviso(
-                        child: CortinaArranque(
-                          listo: !_restaurando,
-                          duracionMinima: widget.duracionArranque,
-                          siguiente: (_) => child!,
+                      // El aviso de conexion no segura (V2-M22.15) explica
+                      // por que se corto la conexion si el certificado del
+                      // servidor no valida.
+                      child: AvisoConexionNoSegura(
+                        // El aviso de privacidad (V2-M22.01) se verifica con
+                        // cada sesion; la guardia del enrutador lleva a la
+                        // puerta si falta aceptarlo.
+                        child: VerificadorDeAviso(
+                          child: CortinaArranque(
+                            listo: !_restaurando,
+                            duracionMinima: widget.duracionArranque,
+                            siguiente: (_) => child!,
+                          ),
                         ),
                       ),
                     ),

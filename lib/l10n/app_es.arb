@@ -2718,6 +2718,14 @@
   "@seguridadEquipoComprometidoMensaje": {
     "description": "Explica que la app sigue funcionando pero no deja copias locales de los datos del cliente."
   },
+  "seguridadConexionNoSeguraTitulo": "No pudimos verificar que la conexión sea segura",
+  "@seguridadConexionNoSeguraTitulo": {
+    "description": "Título del aviso cuando el certificado del servidor no valida (certificados fijados). No bloquea la app."
+  },
+  "seguridadConexionNoSeguraMensaje": "El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.",
+  "@seguridadConexionNoSeguraMensaje": {
+    "description": "Explica por qué se cortó la conexión y qué hacer: cambiar de red."
+  },
   "asistenteTitulo": "Pregúntale a tu auto",
   "@asistenteTitulo": {
     "description": "Título de la pantalla del asistente y acceso desde el detalle del vehículo."
