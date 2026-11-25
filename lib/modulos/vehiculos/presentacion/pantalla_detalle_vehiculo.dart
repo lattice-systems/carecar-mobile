@@ -1,10 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
@@ -15,13 +12,13 @@ import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
-import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
 import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../nucleo/idioma/formato_numeros.dart';
 import '../../asistente/asistente.dart';
 import '../../bitacora/bitacora.dart';
 import '../../citas/citas.dart';
@@ -171,32 +168,41 @@ class _DetalleState extends State<_Detalle> {
               const SizedBox(height: Espaciado.e4),
               TarjetaAsistente(vehiculoId: v.id),
               const SizedBox(height: Espaciado.e6),
-              _AccionesTuAuto(
-                titulo: textos.vehiculosEncabezadoTuAuto,
-                acciones: [
-                  (
-                    texto: textos.vehiculosAccesoFicha,
+              // Ir a pantallas hijas es una lista con chevron, como en Privacidad
+              // y Mantenimiento (V2-T02.23).
+              GrupoLista(
+                encabezado: textos.vehiculosEncabezadoTuAuto,
+                filas: [
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoFicha,
                     icono: Icons.fact_check_outlined,
-                    ruta: rutaFichaTecnicaVehiculo(v.id),
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.vehiculosAccesoHistorial,
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoHistorial,
                     icono: Icons.history,
-                    ruta: rutaHistorialVehiculo(v.id),
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaHistorialVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.mantenimientoAcceso,
+                  FilaGrupo(
+                    titulo: textos.mantenimientoAcceso,
                     icono: Icons.build_circle_outlined,
-                    ruta: rutaMantenimientoVehiculo(v.id),
+                    colorIcono: c.acento,
+                    alToque: () =>
+                        context.push(rutaMantenimientoVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.bitacoraAccesoFila,
+                  FilaGrupo(
+                    titulo: textos.bitacoraAccesoFila,
                     icono: Icons.local_gas_station_outlined,
-                    ruta: rutaBitacoraVehiculo(v.id, nombre: v.titulo),
+                    colorIcono: c.acento,
+                    alToque: () => context.push(
+                      rutaBitacoraVehiculo(v.id, nombre: v.titulo),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(height: Espaciado.e6),
+              const SizedBox(height: Espaciado.e4),
               GrupoLista(
                 encabezado: textos.vehiculosEncabezadoDatos,
                 filas: [
@@ -270,7 +276,6 @@ class _TarjetaCifras extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final km = kmDelTaller?.km ?? vehiculo.kilometraje;
-    final idioma = Localizations.localeOf(context).languageCode;
     final cierre = vehiculo.kilometrajeActualizadoEn ?? kmDelTaller?.fecha;
     final vin = vehiculo.vin;
 
@@ -280,10 +285,7 @@ class _TarjetaCifras extends StatelessWidget {
       valorKm = textos.vehiculosKmSinDato;
       notaKm = '';
     } else {
-      valorKm = textos.vehiculosKilometros(
-        NumberFormat.decimalPattern(idioma == 'es' ? 'es_MX' : idioma)
-            .format(km),
-      );
+      valorKm = textos.vehiculosKilometros(formatearMiles(context, km));
       notaKm = cierre == null
           ? textos.vehiculosKmSinActualizar
           : textos.vehiculosKmActualizado(
@@ -294,7 +296,7 @@ class _TarjetaCifras extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: c.superficie,
-        borderRadius: BorderRadius.circular(Radios.tarjeta),
+        borderRadius: Radios.bordeTarjeta,
         boxShadow: tokens.sombras,
       ),
       child: Padding(
@@ -409,165 +411,6 @@ class _Cargando extends StatelessWidget {
             SizedBox(height: Espaciado.e3),
             Esqueleto(alto: 56),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-/// «Tu auto» como cuadricula de tarjetas iguales de dos columnas (V2-M24.10):
-/// cada una con su icono en un medallon y el nombre centrado debajo. Las dos
-/// de una fila miden lo mismo; con letra al 200 % pasa a una sola columna para
-/// que el texto no se parta ni desborde.
-class _AccionesTuAuto extends StatelessWidget {
-  const _AccionesTuAuto({required this.titulo, required this.acciones});
-
-  final String titulo;
-  final List<({String texto, IconData icono, String ruta})> acciones;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final escala = MediaQuery.textScalerOf(context);
-    final columnas = escala.scale(1) > 1.3 ? 1 : 2;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Semantics(
-          header: true,
-          child: Text(
-            titulo,
-            style: tokens.tipografia.titulo3.copyWith(
-              color: tokens.colores.texto,
-            ),
-          ),
-        ),
-        const SizedBox(height: Espaciado.e3),
-        LayoutBuilder(
-          builder: (context, caja) {
-            // Alto unico de todas las tarjetas: se mide el nombre que mas
-            // lineas ocupa (hasta tres) con el ancho real de la tarjeta, para
-            // que un nombre largo no haga mas alta a una que a otra.
-            final ancho =
-                (caja.maxWidth - Espaciado.e3 * (columnas - 1)) / columnas -
-                _TarjetaTuAuto.relleno * 2 -
-                2;
-            var texto = 0.0;
-            for (final accion in acciones) {
-              final medida = TextPainter(
-                text: TextSpan(
-                  text: accion.texto,
-                  style: tokens.tipografia.cuerpoFuerte,
-                ),
-                textAlign: TextAlign.center,
-                textDirection: Directionality.of(context),
-                textScaler: escala,
-                maxLines: _TarjetaTuAuto.lineasMaximas,
-              )..layout(maxWidth: ancho);
-              texto = math.max(texto, medida.height);
-              medida.dispose();
-            }
-            final alto =
-                _TarjetaTuAuto.medallon +
-                Espaciado.e2 +
-                texto +
-                _TarjetaTuAuto.relleno * 2 +
-                2;
-            return GridView.count(
-              crossAxisCount: columnas,
-              mainAxisSpacing: Espaciado.e3,
-              crossAxisSpacing: Espaciado.e3,
-              mainAxisExtent: alto,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                for (final accion in acciones)
-                  _TarjetaTuAuto(
-                    texto: accion.texto,
-                    icono: accion.icono,
-                    alToque: () => context.push(accion.ruta),
-                  ),
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _TarjetaTuAuto extends StatelessWidget {
-  const _TarjetaTuAuto({
-    required this.texto,
-    required this.icono,
-    required this.alToque,
-  });
-
-  final String texto;
-  final IconData icono;
-  final VoidCallback alToque;
-
-  static const double medallon = 44;
-  static const double relleno = Espaciado.e4;
-  static const int lineasMaximas = 3;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    return Semantics(
-      key: const Key('accion-tu-auto'),
-      container: true,
-      button: true,
-      label: texto,
-      onTap: alToque,
-      excludeSemantics: true,
-      child: ReboteTactil(
-        child: Material(
-          color: c.superficie,
-          borderRadius: Radios.bordeTarjeta,
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: alToque,
-            splashFactory: NoSplash.splashFactory,
-            child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: Radios.bordeTarjeta,
-                border: Border.all(color: c.borde),
-              ),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 48),
-                child: Padding(
-                  padding: const EdgeInsets.all(relleno),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: medallon,
-                        height: medallon,
-                        decoration: BoxDecoration(
-                          color: c.acentoSuave,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(icono, size: 24, color: c.acento),
-                      ),
-                      const SizedBox(height: Espaciado.e2),
-                      Text(
-                        texto,
-                        maxLines: lineasMaximas,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: tokens.tipografia.cuerpoFuerte.copyWith(
-                          color: c.texto,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );

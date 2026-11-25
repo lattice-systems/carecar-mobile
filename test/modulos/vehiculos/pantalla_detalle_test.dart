@@ -119,13 +119,16 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('Tu auto ofrece ficha e historial como tarjetas', (tester) async {
+  _prueba('Tu auto ofrece ficha e historial como filas de lista', (
+    tester,
+  ) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
       expect(find.text(texto), findsOneWidget);
     }
-    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(4));
+    // Cuatro destinos en un solo grupo con chevron (V2-T02.23).
+    expect(find.byIcon(Icons.chevron_right), findsNWidgets(4));
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);
