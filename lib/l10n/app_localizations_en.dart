@@ -23,6 +23,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoBloqueoTitulo => 'Too many attempts';
 
   @override
+  String get accesoCambiarActualEtiqueta => 'Temporary password';
+
+  @override
+  String get accesoCambiarCerrarSesion => 'Sign out';
+
+  @override
+  String get accesoCambiarConfirmarEtiqueta => 'Confirm the new password';
+
+  @override
+  String get accesoCambiarExplicacion =>
+      'The dealership gave you a temporary password. Choose a new one to continue.';
+
+  @override
+  String get accesoCambiarFalloTitulo => 'We couldn\'t change your password';
+
+  @override
+  String get accesoCambiarGuardando => 'Saving…';
+
+  @override
+  String get accesoCambiarGuardar => 'Save';
+
+  @override
+  String get accesoCambiarNoCoincide => 'The two passwords don\'t match.';
+
+  @override
+  String get accesoCambiarNuevaEtiqueta => 'New password';
+
+  @override
+  String get accesoCambiarReglaDistinta => 'Different from the temporary one';
+
+  @override
+  String get accesoCambiarReglaLargo => 'From 8 to 72 characters';
+
+  @override
+  String get accesoCambiarReglaLetra => 'At least one letter';
+
+  @override
+  String get accesoCambiarReglaNumero => 'At least one number';
+
+  @override
+  String get accesoCambiarReglasTitulo => 'Your new password must have:';
+
+  @override
+  String get accesoCambiarTitulo => 'Change your password';
+
+  @override
   String get accesoContrasenaEtiqueta => 'Password';
 
   @override

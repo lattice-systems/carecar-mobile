@@ -23,6 +23,52 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoBloqueoTitulo => 'Demasiados intentos';
 
   @override
+  String get accesoCambiarActualEtiqueta => 'Contraseña temporal';
+
+  @override
+  String get accesoCambiarCerrarSesion => 'Cerrar sesión';
+
+  @override
+  String get accesoCambiarConfirmarEtiqueta => 'Confirma la contraseña nueva';
+
+  @override
+  String get accesoCambiarExplicacion =>
+      'La agencia te dio una contraseña temporal. Elige una nueva para continuar.';
+
+  @override
+  String get accesoCambiarFalloTitulo => 'No pudimos cambiar tu contraseña';
+
+  @override
+  String get accesoCambiarGuardando => 'Guardando…';
+
+  @override
+  String get accesoCambiarGuardar => 'Guardar';
+
+  @override
+  String get accesoCambiarNoCoincide => 'Las dos contraseñas no son iguales.';
+
+  @override
+  String get accesoCambiarNuevaEtiqueta => 'Contraseña nueva';
+
+  @override
+  String get accesoCambiarReglaDistinta => 'Distinta de la temporal';
+
+  @override
+  String get accesoCambiarReglaLargo => 'De 8 a 72 caracteres';
+
+  @override
+  String get accesoCambiarReglaLetra => 'Al menos una letra';
+
+  @override
+  String get accesoCambiarReglaNumero => 'Al menos un número';
+
+  @override
+  String get accesoCambiarReglasTitulo => 'Tu contraseña nueva debe tener:';
+
+  @override
+  String get accesoCambiarTitulo => 'Cambia tu contraseña';
+
+  @override
   String get accesoContrasenaEtiqueta => 'Contraseña';
 
   @override

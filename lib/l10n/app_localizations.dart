@@ -116,6 +116,96 @@ abstract class AppLocalizations {
   /// **'Demasiados intentos'**
   String get accesoBloqueoTitulo;
 
+  /// Etiqueta del campo donde se escribe la contraseña temporal que dio la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña temporal'**
+  String get accesoCambiarActualEtiqueta;
+
+  /// Única salida de la pantalla de cambio obligatorio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get accesoCambiarCerrarSesion;
+
+  /// Etiqueta del campo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma la contraseña nueva'**
+  String get accesoCambiarConfirmarEtiqueta;
+
+  /// Explica por qué no se puede seguir sin cambiarla.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia te dio una contraseña temporal. Elige una nueva para continuar.'**
+  String get accesoCambiarExplicacion;
+
+  /// Título del aviso cuando el servidor rechaza el cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cambiar tu contraseña'**
+  String get accesoCambiarFalloTitulo;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get accesoCambiarGuardando;
+
+  /// Botón principal de la pantalla de cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get accesoCambiarGuardar;
+
+  /// Error cuando la confirmación no coincide con la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Las dos contraseñas no son iguales.'**
+  String get accesoCambiarNoCoincide;
+
+  /// Etiqueta del campo de la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña nueva'**
+  String get accesoCambiarNuevaEtiqueta;
+
+  /// Regla en vivo: la nueva no puede ser la temporal.
+  ///
+  /// In es, this message translates to:
+  /// **'Distinta de la temporal'**
+  String get accesoCambiarReglaDistinta;
+
+  /// Regla en vivo del largo de la contraseña.
+  ///
+  /// In es, this message translates to:
+  /// **'De 8 a 72 caracteres'**
+  String get accesoCambiarReglaLargo;
+
+  /// Regla en vivo: debe tener una letra.
+  ///
+  /// In es, this message translates to:
+  /// **'Al menos una letra'**
+  String get accesoCambiarReglaLetra;
+
+  /// Regla en vivo: debe tener un número.
+  ///
+  /// In es, this message translates to:
+  /// **'Al menos un número'**
+  String get accesoCambiarReglaNumero;
+
+  /// Encabezado de la lista de reglas en vivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña nueva debe tener:'**
+  String get accesoCambiarReglasTitulo;
+
+  /// Título de la pantalla de cambio obligatorio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambia tu contraseña'**
+  String get accesoCambiarTitulo;
+
   /// Etiqueta del campo de contraseña en la pantalla de acceso.
   ///
   /// In es, this message translates to:
