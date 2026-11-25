@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:carecar_mobile/api/api_config.dart';
 import 'package:carecar_mobile/api/cliente_api.dart';
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/api/modelos/problema.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -477,7 +478,7 @@ void main() {
       },
     );
 
-    test('actualizar mapea un 422 como el resto de los errores', () async {
+    test('un 422 sin codigo es una SolicitudRechazada desconocida', () async {
       final cliente = _clienteQueResponde((_) => _problema(422, 'Fuera'));
       await expectLater(
         cliente.actualizar<int>(
@@ -485,7 +486,52 @@ void main() {
           cuerpo: const {},
           leer: (j) => 0,
         ),
-        throwsA(isA<SinParametrosDeValuacion>()),
+        throwsA(
+          isA<SolicitudRechazada>()
+              .having(
+                (e) => e is SinParametrosDeValuacion,
+                'sin parametros',
+                false,
+              )
+              .having((e) => e.codigo, 'codigo', CodigoProblema.desconocido),
+        ),
+      );
+    });
+
+    test('un 422 se distingue por su codigo', () async {
+      Future<Object?> pedir(String codigo) async {
+        final cliente = _clienteQueResponde(
+          (_) => http.Response(
+            jsonEncode({
+              'timestamp': 't',
+              'status': 422,
+              'error': 'Error',
+              'message': 'm',
+              'path': '/p',
+              'codigo': codigo,
+            }),
+            422,
+            headers: {'content-type': 'application/json'},
+          ),
+        );
+        try {
+          await cliente.actualizar<int>('/x', cuerpo: const {}, leer: (j) => 0);
+        } on Object catch (e) {
+          return e;
+        }
+        return null;
+      }
+
+      final cobertura = await pedir('FUERA_DE_COBERTURA');
+      expect(cobertura, isA<SolicitudRechazada>());
+      expect(cobertura, isNot(isA<SinParametrosDeValuacion>()));
+      expect(
+        (cobertura! as SolicitudRechazada).codigo,
+        CodigoProblema.fueraDeCobertura,
+      );
+      expect(
+        await pedir('SIN_PARAMETROS_DE_VALUACION'),
+        isA<SinParametrosDeValuacion>(),
       );
     });
 

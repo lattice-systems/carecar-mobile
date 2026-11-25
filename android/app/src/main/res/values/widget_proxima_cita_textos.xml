@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Solo lo que ve quien elige el widget en el lanzador; el contenido real
-         llega traducido desde Flutter (lib/l10n, prefijo widgets). -->
-    <string name="widget_proxima_cita_nombre">Próxima cita</string>
-    <string name="widget_proxima_cita_descripcion">Tu próxima cita en el taller, sin abrir la app.</string>
-    <string name="widget_proxima_cita_vacio">Abre CareCar para ver tu cita</string>
-</resources>

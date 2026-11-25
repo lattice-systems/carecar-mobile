@@ -29,6 +29,12 @@ enum CodigoProblema {
   direccionEnUso('DIRECCION_EN_USO'),
   ordenCerrada('ORDEN_CERRADA'),
   adicionalYaRespondido('ADICIONAL_YA_RESPONDIDO'),
+  kmInvalido('KM_INVALIDO'),
+
+  /// Solo la devuelven los endpoints internos del backend al mover una
+  /// solicitud o un traslado a un estado que no corresponde; la app no los
+  /// llama, pero reconoce el codigo si algun dia llega.
+  transicionInvalida('TRANSICION_INVALIDA'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

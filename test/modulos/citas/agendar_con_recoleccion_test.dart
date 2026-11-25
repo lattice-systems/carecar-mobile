@@ -22,7 +22,7 @@ const _casa = DireccionGuardada(
   colonia: 'Juárez',
   cp: '06600',
   ciudad: 'CDMX',
-  ubicacion: Coordenada(19.4326, -99.1332),
+  ubicacion: Coordenada(21.1250, -101.6860),
 );
 
 const _lejos = DireccionGuardada(

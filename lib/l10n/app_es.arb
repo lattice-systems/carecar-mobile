@@ -531,6 +531,270 @@
   },
   "citasVacioMensaje": "Por ahora el taller no tiene lugares en los próximos días. Vuelve a revisar pronto.",
   "citasVacioTitulo": "Sin lugares disponibles",
+  "mantenimientoAcceso": "Mantenimiento",
+  "@mantenimientoAcceso": {
+    "description": "Fila del detalle del vehículo que abre el plan."
+  },
+  "mantenimientoAgendar": "Agendar este servicio",
+  "@mantenimientoAgendar": {
+    "description": "Abre agendar cita con el servicio."
+  },
+  "mantenimientoCargando": "Cargando tu plan de mantenimiento",
+  "@mantenimientoCargando": {
+    "description": "Anuncio mientras carga el plan."
+  },
+  "mantenimientoCargandoServicio": "Cargando el servicio",
+  "@mantenimientoCargandoServicio": {
+    "description": "Anuncio mientras carga un servicio."
+  },
+  "mantenimientoCerrar": "Cerrar",
+  "@mantenimientoCerrar": {
+    "description": "Cerrar una pantalla de mantenimiento."
+  },
+  "mantenimientoDescripcionPortada": "Ilustración de una llave de servicio",
+  "@mantenimientoDescripcionPortada": {
+    "description": "Descripción de la portada del plan para el lector de pantalla."
+  },
+  "mantenimientoEncabezadoConceptos": "Qué incluye",
+  "@mantenimientoEncabezadoConceptos": {
+    "description": "Encabezado de los conceptos del servicio."
+  },
+  "mantenimientoEncabezadoKm": "Tu kilometraje",
+  "@mantenimientoEncabezadoKm": {
+    "description": "Encabezado del grupo de kilometraje."
+  },
+  "mantenimientoEncabezadoPlan": "Plan de servicios",
+  "@mantenimientoEncabezadoPlan": {
+    "description": "Encabezado de la lista de servicios."
+  },
+  "mantenimientoEstadoHecho": "Hecho",
+  "@mantenimientoEstadoHecho": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoPendiente": "Pendiente",
+  "@mantenimientoEstadoPendiente": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoProximo": "Próximo",
+  "@mantenimientoEstadoProximo": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoEstadoVencido": "Vencido",
+  "@mantenimientoEstadoVencido": {
+    "description": "Estado del servicio."
+  },
+  "mantenimientoFaltan": "Faltan {km} km · hacia el {fecha}",
+  "@mantenimientoFaltan": {
+    "description": "Cuánto falta y la fecha estimada.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "1,200"
+      },
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoHechoEl": "Hecho el {fecha}",
+  "@mantenimientoHechoEl": {
+    "description": "Cuándo se hizo el servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKilometros": "{km} km",
+  "@mantenimientoKilometros": {
+    "description": "Kilometraje.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmAyuda": "Tu último registro: {km} km",
+  "@mantenimientoKmAyuda": {
+    "description": "Ayuda con el último kilometraje.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmAyudaSinRegistro": "Escribe el número que marca el tablero de tu auto.",
+  "@mantenimientoKmAyudaSinRegistro": {
+    "description": "Ayuda sin lectura previa."
+  },
+  "mantenimientoKmCampo": "Kilometraje actual",
+  "@mantenimientoKmCampo": {
+    "description": "Etiqueta del campo."
+  },
+  "mantenimientoKmDelCliente": "Registrado por ti el {fecha}",
+  "@mantenimientoKmDelCliente": {
+    "description": "Fuente cliente del kilometraje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKmDelTaller": "Registrado por el taller el {fecha}",
+  "@mantenimientoKmDelTaller": {
+    "description": "Fuente taller del kilometraje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 mar 2027"
+      }
+    }
+  },
+  "mantenimientoKmErrorFormato": "Usa solo números enteros mayores que cero.",
+  "@mantenimientoKmErrorFormato": {
+    "description": "Validación."
+  },
+  "mantenimientoKmErrorMenor": "No puede ser menor a {km} km, el último que tenemos.",
+  "@mantenimientoKmErrorMenor": {
+    "description": "Validación contra la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "12,300"
+      }
+    }
+  },
+  "mantenimientoKmErrorRed": "No pudimos guardar tu kilometraje. Revisa tu internet y vuelve a intentarlo.",
+  "@mantenimientoKmErrorRed": {
+    "description": "Fallo al guardar."
+  },
+  "mantenimientoKmErrorServidor": "Ese kilometraje es menor al último registrado. Revísalo en tu tablero.",
+  "@mantenimientoKmErrorServidor": {
+    "description": "Respuesta 422 KM_INVALIDO."
+  },
+  "mantenimientoKmErrorVacio": "Escribe tu kilometraje.",
+  "@mantenimientoKmErrorVacio": {
+    "description": "Validación."
+  },
+  "mantenimientoKmGuardado": "Kilometraje guardado. Actualizamos tu próximo servicio.",
+  "@mantenimientoKmGuardado": {
+    "description": "Aviso de éxito."
+  },
+  "mantenimientoKmGuardando": "Guardando kilometraje",
+  "@mantenimientoKmGuardando": {
+    "description": "Anuncio al guardar."
+  },
+  "mantenimientoKmGuardar": "Guardar kilometraje",
+  "@mantenimientoKmGuardar": {
+    "description": "Botón de guardar."
+  },
+  "mantenimientoKmNota": "El kilometraje que registra el taller es el oficial: tu registro no lo reemplaza.",
+  "@mantenimientoKmNota": {
+    "description": "Nota sobre el km oficial."
+  },
+  "mantenimientoKmSinDato": "Sin registrar",
+  "@mantenimientoKmSinDato": {
+    "description": "Aún no hay kilometraje."
+  },
+  "mantenimientoKmSinFuente": "Aún no hay una lectura de tu auto",
+  "@mantenimientoKmSinFuente": {
+    "description": "Sin fuente del kilometraje."
+  },
+  "mantenimientoKmTitulo": "Registrar kilometraje",
+  "@mantenimientoKmTitulo": {
+    "description": "Título del formulario de kilometraje."
+  },
+  "mantenimientoMotivoKm": "Te toca por kilometraje",
+  "@mantenimientoMotivoKm": {
+    "description": "Motivo del próximo servicio: kilómetros."
+  },
+  "mantenimientoMotivoTiempo": "Te toca por tiempo transcurrido",
+  "@mantenimientoMotivoTiempo": {
+    "description": "Motivo del próximo servicio: meses."
+  },
+  "mantenimientoPrecioEtiqueta": "Precio estimado",
+  "@mantenimientoPrecioEtiqueta": {
+    "description": "Etiqueta del precio."
+  },
+  "mantenimientoPrecioLeyenda": "Estimación no vinculante",
+  "@mantenimientoPrecioLeyenda": {
+    "description": "Leyenda obligatoria junto a todo precio estimado."
+  },
+  "mantenimientoPromedio": "Promedio: {km} km al día",
+  "@mantenimientoPromedio": {
+    "description": "Promedio de kilómetros diarios.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "38"
+      }
+    }
+  },
+  "mantenimientoRegistrarKm": "Registrar km",
+  "@mantenimientoRegistrarKm": {
+    "description": "Abre el registro de kilometraje."
+  },
+  "mantenimientoResumenServicio": "{km} km · {meses} meses",
+  "@mantenimientoResumenServicio": {
+    "description": "Resumen de un servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "10,000"
+      },
+      "meses": {
+        "type": "String",
+        "example": "12"
+      }
+    }
+  },
+  "mantenimientoServicioNoEncontradoMensaje": "Puede que el plan haya cambiado. Vuelve al plan e inténtalo de nuevo.",
+  "@mantenimientoServicioNoEncontradoMensaje": {
+    "description": "Servicio ausente del plan."
+  },
+  "mantenimientoServicioNoEncontradoTitulo": "No encontramos este servicio",
+  "@mantenimientoServicioNoEncontradoTitulo": {
+    "description": "Servicio ausente del plan."
+  },
+  "mantenimientoSinConceptos": "Este servicio no trae conceptos detallados.",
+  "@mantenimientoSinConceptos": {
+    "description": "Servicio sin conceptos."
+  },
+  "mantenimientoSinProximoMensaje": "Registra tu kilometraje para calcular cuándo te toca el siguiente servicio.",
+  "@mantenimientoSinProximoMensaje": {
+    "description": "Invita a registrar el kilometraje."
+  },
+  "mantenimientoSinProximoTitulo": "Sin próximo servicio estimado",
+  "@mantenimientoSinProximoTitulo": {
+    "description": "Héroe cuando no se puede estimar el próximo servicio."
+  },
+  "mantenimientoTitulo": "Mantenimiento",
+  "@mantenimientoTitulo": {
+    "description": "Título de la pantalla del plan de mantenimiento."
+  },
+  "mantenimientoVacioMensaje": "Todavía no tenemos el plan de servicios de este modelo. Pregunta a tu asesor en la agencia.",
+  "@mantenimientoVacioMensaje": {
+    "description": "Mensaje cuando el modelo no tiene plan."
+  },
+  "mantenimientoVacioTitulo": "Aún no hay plan para tu auto",
+  "@mantenimientoVacioTitulo": {
+    "description": "Título cuando el modelo no tiene plan."
+  },
+  "mantenimientoYaToca": "Ya te toca · pasó de los {km} km",
+  "@mantenimientoYaToca": {
+    "description": "El servicio ya llegó o pasó.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "10,000"
+      }
+    }
+  },
   "precioDesde": "Desde {precio}",
   "@precioDesde": {
     "description": "Precio de entrada de un modelo.",
@@ -1681,6 +1945,120 @@
   "@widgetsSinCitaMensaje": {
     "description": "Texto del widget de inicio cuando no hay una cita confirmada por venir."
   },
+  "widgetsTallerTitulo": "Tu auto en el taller",
+  "@widgetsTallerTitulo": {
+    "description": "Encabezado del widget de inicio cuando el auto está en el taller (V2-M25.02)."
+  },
+  "widgetsTallerEntrega": "Entrega estimada: {hora}",
+  "@widgetsTallerEntrega": {
+    "description": "Hora estimada de entrega en el widget de inicio con el auto en el taller.",
+    "placeholders": {
+      "hora": {
+        "type": "String",
+        "example": "24 nov, 18:00"
+      }
+    }
+  },
+  "widgetsAgendar": "Agendar",
+  "@widgetsAgendar": {
+    "description": "Botón corto del estado vacío de los widgets de inicio."
+  },
+  "widgetsTallerEncabezado": "Taller en vivo",
+  "@widgetsTallerEncabezado": {
+    "description": "Encabezado del widget de inicio del taller."
+  },
+  "widgetsTallerVacioMensaje": "Tu auto no está en el taller",
+  "@widgetsTallerVacioMensaje": {
+    "description": "Estado vacío del widget del taller."
+  },
+  "widgetsTallerPaso": "Paso {actual} de {total}",
+  "@widgetsTallerPaso": {
+    "description": "Avance de etapas del widget del taller.",
+    "placeholders": {
+      "actual": {
+        "type": "int",
+        "example": "4"
+      },
+      "total": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+  "widgetsMantenimientoTitulo": "Mantenimiento",
+  "@widgetsMantenimientoTitulo": {
+    "description": "Encabezado del widget de inicio de mantenimiento."
+  },
+  "widgetsMantenimientoFaltanKm": "Faltan {km} km",
+  "@widgetsMantenimientoFaltanKm": {
+    "description": "Kilómetros que faltan para el próximo servicio.",
+    "placeholders": {
+      "km": {
+        "type": "String",
+        "example": "2,300"
+      }
+    }
+  },
+  "widgetsMantenimientoYaToca": "Ya toca",
+  "@widgetsMantenimientoYaToca": {
+    "description": "El próximo servicio ya toca por km o por fecha."
+  },
+  "widgetsMantenimientoFecha": "Hacia el {fecha}",
+  "@widgetsMantenimientoFecha": {
+    "description": "Fecha estimada del próximo servicio.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "15 ene"
+      }
+    }
+  },
+  "widgetsMantenimientoVacioMensaje": "Aún no hay un plan para tu auto",
+  "@widgetsMantenimientoVacioMensaje": {
+    "description": "Estado vacío del widget de mantenimiento."
+  },
+  "widgetsMantenimientoAccion": "Ver plan",
+  "@widgetsMantenimientoAccion": {
+    "description": "Botón del estado vacío del widget de mantenimiento."
+  },
+  "widgetsBitacoraTitulo": "Bitácora",
+  "@widgetsBitacoraTitulo": {
+    "description": "Encabezado del widget de inicio de la bitácora."
+  },
+  "widgetsBitacoraRendimientoUnidad": "km/l",
+  "@widgetsBitacoraRendimientoUnidad": {
+    "description": "Unidad del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraGastoMes": "Gasto de {mes}",
+  "@widgetsBitacoraGastoMes": {
+    "description": "Etiqueta del gasto del mes en el widget de la bitácora.",
+    "placeholders": {
+      "mes": {
+        "type": "String",
+        "example": "noviembre"
+      }
+    }
+  },
+  "widgetsBitacoraRendimientoEtiqueta": "Rendimiento",
+  "@widgetsBitacoraRendimientoEtiqueta": {
+    "description": "Etiqueta del rendimiento en el widget de la bitácora."
+  },
+  "widgetsBitacoraVacioMensaje": "Registra tu primera carga",
+  "@widgetsBitacoraVacioMensaje": {
+    "description": "Estado vacío del widget de la bitácora."
+  },
+  "widgetsBitacoraAccion": "Registrar",
+  "@widgetsBitacoraAccion": {
+    "description": "Botón del estado vacío del widget de la bitácora."
+  },
+  "widgetsAccesosTitulo": "Accesos rápidos",
+  "@widgetsAccesosTitulo": {
+    "description": "Encabezado del widget de accesos rápidos."
+  },
+  "widgetsAccesoComprobante": "Comprobante",
+  "@widgetsAccesoComprobante": {
+    "description": "Acceso rápido al comprobante de la próxima cita."
+  },
   "citasWalletAgregar": "Agregar a Wallet",
   "@citasWalletAgregar": {
     "description": "Botón del comprobante que guarda la cita como pase en Google Wallet o Apple Wallet."
@@ -1720,6 +2098,10 @@
   "citasAccionesCita": "Opciones de tu cita",
   "@citasAccionesCita": {
     "description": "Título de la hoja con las acciones de una cita próxima."
+  },
+  "regresar": "Regresar",
+  "@regresar": {
+    "description": "Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior."
   },
   "citasCerrar": "Cerrar",
   "@citasCerrar": {
@@ -2414,6 +2796,728 @@
       }
     }
   },
+  "asistenciaSeguimientoEncabezado": "Estado de tu solicitud",
+  "@asistenciaSeguimientoEncabezado": {
+    "description": "Encabezado de la línea de tiempo de la solicitud."
+  },
+  "asistenciaEstadoRecibida": "Recibida",
+  "@asistenciaEstadoRecibida": {
+    "description": "Primer paso de la solicitud de ayuda."
+  },
+  "asistenciaEstadoEnCamino": "En camino",
+  "@asistenciaEstadoEnCamino": {
+    "description": "La ayuda va hacia el cliente."
+  },
+  "asistenciaEstadoAtendida": "Atendida",
+  "@asistenciaEstadoAtendida": {
+    "description": "La ayuda ya llegó y se atendió."
+  },
+  "asistenciaEstadoCancelada": "Cancelada",
+  "@asistenciaEstadoCancelada": {
+    "description": "La solicitud se canceló."
+  },
+  "asistenciaEstadoNotaRecibida": "La agencia ya tiene tu solicitud.",
+  "@asistenciaEstadoNotaRecibida": {
+    "description": "Nota del paso Recibida."
+  },
+  "asistenciaEstadoNotaEnCamino": "Hay ayuda en camino hacia ti.",
+  "@asistenciaEstadoNotaEnCamino": {
+    "description": "Nota del paso En camino."
+  },
+  "asistenciaEstadoNotaAtendida": "Tu solicitud ya fue atendida.",
+  "@asistenciaEstadoNotaAtendida": {
+    "description": "Nota del paso Atendida."
+  },
+  "asistenciaEstadoNotaCancelada": "La solicitud se cerró.",
+  "@asistenciaEstadoNotaCancelada": {
+    "description": "Nota del paso Cancelada."
+  },
+  "asistenciaEstadoActual": "Estado: {estado}",
+  "@asistenciaEstadoActual": {
+    "description": "Estado actual que anuncia el lector de pantalla.",
+    "placeholders": {
+      "estado": {
+        "type": "String",
+        "example": "En camino"
+      }
+    }
+  },
+  "asistenciaSeguimientoActualizar": "Actualizar estado",
+  "@asistenciaSeguimientoActualizar": {
+    "description": "Botón para consultar de nuevo el estado."
+  },
+  "asistenciaSeguimientoActualizando": "Actualizando…",
+  "@asistenciaSeguimientoActualizando": {
+    "description": "Botón mientras consulta el estado."
+  },
+  "asistenciaSeguimientoFallo": "No pudimos actualizar el estado. Revisa tu conexión e inténtalo de nuevo.",
+  "@asistenciaSeguimientoFallo": {
+    "description": "Aviso cuando falla la consulta del estado."
+  },
+  "asistenciaSeguimientoUbicacionCerrada": "La solicitud ya está cerrada: tu ubicación dejó de compartirse.",
+  "@asistenciaSeguimientoUbicacionCerrada": {
+    "description": "Aviso al quedar atendida o cancelada."
+  },
+  "recoleccionSeguimientoTitulo": "Seguimiento del traslado",
+  "@recoleccionSeguimientoTitulo": {
+    "description": "Título de la pantalla de seguimiento."
+  },
+  "recoleccionSeguimientoRecoger": "Recogemos tu auto",
+  "@recoleccionSeguimientoRecoger": {
+    "description": "Título del traslado de recoger."
+  },
+  "recoleccionSeguimientoEntregar": "Entregamos tu auto",
+  "@recoleccionSeguimientoEntregar": {
+    "description": "Título del traslado de entregar."
+  },
+  "recoleccionSeguimientoVentana": "{fecha}, de {inicio} a {fin}",
+  "@recoleccionSeguimientoVentana": {
+    "description": "Día y franja del traslado.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd",
+        "example": "lunes, 23 de noviembre"
+      },
+      "inicio": {
+        "type": "String",
+        "example": "07:00"
+      },
+      "fin": {
+        "type": "String",
+        "example": "09:00"
+      }
+    }
+  },
+  "recoleccionSeguimientoAbrir": "Toca un traslado para seguirlo en vivo.",
+  "@recoleccionSeguimientoAbrir": {
+    "description": "Pie del grupo de recolección: invita a abrir el seguimiento."
+  },
+  "recoleccionSeguimientoLineaEncabezado": "Avance",
+  "@recoleccionSeguimientoLineaEncabezado": {
+    "description": "Encabezado de la línea de tiempo del traslado."
+  },
+  "recoleccionEstadoProgramado": "Programado",
+  "@recoleccionEstadoProgramado": {
+    "description": "Traslado agendado."
+  },
+  "recoleccionEstadoEnCamino": "Chofer en camino",
+  "@recoleccionEstadoEnCamino": {
+    "description": "El chofer va al domicilio."
+  },
+  "recoleccionEstadoRecogido": "Auto recogido",
+  "@recoleccionEstadoRecogido": {
+    "description": "El chofer ya tiene el auto."
+  },
+  "recoleccionEstadoEnTaller": "En el taller",
+  "@recoleccionEstadoEnTaller": {
+    "description": "El auto está en el taller."
+  },
+  "recoleccionEstadoDeRegreso": "De regreso a tu domicilio",
+  "@recoleccionEstadoDeRegreso": {
+    "description": "El chofer lleva el auto de vuelta."
+  },
+  "recoleccionEstadoEntregado": "Auto entregado",
+  "@recoleccionEstadoEntregado": {
+    "description": "El auto ya se entregó."
+  },
+  "recoleccionEstadoCancelado": "Cancelado",
+  "@recoleccionEstadoCancelado": {
+    "description": "El traslado se canceló."
+  },
+  "recoleccionEstadoNotaEnCamino": "Sigue su ubicación en el mapa.",
+  "@recoleccionEstadoNotaEnCamino": {
+    "description": "Nota del paso en camino."
+  },
+  "recoleccionEstadoNotaDeRegreso": "Sigue su ubicación en el mapa.",
+  "@recoleccionEstadoNotaDeRegreso": {
+    "description": "Nota del paso de regreso."
+  },
+  "recoleccionSeguimientoMapaEncabezado": "Dónde va el chofer",
+  "@recoleccionSeguimientoMapaEncabezado": {
+    "description": "Encabezado del mapa del chofer."
+  },
+  "recoleccionSeguimientoMapaDescripcion": "Mapa con la ubicación del chofer: latitud {latitud}, longitud {longitud}.",
+  "@recoleccionSeguimientoMapaDescripcion": {
+    "description": "Descripción del mapa para el lector de pantalla.",
+    "placeholders": {
+      "latitud": {
+        "type": "String",
+        "example": "19.4326"
+      },
+      "longitud": {
+        "type": "String",
+        "example": "-99.1332"
+      }
+    }
+  },
+  "recoleccionSeguimientoActualizadaEn": "Ubicación actualizada a las {hora}",
+  "@recoleccionSeguimientoActualizadaEn": {
+    "description": "Hora de la última ubicación del chofer.",
+    "placeholders": {
+      "hora": {
+        "type": "String",
+        "example": "10:30"
+      }
+    }
+  },
+  "recoleccionSeguimientoVerChecklist": "Ver checklist del auto",
+  "@recoleccionSeguimientoVerChecklist": {
+    "description": "Botón que abre el checklist del traslado."
+  },
+  "recoleccionSeguimientoActualizar": "Actualizar",
+  "@recoleccionSeguimientoActualizar": {
+    "description": "Botón para volver a consultar el traslado."
+  },
+  "recoleccionSeguimientoCargando": "Cargando el seguimiento del traslado",
+  "@recoleccionSeguimientoCargando": {
+    "description": "Etiqueta del esqueleto de carga."
+  },
+  "recoleccionSeguimientoNoEncontradoTitulo": "No encontramos este traslado",
+  "@recoleccionSeguimientoNoEncontradoTitulo": {
+    "description": "Título cuando el traslado no existe."
+  },
+  "recoleccionSeguimientoNoEncontradoMensaje": "Puede que ya no exista. Vuelve a tus citas y ábrelo de nuevo.",
+  "@recoleccionSeguimientoNoEncontradoMensaje": {
+    "description": "Mensaje cuando el traslado no existe."
+  },
+  "recoleccionSeguimientoFalloAlActualizar": "No pudimos actualizar. Mostramos lo último que sabemos.",
+  "@recoleccionSeguimientoFalloAlActualizar": {
+    "description": "Aviso cuando falla recargar con datos ya visibles."
+  },
+  "recoleccionChecklistTitulo": "Checklist del auto",
+  "@recoleccionChecklistTitulo": {
+    "description": "Título de la pantalla del checklist."
+  },
+  "recoleccionChecklistKm": "Kilometraje",
+  "@recoleccionChecklistKm": {
+    "description": "Etiqueta del kilometraje."
+  },
+  "recoleccionChecklistKmValor": "{km} km",
+  "@recoleccionChecklistKmValor": {
+    "description": "Kilometraje con unidad.",
+    "placeholders": {
+      "km": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      }
+    }
+  },
+  "recoleccionChecklistGasolina": "Gasolina",
+  "@recoleccionChecklistGasolina": {
+    "description": "Etiqueta del nivel de gasolina."
+  },
+  "recoleccionGasolinaVacio": "Vacío",
+  "@recoleccionGasolinaVacio": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaUnCuarto": "Un cuarto",
+  "@recoleccionGasolinaUnCuarto": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaMedio": "Medio tanque",
+  "@recoleccionGasolinaMedio": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaTresCuartos": "Tres cuartos",
+  "@recoleccionGasolinaTresCuartos": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionGasolinaLleno": "Lleno",
+  "@recoleccionGasolinaLleno": {
+    "description": "Nivel de gasolina."
+  },
+  "recoleccionChecklistGasolinaLector": "Gasolina: {nivel}",
+  "@recoleccionChecklistGasolinaLector": {
+    "description": "Nivel de gasolina para el lector de pantalla.",
+    "placeholders": {
+      "nivel": {
+        "type": "String",
+        "example": "Medio tanque"
+      }
+    }
+  },
+  "recoleccionChecklistNotas": "Notas del chofer",
+  "@recoleccionChecklistNotas": {
+    "description": "Etiqueta de las notas."
+  },
+  "recoleccionChecklistFotos": "Fotos del auto",
+  "@recoleccionChecklistFotos": {
+    "description": "Encabezado de la galería."
+  },
+  "recoleccionChecklistFotoDescripcion": "Foto {numero} de {total} del estado del auto",
+  "@recoleccionChecklistFotoDescripcion": {
+    "description": "Descripción de cada foto para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionChecklistSinFotos": "Este checklist no trae fotos.",
+  "@recoleccionChecklistSinFotos": {
+    "description": "Galería vacía."
+  },
+  "recoleccionChecklistFirmante": "Firma de conformidad",
+  "@recoleccionChecklistFirmante": {
+    "description": "Quien firma el checklist."
+  },
+  "recoleccionChecklistRegistrado": "Registrado el {fecha}",
+  "@recoleccionChecklistRegistrado": {
+    "description": "Fecha del checklist.",
+    "placeholders": {
+      "fecha": {
+        "type": "DateTime",
+        "format": "yMMMMd",
+        "example": "23 de noviembre de 2026"
+      }
+    }
+  },
+  "recoleccionChecklistVacioTitulo": "Aún no hay checklist",
+  "@recoleccionChecklistVacioTitulo": {
+    "description": "Título cuando no hay checklist."
+  },
+  "recoleccionChecklistVacioMensaje": "El chofer lo registra al recoger y al entregar tu auto. Cuando lo haga, lo verás aquí.",
+  "@recoleccionChecklistVacioMensaje": {
+    "description": "Mensaje cuando no hay checklist."
+  },
+  "recoleccionChecklistCargando": "Cargando el checklist del auto",
+  "@recoleccionChecklistCargando": {
+    "description": "Etiqueta del esqueleto de carga."
+  },
+  "bitacoraTitulo": "Bitácora",
+  "@bitacoraTitulo": {
+    "description": "Título de la bitácora del conductor."
+  },
+  "bitacoraSubtituloSinNombre": "Tu auto",
+  "@bitacoraSubtituloSinNombre": {
+    "description": "Subtítulo de la portada cuando no se conoce el nombre del vehículo."
+  },
+  "bitacoraDescripcionPortada": "Ícono de una bomba de gasolina",
+  "@bitacoraDescripcionPortada": {
+    "description": "Descripción para el lector de pantalla del arte de la portada de la bitácora."
+  },
+  "bitacoraNuevaCarga": "Nueva carga",
+  "@bitacoraNuevaCarga": {
+    "description": "Botón que abre el alta de una carga de gasolina."
+  },
+  "bitacoraOtroGasto": "Otro gasto",
+  "@bitacoraOtroGasto": {
+    "description": "Botón que abre el alta de un gasto que no es gasolina."
+  },
+  "bitacoraCerrar": "Cerrar",
+  "@bitacoraCerrar": {
+    "description": "Cierra la pantalla de la bitácora."
+  },
+  "bitacoraCargando": "Cargando tu bitácora",
+  "@bitacoraCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga la bitácora."
+  },
+  "bitacoraVacioTitulo": "Aún no hay gastos",
+  "@bitacoraVacioTitulo": {
+    "description": "Título de la bitácora sin gastos."
+  },
+  "bitacoraVacioMensaje": "Registra tu primera carga de gasolina para saber cuánto rinde y cuánto te cuesta tu auto.",
+  "@bitacoraVacioMensaje": {
+    "description": "Mensaje de la bitácora sin gastos."
+  },
+  "bitacoraResumenTitulo": "Tu rendimiento",
+  "@bitacoraResumenTitulo": {
+    "description": "Encabezado del estante con las cifras de la bitácora."
+  },
+  "bitacoraEtiquetaRendimiento": "Rendimiento",
+  "@bitacoraEtiquetaRendimiento": {
+    "description": "Etiqueta de la cifra de kilómetros por litro."
+  },
+  "bitacoraCifraKmPorLitro": "{valor} km/l",
+  "@bitacoraCifraKmPorLitro": {
+    "description": "Rendimiento en kilómetros por litro.",
+    "placeholders": {
+      "valor": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraEtiquetaCostoPorKm": "Costo por km",
+  "@bitacoraEtiquetaCostoPorKm": {
+    "description": "Etiqueta de la cifra de pesos por kilómetro."
+  },
+  "bitacoraCifraCostoPorKm": "{valor}/km",
+  "@bitacoraCifraCostoPorKm": {
+    "description": "Costo en pesos por kilómetro.",
+    "placeholders": {
+      "valor": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraEtiquetaGastoMes": "Gasto de este mes",
+  "@bitacoraEtiquetaGastoMes": {
+    "description": "Etiqueta de la cifra del gasto del mes en curso."
+  },
+  "bitacoraCifraSinDatos": "—",
+  "@bitacoraCifraSinDatos": {
+    "description": "Cifra cuando todavía no se puede calcular."
+  },
+  "bitacoraDetalleSinDatos": "Necesitas 2 cargas",
+  "@bitacoraDetalleSinDatos": {
+    "description": "Detalle de una cifra que aún no se puede calcular."
+  },
+  "bitacoraVerEstadisticas": "Rendimiento y gasto por mes",
+  "@bitacoraVerEstadisticas": {
+    "description": "Fila que abre las estadísticas."
+  },
+  "bitacoraExportar": "Exportar bitácora",
+  "@bitacoraExportar": {
+    "description": "Fila que abre la exportación."
+  },
+  "bitacoraTipoGasolina": "Gasolina",
+  "@bitacoraTipoGasolina": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoEstacionamiento": "Estacionamiento",
+  "@bitacoraTipoEstacionamiento": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoCasetas": "Casetas",
+  "@bitacoraTipoCasetas": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoLavado": "Lavado",
+  "@bitacoraTipoLavado": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraTipoOtro": "Otro",
+  "@bitacoraTipoOtro": {
+    "description": "Tipo de gasto."
+  },
+  "bitacoraDetalleCarga": "{fecha} · {litros} l · {km} km",
+  "@bitacoraDetalleCarga": {
+    "description": "Subtítulo de una carga de gasolina en la lista.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "litros": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraFormCargaTitulo": "Nueva carga",
+  "@bitacoraFormCargaTitulo": {
+    "description": "Título del formulario de alta de una carga."
+  },
+  "bitacoraFormEditarCargaTitulo": "Editar carga",
+  "@bitacoraFormEditarCargaTitulo": {
+    "description": "Título del formulario de edición de una carga."
+  },
+  "bitacoraFormGastoTitulo": "Nuevo gasto",
+  "@bitacoraFormGastoTitulo": {
+    "description": "Título del formulario de alta de otro gasto."
+  },
+  "bitacoraFormEditarGastoTitulo": "Editar gasto",
+  "@bitacoraFormEditarGastoTitulo": {
+    "description": "Título del formulario de edición de otro gasto."
+  },
+  "bitacoraCampoTipo": "Tipo de gasto",
+  "@bitacoraCampoTipo": {
+    "description": "Etiqueta del selector de tipo."
+  },
+  "bitacoraCampoLitros": "Litros",
+  "@bitacoraCampoLitros": {
+    "description": "Etiqueta del campo de litros."
+  },
+  "bitacoraCampoMonto": "Monto total",
+  "@bitacoraCampoMonto": {
+    "description": "Etiqueta del campo de monto en pesos."
+  },
+  "bitacoraCampoKm": "Kilometraje del tablero",
+  "@bitacoraCampoKm": {
+    "description": "Etiqueta del campo de km."
+  },
+  "bitacoraAyudaKm": "Tu última lectura es de {km} km.",
+  "@bitacoraAyudaKm": {
+    "description": "Ayuda bajo el campo de km con la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraCampoFecha": "Fecha",
+  "@bitacoraCampoFecha": {
+    "description": "Etiqueta del selector de fecha."
+  },
+  "bitacoraElegirFecha": "Elegir fecha",
+  "@bitacoraElegirFecha": {
+    "description": "Acción que abre el calendario del formulario."
+  },
+  "bitacoraCampoDescripcion": "Descripción",
+  "@bitacoraCampoDescripcion": {
+    "description": "Etiqueta del campo de descripción."
+  },
+  "bitacoraAyudaDescripcion": "Obligatoria en «Otro», máximo 200 caracteres.",
+  "@bitacoraAyudaDescripcion": {
+    "description": "Ayuda del campo de descripción."
+  },
+  "bitacoraErrorMonto": "Escribe un monto mayor a 0.",
+  "@bitacoraErrorMonto": {
+    "description": "Error del campo de monto."
+  },
+  "bitacoraErrorLitros": "Escribe los litros, mayores a 0.",
+  "@bitacoraErrorLitros": {
+    "description": "Error del campo de litros."
+  },
+  "bitacoraErrorKm": "Escribe el kilometraje como número entero.",
+  "@bitacoraErrorKm": {
+    "description": "Error del campo de km cuando falta o no es entero."
+  },
+  "bitacoraErrorKmMenor": "No puede ser menor a tu última lectura ({km} km).",
+  "@bitacoraErrorKmMenor": {
+    "description": "Error del campo de km cuando es menor a la última lectura.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraErrorKmServidor": "El servidor lo rechazó: es menor a tu última lectura. Revisa el kilometraje.",
+  "@bitacoraErrorKmServidor": {
+    "description": "Error del campo de km cuando el servidor contesta 422."
+  },
+  "bitacoraErrorFecha": "Elige una fecha que no sea futura.",
+  "@bitacoraErrorFecha": {
+    "description": "Error del campo de fecha."
+  },
+  "bitacoraErrorDescripcion": "Describe el gasto, en máximo 200 caracteres.",
+  "@bitacoraErrorDescripcion": {
+    "description": "Error del campo de descripción."
+  },
+  "bitacoraErrorGuardar": "No se pudo guardar. Intenta de nuevo.",
+  "@bitacoraErrorGuardar": {
+    "description": "Aviso de un fallo al guardar."
+  },
+  "bitacoraErrorBorrar": "No se pudo borrar. Intenta de nuevo.",
+  "@bitacoraErrorBorrar": {
+    "description": "Aviso de un fallo al borrar."
+  },
+  "bitacoraErrorSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@bitacoraErrorSinConexion": {
+    "description": "Aviso de falta de conexión al guardar o borrar."
+  },
+  "bitacoraGuardar": "Guardar",
+  "@bitacoraGuardar": {
+    "description": "Guarda el gasto."
+  },
+  "bitacoraBorrar": "Borrar gasto",
+  "@bitacoraBorrar": {
+    "description": "Borra el gasto que se edita."
+  },
+  "bitacoraBorrarTitulo": "¿Borrar este gasto?",
+  "@bitacoraBorrarTitulo": {
+    "description": "Título de la confirmación de borrado."
+  },
+  "bitacoraBorrarMensaje": "Se borrará «{descripcion}». No se puede deshacer.",
+  "@bitacoraBorrarMensaje": {
+    "description": "Mensaje de la confirmación de borrado.",
+    "placeholders": {
+      "descripcion": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraBorrarConfirmar": "Borrar",
+  "@bitacoraBorrarConfirmar": {
+    "description": "Confirma el borrado."
+  },
+  "bitacoraBorrarCancelar": "Cancelar",
+  "@bitacoraBorrarCancelar": {
+    "description": "Cancela el borrado."
+  },
+  "bitacoraGastoGuardado": "Gasto guardado.",
+  "@bitacoraGastoGuardado": {
+    "description": "Aviso tras guardar."
+  },
+  "bitacoraGastoBorrado": "Gasto borrado.",
+  "@bitacoraGastoBorrado": {
+    "description": "Aviso tras borrar."
+  },
+  "bitacoraTicketTitulo": "Llenar desde el ticket",
+  "@bitacoraTicketTitulo": {
+    "description": "Encabezado de la sección que lee el ticket."
+  },
+  "bitacoraTicketPrivacidad": "La foto se lee en tu teléfono; no se guarda ni se sube.",
+  "@bitacoraTicketPrivacidad": {
+    "description": "Aclaración de privacidad de la lectura del ticket."
+  },
+  "bitacoraTicketTomar": "Tomar foto",
+  "@bitacoraTicketTomar": {
+    "description": "Abre la cámara para fotografiar el ticket."
+  },
+  "bitacoraTicketElegir": "Elegir de fotos",
+  "@bitacoraTicketElegir": {
+    "description": "Abre la galería para elegir la foto del ticket."
+  },
+  "bitacoraTicketLeyendo": "Leyendo el ticket…",
+  "@bitacoraTicketLeyendo": {
+    "description": "Se anuncia mientras se reconoce el texto."
+  },
+  "bitacoraTicketLeido": "Esto fue lo que leímos. Revísalo y corrige lo que haga falta.",
+  "@bitacoraTicketLeido": {
+    "description": "Aviso tras leer el ticket."
+  },
+  "bitacoraTicketNoLeyo": "No pudimos leer el ticket. Llena los datos a mano.",
+  "@bitacoraTicketNoLeyo": {
+    "description": "Aviso cuando no se leyó nada."
+  },
+  "bitacoraTicketSinPermiso": "No tenemos permiso para usar la cámara o tus fotos. Actívalo en los ajustes o llena los datos a mano.",
+  "@bitacoraTicketSinPermiso": {
+    "description": "Aviso cuando se negó el permiso."
+  },
+  "bitacoraTicketError": "No se pudo abrir la foto. Llena los datos a mano.",
+  "@bitacoraTicketError": {
+    "description": "Aviso de un fallo al leer la foto."
+  },
+  "bitacoraEstadisticasTitulo": "Rendimiento y gasto",
+  "@bitacoraEstadisticasTitulo": {
+    "description": "Título de la pantalla de estadísticas."
+  },
+  "bitacoraGraficaTitulo": "Gasto por mes",
+  "@bitacoraGraficaTitulo": {
+    "description": "Título de la gráfica de gasto mensual."
+  },
+  "bitacoraGraficaVacia": "Aún no hay gastos que graficar.",
+  "@bitacoraGraficaVacia": {
+    "description": "Mensaje de la gráfica sin datos."
+  },
+  "bitacoraSinRendimientoTitulo": "Aún no hay rendimiento",
+  "@bitacoraSinRendimientoTitulo": {
+    "description": "Título cuando no se puede calcular el rendimiento."
+  },
+  "bitacoraSinRendimientoMensaje": "Para calcular los km/l y el costo por km necesitamos al menos 2 cargas con su kilometraje. {cargas, plural, =0{Todavía no registras ninguna.} =1{Tienes 1 carga.} other{Tienes {cargas} cargas, pero sus kilometrajes no avanzan.}}",
+  "@bitacoraSinRendimientoMensaje": {
+    "description": "Explica por qué aún no hay rendimiento, según cuántas cargas hay.",
+    "placeholders": {
+      "cargas": {
+        "type": "int"
+      }
+    }
+  },
+  "bitacoraBaseDelCalculo": "Calculado con {km} km recorridos en {tramos, plural, =1{1 tramo} other{{tramos} tramos}} entre cargas.",
+  "@bitacoraBaseDelCalculo": {
+    "description": "Base del cálculo del rendimiento.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      },
+      "tramos": {
+        "type": "int"
+      }
+    }
+  },
+  "bitacoraExportarTitulo": "Exportar bitácora",
+  "@bitacoraExportarTitulo": {
+    "description": "Título de la pantalla de exportación."
+  },
+  "bitacoraExportarIntro": "Elige los meses y comparte tu bitácora con la hoja del sistema.",
+  "@bitacoraExportarIntro": {
+    "description": "Explicación de la pantalla de exportación."
+  },
+  "bitacoraExportarDesde": "Desde",
+  "@bitacoraExportarDesde": {
+    "description": "Selector del primer mes a exportar."
+  },
+  "bitacoraExportarHasta": "Hasta",
+  "@bitacoraExportarHasta": {
+    "description": "Selector del último mes a exportar."
+  },
+  "bitacoraExportarCsv": "Compartir CSV",
+  "@bitacoraExportarCsv": {
+    "description": "Exporta la bitácora como CSV."
+  },
+  "bitacoraExportarPdf": "Compartir PDF",
+  "@bitacoraExportarPdf": {
+    "description": "Exporta la bitácora como PDF."
+  },
+  "bitacoraExportarVacio": "No hay gastos en esos meses.",
+  "@bitacoraExportarVacio": {
+    "description": "Aviso cuando el rango no tiene gastos."
+  },
+  "bitacoraExportarRangoInvalido": "El mes inicial no puede ser posterior al final.",
+  "@bitacoraExportarRangoInvalido": {
+    "description": "Aviso de un rango al revés."
+  },
+  "bitacoraExportarError": "No se pudo compartir el archivo. Intenta de nuevo.",
+  "@bitacoraExportarError": {
+    "description": "Aviso de un fallo al exportar."
+  },
+  "bitacoraPdfTitulo": "Bitácora de {vehiculo}",
+  "@bitacoraPdfTitulo": {
+    "description": "Título del PDF exportado.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraPdfPeriodo": "{desde} a {hasta}",
+  "@bitacoraPdfPeriodo": {
+    "description": "Periodo que cubre el PDF.",
+    "placeholders": {
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraPdfTotal": "Total: {monto}",
+  "@bitacoraPdfTotal": {
+    "description": "Total gastado en el PDF.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "bitacoraColumnaFecha": "Fecha",
+  "@bitacoraColumnaFecha": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaTipo": "Tipo",
+  "@bitacoraColumnaTipo": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaMonto": "Monto",
+  "@bitacoraColumnaMonto": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaLitros": "Litros",
+  "@bitacoraColumnaLitros": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaKm": "Km",
+  "@bitacoraColumnaKm": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraColumnaDetalle": "Detalle",
+  "@bitacoraColumnaDetalle": {
+    "description": "Encabezado de columna del PDF."
+  },
+  "bitacoraAccesoFila": "Bitácora",
+  "@bitacoraAccesoFila": {
+    "description": "Fila del detalle del vehículo que abre la bitácora."
+  },
   "asistenteSugerenciasTitulo": "Prueba con una de estas",
   "@asistenteSugerenciasTitulo": {
     "description": "Encabezado de las preguntas sugeridas con la conversación vacía (V2-M24.08)."
@@ -2857,5 +3961,151 @@
   "asistenteAbrirAjustes": "Abrir ajustes",
   "@asistenteAbrirAjustes": {
     "description": "Botón del aviso de permiso."
+  },
+  "citasMisCitasRecoleccionEncabezado": "Recolección · {cita}",
+  "@citasMisCitasRecoleccionEncabezado": {
+    "description": "Encabezado del grupo de traslados de una cita en Mis citas.",
+    "placeholders": {
+      "cita": {
+        "type": "String",
+        "example": "lun, 23 nov · 09:00"
+      }
+    }
+  },
+  "citasChecklistRecoger": "Checklist al recoger",
+  "@citasChecklistRecoger": {
+    "description": "Fila que abre el checklist del chofer al recoger el auto."
+  },
+  "citasChecklistEntregar": "Checklist al entregar",
+  "@citasChecklistEntregar": {
+    "description": "Fila que abre el checklist del chofer al entregar el auto."
+  },
+  "citasChecklistSubtitulo": "Kilometraje, gasolina y fotos",
+  "@citasChecklistSubtitulo": {
+    "description": "Subtítulo de las filas de checklist."
+  },
+  "citasChecklistComparar": "Comparar recoger y entregar",
+  "@citasChecklistComparar": {
+    "description": "Fila que abre el checklist con la comparación activa."
+  },
+  "citasChecklistCompararSubtitulo": "Lo que cambió entre una y otra",
+  "@citasChecklistCompararSubtitulo": {
+    "description": "Subtítulo de la fila de comparación."
+  },
+  "recoleccionChecklistPestanaRecoger": "Al recoger",
+  "@recoleccionChecklistPestanaRecoger": {
+    "description": "Pestaña del checklist al recoger el auto."
+  },
+  "recoleccionChecklistPestanaEntregar": "Al entregar",
+  "@recoleccionChecklistPestanaEntregar": {
+    "description": "Pestaña del checklist al entregar el auto."
+  },
+  "recoleccionChecklistPestanaComparar": "Comparar",
+  "@recoleccionChecklistPestanaComparar": {
+    "description": "Pestaña que pone lado a lado los dos checklists."
+  },
+  "recoleccionComparacionKmDetalle": "{recoger} km al recoger, {entregar} km al entregar",
+  "@recoleccionComparacionKmDetalle": {
+    "description": "Kilometraje de los dos checklists.",
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,200"
+      },
+      "entregar": {
+        "type": "int",
+        "format": "decimalPattern",
+        "example": "45,210"
+      }
+    }
+  },
+  "recoleccionComparacionGasolinaDetalle": "{recoger} al recoger, {entregar} al entregar",
+  "@recoleccionComparacionGasolinaDetalle": {
+    "description": "Nivel de gasolina de los dos checklists.",
+    "placeholders": {
+      "recoger": {
+        "type": "String",
+        "example": "Medio tanque"
+      },
+      "entregar": {
+        "type": "String",
+        "example": "Tanque lleno"
+      }
+    }
+  },
+  "recoleccionComparacionFotosTitulo": "Fotos al recoger y al entregar",
+  "@recoleccionComparacionFotosTitulo": {
+    "description": "Encabezado de la comparación de fotos."
+  },
+  "recoleccionComparacionFotosAyuda": "Arrastra la barra: a la izquierda ves la foto al recoger y a la derecha la foto al entregar.",
+  "@recoleccionComparacionFotosAyuda": {
+    "description": "Cómo se usa la comparación de fotos."
+  },
+  "recoleccionComparacionFotoRecoger": "Foto {numero} de {total} al recoger",
+  "@recoleccionComparacionFotoRecoger": {
+    "description": "Descripción de la foto de recoger para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotoEntregar": "Foto {numero} de {total} al entregar",
+  "@recoleccionComparacionFotoEntregar": {
+    "description": "Descripción de la foto de entregar para el lector de pantalla.",
+    "placeholders": {
+      "numero": {
+        "type": "int",
+        "example": "1"
+      },
+      "total": {
+        "type": "int",
+        "example": "6"
+      }
+    }
+  },
+  "recoleccionComparacionFotosDesiguales": "Hay {recoger} fotos al recoger y {entregar} al entregar; se comparan las primeras {comparadas}.",
+  "@recoleccionComparacionFotosDesiguales": {
+    "description": "Aviso cuando los checklists traen distinto número de fotos.",
+    "placeholders": {
+      "recoger": {
+        "type": "int",
+        "example": "4"
+      },
+      "entregar": {
+        "type": "int",
+        "example": "3"
+      },
+      "comparadas": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "recoleccionComparacionSinFotos": "Alguno de los dos checklists no trae fotos para comparar.",
+  "@recoleccionComparacionSinFotos": {
+    "description": "Aviso cuando no hay fotos que comparar."
+  },
+  "recoleccionComparacionFaltaTitulo": "Aún no se puede comparar",
+  "@recoleccionComparacionFaltaTitulo": {
+    "description": "Título cuando falta un checklist."
+  },
+  "recoleccionComparacionFaltaRecoger": "El chofer todavía no registra el checklist de recoger.",
+  "@recoleccionComparacionFaltaRecoger": {
+    "description": "Falta el checklist de recoger."
+  },
+  "recoleccionComparacionFaltaEntregar": "El chofer todavía no registra el checklist de entregar. Cuando devuelva tu auto podrás compararlo.",
+  "@recoleccionComparacionFaltaEntregar": {
+    "description": "Falta el checklist de entregar."
+  },
+  "recoleccionComparacionFaltaAmbos": "El chofer todavía no registra ningún checklist de esta recolección.",
+  "@recoleccionComparacionFaltaAmbos": {
+    "description": "Faltan los dos checklists."
   }
 }

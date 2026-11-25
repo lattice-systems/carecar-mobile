@@ -56,6 +56,16 @@ class CabeceraPortada extends StatelessWidget {
 
   static const double _desenfoque = 40;
 
+  /// Alto que la barra superior le quita a la portada: la barra mas la zona
+  /// del reloj, solo cuando el `Scaffold` que la contiene deja el cuerpo
+  /// detras de la barra (`extendBodyBehindAppBar`). Sin esa reserva la pieza
+  /// queda debajo del titulo de la barra.
+  static double _reservaDeBarra(BuildContext context) {
+    final scaffold = Scaffold.maybeOf(context);
+    if (scaffold == null || !scaffold.widget.extendBodyBehindAppBar) return 0;
+    return scaffold.appBarMaxHeight ?? 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
@@ -64,6 +74,7 @@ class CabeceraPortada extends StatelessWidget {
     final color = tinte ?? c.acento;
     final oscuro = tokens.brillo == Brightness.dark;
     final letraGrande = MediaQuery.textScalerOf(context).scale(1) > 1.3;
+    final reserva = _reservaDeBarra(context);
 
     final pieza = Semantics(
       image: true,
@@ -134,9 +145,9 @@ class CabeceraPortada extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             Espaciado.e4,
-            Espaciado.e6,
+            reserva > 0 ? reserva + Espaciado.e4 : Espaciado.e6,
             Espaciado.e4,
             Espaciado.e6,
           ),

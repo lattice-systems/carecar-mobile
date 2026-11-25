@@ -12,14 +12,23 @@ export 'dominio/fallos_recoleccion.dart' show DireccionEnUso, FueraDeCobertura;
 export 'dominio/recoleccion_agendada.dart'
     show RecoleccionAgendada, TipoTraslado, TrasladoAgendado;
 export 'presentacion/formato_pesos.dart' show formatearPesos;
+export 'presentacion/pantalla_checklist_traslado.dart'
+    show PantallaChecklistTraslado;
 export 'presentacion/pantalla_direccion.dart' show PantallaDireccion;
 export 'presentacion/pantalla_mis_direcciones.dart' show PantallaMisDirecciones;
+export 'presentacion/pantalla_seguimiento_traslado.dart'
+    show PantallaSeguimientoTraslado;
 export 'presentacion/proveedores_recoleccion.dart'
     show
         ClaveCotizacion,
+        checklistTrasladoProvider,
         cotizacionRecoleccionProvider,
         direccionesProvider,
         repositorioRecoleccionProvider;
 export 'presentacion/rutas_recoleccion.dart'
-    show rutaMisDirecciones, rutasRecoleccion;
+    show
+        rutaChecklistTraslado,
+        rutaMisDirecciones,
+        rutaSeguimientoTraslado,
+        rutasRecoleccion;
 export 'presentacion/seleccion_recoleccion.dart' show SeleccionRecoleccion;

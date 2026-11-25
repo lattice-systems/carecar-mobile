@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Desde Android 12 el sistema define el radio de las esquinas de los
+         widgets: se usa el suyo para que el fondo coincida con el recorte. -->
+    <dimen name="widget_radio">@android:dimen/system_app_widget_background_radius</dimen>
+</resources>

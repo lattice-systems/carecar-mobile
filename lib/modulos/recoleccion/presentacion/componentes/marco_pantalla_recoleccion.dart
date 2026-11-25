@@ -17,6 +17,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
     required this.slivers,
     super.key,
     this.acciones,
+    this.conRegreso = false,
     this.barraInferior,
     this.alRefrescar,
   });
@@ -27,6 +28,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
     required Widget estado,
     super.key,
     this.acciones,
+    this.conRegreso = false,
   }) : slivers = [SliverFillRemaining(child: estado)],
        barraInferior = null,
        alRefrescar = null;
@@ -36,6 +38,9 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
 
   /// Botones al final del encabezado; por defecto, «Cerrar».
   final List<Widget>? acciones;
+
+  /// Pone «Regresar» antes del título; para las pantallas raíz del módulo.
+  final bool conRegreso;
   final Widget? barraInferior;
 
   /// Jalar para recargar; nulo lo desactiva.
@@ -51,6 +56,7 @@ class MarcoPantallaRecoleccion extends StatelessWidget {
         EncabezadoGrande(
           titulo: titulo,
           translucido: true,
+          conRegreso: conRegreso,
           acciones: acciones ?? [BotonCerrarRecoleccion()],
         ),
         ...slivers,

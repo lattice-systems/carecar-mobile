@@ -38,6 +38,7 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 | V2-M25.03 | Como cliente quiero guardar mi cita en Wallet para presentarla en recepción | Botón en el comprobante · pase firmado por el backend con el QR · si la cita se cancela, el pase queda vencido | ✅ | V2-M02.11 |
 | V2-M25.04 | Como cliente quiero accesos rápidos desde el ícono para ir directo a lo que más uso | Mantener presionado el ícono muestra Agendar, Mi auto y SOS · cada uno abre su pantalla | | V2-T01.03 |
 | V2-M25.05 | Como cliente de iPhone quiero ver el estado del taller en la pantalla bloqueada para seguir mi servicio | Live Activity con la etapa actual mientras la orden esté abierta · termina al entregar el auto · se actualiza por push desde el backend | ✅ | V2-M04.03 |
+| V2-M25.06 | Como cliente quiero que el pase de Wallet de una cita cancelada o reprogramada deje de servir para no presentarme con un pase viejo | Apple: servicio de actualización (`webServiceURL`, registro de dispositivos, APNs) marca el pase `voided` · Google: el objeto pasa a `EXPIRED` · al reprogramar se actualiza fecha y horario · llaves fuera del repo (R8) | ✅ | V2-M25.03 |
 
 ## Fuera de alcance / notas
 
@@ -95,6 +96,31 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 - V2-M25.02 (estado del taller en el widget) reutiliza este widget y el puerto.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
 
+## Avance de V2-M25.02
+
+**Qué quedó**
+
+- El widget de V2-M25.01 ahora muestra el estado del auto cuando hay una **orden abierta**; sin orden vuelve a la próxima cita. Con orden: título «Tu auto en el taller», etapa actual, hora estimada de entrega (si el taller ya la estimó) y el auto. Al tocarlo abre `carecar://taller/<ordenId>` (la ruta `/taller/:ordenId` de V2-M04.02).
+- **Sin duplicar el repositorio del taller:** `SincronizadorDelWidgetDeCita` lee `ordenesEnCursoProvider` (`GET /ordenes/activas`) por el contrato `taller.dart`, que ahora también publica `OrdenEnCurso`, `EtapaTaller`, `textoEtapa` y `horaTaller`. Si hay varias órdenes abiertas se muestra la primera que devuelve el backend.
+- **Dominio:** `ContenidoWidgetCita.enTaller` y `enlaceDeOrdenWidget` (`dominio/proxima_cita_widget.dart`). Reutiliza las mismas claves del almacén (la etapa va en `proxima_cita_fecha`, la entrega en `proxima_cita_horario`, el auto en `proxima_cita_vehiculo`), así que **no cambió el contrato nativo**: el proveedor Kotlin, el layout y el Swift pintan igual; solo se actualizaron sus comentarios.
+- **Cuándo se actualiza:** al cambiar la sesión (cerrar sesión borra todo), las órdenes o las citas, el idioma, al volver la app a primer plano (se vuelven a consultar las órdenes) y con la app abierta por el canal en vivo: el evento `orden` de `GET /eventos` (V2-T05.08) y `conexion.restablecida` invalidan `ordenesEnCursoProvider`. El canal solo se abre con sesión y se cierra al salir.
+- **Si falla la red:** sin orden cargada nunca, el widget cae a la cita; si ya mostraba una orden, la conserva. Mientras las órdenes cargan por primera vez no se publica la cita para no parpadear.
+- Textos con prefijo `widgets` en es y en (`widgetsTallerTitulo`, `widgetsTallerEntrega`) y `app_localizations*.dart` regenerados.
+- Pruebas en `test/modulos/widgets/` (`contenido_widget_taller_test.dart` y casos nuevos en `sincronizador_widget_cita_test.dart`): orden con auto, etapa, entrega y enlace; sin hora estimada; idioma; regreso a la cita al entregarse; evento `orden`, reconexión y primer plano; borrado al cerrar sesión; equipo comprometido; fallos de red.
+
+**Datos y seguridad (OWASP Mobile)**
+
+- Al widget solo viajan textos de pantalla: etapa, hora de entrega, nombre del vehículo y el id de la orden dentro del enlace. No viajan asesor, montos, adicionales, placas, VIN ni datos del cliente. No se escribe nada en logs.
+- Cerrar sesión (o equipo comprometido, V2-M22.05) publica el estado sin datos y no consulta órdenes ni abre el canal. Lo mismo que M25.01: el widget puede verse con el teléfono bloqueado en algunos lanzadores.
+
+**Pendiente / fuera de alcance**
+
+- **iOS (falta Xcode):** igual que M25.01; sin cambios en el Swift más que comentarios. Al enlazar el target se prueba también con orden abierta.
+- Probar en teléfono real que el toque abra la orden con la app cerrada (pasa por la guardia de sesión) y que el evento `orden` repinte con la app abierta.
+- Con la app cerrada el widget no se repinta solo (igual que M25.01); el refresco en segundo plano sería una historia aparte.
+- El widget usa los mismos tamaños y tipografía de M25.01; pedir revisión de diseño a Cristian.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
+
 ## Avance de V2-M25.03
 
 Parte de **app** de «Guardar mi cita en Wallet». Estado: **En curso**; el pase firmado depende de la historia `Backend:` (otro agente la implementa contra el mismo contrato) y de los certificados de Apple y Google (ver notas de arriba).
@@ -120,3 +146,30 @@ Parte de **app** de «Guardar mi cita en Wallet». Estado: **En curso**; el pase
 - `queries` de Android 11+ para `url_launcher` (`https`) no se tocaron: el enlace se abre con `launchUrl`, que no depende de `canLaunchUrl`.
 - `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
 - V2-M25.02 y V2-M25.05 siguen sin empezar.
+
+## Avance de widgets múltiples
+
+Rediseño de los widgets de inicio: cinco widgets independientes que se agregan por separado desde el selector, con estilo tipo widgets de iOS (esquinas grandes, cifras grandes, degradado sutil de marca, mucho aire; sin assets de Apple) y responsivos.
+
+**Qué quedó**
+
+- **Dart** (`lib/modulos/widgets/`): `TipoWidget` (cita, taller, mantenimiento, bitácora, accesos) con su prefijo de claves, `ContenidoWidget` por widget, `PuertoWidgets` y un sincronizador de los cinco (sesión, datos, idioma, primer plano y eventos). Cerrar sesión borra los cinco. Textos en los ARB es y en. Los contratos de mantenimiento y bitácora exportan lo necesario.
+- **Android:** un `AppWidgetProvider` por widget sobre la base `WidgetCarecar`; layouts `widget_{cita,taller,mant,bit,acc}_{s,m,l}.xml` (2x2, 4x2, 4x4). En API 31 o más se entrega un mapa de tamaños y el lanzador elige; antes se elige por el ancho y alto mínimos y se repinta al redimensionar. Claro y oscuro, es y en, vistas previas y `contentDescription`. Accesos rápidos abre `carecar://` y no depende de datos.
+- **iOS:** `ios/CareCarWidgets/` con cinco widgets y `WidgetBundle`, cada uno en `.systemSmall`, `.systemMedium` y `.systemLarge` (5 x 3).
+- Enlaces: cita abre el comprobante, taller la orden, mantenimiento el plan, bitácora la bitácora, accesos los destinos de Agendar, Mi auto, SOS y Comprobante.
+
+**iOS: el target sigue sin enlazar en Xcode.** Falta: (1) File > New > Target > Widget Extension llamado `CareCarWidgets`, borrar lo que genere y agregar todos los `.swift` de `ios/CareCarWidgets/`; (2) App Group `group.com.carecar.carecarMobile` en `Runner` y en la extensión; (3) iOS 17 o superior; (4) probar en dispositivo. El Swift no se compiló aquí (sin Xcode).
+
+**Propuesta de historias nuevas** (no se tocó `plan/tablero.md`; la integra quien mueve el tablero)
+
+| ID propuesto | Historia | Criterios de aceptación |
+| --- | --- | --- |
+| V2-M25.07 | Como cliente quiero un widget de mantenimiento para ver cuánto falta para mi próximo servicio | Próximo servicio, km faltantes, fecha estimada y avance · en rojo cuando ya toca · un toque abre el plan · sin plan invita a abrir el garaje · 2x2, 4x2 y 4x4 · claro, oscuro, es y en |
+| V2-M25.08 | Como cliente quiero un widget de bitácora para ver mi rendimiento y gasto del mes | Rendimiento en km/l y gasto del mes · raya si hay menos de dos cargas · un toque abre la bitácora · tres tamaños |
+| V2-M25.09 | Como cliente quiero un widget de accesos rápidos para ir directo a Agendar, Mi auto, SOS y Comprobante | Cuatro botones con enlace `carecar://` · funciona sin datos · tres tamaños |
+
+**Pendiente**
+
+- Probar en teléfono real tamaños, redimensión, tema oscuro y toque con la app cerrada.
+- Revisión de diseño de Cristian y pase por la guardia de sesión en arranque en frío.
+- `plan/cumplimiento-ficha.md` y `plan/tablero.md` los actualiza quien integra.
