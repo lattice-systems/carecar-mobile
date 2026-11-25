@@ -15,13 +15,81 @@ import '../../../nucleo/navegacion/enlaces.dart';
 
 /// Los widgets que ofrece la app, en el orden del selector.
 enum TipoWidget {
-  proximaCita('cita', 'ProximaCitaWidgetProvider', 'ProximaCitaWidget'),
-  taller('taller', 'TallerWidgetProvider', 'TallerWidget'),
-  mantenimiento('mant', 'MantenimientoWidgetProvider', 'MantenimientoWidget'),
-  bitacora('bit', 'BitacoraWidgetProvider', 'BitacoraWidget'),
-  accesos('acc', 'AccesosWidgetProvider', 'AccesosWidget');
+  proximaCita('cita', 'ProximaCitaWidgetProvider', 'ProximaCitaWidget', [
+    'hay',
+    'titulo',
+    'dia',
+    'mes',
+    'semana',
+    'horario',
+    'vehiculo',
+    'mensaje',
+    'accion',
+    'descripcion',
+    'enlace',
+  ]),
+  taller('taller', 'TallerWidgetProvider', 'TallerWidget', [
+    'hay',
+    'titulo',
+    'etapa',
+    'paso',
+    'total',
+    'paso_texto',
+    'entrega',
+    'vehiculo',
+    'mensaje',
+    'accion',
+    'descripcion',
+    'enlace',
+  ]),
+  mantenimiento('mant', 'MantenimientoWidgetProvider', 'MantenimientoWidget', [
+    'hay',
+    'titulo',
+    'servicio',
+    'faltan',
+    'fecha',
+    'progreso',
+    'urgente',
+    'vehiculo',
+    'mensaje',
+    'accion',
+    'descripcion',
+    'enlace',
+  ]),
+  bitacora('bit', 'BitacoraWidgetProvider', 'BitacoraWidget', [
+    'hay',
+    'titulo',
+    'rendimiento',
+    'unidad',
+    'etiqueta_rendimiento',
+    'gasto',
+    'etiqueta_gasto',
+    'vehiculo',
+    'mensaje',
+    'accion',
+    'descripcion',
+    'enlace',
+  ]),
+  accesos('acc', 'AccesosWidgetProvider', 'AccesosWidget', [
+    'hay',
+    'titulo',
+    'agendar',
+    'mi_auto',
+    'sos',
+    'comprobante',
+    'enlace_agendar',
+    'enlace_mi_auto',
+    'enlace_sos',
+    'enlace_comprobante',
+    'enlace',
+  ]);
 
-  const TipoWidget(this.prefijo, this.proveedorAndroid, this.tipoIos);
+  const TipoWidget(
+    this.prefijo,
+    this.proveedorAndroid,
+    this.tipoIos,
+    this.campos,
+  );
 
   /// Prefijo de todas las claves de este widget en el almacén compartido.
   final String prefijo;
@@ -31,6 +99,10 @@ enum TipoWidget {
 
   /// `kind` del widget de WidgetKit en iOS.
   final String tipoIos;
+
+  /// Todos los campos que este widget puede publicar (sin prefijo). Sirven para
+  /// borrar sus datos por completo al cerrar sesión.
+  final List<String> campos;
 
   /// Clave del almacén para [campo]: `taller_etapa`.
   String clave(String campo) => '${prefijo}_$campo';
