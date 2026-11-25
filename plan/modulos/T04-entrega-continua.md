@@ -48,8 +48,14 @@ Por eso V2-T04.06 queda descartada y V2-T04.03 se cierra con el APK por merge y 
 - Sin los secretos de V2-T04.02 el APK va firmado con la **llave de debug** (el `build.gradle.kts` ya cae a debug si no hay `key.properties`); el Release lo dice. No sirve para tiendas.
 - `github.run_number` cuenta por workflow: el número de build de `ci.yml` y el de `release.yml` son series distintas. Para el APK de prueba por merge (V2-T04.03) habrá que decidir una sola serie si ambos se instalan sobre el mismo teléfono.
 - iOS: el equipo no tiene Mac; el Release adjunta un IPA **sin firmar** para sideload (ver "Avance de V2-T04.03" abajo).
-- Las notas del Release son fijas; las automáticas son V2-T04.05.
+- Las notas del Release salen de los commits (V2-T04.05); por eso importa el formato `tipo(alcance): verbo + cambio`.
 
+
+## Avance de V2-T04.05: notas de versión automáticas
+
+- `scripts/notas-de-version.sh vX.Y.Z` toma los commits sin merges desde la etiqueta `v*` anterior (o todo el historial si es la primera) y los agrupa: `feat` → **Novedades**, `fix` → **Correcciones**, `perf` → **Rendimiento**; lo demás (docs, test, build, ci, chore, refactor) solo se cuenta. Cada línea queda «Descripción (alcance)». Ignora etiquetas que no empiezan con `v` (como `prueba-main`).
+- `release.yml` las pone al inicio de las notas del Release, antes de la línea del APK, la firma y el IPA.
+- Prueba: `test/config/notas_de_version_test.dart` arma un repo temporal con dos etiquetas y revisa las secciones.
 
 ## Avance de V2-T04.02 y V2-T04.03 (Android)
 

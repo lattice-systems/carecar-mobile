@@ -121,14 +121,19 @@ jobs:
           if [ "$FIRMADO" = true ]; then
             firma="Firmado con la llave de producción."
           else
-            firma="**Aviso:** firmado con la llave de debug porque el repositorio aún no tiene los secretos de producción (V2-T04.02, scripts/crear-llaves-android.sh). Sirve para pruebas internas; no es apto para tiendas."
+            firma="**Aviso:** firmado con la llave de debug porque el repositorio aún no tiene los secretos de producción (V2-T04.02, scripts/crear-llaves-android.sh). Sirve para pruebas internas."
           fi
+          # V2-T04.05: qué cambió, de los commits convencionales desde la
+          # etiqueta anterior.
+          cambios=$(scripts/notas-de-version.sh "$ETIQUETA")
           gh release create "$ETIQUETA" "carecar-$ETIQUETA.apk" \
             --title "CareCar $ETIQUETA" \
             --verify-tag \
-            --notes "APK de Android $ETIQUETA (build $NUMERO).
+            --notes "$cambios
 
-          $firma
+          ---
+
+          APK de Android $ETIQUETA (build $NUMERO). $firma
 
           El IPA de iOS (sin firmar, para instalar con Sideloadly) se adjunta unos minutos después; guía en docs/guia-instalar-ios-sin-mac.md."
 

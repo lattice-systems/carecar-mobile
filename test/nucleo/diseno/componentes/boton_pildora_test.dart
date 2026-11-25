@@ -73,6 +73,47 @@ void main() {
     expect(fondoDe(), PaletaColores.claro.acentoSuave);
   });
 
+  testWidgets('peligro es tonal en rojo suave (V2-T02.18)', (tester) async {
+    await tester.pumpWidget(
+      conTemaPista(
+        BotonPildora(
+          texto: 'Cancelar cita',
+          variante: VarianteBotonPildora.peligro,
+          alPresionar: () {},
+        ),
+      ),
+    );
+    final material = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(BotonPildora),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(material.color, PaletaColores.claro.peligroSuave);
+    final texto = tester.widget<Text>(find.text('Cancelar cita'));
+    expect(texto.style?.color, PaletaColores.claro.peligro);
+  });
+
+  testWidgets('cargando muestra el indicador, no responde y lo anuncia', (
+    tester,
+  ) async {
+    var toques = 0;
+    await tester.pumpWidget(
+      conTemaPista(
+        BotonPildora(
+          texto: 'Cancelar cita',
+          cargando: true,
+          alPresionar: () => toques++,
+        ),
+      ),
+    );
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    await tester.tap(find.byType(BotonPildora));
+    await tester.pump();
+    expect(toques, 0);
+    expect(find.bySemanticsLabel(RegExp('Cancelar cita')), findsOneWidget);
+  });
+
   testWidgets('vidrio es translucido con borde de luz (V2-T02.19)', (
     tester,
   ) async {

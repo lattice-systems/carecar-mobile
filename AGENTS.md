@@ -94,7 +94,7 @@ cd mock_api && npm install && npm start   # API simulada en :3000
 
 ## 8. Diseño
 
-El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) con su historia `V2-T02.xx`. Mientras esa historia no se integra, la pantalla que lo necesita no espera: usa un **provisional** en `lib/modulos/<modulo>/presentacion/provisional/`, hecho solo con tokens y componentes existentes y marcado `// PROVISIONAL: se reemplaza por <Componente> de V2-T02.xx` ([`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md), sección 4). Ningún hito cierra con provisionales.
+El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) con su historia `V2-T02.xx`. Mientras esa historia no se integra, la pantalla que lo necesita no espera: usa un **provisional** en `lib/modulos/<modulo>/presentacion/provisional/`, hecho solo con tokens y componentes existentes y marcado `// PROVISIONAL: se reemplaza por <Componente> de V2-T02.xx` ([`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md), sección 4). Ningún hito cierra con provisionales. En `lib/modulos/` no se usan botones, campos, tarjetas ni chips de Material directo ni nada de la v1: lo vigila `test/arquitectura/solo_componentes_del_sistema_test.dart` (V2-T02.18).
 
 ## 9. Seguridad
 
