@@ -5489,6 +5489,30 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Llamar a la agencia o al 911'**
   String get asistenciaLlamarAtajo;
+
+  /// Botón del comprobante que guarda la cita en el calendario del teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar al calendario'**
+  String get citasCalendarioAgregar;
+
+  /// Título del evento de calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita en la agencia'**
+  String get citasCalendarioTitulo;
+
+  /// Descripción del evento de calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículo: {vehiculo}'**
+  String citasCalendarioDescripcion(String vehiculo);
+
+  /// Error al entregar el evento.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir tu calendario. Intenta de nuevo.'**
+  String get citasCalendarioError;
 }
 
 class _AppLocalizationsDelegate
