@@ -218,9 +218,26 @@ void main() {
     'carga, selecciona cada vehiculo y conserva la lista al regresar',
     (tester) async {
       final espera = Completer<List<Vehiculo>>();
-      final api = ApiFalsa()..alPedirVehiculos = () => espera.future;
+      // La primera petición es la del inicio (responde ya); la de la lista
+      // queda en espera para ver su carga.
+      var peticiones = 0;
+      final api = ApiFalsa()
+        ..alPedirVehiculos = () {
+          peticiones++;
+          return peticiones == 1
+              ? Future.value([_march, _jetta])
+              : espera.future;
+        };
       final sesion = await _montar(tester, api);
-      await tester.tap(find.text('Mis vehículos'));
+      // Sin esperar a que termine: se quiere ver la lista cargando.
+      await tester.tap(
+        find.descendant(
+          of: find.byType(BarraFlotante),
+          matching: find.byWidgetPredicate(
+            (w) => w is Text && ['Vehículos', 'Vehicles'].contains(w.data),
+          ),
+        ),
+      );
       await tester.pump();
       expect(find.text('Cargando vehículos…'), findsOneWidget);
       espera.complete([_march, _jetta]);
@@ -237,7 +254,8 @@ void main() {
           findsOneWidget,
         );
       }
-      expect(api.llamadasAVehiculos, 1);
+      // Una del inicio (el auto protagonista) y una de la lista.
+      expect(api.llamadasAVehiculos, 2);
       await _tocar(tester, 'Regresar');
       expect(find.byType(InicioNuevo), findsOneWidget);
       expect(sesion.haySesion, isTrue);
@@ -254,7 +272,8 @@ void main() {
     api.alPedirVehiculos = () async => [];
     await _tocar(tester, 'Reintentar');
     expect(find.text('No tienes vehículos asociados'), findsOneWidget);
-    expect(api.llamadasAVehiculos, 2);
+    // Una del inicio, la de la lista y el reintento.
+    expect(api.llamadasAVehiculos, 3);
     // Deja correr los timers de la animacion de entrada del aviso.
     await tester.pump(const Duration(milliseconds: 500));
   });

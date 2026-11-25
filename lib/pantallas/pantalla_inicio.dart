@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../api/carecar_api.dart';
 import '../l10n/app_localizations.dart';
+import '../api/modelos/cita.dart';
 import '../api/modelos/perfil.dart';
+import '../api/modelos/vehiculo.dart';
 import '../modulos/taller/taller.dart';
 import '../nucleo/inicio/inicio_nuevo.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
@@ -42,6 +44,15 @@ class _PantallaInicioState extends State<PantallaInicio> {
   final _navegador = GlobalKey<NavigatorState>();
   bool _cerrando = false;
   late final Future<Perfil> _perfil = widget.api.miPerfil();
+
+  // El inicio se pinta aunque estas dos listas fallen: sin ellas muestra los
+  // estados vacíos y los accesos siguen funcionando.
+  late final Future<List<Vehiculo>> _vehiculos = widget.api
+      .misVehiculos()
+      .catchError((Object _) => <Vehiculo>[]);
+  late final Future<List<Cita>> _citas = widget.api.misCitas().catchError(
+    (Object _) => <Cita>[],
+  );
 
   @override
   void initState() {
@@ -91,67 +102,120 @@ class _PantallaInicioState extends State<PantallaInicio> {
       onGenerateRoute: (_) => MaterialPageRoute<void>(
         builder: (context) => FutureBuilder<Perfil>(
           future: _perfil,
-          builder: (context, snap) {
-            final alVehiculos =
-                widget.abrirEnV2[ModuloMigrable.vehiculos] ??
-                () => abrirPantalla(
-                  context,
-                  PantallaVehiculos(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
+          builder: (context, snapPerfil) => FutureBuilder<List<Vehiculo>>(
+            future: _vehiculos,
+            builder: (context, snapVehiculos) => FutureBuilder<List<Cita>>(
+              future: _citas,
+              builder: (context, snapCitas) {
+                final perfil = snapPerfil.data;
+                final vehiculos = snapVehiculos.data;
+                final citas = snapCitas.data ?? const <Cita>[];
+                final alVehiculos =
+                    widget.abrirEnV2[ModuloMigrable.vehiculos] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaVehiculos(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    );
+                final alCitas =
+                    widget.abrirEnV2[ModuloMigrable.citas] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaMisCitas(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    );
+                final alCatalogo =
+                    widget.abrirEnV2[ModuloMigrable.catalogo] ??
+                    () => abrirPantalla(
+                      context,
+                      PantallaCatalogo(
+                        api: widget.api,
+                        alCerrarSesion: _cerrarSesion,
+                      ),
+                    );
+                final textos = AppLocalizations.of(context);
+                return InicioNuevo(
+                  nombre: perfil?.nombre,
+                  autos: vehiculos
+                      ?.map(
+                        (v) => AutoInicio(
+                          modelo: v.modelo,
+                          anio: v.anio,
+                          marca: v.marca,
+                          placas: v.placas,
+                          kilometraje: v.kilometraje,
+                        ),
+                      )
+                      .toList(),
+                  proximaCita: _proximaCita(citas, vehiculos ?? const []),
+                  ordenEnCurso: const TarjetaOrdenEnCurso(),
+                  alAgendar: alCitas,
+                  alAbrirAjustes: () => abrirPantalla(
+                    context,
+                    PantallaAjustes(
+                      api: widget.api,
+                      alCerrarSesion: _cerrarSesion,
+                    ),
                   ),
+                  accesos: [
+                    AccesoInicio(
+                      titulo: textos.inicioAccesoVehiculosTitulo,
+                      subtitulo: textos.inicioAccesoVehiculosSubtitulo,
+                      icono: Icons.directions_car_outlined,
+                      alPulsar: alVehiculos,
+                    ),
+                    AccesoInicio(
+                      titulo: textos.inicioAccesoCitasTitulo,
+                      subtitulo: textos.inicioAccesoCitasSubtitulo,
+                      icono: Icons.calendar_month_outlined,
+                      alPulsar: alCitas,
+                    ),
+                    AccesoInicio(
+                      titulo: textos.inicioAccesoCatalogoTitulo,
+                      subtitulo: textos.inicioAccesoCatalogoSubtitulo,
+                      icono: Icons.grid_view_outlined,
+                      alPulsar: alCatalogo,
+                    ),
+                  ],
                 );
-            final alCitas =
-                widget.abrirEnV2[ModuloMigrable.citas] ??
-                () => abrirPantalla(
-                  context,
-                  PantallaMisCitas(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
-                  ),
-                );
-            final alCatalogo =
-                widget.abrirEnV2[ModuloMigrable.catalogo] ??
-                () => abrirPantalla(
-                  context,
-                  PantallaCatalogo(
-                    api: widget.api,
-                    alCerrarSesion: _cerrarSesion,
-                  ),
-                );
-            final textos = AppLocalizations.of(context);
-            return InicioNuevo(
-              nombre: snap.data?.nombre,
-              ordenEnCurso: const TarjetaOrdenEnCurso(),
-              alAgendar: alCitas,
-              alAbrirAjustes: () => abrirPantalla(
-                context,
-                PantallaAjustes(api: widget.api, alCerrarSesion: _cerrarSesion),
-              ),
-              accesos: [
-                AccesoInicio(
-                  titulo: textos.inicioAccesoVehiculosTitulo,
-                  subtitulo: textos.inicioAccesoVehiculosSubtitulo,
-                  icono: Icons.directions_car_outlined,
-                  alPulsar: alVehiculos,
-                ),
-                AccesoInicio(
-                  titulo: textos.inicioAccesoCitasTitulo,
-                  subtitulo: textos.inicioAccesoCitasSubtitulo,
-                  icono: Icons.calendar_month_outlined,
-                  alPulsar: alCitas,
-                ),
-                AccesoInicio(
-                  titulo: textos.inicioAccesoCatalogoTitulo,
-                  subtitulo: textos.inicioAccesoCatalogoSubtitulo,
-                  icono: Icons.grid_view_outlined,
-                  alPulsar: alCatalogo,
-                ),
-              ],
-            );
-          },
+              },
+            ),
+          ),
         ),
       ),
     ),
   );
+
+  /// La cita confirmada más cercana de hoy en adelante.
+  static CitaInicio? _proximaCita(List<Cita> citas, List<Vehiculo> vehiculos) {
+    final ahora = DateTime.now();
+    final hoy = DateTime(ahora.year, ahora.month, ahora.day);
+    final porVenir =
+        citas
+            .where(
+              (c) =>
+                  c.estado == EstadoCita.confirmada && !c.fecha.isBefore(hoy),
+            )
+            .toList()
+          ..sort((a, b) {
+            final dia = a.fecha.compareTo(b.fecha);
+            return dia != 0 ? dia : a.horaInicio.compareTo(b.horaInicio);
+          });
+    if (porVenir.isEmpty) return null;
+    final cita = porVenir.first;
+    final auto = vehiculos.where((v) => v.id == cita.vehiculoId).firstOrNull;
+    return CitaInicio(
+      fecha: cita.fecha,
+      hora: cita.horaInicio.length >= 5
+          ? cita.horaInicio.substring(0, 5)
+          : cita.horaInicio,
+      vehiculo:
+          cita.vehiculoNombre ??
+          (auto == null ? null : '${auto.modelo} ${auto.anio}'),
+    );
+  }
 }

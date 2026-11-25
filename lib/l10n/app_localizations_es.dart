@@ -2167,7 +2167,35 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get inicioAccesos => 'Accesos';
+  String get inicioProximaCita => 'Próxima cita';
+
+  @override
+  String get inicioSinCitas => 'No tienes citas por venir';
+
+  @override
+  String get inicioSinCitasDetalle => 'Agenda la próxima revisión de tu auto';
+
+  @override
+  String get inicioSinAutos => 'Aún no tienes autos registrados';
+
+  @override
+  String get inicioSinAutosDetalle =>
+      'Cuando la agencia registre tu auto, lo verás aquí';
+
+  @override
+  String inicioKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String inicioAutoDeTotal(int n, int total) {
+    return 'Auto $n de $total';
+  }
+
+  @override
+  String inicioCitaCuando(String dia, String hora) {
+    return '$dia, $hora';
+  }
 
   @override
   String get inicioAgendarCita => 'Agendar cita';
