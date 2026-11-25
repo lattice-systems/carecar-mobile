@@ -966,6 +966,15 @@
     }
   },
   "widgetsSinCitaMensaje": "You have no upcoming appointments",
+  "widgetsTallerTitulo": "Your car at the workshop",
+  "widgetsTallerEntrega": "Estimated pickup: {hora}",
+  "@widgetsTallerEntrega": {
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
   "citasWalletAgregar": "Add to Wallet",
   "citasWalletErrorGenerico": "We could not prepare your pass. Try again.",
   "citasWalletErrorSinConexion": "No connection. Check your network and try again.",
