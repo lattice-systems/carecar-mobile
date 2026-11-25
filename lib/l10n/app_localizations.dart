@@ -5417,6 +5417,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'El chofer todavía no registra ningún checklist de esta recolección.'**
   String get recoleccionComparacionFaltaAmbos;
+
+  /// Título de la pantalla de llamadas rápidas.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar ahora'**
+  String get asistenciaLlamarTitulo;
+
+  /// Explica las llamadas rápidas.
+  ///
+  /// In es, this message translates to:
+  /// **'Un toque abre el marcador de tu teléfono con el número. Funciona aunque no tengas datos.'**
+  String get asistenciaLlamarIntro;
+
+  /// Encabezado de la lista de contactos.
+  ///
+  /// In es, this message translates to:
+  /// **'A quién llamar'**
+  String get asistenciaLlamarGrupo;
+
+  /// Contacto: número de emergencias.
+  ///
+  /// In es, this message translates to:
+  /// **'Emergencias'**
+  String get asistenciaLlamarEmergencias;
+
+  /// Detalle del contacto de emergencias.
+  ///
+  /// In es, this message translates to:
+  /// **'911 · policía, ambulancia y bomberos'**
+  String get asistenciaLlamarEmergenciasDetalle;
+
+  /// Contacto: la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia'**
+  String get asistenciaLlamarAgencia;
+
+  /// Contacto: la aseguradora del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi aseguradora'**
+  String get asistenciaLlamarAseguradora;
+
+  /// Detalle cuando no hay aseguradora.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no registras tu aseguradora'**
+  String get asistenciaLlamarAseguradoraFalta;
+
+  /// Aviso que explica cómo agregar la aseguradora.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no registras tu aseguradora. Agrégala en los documentos de tu auto (póliza) y aparecerá aquí para llamarla con un toque.'**
+  String get asistenciaLlamarAseguradoraComoAgregar;
+
+  /// Etiqueta de lector de pantalla del botón de llamar.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a {contacto}'**
+  String asistenciaLlamarAccion(String contacto);
+
+  /// Error al abrir el marcador.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir el marcador. Marca {numero} a mano.'**
+  String asistenciaLlamarNoSePudo(String numero);
+
+  /// Atajo a las llamadas rápidas desde otras pantallas.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia o al 911'**
+  String get asistenciaLlamarAtajo;
 }
 
 class _AppLocalizationsDelegate
