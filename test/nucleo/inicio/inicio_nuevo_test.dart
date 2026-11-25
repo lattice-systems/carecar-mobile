@@ -88,28 +88,29 @@ void main() {
       expect(tester.takeException(), isNull);
     });
 
-    testWidgets('los destinos viven solo en la barra: el cuerpo no los repite', (
-      tester,
-    ) async {
-      await _montar(tester);
-      await _subir(tester);
+    testWidgets(
+      'los destinos viven solo en la barra: el cuerpo no los repite',
+      (tester) async {
+        await _montar(tester);
+        await _subir(tester);
 
-      // Antes el cuerpo traía tres accesos redondos con los mismos destinos
-      // que la barra. Cada nombre debe aparecer una sola vez, en la barra.
-      for (final destino in ['Vehículos', 'Citas', 'Catálogo']) {
-        expect(find.text(destino), findsOneWidget, reason: destino);
-        expect(
-          find.descendant(
-            of: find.byType(BarraFlotante),
-            matching: find.text(destino),
-          ),
-          findsOneWidget,
-          reason: destino,
-        );
-      }
-      expect(find.text('Mis vehículos'), findsNothing);
-      expect(find.text('Conoce los modelos Nissan'), findsNothing);
-    });
+        // Antes el cuerpo traía tres accesos redondos con los mismos destinos
+        // que la barra. Cada nombre debe aparecer una sola vez, en la barra.
+        for (final destino in ['Vehículos', 'Citas', 'Catálogo']) {
+          expect(find.text(destino), findsOneWidget, reason: destino);
+          expect(
+            find.descendant(
+              of: find.byType(BarraFlotante),
+              matching: find.text(destino),
+            ),
+            findsOneWidget,
+            reason: destino,
+          );
+        }
+        expect(find.text('Mis vehículos'), findsNothing);
+        expect(find.text('Conoce los modelos Nissan'), findsNothing);
+      },
+    );
 
     testWidgets(
       'la barra flotante tiene Inicio activo y lleva a cada destino',
@@ -161,7 +162,7 @@ void main() {
       expect(find.text('March 2020'), findsOneWidget);
       expect(find.text('Nissan'), findsOneWidget);
       expect(find.text('XYZ-123'), findsOneWidget);
-      expect(find.text('24.300 km'), findsOneWidget);
+      expect(find.text('24,300 km'), findsOneWidget);
 
       await tester.tap(find.text('March 2020'));
       expect(toques, ['vehiculos']);
@@ -222,26 +223,29 @@ void main() {
       expect(find.textContaining('Servicio del auto'), findsNothing);
     });
 
-    testWidgets('la cita va antes que el servicio; sin cita, la invitación al final', (
-      tester,
-    ) async {
-      await _montar(
-        tester,
-        conServicio: true,
-        cita: CitaInicio(fecha: DateTime(2026, 11, 28), hora: '10:00'),
-      );
-      final citaY = tester.getTopLeft(find.text('Próxima cita')).dy;
-      final servicioY = tester.getTopLeft(find.text('Servicio del auto 5')).dy;
-      expect(citaY, lessThan(servicioY));
+    testWidgets(
+      'la cita va antes que el servicio; sin cita, la invitación al final',
+      (tester) async {
+        await _montar(
+          tester,
+          conServicio: true,
+          cita: CitaInicio(fecha: DateTime(2026, 11, 28), hora: '10:00'),
+        );
+        final citaY = tester.getTopLeft(find.text('Próxima cita')).dy;
+        final servicioY = tester
+            .getTopLeft(find.text('Servicio del auto 5'))
+            .dy;
+        expect(citaY, lessThan(servicioY));
 
-      // Lo vacío nunca se pone por encima de lo que sí hay.
-      await _montar(tester, conServicio: true);
-      final servicio = tester.getTopLeft(find.text('Servicio del auto 5')).dy;
-      final invitacion = tester
-          .getTopLeft(find.text('No tienes citas por venir'))
-          .dy;
-      expect(servicio, lessThan(invitacion));
-    });
+        // Lo vacío nunca se pone por encima de lo que sí hay.
+        await _montar(tester, conServicio: true);
+        final servicio = tester.getTopLeft(find.text('Servicio del auto 5')).dy;
+        final invitacion = tester
+            .getTopLeft(find.text('No tienes citas por venir'))
+            .dy;
+        expect(servicio, lessThan(invitacion));
+      },
+    );
 
     testWidgets('mientras cargan los autos no muestra vacío ni cita', (
       tester,

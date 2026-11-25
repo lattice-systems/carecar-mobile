@@ -16,6 +16,7 @@ import '../diseno/tema_pista.dart';
 import '../diseno/tokens/espaciado.dart';
 import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
+import '../idioma/formato_numeros.dart';
 
 /// Un auto del cliente, como lo muestra el inicio.
 class AutoInicio {
@@ -433,12 +434,9 @@ class _TarjetaDelAuto extends StatelessWidget {
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
-    final idioma = Localizations.localeOf(context).toLanguageTag();
     final km = auto.kilometraje == null
         ? null
-        : textos.inicioKilometros(
-            NumberFormat.decimalPattern(idioma).format(auto.kilometraje),
-          );
+        : textos.inicioKilometros(formatearMiles(context, auto.kilometraje!));
     final titulo = '${auto.modelo} ${auto.anio}';
     final etiqueta = [
       ?auto.marcaAparte,
