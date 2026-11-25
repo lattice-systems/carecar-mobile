@@ -99,7 +99,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54, #121 |
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57, #121 |
-| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | En revisión | #65 |
+| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Hecha | #65 |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Hecha | #65, backend#70 |
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Hecha | backend#85, #92 |
 | V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92 |
