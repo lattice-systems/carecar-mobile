@@ -1,4 +1,9 @@
-// Widget de la proxima cita (V2-M25.01) para iOS, con WidgetKit.
+// Widget de la proxima cita (V2-M25.01) y del auto en el taller (V2-M25.02)
+// para iOS, con WidgetKit.
+//
+// Con una orden abierta Flutter publica en las mismas claves la etapa (como
+// "fecha"), la entrega estimada (como "horario") y el auto, y el enlace
+// carecar://taller/<id>; la vista no distingue los dos casos.
 //
 // ESTE ARCHIVO AUN NO ESTA EN EL PROYECTO XCODE: falta crear el target
 // "Widget Extension" (nombre ProximaCitaWidget) en Runner.xcodeproj, agregar

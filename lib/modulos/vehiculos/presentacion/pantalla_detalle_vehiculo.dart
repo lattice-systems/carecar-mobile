@@ -71,7 +71,14 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
               )
             : RefreshIndicator(
                 onRefresh: () => ref.refresh(garajeProvider.future),
-                child: _Detalle(vehiculo: v),
+                child: _Detalle(
+                  vehiculo: v,
+                  // La fecha del km ya no viene en GET /vehiculos (V2-T05.06):
+                  // se lee del plan, y solo si el vehiculo no trae la suya.
+                  kmDelTaller: v.kilometrajeActualizadoEn == null
+                      ? ref.watch(kmDelTallerProvider(v.id)).value
+                      : null,
+                ),
               ),
       ),
     );
@@ -79,9 +86,10 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
 }
 
 class _Detalle extends StatefulWidget {
-  const _Detalle({required this.vehiculo});
+  const _Detalle({required this.vehiculo, this.kmDelTaller});
 
   final VehiculoGaraje vehiculo;
+  final KmDelTaller? kmDelTaller;
 
   @override
   State<_Detalle> createState() => _DetalleState();
@@ -136,6 +144,7 @@ class _DetalleState extends State<_Detalle> {
               const SizedBox(height: Espaciado.e4),
               _TarjetaCifras(
                 vehiculo: v,
+                kmDelTaller: widget.kmDelTaller,
                 alCopiarVin: vin == null || vin.isEmpty
                     ? null
                     : () => _copiarVin(vin),
@@ -231,9 +240,17 @@ class _DetalleState extends State<_Detalle> {
 /// que lo actualizo el taller (o que aun no hay), y el VIN en monoespaciado que
 /// se copia al tocarlo. Sin fecha de cierre lo dice; nunca la inventa.
 class _TarjetaCifras extends StatelessWidget {
-  const _TarjetaCifras({required this.vehiculo, required this.alCopiarVin});
+  const _TarjetaCifras({
+    required this.vehiculo,
+    required this.alCopiarVin,
+    this.kmDelTaller,
+  });
 
   final VehiculoGaraje vehiculo;
+
+  /// El km y la fecha que dejo el taller segun el plan; gana al km del
+  /// vehiculo cuando este no trae fecha.
+  final KmDelTaller? kmDelTaller;
   final VoidCallback? alCopiarVin;
 
   @override
@@ -242,9 +259,9 @@ class _TarjetaCifras extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
-    final km = vehiculo.kilometraje;
+    final km = kmDelTaller?.km ?? vehiculo.kilometraje;
     final idioma = Localizations.localeOf(context).languageCode;
-    final cierre = vehiculo.kilometrajeActualizadoEn;
+    final cierre = vehiculo.kilometrajeActualizadoEn ?? kmDelTaller?.fecha;
     final vin = vehiculo.vin;
 
     final String valorKm;

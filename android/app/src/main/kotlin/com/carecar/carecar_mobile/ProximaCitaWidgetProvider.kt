@@ -10,7 +10,8 @@ import android.view.View
 import android.widget.RemoteViews
 
 /**
- * Widget de pantalla de inicio con la proxima cita (V2-M25.01).
+ * Widget de pantalla de inicio con la proxima cita (V2-M25.01) o, si hay una
+ * orden abierta, con el estado del auto en el taller (V2-M25.02).
  *
  * No consulta la red ni guarda nada propio: pinta lo que Flutter dejo en el
  * almacen de home_widget (`HomeWidgetPreferences`). Las claves son el contrato
@@ -18,7 +19,12 @@ import android.widget.RemoteViews
  * ve el estado "sin cita" con el acceso a agendar.
  *
  * Un toque abre la app por el enlace `carecar://` que viene en los datos
- * (comprobante de la cita o flujo de agendar); go_router lo traduce a ruta.
+ * (comprobante de la cita, flujo de agendar u orden en `carecar://taller/<id>`);
+ * go_router lo traduce a ruta.
+ *
+ * Con el auto en el taller Flutter reutiliza las mismas claves: la etapa va en
+ * `proxima_cita_fecha`, la entrega estimada en `proxima_cita_horario` y el auto
+ * en `proxima_cita_vehiculo`. Este proveedor no distingue los dos casos.
  */
 class ProximaCitaWidgetProvider : AppWidgetProvider() {
 
