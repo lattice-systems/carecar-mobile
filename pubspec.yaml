@@ -82,7 +82,6 @@ dependencies:
   # (ML Kit, la foto no sale del telefono), toma de la foto y PDF de la
   # exportacion.
   google_mlkit_text_recognition: ^1.0.3
-  image_picker: ^1.2.4
   pdf: ^3.8.4
 
 dev_dependencies:
