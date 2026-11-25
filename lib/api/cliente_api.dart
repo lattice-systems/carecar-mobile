@@ -6,7 +6,9 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart' show MediaType;
 
+import '../config/flavor.dart';
 import 'api_config.dart';
+import 'cliente_http_fijado.dart';
 import 'excepciones.dart';
 import 'modelos/pagina.dart';
 import 'modelos/problema.dart';
@@ -32,9 +34,14 @@ class ClienteApi {
     this.obtenerToken,
     this.renovarSesion,
     this.tiempoLimite = tiempoLimitePorOmision,
-  }) : _http = http ?? _crearCliente();
+  }) : _http = http ?? _crearCliente(config);
 
-  static http.Client _crearCliente() => http.Client();
+  /// El cliente por omisión confía en lo que dice el flavor para la dirección de
+  /// [config] (V2-M22.04): fija los certificados de Azure en `pruebas` y
+  /// `produccion`.
+  static http.Client _crearCliente(ApiConfig config) => crearClienteHttp(
+    decidirConfianza(flavor: Flavor.actual, servidor: config.base),
+  );
 
   final ApiConfig config;
   final http.Client _http;

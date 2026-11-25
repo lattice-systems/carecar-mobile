@@ -95,6 +95,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   yaml: ^3.1.4
+  # Huellas SHA-256 de los certificados fijados (V2-M22.04); ya estaba como
+  # dependencia transitiva de http y de flutter_secure_storage.
+  crypto: ^3.0.0
   flutter_launcher_icons: ^0.9.3
 
 # For information on the generic Dart part of this file, see the
