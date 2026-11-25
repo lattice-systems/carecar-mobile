@@ -98,4 +98,4 @@ El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-d
 
 ## 9. Seguridad
 
-Tokens solo en `flutter_secure_storage`; nunca registrar datos personales en logs; HTTPS fuera de local; OWASP Mobile Top 10 como checklist en cada historia que toque datos del cliente.
+Tokens solo en `flutter_secure_storage`; nunca registrar datos personales en logs (se usa `Registro.depurar`, que tapa correo, teléfono, VIN y token; lo vigila `test/arquitectura/registro_sin_datos_personales_test.dart`); HTTPS fuera de local; OWASP Mobile Top 10 como checklist en cada historia que toque datos del cliente.
