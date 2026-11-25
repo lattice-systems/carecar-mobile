@@ -180,4 +180,76 @@ void main() {
       );
     });
   });
+
+  group('RepositorioArcoApi.cancelarCuenta (V2-M22.03)', () {
+    Future<FalloArco> fallo(Object error) async {
+      final api = ApiFalsa()..alCancelarCuentaArco = (_) => Future.error(error);
+      try {
+        await RepositorioArcoApi(api).cancelarCuenta('Secreta123');
+      } on FalloArco catch (f) {
+        return f;
+      }
+      fail('Debio fallar con un FalloArco');
+    }
+
+    test('pide la cancelacion con la contrasena y termina', () async {
+      final recibidas = <String>[];
+      final api = ApiFalsa()
+        ..alCancelarCuentaArco = (contrasena) async {
+          recibidas.add(contrasena);
+          return _api(9, 'RESUELTA', tipo: 'CANCELACION');
+        };
+
+      await RepositorioArcoApi(api).cancelarCuenta('Secreta123');
+
+      expect(recibidas, ['Secreta123']);
+    });
+
+    test('una contrasena equivocada (400) no borra nada y se dice', () async {
+      expect(
+        await fallo(const DatosInvalidos('La contraseña no es correcta')),
+        isA<ContrasenaIncorrecta>(),
+      );
+    });
+
+    test('el bloqueo (429) trae cuanto esperar', () async {
+      final f = await fallo(
+        const DemasiadosIntentos('bloqueada', esperaSegundos: 900),
+      );
+
+      expect(f, isA<CancelacionBloqueada>());
+      expect((f as CancelacionBloqueada).espera, const Duration(minutes: 15));
+    });
+
+    test('un bloqueo sin Retry-After no inventa un tiempo', () async {
+      for (final segundos in [null, 0, -3]) {
+        final f = await fallo(
+          DemasiadosIntentos('bloqueada', esperaSegundos: segundos),
+        );
+
+        expect(f, isA<CancelacionBloqueada>(), reason: '$segundos');
+        expect((f as CancelacionBloqueada).espera, isNull, reason: '$segundos');
+      }
+    });
+
+    test('una cuenta que ya estaba cerrada (403) no es un error', () async {
+      expect(
+        await fallo(const CuentaDesactivada('desactivada')),
+        isA<CuentaYaCerrada>(),
+      );
+    });
+
+    test('sin red es ArcoSinConexion y lo demas, ArcoNoDisponible', () async {
+      expect(await fallo(const SinConexion()), isA<ArcoSinConexion>());
+      expect(await fallo(const ErrorDelServidor('x')), isA<ArcoNoDisponible>());
+      expect(
+        await fallo(const CredencialesInvalidas('vencida')),
+        isA<ArcoNoDisponible>(),
+      );
+      expect(
+        await fallo(const NoEncontrado('no existe')),
+        isA<ArcoNoDisponible>(),
+      );
+    });
+  });
 }

@@ -48,6 +48,21 @@ class RepositorioArcoFalso implements RepositorioArco {
     return respuesta! as SolicitudDeArco;
   }
 
+  /// Lo que hace `cancelarCuenta`: nada si es nulo, o el fallo si es [FalloArco].
+  Object? alCancelar;
+  final cancelaciones = <String>[];
+
+  /// Si se asigna, cancelar espera a que se complete.
+  Completer<void>? esperaAlCancelar;
+
+  @override
+  Future<void> cancelarCuenta(String contrasena) async {
+    cancelaciones.add(contrasena);
+    await esperaAlCancelar?.future;
+    final respuesta = alCancelar;
+    if (respuesta is FalloArco) throw respuesta;
+  }
+
   @override
   Future<Uint8List> descargar(int solicitudId) async {
     descargados.add(solicitudId);
