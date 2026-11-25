@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
+import '../dominio/recoleccion_agendada.dart' show TipoTraslado;
 import 'pantalla_checklist_traslado.dart';
 import 'pantalla_mis_direcciones.dart';
 import 'pantalla_seguimiento_traslado.dart';
@@ -15,8 +16,22 @@ String rutaSeguimientoTraslado(int id) => '/recoleccion/traslados/$id';
 
 /// Camino del checklist del traslado `id` (V2-M17.04). Cuelga del seguimiento:
 /// regresar lleva a él.
-String rutaChecklistTraslado(int id) =>
-    '${rutaSeguimientoTraslado(id)}/checklist';
+///
+/// Con [contrario] (el otro traslado de la cita) el checklist muestra las
+/// pestañas para alternar y comparar; [tipo] dice si `id` recoge o entrega, y
+/// [comparar] abre directo en la comparación.
+String rutaChecklistTraslado(
+  int id, {
+  int? contrario,
+  TipoTraslado tipo = TipoTraslado.recoger,
+  bool comparar = false,
+}) {
+  final base = '${rutaSeguimientoTraslado(id)}/checklist';
+  if (contrario == null) return base;
+  return '$base?contrario=$contrario'
+      '${tipo == TipoTraslado.entregar ? '&tipo=entregar' : ''}'
+      '${comparar ? '&ver=comparar' : ''}';
+}
 
 Widget _conTemaPista(BuildContext context, Widget pantalla) => Theme(
   data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
@@ -59,6 +74,13 @@ final rutasRecoleccion = <RouteBase>[
           context,
           PantallaChecklistTraslado(
             trasladoId: int.parse(state.pathParameters['id']!),
+            trasladoContrarioId: int.tryParse(
+              state.uri.queryParameters['contrario'] ?? '',
+            ),
+            tipo: state.uri.queryParameters['tipo'] == 'entregar'
+                ? TipoTraslado.entregar
+                : TipoTraslado.recoger,
+            verComparacion: state.uri.queryParameters['ver'] == 'comparar',
           ),
         ),
       ),
