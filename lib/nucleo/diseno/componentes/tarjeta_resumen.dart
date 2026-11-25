@@ -20,7 +20,10 @@ import 'tono.dart';
 /// `tono` colorea el icono y la barra (por omisión, informativo/acento).
 /// `progreso` va de 0 a 1; `etiquetaProgreso` es el texto junto a la barra
 /// («Faltan 1,550 km»). Con `alToque` toda la tarjeta es un botón con chevron.
-/// El lector de pantalla recibe un solo nodo con todos los textos.
+/// El lector de pantalla recibe un solo nodo con todos los textos; `pista` le
+/// dice qué pasa al tocarla («Ver el avance de tu orden») y `estadoConIcono`
+/// suma a la insignia el icono de su tono, para que el estado no dependa solo
+/// del color.
 class TarjetaResumen extends StatelessWidget {
   const TarjetaResumen({
     required this.titulo,
@@ -32,9 +35,11 @@ class TarjetaResumen extends StatelessWidget {
     this.tono = Tono.informacion,
     this.estado,
     this.tonoEstado = Tono.neutro,
+    this.estadoConIcono = false,
     this.progreso,
     this.etiquetaProgreso,
     this.alToque,
+    this.pista,
   }) : assert(
          progreso == null || (progreso >= 0 && progreso <= 1),
          'El progreso va de 0 a 1',
@@ -53,9 +58,13 @@ class TarjetaResumen extends StatelessWidget {
   /// Texto corto de estado que va como insignia, por ejemplo «En camino».
   final String? estado;
   final Tono tonoEstado;
+  final bool estadoConIcono;
   final double? progreso;
   final String? etiquetaProgreso;
   final VoidCallback? alToque;
+
+  /// Lo que anuncia el lector de pantalla sobre el toque.
+  final String? pista;
 
   static const double _cuadroIcono = 40;
 
@@ -112,7 +121,11 @@ class TarjetaResumen extends StatelessWidget {
                       const SizedBox(height: Espaciado.e2),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Insignia(texto: estado!, tono: tonoEstado),
+                        child: Insignia(
+                          texto: estado!,
+                          tono: tonoEstado,
+                          conIcono: estadoConIcono,
+                        ),
                       ),
                     ],
                   ],
@@ -157,6 +170,7 @@ class TarjetaResumen extends StatelessWidget {
       container: true,
       button: alToque != null,
       label: partes.join(', '),
+      hint: pista,
       value: progreso == null ? null : '${(progreso! * 100).round()} %',
       excludeSemantics: true,
       onTap: alToque,
