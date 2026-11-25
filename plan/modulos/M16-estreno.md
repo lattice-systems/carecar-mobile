@@ -42,3 +42,7 @@ Contrato 2.12.1 (de la 2.10.0 a la 2.12.0 no se declaraban `ESTRENO_SIN_PRECIO` 
 
 - El día se elige entre los siete siguientes, en vez de abrir el `Calendario`: es solo una preferencia para que el asesor llame, y así se evita un paso más. Si el CRM pide más holgura, se cambia por el `Calendario`.
 - La atención del prospecto ocurre en el CRM web (congelado). La app solo crea el prospecto con el origen correcto; el CRM ya lista prospectos.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+«Quiero probarlo», «Cotizar» y «Mis solicitudes» usan `BarraPantalla` (regreso, título) en lugar del `AppBar` de Material. Sin cambios de lógica.

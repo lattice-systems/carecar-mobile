@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -138,8 +139,12 @@ class _EstadoPantallaMisEstimaciones
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(t.misEstimacionesTitulo)),
-      body: cuerpo,
+      body: Column(
+        children: [
+          BarraPantalla(titulo: t.misEstimacionesTitulo),
+          Expanded(child: cuerpo),
+        ],
+      ),
     );
   }
 }

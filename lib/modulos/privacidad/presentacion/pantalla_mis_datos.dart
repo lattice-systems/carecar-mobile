@@ -6,6 +6,7 @@ import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/superficie_liquida.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -88,44 +89,56 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
     final acceso = ref.watch(accesoArcoProvider);
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.arcoTitulo)),
-      body: SafeArea(
-        child: acceso.when(
-          skipLoadingOnReload: true,
-          loading: () => Semantics(
-            label: textos.arcoCargando,
-            liveRegion: true,
-            child: const Padding(
-              padding: EdgeInsets.all(Espaciado.e4),
-              child: Column(
-                children: [
-                  Esqueleto(alto: 72),
-                  SizedBox(height: Espaciado.e3),
-                  Esqueleto(alto: 56),
-                ],
-              ),
+    final titulo = textos.arcoTitulo;
+
+    return acceso.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: Semantics(
+          label: textos.arcoCargando,
+          liveRegion: true,
+          child: const SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.all(Espaciado.e4),
+            child: Column(
+              children: [
+                Esqueleto(alto: 72),
+                SizedBox(height: Espaciado.e3),
+                Esqueleto(alto: 56),
+              ],
             ),
           ),
-          error: (error, _) => EstadoError(
-            causa: error is ArcoSinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(accesoArcoProvider),
-          ),
-          data: (solicitud) => ListView(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            children: [
-              _Introduccion(textos: textos),
-              const SizedBox(height: Espaciado.e5),
-              ..._segunLaSolicitud(context, textos, solicitud),
-            ],
-          ),
         ),
+      ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
+          causa: error is ArcoSinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(accesoArcoProvider),
+        ),
+      ),
+      data: (solicitud) => MarcoPantalla(
+        titulo: titulo,
+        conRegreso: true,
+        slivers: [
+          SliverPadding(
+            padding: const EdgeInsets.all(Espaciado.e4),
+            sliver: SliverList.list(
+              children: [
+                _Introduccion(textos: textos),
+                const SizedBox(height: Espaciado.e5),
+                ..._segunLaSolicitud(context, textos, solicitud),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

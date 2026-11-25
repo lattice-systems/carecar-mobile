@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/deslizar_para_confirmar.dart';
 import '../../../nucleo/diseno/componentes/superficie_liquida.dart';
@@ -105,8 +106,6 @@ class _PantallaEliminarCuentaState
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
     final aviso = switch (_fallo) {
       _Fallo.bloqueada => Aviso(
         mensaje: _textoDelBloqueo(textos),
@@ -123,64 +122,69 @@ class _PantallaEliminarCuentaState
       _ => null,
     };
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.eliminarCuentaTitulo)),
-      body: SafeArea(
-        child: ListView(
+    return MarcoPantalla(
+      titulo: textos.eliminarCuentaTitulo,
+      conRegreso: true,
+      slivers: [
+        SliverPadding(
           padding: const EdgeInsets.all(Espaciado.e4),
-          children: [
-            Aviso(
-              titulo: textos.eliminarCuentaAdvertenciaTitulo,
-              mensaje: textos.eliminarCuentaAdvertencia,
-              tono: Tono.peligro,
-            ),
-            const SizedBox(height: Espaciado.e5),
-            _Lista(
-              titulo: textos.eliminarCuentaSeBorraTitulo,
-              icono: Icons.delete_outline,
-              lineas: [
-                textos.eliminarCuentaBorra1,
-                textos.eliminarCuentaBorra2,
-                textos.eliminarCuentaBorra3,
-                textos.eliminarCuentaBorra4,
-              ],
-            ),
-            const SizedBox(height: Espaciado.e4),
-            _Lista(
-              titulo: textos.eliminarCuentaConservaTitulo,
-              icono: Icons.inventory_2_outlined,
-              lineas: [textos.eliminarCuentaConserva],
-            ),
-            const SizedBox(height: Espaciado.e5),
-            CampoContrasena(
-              etiqueta: textos.eliminarCuentaContrasena,
-              ayuda: textos.eliminarCuentaContrasenaAyuda,
-              controlador: _contrasena,
-              habilitado: !_eliminando,
-              error: _fallo == _Fallo.contrasenaIncorrecta
-                  ? textos.eliminarCuentaContrasenaIncorrecta
-                  : null,
-              // Una contraseña nueva ya no es la que falló.
-              alCambiar: (_) => setState(() {
-                if (_fallo == _Fallo.contrasenaIncorrecta) _fallo = null;
-              }),
-            ),
-            const SizedBox(height: Espaciado.e5),
-            if (aviso != null) ...[aviso, const SizedBox(height: Espaciado.e4)],
-            if (_eliminando)
-              _Eliminando(texto: textos.eliminarCuentaEliminando)
-            else
-              DeslizarParaConfirmar(
-                texto: textos.eliminarCuentaDeslizar,
-                mensajeConfirmacion: textos.eliminarCuentaConfirmarMensaje,
-                peligro: true,
-                alConfirmar: _puedeEliminar ? _eliminar : null,
+          sliver: SliverList.list(
+            children: [
+              Aviso(
+                titulo: textos.eliminarCuentaAdvertenciaTitulo,
+                mensaje: textos.eliminarCuentaAdvertencia,
+                tono: Tono.peligro,
               ),
-            const SizedBox(height: Espaciado.e6),
-          ],
+              const SizedBox(height: Espaciado.e5),
+              _Lista(
+                titulo: textos.eliminarCuentaSeBorraTitulo,
+                icono: Icons.delete_outline,
+                lineas: [
+                  textos.eliminarCuentaBorra1,
+                  textos.eliminarCuentaBorra2,
+                  textos.eliminarCuentaBorra3,
+                  textos.eliminarCuentaBorra4,
+                ],
+              ),
+              const SizedBox(height: Espaciado.e4),
+              _Lista(
+                titulo: textos.eliminarCuentaConservaTitulo,
+                icono: Icons.inventory_2_outlined,
+                lineas: [textos.eliminarCuentaConserva],
+              ),
+              const SizedBox(height: Espaciado.e5),
+              CampoContrasena(
+                etiqueta: textos.eliminarCuentaContrasena,
+                ayuda: textos.eliminarCuentaContrasenaAyuda,
+                controlador: _contrasena,
+                habilitado: !_eliminando,
+                error: _fallo == _Fallo.contrasenaIncorrecta
+                    ? textos.eliminarCuentaContrasenaIncorrecta
+                    : null,
+                // Una contraseña nueva ya no es la que falló.
+                alCambiar: (_) => setState(() {
+                  if (_fallo == _Fallo.contrasenaIncorrecta) _fallo = null;
+                }),
+              ),
+              const SizedBox(height: Espaciado.e5),
+              if (aviso != null) ...[
+                aviso,
+                const SizedBox(height: Espaciado.e4),
+              ],
+              if (_eliminando)
+                _Eliminando(texto: textos.eliminarCuentaEliminando)
+              else
+                DeslizarParaConfirmar(
+                  texto: textos.eliminarCuentaDeslizar,
+                  mensajeConfirmacion: textos.eliminarCuentaConfirmarMensaje,
+                  peligro: true,
+                  alConfirmar: _puedeEliminar ? _eliminar : null,
+                ),
+              const SizedBox(height: Espaciado.e6),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }

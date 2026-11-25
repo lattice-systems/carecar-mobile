@@ -10,6 +10,7 @@ import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/fila_lista.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
@@ -36,12 +37,19 @@ class PantallaDetalleModelo extends ConsumerWidget {
     final detalle = ref.watch(detalleModeloProvider(modeloId));
     final textos = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(textos.catalogoDetalleTitulo)),
-      body: detalle.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => error is NoEncontrado
+    final titulo = textos.catalogoDetalleTitulo;
+
+    return detalle.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
+      ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: error is NoEncontrado
             ? EstadoVacio(
                 titulo: textos.catalogoNoEncontradoTitulo,
                 mensaje: textos.catalogoNoEncontradoMensaje,
@@ -54,10 +62,19 @@ class PantallaDetalleModelo extends ConsumerWidget {
                 alReintentar: () =>
                     ref.invalidate(detalleModeloProvider(modeloId)),
               ),
-        data: (d) => RefreshIndicator(
-          onRefresh: () => ref.refresh(detalleModeloProvider(modeloId).future),
-          child: _Detalle(detalle: d, modeloId: modeloId),
-        ),
+      ),
+      data: (d) => MarcoPantalla(
+        titulo: titulo,
+        conRegreso: true,
+        alRefrescar: () => ref.refresh(detalleModeloProvider(modeloId).future),
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(Espaciado.e4),
+              child: _Detalle(detalle: d, modeloId: modeloId),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -109,8 +126,8 @@ class _Detalle extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
 
-    return ListView(
-      padding: const EdgeInsets.all(Espaciado.e4),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TarjetaVehiculo(
           nombre: m.titulo,
@@ -253,7 +270,8 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).catalogoDetalleCargando,
       liveRegion: true,
-      child: const Padding(
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [

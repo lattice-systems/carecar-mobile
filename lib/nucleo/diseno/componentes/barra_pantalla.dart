@@ -10,8 +10,9 @@ import 'boton_regresar.dart';
 ///
 /// Es la versión quieta de [EncabezadoGrande]: mismos botones, mismo margen y
 /// misma tipografía del título recogido, así que al pasar de una pantalla a la
-/// otra nada se mueve. Respeta la zona del reloj. Crece con la letra del
-/// sistema (el título pasa a dos líneas) en vez de recortarse.
+/// otra nada se mueve. Respeta la zona del reloj. El título va en una línea (con
+/// puntos suspensivos si no cabe) para que la barra no crezca con la letra
+/// grande; el lector de pantalla lo oye completo.
 class BarraPantalla extends StatelessWidget {
   const BarraPantalla({
     required this.titulo,
@@ -66,7 +67,7 @@ class BarraPantalla extends StatelessWidget {
                       children: [
                         Text(
                           titulo,
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: t.titulo3.copyWith(color: c.texto),
                         ),

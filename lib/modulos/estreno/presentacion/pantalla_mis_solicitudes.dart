@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -80,71 +81,83 @@ class _PantallaMisSolicitudesState
 
     return Scaffold(
       backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.estrenoMisSolicitudes)),
-      body: SafeArea(
-        child: pagina.when(
-          loading: () => Semantics(
-            label: textos.estrenoCargando,
-            liveRegion: true,
-            child: const Padding(
-              padding: EdgeInsets.all(Espaciado.e4),
-              child: Column(
-                children: [
-                  Esqueleto(alto: 72),
-                  SizedBox(height: Espaciado.e3),
-                  Esqueleto(alto: 72),
-                ],
+      body: Column(
+        children: [
+          BarraPantalla(titulo: textos.estrenoMisSolicitudes),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: pagina.when(
+                loading: () => Semantics(
+                  label: textos.estrenoCargando,
+                  liveRegion: true,
+                  child: const Padding(
+                    padding: EdgeInsets.all(Espaciado.e4),
+                    child: Column(
+                      children: [
+                        Esqueleto(alto: 72),
+                        SizedBox(height: Espaciado.e3),
+                        Esqueleto(alto: 72),
+                      ],
+                    ),
+                  ),
+                ),
+                error: (error, _) => EstadoError(
+                  causa: error is EstrenoSinConexion
+                      ? CausaError.sinConexion
+                      : CausaError.generico,
+                  alReintentar: () => ref.invalidate(misSolicitudesProvider),
+                ),
+                data: (p) => p.solicitudes.isEmpty
+                    ? EstadoVacio(
+                        titulo: textos.estrenoVacioTitulo,
+                        mensaje: textos.estrenoVacioMensaje,
+                        icono: Icons.directions_car_filled_outlined,
+                      )
+                    : RefreshIndicator(
+                        onRefresh: _recargar,
+                        child: ListView(
+                          // Siempre desplazable para que jalar a recargar funcione
+                          // con pocas filas.
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.all(Espaciado.e4),
+                          children: [
+                            GrupoLista(
+                              filas: [
+                                for (final s in [
+                                  ...p.solicitudes,
+                                  ..._siguientes,
+                                ])
+                                  _fila(context, textos, s),
+                              ],
+                            ),
+                            if (_falloMas) ...[
+                              const SizedBox(height: Espaciado.e3),
+                              Aviso(
+                                mensaje: textos.estrenoErrorMas,
+                                tono: Tono.peligro,
+                              ),
+                            ],
+                            if (_hayMas ?? p.hayMas) ...[
+                              const SizedBox(height: Espaciado.e3),
+                              BotonPildora(
+                                texto: _cargandoMas
+                                    ? textos.estrenoCargandoMas
+                                    : textos.estrenoVerMas,
+                                variante: VarianteBotonPildora.vidrio,
+                                expandido: true,
+                                alPresionar: _cargandoMas
+                                    ? null
+                                    : () => _verMas(p),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
               ),
             ),
           ),
-          error: (error, _) => EstadoError(
-            causa: error is EstrenoSinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(misSolicitudesProvider),
-          ),
-          data: (p) => p.solicitudes.isEmpty
-              ? EstadoVacio(
-                  titulo: textos.estrenoVacioTitulo,
-                  mensaje: textos.estrenoVacioMensaje,
-                  icono: Icons.directions_car_filled_outlined,
-                )
-              : RefreshIndicator(
-                  onRefresh: _recargar,
-                  child: ListView(
-                    // Siempre desplazable para que jalar a recargar funcione
-                    // con pocas filas.
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(Espaciado.e4),
-                    children: [
-                      GrupoLista(
-                        filas: [
-                          for (final s in [...p.solicitudes, ..._siguientes])
-                            _fila(context, textos, s),
-                        ],
-                      ),
-                      if (_falloMas) ...[
-                        const SizedBox(height: Espaciado.e3),
-                        Aviso(
-                          mensaje: textos.estrenoErrorMas,
-                          tono: Tono.peligro,
-                        ),
-                      ],
-                      if (_hayMas ?? p.hayMas) ...[
-                        const SizedBox(height: Espaciado.e3),
-                        BotonPildora(
-                          texto: _cargandoMas
-                              ? textos.estrenoCargandoMas
-                              : textos.estrenoVerMas,
-                          variante: VarianteBotonPildora.vidrio,
-                          expandido: true,
-                          alPresionar: _cargandoMas ? null : () => _verMas(p),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-        ),
+        ],
       ),
     );
   }
