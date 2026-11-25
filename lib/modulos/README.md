@@ -57,6 +57,7 @@ Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb`
 | Acciones de sesión (iniciar, cerrar) | `ref.read(controladorSesionProvider)` (`lib/nucleo/sesion/`) |
 | Reaccionar a la sesión | `ref.watch(estadoSesionProvider)` |
 | Componentes y tokens | `lib/nucleo/diseno/` |
+| Números con separador de miles (kilómetros, cifras) | `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el español usa el formato de México, no copies la regla |
 | Errores tipados | `Fallo` y sus preguntas (`lib/nucleo/datos/fallo.dart`) |
 | Base del repositorio | `with RepositorioBase` (`lib/nucleo/datos/repositorio_base.dart`) |
 | Los cinco estados | `VistaAsincrona` (`lib/nucleo/datos/vista_asincrona.dart`) |

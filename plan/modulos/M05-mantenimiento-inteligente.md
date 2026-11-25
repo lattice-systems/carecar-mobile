@@ -97,3 +97,12 @@ Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (
 ## Rediseño: encabezados ligeros (V2-T02.21)
 
 `PantallaPlanMantenimiento` ya no lleva portada: `MarcoPantalla` con una `TarjetaResumen` del próximo servicio (qué toca, por qué y cuánto falta). Cuando toca por kilometraje la tarjeta trae una barra con el avance desde el último servicio hecho; el criterio de aceptación no cambia. «Agendar este servicio» y «Registrar km» van en `FilaAcciones`. La bitácora de combustible (V2-M18) sigue el mismo patrón.
+
+## Inicio: el próximo servicio a la vista (V2-T02.22)
+
+El próximo servicio también se ve en Inicio, sin entrar al plan: `TarjetaProximoServicioDelAuto` (exportada en `mantenimiento.dart`, como `TarjetaOrdenEnCurso` en `taller.dart`) pide el plan del auto que se está viendo en el carrusel y muestra `TarjetaProximoServicio`, la **misma** tarjeta del plan: qué toca, por qué y cuánto falta, con la barra de avance. Al tocarla abre `/mantenimiento/:vehiculoId`.
+
+- El cálculo del avance (`PlanMantenimiento.avanceDelProximo`) pasó al dominio y lo comparten el inicio y el plan.
+- Mientras carga deja un esqueleto del mismo alto; si el plan falla, el modelo no tiene plan o no hay próximo estimado, no ocupa lugar: el inicio no muestra errores de un extra.
+- «Sin próximo servicio estimado» (en el plan) ya no lleva palomita verde: falta el kilometraje, y eso es un aviso informativo, no una buena noticia.
+- El criterio de aceptación de V2-M05.02 no cambia; este es otro lugar donde se ve.

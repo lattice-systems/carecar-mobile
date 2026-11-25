@@ -57,7 +57,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); recordatorio por el canal en vivo hecho (V2-M05.05, falta el push de V2-M06.02) y falta demostrar en celular | Ver M05 |
+| Plan de mantenimiento y próximo servicio | `plan_mantenimiento`, `concepto_mantenimiento`, `orden_servicio`, `vehiculo_cliente` | 🟡 app y backend (plan cruzado con el historial, próximo por km y por tiempo, qué incluye y precio estimado); el próximo servicio también se ve en Inicio (V2-T02.22); recordatorio por el canal en vivo hecho (V2-M05.05, falta el push de V2-M06.02) y falta demostrar en celular | Ver M05 |
 | Registro de kilometraje del cliente | `lectura_km`, `vehiculo_cliente` | 🟡 app y backend, con foto opcional; falta demostrar en celular | Ver M05 |
 
 ### 6. Notificaciones — plan [M06](modulos/M06-notificaciones.md)
