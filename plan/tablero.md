@@ -135,11 +135,11 @@ Total: **218 historias** + 4 de H0.
 | V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Hecha | #127, backend#96 |
 | V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Hecha | #129, backend#97 |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Hecha | #131, backend#99 |
-| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | En revisión | #132 |
+| V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Hecha | #132 |
 | V2-M22.05 | Detectar equipos comprometidos | Daniel |  | — | Hecha | #76 |
 | V2-M22.06 | Ocultar datos en el selector de apps | Daniel |  | — | Hecha | #77 |
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
-| V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
+| V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | En revisión | primera pasada; se repite al cerrar H6 |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
 | V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Lista | |
@@ -281,3 +281,15 @@ Total: **218 historias** + 4 de H0.
 ## H7 · Lista para entregar
 
 Se llena con las historias de endurecimiento que salgan de M20.07, M22.08, M23.06 y T04.06, más los hallazgos de las pruebas en celular de cada hito.
+
+Hallazgos de la primera pasada de la revisión MASVS ([`docs/seguridad/revision-masvs-l1.md`](../docs/seguridad/revision-masvs-l1.md)). Son propuestas: las prioriza el equipo.
+
+| ID | Historia | Dueño | B | Depende de | Estado | PR |
+| --- | --- | --- | --- | --- | --- | --- |
+| V2-M22.10 | Decir en el aviso de privacidad que el mapa y la dirección usan proveedores externos | Daniel |  | V2-M22.01 | Borrador | |
+| V2-M22.11 | Escaneo periódico de dependencias (`pubspec.lock`, Gradle y Pods) | Daniel |  | V2-M22.08 | Borrador | |
+| V2-M22.12 | Keychain de iOS solo de este dispositivo, sin cerrar sesiones | Daniel |  | V2-M22.08 | Borrador | |
+| V2-M22.13 | Caché de la API sin lo que identifica (VIN, placas) o cifrada | Daniel |  | V2-M22.08 | Borrador | |
+| V2-M22.14 | Enlaces universales con el dominio real | Daniel |  | V2-M22.08 | Borrador | |
+| V2-M22.15 | Pines de certificados: mensaje propio e imágenes con el cliente fijado | Daniel |  | V2-M22.04 | Borrador | |
+| V2-M22.16 | Ofuscar el código de release y subir símbolos | Daniel |  | V2-M23.01 | Borrador | |

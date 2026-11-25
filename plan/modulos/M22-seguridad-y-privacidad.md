@@ -6,7 +6,7 @@
 | Dueño | Daniel |
 | Revisa | Ricardo |
 | Ficha técnica | ✅ Sección 20. Seguridad y privacidad |
-| Estado | En curso: M22.01, M22.02, M22.03, M22.04 y M22.07 implementadas (M22.01 a M22.04: falta demostrarlas en celular); M22.05, M22.06 y M22.09 hechas |
+| Estado | En curso: M22.01, M22.02, M22.03, M22.04 y M22.07 implementadas (M22.01 a M22.04: falta demostrarlas en celular); M22.08 con su primera pasada (se repite al cerrar H6); M22.05, M22.06 y M22.09 hechas |
 
 ## Propósito
 
@@ -33,6 +33,13 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 | V2-M22.07 | Como equipo queremos logs sin datos personales | Lint/regla y prueba que falle si se registra correo, teléfono, VIN o token | | V2-T03.01 |
 | V2-M22.08 | Como equipo queremos una revisión MASVS L1 | Checklist en `docs/seguridad/` con evidencia por control | | H6 |
 | V2-M22.09 | Como equipo queremos HTTPS fuera de local | `API_BASE_URL` http solo en flavor de desarrollo | | V2-T04.01 |
+| V2-M22.10 | Como cliente quiero saber qué proveedores externos reciben mi ubicación | El aviso de privacidad menciona las teselas del mapa y el geocodificador (o las teselas pasan por el backend) · nueva versión del aviso | | V2-M22.01 |
+| V2-M22.11 | Como equipo queremos un escaneo periódico de dependencias | Escaneo semanal de `pubspec.lock`, Gradle y Pods en CI · aviso si aparece una vulnerabilidad alta o crítica | | V2-M22.08 |
+| V2-M22.12 | Como equipo queremos que los tokens de iOS no viajen a otro equipo | Keychain con `first_unlock_this_device` · migración que no cierra sesiones · prueba | | V2-M22.08 |
+| V2-M22.13 | Como equipo queremos que la caché no guarde lo que identifica | Sin VIN ni placas en `SharedPreferences`, o caché cifrada · se borra igual al cerrar sesión | | V2-M22.08 |
+| V2-M22.14 | Como equipo queremos enlaces universales con el dominio real | `assetlinks.json` y `apple-app-site-association` servidos · o sin `autoVerify` mientras no existan | | V2-M22.08 |
+| V2-M22.15 | Como equipo queremos un mensaje propio si falla un pin de certificado | «No pudimos verificar que la conexión sea segura» en vez de «sin conexión» · imágenes con el cliente fijado | | V2-M22.04 |
+| V2-M22.16 | Como equipo queremos ofuscar el código de release | `--obfuscate --split-debug-info` en `release.yml` · símbolos subidos con los reportes de fallos | | V2-M23.01 |
 
 ## Notas de implementación
 
@@ -65,5 +72,7 @@ Datos del cliente protegidos y bajo su control, conforme a la LFPDPPP (derechos 
 - **V2-M22.03 · Borrar mi cuenta (cancelación ARCO)** (PR #131, backend#99, contrato 2.15.0): `POST /privacidad/arco/cancelacion` `{contrasena}` borra o anonimiza lo que ninguna ley obliga a conservar, desactiva la cuenta y no deja que el CRM la reactive; todo en una transacción. La contraseña equivocada es 400 (no 401, que cerraría la sesión sin explicar) y cuenta como intento: a los 5, 429. En la app, «Eliminar mi cuenta» (en «Privacidad y mis datos») explica qué se borra y qué se conserva, pide la contraseña y un deslizar; al terminar cierra la sesión aunque la persona haya salido de la pantalla. Diseño, decisiones y límites en [`docs/seguridad/derechos-arco.md`](../../docs/seguridad/derechos-arco.md). Pendiente: la revisión legal de lo que se conserva y la demostración en celular.
 
 - **V2-M22.04 · Fijar certificados del servidor** (PR #132): en `pruebas` y `produccion` la app solo confía en cinco raíces de la jerarquía pública de TLS de Azure (`lib/config/pines_tls.dart`) y no en las del teléfono; `desarrollo` (http contra el simulador) no fija. Se fijan **raíces y no el certificado del servidor**, porque Azure renueva el suyo cada pocos meses y cambia de intermedio sin avisar. Una dirección https sin anclas no arranca. La vigilancia semanal (`scripts/verificar-pines-tls.sh`, `.github/workflows/pines-tls.yml`) comprueba que el servidor real siga validando y avisa de vencimientos con 18 meses. Elección, evidencia, plan de rotación y qué hacer si algo se rompe: [`docs/seguridad/fijar-certificados.md`](../../docs/seguridad/fijar-certificados.md). Pendiente: instalar el APK de `pruebas` y entrar (el canario de los pines) antes de etiquetar una versión de `produccion`; fijar también las imágenes (`NetworkImage`).
+
+- **V2-M22.08 · Revisión MASVS L1** (primera pasada): [`docs/seguridad/revision-masvs-l1.md`](../../docs/seguridad/revision-masvs-l1.md) recorre los 24 controles de MASVS 2.0 con estado y evidencia: 8 cumplen, 9 cumplen en parte, 7 no aplican, ninguna brecha abierta. Es una revisión estática con las pruebas como evidencia, no una prueba de penetración. Encontró una brecha real, corregida en el mismo PR (Android dejaba encendidas las copias de seguridad; ahora una prueba vigila el manifiesto: copias, componentes accesibles, permisos y WebViews) y siete hallazgos para seguimiento (M22.10 a M22.16, `Borrador`); el más importante es que el aviso de privacidad no menciona a los proveedores de mapas. Pendiente: repetirla al cerrar H6 y que la lea el revisor de M22; comprobar en un teléfono lo que quedó en 🟡.
 
 - **V2-M22.07 · Logs sin datos personales** (PR #126): `lib/nucleo/registro/` con `Registro.depurar`, único camino para escribir en el registro, que pasa el texto por `quitarDatosPersonales` (correo, teléfono, VIN y token). La guarda `test/arquitectura/registro_sin_datos_personales_test.dart` falla si algo en `lib/` escribe en la consola sin `Registro` o le interpola un dato personal. Los dos `debugPrint` que había (notificaciones) pasaron a `Registro`. Diseño, límites y cómo usarlo en [`docs/seguridad/registro-sin-datos-personales.md`](../../docs/seguridad/registro-sin-datos-personales.md). Pendiente: que el manejador de V2-M23.01 use el mismo redactor.
