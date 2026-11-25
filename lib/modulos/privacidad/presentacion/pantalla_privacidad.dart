@@ -7,8 +7,9 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'rutas_privacidad.dart';
 
-/// Privacidad y mis datos (V2-M22.02): reúne el aviso de privacidad y los
-/// derechos sobre los datos. Se abre desde el perfil.
+/// Privacidad y mis datos (V2-M22.02 y V2-M22.03): reúne el aviso de privacidad
+/// y los derechos sobre los datos (descargarlos y eliminar la cuenta). Se abre
+/// desde el perfil.
 class PantallaPrivacidad extends StatelessWidget {
   const PantallaPrivacidad({super.key});
 
@@ -39,6 +40,19 @@ class PantallaPrivacidad extends StatelessWidget {
                   icono: Icons.download_outlined,
                   colorIcono: c.acento,
                   alToque: () => context.push(rutaMisDatos),
+                ),
+              ],
+            ),
+            const SizedBox(height: Espaciado.e5),
+            // Aparte y en rojo: es lo único que no se puede deshacer.
+            GrupoLista(
+              filas: [
+                FilaGrupo(
+                  titulo: textos.privacidadHubEliminar,
+                  subtitulo: textos.privacidadHubEliminarDetalle,
+                  icono: Icons.delete_outline,
+                  colorIcono: c.peligro,
+                  alToque: () => context.push(rutaEliminarCuenta),
                 ),
               ],
             ),

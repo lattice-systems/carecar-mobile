@@ -4447,5 +4447,102 @@
   "arcoCargando": "Cargando tus solicitudes",
   "@arcoCargando": {
     "description": "Lector de pantalla mientras carga."
+  },
+  "privacidadHubEliminar": "Eliminar mi cuenta",
+  "@privacidadHubEliminar": {
+    "description": "Fila del centro de privacidad que abre la cancelación de la cuenta."
+  },
+  "privacidadHubEliminarDetalle": "Borra tu cuenta y tus datos personales",
+  "@privacidadHubEliminarDetalle": {
+    "description": "Detalle de la fila de eliminar mi cuenta."
+  },
+  "eliminarCuentaTitulo": "Eliminar mi cuenta",
+  "@eliminarCuentaTitulo": {
+    "description": "Título de la pantalla para eliminar la cuenta (cancelación ARCO)."
+  },
+  "eliminarCuentaAdvertenciaTitulo": "No se puede deshacer",
+  "@eliminarCuentaAdvertenciaTitulo": {
+    "description": "Título del aviso de peligro al eliminar la cuenta."
+  },
+  "eliminarCuentaAdvertencia": "Tu cuenta se cierra de inmediato y no podremos recuperarla.",
+  "@eliminarCuentaAdvertencia": {
+    "description": "Mensaje del aviso de peligro al eliminar la cuenta."
+  },
+  "eliminarCuentaSeBorraTitulo": "Qué se borra",
+  "@eliminarCuentaSeBorraTitulo": {
+    "description": "Encabezado de la lista de lo que se borra."
+  },
+  "eliminarCuentaBorra1": "Tu nombre, correo y teléfono.",
+  "@eliminarCuentaBorra1": {
+    "description": "Primer elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra2": "Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.",
+  "@eliminarCuentaBorra2": {
+    "description": "Segundo elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra3": "Tu bitácora de gastos y kilometraje, con sus fotos y tickets.",
+  "@eliminarCuentaBorra3": {
+    "description": "Tercer elemento de lo que se borra."
+  },
+  "eliminarCuentaBorra4": "Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.",
+  "@eliminarCuentaBorra4": {
+    "description": "Cuarto elemento de lo que se borra."
+  },
+  "eliminarCuentaConservaTitulo": "Qué conservamos",
+  "@eliminarCuentaConservaTitulo": {
+    "description": "Encabezado de lo que se conserva."
+  },
+  "eliminarCuentaConserva": "Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.",
+  "@eliminarCuentaConserva": {
+    "description": "Explica lo que no se borra al eliminar la cuenta."
+  },
+  "eliminarCuentaContrasena": "Tu contraseña",
+  "@eliminarCuentaContrasena": {
+    "description": "Etiqueta del campo de contraseña al eliminar la cuenta."
+  },
+  "eliminarCuentaContrasenaAyuda": "La pedimos para confirmar que eres tú.",
+  "@eliminarCuentaContrasenaAyuda": {
+    "description": "Ayuda del campo de contraseña al eliminar la cuenta."
+  },
+  "eliminarCuentaDeslizar": "Desliza para eliminar mi cuenta",
+  "@eliminarCuentaDeslizar": {
+    "description": "Texto del control de deslizar que elimina la cuenta."
+  },
+  "eliminarCuentaConfirmarMensaje": "Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.",
+  "@eliminarCuentaConfirmarMensaje": {
+    "description": "Mensaje del diálogo de confirmación cuando se usa lector de pantalla."
+  },
+  "eliminarCuentaEliminando": "Eliminando tu cuenta…",
+  "@eliminarCuentaEliminando": {
+    "description": "Mientras se elimina la cuenta."
+  },
+  "eliminarCuentaListo": "Tu cuenta se eliminó. Gracias por usar CareCar.",
+  "@eliminarCuentaListo": {
+    "description": "Aviso al terminar de eliminar la cuenta."
+  },
+  "eliminarCuentaContrasenaIncorrecta": "La contraseña no es correcta.",
+  "@eliminarCuentaContrasenaIncorrecta": {
+    "description": "Error del campo cuando la contraseña es equivocada."
+  },
+  "eliminarCuentaBloqueada": "Demasiados intentos. Intenta de nuevo en {minutos, plural, =1{1 minuto} other{{minutos} minutos}}.",
+  "@eliminarCuentaBloqueada": {
+    "description": "Bloqueo por contraseñas equivocadas, con los minutos de espera.",
+    "placeholders": {
+      "minutos": {
+        "type": "int"
+      }
+    }
+  },
+  "eliminarCuentaBloqueadaSinEspera": "Demasiados intentos. Intenta de nuevo más tarde.",
+  "@eliminarCuentaBloqueadaSinEspera": {
+    "description": "Bloqueo por contraseñas equivocadas, sin tiempo conocido."
+  },
+  "eliminarCuentaSinConexion": "Sin conexión. Revisa tu internet e inténtalo de nuevo.",
+  "@eliminarCuentaSinConexion": {
+    "description": "Sin red al eliminar la cuenta."
+  },
+  "eliminarCuentaError": "No pudimos eliminar tu cuenta. Inténtalo de nuevo.",
+  "@eliminarCuentaError": {
+    "description": "Error genérico al eliminar la cuenta."
   }
 }

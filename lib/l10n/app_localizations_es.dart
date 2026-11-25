@@ -3394,4 +3394,94 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get arcoCargando => 'Cargando tus solicitudes';
+
+  @override
+  String get privacidadHubEliminar => 'Eliminar mi cuenta';
+
+  @override
+  String get privacidadHubEliminarDetalle =>
+      'Borra tu cuenta y tus datos personales';
+
+  @override
+  String get eliminarCuentaTitulo => 'Eliminar mi cuenta';
+
+  @override
+  String get eliminarCuentaAdvertenciaTitulo => 'No se puede deshacer';
+
+  @override
+  String get eliminarCuentaAdvertencia =>
+      'Tu cuenta se cierra de inmediato y no podremos recuperarla.';
+
+  @override
+  String get eliminarCuentaSeBorraTitulo => 'Qué se borra';
+
+  @override
+  String get eliminarCuentaBorra1 => 'Tu nombre, correo y teléfono.';
+
+  @override
+  String get eliminarCuentaBorra2 =>
+      'Tus direcciones, tus preguntas al asistente, tus cotizaciones y tus solicitudes de estreno.';
+
+  @override
+  String get eliminarCuentaBorra3 =>
+      'Tu bitácora de gastos y kilometraje, con sus fotos y tickets.';
+
+  @override
+  String get eliminarCuentaBorra4 =>
+      'Tu ubicación y tus comentarios en las solicitudes de ayuda en carretera.';
+
+  @override
+  String get eliminarCuentaConservaTitulo => 'Qué conservamos';
+
+  @override
+  String get eliminarCuentaConserva =>
+      'Lo que debemos guardar por obligación fiscal, comercial o de garantía: el historial de servicio de tus vehículos, tus compras, pagos y facturas, y la constancia de que aceptaste el aviso de privacidad.';
+
+  @override
+  String get eliminarCuentaContrasena => 'Tu contraseña';
+
+  @override
+  String get eliminarCuentaContrasenaAyuda =>
+      'La pedimos para confirmar que eres tú.';
+
+  @override
+  String get eliminarCuentaDeslizar => 'Desliza para eliminar mi cuenta';
+
+  @override
+  String get eliminarCuentaConfirmarMensaje =>
+      'Se borran tus datos personales y ya no podrás entrar con esta cuenta. No se puede deshacer.';
+
+  @override
+  String get eliminarCuentaEliminando => 'Eliminando tu cuenta…';
+
+  @override
+  String get eliminarCuentaListo =>
+      'Tu cuenta se eliminó. Gracias por usar CareCar.';
+
+  @override
+  String get eliminarCuentaContrasenaIncorrecta =>
+      'La contraseña no es correcta.';
+
+  @override
+  String eliminarCuentaBloqueada(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutos',
+      one: '1 minuto',
+    );
+    return 'Demasiados intentos. Intenta de nuevo en $_temp0.';
+  }
+
+  @override
+  String get eliminarCuentaBloqueadaSinEspera =>
+      'Demasiados intentos. Intenta de nuevo más tarde.';
+
+  @override
+  String get eliminarCuentaSinConexion =>
+      'Sin conexión. Revisa tu internet e inténtalo de nuevo.';
+
+  @override
+  String get eliminarCuentaError =>
+      'No pudimos eliminar tu cuenta. Inténtalo de nuevo.';
 }

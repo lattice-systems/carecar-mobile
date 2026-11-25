@@ -5,6 +5,7 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_aceptar_aviso.dart';
 import 'pantalla_aviso_privacidad.dart';
+import 'pantalla_eliminar_cuenta.dart';
 import 'pantalla_mis_datos.dart';
 import 'pantalla_privacidad.dart';
 
@@ -17,6 +18,9 @@ const rutaAvisoPrivacidad = '/privacidad/aviso';
 
 /// Pedir y descargar la copia de mis datos (acceso ARCO, V2-M22.02).
 const rutaMisDatos = '/privacidad/mis-datos';
+
+/// Eliminar mi cuenta (cancelación ARCO, V2-M22.03).
+const rutaEliminarCuenta = '/privacidad/eliminar-cuenta';
 
 Widget _conTemaPista(BuildContext context, Widget pantalla) => Theme(
   data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
@@ -39,6 +43,12 @@ final rutasPrivacidad = <RouteBase>[
     name: 'privacidad-mis-datos',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaMisDatos()),
+  ),
+  GoRoute(
+    path: rutaEliminarCuenta,
+    name: 'privacidad-eliminar-cuenta',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaEliminarCuenta()),
   ),
   GoRoute(
     path: rutaAvisoPrivacidad,
