@@ -1,5 +1,9 @@
 import '../../../api/carecar_api.dart';
+import '../../../api/excepciones.dart';
+import '../../../api/modelos/problema.dart';
+import '../../../api/modelos/sesion.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
+import '../dominio/fallos_acceso.dart';
 import '../dominio/repositorio_acceso.dart';
 
 /// Habla con la API real · M01.
@@ -17,4 +21,38 @@ class RepositorioAccesoApi with RepositorioBase implements RepositorioAcceso {
     required String actual,
     required String nueva,
   }) => pedir(() => _api.cambiarContrasena(actual: actual, nueva: nueva));
+
+  @override
+  Future<void> pedirEnlaceDeRecuperacion(String correo) =>
+      pedir(() => _api.recuperarContrasena(correo));
+
+  /// La traduccion a [EnlaceNoValido] va **fuera** de [pedir], no dentro.
+  ///
+  /// Es deliberado y conviene no moverlo: un fallo de dominio es una
+  /// `Exception` normal, y `pedir` tipa todo lo que no sea `ExcepcionApi`.
+  /// Traducir dentro lo convertiria en `ErrorDelServidor` y la pantalla
+  /// perderia el unico dato que necesita para ofrecer «pide otro enlace».
+  @override
+  Future<void> restablecerConEnlace({
+    required String token,
+    required String contrasenaNueva,
+  }) async {
+    try {
+      await pedir(
+        () => _api.restablecerContrasena(
+          PeticionRestablecer.conEnlace(
+            token: token,
+            contrasenaNueva: contrasenaNueva,
+          ),
+        ),
+      );
+    } on DatosInvalidos catch (e) {
+      // Vencido y usado llegan igual, y el contrato no los distingue: en los
+      // dos casos la salida es pedir otro enlace.
+      if (e.problema?.codigo == CodigoProblema.codigoInvalido) {
+        throw const EnlaceNoValido();
+      }
+      rethrow;
+    }
+  }
 }

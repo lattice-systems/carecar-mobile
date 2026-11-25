@@ -136,3 +136,44 @@ Pedirla habría rechazado contraseñas que el servidor acepta —`carecar2026`, 
 - **No se repitieron las pruebas del guardia.** Sus casos ya están en `test/nucleo/navegacion/guardia_sesion_test.dart`; lo que se fijó aquí es el apretón de manos, que la pantalla ponga exactamente la bandera que el guardia lee.
 
 **Pendiente / fuera de alcance:** encender las rutas del módulo, que ahora solo espera a **V2-M01.04** y a actualizar las trece pruebas ajenas; demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y las capturas en claro, oscuro y letra grande.
+
+## Avance de V2-M01.04
+
+**Qué quedó**
+
+- `PeticionRestablecer.conEnlace` en `lib/api/modelos/sesion.dart` — la forma con `token` que declara el contrato v2, junto a la del código de 6 dígitos de la v1, que no se tocó.
+- `dominio/fallos_acceso.dart` — `EnlaceNoValido`.
+- `dominio/correo.dart` — `pareceCorreo`, que ahora comparten el acceso y la recuperación.
+- `dominio/repositorio_acceso.dart` y `datos/` — `pedirEnlaceDeRecuperacion` y `restablecerConEnlace`, con la traducción del código del contrato al fallo de dominio.
+- `presentacion/pantalla_recuperar.dart` y `presentacion/pantalla_nueva_contrasena.dart`.
+- Las rutas `/recuperar` y `/restablecer` declaradas, **sin registrar**.
+- **26 pruebas** y 18 claves nuevas en `app_es.arb` y `app_en.arb`.
+
+**Lo que ya estaba y no hubo que hacer**
+
+El andamiaje de enlaces profundos es de **V2-T01.03**: `Rutas.restablecer`, el mapeo de `carecar://restablecer?token=…` y del enlace universal `https://<host>/app/restablecer?token=…`, y la ruta ya figuraba entre las públicas. Esta historia solo le colgó pantallas. Hay una prueba de la vuelta completa: el enlace llega a la pantalla con su token, porque si el camino o el nombre del parámetro no coincidieran, el correo abriría una pantalla que dice «enlace roto».
+
+**Los dos 400 que no se pueden confundir**
+
+Es el filo de la historia. Un enlace vencido o usado y una contraseña que no cumple **llegan los dos como 400**, y solo los separa `Problema.codigo` (`CODIGO_INVALIDO` contra `DATOS_INVALIDOS`):
+
+| Qué pasó | Qué ve la persona |
+| --- | --- |
+| Enlace vencido o usado | Se **retira el formulario** y se ofrece **pedir otro enlace**. Ahí no hay nada que corregir |
+| Contraseña rechazada | Se **conserva el formulario** para corregir, y **no** se ofrece pedir otro: el enlace estaba bien, y mandar a pedir otro sería hacer empezar de cero sin motivo |
+| Sin conexión | Advertencia, y el enlace se conserva |
+
+**Hallazgos**
+
+- **Traducir a un fallo de dominio tiene que ir fuera de `pedir`, no dentro.** Un fallo de dominio es una `Exception` normal y `RepositorioBase.pedir` tipa todo lo que no sea `ExcepcionApi`, así que traducir dentro lo convertiría en `ErrorDelServidor` y la pantalla perdería el único dato que necesita. Soy la primera en adoptar `RepositorioBase` —`citas` traduce sus 409 sin usarlo—, así que esto habría esperado al siguiente. Queda en tres lugares: el aviso en el código, una prueba que falla si alguien lo mueve adentro, y la guía de [`lib/modulos/README.md`](../../lib/modulos/README.md#el-núcleo-de-datos).
+- **Un enlace sin token** (`carecar://restablecer` a secas) no estaba en los criterios. La pantalla arranca en el estado de enlace no válido sin pedir contraseña: pedírsela a quien de todos modos no va a poder guardarla es perderle el tiempo.
+- **El patrón del doble toque apareció por tercera vez.** En las tres pantallas, terminar la operación dejaba el botón otra vez habilitado. Aquí se previó desde la prueba en lugar de descubrirlo.
+
+**Decisiones**
+
+- **`PeticionRestablecer` gana una forma en vez de cambiar la que hay.** El contrato acepta las dos y la pantalla v1 sigue mandando correo y código sin tocarse. Cada forma manda **solo sus campos**: un `correo` vacío junto al token haría que el backend intentara la forma v1 y respondiera 400 por datos inválidos, y eso se vería como «el enlace no sirve» cuando el enlace estaba bien.
+- **El aviso de «revisa tu correo» dice «si ese correo tiene una cuenta».** El contrato responde 202 exista o no, para no revelar qué cuentas hay; una redacción descuidada en la app tiraría por la borda esa protección, y quien se equivocó al teclear tiene que entender que puede no llegarle nada.
+- **La validación del correo salió a `dominio/`** en vez de duplicarse, y la pantalla de acceso se reescribió para usarla. A diferencia del reloj y del aviso de espera del servidor —duplicados porque chocaban con R1 y R3 y no tenían dónde vivir—, esta sí tiene casa.
+- **`ListaDeReglas` gana `mostrarDistinta`**: en la recuperación no hay contraseña temporal que conocer, así que esa regla siempre se cumpliría y sólo confundiría.
+
+**Pendiente / fuera de alcance:** encender las rutas del módulo. **Esta historia cerró el segundo de los tres bloqueos**, así que ya solo falta actualizar las trece pruebas ajenas que comprueban la redirección por el widget y no por la ruta — es mecánico, pero toca código de otras cuatro personas y merece su propia historia. También falta demostrarlo en celular con un correo real, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅, y las capturas.

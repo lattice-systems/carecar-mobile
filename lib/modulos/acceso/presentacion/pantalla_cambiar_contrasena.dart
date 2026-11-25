@@ -224,9 +224,19 @@ class _EstadoPantallaCambiarContrasena
 /// quien llega sabe que se le va a pedir antes de escribir, en vez de
 /// descubrirlo a base de errores.
 class ListaDeReglas extends StatelessWidget {
-  const ListaDeReglas({required this.revision, super.key});
+  const ListaDeReglas({
+    required this.revision,
+    this.mostrarDistinta = true,
+    super.key,
+  });
 
   final RevisionContrasena revision;
+
+  /// Si se muestra «distinta de la temporal».
+  ///
+  /// En la recuperacion por enlace (V2-M01.04) no hay contrasena temporal que
+  /// conocer, asi que esa regla siempre se cumple y ensenarla solo confunde.
+  final bool mostrarDistinta;
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +247,8 @@ class ListaDeReglas extends StatelessWidget {
       textos.accesoCambiarReglaLargo: revision.largoSuficiente,
       textos.accesoCambiarReglaLetra: revision.tieneLetra,
       textos.accesoCambiarReglaNumero: revision.tieneNumero,
-      textos.accesoCambiarReglaDistinta: revision.esDistintaDeLaActual,
+      if (mostrarDistinta)
+        textos.accesoCambiarReglaDistinta: revision.esDistintaDeLaActual,
     };
 
     return Column(
