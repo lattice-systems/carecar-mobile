@@ -6,11 +6,11 @@ import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -82,32 +82,21 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.refresh(ticketServicioProvider(widget.servicioId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.historialTicketTitulo,
-              subtitulo: datos == null ? null : fechaDe(context, datos.fecha),
-              translucido: true,
-              acciones: [
-                if (datos != null)
-                  BotonCircular(
-                    etiqueta: textos.historialTicketCompartir,
-                    icono: Icons.ios_share_rounded,
-                    alPresionar: _compartiendo ? null : () => _compartir(datos),
-                  ),
-              ],
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.historialTicketTitulo,
+      subtitulo: datos == null ? null : fechaDe(context, datos.fecha),
+      conRegreso: true,
+      alRefrescar: () =>
+          ref.refresh(ticketServicioProvider(widget.servicioId).future),
+      acciones: [
+        if (datos != null)
+          BotonCircular(
+            etiqueta: textos.historialTicketCompartir,
+            icono: Icons.ios_share_rounded,
+            alPresionar: _compartiendo ? null : () => _compartir(datos),
+          ),
+      ],
+      slivers: [contenido],
     );
   }
 }

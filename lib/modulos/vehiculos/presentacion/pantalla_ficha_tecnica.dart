@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/ficha_tecnica_vehiculo.dart';
@@ -55,22 +55,11 @@ class PantallaFichaTecnica extends ConsumerWidget {
           : SliverToBoxAdapter(child: _Ficha(ficha: f)),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.vehiculosFichaTitulo,
-              translucido: true,
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.vehiculosFichaTitulo,
+      conRegreso: true,
+      alRefrescar: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),
+      slivers: [contenido],
     );
   }
 }
