@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.14.0
+  version: 2.15.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -75,7 +75,7 @@ tags:
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
-    description: V2-M22.01 y V2-M22.02
+    description: V2-M22.01, V2-M22.02 y V2-M22.03
 
 security:
   - bearerAuth: []
@@ -1331,6 +1331,39 @@ paths:
                 $ref: '#/components/schemas/SolicitudArco'
         '401':
           $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/arco/cancelacion:
+    post:
+      tags: [Privacidad]
+      summary: Borrar mi cuenta (cancelación ARCO)
+      description: |
+        V2-M22.03 · No se puede deshacer. Pide la contraseña como confirmación. Desactiva la cuenta
+        (el siguiente request con cualquier token de ella responde 403 `CUENTA_DESACTIVADA`), cierra
+        sus sesiones y borra o anonimiza los datos personales que ninguna ley obliga a conservar:
+        contacto, direcciones, preguntas al asistente, estimaciones y solicitudes de estreno,
+        bitácora de gastos y kilometraje, y la ubicación de las solicitudes de asistencia. Lo fiscal y
+        comercial (ventas, pagos, facturas), el historial de servicio de los vehículos y la prueba de
+        las aceptaciones del aviso de privacidad se conservan. La contraseña equivocada cuenta como
+        intento fallido: a los 5 se bloquea 15 minutos y responde 429.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelarCuenta'
+      responses:
+        '200':
+          description: Cuenta cancelada; la solicitud queda `RESUELTA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
 
   /privacidad/arco/{solicitudId}/archivo:
     get:
@@ -3172,6 +3205,15 @@ components:
         aceptadoEn:
           type: string
           format: date-time
+    CancelarCuenta:
+      type: object
+      description: V2-M22.03 · La contraseña actual confirma que quien pide borrar la cuenta es su titular
+      required: [contrasena]
+      properties:
+        contrasena:
+          type: string
+          format: password
+
     SolicitudArco:
       type: object
       description: V2-M22.02 · Una solicitud de derechos ARCO de esta cuenta
