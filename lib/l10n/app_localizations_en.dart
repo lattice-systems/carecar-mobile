@@ -100,6 +100,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Links expire soon and work only once. Ask for a new one and check your email.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'This link no longer works';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Ask for another link';
+
+  @override
+  String get accesoNuevaExplicacion =>
+      'Choose a new password. This link works only once.';
+
+  @override
+  String get accesoNuevaFalloTitulo => 'We couldn\'t save your password';
+
+  @override
+  String get accesoNuevaGuardando => 'Saving…';
+
+  @override
+  String get accesoNuevaGuardar => 'Save password';
+
+  @override
+  String get accesoNuevaIrAlAcceso => 'Sign in';
+
+  @override
+  String get accesoNuevaListoMensaje => 'You can sign in with it now.';
+
+  @override
+  String get accesoNuevaListoTitulo => 'Your password is ready';
+
+  @override
+  String get accesoNuevaTitulo => 'Choose your new password';
+
+  @override
   String get accesoOlvide => 'Forgot your password?';
 
   @override

@@ -266,6 +266,72 @@ abstract class AppLocalizations {
   /// **'CareCar'**
   String get accesoMarca;
 
+  /// Explica por qué el enlace de recuperación dejó de servir.
+  ///
+  /// In es, this message translates to:
+  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
+  String get accesoEnlaceNoValidoMensaje;
+
+  /// Título cuando el enlace de recuperación venció o ya se usó.
+  ///
+  /// In es, this message translates to:
+  /// **'El enlace ya no sirve'**
+  String get accesoEnlaceNoValidoTitulo;
+
+  /// Botón que lleva a pedir un enlace de recuperación nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro enlace'**
+  String get accesoEnlacePedirOtro;
+
+  /// Explica qué hace la pantalla a la que abre el enlace.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una contraseña nueva. Este enlace sirve una sola vez.'**
+  String get accesoNuevaExplicacion;
+
+  /// Título del aviso cuando el servidor rechaza la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu contraseña'**
+  String get accesoNuevaFalloTitulo;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get accesoNuevaGuardando;
+
+  /// Botón que guarda la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar contraseña'**
+  String get accesoNuevaGuardar;
+
+  /// Botón que lleva al acceso tras guardar la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar sesión'**
+  String get accesoNuevaIrAlAcceso;
+
+  /// Detalle del aviso de contraseña guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya puedes iniciar sesión con ella.'**
+  String get accesoNuevaListoMensaje;
+
+  /// Título del aviso cuando la contraseña nueva se guardó.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó lista'**
+  String get accesoNuevaListoTitulo;
+
+  /// Título de la pantalla a la que abre el enlace del correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu contraseña nueva'**
+  String get accesoNuevaTitulo;
+
   /// Enlace a la recuperación de contraseña desde la pantalla de acceso.
   ///
   /// In es, this message translates to:

@@ -30,6 +30,7 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
   Future<void>? esperar;
 
   int llamadasAlPedirEnlace = 0;
+  int llamadasAlRestablecer = 0;
   String? ultimoCorreo;
   String? ultimoToken;
   String? ultimaContrasenaDelEnlace;
@@ -65,8 +66,11 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
     required String contrasenaNueva,
   }) async {
     await pedir(() async {
+      llamadasAlRestablecer++;
       ultimoToken = token;
       ultimaContrasenaDelEnlace = contrasenaNueva;
+      final espera = esperar;
+      if (espera != null) await espera;
     });
     final f = fallaDelEnlace;
     if (f != null) throw f;

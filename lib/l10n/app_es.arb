@@ -124,6 +124,50 @@
   "@accesoMarca": {
     "description": "Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce."
   },
+  "accesoEnlaceNoValidoMensaje": "Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.",
+  "@accesoEnlaceNoValidoMensaje": {
+    "description": "Explica por qué el enlace de recuperación dejó de servir."
+  },
+  "accesoEnlaceNoValidoTitulo": "El enlace ya no sirve",
+  "@accesoEnlaceNoValidoTitulo": {
+    "description": "Título cuando el enlace de recuperación venció o ya se usó."
+  },
+  "accesoEnlacePedirOtro": "Pedir otro enlace",
+  "@accesoEnlacePedirOtro": {
+    "description": "Botón que lleva a pedir un enlace de recuperación nuevo."
+  },
+  "accesoNuevaExplicacion": "Elige una contraseña nueva. Este enlace sirve una sola vez.",
+  "@accesoNuevaExplicacion": {
+    "description": "Explica qué hace la pantalla a la que abre el enlace."
+  },
+  "accesoNuevaFalloTitulo": "No pudimos guardar tu contraseña",
+  "@accesoNuevaFalloTitulo": {
+    "description": "Título del aviso cuando el servidor rechaza la contraseña nueva."
+  },
+  "accesoNuevaGuardando": "Guardando…",
+  "@accesoNuevaGuardando": {
+    "description": "Texto del botón mientras el servidor responde."
+  },
+  "accesoNuevaGuardar": "Guardar contraseña",
+  "@accesoNuevaGuardar": {
+    "description": "Botón que guarda la contraseña nueva."
+  },
+  "accesoNuevaIrAlAcceso": "Iniciar sesión",
+  "@accesoNuevaIrAlAcceso": {
+    "description": "Botón que lleva al acceso tras guardar la contraseña nueva."
+  },
+  "accesoNuevaListoMensaje": "Ya puedes iniciar sesión con ella.",
+  "@accesoNuevaListoMensaje": {
+    "description": "Detalle del aviso de contraseña guardada."
+  },
+  "accesoNuevaListoTitulo": "Tu contraseña quedó lista",
+  "@accesoNuevaListoTitulo": {
+    "description": "Título del aviso cuando la contraseña nueva se guardó."
+  },
+  "accesoNuevaTitulo": "Elige tu contraseña nueva",
+  "@accesoNuevaTitulo": {
+    "description": "Título de la pantalla a la que abre el enlace del correo."
+  },
   "accesoOlvide": "¿Olvidaste tu contraseña?",
   "@accesoOlvide": {
     "description": "Enlace a la recuperación de contraseña desde la pantalla de acceso."
