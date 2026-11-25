@@ -77,6 +77,42 @@ void main() {
     expect(find.byType(PantallaChecklistTraslado), findsOneWidget);
   });
 
+  testWidgets('el checklist acepta el traslado contrario y abre en Comparar', (
+    tester,
+  ) async {
+    await _montar(tester);
+    enrutadorDe(tester)
+        .go(rutaChecklistTraslado(5, contrario: 6, comparar: true));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Al recoger'), findsOneWidget);
+    expect(find.text('Aún no se puede comparar'), findsOneWidget);
+  });
+
+  testWidgets('el traslado de entregar abre en su pestana', (tester) async {
+    await _montar(tester);
+    enrutadorDe(
+      tester,
+    ).go(rutaChecklistTraslado(6, contrario: 5, tipo: TipoTraslado.entregar));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Al entregar'), findsOneWidget);
+    expect(find.text('Aún no hay checklist'), findsOneWidget);
+  });
+
+  test('la ruta del checklist arma sus parametros', () {
+    expect(rutaChecklistTraslado(5), '/recoleccion/traslados/5/checklist');
+    expect(
+      rutaChecklistTraslado(
+        6,
+        contrario: 5,
+        tipo: TipoTraslado.entregar,
+        comparar: true,
+      ),
+      '/recoleccion/traslados/6/checklist?contrario=5&tipo=entregar&ver=comparar',
+    );
+  });
+
   testWidgets('un id que no es numero vuelve al inicio', (tester) async {
     await _montar(tester);
     enrutadorDe(tester).go('/recoleccion/traslados/abc');
