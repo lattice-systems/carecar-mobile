@@ -187,7 +187,12 @@ jobs:
   build-ios:
     name: Build iOS (sin firma)
     needs: cambios
-    if: needs.cambios.outputs.codigo == 'true'
+    # EN PAUSA: corre solo si la variable de repositorio MACOS_ACTIVO vale
+    # "true"; si no, el job se salta y no gasta minutos de macOS (cuestan diez
+    # veces los de Linux y a veces no hay runners). No es un check requerido.
+    # Para activarlo: gh variable set MACOS_ACTIVO --body true
+    # (docs/pausa-de-macos.md).
+    if: needs.cambios.outputs.codigo == 'true' && vars.MACOS_ACTIVO == 'true'
     # Xcode solo existe en macOS. Se compila sin firmar: comprueba que el
     # proyecto iOS compila sin certificados ni perfiles de Apple.
     runs-on: macos-latest
