@@ -29,6 +29,8 @@ enum CodigoProblema {
   direccionEnUso('DIRECCION_EN_USO'),
   ordenCerrada('ORDEN_CERRADA'),
   adicionalYaRespondido('ADICIONAL_YA_RESPONDIDO'),
+  estrenoSinPrecio('ESTRENO_SIN_PRECIO'),
+  estrenoDuplicada('ESTRENO_DUPLICADA'),
 
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');

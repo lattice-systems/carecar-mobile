@@ -10,6 +10,7 @@ export 'cita.dart';
 export 'detalle_modelo_catalogo.dart';
 export 'disponibilidad.dart';
 export 'estimacion_toma_cuenta.dart';
+export 'estreno.dart';
 export 'manual.dart';
 export 'modelo_catalogo.dart';
 export 'pagina.dart';

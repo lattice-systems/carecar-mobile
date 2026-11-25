@@ -100,6 +100,8 @@ void main() {
         'DIRECCION_EN_USO',
         'ORDEN_CERRADA',
         'ADICIONAL_YA_RESPONDIDO',
+        'ESTRENO_SIN_PRECIO',
+        'ESTRENO_DUPLICADA',
       };
 
       final queLaAppMapea = CodigoProblema.values
