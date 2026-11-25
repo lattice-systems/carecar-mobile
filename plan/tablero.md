@@ -109,7 +109,7 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Hecha | #65 |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Hecha | #65 |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Hecha | #65, backend#70 |
-| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | En revisión | #130 |
+| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Hecha | #130 |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Hecha | #65, backend#70 |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Hecha | #45 |
 | V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Hecha | #62, backend#68 |
@@ -163,7 +163,7 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
-| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #130, backend#98 |
+| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98 |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
@@ -249,7 +249,7 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Hecha | #94, backend#86 |
-| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | En revisión | #130 |
+| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Hecha | #130 |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Hecha | #65, #121 |
 | V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Hecha | #104, backend#88 |
 | V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Hecha | #104, backend#88 |
