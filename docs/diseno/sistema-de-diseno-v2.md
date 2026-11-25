@@ -186,7 +186,7 @@ Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias y
 flutter test test/nucleo/diseno/componentes/portada_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart
 ```
 
-Si el cambio visual es intencional, agrega `--update-goldens` al comando y revisa las PNG resultantes antes de incluirlas en el PR. Usa Linux con la misma versión de Flutter que CI para reproducir diferencias de renderizado. El check **Pruebas (flutter test)** ejecuta la comparación en Ubuntu y adjunta el artefacto `diferencias-golden` si se genera alguna diferencia.
+Las referencias se generan en Linux con el mismo parche de Flutter que usa CI. La rasterización de texto e íconos puede variar en Windows aunque el diseño sea el mismo. Si el cambio visual es intencional, agrega `--update-goldens` al comando en Linux y revisa las PNG resultantes antes de incluirlas en el PR. El check **Pruebas (flutter test)** ejecuta la comparación exacta en Ubuntu. Si falla, adjunta el artefacto `diferencias-golden`, donde `*_testImage.png` es la captura del runner y `*_masterImage.png` es la referencia con la que se comparó.
 
 ## 9. Escritura (UX copy)
 
