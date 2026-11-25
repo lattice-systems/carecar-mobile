@@ -61,10 +61,13 @@ class RepositorioCitasApi implements RepositorioCitas {
         ),
       );
       return _aDominio(cita);
-    } on SinParametrosDeValuacion {
-      // El cliente HTTP convierte todo 422 en este tipo; en POST /citas solo
-      // puede ser «la direccion de recoleccion esta fuera de cobertura».
-      throw const FueraDeCobertura();
+    } on SolicitudRechazada catch (e) {
+      // El 422 de POST /citas con FUERA_DE_COBERTURA: la direccion de
+      // recoleccion esta fuera de la zona. Otro codigo pasa tal cual.
+      if (e.codigo == CodigoProblema.fueraDeCobertura) {
+        throw const FueraDeCobertura();
+      }
+      rethrow;
     } on Conflicto catch (conflicto) {
       if (conflicto.problema?.codigo == CodigoProblema.franjaSinCupo) {
         throw const FranjaSinCupo();
