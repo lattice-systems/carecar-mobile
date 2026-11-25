@@ -7,12 +7,17 @@ const _sinSesion = SinSesion();
 const _normal = Autenticada(debeCambiarContrasena: false);
 const _temporal = Autenticada(debeCambiarContrasena: true);
 
-String? _va(String destino, EstadoSesion estado, {bool cambiada = false}) =>
-    redirigirPorSesion(
-      destino: Uri.parse(destino),
-      estado: estado,
-      contrasenaCambiada: cambiada,
-    );
+String? _va(
+  String destino,
+  EstadoSesion estado, {
+  bool cambiada = false,
+  bool aviso = false,
+}) => redirigirPorSesion(
+  destino: Uri.parse(destino),
+  estado: estado,
+  contrasenaCambiada: cambiada,
+  avisoPorAceptar: aviso,
+);
 
 void main() {
   group('sin sesion', () {
@@ -96,6 +101,83 @@ void main() {
       );
       expect(_va(Rutas.cambiarContrasena, _temporal, cambiada: true), '/');
       expect(_va('/ejemplo/avisos', _temporal, cambiada: true), isNull);
+    });
+  });
+
+  group('aviso de privacidad por aceptar (V2-M22.01)', () {
+    test('cualquier ruta va a la puerta, guardando el destino', () {
+      expect(
+        _va('/ejemplo/avisos?x=1', _normal, aviso: true),
+        '/privacidad/aceptar?desde=%2Fejemplo%2Favisos%3Fx%3D1',
+      );
+    });
+
+    test('el inicio va a la puerta sin destino que guardar', () {
+      expect(_va('/', _normal, aviso: true), Rutas.aceptarAviso);
+    });
+
+    test('al entrar por el acceso conserva el desde del acceso', () {
+      expect(
+        _va('/acceso?desde=%2Fejemplo%2Favisos', _normal, aviso: true),
+        '/privacidad/aceptar?desde=%2Fejemplo%2Favisos',
+      );
+    });
+
+    test('en la puerta se queda mientras falte aceptar', () {
+      expect(_va(Rutas.aceptarAviso, _normal, aviso: true), isNull);
+      expect(
+        _va('/privacidad/aceptar?desde=%2Fejemplo', _normal, aviso: true),
+        isNull,
+      );
+    });
+
+    test('aceptado, sale de la puerta a desde, o al inicio', () {
+      expect(
+        _va('/privacidad/aceptar?desde=%2Fejemplo%2Favisos', _normal),
+        '/ejemplo/avisos',
+      );
+      expect(_va(Rutas.aceptarAviso, _normal), Rutas.inicio);
+      expect(_va('/ejemplo/avisos', _normal), isNull);
+    });
+
+    test('la contrasena temporal va primero', () {
+      expect(
+        _va('/ejemplo/avisos', _temporal, aviso: true),
+        '/cambiar-contrasena?desde=%2Fejemplo%2Favisos',
+      );
+      expect(_va(Rutas.aceptarAviso, _temporal, aviso: true), isNotNull);
+    });
+
+    test('cambiada la contrasena, sigue la puerta', () {
+      expect(
+        _va('/cambiar-contrasena?desde=%2Fejemplo', _temporal, cambiada: true),
+        '/ejemplo',
+        reason: 'la guardia de contrasena no decide por el aviso',
+      );
+      expect(
+        _va('/ejemplo', _temporal, cambiada: true, aviso: true),
+        '/privacidad/aceptar?desde=%2Fejemplo',
+      );
+    });
+
+    test(
+      'sin sesion la puerta pide acceso, aunque el aviso este pendiente',
+      () {
+        expect(_va(Rutas.aceptarAviso, _sinSesion, aviso: true), Rutas.acceso);
+        expect(_va('/ejemplo', _sinSesion, aviso: true), isNotNull);
+      },
+    );
+
+    test('un desde que apunta a la puerta se ignora, para no dar vueltas', () {
+      expect(_va('/acceso?desde=%2Fprivacidad%2Faceptar', _normal), '/');
+      expect(
+        _va('/privacidad/aceptar?desde=%2Fprivacidad%2Faceptar', _normal),
+        '/',
+      );
+    });
+
+    test('las rutas publicas siguen viendose sin sesion', () {
+      expect(_va('/recuperar', _sinSesion, aviso: true), isNull);
     });
   });
 }

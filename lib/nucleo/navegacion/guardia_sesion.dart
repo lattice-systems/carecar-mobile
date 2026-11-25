@@ -5,13 +5,16 @@ import 'rutas.dart';
 ///
 /// - Sin sesion y ruta privada: al acceso, guardando a donde volver (`desde`).
 /// - Con sesion y contrasena temporal sin cambiar: al cambio obligatorio.
-/// - Con sesion en acceso o en cambio ya resuelto: a `desde`, o al inicio.
+/// - Con sesion y el aviso de privacidad por aceptar (V2-M22.01), resuelta ya
+///   la contrasena: a la puerta del aviso, guardando el destino.
+/// - Con sesion en acceso o en un paso ya resuelto: a `desde`, o al inicio.
 ///
 /// Devuelve `null` si no hay que redirigir.
 String? redirigirPorSesion({
   required Uri destino,
   required EstadoSesion estado,
   required bool contrasenaCambiada,
+  bool avisoPorAceptar = false,
 }) {
   final camino = destino.path;
   final desdeEnConsulta = _desdeValido(
@@ -33,7 +36,18 @@ String? redirigirPorSesion({
     );
   }
 
-  if (camino == Rutas.acceso || camino == Rutas.cambiarContrasena) {
+  if (avisoPorAceptar) {
+    if (camino == Rutas.aceptarAviso) return null;
+    return Rutas.localizacionAceptarAviso(
+      desde: camino == Rutas.acceso || camino == Rutas.cambiarContrasena
+          ? desdeEnConsulta
+          : _destinoParaVolver(destino),
+    );
+  }
+
+  if (camino == Rutas.acceso ||
+      camino == Rutas.cambiarContrasena ||
+      camino == Rutas.aceptarAviso) {
     return desdeEnConsulta ?? Rutas.inicio;
   }
   return null;
@@ -54,7 +68,8 @@ String? _desdeValido(String? valor) {
   final camino = Uri.tryParse(valor)?.path;
   if (camino == null ||
       camino == Rutas.acceso ||
-      camino == Rutas.cambiarContrasena) {
+      camino == Rutas.cambiarContrasena ||
+      camino == Rutas.aceptarAviso) {
     return null;
   }
   return valor;
