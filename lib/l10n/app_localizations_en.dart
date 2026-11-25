@@ -2256,4 +2256,112 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistenteAbrirAjustes => 'Open settings';
+
+  @override
+  String get estrenoQuieroProbarlo => 'Test drive';
+
+  @override
+  String get estrenoCotizar => 'Get a quote';
+
+  @override
+  String get estrenoPruebaTitulo => 'Test drive';
+
+  @override
+  String get estrenoCotizacionTitulo => 'Quote';
+
+  @override
+  String get estrenoMisSolicitudes => 'My requests';
+
+  @override
+  String get estrenoDia => 'Which day?';
+
+  @override
+  String get estrenoFranja => 'What time?';
+
+  @override
+  String get estrenoManana => 'Morning (9 am–1 pm)';
+
+  @override
+  String get estrenoTarde => 'Afternoon (1–6 pm)';
+
+  @override
+  String get estrenoTomaACuenta => 'Trading in your car?';
+
+  @override
+  String get estrenoSinTomaACuenta => 'No';
+
+  @override
+  String get estrenoEnviar => 'Send request';
+
+  @override
+  String get estrenoEnviarCotizacion => 'Send quote';
+
+  @override
+  String get estrenoListo => 'Done! An advisor will contact you soon.';
+
+  @override
+  String get estrenoVerSolicitudes => 'See my requests';
+
+  @override
+  String get estrenoDuplicada =>
+      'You already asked for this model; an advisor will contact you.';
+
+  @override
+  String get estrenoSinPrecio =>
+      'This model has no published price yet. Ask an advisor.';
+
+  @override
+  String get estrenoSinConexion =>
+      'We couldn\'t send it. Check your internet and try again.';
+
+  @override
+  String get estrenoNoDisponible => 'Something went wrong. Try again later.';
+
+  @override
+  String get estrenoEnganche => 'Down payment';
+
+  @override
+  String estrenoEngancheAyuda(String minimo) {
+    return 'At least $minimo';
+  }
+
+  @override
+  String get estrenoPlazo => 'Term';
+
+  @override
+  String estrenoMeses(int meses) {
+    return '$meses months';
+  }
+
+  @override
+  String get estrenoMensualidad => 'Estimated monthly payment';
+
+  @override
+  String estrenoPrecioDesde(String precio) {
+    return 'Price from $precio';
+  }
+
+  @override
+  String get estrenoEstadoRecibida => 'Received';
+
+  @override
+  String get estrenoEstadoEnAtencion => 'In progress';
+
+  @override
+  String get estrenoEstadoCerrada => 'Closed';
+
+  @override
+  String estrenoTeAtiende(String nombre) {
+    return '$nombre is helping you';
+  }
+
+  @override
+  String get estrenoVacioTitulo => 'You have no requests yet';
+
+  @override
+  String get estrenoVacioMensaje =>
+      'From the catalog you can book a test drive or get a quote.';
+
+  @override
+  String get estrenoCargando => 'Loading your requests';
 }

@@ -2857,5 +2857,153 @@
   "asistenteAbrirAjustes": "Abrir ajustes",
   "@asistenteAbrirAjustes": {
     "description": "Botón del aviso de permiso."
+  },
+  "estrenoQuieroProbarlo": "Quiero probarlo",
+  "@estrenoQuieroProbarlo": {
+    "description": "Píldora principal del detalle de un modelo (V2-M16.01)."
+  },
+  "estrenoCotizar": "Cotizar",
+  "@estrenoCotizar": {
+    "description": "Píldora de vidrio del detalle de un modelo (V2-M16.02)."
+  },
+  "estrenoPruebaTitulo": "Prueba de manejo",
+  "@estrenoPruebaTitulo": {
+    "description": "Título de la pantalla y tipo de solicitud."
+  },
+  "estrenoCotizacionTitulo": "Cotización",
+  "@estrenoCotizacionTitulo": {
+    "description": "Título de la pantalla y tipo de solicitud."
+  },
+  "estrenoMisSolicitudes": "Mis solicitudes",
+  "@estrenoMisSolicitudes": {
+    "description": "Título de la lista de solicitudes de estreno (V2-M16.04)."
+  },
+  "estrenoDia": "¿Qué día?",
+  "@estrenoDia": {
+    "description": "Sección para elegir el día de la prueba."
+  },
+  "estrenoFranja": "¿A qué hora?",
+  "@estrenoFranja": {
+    "description": "Sección para elegir mañana o tarde."
+  },
+  "estrenoManana": "Mañana (9 a 13 h)",
+  "@estrenoManana": {
+    "description": "Franja de la mañana."
+  },
+  "estrenoTarde": "Tarde (13 a 18 h)",
+  "@estrenoTarde": {
+    "description": "Franja de la tarde."
+  },
+  "estrenoTomaACuenta": "¿Dejas tu auto a cuenta?",
+  "@estrenoTomaACuenta": {
+    "description": "Sección para adjuntar una estimación de toma a cuenta (V2-M16.03)."
+  },
+  "estrenoSinTomaACuenta": "No",
+  "@estrenoSinTomaACuenta": {
+    "description": "Opción para no adjuntar estimación."
+  },
+  "estrenoEnviar": "Enviar solicitud",
+  "@estrenoEnviar": {
+    "description": "Botón para pedir la prueba."
+  },
+  "estrenoEnviarCotizacion": "Enviar cotización",
+  "@estrenoEnviarCotizacion": {
+    "description": "Botón para mandar la cotización a un asesor."
+  },
+  "estrenoListo": "¡Listo! Un asesor te contactará pronto.",
+  "@estrenoListo": {
+    "description": "Confirmación al enviar."
+  },
+  "estrenoVerSolicitudes": "Ver mis solicitudes",
+  "@estrenoVerSolicitudes": {
+    "description": "Lleva a Mis solicitudes."
+  },
+  "estrenoDuplicada": "Ya pediste esto para este modelo; un asesor te contactará.",
+  "@estrenoDuplicada": {
+    "description": "409 ESTRENO_DUPLICADA."
+  },
+  "estrenoSinPrecio": "Este modelo aún no tiene precio publicado. Pregúntale a un asesor.",
+  "@estrenoSinPrecio": {
+    "description": "409 ESTRENO_SIN_PRECIO."
+  },
+  "estrenoSinConexion": "No pudimos enviarlo. Revisa tu internet y vuelve a intentar.",
+  "@estrenoSinConexion": {
+    "description": "Sin conexión."
+  },
+  "estrenoNoDisponible": "Algo falló. Intenta más tarde.",
+  "@estrenoNoDisponible": {
+    "description": "Otro error."
+  },
+  "estrenoEnganche": "Enganche",
+  "@estrenoEnganche": {
+    "description": "Campo del enganche en pesos."
+  },
+  "estrenoEngancheAyuda": "Mínimo {minimo}",
+  "@estrenoEngancheAyuda": {
+    "description": "Ayuda del enganche con el mínimo.",
+    "placeholders": {
+      "minimo": {
+        "type": "String"
+      }
+    }
+  },
+  "estrenoPlazo": "Plazo",
+  "@estrenoPlazo": {
+    "description": "Sección de plazos."
+  },
+  "estrenoMeses": "{meses} meses",
+  "@estrenoMeses": {
+    "description": "Un plazo.",
+    "placeholders": {
+      "meses": {
+        "type": "int"
+      }
+    }
+  },
+  "estrenoMensualidad": "Mensualidad estimada",
+  "@estrenoMensualidad": {
+    "description": "Etiqueta de la mensualidad."
+  },
+  "estrenoPrecioDesde": "Precio desde {precio}",
+  "@estrenoPrecioDesde": {
+    "description": "Precio del modelo.",
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "estrenoEstadoRecibida": "Recibida",
+  "@estrenoEstadoRecibida": {
+    "description": "Estado de una solicitud sin vendedor aún."
+  },
+  "estrenoEstadoEnAtencion": "En atención",
+  "@estrenoEstadoEnAtencion": {
+    "description": "Estado con vendedor asignado."
+  },
+  "estrenoEstadoCerrada": "Cerrada",
+  "@estrenoEstadoCerrada": {
+    "description": "Estado cerrado."
+  },
+  "estrenoTeAtiende": "Te atiende {nombre}",
+  "@estrenoTeAtiende": {
+    "description": "Vendedor asignado.",
+    "placeholders": {
+      "nombre": {
+        "type": "String"
+      }
+    }
+  },
+  "estrenoVacioTitulo": "Aún no tienes solicitudes",
+  "@estrenoVacioTitulo": {
+    "description": "Lista vacía."
+  },
+  "estrenoVacioMensaje": "Desde el catálogo puedes pedir una prueba de manejo o cotizar un auto nuevo.",
+  "@estrenoVacioMensaje": {
+    "description": "Lista vacía."
+  },
+  "estrenoCargando": "Cargando tus solicitudes",
+  "@estrenoCargando": {
+    "description": "Lector de pantalla mientras carga."
   }
 }

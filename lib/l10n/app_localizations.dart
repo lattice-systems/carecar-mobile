@@ -3759,6 +3759,198 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Abrir ajustes'**
   String get asistenteAbrirAjustes;
+
+  /// Píldora principal del detalle de un modelo (V2-M16.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Quiero probarlo'**
+  String get estrenoQuieroProbarlo;
+
+  /// Píldora de vidrio del detalle de un modelo (V2-M16.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Cotizar'**
+  String get estrenoCotizar;
+
+  /// Título de la pantalla y tipo de solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba de manejo'**
+  String get estrenoPruebaTitulo;
+
+  /// Título de la pantalla y tipo de solicitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Cotización'**
+  String get estrenoCotizacionTitulo;
+
+  /// Título de la lista de solicitudes de estreno (V2-M16.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis solicitudes'**
+  String get estrenoMisSolicitudes;
+
+  /// Sección para elegir el día de la prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué día?'**
+  String get estrenoDia;
+
+  /// Sección para elegir mañana o tarde.
+  ///
+  /// In es, this message translates to:
+  /// **'¿A qué hora?'**
+  String get estrenoFranja;
+
+  /// Franja de la mañana.
+  ///
+  /// In es, this message translates to:
+  /// **'Mañana (9 a 13 h)'**
+  String get estrenoManana;
+
+  /// Franja de la tarde.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarde (13 a 18 h)'**
+  String get estrenoTarde;
+
+  /// Sección para adjuntar una estimación de toma a cuenta (V2-M16.03).
+  ///
+  /// In es, this message translates to:
+  /// **'¿Dejas tu auto a cuenta?'**
+  String get estrenoTomaACuenta;
+
+  /// Opción para no adjuntar estimación.
+  ///
+  /// In es, this message translates to:
+  /// **'No'**
+  String get estrenoSinTomaACuenta;
+
+  /// Botón para pedir la prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar solicitud'**
+  String get estrenoEnviar;
+
+  /// Botón para mandar la cotización a un asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar cotización'**
+  String get estrenoEnviarCotizacion;
+
+  /// Confirmación al enviar.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Listo! Un asesor te contactará pronto.'**
+  String get estrenoListo;
+
+  /// Lleva a Mis solicitudes.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis solicitudes'**
+  String get estrenoVerSolicitudes;
+
+  /// 409 ESTRENO_DUPLICADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya pediste esto para este modelo; un asesor te contactará.'**
+  String get estrenoDuplicada;
+
+  /// 409 ESTRENO_SIN_PRECIO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este modelo aún no tiene precio publicado. Pregúntale a un asesor.'**
+  String get estrenoSinPrecio;
+
+  /// Sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos enviarlo. Revisa tu internet y vuelve a intentar.'**
+  String get estrenoSinConexion;
+
+  /// Otro error.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo falló. Intenta más tarde.'**
+  String get estrenoNoDisponible;
+
+  /// Campo del enganche en pesos.
+  ///
+  /// In es, this message translates to:
+  /// **'Enganche'**
+  String get estrenoEnganche;
+
+  /// Ayuda del enganche con el mínimo.
+  ///
+  /// In es, this message translates to:
+  /// **'Mínimo {minimo}'**
+  String estrenoEngancheAyuda(String minimo);
+
+  /// Sección de plazos.
+  ///
+  /// In es, this message translates to:
+  /// **'Plazo'**
+  String get estrenoPlazo;
+
+  /// Un plazo.
+  ///
+  /// In es, this message translates to:
+  /// **'{meses} meses'**
+  String estrenoMeses(int meses);
+
+  /// Etiqueta de la mensualidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensualidad estimada'**
+  String get estrenoMensualidad;
+
+  /// Precio del modelo.
+  ///
+  /// In es, this message translates to:
+  /// **'Precio desde {precio}'**
+  String estrenoPrecioDesde(String precio);
+
+  /// Estado de una solicitud sin vendedor aún.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibida'**
+  String get estrenoEstadoRecibida;
+
+  /// Estado con vendedor asignado.
+  ///
+  /// In es, this message translates to:
+  /// **'En atención'**
+  String get estrenoEstadoEnAtencion;
+
+  /// Estado cerrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrada'**
+  String get estrenoEstadoCerrada;
+
+  /// Vendedor asignado.
+  ///
+  /// In es, this message translates to:
+  /// **'Te atiende {nombre}'**
+  String estrenoTeAtiende(String nombre);
+
+  /// Lista vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes solicitudes'**
+  String get estrenoVacioTitulo;
+
+  /// Lista vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Desde el catálogo puedes pedir una prueba de manejo o cotizar un auto nuevo.'**
+  String get estrenoVacioMensaje;
+
+  /// Lector de pantalla mientras carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus solicitudes'**
+  String get estrenoCargando;
 }
 
 class _AppLocalizationsDelegate

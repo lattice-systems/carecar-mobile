@@ -2253,4 +2253,112 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenteAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String get estrenoQuieroProbarlo => 'Quiero probarlo';
+
+  @override
+  String get estrenoCotizar => 'Cotizar';
+
+  @override
+  String get estrenoPruebaTitulo => 'Prueba de manejo';
+
+  @override
+  String get estrenoCotizacionTitulo => 'Cotización';
+
+  @override
+  String get estrenoMisSolicitudes => 'Mis solicitudes';
+
+  @override
+  String get estrenoDia => '¿Qué día?';
+
+  @override
+  String get estrenoFranja => '¿A qué hora?';
+
+  @override
+  String get estrenoManana => 'Mañana (9 a 13 h)';
+
+  @override
+  String get estrenoTarde => 'Tarde (13 a 18 h)';
+
+  @override
+  String get estrenoTomaACuenta => '¿Dejas tu auto a cuenta?';
+
+  @override
+  String get estrenoSinTomaACuenta => 'No';
+
+  @override
+  String get estrenoEnviar => 'Enviar solicitud';
+
+  @override
+  String get estrenoEnviarCotizacion => 'Enviar cotización';
+
+  @override
+  String get estrenoListo => '¡Listo! Un asesor te contactará pronto.';
+
+  @override
+  String get estrenoVerSolicitudes => 'Ver mis solicitudes';
+
+  @override
+  String get estrenoDuplicada =>
+      'Ya pediste esto para este modelo; un asesor te contactará.';
+
+  @override
+  String get estrenoSinPrecio =>
+      'Este modelo aún no tiene precio publicado. Pregúntale a un asesor.';
+
+  @override
+  String get estrenoSinConexion =>
+      'No pudimos enviarlo. Revisa tu internet y vuelve a intentar.';
+
+  @override
+  String get estrenoNoDisponible => 'Algo falló. Intenta más tarde.';
+
+  @override
+  String get estrenoEnganche => 'Enganche';
+
+  @override
+  String estrenoEngancheAyuda(String minimo) {
+    return 'Mínimo $minimo';
+  }
+
+  @override
+  String get estrenoPlazo => 'Plazo';
+
+  @override
+  String estrenoMeses(int meses) {
+    return '$meses meses';
+  }
+
+  @override
+  String get estrenoMensualidad => 'Mensualidad estimada';
+
+  @override
+  String estrenoPrecioDesde(String precio) {
+    return 'Precio desde $precio';
+  }
+
+  @override
+  String get estrenoEstadoRecibida => 'Recibida';
+
+  @override
+  String get estrenoEstadoEnAtencion => 'En atención';
+
+  @override
+  String get estrenoEstadoCerrada => 'Cerrada';
+
+  @override
+  String estrenoTeAtiende(String nombre) {
+    return 'Te atiende $nombre';
+  }
+
+  @override
+  String get estrenoVacioTitulo => 'Aún no tienes solicitudes';
+
+  @override
+  String get estrenoVacioMensaje =>
+      'Desde el catálogo puedes pedir una prueba de manejo o cotizar un auto nuevo.';
+
+  @override
+  String get estrenoCargando => 'Cargando tus solicitudes';
 }
