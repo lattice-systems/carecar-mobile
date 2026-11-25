@@ -74,7 +74,7 @@ Antes de abrir un PR con interfaz, contesta:
 
 ## Herramientas
 
-Tres skills de agente revisadas y probadas (2026-11-25). Sirven a quien trabaje con Claude Code; las reglas de arriba valen igual para personas y para otros agentes.
+Tres skills de agente (2026-11-25): se leyó su contenido completo antes de instalarlas, pero no se ejecutaron sus scripts. Sirven a quien trabaje con Claude Code; las reglas de arriba valen igual para personas y para otros agentes.
 
 | Skill | Para qué | Origen |
 | --- | --- | --- |
