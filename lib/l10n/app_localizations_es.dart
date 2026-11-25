@@ -103,6 +103,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
 
   @override
+  String get accesoRecuperarEnviado => 'Revisa tu correo';
+
+  @override
+  String get accesoRecuperarEnviadoMensaje =>
+      'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.';
+
+  @override
+  String get accesoRecuperarEnviando => 'Enviando…';
+
+  @override
+  String get accesoRecuperarEnviar => 'Enviarme el enlace';
+
+  @override
+  String get accesoRecuperarExplicacion =>
+      'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.';
+
+  @override
+  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el enlace';
+
+  @override
+  String get accesoRecuperarTitulo => 'Recupera tu contraseña';
+
+  @override
   String get accesoServidorDespertandoMensaje =>
       'La primera vez después de un rato puede tardar hasta un minuto.';
 

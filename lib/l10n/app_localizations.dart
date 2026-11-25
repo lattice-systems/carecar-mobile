@@ -272,6 +272,48 @@ abstract class AppLocalizations {
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
 
+  /// Título del aviso tras pedir el enlace de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu correo'**
+  String get accesoRecuperarEnviado;
+
+  /// Explica que el enlace puede no llegar si el correo no tiene cuenta, para que nadie se quede esperando.
+  ///
+  /// In es, this message translates to:
+  /// **'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.'**
+  String get accesoRecuperarEnviadoMensaje;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get accesoRecuperarEnviando;
+
+  /// Botón que pide el enlace de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviarme el enlace'**
+  String get accesoRecuperarEnviar;
+
+  /// Explica qué hace la pantalla de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.'**
+  String get accesoRecuperarExplicacion;
+
+  /// Título del aviso cuando falla la petición del enlace.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos enviar el enlace'**
+  String get accesoRecuperarFalloTitulo;
+
+  /// Título de la pantalla de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Recupera tu contraseña'**
+  String get accesoRecuperarTitulo;
+
   /// Detalle del aviso cuando el servidor está despertando y la petición sigue en curso.
   ///
   /// In es, this message translates to:

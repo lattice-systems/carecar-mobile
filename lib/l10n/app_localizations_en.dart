@@ -103,6 +103,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoOlvide => 'Forgot your password?';
 
   @override
+  String get accesoRecuperarEnviado => 'Check your email';
+
+  @override
+  String get accesoRecuperarEnviadoMensaje =>
+      'If that email has an account, you\'ll get a link to choose a new password. It expires soon and works only once.';
+
+  @override
+  String get accesoRecuperarEnviando => 'Sending…';
+
+  @override
+  String get accesoRecuperarEnviar => 'Send me the link';
+
+  @override
+  String get accesoRecuperarExplicacion =>
+      'Enter your email and we\'ll send you a link to choose a new password.';
+
+  @override
+  String get accesoRecuperarFalloTitulo => 'We couldn\'t send the link';
+
+  @override
+  String get accesoRecuperarTitulo => 'Recover your password';
+
+  @override
   String get accesoServidorDespertandoMensaje =>
       'The first time after a while it can take up to a minute.';
 

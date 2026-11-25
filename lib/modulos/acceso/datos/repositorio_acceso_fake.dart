@@ -23,6 +23,12 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
   String? ultimaActual;
   String? ultimaNueva;
 
+  /// Si no es nulo, las operaciones esperan esto antes de terminar.
+  ///
+  /// Sirve para probar lo que pasa **mientras** el servidor responde: el
+  /// boton bloqueado, el doble toque, el aviso de que tarda.
+  Future<void>? esperar;
+
   int llamadasAlPedirEnlace = 0;
   String? ultimoCorreo;
   String? ultimoToken;
@@ -44,6 +50,8 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
   Future<void> pedirEnlaceDeRecuperacion(String correo) => pedir(() async {
     llamadasAlPedirEnlace++;
     ultimoCorreo = correo;
+    final espera = esperar;
+    if (espera != null) await espera;
     final f = falla;
     if (f != null) throw f;
   });
