@@ -1,5 +1,7 @@
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/acceso/acceso.dart';
+import 'package:carecar_mobile/modulos/acceso/presentacion/proveedores_acceso.dart'
+    show repositorioAccesoProvider;
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
@@ -112,10 +114,59 @@ void main() {
     expect(find.byType(PantallaCambiarContrasena), findsOneWidget);
   });
 
-  testWidgets('las dos rutas del modulo no comparten camino', (tester) async {
+  testWidgets('las cuatro rutas del modulo no comparten camino', (
+    tester,
+  ) async {
     final caminos = rutasAcceso.whereType<GoRoute>().map((r) => r.path);
     expect(caminos.toSet().length, caminos.length);
-    expect(caminos, containsAll([Rutas.acceso, Rutas.cambiarContrasena]));
+    expect(
+      caminos,
+      containsAll([
+        Rutas.acceso,
+        Rutas.cambiarContrasena,
+        Rutas.recuperar,
+        Rutas.restablecer,
+      ]),
+    );
+  });
+
+  testWidgets('el enlace del correo llega a la pantalla con su token', (
+    tester,
+  ) async {
+    // La vuelta completa del criterio: `carecar://restablecer?token=abc` lo
+    // traduce el nucleo a esta ruta, y la pantalla tiene que recibir el token
+    // por la consulta. Si el camino o el nombre del parametro no coincidieran,
+    // el enlace del correo abriria una pantalla que dice «enlace roto».
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          controladorSesionProvider.overrideWithValue(
+            ControladorSesion(ApiFalsa(), AlmacenEnMemoria()),
+          ),
+          repositorioAccesoProvider.overrideWithValue(RepositorioAccesoFake()),
+        ],
+        child: MaterialApp.router(
+          locale: idiomaBase,
+          localizationsDelegates: delegadasDeIdioma,
+          supportedLocales: idiomasSoportados,
+          routerConfig: GoRouter(
+            initialLocation: '${Rutas.restablecer}?token=abc123',
+            routes: rutasAcceso,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final pantalla = tester.widget<PantallaNuevaContrasena>(
+      find.byType(PantallaNuevaContrasena),
+    );
+    expect(pantalla.token, 'abc123');
+    // Y por tanto pide la contrasena en vez de decir que el enlace no sirve.
+    expect(
+      find.byKey(PantallaNuevaContrasena.campoNueva),
+      findsOneWidget,
+    );
   });
 
   testWidgets('la pantalla llega con el tema Pista, no con el de la v1', (
