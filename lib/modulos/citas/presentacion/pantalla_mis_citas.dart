@@ -21,6 +21,7 @@ import '../dominio/cita_cliente.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
 import 'componentes/grupo_citas.dart';
+import 'componentes/grupo_recoleccion_cita.dart';
 import 'componentes/marco_pantalla_cita.dart';
 import 'componentes/seccion_cita.dart';
 import 'componentes/vacio_ilustrado.dart';
@@ -171,6 +172,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                       ),
                   ],
                 ),
+              ..._traslados(textos, proximas),
               if (pasadas.isEmpty)
                 seccionVacia(textos.citasPasadas, textos.citasPasadasVacio)
               else
@@ -180,6 +182,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                     for (final c in pasadas) _fila(context, c, vehiculos),
                   ],
                 ),
+              ..._traslados(textos, pasadas),
               if (estado.errorAlCargarMas)
                 Padding(
                   padding: const EdgeInsets.all(Espaciado.e4),
@@ -209,6 +212,20 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ],
     );
   }
+
+  /// Un grupo de traslados por cada cita que lleva recolección y sigue en pie
+  /// (V2-M17.03): desde aquí se abre el seguimiento del chofer y su checklist.
+  /// Una cita cancelada ya no tiene a quién seguir.
+  List<Widget> _traslados(AppLocalizations textos, List<CitaCliente> citas) => [
+    for (final c in citas)
+      if (c.recoleccion != null && c.estado != EstadoDeCita.cancelada)
+        GrupoRecoleccionCita(
+          recoleccion: c.recoleccion!,
+          encabezado: textos.citasMisCitasRecoleccionEncabezado(
+            textos.citasFilaTitulo(c.fecha, c.horaInicio),
+          ),
+        ),
+  ];
 
   String _nombreVehiculo(
     AppLocalizations textos,
