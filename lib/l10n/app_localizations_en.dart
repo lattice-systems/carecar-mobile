@@ -2118,6 +2118,50 @@ class AppLocalizationsEn extends AppLocalizations {
       'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
 
   @override
+  String inicioSaludo(String nombre) {
+    return 'Hi, $nombre';
+  }
+
+  @override
+  String get inicioAccesos => 'Shortcuts';
+
+  @override
+  String get inicioAgendarCita => 'Book appointment';
+
+  @override
+  String get inicioPerfilYAjustes => 'Profile and settings';
+
+  @override
+  String get inicioDestinoInicio => 'Home';
+
+  @override
+  String get inicioDestinoVehiculos => 'Vehicles';
+
+  @override
+  String get inicioDestinoCitas => 'Appointments';
+
+  @override
+  String get inicioDestinoCatalogo => 'Catalog';
+
+  @override
+  String get inicioAccesoVehiculosTitulo => 'My vehicles';
+
+  @override
+  String get inicioAccesoVehiculosSubtitulo => 'Your cars, specs and manuals';
+
+  @override
+  String get inicioAccesoCitasTitulo => 'Appointments';
+
+  @override
+  String get inicioAccesoCitasSubtitulo => 'Book and review your appointments';
+
+  @override
+  String get inicioAccesoCatalogoTitulo => 'Catalog';
+
+  @override
+  String get inicioAccesoCatalogoSubtitulo => 'Explore the Nissan models';
+
+  @override
   String get asistenteTitulo => 'Ask your car';
 
   @override

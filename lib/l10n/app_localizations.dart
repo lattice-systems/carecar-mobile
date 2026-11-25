@@ -3550,6 +3550,90 @@ abstract class AppLocalizations {
   /// **'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.'**
   String get seguridadConexionNoSeguraMensaje;
 
+  /// Saludo de la pantalla de inicio con el primer nombre del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Hola, {nombre}'**
+  String inicioSaludo(String nombre);
+
+  /// Encabezado de la lista de accesos del inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesos'**
+  String get inicioAccesos;
+
+  /// Botón flotante del inicio: la acción principal.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get inicioAgendarCita;
+
+  /// Nombre del botón del avatar, arriba a la izquierda del inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil y ajustes'**
+  String get inicioPerfilYAjustes;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Inicio'**
+  String get inicioDestinoInicio;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículos'**
+  String get inicioDestinoVehiculos;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Citas'**
+  String get inicioDestinoCitas;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo'**
+  String get inicioDestinoCatalogo;
+
+  /// Título del acceso a los vehículos en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis vehículos'**
+  String get inicioAccesoVehiculosTitulo;
+
+  /// Subtítulo del acceso a los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, fichas y manuales'**
+  String get inicioAccesoVehiculosSubtitulo;
+
+  /// Título del acceso a las citas en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Citas'**
+  String get inicioAccesoCitasTitulo;
+
+  /// Subtítulo del acceso a las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda y revisa tus citas'**
+  String get inicioAccesoCitasSubtitulo;
+
+  /// Título del acceso al catálogo en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo'**
+  String get inicioAccesoCatalogoTitulo;
+
+  /// Subtítulo del acceso al catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Conoce los modelos Nissan'**
+  String get inicioAccesoCatalogoSubtitulo;
+
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
   /// In es, this message translates to:

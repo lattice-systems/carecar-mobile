@@ -6,6 +6,7 @@ import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -60,11 +61,19 @@ String _codigoEscrito(WidgetTester tester) => tester
 String _ubicacion(WidgetTester tester) =>
     enrutadorDe(tester).routerDelegate.currentConfiguration.uri.toString();
 
+/// El avatar del inicio. La arnés de prueba usa el idioma por omisión (inglés),
+/// así que se acepta el nombre en cualquiera de los dos idiomas.
+Finder _botonPerfil() => find.byWidgetPredicate(
+  (w) =>
+      w is Tooltip &&
+      (w.message == 'Perfil y ajustes' || w.message == 'Profile and settings'),
+);
+
 void main() {
   group('una prueba por ruta', () {
     testWidgets('inicio ("/") muestra el menu', (tester) async {
       await _montar(tester);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
       expect(_ubicacion(tester), Rutas.inicio);
     });
 
@@ -128,7 +137,7 @@ void main() {
       await _montar(tester);
       enrutadorDe(tester).go('/no-existe');
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
   });
 
@@ -203,7 +212,7 @@ void main() {
       await _montar(tester);
       enrutadorDe(tester).go(Rutas.acceso);
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
 
     testWidgets('al cerrar sesion vuelve al acceso', (tester) async {

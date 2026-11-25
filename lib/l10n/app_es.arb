@@ -2726,6 +2726,37 @@
   "@seguridadConexionNoSeguraMensaje": {
     "description": "Explica por qué se cortó la conexión y qué hacer: cambiar de red."
   },
+  "inicioSaludo": "Hola, {nombre}",
+  "@inicioSaludo": {
+    "description": "Saludo de la pantalla de inicio con el primer nombre del cliente.",
+    "placeholders": { "nombre": { "type": "String" } }
+  },
+  "inicioAccesos": "Accesos",
+  "@inicioAccesos": { "description": "Encabezado de la lista de accesos del inicio." },
+  "inicioAgendarCita": "Agendar cita",
+  "@inicioAgendarCita": { "description": "Botón flotante del inicio: la acción principal." },
+  "inicioPerfilYAjustes": "Perfil y ajustes",
+  "@inicioPerfilYAjustes": { "description": "Nombre del botón del avatar, arriba a la izquierda del inicio." },
+  "inicioDestinoInicio": "Inicio",
+  "@inicioDestinoInicio": { "description": "Destino de la barra inferior." },
+  "inicioDestinoVehiculos": "Vehículos",
+  "@inicioDestinoVehiculos": { "description": "Destino de la barra inferior." },
+  "inicioDestinoCitas": "Citas",
+  "@inicioDestinoCitas": { "description": "Destino de la barra inferior." },
+  "inicioDestinoCatalogo": "Catálogo",
+  "@inicioDestinoCatalogo": { "description": "Destino de la barra inferior." },
+  "inicioAccesoVehiculosTitulo": "Mis vehículos",
+  "@inicioAccesoVehiculosTitulo": { "description": "Título del acceso a los vehículos en el inicio." },
+  "inicioAccesoVehiculosSubtitulo": "Tus autos, fichas y manuales",
+  "@inicioAccesoVehiculosSubtitulo": { "description": "Subtítulo del acceso a los vehículos." },
+  "inicioAccesoCitasTitulo": "Citas",
+  "@inicioAccesoCitasTitulo": { "description": "Título del acceso a las citas en el inicio." },
+  "inicioAccesoCitasSubtitulo": "Agenda y revisa tus citas",
+  "@inicioAccesoCitasSubtitulo": { "description": "Subtítulo del acceso a las citas." },
+  "inicioAccesoCatalogoTitulo": "Catálogo",
+  "@inicioAccesoCatalogoTitulo": { "description": "Título del acceso al catálogo en el inicio." },
+  "inicioAccesoCatalogoSubtitulo": "Conoce los modelos Nissan",
+  "@inicioAccesoCatalogoSubtitulo": { "description": "Subtítulo del acceso al catálogo." },
   "asistenteTitulo": "Pregúntale a tu auto",
   "@asistenteTitulo": {
     "description": "Título de la pantalla del asistente y acceso desde el detalle del vehículo."
