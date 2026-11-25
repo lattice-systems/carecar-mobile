@@ -61,14 +61,6 @@ String _codigoEscrito(WidgetTester tester) => tester
 String _ubicacion(WidgetTester tester) =>
     enrutadorDe(tester).routerDelegate.currentConfiguration.uri.toString();
 
-/// El avatar del inicio. La arnés de prueba usa el idioma por omisión (inglés),
-/// así que se acepta el nombre en cualquiera de los dos idiomas.
-Finder _botonPerfil() => find.byWidgetPredicate(
-  (w) =>
-      w is Tooltip &&
-      (w.message == 'Perfil y ajustes' || w.message == 'Profile and settings'),
-);
-
 void main() {
   group('una prueba por ruta', () {
     testWidgets('inicio ("/") muestra el menu', (tester) async {
