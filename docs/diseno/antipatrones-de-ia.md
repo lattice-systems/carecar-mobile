@@ -32,7 +32,7 @@ Cada fila dice qué se rechaza, el caso real de CareCar donde apareció y la reg
 | **Lo vacío por encima de lo que hay** | La invitación a agendar iba antes que el próximo servicio | Lo vacío va al final |
 | **Ritmo irregular**: huecos que cambian según qué tarjetas se vean | Entre la tarjeta del taller y la de citas había 44 px; entre las demás, 16 | Cada tarjeta lleva su propia separación inferior (16); quien las junta no suma huecos |
 | **El mismo dato escrito distinto** | `18.450 km` en el inicio y `18,450 km` en el resto | En español, formato de México: `formatearMiles` |
-| **Pantallas sin salida visible**, o con el botón de otro color | Historial, Tu orden, Inspección, Adicionales y Ficha técnica abrían sin botón de regreso; «Pedir ayuda» cerraba con una X azul | Toda pantalla de detalle abre con `MarcoPantalla` o `BarraPantalla`, con `BotonRegresar` o `BotonCerrar` |
+| **Pantallas sin salida visible**, o con el botón de otro color | Historial, Tu orden, Inspección, Adicionales y Ficha técnica abrían sin botón de regreso; «Pedir ayuda» cerraba con una X azul | Toda pantalla de detalle abre con `MarcoPantalla` o `BarraPantalla`, con `BotonRegresar` o `BotonCerrar`. Una prueba de arquitectura falla si un módulo arma `EncabezadoGrande` a mano |
 | **Vidrio y desenfoque como adorno** | Cuesta rendimiento y legibilidad sin decir nada | Solo donde hay capas reales: la barra flotante y el encabezado que se recoge |
 | **Movimiento sin propósito** (entradas en cascada, rebotes en todo) | Distrae y cansa | Un momento orquestado por pantalla; el que responde a un toque (abrir, confirmar) sí |
 | **Datos o pruebas inventados** que parecen reales | Engaña | Cada cifra sale del servidor o de un estado vacío honesto |
