@@ -13,7 +13,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01); su ruta **no está encendida** hasta V2-M01.03 y V2-M01.04, y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
-| Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 | V2-M01.03 |
+| Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 pantalla v2 con 15 pruebas y el apretón de manos con el guardia fijado (V2-M01.03); su ruta **no está encendida** hasta V2-M01.04, y falta demostrarla en celular | V2-M01.03 |
 | Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); falta la pantalla de la app (V2-M01.04) | V2-M01.04, V2-T05.04 |
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
 | Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 | V2-M01.06 |
@@ -49,7 +49,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | 🟡 backend con `etapa_orden` y `orden_servicio.cita_id`, `asesor_id` y `entrega_estimada` (`TallerAppIntegrationTest`); app con la tarjeta de Inicio y la línea de tiempo con la hora de cada etapa y la entrega estimada (`test/modulos/taller/`); falta que se actualice sola (V2-M04.03) y demostrar en celular | V2-M04.01, V2-M04.02, V2-M04.03 |
+| Estado de la orden en tiempo real | `orden_servicio`, `etapa_orden` | 🟡 backend con `etapa_orden` y `orden_servicio.cita_id`, `asesor_id` y `entrega_estimada` (`TallerAppIntegrationTest`); app con la tarjeta de Inicio y la línea de tiempo con la hora de cada etapa y la entrega estimada (`test/modulos/taller/`); se actualiza sola con el aviso `orden` del canal de eventos (`GET /eventos`, V2-M04.03); lista para entrega, la tarjeta cambia a «Listo» con el total y el horario de `franja_horario` (V2-M04.06), y la orden cerrada pasa sus adicionales aprobados a `orden_mano_de_obra` y `orden_refaccion` y abre su ticket del historial (V2-M04.07); falta el push con la app cerrada (V2-M06.07) y demostrar en celular | V2-M04.01, V2-M04.02, V2-M04.03, V2-M04.06, V2-M04.07 |
 | Inspección multipunto con fotos | `orden_servicio`, `punto_inspeccion`, `evidencia_orden` | 🟡 backend con `punto_inspeccion` y `evidencia_orden` (fotos y videos en `archivos`, URL firmada) (`TallerAppIntegrationTest`); app con semáforo, fotos con zoom y video en el reproductor del teléfono (`test/modulos/taller/`); falta demostrar en celular | V2-M04.04 |
 | Aprobación de trabajos adicionales | `orden_servicio`, `trabajo_adicional` | 🟡 backend con `trabajo_adicional` y su auditoría (quién, cuándo y firma) (`TallerAppIntegrationTest`); app aprueba o rechaza uno por uno con firma en pantalla y recalcula el total (`test/modulos/taller/`); la firma usa un lienzo provisional; falta demostrar en celular | V2-M04.05 |
 

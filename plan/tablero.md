@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **227 historias** (una descartada) + 4 de H0.
+Total: **228 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -56,6 +56,7 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | V2-T02.18 | Los módulos v2 solo usan controles del sistema de diseño (regla en CI) | Daniel |  | V2-T02.17 | Hecha | #105 |
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
+| V2-T02.21 | Navegación en píldora e inicio nuevo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
@@ -88,7 +89,7 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Hecha | #107 |
 | V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Lista | |
-| V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Lista | |
+| V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Hecha | #143 |
 | V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Lista | |
 | V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.06 | Ver mi perfil | Jael |  | V2-M01.01 | Lista | |
@@ -154,11 +155,11 @@ Total: **227 historias** (una descartada) + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M04.01 | Ver en Inicio que mi auto está en el taller | Ricardo | B | V2-M02.05 | Hecha | backend#89, #109, #111 |
 | V2-M04.02 | La línea de tiempo de mi orden con la hora de cada etapa | Ricardo | B | V2-M04.01, V2-T02.13 (provisional) | Hecha | backend#89, #109 |
-| V2-M04.03 | Que la línea de tiempo se actualice sola | Ricardo | B | V2-M04.02, V2-M06.02 | Lista | |
+| V2-M04.03 | Que la línea de tiempo se actualice sola | Ricardo | B | V2-M04.02, V2-M06.02 | Hecha | backend#102, #145 |
 | V2-M04.04 | Ver la inspección multipunto con fotos | Ricardo | B | V2-M04.02 | Hecha | backend#89, #109 |
 | V2-M04.05 | Aprobar o rechazar trabajos adicionales desde la app | Ricardo | B | V2-M04.02 | Hecha | backend#89, #109 |
-| V2-M04.06 | Saber cuándo mi auto está listo | Ricardo | B | V2-M04.03 | Lista | |
-| V2-M04.07 | Que la orden cerrada pase a mi historial con su ticket | Ricardo | B | V2-M04.06 | Lista | |
+| V2-M04.06 | Saber cuándo mi auto está listo | Ricardo | B | V2-M04.03 | Hecha | backend#102, #145 |
+| V2-M04.07 | Que la orden cerrada pase a mi historial con su ticket | Ricardo | B | V2-M04.06 | Hecha | backend#102, #145 |
 | V2-M05.01 | Ver el plan de mantenimiento de mi modelo | Juan Pablo | B | V2-M02.05 | Hecha | #104, backend#88 |
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |

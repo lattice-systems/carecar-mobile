@@ -1,5 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../nucleo/api/proveedores_api.dart';
+import '../datos/repositorio_acceso_api.dart';
+import '../dominio/repositorio_acceso.dart';
+
+/// Lo que el modulo necesita del servidor.
+///
+/// En pruebas se sustituye por `RepositorioAccesoFake` con
+/// `overrideWithValue`, asi que ninguna prueba de pantalla levanta red.
+final repositorioAccesoProvider = Provider<RepositorioAcceso>(
+  (ref) => RepositorioAccesoApi(ref.watch(carecarApiProvider)),
+  name: 'repositorioAccesoProvider',
+);
+
 /// De donde sale «ahora» en el modulo de acceso.
 ///
 /// Existe para que la cuenta regresiva del bloqueo por intentos se pueda

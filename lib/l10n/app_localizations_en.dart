@@ -23,6 +23,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoBloqueoTitulo => 'Too many attempts';
 
   @override
+  String get accesoCambiarActualEtiqueta => 'Temporary password';
+
+  @override
+  String get accesoCambiarCerrarSesion => 'Sign out';
+
+  @override
+  String get accesoCambiarConfirmarEtiqueta => 'Confirm the new password';
+
+  @override
+  String get accesoCambiarExplicacion =>
+      'The dealership gave you a temporary password. Choose a new one to continue.';
+
+  @override
+  String get accesoCambiarFalloTitulo => 'We couldn\'t change your password';
+
+  @override
+  String get accesoCambiarGuardando => 'Saving…';
+
+  @override
+  String get accesoCambiarGuardar => 'Save';
+
+  @override
+  String get accesoCambiarNoCoincide => 'The two passwords don\'t match.';
+
+  @override
+  String get accesoCambiarNuevaEtiqueta => 'New password';
+
+  @override
+  String get accesoCambiarReglaDistinta => 'Different from the temporary one';
+
+  @override
+  String get accesoCambiarReglaLargo => 'From 8 to 72 characters';
+
+  @override
+  String get accesoCambiarReglaLetra => 'At least one letter';
+
+  @override
+  String get accesoCambiarReglaNumero => 'At least one number';
+
+  @override
+  String get accesoCambiarReglasTitulo => 'Your new password must have:';
+
+  @override
+  String get accesoCambiarTitulo => 'Change your password';
+
+  @override
   String get accesoContrasenaEtiqueta => 'Password';
 
   @override
@@ -2118,6 +2164,78 @@ class AppLocalizationsEn extends AppLocalizations {
       'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
 
   @override
+  String inicioSaludo(String nombre) {
+    return 'Hi, $nombre';
+  }
+
+  @override
+  String get inicioProximaCita => 'Next appointment';
+
+  @override
+  String get inicioSinCitas => 'No upcoming appointments';
+
+  @override
+  String get inicioSinCitasDetalle => 'Book your car\'s next service';
+
+  @override
+  String get inicioSinAutos => 'No cars registered yet';
+
+  @override
+  String get inicioSinAutosDetalle =>
+      'Once the dealership registers your car, you\'ll see it here';
+
+  @override
+  String inicioKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String inicioAutoDeTotal(int n, int total) {
+    return 'Car $n of $total';
+  }
+
+  @override
+  String inicioCitaCuando(String dia, String hora) {
+    return '$dia, $hora';
+  }
+
+  @override
+  String get inicioAgendarCita => 'Book appointment';
+
+  @override
+  String get inicioPerfilYAjustes => 'Profile and settings';
+
+  @override
+  String get inicioDestinoInicio => 'Home';
+
+  @override
+  String get inicioDestinoVehiculos => 'Vehicles';
+
+  @override
+  String get inicioDestinoCitas => 'Appointments';
+
+  @override
+  String get inicioDestinoCatalogo => 'Catalog';
+
+  @override
+  String get inicioAccesoVehiculosTitulo => 'My vehicles';
+
+  @override
+  String get inicioAccesoVehiculosSubtitulo => 'Your cars, specs and manuals';
+
+  @override
+  String get inicioAccesoCitasTitulo => 'Appointments';
+
+  @override
+  String get inicioAccesoCitasSubtitulo => 'Book and review your appointments';
+
+  @override
+  String get inicioAccesoCatalogoTitulo => 'Catalog';
+
+  @override
+  String get inicioAccesoCatalogoSubtitulo => 'Explore the Nissan models';
+
+  @override
   String get asistenteTitulo => 'Ask your car';
 
   @override
@@ -3007,6 +3125,47 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tallerRespuestaError =>
       'Your answer could not be sent. Try again.';
+
+  @override
+  String tallerTarjetaListoTitulo(String vehiculo) {
+    return 'Your $vehiculo is ready';
+  }
+
+  @override
+  String tallerTarjetaListoTotal(String total) {
+    return 'Total to pay $total';
+  }
+
+  @override
+  String tallerHorarioEntrega(String fecha, String desde, String hasta) {
+    return 'Pick it up on $fecha from $desde to $hasta';
+  }
+
+  @override
+  String get tallerHorarioSinFranjas =>
+      'Your advisor will tell you when to pick it up.';
+
+  @override
+  String get tallerOrdenListoTitulo => 'Your car is ready';
+
+  @override
+  String get tallerOrdenTotalAPagar => 'Total to pay';
+
+  @override
+  String get tallerOrdenEntregadaTitulo => 'You picked up your car';
+
+  @override
+  String get tallerOrdenEntregadaMensaje =>
+      'The order is now in your vehicle history with its ticket.';
+
+  @override
+  String get tallerOrdenVerTicket => 'See ticket';
+
+  @override
+  String get tallerOrdenVerTicketResumen => 'Labor and parts of the order';
+
+  @override
+  String get tallerOrdenVerHistorial => 'See vehicle history';
 
   @override
   String get asistenteFotoAdjuntar => 'Photo of a dashboard light';

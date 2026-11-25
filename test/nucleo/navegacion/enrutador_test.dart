@@ -6,6 +6,7 @@ import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -64,7 +65,7 @@ void main() {
   group('una prueba por ruta', () {
     testWidgets('inicio ("/") muestra el menu', (tester) async {
       await _montar(tester);
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
       expect(_ubicacion(tester), Rutas.inicio);
     });
 
@@ -128,7 +129,7 @@ void main() {
       await _montar(tester);
       enrutadorDe(tester).go('/no-existe');
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
   });
 
@@ -203,7 +204,7 @@ void main() {
       await _montar(tester);
       enrutadorDe(tester).go(Rutas.acceso);
       await tester.pumpAndSettle();
-      expect(find.text('Menú'), findsOneWidget);
+      expect(find.byType(InicioNuevo), findsOneWidget);
     });
 
     testWidgets('al cerrar sesion vuelve al acceso', (tester) async {

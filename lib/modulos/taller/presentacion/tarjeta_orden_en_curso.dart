@@ -18,7 +18,8 @@ import 'rutas_taller.dart';
 /// Tarjeta de Inicio que dice que el auto esta en el taller (V2-M04.01). Solo
 /// aparece si hay una orden sin entregar; mientras carga, si falla o al
 /// entregarse la orden, no ocupa lugar. Al tocarla abre la orden y, al volver,
-/// se recarga.
+/// se recarga. Cuando la orden queda lista cambia sola a «Listo» con el total
+/// y el horario para recogerlo (V2-M04.06).
 class TarjetaOrdenEnCurso extends ConsumerWidget {
   const TarjetaOrdenEnCurso({super.key});
 
@@ -67,14 +68,24 @@ class _Tarjeta extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
+    final lista = orden.lista;
     final etapa = textoEtapa(textos, orden.etapa);
     final entrega = orden.entregaEstimada;
-    final detalle = entrega == null
-        ? etapa
-        : textos.tallerTarjetaEtapaYEntrega(
-            etapa,
-            horaTaller(context, entrega),
-          );
+    final total = orden.totalEstimado;
+    final detalles = lista
+        ? [
+            if (total != null)
+              textos.tallerTarjetaListoTotal(monedaTaller(context, total)),
+            textoHorarioEntrega(context, orden.horarioEntrega),
+          ]
+        : [
+            entrega == null
+                ? etapa
+                : textos.tallerTarjetaEtapaYEntrega(
+                    etapa,
+                    horaTaller(context, entrega),
+                  ),
+          ];
 
     return Semantics(
       button: true,
@@ -97,10 +108,15 @@ class _Tarjeta extends StatelessWidget {
                   width: _medallon,
                   height: _medallon,
                   decoration: BoxDecoration(
-                    color: c.acentoSuave,
+                    color: lista ? c.exitoSuave : c.acentoSuave,
                     borderRadius: Radios.bordePildora,
                   ),
-                  child: Icon(Icons.car_repair_rounded, color: c.acento),
+                  child: Icon(
+                    lista
+                        ? Icons.check_circle_outline_rounded
+                        : Icons.car_repair_rounded,
+                    color: lista ? c.exito : c.acento,
+                  ),
                 ),
                 const SizedBox(width: Espaciado.e3),
                 Expanded(
@@ -108,16 +124,29 @@ class _Tarjeta extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        textos.tallerTarjetaTitulo(orden.vehiculo),
+                        lista
+                            ? textos.tallerTarjetaListoTitulo(orden.vehiculo)
+                            : textos.tallerTarjetaTitulo(orden.vehiculo),
                         style: t.cuerpoFuerte.copyWith(color: c.texto),
                       ),
-                      const SizedBox(height: Espaciado.e1),
-                      Text(
-                        detalle,
-                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                      ),
+                      for (final detalle in detalles) ...[
+                        const SizedBox(height: Espaciado.e1),
+                        Text(
+                          detalle,
+                          style: t.cuerpoChico.copyWith(
+                            color: c.textoSecundario,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: Espaciado.e3),
-                      BarraAvance(avance: orden.avance),
+                      if (lista)
+                        Insignia(
+                          texto: textos.tallerEtapaListoParaEntrega,
+                          tono: Tono.exito,
+                          conIcono: true,
+                        )
+                      else
+                        BarraAvance(avance: orden.avance),
                       if (orden.adicionalesPendientes > 0) ...[
                         const SizedBox(height: Espaciado.e3),
                         Insignia(

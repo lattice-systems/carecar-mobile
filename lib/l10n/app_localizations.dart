@@ -116,6 +116,96 @@ abstract class AppLocalizations {
   /// **'Demasiados intentos'**
   String get accesoBloqueoTitulo;
 
+  /// Etiqueta del campo donde se escribe la contraseña temporal que dio la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña temporal'**
+  String get accesoCambiarActualEtiqueta;
+
+  /// Única salida de la pantalla de cambio obligatorio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get accesoCambiarCerrarSesion;
+
+  /// Etiqueta del campo de confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma la contraseña nueva'**
+  String get accesoCambiarConfirmarEtiqueta;
+
+  /// Explica por qué no se puede seguir sin cambiarla.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia te dio una contraseña temporal. Elige una nueva para continuar.'**
+  String get accesoCambiarExplicacion;
+
+  /// Título del aviso cuando el servidor rechaza el cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cambiar tu contraseña'**
+  String get accesoCambiarFalloTitulo;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get accesoCambiarGuardando;
+
+  /// Botón principal de la pantalla de cambio.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get accesoCambiarGuardar;
+
+  /// Error cuando la confirmación no coincide con la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Las dos contraseñas no son iguales.'**
+  String get accesoCambiarNoCoincide;
+
+  /// Etiqueta del campo de la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña nueva'**
+  String get accesoCambiarNuevaEtiqueta;
+
+  /// Regla en vivo: la nueva no puede ser la temporal.
+  ///
+  /// In es, this message translates to:
+  /// **'Distinta de la temporal'**
+  String get accesoCambiarReglaDistinta;
+
+  /// Regla en vivo del largo de la contraseña.
+  ///
+  /// In es, this message translates to:
+  /// **'De 8 a 72 caracteres'**
+  String get accesoCambiarReglaLargo;
+
+  /// Regla en vivo: debe tener una letra.
+  ///
+  /// In es, this message translates to:
+  /// **'Al menos una letra'**
+  String get accesoCambiarReglaLetra;
+
+  /// Regla en vivo: debe tener un número.
+  ///
+  /// In es, this message translates to:
+  /// **'Al menos un número'**
+  String get accesoCambiarReglaNumero;
+
+  /// Encabezado de la lista de reglas en vivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña nueva debe tener:'**
+  String get accesoCambiarReglasTitulo;
+
+  /// Título de la pantalla de cambio obligatorio.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambia tu contraseña'**
+  String get accesoCambiarTitulo;
+
   /// Etiqueta del campo de contraseña en la pantalla de acceso.
   ///
   /// In es, this message translates to:
@@ -3550,6 +3640,132 @@ abstract class AppLocalizations {
   /// **'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.'**
   String get seguridadConexionNoSeguraMensaje;
 
+  /// Saludo de la pantalla de inicio con el primer nombre del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Hola, {nombre}'**
+  String inicioSaludo(String nombre);
+
+  /// Rótulo de la tarjeta de la próxima cita en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Próxima cita'**
+  String get inicioProximaCita;
+
+  /// Título de la tarjeta de citas cuando no hay ninguna.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas por venir'**
+  String get inicioSinCitas;
+
+  /// Detalle de la tarjeta de citas vacía; al tocarla se abre la agenda.
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda la próxima revisión de tu auto'**
+  String get inicioSinCitasDetalle;
+
+  /// Título de la tarjeta de autos cuando el cliente no tiene ninguno.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes autos registrados'**
+  String get inicioSinAutos;
+
+  /// Detalle de la tarjeta de autos vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia registre tu auto, lo verás aquí'**
+  String get inicioSinAutosDetalle;
+
+  /// Kilometraje del auto en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String inicioKilometros(String km);
+
+  /// Posición del auto en el carrusel del inicio, para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Auto {n} de {total}'**
+  String inicioAutoDeTotal(int n, int total);
+
+  /// Día de la semana y hora de la próxima cita.
+  ///
+  /// In es, this message translates to:
+  /// **'{dia}, {hora}'**
+  String inicioCitaCuando(String dia, String hora);
+
+  /// Botón flotante del inicio: la acción principal.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get inicioAgendarCita;
+
+  /// Nombre del botón del avatar, arriba a la izquierda del inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil y ajustes'**
+  String get inicioPerfilYAjustes;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Inicio'**
+  String get inicioDestinoInicio;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Vehículos'**
+  String get inicioDestinoVehiculos;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Citas'**
+  String get inicioDestinoCitas;
+
+  /// Destino de la barra inferior.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo'**
+  String get inicioDestinoCatalogo;
+
+  /// Título del acceso a los vehículos en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis vehículos'**
+  String get inicioAccesoVehiculosTitulo;
+
+  /// Subtítulo del acceso a los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, fichas y manuales'**
+  String get inicioAccesoVehiculosSubtitulo;
+
+  /// Título del acceso a las citas en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Citas'**
+  String get inicioAccesoCitasTitulo;
+
+  /// Subtítulo del acceso a las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda y revisa tus citas'**
+  String get inicioAccesoCitasSubtitulo;
+
+  /// Título del acceso al catálogo en el inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Catálogo'**
+  String get inicioAccesoCatalogoTitulo;
+
+  /// Subtítulo del acceso al catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Conoce los modelos Nissan'**
+  String get inicioAccesoCatalogoSubtitulo;
+
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
   /// In es, this message translates to:
@@ -4999,6 +5215,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo enviar tu respuesta. Intenta de nuevo.'**
   String get tallerRespuestaError;
+
+  /// Tarjeta de Inicio cuando la orden está lista para entrega (V2-M04.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu {vehiculo} está listo'**
+  String tallerTarjetaListoTitulo(String vehiculo);
+
+  /// Total de la orden lista en la tarjeta de Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Total a pagar {total}'**
+  String tallerTarjetaListoTotal(String total);
+
+  /// Horario para recoger el auto listo, en hora de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Recógelo el {fecha} de {desde} a {hasta}'**
+  String tallerHorarioEntrega(String fecha, String desde, String hasta);
+
+  /// El taller no tiene horario cargado para recoger el auto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor te dirá cuándo recogerlo.'**
+  String get tallerHorarioSinFranjas;
+
+  /// Título del aviso de la orden lista para entrega (V2-M04.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto está listo'**
+  String get tallerOrdenListoTitulo;
+
+  /// Subtítulo de la fila con el total de la orden lista o entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'Total a pagar'**
+  String get tallerOrdenTotalAPagar;
+
+  /// Título del aviso de la orden entregada (V2-M04.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Ya recogiste tu auto'**
+  String get tallerOrdenEntregadaTitulo;
+
+  /// Mensaje del aviso de la orden entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'La orden quedó en el historial de tu vehículo con su ticket.'**
+  String get tallerOrdenEntregadaMensaje;
+
+  /// Fila que abre el ticket de la orden lista o entregada (V2-M04.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Ver ticket'**
+  String get tallerOrdenVerTicket;
+
+  /// Subtítulo de la fila que abre el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra y refacciones de la orden'**
+  String get tallerOrdenVerTicketResumen;
+
+  /// Fila que abre el historial del vehículo desde la orden entregada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver historial del vehículo'**
+  String get tallerOrdenVerHistorial;
 
   /// Botón de cámara junto al campo del asistente (V2-M24.05).
   ///
