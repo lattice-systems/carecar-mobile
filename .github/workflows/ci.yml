@@ -131,6 +131,14 @@ jobs:
       - name: Correr las pruebas
         run: flutter test
 
+      - name: Guardar diferencias de las pruebas golden
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: diferencias-golden
+          path: test/**/failures/*.png
+          if-no-files-found: ignore
+
   build-android:
     name: Build Android (APK)
     needs: cambios

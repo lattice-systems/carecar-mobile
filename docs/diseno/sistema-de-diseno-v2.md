@@ -170,9 +170,21 @@ Para pantallas con aire, esquinas generosas y una pieza protagonista (referencia
 
 **`GrupoLista` y `FilaGrupo`.** Lista agrupada: tarjeta de radio `tarjeta` con filas separadas por líneas finas que empiezan después del ícono. Cada fila lleva ícono en cuadro redondeado de color (`colorIcono`), título, subtítulo, adorno final y chevron si es tocable. `encabezado` (etiqueta, como encabezado accesible) y `pie` (texto de apoyo) van fuera de la tarjeta. Cada fila es un solo nodo para el lector de pantalla.
 
-Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %), con la fuente de prueba de Flutter hasta que V2-T03.02 deje las reales. Todos están en la galería.
+Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %). Todos están en la galería.
 
 Cada componente documenta: anatomía, variantes, estados (normal, presionado, foco, deshabilitado, cargando, error), accesibilidad (`Semantics`, orden de foco) y golden en claro, oscuro y 200 %.
+
+### Pruebas golden
+
+Las pruebas de Portada y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` carga las fuentes del manifiesto de la app, incluidos sus íconos. Si Geist y Geist Mono aún no están empaquetadas, registra Inter y JetBrains Mono como las fuentes de respaldo que usan los tokens. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+
+Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
+
+```bash
+flutter test test/nucleo/diseno/componentes/portada_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart
+```
+
+Si el cambio visual es intencional, agrega `--update-goldens` al comando y revisa las PNG resultantes antes de incluirlas en el PR. Usa Linux con la misma versión de Flutter que CI para reproducir diferencias de renderizado. El check **Pruebas (flutter test)** ejecuta la comparación en Ubuntu y adjunta el artefacto `diferencias-golden` si se genera alguna diferencia.
 
 ## 9. Escritura (UX copy)
 

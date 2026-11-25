@@ -2,14 +2,13 @@ import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_compuestos
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../ayudas/fuentes_golden.dart';
 import '../../../ayudas/tema_pista.dart';
 
-/// Golden de `BurbujaMensaje` y `CampoMensaje` (V2-T02.15) en claro, oscuro y
-/// letra al 200 %, a partir de la sección "Mensajes" de la galería. Usan la
-/// fuente de prueba de Flutter: vigilan estructura, color y espacio. Para
-/// regenerarlos: `flutter test --update-goldens
-/// test/nucleo/diseno/componentes/mensajes_golden_test.dart`.
+/// Golden de la sección "Mensajes" en claro, oscuro y letra al 200 %.
 void main() {
+  prepararFuentesGolden();
+
   final seccion = seccionesCompuestos().firstWhere(
     (s) => s.titulo == 'Mensajes',
   );
