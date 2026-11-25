@@ -93,3 +93,7 @@ Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (
 ## Mock
 
 `mock_api/modulos/mantenimiento.js` simula ambos endpoints: plan de 8 servicios cada 5 000 km cuyo estado sale del km vigente, promedio diario de las lecturas (35 km/día por omisión), 404 para vehículo ajeno, 400 `DATOS_INVALIDOS` y 422 `KM_INVALIDO` en las lecturas. Los vehículos de 2014 o anteriores no tienen plan.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+`PantallaPlanMantenimiento` ya no lleva portada: `MarcoPantalla` con una `TarjetaResumen` del próximo servicio (qué toca, por qué y cuánto falta). Cuando toca por kilometraje la tarjeta trae una barra con el avance desde el último servicio hecho; el criterio de aceptación no cambia. «Agendar este servicio» y «Registrar km» van en `FilaAcciones`. La bitácora de combustible (V2-M18) sigue el mismo patrón.

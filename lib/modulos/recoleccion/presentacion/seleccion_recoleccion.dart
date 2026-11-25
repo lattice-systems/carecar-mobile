@@ -13,7 +13,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/cotizacion_recoleccion.dart';
 import '../dominio/fallos_recoleccion.dart';
-import 'componentes/marco_pantalla_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_pesos.dart';
 import 'pantalla_mis_direcciones.dart';
 import 'proveedores_recoleccion.dart';
@@ -48,7 +48,7 @@ class SeleccionRecoleccion extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
 
-    return SeccionRecoleccion(
+    return SeccionPantalla(
       titulo: textos.recoleccionSelectorTitulo,
       hijo: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

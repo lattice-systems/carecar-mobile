@@ -19,7 +19,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../datos/pdf_bitacora.dart';
 import '../dominio/exportar_bitacora.dart';
 import '../dominio/gasto.dart';
-import 'componentes/marco_bitacora.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_bitacora.dart';
 import 'proveedores_bitacora.dart';
 
@@ -40,7 +40,7 @@ class PantallaExportar extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final gastos = ref.watch(gastosProvider(vehiculoId));
 
-    Widget estado(Widget hijo) => MarcoBitacora.estado(
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
       titulo: textos.bitacoraExportarTitulo,
       estado: hijo,
     );
@@ -195,9 +195,9 @@ class _EstadoFormulario extends ConsumerState<_Formulario> {
         OpcionSelector(valor: m, texto: mesLegible(context, m)),
     ];
 
-    return MarcoBitacora(
+    return MarcoPantalla(
       titulo: textos.bitacoraExportarTitulo,
-      barraInferior: BarraInferiorBitacora(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.bitacoraExportarCsv,

@@ -142,3 +142,7 @@ Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis 
 - **Regresar** en Mis direcciones (pantalla raíz) mediante `conRegreso` en `MarcoPantallaRecoleccion`; seguimiento y checklist lo traen por `BarraPortada`.
 - **Cobertura alineada con el backend:** centro de León (21.1250, -101.6860), radio 15 km, tarifa 80 + 8/km y ventanas 07:00–09:00 y 17:00–19:00. Se actualizaron `mock_api/server.js`, `RepositorioRecoleccionFake` (distancia real en vez de cuadro de medio grado) y el centro inicial del mapa. Antes el mock cubría 40 km de la CDMX y guardar una dirección fallaba contra el backend.
 - **422 `FUERA_DE_COBERTURA`:** el formulario muestra «Fuera de cobertura» y pide mover el pin; probado con Monterrey y con la CDMX.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+Los marcos de pantalla del módulo (`MarcoPantallaRecoleccion`, `BarraInferiorRecoleccion`, `SeccionRecoleccion`) son ahora `MarcoPantalla`, `BarraInferior` y `SeccionPantalla` del sistema. Seguimiento del traslado y checklist usan el encabezado grande (el checklist con pestañas usa `BarraPantalla`), con `FilaAcciones` («Ver checklist», «Actualizar») en el seguimiento. Sin portada.

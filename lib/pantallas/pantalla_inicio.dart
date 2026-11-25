@@ -148,6 +148,7 @@ class _PantallaInicioState extends State<PantallaInicio> {
                           marca: v.marca,
                           placas: v.placas,
                           kilometraje: v.kilometraje,
+                          color: v.color,
                         ),
                       )
                       .toList(),

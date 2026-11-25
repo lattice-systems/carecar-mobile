@@ -7,7 +7,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'seccion_galeria.dart';
 import 'secciones_base.dart';
 import 'secciones_compuestos.dart';
-import 'secciones_portada.dart';
+import 'secciones_pantalla.dart';
 
 /// Galeria del sistema de diseno v2 (V2-T02.06): todos los componentes con sus
 /// estados, y tres interruptores para verlos en oscuro y con letra al 150 % y
@@ -26,7 +26,7 @@ class _PantallaGaleriaState extends State<PantallaGaleria> {
   final List<SeccionGaleria> _secciones = [
     ...seccionesBase(),
     ...seccionesCompuestos(),
-    ...seccionesPortada(),
+    ...seccionesPantalla(),
   ];
 
   @override

@@ -522,13 +522,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'No pudimos reprogramar tu cita. Intenta de nuevo.';
 
   @override
+  String get citasReprogramadaTitulo => 'Cita reprogramada';
+
+  @override
   String citasReprogramarListo(DateTime fecha, String hora) {
     final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
       localeName,
     );
     final String fechaString = fechaDateFormat.format(fecha);
 
-    return 'Cita reprogramada para el $fechaString a las $hora. El horario anterior quedó libre.';
+    return 'Te esperamos el $fechaString a las $hora. El horario anterior quedó libre.';
   }
 
   @override
@@ -1662,6 +1665,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get citasAccionesCita => 'Opciones de tu cita';
+
+  @override
+  String get cerrarPantalla => 'Cerrar';
 
   @override
   String get regresar => 'Regresar';

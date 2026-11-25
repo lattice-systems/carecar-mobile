@@ -9,11 +9,14 @@ import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
 import '../diseno/componentes/esqueleto.dart';
 import '../diseno/componentes/rebote_tactil.dart';
+import '../diseno/componentes/tarjeta_auto.dart';
+import '../diseno/componentes/tarjeta_resumen.dart';
+import '../diseno/componentes/tinte_auto.dart';
+import '../diseno/componentes/tono.dart';
 import '../diseno/tema_pista.dart';
 import '../diseno/tokens/espaciado.dart';
 import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
-import 'silueta_auto.dart';
 
 /// Un acceso de la lista del inicio.
 class AccesoInicio {
@@ -38,6 +41,7 @@ class AutoInicio {
     this.marca,
     this.placas,
     this.kilometraje,
+    this.color,
   });
 
   final String modelo;
@@ -45,6 +49,9 @@ class AutoInicio {
   final String? marca;
   final String? placas;
   final int? kilometraje;
+
+  /// Nombre del color del auto; tiñe su tarjeta (ver `tinteDeColorAuto`).
+  final String? color;
 }
 
 /// La próxima cita del cliente, como la muestra el inicio.
@@ -111,14 +118,8 @@ class InicioNuevo extends StatelessWidget {
   }
 }
 
-/// Esquinas de las tarjetas grandes del inicio (las cuatro; `Radios.bordeHoja`
-/// solo redondea arriba).
-const BorderRadius _bordeTarjetaGrande = BorderRadius.all(
-  Radius.circular(Radios.hoja),
-);
-
 /// Alto que se deja bajo la tarjeta del auto para que se vea su sombra.
-const double _huecoDeSombra = 20;
+const double _huecoDeSombra = 28;
 
 /// Por encima de esta escala de letra el botón flotante se esconde.
 const double _escalaMaximaDelBoton = 1.5;
@@ -150,7 +151,6 @@ class _Cuerpo extends StatelessWidget {
       backgroundColor: c.fondo,
       body: Stack(
         children: [
-          const Positioned.fill(child: _Aurora()),
           SafeArea(
             bottom: false,
             child: ListView(
@@ -260,53 +260,6 @@ class _Cuerpo extends StatelessWidget {
   }
 }
 
-/// Resplandor de fondo, como el del login: un halo azul arriba a la izquierda
-/// y otro turquesa a la derecha, que se funden con la superficie.
-class _Aurora extends StatelessWidget {
-  const _Aurora();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    final oscuro = Theme.of(context).brightness == Brightness.dark;
-    final fuerza = oscuro ? 0.26 : 0.16;
-    Widget halo(
-      Color color, {
-      double? izquierda,
-      double? derecha,
-      required double arriba,
-      required double lado,
-    }) => Positioned(
-      left: izquierda,
-      right: derecha,
-      top: arriba,
-      width: lado,
-      height: lado,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: [
-              color.withValues(alpha: fuerza),
-              color.withValues(alpha: 0),
-            ],
-          ),
-        ),
-      ),
-    );
-    return IgnorePointer(
-      child: ExcludeSemantics(
-        child: Stack(
-          children: [
-            halo(c.acento, izquierda: -140, arriba: -170, lado: 460),
-            halo(c.exito, derecha: -180, arriba: 300, lado: 380),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 // ---------------------------------------------------------------------------
 // Autos
 // ---------------------------------------------------------------------------
@@ -344,12 +297,18 @@ class _SeccionAutosState extends State<_SeccionAutos> {
     final autos = widget.autos;
     // Con letra grande la tarjeta crece para que el texto no se encime a la
     // silueta.
-    final alto = 244 + (widget.escala - 1).clamp(0.0, 1.0) * 190;
+    final alto = TarjetaAuto.altoPara(conTitulo: true, escala: widget.escala);
     if (autos == null) {
       return Esqueleto(alto: alto, radio: Radios.hoja);
     }
     if (autos.isEmpty) {
-      return _AutosVacio(alToque: widget.alToque);
+      final textos = AppLocalizations.of(context);
+      return TarjetaResumen(
+        titulo: textos.inicioSinAutos,
+        subtitulo: textos.inicioSinAutosDetalle,
+        icono: Icons.directions_car_outlined,
+        alToque: widget.alToque,
+      );
     }
     return Column(
       children: [
@@ -371,11 +330,11 @@ class _SeccionAutosState extends State<_SeccionAutos> {
                   right: autos.length > 1 ? Espaciado.e1 : 0,
                   bottom: _huecoDeSombra,
                 ),
-                child: _TarjetaAuto(
+                child: _TarjetaDelAuto(
                   auto: autos[i],
                   posicion: autos.length > 1 ? (i + 1, autos.length) : null,
                   alToque: widget.alToque,
-                  placasAbajo: widget.escala > 1.3,
+                  alto: alto,
                 ),
               ),
             ),
@@ -407,291 +366,50 @@ class _SeccionAutosState extends State<_SeccionAutos> {
   }
 }
 
-class _TarjetaAuto extends StatelessWidget {
-  const _TarjetaAuto({
+/// La tarjeta de un auto del cliente, con sus textos ya traducidos.
+class _TarjetaDelAuto extends StatelessWidget {
+  const _TarjetaDelAuto({
     required this.auto,
     required this.alToque,
+    required this.alto,
     this.posicion,
-    this.placasAbajo = false,
   });
 
   final AutoInicio auto;
   final VoidCallback alToque;
-
-  /// Con letra grande las placas bajan debajo del nombre para no quitarle el
-  /// ancho.
-  final bool placasAbajo;
+  final double alto;
 
   /// (n, total) cuando hay varios autos.
   final (int, int)? posicion;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
+    final c = TokensPista.de(context).colores;
     final idioma = Localizations.localeOf(context).toLanguageTag();
-    final oscuro = tokens.brillo == Brightness.dark;
-    // `sobreAcento` es el color que el sistema define para leer sobre el
-    // relleno saturado: blanco en claro, casi negro en oscuro.
-    final frente = c.sobreAcento;
     final km = auto.kilometraje == null
         ? null
         : textos.inicioKilometros(
             NumberFormat.decimalPattern(idioma).format(auto.kilometraje),
           );
     final titulo = '${auto.modelo} ${auto.anio}';
-    final conPlacas = (auto.placas ?? '').isNotEmpty;
-    final partes = [
+    final etiqueta = [
       ?auto.marca,
       titulo,
       ?auto.placas,
       ?km,
       if (posicion != null)
         textos.inicioAutoDeTotal(posicion!.$1, posicion!.$2),
-    ];
-    return Semantics(
-      button: true,
-      container: true,
-      label: partes.join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: _bordeTarjetaGrande,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [c.acento, Color.lerp(c.acento, c.marca, 0.85)!],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: c.acento.withValues(alpha: 0.34),
-                blurRadius: 24,
-                spreadRadius: -12,
-                offset: const Offset(0, 14),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: _bordeTarjetaGrande,
-            child: Stack(
-              children: [
-                // Destello de luz arriba a la derecha.
-                Positioned(
-                  right: -70,
-                  top: -90,
-                  width: 260,
-                  height: 260,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          frente.withValues(alpha: 0.22),
-                          frente.withValues(alpha: 0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Espaciado.e5,
-                    Espaciado.e5,
-                    Espaciado.e5,
-                    Espaciado.e3,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (auto.marca != null)
-                                  Text(
-                                    auto.marca!,
-                                    style: t.cuerpoChico.copyWith(
-                                      color: frente.withValues(alpha: 0.85),
-                                    ),
-                                  ),
-                                Text(
-                                  titulo,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: t.titulo1.copyWith(
-                                    color: frente,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                if (placasAbajo && conPlacas) ...[
-                                  const SizedBox(height: Espaciado.e2),
-                                  _Placas(texto: auto.placas!, color: frente),
-                                ],
-                                if (km != null) ...[
-                                  const SizedBox(height: Espaciado.e1),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.speed_rounded,
-                                        size: 16,
-                                        color: frente.withValues(alpha: 0.85),
-                                      ),
-                                      const SizedBox(width: Espaciado.e1),
-                                      Flexible(
-                                        child: Text(
-                                          km,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: t.cuerpoChico.copyWith(
-                                            color: frente.withValues(
-                                              alpha: 0.85,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                          if (!placasAbajo && conPlacas) ...[
-                            const SizedBox(width: Espaciado.e3),
-                            _Placas(texto: auto.placas!, color: frente),
-                          ],
-                        ],
-                      ),
-                      // La silueta toma el alto que sobra y nunca más ancho que
-                      // 340: en pantallas anchas no crece hasta desbordar.
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 340),
-                            child: SiluetaAuto(
-                              carroceria: frente,
-                              cristal: c.marca.withValues(
-                                alpha: oscuro ? 0.9 : 0.85,
-                              ),
-                              llanta: oscuro
-                                  ? frente
-                                  : Color.lerp(c.marca, Colors.black, 0.5)!,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Placas extends StatelessWidget {
-  const _Placas({required this.texto, required this.color});
-
-  final String texto;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = TokensPista.de(context).tipografia;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.16),
-        borderRadius: Radios.bordePildora,
-        border: Border.all(color: color.withValues(alpha: 0.4)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Espaciado.e3,
-          vertical: Espaciado.e1,
-        ),
-        child: Text(
-          texto,
-          style: t.cuerpoChico.copyWith(
-            color: color,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.6,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AutosVacio extends StatelessWidget {
-  const _AutosVacio({required this.alToque});
-
-  final VoidCallback alToque;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    final textos = AppLocalizations.of(context);
-    final titulo = textos.inicioSinAutos;
-    final detalle = textos.inicioSinAutosDetalle;
-    return Semantics(
-      button: true,
-      container: true,
-      label: [titulo, detalle].join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: _bordeTarjetaGrande,
-            color: c.acentoSuave,
-            border: Border.all(color: c.acento.withValues(alpha: 0.25)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 300),
-                  child: SiluetaAuto(
-                    carroceria: c.acento.withValues(alpha: 0.35),
-                    cristal: c.acento.withValues(alpha: 0.55),
-                    llanta: c.acento.withValues(alpha: 0.7),
-                  ),
-                ),
-                const SizedBox(height: Espaciado.e3),
-                Text(
-                  titulo,
-                  style: t.titulo3.copyWith(
-                    color: c.texto,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: Espaciado.e1),
-                Text(
-                  detalle,
-                  style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+    ].join(', ');
+    return TarjetaAuto(
+      marca: auto.marca,
+      titulo: titulo,
+      placas: auto.placas,
+      kilometraje: km,
+      tinte: auto.color == null ? null : tinteDeColorAuto(c, auto.color),
+      alToque: alToque,
+      etiqueta: etiqueta,
+      alto: alto,
     );
   }
 }
@@ -713,119 +431,70 @@ class _TarjetaCita extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final cita = this.cita;
+    if (cita == null) {
+      return TarjetaResumen(
+        titulo: textos.inicioSinCitas,
+        subtitulo: textos.inicioSinCitasDetalle,
+        icono: Icons.event_available_outlined,
+        tono: Tono.exito,
+        alToque: alAgendar,
+      );
+    }
+    final idioma = Localizations.localeOf(context).toLanguageTag();
+    final dia = DateFormat.EEEE(idioma).format(cita.fecha);
+    final diaCapital = dia.isEmpty
+        ? dia
+        : '${dia[0].toUpperCase()}${dia.substring(1)}';
+    return TarjetaResumen(
+      titulo: textos.inicioProximaCita,
+      subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
+      detalle: cita.vehiculo,
+      visual: _BloqueFecha(
+        dia: cita.fecha.day.toString(),
+        mes: DateFormat.MMM(idioma).format(cita.fecha),
+      ),
+      alToque: alAbrirCitas,
+    );
+  }
+}
+
+/// El día y el mes de la cita en un cuadro pleno del acento, del mismo estilo
+/// y ancho que el icono de las demás tarjetas de resumen.
+class _BloqueFecha extends StatelessWidget {
+  const _BloqueFecha({required this.dia, required this.mes});
+
+  final String dia;
+  final String mes;
+
+  @override
+  Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
-    final textos = AppLocalizations.of(context);
-    final idioma = Localizations.localeOf(context).toLanguageTag();
-    final cita = this.cita;
-
-    final String rotulo;
-    final String titulo;
-    final String? detalle;
-    final Widget cabeza;
-    if (cita == null) {
-      rotulo = textos.inicioSinCitas;
-      titulo = textos.inicioSinCitasDetalle;
-      detalle = null;
-      cabeza = DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.exitoSuave,
-          borderRadius: Radios.bordeTarjeta,
-        ),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 56, minHeight: 64),
-          child: Icon(Icons.event_available_outlined, color: c.exito),
-        ),
-      );
-    } else {
-      final dia = DateFormat.EEEE(idioma).format(cita.fecha);
-      final diaCapital = dia.isEmpty
-          ? dia
-          : '${dia[0].toUpperCase()}${dia.substring(1)}';
-      final numeroDia = cita.fecha.day.toString();
-      rotulo = textos.inicioProximaCita;
-      titulo = textos.inicioCitaCuando(diaCapital, cita.hora);
-      detalle = cita.vehiculo;
-      cabeza = DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.acentoSuave,
-          borderRadius: Radios.bordeTarjeta,
-        ),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 56, minHeight: 64),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.acento,
+        borderRadius: Radios.bordeControl,
+      ),
+      child: SizedBox(
+        width: 40,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: Espaciado.e1),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: Espaciado.e2),
               Text(
-                numeroDia,
-                style: t.titulo2.copyWith(
-                  color: c.acento,
-                  fontWeight: FontWeight.w800,
-                  height: 1,
+                dia,
+                style: t.titulo3.copyWith(
+                  color: c.sobreAcento,
+                  fontWeight: FontWeight.w700,
+                  height: 1.1,
                 ),
               ),
-              const SizedBox(height: 2),
-              Text(
-                DateFormat.MMM(idioma).format(cita.fecha),
-                style: t.micro.copyWith(color: c.acento),
-              ),
-              const SizedBox(height: Espaciado.e2),
+              Text(mes, style: t.micro.copyWith(color: c.sobreAcento)),
             ],
-          ),
-        ),
-      );
-    }
-    final alToque = cita == null ? alAgendar : alAbrirCitas;
-    return Semantics(
-      button: true,
-      container: true,
-      label: [rotulo, titulo, ?detalle].join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: c.superficie,
-            borderRadius: _bordeTarjetaGrande,
-            border: Border.all(color: c.borde),
-            boxShadow: tokens.sombras,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Row(
-              children: [
-                cabeza,
-                const SizedBox(width: Espaciado.e4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        rotulo,
-                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        titulo,
-                        style: t.cuerpoFuerte.copyWith(color: c.texto),
-                      ),
-                      if (detalle != null)
-                        Text(
-                          detalle,
-                          style: t.cuerpoChico.copyWith(
-                            color: c.textoSecundario,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                Icon(Icons.chevron_right_rounded, color: c.textoTerciario),
-              ],
-            ),
           ),
         ),
       ),
@@ -837,8 +506,8 @@ class _TarjetaCita extends StatelessWidget {
 // Accesos
 // ---------------------------------------------------------------------------
 
-/// Tres accesos redondos de color (acento, éxito y marca), con su nombre
-/// debajo.
+/// Tres accesos redondos (acento, éxito y marca), planos como los iconos de
+/// las listas, con su nombre debajo.
 class _Accesos extends StatelessWidget {
   const _Accesos({required this.accesos});
 
@@ -873,7 +542,6 @@ class _Acceso extends StatelessWidget {
     final t = tokens.tipografia;
     final frente = c.sobreAcento;
     final etiqueta = [acceso.titulo, acceso.subtitulo].join(', ');
-    final fin = Color.lerp(color, c.marca, 0.5)!;
     return Semantics(
       button: true,
       label: etiqueta,
@@ -884,21 +552,7 @@ class _Acceso extends StatelessWidget {
         child: Column(
           children: [
             DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [color, fin],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.withValues(alpha: 0.32),
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
+              decoration: BoxDecoration(shape: BoxShape.circle, color: color),
               child: SizedBox(
                 width: 64,
                 height: 64,

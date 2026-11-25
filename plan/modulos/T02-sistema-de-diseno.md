@@ -172,3 +172,13 @@ Después (PR del campo de chat): `CampoMensaje` pasa a píldora con `Radios.camp
 
 Pendiente fuera de este PR: la gráfica de línea no ajusta su escala a los datos (la línea queda pegada arriba).
 
+## Encabezados ligeros (rediseño V2-T02.21)
+
+Daniel pidió que las pantallas dejaran de verse como plantilla: «que no se vea mucha IA, con buen diseño, consistente y reutilizable». Se retiraron `CabeceraPortada`, `BarraPortada`, `AccionPortada`, `PortadaVehiculo` y `PortadaMantenimiento` (la pieza grande con fondo difuminado) y los cuatro marcos copiados por módulo (`MarcoBitacora`, `MarcoPantallaCita`, `MarcoPantallaMantenimiento`, `MarcoPantallaRecoleccion`, con sus barras inferiores, secciones y botones «Cerrar»). En su lugar, en `lib/nucleo/diseno/componentes/`:
+
+- `EncabezadoGrande` rehecho (barra fija + título grande que se recoge), `BotonRegresar` y `BotonCerrar` (círculos de vidrio iguales), `BarraPantalla` (barra quieta para visor y pestañas).
+- `MarcoPantalla` (+ `BarraInferior`, `SeccionPantalla`): el único marco de detalle y formulario.
+- `TarjetaAuto` (+ `SiluetaAuto`, `tinteDeColorAuto`): el auto del cliente, en el inicio, el garaje y el detalle; `TarjetaVehiculo` usa la misma silueta cuando no hay foto.
+- `TarjetaResumen` (con barra de avance), `FilaAcciones` y `ResultadoPantalla`.
+
+Documentado en §8 del sistema de diseño. La galería y los golden (`pantalla_golden_test.dart`) muestran las tarjetas nuevas. Pendiente de la misma historia: migrar a `MarcoPantalla` las pantallas que aún usan un `AppBar` de Material (catálogo, privacidad, estreno, asistente, cambio de contraseña).

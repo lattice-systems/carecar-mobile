@@ -7,17 +7,25 @@ import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton_regresar.dart';
 
-/// Encabezado de pantalla que empieza grande y se encoge al desplazar.
+/// Encabezado de pantalla con título grande que se recoge al desplazar.
 ///
-/// Es un sliver: va dentro de un `CustomScrollView`. Con el desplazamiento el
-/// titulo pasa de `titulo1` a `titulo3` y el subtitulo se desvanece. Las
-/// alturas crecen con el tamano de letra del sistema, para que a 200 % el
-/// titulo no se corte.
+/// Es un sliver: va dentro de un `CustomScrollView`. Tiene dos partes, siempre
+/// las mismas en todas las pantallas:
 ///
-/// Con `translucido` la barra contraida deja ver el contenido que pasa por
-/// debajo, desenfocado y teñido con el fondo (estilo barra de navegacion
-/// compacta); el fondo baja apenas a 92 % de opacidad al contraerse: deja un asomo de
-/// color pero el texto de abajo no se lee a traves del titulo.
+/// - **La barra** (56 de alto, fija): a la izquierda el [BotonRegresar] si
+///   `conRegreso`, a la derecha las `acciones` (botones circulares o un
+///   `GrupoAccionesPildora`). Al recogerse muestra el título pequeño entre
+///   ambos.
+/// - **El título grande**, alineado a la izquierda, con el `subtitulo` debajo.
+///   Se desliza hacia arriba por debajo de la barra y se desvanece mientras el
+///   título pequeño aparece; recogido del todo, el subtítulo ya no se arma.
+///
+/// Las alturas se miden con el tamaño de letra del sistema y el ancho
+/// disponible, así que a 200 % el título (hasta dos líneas) no se corta.
+///
+/// Con `translucido` la barra recogida deja ver el contenido que pasa por
+/// debajo, desenfocado y teñido con el fondo; el fondo baja apenas a 92 % de
+/// opacidad: asoma color, pero el texto de abajo no se lee a través del título.
 class EncabezadoGrande extends StatelessWidget {
   const EncabezadoGrande({
     required this.titulo,
@@ -31,19 +39,22 @@ class EncabezadoGrande extends StatelessWidget {
   final String titulo;
   final String? subtitulo;
 
-  /// Botones al final del encabezado, cada uno con su zona tactil de 48.
+  /// Botones al final de la barra, cada uno con su zona táctil de 48.
   final List<Widget> acciones;
 
-  /// Barra contraida translucida con desenfoque.
+  /// Barra recogida translúcida con desenfoque.
   final bool translucido;
 
-  /// Pone un [BotonRegresar] antes del titulo; para las pantallas raiz de un
-  /// modulo, que se abren desde el menu o un enlace.
+  /// Pone un [BotonRegresar] al inicio de la barra; para las pantallas raíz de
+  /// un módulo, que se abren desde el menú o un enlace.
   final bool conRegreso;
 
   @override
   Widget build(BuildContext context) {
-    final escala = MediaQuery.textScalerOf(context);
+    final ancho = math.min(
+      MediaQuery.sizeOf(context).width,
+      Espaciado.anchoMaximoContenido,
+    );
     return SliverPersistentHeader(
       pinned: true,
       delegate: _Delegado(
@@ -52,9 +63,11 @@ class EncabezadoGrande extends StatelessWidget {
         acciones: acciones,
         translucido: translucido,
         conRegreso: conRegreso,
-        escala: escala,
+        escala: MediaQuery.textScalerOf(context),
         tokens: TokensPista.de(context),
         arriba: MediaQuery.paddingOf(context).top,
+        anchoTexto: ancho - 2 * Espaciado.margenTelefono,
+        direccion: Directionality.of(context),
       ),
     );
   }
@@ -70,7 +83,11 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     required this.escala,
     required this.tokens,
     required this.arriba,
-  });
+    required this.anchoTexto,
+    required this.direccion,
+  }) {
+    _medirBloque();
+  }
 
   final String titulo;
   final String? subtitulo;
@@ -81,35 +98,45 @@ class _Delegado extends SliverPersistentHeaderDelegate {
   final TokensPista tokens;
   final double arriba;
 
-  /// Con letra ampliada el titulo se parte en dos lineas, asi que se reserva
-  /// el espacio de las dos para que no se corte ni desborde.
-  int get _lineasTitulo => escala.scale(1) > 1.3 ? 2 : 1;
+  /// Ancho de una línea del título grande.
+  final double anchoTexto;
+  final TextDirection direccion;
 
-  double get _alturaContraida =>
-      math.max(
-        56,
-        escala.scale(tokens.tipografia.titulo3.fontSize! * 1.5) * _lineasTitulo,
-      ) +
-      Espaciado.e2;
+  /// Alto de la barra fija, sin la zona del reloj.
+  static const double _alturaBarra = Espaciado.e14;
 
-  double get _alturaExpandida {
+  /// Aire bajo el título grande.
+  static const double _aireAbajo = Espaciado.e3;
+  static const double _desenfoque = 30;
+
+  late final double _altoBloque;
+
+  double _medir(TextStyle estilo, String texto, int lineas) {
+    final pintor = TextPainter(
+      text: TextSpan(text: texto, style: estilo),
+      textDirection: direccion,
+      textScaler: escala,
+      maxLines: lineas,
+    )..layout(maxWidth: math.max(1, anchoTexto));
+    final alto = pintor.height;
+    pintor.dispose();
+    return alto;
+  }
+
+  void _medirBloque() {
     final t = tokens.tipografia;
-    final lineaTitulo =
-        escala.scale(t.titulo1.fontSize! * 1.25) * _lineasTitulo;
-    final lineaSub = subtitulo == null
-        ? 0
-        : escala.scale(t.cuerpoChico.fontSize! * 1.4);
-    return math.max(
-      _alturaContraida + Espaciado.e6,
-      lineaTitulo + lineaSub + Espaciado.e6 + Espaciado.e4,
-    );
+    var alto = _medir(t.titulo1, titulo, 2);
+    if (subtitulo != null) {
+      alto += Espaciado.e1 + _medir(t.cuerpoChico, subtitulo!, 2);
+    }
+    _altoBloque = alto;
   }
 
   @override
-  double get minExtent => _alturaContraida + arriba;
+  double get minExtent => arriba + _alturaBarra;
 
   @override
-  double get maxExtent => _alturaExpandida + arriba;
+  double get maxExtent => minExtent + _altoBloque + _aireAbajo;
 
   @override
   Widget build(
@@ -121,82 +148,138 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     final t = tokens.tipografia;
     final rango = math.max(1, maxExtent - minExtent);
     final avance = (shrinkOffset / rango).clamp(0.0, 1.0);
-    final estiloTitulo = TextStyle.lerp(
-      t.titulo1,
-      t.titulo3,
-      avance,
-    )!.copyWith(color: c.texto);
+    // El título grande se va en la primera mitad del recorrido y el pequeño
+    // llega en la segunda: nunca se ven los dos a la vez.
+    final grande = avance < 0.5;
+    final opacidadGrande = (1 - 2 * avance).clamp(0.0, 1.0);
+    final opacidadChico = (2 * avance - 1).clamp(0.0, 1.0);
 
     final fondo = translucido
         ? c.fondo.withValues(alpha: 1 - 0.08 * avance)
         : c.fondo;
 
-    final barra = DecoratedBox(
+    final bloque = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Espaciado.margenTelefono),
+      child: Opacity(
+        opacity: opacidadGrande,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Semantics(
+              header: true,
+              child: Text(
+                titulo,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: t.titulo1.copyWith(color: c.texto),
+              ),
+            ),
+            if (subtitulo != null) ...[
+              const SizedBox(height: Espaciado.e1),
+              Text(
+                subtitulo!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+
+    final barra = Padding(
+      padding: EdgeInsets.fromLTRB(
+        Espaciado.margenTelefono,
+        arriba,
+        Espaciado.margenTelefono,
+        0,
+      ),
+      child: SizedBox(
+        height: _alturaBarra,
+        child: Row(
+          children: [
+            if (conRegreso) ...[
+              const BotonRegresar(),
+              const SizedBox(width: Espaciado.e3),
+            ],
+            Expanded(
+              child: grande
+                  ? const SizedBox.shrink()
+                  : Semantics(
+                      header: true,
+                      child: Opacity(
+                        opacity: opacidadChico,
+                        // Aunque aún no se vea, es el encabezado para el lector.
+                        alwaysIncludeSemantics: true,
+                        child: Text(
+                          titulo,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: t.titulo3.copyWith(color: c.texto),
+                        ),
+                      ),
+                    ),
+            ),
+            for (var i = 0; i < acciones.length; i++) ...[
+              if (i > 0) const SizedBox(width: Espaciado.e2),
+              acciones[i],
+            ],
+          ],
+        ),
+      ),
+    );
+
+    // El sliver mide al hijo con un alto máximo, no fijo: se le da el alto
+    // exacto que le toca en este punto del desplazamiento.
+    final alto = math.max(minExtent, maxExtent - shrinkOffset);
+    Widget cuerpo = DecoratedBox(
       decoration: BoxDecoration(
         color: fondo,
         border: Border(
           bottom: BorderSide(color: avance >= 1 ? c.borde : Colors.transparent),
         ),
       ),
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          conRegreso ? Espaciado.e1 : Espaciado.e4,
-          arriba,
-          Espaciado.e2,
-          Espaciado.e2,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            if (conRegreso) const BotonRegresar(),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    titulo,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: estiloTitulo,
-                  ),
-                  if (subtitulo != null && avance < 1)
-                    Opacity(
-                      opacity: 1 - avance,
-                      child: Text(
-                        subtitulo!,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                      ),
-                    ),
-                ],
+      child: Stack(
+        children: [
+          // El título grande vive bajo la barra y sube con el desplazamiento:
+          // la ventana recorta lo que pasa por detrás de la barra.
+          Positioned(
+            top: minExtent,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: ClipRect(
+              child: OverflowBox(
+                alignment: Alignment.topLeft,
+                minHeight: 0,
+                maxHeight: double.infinity,
+                child: Transform.translate(
+                  offset: Offset(0, -shrinkOffset),
+                  // Recogido del todo ya no se arma: queda la barra.
+                  child: grande ? bloque : const SizedBox.shrink(),
+                ),
               ),
             ),
-            ...acciones,
-          ],
-        ),
+          ),
+          barra,
+        ],
       ),
     );
 
-    return Semantics(
-      container: true,
-      header: true,
-      child: translucido && avance > 0
-          ? ClipRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: _desenfoque * avance,
-                  sigmaY: _desenfoque * avance,
-                ),
-                child: barra,
+    cuerpo = SizedBox(height: alto, child: cuerpo);
+    return translucido && avance > 0
+        ? ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: _desenfoque * avance,
+                sigmaY: _desenfoque * avance,
               ),
-            )
-          : barra,
-    );
+              child: cuerpo,
+            ),
+          )
+        : cuerpo;
   }
-
-  static const double _desenfoque = 30;
 
   @override
   bool shouldRebuild(_Delegado anterior) =>
@@ -207,5 +290,7 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       anterior.conRegreso != conRegreso ||
       anterior.escala != escala ||
       anterior.tokens != tokens ||
-      anterior.arriba != arriba;
+      anterior.arriba != arriba ||
+      anterior.anchoTexto != anchoTexto ||
+      anterior.direccion != direccion;
 }

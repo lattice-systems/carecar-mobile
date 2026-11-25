@@ -5,7 +5,8 @@ import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
+import '../../../nucleo/diseno/componentes/resultado_pantalla.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -16,8 +17,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
-import 'componentes/barra_inferior_cita.dart';
-import 'componentes/marco_pantalla_cita.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/seleccion_dia_horario.dart';
 import 'proveedores_citas.dart';
 
@@ -64,7 +64,7 @@ class _EstadoPantallaReprogramarCita
     final disponibilidad = ref.watch(disponibilidadProvider);
     final ahora = ref.watch(relojCitasProvider)();
 
-    Widget estado(Widget hijo) => MarcoPantallaCita.estado(
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
       titulo: textos.citasReprogramarTitulo,
       estado: hijo,
     );
@@ -119,13 +119,13 @@ class _EstadoPantallaReprogramarCita
         : taller.franjasDe(dia);
     final indice = franjas.indexWhere((f) => f.franjaId == _franja?.franjaId);
 
-    return MarcoPantallaCita(
+    return MarcoPantalla(
       titulo: textos.citasReprogramarTitulo,
       alRefrescar: () async {
         ref.invalidate(disponibilidadProvider);
         await ref.read(disponibilidadProvider.future);
       },
-      barraInferior: BarraInferiorCita(
+      barraInferior: BarraInferior(
         hijos: [
           if (_franja == null) ...[
             Text(
@@ -279,41 +279,12 @@ class _EstadoPantallaReprogramarCita
 
   Widget _listo(BuildContext context, CitaCliente cita) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
-    return Scaffold(
-      backgroundColor: c.fondo,
-      body: SafeArea(
-        top: false,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: Espaciado.anchoMaximoContenido,
-            ),
-            child: SingleChildScrollView(
-              child: CabeceraPortada(
-                titulo: textos.citasReprogramarTitulo,
-                subtitulo: textos.citasReprogramarListo(
-                  cita.fecha,
-                  cita.horaInicio,
-                ),
-                tinte: c.exito,
-                lado: 200,
-                portada: ColoredBox(
-                  color: c.exitoSuave,
-                  child: Icon(
-                    Icons.check_circle_rounded,
-                    size: 104,
-                    color: c.exito,
-                  ),
-                ),
-                principal: AccionPortada(
-                  texto: textos.citasListoCerrar,
-                  alPresionar: () => Navigator.of(context).maybePop(),
-                ),
-              ),
-            ),
-          ),
-        ),
+    return ResultadoPantalla(
+      titulo: textos.citasReprogramadaTitulo,
+      mensaje: textos.citasReprogramarListo(cita.fecha, cita.horaInicio),
+      principal: AccionPantalla(
+        texto: textos.citasListoCerrar,
+        alPresionar: () => Navigator.of(context).maybePop(),
       ),
     );
   }

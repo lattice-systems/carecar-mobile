@@ -23,8 +23,7 @@ import '../dominio/motivo_cita.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'componentes/grupo_citas.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
-import 'componentes/marco_pantalla_cita.dart';
-import 'componentes/seccion_cita.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/vacio_ilustrado.dart';
 import 'proveedores_citas.dart';
 import 'rutas_citas.dart';
@@ -55,7 +54,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final citas = ref.watch(misCitasProvider);
 
     if (citas.hasError && !citas.hasValue) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
@@ -68,7 +67,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       );
     }
     if (!citas.hasValue) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
@@ -76,7 +75,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       );
     }
     if (citas.requireValue.citas.isEmpty) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
@@ -112,7 +111,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final destacada = proximas.isEmpty ? null : proximas.first;
     final otras = proximas.length > 1 ? proximas.sublist(1) : <CitaCliente>[];
 
-    Widget seccionVacia(String encabezado, String texto) => SeccionCita(
+    Widget seccionVacia(String encabezado, String texto) => SeccionPantalla(
       titulo: encabezado,
       hijo: Text(
         texto,
@@ -122,7 +121,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ),
     );
 
-    return MarcoPantallaCita(
+    return MarcoPantalla(
       titulo: textos.citasMisCitasTitulo,
       conRegreso: true,
       acciones: [

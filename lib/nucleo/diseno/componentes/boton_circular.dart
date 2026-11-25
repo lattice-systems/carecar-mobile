@@ -29,6 +29,7 @@ class BotonCircular extends StatelessWidget {
     this.variante = VarianteBotonCircular.vidrio,
     this.iconoMarcado,
     this.marcado = false,
+    this.colorIcono,
   });
 
   final IconData icono;
@@ -37,6 +38,11 @@ class BotonCircular extends StatelessWidget {
   final VarianteBotonCircular variante;
   final IconData? iconoMarcado;
   final bool marcado;
+
+  /// Color del icono cuando el botón está habilitado; por omisión depende de
+  /// la variante. Los encabezados lo pasan neutro (`texto`) para que el
+  /// regreso y el cierre se vean iguales.
+  final Color? colorIcono;
 
   static const double _tamanoIcono = 20;
   static const double _alfaVidrio = 0.06;
@@ -59,7 +65,7 @@ class BotonCircular extends StatelessWidget {
               : c.superficieHundida);
     final frente = !habilitado
         ? c.textoTerciario
-        : (resaltado || vidrio ? c.acento : c.textoSecundario);
+        : (colorIcono ?? (resaltado || vidrio ? c.acento : c.textoSecundario));
 
     return Semantics(
       container: true,

@@ -16,7 +16,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../citas/citas.dart';
 import '../../recoleccion/recoleccion.dart' show formatearPesos;
 import '../dominio/plan_mantenimiento.dart';
-import 'componentes/marco_pantalla_mantenimiento.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 
@@ -45,11 +45,11 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
 
     return plan.when(
       skipLoadingOnReload: true,
-      loading: () => MarcoPantallaMantenimiento.estado(
+      loading: () => MarcoPantalla.estado(
         titulo: textos.mantenimientoTitulo,
         estado: const _Cargando(),
       ),
-      error: (error, _) => MarcoPantallaMantenimiento.estado(
+      error: (error, _) => MarcoPantalla.estado(
         titulo: textos.mantenimientoTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -62,7 +62,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
       data: (p) {
         final servicio = p.servicioPorId(servicioId);
         if (servicio == null) {
-          return MarcoPantallaMantenimiento.estado(
+          return MarcoPantalla.estado(
             titulo: textos.mantenimientoTitulo,
             estado: EstadoVacio(
               titulo: textos.mantenimientoServicioNoEncontradoTitulo,
@@ -71,12 +71,12 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
             ),
           );
         }
-        return MarcoPantallaMantenimiento(
+        return MarcoPantalla(
           titulo: servicio.nombre,
           alRefrescar: () =>
               ref.refresh(planMantenimientoProvider(vehiculoId).future),
           barraInferior: servicio.sePuedeAgendar
-              ? BarraInferiorMantenimiento(
+              ? BarraInferior(
                   hijos: [
                     BotonPildora(
                       texto: textos.mantenimientoAgendar,

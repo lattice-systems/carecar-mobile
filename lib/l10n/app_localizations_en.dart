@@ -524,13 +524,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'We could not reschedule your appointment. Try again.';
 
   @override
+  String get citasReprogramadaTitulo => 'Appointment rescheduled';
+
+  @override
   String citasReprogramarListo(DateTime fecha, String hora) {
     final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
       localeName,
     );
     final String fechaString = fechaDateFormat.format(fecha);
 
-    return 'Appointment moved to $fechaString at $hora. The previous time slot is free again.';
+    return 'We will see you on $fechaString at $hora. The previous time slot is free again.';
   }
 
   @override
@@ -1668,6 +1671,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get citasAccionesCita => 'Appointment options';
+
+  @override
+  String get cerrarPantalla => 'Close';
 
   @override
   String get regresar => 'Back';
