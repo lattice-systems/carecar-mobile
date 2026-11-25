@@ -1,7 +1,14 @@
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
+import 'package:carecar_mobile/modulos/taller/datos/repositorio_taller_fake.dart';
+import 'package:carecar_mobile/modulos/taller/dominio/etapa_taller.dart';
+import 'package:carecar_mobile/modulos/taller/dominio/orden_taller.dart';
+import 'package:carecar_mobile/modulos/taller/dominio/repositorio_taller.dart';
+import 'package:carecar_mobile/modulos/taller/taller.dart';
 import 'package:carecar_mobile/modulos/widgets/widgets.dart';
+import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
+import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/seguridad/detector_integridad.dart';
 import 'package:carecar_mobile/nucleo/seguridad/politica_datos_locales.dart';
 import 'package:carecar_mobile/nucleo/seguridad/proveedores_seguridad.dart';
@@ -46,8 +53,47 @@ CitaCliente _cita(
 
 final _ahora = DateTime(2026, 11, 22, 12);
 
+/// Repositorio del taller que deja cambiar las ordenes abiertas a mitad de la
+/// prueba, como cuando el taller avanza la orden.
+class _TallerMutable extends RepositorioTallerFake {
+  _TallerMutable(this.abiertas) : super(ordenes: const []);
+
+  List<OrdenEnCurso> abiertas;
+  int consultas = 0;
+
+  @override
+  Future<List<OrdenEnCurso>> enCurso() async {
+    consultas++;
+    if (falla != null) throw falla!;
+    return abiertas;
+  }
+}
+
+OrdenEnCurso _orden({
+  int id = 41,
+  EtapaTaller etapa = EtapaTaller.enReparacion,
+  DateTime? entrega,
+}) => OrdenEnCurso(
+  id: id,
+  vehiculoId: 1,
+  vehiculo: 'Nissan March 2026',
+  etapa: etapa,
+  avance: 50,
+  adicionalesPendientes: 0,
+  entregaEstimada: entrega ?? DateTime(2026, 11, 22, 18),
+  asesor: 'Laura Méndez',
+);
+
 class _Escenario {
-  _Escenario(this.puerto, this.controlador, this.repositorio);
+  _Escenario(
+    this.puerto,
+    this.controlador,
+    this.repositorio,
+    this.taller,
+    this.eventos,
+  );
+  final _TallerMutable taller;
+  final EventosEnVivoFake eventos;
   final _PuertoFalso puerto;
   final ControladorSesion controlador;
   final RepositorioCitasFake repositorio;
@@ -56,6 +102,8 @@ class _Escenario {
 Future<_Escenario> _montar(
   WidgetTester tester, {
   List<CitaCliente> citas = const [],
+  List<OrdenEnCurso> ordenes = const [],
+  Object? falloTaller,
   Object? falloAlCargar,
   bool conSesion = true,
   Locale idioma = const Locale('es'),
@@ -64,6 +112,8 @@ Future<_Escenario> _montar(
   tester.platformDispatcher.localesTestValue = [idioma];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
   final puerto = _PuertoFalso();
+  final taller = _TallerMutable(ordenes)..falla = falloTaller;
+  final eventos = EventosEnVivoFake();
   final repositorio = RepositorioCitasFake(
     citas: citas,
     error: falloAlCargar,
@@ -81,6 +131,8 @@ Future<_Escenario> _montar(
       overrides: [
         puertoWidgetCitaProvider.overrideWithValue(puerto),
         repositorioCitasProvider.overrideWithValue(repositorio),
+        repositorioTallerProvider.overrideWithValue(taller),
+        eventosEnVivoProvider.overrideWithValue(eventos),
         relojCitasProvider.overrideWithValue(() => _ahora),
         controladorSesionProvider.overrideWithValue(controlador),
         if (politica != null)
@@ -97,7 +149,7 @@ Future<_Escenario> _montar(
     ),
   );
   await tester.pumpAndSettle();
-  return _Escenario(puerto, controlador, repositorio);
+  return _Escenario(puerto, controlador, repositorio, taller, eventos);
 }
 
 void main() {
@@ -253,6 +305,192 @@ void main() {
     expect(e.puerto.publicados, isEmpty);
   });
 
+  testWidgets('con orden abierta muestra auto, etapa y entrega', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      ordenes: [_orden()],
+    );
+    final c = e.puerto.ultimo;
+    expect(c.hayCita, isTrue);
+    expect(c.titulo, 'Tu auto en el taller');
+    expect(c.fecha, 'En reparación');
+    expect(c.horario, startsWith('Entrega estimada:'));
+    expect(c.horario, contains('18:00'));
+    expect(c.vehiculo, 'Nissan March 2026');
+    expect(c.enlace, 'carecar://taller/41');
+  });
+
+  testWidgets('con orden abierta no se publica ninguna cita', (tester) async {
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      ordenes: [_orden()],
+    );
+    expect(
+      e.puerto.publicados.where((c) => c.enlace.contains('citas')),
+      isEmpty,
+    );
+  });
+
+  testWidgets('sin hora estimada no dice cuando entregan', (tester) async {
+    final e = await _montar(
+      tester,
+      ordenes: [
+        const OrdenEnCurso(
+          id: 7,
+          vehiculoId: 1,
+          vehiculo: 'Aveo',
+          etapa: EtapaTaller.recibido,
+          avance: 0,
+          adicionalesPendientes: 0,
+        ),
+      ],
+    );
+    expect(e.puerto.ultimo.fecha, 'Recibido');
+    expect(e.puerto.ultimo.horario, isNull);
+  });
+
+  testWidgets('los textos del taller siguen el idioma del telefono', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      ordenes: [_orden()],
+      idioma: const Locale('en'),
+    );
+    expect(e.puerto.ultimo.titulo, 'Your car at the workshop');
+    expect(e.puerto.ultimo.horario, startsWith('Estimated pickup:'));
+  });
+
+  testWidgets('al entregarse la orden vuelve a la proxima cita', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      ordenes: [_orden()],
+    );
+    e.taller.abiertas = [];
+    e.eventos.emitir('orden', {'ordenId': 41});
+    await tester.pumpAndSettle();
+
+    expect(e.puerto.ultimo.enlace, 'carecar://citas/2/comprobante');
+  });
+
+  testWidgets('un evento de orden actualiza la etapa con la app abierta', (
+    tester,
+  ) async {
+    final e = await _montar(tester, ordenes: [_orden()]);
+    expect(e.puerto.ultimo.fecha, 'En reparación');
+
+    e.taller.abiertas = [_orden(etapa: EtapaTaller.listoParaEntrega)];
+    e.eventos.emitir('orden', {'ordenId': 41});
+    await tester.pumpAndSettle();
+
+    expect(e.puerto.ultimo.fecha, 'Listo para entrega');
+  });
+
+  testWidgets('al reconectar el canal vuelve a consultar las ordenes', (
+    tester,
+  ) async {
+    final e = await _montar(tester, ordenes: [_orden()]);
+    final antes = e.taller.consultas;
+
+    e.eventos.emitir('conexion.restablecida');
+    await tester.pumpAndSettle();
+
+    expect(e.taller.consultas, greaterThan(antes));
+  });
+
+  testWidgets('otros eventos no vuelven a consultar las ordenes', (
+    tester,
+  ) async {
+    final e = await _montar(tester, ordenes: [_orden()]);
+    final antes = e.taller.consultas;
+
+    e.eventos.emitir('asistencia.estado', {'solicitudId': 1});
+    await tester.pumpAndSettle();
+
+    expect(e.taller.consultas, antes);
+  });
+
+  testWidgets('al volver a primer plano vuelve a consultar las ordenes', (
+    tester,
+  ) async {
+    final e = await _montar(tester, ordenes: [_orden()]);
+    e.taller.abiertas = [_orden(etapa: EtapaTaller.lavado)];
+
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+    tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await tester.pumpAndSettle();
+
+    expect(e.puerto.ultimo.fecha, 'Lavado');
+  });
+
+  testWidgets('al cerrar sesion se borra el auto del widget', (tester) async {
+    final e = await _montar(tester, ordenes: [_orden()]);
+    expect(e.puerto.ultimo.vehiculo, 'Nissan March 2026');
+
+    await e.controlador.cerrarSesion();
+    await tester.pumpAndSettle();
+
+    final c = e.puerto.ultimo;
+    expect(c.hayCita, isFalse);
+    expect(c.vehiculo, isNull);
+    expect(c.fecha, isNull);
+    expect(c.enlace, enlaceAgendarWidget);
+  });
+
+  testWidgets('sin sesion no se consultan las ordenes ni se abre el canal', (
+    tester,
+  ) async {
+    final e = await _montar(tester, conSesion: false, ordenes: [_orden()]);
+    expect(e.taller.consultas, 0);
+    expect(e.eventos.aperturas, 0);
+  });
+
+  testWidgets('si las ordenes no cargan se muestra la proxima cita', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      falloTaller: Exception('sin red'),
+    );
+    expect(e.puerto.ultimo.enlace, 'carecar://citas/2/comprobante');
+  });
+
+  testWidgets('si falla al actualizar conserva la orden que ya mostraba', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      citas: [_cita(2, DateTime(2026, 11, 25))],
+      ordenes: [_orden()],
+    );
+    e.taller.falla = Exception('sin red');
+    e.eventos.emitir('orden', {'ordenId': 41});
+    await tester.pumpAndSettle();
+
+    expect(e.puerto.ultimo.enlace, 'carecar://taller/41');
+  });
+
+  testWidgets('en equipo comprometido el widget no muestra el auto', (
+    tester,
+  ) async {
+    final e = await _montar(
+      tester,
+      ordenes: [_orden()],
+      politica: PoliticaDatosLocales(EstadoIntegridad.comprometido),
+    );
+    expect(e.puerto.ultimo.hayCita, isFalse);
+    expect(e.puerto.ultimo.vehiculo, isNull);
+    expect(e.taller.consultas, 0);
+  });
+
   testWidgets('un sistema sin widgets no afecta a la app', (tester) async {
     final puerto = _PuertoFalso()..fallo = StateError('sin widgets');
     final controlador = ControladorSesion(ApiFalsa(), AlmacenEnMemoria());
@@ -260,6 +498,8 @@ void main() {
       ProviderScope(
         overrides: [
           puertoWidgetCitaProvider.overrideWithValue(puerto),
+          repositorioTallerProvider.overrideWithValue(_TallerMutable([])),
+          eventosEnVivoProvider.overrideWithValue(EventosEnVivoFake()),
           controladorSesionProvider.overrideWithValue(controlador),
         ],
         child: MaterialApp(
