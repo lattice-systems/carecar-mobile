@@ -5,6 +5,7 @@ import '../../../api/excepciones.dart';
 import '../../../api/modelos/cita.dart';
 import '../../../api/modelos/problema.dart';
 import '../../../api/modelos/recoleccion_cita.dart';
+import '../../../api/modelos/traslado.dart';
 import '../../recoleccion/recoleccion.dart';
 import '../dominio/cita_agendada.dart';
 import '../dominio/cita_cliente.dart';
@@ -168,6 +169,7 @@ class RepositorioCitasApi implements RepositorioCitas {
     franjaId: c.franjaId,
     vehiculoNombre: c.vehiculoNombre,
     motivo: MotivoCita.desdeCodigo(c.motivo),
+    recoleccion: _aRecoleccion(c.recoleccion),
   );
 
   CitaAgendada _aDominio(Cita c) => CitaAgendada(
@@ -195,6 +197,7 @@ class RepositorioCitasApi implements RepositorioCitas {
               fecha: t.fecha,
               ventanaInicio: t.ventanaInicio,
               ventanaFin: t.ventanaFin,
+              estado: EstadoTraslado.desde(t.estado),
             ),
       ],
     );
