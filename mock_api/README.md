@@ -1,7 +1,7 @@
 # API simulada de Agencia360 · TEC-5
 
 Simula la API que Agencia360 expone a la app CareCar, para que la app avance sin
-esperar al backend. Simula el contrato `api/agencia360-api-app-v1.yaml`.
+esperar al backend. Incluye operaciones del contrato v1 y módulos de v2.
 
 **No es parte de la app.** Es una herramienta de desarrollo: no se compila, no se
 publica y no viaja en el APK.
@@ -21,9 +21,9 @@ Los colores Blanco/Gris son metadatos internos de la semilla: el contrato v1.1
 solo expone `id`, `vin`, `modelo`, `anio`, `placas` y `kilometraje`; la app muestra
 «No disponible» para marca, tipo, versión y color por separado.
 
-Si ya existe `db.json`, `npm run reset` copia la semilla **y elimina cambios
-locales del mock**. Reiniciar el servidor después de hacerlo; mantiene datos en
-memoria. Si los datos ya están incorporados, basta con reiniciar el servidor.
+Si ya existe `db.json`, `npm run reset` reúne las semillas **y elimina cambios
+locales del mock**. Detén el servidor antes de restaurar los datos y vuelve a
+iniciarlo después para que lea el archivo nuevo.
 
 Para probar en otro puerto desde PowerShell:
 
@@ -101,15 +101,35 @@ Tokens de recuperación para APP-2.3:
 
 | Archivo | Qué es |
 | --- | --- |
-| `db.seed.json` | Estado inicial. **Está versionado**: es el que se edita para agregar datos de ejemplo |
+| `semillas/<modulo>.json` | Colecciones iniciales versionadas por módulo |
 | `db.json` | Estado vivo. Lo modifican las peticiones `POST`. **Está ignorado por git** |
 
-El servidor crea `db.json` desde la semilla la primera vez. Para volver al estado
-inicial:
+El servidor crea `db.json` reuniendo todas las semillas la primera vez. Los
+arranques siguientes leen el estado persistido. Para volver al estado inicial:
 
 ```bash
 npm run reset
 ```
+
+### Agregar un módulo
+
+1. Crea `modulos/<modulo>.js` con una función CommonJS que registre las rutas en
+   `servidor`. Recibe `db` si necesita leer o escribir colecciones. Usa `BASE`,
+   `problema` y `noEncontrado` de `comun/http.js` para las rutas y errores del
+   contrato. Los módulos se registran después de la guardia de sesión.
+2. Registra la función en `server.js` antes del manejo de rutas desconocidas.
+   Pasa sólo las dependencias necesarias. Por ejemplo, Citas recibe de
+   Recolección las operaciones que necesita para crear y cancelar traslados.
+3. Si hay datos persistidos, crea `semillas/<modulo>.json` con un objeto cuyas
+   claves sean nombres de colecciones y cuyos valores sean listas. Para sumar
+   datos a una colección existente, edita la semilla del módulo dueño. El reset
+   detecta nombres repetidos antes de escribir `db.json`.
+4. Si agregas una colección, inicialízala con `db.defaults(...).write()` en el
+   módulo para que funcione con los `db.json` creados en versiones previas.
+   Revisa el arranque con y sin un estado persistido.
+
+Las rutas sin datos persistidos, como Asistencia y Eventos, mantienen su estado
+en memoria y no necesitan un archivo de semilla.
 
 ### Guarda estado
 
@@ -123,7 +143,7 @@ Por eso existe `npm run reset`.
 
 ## Qué cubre
 
-Los 13 endpoints del contrato, con sus casos de error:
+Operaciones de la app y casos de error:
 
 | Método | Ruta | Notas |
 | --- | --- | --- |
@@ -144,12 +164,12 @@ Los 13 endpoints del contrato, con sus casos de error:
 | POST | `/citas/{id}/cancelar` | 200 · 409 si ya no está confirmada |
 | POST | `/citas/{id}/reprogramar` | 200 · 409 `FRANJA_SIN_CUPO`, `CITA_NO_REPROGRAMABLE` o `FUERA_DE_PLAZO` (propuesto en V2-M02.13; no está en el contrato v1) |
 | GET | `/direcciones` | Las del cliente (V2-M17.01) |
-| POST | `/direcciones` | 201 · 400 `DATOS_INVALIDOS` · 422 `FUERA_DE_COBERTURA` (círculo de 40 km alrededor de la Ciudad de México) |
+| POST | `/direcciones` | 201 · 400 `DATOS_INVALIDOS` · 422 `FUERA_DE_COBERTURA` (15 km alrededor del centro de León, Guanajuato) |
 | PUT | `/direcciones/{id}` | 200 · 400 · 404 si es ajena · 422 |
 | DELETE | `/direcciones/{id}` | 204 · 404 · 409 `DIRECCION_EN_USO` si ya tiene traslados |
 | GET | `/vehiculos/{id}/mantenimiento` | Plan de 8 servicios cada 5 000 km con su estado y el próximo servicio · 404 si el vehículo es ajeno · los de 2014 o anteriores no tienen plan (V2-M05.01) |
 | POST | `/vehiculos/{id}/lecturas-km` | `{ km }` · 201 lectura del cliente · 400 `DATOS_INVALIDOS` · 404 · 422 `KM_INVALIDO` si es menor a la última lectura (V2-M05.03) |
-| GET | `/recoleccion/cotizacion` | `direccionId` y `fecha` · costo por traslado (80 + 12 por km), total, y franjas 07:00-09:00 y 17:00-19:00 · 400 · 404 · 422 (V2-M17.02) |
+| GET | `/recoleccion/cotizacion` | `direccionId` y `fecha` · costo por traslado (80 + 8 por km), total, y franjas 07:00-09:00 y 17:00-19:00 · 400 · 404 · 422 (V2-M17.02) |
 | GET | `/catalogo` | Solo modelos activos |
 | GET | `/catalogo/{id}` | Detalle con `imagenes`, `versiones` y `especificaciones` · 404 si no existe o está retirado |
 | POST | `/toma-a-cuenta/estimaciones` | 201 con el rango y los supuestos, y la guarda · 400 si el auto no viene de una sola forma o km, año o estado no sirven · 404 si el vehículo es ajeno o el modelo está retirado · 422 `SIN_PARAMETROS_DE_VALUACION` si no hay parámetros para ese auto |

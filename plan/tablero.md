@@ -63,7 +63,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
-| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
+| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | En curso | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |

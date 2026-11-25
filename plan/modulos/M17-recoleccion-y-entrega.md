@@ -107,7 +107,7 @@ Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis 
 **Contrato, DTOs y mock**
 
 - DTOs en `lib/api/modelos/traslado.dart` (`TrasladoDetalle`, `UbicacionChofer`, `ChecklistTraslado`, `EstadoTraslado`, `NivelGasolina`). El 404 del checklist se traduce a `null` en `RepositorioRecoleccionApi.checklist`. Código `TRANSICION_INVALIDA` agregado a `CodigoProblema` y a `test/api/errores_v11_test.dart`. `api/*.yaml` y `test/contrato` los integra quien integra.
-- `mock_api/server.js`: `GET /traslados/{id}` (ubicación solo en `en_camino` y `de_regreso`), `GET /traslados/{id}/checklist` (404 si no hay; URLs con firma que cambia en cada petición), cancelar una cita cancela sus traslados programados y un emisor de prueba (`POST /__mock/traslados/{id}/estado|ubicacion|checklist`, ver `mock_api/README.md`).
+- `mock_api/modulos/recoleccion.js`: `GET /traslados/{id}` (ubicación solo en `en_camino` y `de_regreso`), `GET /traslados/{id}/checklist` (404 si no hay; URLs con firma que cambia en cada petición), cancelar una cita cancela sus traslados programados y un emisor de prueba (`POST /__mock/traslados/{id}/estado|ubicacion|checklist`, ver `mock_api/README.md`).
 - **Pruebas:** `test/api/traslado_modelos_test.dart`, repositorio, proveedores y fake de recolección, `seguimiento_traslado_test.dart`, `pantalla_seguimiento_traslado_test.dart`, `pantalla_checklist_traslado_test.dart`, `ruta_seguimiento_traslado_test.dart`, `mapa_provisional_test.dart`, `test/modulos/citas/grupo_recoleccion_cita_test.dart` y `test/pantallas/perfil/pantalla_perfil_direcciones_test.dart`.
 
 **Pendiente / fuera de alcance**

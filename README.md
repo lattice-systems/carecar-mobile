@@ -281,6 +281,8 @@ flutter test test/widget_test.dart    # un solo archivo
 
 Para ejecutar las pruebas visuales o actualizar las imágenes de referencia, consulta el [sistema de diseño v2](docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
 
+El simulador registra las rutas desde `mock_api/modulos/` y genera su estado inicial desde `mock_api/semillas/`. Para ampliar el simulador o restaurar los datos locales, consulta la [guía de la API simulada](mock_api/README.md#los-datos).
+
 ---
 
 ## ✅ CI y checks del PR

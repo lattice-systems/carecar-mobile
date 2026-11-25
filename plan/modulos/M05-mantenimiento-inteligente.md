@@ -78,4 +78,4 @@ El próximo servicio es el héroe del plan: título con el nombre del servicio, 
 
 ## Mock
 
-`mock_api/server.js` (bloque `// ── mantenimiento ──`) simula ambos endpoints: plan de 8 servicios cada 5 000 km cuyo estado sale del km vigente, promedio diario de las lecturas (35 km/día por omisión), 404 para vehículo ajeno, 400 `DATOS_INVALIDOS` y 422 `KM_INVALIDO` en las lecturas. Los vehículos de 2014 o anteriores no tienen plan.
+`mock_api/modulos/mantenimiento.js` simula ambos endpoints: plan de 8 servicios cada 5 000 km cuyo estado sale del km vigente, promedio diario de las lecturas (35 km/día por omisión), 404 para vehículo ajeno, 400 `DATOS_INVALIDOS` y 422 `KM_INVALIDO` en las lecturas. Los vehículos de 2014 o anteriores no tienen plan.
