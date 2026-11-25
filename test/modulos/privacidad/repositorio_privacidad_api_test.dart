@@ -18,7 +18,7 @@ Problema _problema(String codigo, int status) => Problema.fromJson({
 final _aviso = AvisoPrivacidad(
   id: 3,
   version: 2,
-  texto: 'Primero.\n\nSegundo.\n\n\nTercero.',
+  texto: 'Primero.\n\nSegundo.\n\n\nTercero.\n  \nCuarto.',
   vigenteDesde: DateTime.utc(2026, 11, 25, 18),
   aceptado: false,
 );
@@ -73,7 +73,7 @@ void main() {
 
         final aviso = await RepositorioPrivacidadApi(api).avisoVigente();
 
-        expect(aviso.parrafos, ['Primero.', 'Segundo.', 'Tercero.']);
+        expect(aviso.parrafos, ['Primero.', 'Segundo.', 'Tercero.', 'Cuarto.']);
       },
     );
 
