@@ -221,4 +221,76 @@ void main() {
       expect(claves, isNot(contains(prohibida)));
     }
   });
+
+  test('los campos conocidos de cada widget cubren todo lo que publica', () {
+    final contenidos = [
+      ContenidoWidget.proximaCita(
+        titulo: 't',
+        dia: '1',
+        mes: 'M',
+        semana: 's',
+        horario: 'h',
+        vehiculo: 'v',
+        descripcion: 'd',
+        citaId: 1,
+      ),
+      ContenidoWidget.proximaCitaVacia(titulo: 't', mensaje: 'm', accion: 'a'),
+      ContenidoWidget.taller(
+        titulo: 't',
+        etapa: 'e',
+        paso: 1,
+        total: 7,
+        pasoTexto: 'p',
+        entrega: 'x',
+        vehiculo: 'v',
+        descripcion: 'd',
+        ordenId: 1,
+      ),
+      ContenidoWidget.tallerVacio(titulo: 't', mensaje: 'm', accion: 'a'),
+      ContenidoWidget.mantenimiento(
+        titulo: 't',
+        servicio: 's',
+        faltan: 'f',
+        progreso: 1,
+        urgente: false,
+        descripcion: 'd',
+        vehiculoId: 1,
+        fecha: 'x',
+        vehiculo: 'v',
+      ),
+      ContenidoWidget.mantenimientoVacio(
+        titulo: 't',
+        mensaje: 'm',
+        accion: 'a',
+      ),
+      ContenidoWidget.bitacora(
+        titulo: 't',
+        unidad: 'u',
+        etiquetaRendimiento: 'e',
+        gasto: 'g',
+        etiquetaGasto: 'eg',
+        descripcion: 'd',
+        vehiculoId: 1,
+        rendimiento: '1',
+        vehiculo: 'v',
+      ),
+      ContenidoWidget.bitacoraVacia(titulo: 't', mensaje: 'm', accion: 'a'),
+      ContenidoWidget.accesos(
+        titulo: 't',
+        agendar: 'a',
+        miAuto: 'm',
+        sos: 's',
+        comprobante: 'c',
+        enlaceComprobante: 'e',
+        enlaceSos: 's',
+      ),
+    ];
+    for (final c in contenidos) {
+      expect(
+        c.tipo.campos.toSet().containsAll(c.datos.keys),
+        isTrue,
+        reason: '${c.tipo} publica campos que no declara',
+      );
+    }
+  });
 }
