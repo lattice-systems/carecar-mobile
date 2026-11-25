@@ -10,6 +10,7 @@ import 'api/cliente_api.dart';
 import 'cache/carecar_api_con_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
+import 'modulos/privacidad/privacidad.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/datos/reintento.dart';
@@ -236,10 +237,15 @@ class _AppCareCarState extends State<AppCareCar> {
                 child: SincronizadorDeWidgets(
                   child: ShadAppBuilder(
                     child: AvisoEquipoComprometido(
-                      child: CortinaArranque(
-                        listo: !_restaurando,
-                        duracionMinima: widget.duracionArranque,
-                        siguiente: (_) => child!,
+                      // El aviso de privacidad (V2-M22.01) se verifica con
+                      // cada sesion; la guardia del enrutador lleva a la
+                      // puerta si falta aceptarlo.
+                      child: VerificadorDeAviso(
+                        child: CortinaArranque(
+                          listo: !_restaurando,
+                          duracionMinima: widget.duracionArranque,
+                          siguiente: (_) => child!,
+                        ),
                       ),
                     ),
                   ),

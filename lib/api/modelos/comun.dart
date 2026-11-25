@@ -60,6 +60,27 @@ DateTime? leerFechaHoraOpcional(Object? valor, String campo) {
   );
 }
 
+/// Lee un `date-time` del contrato que es un instante: sin zona se toma como
+/// UTC, que es lo que el contrato declara. Una fecha rota falla: no se
+/// inventa una.
+DateTime leerMomentoUtc(Object? valor, String campo) {
+  final texto = leerTexto(valor, campo);
+  final momento = DateTime.tryParse(texto);
+  if (momento == null) {
+    throw FormatException('El campo «$campo» no es una fecha: $texto');
+  }
+  return momento.isUtc
+      ? momento
+      : DateTime.utc(
+          momento.year,
+          momento.month,
+          momento.day,
+          momento.hour,
+          momento.minute,
+          momento.second,
+        );
+}
+
 /// Escribe una fecha como `AAAA-MM-DD`, el formato que pide el contrato.
 String escribirFecha(DateTime fecha) {
   final mes = fecha.month.toString().padLeft(2, '0');

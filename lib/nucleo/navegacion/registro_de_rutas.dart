@@ -11,6 +11,7 @@ import '../../modulos/estreno/estreno.dart';
 import '../../modulos/galeria/galeria.dart';
 import '../../modulos/historial/historial.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
+import '../../modulos/privacidad/privacidad.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
 import '../../modulos/taller/taller.dart';
 import '../../modulos/vehiculos/vehiculos.dart';
@@ -51,6 +52,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasHistorial,
   // El mantenimiento (M05) es nuevo en v2: no pasa por el interruptor.
   ...rutasMantenimiento,
+  // La privacidad (M22) es nueva en v2: no pasa por el interruptor.
+  ...rutasPrivacidad,
   // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.
   ...rutasRecoleccion,
   ...rutasTaller,

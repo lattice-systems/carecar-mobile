@@ -225,4 +225,14 @@ abstract interface class CarecarApi {
     int pagina = 0,
     int tamano = 20,
   });
+
+  // --- Privacidad · V2-M22.01 ---
+
+  /// `GET /privacidad/aviso`: el aviso vigente y si esta cuenta ya lo acepto.
+  Future<AvisoPrivacidad> avisoDePrivacidad();
+
+  /// `POST /privacidad/aceptaciones`: registra que se leyo esa version. Es
+  /// idempotente. 404 si el aviso no existe; 409 `AVISO_NO_VIGENTE` si ya hay
+  /// una version mas nueva.
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId);
 }

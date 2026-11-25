@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../sesion/controlador_sesion.dart';
 import '../migracion/proveedores_migracion.dart';
+import '../privacidad/estado_aviso.dart';
 import '../sesion/proveedores_sesion.dart';
 import 'enlaces.dart';
 import 'guardia_sesion.dart';
@@ -44,6 +45,7 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
   void avisar(Object? _, Object? _) => cambios.value++;
   ref.listen(estadoSesionProvider, avisar);
   ref.listen(contrasenaCambiadaProvider, avisar);
+  ref.listen(estadoAvisoProvider, avisar);
 
   final enrutador = GoRouter(
     initialLocation: Rutas.inicio,
@@ -58,6 +60,7 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
         destino: state.uri,
         estado: ref.read(estadoSesionProvider),
         contrasenaCambiada: ref.read(contrasenaCambiadaProvider),
+        avisoPorAceptar: ref.read(estadoAvisoProvider).porAceptar,
       );
     },
     // Una ruta que no existe (enlace viejo o mal escrito) no deja pantalla

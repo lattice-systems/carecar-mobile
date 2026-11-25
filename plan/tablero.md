@@ -57,13 +57,13 @@ Total: **218 historias** + 4 de H0.
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
-| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Lista | |
+| V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | En revisión | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
 | V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
-| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Lista | |
+| V2-T03.08 | API simulada partida por módulo | Haziel |  | — | En curso | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
 | V2-T04.03 | Un APK/IPA de prueba por cada merge a `main` | Daniel |  | V2-T04.02 | Hecha | #72, #73 (avance: IPA sin firmar para sideload, [guía](../docs/guia-instalar-ios-sin-mac.md)); Android: APK por merge en el pre-release `prueba-main` ; iOS por IPA sin firmar + Sideloadly (sin tiendas) |
@@ -132,7 +132,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | Lista | |
 | V2-M21.05 | Resolver conflictos de forma predecible | Jael | B | V2-M21.03 | Lista | |
 | V2-M21.06 | Que la app sincronice en segundo plano | Jael |  | V2-M21.02 | Lista | |
-| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Lista | |
+| V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | En revisión | #127, backend#96 |
 | V2-M22.02 | Descargar mis datos (acceso ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.03 | Pedir que borren mi cuenta (cancelación ARCO) | Daniel | B | V2-M01.06 | Lista | |
 | V2-M22.04 | Fijar certificados del servidor | Daniel |  | V2-T04.02 | Lista | |

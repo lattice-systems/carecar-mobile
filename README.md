@@ -268,6 +268,7 @@ Lineamientos que afectan a la app:
 | Tipo                   | Herramienta                                    | Estado           |
 | ---------------------- | ---------------------------------------------- | ---------------- |
 | Unitarias y de widgets | `flutter_test`                                 | ✅ Configurado    |
+| Visuales (golden)      | `matchesGoldenFile` con fuentes empaquetadas   | ✅ Configurado    |
 | Simulación de la API   | `mock_api/` (json-server) + prueba de contrato | ✅ Configurado    |
 | De integración         | `integration_test` (en emulador o dispositivo) | ⏳ Por configurar |
 
@@ -277,6 +278,10 @@ Las pruebas viven en `test/` con el sufijo `_test.dart` (API, contrato, sesión 
 flutter test                          # todas las pruebas
 flutter test test/widget_test.dart    # un solo archivo
 ```
+
+Para ejecutar las pruebas visuales o actualizar las imágenes de referencia, consulta el [sistema de diseño v2](docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
+
+El simulador registra las rutas desde `mock_api/modulos/` y genera su estado inicial desde `mock_api/semillas/`. Para ampliar el simulador o restaurar los datos locales, consulta la [guía de la API simulada](mock_api/README.md#los-datos).
 
 ---
 

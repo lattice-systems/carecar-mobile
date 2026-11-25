@@ -505,4 +505,18 @@ class ApiFalsa implements CarecarApi {
   }) =>
       alPedirSolicitudesEstreno?.call(pagina) ??
       Future.value(const Pagina(contenido: [], totalPaginas: 0));
+
+  // --- Privacidad (V2-M22.01) ---
+  Future<AvisoPrivacidad> Function()? alPedirAvisoDePrivacidad;
+  Future<AceptacionAviso> Function(int avisoId)? alAceptarAvisoDePrivacidad;
+
+  @override
+  Future<AvisoPrivacidad> avisoDePrivacidad() =>
+      alPedirAvisoDePrivacidad?.call() ??
+      Future.error(UnimplementedError('avisoDePrivacidad'));
+
+  @override
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
+      alAceptarAvisoDePrivacidad?.call(avisoId) ??
+      Future.error(UnimplementedError('aceptarAvisoDePrivacidad'));
 }

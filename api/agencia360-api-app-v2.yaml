@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.12.1
+  version: 2.13.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -74,6 +74,8 @@ tags:
     description: V2-M05.01, V2-M05.02, V2-M05.03 y V2-M05.06
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
+  - name: Privacidad
+    description: V2-M22.01
 
 security:
   - bearerAuth: []
@@ -1234,6 +1236,57 @@ paths:
                     type: integer
         '401':
           $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/aviso:
+    get:
+      tags: [Privacidad]
+      summary: El aviso de privacidad vigente y si ya lo acepté
+      description: |
+        V2-M22.01 · Texto versionado: un aviso publicado nunca se edita, la agencia publica una versión
+        nueva. `aceptado` es `false` en el primer ingreso y cada vez que hay una versión nueva; la app pide
+        aceptarla antes de seguir. El servidor no bloquea el resto de la API por no haberla aceptado.
+      responses:
+        '200':
+          description: Aviso vigente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvisoPrivacidad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/aceptaciones:
+    post:
+      tags: [Privacidad]
+      summary: Aceptar el aviso de privacidad vigente
+      description: |
+        V2-M22.01 · Registra que esta cuenta aceptó esa versión. Es idempotente: aceptar otra vez la misma
+        versión devuelve la primera aceptación sin duplicarla.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AceptarAviso'
+      responses:
+        '200':
+          description: Aceptación registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AceptacionAviso'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: El aviso ya no es el vigente (`AVISO_NO_VIGENTE`), porque la agencia publicó una versión nueva que hay que leer y aceptar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /toma-a-cuenta/estimaciones:
     get:
@@ -3000,6 +3053,49 @@ components:
         creadaEn:
           type: string
           format: date-time
+    AvisoPrivacidad:
+      type: object
+      required: [id, version, texto, vigenteDesde, aceptado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          example: 1
+        texto:
+          type: string
+          description: Texto completo del aviso; los párrafos van separados por una línea en blanco
+        vigenteDesde:
+          type: string
+          format: date-time
+        aceptado:
+          type: boolean
+          description: Si esta cuenta ya aceptó esta versión
+        aceptadoEn:
+          type: string
+          format: date-time
+          nullable: true
+    AceptarAviso:
+      type: object
+      required: [avisoId]
+      properties:
+        avisoId:
+          type: integer
+          format: int64
+          description: El `id` del aviso que se leyó; debe ser el vigente
+    AceptacionAviso:
+      type: object
+      required: [avisoId, version, aceptadoEn]
+      properties:
+        avisoId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+        aceptadoEn:
+          type: string
+          format: date-time
     EstimacionTomaCuenta:
       type: object
       description: |
@@ -3645,6 +3741,7 @@ components:
             - TRANSICION_INVALIDA
             - ESTRENO_SIN_PRECIO
             - ESTRENO_DUPLICADA
+            - AVISO_NO_VIGENTE
           example: FRANJA_SIN_CUPO
         path:
           type: string

@@ -174,9 +174,21 @@ Para pantallas con aire, esquinas generosas y una pieza protagonista (referencia
 
 **`GrupoLista` y `FilaGrupo`.** Lista agrupada: tarjeta de radio `tarjeta` con filas separadas por líneas finas que empiezan después del ícono. Cada fila lleva ícono en cuadro redondeado de color (`colorIcono`), título, subtítulo, adorno final y chevron si es tocable. `encabezado` (etiqueta, como encabezado accesible) y `pie` (texto de apoyo) van fuera de la tarjeta. Cada fila es un solo nodo para el lector de pantalla.
 
-Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %), con la fuente de prueba de Flutter hasta que V2-T03.02 deje las reales. Todos están en la galería.
+Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %). Todos están en la galería.
 
 Cada componente documenta: anatomía, variantes, estados (normal, presionado, foco, deshabilitado, cargando, error), accesibilidad (`Semantics`, orden de foco) y golden en claro, oscuro y 200 %.
+
+### Pruebas golden
+
+Las pruebas de Portada y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee Inter y JetBrains Mono desde `assets/fonts/` y Material Icons desde el directorio de recursos que prepara `flutter test`. Registra las fuentes de respaldo con los nombres tipográficos de los tokens mientras Geist y Geist Mono estén pendientes en V2-T02.02. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+
+Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
+
+```bash
+flutter test test/nucleo/diseno/componentes/portada_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart
+```
+
+Las referencias se generan en Linux con el mismo parche de Flutter que usa CI. La rasterización de texto e íconos puede variar en Windows aunque el diseño sea el mismo. Si el cambio visual es intencional, agrega `--update-goldens` al comando en Linux y revisa las PNG resultantes antes de incluirlas en el PR. El check **Pruebas (flutter test)** ejecuta la comparación exacta en Ubuntu. Si falla, adjunta el artefacto `diferencias-golden`, donde `*_testImage.png` es la captura del runner y `*_masterImage.png` es la referencia con la que se comparó.
 
 ## 9. Escritura (UX copy)
 
