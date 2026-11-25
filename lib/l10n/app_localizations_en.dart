@@ -3260,4 +3260,48 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'The driver hasn\'t recorded any checklist for this pickup yet.';
+
+  @override
+  String get asistenciaLlamarTitulo => 'Call now';
+
+  @override
+  String get asistenciaLlamarIntro =>
+      'One tap opens your phone\'s dialer with the number. It works even without data.';
+
+  @override
+  String get asistenciaLlamarGrupo => 'Who to call';
+
+  @override
+  String get asistenciaLlamarEmergencias => 'Emergencies';
+
+  @override
+  String get asistenciaLlamarEmergenciasDetalle =>
+      '911 · police, ambulance and fire';
+
+  @override
+  String get asistenciaLlamarAgencia => 'The dealership';
+
+  @override
+  String get asistenciaLlamarAseguradora => 'My insurer';
+
+  @override
+  String get asistenciaLlamarAseguradoraFalta =>
+      'You haven\'t added your insurer yet';
+
+  @override
+  String get asistenciaLlamarAseguradoraComoAgregar =>
+      'You haven\'t added your insurer yet. Add it in your car\'s documents (policy) and it will show up here to call with one tap.';
+
+  @override
+  String asistenciaLlamarAccion(String contacto) {
+    return 'Call $contacto';
+  }
+
+  @override
+  String asistenciaLlamarNoSePudo(String numero) {
+    return 'We couldn\'t open the dialer. Dial $numero by hand.';
+  }
+
+  @override
+  String get asistenciaLlamarAtajo => 'Call the dealership or 911';
 }
