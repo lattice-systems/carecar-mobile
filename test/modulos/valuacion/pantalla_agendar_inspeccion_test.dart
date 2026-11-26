@@ -188,9 +188,19 @@ void main() {
       await tester.pumpAndSettle();
       await _elegirDiaYHora(tester);
       expect(tester.takeException(), isNull, reason: escenario.name);
-      // Aquí no se mide la zona táctil: en 320 no caben siete columnas de 48
-      // y cada día del Calendario queda en unos 42 de ancho (anotado en M20).
+      // Excepción aceptada (M20): en 320 no caben siete columnas de 48, así
+      // que cada día del Calendario mide unos 42 de ancho y conserva 48 de
+      // alto. La guía baja a 40 de ancho para que no se encoja más.
       final semantica = tester.ensureSemantics();
+      await expectLater(
+        tester,
+        meetsGuideline(
+          const MinimumTapTargetGuideline(
+            size: Size(40, 48),
+            link: 'https://www.w3.org/TR/WCAG22/#target-size-minimum',
+          ),
+        ),
+      );
       await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
       await expectLater(tester, meetsGuideline(textContrastGuideline));
       semantica.dispose();
