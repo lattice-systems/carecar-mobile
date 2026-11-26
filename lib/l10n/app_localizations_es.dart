@@ -3956,4 +3956,27 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get campanasVerComprobante => 'Ver comprobante';
+
+  @override
+  String get vehiculosManualBuscarAccion => 'Buscar en el manual';
+
+  @override
+  String get vehiculosManualBuscarCerrar => 'Cerrar la búsqueda';
+
+  @override
+  String get vehiculosManualBuscarSugerencia => 'Buscar en el manual';
+
+  @override
+  String get vehiculosManualBuscarAyuda =>
+      'Escribe al menos dos letras para buscar en el manual.';
+
+  @override
+  String vehiculosManualSinResultados(String consulta) {
+    return 'No encontramos «$consulta» en el manual.';
+  }
+
+  @override
+  String vehiculosManualResultadoPagina(int pagina) {
+    return 'Página $pagina';
+  }
 }
