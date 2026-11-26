@@ -1,6 +1,5 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/acceso/acceso.dart';
-import 'package:carecar_mobile/nucleo/navegacion/proveedores_navegacion.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
