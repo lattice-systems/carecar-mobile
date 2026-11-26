@@ -73,6 +73,24 @@ enum CodigoProblema {
   /// V2-M12.04: el cliente ya tiene el maximo de referidos en seguimiento.
   limiteReferidos('LIMITE_REFERIDOS'),
 
+  /// V2-M14.02: no alcanzan las piezas para apartar.
+  sinExistencia('SIN_EXISTENCIA'),
+
+  /// V2-M14.03: la cita esta cancelada o ya paso.
+  citaNoDisponible('CITA_NO_DISPONIBLE'),
+
+  /// V2-M14.02: ya hay el maximo de pedidos sin entregar.
+  limiteApartados('LIMITE_APARTADOS'),
+
+  /// V2-M14.02: el pedido ya se entrego.
+  pedidoNoCancelable('PEDIDO_NO_CANCELABLE'),
+
+  /// V2-M14.03: el pedido ya se entrego o se cancelo.
+  pedidoNoModificable('PEDIDO_NO_MODIFICABLE'),
+
+  /// V2-M14.03: algun producto no le queda al vehiculo de la cita.
+  productoIncompatible('PRODUCTO_INCOMPATIBLE'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

@@ -5630,6 +5630,12 @@ components:
             - VALUACION_NO_AGENDABLE
             - OFERTA_VENCIDA
             - OFERTA_NO_DISPONIBLE
+            - SIN_EXISTENCIA
+            - CITA_NO_DISPONIBLE
+            - LIMITE_APARTADOS
+            - PEDIDO_NO_CANCELABLE
+            - PEDIDO_NO_MODIFICABLE
+            - PRODUCTO_INCOMPATIBLE
           example: FRANJA_SIN_CUPO
         path:
           type: string
