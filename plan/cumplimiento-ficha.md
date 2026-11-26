@@ -171,7 +171,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Valuación y oferta de toma a cuenta | `valuacion`, `estimacion_toma_cuenta`, `cita` | ⬜ | Ver M26 |
+| Valuación y oferta de toma a cuenta | `valuacion`, `estimacion_toma_cuenta`, `cita` | ⬜ diseñada en el backend con contrato 2.19.0: `valuacion` es nueva y la inspección reusa `cita` con motivo `VALUACION`. `estimacion_toma_cuenta` ya existe (`V34`). La oferta se captura con endpoints del personal porque el ERP y el CRM web están congelados | V2-M26.01 a V2-M26.05 |
 
 ### 23. Ayuda y sucursales — plan [M27](modulos/M27-ayuda-y-sucursales.md)
 
