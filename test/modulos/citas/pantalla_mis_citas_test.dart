@@ -11,6 +11,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/dialogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -110,6 +111,32 @@ void main() {
       final pasadas = tester.getTopLeft(find.text('Pasadas')).dy;
       expect(heroe, lessThan(proximas));
       expect(proximas, lessThan(pasadas));
+    });
+
+    _prueba('proximas y pasadas son la lista del sistema, con el dia en su '
+        'cuadro', (tester) async {
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
+      await tester.pumpAndSettle();
+      // Una lista para las proximas y otra para las pasadas: ya no hay una
+      // copia propia del modulo.
+      expect(find.byType(GrupoLista), findsNWidgets(2));
+      // La proxima destacada, otra proxima y cuatro pasadas llevan el dia.
+      expect(find.byType(CuadroFecha), findsNWidgets(6));
+    });
+
+    _prueba('cada fila de la lista dice fecha, vehiculo y estado juntos', (
+      tester,
+    ) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
+      await tester.pumpAndSettle();
+      final etiquetas = find.byWidgetPredicate(
+        (w) =>
+            w is Semantics &&
+            (w.properties.label?.endsWith('. Cancelada') ?? false),
+      );
+      expect(etiquetas, findsOneWidget);
+      semantica.dispose();
     });
 
     _prueba(

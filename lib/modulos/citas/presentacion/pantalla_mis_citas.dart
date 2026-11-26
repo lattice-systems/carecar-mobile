@@ -13,6 +13,7 @@ import '../../../nucleo/diseno/componentes/cuadro_fecha.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
@@ -25,7 +26,6 @@ import '../dominio/cita_cliente.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
-import 'componentes/grupo_citas.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/vacio_ilustrado.dart';
@@ -165,27 +165,31 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
               else
                 seccionVacia(textos.citasProximas, textos.citasProximasVacio),
               if (otras.isNotEmpty)
-                GrupoCitas(
-                  encabezado: textos.citasProximas,
-                  filas: [
-                    for (final c in otras)
-                      _fila(
-                        context,
-                        c,
-                        vehiculos,
-                        alToque: () => _abrirAcciones(c, vehiculos),
-                      ),
-                  ],
+                SeccionPantalla(
+                  titulo: textos.citasProximas,
+                  hijo: GrupoLista(
+                    filas: [
+                      for (final c in otras)
+                        _fila(
+                          context,
+                          c,
+                          vehiculos,
+                          alToque: () => _abrirAcciones(c, vehiculos),
+                        ),
+                    ],
+                  ),
                 ),
               ..._traslados(textos, proximas),
               if (pasadas.isEmpty)
                 seccionVacia(textos.citasPasadas, textos.citasPasadasVacio)
               else
-                GrupoCitas(
-                  encabezado: textos.citasPasadas,
-                  filas: [
-                    for (final c in pasadas) _fila(context, c, vehiculos),
-                  ],
+                SeccionPantalla(
+                  titulo: textos.citasPasadas,
+                  hijo: GrupoLista(
+                    filas: [
+                      for (final c in pasadas) _fila(context, c, vehiculos),
+                    ],
+                  ),
                 ),
               ..._traslados(textos, pasadas),
               if (estado.errorAlCargarMas)
@@ -241,7 +245,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       vehiculos[cita.vehiculoId] ??
       textos.citasFilaVehiculoGenerico;
 
-  FilaCita _fila(
+  FilaGrupo _fila(
     BuildContext context,
     CitaCliente cita,
     Map<int, String> vehiculos, {
@@ -250,22 +254,20 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final textos = AppLocalizations.of(context);
     final vehiculo = _nombreVehiculo(textos, cita, vehiculos);
     final motivo = cita.motivo;
-    final titulo = textos.citasFilaTitulo(cita.fecha, cita.horaInicio);
     final estado = _textoEstado(textos, cita.estado);
-    final subtitulo = motivo == null
-        ? vehiculo
-        : '$vehiculo · ${_textoMotivo(textos, motivo)}';
-    return FilaCita(
-      fecha: cita.fecha,
-      tono: _tonoEstado(cita.estado),
-      titulo: titulo,
-      subtitulo: subtitulo,
-      etiquetaSemantica: '$titulo. $subtitulo. $estado',
+    return FilaGrupo(
+      titulo: textos.citasFilaTitulo(cita.fecha, cita.horaInicio),
+      subtitulo: motivo == null
+          ? vehiculo
+          : '$vehiculo · ${_textoMotivo(textos, motivo)}',
+      visual: CuadroFecha(fecha: cita.fecha, tono: _tonoEstado(cita.estado)),
       fin: Insignia(
         texto: estado,
         tono: _tonoEstado(cita.estado),
         conIcono: true,
       ),
+      // La insignia no la lee el lector aparte: el estado va dicho aqui.
+      etiquetaFin: estado,
       alToque: alToque,
     );
   }
