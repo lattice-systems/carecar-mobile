@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:flutter/services.dart';
 
@@ -169,7 +170,7 @@ class _PantallaRecuperarContrasenaState
       appBar: AppBar(
         leading: IconButton(
           key: PantallaRecuperarContrasena.botonVolver,
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(LucideIcons300.arrowLeft),
           onPressed: _trabajando ? null : widget.alVolver,
           tooltip: 'Volver al inicio de sesión',
         ),
@@ -199,7 +200,7 @@ class _PantallaRecuperarContrasenaState
                                   ? TonoAviso.advertencia
                                   : TonoAviso.error,
                               icono: _errorDeRed
-                                  ? Icons.wifi_off_outlined
+                                  ? LucideIcons300.wifiOff
                                   : null,
                               titulo: _errorDeRed
                                   ? 'Sin conexión'
@@ -249,7 +250,7 @@ class _PantallaRecuperarContrasenaState
       etiqueta: 'Correo',
       ayuda: 'El que le diste a la agencia',
       habilitado: !_trabajando,
-      icono: Icons.mail_outline,
+      icono: LucideIcons300.mail,
       teclado: TextInputType.emailAddress,
       autocompletar: const [AutofillHints.email],
       enfocar: widget.correoInicial == null,
@@ -283,7 +284,7 @@ class _PantallaRecuperarContrasenaState
       etiqueta: 'Código de 6 dígitos',
       ayuda: '123456',
       habilitado: !_trabajando,
-      icono: Icons.pin_outlined,
+      icono: LucideIcons300.hash,
       teclado: TextInputType.number,
       formatos: [FilteringTextInputFormatter.digitsOnly],
       largoMaximo: 6,
@@ -304,15 +305,13 @@ class _PantallaRecuperarContrasenaState
       etiqueta: 'Contraseña nueva',
       ayuda: 'Al menos 8 caracteres, con letra y número',
       habilitado: !_trabajando,
-      icono: Icons.lock_outline,
+      icono: LucideIcons300.lock,
       ocultar: !_ver,
       textInputAction: TextInputAction.done,
       alEnviar: _trabajando ? null : _restablecer,
       sufijo: IconButton(
         onPressed: _trabajando ? null : () => setState(() => _ver = !_ver),
-        icon: Icon(
-          _ver ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-        ),
+        icon: Icon(_ver ? LucideIcons300.eyeOff : LucideIcons300.eye),
         tooltip: _ver ? 'Ocultar la contraseña' : 'Mostrar la contraseña',
       ),
       validar: (v) => ReglasContrasena.revisar(v ?? ''),

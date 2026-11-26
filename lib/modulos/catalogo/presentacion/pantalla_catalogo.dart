@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -91,7 +93,7 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
               estado: EstadoVacio(
                 titulo: textos.catalogoVacioTitulo,
                 mensaje: textos.catalogoVacioMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
                 textoAccion: textos.tiendaTitulo,
                 alAccion: () => context.push(rutaTienda),
               ),
@@ -105,7 +107,9 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
                     etiqueta: _comparando
                         ? textos.catalogoSalirDeComparar
                         : textos.catalogoComparar,
-                    icono: _comparando ? Icons.close : Icons.compare_arrows,
+                    icono: _comparando
+                        ? LucideIcons300.x
+                        : LucideIcons300.arrowRightLeft,
                     colorIcono: c.texto,
                     alPresionar: _alternarModo,
                   ),
@@ -140,7 +144,7 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
                       child: TarjetaResumen(
                         titulo: textos.tiendaTitulo,
                         subtitulo: textos.tiendaEntradaDetalle,
-                        icono: Icons.shopping_bag_outlined,
+                        icono: LucideIcons300.shoppingBag,
                         alToque: () => context.push(rutaTienda),
                       ),
                     ),

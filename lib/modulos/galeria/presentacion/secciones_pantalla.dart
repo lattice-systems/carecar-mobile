@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/estante.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
@@ -26,7 +28,7 @@ List<SeccionGaleria> seccionesPantalla() => [
             Expanded(
               child: BotonPildora(
                 texto: 'Agendar',
-                icono: Icons.event,
+                icono: LucideIcons300.calendar,
                 expandido: true,
                 alPresionar: () {},
               ),
@@ -62,7 +64,7 @@ List<SeccionGaleria> seccionesPantalla() => [
         FilaAcciones(
           principal: AccionPantalla(
             texto: 'Agendar cita',
-            icono: Icons.event,
+            icono: LucideIcons300.calendar,
             alPresionar: () {},
           ),
           secundaria: AccionPantalla(texto: 'Ver detalle', alPresionar: () {}),
@@ -78,7 +80,7 @@ List<SeccionGaleria> seccionesPantalla() => [
         TarjetaResumen(
           titulo: 'Servicio de 20,000 km',
           subtitulo: 'Te toca por kilometraje',
-          icono: Icons.build_circle_outlined,
+          icono: LucideIcons300.wrench,
           progreso: 0.84,
           etiquetaProgreso: 'Faltan 1,550 km · hacia el sáb, 9 ene',
         ),
@@ -86,7 +88,7 @@ List<SeccionGaleria> seccionesPantalla() => [
         TarjetaResumen(
           titulo: 'Folio 1042',
           subtitulo: 'Jueves 3 de diciembre, 09:00',
-          icono: Icons.event_available_outlined,
+          icono: LucideIcons300.calendarCheck,
           tono: Tono.exito,
           estado: 'Confirmada',
           tonoEstado: Tono.exito,
@@ -110,7 +112,7 @@ List<SeccionGaleria> seccionesPantalla() => [
                 color: color.withValues(alpha: 0.18),
                 borderRadius: Radios.bordeTarjeta,
               ),
-              child: Icon(Icons.local_offer_outlined, color: color, size: 40),
+              child: Icon(LucideIcons300.tag, color: color, size: 40),
             ),
         ],
       );
@@ -127,19 +129,19 @@ List<SeccionGaleria> seccionesPantalla() => [
           FilaGrupo(
             titulo: 'Perfil',
             subtitulo: 'Nombre y telefono',
-            icono: Icons.person,
+            icono: LucideIcons300.user,
             colorIcono: c.acento,
             alToque: () {},
           ),
           FilaGrupo(
             titulo: 'Seguridad',
-            icono: Icons.lock,
+            icono: LucideIcons300.lock,
             colorIcono: c.exito,
             alToque: () {},
           ),
           FilaGrupo(
             titulo: 'Notificaciones',
-            icono: Icons.notifications,
+            icono: LucideIcons300.bell,
             colorIcono: c.peligro,
             fin: const Text('Activadas'),
             alToque: () {},

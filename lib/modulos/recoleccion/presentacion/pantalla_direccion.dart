@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -255,7 +257,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: textos.recoleccionBorrar,
-              icono: Icons.delete_outline,
+              icono: LucideIcons300.trash2,
               variante: VarianteBotonPildora.vidrio,
               expandido: true,
               alPresionar: _ocupado ? null : _confirmarBorrado,
@@ -307,7 +309,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                     const SizedBox(height: Espaciado.e3),
                     BotonPildora(
                       texto: textos.recoleccionFormUsarUbicacion,
-                      icono: Icons.my_location_outlined,
+                      icono: LucideIcons300.locateFixed,
                       variante: VarianteBotonPildora.vidrio,
                       expandido: true,
                       alPresionar: _ocupado ? null : _usarUbicacion,
@@ -321,7 +323,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                       alEnviar: (_) => _buscar(),
                       sufijo: BotonCircular(
                         etiqueta: textos.recoleccionFormBuscarAccion,
-                        icono: Icons.search_rounded,
+                        icono: LucideIcons300.search,
                         variante: VarianteBotonCircular.acento,
                         alPresionar: _ocupado ? null : _buscar,
                       ),

@@ -17,6 +17,7 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
@@ -69,7 +70,7 @@ Widget _app(ApiFalsa api, {Escenario escenario = Escenario.claro}) =>
     );
 
 /// Una fila por estimación: cada una lleva el icono de la calculadora.
-final _filas = find.byIcon(Icons.calculate_outlined);
+final _filas = find.byIcon(LucideIcons300.calculator);
 
 void _pantallaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(800, 3000);

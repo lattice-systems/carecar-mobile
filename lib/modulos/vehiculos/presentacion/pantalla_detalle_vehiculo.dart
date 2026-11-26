@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -72,7 +74,7 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
               estado: EstadoVacio(
                 titulo: textos.vehiculosNoEncontradoTitulo,
                 mensaje: textos.vehiculosNoEncontradoMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               ),
             )
           : _Detalle(
@@ -140,12 +142,12 @@ class _DetalleState extends State<_Detalle> {
               FilaAcciones(
                 principal: AccionPantalla(
                   texto: textos.vehiculosAgendarServicio,
-                  icono: Icons.event_available_outlined,
+                  icono: LucideIcons300.calendarCheck,
                   alPresionar: () => context.push(rutaAgendarCita),
                 ),
                 secundaria: AccionPantalla(
                   texto: textos.vehiculosBotonManual,
-                  icono: Icons.menu_book_outlined,
+                  icono: LucideIcons300.bookOpen,
                   alPresionar: () => context.push(rutaManualVehiculo(v.id)),
                 ),
               ),
@@ -176,26 +178,26 @@ class _DetalleState extends State<_Detalle> {
                 filas: [
                   FilaGrupo(
                     titulo: textos.vehiculosAccesoFicha,
-                    icono: Icons.fact_check_outlined,
+                    icono: LucideIcons300.clipboardCheck,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
                   ),
                   FilaGrupo(
                     titulo: textos.vehiculosAccesoHistorial,
-                    icono: Icons.history,
+                    icono: LucideIcons300.history,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaHistorialVehiculo(v.id)),
                   ),
                   FilaGrupo(
                     titulo: textos.mantenimientoAcceso,
-                    icono: Icons.build_circle_outlined,
+                    icono: LucideIcons300.wrench,
                     colorIcono: c.acento,
                     alToque: () =>
                         context.push(rutaMantenimientoVehiculo(v.id)),
                   ),
                   FilaGrupo(
                     titulo: textos.bitacoraAccesoFila,
-                    icono: Icons.local_gas_station_outlined,
+                    icono: LucideIcons300.fuel,
                     colorIcono: c.acento,
                     alToque: () => context.push(
                       rutaBitacoraVehiculo(v.id, nombre: v.titulo),
@@ -203,13 +205,13 @@ class _DetalleState extends State<_Detalle> {
                   ),
                   FilaGrupo(
                     titulo: textos.garantiaAcceso,
-                    icono: Icons.verified_user_outlined,
+                    icono: LucideIcons300.shieldCheck,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaGarantiaVehiculo(v.id)),
                   ),
                   FilaGrupo(
                     titulo: textos.campanasAcceso,
-                    icono: Icons.campaign_outlined,
+                    icono: LucideIcons300.megaphone,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaCampanasVehiculo(v.id)),
                   ),
@@ -220,27 +222,27 @@ class _DetalleState extends State<_Detalle> {
                 encabezado: textos.vehiculosEncabezadoDatos,
                 filas: [
                   _dato(
-                    Icons.pin_outlined,
+                    LucideIcons300.hash,
                     textos.vehiculosPlacasEtiqueta,
                     sinPlacas ? textos.vehiculosSinPlacas : placas,
                     c.acento,
                   ),
                   _dato(
-                    Icons.calendar_today_outlined,
+                    LucideIcons300.calendar,
                     textos.vehiculosAnio,
                     '${v.anio}',
                     c.marca,
                   ),
                   if (v.color != null)
                     _dato(
-                      Icons.palette_outlined,
+                      LucideIcons300.palette,
                       textos.vehiculosColor,
                       v.color!,
                       tinte,
                     ),
                   if (v.version != null)
                     _dato(
-                      Icons.tune,
+                      LucideIcons300.slidersHorizontal,
                       textos.vehiculosVersion,
                       v.version!,
                       c.exito,
@@ -389,7 +391,7 @@ class _TarjetaCifras extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Icon(Icons.copy_outlined, color: c.acento),
+                            Icon(LucideIcons300.copy, color: c.acento),
                           ],
                         ),
                       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../navegacion/rutas.dart';
 import '../tokens/tokens_pista.dart';
@@ -23,7 +25,7 @@ class BotonRegresar extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
     return BotonCircular(
-      icono: Icons.arrow_back_ios_new_rounded,
+      icono: LucideIcons300.chevronLeft,
       etiqueta: AppLocalizations.of(context).regresar,
       colorIcono: c.texto,
       alPresionar: () => _regresar(context),

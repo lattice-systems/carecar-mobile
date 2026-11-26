@@ -9,6 +9,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/contraste.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -51,9 +53,9 @@ void main() {
           ),
         ),
       );
-      expect(find.byIcon(Icons.check_circle), findsOneWidget);
-      expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
-      expect(find.byIcon(Icons.error), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleCheck), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.triangleAlert), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleAlert), findsOneWidget);
       expect(find.text('Bien'), findsOneWidget);
       expect(find.text('Requiere atencion'), findsOneWidget);
     });
@@ -108,7 +110,7 @@ void main() {
           const Semaforo(punto: 'Luces', estado: EstadoSemaforo.bien),
         ),
       );
-      expect(find.byIcon(Icons.chevron_right_rounded), findsNothing);
+      expect(find.byIcon(LucideIcons300.chevronRight), findsNothing);
     });
   });
 

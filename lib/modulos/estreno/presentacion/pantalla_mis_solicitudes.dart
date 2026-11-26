@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -114,7 +116,7 @@ class _PantallaMisSolicitudesState
               EstadoVacio(
                 titulo: textos.estrenoVacioTitulo,
                 mensaje: textos.estrenoVacioMensaje,
-                icono: Icons.directions_car_filled_outlined,
+                icono: LucideIcons300.carFront,
               ),
             )
           : MarcoPantalla(
@@ -199,8 +201,8 @@ class _PantallaMisSolicitudesState
       titulo: s.modelo,
       subtitulo: detalle,
       icono: s.tipo == TipoSolicitud.pruebaManejo
-          ? Icons.directions_car_outlined
-          : Icons.request_quote_outlined,
+          ? LucideIcons300.car
+          : LucideIcons300.fileText,
       colorIcono: c.acento,
       fin: Insignia(texto: estado, tono: tono),
     );

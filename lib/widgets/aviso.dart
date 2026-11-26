@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../nucleo/diseno/componentes/tono.dart';
 import '../nucleo/diseno/tokens/colores.dart';
 import '../tema/tema_carecar.dart';
@@ -68,10 +70,10 @@ class Aviso extends StatelessWidget {
   IconData get _icono =>
       icono ??
       switch (tono) {
-        TonoAviso.error => Icons.error_outline,
-        TonoAviso.advertencia => Icons.warning_amber_outlined,
-        TonoAviso.exito => Icons.check_circle_outline,
-        TonoAviso.informacion => Icons.info_outline,
+        TonoAviso.error => LucideIcons300.circleAlert,
+        TonoAviso.advertencia => LucideIcons300.triangleAlert,
+        TonoAviso.exito => LucideIcons300.circleCheck,
+        TonoAviso.informacion => LucideIcons300.info,
       };
 
   @override

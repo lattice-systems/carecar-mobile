@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -52,7 +54,7 @@ class PantallaMisValuaciones extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: t.valuacionMisVacioTitulo,
                     mensaje: t.valuacionMisVacioMensaje,
-                    icono: Icons.verified_outlined,
+                    icono: LucideIcons300.badgeCheck,
                     textoAccion: t.valuacionMisVacioAccion,
                     alAccion: () => context.push(rutaDeMisEstimaciones),
                   ),
@@ -119,7 +121,7 @@ class _TarjetaValuacion extends StatelessWidget {
               pesosValuacion(oferta.monto),
               fechaValuacion(context, oferta.vigenciaHasta),
             ),
-      icono: Icons.verified_outlined,
+      icono: LucideIcons300.badgeCheck,
       estado: textoEstadoValuacion(t, valuacion.estado),
       tonoEstado: tonoEstadoValuacion(valuacion.estado),
       alToque: () => context.push(rutaValuacion(valuacion.id)),

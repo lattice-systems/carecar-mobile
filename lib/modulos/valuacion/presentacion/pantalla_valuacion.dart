@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -121,7 +123,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
                 ? EstadoVacio(
                     titulo: t.valuacionNoEncontradaTitulo,
                     mensaje: t.valuacionNoEncontradaMensaje,
-                    icono: Icons.search_off_rounded,
+                    icono: LucideIcons300.searchX,
                     textoAccion: t.valuacionMisTitulo,
                     alAccion: () => context.go(rutaValuaciones),
                   )
@@ -162,7 +164,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
               TarjetaResumen(
                 titulo: v.estimacion.auto,
                 subtitulo: t.valuacionKm(milesValuacion(v.estimacion.km)),
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
                 estado: textoEstadoValuacion(t, v.estado),
                 tonoEstado: tonoEstadoValuacion(v.estado),
               ),
@@ -207,7 +209,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
             hijo: TarjetaResumen(
               titulo: v.asesor!,
               subtitulo: t.valuacionAsesorDetalle,
-              icono: Icons.person_outline_rounded,
+              icono: LucideIcons300.user,
             ),
           ),
         Padding(
@@ -219,7 +221,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
           ),
           child: BotonPildora(
             texto: t.valuacionVerValor,
-            icono: Icons.show_chart_rounded,
+            icono: LucideIcons300.chartLine,
             variante: VarianteBotonPildora.tonal,
             expandido: true,
             alPresionar: () => context.push(rutaValorVehiculo(v.vehiculoId)),
@@ -357,7 +359,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
             const SizedBox(height: Espaciado.e3),
             BotonPildora(
               texto: t.valuacionFotosSubir,
-              icono: Icons.photo_camera_outlined,
+              icono: LucideIcons300.camera,
               expandido: true,
               alPresionar: () => _abrir(rutaFotosValuacion(v.id)),
             ),
@@ -382,7 +384,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
                 cita.horaInicio,
                 cita.horaFin,
               ),
-              icono: Icons.event_available_outlined,
+              icono: LucideIcons300.calendarCheck,
             ),
             const SizedBox(height: Espaciado.e3),
             BotonPildora(
@@ -397,7 +399,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
             if (cita != null) const SizedBox(height: Espaciado.e3),
             BotonPildora(
               texto: t.valuacionAgendar,
-              icono: Icons.event_outlined,
+              icono: LucideIcons300.calendar,
               expandido: true,
               alPresionar: () => _abrir(rutaCitaValuacion(v.id)),
             ),

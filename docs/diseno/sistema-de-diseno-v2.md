@@ -52,6 +52,30 @@ Degradado de héroe (detrás de la foto del auto): de `superficieHundida` a `fon
 
 - **Texto:** Geist (SIL OFL), empaquetada en `assets/fonts`. Respaldo: Inter (ya empaquetada en v1).
 - **Números y códigos:** Geist Mono con cifras tabulares — km, VIN, placas, precios, horas, folios.
+- **Pesos empaquetados:** Geist 400, 500 y 600. Geist Mono 500. Son los de la tabla y la app no descarga fuentes mientras corre. Si un estilo pide otro peso, como 700, el motor usa el más cercano que sí viene (600). Un peso nuevo entra primero en la tabla y luego en `pubspec.yaml`. Lo vigila `test/nucleo/diseno/tokens/fuentes_empaquetadas_test.dart`.
+
+### Origen de las fuentes
+
+| Dato | Valor |
+| --- | --- |
+| Versión | `v1.9.2` de [vercel/geist-font](https://github.com/vercel/geist-font/releases/tag/v1.9.2) |
+| Paquete | <https://github.com/vercel/geist-font/releases/download/v1.9.2/geist-font-v1.9.2.zip> |
+| SHA-256 del paquete | `15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8` |
+| Licencia | SIL Open Font License 1.1, en `assets/fonts/Geist-OFL.txt` |
+
+Los archivos son los TTF estáticos del paquete, sin modificar. Solo cambia el nombre.
+
+| En `assets/fonts` | En el paquete (`geist-font/`) | SHA-256 |
+| --- | --- | --- |
+| `Geist-400.ttf` | `Geist/ttf/Geist-Regular.ttf` | `2c460a7a71063e53491f343d44b382267bc0cf496e31db64865f962af3152e68` |
+| `Geist-500.ttf` | `Geist/ttf/Geist-Medium.ttf` | `e9099e006d4934cae4a8c7d14a1ca2ea724ee2f69f9bdd5b2ffe715baf5524fc` |
+| `Geist-600.ttf` | `Geist/ttf/Geist-SemiBold.ttf` | `01923aa148e5202ae70a2e11b2ab4dc41b80bcc374aedccc913d47bb2f591c06` |
+| `GeistMono-500.ttf` | `GeistMono/ttf/GeistMono-Medium.ttf` | `34c0828460d47e697655bc9d730027a4b8baf6e6c9aa46f5f32b653b4797cf36` |
+| `Geist-OFL.txt` | `OFL.txt` | `021caa749f89fecd7c2e40a50499de29e84d2bc19251659b47d499c2fbfffc17` |
+
+Las cuatro fuentes suman 531 KB sin comprimir y unos 249 KB con compresión deflate, que es la estimación de lo que crece el APK. La app no tiene pantalla de licencias, así que no se registra en `LicenseRegistry`. Cada TTF lleva el aviso de derechos y de licencia en sus metadatos. Si algún día se agrega esa pantalla, hay que registrar `Geist-OFL.txt`.
+
+`shadcn_ui` trae su propia copia variable de Geist bajo `packages/shadcn_ui/`, que es de la v1 y se va con V2-T02.08.
 
 | Token | Tamaño / interlineado | Peso | Tracking |
 | --- | --- | --- | --- |
@@ -88,7 +112,10 @@ Momentos firma: la foto del auto viaja (héroe) de Garaje a Detalle; la etapa ac
 
 ## 6. Iconografía e imagen
 
-- Un solo set de íconos de trazo (Lucide, trazo 1.75) — decisión final en T02.07.
+- **Un solo set de íconos (V2-T02.07):** Lucide de trazo 1.5, desde `LucideIcons300` (paquete `lucide_icons_flutter`). Se eligió 1.5 porque la fuente no trae el 1.75 que se había propuesto y el trazo fino acompaña mejor a Geist. Lucide no tiene variantes rellenas, así que el estado marcado se distingue por color, píldora y lector de pantalla, nunca por el ícono. Los botones que Material dibuja solo (regresar, cerrar, menú) usan el mismo set por `actionIconTheme`. La prueba `test/arquitectura/un_solo_set_de_iconos_test.dart` impide volver a `Icons` o `CupertinoIcons`.
+- **Logo (V2-T02.07):** `assets/marca/agencia360-logo.svg` (letras marino, para fondo claro) y `agencia360-logo-oscuro.svg` (letras claras, para fondo oscuro). Son un trazado del logo que ya existía, sin rediseño. `agencia360-icono.svg` es el símbolo sobre su cuadro marino.
+- **Ícono de app (V2-T02.07):** en Android 8 o posterior es adaptativo, con fondo `azul_arranque`, el símbolo en vector dentro de la zona segura y capa monocroma para los íconos temáticos. Los sabores desarrollo y pruebas conservan su franja.
+- **Splash (V2-T02.07):** el del sistema es solo el azul de marca y la cortina de Flutter dibuja el símbolo en SVG, para que no haya salto entre los dos.
 - Fotos del auto con fondo transparente por modelo y color (`assets/autos/`); si falta el color exacto, silueta del modelo en `textoTerciario`.
 - Ilustraciones de estados vacíos en línea, monocromas con toque de `acento`.
 
@@ -139,7 +166,7 @@ Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos
   - reemplaza la salpicadura de Material con un encogimiento corto al presionar (`Movimiento.toqueBajada` de 70 ms y `toqueSubida` de 100 ms);
   - con reducir movimiento no se encoge;
   - el interruptor además vibra levemente.
-- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.png`) y barra de estado en claro.
+- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.svg`) y barra de estado en claro.
 
 ### Mensajes (chat)
 
@@ -204,14 +231,54 @@ Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %). Tod
 
 Cada componente documenta: anatomía, variantes, estados (normal, presionado, foco, deshabilitado, cargando, error), accesibilidad (`Semantics`, orden de foco) y golden en claro, oscuro y 200 %.
 
+### Mapa
+
+`Mapa` (V2-T02.09, decisión [0006](../decisiones/0006-mapas-y-geocodificacion.md)) vive en `lib/nucleo/diseno/componentes/mapa.dart`. Es el único componente que importa `flutter_map` y `latlong2`: quien lo usa habla en `Coordenada` e importa `lib/nucleo/mapas/mapas.dart`.
+
+**Anatomía.** Un recuadro de radio `tarjeta` (260 de alto por omisión, `alto`) con las teselas, los marcadores y el crédito abajo a la derecha. Debajo, y solo cuando aplican, van el aviso de teselas con «Reintentar», «Ver mi ubicación», el aviso de ubicación y los controles del pin. Ningún control tapa el crédito.
+
+| Parte | Cómo se ve | Con qué se activa |
+| --- | --- | --- |
+| Pin | `location_on` de 48 en `acento` con aro `superficie`. La punta marca la coordenada | `pin` |
+| Pin editable | El mismo, se arrastra y trae sus botones | `alMoverPin` (sin él es de solo lectura) |
+| Ubicación propia | Punto de 24 en `acento` con aro | `miUbicacion` o `proveedorUbicacion` |
+| Marcador en movimiento | Ficha redonda de 48 con borde `acento` e ícono (`local_shipping` por omisión) | `enMovimiento` (`MarcadorEnMovimiento`) |
+
+**Pin.** La pantalla guarda la coordenada: el mapa la entrega al tocar, al soltar el arrastre (no en cada paso) o al usar los botones. Arrastrar el pin le gana al desplazamiento del mapa y al de la página que lo contiene, y no sale del recuadro. Para ponerlo y moverlo sin arrastrar hay «Poner el pin en el centro» (cuando no hay pin) y cuatro `BotonCircular` de 48 (norte, sur, oeste y este) que lo mueven 24 puntos de pantalla, así que cuanto más cerca está el mapa más fino es el paso.
+
+**Cámara.** Abre en el pin, el marcador en movimiento o la ubicación propia, en ese orden, y sin ninguno en `centroInicial` (León, Guanajuato). Si el pin o el marcador en movimiento cambian a un punto que no se ve, el mapa lo sigue. No se puede girar.
+
+**Ubicación propia y permiso.** Con `proveedorUbicacion` la posición se lee una sola vez, solo cuando la persona toca «Ver mi ubicación». El mapa no pide permisos al abrirse ni sigue la posición. Permiso negado, permiso bloqueado, ubicación apagada y tiempo agotado tienen cada uno su aviso, y el resto del mapa sigue funcionando.
+
+**Sin conexión.** Si una tesela falla aparece un aviso con «Reintentar». El pin, los marcadores y los botones siguen disponibles.
+
+**Movimiento.** El marcador en movimiento se desliza con el token `base`. Con «reducir movimiento» salta a la posición nueva sin animar, como pide la decisión 0006.
+
+**Oscuro.** Las teselas son claras, así que se atenúan con `fondo` al 40 %. No se invierten.
+
+**Accesibilidad.** El mapa es un solo nodo con nombre («Mapa con un pin.», «Mapa sin pin.» o «Mapa de seguimiento.») o con la `descripcion` que dé la pantalla, más la etiqueta del marcador y «Se muestra tu ubicación.» cuando aplican. El nombre por omisión no dice coordenadas. El crédito se lee aparte. Al mover el pin con un botón se anuncia, por ejemplo, «Pin movido al norte». Todos los controles miden al menos 48 y los avisos se anuncian solos.
+
+**Teselas y privacidad.** `teselas` es la `ConfiguracionTeselas` del build (`configuracionTeselasProvider`): URL y crédito se configuran, no se escriben en las pantallas. Por la política de OpenStreetMap, cada descarga lleva en el `User-Agent` el identificador de la app, el crédito está siempre a la vista, la caché del paquete queda activa y no se descarga por adelantado fuera de lo visible. Los errores de descarga salen sin la dirección de la tesela (`ClienteTeselas`), porque esa ruta dice qué zona mira la persona y el paquete los escribe en la consola.
+
+**Pruebas.** `fuenteTeselas` reemplaza la red con `TeselasLisas` o `TeselasSinConexion` (en pantallas, `fuenteTeselasProvider`). Pruebas en `test/nucleo/diseno/componentes/mapa_test.dart` y golden en `goldens/mapa_*.png`. `test/arquitectura/paquetes_de_mapas_test.dart` vigila que los paquetes no salgan de su sitio.
+
+```dart
+Mapa(
+  teselas: ref.watch(configuracionTeselasProvider),
+  fuenteTeselas: ref.watch(fuenteTeselasProvider),
+  pin: _pin,
+  alMoverPin: _ponerPin,
+)
+```
+
 ### Pruebas golden
 
-Las pruebas de Pantalla y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee Inter y JetBrains Mono desde `assets/fonts/` y Material Icons desde el directorio de recursos que prepara `flutter test`. Registra las fuentes de respaldo con los nombres tipográficos de los tokens mientras Geist y Geist Mono estén pendientes en V2-T02.02. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+Las pruebas de Pantalla, Mensajes y Mapa usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee de `assets/fonts/` los mismos pesos de Geist y Geist Mono que declara `pubspec.yaml`, más Inter y JetBrains Mono de respaldo. Material Icons sale del directorio de recursos que prepara `flutter test`. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
 
-Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
+Desde la raíz de CareCar, corre las tres suites con Flutter y las dependencias ya instaladas:
 
 ```bash
-flutter test test/nucleo/diseno/componentes/pantalla_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart
+flutter test test/nucleo/diseno/componentes/pantalla_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart test/nucleo/diseno/componentes/mapa_golden_test.dart
 ```
 
 Las referencias se generan en Linux con el mismo parche de Flutter que usa CI. La rasterización de texto e íconos puede variar en Windows aunque el diseño sea el mismo. Si el cambio visual es intencional, agrega `--update-goldens` al comando en Linux y revisa las PNG resultantes antes de incluirlas en el PR. El check **Pruebas (flutter test)** ejecuta la comparación exacta en Ubuntu. Si falla, adjunta el artefacto `diferencias-golden`, donde `*_testImage.png` es la captura del runner y `*_masterImage.png` es la referencia con la que se comparó.

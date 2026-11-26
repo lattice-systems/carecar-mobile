@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -270,8 +272,8 @@ class ListaDeReglas extends StatelessWidget {
                 // solo del color (guia de estilos).
                 Icon(
                   regla.value
-                      ? Icons.check_circle_outline
-                      : Icons.circle_outlined,
+                      ? LucideIcons300.circleCheck
+                      : LucideIcons300.circle,
                   size: 16,
                   color: regla.value
                       ? tokens.colores.exito

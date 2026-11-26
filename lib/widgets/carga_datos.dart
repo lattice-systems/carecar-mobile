@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../api/excepciones.dart';
@@ -120,7 +121,7 @@ class _CargaDatosState<T> extends State<CargaDatos<T>> {
             const SizedBox(height: TemaCareCar.espacioCampos),
             ShadButton.outline(
               onPressed: _recargar,
-              leading: const Icon(Icons.refresh, size: 18),
+              leading: const Icon(LucideIcons300.refreshCw, size: 18),
               child: const Text('Reintentar'),
             ),
           ],

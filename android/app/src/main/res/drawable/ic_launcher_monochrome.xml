@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Capa para los íconos temáticos de Android 13. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <group android:scaleX="0.17" android:scaleY="0.17"
+        android:translateX="10.48" android:translateY="10.48">
+        <path android:pathData="M352.4,141.1 A150,150 0 1,1 182,125.5"
+            android:strokeColor="#FFFFFF" android:strokeWidth="34"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M173,86.5 L231,103.5 Q234,105 232.5,108 L200.5,156 Q197,159 195,155 L170,91 Q169,85.5 173,86.5 Z" android:fillColor="#FFFFFF" />
+        <path android:pathData="M194,338 L256,172 L318,338"
+            android:strokeColor="#FFFFFF" android:strokeWidth="30"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M256,266 L256,296 M256,322 L256,338"
+            android:strokeColor="#FFFFFF" android:strokeWidth="14"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+    </group>
+</vector>

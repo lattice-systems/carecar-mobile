@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -106,7 +108,7 @@ class _ComparacionAntesDespuesState extends State<ComparacionAntesDespues> {
                                 border: Border.all(color: c.borde),
                               ),
                               child: Icon(
-                                Icons.unfold_more,
+                                LucideIcons300.chevronsUpDown,
                                 size: 18,
                                 color: c.texto,
                               ),

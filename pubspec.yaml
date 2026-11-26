@@ -31,9 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  # Único set de íconos de la app (V2-T02.07): Lucide de trazo 1.5.
+  lucide_icons_flutter: ^4.0.3
   http: ^1.6.0
   flutter_svg: ^2.3.0
   pdfx: 2.11.0
@@ -122,6 +121,19 @@ flutter:
   # Cuando lleguen los SVG conviene regenerarlos, sobre todo la version blanca
   # para fondos oscuros, que no se puede derivar del JPEG.
   fonts:
+    # Letra del sistema de diseño v2 (V2-T02.02), con licencia SIL OFL en
+    # assets/fonts/Geist-OFL.txt. Solo van los pesos que usa la escala.
+    - family: Geist
+      fonts:
+        - asset: assets/fonts/Geist-400.ttf
+        - asset: assets/fonts/Geist-500.ttf
+          weight: 500
+        - asset: assets/fonts/Geist-600.ttf
+          weight: 600
+    - family: GeistMono
+      fonts:
+        - asset: assets/fonts/GeistMono-500.ttf
+          weight: 500
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-400.ttf
@@ -171,12 +183,11 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 # Icono de la app (se regenera con `dart run flutter_launcher_icons:main`).
+# El adaptativo de Android no sale de aqui: son los vectores ic_launcher_*.xml.
 flutter_icons:
   android: true
   ios: true
   image_path: assets/marca/agencia360-icono.png
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: assets/marca/agencia360-icono.png
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"
 
