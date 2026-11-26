@@ -1,13 +1,13 @@
-const { BASE, noEncontrado } = require('../comun/http');
+const { BASE, problema, noEncontrado, paginar } = require('../comun/http');
 
-module.exports = function registrarPagos(servidor, db) {
+module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emitirEvento) {
   // ── pagos y facturas: datos fiscales ──
   // V2-M08.05 · Mismas reglas que el backend (DatosFiscales.validar): RFC con
   // forma, fecha real y dígito verificador del SAT, régimen y uso del catálogo
   // de CFDI 4.0 para el tipo de persona, el uso aceptado por el régimen y
   // errores por campo en `campos`. El catálogo es copia del de
   // CatalogoFiscal.java (semillas/catalogos_fiscales.json). Los pagos y las
-  // facturas de M08 son simulados (ADR 0009).
+  // facturas de M08 son simulados (ADR 0009); los pagos van abajo.
   db.defaults({ regimenesFiscales: [], usosCfdi: [], perfilesFiscales: [] }).write();
 
   const VALORES = '0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ Ñ';
@@ -156,5 +156,350 @@ module.exports = function registrarPagos(servidor, db) {
       if (siguiente) db.get('perfilesFiscales').find({ id: siguiente.id }).assign({ predeterminado: true }).write();
     }
     res.status(204).end();
+  });
+
+  // ── pagos y tarjetas guardadas ──
+  // V2-M08.02, V2-M08.04 y V2-M08.07 · El procesador simulado del backend
+  // (ProcesadorSimulado, ADR 0009): decide por el token de la tarjeta de
+  // prueba, la misma Idempotency-Key devuelve el mismo intento, un 3-D Secure
+  // sin responder vence a los 15 minutos y la tarjeta se guarda al quedar
+  // pagado si se pidio. Una orden se paga si viene del taller (`delTaller`),
+  // esta TERMINADO o ENTREGADO, tiene total y nadie la ha pagado.
+  db.defaults({ pagosApp: [], metodosPago: [] }).write();
+
+  const TARJETAS = {
+    tok_sim_visa: { marca: 'VISA', ultimos4: '4242', tipo: 'CREDITO', escenario: 'APROBADA' },
+    tok_sim_mastercard: { marca: 'MASTERCARD', ultimos4: '4444', tipo: 'CREDITO', escenario: 'APROBADA' },
+    tok_sim_visa_debito: { marca: 'VISA', ultimos4: '5556', tipo: 'DEBITO', escenario: 'APROBADA' },
+    tok_sim_fondos_insuficientes: { marca: 'VISA', ultimos4: '9995', tipo: 'CREDITO', escenario: 'FONDOS' },
+    tok_sim_3ds: { marca: 'VISA', ultimos4: '3220', tipo: 'CREDITO', escenario: 'CONFIRMAR' },
+    tok_sim_3ds_falla: { marca: 'VISA', ultimos4: '1629', tipo: 'CREDITO', escenario: 'FALLA' },
+  };
+  const VIGENCIA_MS = 15 * 60 * 1000;
+  const TARJETAS_MAXIMAS = 10;
+  const ahora = () => new Date().toISOString();
+  const siguiente = (coleccion) => {
+    const ids = db.get(coleccion).map('id').value();
+    return ids.length ? Math.max(...ids) + 1 : 1;
+  };
+  const folio = () => 'sim_pi_' + [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)).join('');
+
+  const publicoPago = (p) => ({
+    id: p.id,
+    ordenId: p.ordenId,
+    vehiculoId: p.vehiculoId,
+    monto: p.monto,
+    moneda: p.moneda,
+    medio: p.medio,
+    marca: p.marca ?? null,
+    ultimos4: p.ultimos4 ?? null,
+    tipoTarjeta: p.tipoTarjeta ?? null,
+    estado: p.estado,
+    motivoFallo: p.motivoFallo ?? null,
+    requiereAutenticacion: p.estado === 'PENDIENTE' && p.autenticacion === 'REQUERIDA',
+    referencia: p.referencia,
+    simulado: p.simulado,
+    metodoPagoId: p.metodoPagoId ?? null,
+    perfilFiscalId: p.perfilFiscalId ?? null,
+    pagadoEn: p.pagadoEn ?? null,
+    creadoEn: p.creadoEn,
+  });
+  const publicoMetodo = (m) => {
+    const hoy = new Date();
+    const vencida = m.anioVence < hoy.getFullYear() || (m.anioVence === hoy.getFullYear() && m.mesVence < hoy.getMonth() + 1);
+    return {
+      id: m.id,
+      marca: m.marca,
+      ultimos4: m.ultimos4,
+      tipo: m.tipo,
+      mesVence: m.mesVence,
+      anioVence: m.anioVence,
+      vencida,
+      predeterminado: m.predeterminado,
+      creadoEn: m.creadoEn,
+    };
+  };
+  const metodosDe = (clienteId) =>
+    db
+      .get('metodosPago')
+      .filter({ clienteId })
+      .orderBy([(m) => (m.predeterminado ? 0 : 1), 'id'])
+      .value();
+  const pagadoDe = (ordenId) => db.get('pagosApp').find({ ordenId, estado: 'PAGADO' }).value();
+
+  function vencerPendientes(filtro) {
+    const limite = Date.now() - VIGENCIA_MS;
+    db.get('pagosApp')
+      .filter((p) => p.estado === 'PENDIENTE' && Date.parse(p.creadoEn) <= limite)
+      .filter(filtro)
+      .each((p) => Object.assign(p, { estado: 'FALLIDO', motivoFallo: 'AUTENTICACION_VENCIDA', autenticacion: 'RECHAZADA' }))
+      .value();
+    db.write();
+  }
+
+  function puntosPorServicio(pago) {
+    const yaSumo = db
+      .get('movimientosPuntos')
+      .find({ motivo: 'SERVICIO', referenciaTipo: 'ORDEN', referenciaId: pago.ordenId })
+      .value();
+    const puntos = Math.floor(pago.monto / 10);
+    if (yaSumo || puntos <= 0) return;
+    const ids = db.get('movimientosPuntos').map('id').value();
+    db.get('movimientosPuntos')
+      .push({
+        id: ids.length ? Math.max(...ids) + 1 : 1,
+        clienteId: pago.clienteId,
+        puntos,
+        motivo: 'SERVICIO',
+        referenciaTipo: 'ORDEN',
+        referenciaId: pago.ordenId,
+        creadoEn: ahora(),
+      })
+      .write();
+    const saldo = db.get('movimientosPuntos').filter({ clienteId: pago.clienteId }).map('puntos').sum().value();
+    emitirEvento(pago.clienteId, 'puntos.movidos', { puntos, motivo: 'SERVICIO', saldo });
+  }
+
+  function confirmar(pago) {
+    if (pago.guardar) {
+      const existente = db.get('metodosPago').find({ clienteId: pago.clienteId, token: pago.token });
+      if (existente.value()) {
+        existente.assign({ mesVence: pago.mesVence, anioVence: pago.anioVence }).write();
+        pago.metodoPagoId = existente.value().id;
+      } else if (metodosDe(pago.clienteId).length < TARJETAS_MAXIMAS) {
+        const id = siguiente('metodosPago');
+        db.get('metodosPago')
+          .push({
+            id,
+            clienteId: pago.clienteId,
+            procesador: 'SIMULADO',
+            clienteProcesadorId: `sim_cus_${pago.clienteId}`,
+            token: pago.token,
+            marca: pago.marca,
+            ultimos4: pago.ultimos4,
+            tipo: pago.tipoTarjeta,
+            mesVence: pago.mesVence,
+            anioVence: pago.anioVence,
+            predeterminado: metodosDe(pago.clienteId).length === 0,
+            creadoEn: ahora(),
+          })
+          .write();
+        pago.metodoPagoId = id;
+      }
+    }
+    puntosPorServicio(pago);
+    emitirEvento(pago.clienteId, 'pago.confirmado', { pagoId: pago.id, ordenId: pago.ordenId, estado: 'PAGADO' });
+  }
+
+  function aplicar(pago, respuesta) {
+    if (respuesta === 'APROBADO') {
+      Object.assign(pago, { estado: 'PAGADO', pagadoEn: ahora() });
+      if (pago.autenticacion === 'REQUERIDA') pago.autenticacion = 'APROBADA';
+      confirmar(pago);
+    } else if (respuesta === 'RECHAZADO_FONDOS' || respuesta === 'RECHAZADO_AUTENTICACION') {
+      Object.assign(pago, {
+        estado: 'FALLIDO',
+        motivoFallo: respuesta === 'RECHAZADO_FONDOS' ? 'FONDOS_INSUFICIENTES' : 'AUTENTICACION_FALLIDA',
+      });
+      if (pago.autenticacion === 'REQUERIDA') pago.autenticacion = 'RECHAZADA';
+    } else {
+      pago.autenticacion = 'REQUERIDA';
+    }
+  }
+
+  servidor.post(`${BASE}/ordenes/:ordenId/pagos`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const ordenId = Number(req.params.ordenId);
+    const llave = String(req.get('Idempotency-Key') || '').trim();
+    if (llave.length < 8 || llave.length > 64) {
+      return problema(req, res, 400, 'La llave Idempotency-Key debe tener entre 8 y 64 caracteres', 'DATOS_INVALIDOS');
+    }
+    const cuerpo = req.body || {};
+    const conToken = Boolean(cuerpo.tarjeta && cuerpo.tarjeta.token);
+    if (conToken === (cuerpo.metodoPagoId != null)) {
+      return problema(req, res, 400, 'Paga con una tarjeta nueva o con una guardada, no con las dos', 'DATOS_INVALIDOS');
+    }
+    const repetido = db.get('pagosApp').find({ clienteId, llave }).value();
+    if (repetido) {
+      if (repetido.ordenId !== ordenId) {
+        return problema(req, res, 400, 'Esa llave Idempotency-Key ya se usó para pagar otra orden', 'DATOS_INVALIDOS');
+      }
+      return res.status(200).jsonp(publicoPago(repetido));
+    }
+    const servicio = db.get('servicios').find({ id: ordenId }).value();
+    if (!servicio || !vehiculoDelCliente(req, servicio.vehiculoId)) return noEncontrado(req, res);
+    if (pagadoDe(ordenId)) return problema(req, res, 409, 'La orden ya está pagada', 'ORDEN_NO_PAGABLE');
+    if (!['TERMINADO', 'ENTREGADO'].includes(servicio.estatus) || !(servicio.total > 0) || servicio.delTaller !== true) {
+      return problema(req, res, 409, 'La orden no se puede pagar en la app', 'ORDEN_NO_PAGABLE');
+    }
+    vencerPendientes((p) => p.ordenId === ordenId);
+    if (db.get('pagosApp').find({ ordenId, estado: 'PENDIENTE' }).value()) {
+      return problema(req, res, 409, 'Ya hay un pago de esta orden esperando la confirmación de tu banco', 'PAGO_EN_CURSO');
+    }
+    let token;
+    let mesVence;
+    let anioVence;
+    let metodoPagoId = null;
+    if (conToken) {
+      token = String(cuerpo.tarjeta.token).trim();
+      mesVence = Number(cuerpo.tarjeta.mesVence);
+      anioVence = Number(cuerpo.tarjeta.anioVence);
+      if (!TARJETAS[token]) return problema(req, res, 400, 'Esa tarjeta no es una de las tarjetas de prueba', 'DATOS_INVALIDOS');
+      const hoy = new Date();
+      const valido = Number.isInteger(mesVence) && mesVence >= 1 && mesVence <= 12 && Number.isInteger(anioVence);
+      const vencida = !valido || anioVence < hoy.getFullYear() || (anioVence === hoy.getFullYear() && mesVence < hoy.getMonth() + 1);
+      if (vencida || anioVence > hoy.getFullYear() + 20) return problema(req, res, 400, 'La tarjeta ya venció', 'DATOS_INVALIDOS');
+    } else {
+      const metodo = db.get('metodosPago').find({ id: Number(cuerpo.metodoPagoId), clienteId }).value();
+      if (!metodo) return noEncontrado(req, res);
+      if (publicoMetodo(metodo).vencida) return problema(req, res, 400, 'La tarjeta guardada ya venció', 'DATOS_INVALIDOS');
+      ({ token, mesVence, anioVence } = metodo);
+      metodoPagoId = metodo.id;
+    }
+    const perfilFiscalId = cuerpo.perfilFiscalId == null ? null : Number(cuerpo.perfilFiscalId);
+    if (perfilFiscalId != null && !db.get('perfilesFiscales').find({ id: perfilFiscalId, clienteId }).value()) {
+      return noEncontrado(req, res);
+    }
+    const tarjeta = TARJETAS[token];
+    const pago = {
+      id: siguiente('pagosApp'),
+      clienteId,
+      ordenId,
+      vehiculoId: servicio.vehiculoId,
+      monto: servicio.total,
+      moneda: 'MXN',
+      medio: 'TARJETA',
+      marca: tarjeta.marca,
+      ultimos4: tarjeta.ultimos4,
+      tipoTarjeta: tarjeta.tipo,
+      estado: 'PENDIENTE',
+      motivoFallo: null,
+      autenticacion: null,
+      referencia: folio(),
+      simulado: true,
+      metodoPagoId,
+      perfilFiscalId,
+      pagadoEn: null,
+      creadoEn: ahora(),
+      token,
+      llave,
+      guardar: metodoPagoId == null && cuerpo.guardarTarjeta === true,
+      mesVence,
+      anioVence,
+    };
+    const respuesta = {
+      APROBADA: 'APROBADO',
+      FONDOS: 'RECHAZADO_FONDOS',
+      CONFIRMAR: 'PIDE_AUTENTICACION',
+      FALLA: 'PIDE_AUTENTICACION',
+    }[tarjeta.escenario];
+    aplicar(pago, respuesta);
+    db.get('pagosApp').push(pago).write();
+    res.status(201).jsonp(publicoPago(pago));
+  });
+
+  servidor.post(`${BASE}/pagos/:pagoId/autenticacion`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const registro = db.get('pagosApp').find({ id: Number(req.params.pagoId), clienteId });
+    const pago = registro.value();
+    if (!pago) return noEncontrado(req, res);
+    if (typeof (req.body || {}).confirmada !== 'boolean') {
+      return problema(req, res, 400, 'Falta confirmada', 'DATOS_INVALIDOS');
+    }
+    vencerPendientes((p) => p.id === pago.id);
+    if (pago.estado !== 'PENDIENTE' || pago.autenticacion !== 'REQUERIDA') {
+      if (pago.motivoFallo === 'AUTENTICACION_VENCIDA') return res.jsonp(publicoPago(pago));
+      return problema(req, res, 409, 'El pago ya no espera la confirmación de tu banco', 'PAGO_NO_PENDIENTE');
+    }
+    const confirmada = req.body.confirmada;
+    const falla = TARJETAS[pago.token] && TARJETAS[pago.token].escenario === 'FALLA';
+    aplicar(pago, confirmada && !falla ? 'APROBADO' : 'RECHAZADO_AUTENTICACION');
+    registro.assign(pago).write();
+    res.jsonp(publicoPago(pago));
+  });
+
+  servidor.get(`${BASE}/pagos`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    vencerPendientes((p) => p.clienteId === clienteId);
+    const pagos = db
+      .get('pagosApp')
+      .filter({ clienteId })
+      .orderBy(['creadoEn', 'id'], ['desc', 'desc'])
+      .value()
+      .map(publicoPago);
+    paginar(req, res, pagos);
+  });
+
+  servidor.get(`${BASE}/pagos/:pagoId`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    vencerPendientes((p) => p.clienteId === clienteId);
+    const pago = db.get('pagosApp').find({ id: Number(req.params.pagoId), clienteId }).value();
+    if (!pago) return noEncontrado(req, res);
+    res.jsonp(publicoPago(pago));
+  });
+
+  servidor.get(`${BASE}/metodos-pago`, (req, res) => {
+    res.jsonp(metodosDe(req.sesion.clienteId).map(publicoMetodo));
+  });
+
+  servidor.put(`${BASE}/metodos-pago/:metodoPagoId/predeterminado`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const metodo = db.get('metodosPago').find({ id: Number(req.params.metodoPagoId), clienteId }).value();
+    if (!metodo) return noEncontrado(req, res);
+    db.get('metodosPago').filter({ clienteId }).each((m) => { m.predeterminado = m.id === metodo.id; }).value();
+    db.write();
+    res.jsonp(publicoMetodo(db.get('metodosPago').find({ id: metodo.id }).value()));
+  });
+
+  // Si era la predeterminada, lo es la mas vieja de las que quedan. Los pagos
+  // hechos con ella se conservan sin la referencia.
+  servidor.delete(`${BASE}/metodos-pago/:metodoPagoId`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const metodo = db.get('metodosPago').find({ id: Number(req.params.metodoPagoId), clienteId }).value();
+    if (!metodo) return noEncontrado(req, res);
+    db.get('metodosPago').remove({ id: metodo.id }).write();
+    db.get('pagosApp').filter({ metodoPagoId: metodo.id }).each((p) => { p.metodoPagoId = null; }).value();
+    db.write();
+    if (metodo.predeterminado) {
+      const otra = metodosDe(clienteId)[0];
+      if (otra) db.get('metodosPago').find({ id: otra.id }).assign({ predeterminado: true }).write();
+    }
+    res.status(204).end();
+  });
+
+  // Solo del simulador (en el backend es de la caja): la orden se cobro en el
+  // mostrador. Un intento que esperaba el 3-D Secure queda fallido.
+  servidor.post('/__mock/ordenes/:ordenId/pagada-en-caja', (req, res) => {
+    const ordenId = Number(req.params.ordenId);
+    const servicio = db.get('servicios').find({ id: ordenId }).value();
+    if (!servicio) return noEncontrado(req, res);
+    if (pagadoDe(ordenId)) return problema(req, res, 409, 'La orden ya está pagada', 'ORDEN_NO_PAGABLE');
+    if (!['TERMINADO', 'ENTREGADO'].includes(servicio.estatus) || !(servicio.total > 0)) {
+      return problema(req, res, 409, 'La orden aún no está lista para cobrarse', 'ORDEN_NO_PAGABLE');
+    }
+    const vehiculo = db.get('vehiculos').find({ id: servicio.vehiculoId }).value();
+    db.get('pagosApp')
+      .filter({ ordenId, estado: 'PENDIENTE' })
+      .each((p) => Object.assign(p, { estado: 'FALLIDO', motivoFallo: 'PAGADA_EN_CAJA', autenticacion: 'RECHAZADA' }))
+      .value();
+    const pago = {
+      id: siguiente('pagosApp'),
+      clienteId: vehiculo ? vehiculo.clienteId : null,
+      ordenId,
+      vehiculoId: servicio.vehiculoId,
+      monto: servicio.total,
+      moneda: 'MXN',
+      medio: 'CAJA',
+      estado: 'PAGADO',
+      referencia: String((req.body || {}).referencia || `caja_${folio()}`),
+      simulado: false,
+      metodoPagoId: null,
+      perfilFiscalId: null,
+      pagadoEn: ahora(),
+      creadoEn: ahora(),
+    };
+    db.get('pagosApp').push(pago).write();
+    if (pago.clienteId != null) confirmar(pago);
+    res.status(201).jsonp(publicoPago(pago));
   });
 };
