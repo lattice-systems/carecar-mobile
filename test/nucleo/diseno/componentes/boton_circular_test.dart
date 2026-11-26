@@ -5,6 +5,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/tokens_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 Color? _fondo(WidgetTester tester) {
@@ -24,7 +26,7 @@ void main() {
       await tester.pumpWidget(
         conTemaPista(
           BotonCircular(
-            icono: Icons.send,
+            icono: LucideIcons300.send,
             etiqueta: 'Enviar',
             alPresionar: () => toques++,
           ),
@@ -50,7 +52,7 @@ void main() {
             builder: (context) {
               tokens = TokensPista.de(context);
               return BotonCircular(
-                icono: Icons.send,
+                icono: LucideIcons300.send,
                 etiqueta: 'Enviar',
                 variante: VarianteBotonCircular.acento,
                 alPresionar: () {},
@@ -70,7 +72,7 @@ void main() {
             builder: (context) {
               tokens = TokensPista.de(context);
               return const BotonCircular(
-                icono: Icons.send,
+                icono: LucideIcons300.send,
                 etiqueta: 'Enviar',
                 variante: VarianteBotonCircular.acento,
                 alPresionar: null,
@@ -92,8 +94,8 @@ void main() {
       await tester.pumpWidget(
         conTemaPista(
           BotonCircular(
-            icono: Icons.thumb_up_outlined,
-            iconoMarcado: Icons.thumb_up,
+            icono: LucideIcons300.thumbsUp,
+            iconoMarcado: LucideIcons300.thumbsUp,
             etiqueta: 'Me sirvió',
             marcado: true,
             alPresionar: () {},
@@ -104,7 +106,7 @@ void main() {
           .getSemantics(find.bySemanticsLabel('Me sirvió'))
           .getSemanticsData();
       expect(datos.flagsCollection.isSelected, Tristate.isTrue);
-      expect(find.byIcon(Icons.thumb_up), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.thumbsUp), findsOneWidget);
     });
 
     testWidgets('vidrio es translucido con borde de luz (V2-T02.19)', (
@@ -117,7 +119,7 @@ void main() {
             builder: (context) {
               tokens = TokensPista.de(context);
               return BotonCircular(
-                icono: Icons.attach_file,
+                icono: LucideIcons300.paperclip,
                 etiqueta: 'Adjuntar',
                 variante: VarianteBotonCircular.vidrio,
                 alPresionar: () {},
@@ -134,7 +136,7 @@ void main() {
       expect(deco.color, tokens.colores.texto.withValues(alpha: 0.06));
       expect(deco.border, isNotNull);
       expect(
-        tester.widget<Icon>(find.byIcon(Icons.attach_file)).color,
+        tester.widget<Icon>(find.byIcon(LucideIcons300.paperclip)).color,
         tokens.colores.acento,
       );
     });
@@ -144,7 +146,7 @@ void main() {
         await tester.pumpWidget(
           conTemaPista(
             BotonCircular(
-              icono: Icons.send,
+              icono: LucideIcons300.send,
               etiqueta: 'Enviar',
               alPresionar: () {},
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -51,7 +53,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
             EstadoVacio(
               titulo: textos.recoleccionDireccionesVacioTitulo,
               mensaje: textos.recoleccionDireccionesVacioMensaje,
-              icono: Icons.location_off_outlined,
+              icono: LucideIcons300.mapPinOff,
               textoAccion: textos.recoleccionDireccionesAgregar,
               alAccion: () => abrirFormularioDireccion(context),
             ),
@@ -101,7 +103,7 @@ class _Lista extends ConsumerWidget {
         hijos: [
           BotonPildora(
             texto: textos.recoleccionDireccionesAgregar,
-            icono: Icons.add_location_alt_outlined,
+            icono: LucideIcons300.mapPinPlus,
             expandido: true,
             alPresionar: () => abrirFormularioDireccion(context),
           ),
@@ -119,7 +121,7 @@ class _Lista extends ConsumerWidget {
                   FilaGrupo(
                     titulo: d.alias,
                     subtitulo: d.resumen,
-                    icono: Icons.place_outlined,
+                    icono: LucideIcons300.mapPin,
                     colorIcono: c.acento,
                     alToque: () =>
                         abrirFormularioDireccion(context, editando: d),

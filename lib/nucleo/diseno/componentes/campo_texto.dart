@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/tokens_pista.dart';
 import 'campo_base.dart';
 
@@ -137,7 +139,7 @@ class _CampoContrasenaState extends State<CampoContrasena> {
         tooltip: _oculta ? 'Mostrar contraseña' : 'Ocultar contraseña',
         constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
         icon: Icon(
-          _oculta ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+          _oculta ? LucideIcons300.eye : LucideIcons300.eyeOff,
           color: c.textoSecundario,
         ),
       ),

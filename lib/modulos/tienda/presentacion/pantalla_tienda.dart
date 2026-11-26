@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -100,7 +102,7 @@ class _PantallaTiendaState extends ConsumerState<PantallaTienda> {
       acciones: [
         BotonCircular(
           etiqueta: t.tiendaMisPedidos,
-          icono: Icons.receipt_long_outlined,
+          icono: LucideIcons300.receiptText,
           colorIcono: c.texto,
           alPresionar: () => context.push(rutaMisPedidos),
         ),
@@ -112,7 +114,7 @@ class _PantallaTiendaState extends ConsumerState<PantallaTienda> {
               hijos: [
                 Boton(
                   texto: t.tiendaVerCarrito(carrito.piezas),
-                  icono: Icons.shopping_bag_outlined,
+                  icono: LucideIcons300.shoppingBag,
                   anchoCompleto: true,
                   alPresionar: () => context.push(rutaCarrito),
                 ),
@@ -147,7 +149,7 @@ class _PantallaTiendaState extends ConsumerState<PantallaTienda> {
                       child: EstadoVacio(
                         titulo: t.tiendaVacioTitulo,
                         mensaje: t.tiendaVacioMensaje,
-                        icono: Icons.search_off_rounded,
+                        icono: LucideIcons300.searchX,
                         textoAccion: t.tiendaQuitarFiltros,
                         alAccion: _verTodo,
                       ),

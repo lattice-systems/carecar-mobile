@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -60,7 +62,7 @@ class PantallaCampanas extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: textos.campanasVaciaTitulo,
                     mensaje: textos.campanasVaciaMensaje,
-                    icono: Icons.campaign_outlined,
+                    icono: LucideIcons300.megaphone,
                   ),
                 )
               : MarcoPantalla(
@@ -122,8 +124,8 @@ class TarjetaCampana extends StatelessWidget {
       subtitulo: textos.campanasCodigo(campana.codigo),
       detalle: textoGravedad(textos, campana.gravedad),
       icono: campana.gravedad == GravedadCampana.critica
-          ? Icons.priority_high_rounded
-          : Icons.campaign_outlined,
+          ? LucideIcons300.circleAlert
+          : LucideIcons300.megaphone,
       tono: tonoGravedad(campana.gravedad),
       estado: textoEstadoCampana(textos, campana.estado),
       tonoEstado: tonoEstadoCampana(campana.estado),

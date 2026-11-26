@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
@@ -109,8 +111,8 @@ class ListaDeCitas extends StatelessWidget {
             titulo: textoCita(context, cita, garaje),
             subtitulo: cita.id == elegida ? t.tiendaCitaElegida : null,
             icono: cita.id == elegida
-                ? Icons.check_rounded
-                : Icons.event_outlined,
+                ? LucideIcons300.check
+                : LucideIcons300.calendar,
             alToque: () => alElegir(cita.id),
           ),
       ],

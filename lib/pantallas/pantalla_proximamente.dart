@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../api/modelos/vehiculo.dart';
 import '../tema/tema_carecar.dart';
 import '../widgets/pagina_carecar.dart';
@@ -29,7 +31,7 @@ class PantallaProximamente extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Icon(
-              Icons.more_time,
+              LucideIcons300.clockPlus,
               size: 56,
               color: TemaCareCar.textoSecundario,
             ),

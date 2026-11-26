@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
@@ -125,7 +127,7 @@ class _EstadoPantallaMisEstimaciones
       cuerpo = EstadoVacio(
         titulo: t.misEstimacionesVacioTitulo,
         mensaje: t.misEstimacionesVacioMensaje,
-        icono: Icons.calculate_outlined,
+        icono: LucideIcons300.calculator,
         textoAccion: t.misEstimacionesVacioAccion,
         alAccion: () => context.pushReplacement(rutaCalculadora),
       );
@@ -150,7 +152,7 @@ class _EstadoPantallaMisEstimaciones
             acciones: [
               BotonCircular(
                 etiqueta: t.valuacionMisTitulo,
-                icono: Icons.verified_outlined,
+                icono: LucideIcons300.badgeCheck,
                 colorIcono: TokensPista.de(context).colores.texto,
                 alPresionar: () => context.push(rutaValuaciones),
               ),
@@ -264,7 +266,7 @@ void _abrirDetalle(BuildContext context, Estimacion e) {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: t.valuacionVerValor,
-              icono: Icons.show_chart_rounded,
+              icono: LucideIcons300.chartLine,
               variante: VarianteBotonPildora.tonal,
               expandido: true,
               alPresionar: () => irA(hoja, rutaValorVehiculo(vehiculoId)),

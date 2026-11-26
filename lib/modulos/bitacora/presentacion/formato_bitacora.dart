@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/gasto.dart';
@@ -42,11 +44,11 @@ String nombreTipo(AppLocalizations textos, TipoGasto tipo) => switch (tipo) {
 };
 
 IconData iconoTipo(TipoGasto tipo) => switch (tipo) {
-  TipoGasto.gasolina => Icons.local_gas_station_outlined,
-  TipoGasto.estacionamiento => Icons.local_parking_outlined,
-  TipoGasto.casetas => Icons.toll_outlined,
-  TipoGasto.lavado => Icons.local_car_wash_outlined,
-  TipoGasto.otro => Icons.receipt_long_outlined,
+  TipoGasto.gasolina => LucideIcons300.fuel,
+  TipoGasto.estacionamiento => LucideIcons300.squareParking,
+  TipoGasto.casetas => LucideIcons300.coins,
+  TipoGasto.lavado => LucideIcons300.droplets,
+  TipoGasto.otro => LucideIcons300.receiptText,
 };
 
 /// Color del ícono de cada tipo, solo con colores de los tokens.

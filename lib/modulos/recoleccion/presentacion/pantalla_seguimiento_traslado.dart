@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/traslado.dart';
 import '../../../l10n/app_localizations.dart';
@@ -53,7 +55,7 @@ class PantallaSeguimientoTraslado extends ConsumerWidget {
           NoEncontrado() => EstadoVacio(
             titulo: textos.recoleccionSeguimientoNoEncontradoTitulo,
             mensaje: textos.recoleccionSeguimientoNoEncontradoMensaje,
-            icono: Icons.local_shipping_outlined,
+            icono: LucideIcons300.truck,
           ),
           _ => EstadoError(
             causa: error is SinConexion
@@ -129,7 +131,7 @@ class _Contenido extends StatelessWidget {
 
     final actualizar = AccionPantalla(
       texto: textos.recoleccionSeguimientoActualizar,
-      icono: Icons.refresh_rounded,
+      icono: LucideIcons300.refreshCw,
       alPresionar: actualizando ? null : alActualizar,
     );
 
@@ -150,7 +152,7 @@ class _Contenido extends StatelessWidget {
                   FilaAcciones(
                     principal: AccionPantalla(
                       texto: textos.recoleccionSeguimientoVerChecklist,
-                      icono: Icons.fact_check_outlined,
+                      icono: LucideIcons300.clipboardCheck,
                       alPresionar: () =>
                           context.push(rutaChecklistTraslado(traslado.id)),
                     ),
@@ -175,7 +177,7 @@ class _Contenido extends StatelessWidget {
                         traslado.ventanaInicio,
                         traslado.ventanaFin,
                       ),
-                      icono: Icons.schedule_outlined,
+                      icono: LucideIcons300.clock,
                       colorIcono: c.marca,
                     ),
                   ],
@@ -192,7 +194,7 @@ class _Contenido extends StatelessWidget {
                   const SizedBox(height: Espaciado.e3),
                   MapaProvisional(
                     pin: Coordenada(chofer.lat, chofer.lng),
-                    icono: Icons.local_shipping,
+                    icono: LucideIcons300.truck,
                     descripcion: textos.recoleccionSeguimientoMapaDescripcion(
                       '${chofer.lat}',
                       '${chofer.lng}',

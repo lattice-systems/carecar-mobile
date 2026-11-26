@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../diseno/componentes/avatar.dart';
 import '../diseno/componentes/barra_flotante.dart';
@@ -217,7 +219,7 @@ class _Cuerpo extends StatelessWidget {
                     padding: const EdgeInsets.only(right: Espaciado.e4),
                     child: BotonAccionFlotante(
                       texto: textos.inicioAgendarCita,
-                      icono: Icons.add,
+                      icono: LucideIcons300.plus,
                       alPresionar: inicio.alAgendar,
                     ),
                   ),
@@ -231,23 +233,23 @@ class _Cuerpo extends StatelessWidget {
                   destinos: [
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoInicio,
-                      icono: Icons.home_outlined,
-                      iconoActivo: Icons.home_rounded,
+                      icono: LucideIcons300.house,
+                      iconoActivo: LucideIcons300.house,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoVehiculos,
-                      icono: Icons.directions_car_outlined,
-                      iconoActivo: Icons.directions_car_rounded,
+                      icono: LucideIcons300.car,
+                      iconoActivo: LucideIcons300.car,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoCitas,
-                      icono: Icons.calendar_month_outlined,
-                      iconoActivo: Icons.calendar_month_rounded,
+                      icono: LucideIcons300.calendarDays,
+                      iconoActivo: LucideIcons300.calendarDays,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoCatalogo,
-                      icono: Icons.grid_view_outlined,
-                      iconoActivo: Icons.grid_view_rounded,
+                      icono: LucideIcons300.layoutGrid,
+                      iconoActivo: LucideIcons300.layoutGrid,
                     ),
                   ],
                 ),
@@ -306,7 +308,7 @@ class _SeccionAutosState extends State<_SeccionAutos> {
       return TarjetaResumen(
         titulo: textos.inicioSinAutos,
         subtitulo: textos.inicioSinAutosDetalle,
-        icono: Icons.directions_car_outlined,
+        icono: LucideIcons300.car,
         alToque: widget.alToque,
       );
     }
@@ -437,7 +439,7 @@ class _TarjetaCita extends StatelessWidget {
       return TarjetaResumen(
         titulo: textos.inicioSinCitas,
         subtitulo: textos.inicioSinCitasDetalle,
-        icono: Icons.event_available_outlined,
+        icono: LucideIcons300.calendarCheck,
         tono: Tono.exito,
         alToque: alAgendar,
       );
@@ -608,7 +610,7 @@ class _BotonPerfil extends StatelessWidget {
             child: Center(
               child: conNombre
                   ? Avatar(nombre: nombre!)
-                  : Icon(Icons.person_outline, color: c.textoSecundario),
+                  : Icon(LucideIcons300.user, color: c.textoSecundario),
             ),
           ),
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../api/carecar_api.dart';
 import '../l10n/app_localizations.dart';
 import '../api/modelos/cita.dart';
@@ -166,19 +168,19 @@ class _PantallaInicioState extends State<PantallaInicio> {
                     AccesoInicio(
                       titulo: textos.inicioAccesoVehiculosTitulo,
                       subtitulo: textos.inicioAccesoVehiculosSubtitulo,
-                      icono: Icons.directions_car_outlined,
+                      icono: LucideIcons300.car,
                       alPulsar: alVehiculos,
                     ),
                     AccesoInicio(
                       titulo: textos.inicioAccesoCitasTitulo,
                       subtitulo: textos.inicioAccesoCitasSubtitulo,
-                      icono: Icons.calendar_month_outlined,
+                      icono: LucideIcons300.calendarDays,
                       alPulsar: alCitas,
                     ),
                     AccesoInicio(
                       titulo: textos.inicioAccesoCatalogoTitulo,
                       subtitulo: textos.inicioAccesoCatalogoSubtitulo,
-                      icono: Icons.grid_view_outlined,
+                      icono: LucideIcons300.layoutGrid,
                       alPulsar: alCatalogo,
                     ),
                   ],

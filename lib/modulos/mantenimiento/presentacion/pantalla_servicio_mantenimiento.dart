@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -67,7 +69,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
             estado: EstadoVacio(
               titulo: textos.mantenimientoServicioNoEncontradoTitulo,
               mensaje: textos.mantenimientoServicioNoEncontradoMensaje,
-              icono: Icons.build_circle_outlined,
+              icono: LucideIcons300.wrench,
             ),
           );
         }
@@ -80,7 +82,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
                   hijos: [
                     BotonPildora(
                       texto: textos.mantenimientoAgendar,
-                      icono: Icons.event_available_outlined,
+                      icono: LucideIcons300.calendarCheck,
                       expandido: true,
                       alPresionar: () => context.push(
                         rutaAgendarCitaCon(
@@ -159,7 +161,7 @@ class _Servicio extends StatelessWidget {
               for (final concepto in servicio.conceptos)
                 FilaGrupo(
                   titulo: concepto,
-                  icono: Icons.check_rounded,
+                  icono: LucideIcons300.check,
                   colorIcono: c.exito,
                 ),
             ],

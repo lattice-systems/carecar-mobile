@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
@@ -112,9 +114,7 @@ class _Tarjeta extends StatelessWidget {
                     borderRadius: Radios.bordePildora,
                   ),
                   child: Icon(
-                    lista
-                        ? Icons.check_circle_outline_rounded
-                        : Icons.car_repair_rounded,
+                    lista ? LucideIcons300.circleCheck : LucideIcons300.wrench,
                     color: lista ? c.exito : c.acento,
                   ),
                 ),
@@ -161,7 +161,7 @@ class _Tarjeta extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: Espaciado.e2),
-                Icon(Icons.chevron_right_rounded, color: c.textoTerciario),
+                Icon(LucideIcons300.chevronRight, color: c.textoTerciario),
               ],
             ),
           ),

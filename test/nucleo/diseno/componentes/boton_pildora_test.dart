@@ -5,6 +5,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/colores.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -121,7 +123,7 @@ void main() {
       conTemaPista(
         BotonPildora(
           texto: 'Reprogramar',
-          icono: Icons.event_repeat,
+          icono: LucideIcons300.calendarSync,
           variante: VarianteBotonPildora.vidrio,
           alPresionar: () {},
         ),
@@ -139,7 +141,7 @@ void main() {
     expect((material.shape! as StadiumBorder).side.width, greaterThan(0));
     expect(tester.widget<Text>(find.text('Reprogramar')).style?.color, c.texto);
     expect(
-      tester.widget<Icon>(find.byIcon(Icons.event_repeat)).color,
+      tester.widget<Icon>(find.byIcon(LucideIcons300.calendarSync)).color,
       c.acento,
     );
   });
@@ -161,7 +163,7 @@ void main() {
             Expanded(
               child: BotonPildora(
                 texto: 'Reproducir',
-                icono: Icons.play_arrow,
+                icono: LucideIcons300.play,
                 expandido: true,
                 alPresionar: () {},
               ),
@@ -193,7 +195,7 @@ void main() {
               Expanded(
                 child: BotonPildora(
                   texto: 'Agendar cita de servicio',
-                  icono: Icons.event,
+                  icono: LucideIcons300.calendar,
                   expandido: true,
                   alPresionar: () {},
                 ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton_circular.dart';
@@ -19,7 +21,7 @@ class BotonCerrar extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
     return BotonCircular(
-      icono: Icons.close_rounded,
+      icono: LucideIcons300.x,
       etiqueta: AppLocalizations.of(context).cerrarPantalla,
       colorIcono: c.texto,
       alPresionar: alCerrar ?? () => Navigator.of(context).maybePop(),

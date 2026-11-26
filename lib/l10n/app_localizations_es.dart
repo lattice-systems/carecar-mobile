@@ -4155,6 +4155,74 @@ class AppLocalizationsEs extends AppLocalizations {
       'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.';
 
   @override
+  String get mapaAyudaPin => 'Arrastra el pin, toca el mapa o usa las flechas.';
+
+  @override
+  String get mapaConPin => 'Mapa con un pin.';
+
+  @override
+  String get mapaConUbicacion => 'Se muestra tu ubicación.';
+
+  @override
+  String get mapaMiUbicacion => 'Ver mi ubicación';
+
+  @override
+  String get mapaMoverEste => 'Mover el pin al este';
+
+  @override
+  String get mapaMoverNorte => 'Mover el pin al norte';
+
+  @override
+  String get mapaMoverOeste => 'Mover el pin al oeste';
+
+  @override
+  String get mapaMoverSur => 'Mover el pin al sur';
+
+  @override
+  String get mapaPinAlCentro => 'Poner el pin en el centro';
+
+  @override
+  String get mapaPinMovidoEste => 'Pin movido al este';
+
+  @override
+  String get mapaPinMovidoNorte => 'Pin movido al norte';
+
+  @override
+  String get mapaPinMovidoOeste => 'Pin movido al oeste';
+
+  @override
+  String get mapaPinMovidoSur => 'Pin movido al sur';
+
+  @override
+  String get mapaReintentar => 'Reintentar';
+
+  @override
+  String get mapaSeguimiento => 'Mapa de seguimiento.';
+
+  @override
+  String get mapaSinPin => 'Mapa sin pin.';
+
+  @override
+  String get mapaSinTeselas =>
+      'No pudimos cargar el mapa. Revisa tu internet y vuelve a intentarlo.';
+
+  @override
+  String get mapaUbicacionApagada =>
+      'La ubicación del teléfono está apagada. Enciéndela y vuelve a intentarlo.';
+
+  @override
+  String get mapaUbicacionBloqueada =>
+      'La ubicación está bloqueada. Actívala para CareCar en los ajustes del teléfono.';
+
+  @override
+  String get mapaUbicacionDenegada =>
+      'No nos diste permiso para ver tu ubicación. Puedes usar el mapa sin ella.';
+
+  @override
+  String get mapaUbicacionTiempo =>
+      'Tu ubicación tardó demasiado. Vuelve a intentarlo.';
+
+  @override
   String get garantiaTitulo => 'Garantía';
 
   @override

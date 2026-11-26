@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../api/carecar_api.dart';
@@ -233,7 +234,7 @@ class _LineaState extends State<_Linea> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         const Icon(
-                                          Icons.receipt_long_outlined,
+                                          LucideIcons300.receiptText,
                                           size: 18,
                                           color: TemaCareCar.textoSecundario,
                                         ),
@@ -282,7 +283,7 @@ class _LineaState extends State<_Linea> {
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.expand_more),
+                : const Icon(LucideIcons300.chevronDown),
             label: Text(_cargando ? 'Cargando…' : 'Cargar más'),
           ),
       ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -122,7 +124,7 @@ class TarjetaResumen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: Espaciado.e2),
                   child: Icon(
-                    Icons.chevron_right_rounded,
+                    LucideIcons300.chevronRight,
                     color: c.textoTerciario,
                   ),
                 ),

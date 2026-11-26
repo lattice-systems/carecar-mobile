@@ -14,6 +14,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 Widget _app(
   Widget pantalla, {
@@ -440,7 +441,7 @@ void main() {
               body: TarjetaResumen(
                 titulo: 'Servicio de 20,000 km',
                 subtitulo: 'Te toca por kilometraje',
-                icono: Icons.build_outlined,
+                icono: LucideIcons300.wrench,
                 progreso: 0.5,
                 etiquetaProgreso: 'Faltan 1,550 km',
               ),
@@ -470,7 +471,7 @@ void main() {
             Scaffold(
               body: TarjetaResumen(
                 titulo: 'Folio 1042',
-                icono: Icons.event_available_outlined,
+                icono: LucideIcons300.calendarCheck,
                 tono: Tono.exito,
                 estado: 'Confirmada',
                 tonoEstado: Tono.exito,
@@ -480,7 +481,7 @@ void main() {
           ),
         );
         expect(find.text('Confirmada'), findsOneWidget);
-        expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+        expect(find.byIcon(LucideIcons300.chevronRight), findsOneWidget);
         await tester.tap(find.byType(TarjetaResumen));
         expect(toques, 1);
       },
