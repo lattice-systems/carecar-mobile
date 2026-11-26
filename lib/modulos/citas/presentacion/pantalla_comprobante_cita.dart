@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../api/excepciones.dart';
@@ -158,7 +159,7 @@ class _Comprobante extends ConsumerWidget {
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: textos.citasComprobanteVerPdf,
-                icono: Icons.picture_as_pdf_outlined,
+                icono: LucideIcons300.fileText,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => _abrirPdf(context, ref),
@@ -174,13 +175,13 @@ class _Comprobante extends ConsumerWidget {
               FilaGrupo(
                 titulo: textos.citasResumenVehiculo,
                 subtitulo: datos.vehiculoNombre,
-                icono: Icons.directions_car_filled_outlined,
+                icono: LucideIcons300.carFront,
                 colorIcono: c.acento,
               ),
             FilaGrupo(
               titulo: textos.citasResumenFecha,
               subtitulo: fecha,
-              icono: Icons.calendar_today_outlined,
+              icono: LucideIcons300.calendar,
               colorIcono: c.marca,
             ),
             FilaGrupo(
@@ -189,13 +190,13 @@ class _Comprobante extends ConsumerWidget {
                 datos.horaInicio,
                 datos.horaFin,
               ),
-              icono: Icons.schedule_outlined,
+              icono: LucideIcons300.clock,
               colorIcono: c.advertencia,
             ),
             FilaGrupo(
               titulo: textos.citasComprobanteRecepcion,
               subtitulo: textos.citasComprobanteIndicacion,
-              icono: Icons.qr_code_scanner_rounded,
+              icono: LucideIcons300.scanQrCode,
               colorIcono: c.exito,
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -199,7 +201,7 @@ class _Fila extends StatelessWidget {
                 const SizedBox(width: Espaciado.e2),
                 ExcludeSemantics(
                   child: Icon(
-                    Icons.chevron_right_rounded,
+                    LucideIcons300.chevronRight,
                     color: c.textoTerciario,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../tema/tema_carecar.dart';
@@ -118,7 +119,7 @@ class _GaleriaAutoState extends State<GaleriaAuto> {
         key: FotoAuto.marcador,
         color: TemaCareCar.azulSuave,
         child: const Icon(
-          Icons.directions_car_outlined,
+          LucideIcons300.car,
           size: 56,
           color: TemaCareCar.azulAgencia,
         ),
@@ -185,7 +186,7 @@ class _GaleriaAutoState extends State<GaleriaAuto> {
                   child: Center(
                     child: _Flecha(
                       clave: GaleriaAuto.flechaAnterior,
-                      icono: LucideIcons.chevronLeft,
+                      icono: LucideIcons300.chevronLeft,
                       etiqueta: 'Foto anterior',
                       alPulsar: () => _ir(_actual - 1),
                     ),
@@ -199,7 +200,7 @@ class _GaleriaAutoState extends State<GaleriaAuto> {
                   child: Center(
                     child: _Flecha(
                       clave: GaleriaAuto.flechaSiguiente,
-                      icono: LucideIcons.chevronRight,
+                      icono: LucideIcons300.chevronRight,
                       etiqueta: 'Foto siguiente',
                       alPulsar: () => _ir(_actual + 1),
                     ),
@@ -352,7 +353,7 @@ class _VisorCompletoState extends State<_VisorCompleto> {
             bottom: 0,
             child: Center(
               child: _Flecha(
-                icono: LucideIcons.chevronLeft,
+                icono: LucideIcons300.chevronLeft,
                 etiqueta: 'Foto anterior',
                 alPulsar: () => _ir(_actual - 1),
               ),
@@ -365,7 +366,7 @@ class _VisorCompletoState extends State<_VisorCompleto> {
             bottom: 0,
             child: Center(
               child: _Flecha(
-                icono: LucideIcons.chevronRight,
+                icono: LucideIcons300.chevronRight,
                 etiqueta: 'Foto siguiente',
                 alPulsar: () => _ir(_actual + 1),
               ),
@@ -379,7 +380,7 @@ class _VisorCompletoState extends State<_VisorCompleto> {
                 _Contador(texto: '${_actual + 1} / ${widget.total}'),
                 const Spacer(),
                 _Flecha(
-                  icono: LucideIcons.x,
+                  icono: LucideIcons300.x,
                   etiqueta: 'Cerrar',
                   alPulsar: () => Navigator.of(context).pop(_actual),
                 ),

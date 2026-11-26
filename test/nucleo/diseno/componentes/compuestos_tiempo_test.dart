@@ -4,6 +4,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/selector_franja.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 const _pasos = [
@@ -45,7 +47,7 @@ void main() {
           const SingleChildScrollView(child: LineaDeTiempo(pasos: _pasos)),
         ),
       );
-      expect(find.byIcon(Icons.check), findsNWidgets(2));
+      expect(find.byIcon(LucideIcons300.check), findsNWidgets(2));
     });
 
     testWidgets('cada paso se anuncia con su estado', (tester) async {
@@ -326,7 +328,7 @@ void main() {
       expect(
         tester
             .widget<IconButton>(
-              find.widgetWithIcon(IconButton, Icons.chevron_left),
+              find.widgetWithIcon(IconButton, LucideIcons300.chevronLeft),
             )
             .onPressed,
         isNull,
@@ -336,7 +338,7 @@ void main() {
       expect(
         tester
             .widget<IconButton>(
-              find.widgetWithIcon(IconButton, Icons.chevron_right),
+              find.widgetWithIcon(IconButton, LucideIcons300.chevronRight),
             )
             .onPressed,
         isNull,

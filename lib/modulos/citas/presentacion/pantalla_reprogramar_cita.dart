@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -90,7 +92,7 @@ class _EstadoPantallaReprogramarCita
         EstadoVacio(
           titulo: textos.citasReprogramarNoEncontradaTitulo,
           mensaje: textos.citasReprogramarNoEncontradaMensaje,
-          icono: Icons.event_busy_outlined,
+          icono: LucideIcons300.calendarX,
         ),
       );
     }
@@ -167,7 +169,7 @@ class _EstadoPantallaReprogramarCita
                       children: [
                         ExcludeSemantics(
                           child: Icon(
-                            Icons.event_outlined,
+                            LucideIcons300.calendar,
                             color: c.acento,
                             size: 28,
                           ),

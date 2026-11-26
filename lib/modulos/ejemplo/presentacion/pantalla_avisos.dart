@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -43,7 +45,7 @@ class PantallaAvisos extends ConsumerWidget {
                       titulo: a.titulo,
                       subtitulo: a.detalle,
                       inicio: a.urgente
-                          ? const Icon(Icons.priority_high)
+                          ? const Icon(LucideIcons300.circleAlert)
                           : null,
                       conChevron: false,
                     ),

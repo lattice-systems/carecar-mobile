@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -61,7 +63,7 @@ class PantallaMovimientos extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: textos.movimientosVaciaTitulo,
                     mensaje: textos.movimientosVaciaMensaje,
-                    icono: Icons.receipt_long_outlined,
+                    icono: LucideIcons300.receiptText,
                   ),
                 )
               : MarcoPantalla(
@@ -107,7 +109,7 @@ class PantallaMovimientos extends ConsumerWidget {
                 BotonPildora(
                   texto: textos.lealtadReintentar,
                   variante: VarianteBotonPildora.vidrio,
-                  icono: Icons.refresh_rounded,
+                  icono: LucideIcons300.refreshCw,
                   alPresionar: () =>
                       ref.read(movimientosProvider.notifier).cargarMas(),
                 ),
@@ -144,12 +146,12 @@ FilaGrupo filaMovimiento(BuildContext context, MovimientoPuntos m) {
         ? fecha
         : textos.movimientosFechaYReferencia(fecha, referencia),
     icono: switch (m.motivo) {
-      MotivoPuntos.servicio => Icons.build_circle_outlined,
-      MotivoPuntos.canje => Icons.card_giftcard_outlined,
-      MotivoPuntos.devolucionCanje => Icons.undo_rounded,
-      MotivoPuntos.referido => Icons.group_add_outlined,
-      MotivoPuntos.ajuste => Icons.tune_rounded,
-      MotivoPuntos.desconocido => Icons.help_outline_rounded,
+      MotivoPuntos.servicio => LucideIcons300.wrench,
+      MotivoPuntos.canje => LucideIcons300.gift,
+      MotivoPuntos.devolucionCanje => LucideIcons300.undo2,
+      MotivoPuntos.referido => LucideIcons300.userPlus,
+      MotivoPuntos.ajuste => LucideIcons300.slidersHorizontal,
+      MotivoPuntos.desconocido => LucideIcons300.circleQuestionMark,
     },
     colorIcono: gano ? c.exito : c.textoSecundario,
     fin: Text(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/camara/selector_foto.dart';
 import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
@@ -73,13 +75,13 @@ class _PantallaAsistenteState extends ConsumerState<PantallaAsistente> {
         filas: [
           FilaGrupo(
             titulo: textos.asistenteFotoTomar,
-            icono: Icons.photo_camera_outlined,
+            icono: LucideIcons300.camera,
             colorIcono: c.acento,
             alToque: () => Navigator.of(hoja).pop(OrigenFoto.camara),
           ),
           FilaGrupo(
             titulo: textos.asistenteFotoGaleria,
-            icono: Icons.photo_library_outlined,
+            icono: LucideIcons300.images,
             colorIcono: c.marca,
             alToque: () => Navigator.of(hoja).pop(OrigenFoto.galeria),
           ),
@@ -198,7 +200,7 @@ class _ContenidoAsistente extends ConsumerWidget {
                           const SizedBox(height: Espaciado.e2),
                           BotonPildora(
                             texto: textos.asistenteAbrirAjustes,
-                            icono: Icons.settings_outlined,
+                            icono: LucideIcons300.settings,
                             variante: VarianteBotonPildora.vidrio,
                             alPresionar: alAbrirAjustes,
                           ),
@@ -214,7 +216,7 @@ class _ContenidoAsistente extends ConsumerWidget {
                                 EstadoVacio(
                                   titulo: textos.asistenteVacioTitulo,
                                   mensaje: textos.asistenteVacioMensaje,
-                                  icono: Icons.auto_awesome_outlined,
+                                  icono: LucideIcons300.sparkles,
                                 ),
                                 _PreguntasSugeridas(
                                   alElegir: conversacion.preguntar,
@@ -241,7 +243,7 @@ class _ContenidoAsistente extends ConsumerWidget {
                     child: CampoMensaje(
                       alEnviar: conversacion.preguntar,
                       alAdjuntar: alTomarFoto,
-                      iconoAdjuntar: Icons.photo_camera_outlined,
+                      iconoAdjuntar: LucideIcons300.camera,
                       etiquetaAdjuntar: textos.asistenteFotoAdjuntar,
                       habilitado: !esperando,
                       sugerencia: textos.asistenteSugerencia,
@@ -391,13 +393,13 @@ class _Mensaje extends StatelessWidget {
             if (roja)
               BotonPildora(
                 texto: textos.asistentePedirAyuda,
-                icono: Icons.sos_rounded,
+                icono: LucideIcons300.siren,
                 alPresionar: () => context.push(rutaPedirAyuda),
               ),
             if (ofrecerAgendar)
               BotonPildora(
                 texto: textos.asistenteAgendarRevision,
-                icono: Icons.event_available_outlined,
+                icono: LucideIcons300.calendarCheck,
                 variante: VarianteBotonPildora.vidrio,
                 alPresionar: () => context.push(
                   rutaAgendarCitaCon(
@@ -409,15 +411,15 @@ class _Mensaje extends StatelessWidget {
             if (mensaje.consultaId != null) ...[
               BotonCircular(
                 etiqueta: textos.asistenteMeSirvio,
-                icono: Icons.thumb_up_outlined,
-                iconoMarcado: Icons.thumb_up,
+                icono: LucideIcons300.thumbsUp,
+                iconoMarcado: LucideIcons300.thumbsUp,
                 marcado: mensaje.util == true,
                 alPresionar: () => alCalificar(true),
               ),
               BotonCircular(
                 etiqueta: textos.asistenteNoMeSirvio,
-                icono: Icons.thumb_down_outlined,
-                iconoMarcado: Icons.thumb_down,
+                icono: LucideIcons300.thumbsDown,
+                iconoMarcado: LucideIcons300.thumbsDown,
                 marcado: mensaje.util == false,
                 alPresionar: () => alCalificar(false),
               ),

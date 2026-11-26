@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../cache/carecar_api_con_cache.dart';
@@ -208,7 +210,7 @@ class TarjetaVehiculo extends StatelessWidget {
                       ),
                     ),
                     const Icon(
-                      Icons.chevron_right,
+                      LucideIcons300.chevronRight,
                       color: TemaCareCar.textoSecundario,
                     ),
                   ],
@@ -224,7 +226,7 @@ class TarjetaVehiculo extends StatelessWidget {
                     _envolver(
                       apilar,
                       _Dato(
-                        icono: Icons.pin_outlined,
+                        icono: LucideIcons300.hash,
                         etiqueta: 'Placas',
                         valor: v.placas,
                         mono: true,
@@ -234,7 +236,7 @@ class TarjetaVehiculo extends StatelessWidget {
                     _envolver(
                       apilar,
                       _Dato(
-                        icono: Icons.speed_outlined,
+                        icono: LucideIcons300.gauge,
                         etiqueta: 'Kilometraje',
                         valor: v.kilometraje == null
                             ? null

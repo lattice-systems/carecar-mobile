@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
@@ -198,7 +199,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
             opciones: [
               _Opcion(
                 llave: PantallaPerfil.botonCambiarContrasena,
-                icono: Icons.lock_reset_outlined,
+                icono: LucideIcons300.keyRound,
                 titulo: 'Cambiar contraseña',
                 subtitulo: 'Actualiza la contraseña con la que entras',
                 alTocar: _cambiarContrasena,
@@ -206,7 +207,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
               if (GoRouter.maybeOf(context) != null)
                 _Opcion(
                   llave: PantallaPerfil.botonMisPuntos,
-                  icono: Icons.workspace_premium_outlined,
+                  icono: LucideIcons300.award,
                   titulo: 'Mis puntos',
                   subtitulo: 'Tu saldo, nivel y recompensas',
                   alTocar: _abrirMisPuntos,
@@ -214,7 +215,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
               if (GoRouter.maybeOf(context) != null)
                 _Opcion(
                   llave: PantallaPerfil.botonMisDirecciones,
-                  icono: Icons.place_outlined,
+                  icono: LucideIcons300.mapPin,
                   titulo: 'Mis direcciones',
                   subtitulo: 'Donde recogemos y entregamos tu auto',
                   alTocar: _abrirDirecciones,
@@ -226,7 +227,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
             opciones: [
               _Opcion(
                 llave: PantallaPerfil.interruptorRecordatorios,
-                icono: Icons.notifications_active_outlined,
+                icono: LucideIcons300.bellRing,
                 titulo: 'Recordatorios de citas',
                 subtitulo: 'Un día y dos horas antes de cada cita',
                 alTocar: () => _cambiarRecordatorios(!_recordatorios),
@@ -239,14 +240,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
             opciones: [
               _Opcion(
                 llave: PantallaPerfil.botonContactar,
-                icono: Icons.support_agent_outlined,
+                icono: LucideIcons300.headset,
                 titulo: 'Contactar a la agencia',
                 subtitulo: 'Teléfono y correo de atención',
                 alTocar: _contactar,
               ),
               _Opcion(
                 llave: PantallaPerfil.botonPrivacidad,
-                icono: Icons.privacy_tip_outlined,
+                icono: LucideIcons300.shieldAlert,
                 titulo: 'Privacidad y mis datos',
                 subtitulo: 'Aviso de privacidad y copia de tus datos',
                 alTocar: _privacidad,
@@ -257,7 +258,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
             titulo: 'Acerca de',
             opciones: [
               _Opcion(
-                icono: Icons.info_outline,
+                icono: LucideIcons300.info,
                 titulo: 'CareCar',
                 subtitulo: _version.isEmpty ? null : 'Versión $_version',
               ),
@@ -267,7 +268,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
             opciones: [
               _Opcion(
                 llave: PaginaCareCar.botonCerrarSesion,
-                icono: Icons.logout,
+                icono: LucideIcons300.logOut,
                 titulo: 'Cerrar sesión',
                 peligro: true,
                 alTocar: _confirmarCierre,
@@ -356,7 +357,7 @@ class _PerfilConError extends StatelessWidget {
           subtitulo: sinRed
               ? 'Revisa tu conexión a internet e inténtalo de nuevo.'
               : 'Ocurrió un problema con el servidor. Inténtalo de nuevo.',
-          icono: sinRed ? Icons.wifi_off_rounded : Icons.error_outline,
+          icono: sinRed ? LucideIcons300.wifiOff : LucideIcons300.circleAlert,
           tono: sinRed ? Tono.neutro : Tono.peligro,
         ),
         const SizedBox(height: Espaciado.e3),
@@ -365,7 +366,7 @@ class _PerfilConError extends StatelessWidget {
           child: BotonPildora(
             key: PantallaPerfil.botonReintentar,
             texto: 'Reintentar',
-            icono: Icons.refresh,
+            icono: LucideIcons300.refreshCw,
             variante: VarianteBotonPildora.tonal,
             alPresionar: alReintentar,
           ),
@@ -448,7 +449,7 @@ class _HojaContacto extends StatelessWidget {
         _Seccion(
           opciones: [
             _Opcion(
-              icono: Icons.phone_outlined,
+              icono: LucideIcons300.phone,
               titulo: 'Teléfono',
               subtitulo: Agencia.telefono,
               alTocar: () => _abrir(
@@ -457,14 +458,14 @@ class _HojaContacto extends StatelessWidget {
               ),
             ),
             _Opcion(
-              icono: Icons.alternate_email,
+              icono: LucideIcons300.atSign,
               titulo: 'Correo',
               subtitulo: Agencia.correo,
               alTocar: () =>
                   _abrir(context, Uri(scheme: 'mailto', path: Agencia.correo)),
             ),
             const _Opcion(
-              icono: Icons.place_outlined,
+              icono: LucideIcons300.mapPin,
               titulo: 'Dirección',
               subtitulo: Agencia.direccion,
             ),

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -125,12 +126,12 @@ void main() {
       var toques = 0;
       await tester.pumpWidget(_tarjeta(_proximo(), alToque: () => toques++));
 
-      expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.chevronRight), findsOneWidget);
       await tester.tap(find.text('Servicio de 10,000 km'));
       expect(toques, 1);
 
       await tester.pumpWidget(_tarjeta(_proximo()));
-      expect(find.byIcon(Icons.chevron_right_rounded), findsNothing);
+      expect(find.byIcon(LucideIcons300.chevronRight), findsNothing);
     });
 
     for (final escenario in [Escenario.oscuro, Escenario.letraGrande]) {

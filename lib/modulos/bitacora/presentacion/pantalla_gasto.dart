@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -319,7 +321,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: textos.bitacoraBorrar,
-              icono: Icons.delete_outline,
+              icono: LucideIcons300.trash2,
               variante: VarianteBotonPildora.tonal,
               expandido: true,
               alPresionar: _ocupado ? null : _confirmarBorrado,
@@ -366,7 +368,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                       else ...[
                         BotonPildora(
                           texto: textos.bitacoraTicketTomar,
-                          icono: Icons.photo_camera_outlined,
+                          icono: LucideIcons300.camera,
                           variante: VarianteBotonPildora.tonal,
                           expandido: true,
                           alPresionar: _ocupado
@@ -376,7 +378,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                         const SizedBox(height: Espaciado.e2),
                         BotonPildora(
                           texto: textos.bitacoraTicketElegir,
-                          icono: Icons.photo_library_outlined,
+                          icono: LucideIcons300.images,
                           variante: VarianteBotonPildora.tonal,
                           expandido: true,
                           alPresionar: _ocupado
@@ -457,7 +459,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                       filas: [
                         FilaGrupo(
                           titulo: textos.bitacoraCampoFecha,
-                          icono: Icons.calendar_today_outlined,
+                          icono: LucideIcons300.calendar,
                           colorIcono: c.acento,
                           fin: Text(
                             fechaCorta(context, _fecha),

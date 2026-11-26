@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../../nucleo/diseno/componentes/cuadro_fecha.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../../nucleo/diseno/componentes/tono.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/radios.dart';
@@ -154,7 +157,7 @@ class _Fila extends StatelessWidget {
               const SizedBox(width: Espaciado.e2),
               ExcludeSemantics(
                 child: Icon(
-                  Icons.chevron_right_rounded,
+                  LucideIcons300.chevronRight,
                   color: c.textoTerciario,
                 ),
               ),

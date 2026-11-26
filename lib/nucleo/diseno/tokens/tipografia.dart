@@ -2,9 +2,8 @@ import 'package:flutter/painting.dart';
 
 /// Escala tipografica del sistema de diseno v2.
 ///
-/// El texto usa Geist y las cifras Geist Mono. Mientras las fuentes no esten
-/// empaquetadas (V2-T02.02) se usan Inter y JetBrainsMono, que ya viven en
-/// `assets/fonts`.
+/// El texto usa Geist y las cifras Geist Mono, empaquetadas en `assets/fonts`.
+/// Inter y JetBrainsMono quedan de respaldo y las sigue usando la v1.
 class Tipografia {
   const Tipografia._({
     required this.display,

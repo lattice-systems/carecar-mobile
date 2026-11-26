@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tema/tema_carecar.dart';
 
 /// Ruta de la foto incluida en la app para un modelo, o `null` si no hay.
@@ -76,7 +78,7 @@ class FotoAuto extends StatelessWidget {
       width: double.infinity,
       color: TemaCareCar.azulSuave,
       child: const Icon(
-        Icons.directions_car_outlined,
+        LucideIcons300.car,
         size: 56,
         color: TemaCareCar.azulAgencia,
       ),

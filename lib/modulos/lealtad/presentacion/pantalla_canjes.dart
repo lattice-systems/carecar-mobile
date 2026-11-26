@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -57,7 +59,7 @@ class PantallaCanjes extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: textos.canjesVaciaTitulo,
                     mensaje: textos.canjesVaciaMensaje,
-                    icono: Icons.qr_code_2_rounded,
+                    icono: LucideIcons300.qrCode,
                     textoAccion: textos.canjesVerRecompensas,
                     alAccion: () => context.push(rutaRecompensas),
                   ),
@@ -106,7 +108,7 @@ class TarjetaCanje extends StatelessWidget {
       titulo: canje.recompensa,
       subtitulo: textos.canjesCodigo(canje.codigo),
       detalle: textoFechaCanje(context, canje),
-      icono: Icons.qr_code_2_rounded,
+      icono: LucideIcons300.qrCode,
       tono: tono,
       estado: textoEstadoCanje(textos, canje.estado),
       tonoEstado: tono,
