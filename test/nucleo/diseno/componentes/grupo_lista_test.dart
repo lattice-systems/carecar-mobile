@@ -100,6 +100,58 @@ void main() {
     expect(toques, 1);
   });
 
+  testWidgets('el texto usa el ancho que sobra y el fin toma solo el suyo', (
+    tester,
+  ) async {
+    // Antes el espacio libre se repartía a partes iguales entre el texto y el
+    // `fin`: con un interruptor, «Recordatorios de citas» se partía en dos
+    // líneas aunque cabía de sobra. En pruebas la letra es Ahem (1 em por
+    // carácter), así que se usa un título corto que sí cabe.
+    Future<double> alturaDelTitulo({required bool conFin}) async {
+      await tester.pumpWidget(
+        conTemaPista(
+          GrupoLista(
+            filas: [
+              FilaGrupo(
+                titulo: 'Recordatorio',
+                icono: Icons.notifications,
+                fin: conFin ? const SizedBox(width: 52, height: 32) : null,
+              ),
+            ],
+          ),
+        ),
+      );
+      return tester.getSize(find.text('Recordatorio')).height;
+    }
+
+    final sinFin = await alturaDelTitulo(conFin: false);
+    final conFin = await alturaDelTitulo(conFin: true);
+
+    expect(conFin, sinFin, reason: 'el título no debe partirse por el fin');
+  });
+
+  testWidgets('un fin muy ancho no desborda la fila: se limita a la mitad', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      conTemaPista(
+        GrupoLista(
+          filas: [
+            FilaGrupo(
+              titulo: 'Servicio',
+              fin: Text(
+                'Un valor muy largo que no cabe en una sola línea ' * 3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Servicio'), findsOneWidget);
+  });
+
   testWidgets('cada fila es un solo nodo para el lector de pantalla', (
     tester,
   ) async {

@@ -151,50 +151,58 @@ class _Fila extends StatelessWidget {
           horizontal: Espaciado.e4,
           vertical: Espaciado.e2,
         ),
-        child: Row(
-          children: [
-            if (fila.icono != null) ...[
-              ExcludeSemantics(
-                child: Container(
-                  width: GrupoLista._cuadroIcono,
-                  height: GrupoLista._cuadroIcono,
-                  decoration: BoxDecoration(
-                    color: fila.colorIcono ?? c.acento,
-                    borderRadius: Radios.bordeControl,
+        child: LayoutBuilder(
+          builder: (context, caja) => Row(
+            children: [
+              if (fila.icono != null) ...[
+                ExcludeSemantics(
+                  child: Container(
+                    width: GrupoLista._cuadroIcono,
+                    height: GrupoLista._cuadroIcono,
+                    decoration: BoxDecoration(
+                      color: fila.colorIcono ?? c.acento,
+                      borderRadius: Radios.bordeControl,
+                    ),
+                    child: Icon(fila.icono, size: 20, color: c.sobreAcento),
                   ),
-                  child: Icon(fila.icono, size: 20, color: c.sobreAcento),
+                ),
+                const SizedBox(width: Espaciado.e3),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      fila.titulo,
+                      style: t.cuerpoFuerte.copyWith(color: c.texto),
+                    ),
+                    if (fila.subtitulo != null)
+                      Text(
+                        fila.subtitulo!,
+                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+                      ),
+                  ],
                 ),
               ),
-              const SizedBox(width: Espaciado.e3),
+              if (fila.fin != null) ...[
+                const SizedBox(width: Espaciado.e3),
+                // El `fin` toma su ancho natural, hasta la mitad de la fila, y
+                // el texto el resto. Antes los dos repartian el espacio libre
+                // a partes iguales y el texto se partia aunque cupiera.
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: caja.maxWidth / 2),
+                  child: fila.fin!,
+                ),
+              ],
+              if (fila.conChevron ?? tocable) ...[
+                const SizedBox(width: Espaciado.e2),
+                ExcludeSemantics(
+                  child: Icon(Icons.chevron_right, color: c.textoTerciario),
+                ),
+              ],
             ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    fila.titulo,
-                    style: t.cuerpoFuerte.copyWith(color: c.texto),
-                  ),
-                  if (fila.subtitulo != null)
-                    Text(
-                      fila.subtitulo!,
-                      style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                    ),
-                ],
-              ),
-            ),
-            if (fila.fin != null) ...[
-              const SizedBox(width: Espaciado.e3),
-              Flexible(child: fila.fin!),
-            ],
-            if (fila.conChevron ?? tocable) ...[
-              const SizedBox(width: Espaciado.e2),
-              ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoTerciario),
-              ),
-            ],
-          ],
+          ),
         ),
       ),
     );
