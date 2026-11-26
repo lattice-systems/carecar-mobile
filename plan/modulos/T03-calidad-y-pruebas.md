@@ -34,6 +34,12 @@ La [prueba de integración](../../integration_test/flujo_principal_test.dart) ar
 
 Desde la raíz del repo, puedes correr `npm ci --prefix mock_api` y `bash tool/probar_flujo_android.sh emulator-5554` con un emulador abierto. En PowerShell inicia `node mock_api/pruebas/servidor_flujo.js` en una terminal. En otra ejecuta `flutter test integration_test/flujo_principal_test.dart -d emulator-5554 --flavor desarrollo '--dart-define=MODULOS_V2=vehiculos,citas'`. Usa una instalación de desarrollo dedicada a pruebas porque el guion reinicia su sesión local.
 
+## V2-T03.04 · Cobertura visible
+
+El job de pruebas publica `cobertura-carecar` con `coverage/lcov.info` y muestra en el resumen las líneas ejecutadas y los archivos instrumentados del total de `lib/`, `dominio/` y `datos/`. La meta inicial es de **85 % de líneas instrumentadas por capa** en dominio y datos. Es una meta de seguimiento. La primera ejecución fija la línea base y los archivos sin datos quedan visibles en el resumen.
+
+Para reproducir el informe, ejecuta `flutter test --coverage` y `node tool/resumir_cobertura.js` desde la raíz del repo.
+
 ## V2-T03.06 · Contrato de la API simulada
 
 La [prueba de contrato](../../test/contrato/mock_api_v2_test.dart) coteja el inventario real de métodos y rutas con `api/agencia360-api-app-v2.yaml`. Comprueba las respuestas `Problema` de las operaciones protegidas y casos autenticados de JSON, PDF y SSE. CI instala las dependencias del mock y ejecuta la prueba con semillas en memoria. [Ejecución local](../../mock_api/README.md#agregar-un-módulo)
