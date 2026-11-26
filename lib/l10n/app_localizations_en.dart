@@ -5600,4 +5600,433 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get datosFiscalesErrorCorreo => 'Check the email.';
+
+  @override
+  String get pagosCargando => 'Loading your payments';
+
+  @override
+  String get pagosReintentar => 'Try again';
+
+  @override
+  String get pagosSimuladoAviso =>
+      'Simulated payment: nothing is charged. Use one of the test cards.';
+
+  @override
+  String get pagosSimuladoPie =>
+      'App payments are simulated: nothing was charged.';
+
+  @override
+  String get pagosSimuladoCorto => 'Simulated payment: nothing was charged.';
+
+  @override
+  String get pagosEnCaja => 'It was paid at the dealership\'s cashier.';
+
+  @override
+  String get pagosPagarTitulo => 'Pay order';
+
+  @override
+  String pagosOrden(String orden) {
+    return 'Order $orden';
+  }
+
+  @override
+  String get pagosDesglose => 'What you pay';
+
+  @override
+  String get pagosManoDeObra => 'Labor';
+
+  @override
+  String get pagosRefacciones => 'Parts';
+
+  @override
+  String get pagosSubtotal => 'Subtotal before VAT';
+
+  @override
+  String get pagosIva => 'VAT';
+
+  @override
+  String get pagosTotal => 'Total';
+
+  @override
+  String get pagosPreciosConIva => 'Prices include VAT.';
+
+  @override
+  String get pagosConQue => 'How you pay';
+
+  @override
+  String get pagosTarjeta => 'Card';
+
+  @override
+  String get pagosOtraTarjeta => 'Another card';
+
+  @override
+  String pagosTarjetaVencida(String tarjeta) {
+    return '$tarjeta (expired)';
+  }
+
+  @override
+  String get pagosNumero => 'Card number';
+
+  @override
+  String get pagosNumeroSugerencia => '4242 4242 4242 4242';
+
+  @override
+  String get pagosVencimiento => 'Expires (MM/YY)';
+
+  @override
+  String get pagosVencimientoSugerencia => '12/28';
+
+  @override
+  String get pagosCvv => 'CVV';
+
+  @override
+  String get pagosCvvAyuda =>
+      'The number and the CVV never leave your phone: only a test card token is sent.';
+
+  @override
+  String get pagosGuardarTarjeta => 'Save card';
+
+  @override
+  String get pagosGuardarTarjetaAyuda =>
+      'To pay faster. Only the brand, the last 4 and the expiration date are saved.';
+
+  @override
+  String get pagosTarjetasDePrueba => 'Test cards';
+
+  @override
+  String get pagosTarjetasDePruebaPie =>
+      'Tap one to fill in its number. Any future expiration date and any 3-digit CVV work.';
+
+  @override
+  String pagosTarjetaDePruebaDetalle(String marca, String escenario) {
+    return '$marca · $escenario';
+  }
+
+  @override
+  String get pagosEscenarioAprobada => 'Gets approved';
+
+  @override
+  String get pagosEscenarioFondos => 'Declined for insufficient funds';
+
+  @override
+  String get pagosEscenarioConfirmar => 'Your bank asks you to confirm';
+
+  @override
+  String get pagosEscenarioConfirmacionFalla => 'Your bank does not confirm';
+
+  @override
+  String get pagosFactura => 'Invoice';
+
+  @override
+  String get pagosDatosFiscales => 'Tax details';
+
+  @override
+  String get pagosFacturaAyuda =>
+      'With your tax details, the simulated invoice is issued when you pay.';
+
+  @override
+  String get pagosSinFactura => 'No invoice';
+
+  @override
+  String pagosPerfilFiscal(String rfc, String razonSocial) {
+    return '$rfc · $razonSocial';
+  }
+
+  @override
+  String pagosPagar(String monto) {
+    return 'Pay $monto';
+  }
+
+  @override
+  String get pagosRevisaTarjeta => 'Check the card details.';
+
+  @override
+  String get pagosSinConexion =>
+      'No connection. Check your internet and try again; you won\'t be charged twice.';
+
+  @override
+  String get pagosErrorPagar => 'We couldn\'t process the payment. Try again.';
+
+  @override
+  String get pagosOrdenNoPagable =>
+      'This order can no longer be paid in the app.';
+
+  @override
+  String get pagosPagoEnCurso =>
+      'A payment for this order is already waiting for your bank\'s confirmation. Check it in My payments.';
+
+  @override
+  String get pagosPagoNoPendiente =>
+      'This payment is no longer waiting for your bank\'s confirmation.';
+
+  @override
+  String get pagosErrorNumeroVacio => 'Enter the card number.';
+
+  @override
+  String get pagosErrorNumeroIncompleto => 'The number has 16 digits.';
+
+  @override
+  String get pagosErrorNumeroInvalido => 'That number isn\'t valid; check it.';
+
+  @override
+  String get pagosErrorNoEsDePrueba => 'Use one of the test cards.';
+
+  @override
+  String get pagosErrorVencimientoVacio => 'Enter the expiration date.';
+
+  @override
+  String get pagosErrorVencimientoInvalido => 'Write it as MM/YY.';
+
+  @override
+  String get pagosErrorVencida => 'The card has expired.';
+
+  @override
+  String get pagosErrorCvv => 'The CVV has 3 digits.';
+
+  @override
+  String get pagosBancoTitulo => 'Your bank asks you to confirm';
+
+  @override
+  String pagosBancoMensaje(String monto, String tarjeta) {
+    return 'Confirm the $monto payment with $tarjeta. This bank screen is simulated.';
+  }
+
+  @override
+  String get pagosBancoConfirmar => 'Confirm';
+
+  @override
+  String get pagosBancoCancelar => 'Cancel';
+
+  @override
+  String get pagosPagadoTitulo => 'Order paid!';
+
+  @override
+  String pagosPagadoMensaje(String monto, String referencia) {
+    return 'You paid $monto. Reference $referencia. It\'s a simulated payment: nothing was charged.';
+  }
+
+  @override
+  String get pagosListo => 'Done';
+
+  @override
+  String get pagosVerMisPagos => 'See my payments';
+
+  @override
+  String get pagosFalloTitulo => 'The payment didn\'t go through';
+
+  @override
+  String get pagosIntentarOtraVez => 'Try again';
+
+  @override
+  String get pagosVolver => 'Go back';
+
+  @override
+  String get pagosMotivoFondos =>
+      'Your bank declined the card for insufficient funds.';
+
+  @override
+  String get pagosMotivoAutenticacion =>
+      'Your bank didn\'t confirm the payment.';
+
+  @override
+  String get pagosMotivoVencida => 'Nobody confirmed the payment in time.';
+
+  @override
+  String get pagosMotivoCaja => 'The order was paid at the cashier.';
+
+  @override
+  String get pagosMotivoOtro => 'The payment wasn\'t completed.';
+
+  @override
+  String get pagosYaPagadaTitulo => 'This order is already paid';
+
+  @override
+  String pagosYaPagadaMensaje(String medio, String fecha) {
+    return 'With $medio on $fecha.';
+  }
+
+  @override
+  String get pagosVerPago => 'See the payment';
+
+  @override
+  String get pagosNoPagableTitulo => 'This order can\'t be paid yet';
+
+  @override
+  String get pagosNoPagableMensaje =>
+      'It can be paid in the app when it\'s ready for pickup. A service registered as already done is paid at the dealership.';
+
+  @override
+  String get pagosMisPagosTitulo => 'My payments';
+
+  @override
+  String get pagosMisPagosSubtitulo => 'Newest first';
+
+  @override
+  String get pagosMisPagosVacioTitulo => 'You don\'t have payments yet';
+
+  @override
+  String get pagosMisPagosVacioMensaje =>
+      'What you pay from the app will show up here.';
+
+  @override
+  String pagosFilaSubtitulo(String estado, String medio, String fecha) {
+    return '$estado · $medio · $fecha';
+  }
+
+  @override
+  String pagosMontoConEstado(String monto, String estado) {
+    return '$monto, $estado';
+  }
+
+  @override
+  String get pagosCargandoMas => 'Loading more payments';
+
+  @override
+  String get pagosErrorCargarMas => 'We couldn\'t load more payments.';
+
+  @override
+  String get pagosEstadoPendiente => 'Pending';
+
+  @override
+  String get pagosEstadoPagado => 'Paid';
+
+  @override
+  String get pagosEstadoFallido => 'Failed';
+
+  @override
+  String get pagosEstadoReembolsado => 'Refunded';
+
+  @override
+  String pagosMedioTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
+
+  @override
+  String get pagosMedioCaja => 'At the cashier';
+
+  @override
+  String get pagosMedioApplePay => 'Apple Pay (simulated)';
+
+  @override
+  String get pagosMedioGooglePay => 'Google Pay (simulated)';
+
+  @override
+  String get pagosPagoTitulo => 'Payment';
+
+  @override
+  String get pagosMonto => 'Amount';
+
+  @override
+  String get pagosMedio => 'Paid with';
+
+  @override
+  String get pagosFechaPago => 'Paid on';
+
+  @override
+  String get pagosFechaIntento => 'Attempted on';
+
+  @override
+  String get pagosReferencia => 'Reference';
+
+  @override
+  String get pagosMotivo => 'Why it wasn\'t charged';
+
+  @override
+  String get pagosConfirmarBanco => 'Confirm with your bank';
+
+  @override
+  String get pagosVerTicket => 'See the receipt';
+
+  @override
+  String get pagosNoEncontradoTitulo => 'We couldn\'t find this payment';
+
+  @override
+  String get pagosNoEncontradoMensaje =>
+      'It may belong to another account. Check My payments.';
+
+  @override
+  String get pagosMetodosTitulo => 'Payment methods';
+
+  @override
+  String get pagosMetodosVacioTitulo => 'You don\'t have saved cards yet';
+
+  @override
+  String get pagosMetodosVacioMensaje =>
+      'When you pay, check «Save card» so it shows up here.';
+
+  @override
+  String get pagosMetodosPie =>
+      'Only the brand, the last 4 and the expiration date of test cards are saved.';
+
+  @override
+  String pagosVence(String vence) {
+    return 'Expires $vence';
+  }
+
+  @override
+  String pagosVenceYTipo(String vence, String tipo) {
+    return 'Expires $vence · $tipo';
+  }
+
+  @override
+  String get pagosCredito => 'Credit';
+
+  @override
+  String get pagosDebito => 'Debit';
+
+  @override
+  String get pagosPredeterminada => 'Default';
+
+  @override
+  String get pagosVencidaInsignia => 'Expired';
+
+  @override
+  String get pagosUsarPredeterminada => 'Use as default';
+
+  @override
+  String get pagosBorrarTarjeta => 'Delete card';
+
+  @override
+  String get pagosBorrarTitulo => 'Delete this card?';
+
+  @override
+  String pagosBorrarMensaje(String tarjeta) {
+    return '$tarjeta will no longer show up when paying. Payments you made with it are kept.';
+  }
+
+  @override
+  String get pagosBorrarConfirmar => 'Delete';
+
+  @override
+  String get pagosBorrarCancelar => 'Cancel';
+
+  @override
+  String get pagosErrorMetodo => 'We couldn\'t save the change. Try again.';
+
+  @override
+  String get historialTicketPago => 'Payment';
+
+  @override
+  String get historialTicketPagado => 'Paid';
+
+  @override
+  String historialTicketPagadoDetalle(String medio, String fecha) {
+    return '$medio · $fecha';
+  }
+
+  @override
+  String get historialTicketPagadoEnCaja => 'At the cashier';
+
+  @override
+  String historialTicketTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
+
+  @override
+  String get historialTicketReferencia => 'Reference';
+
+  @override
+  String historialTicketPagar(String monto) {
+    return 'Pay $monto';
+  }
 }

@@ -9353,6 +9353,762 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Revisa el correo.'**
   String get datosFiscalesErrorCorreo;
+
+  /// Esqueleto de carga de pagos para el lector de pantalla (V2-M08).
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus pagos'**
+  String get pagosCargando;
+
+  /// Botón para volver a pedir los pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get pagosReintentar;
+
+  /// Aviso fijo de la pantalla de pago (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobra nada. Usa una de las tarjetas de prueba.'**
+  String get pagosSimuladoAviso;
+
+  /// Pie de mis pagos (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos de la app son simulados: no se cobró nada.'**
+  String get pagosSimuladoPie;
+
+  /// Aviso del detalle de un pago simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobró nada.'**
+  String get pagosSimuladoCorto;
+
+  /// Aviso del detalle de un pago en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'Se pagó en la caja de la agencia.'**
+  String get pagosEnCaja;
+
+  /// Título de la pantalla para pagar una orden (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar orden'**
+  String get pagosPagarTitulo;
+
+  /// Número de la orden de servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden {orden}'**
+  String pagosOrden(String orden);
+
+  /// Encabezado del desglose del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que pagas'**
+  String get pagosDesglose;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get pagosManoDeObra;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get pagosRefacciones;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Subtotal sin IVA'**
+  String get pagosSubtotal;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'IVA'**
+  String get pagosIva;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get pagosTotal;
+
+  /// Pie del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Los precios incluyen IVA.'**
+  String get pagosPreciosConIva;
+
+  /// Sección para elegir la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué pagas'**
+  String get pagosConQue;
+
+  /// Selector de tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta'**
+  String get pagosTarjeta;
+
+  /// Opción para escribir una tarjeta nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Otra tarjeta'**
+  String get pagosOtraTarjeta;
+
+  /// Tarjeta guardada que ya venció en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} (vencida)'**
+  String pagosTarjetaVencida(String tarjeta);
+
+  /// Campo del número de tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de tarjeta'**
+  String get pagosNumero;
+
+  /// Ejemplo dentro del campo del número.
+  ///
+  /// In es, this message translates to:
+  /// **'4242 4242 4242 4242'**
+  String get pagosNumeroSugerencia;
+
+  /// Campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence (MM/AA)'**
+  String get pagosVencimiento;
+
+  /// Ejemplo dentro del campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'12/28'**
+  String get pagosVencimientoSugerencia;
+
+  /// Campo del código de seguridad.
+  ///
+  /// In es, this message translates to:
+  /// **'CVV'**
+  String get pagosCvv;
+
+  /// Ayuda bajo los campos de la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'El número y el CVV no salen de tu teléfono: solo se envía un token de la tarjeta de prueba.'**
+  String get pagosCvvAyuda;
+
+  /// Casilla para guardar la tarjeta (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar tarjeta'**
+  String get pagosGuardarTarjeta;
+
+  /// Descripción de la casilla para guardar la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Para pagar más rápido. Solo se guardan la marca, los últimos 4 y el vencimiento.'**
+  String get pagosGuardarTarjetaAyuda;
+
+  /// Encabezado de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjetas de prueba'**
+  String get pagosTarjetasDePrueba;
+
+  /// Pie de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca una para escribir su número. Sirve cualquier vencimiento futuro y cualquier CVV de 3 dígitos.'**
+  String get pagosTarjetasDePruebaPie;
+
+  /// Marca y qué hace el banco simulado con la tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} · {escenario}'**
+  String pagosTarjetaDePruebaDetalle(String marca, String escenario);
+
+  /// Tarjeta de prueba aprobada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se aprueba'**
+  String get pagosEscenarioAprobada;
+
+  /// Tarjeta de prueba rechazada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se rechaza por fondos insuficientes'**
+  String get pagosEscenarioFondos;
+
+  /// Tarjeta de prueba con 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosEscenarioConfirmar;
+
+  /// Tarjeta de prueba cuyo 3-D Secure falla.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirma'**
+  String get pagosEscenarioConfirmacionFalla;
+
+  /// Sección de datos fiscales al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get pagosFactura;
+
+  /// Selector del perfil fiscal para facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get pagosDatosFiscales;
+
+  /// Ayuda del selector de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tus datos fiscales se emite la factura simulada al pagar.'**
+  String get pagosFacturaAyuda;
+
+  /// Opción para pagar sin facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin factura'**
+  String get pagosSinFactura;
+
+  /// Un perfil fiscal en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {razonSocial}'**
+  String pagosPerfilFiscal(String rfc, String razonSocial);
+
+  /// Botón para pagar la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String pagosPagar(String monto);
+
+  /// Aviso cuando la tarjeta no pasa las reglas.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos de la tarjeta.'**
+  String get pagosRevisaTarjeta;
+
+  /// Aviso sin conexión al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo; no se cobrará dos veces.'**
+  String get pagosSinConexion;
+
+  /// Aviso de error al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos procesar el pago. Intenta de nuevo.'**
+  String get pagosErrorPagar;
+
+  /// 409 ORDEN_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya no se puede pagar en la app.'**
+  String get pagosOrdenNoPagable;
+
+  /// 409 PAGO_EN_CURSO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de esta orden esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPagoEnCurso;
+
+  /// 409 PAGO_NO_PENDIENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya no espera la confirmación de tu banco.'**
+  String get pagosPagoNoPendiente;
+
+  /// Error: falta el número.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el número de la tarjeta.'**
+  String get pagosErrorNumeroVacio;
+
+  /// Error: número incompleto.
+  ///
+  /// In es, this message translates to:
+  /// **'El número tiene 16 dígitos.'**
+  String get pagosErrorNumeroIncompleto;
+
+  /// Error: no pasa el algoritmo de Luhn.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese número no es válido; revísalo.'**
+  String get pagosErrorNumeroInvalido;
+
+  /// Error: no es una tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa una de las tarjetas de prueba.'**
+  String get pagosErrorNoEsDePrueba;
+
+  /// Error: falta el vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el vencimiento.'**
+  String get pagosErrorVencimientoVacio;
+
+  /// Error: vencimiento sin forma.
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelo como MM/AA.'**
+  String get pagosErrorVencimientoInvalido;
+
+  /// Error: tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'La tarjeta ya venció.'**
+  String get pagosErrorVencida;
+
+  /// Error: CVV.
+  ///
+  /// In es, this message translates to:
+  /// **'El CVV tiene 3 dígitos.'**
+  String get pagosErrorCvv;
+
+  /// Título de la pantalla simulada de 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosBancoTitulo;
+
+  /// Mensaje del 3-D Secure simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma el pago de {monto} con {tarjeta}. Esta pantalla del banco es simulada.'**
+  String pagosBancoMensaje(String monto, String tarjeta);
+
+  /// Botón para confirmar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get pagosBancoConfirmar;
+
+  /// Botón para cancelar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBancoCancelar;
+
+  /// Resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Orden pagada!'**
+  String get pagosPagadoTitulo;
+
+  /// Mensaje del resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. Es un pago simulado: no se cobró nada.'**
+  String pagosPagadoMensaje(String monto, String referencia);
+
+  /// Botón para cerrar el resultado del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get pagosListo;
+
+  /// Botón para ir a mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis pagos'**
+  String get pagosVerMisPagos;
+
+  /// Resultado de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo pagar'**
+  String get pagosFalloTitulo;
+
+  /// Botón para reintentar con una llave nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentar otra vez'**
+  String get pagosIntentarOtraVez;
+
+  /// Botón para salir del resultado.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver'**
+  String get pagosVolver;
+
+  /// Motivo: fondos insuficientes.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco rechazó la tarjeta por fondos insuficientes.'**
+  String get pagosMotivoFondos;
+
+  /// Motivo: 3-D Secure fallido o cancelado.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirmó el pago.'**
+  String get pagosMotivoAutenticacion;
+
+  /// Motivo: 3-D Secure vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie confirmó el pago a tiempo.'**
+  String get pagosMotivoVencida;
+
+  /// Motivo: pagada en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'La orden se pagó en caja.'**
+  String get pagosMotivoCaja;
+
+  /// Motivo que esta versión aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'El pago no se completó.'**
+  String get pagosMotivoOtro;
+
+  /// Estado de una orden pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya está pagada'**
+  String get pagosYaPagadaTitulo;
+
+  /// Con qué y cuándo se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'Con {medio} el {fecha}.'**
+  String pagosYaPagadaMensaje(String medio, String fecha);
+
+  /// Botón para ver el pago de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pago'**
+  String get pagosVerPago;
+
+  /// Estado de una orden que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden aún no se puede pagar'**
+  String get pagosNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app cuando está lista para entrega. Un servicio registrado ya hecho se paga en la agencia.'**
+  String get pagosNoPagableMensaje;
+
+  /// Título de mis pagos (V2-M08.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis pagos'**
+  String get pagosMisPagosTitulo;
+
+  /// Subtítulo de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Del más nuevo al más viejo'**
+  String get pagosMisPagosSubtitulo;
+
+  /// Estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes pagos'**
+  String get pagosMisPagosVacioTitulo;
+
+  /// Mensaje del estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí verás lo que pagues desde la app.'**
+  String get pagosMisPagosVacioMensaje;
+
+  /// Estado, con qué y cuándo de un pago en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{estado} · {medio} · {fecha}'**
+  String pagosFilaSubtitulo(String estado, String medio, String fecha);
+
+  /// Lo que oye el lector al final de la fila de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'{monto}, {estado}'**
+  String pagosMontoConEstado(String monto, String estado);
+
+  /// Indicador de la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más pagos'**
+  String get pagosCargandoMas;
+
+  /// Error al pedir la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más pagos.'**
+  String get pagosErrorCargarMas;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get pagosEstadoPendiente;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get pagosEstadoPagado;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Fallido'**
+  String get pagosEstadoFallido;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Reembolsado'**
+  String get pagosEstadoReembolsado;
+
+  /// Una tarjeta por su marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String pagosMedioTarjeta(String marca, String ultimos4);
+
+  /// Medio de pago: caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get pagosMedioCaja;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Apple Pay (simulado)'**
+  String get pagosMedioApplePay;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Google Pay (simulado)'**
+  String get pagosMedioGooglePay;
+
+  /// Título del detalle de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get pagosPagoTitulo;
+
+  /// Etiqueta del monto del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto'**
+  String get pagosMonto;
+
+  /// Fila del medio de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué se pagó'**
+  String get pagosMedio;
+
+  /// Fila de la fecha de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado el'**
+  String get pagosFechaPago;
+
+  /// Fila de la fecha de un intento sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentado el'**
+  String get pagosFechaIntento;
+
+  /// Fila de la referencia del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get pagosReferencia;
+
+  /// Fila del motivo de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'Por qué no se cobró'**
+  String get pagosMotivo;
+
+  /// Botón para responder un 3-D Secure pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar con tu banco'**
+  String get pagosConfirmarBanco;
+
+  /// Botón para abrir el ticket de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el ticket'**
+  String get pagosVerTicket;
+
+  /// Pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este pago'**
+  String get pagosNoEncontradoTitulo;
+
+  /// Mensaje del pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que sea de otra cuenta. Revisa Mis pagos.'**
+  String get pagosNoEncontradoMensaje;
+
+  /// Título de mis tarjetas guardadas (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Métodos de pago'**
+  String get pagosMetodosTitulo;
+
+  /// Estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes tarjetas guardadas'**
+  String get pagosMetodosVacioTitulo;
+
+  /// Mensaje del estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Al pagar, marca «Guardar tarjeta» para que aparezca aquí.'**
+  String get pagosMetodosVacioMensaje;
+
+  /// Pie de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo se guardan la marca, los últimos 4 y el vencimiento de tarjetas de prueba.'**
+  String get pagosMetodosPie;
+
+  /// Vencimiento de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence}'**
+  String pagosVence(String vence);
+
+  /// Vencimiento y tipo de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence} · {tipo}'**
+  String pagosVenceYTipo(String vence, String tipo);
+
+  /// Tarjeta de crédito.
+  ///
+  /// In es, this message translates to:
+  /// **'Crédito'**
+  String get pagosCredito;
+
+  /// Tarjeta de débito.
+  ///
+  /// In es, this message translates to:
+  /// **'Débito'**
+  String get pagosDebito;
+
+  /// Insignia de la tarjeta predeterminada.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminada'**
+  String get pagosPredeterminada;
+
+  /// Insignia de una tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get pagosVencidaInsignia;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminada'**
+  String get pagosUsarPredeterminada;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar tarjeta'**
+  String get pagosBorrarTarjeta;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar esta tarjeta?'**
+  String get pagosBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} ya no aparecerá al pagar. Los pagos que hiciste con ella se conservan.'**
+  String pagosBorrarMensaje(String tarjeta);
+
+  /// Botón para confirmar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get pagosBorrarConfirmar;
+
+  /// Botón para cancelar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBorrarCancelar;
+
+  /// Error al cambiar una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el cambio. Intenta de nuevo.'**
+  String get pagosErrorMetodo;
+
+  /// Encabezado del pago en el ticket (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get historialTicketPago;
+
+  /// La orden ya está pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get historialTicketPagado;
+
+  /// Con qué y cuándo se pagó la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'{medio} · {fecha}'**
+  String historialTicketPagadoDetalle(String medio, String fecha);
+
+  /// Se pagó en la caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get historialTicketPagadoEnCaja;
+
+  /// La tarjeta con que se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String historialTicketTarjeta(String marca, String ultimos4);
+
+  /// La referencia del pago en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get historialTicketReferencia;
+
+  /// Botón para pagar la orden desde su ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String historialTicketPagar(String monto);
 }
 
 class _AppLocalizationsDelegate
