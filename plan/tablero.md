@@ -194,11 +194,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M07.03 | Mandar fotos y audios | Jael | B | V2-M07.01 | Borrador | |
 | V2-M07.04 | Saber si mi mensaje fue leído | Jael | B | V2-M07.02 | Borrador | |
 | V2-M07.05 | Escribir sin conexión y que se envíe después | Jael |  | V2-M21.03 | Borrador | |
-| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Lista | |
-| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Lista | |
-| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Lista | |
-| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Lista | |
-| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Lista | |
+| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Hecha | backend#105, #165, #166 |
+| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Hecha | backend#105, #165 |
+| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
+| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
+| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Hecha | backend#105, #163, #165 |
 | V2-M13.01 | Ver promociones que apliquen a mi auto | Haziel | B | V2-M02.01 | Borrador | |
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
