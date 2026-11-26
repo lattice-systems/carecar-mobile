@@ -422,6 +422,16 @@ module.exports = function registrarAcceso(servidor, db) {
 
   servidor.get(`${BASE}/perfil`, (req, res) => {
     const cuenta = req.sesion.cuenta;
-    res.jsonp({ id: cuenta.clienteId, nombre: cuenta.nombre, correo: cuenta.correo });
+    res.jsonp({
+      id: cuenta.clienteId,
+      nombre: cuenta.nombre,
+      correo: cuenta.correo,
+      // V2-M01.06. `telefono` puede ser nulo -la agencia no siempre lo captura- y
+      // cliente2 lo tiene asi a proposito, para poder ver ese caso en desarrollo
+      // sin tocar la semilla. `clienteDesde` es una fecha, no un instante: el
+      // servidor real la resuelve en la zona de la agencia.
+      telefono: cuenta.telefono ?? null,
+      clienteDesde: cuenta.clienteDesde,
+    });
   });
 };

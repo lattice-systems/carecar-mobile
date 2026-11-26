@@ -5,9 +5,16 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
 import 'pantalla_cambiar_contrasena.dart';
+import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
 import 'pantalla_recuperar.dart';
 import 'pantalla_sesiones.dart';
+
+/// Mi perfil (V2-M01.06). Se abre desde Ajustes.
+///
+/// `/perfil` esta tomado por el endpoint del contrato y `/ajustes` es la
+/// pantalla v1 que sigue viva, asi que no se usa ninguno de los dos.
+const rutaMiPerfil = '/mi-perfil';
 
 /// Mis sesiones abiertas (V2-M01.09). Se abre desde el perfil.
 ///
@@ -88,11 +95,17 @@ final rutasRecuperacion = <RouteBase>[
   ),
 ];
 
-/// Mis sesiones abiertas, aparte de [rutasAcceso] · V2-M01.09.
+/// Mi perfil y mis sesiones, aparte de [rutasAcceso] · V2-M01.06 y V2-M01.09.
 ///
 /// Va en su propia lista y **se registra siempre**: `/sesiones` no existe en
 /// la v1, asi que no choca con nada y no necesita el interruptor.
 final rutasSesiones = <RouteBase>[
+  GoRoute(
+    path: rutaMiPerfil,
+    name: 'mi-perfil',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaMiPerfil()),
+  ),
   GoRoute(
     path: rutaSesiones,
     name: 'sesiones',

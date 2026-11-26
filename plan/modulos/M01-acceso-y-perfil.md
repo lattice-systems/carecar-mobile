@@ -210,6 +210,37 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 - **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
 
+## Avance de V2-M01.06
+
+**Lo primero que apareció fue que la historia no se podía cumplir como estaba escrita.** El criterio pide nombre, correo, **teléfono**, **«cliente desde»** y vehículos; el contrato declaraba `Perfil` con `id`, `nombre` y `correo`, y `PerfilApp` del backend devolvía esos tres. La historia estaba marcada **sin** parte de backend y se corrigió a `B` al tomarla. No hizo falta migración: `cliente` ya tenía `telefono` y `created_at`.
+
+**Qué quedó**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| Contrato 2.23.0 | `Perfil` gana `telefono` y `clienteDesde` |
+| `api/modelos/perfil.dart` | Los lee; la caché los guarda |
+| `dominio/perfil_del_cliente.dart` | Distingue «no hay teléfono» de «hay uno vacío» |
+| `datos/` y `presentacion/` | `RepositorioAcceso.perfil()`, `perfilProvider`, `PantallaMiPerfil` y la ruta `/mi-perfil` |
+| Ajustes v1 | Una fila más que abre el perfil |
+| Backend | `ClienteRegistrado` y `PerfilApp` con los dos campos |
+
+**Las dos reglas no son simétricas, y de ahí sale casi todo**
+
+- **El teléfono puede faltar**: la agencia no siempre lo captura. Es opcional en el contrato, y la pantalla dice «Sin teléfono registrado» en vez de dejar el renglón vacío, que parecería un error de la app. Un teléfono con solo espacios cuenta como que no hay.
+- **«Cliente desde» siempre viene**, porque `cliente.created_at` es `not null`, así que va en `required`. Y es una **fecha**, no un instante: el servidor la resuelve en la zona de la agencia, porque convertirla en el celular haría que quien se registró el 1 de marzo a las 02:00 UTC apareciera como «desde febrero» en México.
+
+**Dos lecturas, dos estados.** El perfil y el garaje se piden por separado y cada uno lleva el suyo: si los vehículos no cargan, el perfil se sigue viendo con un aviso pequeño. Perder los datos que el cliente vino a confirmar porque una lista no respondió sería peor. Por eso esa sección no usa `VistaAsincrona`, que pinta el error a pantalla completa. Los vehículos vienen del módulo `vehiculos` por su contrato público (regla R1).
+
+**Esta historia vuelve alcanzable a V2-M01.09.** «Mis sesiones» tenía ruta y nada que llevara a ella; ahora se abre desde el perfil, y el perfil desde una fila más en Ajustes.
+
+**Dos cosas que conviene que el equipo sepa**
+
+- **La caché habría roto el perfil sin conexión**: guardaba solo `id`, `nombre` y `correo`, y releer esa copia con un campo obligatorio nuevo habría fallado. Ya guarda los cinco. No hizo falta tocar nada para las copias viejas: `_copia` descarta y borra la que no se puede leer con la forma de ahora.
+- **En el backend, la zona de la agencia está definida en tres lugares** (`AgendaAppService`, `ServicioApp` y una copia privada en `RecoleccionService`). Se usó la de `ServicioApp`; unificarlas merece su propia historia.
+
+**Pendiente:** demostrarlo en celular, que es lo único que le falta a su fila de `cumplimiento-ficha.md`. Editar teléfono y correo es V2-M01.07, que esta historia desbloquea.
+
 ## Avance de V2-M01.09
 
 **Qué quedó, en la app**
