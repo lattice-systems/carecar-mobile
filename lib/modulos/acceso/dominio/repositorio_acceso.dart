@@ -1,4 +1,5 @@
 import 'fallos_acceso.dart';
+import 'sesion_de_la_cuenta.dart';
 
 /// Lo que el modulo `acceso` necesita del servidor · M01.
 ///
@@ -33,4 +34,23 @@ abstract interface class RepositorioAcceso {
     required String token,
     required String contrasenaNueva,
   });
+
+  /// `GET /sesiones`: las sesiones vigentes de la cuenta · V2-M01.09.
+  ///
+  /// Llegan ordenadas por actividad, las mas recientes primero, y **el orden se
+  /// conserva**: el servidor ya decidio que hacer con las que nunca se
+  /// refrescaron, y reordenar aqui seria discrepar de el.
+  Future<List<SesionDeLaCuenta>> sesiones();
+
+  /// `DELETE /sesiones/{id}`: cierra esa sesion.
+  ///
+  /// Idempotente: cerrar una ya cerrada termina bien. Una sesion que no es de
+  /// esta cuenta lanza `NoEncontrado`.
+  Future<void> cerrarUnaSesion(int sesionId);
+
+  /// `DELETE /sesiones`: cierra **todas**, incluida la de este celular.
+  ///
+  /// Quien llame tiene que cerrar la sesion local tambien: el access token en
+  /// curso sigue valiendo hasta que expire.
+  Future<void> cerrarTodasLasSesiones();
 }

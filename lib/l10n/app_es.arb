@@ -208,6 +208,142 @@
   "@accesoServidorDespertandoTitulo": {
     "description": "Título del aviso cuando el servidor tarda más de unos segundos en responder al acceso."
   },
+  "accesoSesionesActivaAhora": "Activa ahora",
+  "@accesoSesionesActivaAhora": {
+    "description": "Último uso de una sesión que se usó hace menos de un minuto."
+  },
+  "accesoSesionesCambio": "Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.",
+  "@accesoSesionesCambio": {
+    "description": "Aviso cuando cerrar una sesión falla porque su identificador ya cambió: la sesión sigue abierta con otro identificador."
+  },
+  "accesoSesionesCancelar": "Cancelar",
+  "@accesoSesionesCancelar": {
+    "description": "Acción secundaria del diálogo que confirma cerrar todas las sesiones."
+  },
+  "accesoSesionesCargando": "Cargando tus sesiones…",
+  "@accesoSesionesCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras carga la lista de sesiones."
+  },
+  "accesoSesionesCerrada": "Listo, esa sesión se cerró.",
+  "@accesoSesionesCerrada": {
+    "description": "Confirmación después de cerrar una sesión de la lista."
+  },
+  "accesoSesionesCerrar": "Cerrar",
+  "@accesoSesionesCerrar": {
+    "description": "Botón de cada fila para cerrar esa sesión."
+  },
+  "accesoSesionesCerrarEtiqueta": "Cerrar la sesión de {dispositivo}",
+  "@accesoSesionesCerrarEtiqueta": {
+    "description": "Etiqueta para lector de pantalla del botón de cerrar una sesión, para que no diga solo «Cerrar».",
+    "placeholders": {
+      "dispositivo": {
+        "type": "String",
+        "example": "Pixel 7"
+      }
+    }
+  },
+  "accesoSesionesCerrarTodas": "Cerrar todas las sesiones",
+  "@accesoSesionesCerrarTodas": {
+    "description": "Botón inferior que cierra la sesión en todos los dispositivos."
+  },
+  "accesoSesionesCerrarTodasConfirmar": "Cerrar todas",
+  "@accesoSesionesCerrarTodasConfirmar": {
+    "description": "Acción principal del diálogo que confirma cerrar todas las sesiones."
+  },
+  "accesoSesionesCerrarTodasMensaje": "Se cerrarán en todos tus dispositivos, incluido este. Tendrás que entrar otra vez.",
+  "@accesoSesionesCerrarTodasMensaje": {
+    "description": "Mensaje del diálogo de cerrar todas: avisa que la sesión de este mismo teléfono también se cierra."
+  },
+  "accesoSesionesCerrarTodasTitulo": "¿Cerrar todas las sesiones?",
+  "@accesoSesionesCerrarTodasTitulo": {
+    "description": "Título del diálogo que confirma cerrar todas las sesiones."
+  },
+  "accesoSesionesCerrarUnaMensaje": "Ese dispositivo tendrá que entrar otra vez con tu correo y tu contraseña.",
+  "@accesoSesionesCerrarUnaMensaje": {
+    "description": "Mensaje del diálogo que confirma cerrar una sesión de la lista."
+  },
+  "accesoSesionesCerrarUnaTitulo": "¿Cerrar la sesión de {dispositivo}?",
+  "@accesoSesionesCerrarUnaTitulo": {
+    "description": "Título del diálogo que confirma cerrar una sesión.",
+    "placeholders": {
+      "dispositivo": {
+        "type": "String",
+        "example": "Pixel 7"
+      }
+    }
+  },
+  "accesoSesionesEncabezado": "Dispositivos con tu sesión abierta",
+  "@accesoSesionesEncabezado": {
+    "description": "Encabezado de la lista de sesiones."
+  },
+  "accesoSesionesEquipoSinNombre": "Dispositivo sin nombre",
+  "@accesoSesionesEquipoSinNombre": {
+    "description": "Nombre que se muestra cuando la sesión no trae el nombre del dispositivo, como las abiertas antes de esta función."
+  },
+  "accesoSesionesFalloCerrar": "No pudimos cerrar esa sesión. Inténtalo otra vez.",
+  "@accesoSesionesFalloCerrar": {
+    "description": "Aviso cuando cerrar una sesión falla por un error de red o del servidor."
+  },
+  "accesoSesionesHaceDias": "{dias, plural, =1{Hace 1 día} other{Hace {dias} días}}",
+  "@accesoSesionesHaceDias": {
+    "description": "Último uso de una sesión, en días.",
+    "placeholders": {
+      "dias": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "accesoSesionesHaceHoras": "{horas, plural, =1{Hace 1 hora} other{Hace {horas} horas}}",
+  "@accesoSesionesHaceHoras": {
+    "description": "Último uso de una sesión, en horas.",
+    "placeholders": {
+      "horas": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "accesoSesionesHaceMinutos": "{minutos, plural, =1{Hace 1 minuto} other{Hace {minutos} minutos}}",
+  "@accesoSesionesHaceMinutos": {
+    "description": "Último uso de una sesión, en minutos.",
+    "placeholders": {
+      "minutos": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "accesoSesionesPie": "Si ves un dispositivo que no reconoces, ciérralo y cambia tu contraseña.",
+  "@accesoSesionesPie": {
+    "description": "Pie de la lista de sesiones: qué hacer si hay un dispositivo desconocido."
+  },
+  "accesoSesionesSinActividad": "Sin actividad registrada",
+  "@accesoSesionesSinActividad": {
+    "description": "Último uso de una sesión abierta antes de esta función, que no guardó ninguna fecha."
+  },
+  "accesoSesionesTitulo": "Mis sesiones",
+  "@accesoSesionesTitulo": {
+    "description": "Título de la pantalla de sesiones y dispositivos activos."
+  },
+  "accesoSesionesUltimoUsoFecha": "El {fecha}",
+  "@accesoSesionesUltimoUsoFecha": {
+    "description": "Último uso de una sesión de hace más de una semana, con la fecha.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "19 de noviembre de 2026"
+      }
+    }
+  },
+  "accesoSesionesVacioMensaje": "Cuando entres desde un dispositivo, aparecerá aquí.",
+  "@accesoSesionesVacioMensaje": {
+    "description": "Mensaje del estado vacío de la lista de sesiones."
+  },
+  "accesoSesionesVacioTitulo": "No hay sesiones abiertas",
+  "@accesoSesionesVacioTitulo": {
+    "description": "Título del estado vacío de la lista de sesiones."
+  },
   "accesoSinConexionTitulo": "Sin conexión",
   "@accesoSinConexionTitulo": {
     "description": "Título del aviso cuando no se pudo llegar al servidor al intentar entrar."

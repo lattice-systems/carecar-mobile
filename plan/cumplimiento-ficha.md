@@ -18,7 +18,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
 | Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 | V2-M01.06 |
 | Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | ❌ backend con `cuenta_app.usuario` que sigue al correo (V2-T05.03); falta `verificacion_contacto` y la pantalla | V2-M01.07, V2-T05.03 |
-| Sesiones y dispositivos activos | `sesion_app` | ⬜ | V2-M01.09, V2-M01.10 |
+| Sesiones y dispositivos activos | `sesion_app` | 🟡 app completa (V2-M01.09): lista con dispositivo y último uso, cerrar una o todas, 60 pruebas, y su ruta `/sesiones` **sí registrada** porque no choca con ninguna v1; **falta la parte del backend** (`dispositivo`, `ultimo_uso` e `iniciada_en` en `sesion_app` y los tres endpoints) y demostrarlo en celular. La lista **no marca «este dispositivo»**: el JWT no lleva el id de la sesión | V2-M01.09, V2-M01.10 |
 | Aviso de cuenta desactivada | `cuenta_app` | 🟡 | V2-M01.08 |
 
 ### 2. Mis vehículos y postventa — plan [M02](modulos/M02-vehiculos-y-postventa.md)
