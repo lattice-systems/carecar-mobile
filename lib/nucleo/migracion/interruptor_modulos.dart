@@ -5,9 +5,13 @@
 /// por separado. Es una decision de compilacion: un valor por defecto en
 /// codigo que se sobrescribe con `--dart-define`; no hay servidor ni secretos.
 ///
+/// Desde V2-T01.09 el valor por defecto es **todo en v2**. La v1 queda solo
+/// como salida de emergencia hasta que se retire:
+///
 /// ```bash
-/// flutter run --dart-define=MODULOS_V2=vehiculos,citas
-/// flutter run --dart-define=MODULOS_V2=todos --dart-define=MODULOS_V1=catalogo
+/// flutter run --dart-define=MODULOS_V1=todos      # todo vuelve a la v1
+/// flutter run --dart-define=MODULOS_V1=catalogo   # solo el catalogo
+/// flutter run --dart-define=MODULOS_V2=<modulo>   # un modulo nuevo, aun no encendido
 /// ```
 ///
 /// Se retira completo en V2-T01.07 (guia en `plan/arquitectura-v2.md`).
@@ -33,9 +37,21 @@ enum ModuloMigrable {
 class InterruptorModulos {
   const InterruptorModulos(this._versiones);
 
-  /// Valor por defecto en codigo: todo en v1, tal como hoy. Un modulo se
-  /// enciende aqui cuando esta completo y se decide que llegue a todos.
-  static const porDefecto = InterruptorModulos({});
+  /// Valor por defecto en codigo: los cuatro modulos que ya existian en v1 van
+  /// en v2 (V2-T01.09). Un modulo nuevo se enciende aqui cuando esta completo y
+  /// se decide que llegue a todos; mientras no este, [de] responde v1 y solo
+  /// se prueba con `--dart-define=MODULOS_V2=<modulo>`. Volver atras sin tocar
+  /// codigo: `--dart-define=MODULOS_V1=todos`.
+  static const porDefecto = InterruptorModulos({
+    ModuloMigrable.asistencia: VersionModulo.v2,
+    ModuloMigrable.catalogo: VersionModulo.v2,
+    ModuloMigrable.citas: VersionModulo.v2,
+    ModuloMigrable.vehiculos: VersionModulo.v2,
+  });
+
+  /// Todo en v1. Para las pruebas de la v1 (que se retiran con V2-T01.07) y
+  /// para comprobar que la salida de emergencia sigue en pie.
+  static const todoV1 = InterruptorModulos({});
 
   /// Todo en v2. Para desarrollo y pruebas.
   static final todoV2 = InterruptorModulos({
