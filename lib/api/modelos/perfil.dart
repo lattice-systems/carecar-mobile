@@ -37,3 +37,22 @@ class Perfil {
   /// aquí no se convierte nada: hacerlo correría el día.
   final DateTime clienteDesde;
 }
+
+/// La verificación recién creada por `PATCH /perfil` · V2-M01.07.
+///
+/// No trae el correo nuevo a propósito: quien pidió el cambio ya lo escribió,
+/// y repetirlo solo sería un dato personal más viajando.
+class VerificacionPendiente {
+  const VerificacionPendiente({required this.id, required this.expira});
+
+  factory VerificacionPendiente.fromJson(Map<String, Object?> json) =>
+      VerificacionPendiente(
+        id: leerEntero(json['id'], 'id'),
+        expira: leerMomentoUtc(json['expira'], 'expira'),
+      );
+
+  final int id;
+
+  /// A los 15 minutos, igual que el código de recuperación.
+  final DateTime expira;
+}

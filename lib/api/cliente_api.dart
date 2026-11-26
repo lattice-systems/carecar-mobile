@@ -384,6 +384,27 @@ class ClienteApi {
     return _leerObjeto(respuesta, leer);
   }
 
+  /// PATCH que devuelve un objeto (cambiar parte de un recurso propio).
+  ///
+  /// Se separa de [actualizar] porque el verbo importa: un PUT dice «esta es
+  /// la version completa» y un PATCH «cambia solo esto», y el contrato declara
+  /// PATCH donde el cliente manda un campo suelto.
+  Future<T> parchar<T>(
+    String camino, {
+    required Object? cuerpo,
+    required T Function(Map<String, Object?>) leer,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.patch(
+        config.ruta(camino),
+        headers: await _encabezados(conCuerpo: cuerpo != null),
+        body: cuerpo == null ? null : jsonEncode(cuerpo),
+      ),
+      conToken: true,
+    );
+    return _leerObjeto(respuesta, leer);
+  }
+
   /// DELETE de los endpoints que contestan 204 sin cuerpo.
   Future<void> eliminar(String camino) async {
     final respuesta = await _pedir(

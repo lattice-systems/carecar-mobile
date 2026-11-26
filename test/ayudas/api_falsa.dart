@@ -95,6 +95,57 @@ class ApiFalsa implements CarecarApi {
     cierresPedidos.add(refreshToken);
   }
 
+  // --- Cambio de correo · V2-M01.07 ---
+
+  /// Que hace el pedido del cambio. Si es nulo, responde una verificacion.
+  Future<VerificacionPendiente> Function(String correo, String contrasena)?
+  alPedirCambioDeCorreo;
+
+  /// Que hace la confirmacion. Si es nulo, devuelve el perfil con el correo
+  /// nuevo, que es lo que hace el servidor de verdad.
+  Future<Perfil> Function(int id, String codigo)? alConfirmarVerificacion;
+
+  /// Lo que se recibio en la ultima llamada a [pedirCambioDeCorreo].
+  String? ultimoCorreoPedido;
+  String? ultimaContrasenaDelCambio;
+  int? ultimaVerificacionConfirmada;
+  String? ultimoCodigoDeVerificacion;
+
+  @override
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) async {
+    ultimoCorreoPedido = correo;
+    ultimaContrasenaDelCambio = contrasenaActual;
+    if (alPedirCambioDeCorreo != null) {
+      return alPedirCambioDeCorreo!(correo, contrasenaActual);
+    }
+    return VerificacionPendiente(
+      id: 12,
+      expira: DateTime.now().toUtc().add(const Duration(minutes: 15)),
+    );
+  }
+
+  @override
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  }) async {
+    ultimaVerificacionConfirmada = id;
+    ultimoCodigoDeVerificacion = codigo;
+    if (alConfirmarVerificacion != null) {
+      return alConfirmarVerificacion!(id, codigo);
+    }
+    return Perfil(
+      id: 1,
+      nombre: 'María Robles',
+      correo: ultimoCorreoPedido ?? 'cliente1@example.com',
+      telefono: '477 123 4567',
+      clienteDesde: DateTime(2022, 5, 18),
+    );
+  }
+
   // --- Sesiones activas · V2-M01.09 ---
 
   /// Lo que devuelve [misSesiones]. Si es nulo, una lista vacia.
