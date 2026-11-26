@@ -5133,5 +5133,17 @@
   "campanasVerComprobante": "Ver comprobante",
   "@campanasVerComprobante": {
     "description": "Abre el comprobante con QR de la cita."
-  }
+  },
+  "vehiculosManualBuscarAccion": "Buscar en el manual",
+  "@vehiculosManualBuscarAccion": {"description": "Acción que abre la búsqueda dentro del manual."},
+  "vehiculosManualBuscarCerrar": "Cerrar la búsqueda",
+  "@vehiculosManualBuscarCerrar": {"description": "Acción que cierra la búsqueda."},
+  "vehiculosManualBuscarSugerencia": "Buscar en el manual",
+  "@vehiculosManualBuscarSugerencia": {"description": "Texto guía del campo de búsqueda."},
+  "vehiculosManualBuscarAyuda": "Escribe al menos dos letras para buscar en el manual.",
+  "@vehiculosManualBuscarAyuda": {"description": "Guía cuando la búsqueda es muy corta."},
+  "vehiculosManualSinResultados": "No encontramos «{consulta}» en el manual.",
+  "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "frenos"}}},
+  "vehiculosManualResultadoPagina": "Página {pagina}",
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}}
 }
