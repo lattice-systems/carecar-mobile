@@ -5717,5 +5717,561 @@
   "valuacionVerValor": "Ver cómo cambia el valor",
   "@valuacionVerValor": {
     "description": "Botón hacia el valor en el tiempo."
+  },
+  "historialTicketPuntosGanados": "Ganaste {puntos} puntos de lealtad con este servicio.",
+  "@historialTicketPuntosGanados": {
+    "description": "Aviso del ticket con los puntos que dio la orden (V2-M12.02); puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadTitulo": "Mis puntos",
+  "@lealtadTitulo": {
+    "description": "Título de la pantalla de lealtad (V2-M12.01)."
+  },
+  "lealtadSubtitulo": "Gana puntos en cada servicio y canjéalos en la agencia.",
+  "@lealtadSubtitulo": {
+    "description": "Subtítulo de Mis puntos."
+  },
+  "lealtadPuntos": "{puntos} puntos",
+  "@lealtadPuntos": {
+    "description": "Saldo de puntos; puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivel": "Nivel {nivel}",
+  "@lealtadNivel": {
+    "description": "Nivel del cliente; nivel es Bronce, Plata u Oro.",
+    "placeholders": {
+      "nivel": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivelBronce": "Bronce",
+  "@lealtadNivelBronce": {
+    "description": "Nombre del nivel Bronce."
+  },
+  "lealtadNivelPlata": "Plata",
+  "@lealtadNivelPlata": {
+    "description": "Nombre del nivel Plata."
+  },
+  "lealtadNivelOro": "Oro",
+  "@lealtadNivelOro": {
+    "description": "Nombre del nivel Oro."
+  },
+  "lealtadFaltan": "Te faltan {puntos} puntos para {nivel}",
+  "@lealtadFaltan": {
+    "description": "Lo que falta para el siguiente nivel.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      },
+      "nivel": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivelMaximo": "Ya estás en el nivel más alto.",
+  "@lealtadNivelMaximo": {
+    "description": "Detalle en el nivel Oro."
+  },
+  "lealtadGanados": "{puntos} ganados en 12 meses",
+  "@lealtadGanados": {
+    "description": "Etiqueta de la barra de avance; puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadCargando": "Cargando tus puntos",
+  "@lealtadCargando": {
+    "description": "Esqueleto de carga de las pantallas de lealtad para el lector de pantalla."
+  },
+  "lealtadReintentar": "Reintentar",
+  "@lealtadReintentar": {
+    "description": "Botón para volver a pedir los datos de lealtad."
+  },
+  "lealtadRecompensas": "Recompensas",
+  "@lealtadRecompensas": {
+    "description": "Acceso al catálogo de recompensas."
+  },
+  "lealtadRecompensasResumen": "Canjea tus puntos",
+  "@lealtadRecompensasResumen": {
+    "description": "Subtítulo del acceso a recompensas."
+  },
+  "lealtadCanjes": "Mis canjes",
+  "@lealtadCanjes": {
+    "description": "Acceso a mis canjes."
+  },
+  "lealtadCanjesResumen": "Códigos para usar en la agencia",
+  "@lealtadCanjesResumen": {
+    "description": "Subtítulo del acceso a mis canjes."
+  },
+  "lealtadMovimientos": "Movimientos",
+  "@lealtadMovimientos": {
+    "description": "Acceso a los movimientos de puntos."
+  },
+  "lealtadMovimientosResumen": "De dónde salen tus puntos",
+  "@lealtadMovimientosResumen": {
+    "description": "Subtítulo del acceso a movimientos."
+  },
+  "lealtadReferir": "Referir a un amigo",
+  "@lealtadReferir": {
+    "description": "Acceso a referir."
+  },
+  "lealtadReferirResumen": "Gana puntos si tu amigo compra su auto",
+  "@lealtadReferirResumen": {
+    "description": "Subtítulo del acceso a referir."
+  },
+  "recompensasTitulo": "Recompensas",
+  "@recompensasTitulo": {
+    "description": "Título del catálogo de recompensas (V2-M12.03)."
+  },
+  "recompensasSaldo": "Tienes {puntos} puntos",
+  "@recompensasSaldo": {
+    "description": "Subtítulo del catálogo con el saldo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasVaciaTitulo": "Aún no hay recompensas",
+  "@recompensasVaciaTitulo": {
+    "description": "Estado vacío del catálogo."
+  },
+  "recompensasVaciaMensaje": "Cuando la agencia publique recompensas las verás aquí.",
+  "@recompensasVaciaMensaje": {
+    "description": "Mensaje del catálogo vacío."
+  },
+  "recompensasCosto": "{puntos} puntos",
+  "@recompensasCosto": {
+    "description": "Costo de una recompensa.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasTeFaltan": "Te faltan {puntos}",
+  "@recompensasTeFaltan": {
+    "description": "Insignia de una recompensa que no alcanza.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasAgotada": "Agotada",
+  "@recompensasAgotada": {
+    "description": "Insignia de una recompensa sin existencia."
+  },
+  "recompensasDisponible": "Disponible",
+  "@recompensasDisponible": {
+    "description": "Insignia de una recompensa que se puede canjear."
+  },
+  "recompensasConfirmarTitulo": "¿Canjear {recompensa}?",
+  "@recompensasConfirmarTitulo": {
+    "description": "Título de la confirmación del canje.",
+    "placeholders": {
+      "recompensa": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasConfirmarMensaje": "Cuesta {costo} puntos. Te quedarán {quedan}.",
+  "@recompensasConfirmarMensaje": {
+    "description": "Mensaje de la confirmación con el costo y el saldo que queda.",
+    "placeholders": {
+      "costo": {
+        "type": "String"
+      },
+      "quedan": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasConfirmar": "Canjear",
+  "@recompensasConfirmar": {
+    "description": "Botón que confirma el canje."
+  },
+  "recompensasCancelar": "Cancelar",
+  "@recompensasCancelar": {
+    "description": "Botón que cancela el canje."
+  },
+  "recompensasNoSePudoTitulo": "No se pudo canjear",
+  "@recompensasNoSePudoTitulo": {
+    "description": "Título del diálogo de error al canjear."
+  },
+  "recompensasSinSaldo": "Ya no te alcanzan los puntos para esta recompensa.",
+  "@recompensasSinSaldo": {
+    "description": "Error SALDO_INSUFICIENTE."
+  },
+  "recompensasSeAgoto": "Esta recompensa se acaba de agotar.",
+  "@recompensasSeAgoto": {
+    "description": "Error RECOMPENSA_AGOTADA."
+  },
+  "recompensasError": "No pudimos canjear la recompensa. Intenta de nuevo.",
+  "@recompensasError": {
+    "description": "Error genérico al canjear."
+  },
+  "recompensasEntendido": "Entendido",
+  "@recompensasEntendido": {
+    "description": "Cierra el diálogo de error."
+  },
+  "canjesTitulo": "Mis canjes",
+  "@canjesTitulo": {
+    "description": "Título de mis canjes (V2-M12.03)."
+  },
+  "canjesVaciaTitulo": "Aún no canjeas nada",
+  "@canjesVaciaTitulo": {
+    "description": "Estado vacío de mis canjes."
+  },
+  "canjesVaciaMensaje": "Cambia tus puntos por recompensas y aquí tendrás su código.",
+  "@canjesVaciaMensaje": {
+    "description": "Mensaje de mis canjes vacío."
+  },
+  "canjesVerRecompensas": "Ver recompensas",
+  "@canjesVerRecompensas": {
+    "description": "Acción del estado vacío de mis canjes."
+  },
+  "canjesCodigo": "Código {codigo}",
+  "@canjesCodigo": {
+    "description": "Código del canje.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesVence": "Vence el {fecha}",
+  "@canjesVence": {
+    "description": "Vigencia de un canje vigente.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesUsado": "Usado el {fecha}",
+  "@canjesUsado": {
+    "description": "Fecha de uso de un canje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesVencio": "Venció el {fecha}; tus puntos regresaron",
+  "@canjesVencio": {
+    "description": "Detalle de un canje vencido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesEstadoVigente": "Vigente",
+  "@canjesEstadoVigente": {
+    "description": "Estado de canje vigente."
+  },
+  "canjesEstadoUsado": "Usado",
+  "@canjesEstadoUsado": {
+    "description": "Estado de canje usado."
+  },
+  "canjesEstadoVencido": "Vencido",
+  "@canjesEstadoVencido": {
+    "description": "Estado de canje vencido."
+  },
+  "canjeMuestralo": "Muestra este código en caja o en servicio para usar tu recompensa.",
+  "@canjeMuestralo": {
+    "description": "Indicación bajo el QR de un canje vigente."
+  },
+  "canjeQr": "Código QR del canje {codigo}",
+  "@canjeQr": {
+    "description": "Descripción del QR para el lector de pantalla.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "canjeYaUsado": "Este canje ya se usó.",
+  "@canjeYaUsado": {
+    "description": "Aviso de un canje usado."
+  },
+  "canjeYaVencio": "Este canje venció sin usarse y tus puntos regresaron a tu saldo.",
+  "@canjeYaVencio": {
+    "description": "Aviso de un canje vencido."
+  },
+  "canjeDetalles": "Detalles",
+  "@canjeDetalles": {
+    "description": "Encabezado de los detalles del canje."
+  },
+  "canjeCosto": "Costo",
+  "@canjeCosto": {
+    "description": "Fila del costo del canje."
+  },
+  "canjeCanjeado": "Canjeado",
+  "@canjeCanjeado": {
+    "description": "Fila de la fecha del canje."
+  },
+  "canjeVigencia": "Vigencia",
+  "@canjeVigencia": {
+    "description": "Fila de la vigencia del canje."
+  },
+  "canjeUsadoEl": "Usado",
+  "@canjeUsadoEl": {
+    "description": "Fila de la fecha de uso del canje."
+  },
+  "canjeNoEncontradoTitulo": "Ya no encontramos este canje",
+  "@canjeNoEncontradoTitulo": {
+    "description": "Estado cuando el canje no aparece en la lista."
+  },
+  "canjeNoEncontradoMensaje": "Vuelve a Mis canjes para ver tus códigos.",
+  "@canjeNoEncontradoMensaje": {
+    "description": "Mensaje del canje no encontrado."
+  },
+  "movimientosTitulo": "Movimientos",
+  "@movimientosTitulo": {
+    "description": "Título de los movimientos de puntos (V2-M12.05)."
+  },
+  "movimientosVaciaTitulo": "Aún no tienes movimientos",
+  "@movimientosVaciaTitulo": {
+    "description": "Estado vacío de los movimientos."
+  },
+  "movimientosVaciaMensaje": "Ganas puntos cada vez que recoges tu auto del taller.",
+  "@movimientosVaciaMensaje": {
+    "description": "Mensaje de movimientos vacío."
+  },
+  "movimientosMotivoServicio": "Servicio en el taller",
+  "@movimientosMotivoServicio": {
+    "description": "Motivo SERVICIO."
+  },
+  "movimientosMotivoCanje": "Canje de recompensa",
+  "@movimientosMotivoCanje": {
+    "description": "Motivo CANJE."
+  },
+  "movimientosMotivoDevolucion": "Canje vencido",
+  "@movimientosMotivoDevolucion": {
+    "description": "Motivo DEVOLUCION_CANJE."
+  },
+  "movimientosMotivoReferido": "Amigo referido",
+  "@movimientosMotivoReferido": {
+    "description": "Motivo REFERIDO."
+  },
+  "movimientosMotivoAjuste": "Ajuste de la agencia",
+  "@movimientosMotivoAjuste": {
+    "description": "Motivo AJUSTE."
+  },
+  "movimientosMotivoOtro": "Movimiento",
+  "@movimientosMotivoOtro": {
+    "description": "Motivo que la app no conoce."
+  },
+  "movimientosOrden": "Orden {id}",
+  "@movimientosOrden": {
+    "description": "Referencia a una orden de servicio.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "movimientosCanje": "Canje {id}",
+  "@movimientosCanje": {
+    "description": "Referencia a un canje.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "movimientosFechaYReferencia": "{fecha} · {referencia}",
+  "@movimientosFechaYReferencia": {
+    "description": "Fecha y a qué se refiere un movimiento.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "referencia": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosGanaste": "Ganaste {puntos} puntos",
+  "@movimientosGanaste": {
+    "description": "Lectura de un movimiento positivo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosUsaste": "Usaste {puntos} puntos",
+  "@movimientosUsaste": {
+    "description": "Lectura de un movimiento negativo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosCargandoMas": "Cargando más movimientos",
+  "@movimientosCargandoMas": {
+    "description": "Indicador al pedir la siguiente página."
+  },
+  "movimientosErrorMas": "No pudimos cargar más movimientos.",
+  "@movimientosErrorMas": {
+    "description": "Error al pedir la siguiente página."
+  },
+  "referirTitulo": "Referir a un amigo",
+  "@referirTitulo": {
+    "description": "Título de referir (V2-M12.04)."
+  },
+  "referirSubtitulo": "Si tu amigo compra su auto, ganas puntos.",
+  "@referirSubtitulo": {
+    "description": "Subtítulo de referir."
+  },
+  "referirCodigoTitulo": "Tu código",
+  "@referirCodigoTitulo": {
+    "description": "Sección con el código personal."
+  },
+  "referirCodigoAyuda": "Tu amigo lo menciona al visitar la agencia.",
+  "@referirCodigoAyuda": {
+    "description": "Ayuda bajo el código personal."
+  },
+  "referirCompartir": "Compartir mi código",
+  "@referirCompartir": {
+    "description": "Botón que comparte el código con la hoja del sistema."
+  },
+  "referirMensaje": "Te recomiendo la agencia. Menciona mi código {codigo} cuando vayas.",
+  "@referirMensaje": {
+    "description": "Texto que se comparte con el código.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "referirFormularioTitulo": "Registra a tu amigo",
+  "@referirFormularioTitulo": {
+    "description": "Sección del formulario de referido."
+  },
+  "referirFormularioNota": "Escribe su teléfono, su correo o los dos. La agencia solo los usa para contactarlo.",
+  "@referirFormularioNota": {
+    "description": "Nota bajo el formulario."
+  },
+  "referirNombre": "Nombre de tu amigo",
+  "@referirNombre": {
+    "description": "Campo de nombre."
+  },
+  "referirTelefono": "Teléfono",
+  "@referirTelefono": {
+    "description": "Campo de teléfono."
+  },
+  "referirTelefonoAyuda": "10 dígitos",
+  "@referirTelefonoAyuda": {
+    "description": "Ayuda del campo de teléfono."
+  },
+  "referirTelefonoInvalido": "Escribe los 10 dígitos.",
+  "@referirTelefonoInvalido": {
+    "description": "Error de teléfono incompleto."
+  },
+  "referirCorreo": "Correo",
+  "@referirCorreo": {
+    "description": "Campo de correo."
+  },
+  "referirCorreoInvalido": "Revisa el correo.",
+  "@referirCorreoInvalido": {
+    "description": "Error de correo inválido."
+  },
+  "referirConsentimiento": "Mi amigo aceptó que la agencia lo contacte",
+  "@referirConsentimiento": {
+    "description": "Casilla de consentimiento."
+  },
+  "referirEnviar": "Enviar",
+  "@referirEnviar": {
+    "description": "Botón que registra al amigo."
+  },
+  "referirEnviado": "Listo, la agencia contactará a {nombre}.",
+  "@referirEnviado": {
+    "description": "Aviso tras registrar al amigo.",
+    "placeholders": {
+      "nombre": {
+        "type": "String"
+      }
+    }
+  },
+  "referirDuplicado": "Esa persona ya está con la agencia.",
+  "@referirDuplicado": {
+    "description": "Error REFERIDO_DUPLICADO; no dice de quién."
+  },
+  "referirLimite": "Ya tienes el máximo de amigos en seguimiento. Espera a que la agencia los atienda.",
+  "@referirLimite": {
+    "description": "Error LIMITE_REFERIDOS."
+  },
+  "referirError": "No pudimos registrar a tu amigo. Intenta de nuevo.",
+  "@referirError": {
+    "description": "Error genérico al referir."
+  },
+  "referirListaTitulo": "Tus referidos",
+  "@referirListaTitulo": {
+    "description": "Sección con mis referidos."
+  },
+  "referirVacio": "Aún no refieres a nadie.",
+  "@referirVacio": {
+    "description": "Lista de referidos vacía."
+  },
+  "referirListaError": "No pudimos cargar tus referidos.",
+  "@referirListaError": {
+    "description": "Error al pedir los referidos."
+  },
+  "referirPuntosAyuda": "Ganas puntos una sola vez por cada amigo que compre.",
+  "@referirPuntosAyuda": {
+    "description": "Nota bajo la lista de referidos."
+  },
+  "referidoEstadoRegistrado": "Registrado",
+  "@referidoEstadoRegistrado": {
+    "description": "Estado REGISTRADO."
+  },
+  "referidoEstadoSeguimiento": "En seguimiento",
+  "@referidoEstadoSeguimiento": {
+    "description": "Estado EN_SEGUIMIENTO."
+  },
+  "referidoEstadoCompro": "Compró",
+  "@referidoEstadoCompro": {
+    "description": "Estado COMPRO."
+  },
+  "referidoEstadoDescartado": "Sin compra",
+  "@referidoEstadoDescartado": {
+    "description": "Estado DESCARTADO."
+  },
+  "referidoDesde": "{estado} · desde el {fecha}",
+  "@referidoDesde": {
+    "description": "Estado y fecha de un referido.",
+    "placeholders": {
+      "estado": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "referidoGanaste": "+{puntos}",
+  "@referidoGanaste": {
+    "description": "Puntos ganados por un referido que compró.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
   }
 }

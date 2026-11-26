@@ -4404,4 +4404,385 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get valuacionVerValor => 'Ver cómo cambia el valor';
+
+  @override
+  String historialTicketPuntosGanados(String puntos) {
+    return 'Ganaste $puntos puntos de lealtad con este servicio.';
+  }
+
+  @override
+  String get lealtadTitulo => 'Mis puntos';
+
+  @override
+  String get lealtadSubtitulo =>
+      'Gana puntos en cada servicio y canjéalos en la agencia.';
+
+  @override
+  String lealtadPuntos(String puntos) {
+    return '$puntos puntos';
+  }
+
+  @override
+  String lealtadNivel(String nivel) {
+    return 'Nivel $nivel';
+  }
+
+  @override
+  String get lealtadNivelBronce => 'Bronce';
+
+  @override
+  String get lealtadNivelPlata => 'Plata';
+
+  @override
+  String get lealtadNivelOro => 'Oro';
+
+  @override
+  String lealtadFaltan(String puntos, String nivel) {
+    return 'Te faltan $puntos puntos para $nivel';
+  }
+
+  @override
+  String get lealtadNivelMaximo => 'Ya estás en el nivel más alto.';
+
+  @override
+  String lealtadGanados(String puntos) {
+    return '$puntos ganados en 12 meses';
+  }
+
+  @override
+  String get lealtadCargando => 'Cargando tus puntos';
+
+  @override
+  String get lealtadReintentar => 'Reintentar';
+
+  @override
+  String get lealtadRecompensas => 'Recompensas';
+
+  @override
+  String get lealtadRecompensasResumen => 'Canjea tus puntos';
+
+  @override
+  String get lealtadCanjes => 'Mis canjes';
+
+  @override
+  String get lealtadCanjesResumen => 'Códigos para usar en la agencia';
+
+  @override
+  String get lealtadMovimientos => 'Movimientos';
+
+  @override
+  String get lealtadMovimientosResumen => 'De dónde salen tus puntos';
+
+  @override
+  String get lealtadReferir => 'Referir a un amigo';
+
+  @override
+  String get lealtadReferirResumen => 'Gana puntos si tu amigo compra su auto';
+
+  @override
+  String get recompensasTitulo => 'Recompensas';
+
+  @override
+  String recompensasSaldo(String puntos) {
+    return 'Tienes $puntos puntos';
+  }
+
+  @override
+  String get recompensasVaciaTitulo => 'Aún no hay recompensas';
+
+  @override
+  String get recompensasVaciaMensaje =>
+      'Cuando la agencia publique recompensas las verás aquí.';
+
+  @override
+  String recompensasCosto(String puntos) {
+    return '$puntos puntos';
+  }
+
+  @override
+  String recompensasTeFaltan(String puntos) {
+    return 'Te faltan $puntos';
+  }
+
+  @override
+  String get recompensasAgotada => 'Agotada';
+
+  @override
+  String get recompensasDisponible => 'Disponible';
+
+  @override
+  String recompensasConfirmarTitulo(String recompensa) {
+    return '¿Canjear $recompensa?';
+  }
+
+  @override
+  String recompensasConfirmarMensaje(String costo, String quedan) {
+    return 'Cuesta $costo puntos. Te quedarán $quedan.';
+  }
+
+  @override
+  String get recompensasConfirmar => 'Canjear';
+
+  @override
+  String get recompensasCancelar => 'Cancelar';
+
+  @override
+  String get recompensasNoSePudoTitulo => 'No se pudo canjear';
+
+  @override
+  String get recompensasSinSaldo =>
+      'Ya no te alcanzan los puntos para esta recompensa.';
+
+  @override
+  String get recompensasSeAgoto => 'Esta recompensa se acaba de agotar.';
+
+  @override
+  String get recompensasError =>
+      'No pudimos canjear la recompensa. Intenta de nuevo.';
+
+  @override
+  String get recompensasEntendido => 'Entendido';
+
+  @override
+  String get canjesTitulo => 'Mis canjes';
+
+  @override
+  String get canjesVaciaTitulo => 'Aún no canjeas nada';
+
+  @override
+  String get canjesVaciaMensaje =>
+      'Cambia tus puntos por recompensas y aquí tendrás su código.';
+
+  @override
+  String get canjesVerRecompensas => 'Ver recompensas';
+
+  @override
+  String canjesCodigo(String codigo) {
+    return 'Código $codigo';
+  }
+
+  @override
+  String canjesVence(String fecha) {
+    return 'Vence el $fecha';
+  }
+
+  @override
+  String canjesUsado(String fecha) {
+    return 'Usado el $fecha';
+  }
+
+  @override
+  String canjesVencio(String fecha) {
+    return 'Venció el $fecha; tus puntos regresaron';
+  }
+
+  @override
+  String get canjesEstadoVigente => 'Vigente';
+
+  @override
+  String get canjesEstadoUsado => 'Usado';
+
+  @override
+  String get canjesEstadoVencido => 'Vencido';
+
+  @override
+  String get canjeMuestralo =>
+      'Muestra este código en caja o en servicio para usar tu recompensa.';
+
+  @override
+  String canjeQr(String codigo) {
+    return 'Código QR del canje $codigo';
+  }
+
+  @override
+  String get canjeYaUsado => 'Este canje ya se usó.';
+
+  @override
+  String get canjeYaVencio =>
+      'Este canje venció sin usarse y tus puntos regresaron a tu saldo.';
+
+  @override
+  String get canjeDetalles => 'Detalles';
+
+  @override
+  String get canjeCosto => 'Costo';
+
+  @override
+  String get canjeCanjeado => 'Canjeado';
+
+  @override
+  String get canjeVigencia => 'Vigencia';
+
+  @override
+  String get canjeUsadoEl => 'Usado';
+
+  @override
+  String get canjeNoEncontradoTitulo => 'Ya no encontramos este canje';
+
+  @override
+  String get canjeNoEncontradoMensaje =>
+      'Vuelve a Mis canjes para ver tus códigos.';
+
+  @override
+  String get movimientosTitulo => 'Movimientos';
+
+  @override
+  String get movimientosVaciaTitulo => 'Aún no tienes movimientos';
+
+  @override
+  String get movimientosVaciaMensaje =>
+      'Ganas puntos cada vez que recoges tu auto del taller.';
+
+  @override
+  String get movimientosMotivoServicio => 'Servicio en el taller';
+
+  @override
+  String get movimientosMotivoCanje => 'Canje de recompensa';
+
+  @override
+  String get movimientosMotivoDevolucion => 'Canje vencido';
+
+  @override
+  String get movimientosMotivoReferido => 'Amigo referido';
+
+  @override
+  String get movimientosMotivoAjuste => 'Ajuste de la agencia';
+
+  @override
+  String get movimientosMotivoOtro => 'Movimiento';
+
+  @override
+  String movimientosOrden(int id) {
+    return 'Orden $id';
+  }
+
+  @override
+  String movimientosCanje(int id) {
+    return 'Canje $id';
+  }
+
+  @override
+  String movimientosFechaYReferencia(String fecha, String referencia) {
+    return '$fecha · $referencia';
+  }
+
+  @override
+  String movimientosGanaste(String puntos) {
+    return 'Ganaste $puntos puntos';
+  }
+
+  @override
+  String movimientosUsaste(String puntos) {
+    return 'Usaste $puntos puntos';
+  }
+
+  @override
+  String get movimientosCargandoMas => 'Cargando más movimientos';
+
+  @override
+  String get movimientosErrorMas => 'No pudimos cargar más movimientos.';
+
+  @override
+  String get referirTitulo => 'Referir a un amigo';
+
+  @override
+  String get referirSubtitulo => 'Si tu amigo compra su auto, ganas puntos.';
+
+  @override
+  String get referirCodigoTitulo => 'Tu código';
+
+  @override
+  String get referirCodigoAyuda =>
+      'Tu amigo lo menciona al visitar la agencia.';
+
+  @override
+  String get referirCompartir => 'Compartir mi código';
+
+  @override
+  String referirMensaje(String codigo) {
+    return 'Te recomiendo la agencia. Menciona mi código $codigo cuando vayas.';
+  }
+
+  @override
+  String get referirFormularioTitulo => 'Registra a tu amigo';
+
+  @override
+  String get referirFormularioNota =>
+      'Escribe su teléfono, su correo o los dos. La agencia solo los usa para contactarlo.';
+
+  @override
+  String get referirNombre => 'Nombre de tu amigo';
+
+  @override
+  String get referirTelefono => 'Teléfono';
+
+  @override
+  String get referirTelefonoAyuda => '10 dígitos';
+
+  @override
+  String get referirTelefonoInvalido => 'Escribe los 10 dígitos.';
+
+  @override
+  String get referirCorreo => 'Correo';
+
+  @override
+  String get referirCorreoInvalido => 'Revisa el correo.';
+
+  @override
+  String get referirConsentimiento =>
+      'Mi amigo aceptó que la agencia lo contacte';
+
+  @override
+  String get referirEnviar => 'Enviar';
+
+  @override
+  String referirEnviado(String nombre) {
+    return 'Listo, la agencia contactará a $nombre.';
+  }
+
+  @override
+  String get referirDuplicado => 'Esa persona ya está con la agencia.';
+
+  @override
+  String get referirLimite =>
+      'Ya tienes el máximo de amigos en seguimiento. Espera a que la agencia los atienda.';
+
+  @override
+  String get referirError =>
+      'No pudimos registrar a tu amigo. Intenta de nuevo.';
+
+  @override
+  String get referirListaTitulo => 'Tus referidos';
+
+  @override
+  String get referirVacio => 'Aún no refieres a nadie.';
+
+  @override
+  String get referirListaError => 'No pudimos cargar tus referidos.';
+
+  @override
+  String get referirPuntosAyuda =>
+      'Ganas puntos una sola vez por cada amigo que compre.';
+
+  @override
+  String get referidoEstadoRegistrado => 'Registrado';
+
+  @override
+  String get referidoEstadoSeguimiento => 'En seguimiento';
+
+  @override
+  String get referidoEstadoCompro => 'Compró';
+
+  @override
+  String get referidoEstadoDescartado => 'Sin compra';
+
+  @override
+  String referidoDesde(String estado, String fecha) {
+    return '$estado · desde el $fecha';
+  }
+
+  @override
+  String referidoGanaste(String puntos) {
+    return '+$puntos';
+  }
 }
