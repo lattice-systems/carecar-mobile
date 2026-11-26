@@ -6,7 +6,7 @@
 | Dueño | Ricardo |
 | Revisa | Haziel |
 | Ficha técnica | ✅ Sección 12. Lealtad y recompensas |
-| Estado | Listo para historias |
+| Estado | En curso (V2-M12.01 a V2-M12.05) |
 
 ## Propósito
 
@@ -42,7 +42,7 @@ Viven en la configuración del backend (`app.lealtad.*`), no en el código ni en
 | `recompensa` ➕ | id, nombre, descripcion, puntos, activa, existencia, creado_en | `existencia` nula = sin límite; con límite se descuenta con bloqueo de fila. |
 | `canje` ➕ | id, cliente_id, recompensa_id, codigo, puntos, estado (VIGENTE, USADO, VENCIDO), vence_en, usado_en, creado_en | `codigo` único de 8 caracteres sin letras confusas; el QR lo codifica. |
 | `referido` ➕ | id, cliente_id, codigo, nombre, telefono, correo, consentimiento_en, prospecto_id, estado (REGISTRADO, EN_SEGUIMIENTO, COMPRO, DESCARTADO), recompensado_en, creado_en | `codigo` es el código personal del cliente que refiere. |
-| `prospecto` (existe) | — | El referido entra como prospecto con origen `REFERIDO` por un evento que escucha `ventascrm`, como ya se hace con Estreno. |
+| `prospecto` (existe) | — | El referido entra como prospecto por un evento que escucha `ventascrm`, como ya se hace con Estreno. La tabla no tiene columna de origen: el prospecto queda con el registro de origen `APP` en su historial y se liga al referido por `referido.prospecto_id`. |
 
 ## API (`/api/v1/app`)
 
@@ -67,6 +67,21 @@ Viven en la configuración del backend (`app.lealtad.*`), no en el código ni en
 | V2-M12.03 | Como cliente quiero canjear recompensas para usar mis puntos en la agencia | Confirmación con el costo y el saldo que queda · el canje descuenta los puntos y crea un código con QR vigente 30 días · dos canjes al mismo tiempo nunca dejan el saldo negativo (bloqueo de fila del cliente) · `SALDO_INSUFICIENTE` y `RECOMPENSA_AGOTADA` explicados · «Mis canjes» con su estado · el personal lo marca usado con `/api/v1/lealtad/canjes/{codigo}/usar` · al vencer sin usarse, los puntos regresan con `DEVOLUCION_CANJE` | ✅ | V2-M12.01 |
 | V2-M12.04 | Como cliente quiero referir a un amigo para que la agencia lo atienda y yo gane puntos si compra | Mi código personal se comparte con la hoja del sistema · registro a mi amigo con nombre y teléfono o correo y confirmo que aceptó que lo contacten (sin la casilla no se envía) · el backend crea el prospecto con origen `REFERIDO` en `ventascrm` por evento · si ya es cliente o prospecto, `REFERIDO_DUPLICADO` sin decir de quién · hasta 10 abiertos · cuando la venta del prospecto se finaliza (`ProspectoFinalizado`) gano 500 puntos una sola vez · «Mis referidos» con estado | ✅ | V2-M12.01 |
 | V2-M12.05 | Como cliente quiero ver mis movimientos de puntos para entender de dónde salió mi saldo | Lista paginada (20, del más nuevo) con puntos (+ en verde, − en el color de texto), motivo en palabras, fecha y a qué se refiere (orden, canje o referido) · la suma de la lista completa es el saldo de V2-M12.01 · vacío, error y sin conexión resueltos | ✅ | V2-M12.01 |
+
+## Avance de V2-M12.01 a V2-M12.05
+
+El módulo vive en `lib/modulos/lealtad/` (`dominio/`, `datos/`, `presentacion/`) y su contrato público es `lealtad.dart`. Es nuevo en v2: sus rutas se registran en `registro_de_rutas.dart` sin interruptor v1/v2. Las seis pantallas abren con `MarcoPantalla` (con `MarcoPantalla.estado` para cargando, vacío y error). La entrada es «Mis puntos» en la sección «Cuenta» del perfil. El diseño técnico del backend está en `agencia-360-backend/plan/historias-backend.md` (contrato 2.19.0, módulo `carecarapp`).
+
+- **Mis puntos (V2-M12.01):** `PantallaLealtad` en `/lealtad`. Una `TarjetaResumen` con el saldo, el nivel (insignia Bronce, Plata u Oro), lo que falta para el siguiente («Te faltan 2,370 puntos para Oro»; en Oro, «Ya estás en el nivel más alto.») y la barra de lo ganado en 12 meses contra el siguiente umbral; el lector la oye como un solo nodo con el avance en porcentaje. Abajo, los accesos a recompensas, canjes, movimientos y referir. Un cliente nuevo ve 0 puntos en Bronce. Los umbrales los decide el backend (`app.lealtad.*`); la app solo pinta lo que recibe.
+- **Ganar puntos (V2-M12.02):** el backend suma 1 punto por cada $10 del total al entregarse la orden (una sola vez por orden). La app recarga Mis puntos, movimientos, canjes y referidos con `puntos.movidos` (y al volver la conexión) sin pasar por carga. El ticket de la orden dice «Ganaste N puntos de lealtad con este servicio.» con el `puntosGanados` nuevo de `ServicioDetalle`. Cuando se integre V2-M08.02 los puntos se sumarán al confirmarse el pago y no también al entregar.
+- **Recompensas y canjes (V2-M12.03):** `PantallaRecompensas` en `/lealtad/recompensas` con el saldo como subtítulo. Cada recompensa es una `TarjetaResumen` con costo y descripción; las que no alcanzan dicen «Te faltan N» y las agotadas «Agotada», y ninguna de las dos se toca. Al tocar una se confirma con `Dialogo` («Cuesta 300 puntos. Te quedarán 1,030.») y el canje abre su código. `SALDO_INSUFICIENTE` y `RECOMPENSA_AGOTADA` se explican en un diálogo y vuelven a pedir el saldo o el catálogo. `PantallaCanjes` en `/lealtad/canjes` lista cada canje con código, estado y fecha; `PantallaCanje` en `/lealtad/canjes/{id}` muestra el QR (negro sobre blanco en los dos temas) y el código para caja o servicio, o dice que ya se usó o que venció y sus puntos regresaron. El personal lo marca usado con `POST /api/v1/lealtad/canjes/{codigo}/usar`.
+- **Referir (V2-M12.04):** `PantallaReferir` en `/lealtad/referir`: mi código con «Compartir mi código» (hoja del sistema, `share_plus`), el formulario con nombre, teléfono de 10 dígitos o correo y la casilla «Mi amigo aceptó que la agencia lo contacte» (sin ella no se envía), y «Tus referidos» con su estado y los puntos que dio el que compró. `REFERIDO_DUPLICADO` no dice de quién y `LIMITE_REFERIDOS` pide esperar, sin decir el número (es una regla del backend).
+- **Movimientos (V2-M12.05):** `PantallaMovimientos` en `/lealtad/movimientos`, de 20 en 20, pide la página siguiente al llegar al final y, si falla, conserva lo cargado con «Reintentar». Cada fila dice el motivo en palabras, la fecha y la referencia («Orden 2», «Canje 1»), y los puntos con signo (+ en verde, − en el color del texto); el lector oye «Ganaste 230 puntos» o «Usaste 300 puntos» gracias a `etiquetaFin` de `FilaGrupo` (sistema de diseño).
+- **Cinco estados:** cargando (esqueleto), datos, vacío, error con reintento y sin conexión en todas las pantallas; el detalle de un canje dice también si ya no aparece.
+- **Pruebas:** `test/modulos/lealtad/` (repositorio API y fake, cada pantalla, en vivo, paginación y rutas), `test/contrato/contrato_lealtad_test.dart`, `test/pantallas/perfil/pantalla_perfil_lealtad_test.dart` y el ticket en `test/modulos/historial/`. Cada pantalla se prueba en claro, oscuro y letra al 200 %.
+- **Textos:** claves `lealtad*`, `recompensas*`, `canjes*`, `canje*`, `movimientos*`, `referir*`, `referido*` y `historialTicketPuntosGanados` en `app_es.arb` y `app_en.arb`.
+- **Simulador:** `mock_api/modulos/lealtad.js` con semillas en `semillas/lealtad.json` (cliente 1 en Plata con 1,330 puntos) y emisores `/__mock/puntos`, `/__mock/canjes/{codigo}/usar` y `/__mock/referidos/{id}/compro`.
+- **Pendiente:** que el PO confirme las reglas, los puntos al confirmarse el pago (V2-M08.02) y demostrarlo en celular.
 
 ## Fuera de alcance / notas
 

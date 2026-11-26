@@ -106,9 +106,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Puntos y niveles | `movimiento_puntos` | ⬜ reglas propuestas en M12, pendientes del PO | V2-M12.01, V2-M12.02, V2-M12.05 |
-| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | ⬜ | V2-M12.03 |
-| Referidos | `referido`, `prospecto` | ⬜ | V2-M12.04 |
+| Puntos y niveles | `movimiento_puntos` | 🟡 backend con `movimiento_puntos`, saldo por suma, nivel por lo ganado en 12 meses y puntos al entregar la orden una sola vez (`LealtadIntegrationTest`, `ReglasLealtadTest`); app con Mis puntos, movimientos paginados, puntos en el ticket y recarga en vivo (`test/modulos/lealtad/`); reglas propuestas, pendientes del PO; falta sumar al confirmarse el pago (V2-M08.02) y demostrar en celular | V2-M12.01, V2-M12.02, V2-M12.05 |
+| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | 🟡 backend con canje bajo bloqueo del saldo y de la recompensa, código de 8 caracteres, vencimiento a 30 días con `DEVOLUCION_CANJE` y uso por el personal (`LealtadIntegrationTest`, `LealtadAppServiceTest`); app con catálogo, confirmación, mis canjes y QR (`test/modulos/lealtad/`); falta demostrar en celular | V2-M12.03 |
+| Referidos | `referido`, `prospecto` | 🟡 backend con `referido`, consentimiento, prospecto creado por evento en `ventascrm` y 500 puntos al finalizarse la venta una sola vez (`LealtadIntegrationTest`, `ReferidosAppServiceTest`); app con mi código para compartir, formulario y mis referidos (`test/modulos/lealtad/`); falta demostrar en celular | V2-M12.04 |
 
 ### 13. Promociones y novedades — plan [M13](modulos/M13-promociones.md)
 
