@@ -91,6 +91,10 @@ enum CodigoProblema {
   /// V2-M14.03: algun producto no le queda al vehiculo de la cita.
   productoIncompatible('PRODUCTO_INCOMPATIBLE'),
 
+  /// V2-M08.05: un dato fiscal no cumple las reglas del SAT; [Problema.campos]
+  /// dice que corregir en cada uno.
+  datosFiscalesInvalidos('DATOS_FISCALES_INVALIDOS'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 
@@ -120,6 +124,7 @@ class Problema {
     required this.message,
     required this.path,
     this.codigo = CodigoProblema.desconocido,
+    this.campos = const {},
   });
 
   /// Tolerante a proposito: un cuerpo de error incompleto no debe provocar un
@@ -133,7 +138,15 @@ class Problema {
         : 'Ocurrió un error inesperado. Intenta de nuevo.',
     path: json['path'] as String? ?? '',
     codigo: CodigoProblema.desde(json['codigo'] as String?),
+    campos: _campos(json['campos']),
   );
+
+  static Map<String, String> _campos(Object? valor) => valor is Map
+      ? {
+          for (final MapEntry(:key, :value) in valor.entries)
+            if (key is String && value is String) key: value,
+        }
+      : const {};
 
   final String timestamp;
   final int status;
@@ -143,6 +156,11 @@ class Problema {
 
   /// El codigo propio del contrato, o [CodigoProblema.desconocido] si no vino.
   final CodigoProblema codigo;
+
+  /// Que esta mal en cada campo de la peticion (nombre del campo → por que),
+  /// escrito para la persona. Vacio si el error no lo explica por campo
+  /// (V2-M08.05, `DATOS_FISCALES_INVALIDOS`).
+  final Map<String, String> campos;
 
   /// `true` si el [message] del servidor se le puede enseñar al usuario.
   ///

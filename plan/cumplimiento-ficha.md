@@ -78,9 +78,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ procesador propuesto en la [ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md) (Stripe en modo de pruebas) | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07 |
+| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ procesador simulado y propio, sin cuentas externas ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md), aceptada) | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07 |
 | Métodos de pago guardados | `metodo_pago` | ⬜ | V2-M08.04 |
-| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ `factura` existe (ERP, sin timbrado); se le agregan columnas para facturas de servicio y el timbrado va con Facturama en sandbox ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) | V2-M08.05, V2-M08.06 |
+| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | 🟡 `perfil_fiscal` existe (backend V54) con RFC, régimen y uso de CFDI validados con CFDI 4.0, pantallas, mock y pruebas (V2-M08.05). `factura` existe (ERP, sin timbrado); se le agregan columnas para facturas de servicio y el timbrado es simulado ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) | V2-M08.05, V2-M08.06 |
 
 ### 9. Documentos y vencimientos — plan [M09](modulos/M09-documentos-y-vencimientos.md)
 
