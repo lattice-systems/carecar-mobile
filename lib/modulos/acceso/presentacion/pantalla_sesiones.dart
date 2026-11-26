@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -55,7 +56,7 @@ class PantallaSesiones extends ConsumerWidget {
         estado: EstadoVacio(
           titulo: textos.accesoSesionesVacioTitulo,
           mensaje: textos.accesoSesionesVacioMensaje,
-          icono: Icons.devices_other_outlined,
+          icono: LucideIcons300.monitorSmartphone,
         ),
       ),
       alReintentar: () => ref.invalidate(sesionesProvider),
@@ -85,7 +86,7 @@ class _Lista extends ConsumerWidget {
         hijos: [
           BotonPildora(
             texto: textos.accesoSesionesCerrarTodas,
-            icono: Icons.logout_outlined,
+            icono: LucideIcons300.logOut,
             variante: VarianteBotonPildora.peligro,
             expandido: true,
             alPresionar: () => _cerrarTodas(context, ref),
@@ -105,7 +106,7 @@ class _Lista extends ConsumerWidget {
                     titulo:
                         s.dispositivo ?? textos.accesoSesionesEquipoSinNombre,
                     subtitulo: _ultimoUso(context, s, ref),
-                    icono: Icons.smartphone_outlined,
+                    icono: LucideIcons300.smartphone,
                     colorIcono: c.acento,
                     // `fin` es adorno: `GrupoLista` no lo deja leer al lector
                     // de pantalla («el `fin` no se lee»), asi que la accion es
