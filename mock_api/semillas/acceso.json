@@ -8,7 +8,9 @@
       "debeCambiarContrasena": false,
       "activa": true,
       "nombre": "Maria Elena Robles",
-      "correo": "cliente1@example.com"
+      "correo": "cliente1@example.com",
+      "telefono": "477 123 4567",
+      "clienteDesde": "2022-05-18"
     },
     {
       "id": 2,
@@ -18,7 +20,9 @@
       "debeCambiarContrasena": true,
       "activa": true,
       "nombre": "Jorge Alberto Fuentes",
-      "correo": "cliente2@example.com"
+      "correo": "cliente2@example.com",
+      "telefono": null,
+      "clienteDesde": "2025-11-03"
     },
     {
       "id": 3,
@@ -28,7 +32,9 @@
       "debeCambiarContrasena": false,
       "activa": false,
       "nombre": "Cuenta desactivada",
-      "correo": "cliente3@example.com"
+      "correo": "cliente3@example.com",
+      "telefono": "477 987 6543",
+      "clienteDesde": "2019-01-09"
     }
   ],
   "tokensRecuperacion": [
