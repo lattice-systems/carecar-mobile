@@ -66,6 +66,17 @@ class CarecarApiHttp implements CarecarApi {
   Future<Perfil> miPerfil() => _cliente.obtener('/perfil', Perfil.fromJson);
 
   @override
+  Future<List<SesionActiva>> misSesiones() =>
+      _cliente.obtenerLista('/sesiones', SesionActiva.fromJson);
+
+  @override
+  Future<void> cerrarSesionActiva(int sesionId) =>
+      _cliente.eliminar('/sesiones/$sesionId');
+
+  @override
+  Future<void> cerrarTodasLasSesiones() => _cliente.eliminar('/sesiones');
+
+  @override
   Future<List<Vehiculo>> misVehiculos() =>
       _cliente.obtenerLista('/vehiculos', Vehiculo.fromJson);
 

@@ -95,6 +95,31 @@ class ApiFalsa implements CarecarApi {
     cierresPedidos.add(refreshToken);
   }
 
+  // --- Sesiones activas · V2-M01.09 ---
+
+  /// Lo que devuelve [misSesiones]. Si es nulo, una lista vacia.
+  Future<List<SesionActiva>> Function()? alPedirSesiones;
+
+  /// Los ids que se mandaron a cerrar, en orden. Cerrar todas se anota como
+  /// [todasLasSesionesCerradas], no aqui.
+  final sesionesCerradas = <int>[];
+
+  bool todasLasSesionesCerradas = false;
+
+  @override
+  Future<List<SesionActiva>> misSesiones() async =>
+      alPedirSesiones == null ? const [] : await alPedirSesiones!();
+
+  @override
+  Future<void> cerrarSesionActiva(int sesionId) async {
+    sesionesCerradas.add(sesionId);
+  }
+
+  @override
+  Future<void> cerrarTodasLasSesiones() async {
+    todasLasSesionesCerradas = true;
+  }
+
   // El resto de las operaciones no las usa APP-2.1. Llegan en S2 y S4.
 
   // --- APP-2.3 ---
