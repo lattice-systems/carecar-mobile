@@ -51,7 +51,7 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 ### Pantallas de catálogo, tienda y valuación
 
 - Las pantallas de M03, M14 y M26 pasan las guías en sus pruebas de módulo, en claro, oscuro y letra al 200 %. Las de catálogo y valuación se prueban además en 320 de ancho, como ya hacía la tienda.
-- **Excepción abierta para V2-M20.08:** en 320 de ancho cada día del `Calendario` mide unos 42 de ancho y no 48, porque siete columnas de 48 suman 336. Afecta a toda pantalla que use el componente. La prueba de agendar inspección revisa ahí desbordes, etiquetas y contraste, pero no la zona táctil. Falta que el equipo decida si se acepta o si el componente cambia de forma en teléfonos angostos.
+- **Excepción aceptada en V2-M20.08:** en teléfonos de 320 de ancho cada día del `Calendario` mide unos 42 de ancho y conserva 48 de alto, porque siete columnas de 48 suman 336. Se acepta porque supera el mínimo de WCAG 2.2 AA (24 × 24) y las otras salidas, como desplazar el mes de lado, son peores para quien lo usa. La prueba de agendar inspección exige al menos 40 de ancho y 48 de alto.
 - Las tres historias siguen abiertas: faltan las pantallas de los demás módulos y la prueba con TalkBack y VoiceOver.
 
 ## Avance de V2-M20.01 (fase 1)
