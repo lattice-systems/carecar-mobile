@@ -139,7 +139,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; faltan el componente Mapa (hoy provisional), el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; el componente Mapa ya existe (V2-T02.09); faltan que estas pantallas dejen el mapa provisional, el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
