@@ -10,8 +10,10 @@ import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_pase_walle
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
 import 'package:carecar_mobile/modulos/citas/dominio/repositorio_citas.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/visor_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -152,6 +154,25 @@ void main() {
     expect(find.text('En recepción'), findsOneWidget);
     expect(find.text('Horario'), findsOneWidget);
   });
+
+  testWidgets(
+    'la lista de detalles lleva el mismo margen lateral que los botones',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 3000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      await tester.pumpWidget(_app(RepositorioCitasFake()));
+      await tester.pumpAndSettle();
+
+      // Antes la tarjeta de detalles llegaba de borde a borde.
+      final boton = tester.getRect(
+        find.widgetWithText(BotonPildora, 'Ver comprobante en PDF'),
+      );
+      final lista = tester.getRect(find.byType(GrupoLista));
+      expect(lista.left, boton.left);
+      expect(lista.right, boton.right);
+    },
+  );
 
   testWidgets('el boton abre el PDF de la cita en el visor', (tester) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
