@@ -67,7 +67,10 @@ class FilaLista extends StatelessWidget {
             if (tocable && conChevron) ...[
               const SizedBox(width: Espaciado.e2),
               ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoSecundario),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: c.textoTerciario,
+                ),
               ),
             ],
           ],

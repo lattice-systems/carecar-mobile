@@ -198,7 +198,10 @@ class _Fila extends StatelessWidget {
               if (fila.conChevron ?? tocable) ...[
                 const SizedBox(width: Espaciado.e2),
                 ExcludeSemantics(
-                  child: Icon(Icons.chevron_right, color: c.textoTerciario),
+                  child: Icon(
+                    Icons.chevron_right_rounded,
+                    color: c.textoTerciario,
+                  ),
                 ),
               ],
             ],

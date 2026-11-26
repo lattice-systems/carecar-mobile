@@ -108,7 +108,7 @@ void main() {
           const Semaforo(punto: 'Luces', estado: EstadoSemaforo.bien),
         ),
       );
-      expect(find.byIcon(Icons.chevron_right), findsNothing);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsNothing);
     });
   });
 

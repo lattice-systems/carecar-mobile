@@ -258,7 +258,7 @@ void main() {
 
     testWidgets('sin toque no muestra chevron', (tester) async {
       await tester.pumpWidget(conTemaPista(const FilaLista(titulo: 'Citas')));
-      expect(find.byIcon(Icons.chevron_right), findsNothing);
+      expect(find.byIcon(Icons.chevron_right_rounded), findsNothing);
     });
 
     testWidgets('se anuncia como boton con titulo y subtitulo', (tester) async {

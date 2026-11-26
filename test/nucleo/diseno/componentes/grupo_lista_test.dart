@@ -46,7 +46,7 @@ void main() {
   ) async {
     var toques = 0;
     await tester.pumpWidget(conTemaPista(_grupo(alToque: () => toques++)));
-    expect(find.byIcon(Icons.chevron_right), findsNWidgets(2));
+    expect(find.byIcon(Icons.chevron_right_rounded), findsNWidgets(2));
     await tester.tap(find.text('Perfil'));
     expect(toques, 1);
   });
@@ -95,7 +95,7 @@ void main() {
     );
 
     // Solo la fila que lleva a otra pantalla muestra la flecha.
-    expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+    expect(find.byIcon(Icons.chevron_right_rounded), findsOneWidget);
     await tester.tap(find.text('Recordatorios'));
     expect(toques, 1);
   });

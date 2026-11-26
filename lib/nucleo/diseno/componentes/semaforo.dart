@@ -77,7 +77,10 @@ class Semaforo extends StatelessWidget {
             ),
             if (tocable)
               ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoSecundario),
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: c.textoTerciario,
+                ),
               ),
           ],
         ),
