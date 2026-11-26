@@ -2952,5 +2952,17 @@
   "campanasQuePasa": "What's wrong",
   "campanasNoEncontradaTitulo": "We can't find this recall anymore",
   "campanasNoEncontradaMensaje": "Go back to the list to see your car's recalls.",
-  "campanasVerComprobante": "See confirmation"
+  "campanasVerComprobante": "See confirmation",
+  "vehiculosManualBuscarAccion": "Search the manual",
+  "@vehiculosManualBuscarAccion": {"description": "Acción que abre la búsqueda dentro del manual."},
+  "vehiculosManualBuscarCerrar": "Close search",
+  "@vehiculosManualBuscarCerrar": {"description": "Acción que cierra la búsqueda."},
+  "vehiculosManualBuscarSugerencia": "Search the manual",
+  "@vehiculosManualBuscarSugerencia": {"description": "Texto guía del campo de búsqueda."},
+  "vehiculosManualBuscarAyuda": "Type at least two letters to search the manual.",
+  "@vehiculosManualBuscarAyuda": {"description": "Guía cuando la búsqueda es muy corta."},
+  "vehiculosManualSinResultados": "We couldn’t find “{consulta}” in the manual.",
+  "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "brakes"}}},
+  "vehiculosManualResultadoPagina": "Page {pagina}",
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}}
 }
