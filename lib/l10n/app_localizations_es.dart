@@ -5344,4 +5344,212 @@ class AppLocalizationsEs extends AppLocalizations {
   String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo) {
     return '$vehiculo · $motivo';
   }
+
+  @override
+  String get datosFiscalesTitulo => 'Datos fiscales';
+
+  @override
+  String get datosFiscalesSubtitulo => 'Para facturar tus servicios';
+
+  @override
+  String get datosFiscalesCargando => 'Cargando tus datos fiscales';
+
+  @override
+  String get datosFiscalesReintentar => 'Reintentar';
+
+  @override
+  String get datosFiscalesVacioTitulo => 'Aún no tienes datos fiscales';
+
+  @override
+  String get datosFiscalesVacioMensaje =>
+      'Agrégalos para pedir factura de tus servicios.';
+
+  @override
+  String get datosFiscalesAgregar => 'Agregar datos fiscales';
+
+  @override
+  String get datosFiscalesEncabezado => 'Tus perfiles';
+
+  @override
+  String get datosFiscalesPie =>
+      'Escríbelos como en tu constancia de situación fiscal. Por ahora las facturas de la app son simuladas, sin validez fiscal.';
+
+  @override
+  String datosFiscalesFilaSubtitulo(
+    String rfc,
+    String persona,
+    String regimen,
+  ) {
+    return '$rfc · $persona · Régimen $regimen';
+  }
+
+  @override
+  String get datosFiscalesPredeterminado => 'Predeterminado';
+
+  @override
+  String get datosFiscalesNuevoTitulo => 'Nuevos datos fiscales';
+
+  @override
+  String get datosFiscalesEditarTitulo => 'Editar datos fiscales';
+
+  @override
+  String get datosFiscalesSeccionContribuyente => 'Contribuyente';
+
+  @override
+  String get datosFiscalesSeccionFacturar => 'Para facturar';
+
+  @override
+  String get datosFiscalesRfc => 'RFC';
+
+  @override
+  String get datosFiscalesRfcSugerencia => 'GODE561231GR8';
+
+  @override
+  String get datosFiscalesRfcAyuda =>
+      '13 caracteres si eres persona física; 12 si es una empresa.';
+
+  @override
+  String get datosFiscalesPersonaFisica => 'Persona física';
+
+  @override
+  String get datosFiscalesPersonaMoral => 'Persona moral';
+
+  @override
+  String get datosFiscalesRazonSocial => 'Nombre o razón social';
+
+  @override
+  String get datosFiscalesRazonSocialAyuda =>
+      'Igual que en tu constancia, sin el régimen societario (S.A. de C.V.).';
+
+  @override
+  String get datosFiscalesCodigoPostal => 'Código postal fiscal';
+
+  @override
+  String get datosFiscalesCodigoPostalAyuda => 'El de tu domicilio fiscal.';
+
+  @override
+  String get datosFiscalesRegimen => 'Régimen fiscal';
+
+  @override
+  String get datosFiscalesRegimenSugerencia => 'Elige tu régimen';
+
+  @override
+  String get datosFiscalesUso => 'Uso del CFDI';
+
+  @override
+  String get datosFiscalesUsoSugerencia => 'Elige el uso';
+
+  @override
+  String get datosFiscalesUsoAyuda =>
+      'Solo aparecen los que acepta tu régimen.';
+
+  @override
+  String datosFiscalesOpcion(String clave, String descripcion) {
+    return '$clave · $descripcion';
+  }
+
+  @override
+  String get datosFiscalesCorreo => 'Correo para la factura (opcional)';
+
+  @override
+  String get datosFiscalesHacerPredeterminado => 'Usar como predeterminado';
+
+  @override
+  String get datosFiscalesHacerPredeterminadoAyuda =>
+      'Es el que se propone al pagar.';
+
+  @override
+  String get datosFiscalesGuardar => 'Guardar';
+
+  @override
+  String get datosFiscalesBorrar => 'Borrar';
+
+  @override
+  String get datosFiscalesBorrarTitulo => '¿Borrar estos datos fiscales?';
+
+  @override
+  String datosFiscalesBorrarMensaje(String rfc) {
+    return 'Se borra el perfil $rfc. Las facturas que ya tengas no cambian.';
+  }
+
+  @override
+  String get datosFiscalesBorrarConfirmar => 'Borrar';
+
+  @override
+  String get datosFiscalesBorrarCancelar => 'Cancelar';
+
+  @override
+  String get datosFiscalesRevisa => 'Revisa los campos marcados.';
+
+  @override
+  String get datosFiscalesSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get datosFiscalesErrorGuardar =>
+      'No pudimos guardar tus datos fiscales. Intenta de nuevo.';
+
+  @override
+  String get datosFiscalesErrorBorrar =>
+      'No pudimos borrar estos datos fiscales. Intenta de nuevo.';
+
+  @override
+  String get datosFiscalesNoEncontradoTitulo =>
+      'Ya no encontramos estos datos fiscales';
+
+  @override
+  String get datosFiscalesNoEncontradoMensaje =>
+      'Vuelve a Datos fiscales para ver tus perfiles.';
+
+  @override
+  String get datosFiscalesErrorRfcVacio => 'Escribe el RFC.';
+
+  @override
+  String get datosFiscalesErrorRfcLargo =>
+      'El RFC tiene 12 caracteres (persona moral) o 13 (persona física).';
+
+  @override
+  String get datosFiscalesErrorRfcForma => 'El RFC no tiene la forma del SAT.';
+
+  @override
+  String get datosFiscalesErrorRfcGenerico =>
+      'El RFC genérico no se usa en un perfil.';
+
+  @override
+  String get datosFiscalesErrorRfcFecha => 'La fecha del RFC no existe.';
+
+  @override
+  String get datosFiscalesErrorRfcDigito =>
+      'El último carácter no coincide; revisa la homoclave.';
+
+  @override
+  String get datosFiscalesErrorRazonVacia =>
+      'Escribe el nombre o la razón social.';
+
+  @override
+  String get datosFiscalesErrorRazonLarga => 'El nombre es demasiado largo.';
+
+  @override
+  String get datosFiscalesErrorCodigoPostal => 'Escribe los 5 dígitos.';
+
+  @override
+  String get datosFiscalesErrorRegimenFalta => 'Elige tu régimen fiscal.';
+
+  @override
+  String get datosFiscalesErrorRegimenNoAplica =>
+      'Ese régimen no aplica a tu tipo de persona.';
+
+  @override
+  String get datosFiscalesErrorUsoFalta => 'Elige el uso del CFDI.';
+
+  @override
+  String get datosFiscalesErrorUsoNoAplica =>
+      'Ese uso no aplica a tu tipo de persona.';
+
+  @override
+  String get datosFiscalesErrorUsoNoAceptaRegimen =>
+      'Ese uso no se puede con tu régimen.';
+
+  @override
+  String get datosFiscalesErrorCorreo => 'Revisa el correo.';
 }

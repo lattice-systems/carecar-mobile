@@ -5345,4 +5345,212 @@ class AppLocalizationsEn extends AppLocalizations {
   String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo) {
     return '$vehiculo · $motivo';
   }
+
+  @override
+  String get datosFiscalesTitulo => 'Tax details';
+
+  @override
+  String get datosFiscalesSubtitulo => 'To invoice your services';
+
+  @override
+  String get datosFiscalesCargando => 'Loading your tax details';
+
+  @override
+  String get datosFiscalesReintentar => 'Try again';
+
+  @override
+  String get datosFiscalesVacioTitulo => 'You don\'t have tax details yet';
+
+  @override
+  String get datosFiscalesVacioMensaje =>
+      'Add them to request invoices for your services.';
+
+  @override
+  String get datosFiscalesAgregar => 'Add tax details';
+
+  @override
+  String get datosFiscalesEncabezado => 'Your profiles';
+
+  @override
+  String get datosFiscalesPie =>
+      'Enter them as they appear on your tax certificate. For now the app\'s invoices are simulated and have no tax validity.';
+
+  @override
+  String datosFiscalesFilaSubtitulo(
+    String rfc,
+    String persona,
+    String regimen,
+  ) {
+    return '$rfc · $persona · Regime $regimen';
+  }
+
+  @override
+  String get datosFiscalesPredeterminado => 'Default';
+
+  @override
+  String get datosFiscalesNuevoTitulo => 'New tax details';
+
+  @override
+  String get datosFiscalesEditarTitulo => 'Edit tax details';
+
+  @override
+  String get datosFiscalesSeccionContribuyente => 'Taxpayer';
+
+  @override
+  String get datosFiscalesSeccionFacturar => 'For invoicing';
+
+  @override
+  String get datosFiscalesRfc => 'RFC';
+
+  @override
+  String get datosFiscalesRfcSugerencia => 'GODE561231GR8';
+
+  @override
+  String get datosFiscalesRfcAyuda =>
+      '13 characters for an individual; 12 for a company.';
+
+  @override
+  String get datosFiscalesPersonaFisica => 'Individual';
+
+  @override
+  String get datosFiscalesPersonaMoral => 'Company';
+
+  @override
+  String get datosFiscalesRazonSocial => 'Name or company name';
+
+  @override
+  String get datosFiscalesRazonSocialAyuda =>
+      'As on your certificate, without the company type (S.A. de C.V.).';
+
+  @override
+  String get datosFiscalesCodigoPostal => 'Tax postal code';
+
+  @override
+  String get datosFiscalesCodigoPostalAyuda => 'The one of your tax address.';
+
+  @override
+  String get datosFiscalesRegimen => 'Tax regime';
+
+  @override
+  String get datosFiscalesRegimenSugerencia => 'Choose your regime';
+
+  @override
+  String get datosFiscalesUso => 'CFDI use';
+
+  @override
+  String get datosFiscalesUsoSugerencia => 'Choose the use';
+
+  @override
+  String get datosFiscalesUsoAyuda =>
+      'Only the ones your regime accepts are shown.';
+
+  @override
+  String datosFiscalesOpcion(String clave, String descripcion) {
+    return '$clave · $descripcion';
+  }
+
+  @override
+  String get datosFiscalesCorreo => 'Email for the invoice (optional)';
+
+  @override
+  String get datosFiscalesHacerPredeterminado => 'Use as default';
+
+  @override
+  String get datosFiscalesHacerPredeterminadoAyuda =>
+      'It\'s the one suggested when paying.';
+
+  @override
+  String get datosFiscalesGuardar => 'Save';
+
+  @override
+  String get datosFiscalesBorrar => 'Delete';
+
+  @override
+  String get datosFiscalesBorrarTitulo => 'Delete these tax details?';
+
+  @override
+  String datosFiscalesBorrarMensaje(String rfc) {
+    return 'Profile $rfc will be deleted. Invoices you already have won\'t change.';
+  }
+
+  @override
+  String get datosFiscalesBorrarConfirmar => 'Delete';
+
+  @override
+  String get datosFiscalesBorrarCancelar => 'Cancel';
+
+  @override
+  String get datosFiscalesRevisa => 'Check the highlighted fields.';
+
+  @override
+  String get datosFiscalesSinConexion =>
+      'No connection. Check your internet and try again.';
+
+  @override
+  String get datosFiscalesErrorGuardar =>
+      'We couldn\'t save your tax details. Please try again.';
+
+  @override
+  String get datosFiscalesErrorBorrar =>
+      'We couldn\'t delete these tax details. Please try again.';
+
+  @override
+  String get datosFiscalesNoEncontradoTitulo =>
+      'We can\'t find these tax details anymore';
+
+  @override
+  String get datosFiscalesNoEncontradoMensaje =>
+      'Go back to Tax details to see your profiles.';
+
+  @override
+  String get datosFiscalesErrorRfcVacio => 'Enter the RFC.';
+
+  @override
+  String get datosFiscalesErrorRfcLargo =>
+      'The RFC has 12 characters (company) or 13 (individual).';
+
+  @override
+  String get datosFiscalesErrorRfcForma =>
+      'The RFC doesn\'t have the SAT format.';
+
+  @override
+  String get datosFiscalesErrorRfcGenerico =>
+      'The generic RFC can\'t be used in a profile.';
+
+  @override
+  String get datosFiscalesErrorRfcFecha => 'The RFC date doesn\'t exist.';
+
+  @override
+  String get datosFiscalesErrorRfcDigito =>
+      'The last character doesn\'t match; check the homoclave.';
+
+  @override
+  String get datosFiscalesErrorRazonVacia => 'Enter the name or company name.';
+
+  @override
+  String get datosFiscalesErrorRazonLarga => 'The name is too long.';
+
+  @override
+  String get datosFiscalesErrorCodigoPostal => 'Enter all 5 digits.';
+
+  @override
+  String get datosFiscalesErrorRegimenFalta => 'Choose your tax regime.';
+
+  @override
+  String get datosFiscalesErrorRegimenNoAplica =>
+      'That regime doesn\'t apply to your taxpayer type.';
+
+  @override
+  String get datosFiscalesErrorUsoFalta => 'Choose the CFDI use.';
+
+  @override
+  String get datosFiscalesErrorUsoNoAplica =>
+      'That use doesn\'t apply to your taxpayer type.';
+
+  @override
+  String get datosFiscalesErrorUsoNoAceptaRegimen =>
+      'That use isn\'t allowed with your regime.';
+
+  @override
+  String get datosFiscalesErrorCorreo => 'Check the email.';
 }

@@ -1,0 +1,16 @@
+{
+  "perfilesFiscales": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "rfc": "GODE561231GR8",
+      "razonSocial": "DOLORES GÓMEZ",
+      "regimenFiscal": "612",
+      "codigoPostal": "76000",
+      "usoCfdi": "G03",
+      "correo": "cliente1@example.com",
+      "predeterminado": true,
+      "creadoEn": "2026-11-20T18:00:00.000Z"
+    }
+  ]
+}
