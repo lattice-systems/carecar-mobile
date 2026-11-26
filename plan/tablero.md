@@ -97,7 +97,7 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Lista | |
 | V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
-| V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | En revisión | |
+| V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | En revisión | #162 |
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54, #121 |
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57, #121 |
