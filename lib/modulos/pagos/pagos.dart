@@ -5,8 +5,22 @@
 library;
 
 export 'presentacion/pantalla_datos_fiscales.dart' show PantallaDatosFiscales;
+export 'presentacion/pantalla_metodos_pago.dart' show PantallaMetodosPago;
+export 'presentacion/pantalla_mis_pagos.dart' show PantallaMisPagos;
+export 'presentacion/pantalla_pagar_orden.dart' show PantallaPagarOrden;
+export 'presentacion/pantalla_pago.dart' show PantallaPago;
 export 'presentacion/pantalla_perfil_fiscal.dart' show PantallaPerfilFiscal;
 export 'presentacion/proveedores_datos_fiscales.dart'
     show repositorioDatosFiscalesProvider;
+export 'presentacion/proveedores_pagos.dart'
+    show eventoPagoConfirmado, repositorioPagosProvider;
 export 'presentacion/rutas_pagos.dart'
-    show rutaDatosFiscales, rutaPerfilFiscal, rutaPerfilFiscalNuevo, rutasPagos;
+    show
+        rutaDatosFiscales,
+        rutaMetodosPago,
+        rutaMisPagos,
+        rutaPagarOrden,
+        rutaPago,
+        rutaPerfilFiscal,
+        rutaPerfilFiscalNuevo,
+        rutasPagos;
