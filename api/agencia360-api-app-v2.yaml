@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.17.0
+  version: 2.18.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -72,6 +72,8 @@ tags:
     description: V2-M04.01, V2-M04.02, V2-M04.04 y V2-M04.05
   - name: Mantenimiento
     description: V2-M05.01, V2-M05.02, V2-M05.03 y V2-M05.06
+  - name: Garantía y campañas
+    description: V2-M10.01, V2-M10.02 y V2-M10.03
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
@@ -1611,6 +1613,106 @@ paths:
         '422':
           $ref: '#/components/responses/KmInvalido'
 
+  /vehiculos/{vehiculoId}/garantia:
+    get:
+      tags: [Garantía y campañas]
+      summary: Garantía del vehículo
+      description: |
+        V2-M10.01 · Cada componente cubierto con su fecha y km límite contra el km actual del
+        auto (el mismo del mantenimiento, V2-M05.02). La que vence primero va arriba. Por vencer
+        a 60 días o a 1 000 km del límite; vencida en cuanto pasa la fecha o el km. Sin
+        coberturas registradas responde 200 con `coberturas` vacío.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Garantía del vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GarantiaVehiculo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/campanas:
+    get:
+      tags: [Garantía y campañas]
+      summary: Campañas de seguridad del vehículo
+      description: |
+        V2-M10.02 · Las campañas (recalls) que aplican al vehículo por modelo, año y, si la
+        campaña lo trae, rango de VIN. Abiertas primero (la más grave arriba), luego agendadas
+        y atendidas. Una agendada cuya cita se canceló vuelve a `ABIERTA`. Sin campañas
+        responde 200 con la lista vacía. La app muestra la insignia en el garaje si alguna está
+        `ABIERTA`.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Campañas del vehículo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampanaSeguridad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/campanas/{campanaId}/cita:
+    post:
+      tags: [Garantía y campañas]
+      summary: Agendar la atención de una campaña
+      description: |
+        V2-M10.03 · Agenda una cita en la franja y el día elegidos (como `POST /citas`) con
+        `motivo` `campana`, y la campaña pasa a `AGENDADA` con esa cita. Si la cita se cancela,
+        la campaña vuelve a `ABIERTA`.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - name: campanaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendarCampana'
+      responses:
+        '201':
+          description: Cita confirmada para atender la campaña
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La campaña ya está agendada o atendida (`codigo` CAMPANA_NO_AGENDABLE), la franja ya no
+            tiene cupo (`codigo` FRANJA_SIN_CUPO) o el vehículo ya tiene una cita ese día
+            (`codigo` CITA_DUPLICADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
   /vehiculos/{vehiculoId}/gastos:
     get:
       tags: [Bitácora]
@@ -1901,6 +2003,13 @@ paths:
         - `arco.estado` (V2-M22.02), `AvisoArco`: cuando una solicitud de derechos ARCO cambia de
           estado (el archivo de acceso quedó listo, o falló). La app vuelve a consultar
           `GET /privacidad/arco`.
+        - `campana.nueva` (V2-M10.04), `AvisoCampanaNueva`: cuando la agencia publica una campaña
+          de seguridad que aplica a un vehículo del cliente. `critica` en `true` pide que el push
+          (V2-M06.07) no se pueda silenciar. La app vuelve a consultar
+          `GET /vehiculos/{vehiculoId}/campanas`.
+        - `garantia.por_vencer` (V2-M10.05), `AvisoGarantiaPorVencer`: una sola vez a 60 días, a
+          15 días y a 1 000 km del límite de cada cobertura. La app vuelve a consultar
+          `GET /vehiculos/{vehiculoId}/garantia`.
 
         Ejemplo en el flujo:
         ```
@@ -2744,8 +2853,11 @@ components:
     MotivoCita:
       type: string
       nullable: true
-      description: V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en minúsculas.
-      enum: [mantenimiento, reparacion, revision, garantia, otro]
+      description: |
+        V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en
+        minúsculas. V2-M10.03 · `campana` es el de las citas que atienden una campaña de
+        seguridad; se agendan desde la campaña.
+      enum: [mantenimiento, reparacion, revision, garantia, campana, otro]
 
     ReprogramarCita:
       type: object
@@ -3375,6 +3487,162 @@ components:
         estado:
           $ref: '#/components/schemas/EstadoAsistencia'
 
+    GarantiaVehiculo:
+      type: object
+      description: V2-M10.01 · La garantía de un vehículo
+      required: [vehiculoId, coberturas]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        kmActual:
+          type: integer
+          nullable: true
+          description: El km actual del auto (V2-M05.02); nulo si no se conoce.
+        coberturas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CoberturaGarantia'
+
+    CoberturaGarantia:
+      type: object
+      description: V2-M10.01 · Lo que cubre la garantía de un componente y hasta cuándo
+      required: [id, componente, iniciaEn, venceEn, diasRestantes, consumo, estado, limite]
+      properties:
+        id:
+          type: integer
+          format: int64
+        componente:
+          type: string
+          example: Motor y transmisión
+        descripcion:
+          type: string
+          nullable: true
+        iniciaEn:
+          type: string
+          format: date
+        venceEn:
+          type: string
+          format: date
+        kmLimite:
+          type: integer
+          nullable: true
+          example: 60000
+        diasRestantes:
+          type: integer
+          description: Días hasta `venceEn`; 0 si ya pasó.
+        kmRestantes:
+          type: integer
+          nullable: true
+          description: Km hasta `kmLimite`; nulo si no tiene km límite o no se conoce el km del auto.
+        consumo:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Porcentaje usado del tiempo o del km, lo que vaya más adelante.
+        estado:
+          type: string
+          enum: [VIGENTE, POR_VENCER, VENCIDA]
+        limite:
+          type: string
+          enum: [fecha, km]
+          description: El límite que se alcanza primero, o el que la venció.
+
+    CampanaSeguridad:
+      type: object
+      description: V2-M10.02 · Una campaña de seguridad para un vehículo del cliente
+      required: [id, codigo, titulo, descripcion, queHacer, gravedad, estado, publicadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id de la campaña; el mismo para todos los vehículos a los que aplica.
+        codigo:
+          type: string
+          example: RC-24-017
+        titulo:
+          type: string
+          example: Bolsa de aire del conductor
+        descripcion:
+          type: string
+        queHacer:
+          type: string
+          example: Agenda una revisión; el cambio no tiene costo.
+        gravedad:
+          type: string
+          enum: [BAJA, MEDIA, ALTA, CRITICA]
+        estado:
+          type: string
+          enum: [ABIERTA, AGENDADA, ATENDIDA]
+        citaId:
+          type: integer
+          format: int64
+          nullable: true
+          description: La cita que la atiende; nula si aún no se agenda.
+        publicadaEn:
+          type: string
+          format: date-time
+
+    AgendarCampana:
+      type: object
+      description: V2-M10.03 · Franja y día para atender la campaña
+      required: [franjaId, fecha]
+      properties:
+        franjaId:
+          type: integer
+          format: int64
+          description: Id de `franja_horario`; debe ser del día de `fecha`.
+        fecha:
+          type: string
+          format: date
+
+    AvisoCampanaNueva:
+      type: object
+      description: V2-M10.04 · `data` del evento `campana.nueva`
+      required: [vehiculoId, campanaId, codigo, titulo, gravedad, critica]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        campanaId:
+          type: integer
+          format: int64
+        codigo:
+          type: string
+        titulo:
+          type: string
+        gravedad:
+          type: string
+          enum: [BAJA, MEDIA, ALTA, CRITICA]
+        critica:
+          type: boolean
+          description: El push no se puede silenciar si es `true`.
+
+    AvisoGarantiaPorVencer:
+      type: object
+      description: V2-M10.05 · `data` del evento `garantia.por_vencer`
+      required: [vehiculoId, garantiaId, componente, venceEn, diasRestantes, motivo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        garantiaId:
+          type: integer
+          format: int64
+        componente:
+          type: string
+        venceEn:
+          type: string
+          format: date
+        diasRestantes:
+          type: integer
+        kmRestantes:
+          type: integer
+          description: Solo si la cobertura tiene km límite y se conoce el km del auto.
+        motivo:
+          type: string
+          enum: [dias_60, dias_15, km_1000]
+
     AvisoMantenimientoRecordatorio:
       type: object
       description: V2-M05.05 · `data` del evento `mantenimiento.recordatorio`
@@ -3985,6 +4253,7 @@ components:
             - ESTRENO_SIN_PRECIO
             - ESTRENO_DUPLICADA
             - AVISO_NO_VIGENTE
+            - CAMPANA_NO_AGENDABLE
           example: FRANJA_SIN_CUPO
         path:
           type: string
