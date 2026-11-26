@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -167,12 +168,13 @@ class _TeselaRota extends ImageProvider<_TeselaRota> {
       SynchronousFuture(this);
 
   @override
-  ImageStreamCompleter loadImage(
-    _TeselaRota key,
-    ImageDecoderCallback decode,
-  ) => OneFrameImageStreamCompleter(
-    Future.error(Exception('Sin conexión (simulada).')),
-  );
+  ImageStreamCompleter loadImage(_TeselaRota key, ImageDecoderCallback decode) {
+    // Como la descarga real, no deja el fallo en la caché: así se reintenta.
+    scheduleMicrotask(() => PaintingBinding.instance.imageCache.evict(key));
+    return OneFrameImageStreamCompleter(
+      Future.error(Exception('Sin conexión (simulada).')),
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
