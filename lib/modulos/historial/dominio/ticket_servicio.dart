@@ -15,6 +15,27 @@ class RenglonTicketServicio {
   final double importe;
 }
 
+/// Con que quedo pagada una orden (V2-M08.02), para su ticket.
+class PagoDelTicket {
+  const PagoDelTicket({
+    required this.id,
+    required this.enCaja,
+    required this.referencia,
+    this.marca,
+    this.ultimos4,
+    this.pagadoEn,
+  });
+
+  final int id;
+
+  /// Se cobro en el mostrador de la agencia.
+  final bool enCaja;
+  final String referencia;
+  final String? marca;
+  final String? ultimos4;
+  final DateTime? pagadoEn;
+}
+
 /// Ticket de una orden de servicio (V2-M02.06): mano de obra y refacciones con
 /// sus importes, y los totales. Los precios traen el IVA incluido.
 class TicketServicio {
@@ -33,6 +54,8 @@ class TicketServicio {
     required this.total,
     this.fechaCierre,
     this.puntosGanados,
+    this.pago,
+    this.pagable = false,
   });
 
   final int id;
@@ -52,6 +75,13 @@ class TicketServicio {
   /// Puntos de lealtad que dio la orden al entregarse (V2-M12.02); nulo si no
   /// dio.
   final int? puntosGanados;
+
+  /// Con que quedo pagada (V2-M08.02); nulo si no se ha pagado.
+  final PagoDelTicket? pago;
+
+  /// Se puede pagar en la app: viene del taller, esta lista o entregada, tiene
+  /// total y nadie la ha pagado (V2-M08.02).
+  final bool pagable;
 
   static const _centavo = 0.005;
 

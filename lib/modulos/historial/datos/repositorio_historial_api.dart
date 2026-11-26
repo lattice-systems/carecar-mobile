@@ -64,6 +64,18 @@ class RepositorioHistorialApi implements RepositorioHistorial {
       iva: d.iva,
       total: d.total,
       puntosGanados: d.puntosGanados,
+      pago: switch (d.pago) {
+        final pago? => PagoDelTicket(
+          id: pago.id,
+          enCaja: pago.medio == 'CAJA',
+          referencia: pago.referencia,
+          marca: pago.marca,
+          ultimos4: pago.ultimos4,
+          pagadoEn: pago.pagadoEn,
+        ),
+        null => null,
+      },
+      pagable: d.pagable,
     );
   }
 
