@@ -134,6 +134,138 @@ abstract class AppLocalizations {
   /// **'Confirma la contraseña nueva'**
   String get accesoCambiarConfirmarEtiqueta;
 
+  /// Error del campo del código cuando no están los seis dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'El código tiene 6 dígitos'**
+  String get accesoCambiarCorreoCodigoCorto;
+
+  /// Etiqueta del campo donde se escribe el código que llegó al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get accesoCambiarCorreoCodigoEtiqueta;
+
+  /// Los tres casos llegan iguales del servidor a propósito: responder distinto permitiría averiguar qué códigos existen.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese código no es válido, ya se usó o venció'**
+  String get accesoCambiarCorreoCodigoInvalido;
+
+  /// Botón de confirmar mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmando…'**
+  String get accesoCambiarCorreoConfirmando;
+
+  /// Botón que manda el código y aplica el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get accesoCambiarCorreoConfirmar;
+
+  /// Etiqueta de la contraseña actual, que se pide para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get accesoCambiarCorreoContrasenaEtiqueta;
+
+  /// Error del campo de la contraseña cuando está vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu contraseña'**
+  String get accesoCambiarCorreoContrasenaFalta;
+
+  /// El servidor dice que la contraseña actual no es la correcta. Llega en el mismo 400 que un correo mal escrito y solo los separa el código, así que la pantalla tiene que culpar al campo correcto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña no coincide'**
+  String get accesoCambiarCorreoContrasenaNoCoincide;
+
+  /// Explica por qué se pide la contraseña para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tu correo se entra a la app, así que confirmamos que eres tú.'**
+  String get accesoCambiarCorreoContrasenaPista;
+
+  /// El correo nuevo ya es de otro cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese correo ya está en uso'**
+  String get accesoCambiarCorreoCorreoEnUso;
+
+  /// Etiqueta del campo del correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo nuevo'**
+  String get accesoCambiarCorreoCorreoEtiqueta;
+
+  /// Error del campo del correo cuando no tiene formato. Se detecta en la app, sin viajar al servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un correo válido'**
+  String get accesoCambiarCorreoCorreoInvalido;
+
+  /// Botón de enviar el código mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get accesoCambiarCorreoEnviando;
+
+  /// Botón que pide el cambio y manda el código al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar el código'**
+  String get accesoCambiarCorreoEnviar;
+
+  /// Explica el primer paso del cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.'**
+  String get accesoCambiarCorreoExplicacion;
+
+  /// Título del aviso cuando falla pedir el cambio por una razón que no es la contraseña ni el correo en uso.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir el cambio'**
+  String get accesoCambiarCorreoFalloTitulo;
+
+  /// Mensaje al terminar el cambio. Dice lo que de verdad cambió: con qué correo se entra.
+  ///
+  /// In es, this message translates to:
+  /// **'A partir de ahora entras con {correo}.'**
+  String accesoCambiarCorreoListoMensaje(String correo);
+
+  /// Título al terminar el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu correo quedó actualizado'**
+  String get accesoCambiarCorreoListoTitulo;
+
+  /// Explica el segundo paso y recuerda a qué correo fue el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandamos un código a {correo}. Vence en 15 minutos.'**
+  String accesoCambiarCorreoPasoDosExplicacion(String correo);
+
+  /// Vuelve al primer paso para pedir un código nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro código'**
+  String get accesoCambiarCorreoPedirOtro;
+
+  /// Título de la pantalla que cambia el correo del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi correo'**
+  String get accesoCambiarCorreoTitulo;
+
+  /// Aviso cuando pasaron los 15 minutos antes de escribir el código. Se detecta en la app, sin gastar un viaje condenado.
+  ///
+  /// In es, this message translates to:
+  /// **'El código venció. Pide otro.'**
+  String get accesoCambiarCorreoVencio;
+
   /// Explica por qué no se puede seguir sin cambiarla.
   ///
   /// In es, this message translates to:
@@ -389,7 +521,7 @@ abstract class AppLocalizations {
   /// Pie de los datos del perfil. Son de solo lectura hasta que exista la edición (V2-M01.07), y conviene decir qué hacer mientras tanto en vez de dejar al cliente buscando un botón que no existe.
   ///
   /// In es, this message translates to:
-  /// **'Para cambiar tu teléfono o tu correo, comunícate con la agencia.'**
+  /// **'Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.'**
   String get accesoPerfilPie;
 
   /// Lo que se muestra cuando la agencia no capturó el teléfono del cliente, en vez de dejar el renglón vacío.

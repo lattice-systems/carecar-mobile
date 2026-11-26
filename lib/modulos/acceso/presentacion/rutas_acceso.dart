@@ -5,6 +5,7 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
 import 'pantalla_cambiar_contrasena.dart';
+import 'pantalla_cambiar_correo.dart';
 import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
 import 'pantalla_recuperar.dart';
@@ -15,6 +16,9 @@ import 'pantalla_sesiones.dart';
 /// `/perfil` esta tomado por el endpoint del contrato y `/ajustes` es la
 /// pantalla v1 que sigue viva, asi que no se usa ninguno de los dos.
 const rutaMiPerfil = '/mi-perfil';
+
+/// Cambiar mi correo (V2-M01.07). Se abre desde el perfil.
+const rutaCambiarCorreo = '/mi-perfil/correo';
 
 /// Mis sesiones abiertas (V2-M01.09). Se abre desde el perfil.
 ///
@@ -106,6 +110,12 @@ final rutasSesiones = <RouteBase>[
     name: 'mi-perfil',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaMiPerfil()),
+  ),
+  GoRoute(
+    path: rutaCambiarCorreo,
+    name: 'cambiar-correo',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaCambiarCorreo()),
   ),
   GoRoute(
     path: rutaSesiones,
