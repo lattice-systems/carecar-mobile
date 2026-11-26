@@ -141,7 +141,7 @@ Total: **218 historias** + 4 de H0.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0009-diagnostico-de-carecar.md) · captura Android y conteo en Agencia360 implementados · validación de distribución pendiente |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0009-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
 | V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
 | V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |

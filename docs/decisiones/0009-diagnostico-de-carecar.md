@@ -24,6 +24,8 @@ El workflow de distribución de Android prepara un artefacto con los símbolos D
 2. Con el APK profile de desarrollo y una cuenta de prueba, activar **Compartir analítica**. Provocar un cierre de la instancia de prueba y volver a abrirla. Comprobar que la API responde 204 a `{"tipo":"CRASH_ANDROID"}` y que una segunda reapertura no repite el evento. Repetir con el interruptor apagado y verificar que la API no recibe el reporte.
 3. Comprobar que el workflow de distribución publica el artefacto de símbolos Dart del APK.
 
+En el emulador API 37, con el APK profile de desarrollo, Android clasificó los cierres controlados con `SIGSEGV` como fallos de código nativo. El simulador recibió un evento con `tipo` como único campo y devolvió 204. La segunda apertura no repitió el envío. Un nuevo cierre con la opción apagada quedó fuera del reporte. Una sonda temporal reportó `ERROR_FLUTTER` al activar el permiso. Tanto esa categoría como `CRASH_ANDROID` quedaron fuera del envío con la opción apagada. El archivo de símbolos Dart x86_64 y `libapp.so` del APK tienen el mismo identificador de compilación.
+
 ## Consecuencias
 
 Agencia360 conserva el diagnóstico operativo y el panel. El historial de Android es limitado y el envío es de mejor esfuerzo. El conteo se agrega al día de recepción. Los símbolos Dart sirven para inspeccionar trazas obtenidas por separado.
