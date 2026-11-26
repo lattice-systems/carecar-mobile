@@ -4,6 +4,7 @@ import '../../../api/excepciones.dart';
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_acceso_api.dart';
 import '../dominio/fallos_acceso.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -29,6 +30,17 @@ final repositorioAccesoProvider = Provider<RepositorioAcceso>(
 final relojAccesoProvider = Provider<DateTime Function()>(
   (ref) => DateTime.now,
   name: 'relojAccesoProvider',
+);
+
+/// Los datos del cliente que inicio sesion · V2-M01.06.
+///
+/// De solo lectura, asi que basta un `FutureProvider`: no hay nada que
+/// modificar hasta que exista la edicion (V2-M01.07).
+final perfilProvider = FutureProvider<PerfilDelCliente>(
+  (ref) => ref.watch(repositorioAccesoProvider).perfil(),
+  // El reintento es del usuario, con el boton de `EstadoError`.
+  retry: (_, _) => null,
+  name: 'perfilProvider',
 );
 
 /// Las sesiones abiertas de la cuenta · V2-M01.09.

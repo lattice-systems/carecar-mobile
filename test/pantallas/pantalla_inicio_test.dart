@@ -356,7 +356,8 @@ void main() {
     espera.completeError(const SinConexion('Sin conexión de prueba'));
     await tester.pumpAndSettle();
     expect(find.text('Sin conexión'), findsOneWidget);
-    api.alPedirPerfil = () async => const Perfil(id: 1, nombre: '', correo: '');
+    api.alPedirPerfil = () async =>
+        Perfil(id: 1, nombre: '', correo: '', clienteDesde: DateTime(2024, 3));
     await _tocar(tester, 'Reintentar');
     // Con datos vacios el perfil no inventa nombre ni correo.
     expect(find.text('Nombre del cliente'), findsNothing);

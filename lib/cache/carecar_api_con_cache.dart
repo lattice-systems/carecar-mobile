@@ -134,7 +134,15 @@ class CarecarApiConCache implements CarecarApi {
   Future<Perfil> miPerfil() => _leer<Perfil>(
     'perfil',
     _api.miPerfil,
-    (p) => {'id': p.id, 'nombre': p.nombre, 'correo': p.correo},
+    (p) => {
+      'id': p.id,
+      'nombre': p.nombre,
+      'correo': p.correo,
+      'telefono': p.telefono,
+      // Como fecha, no como instante: el servidor ya la resolvio en la zona de
+      // la agencia y guardarla con hora la correria un dia al releerla.
+      'clienteDesde': escribirFecha(p.clienteDesde),
+    },
     (j) => Perfil.fromJson((j! as Map).cast<String, Object?>()),
   );
 

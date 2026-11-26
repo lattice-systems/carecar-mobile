@@ -177,10 +177,12 @@ class ApiFalsa implements CarecarApi {
   Future<Perfil> miPerfil() async {
     llamadasAPerfil++;
     return alPedirPerfil == null
-        ? const Perfil(
+        ? Perfil(
             id: 1,
             nombre: 'María Robles',
             correo: 'cliente1@example.com',
+            telefono: '477 123 4567',
+            clienteDesde: DateTime(2024, 3),
           )
         : alPedirPerfil!();
   }

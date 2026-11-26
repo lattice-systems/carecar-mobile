@@ -138,10 +138,11 @@ void main() {
       ..alPedirPerfil = () async {
         intentos++;
         if (intentos == 1) throw const SinConexion();
-        return const Perfil(
+        return Perfil(
           id: 1,
           nombre: 'María Robles',
           correo: 'cliente1@example.com',
+          clienteDesde: DateTime(2024, 3),
         );
       };
     await _montar(tester, api);
