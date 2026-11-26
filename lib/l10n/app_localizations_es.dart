@@ -88,6 +88,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCorreoVacio => 'Escribe tu correo.';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'El enlace ya no sirve';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Pedir otro enlace';
+
+  @override
   String get accesoEntrando => 'Entrando…';
 
   @override
@@ -98,16 +108,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoMarca => 'CareCar';
-
-  @override
-  String get accesoEnlaceNoValidoMensaje =>
-      'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
-
-  @override
-  String get accesoEnlaceNoValidoTitulo => 'El enlace ya no sirve';
-
-  @override
-  String get accesoEnlacePedirOtro => 'Pedir otro enlace';
 
   @override
   String get accesoNuevaExplicacion =>
@@ -136,6 +136,53 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
+
+  @override
+  String get accesoPerfilCargando => 'Cargando tu perfil…';
+
+  @override
+  String get accesoPerfilClienteDesde => 'Cliente desde';
+
+  @override
+  String get accesoPerfilCorreo => 'Correo';
+
+  @override
+  String get accesoPerfilCuentaEncabezado => 'Tu cuenta';
+
+  @override
+  String get accesoPerfilDatosEncabezado => 'Tus datos';
+
+  @override
+  String get accesoPerfilMisSesiones => 'Mis sesiones';
+
+  @override
+  String get accesoPerfilMisSesionesDetalle =>
+      'Mira y cierra las sesiones abiertas en otros dispositivos';
+
+  @override
+  String get accesoPerfilNombre => 'Nombre';
+
+  @override
+  String get accesoPerfilPie =>
+      'Para cambiar tu teléfono o tu correo, comunícate con la agencia.';
+
+  @override
+  String get accesoPerfilSinTelefono => 'Sin teléfono registrado';
+
+  @override
+  String get accesoPerfilSinVehiculos => 'No tienes vehículos registrados';
+
+  @override
+  String get accesoPerfilTelefono => 'Teléfono';
+
+  @override
+  String get accesoPerfilTitulo => 'Mi perfil';
+
+  @override
+  String get accesoPerfilVehiculosEncabezado => 'Tus vehículos';
+
+  @override
+  String get accesoPerfilVehiculosFallo => 'No pudimos traer tus vehículos';
 
   @override
   String get accesoRecuperarEnviado => 'Revisa tu correo';

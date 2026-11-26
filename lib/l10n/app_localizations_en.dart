@@ -88,6 +88,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoCorreoVacio => 'Enter your email.';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Links expire soon and work only once. Ask for a new one and check your email.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'This link no longer works';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Ask for another link';
+
+  @override
   String get accesoEntrando => 'Signing in…';
 
   @override
@@ -98,16 +108,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accesoMarca => 'CareCar';
-
-  @override
-  String get accesoEnlaceNoValidoMensaje =>
-      'Links expire soon and work only once. Ask for a new one and check your email.';
-
-  @override
-  String get accesoEnlaceNoValidoTitulo => 'This link no longer works';
-
-  @override
-  String get accesoEnlacePedirOtro => 'Ask for another link';
 
   @override
   String get accesoNuevaExplicacion =>
@@ -136,6 +136,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accesoOlvide => 'Forgot your password?';
+
+  @override
+  String get accesoPerfilCargando => 'Loading your profile…';
+
+  @override
+  String get accesoPerfilClienteDesde => 'Customer since';
+
+  @override
+  String get accesoPerfilCorreo => 'Email';
+
+  @override
+  String get accesoPerfilCuentaEncabezado => 'Your account';
+
+  @override
+  String get accesoPerfilDatosEncabezado => 'Your details';
+
+  @override
+  String get accesoPerfilMisSesiones => 'My sessions';
+
+  @override
+  String get accesoPerfilMisSesionesDetalle =>
+      'See and close the sessions open on other devices';
+
+  @override
+  String get accesoPerfilNombre => 'Name';
+
+  @override
+  String get accesoPerfilPie =>
+      'To change your phone or email, get in touch with the dealership.';
+
+  @override
+  String get accesoPerfilSinTelefono => 'No phone on file';
+
+  @override
+  String get accesoPerfilSinVehiculos => 'You have no vehicles registered';
+
+  @override
+  String get accesoPerfilTelefono => 'Phone';
+
+  @override
+  String get accesoPerfilTitulo => 'My profile';
+
+  @override
+  String get accesoPerfilVehiculosEncabezado => 'Your vehicles';
+
+  @override
+  String get accesoPerfilVehiculosFallo => 'We couldn\'t load your vehicles';
 
   @override
   String get accesoRecuperarEnviado => 'Check your email';
