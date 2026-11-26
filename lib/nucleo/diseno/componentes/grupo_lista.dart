@@ -9,7 +9,9 @@ import 'rebote_tactil.dart';
 ///
 /// `icono` se dibuja sobre un cuadro redondeado de `colorIcono` (por defecto el
 /// acento). Con `alToque` la fila entera es tocable y muestra un chevron. El
-/// lector de pantalla recibe un solo nodo con titulo y subtitulo.
+/// lector de pantalla recibe un solo nodo con titulo, subtitulo y
+/// `etiquetaFin`; el `fin` no se lee, asi que una cifra que importa va tambien
+/// en `etiquetaFin` dicha en palabras.
 class FilaGrupo {
   const FilaGrupo({
     required this.titulo,
@@ -17,6 +19,7 @@ class FilaGrupo {
     this.icono,
     this.colorIcono,
     this.fin,
+    this.etiquetaFin,
     this.alToque,
   });
 
@@ -27,6 +30,10 @@ class FilaGrupo {
 
   /// Texto o adorno antes del chevron, por ejemplo un valor.
   final Widget? fin;
+
+  /// Lo que oye el lector del `fin`, por ejemplo «Ganaste 230 puntos» por
+  /// «+230»; nulo si el `fin` es solo adorno.
+  final String? etiquetaFin;
   final VoidCallback? alToque;
 }
 
@@ -187,9 +194,7 @@ class _Fila extends StatelessWidget {
     return Semantics(
       container: true,
       button: tocable,
-      label: fila.subtitulo == null
-          ? fila.titulo
-          : '${fila.titulo}. ${fila.subtitulo}',
+      label: [fila.titulo, ?fila.subtitulo, ?fila.etiquetaFin].join('. '),
       onTap: fila.alToque,
       excludeSemantics: true,
       child: tocable
