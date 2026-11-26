@@ -128,6 +128,21 @@ void main() {
     expect(find.byType(BotonRegresar), findsNothing);
   });
 
+  testWidgets('los tres encabezados del formulario tienen el mismo estilo', (
+    tester,
+  ) async {
+    await _montar(tester);
+
+    // El primero era la etiqueta pequeña de la lista y los otros dos títulos:
+    // tres títulos de sección de dos tamaños en una misma pantalla.
+    TextStyle? estilo(String texto) =>
+        tester.widget<Text>(find.text(texto)).style;
+    final vehiculo = estilo('¿Qué vehículo necesita ayuda?');
+    expect(vehiculo, isNotNull);
+    expect(estilo('¿Qué pasó?'), vehiculo);
+    expect(estilo('Tu ubicación'), vehiculo);
+  });
+
   testWidgets('trae vehiculos, tipos, ubicacion y el control de deslizar', (
     tester,
   ) async {
