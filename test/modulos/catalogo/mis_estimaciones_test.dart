@@ -6,9 +6,12 @@ import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fak
 import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_pantalla.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
-import 'package:carecar_mobile/nucleo/diseno/componentes/fila_lista.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +68,9 @@ Widget _app(ApiFalsa api, {Escenario escenario = Escenario.claro}) =>
       ),
     );
 
+/// Una fila por estimación: cada una lleva el icono de la calculadora.
+final _filas = find.byIcon(Icons.calculate_outlined);
+
 void _pantallaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(800, 3000);
   tester.view.devicePixelRatio = 1;
@@ -103,7 +109,7 @@ void main() {
     await tester.pumpWidget(_app(api));
     await tester.pumpAndSettle();
 
-    expect(find.byType(FilaLista), findsNWidgets(2));
+    expect(_filas, findsNWidgets(2));
     expect(find.text('Nissan March 2020'), findsOneWidget);
     expect(find.text('Nissan Versa 2020'), findsOneWidget);
     expect(
@@ -114,6 +120,24 @@ void main() {
     expect(find.textContaining('22 nov 2026'), findsNWidgets(2));
     expect(find.text('Ver más'), findsNothing);
   });
+
+  testWidgets(
+    'usa el marco del sistema: regreso, título grande y lista agrupada',
+    (tester) async {
+      _pantallaAlta(tester);
+      final api = ApiFalsa()
+        ..estimaciones = [_estimacion(2), _estimacion(1, modelo: 'Versa')];
+      await tester.pumpWidget(_app(api));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarcoPantalla), findsOneWidget);
+      expect(find.byType(BotonRegresar), findsOneWidget);
+      expect(find.byType(GrupoLista), findsOneWidget);
+      expect(find.byType(BarraPantalla), findsNothing);
+      // «Mis valuaciones» sigue a un toque, en la barra del marco.
+      expect(find.bySemanticsLabel('Mis valuaciones'), findsOneWidget);
+    },
+  );
 
   testWidgets('tocar una abre el detalle guardado con la leyenda', (
     tester,
@@ -156,12 +180,12 @@ void main() {
       ];
     await tester.pumpWidget(_app(api));
     await tester.pumpAndSettle();
-    expect(find.byType(FilaLista), findsNWidgets(20));
+    expect(_filas, findsNWidgets(20));
 
     await tester.ensureVisible(find.text('Ver más'));
     await tester.tap(find.text('Ver más'));
     await tester.pumpAndSettle();
-    expect(find.byType(FilaLista), findsNWidgets(25));
+    expect(_filas, findsNWidgets(25));
     expect(find.text('Ver más'), findsNothing);
   });
 
@@ -179,14 +203,14 @@ void main() {
     await tester.tap(find.text('Ver más'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(FilaLista), findsNWidgets(20));
+    expect(_filas, findsNWidgets(20));
     expect(find.byType(Aviso), findsOneWidget);
     expect(find.text('Ver más'), findsOneWidget);
 
     api.cae = false;
     await tester.tap(find.text('Ver más'));
     await tester.pumpAndSettle();
-    expect(find.byType(FilaLista), findsNWidgets(25));
+    expect(_filas, findsNWidgets(25));
     expect(find.byType(Aviso), findsNothing);
   });
 
@@ -196,6 +220,7 @@ void main() {
     expect(find.byType(EstadoVacio), findsOneWidget);
     expect(find.text('Aún no tienes estimaciones'), findsOneWidget);
     expect(find.text('Calcular una estimación'), findsOneWidget);
+    expect(find.byType(BotonRegresar), findsOneWidget);
   });
 
   testWidgets('sin conexion ofrece reintentar y recupera', (tester) async {

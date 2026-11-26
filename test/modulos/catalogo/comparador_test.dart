@@ -2,8 +2,11 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_pantalla.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -157,6 +160,18 @@ void main() {
     expect(find.text('Sin dato'), findsNWidgets(6));
   });
 
+  testWidgets('usa el marco del sistema: título grande y regreso', (
+    tester,
+  ) async {
+    _pantallaAlta(tester);
+    await tester.pumpWidget(_app(_api(), [1, 2]));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MarcoPantalla), findsOneWidget);
+    expect(find.byType(BotonRegresar), findsOneWidget);
+    expect(find.byType(BarraPantalla), findsNothing);
+  });
+
   testWidgets('resalta el precio mas bajo', (tester) async {
     _pantallaAlta(tester);
     await tester.pumpWidget(_app(_api(), [1, 2]));
@@ -175,6 +190,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(EstadoVacio), findsOneWidget);
     expect(find.text('Elige de dos a tres modelos'), findsOneWidget);
+    // Un estado no deja la pantalla sin salida: conserva el marco.
+    expect(find.byType(BotonRegresar), findsOneWidget);
   });
 
   testWidgets('un modelo retirado explica que ya no esta', (tester) async {
