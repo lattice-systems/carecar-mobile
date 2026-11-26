@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/cita.dart';
+import '../../../api/modelos/disponibilidad.dart';
 import '../../../api/modelos/problema.dart';
 import '../../../api/modelos/recoleccion_cita.dart';
 import '../../../api/modelos/traslado.dart';
@@ -30,18 +31,27 @@ class RepositorioCitasApi implements RepositorioCitas {
     required DateTime desde,
     required DateTime hasta,
   }) async {
-    final dto = await _api.disponibilidad(desde: desde, hasta: hasta);
-    return DisponibilidadTaller(
-      dto.map(
-        (d) => FranjaDisponible(
-          franjaId: d.franjaId,
-          fecha: d.fecha,
-          horaInicio: d.horaInicio,
-          horaFin: d.horaFin,
-          cupo: d.cupoDisponible,
-        ),
-      ),
-    );
+    // El backend acepta rangos inclusivos de hasta 31 días por consulta.
+    final consultas = <Future<List<Disponibilidad>>>[];
+    var inicio = desde;
+    do {
+      final limite = DateTime(inicio.year, inicio.month, inicio.day + 30);
+      final fin = limite.isBefore(hasta) ? limite : hasta;
+      consultas.add(_api.disponibilidad(desde: inicio, hasta: fin));
+      inicio = DateTime(fin.year, fin.month, fin.day + 1);
+    } while (!inicio.isAfter(hasta));
+    final paginas = await Future.wait(consultas);
+    return DisponibilidadTaller([
+      for (final pagina in paginas)
+        for (final d in pagina)
+          FranjaDisponible(
+            franjaId: d.franjaId,
+            fecha: d.fecha,
+            horaInicio: d.horaInicio,
+            horaFin: d.horaFin,
+            cupo: d.cupoDisponible,
+          ),
+    ]);
   }
 
   @override

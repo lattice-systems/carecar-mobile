@@ -125,6 +125,48 @@ void main() {
       });
 
       test(
+        'analítica acepta el catálogo y rechaza campos libres y citas ajenas',
+        () async {
+          final sesion = await pedir('POST', '/auth/login', cuerpo: _login);
+          final token =
+              (jsonDecode(sesion.body) as Map<String, dynamic>)['accessToken']
+                  as String;
+          const ruta = '/analitica/eventos';
+          const intento = '12345678-1234-4123-8123-123456789012';
+          final aceptada = await pedir(
+            'POST',
+            ruta,
+            token: token,
+            cuerpo: {'tipo': 'CONFIRMADA', 'intento': intento, 'citaId': 1},
+          );
+          expect(operaciones['POST $ruta']!['responses'], contains('204'));
+          expect(aceptada.statusCode, 204);
+          expect(
+            (await pedir(
+              'POST',
+              ruta,
+              token: token,
+              cuerpo: {'tipo': 'ERROR_FLUTTER', 'mensaje': 'dato no permitido'},
+            )).statusCode,
+            400,
+          );
+          expect(
+            (await pedir(
+              'POST',
+              ruta,
+              token: token,
+              cuerpo: {
+                'tipo': 'CONFIRMADA',
+                'intento': intento,
+                'citaId': 9999,
+              },
+            )).statusCode,
+            404,
+          );
+        },
+      );
+
+      test(
         'las operaciones protegidas devuelven Problema sin sesión',
         () async {
           for (final entrada in operaciones.entries) {

@@ -13,6 +13,7 @@ function crearServidor(datos, { logger = true } = {}) {
   servidor.use(jsonServer.bodyParser);
 
   require('./modulos/acceso')(servidor, db);
+  require('./modulos/analitica')(servidor, db);
   const vehiculoDelCliente = require('./modulos/vehiculos')(servidor, db);
   const emitirEvento = require('./modulos/eventos')(servidor);
   const recoleccion = require('./modulos/recoleccion')(servidor, db, emitirEvento);

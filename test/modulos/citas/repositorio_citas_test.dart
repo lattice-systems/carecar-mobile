@@ -52,6 +52,29 @@ void main() {
         throwsA(isA<SinConexion>()),
       );
     });
+
+    test('divide una agenda de 61 días en rangos inclusivos válidos', () async {
+      final rangos = <(DateTime, DateTime)>[];
+      final api = ApiFalsa()
+        ..alPedirDisponibilidad = (inicio, fin) async {
+          rangos.add((inicio, fin));
+          return [
+            Disponibilidad(
+              fecha: fin,
+              franjaId: 1,
+              horaInicio: '09:00',
+              horaFin: '10:00',
+              cupoDisponible: 2,
+            ),
+          ];
+        };
+      final fin = DateTime(2027, 1, 22);
+      final taller = await RepositorioCitasApi(api)
+          .disponibilidad(desde: desde, hasta: fin);
+      expect(rangos, [(desde, hasta), (DateTime(2026, 12, 24), fin)]);
+      expect(taller.tieneCupo(hasta), isTrue);
+      expect(taller.tieneCupo(fin), isTrue);
+    });
   });
 
   group('RepositorioCitasFake', () {

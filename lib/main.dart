@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +14,10 @@ import 'cache/carecar_api_con_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/widgets/widgets.dart';
+import 'nucleo/analitica/ambito_analitica.dart';
+import 'nucleo/analitica/analitica.dart';
+import 'nucleo/analitica/observador_analitica.dart';
+import 'nucleo/analitica/proveedores_analitica.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/datos/reintento.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
@@ -36,6 +43,7 @@ Future<void> main() => arrancar(Flavor.produccion);
 
 /// Arranca la app en el [flavor] dado (V2-T01.04).
 Future<void> arrancar(Flavor flavor) async {
+  final relojArranque = Stopwatch()..start();
   Flavor.actual = flavor;
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
@@ -54,7 +62,9 @@ Future<void> arrancar(Flavor flavor) async {
   );
   // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
   // alcance anidado no vería los proveedores del enrutador.
-  runApp(AppCareCar(prefs: prefs, politica: politica));
+  runApp(
+    AppCareCar(prefs: prefs, politica: politica, relojArranque: relojArranque),
+  );
 }
 
 /// Arma la app y conecta las piezas.
@@ -71,11 +81,13 @@ class AppCareCar extends StatefulWidget {
     super.key,
     this.prefs,
     this.politica,
+    this.relojArranque,
     this.duracionArranque = const Duration(milliseconds: 1200),
   });
 
   /// Tiempo minimo que se ve la cortina de arranque (cero en pruebas).
   final Duration duracionArranque;
+  final Stopwatch? relojArranque;
 
   /// Que se puede guardar en el equipo segun su integridad (V2-M22.05). Sin
   /// ella la app se comporta como en un equipo sin señal de riesgo.
@@ -92,6 +104,7 @@ class _AppCareCarState extends State<AppCareCar> {
   ControladorSesion? _sesion;
   ClienteApi? _cliente;
   CarecarApi? _api;
+  EnviarAnalitica? _enviarAnalitica;
   Object? _errorDeArranque;
 
   /// Mientras se lee la sesion guardada no se sabe si hay que mostrar el login.
@@ -135,6 +148,25 @@ class _AppCareCarState extends State<AppCareCar> {
               politica: widget.politica,
             );
       sesion = ControladorSesion(api, almacen);
+      _enviarAnalitica = (evento, siguePermitido) async {
+        final estado = sesion.estado;
+        if (estado is! Autenticada || estado.debeCambiarContrasena) return;
+        final guardada = await almacen.leer();
+        if (guardada == null ||
+            !identical(sesion.estado, estado) ||
+            !siguePermitido())
+          return;
+        await http
+            .post(
+              cliente.config.ruta('/analitica/eventos'),
+              headers: {
+                'Authorization': 'Bearer ${guardada.accessToken}',
+                'Content-Type': 'application/json',
+              },
+              body: jsonEncode(evento),
+            )
+            .timeout(const Duration(seconds: 5));
+      };
 
       _cliente = cliente;
       _api = api;
@@ -189,6 +221,8 @@ class _AppCareCarState extends State<AppCareCar> {
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
           controladorSesionProvider.overrideWithValue(_sesion!),
+        if (_enviarAnalitica != null)
+          transporteAnaliticaProvider.overrideWithValue(_enviarAnalitica),
       ],
       child: _construirApp(),
     );
@@ -231,21 +265,37 @@ class _AppCareCarState extends State<AppCareCar> {
             // lo mismo y porque observa la sesion.
             // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
             // tapar tambien la cortina y los dialogos en el selector de apps.
-            builder: (context, child) => CubiertaEnSegundoPlano(
-              child: InstaladorDeAccesosRapidos(
-                child: SincronizadorDeWidgets(
-                  child: ShadAppBuilder(
-                    child: AvisoEquipoComprometido(
-                      child: CortinaArranque(
-                        listo: !_restaurando,
-                        duracionMinima: widget.duracionArranque,
-                        siguiente: (_) => child!,
+            builder: (context, child) {
+              final analitica = ref.read(analiticaProvider);
+              Widget contenido([VoidCallback? primeraPantalla]) =>
+                  CubiertaEnSegundoPlano(
+                    child: InstaladorDeAccesosRapidos(
+                      child: SincronizadorDeWidgets(
+                        child: ShadAppBuilder(
+                          child: AvisoEquipoComprometido(
+                            child: CortinaArranque(
+                              listo: !_restaurando,
+                              duracionMinima: widget.duracionArranque,
+                              alTerminar: primeraPantalla,
+                              siguiente: (_) => AmbitoAnalitica(
+                                analitica: analitica,
+                                child: child!,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
+                  );
+              final reloj = widget.relojArranque;
+              return reloj == null
+                  ? contenido()
+                  : ObservadorAnalitica(
+                      analitica: analitica,
+                      reloj: reloj,
+                      construir: contenido,
+                    );
+            },
           ),
         );
       },

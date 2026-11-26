@@ -1,5 +1,14 @@
 import 'dart:math';
 
+int estimarCuadrosPerdidos(Duration compilacion, Duration raster, double hz) {
+  final frecuencia = hz.isFinite && hz > 0 ? hz : 60.0;
+  final costo = max(compilacion.inMicroseconds, raster.inMicroseconds);
+  return max(
+    0,
+    (costo * frecuencia / Duration.microsecondsPerSecond).ceil() - 1,
+  );
+}
+
 typedef EnviarAnalitica = Future<void> Function(
   Map<String, Object> evento,
   bool Function() siguePermitido,
