@@ -10,6 +10,7 @@ export 'dominio/fallos_acceso.dart' show EnlaceNoValido;
 export 'dominio/reglas_contrasena.dart'
     show ReglasContrasena, RevisionContrasena;
 export 'dominio/repositorio_acceso.dart' show RepositorioAcceso;
+export 'dominio/sesion_de_la_cuenta.dart' show SesionDeLaCuenta;
 export 'presentacion/pantalla_acceso.dart' show PantallaAcceso;
 export 'presentacion/pantalla_cambiar_contrasena.dart'
     show ListaDeReglas, PantallaCambiarContrasena;
