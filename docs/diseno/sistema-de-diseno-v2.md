@@ -50,6 +50,30 @@ Degradado de héroe (detrás de la foto del auto): de `superficieHundida` a `fon
 
 - **Texto:** Geist (SIL OFL), empaquetada en `assets/fonts`. Respaldo: Inter (ya empaquetada en v1).
 - **Números y códigos:** Geist Mono con cifras tabulares — km, VIN, placas, precios, horas, folios.
+- **Pesos empaquetados:** Geist 400, 500 y 600. Geist Mono 500. Son los de la tabla y la app no descarga fuentes mientras corre. Si un estilo pide otro peso, como 700, el motor usa el más cercano que sí viene (600). Un peso nuevo entra primero en la tabla y luego en `pubspec.yaml`. Lo vigila `test/nucleo/diseno/tokens/fuentes_empaquetadas_test.dart`.
+
+### Origen de las fuentes
+
+| Dato | Valor |
+| --- | --- |
+| Versión | `v1.9.2` de [vercel/geist-font](https://github.com/vercel/geist-font/releases/tag/v1.9.2) |
+| Paquete | <https://github.com/vercel/geist-font/releases/download/v1.9.2/geist-font-v1.9.2.zip> |
+| SHA-256 del paquete | `15f066d58dcb99fb10014a49913009fdaf41e464cfb8851a44b44e593c95d3d8` |
+| Licencia | SIL Open Font License 1.1, en `assets/fonts/Geist-OFL.txt` |
+
+Los archivos son los TTF estáticos del paquete, sin modificar. Solo cambia el nombre.
+
+| En `assets/fonts` | En el paquete (`geist-font/`) | SHA-256 |
+| --- | --- | --- |
+| `Geist-400.ttf` | `Geist/ttf/Geist-Regular.ttf` | `2c460a7a71063e53491f343d44b382267bc0cf496e31db64865f962af3152e68` |
+| `Geist-500.ttf` | `Geist/ttf/Geist-Medium.ttf` | `e9099e006d4934cae4a8c7d14a1ca2ea724ee2f69f9bdd5b2ffe715baf5524fc` |
+| `Geist-600.ttf` | `Geist/ttf/Geist-SemiBold.ttf` | `01923aa148e5202ae70a2e11b2ab4dc41b80bcc374aedccc913d47bb2f591c06` |
+| `GeistMono-500.ttf` | `GeistMono/ttf/GeistMono-Medium.ttf` | `34c0828460d47e697655bc9d730027a4b8baf6e6c9aa46f5f32b653b4797cf36` |
+| `Geist-OFL.txt` | `OFL.txt` | `021caa749f89fecd7c2e40a50499de29e84d2bc19251659b47d499c2fbfffc17` |
+
+Las cuatro fuentes suman 531 KB sin comprimir y unos 249 KB con compresión deflate, que es la estimación de lo que crece el APK. La app no tiene pantalla de licencias, así que no se registra en `LicenseRegistry`. Cada TTF lleva el aviso de derechos y de licencia en sus metadatos. Si algún día se agrega esa pantalla, hay que registrar `Geist-OFL.txt`.
+
+`shadcn_ui` trae su propia copia variable de Geist bajo `packages/shadcn_ui/`, que es de la v1 y se va con V2-T02.08.
 
 | Token | Tamaño / interlineado | Peso | Tracking |
 | --- | --- | --- | --- |
@@ -198,7 +222,7 @@ Cada componente documenta: anatomía, variantes, estados (normal, presionado, fo
 
 ### Pruebas golden
 
-Las pruebas de Pantalla y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee Inter y JetBrains Mono desde `assets/fonts/` y Material Icons desde el directorio de recursos que prepara `flutter test`. Registra las fuentes de respaldo con los nombres tipográficos de los tokens mientras Geist y Geist Mono estén pendientes en V2-T02.02. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+Las pruebas de Pantalla y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee de `assets/fonts/` los mismos pesos de Geist y Geist Mono que declara `pubspec.yaml`, más Inter y JetBrains Mono de respaldo. Material Icons sale del directorio de recursos que prepara `flutter test`. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
 
 Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
 
