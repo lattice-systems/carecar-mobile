@@ -113,10 +113,13 @@ PR sugeridos en la app: (1) módulo, solicitud, lista, detalle y simulador, (2) 
 La app está construida contra `mock_api`. El módulo vive en `lib/modulos/valuacion/` (`dominio/`, `datos/`, `presentacion/`) y su contrato público es `valuacion.dart`. No importa `catalogo`. Es nuevo en v2: sus rutas se registran sin interruptor v1/v2.
 
 - **Solicitud, lista y detalle (V2-M26.01):** `BotonPedirValuacion` está en el resultado de la calculadora y en la hoja de una estimación guardada. «Mis estimaciones» abre «Mis valuaciones» desde su barra. `VALUACION_SIN_VEHICULO` se explica sin salir de la pantalla. La lista se pide por páginas.
-- **Fotos guiadas (V2-M26.02):** las 8 tomas con su silueta, instrucción, «Tomar foto» y «Elegir de la galería». Cada subida se guarda por toma en memoria. De dos subidas a la vez queda de cada toma la más reciente. Sin permiso, el aviso y «Abrir ajustes» van en la barra inferior para que se vean aunque la lista esté desplazada.
+- **Fotos guiadas (V2-M26.02):** las 8 tomas con su silueta, instrucción, «Tomar foto» y «Elegir de la galería». Cada subida se guarda por toma en memoria. De dos subidas a la vez queda de cada toma la más reciente. Sin permiso, el aviso y «Abrir ajustes» van en la barra inferior para que se vean aunque la lista esté desplazada. Un 400 o un 413 por tamaño se explican y conservan la foto.
+- **Orientación de la foto:** el servidor borra el EXIF sin aplicar la orientación. En Android, `image_picker` reduce la foto sin girar los píxeles y solo copia la marca (`ImageResizer.java`), así que `datos/enderezar_foto.dart` la manda ya girada. `dart:ui` solo escribe PNG: una foto girada viaja como PNG, que pesa más que el JPEG. Una foto que ya viene derecha no se toca.
 - **Inspección (V2-M26.03):** «Agendar inspección» solo sale con `puedeAgendar`. Al agendar se vuelven a pedir «Mis citas», la disponibilidad, la lista y el detalle. Al volver de «Mis citas» el detalle se recarga, así refleja una cancelación o un cambio de fecha.
 - **Oferta (V2-M26.04):** monto, vigencia y nota, con `DeslizarParaConfirmar` para aceptar y `Dialogo` para rechazar. Con `OFERTA_VENCIDA` u `OFERTA_NO_DISPONIBLE` se explica y se vuelve a cargar. Lista y detalle se actualizan con `valuacion.oferta` y al volver la conexión.
 - **Valor en el tiempo (V2-M26.05):** gráfica de líneas con su tabla y la lista de rangos. Con un solo mes se muestra la cifra en lugar de la gráfica. La leyenda no vinculante está en los cinco estados.
+
+La copia de `api/` es la 2.20.0. El backend sumó la valuación sobre su `main`, que ya traía M12 con el número 2.19.0. Por eso la copia también trae las rutas de lealtad, y sus cuatro códigos están en `CodigoProblema` sin pantallas todavía.
 
 Ajustes respecto del diseño:
 
@@ -127,6 +130,6 @@ Ajustes respecto del diseño:
 
 Pendientes:
 
-- Integrar el backend y demostrar el flujo en celular, con cámara y galería reales.
+- Integrar el backend y demostrar el flujo en celular, con cámara y galería reales. Hay que revisar en el celular que una foto vertical llegue derecha y cuánto pesa el PNG. Si pesa demasiado, escribir JPEG necesita un paquete y su PR de dependencias.
 - Mostrar «Valuación» en «Mis citas» es un PR aparte del módulo `citas`.
 - El simulador de `citas` todavía acepta `POST /citas` con motivo `valuacion`. El contrato pide responder 400.
