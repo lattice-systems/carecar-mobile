@@ -107,3 +107,26 @@ PR sugeridos en la app: (1) módulo, solicitud, lista, detalle y simulador, (2) 
 - **Pendiente del PO:** los valores reales de `parametro_toma_cuenta`. Sin ellos toda estimación responde 422 en el backend real, así que no hay valuación ni gráfica fuera del simulador y de datos capturados por SQL.
 - **Pendiente del PO:** confirmar los plazos propuestos, el texto que acompaña a la oferta (alcance legal de «formal») y si un auto capturado a mano debe poder valuarse.
 - **Pendiente del PO y de M22:** confirmar que el aviso de privacidad cubre las fotos del vehículo, que muestran placas, y cuánto tiempo se conservan. Hoy se borran al cancelar la cuenta.
+
+## Avance de V2-M26.01 a V2-M26.05
+
+La app está construida contra `mock_api`. El módulo vive en `lib/modulos/valuacion/` (`dominio/`, `datos/`, `presentacion/`) y su contrato público es `valuacion.dart`. No importa `catalogo`. Es nuevo en v2: sus rutas se registran sin interruptor v1/v2.
+
+- **Solicitud, lista y detalle (V2-M26.01):** `BotonPedirValuacion` está en el resultado de la calculadora y en la hoja de una estimación guardada. «Mis estimaciones» abre «Mis valuaciones» desde su barra. `VALUACION_SIN_VEHICULO` se explica sin salir de la pantalla. La lista se pide por páginas.
+- **Fotos guiadas (V2-M26.02):** las 8 tomas con su silueta, instrucción, «Tomar foto» y «Elegir de la galería». Cada subida se guarda por toma en memoria. De dos subidas a la vez queda de cada toma la más reciente. Sin permiso, el aviso y «Abrir ajustes» van en la barra inferior para que se vean aunque la lista esté desplazada.
+- **Inspección (V2-M26.03):** «Agendar inspección» solo sale con `puedeAgendar`. Al agendar se vuelven a pedir «Mis citas», la disponibilidad, la lista y el detalle. Al volver de «Mis citas» el detalle se recarga, así refleja una cancelación o un cambio de fecha.
+- **Oferta (V2-M26.04):** monto, vigencia y nota, con `DeslizarParaConfirmar` para aceptar y `Dialogo` para rechazar. Con `OFERTA_VENCIDA` u `OFERTA_NO_DISPONIBLE` se explica y se vuelve a cargar. Lista y detalle se actualizan con `valuacion.oferta` y al volver la conexión.
+- **Valor en el tiempo (V2-M26.05):** gráfica de líneas con su tabla y la lista de rangos. Con un solo mes se muestra la cifra en lugar de la gráfica. La leyenda no vinculante está en los cinco estados.
+
+Ajustes respecto del diseño:
+
+- La estimación de `catalogo` ahora guarda `vehiculoId` en su dominio y su repositorio. Sin él, una estimación guardada no puede abrir «Ver cómo cambia el valor».
+- Los accesos a «Mis estimaciones» y a la calculadora desde los estados vacíos usan rutas escritas en `valuacion`, para no crear un ciclo. `test/modulos/valuacion/ruta_valuacion_test.dart` comprueba que coincidan con las de `catalogo`.
+- El calendario de la inspección usa 12 de margen y no tiene relleno dentro de la tarjeta. Con el relleno de la pantalla de campañas, en un ancho de 360 cada día mide menos de 48 y no pasa la guía de zona táctil.
+- El simulador suma sus estimaciones y la cita de la oferta desde `semillas/valuacion.json` sin editar las semillas de otros módulos. Si las franjas de `citas` ya pasaron, agrega tres futuras.
+
+Pendientes:
+
+- Integrar el backend y demostrar el flujo en celular, con cámara y galería reales.
+- Mostrar «Valuación» en «Mis citas» es un PR aparte del módulo `citas`.
+- El simulador de `citas` todavía acepta `POST /citas` con motivo `valuacion`. El contrato pide responder 400.
