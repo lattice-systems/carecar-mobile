@@ -125,7 +125,28 @@ La galería del sistema vive en `lib/modulos/galeria/` y se abre en la ruta `/ga
 
 ## Nota sobre V2-T02.09
 
-`Mapa` está bloqueada por una decisión: el criterio exige elegir proveedor de mapas y geocodificación en una ADR. Se propone en [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, todo detrás de interfaces en `lib/nucleo/mapas/`). Mientras esté en `Propuesta` no se escribe código del componente. Lo que falta para aceptarla es que el PO confirme el proveedor de teselas de producción y su costo.
+La decisión que pide el criterio, [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, con interfaces en `lib/nucleo/mapas/`), está **Aceptada**, así que el componente ya no está bloqueado. Sigue abierto, antes de publicar en producción, qué proveedor de teselas contrata el PO y cuánto cuesta. No cambia el código: se configura con `TILES_URL` y `TILES_ATTRIBUTION`.
+
+## Avance de V2-T02.09
+
+`Mapa` y `MarcadorEnMovimiento` viven en `lib/nucleo/diseno/componentes/mapa.dart`. La anatomía, los estados y la accesibilidad están en la sección 8 del sistema de diseño.
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Pin arrastrable | `alMoverPin`: arrastre, toque y, sin arrastrar, botones de 48 para ponerlo y moverlo |
+| Ubicación propia | `miUbicacion` o «Ver mi ubicación» con `ProveedorUbicacion`. Permiso negado, permiso bloqueado, GPS apagado y tiempo agotado se explican |
+| Marcador en movimiento | `enMovimiento`: se desliza con `base` y salta con reducir movimiento |
+| Proveedor y geocodificación en una ADR | Decisión 0006, aceptada |
+| Golden claro, oscuro y 200 % | `mapa_golden_test.dart` |
+
+También quedan el aviso sin conexión con reintento, las teselas inyectables para probar sin red (`TeselasLisas`, `TeselasSinConexion`, `fuenteTeselasProvider`), `ClienteTeselas` para que los errores no lleven la dirección de la tesela, la sección «Mapa» de la galería y la prueba de arquitectura de los paquetes de mapas.
+
+**Pendiente fuera de esta historia:**
+
+- `MapaProvisional` de `recoleccion` sigue en uso. Por la regla de provisionales ([`trabajo-en-paralelo.md`](../trabajo-en-paralelo.md), sección 4) lo reemplaza el dueño de M17 en su siguiente cambio a esas pantallas. Mientras exista no tiene el arrastre, la alternativa sin arrastre ni el aviso sin conexión, y sus errores de descarga sí pueden llevar a la consola la dirección de la tesela.
+- `lib/nucleo/camara/selector_foto.dart` importa `geolocator` solo para abrir los ajustes de la app. Queda anotado como excepción en la prueba de arquitectura.
+- El crédito del mapa es texto, no un enlace a la página de licencia de OpenStreetMap.
+- Falta probar el componente en un teléfono con teselas reales.
 
 ## Avance del estilo portada
 
