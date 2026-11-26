@@ -120,8 +120,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | ⬜ | Ver M14 |
-| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | ⬜ | Ver M14 |
+| Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | 🟡 app lista con el contrato 2.21.0 y `mock_api`: filtro por vehículo, existencia visible, categorías y búsqueda (`test/modulos/tienda/pantalla_tienda_test.dart`, `pantalla_producto_test.dart` y `test/contrato/contrato_tienda_test.dart`). Falta probarla contra el backend real y demostrarla en celular | V2-M14.01 |
+| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | 🟡 app lista con `mock_api`: apartar con llave de idempotencia, vigencia, cancelar, instalar en una cita y mis pedidos en vivo (`pantalla_carrito_test.dart` y `pantalla_pedidos_test.dart`). Se paga en caja: el pago en la app (V2-M14.04) espera a V2-M08.02 y el push con la app cerrada a M06. Falta probarla contra el backend real y demostrarla en celular | V2-M14.02, V2-M14.03, V2-M14.05 |
 
 ### 15. Encuestas y NPS — plan [M15](modulos/M15-encuestas-nps.md)
 
