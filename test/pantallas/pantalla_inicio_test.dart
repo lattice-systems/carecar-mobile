@@ -50,7 +50,7 @@ Future<ControladorSesion> _montar(
     AppEnrutadaDePrueba(
       api: api,
       controlador: sesion,
-      interruptor: InterruptorModulos.porDefecto,
+      interruptor: InterruptorModulos.todoV1,
       idioma: const Locale('es'),
     ),
   );
@@ -128,7 +128,7 @@ void main() {
       AppEnrutadaDePrueba(
         api: api,
         controlador: restaurada,
-        interruptor: InterruptorModulos.porDefecto,
+        interruptor: InterruptorModulos.todoV1,
       ),
     );
     await tester.pumpAndSettle();

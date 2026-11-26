@@ -44,13 +44,13 @@ Future<void> _ir(WidgetTester tester, String ruta) async {
 
 void main() {
   test(
-    'la app lee el interruptor de los --dart-define (todo v1 sin ellos)',
+    'la app lee el interruptor de los --dart-define (todo v2 sin ellos)',
     () {
       final contenedor = ProviderContainer();
       addTearDown(contenedor.dispose);
       final i = contenedor.read(interruptorModulosProvider);
       for (final m in ModuloMigrable.values) {
-        expect(i.esV2(m), isFalse, reason: m.name);
+        expect(i.esV2(m), isTrue, reason: m.name);
       }
     },
   );
@@ -75,7 +75,7 @@ void main() {
       testWidgets('${e.key.name} en v1: ${e.value} cae en el inicio', (
         tester,
       ) async {
-        await _montar(tester, InterruptorModulos.porDefecto);
+        await _montar(tester, InterruptorModulos.todoV1);
         await _ir(tester, e.value);
         expect(find.byType(InicioNuevo), findsOneWidget);
       });
@@ -95,15 +95,35 @@ void main() {
 
   // Los destinos del inicio viven en la barra flotante (V2-T02.22).
   group('el menu v1 abre la version que dice el interruptor', () {
-    testWidgets('todo en v1: la barra abre las pantallas v1', (tester) async {
+    testWidgets('por defecto: la barra abre las pantallas v2', (tester) async {
       await _montar(tester, InterruptorModulos.porDefecto);
+      await tester.tap(find.text('Vehículos'));
+      await tester.pumpAndSettle();
+      expect(find.byType(v1.PantallaVehiculos), findsNothing);
+      expect(find.byType(PantallaGaraje), findsOneWidget);
+    });
+
+    testWidgets('MODULOS_V1=todos: la barra vuelve a las pantallas v1', (
+      tester,
+    ) async {
+      await _montar(tester, InterruptorModulos.desdeValores(v1: 'todos'));
+      await tester.tap(find.text('Vehículos'));
+      await tester.pumpAndSettle();
+      expect(find.byType(v1.PantallaVehiculos), findsOneWidget);
+    });
+
+    testWidgets('todo en v1: la barra abre las pantallas v1', (tester) async {
+      await _montar(tester, InterruptorModulos.todoV1);
       await tester.tap(find.text('Vehículos'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsOneWidget);
     });
 
     testWidgets('vehiculos en v2: la barra lleva al garaje v2', (tester) async {
-      await _montar(tester, InterruptorModulos.desdeValores(v2: 'vehiculos'));
+      await _montar(
+        tester,
+        const InterruptorModulos({ModuloMigrable.vehiculos: VersionModulo.v2}),
+      );
       await tester.tap(find.text('Vehículos'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsNothing);
@@ -111,7 +131,10 @@ void main() {
     });
 
     testWidgets('citas en v2: la barra lleva a mis citas v2', (tester) async {
-      await _montar(tester, InterruptorModulos.desdeValores(v2: 'citas'));
+      await _montar(
+        tester,
+        const InterruptorModulos({ModuloMigrable.citas: VersionModulo.v2}),
+      );
       await tester.tap(find.text('Citas').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaMisCitas), findsNothing);
@@ -121,7 +144,10 @@ void main() {
     testWidgets('catalogo en v2: la barra lleva al catalogo v2', (
       tester,
     ) async {
-      await _montar(tester, InterruptorModulos.desdeValores(v2: 'catalogo'));
+      await _montar(
+        tester,
+        const InterruptorModulos({ModuloMigrable.catalogo: VersionModulo.v2}),
+      );
       await tester.tap(find.text('Catálogo').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaCatalogo), findsNothing);
@@ -131,7 +157,10 @@ void main() {
     testWidgets('un modulo en v2 no cambia los que siguen en v1', (
       tester,
     ) async {
-      await _montar(tester, InterruptorModulos.desdeValores(v2: 'vehiculos'));
+      await _montar(
+        tester,
+        const InterruptorModulos({ModuloMigrable.vehiculos: VersionModulo.v2}),
+      );
       await tester.tap(find.text('Citas').last);
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaMisCitas), findsOneWidget);
