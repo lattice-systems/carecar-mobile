@@ -25,13 +25,13 @@ Future<List<Rect>> _tarjetas(WidgetTester tester, Escenario escenario) async {
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
   final tarjetas = find.byKey(const Key('accion-tu-auto'));
-  expect(tarjetas, findsNWidgets(4));
-  return [for (var i = 0; i < 4; i++) tester.getRect(tarjetas.at(i))];
+  expect(tarjetas, findsNWidgets(6));
+  return [for (var i = 0; i < 6; i++) tester.getRect(tarjetas.at(i))];
 }
 
 void main() {
   for (final escenario in [Escenario.claro, Escenario.oscuro]) {
-    testWidgets('Tu auto: cuadricula 2x2 de tarjetas iguales ($escenario)', (
+    testWidgets('Tu auto: cuadricula de dos columnas iguales ($escenario)', (
       tester,
     ) async {
       final r = await _tarjetas(tester, escenario);
@@ -39,12 +39,17 @@ void main() {
         expect(t.width, closeTo(r[0].width, 0.5));
         expect(t.height, closeTo(r[0].height, 0.5));
       }
-      expect(r[1].top, closeTo(r[0].top, 0.5));
-      expect(r[3].top, closeTo(r[2].top, 0.5));
-      expect(r[2].left, closeTo(r[0].left, 0.5));
-      expect(r[3].left, closeTo(r[1].left, 0.5));
+      for (var fila = 0; fila < 3; fila++) {
+        final izquierda = r[fila * 2];
+        final derecha = r[fila * 2 + 1];
+        expect(derecha.top, closeTo(izquierda.top, 0.5));
+        expect(izquierda.left, closeTo(r[0].left, 0.5));
+        expect(derecha.left, closeTo(r[1].left, 0.5));
+        if (fila > 0) {
+          expect(izquierda.top, greaterThan(r[fila * 2 - 2].bottom - 0.5));
+        }
+      }
       expect(r[1].left, greaterThan(r[0].right - 0.5));
-      expect(r[2].top, greaterThan(r[0].bottom - 0.5));
     });
   }
 
@@ -52,7 +57,7 @@ void main() {
     tester,
   ) async {
     final r = await _tarjetas(tester, Escenario.letraGrande);
-    for (var i = 1; i < 4; i++) {
+    for (var i = 1; i < 6; i++) {
       expect(r[i].left, closeTo(r[0].left, 0.5));
       expect(r[i].width, closeTo(r[0].width, 0.5));
       expect(r[i].top, greaterThan(r[i - 1].bottom - 0.5));
@@ -68,6 +73,8 @@ void main() {
       'Historial de servicios',
       'Mantenimiento',
       'Bitácora',
+      'Garantía',
+      'Campañas de seguridad',
     ]) {
       expect(find.bySemanticsLabel(nombre), findsOneWidget);
     }

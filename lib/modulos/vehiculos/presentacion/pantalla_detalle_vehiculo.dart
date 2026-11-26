@@ -25,6 +25,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../asistente/asistente.dart';
 import '../../bitacora/bitacora.dart';
 import '../../citas/citas.dart';
+import '../../garantia/garantia.dart';
 import '../../historial/historial.dart';
 import '../../mantenimiento/mantenimiento.dart';
 import '../dominio/vehiculo_garaje.dart';
@@ -193,6 +194,16 @@ class _DetalleState extends State<_Detalle> {
                     texto: textos.bitacoraAccesoFila,
                     icono: Icons.local_gas_station_outlined,
                     ruta: rutaBitacoraVehiculo(v.id, nombre: v.titulo),
+                  ),
+                  (
+                    texto: textos.garantiaAcceso,
+                    icono: Icons.verified_user_outlined,
+                    ruta: rutaGarantiaVehiculo(v.id),
+                  ),
+                  (
+                    texto: textos.campanasAcceso,
+                    icono: Icons.campaign_outlined,
+                    ruta: rutaCampanasVehiculo(v.id),
                   ),
                 ],
               ),
