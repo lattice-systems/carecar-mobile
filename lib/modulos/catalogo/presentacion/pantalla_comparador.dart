@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
@@ -34,7 +36,7 @@ class PantallaComparador extends ConsumerWidget {
         ? EstadoVacio(
             titulo: textos.catalogoComparadorIdsMalosTitulo,
             mensaje: textos.catalogoComparadorIdsMalosMensaje,
-            icono: Icons.compare_arrows,
+            icono: LucideIcons300.arrowRightLeft,
           )
         : _Cuerpo(clave: ids.join(','));
 
@@ -66,7 +68,7 @@ class _Cuerpo extends ConsumerWidget {
           ? EstadoVacio(
               titulo: textos.catalogoNoEncontradoTitulo,
               mensaje: textos.catalogoNoEncontradoMensaje,
-              icono: Icons.directions_car_outlined,
+              icono: LucideIcons300.car,
             )
           : EstadoError(
               causa: error is SinConexion
@@ -172,7 +174,7 @@ class _FilaModelos extends StatelessWidget {
                         width: double.infinity,
                         child: m.modelo.imagenUrl == null
                             ? Icon(
-                                Icons.directions_car_filled_outlined,
+                                LucideIcons300.carFront,
                                 size: 48,
                                 color: c.textoTerciario,
                               )
@@ -180,7 +182,7 @@ class _FilaModelos extends StatelessWidget {
                                 m.modelo.imagenUrl!,
                                 fit: BoxFit.contain,
                                 errorBuilder: (_, _, _) => Icon(
-                                  Icons.directions_car_filled_outlined,
+                                  LucideIcons300.carFront,
                                   size: 48,
                                   color: c.textoTerciario,
                                 ),

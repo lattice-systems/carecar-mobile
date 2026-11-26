@@ -4,6 +4,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -39,7 +41,7 @@ void main() {
       );
       expect(find.text('Escribe un correo valido'), findsOneWidget);
       expect(find.text('Tu correo'), findsNothing);
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleAlert), findsOneWidget);
     });
 
     testWidgets('deshabilitado no deja escribir', (tester) async {
@@ -261,7 +263,7 @@ void main() {
         ),
       );
       expect(find.text('Elige un motivo'), findsOneWidget);
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleAlert), findsOneWidget);
     });
 
     testWidgets('no desborda en los tres escenarios', (tester) async {

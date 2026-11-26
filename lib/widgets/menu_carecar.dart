@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shadcn_ui/shadcn_ui.dart' show LucideIcons;
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../tema/tema_carecar.dart';
 import 'movimiento.dart';
@@ -16,12 +17,12 @@ abstract final class EstiloMenu {
 
 /// Opciones del menu con su icono Lucide (el trazo es uniforme y nitido).
 enum IconoMenu {
-  vehiculos(LucideIcons.carFront),
-  catalogo(LucideIcons.layoutGrid),
-  ajustes(LucideIcons.settings),
-  cita(LucideIcons.calendarDays),
-  historial(LucideIcons.history),
-  manual(LucideIcons.bookText);
+  vehiculos(LucideIcons300.carFront),
+  catalogo(LucideIcons300.layoutGrid),
+  ajustes(LucideIcons300.settings),
+  cita(LucideIcons300.calendarDays),
+  historial(LucideIcons300.history),
+  manual(LucideIcons300.bookText);
 
   const IconoMenu(this.icono);
   final IconData icono;
@@ -139,7 +140,7 @@ class TarjetaMenu extends StatelessWidget {
         const SizedBox(width: 8),
         ExcludeSemantics(
           child: Icon(
-            LucideIcons.arrowRight,
+            LucideIcons300.arrowRight,
             color: Colors.white.withValues(alpha: 0.9),
             size: 22,
           ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -51,7 +53,7 @@ class PantallaMisPedidos extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: t.tiendaPedidosVacioTitulo,
                     mensaje: t.tiendaPedidosVacioMensaje,
-                    icono: Icons.receipt_long_outlined,
+                    icono: LucideIcons300.receiptText,
                     textoAccion: t.tiendaIrALaTienda,
                     alAccion: () => context.push(rutaTienda),
                   ),
@@ -116,7 +118,7 @@ class _TarjetaPedido extends StatelessWidget {
       detalle: vence == null || !pedido.abierto
           ? null
           : t.tiendaVence(momentoTienda(context, vence)),
-      icono: Icons.shopping_bag_outlined,
+      icono: LucideIcons300.shoppingBag,
       estado: textoEstadoPedido(t, pedido.estado),
       tonoEstado: tonoEstadoPedido(pedido.estado),
       alToque: () => context.push(rutaPedido(pedido.id)),

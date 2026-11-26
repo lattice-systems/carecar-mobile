@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../ayudas/tema_pista.dart';
 
 Widget _app({
@@ -50,7 +52,7 @@ void main() {
       _app(pin: const Coordenada(19.4326, -99.1332), alElegir: (_) {}),
     );
     await tester.pump();
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
     expect(
       find.bySemanticsLabel(RegExp('Pin en 19.4326, -99.1332')),
       findsOneWidget,
@@ -60,7 +62,7 @@ void main() {
   testWidgets('sin pin no hay marcador y dice que falta', (tester) async {
     await tester.pumpWidget(_app(alElegir: (_) {}));
     await tester.pump();
-    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.byIcon(LucideIcons300.mapPin), findsNothing);
     expect(find.bySemanticsLabel(RegExp('Todavía no hay pin')), findsOneWidget);
   });
 
@@ -88,7 +90,7 @@ void main() {
         child: conTemaPista(
           const MapaProvisional(
             pin: Coordenada(19.43, -99.13),
-            icono: Icons.local_shipping,
+            icono: LucideIcons300.truck,
             descripcion: 'El chofer va aquí',
           ),
         ),
@@ -96,8 +98,8 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.byIcon(Icons.local_shipping), findsOneWidget);
-    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.byIcon(LucideIcons300.truck), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsNothing);
     expect(find.bySemanticsLabel(RegExp('El chofer va aquí')), findsOneWidget);
   });
 

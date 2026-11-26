@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -71,7 +73,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
             mensaje: _anio == null
                 ? textos.historialVacioMensaje
                 : textos.historialVacioAnioMensaje('$_anio'),
-            icono: Icons.history,
+            icono: LucideIcons300.history,
           ),
         ),
       ];
@@ -197,7 +199,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
                 BotonPildora(
                   texto: textos.historialReintentar,
                   variante: VarianteBotonPildora.vidrio,
-                  icono: Icons.refresh_rounded,
+                  icono: LucideIcons300.refreshCw,
                   alPresionar: () => ref
                       .read(historialProvider(_consulta).notifier)
                       .cargarMas(),
@@ -220,11 +222,11 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
 }
 
 IconData _iconoEstatus(EstatusOrden estatus) => switch (estatus) {
-  EstatusOrden.recibido => Icons.login_rounded,
-  EstatusOrden.enProceso => Icons.build_circle_outlined,
-  EstatusOrden.terminado => Icons.task_alt_rounded,
-  EstatusOrden.entregado => Icons.directions_car_filled_outlined,
-  EstatusOrden.desconocido => Icons.help_outline_rounded,
+  EstatusOrden.recibido => LucideIcons300.logIn,
+  EstatusOrden.enProceso => LucideIcons300.wrench,
+  EstatusOrden.terminado => LucideIcons300.circleCheckBig,
+  EstatusOrden.entregado => LucideIcons300.carFront,
+  EstatusOrden.desconocido => LucideIcons300.circleQuestionMark,
 };
 
 Color _colorEstatus(TokensPista tokens, EstatusOrden estatus) {

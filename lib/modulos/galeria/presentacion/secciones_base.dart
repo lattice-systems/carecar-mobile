@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../nucleo/diseno/componentes/avatar.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -28,7 +30,11 @@ List<SeccionGaleria> seccionesBase() => [
           Boton(texto: v.name, variante: v, alPresionar: () {}),
         const Boton(texto: 'Deshabilitado', alPresionar: null),
         Boton(texto: 'Cargando', cargando: true, alPresionar: () {}),
-        Boton(texto: 'Con icono', icono: Icons.event, alPresionar: () {}),
+        Boton(
+          texto: 'Con icono',
+          icono: LucideIcons300.calendar,
+          alPresionar: () {},
+        ),
         for (final t in TamanoBoton.values)
           Boton(texto: t.name, tamano: t, alPresionar: () {}),
       ],
@@ -181,7 +187,11 @@ List<SeccionGaleria> seccionesBase() => [
           etiqueta: 'Mas opciones',
           alSeleccionar: (_) {},
           items: const [
-            ItemMenu(valor: 'editar', texto: 'Editar', icono: Icons.edit),
+            ItemMenu(
+              valor: 'editar',
+              texto: 'Editar',
+              icono: LucideIcons300.pencil,
+            ),
             ItemMenu(valor: 'borrar', texto: 'Borrar', peligro: true),
           ],
         ),

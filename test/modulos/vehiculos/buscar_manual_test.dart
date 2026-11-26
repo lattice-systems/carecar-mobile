@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../ayudas/tema_pista.dart';
 
 final _bytes = Uint8List.fromList([1, 2, 3]);
@@ -78,12 +80,12 @@ Future<void> _montar(WidgetTester tester, {IndiceDeManual? indice}) async {
 void main() {
   testWidgets('sin índice no ofrece buscar', (tester) async {
     await _montar(tester, indice: null);
-    expect(find.byIcon(Icons.search_outlined), findsNothing);
+    expect(find.byIcon(LucideIcons300.search), findsNothing);
   });
 
   testWidgets('con índice, buscar abre el campo', (tester) async {
     await _montar(tester, indice: _indice);
-    await tester.tap(find.byIcon(Icons.search_outlined));
+    await tester.tap(find.byIcon(LucideIcons300.search));
     await tester.pumpAndSettle();
     expect(find.byType(TextField), findsOneWidget);
   });
@@ -92,7 +94,7 @@ void main() {
     tester,
   ) async {
     await _montar(tester, indice: _indice);
-    await tester.tap(find.byIcon(Icons.search_outlined));
+    await tester.tap(find.byIcon(LucideIcons300.search));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'llantas');
     await tester.pumpAndSettle();
@@ -107,7 +109,7 @@ void main() {
     tester,
   ) async {
     await _montar(tester, indice: _indice);
-    await tester.tap(find.byIcon(Icons.search_outlined));
+    await tester.tap(find.byIcon(LucideIcons300.search));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'frenos');
     await tester.pumpAndSettle();
@@ -119,7 +121,7 @@ void main() {
 
   testWidgets('una búsqueda sin coincidencias lo dice', (tester) async {
     await _montar(tester, indice: _indice);
-    await tester.tap(find.byIcon(Icons.search_outlined));
+    await tester.tap(find.byIcon(LucideIcons300.search));
     await tester.pumpAndSettle();
     await tester.enterText(find.byType(TextField), 'turbo');
     await tester.pumpAndSettle();

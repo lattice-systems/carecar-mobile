@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -301,7 +303,7 @@ class _NotaSinRegistro extends StatelessWidget {
       children: [
         ExcludeSemantics(
           child: Icon(
-            Icons.info_outline,
+            LucideIcons300.info,
             size: 16,
             color: tokens.colores.textoSecundario,
           ),

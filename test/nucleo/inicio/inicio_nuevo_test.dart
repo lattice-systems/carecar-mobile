@@ -4,6 +4,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.d
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 const _march = AutoInicio(
   id: 5,

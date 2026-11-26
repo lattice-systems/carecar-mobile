@@ -4,6 +4,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/contraste.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 ButtonStyle estiloDe(WidgetTester tester) {
@@ -57,10 +59,10 @@ void main() {
   testWidgets('con icono lo muestra junto al texto', (tester) async {
     await tester.pumpWidget(
       conTemaPista(
-        Boton(texto: 'Llamar', icono: Icons.phone, alPresionar: () {}),
+        Boton(texto: 'Llamar', icono: LucideIcons300.phone, alPresionar: () {}),
       ),
     );
-    expect(find.byIcon(Icons.phone), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.phone), findsOneWidget);
   });
 
   group('tamanos', () {
@@ -203,7 +205,7 @@ void main() {
             conTemaPista(
               Boton(
                 texto: 'Agendar mi cita de servicio',
-                icono: Icons.event,
+                icono: LucideIcons300.calendar,
                 variante: variante,
                 alPresionar: () {},
               ),

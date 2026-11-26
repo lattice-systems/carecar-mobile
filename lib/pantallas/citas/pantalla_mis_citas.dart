@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../widgets/dialogos.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -278,7 +279,7 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
             onPressed: _agendar,
             backgroundColor: TemaCareCar.azulAgencia,
             foregroundColor: Colors.white,
-            icon: const Icon(Icons.add),
+            icon: const Icon(LucideIcons300.plus),
             label: const Text('Agendar cita'),
           ).animate().scale(delay: 200.ms, curve: Curves.easeOutBack),
         ),
@@ -353,7 +354,7 @@ class _PantallaMisCitasState extends State<PantallaMisCitas> {
                   dimension: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.expand_more),
+              : const Icon(LucideIcons300.chevronDown),
           label: Text(_cargandoMas ? 'Cargando…' : 'Cargar más'),
         ),
       );
@@ -369,7 +370,7 @@ class _Encabezado extends StatelessWidget {
     etiqueta: 'SERVICIO EN TALLER',
     titulo: 'Tus citas',
     texto: 'Agenda tu visita al taller y consulta tus citas.',
-    icono: Icons.calendar_month_rounded,
+    icono: LucideIcons300.calendarDays,
     color: Color(0xFF3B5BA9),
     fondo: Color(0xFFEAEFFA),
   );
@@ -477,7 +478,7 @@ class TarjetaCita extends StatelessWidget {
                     Row(
                       children: [
                         const Icon(
-                          Icons.schedule,
+                          LucideIcons300.clock,
                           size: 16,
                           color: TemaCareCar.turquesaOscuro,
                         ),
@@ -512,7 +513,7 @@ class TarjetaCita extends StatelessWidget {
             child: Row(
               children: [
                 const Icon(
-                  Icons.directions_car_filled_outlined,
+                  LucideIcons300.carFront,
                   size: 18,
                   color: TemaCareCar.turquesaOscuro,
                 ),
@@ -547,7 +548,7 @@ class TarjetaCita extends StatelessWidget {
               child: ShadButton.outline(
                 key: PantallaMisCitas.botonTicket(c.id),
                 onPressed: alVerTicket,
-                leading: const Icon(Icons.receipt_long_outlined, size: 18),
+                leading: const Icon(LucideIcons300.receiptText, size: 18),
                 // Flexible: con letra grande y pantalla angosta el texto se
                 // recorta en vez de desbordar la fila del boton.
                 child: const Flexible(
@@ -583,7 +584,7 @@ class TarjetaCita extends StatelessWidget {
                         dimension: 16,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : const Icon(Icons.close, size: 18),
+                    : const Icon(LucideIcons300.x, size: 18),
                 label: Text(cancelando ? 'Cancelando…' : 'Cancelar cita'),
               ),
             ),
@@ -655,31 +656,31 @@ class ChipEstadoCita extends StatelessWidget {
         'Confirmada',
         TemaCareCar.azulAgencia,
         TemaCareCar.azulSuave,
-        Icons.event_available,
+        LucideIcons300.calendarCheck,
       ),
       EstadoCita.atendida => (
         'Atendida',
         TemaCareCar.exito,
         TemaCareCar.exitoFondo,
-        Icons.check_circle_outline,
+        LucideIcons300.circleCheck,
       ),
       EstadoCita.noAsistio => (
         'No asistió',
         TemaCareCar.advertencia,
         TemaCareCar.advertenciaFondo,
-        Icons.person_off_outlined,
+        LucideIcons300.userX,
       ),
       EstadoCita.cancelada => (
         'Cancelada',
         TemaCareCar.peligro,
         TemaCareCar.peligroFondo,
-        Icons.cancel_outlined,
+        LucideIcons300.circleX,
       ),
       EstadoCita.desconocido => (
         'Sin estado',
         TemaCareCar.textoSecundario,
         TemaCareCar.fondo,
-        Icons.help_outline,
+        LucideIcons300.circleQuestionMark,
       ),
     };
     return Container(
@@ -731,7 +732,7 @@ class _Vacio extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              Icons.calendar_month_outlined,
+              LucideIcons300.calendarDays,
               size: 44,
               color: TemaCareCar.azulAgencia,
             ),
@@ -769,7 +770,7 @@ class _Error extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            sinRed ? Icons.wifi_off_rounded : Icons.error_outline,
+            sinRed ? LucideIcons300.wifiOff : LucideIcons300.circleAlert,
             size: 56,
             color: TemaCareCar.peligro,
           ),
@@ -793,7 +794,7 @@ class _Error extends StatelessWidget {
           FilledButton.icon(
             key: PantallaMisCitas.botonReintentar,
             onPressed: alReintentar,
-            icon: const Icon(Icons.refresh),
+            icon: const Icon(LucideIcons300.refreshCw),
             label: const Text('Reintentar'),
           ),
         ],

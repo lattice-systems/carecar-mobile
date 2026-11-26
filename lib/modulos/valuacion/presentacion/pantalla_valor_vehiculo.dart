@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -43,7 +45,7 @@ class PantallaValorVehiculo extends ConsumerWidget {
                 ? EstadoVacio(
                     titulo: t.valuacionValorNoEncontradoTitulo,
                     mensaje: t.valuacionValorNoEncontradoMensaje,
-                    icono: Icons.search_off_rounded,
+                    icono: LucideIcons300.searchX,
                   )
                 : ErrorValuacion(
                     error: error,
@@ -55,7 +57,7 @@ class PantallaValorVehiculo extends ConsumerWidget {
                   child: EstadoVacio(
                     titulo: t.valuacionValorVacioTitulo,
                     mensaje: t.valuacionValorVacioMensaje,
-                    icono: Icons.show_chart_rounded,
+                    icono: LucideIcons300.chartLine,
                     textoAccion: t.valuacionValorVacioAccion,
                     alAccion: () => context.push(rutaDeLaCalculadora),
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -24,7 +26,7 @@ class CampoMensaje extends StatefulWidget {
     this.sugerencia = 'Escribe un mensaje',
     this.etiquetaEnviar = 'Enviar',
     this.etiquetaAdjuntar = 'Adjuntar',
-    this.iconoAdjuntar = Icons.attach_file,
+    this.iconoAdjuntar = LucideIcons300.paperclip,
   });
 
   final ValueChanged<String> alEnviar;
@@ -134,7 +136,7 @@ class _CampoMensajeState extends State<CampoMensaje> {
         const SizedBox(width: Espaciado.e2),
         BotonCircular(
           key: const ValueKey('campo-mensaje-enviar'),
-          icono: Icons.send,
+          icono: LucideIcons300.send,
           etiqueta: widget.etiquetaEnviar,
           variante: VarianteBotonCircular.acento,
           alPresionar: _puedeEnviar ? _enviar : null,

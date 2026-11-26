@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
@@ -104,7 +106,7 @@ class _ConGaraje extends ConsumerWidget {
               estado: EstadoVacio(
                 titulo: textos.asistenciaGarajeVacioTitulo,
                 mensaje: textos.asistenciaGarajeVacioMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               ),
             )
           : _Marco(
@@ -180,7 +182,7 @@ class _Marco extends StatelessWidget {
                   BotonCircular(
                     etiqueta: MaterialLocalizations.of(context)
                         .closeButtonTooltip,
-                    icono: Icons.close_rounded,
+                    icono: LucideIcons300.x,
                     alPresionar: () => Navigator.of(context).maybePop(),
                   ),
                 ],

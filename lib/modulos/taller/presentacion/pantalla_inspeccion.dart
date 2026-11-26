@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -69,7 +71,7 @@ class _EstadoInspeccion extends ConsumerState<PantallaInspeccion> {
               child: EstadoVacio(
                 titulo: textos.tallerInspeccionVacia,
                 mensaje: textos.tallerInspeccionVaciaMensaje,
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
               ),
             )
           : SliverToBoxAdapter(
@@ -142,7 +144,7 @@ class _Inspeccion extends ConsumerWidget {
                 FilaGrupo(
                   titulo: textos.tallerInspeccionVerVideo(i + 1),
                   subtitulo: textos.tallerInspeccionVideoAbre,
-                  icono: Icons.play_circle_outline_rounded,
+                  icono: LucideIcons300.circlePlay,
                   colorIcono: TokensPista.de(context).colores.acento,
                   alToque: () => alAbrirVideo(video),
                 ),

@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 TrasladoDetalle _traslado({
   EstadoTraslado estado = EstadoTraslado.programado,
@@ -147,7 +148,7 @@ void main() {
     await tester.pump();
 
     expect(find.byType(MapaProvisional), findsOneWidget);
-    expect(find.byIcon(Icons.local_shipping), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.truck), findsOneWidget);
     expect(find.text('Dónde va el chofer'), findsOneWidget);
     expect(find.textContaining('Ubicación actualizada a las'), findsOneWidget);
   });

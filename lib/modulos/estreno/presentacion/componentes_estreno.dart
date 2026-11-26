@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -68,9 +70,7 @@ class ConfirmacionEstreno extends StatelessWidget {
               subtitulo: esPrueba
                   ? textos.estrenoPruebaTitulo
                   : textos.estrenoCotizacionTitulo,
-              icono: esPrueba
-                  ? Icons.directions_car_outlined
-                  : Icons.request_quote_outlined,
+              icono: esPrueba ? LucideIcons300.car : LucideIcons300.fileText,
               colorIcono: c.acento,
             ),
             if (fecha != null)
@@ -81,7 +81,7 @@ class ConfirmacionEstreno extends StatelessWidget {
                   FranjaPreferida.tarde => textos.estrenoTarde,
                   null => null,
                 },
-                icono: Icons.event_outlined,
+                icono: LucideIcons300.calendar,
                 colorIcono: c.acento,
               ),
             if (cotizacion != null)
@@ -91,13 +91,13 @@ class ConfirmacionEstreno extends StatelessWidget {
                   textos.estrenoMensualidad,
                   textos.estrenoMeses(cotizacion.plazoMeses),
                 ].join(' · '),
-                icono: Icons.payments_outlined,
+                icono: LucideIcons300.banknote,
                 colorIcono: c.acento,
               ),
             if (vendedor != null)
               FilaGrupo(
                 titulo: textos.estrenoTeAtiende(vendedor),
-                icono: Icons.person_outline,
+                icono: LucideIcons300.user,
                 colorIcono: c.acento,
               ),
           ],
@@ -131,7 +131,7 @@ class AccesoMisSolicitudes extends StatelessWidget {
         filas: [
           FilaGrupo(
             titulo: textos.estrenoMisSolicitudes,
-            icono: Icons.history,
+            icono: LucideIcons300.history,
             colorIcono: c.acento,
             alToque: alToque,
           ),
