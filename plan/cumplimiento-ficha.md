@@ -208,6 +208,8 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M02.13: reprograma y libera el horario anterior` | [Prueba](../test/modulos/citas/pantalla_reprogramar_cita_test.dart) |
 | `V2-M03.03: compara tres modelos con precio y ficha` | [Prueba](../test/modulos/catalogo/comparador_test.dart) |
 | `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
+| `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
+| `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
 | `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
 | `V2-M24.05: el testigo rojo indica detenerse y pedir ayuda` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
 
