@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **230 historias** (una descartada) + 4 de H0.
+Total: **231 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -59,6 +59,7 @@ Total: **230 historias** (una descartada) + 4 de H0.
 | V2-T02.21 | Navegación en píldora, inicio nuevo y encabezados ligeros (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148, #151, #153, #154 |
 | V2-T02.22 | Inicio con datos del auto: sin accesos repetidos, próximo servicio y tarjetas con un solo estilo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.21 | En revisión | #155 |
 | V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | En revisión | #156 |
+| V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | En curso | |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
