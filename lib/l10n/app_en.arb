@@ -711,6 +711,18 @@
   },
   "historialVacioMensaje": "When the shop closes an order for this car, it will show up here.",
   "historialVacioTitulo": "No services yet",
+  "analiticaTitulo": "Share analytics",
+  "@analiticaTitulo": {
+    "description": "Etiqueta del interruptor de analitica."
+  },
+  "analiticaDescripcion": "Share usage and diagnostic metrics to help improve CareCar.",
+  "@analiticaDescripcion": {
+    "description": "Explica los datos opcionales de analitica."
+  },
+  "analiticaError": "The preference could not be saved. Try again.",
+  "@analiticaError": {
+    "description": "Error al guardar la preferencia de analitica."
+  },
   "idiomaEtiqueta": "Language",
   "@idiomaEtiqueta": {
     "description": "Etiqueta del selector de idioma de la app."

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../api/carecar_api.dart';
+import '../nucleo/analitica/interruptor_analitica.dart';
 import '../nucleo/diseno/tema_pista.dart';
 import '../nucleo/idioma/selector_idioma.dart';
 import '../widgets/pagina_carecar.dart';
@@ -35,6 +36,7 @@ class PantallaAjustes extends StatelessWidget {
             child: SelectorIdioma(),
           ),
         ),
+        const InterruptorAnalitica(),
         Expanded(
           child: PantallaPerfil(
             api: api,

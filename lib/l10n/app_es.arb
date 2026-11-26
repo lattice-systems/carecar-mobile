@@ -1536,6 +1536,18 @@
   "@historialVacioTitulo": {
     "description": "Título del estado vacío del historial."
   },
+  "analiticaTitulo": "Compartir analítica",
+  "@analiticaTitulo": {
+    "description": "Etiqueta del interruptor de analitica."
+  },
+  "analiticaDescripcion": "Comparte métricas de uso y diagnóstico para mejorar CareCar.",
+  "@analiticaDescripcion": {
+    "description": "Explica los datos opcionales de analitica."
+  },
+  "analiticaError": "No se pudo guardar la preferencia. Intenta de nuevo.",
+  "@analiticaError": {
+    "description": "Error al guardar la preferencia de analitica."
+  },
   "idiomaEtiqueta": "Idioma",
   "@idiomaEtiqueta": {
     "description": "Etiqueta del selector de idioma de la app."

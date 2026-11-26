@@ -1231,6 +1231,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get historialVacioTitulo => 'Aún no hay servicios';
 
   @override
+  String get analiticaTitulo => 'Compartir analítica';
+
+  @override
+  String get analiticaDescripcion =>
+      'Comparte métricas de uso y diagnóstico para mejorar CareCar.';
+
+  @override
+  String get analiticaError =>
+      'No se pudo guardar la preferencia. Intenta de nuevo.';
+
+  @override
   String get idiomaEtiqueta => 'Idioma';
 
   @override

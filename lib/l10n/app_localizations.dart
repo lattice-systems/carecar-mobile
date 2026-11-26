@@ -2078,6 +2078,24 @@ abstract class AppLocalizations {
   /// **'Aún no hay servicios'**
   String get historialVacioTitulo;
 
+  /// Etiqueta del interruptor de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir analítica'**
+  String get analiticaTitulo;
+
+  /// Explica los datos opcionales de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparte métricas de uso y diagnóstico para mejorar CareCar.'**
+  String get analiticaDescripcion;
+
+  /// Error al guardar la preferencia de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar la preferencia. Intenta de nuevo.'**
+  String get analiticaError;
+
   /// Etiqueta del selector de idioma de la app.
   ///
   /// In es, this message translates to:
