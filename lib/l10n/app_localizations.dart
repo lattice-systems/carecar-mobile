@@ -1472,6 +1472,630 @@ abstract class AppLocalizations {
   /// **'Foto del {modelo}'**
   String fotoDeModelo(String modelo);
 
+  /// Falla inesperada en una acción.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal. Intenta de nuevo.'**
+  String get tiendaAccionError;
+
+  /// Falla de red al cambiar un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get tiendaAccionSinConexion;
+
+  /// Botón hacia agendar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get tiendaAgendarCita;
+
+  /// Producto sin existencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Agotado'**
+  String get tiendaAgotado;
+
+  /// Confirmación al agregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregado. Llevas {piezas} de este producto.'**
+  String tiendaAgregado(int piezas);
+
+  /// Botón para agregar un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar al carrito'**
+  String get tiendaAgregar;
+
+  /// Detalle del cierre del apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagas en caja. Tu apartado vence el {fecha}.'**
+  String tiendaApartadoMensaje(String fecha);
+
+  /// Cierre del apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Productos apartados'**
+  String get tiendaApartadoTitulo;
+
+  /// Botón que aparta el carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Apartar'**
+  String get tiendaApartar;
+
+  /// Falla de red al apartar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Tu carrito se conserva: vuelve a intentar y no se apartará dos veces.'**
+  String get tiendaApartarSinConexion;
+
+  /// Sección de los estados del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get tiendaAvanceTitulo;
+
+  /// Etiqueta del buscador.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar por nombre o código'**
+  String get tiendaBuscar;
+
+  /// Elige otra cita para instalar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar de cita'**
+  String get tiendaCambiarCita;
+
+  /// Confirma la cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, cancelar'**
+  String get tiendaCancelarConfirmar;
+
+  /// Detalle de la confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Las piezas se liberan y otra persona puede apartarlas.'**
+  String get tiendaCancelarMensaje;
+
+  /// Botón para cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar pedido'**
+  String get tiendaCancelarPedido;
+
+  /// Confirmación de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cancelar el pedido?'**
+  String get tiendaCancelarTitulo;
+
+  /// No cancela.
+  ///
+  /// In es, this message translates to:
+  /// **'Conservar'**
+  String get tiendaCancelarVolver;
+
+  /// Etiqueta del selector de piezas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cantidad'**
+  String get tiendaCantidad;
+
+  /// Anuncio del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la tienda'**
+  String get tiendaCargando;
+
+  /// Carrito lleno.
+  ///
+  /// In es, this message translates to:
+  /// **'El carrito admite hasta {maximo} productos distintos.'**
+  String tiendaCarritoLleno(int maximo);
+
+  /// Título del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Carrito'**
+  String get tiendaCarritoTitulo;
+
+  /// Detalle del carrito vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Agrega productos desde la tienda para apartarlos.'**
+  String get tiendaCarritoVacioMensaje;
+
+  /// Estado vacío del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu carrito está vacío'**
+  String get tiendaCarritoVacioTitulo;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesorios'**
+  String get tiendaCategoriaAccesorio;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuidado del auto'**
+  String get tiendaCategoriaCuidado;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get tiendaCategoriaRefaccion;
+
+  /// Filtro sin categoría.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo'**
+  String get tiendaCategoriaTodas;
+
+  /// Marca de la cita elegida.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegida'**
+  String get tiendaCitaElegida;
+
+  /// Rango de años de un modelo compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String tiendaCompatibilidadAnios(String desde, String hasta);
+
+  /// Encabezado de la lista de compatibilidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Autos compatibles'**
+  String get tiendaCompatibilidadTitulo;
+
+  /// Insignia de producto compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'Le queda a tu auto'**
+  String get tiendaCompatible;
+
+  /// Título del detalle de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi pedido'**
+  String get tiendaDetalleTitulo;
+
+  /// Encabezado del selector de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige la cita'**
+  String get tiendaElegirCita;
+
+  /// Cierra un diálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Entendido'**
+  String get tiendaEntendido;
+
+  /// Texto de la entrada a la tienda desde el catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesorios y refacciones originales para tu auto'**
+  String get tiendaEntradaDetalle;
+
+  /// Entrega con instalación.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalar en mi cita'**
+  String get tiendaEntregaCita;
+
+  /// Entrega en mostrador.
+  ///
+  /// In es, this message translates to:
+  /// **'Recoger en mostrador'**
+  String get tiendaEntregaMostrador;
+
+  /// Sección de cómo se entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega'**
+  String get tiendaEntregaTitulo;
+
+  /// Falla al leer las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos consultar tus citas.'**
+  String get tiendaErrorCitas;
+
+  /// Falla al pedir otra página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más. Intenta de nuevo.'**
+  String get tiendaErrorMas;
+
+  /// Detalle del error genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get tiendaErrorMensaje;
+
+  /// Error genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get tiendaErrorTitulo;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Apartado'**
+  String get tiendaEstadoApartado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelado'**
+  String get tiendaEstadoCancelado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregado'**
+  String get tiendaEstadoEntregado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get tiendaEstadoListo;
+
+  /// Piezas disponibles de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'{piezas, plural, =1{Queda 1 pieza} other{Quedan {piezas} piezas}}'**
+  String tiendaExistencia(int piezas);
+
+  /// Encabezado del filtro por vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Compatible con'**
+  String get tiendaFiltroAuto;
+
+  /// Descripción de la foto de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de {producto}'**
+  String tiendaFotoDe(String producto);
+
+  /// Sección de instalación del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalación'**
+  String get tiendaInstalacionTitulo;
+
+  /// Botón del producto para instalarlo en la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalar en mi próxima cita'**
+  String get tiendaInstalarProxima;
+
+  /// Botón que lleva a la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a la tienda'**
+  String get tiendaIrALaTienda;
+
+  /// Aviso de compatibilidad en el producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Le queda a tu {auto}'**
+  String tiendaLeQueda(String auto);
+
+  /// No se pueden agregar más piezas de ese producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya llevas {piezas}, el máximo de este producto.'**
+  String tiendaMaximoAlcanzado(int piezas);
+
+  /// Título y botón de la lista de pedidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis pedidos'**
+  String get tiendaMisPedidos;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo canceló la agencia'**
+  String get tiendaMotivoAgencia;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo cancelaste tú'**
+  String get tiendaMotivoCliente;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado venció'**
+  String get tiendaMotivoVencido;
+
+  /// Aviso de incompatibilidad en el producto.
+  ///
+  /// In es, this message translates to:
+  /// **'No le queda a tu {auto}'**
+  String tiendaNoLeQueda(String auto);
+
+  /// Título del diálogo de rechazo al apartar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo apartar'**
+  String get tiendaNoSeApartoTitulo;
+
+  /// Título del diálogo de rechazo al cambiar un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cambiar el pedido'**
+  String get tiendaNoSeCambioTitulo;
+
+  /// Cómo se paga.
+  ///
+  /// In es, this message translates to:
+  /// **'No se cobra en la app: pagas en caja.'**
+  String get tiendaPagoEnCaja;
+
+  /// Detalle de pedido inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu lista de pedidos.'**
+  String get tiendaPedidoNoEncontradoMensaje;
+
+  /// Pedido ajeno o inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese pedido'**
+  String get tiendaPedidoNoEncontradoTitulo;
+
+  /// Total y piezas de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'{total}, {piezas, plural, =1{1 pieza} other{{piezas} piezas}}'**
+  String tiendaPedidoResumen(String total, int piezas);
+
+  /// Título de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedido {numero}'**
+  String tiendaPedidoTitulo(int numero);
+
+  /// Detalle de mis pedidos vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que apartes en la tienda aparece aquí.'**
+  String get tiendaPedidosVacioMensaje;
+
+  /// Estado vacío de mis pedidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes pedidos'**
+  String get tiendaPedidosVacioTitulo;
+
+  /// Precio unitario.
+  ///
+  /// In es, this message translates to:
+  /// **'{precio} cada uno'**
+  String tiendaPrecioCadaUno(String precio);
+
+  /// Detalle de producto retirado.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que la agencia lo haya retirado de la tienda.'**
+  String get tiendaProductoNoEncontradoMensaje;
+
+  /// Producto retirado o inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese producto ya no está'**
+  String get tiendaProductoNoEncontradoTitulo;
+
+  /// Título de la pantalla de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Producto'**
+  String get tiendaProductoTitulo;
+
+  /// Sección de renglones del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Productos'**
+  String get tiendaProductosTitulo;
+
+  /// Quita un producto del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar'**
+  String get tiendaQuitar;
+
+  /// Quita los filtros de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todos los productos'**
+  String get tiendaQuitarFiltros;
+
+  /// Rechazo CITA_NO_DISPONIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa cita está cancelada o ya pasó. Elige otra o recoge en mostrador.'**
+  String get tiendaRechazoCitaNoDisponible;
+
+  /// Rechazo PRODUCTO_INCOMPATIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Algún producto no le queda al auto de esa cita. Elige otra cita o recoge en mostrador.'**
+  String get tiendaRechazoIncompatible;
+
+  /// Rechazo LIMITE_APARTADOS.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes 3 pedidos sin entregar. Recoge o cancela uno para apartar más.'**
+  String get tiendaRechazoLimite;
+
+  /// Rechazo PEDIDO_NO_CANCELABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya se entregó y no se puede cancelar.'**
+  String get tiendaRechazoNoCancelable;
+
+  /// Rechazo PEDIDO_NO_MODIFICABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya se entregó o se canceló y no se puede cambiar.'**
+  String get tiendaRechazoNoModificable;
+
+  /// Rechazo SIN_EXISTENCIA.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.'**
+  String get tiendaRechazoSinExistencia;
+
+  /// Botón de reintento.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get tiendaReintentar;
+
+  /// Cantidad y precio de un renglón.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad} por {precio}'**
+  String tiendaRenglonDetalle(int cantidad, String precio);
+
+  /// El pedido va ligado a una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Se instala en tu cita'**
+  String get tiendaSeInstala;
+
+  /// El pedido se recoge.
+  ///
+  /// In es, this message translates to:
+  /// **'Se recoge en mostrador'**
+  String get tiendaSeRecoge;
+
+  /// Regresa a la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir en la tienda'**
+  String get tiendaSeguirComprando;
+
+  /// Ninguna cita es de un auto compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'No le queda al auto de ninguna de tus próximas citas.'**
+  String get tiendaSinCitaCompatible;
+
+  /// No hay cita donde instalar.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas confirmadas por venir. Agenda una para que lo instalen.'**
+  String get tiendaSinCitas;
+
+  /// Detalle del error sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get tiendaSinConexionMensaje;
+
+  /// Error sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get tiendaSinConexionTitulo;
+
+  /// Título de la tienda y de su entrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienda'**
+  String get tiendaTitulo;
+
+  /// Opción para no filtrar por vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los productos'**
+  String get tiendaTodosLosProductos;
+
+  /// Total del carrito o del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get tiendaTotal;
+
+  /// Producto universal.
+  ///
+  /// In es, this message translates to:
+  /// **'Para cualquier auto'**
+  String get tiendaUniversal;
+
+  /// Mensaje del estado vacío de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con otra búsqueda, otra categoría u otro auto.'**
+  String get tiendaVacioMensaje;
+
+  /// Estado vacío de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos productos'**
+  String get tiendaVacioTitulo;
+
+  /// Cuándo vence un apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String tiendaVence(String fecha);
+
+  /// Aviso de vencimiento en el pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}. Pasada esa hora se cancela y las piezas se liberan.'**
+  String tiendaVenceDetalle(String fecha);
+
+  /// Botón al carrito con el número de piezas.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver carrito ({piezas})'**
+  String tiendaVerCarrito(int piezas);
+
+  /// Pide la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get tiendaVerMas;
+
+  /// Abre el pedido recién creado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mi pedido'**
+  String get tiendaVerMiPedido;
+
+  /// Vigencia del apartado con instalación.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado dura hasta el final del día siguiente a tu cita.'**
+  String get tiendaVigenciaCita;
+
+  /// Vigencia del apartado en mostrador.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado dura 48 horas. Si vence, las piezas se liberan.'**
+  String get tiendaVigenciaMostrador;
+
   /// Acceso del detalle a la ficha técnica del vehículo.
   ///
   /// In es, this message translates to:

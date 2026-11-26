@@ -853,6 +853,381 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tiendaAccionError => 'Something went wrong. Try again.';
+
+  @override
+  String get tiendaAccionSinConexion =>
+      'No connection. Check your internet and try again.';
+
+  @override
+  String get tiendaAgendarCita => 'Book appointment';
+
+  @override
+  String get tiendaAgotado => 'Out of stock';
+
+  @override
+  String tiendaAgregado(int piezas) {
+    return 'Added. You have $piezas of this product.';
+  }
+
+  @override
+  String get tiendaAgregar => 'Add to cart';
+
+  @override
+  String tiendaApartadoMensaje(String fecha) {
+    return 'Pay at the counter. Your reservation expires on $fecha.';
+  }
+
+  @override
+  String get tiendaApartadoTitulo => 'Items reserved';
+
+  @override
+  String get tiendaApartar => 'Reserve';
+
+  @override
+  String get tiendaApartarSinConexion =>
+      'No connection. Your cart is saved: try again and it will not be reserved twice.';
+
+  @override
+  String get tiendaAvanceTitulo => 'Progress';
+
+  @override
+  String get tiendaBuscar => 'Search by name or code';
+
+  @override
+  String get tiendaCambiarCita => 'Change appointment';
+
+  @override
+  String get tiendaCancelarConfirmar => 'Yes, cancel it';
+
+  @override
+  String get tiendaCancelarMensaje =>
+      'The items are released and someone else can reserve them.';
+
+  @override
+  String get tiendaCancelarPedido => 'Cancel order';
+
+  @override
+  String get tiendaCancelarTitulo => 'Cancel the order?';
+
+  @override
+  String get tiendaCancelarVolver => 'Keep it';
+
+  @override
+  String get tiendaCantidad => 'Quantity';
+
+  @override
+  String get tiendaCargando => 'Loading the store';
+
+  @override
+  String tiendaCarritoLleno(int maximo) {
+    return 'The cart holds up to $maximo different products.';
+  }
+
+  @override
+  String get tiendaCarritoTitulo => 'Cart';
+
+  @override
+  String get tiendaCarritoVacioMensaje =>
+      'Add products from the store to reserve them.';
+
+  @override
+  String get tiendaCarritoVacioTitulo => 'Your cart is empty';
+
+  @override
+  String get tiendaCategoriaAccesorio => 'Accessories';
+
+  @override
+  String get tiendaCategoriaCuidado => 'Car care';
+
+  @override
+  String get tiendaCategoriaRefaccion => 'Parts';
+
+  @override
+  String get tiendaCategoriaTodas => 'All';
+
+  @override
+  String get tiendaCitaElegida => 'Selected';
+
+  @override
+  String tiendaCompatibilidadAnios(String desde, String hasta) {
+    return '$desde to $hasta';
+  }
+
+  @override
+  String get tiendaCompatibilidadTitulo => 'Compatible cars';
+
+  @override
+  String get tiendaCompatible => 'Fits your car';
+
+  @override
+  String get tiendaDetalleTitulo => 'My order';
+
+  @override
+  String get tiendaElegirCita => 'Choose the appointment';
+
+  @override
+  String get tiendaEntendido => 'Got it';
+
+  @override
+  String get tiendaEntradaDetalle =>
+      'Genuine accessories and parts for your car';
+
+  @override
+  String get tiendaEntregaCita => 'Install at my appointment';
+
+  @override
+  String get tiendaEntregaMostrador => 'Pick up at the counter';
+
+  @override
+  String get tiendaEntregaTitulo => 'Delivery';
+
+  @override
+  String get tiendaErrorCitas => 'We could not load your appointments.';
+
+  @override
+  String get tiendaErrorMas => 'We could not load more. Try again.';
+
+  @override
+  String get tiendaErrorMensaje => 'Try again in a moment.';
+
+  @override
+  String get tiendaErrorTitulo => 'We could not load this';
+
+  @override
+  String get tiendaEstadoApartado => 'Reserved';
+
+  @override
+  String get tiendaEstadoCancelado => 'Cancelled';
+
+  @override
+  String get tiendaEstadoEntregado => 'Delivered';
+
+  @override
+  String get tiendaEstadoListo => 'Ready';
+
+  @override
+  String tiendaExistencia(int piezas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      piezas,
+      locale: localeName,
+      other: '$piezas left',
+      one: '1 left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tiendaFiltroAuto => 'Fits';
+
+  @override
+  String tiendaFotoDe(String producto) {
+    return 'Photo of $producto';
+  }
+
+  @override
+  String get tiendaInstalacionTitulo => 'Installation';
+
+  @override
+  String get tiendaInstalarProxima => 'Install at my next appointment';
+
+  @override
+  String get tiendaIrALaTienda => 'Go to the store';
+
+  @override
+  String tiendaLeQueda(String auto) {
+    return 'Fits your $auto';
+  }
+
+  @override
+  String tiendaMaximoAlcanzado(int piezas) {
+    return 'You already have $piezas, the most for this product.';
+  }
+
+  @override
+  String get tiendaMisPedidos => 'My orders';
+
+  @override
+  String get tiendaMotivoAgencia => 'The dealership cancelled it';
+
+  @override
+  String get tiendaMotivoCliente => 'You cancelled it';
+
+  @override
+  String get tiendaMotivoVencido => 'The reservation expired';
+
+  @override
+  String tiendaNoLeQueda(String auto) {
+    return 'Does not fit your $auto';
+  }
+
+  @override
+  String get tiendaNoSeApartoTitulo => 'We could not reserve it';
+
+  @override
+  String get tiendaNoSeCambioTitulo => 'We could not change the order';
+
+  @override
+  String get tiendaPagoEnCaja =>
+      'The app does not charge you: pay at the counter.';
+
+  @override
+  String get tiendaPedidoNoEncontradoMensaje => 'Check your list of orders.';
+
+  @override
+  String get tiendaPedidoNoEncontradoTitulo => 'We could not find that order';
+
+  @override
+  String tiendaPedidoResumen(String total, int piezas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      piezas,
+      locale: localeName,
+      other: '$piezas items',
+      one: '1 item',
+    );
+    return '$total, $_temp0';
+  }
+
+  @override
+  String tiendaPedidoTitulo(int numero) {
+    return 'Order $numero';
+  }
+
+  @override
+  String get tiendaPedidosVacioMensaje =>
+      'What you reserve in the store shows up here.';
+
+  @override
+  String get tiendaPedidosVacioTitulo => 'You have no orders yet';
+
+  @override
+  String tiendaPrecioCadaUno(String precio) {
+    return '$precio each';
+  }
+
+  @override
+  String get tiendaProductoNoEncontradoMensaje =>
+      'The dealership may have removed it from the store.';
+
+  @override
+  String get tiendaProductoNoEncontradoTitulo =>
+      'This product is no longer available';
+
+  @override
+  String get tiendaProductoTitulo => 'Product';
+
+  @override
+  String get tiendaProductosTitulo => 'Products';
+
+  @override
+  String get tiendaQuitar => 'Remove';
+
+  @override
+  String get tiendaQuitarFiltros => 'Show all products';
+
+  @override
+  String get tiendaRechazoCitaNoDisponible =>
+      'That appointment was cancelled or has passed. Choose another or pick up at the counter.';
+
+  @override
+  String get tiendaRechazoIncompatible =>
+      'One of the products does not fit the car of that appointment. Choose another or pick up at the counter.';
+
+  @override
+  String get tiendaRechazoLimite =>
+      'You already have 3 undelivered orders. Pick up or cancel one to reserve more.';
+
+  @override
+  String get tiendaRechazoNoCancelable =>
+      'This order was already delivered and cannot be cancelled.';
+
+  @override
+  String get tiendaRechazoNoModificable =>
+      'This order was delivered or cancelled and cannot be changed.';
+
+  @override
+  String get tiendaRechazoSinExistencia =>
+      'There are not enough items left. Check the stock and change the quantity.';
+
+  @override
+  String get tiendaReintentar => 'Retry';
+
+  @override
+  String tiendaRenglonDetalle(int cantidad, String precio) {
+    return '$cantidad at $precio';
+  }
+
+  @override
+  String get tiendaSeInstala => 'Installed at your appointment';
+
+  @override
+  String get tiendaSeRecoge => 'Picked up at the counter';
+
+  @override
+  String get tiendaSeguirComprando => 'Back to the store';
+
+  @override
+  String get tiendaSinCitaCompatible =>
+      'It does not fit the car of any of your upcoming appointments.';
+
+  @override
+  String get tiendaSinCitas =>
+      'You have no upcoming confirmed appointments. Book one to have it installed.';
+
+  @override
+  String get tiendaSinConexionMensaje => 'Check your internet and try again.';
+
+  @override
+  String get tiendaSinConexionTitulo => 'No connection';
+
+  @override
+  String get tiendaTitulo => 'Store';
+
+  @override
+  String get tiendaTodosLosProductos => 'All products';
+
+  @override
+  String get tiendaTotal => 'Total';
+
+  @override
+  String get tiendaUniversal => 'Fits any car';
+
+  @override
+  String get tiendaVacioMensaje => 'Try another search, category or car.';
+
+  @override
+  String get tiendaVacioTitulo => 'No products found';
+
+  @override
+  String tiendaVence(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String tiendaVenceDetalle(String fecha) {
+    return 'Expires on $fecha. After that it is cancelled and the items are released.';
+  }
+
+  @override
+  String tiendaVerCarrito(int piezas) {
+    return 'View cart ($piezas)';
+  }
+
+  @override
+  String get tiendaVerMas => 'Show more';
+
+  @override
+  String get tiendaVerMiPedido => 'View my order';
+
+  @override
+  String get tiendaVigenciaCita =>
+      'The reservation lasts until the end of the day after your appointment.';
+
+  @override
+  String get tiendaVigenciaMostrador =>
+      'The reservation lasts 48 hours. If it expires, the items are released.';
+
+  @override
   String get vehiculosAccesoFicha => 'Technical specs';
 
   @override

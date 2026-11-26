@@ -951,6 +951,511 @@
       }
     }
   },
+  "tiendaAccionError": "Algo salió mal. Intenta de nuevo.",
+  "@tiendaAccionError": {
+    "description": "Falla inesperada en una acción."
+  },
+  "tiendaAccionSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@tiendaAccionSinConexion": {
+    "description": "Falla de red al cambiar un pedido."
+  },
+  "tiendaAgendarCita": "Agendar cita",
+  "@tiendaAgendarCita": {
+    "description": "Botón hacia agendar una cita."
+  },
+  "tiendaAgotado": "Agotado",
+  "@tiendaAgotado": {
+    "description": "Producto sin existencia."
+  },
+  "tiendaAgregado": "Agregado. Llevas {piezas} de este producto.",
+  "@tiendaAgregado": {
+    "description": "Confirmación al agregar.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaAgregar": "Agregar al carrito",
+  "@tiendaAgregar": {
+    "description": "Botón para agregar un producto."
+  },
+  "tiendaApartadoMensaje": "Pagas en caja. Tu apartado vence el {fecha}.",
+  "@tiendaApartadoMensaje": {
+    "description": "Detalle del cierre del apartado.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaApartadoTitulo": "Productos apartados",
+  "@tiendaApartadoTitulo": {
+    "description": "Cierre del apartado."
+  },
+  "tiendaApartar": "Apartar",
+  "@tiendaApartar": {
+    "description": "Botón que aparta el carrito."
+  },
+  "tiendaApartarSinConexion": "Sin conexión. Tu carrito se conserva: vuelve a intentar y no se apartará dos veces.",
+  "@tiendaApartarSinConexion": {
+    "description": "Falla de red al apartar."
+  },
+  "tiendaAvanceTitulo": "Avance",
+  "@tiendaAvanceTitulo": {
+    "description": "Sección de los estados del pedido."
+  },
+  "tiendaBuscar": "Buscar por nombre o código",
+  "@tiendaBuscar": {
+    "description": "Etiqueta del buscador."
+  },
+  "tiendaCambiarCita": "Cambiar de cita",
+  "@tiendaCambiarCita": {
+    "description": "Elige otra cita para instalar."
+  },
+  "tiendaCancelarConfirmar": "Sí, cancelar",
+  "@tiendaCancelarConfirmar": {
+    "description": "Confirma la cancelación."
+  },
+  "tiendaCancelarMensaje": "Las piezas se liberan y otra persona puede apartarlas.",
+  "@tiendaCancelarMensaje": {
+    "description": "Detalle de la confirmación."
+  },
+  "tiendaCancelarPedido": "Cancelar pedido",
+  "@tiendaCancelarPedido": {
+    "description": "Botón para cancelar."
+  },
+  "tiendaCancelarTitulo": "¿Cancelar el pedido?",
+  "@tiendaCancelarTitulo": {
+    "description": "Confirmación de cancelación."
+  },
+  "tiendaCancelarVolver": "Conservar",
+  "@tiendaCancelarVolver": {
+    "description": "No cancela."
+  },
+  "tiendaCantidad": "Cantidad",
+  "@tiendaCantidad": {
+    "description": "Etiqueta del selector de piezas."
+  },
+  "tiendaCargando": "Cargando la tienda",
+  "@tiendaCargando": {
+    "description": "Anuncio del esqueleto de carga."
+  },
+  "tiendaCarritoLleno": "El carrito admite hasta {maximo} productos distintos.",
+  "@tiendaCarritoLleno": {
+    "description": "Carrito lleno.",
+    "placeholders": {
+      "maximo": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaCarritoTitulo": "Carrito",
+  "@tiendaCarritoTitulo": {
+    "description": "Título del carrito."
+  },
+  "tiendaCarritoVacioMensaje": "Agrega productos desde la tienda para apartarlos.",
+  "@tiendaCarritoVacioMensaje": {
+    "description": "Detalle del carrito vacío."
+  },
+  "tiendaCarritoVacioTitulo": "Tu carrito está vacío",
+  "@tiendaCarritoVacioTitulo": {
+    "description": "Estado vacío del carrito."
+  },
+  "tiendaCategoriaAccesorio": "Accesorios",
+  "@tiendaCategoriaAccesorio": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaCuidado": "Cuidado del auto",
+  "@tiendaCategoriaCuidado": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaRefaccion": "Refacciones",
+  "@tiendaCategoriaRefaccion": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaTodas": "Todo",
+  "@tiendaCategoriaTodas": {
+    "description": "Filtro sin categoría."
+  },
+  "tiendaCitaElegida": "Elegida",
+  "@tiendaCitaElegida": {
+    "description": "Marca de la cita elegida."
+  },
+  "tiendaCompatibilidadAnios": "{desde} a {hasta}",
+  "@tiendaCompatibilidadAnios": {
+    "description": "Rango de años de un modelo compatible.",
+    "placeholders": {
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaCompatibilidadTitulo": "Autos compatibles",
+  "@tiendaCompatibilidadTitulo": {
+    "description": "Encabezado de la lista de compatibilidad."
+  },
+  "tiendaCompatible": "Le queda a tu auto",
+  "@tiendaCompatible": {
+    "description": "Insignia de producto compatible."
+  },
+  "tiendaDetalleTitulo": "Mi pedido",
+  "@tiendaDetalleTitulo": {
+    "description": "Título del detalle de un pedido."
+  },
+  "tiendaElegirCita": "Elige la cita",
+  "@tiendaElegirCita": {
+    "description": "Encabezado del selector de citas."
+  },
+  "tiendaEntendido": "Entendido",
+  "@tiendaEntendido": {
+    "description": "Cierra un diálogo."
+  },
+  "tiendaEntradaDetalle": "Accesorios y refacciones originales para tu auto",
+  "@tiendaEntradaDetalle": {
+    "description": "Texto de la entrada a la tienda desde el catálogo."
+  },
+  "tiendaEntregaCita": "Instalar en mi cita",
+  "@tiendaEntregaCita": {
+    "description": "Entrega con instalación."
+  },
+  "tiendaEntregaMostrador": "Recoger en mostrador",
+  "@tiendaEntregaMostrador": {
+    "description": "Entrega en mostrador."
+  },
+  "tiendaEntregaTitulo": "Entrega",
+  "@tiendaEntregaTitulo": {
+    "description": "Sección de cómo se entrega."
+  },
+  "tiendaErrorCitas": "No pudimos consultar tus citas.",
+  "@tiendaErrorCitas": {
+    "description": "Falla al leer las citas."
+  },
+  "tiendaErrorMas": "No pudimos cargar más. Intenta de nuevo.",
+  "@tiendaErrorMas": {
+    "description": "Falla al pedir otra página."
+  },
+  "tiendaErrorMensaje": "Intenta de nuevo en un momento.",
+  "@tiendaErrorMensaje": {
+    "description": "Detalle del error genérico."
+  },
+  "tiendaErrorTitulo": "No pudimos cargar esto",
+  "@tiendaErrorTitulo": {
+    "description": "Error genérico."
+  },
+  "tiendaEstadoApartado": "Apartado",
+  "@tiendaEstadoApartado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoCancelado": "Cancelado",
+  "@tiendaEstadoCancelado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoEntregado": "Entregado",
+  "@tiendaEstadoEntregado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoListo": "Listo",
+  "@tiendaEstadoListo": {
+    "description": "Estado del pedido."
+  },
+  "tiendaExistencia": "{piezas, plural, =1{Queda 1 pieza} other{Quedan {piezas} piezas}}",
+  "@tiendaExistencia": {
+    "description": "Piezas disponibles de un producto.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaFiltroAuto": "Compatible con",
+  "@tiendaFiltroAuto": {
+    "description": "Encabezado del filtro por vehículo."
+  },
+  "tiendaFotoDe": "Foto de {producto}",
+  "@tiendaFotoDe": {
+    "description": "Descripción de la foto de un producto.",
+    "placeholders": {
+      "producto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaInstalacionTitulo": "Instalación",
+  "@tiendaInstalacionTitulo": {
+    "description": "Sección de instalación del pedido."
+  },
+  "tiendaInstalarProxima": "Instalar en mi próxima cita",
+  "@tiendaInstalarProxima": {
+    "description": "Botón del producto para instalarlo en la cita."
+  },
+  "tiendaIrALaTienda": "Ir a la tienda",
+  "@tiendaIrALaTienda": {
+    "description": "Botón que lleva a la tienda."
+  },
+  "tiendaLeQueda": "Le queda a tu {auto}",
+  "@tiendaLeQueda": {
+    "description": "Aviso de compatibilidad en el producto.",
+    "placeholders": {
+      "auto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaMaximoAlcanzado": "Ya llevas {piezas}, el máximo de este producto.",
+  "@tiendaMaximoAlcanzado": {
+    "description": "No se pueden agregar más piezas de ese producto.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaMisPedidos": "Mis pedidos",
+  "@tiendaMisPedidos": {
+    "description": "Título y botón de la lista de pedidos."
+  },
+  "tiendaMotivoAgencia": "Lo canceló la agencia",
+  "@tiendaMotivoAgencia": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaMotivoCliente": "Lo cancelaste tú",
+  "@tiendaMotivoCliente": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaMotivoVencido": "El apartado venció",
+  "@tiendaMotivoVencido": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaNoLeQueda": "No le queda a tu {auto}",
+  "@tiendaNoLeQueda": {
+    "description": "Aviso de incompatibilidad en el producto.",
+    "placeholders": {
+      "auto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaNoSeApartoTitulo": "No se pudo apartar",
+  "@tiendaNoSeApartoTitulo": {
+    "description": "Título del diálogo de rechazo al apartar."
+  },
+  "tiendaNoSeCambioTitulo": "No se pudo cambiar el pedido",
+  "@tiendaNoSeCambioTitulo": {
+    "description": "Título del diálogo de rechazo al cambiar un pedido."
+  },
+  "tiendaPagoEnCaja": "No se cobra en la app: pagas en caja.",
+  "@tiendaPagoEnCaja": {
+    "description": "Cómo se paga."
+  },
+  "tiendaPedidoNoEncontradoMensaje": "Revisa tu lista de pedidos.",
+  "@tiendaPedidoNoEncontradoMensaje": {
+    "description": "Detalle de pedido inexistente."
+  },
+  "tiendaPedidoNoEncontradoTitulo": "No encontramos ese pedido",
+  "@tiendaPedidoNoEncontradoTitulo": {
+    "description": "Pedido ajeno o inexistente."
+  },
+  "tiendaPedidoResumen": "{total}, {piezas, plural, =1{1 pieza} other{{piezas} piezas}}",
+  "@tiendaPedidoResumen": {
+    "description": "Total y piezas de un pedido.",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaPedidoTitulo": "Pedido {numero}",
+  "@tiendaPedidoTitulo": {
+    "description": "Título de un pedido.",
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaPedidosVacioMensaje": "Lo que apartes en la tienda aparece aquí.",
+  "@tiendaPedidosVacioMensaje": {
+    "description": "Detalle de mis pedidos vacío."
+  },
+  "tiendaPedidosVacioTitulo": "Aún no tienes pedidos",
+  "@tiendaPedidosVacioTitulo": {
+    "description": "Estado vacío de mis pedidos."
+  },
+  "tiendaPrecioCadaUno": "{precio} cada uno",
+  "@tiendaPrecioCadaUno": {
+    "description": "Precio unitario.",
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaProductoNoEncontradoMensaje": "Puede que la agencia lo haya retirado de la tienda.",
+  "@tiendaProductoNoEncontradoMensaje": {
+    "description": "Detalle de producto retirado."
+  },
+  "tiendaProductoNoEncontradoTitulo": "Ese producto ya no está",
+  "@tiendaProductoNoEncontradoTitulo": {
+    "description": "Producto retirado o inexistente."
+  },
+  "tiendaProductoTitulo": "Producto",
+  "@tiendaProductoTitulo": {
+    "description": "Título de la pantalla de un producto."
+  },
+  "tiendaProductosTitulo": "Productos",
+  "@tiendaProductosTitulo": {
+    "description": "Sección de renglones del pedido."
+  },
+  "tiendaQuitar": "Quitar",
+  "@tiendaQuitar": {
+    "description": "Quita un producto del carrito."
+  },
+  "tiendaQuitarFiltros": "Ver todos los productos",
+  "@tiendaQuitarFiltros": {
+    "description": "Quita los filtros de la tienda."
+  },
+  "tiendaRechazoCitaNoDisponible": "Esa cita está cancelada o ya pasó. Elige otra o recoge en mostrador.",
+  "@tiendaRechazoCitaNoDisponible": {
+    "description": "Rechazo CITA_NO_DISPONIBLE."
+  },
+  "tiendaRechazoIncompatible": "Algún producto no le queda al auto de esa cita. Elige otra cita o recoge en mostrador.",
+  "@tiendaRechazoIncompatible": {
+    "description": "Rechazo PRODUCTO_INCOMPATIBLE."
+  },
+  "tiendaRechazoLimite": "Ya tienes 3 pedidos sin entregar. Recoge o cancela uno para apartar más.",
+  "@tiendaRechazoLimite": {
+    "description": "Rechazo LIMITE_APARTADOS."
+  },
+  "tiendaRechazoNoCancelable": "Este pedido ya se entregó y no se puede cancelar.",
+  "@tiendaRechazoNoCancelable": {
+    "description": "Rechazo PEDIDO_NO_CANCELABLE."
+  },
+  "tiendaRechazoNoModificable": "Este pedido ya se entregó o se canceló y no se puede cambiar.",
+  "@tiendaRechazoNoModificable": {
+    "description": "Rechazo PEDIDO_NO_MODIFICABLE."
+  },
+  "tiendaRechazoSinExistencia": "Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.",
+  "@tiendaRechazoSinExistencia": {
+    "description": "Rechazo SIN_EXISTENCIA."
+  },
+  "tiendaReintentar": "Reintentar",
+  "@tiendaReintentar": {
+    "description": "Botón de reintento."
+  },
+  "tiendaRenglonDetalle": "{cantidad} por {precio}",
+  "@tiendaRenglonDetalle": {
+    "description": "Cantidad y precio de un renglón.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      },
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaSeInstala": "Se instala en tu cita",
+  "@tiendaSeInstala": {
+    "description": "El pedido va ligado a una cita."
+  },
+  "tiendaSeRecoge": "Se recoge en mostrador",
+  "@tiendaSeRecoge": {
+    "description": "El pedido se recoge."
+  },
+  "tiendaSeguirComprando": "Seguir en la tienda",
+  "@tiendaSeguirComprando": {
+    "description": "Regresa a la tienda."
+  },
+  "tiendaSinCitaCompatible": "No le queda al auto de ninguna de tus próximas citas.",
+  "@tiendaSinCitaCompatible": {
+    "description": "Ninguna cita es de un auto compatible."
+  },
+  "tiendaSinCitas": "No tienes citas confirmadas por venir. Agenda una para que lo instalen.",
+  "@tiendaSinCitas": {
+    "description": "No hay cita donde instalar."
+  },
+  "tiendaSinConexionMensaje": "Revisa tu internet e intenta de nuevo.",
+  "@tiendaSinConexionMensaje": {
+    "description": "Detalle del error sin conexión."
+  },
+  "tiendaSinConexionTitulo": "Sin conexión",
+  "@tiendaSinConexionTitulo": {
+    "description": "Error sin conexión."
+  },
+  "tiendaTitulo": "Tienda",
+  "@tiendaTitulo": {
+    "description": "Título de la tienda y de su entrada."
+  },
+  "tiendaTodosLosProductos": "Todos los productos",
+  "@tiendaTodosLosProductos": {
+    "description": "Opción para no filtrar por vehículo."
+  },
+  "tiendaTotal": "Total",
+  "@tiendaTotal": {
+    "description": "Total del carrito o del pedido."
+  },
+  "tiendaUniversal": "Para cualquier auto",
+  "@tiendaUniversal": {
+    "description": "Producto universal."
+  },
+  "tiendaVacioMensaje": "Prueba con otra búsqueda, otra categoría u otro auto.",
+  "@tiendaVacioMensaje": {
+    "description": "Mensaje del estado vacío de la tienda."
+  },
+  "tiendaVacioTitulo": "No encontramos productos",
+  "@tiendaVacioTitulo": {
+    "description": "Estado vacío de la tienda."
+  },
+  "tiendaVence": "Vence el {fecha}",
+  "@tiendaVence": {
+    "description": "Cuándo vence un apartado.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaVenceDetalle": "Vence el {fecha}. Pasada esa hora se cancela y las piezas se liberan.",
+  "@tiendaVenceDetalle": {
+    "description": "Aviso de vencimiento en el pedido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaVerCarrito": "Ver carrito ({piezas})",
+  "@tiendaVerCarrito": {
+    "description": "Botón al carrito con el número de piezas.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaVerMas": "Ver más",
+  "@tiendaVerMas": {
+    "description": "Pide la página siguiente."
+  },
+  "tiendaVerMiPedido": "Ver mi pedido",
+  "@tiendaVerMiPedido": {
+    "description": "Abre el pedido recién creado."
+  },
+  "tiendaVigenciaCita": "El apartado dura hasta el final del día siguiente a tu cita.",
+  "@tiendaVigenciaCita": {
+    "description": "Vigencia del apartado con instalación."
+  },
+  "tiendaVigenciaMostrador": "El apartado dura 48 horas. Si vence, las piezas se liberan.",
+  "@tiendaVigenciaMostrador": {
+    "description": "Vigencia del apartado en mostrador."
+  },
   "vehiculosAccesoFicha": "Ficha técnica",
   "@vehiculosAccesoFicha": {
     "description": "Acceso del detalle a la ficha técnica del vehículo."
