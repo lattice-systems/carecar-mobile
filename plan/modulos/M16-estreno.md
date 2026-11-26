@@ -46,3 +46,7 @@ Contrato 2.12.1 (de la 2.10.0 a la 2.12.0 no se declaraban `ESTRENO_SIN_PRECIO` 
 ## Rediseño: encabezados ligeros (V2-T02.21)
 
 «Quiero probarlo», «Cotizar» y «Mis solicitudes» usan `BarraPantalla` (regreso, título) en lugar del `AppBar` de Material. Sin cambios de lógica.
+
+## Rediseño: marco del sistema (V2-T02.25)
+
+«Quiero probarlo», «Cotizar» y «Mis solicitudes» pasan de `BarraPantalla` a `MarcoPantalla`. Los dos formularios se abren encima del detalle del modelo, así que llevan «Cerrar», y el modelo es el subtítulo del encabezado en lugar de un segundo título dentro del cuerpo; «Mis solicitudes» es una raíz y lleva «Regresar». Cargando, vacío y error conservan el marco. Sin cambios de lógica.
