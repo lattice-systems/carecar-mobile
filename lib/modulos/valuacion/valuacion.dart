@@ -22,6 +22,7 @@ export 'dominio/valuacion.dart'
         TomaValuacion,
         Valuacion;
 export 'presentacion/boton_pedir_valuacion.dart' show BotonPedirValuacion;
+export 'presentacion/pantalla_fotos_valuacion.dart' show PantallaFotosValuacion;
 export 'presentacion/pantalla_mis_valuaciones.dart' show PantallaMisValuaciones;
 export 'presentacion/pantalla_valuacion.dart' show PantallaValuacion;
 export 'presentacion/proveedores_valuacion.dart'

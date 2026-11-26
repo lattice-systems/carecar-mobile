@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
+import 'pantalla_fotos_valuacion.dart';
 import 'pantalla_mis_valuaciones.dart';
 import 'pantalla_valuacion.dart';
 
@@ -59,6 +60,18 @@ final rutasValuacion = <RouteBase>[
           context,
           PantallaValuacion(valuacionId: _entero(state, 'valuacionId')),
         ),
+        routes: [
+          GoRoute(
+            path: 'fotos',
+            name: 'valuacion-fotos',
+            builder: (context, state) => _conTemaPista(
+              context,
+              PantallaFotosValuacion(
+                valuacionId: _entero(state, 'valuacionId'),
+              ),
+            ),
+          ),
+        ],
       ),
     ],
   ),
