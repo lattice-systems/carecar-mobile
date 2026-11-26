@@ -84,6 +84,20 @@ dependencies:
   pdf: ^3.8.4
   cryptography: ^2.9.0
 
+  # Nombre del equipo para «mis sesiones abiertas» (V2-M01.09).
+  #
+  # Autorizada por Jael el 26 de noviembre de 2026. Hace falta porque
+  # `POST /auth/login` acepta un `dispositivo` opcional y es lo unico que luego
+  # le permite al cliente reconocer sus sesiones: sin nombre, en la lista todas
+  # se ven iguales y el criterio de la historia no se cumple. Nada en las
+  # dependencias de hoy da el modelo del equipo.
+  #
+  # Queda detras de `LectorDelDispositivo` (`lib/nucleo/dispositivo/`), asi que
+  # si el equipo prefiere un canal nativo propio se cambia una clase. No se lee
+  # ningun identificador: solo modelo y version del sistema, que no identifican
+  # a la persona.
+  device_info_plus: ^13.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
