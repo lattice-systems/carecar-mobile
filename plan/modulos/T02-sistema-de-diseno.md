@@ -182,3 +182,17 @@ Daniel pidió que las pantallas dejaran de verse como plantilla: «que no se vea
 - `TarjetaResumen` (con barra de avance), `FilaAcciones` y `ResultadoPantalla`.
 
 Documentado en §8 del sistema de diseño. La galería y los golden (`pantalla_golden_test.dart`) muestran las tarjetas nuevas. Después se migraron las pantallas que usaban un `AppBar` de Material: catálogo (lista, detalle, comparador, calculadora, mis estimaciones), privacidad (puerta del aviso, aviso, hub, mis datos, eliminar cuenta), estreno, asistente y el PDF del comprobante. Las listas, detalles y formularios usan `MarcoPantalla`; el chat, el visor, la calculadora y los formularios de estreno usan `BarraPantalla`. Quedan fuera las pantallas de la v1 (se retiran con V2-T01.07) y los ejemplos.
+
+## Avance de V2-T02.02
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Fuentes en `assets/fonts` sin descarga en tiempo de ejecución | Geist 400, 500 y 600 y Geist Mono 500 en TTF estáticos, con `Geist-OFL.txt`, declaradas en `pubspec.yaml`. No hay `google_fonts` ni direcciones de fuentes en `lib/` |
+| Escala tipográfica del documento | Se comparó `Tipografia` con la tabla de la sección 3 del sistema de diseño: los diez estilos coinciden en tamaño, interlineado, peso y tracking, así que no cambió ningún valor. Lo cubre `tipografia_test.dart` |
+
+- `fuentes_empaquetadas_test.dart` comprueba que cada familia declara solo los pesos de la escala, que cada archivo existe y trae ese peso, que la licencia está y que nada descarga fuentes.
+- La versión, la dirección y las huellas están en [la sección 3 del sistema de diseño](../../docs/diseno/sistema-de-diseno-v2.md#origen-de-las-fuentes). El APK crece unos 249 KB (estimado con deflate, sin compilarlo).
+- Se regeneraron los 18 golden en Linux con Flutter 3.47.9, el parche del CI. Antes se comprobó que ese entorno reproduce sin diferencias las referencias anteriores.
+- Inter y JetBrains Mono se quedan: las usa la v1 y son el respaldo de los tokens.
+- Algunos componentes e inicio piden peso 700 con `copyWith`. Con Geist se pinta en 600. Falta decidir si pasan a 600 en el código o si la escala suma el 700.
+- Con letra al 200 %, el golden de `GrupoLista` parte «Notificaciones» a media palabra cuando la fila lleva un valor a la derecha. Ya pasaba con Inter y se corrige aparte.
