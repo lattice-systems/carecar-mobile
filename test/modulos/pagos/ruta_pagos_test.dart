@@ -3,7 +3,6 @@ import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/privacidad/pantalla_segura.dart';
 import 'package:carecar_mobile/nucleo/privacidad/proteccion_de_captura.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -98,6 +97,6 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaDatosFiscales);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 }
