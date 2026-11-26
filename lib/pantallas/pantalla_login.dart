@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../nucleo/diseno/componentes/rebote_tactil.dart';
@@ -184,9 +185,9 @@ class _PantallaLoginState extends State<PantallaLogin> {
                                     : TonoAviso.error,
                                 icono: switch (fallo) {
                                   _ when fallo.esFalloDeRed =>
-                                    Icons.wifi_off_outlined,
+                                    LucideIcons300.wifiOff,
                                   _ when fallo.esBloqueoTemporal =>
-                                    Icons.lock_clock_outlined,
+                                    LucideIcons300.lockKeyhole,
                                   _ => null,
                                 },
                                 titulo: switch (fallo) {
@@ -205,7 +206,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                               etiqueta: 'Correo',
                               ayuda: 'El que le diste a la agencia',
                               habilitado: !entrando,
-                              icono: Icons.mail_outline_rounded,
+                              icono: LucideIcons300.mail,
                               teclado: TextInputType.emailAddress,
                               autocompletar: const [AutofillHints.email],
                               textInputAction: TextInputAction.next,
@@ -217,7 +218,7 @@ class _PantallaLoginState extends State<PantallaLogin> {
                               controlador: _contrasena,
                               etiqueta: 'Contraseña',
                               habilitado: !entrando,
-                              icono: Icons.lock_outline_rounded,
+                              icono: LucideIcons300.lock,
                               ocultar: !_verContrasena,
                               textInputAction: TextInputAction.done,
                               alEnviar: entrando ? null : _entrar,
@@ -230,8 +231,8 @@ class _PantallaLoginState extends State<PantallaLogin> {
                                       ),
                                 icon: Icon(
                                   _verContrasena
-                                      ? Icons.visibility_off_outlined
-                                      : Icons.visibility_outlined,
+                                      ? LucideIcons300.eyeOff
+                                      : LucideIcons300.eye,
                                   color: const Color(0xFF8E9BAE),
                                   size: 20,
                                 ),
@@ -334,13 +335,13 @@ class _Encabezado extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image.asset(
+        SvgPicture.asset(
           // Variante con letras claras: la original es azul marino y se pierde
           // sobre el fondo oscuro del login.
-          'assets/marca/agencia360-logo-oscuro.png',
+          'assets/marca/agencia360-logo-oscuro.svg',
           key: PantallaLogin.logo,
           width: 180,
-          semanticLabel: 'Agencia360',
+          semanticsLabel: 'Agencia360',
         ),
         const SizedBox(height: 18),
         const Text(
@@ -383,7 +384,7 @@ class _NotaSinRegistro extends StatelessWidget {
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.info_outline, size: 16, color: Color(0xFF8E9BAE)),
+          Icon(LucideIcons300.info, size: 16, color: Color(0xFF8E9BAE)),
           SizedBox(width: 10),
           Expanded(
             child: Text(
