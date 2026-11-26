@@ -105,6 +105,7 @@ void main() {
         'ESTRENO_SIN_PRECIO',
         'ESTRENO_DUPLICADA',
         'AVISO_NO_VIGENTE',
+        'CAMPANA_NO_AGENDABLE',
       };
 
       final queLaAppMapea = CodigoProblema.values
