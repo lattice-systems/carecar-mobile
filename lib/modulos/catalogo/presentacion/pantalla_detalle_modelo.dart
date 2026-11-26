@@ -13,7 +13,7 @@ import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -186,18 +186,22 @@ class _Detalle extends StatelessWidget {
         ],
         if (detalle.versiones.isNotEmpty) ...[
           _Encabezado(textos.catalogoVersiones),
-          for (final v in detalle.versiones)
-            FilaLista(
-              titulo: v.nombre,
-              subtitulo: v.id == modeloId
-                  ? textos.catalogoVersionActual
-                  : (v.precioDesde == null
-                        ? textos.catalogoSinPrecio
-                        : textos.precioDesde(_pesos.format(v.precioDesde))),
-              alToque: v.id == modeloId
-                  ? null
-                  : () => context.push(rutaDetalleModelo(v.id)),
-            ),
+          GrupoLista(
+            filas: [
+              for (final v in detalle.versiones)
+                FilaGrupo(
+                  titulo: v.nombre,
+                  subtitulo: v.id == modeloId
+                      ? textos.catalogoVersionActual
+                      : (v.precioDesde == null
+                            ? textos.catalogoSinPrecio
+                            : textos.precioDesde(_pesos.format(v.precioDesde))),
+                  alToque: v.id == modeloId
+                      ? null
+                      : () => context.push(rutaDetalleModelo(v.id)),
+                ),
+            ],
+          ),
         ],
         if (detalle.ficha.isNotEmpty) ...[
           _Encabezado(textos.catalogoFicha),

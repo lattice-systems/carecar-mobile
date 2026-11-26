@@ -129,3 +129,7 @@ El backend ya está construido (backend#84). La fórmula vive en `CalculadoraTom
 ## Rediseño: encabezados ligeros (V2-T02.21)
 
 El catálogo, el detalle del modelo, el comparador, la calculadora y «Mis estimaciones» dejaron el `AppBar` de Material: el catálogo y el detalle usan `MarcoPantalla` (el botón de comparar va en la barra, con regreso a la izquierda; el botón «Comparar» de abajo es una `BarraInferior`) y el comparador, la calculadora y las estimaciones usan `BarraPantalla`. Sin cambios de lógica ni de criterios.
+
+## Rediseño: marco y listas del sistema (V2-T02.25)
+
+«Mis estimaciones» y «Comparar modelos» pasan de `BarraPantalla` a `MarcoPantalla` (título grande, «Regresar», recarga jalando, y cargando, vacío y error bajo el mismo título); «Mis valuaciones» sigue a un toque, en la barra. Las estimaciones y las versiones del detalle de un modelo se dibujan con `GrupoLista` en lugar de `FilaLista`. La calculadora conserva `BarraPantalla` (formulario con su propio desplazamiento). Sin cambios de lógica ni de criterios.

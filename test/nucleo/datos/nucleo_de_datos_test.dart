@@ -102,7 +102,7 @@ void main() {
 
       final error = tester.widget<EstadoError>(find.byType(EstadoError));
       expect(error.causa, CausaError.sinConexion);
-      expect(find.text('Sin conexion'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsOneWidget);
     });
   });
 

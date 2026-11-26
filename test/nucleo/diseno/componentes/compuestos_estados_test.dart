@@ -73,8 +73,23 @@ void main() {
           EstadoError(causa: CausaError.sinConexion, alReintentar: () {}),
         ),
       );
-      expect(find.text('Sin conexion'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsOneWidget);
       expect(find.byIcon(LucideIcons300.wifiOff), findsOneWidget);
+    });
+
+    testWidgets('los textos por omisión siguen el idioma de la app', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        conTemaPista(
+          EstadoError(causa: CausaError.sinConexion, alReintentar: () {}),
+          idioma: const Locale('en'),
+        ),
+      );
+      expect(find.text('No connection'), findsOneWidget);
+      expect(find.text('Check your internet and try again.'), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsNothing);
     });
 
     testWidgets('reintentar llama al callback', (tester) async {

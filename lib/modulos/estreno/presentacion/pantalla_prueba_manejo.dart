@@ -3,13 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../catalogo/catalogo.dart';
 import '../dominio/estreno.dart';
 import 'componentes_estreno.dart';
@@ -67,7 +66,6 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
     final hoy = ref.watch(relojEstrenoProvider)();
     final manana = DateTime(hoy.year, hoy.month, hoy.day + 1);
     final dias = [
@@ -76,101 +74,94 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
     ];
     final modelo = ref.watch(detalleModeloProvider(widget.modeloId)).value;
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      body: Column(
-        children: [
-          BarraPantalla(titulo: textos.estrenoPruebaTitulo),
-          Expanded(
-            child: SafeArea(
-              top: false,
-              child: ListView(
-                padding: const EdgeInsets.all(Espaciado.e4),
-                children: [
-                  if (modelo != null)
-                    Text(
-                      modelo.modelo.titulo,
-                      style: TokensPista.de(context).tipografia.titulo2
-                          .copyWith(color: c.texto),
+    return MarcoPantalla(
+      titulo: textos.estrenoPruebaTitulo,
+      subtitulo: modelo?.modelo.titulo,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: Espaciado.margenTelefono,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (_solicitud case final solicitud?) ...[
+                  const SizedBox(height: Espaciado.e4),
+                  ConfirmacionEstreno(
+                    solicitud: solicitud,
+                    alVerSolicitudes: () =>
+                        context.pushReplacement(rutaMisSolicitudesEstreno),
+                  ),
+                ] else ...[
+                  SeccionEstreno(
+                    titulo: textos.estrenoDia,
+                    hijo: Wrap(
+                      spacing: Espaciado.e2,
+                      runSpacing: Espaciado.e1,
+                      children: [
+                        for (final d in dias)
+                          ChipPista(
+                            texto: diaCortoEstreno(context, d),
+                            seleccionado: _dia == d,
+                            alCambiar: (_) => setState(() => _dia = d),
+                          ),
+                      ],
                     ),
-                  if (_solicitud case final solicitud?) ...[
+                  ),
+                  SeccionEstreno(
+                    titulo: textos.estrenoFranja,
+                    hijo: Wrap(
+                      spacing: Espaciado.e2,
+                      runSpacing: Espaciado.e1,
+                      children: [
+                        ChipPista(
+                          texto: textos.estrenoManana,
+                          seleccionado: _franja == FranjaPreferida.manana,
+                          alCambiar: (_) =>
+                              setState(() => _franja = FranjaPreferida.manana),
+                        ),
+                        ChipPista(
+                          texto: textos.estrenoTarde,
+                          seleccionado: _franja == FranjaPreferida.tarde,
+                          alCambiar: (_) =>
+                              setState(() => _franja = FranjaPreferida.tarde),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SelectorEstimacion(
+                    elegida: _estimacion,
+                    alElegir: (id) => setState(() => _estimacion = id),
+                  ),
+                  if (_fallo != null) ...[
                     const SizedBox(height: Espaciado.e4),
-                    ConfirmacionEstreno(
-                      solicitud: solicitud,
-                      alVerSolicitudes: () =>
-                          context.pushReplacement(rutaMisSolicitudesEstreno),
-                    ),
-                  ] else ...[
-                    SeccionEstreno(
-                      titulo: textos.estrenoDia,
-                      hijo: Wrap(
-                        spacing: Espaciado.e2,
-                        runSpacing: Espaciado.e1,
-                        children: [
-                          for (final d in dias)
-                            ChipPista(
-                              texto: diaCortoEstreno(context, d),
-                              seleccionado: _dia == d,
-                              alCambiar: (_) => setState(() => _dia = d),
-                            ),
-                        ],
-                      ),
-                    ),
-                    SeccionEstreno(
-                      titulo: textos.estrenoFranja,
-                      hijo: Wrap(
-                        spacing: Espaciado.e2,
-                        runSpacing: Espaciado.e1,
-                        children: [
-                          ChipPista(
-                            texto: textos.estrenoManana,
-                            seleccionado: _franja == FranjaPreferida.manana,
-                            alCambiar: (_) => setState(
-                              () => _franja = FranjaPreferida.manana,
-                            ),
-                          ),
-                          ChipPista(
-                            texto: textos.estrenoTarde,
-                            seleccionado: _franja == FranjaPreferida.tarde,
-                            alCambiar: (_) =>
-                                setState(() => _franja = FranjaPreferida.tarde),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SelectorEstimacion(
-                      elegida: _estimacion,
-                      alElegir: (id) => setState(() => _estimacion = id),
-                    ),
-                    if (_fallo != null) ...[
-                      const SizedBox(height: Espaciado.e4),
-                      Aviso(
-                        mensaje: textoDeFalloEstreno(textos, _fallo!),
-                        tono: _fallo is EstrenoDuplicada
-                            ? Tono.informacion
-                            : Tono.peligro,
-                      ),
-                    ],
-                    const SizedBox(height: Espaciado.e5),
-                    BotonPildora(
-                      texto: _enviando
-                          ? textos.estrenoEnviando
-                          : textos.estrenoEnviar,
-                      expandido: true,
-                      alPresionar: _enviando || _dia == null || _franja == null
-                          ? null
-                          : _enviar,
-                    ),
-                    AccesoMisSolicitudes(
-                      alToque: () => context.push(rutaMisSolicitudesEstreno),
+                    Aviso(
+                      mensaje: textoDeFalloEstreno(textos, _fallo!),
+                      tono: _fallo is EstrenoDuplicada
+                          ? Tono.informacion
+                          : Tono.peligro,
                     ),
                   ],
+                  const SizedBox(height: Espaciado.e5),
+                  BotonPildora(
+                    texto: _enviando
+                        ? textos.estrenoEnviando
+                        : textos.estrenoEnviar,
+                    expandido: true,
+                    alPresionar: _enviando || _dia == null || _franja == null
+                        ? null
+                        : _enviar,
+                  ),
+                  AccesoMisSolicitudes(
+                    alToque: () => context.push(rutaMisSolicitudesEstreno),
+                  ),
                 ],
-              ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

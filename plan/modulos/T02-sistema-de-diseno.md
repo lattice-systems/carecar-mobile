@@ -235,7 +235,7 @@ Segunda pasada de la revisión de V2-T02.22, pantalla por pantalla contra la app
 - **`CuadroFecha`** sube al sistema de diseño y reemplaza a las dos copias (la del inicio y la de la lista de citas, que se veían distintas).
 - La guía de revisión y los casos están en [`antipatrones-de-ia.md`](../../docs/diseno/antipatrones-de-ia.md).
 
-**Pendiente** (detectado, no tocado aquí): `Mis estimaciones`, `Mis solicitudes` (estreno) y `Comparar modelos` son listas pero usan `BarraPantalla` (título pequeño) en vez de `MarcoPantalla` (título grande) como `Mis citas`; `GrupoLista` usa `Icons.chevron_right` y `TarjetaResumen` `Icons.chevron_right_rounded`; la regla de números `es_MX` sigue copiada en otros módulos y se migra a `formatearMiles` poco a poco.
+**Pendiente** (detectado, no tocado aquí): `Mis estimaciones`, `Mis solicitudes` (estreno) y `Comparar modelos` usaban `BarraPantalla` y `GrupoLista` y `TarjetaResumen` dos flechas distintas: se atendió en V2-T02.25. La regla de números `es_MX` sigue copiada en otros módulos y se migra a `formatearMiles` poco a poco.
 
 ## Avance de V2-T02.24 (Ajustes en el lenguaje v2)
 
@@ -247,6 +247,16 @@ Ajustes se abre desde el avatar del inicio en toda compilación y era lo más le
 - **Higiene**: doce PNG de diferencias de golden fallido se habían colado en un commit; se quitan y `failures/` queda ignorado.
 
 **Sigue en v1 desde Ajustes:** «Cambiar contraseña» abre la pantalla v1 (`PantallaCambiarContrasena`); su versión v2 es V2-M01.10 (Jael). Los avisos breves (`mostrarToast`) también son de la v1. V2-M01.06 puede mover Ajustes a un módulo `perfil` sin cambiar su aspecto.
+
+## Avance de V2-T02.25 (las pantallas v2 que faltaban)
+
+Se repasaron una por una las pantallas de los módulos antes de encender la v2 por defecto ([V2-T01.09](T01-arquitectura-v2.md)): con ese cambio llegan a todas las personas, así que ya no pueden verse distintas.
+
+- **Un solo marco.** `Mis estimaciones` y `Comparar modelos` (catálogo) y `Mis solicitudes`, `Quiero probarlo` y `Cotización` (estreno) pasan de `Scaffold` + `BarraPantalla` a `MarcoPantalla`. Las listas llevan «Regresar»; los formularios, «Cerrar» (se abren encima del detalle del modelo), con el modelo como subtítulo del encabezado. Cargando, vacío y error conservan el marco. `BarraPantalla` queda para el chat, el visor de PDF, la calculadora y el checklist con pestañas.
+- **Un solo estilo de lista.** Las estimaciones y las versiones de un modelo pasan de `FilaLista` a `GrupoLista`; ninguna pantalla usa ya `FilaLista` (si nadie lo necesita, se retira).
+- **La próxima cita** de `Mis citas` era otra tarjeta héroe (degradado, etiqueta en mayúsculas, día de 84 px). Ahora es la `TarjetaResumen` del inicio con el `CuadroFecha` en el tono del estado; Comprobante, Reprogramar y Cancelar quedan debajo. El inicio, que solo muestra citas confirmadas, pinta el mismo cuadro en el mismo tono: antes la misma cita era azul en el inicio y verde en «Mis citas».
+- **Una sola flecha.** Filas y tarjetas tocables llevan la misma (`LucideIcons300.chevronRight`, el set único de V2-T02.07) en el mismo color, `textoTerciario`: `FilaLista` y `Semaforo` la llevaban en `textoSecundario`. Las pruebas que contaban flechas cuentan las de la lista, sin confundirse con la de una tarjeta.
+- **`EstadoError` traducido.** Sus textos por omisión estaban escritos a mano («Sin conexion», sin tilde y siempre en español) y los usan 44 pantallas; ahora salen de `AppLocalizations` (cinco cadenas nuevas).
 ## Avance de V2-T02.02
 
 | Criterio | Dónde se cumple |

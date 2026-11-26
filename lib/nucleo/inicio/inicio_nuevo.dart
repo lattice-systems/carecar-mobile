@@ -504,7 +504,8 @@ class _TarjetaCita extends StatelessWidget {
         titulo: textos.inicioProximaCita,
         subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
         detalle: cita.vehiculo,
-        visual: CuadroFecha(fecha: cita.fecha),
+        // Solo se muestra una cita confirmada: el mismo tono que en Mis citas.
+        visual: CuadroFecha(fecha: cita.fecha, tono: Tono.exito),
         alToque: alAbrirCitas,
       ),
     );

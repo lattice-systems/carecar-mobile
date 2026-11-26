@@ -3445,5 +3445,52 @@
   "referidoEstadoCompro": "Bought",
   "referidoEstadoDescartado": "No purchase",
   "referidoDesde": "{estado} · since {fecha}",
-  "referidoGanaste": "+{puntos}"
+  "referidoGanaste": "+{puntos}",
+  "estadoErrorTitulo": "We could not load this",
+  "@estadoErrorTitulo": {
+    "description": "Title of the load error state (EstadoError) when the screen does not give its own."
+  },
+  "estadoErrorMensaje": "Try again in a moment.",
+  "@estadoErrorMensaje": {
+    "description": "Message of the load error state (EstadoError) when the screen does not give its own."
+  },
+  "estadoErrorSinConexionTitulo": "No connection",
+  "@estadoErrorSinConexionTitulo": {
+    "description": "Title of the load error state when the phone is offline."
+  },
+  "estadoErrorSinConexionMensaje": "Check your internet and try again.",
+  "@estadoErrorSinConexionMensaje": {
+    "description": "Message of the load error state when the phone is offline."
+  },
+  "estadoErrorReintentar": "Retry",
+  "@estadoErrorReintentar": {
+    "description": "Button that asks again for what did not load (load error state)."
+  },
+  "citasMisCitasCuando": "{dia}, {inicio} - {fin}",
+  "@citasMisCitasCuando": {
+    "description": "Weekday and time range of the next appointment in My appointments.",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "citasMisCitasVehiculoYMotivo": "{vehiculo} · {motivo}",
+  "@citasMisCitasVehiculoYMotivo": {
+    "description": "Vehicle and reason of the next appointment in My appointments.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      },
+      "motivo": {
+        "type": "String"
+      }
+    }
+  }
 }

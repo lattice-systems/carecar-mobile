@@ -6,10 +6,10 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/comparativa.dart';
@@ -32,55 +32,51 @@ class PantallaComparador extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
-    final cuerpo = ids.isEmpty
-        ? EstadoVacio(
-            titulo: textos.catalogoComparadorIdsMalosTitulo,
-            mensaje: textos.catalogoComparadorIdsMalosMensaje,
-            icono: LucideIcons300.arrowRightLeft,
-          )
-        : _Cuerpo(clave: ids.join(','));
 
-    return Scaffold(
-      body: Column(
-        children: [
-          BarraPantalla(titulo: textos.catalogoComparadorTitulo),
-          Expanded(child: cuerpo),
-        ],
-      ),
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      titulo: textos.catalogoComparadorTitulo,
+      conRegreso: true,
+      estado: hijo,
     );
-  }
-}
 
-class _Cuerpo extends ConsumerWidget {
-  const _Cuerpo({required this.clave});
+    if (ids.isEmpty) {
+      return estado(
+        EstadoVacio(
+          titulo: textos.catalogoComparadorIdsMalosTitulo,
+          mensaje: textos.catalogoComparadorIdsMalosMensaje,
+          icono: LucideIcons300.arrowRightLeft,
+        ),
+      );
+    }
 
-  final String clave;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final textos = AppLocalizations.of(context);
-    final detalles = ref.watch(comparativaProvider(clave));
-
-    return detalles.when(
-      skipLoadingOnReload: true,
-      loading: () => const _Cargando(),
-      error: (error, _) => error is NoEncontrado
-          ? EstadoVacio(
-              titulo: textos.catalogoNoEncontradoTitulo,
-              mensaje: textos.catalogoNoEncontradoMensaje,
-              icono: LucideIcons300.car,
-            )
-          : EstadoError(
-              causa: error is SinConexion
-                  ? CausaError.sinConexion
-                  : CausaError.generico,
-              alReintentar: () => ref.invalidate(comparativaProvider(clave)),
-            ),
-      data: (modelos) => RefreshIndicator(
-        onRefresh: () => ref.refresh(comparativaProvider(clave).future),
-        child: _Tabla(modelos: modelos),
-      ),
-    );
+    final clave = ids.join(',');
+    return ref
+        .watch(comparativaProvider(clave))
+        .when(
+          skipLoadingOnReload: true,
+          loading: () => estado(const _Cargando()),
+          error: (error, _) => estado(
+            error is NoEncontrado
+                ? EstadoVacio(
+                    titulo: textos.catalogoNoEncontradoTitulo,
+                    mensaje: textos.catalogoNoEncontradoMensaje,
+                    icono: LucideIcons300.car,
+                  )
+                : EstadoError(
+                    causa: error is SinConexion
+                        ? CausaError.sinConexion
+                        : CausaError.generico,
+                    alReintentar: () =>
+                        ref.invalidate(comparativaProvider(clave)),
+                  ),
+          ),
+          data: (modelos) => MarcoPantalla(
+            titulo: textos.catalogoComparadorTitulo,
+            conRegreso: true,
+            alRefrescar: () => ref.refresh(comparativaProvider(clave).future),
+            slivers: [SliverToBoxAdapter(child: _Tabla(modelos: modelos))],
+          ),
+        );
   }
 }
 
@@ -118,29 +114,27 @@ class _Tabla extends StatelessWidget {
       ...filasDeFicha(modelos),
     ];
 
-    // El scroll vertical es el de la lista y el horizontal el de la tabla, asi
+    // El scroll vertical es el del marco y el horizontal el de la tabla, asi
     // la pantalla alta y la ancha se resuelven sin recortar nada.
-    return ListView(
-      padding: const EdgeInsets.all(Espaciado.e4),
-      children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _FilaModelos(modelos: modelos),
-              for (var f = 0; f < filas.length; f++)
-                _FilaDato(
-                  fila: filas[f],
-                  modelos: modelos,
-                  sinDato: sinDato,
-                  // La fila 0 es el precio: ahi se marca el mas bajo.
-                  resaltar: f == 0 ? masBarato : null,
-                ),
-            ],
-          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Espaciado.margenTelefono),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _FilaModelos(modelos: modelos),
+            for (var f = 0; f < filas.length; f++)
+              _FilaDato(
+                fila: filas[f],
+                modelos: modelos,
+                sinDato: sinDato,
+                // La fila 0 es el precio: ahi se marca el mas bajo.
+                resaltar: f == 0 ? masBarato : null,
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

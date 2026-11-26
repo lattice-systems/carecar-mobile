@@ -189,7 +189,7 @@ void main() {
       _app(RepositorioCitasFake(error: const SinConexion())),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Sin conexion'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
   });
 
   for (final escenario in [Escenario.oscuro, Escenario.letraGrande]) {

@@ -6,7 +6,7 @@
 
 | Persona | Rol Scrum | GitHub | Frentes (dueño) | Historias |
 | --- | --- | --- | --- | --- |
-| Daniel Ojeda Luna | Scrum Master | `DevOjeda016` | T01 Arquitectura · T04 Entrega continua · M16 Estreno · M22 Seguridad y privacidad · M24 Asistente IA | 50 |
+| Daniel Ojeda Luna | Scrum Master | `DevOjeda016` | T01 Arquitectura · T04 Entrega continua · M16 Estreno · M22 Seguridad y privacidad · M24 Asistente IA | 51 |
 | Haziel Orlando Gutierrez Hernandez | Product Owner | `UncrownedRex` | T03 Calidad y aceptación · M09 Documentos · M13 Promociones · M15 Encuestas · M23 Analítica · M27 Ayuda | 33 |
 | Cristian Veuliah Mares Cerda | Desarrollo | `CristianMares` | T02 Sistema de diseño · M03 Catálogo y calculadora · M14 Tienda · M20 Accesibilidad · M26 Valuación | 39 |
 | Ricardo Garnica Mejia | Desarrollo | `RichiGM` | T05 Contrato API y backend · M02 historial y tickets · M04 Taller en vivo · M08 Pagos · M10 Garantía · M12 Lealtad | 36 |

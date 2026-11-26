@@ -1,6 +1,8 @@
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -288,6 +290,25 @@ void main() {
       await tester.tap(find.text('Sábado, 10:00'));
       expect(toques, ['citas']);
     });
+
+    testWidgets(
+      'el cuadro de la fecha va en el tono de una cita confirmada, como en Mis citas',
+      (tester) async {
+        await _montar(
+          tester,
+          cita: CitaInicio(
+            fecha: DateTime(2026, 11, 28),
+            hora: '10:00',
+            vehiculo: 'March 2020',
+          ),
+        );
+
+        expect(
+          tester.widget<CuadroFecha>(find.byType(CuadroFecha)).tono,
+          Tono.exito,
+        );
+      },
+    );
 
     testWidgets('el botón flotante agenda y el avatar abre ajustes', (
       tester,

@@ -8867,6 +8867,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'+{puntos}'**
   String referidoGanaste(String puntos);
+
+  /// Título del estado de error de carga (EstadoError) cuando la pantalla no dice otro.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get estadoErrorTitulo;
+
+  /// Mensaje del estado de error de carga (EstadoError) cuando la pantalla no dice otro.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get estadoErrorMensaje;
+
+  /// Título del estado de error de carga cuando el teléfono no tiene conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get estadoErrorSinConexionTitulo;
+
+  /// Mensaje del estado de error de carga cuando el teléfono no tiene conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get estadoErrorSinConexionMensaje;
+
+  /// Botón que vuelve a pedir lo que no cargó (estado de error de carga).
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get estadoErrorReintentar;
+
+  /// Día de la semana y horario de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{dia}, {inicio} - {fin}'**
+  String citasMisCitasCuando(String dia, String inicio, String fin);
+
+  /// Vehículo y motivo de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{vehiculo} · {motivo}'**
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo);
 }
 
 class _AppLocalizationsDelegate

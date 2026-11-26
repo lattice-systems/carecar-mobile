@@ -5322,4 +5322,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String referidoGanaste(String puntos) {
     return '+$puntos';
   }
+
+  @override
+  String get estadoErrorTitulo => 'We could not load this';
+
+  @override
+  String get estadoErrorMensaje => 'Try again in a moment.';
+
+  @override
+  String get estadoErrorSinConexionTitulo => 'No connection';
+
+  @override
+  String get estadoErrorSinConexionMensaje =>
+      'Check your internet and try again.';
+
+  @override
+  String get estadoErrorReintentar => 'Retry';
+
+  @override
+  String citasMisCitasCuando(String dia, String inicio, String fin) {
+    return '$dia, $inicio - $fin';
+  }
+
+  @override
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo) {
+    return '$vehiculo · $motivo';
+  }
 }

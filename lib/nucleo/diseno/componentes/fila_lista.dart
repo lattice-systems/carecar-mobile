@@ -71,7 +71,7 @@ class FilaLista extends StatelessWidget {
               ExcludeSemantics(
                 child: Icon(
                   LucideIcons300.chevronRight,
-                  color: c.textoSecundario,
+                  color: c.textoTerciario,
                 ),
               ),
             ],
