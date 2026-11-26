@@ -23,6 +23,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoBloqueoTitulo => 'Too many attempts';
 
   @override
+  String get accesoCambiarActualEtiqueta => 'Temporary password';
+
+  @override
+  String get accesoCambiarCerrarSesion => 'Sign out';
+
+  @override
+  String get accesoCambiarConfirmarEtiqueta => 'Confirm the new password';
+
+  @override
+  String get accesoCambiarExplicacion =>
+      'The dealership gave you a temporary password. Choose a new one to continue.';
+
+  @override
+  String get accesoCambiarFalloTitulo => 'We couldn\'t change your password';
+
+  @override
+  String get accesoCambiarGuardando => 'Saving…';
+
+  @override
+  String get accesoCambiarGuardar => 'Save';
+
+  @override
+  String get accesoCambiarNoCoincide => 'The two passwords don\'t match.';
+
+  @override
+  String get accesoCambiarNuevaEtiqueta => 'New password';
+
+  @override
+  String get accesoCambiarReglaDistinta => 'Different from the temporary one';
+
+  @override
+  String get accesoCambiarReglaLargo => 'From 8 to 72 characters';
+
+  @override
+  String get accesoCambiarReglaLetra => 'At least one letter';
+
+  @override
+  String get accesoCambiarReglaNumero => 'At least one number';
+
+  @override
+  String get accesoCambiarReglasTitulo => 'Your new password must have:';
+
+  @override
+  String get accesoCambiarTitulo => 'Change your password';
+
+  @override
   String get accesoContrasenaEtiqueta => 'Password';
 
   @override
@@ -54,7 +100,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoEnlaceNoValidoMensaje =>
+      'Links expire soon and work only once. Ask for a new one and check your email.';
+
+  @override
+  String get accesoEnlaceNoValidoTitulo => 'This link no longer works';
+
+  @override
+  String get accesoEnlacePedirOtro => 'Ask for another link';
+
+  @override
+  String get accesoNuevaExplicacion =>
+      'Choose a new password. This link works only once.';
+
+  @override
+  String get accesoNuevaFalloTitulo => 'We couldn\'t save your password';
+
+  @override
+  String get accesoNuevaGuardando => 'Saving…';
+
+  @override
+  String get accesoNuevaGuardar => 'Save password';
+
+  @override
+  String get accesoNuevaIrAlAcceso => 'Sign in';
+
+  @override
+  String get accesoNuevaListoMensaje => 'You can sign in with it now.';
+
+  @override
+  String get accesoNuevaListoTitulo => 'Your password is ready';
+
+  @override
+  String get accesoNuevaTitulo => 'Choose your new password';
+
+  @override
   String get accesoOlvide => 'Forgot your password?';
+
+  @override
+  String get accesoRecuperarEnviado => 'Check your email';
+
+  @override
+  String get accesoRecuperarEnviadoMensaje =>
+      'If that email has an account, you\'ll get a link to choose a new password. It expires soon and works only once.';
+
+  @override
+  String get accesoRecuperarEnviando => 'Sending…';
+
+  @override
+  String get accesoRecuperarEnviar => 'Send me the link';
+
+  @override
+  String get accesoRecuperarExplicacion =>
+      'Enter your email and we\'ll send you a link to choose a new password.';
+
+  @override
+  String get accesoRecuperarFalloTitulo => 'We couldn\'t send the link';
+
+  @override
+  String get accesoRecuperarTitulo => 'Recover your password';
 
   @override
   String get accesoServidorDespertandoMensaje =>
@@ -62,6 +166,117 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accesoServidorDespertandoTitulo => 'Waking up the server…';
+
+  @override
+  String get accesoSesionesActivaAhora => 'Active now';
+
+  @override
+  String get accesoSesionesCambio =>
+      'That session changed while you were looking. Check the list and try again.';
+
+  @override
+  String get accesoSesionesCancelar => 'Cancel';
+
+  @override
+  String get accesoSesionesCargando => 'Loading your sessions…';
+
+  @override
+  String get accesoSesionesCerrada => 'Done, that session is closed.';
+
+  @override
+  String get accesoSesionesCerrar => 'Close';
+
+  @override
+  String accesoSesionesCerrarEtiqueta(String dispositivo) {
+    return 'Close the session on $dispositivo';
+  }
+
+  @override
+  String get accesoSesionesCerrarTodas => 'Close all sessions';
+
+  @override
+  String get accesoSesionesCerrarTodasConfirmar => 'Close all';
+
+  @override
+  String get accesoSesionesCerrarTodasMensaje =>
+      'They will close on all your devices, including this one. You\'ll need to sign in again.';
+
+  @override
+  String get accesoSesionesCerrarTodasTitulo => 'Close all sessions?';
+
+  @override
+  String get accesoSesionesCerrarUnaMensaje =>
+      'That device will have to sign in again with your email and password.';
+
+  @override
+  String accesoSesionesCerrarUnaTitulo(String dispositivo) {
+    return 'Close the session on $dispositivo?';
+  }
+
+  @override
+  String get accesoSesionesEncabezado => 'Devices with your session open';
+
+  @override
+  String get accesoSesionesEquipoSinNombre => 'Unnamed device';
+
+  @override
+  String get accesoSesionesFalloCerrar =>
+      'We couldn\'t close that session. Try again.';
+
+  @override
+  String accesoSesionesHaceDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: '$dias days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String accesoSesionesHaceHoras(int horas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      horas,
+      locale: localeName,
+      other: '$horas hours ago',
+      one: '1 hour ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String accesoSesionesHaceMinutos(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutes ago',
+      one: '1 minute ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accesoSesionesPie =>
+      'If you see a device you don\'t recognize, close it and change your password.';
+
+  @override
+  String get accesoSesionesSinActividad => 'No recorded activity';
+
+  @override
+  String get accesoSesionesTitulo => 'My sessions';
+
+  @override
+  String accesoSesionesUltimoUsoFecha(String fecha) {
+    return 'On $fecha';
+  }
+
+  @override
+  String get accesoSesionesVacioMensaje =>
+      'When you sign in from a device, it will show up here.';
+
+  @override
+  String get accesoSesionesVacioTitulo => 'No sessions open';
 
   @override
   String get accesoSinConexionTitulo => 'No connection';
@@ -181,10 +396,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get asistenciaHeroeAccion => 'Ask for help';
 
   @override
-  String get asistenciaEstanteGuias => 'Quick guides';
-
-  @override
-  String get asistenciaGrupoGuias => 'All guides';
+  String get asistenciaGrupoGuias => 'Guides';
 
   @override
   String asistenciaGuiaCantidadPasos(int pasos) {
@@ -478,13 +690,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'We could not reschedule your appointment. Try again.';
 
   @override
+  String get citasReprogramadaTitulo => 'Appointment rescheduled';
+
+  @override
   String citasReprogramarListo(DateTime fecha, String hora) {
     final intl.DateFormat fechaDateFormat = intl.DateFormat.MMMMEEEEd(
       localeName,
     );
     final String fechaString = fechaDateFormat.format(fecha);
 
-    return 'Appointment moved to $fechaString at $hora. The previous time slot is free again.';
+    return 'We will see you on $fechaString at $hora. The previous time slot is free again.';
   }
 
   @override
@@ -744,6 +959,381 @@ class AppLocalizationsEn extends AppLocalizations {
   String fotoDeModelo(String modelo) {
     return 'Photo of the $modelo';
   }
+
+  @override
+  String get tiendaAccionError => 'Something went wrong. Try again.';
+
+  @override
+  String get tiendaAccionSinConexion =>
+      'No connection. Check your internet and try again.';
+
+  @override
+  String get tiendaAgendarCita => 'Book appointment';
+
+  @override
+  String get tiendaAgotado => 'Out of stock';
+
+  @override
+  String tiendaAgregado(int piezas) {
+    return 'Added. You have $piezas of this product.';
+  }
+
+  @override
+  String get tiendaAgregar => 'Add to cart';
+
+  @override
+  String tiendaApartadoMensaje(String fecha) {
+    return 'Pay at the counter. Your reservation expires on $fecha.';
+  }
+
+  @override
+  String get tiendaApartadoTitulo => 'Items reserved';
+
+  @override
+  String get tiendaApartar => 'Reserve';
+
+  @override
+  String get tiendaApartarSinConexion =>
+      'No connection. Your cart is saved: try again and it will not be reserved twice.';
+
+  @override
+  String get tiendaAvanceTitulo => 'Progress';
+
+  @override
+  String get tiendaBuscar => 'Search by name or code';
+
+  @override
+  String get tiendaCambiarCita => 'Change appointment';
+
+  @override
+  String get tiendaCancelarConfirmar => 'Yes, cancel it';
+
+  @override
+  String get tiendaCancelarMensaje =>
+      'The items are released and someone else can reserve them.';
+
+  @override
+  String get tiendaCancelarPedido => 'Cancel order';
+
+  @override
+  String get tiendaCancelarTitulo => 'Cancel the order?';
+
+  @override
+  String get tiendaCancelarVolver => 'Keep it';
+
+  @override
+  String get tiendaCantidad => 'Quantity';
+
+  @override
+  String get tiendaCargando => 'Loading the store';
+
+  @override
+  String tiendaCarritoLleno(int maximo) {
+    return 'The cart holds up to $maximo different products.';
+  }
+
+  @override
+  String get tiendaCarritoTitulo => 'Cart';
+
+  @override
+  String get tiendaCarritoVacioMensaje =>
+      'Add products from the store to reserve them.';
+
+  @override
+  String get tiendaCarritoVacioTitulo => 'Your cart is empty';
+
+  @override
+  String get tiendaCategoriaAccesorio => 'Accessories';
+
+  @override
+  String get tiendaCategoriaCuidado => 'Car care';
+
+  @override
+  String get tiendaCategoriaRefaccion => 'Parts';
+
+  @override
+  String get tiendaCategoriaTodas => 'All';
+
+  @override
+  String get tiendaCitaElegida => 'Selected';
+
+  @override
+  String tiendaCompatibilidadAnios(String desde, String hasta) {
+    return '$desde to $hasta';
+  }
+
+  @override
+  String get tiendaCompatibilidadTitulo => 'Compatible cars';
+
+  @override
+  String get tiendaCompatible => 'Fits your car';
+
+  @override
+  String get tiendaDetalleTitulo => 'My order';
+
+  @override
+  String get tiendaElegirCita => 'Choose the appointment';
+
+  @override
+  String get tiendaEntendido => 'Got it';
+
+  @override
+  String get tiendaEntradaDetalle =>
+      'Genuine accessories and parts for your car';
+
+  @override
+  String get tiendaEntregaCita => 'Install at my appointment';
+
+  @override
+  String get tiendaEntregaMostrador => 'Pick up at the counter';
+
+  @override
+  String get tiendaEntregaTitulo => 'Delivery';
+
+  @override
+  String get tiendaErrorCitas => 'We could not load your appointments.';
+
+  @override
+  String get tiendaErrorMas => 'We could not load more. Try again.';
+
+  @override
+  String get tiendaErrorMensaje => 'Try again in a moment.';
+
+  @override
+  String get tiendaErrorTitulo => 'We could not load this';
+
+  @override
+  String get tiendaEstadoApartado => 'Reserved';
+
+  @override
+  String get tiendaEstadoCancelado => 'Cancelled';
+
+  @override
+  String get tiendaEstadoEntregado => 'Delivered';
+
+  @override
+  String get tiendaEstadoListo => 'Ready';
+
+  @override
+  String tiendaExistencia(int piezas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      piezas,
+      locale: localeName,
+      other: '$piezas left',
+      one: '1 left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get tiendaFiltroAuto => 'Fits';
+
+  @override
+  String tiendaFotoDe(String producto) {
+    return 'Photo of $producto';
+  }
+
+  @override
+  String get tiendaInstalacionTitulo => 'Installation';
+
+  @override
+  String get tiendaInstalarProxima => 'Install at my next appointment';
+
+  @override
+  String get tiendaIrALaTienda => 'Go to the store';
+
+  @override
+  String tiendaLeQueda(String auto) {
+    return 'Fits your $auto';
+  }
+
+  @override
+  String tiendaMaximoAlcanzado(int piezas) {
+    return 'You already have $piezas, the most for this product.';
+  }
+
+  @override
+  String get tiendaMisPedidos => 'My orders';
+
+  @override
+  String get tiendaMotivoAgencia => 'The dealership cancelled it';
+
+  @override
+  String get tiendaMotivoCliente => 'You cancelled it';
+
+  @override
+  String get tiendaMotivoVencido => 'The reservation expired';
+
+  @override
+  String tiendaNoLeQueda(String auto) {
+    return 'Does not fit your $auto';
+  }
+
+  @override
+  String get tiendaNoSeApartoTitulo => 'We could not reserve it';
+
+  @override
+  String get tiendaNoSeCambioTitulo => 'We could not change the order';
+
+  @override
+  String get tiendaPagoEnCaja =>
+      'The app does not charge you: pay at the counter.';
+
+  @override
+  String get tiendaPedidoNoEncontradoMensaje => 'Check your list of orders.';
+
+  @override
+  String get tiendaPedidoNoEncontradoTitulo => 'We could not find that order';
+
+  @override
+  String tiendaPedidoResumen(String total, int piezas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      piezas,
+      locale: localeName,
+      other: '$piezas items',
+      one: '1 item',
+    );
+    return '$total, $_temp0';
+  }
+
+  @override
+  String tiendaPedidoTitulo(int numero) {
+    return 'Order $numero';
+  }
+
+  @override
+  String get tiendaPedidosVacioMensaje =>
+      'What you reserve in the store shows up here.';
+
+  @override
+  String get tiendaPedidosVacioTitulo => 'You have no orders yet';
+
+  @override
+  String tiendaPrecioCadaUno(String precio) {
+    return '$precio each';
+  }
+
+  @override
+  String get tiendaProductoNoEncontradoMensaje =>
+      'The dealership may have removed it from the store.';
+
+  @override
+  String get tiendaProductoNoEncontradoTitulo =>
+      'This product is no longer available';
+
+  @override
+  String get tiendaProductoTitulo => 'Product';
+
+  @override
+  String get tiendaProductosTitulo => 'Products';
+
+  @override
+  String get tiendaQuitar => 'Remove';
+
+  @override
+  String get tiendaQuitarFiltros => 'Show all products';
+
+  @override
+  String get tiendaRechazoCitaNoDisponible =>
+      'That appointment was cancelled or has passed. Choose another or pick up at the counter.';
+
+  @override
+  String get tiendaRechazoIncompatible =>
+      'One of the products does not fit the car of that appointment. Choose another or pick up at the counter.';
+
+  @override
+  String get tiendaRechazoLimite =>
+      'You already have 3 undelivered orders. Pick up or cancel one to reserve more.';
+
+  @override
+  String get tiendaRechazoNoCancelable =>
+      'This order was already delivered and cannot be cancelled.';
+
+  @override
+  String get tiendaRechazoNoModificable =>
+      'This order was delivered or cancelled and cannot be changed.';
+
+  @override
+  String get tiendaRechazoSinExistencia =>
+      'There are not enough items left. Check the stock and change the quantity.';
+
+  @override
+  String get tiendaReintentar => 'Retry';
+
+  @override
+  String tiendaRenglonDetalle(int cantidad, String precio) {
+    return '$cantidad at $precio';
+  }
+
+  @override
+  String get tiendaSeInstala => 'Installed at your appointment';
+
+  @override
+  String get tiendaSeRecoge => 'Picked up at the counter';
+
+  @override
+  String get tiendaSeguirComprando => 'Back to the store';
+
+  @override
+  String get tiendaSinCitaCompatible =>
+      'It does not fit the car of any of your upcoming appointments.';
+
+  @override
+  String get tiendaSinCitas =>
+      'You have no upcoming confirmed appointments. Book one to have it installed.';
+
+  @override
+  String get tiendaSinConexionMensaje => 'Check your internet and try again.';
+
+  @override
+  String get tiendaSinConexionTitulo => 'No connection';
+
+  @override
+  String get tiendaTitulo => 'Store';
+
+  @override
+  String get tiendaTodosLosProductos => 'All products';
+
+  @override
+  String get tiendaTotal => 'Total';
+
+  @override
+  String get tiendaUniversal => 'Fits any car';
+
+  @override
+  String get tiendaVacioMensaje => 'Try another search, category or car.';
+
+  @override
+  String get tiendaVacioTitulo => 'No products found';
+
+  @override
+  String tiendaVence(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String tiendaVenceDetalle(String fecha) {
+    return 'Expires on $fecha. After that it is cancelled and the items are released.';
+  }
+
+  @override
+  String tiendaVerCarrito(int piezas) {
+    return 'View cart ($piezas)';
+  }
+
+  @override
+  String get tiendaVerMas => 'Show more';
+
+  @override
+  String get tiendaVerMiPedido => 'View my order';
+
+  @override
+  String get tiendaVigenciaCita =>
+      'The reservation lasts until the end of the day after your appointment.';
+
+  @override
+  String get tiendaVigenciaMostrador =>
+      'The reservation lasts 48 hours. If it expires, the items are released.';
 
   @override
   String get vehiculosAccesoFicha => 'Technical specs';
@@ -1634,6 +2224,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get citasAccionesCita => 'Appointment options';
 
   @override
+  String get cerrarPantalla => 'Close';
+
+  @override
   String get regresar => 'Back';
 
   @override
@@ -2118,6 +2711,68 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get seguridadEquipoComprometidoMensaje =>
       'You can keep using CareCar, but for your safety we do not store your data on this device. Offline, you will not see saved information.';
+
+  @override
+  String get seguridadConexionNoSeguraTitulo =>
+      'We could not verify that the connection is secure';
+
+  @override
+  String get seguridadConexionNoSeguraMensaje =>
+      'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
+
+  @override
+  String inicioSaludo(String nombre) {
+    return 'Hi, $nombre';
+  }
+
+  @override
+  String get inicioProximaCita => 'Next appointment';
+
+  @override
+  String get inicioSinCitas => 'No upcoming appointments';
+
+  @override
+  String get inicioSinCitasDetalle => 'Book your car\'s next service';
+
+  @override
+  String get inicioSinAutos => 'No cars registered yet';
+
+  @override
+  String get inicioSinAutosDetalle =>
+      'Once the dealership registers your car, you\'ll see it here';
+
+  @override
+  String inicioKilometros(String km) {
+    return '$km km';
+  }
+
+  @override
+  String inicioAutoDeTotal(int n, int total) {
+    return 'Car $n of $total';
+  }
+
+  @override
+  String inicioCitaCuando(String dia, String hora) {
+    return '$dia, $hora';
+  }
+
+  @override
+  String get inicioAgendarCita => 'Book appointment';
+
+  @override
+  String get inicioPerfilYAjustes => 'Profile and settings';
+
+  @override
+  String get inicioDestinoInicio => 'Home';
+
+  @override
+  String get inicioDestinoVehiculos => 'Vehicles';
+
+  @override
+  String get inicioDestinoCitas => 'Appointments';
+
+  @override
+  String get inicioDestinoCatalogo => 'Catalog';
 
   @override
   String get asistenteTitulo => 'Ask your car';
@@ -3011,6 +3666,47 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your answer could not be sent. Try again.';
 
   @override
+  String tallerTarjetaListoTitulo(String vehiculo) {
+    return 'Your $vehiculo is ready';
+  }
+
+  @override
+  String tallerTarjetaListoTotal(String total) {
+    return 'Total to pay $total';
+  }
+
+  @override
+  String tallerHorarioEntrega(String fecha, String desde, String hasta) {
+    return 'Pick it up on $fecha from $desde to $hasta';
+  }
+
+  @override
+  String get tallerHorarioSinFranjas =>
+      'Your advisor will tell you when to pick it up.';
+
+  @override
+  String get tallerOrdenListoTitulo => 'Your car is ready';
+
+  @override
+  String get tallerOrdenTotalAPagar => 'Total to pay';
+
+  @override
+  String get tallerOrdenEntregadaTitulo => 'You picked up your car';
+
+  @override
+  String get tallerOrdenEntregadaMensaje =>
+      'The order is now in your vehicle history with its ticket.';
+
+  @override
+  String get tallerOrdenVerTicket => 'See ticket';
+
+  @override
+  String get tallerOrdenVerTicketResumen => 'Labor and parts of the order';
+
+  @override
+  String get tallerOrdenVerHistorial => 'See vehicle history';
+
+  @override
   String get asistenteFotoAdjuntar => 'Photo of a dashboard light';
 
   @override
@@ -3270,4 +3966,1393 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recoleccionComparacionFaltaAmbos =>
       'The driver hasn\'t recorded any checklist for this pickup yet.';
+
+  @override
+  String get privacidadTitulo => 'Privacy notice';
+
+  @override
+  String privacidadVersion(int version) {
+    return 'Version $version';
+  }
+
+  @override
+  String privacidadVigenteDesde(String fecha) {
+    return 'In effect since $fecha';
+  }
+
+  @override
+  String privacidadAceptadoEl(String fecha) {
+    return 'You accepted it on $fecha';
+  }
+
+  @override
+  String get privacidadCargando => 'Loading the privacy notice';
+
+  @override
+  String get privacidadAntesDeContinuar => 'Before you continue';
+
+  @override
+  String get privacidadIntro =>
+      'Read the privacy notice. You need to accept it to use CareCar.';
+
+  @override
+  String get privacidadAceptar => 'I accept the privacy notice';
+
+  @override
+  String get privacidadGuardando => 'Saving…';
+
+  @override
+  String get privacidadNoAcepto => 'I don\'t accept, sign out';
+
+  @override
+  String get privacidadCambio =>
+      'The notice changed while you were reading. The new one is up: read it and accept it if you agree.';
+
+  @override
+  String get privacidadErrorAceptar =>
+      'We couldn\'t save your acceptance. Try again.';
+
+  @override
+  String get privacidadSinConexionAceptar =>
+      'You\'re offline. Connect to save your acceptance.';
+
+  @override
+  String get privacidadHubTitulo => 'Privacy and my data';
+
+  @override
+  String get privacidadHubAviso => 'Privacy notice';
+
+  @override
+  String get privacidadHubAvisoDetalle => 'What we do with your data';
+
+  @override
+  String get privacidadHubDatos => 'Download my data';
+
+  @override
+  String get privacidadHubDatosDetalle => 'A copy of your personal data';
+
+  @override
+  String get arcoTitulo => 'My data';
+
+  @override
+  String get arcoIntro =>
+      'You can ask for a copy of the personal data CareCar keeps for your account. It\'s a file you can save or share.';
+
+  @override
+  String get arcoAlcance =>
+      'It doesn\'t include the tax and commercial records the dealership keeps by law (sales, payments and invoices): ask for them at the dealership.';
+
+  @override
+  String get arcoPedir => 'Ask for a copy of my data';
+
+  @override
+  String get arcoPidiendo => 'Requesting…';
+
+  @override
+  String get arcoPreparando => 'We\'re preparing your file';
+
+  @override
+  String get arcoPreparandoDetalle =>
+      'It takes a few seconds. You can stay on this screen.';
+
+  @override
+  String get arcoLista => 'Your file is ready';
+
+  @override
+  String arcoVence(String fecha) {
+    return 'Available until $fecha';
+  }
+
+  @override
+  String get arcoCuidado =>
+      'It contains personal information: keep it somewhere safe and don\'t share it.';
+
+  @override
+  String get arcoDescargar => 'Download my file';
+
+  @override
+  String get arcoDescargando => 'Preparing…';
+
+  @override
+  String get arcoPedirOtra => 'Ask for a new copy';
+
+  @override
+  String get arcoFallida => 'We couldn\'t prepare your file. Try again.';
+
+  @override
+  String get arcoVencida =>
+      'Your file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoErrorPedir => 'We couldn\'t request your copy. Try again.';
+
+  @override
+  String get arcoSinConexionPedir =>
+      'You\'re offline. Connect to request your copy.';
+
+  @override
+  String get arcoErrorDescarga => 'We couldn\'t download your file. Try again.';
+
+  @override
+  String get arcoArchivoNoDisponible =>
+      'The file is no longer available. Ask for a new copy.';
+
+  @override
+  String get arcoCargando => 'Loading your requests';
+
+  @override
+  String get privacidadHubEliminar => 'Delete my account';
+
+  @override
+  String get privacidadHubEliminarDetalle =>
+      'Deletes your account and your personal data';
+
+  @override
+  String get eliminarCuentaTitulo => 'Delete my account';
+
+  @override
+  String get eliminarCuentaAdvertenciaTitulo => 'This can\'t be undone';
+
+  @override
+  String get eliminarCuentaAdvertencia =>
+      'Your account is closed right away and we won\'t be able to recover it.';
+
+  @override
+  String get eliminarCuentaSeBorraTitulo => 'What gets deleted';
+
+  @override
+  String get eliminarCuentaBorra1 => 'Your name, email and phone number.';
+
+  @override
+  String get eliminarCuentaBorra2 =>
+      'Your addresses, your questions to the assistant, your quotes and your new-car requests.';
+
+  @override
+  String get eliminarCuentaBorra3 =>
+      'Your expense and mileage log, with its photos and receipts.';
+
+  @override
+  String get eliminarCuentaBorra4 =>
+      'Your location and comments in roadside assistance requests.';
+
+  @override
+  String get eliminarCuentaConservaTitulo => 'What we keep';
+
+  @override
+  String get eliminarCuentaConserva =>
+      'What we must keep for tax, commercial or warranty reasons: your vehicles\' service history, your purchases, payments and invoices, and the record that you accepted the privacy notice.';
+
+  @override
+  String get eliminarCuentaContrasena => 'Your password';
+
+  @override
+  String get eliminarCuentaContrasenaAyuda =>
+      'We ask for it to confirm it\'s you.';
+
+  @override
+  String get eliminarCuentaDeslizar => 'Slide to delete my account';
+
+  @override
+  String get eliminarCuentaConfirmarMensaje =>
+      'Your personal data is deleted and you won\'t be able to sign in with this account again. This can\'t be undone.';
+
+  @override
+  String get eliminarCuentaEliminando => 'Deleting your account…';
+
+  @override
+  String get eliminarCuentaListo =>
+      'Your account was deleted. Thanks for using CareCar.';
+
+  @override
+  String get eliminarCuentaContrasenaIncorrecta =>
+      'The password isn\'t correct.';
+
+  @override
+  String eliminarCuentaBloqueada(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: '$minutos minutes',
+      one: '1 minute',
+    );
+    return 'Too many attempts. Try again in $_temp0.';
+  }
+
+  @override
+  String get eliminarCuentaBloqueadaSinEspera =>
+      'Too many attempts. Try again later.';
+
+  @override
+  String get eliminarCuentaSinConexion =>
+      'You\'re offline. Check your connection and try again.';
+
+  @override
+  String get eliminarCuentaError =>
+      'We couldn\'t delete your account. Try again.';
+
+  @override
+  String get asistenciaLlamarTitulo => 'Call now';
+
+  @override
+  String get asistenciaLlamarIntro =>
+      'One tap opens your phone\'s dialer with the number. It works even without data.';
+
+  @override
+  String get asistenciaLlamarGrupo => 'Who to call';
+
+  @override
+  String get asistenciaLlamarEmergencias => 'Emergencies';
+
+  @override
+  String get asistenciaLlamarEmergenciasDetalle =>
+      '911 · police, ambulance and fire';
+
+  @override
+  String get asistenciaLlamarAgencia => 'The dealership';
+
+  @override
+  String get asistenciaLlamarAseguradora => 'My insurer';
+
+  @override
+  String get asistenciaLlamarAseguradoraFalta =>
+      'You haven\'t added your insurer yet';
+
+  @override
+  String get asistenciaLlamarAseguradoraComoAgregar =>
+      'You haven\'t added your insurer yet. Add it in your car\'s documents (policy) and it will show up here to call with one tap.';
+
+  @override
+  String asistenciaLlamarAccion(String contacto) {
+    return 'Call $contacto';
+  }
+
+  @override
+  String asistenciaLlamarNoSePudo(String numero) {
+    return 'We couldn\'t open the dialer. Dial $numero by hand.';
+  }
+
+  @override
+  String get asistenciaLlamarAtajo => 'Call the dealership or 911';
+
+  @override
+  String get citasCalendarioAgregar => 'Add to calendar';
+
+  @override
+  String get citasCalendarioTitulo => 'Dealership appointment';
+
+  @override
+  String citasCalendarioDescripcion(String vehiculo) {
+    return 'Vehicle: $vehiculo';
+  }
+
+  @override
+  String get citasCalendarioError =>
+      'We couldn\'t open your calendar. Try again.';
+
+  @override
+  String get mantenimientoRecordatorioEnVivo =>
+      'Your next service is coming up. You can book it whenever you like.';
+
+  @override
+  String get mapaAyudaPin => 'Drag the pin, tap the map or use the arrows.';
+
+  @override
+  String get mapaConPin => 'Map with a pin.';
+
+  @override
+  String get mapaConUbicacion => 'Your location is shown.';
+
+  @override
+  String get mapaMiUbicacion => 'Show my location';
+
+  @override
+  String get mapaMoverEste => 'Move the pin east';
+
+  @override
+  String get mapaMoverNorte => 'Move the pin north';
+
+  @override
+  String get mapaMoverOeste => 'Move the pin west';
+
+  @override
+  String get mapaMoverSur => 'Move the pin south';
+
+  @override
+  String get mapaPinAlCentro => 'Place the pin in the center';
+
+  @override
+  String get mapaPinMovidoEste => 'Pin moved east';
+
+  @override
+  String get mapaPinMovidoNorte => 'Pin moved north';
+
+  @override
+  String get mapaPinMovidoOeste => 'Pin moved west';
+
+  @override
+  String get mapaPinMovidoSur => 'Pin moved south';
+
+  @override
+  String get mapaReintentar => 'Try again';
+
+  @override
+  String get mapaSeguimiento => 'Tracking map.';
+
+  @override
+  String get mapaSinPin => 'Map without a pin.';
+
+  @override
+  String get mapaSinTeselas =>
+      'We couldn\'t load the map. Check your internet and try again.';
+
+  @override
+  String get mapaUbicacionApagada =>
+      'Your phone\'s location is off. Turn it on and try again.';
+
+  @override
+  String get mapaUbicacionBloqueada =>
+      'Location is blocked. Turn it on for CareCar in your phone settings.';
+
+  @override
+  String get mapaUbicacionDenegada =>
+      'You didn\'t let us see your location. You can use the map without it.';
+
+  @override
+  String get mapaUbicacionTiempo => 'Your location took too long. Try again.';
+
+  @override
+  String get garantiaTitulo => 'Warranty';
+
+  @override
+  String get garantiaAcceso => 'Warranty';
+
+  @override
+  String garantiaKmActual(String km) {
+    return 'Your car has $km km';
+  }
+
+  @override
+  String get garantiaVaciaTitulo => 'No warranty on file';
+
+  @override
+  String get garantiaVaciaMensaje =>
+      'When the dealership registers your car\'s warranty you\'ll see it here.';
+
+  @override
+  String get garantiaEstadoVigente => 'Active';
+
+  @override
+  String get garantiaEstadoPorVencer => 'Expiring soon';
+
+  @override
+  String get garantiaEstadoVencida => 'Expired';
+
+  @override
+  String garantiaVence(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String garantiaVenceOKm(String fecha, String km) {
+    return 'Expires on $fecha or at $km km';
+  }
+
+  @override
+  String garantiaQuedanDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: '$dias days left',
+      one: '1 day left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String garantiaQuedanKm(String km) {
+    return '$km km left';
+  }
+
+  @override
+  String get garantiaVencidaPorFecha => 'Expired by date';
+
+  @override
+  String get garantiaVencidaPorKm => 'Expired by mileage';
+
+  @override
+  String get campanasTitulo => 'Recalls';
+
+  @override
+  String get campanasAcceso => 'Safety recalls';
+
+  @override
+  String get campanasAccesoResumen => 'Manufacturer recalls for your car';
+
+  @override
+  String get campanasInsignia => 'Safety recall';
+
+  @override
+  String get campanasVaciaTitulo => 'Your car has no recalls';
+
+  @override
+  String get campanasVaciaMensaje =>
+      'If the manufacturer issues one for your car, we\'ll let you know.';
+
+  @override
+  String campanasCodigo(String codigo) {
+    return 'Recall $codigo';
+  }
+
+  @override
+  String get campanasGravedadBaja => 'Low severity';
+
+  @override
+  String get campanasGravedadMedia => 'Medium severity';
+
+  @override
+  String get campanasGravedadAlta => 'High severity';
+
+  @override
+  String get campanasGravedadCritica => 'Critical';
+
+  @override
+  String get campanasEstadoAbierta => 'Pending';
+
+  @override
+  String get campanasEstadoAgendada => 'Scheduled';
+
+  @override
+  String get campanasEstadoAtendida => 'Done';
+
+  @override
+  String get campanasQueHacer => 'What to do';
+
+  @override
+  String get campanasAvisoCritica =>
+      'Take care of this recall as soon as possible';
+
+  @override
+  String get campanasAgendar => 'Schedule service';
+
+  @override
+  String get garantiaReintentar => 'Retry';
+
+  @override
+  String get campanasAgendarSinDia => 'Pick a day to see its times.';
+
+  @override
+  String get campanasAgendarSinHorarios => 'No times left that day.';
+
+  @override
+  String get campanasAgendarSinCupoRango =>
+      'The shop has no open times right now. Try again later.';
+
+  @override
+  String get campanasAgendarVolver => 'Back to the recall';
+
+  @override
+  String get campanasVerCitas => 'See my appointments';
+
+  @override
+  String get campanasAgendarTitulo => 'Schedule recall';
+
+  @override
+  String get campanasAgendarDia => 'Pick a day';
+
+  @override
+  String get campanasAgendarHora => 'Pick a time';
+
+  @override
+  String get campanasAgendarConfirmar => 'Schedule';
+
+  @override
+  String get campanasAgendarSinCupo =>
+      'That time slot filled up. Pick another.';
+
+  @override
+  String get campanasAgendarDuplicada =>
+      'Your car already has an appointment that day. Pick another day.';
+
+  @override
+  String get campanasAgendarYaAgendada => 'This recall is already scheduled.';
+
+  @override
+  String get campanasAgendarError => 'We couldn\'t schedule it. Try again.';
+
+  @override
+  String get campanasAgendadaTitulo => 'Done, your appointment is booked';
+
+  @override
+  String campanasAgendadaMensaje(String fecha, String hora) {
+    return 'We\'ll see you on $fecha at $hora.';
+  }
+
+  @override
+  String get campanasQuePasa => 'What\'s wrong';
+
+  @override
+  String get campanasNoEncontradaTitulo => 'We can\'t find this recall anymore';
+
+  @override
+  String get campanasNoEncontradaMensaje =>
+      'Go back to the list to see your car\'s recalls.';
+
+  @override
+  String get campanasVerComprobante => 'See confirmation';
+
+  @override
+  String get vehiculosManualBuscarAccion => 'Search the manual';
+
+  @override
+  String get vehiculosManualBuscarCerrar => 'Close search';
+
+  @override
+  String get vehiculosManualBuscarSugerencia => 'Search the manual';
+
+  @override
+  String get vehiculosManualBuscarAyuda =>
+      'Type at least two letters to search the manual.';
+
+  @override
+  String vehiculosManualSinResultados(String consulta) {
+    return 'We couldn’t find “$consulta” in the manual.';
+  }
+
+  @override
+  String vehiculosManualResultadoPagina(int pagina) {
+    return 'Page $pagina';
+  }
+
+  @override
+  String get valuacionAceptar => 'Accept offer';
+
+  @override
+  String valuacionAceptarMensaje(String monto) {
+    return 'You are about to accept the $monto offer. The dealer records your decision.';
+  }
+
+  @override
+  String valuacionAgendadaMensaje(String dia, String hora) {
+    return 'See you on $dia at $hora to inspect your car.';
+  }
+
+  @override
+  String get valuacionAgendadaTitulo => 'Inspection booked';
+
+  @override
+  String get valuacionAgendadaVerCitas => 'See my appointments';
+
+  @override
+  String get valuacionAgendadaVolver => 'Back to the appraisal';
+
+  @override
+  String get valuacionAgendar => 'Book inspection';
+
+  @override
+  String get valuacionAgendarConfirmar => 'Confirm inspection';
+
+  @override
+  String get valuacionAgendarDia => 'Day';
+
+  @override
+  String get valuacionAgendarDuplicada =>
+      'This car already has an appointment that day. Pick another day.';
+
+  @override
+  String get valuacionAgendarError =>
+      'We could not book the inspection. Try again.';
+
+  @override
+  String get valuacionAgendarHorario => 'Time';
+
+  @override
+  String get valuacionAgendarNoAgendable =>
+      'This appraisal already has an appointment or can no longer be booked. Check its details.';
+
+  @override
+  String get valuacionAgendarSinCupo =>
+      'That time just filled up. Pick another one.';
+
+  @override
+  String get valuacionAgendarSinDia => 'Pick a day to see its times.';
+
+  @override
+  String get valuacionAgendarSinHorarios => 'No times left that day.';
+
+  @override
+  String get valuacionAgendarVacioMensaje =>
+      'The workshop has no free times for now. Try again later.';
+
+  @override
+  String get valuacionAgendarVacioTitulo => 'No times available';
+
+  @override
+  String get valuacionAsesorDetalle => 'Your sales advisor for this appraisal';
+
+  @override
+  String get valuacionAsesorTitulo => 'Your advisor';
+
+  @override
+  String get valuacionAvanceTitulo => 'Progress';
+
+  @override
+  String get valuacionCargando => 'Loading the appraisal';
+
+  @override
+  String get valuacionDetalleTitulo => 'Formal appraisal';
+
+  @override
+  String get valuacionErrorMensaje => 'Try again in a moment.';
+
+  @override
+  String get valuacionErrorTitulo => 'We could not load this';
+
+  @override
+  String get valuacionEstadoAceptada => 'Accepted';
+
+  @override
+  String get valuacionEstadoCitaAgendada => 'Inspection booked';
+
+  @override
+  String get valuacionEstadoDesconocido => 'In review';
+
+  @override
+  String get valuacionEstadoOfertada => 'Offer received';
+
+  @override
+  String get valuacionEstadoRechazada => 'Declined';
+
+  @override
+  String get valuacionEstadoSolicitada => 'To be booked';
+
+  @override
+  String get valuacionEstadoVencida => 'Expired';
+
+  @override
+  String valuacionEstimadaEl(String fecha) {
+    return 'Estimated on $fecha';
+  }
+
+  @override
+  String get valuacionEstimadoRango => 'Estimated range';
+
+  @override
+  String get valuacionEstimadoTitulo => 'Starting estimate';
+
+  @override
+  String get valuacionFotoError => 'Upload failed. The photo is still here.';
+
+  @override
+  String get valuacionFotoGaleria => 'Choose from gallery';
+
+  @override
+  String get valuacionFotoInvalida =>
+      'The dealer did not accept that image. Use a JPEG or PNG photo up to 8 MB.';
+
+  @override
+  String valuacionFotoPorSubir(String toma) {
+    return 'Photo to upload: $toma';
+  }
+
+  @override
+  String get valuacionFotoSinConexion =>
+      'No connection. The photo is still here.';
+
+  @override
+  String valuacionFotoSubida(String toma) {
+    return 'Uploaded photo: $toma';
+  }
+
+  @override
+  String get valuacionFotoSubiendo => 'Uploading the photo';
+
+  @override
+  String get valuacionFotoTomar => 'Take photo';
+
+  @override
+  String get valuacionFotosAbrirAjustes => 'Open settings';
+
+  @override
+  String valuacionFotosAvance(int subidas, int total) {
+    return '$subidas of $total photos';
+  }
+
+  @override
+  String get valuacionFotosCerrada =>
+      'This appraisal no longer accepts photos.';
+
+  @override
+  String get valuacionFotosGuiadasTitulo => 'Guided photos';
+
+  @override
+  String get valuacionFotosPrivacidad =>
+      'You can book without all 8 photos. Each photo uploads on its own and the app does not keep it on your phone.';
+
+  @override
+  String get valuacionFotosSinCamara =>
+      'We could not open the camera or the gallery. Try again.';
+
+  @override
+  String get valuacionFotosSinPermiso =>
+      'No permission for the camera or photos. Turn it on in settings.';
+
+  @override
+  String get valuacionFotosSubir => 'Upload guided photos';
+
+  @override
+  String get valuacionFotosTitulo => 'Photos of your car';
+
+  @override
+  String get valuacionFotosVacio => 'You have not uploaded photos yet.';
+
+  @override
+  String valuacionInspeccionHorario(String inicio, String fin) {
+    return 'From $inicio to $fin';
+  }
+
+  @override
+  String get valuacionInspeccionTitulo => 'Inspection';
+
+  @override
+  String get valuacionInspeccionVerCitas => 'See in My appointments';
+
+  @override
+  String get valuacionInstruccionCajuela =>
+      'Open the trunk and capture the whole cargo space.';
+
+  @override
+  String get valuacionInstruccionFrente =>
+      'Stand in front, with the whole car and the plates in view.';
+
+  @override
+  String get valuacionInstruccionInteriorDelantero =>
+      'Open the driver door and capture the front seats and the wheel.';
+
+  @override
+  String get valuacionInstruccionInteriorTrasero =>
+      'Open a rear door and capture the whole back seat.';
+
+  @override
+  String get valuacionInstruccionLateralDerecho =>
+      'Capture the passenger side, bumper to bumper.';
+
+  @override
+  String get valuacionInstruccionLateralIzquierdo =>
+      'Capture the driver side, bumper to bumper.';
+
+  @override
+  String get valuacionInstruccionTableroKm =>
+      'Turn the dashboard on and take a close, glare free shot of the mileage.';
+
+  @override
+  String get valuacionInstruccionTrasera =>
+      'Stand behind, with the whole car and the plates in view.';
+
+  @override
+  String valuacionKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get valuacionMisErrorMas =>
+      'We could not load more appraisals. Try again.';
+
+  @override
+  String get valuacionMisTitulo => 'My appraisals';
+
+  @override
+  String get valuacionMisVacioAccion => 'Go to My estimates';
+
+  @override
+  String get valuacionMisVacioMensaje =>
+      'Request a formal appraisal from an estimate made with one of your cars.';
+
+  @override
+  String get valuacionMisVacioTitulo => 'You have no appraisals yet';
+
+  @override
+  String get valuacionMisVerMas => 'See more';
+
+  @override
+  String get valuacionNoEncontradaMensaje =>
+      'It may no longer exist or may not belong to your account.';
+
+  @override
+  String get valuacionNoEncontradaTitulo => 'We could not find that appraisal';
+
+  @override
+  String get valuacionOfertaAceptada =>
+      'You accepted this offer. The dealer will follow up.';
+
+  @override
+  String valuacionOfertaConVigencia(String monto, String fecha) {
+    return '$monto offer, valid until $fecha';
+  }
+
+  @override
+  String get valuacionOfertaEtiqueta => 'Formal dealer offer';
+
+  @override
+  String get valuacionOfertaRechazada => 'You declined this offer.';
+
+  @override
+  String get valuacionOfertaTitulo => 'Your offer';
+
+  @override
+  String get valuacionOfertaVencida =>
+      'Expired. You can no longer answer, but the dealer can renew it.';
+
+  @override
+  String valuacionOfertaVigencia(String fecha) {
+    return 'Valid until $fecha';
+  }
+
+  @override
+  String get valuacionPasoFotos => 'Photos';
+
+  @override
+  String get valuacionPasoInspeccion => 'Inspection';
+
+  @override
+  String get valuacionPasoOferta => 'Offer';
+
+  @override
+  String valuacionPedidaEl(String fecha) {
+    return 'Requested on $fecha';
+  }
+
+  @override
+  String get valuacionPedir => 'Request formal appraisal';
+
+  @override
+  String get valuacionPedirError =>
+      'We could not request the appraisal. Try again.';
+
+  @override
+  String get valuacionPedirNoEncontrada => 'We could not find that estimate.';
+
+  @override
+  String get valuacionPedirSinVehiculo =>
+      'This estimate was made by typing the car in. To appraise it, ask at the dealership.';
+
+  @override
+  String get valuacionRechazar => 'Decline offer';
+
+  @override
+  String get valuacionRechazarCancelar => 'Cancel';
+
+  @override
+  String get valuacionRechazarConfirmar => 'Yes, decline';
+
+  @override
+  String valuacionRechazarMensaje(String monto) {
+    return 'You are about to decline the $monto offer. This cannot be undone.';
+  }
+
+  @override
+  String get valuacionRechazarTitulo => 'Decline the offer?';
+
+  @override
+  String get valuacionReintentar => 'Try again';
+
+  @override
+  String get valuacionRespuestaError =>
+      'We could not record your answer. Try again.';
+
+  @override
+  String get valuacionRespuestaNoDisponible =>
+      'The offer changed and nothing was recorded. Check the current details.';
+
+  @override
+  String get valuacionRespuestaVencida =>
+      'The offer expired and your answer was not recorded.';
+
+  @override
+  String get valuacionSinConexionAccion =>
+      'No connection. Check your internet and try again.';
+
+  @override
+  String get valuacionSinConexionMensaje =>
+      'Check your internet and try again.';
+
+  @override
+  String get valuacionSinConexionTitulo => 'No connection';
+
+  @override
+  String get valuacionTomaCajuela => 'Trunk';
+
+  @override
+  String get valuacionTomaFrente => 'Front';
+
+  @override
+  String get valuacionTomaInteriorDelantero => 'Front interior';
+
+  @override
+  String get valuacionTomaInteriorTrasero => 'Rear interior';
+
+  @override
+  String get valuacionTomaLateralDerecho => 'Right side';
+
+  @override
+  String get valuacionTomaLateralIzquierdo => 'Left side';
+
+  @override
+  String valuacionTomaNumero(int numero, String toma) {
+    return '$numero. $toma';
+  }
+
+  @override
+  String get valuacionTomaTableroKm => 'Dashboard with mileage';
+
+  @override
+  String get valuacionTomaTrasera => 'Rear';
+
+  @override
+  String get valuacionValorGrafica => 'Average estimated value by month';
+
+  @override
+  String get valuacionValorMedio => 'Average estimated value';
+
+  @override
+  String get valuacionValorNoEncontradoMensaje =>
+      'It may no longer be in your garage.';
+
+  @override
+  String get valuacionValorNoEncontradoTitulo => 'We could not find that car';
+
+  @override
+  String valuacionValorRangoDelMes(String rango, String km) {
+    return '$rango, at $km km';
+  }
+
+  @override
+  String get valuacionValorRangos => 'Range for each month';
+
+  @override
+  String get valuacionValorTitulo => 'My car value';
+
+  @override
+  String get valuacionValorUnMes =>
+      'The trend appears once you estimate your car in other months.';
+
+  @override
+  String get valuacionValorVacioAccion => 'Go to the calculator';
+
+  @override
+  String get valuacionValorVacioMensaje =>
+      'Estimate this car with the calculator to see how its value changes.';
+
+  @override
+  String get valuacionValorVacioTitulo => 'No estimates for this car yet';
+
+  @override
+  String get valuacionVerValor => 'See how the value changes';
+
+  @override
+  String historialTicketPuntosGanados(String puntos) {
+    return 'You earned $puntos loyalty points with this service.';
+  }
+
+  @override
+  String get lealtadTitulo => 'My points';
+
+  @override
+  String get lealtadSubtitulo =>
+      'Earn points with every service and redeem them at the dealership.';
+
+  @override
+  String lealtadPuntos(String puntos) {
+    return '$puntos points';
+  }
+
+  @override
+  String lealtadNivel(String nivel) {
+    return '$nivel level';
+  }
+
+  @override
+  String get lealtadNivelBronce => 'Bronze';
+
+  @override
+  String get lealtadNivelPlata => 'Silver';
+
+  @override
+  String get lealtadNivelOro => 'Gold';
+
+  @override
+  String lealtadFaltan(String puntos, String nivel) {
+    return '$puntos more points to reach $nivel';
+  }
+
+  @override
+  String get lealtadNivelMaximo => 'You\'re already at the top level.';
+
+  @override
+  String lealtadGanados(String puntos) {
+    return '$puntos earned in 12 months';
+  }
+
+  @override
+  String get lealtadCargando => 'Loading your points';
+
+  @override
+  String get lealtadReintentar => 'Try again';
+
+  @override
+  String get lealtadRecompensas => 'Rewards';
+
+  @override
+  String get lealtadRecompensasResumen => 'Redeem your points';
+
+  @override
+  String get lealtadCanjes => 'My redemptions';
+
+  @override
+  String get lealtadCanjesResumen => 'Codes to use at the dealership';
+
+  @override
+  String get lealtadMovimientos => 'Activity';
+
+  @override
+  String get lealtadMovimientosResumen => 'Where your points come from';
+
+  @override
+  String get lealtadReferir => 'Refer a friend';
+
+  @override
+  String get lealtadReferirResumen => 'Earn points if your friend buys a car';
+
+  @override
+  String get recompensasTitulo => 'Rewards';
+
+  @override
+  String recompensasSaldo(String puntos) {
+    return 'You have $puntos points';
+  }
+
+  @override
+  String get recompensasVaciaTitulo => 'No rewards yet';
+
+  @override
+  String get recompensasVaciaMensaje =>
+      'When the dealership publishes rewards you\'ll see them here.';
+
+  @override
+  String recompensasCosto(String puntos) {
+    return '$puntos points';
+  }
+
+  @override
+  String recompensasTeFaltan(String puntos) {
+    return '$puntos more needed';
+  }
+
+  @override
+  String get recompensasAgotada => 'Sold out';
+
+  @override
+  String get recompensasDisponible => 'Available';
+
+  @override
+  String recompensasConfirmarTitulo(String recompensa) {
+    return 'Redeem $recompensa?';
+  }
+
+  @override
+  String recompensasConfirmarMensaje(String costo, String quedan) {
+    return 'It costs $costo points. You\'ll have $quedan left.';
+  }
+
+  @override
+  String get recompensasConfirmar => 'Redeem';
+
+  @override
+  String get recompensasCancelar => 'Cancel';
+
+  @override
+  String get recompensasNoSePudoTitulo => 'Couldn\'t redeem';
+
+  @override
+  String get recompensasSinSaldo =>
+      'You no longer have enough points for this reward.';
+
+  @override
+  String get recompensasSeAgoto => 'This reward just sold out.';
+
+  @override
+  String get recompensasError =>
+      'We couldn\'t redeem the reward. Please try again.';
+
+  @override
+  String get recompensasEntendido => 'Got it';
+
+  @override
+  String get canjesTitulo => 'My redemptions';
+
+  @override
+  String get canjesVaciaTitulo => 'No redemptions yet';
+
+  @override
+  String get canjesVaciaMensaje =>
+      'Trade your points for rewards and their codes will show up here.';
+
+  @override
+  String get canjesVerRecompensas => 'See rewards';
+
+  @override
+  String canjesCodigo(String codigo) {
+    return 'Code $codigo';
+  }
+
+  @override
+  String canjesVence(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String canjesUsado(String fecha) {
+    return 'Used on $fecha';
+  }
+
+  @override
+  String canjesVencio(String fecha) {
+    return 'Expired on $fecha; your points were returned';
+  }
+
+  @override
+  String get canjesEstadoVigente => 'Active';
+
+  @override
+  String get canjesEstadoUsado => 'Used';
+
+  @override
+  String get canjesEstadoVencido => 'Expired';
+
+  @override
+  String get canjeMuestralo =>
+      'Show this code at the cashier or service desk to use your reward.';
+
+  @override
+  String canjeQr(String codigo) {
+    return 'QR code for redemption $codigo';
+  }
+
+  @override
+  String get canjeYaUsado => 'This redemption was already used.';
+
+  @override
+  String get canjeYaVencio =>
+      'This redemption expired unused and your points were returned.';
+
+  @override
+  String get canjeDetalles => 'Details';
+
+  @override
+  String get canjeCosto => 'Cost';
+
+  @override
+  String get canjeCanjeado => 'Redeemed';
+
+  @override
+  String get canjeVigencia => 'Valid until';
+
+  @override
+  String get canjeUsadoEl => 'Used';
+
+  @override
+  String get canjeNoEncontradoTitulo =>
+      'We can\'t find this redemption anymore';
+
+  @override
+  String get canjeNoEncontradoMensaje =>
+      'Go back to My redemptions to see your codes.';
+
+  @override
+  String get movimientosTitulo => 'Activity';
+
+  @override
+  String get movimientosVaciaTitulo => 'No activity yet';
+
+  @override
+  String get movimientosVaciaMensaje =>
+      'You earn points every time you pick up your car from service.';
+
+  @override
+  String get movimientosMotivoServicio => 'Service visit';
+
+  @override
+  String get movimientosMotivoCanje => 'Reward redemption';
+
+  @override
+  String get movimientosMotivoDevolucion => 'Expired redemption';
+
+  @override
+  String get movimientosMotivoReferido => 'Referred friend';
+
+  @override
+  String get movimientosMotivoAjuste => 'Dealership adjustment';
+
+  @override
+  String get movimientosMotivoOtro => 'Activity';
+
+  @override
+  String movimientosOrden(int id) {
+    return 'Order $id';
+  }
+
+  @override
+  String movimientosCanje(int id) {
+    return 'Redemption $id';
+  }
+
+  @override
+  String movimientosFechaYReferencia(String fecha, String referencia) {
+    return '$fecha · $referencia';
+  }
+
+  @override
+  String movimientosGanaste(String puntos) {
+    return 'You earned $puntos points';
+  }
+
+  @override
+  String movimientosUsaste(String puntos) {
+    return 'You used $puntos points';
+  }
+
+  @override
+  String get movimientosCargandoMas => 'Loading more activity';
+
+  @override
+  String get movimientosErrorMas => 'We couldn\'t load more activity.';
+
+  @override
+  String get referirTitulo => 'Refer a friend';
+
+  @override
+  String get referirSubtitulo => 'If your friend buys a car, you earn points.';
+
+  @override
+  String get referirCodigoTitulo => 'Your code';
+
+  @override
+  String get referirCodigoAyuda =>
+      'Your friend mentions it when visiting the dealership.';
+
+  @override
+  String get referirCompartir => 'Share my code';
+
+  @override
+  String referirMensaje(String codigo) {
+    return 'I recommend the dealership. Mention my code $codigo when you go.';
+  }
+
+  @override
+  String get referirFormularioTitulo => 'Sign up your friend';
+
+  @override
+  String get referirFormularioNota =>
+      'Enter their phone, email or both. The dealership only uses them to contact your friend.';
+
+  @override
+  String get referirNombre => 'Your friend\'s name';
+
+  @override
+  String get referirTelefono => 'Phone';
+
+  @override
+  String get referirTelefonoAyuda => '10 digits';
+
+  @override
+  String get referirTelefonoInvalido => 'Enter all 10 digits.';
+
+  @override
+  String get referirCorreo => 'Email';
+
+  @override
+  String get referirCorreoInvalido => 'Check the email.';
+
+  @override
+  String get referirConsentimiento =>
+      'My friend agreed to be contacted by the dealership';
+
+  @override
+  String get referirEnviar => 'Send';
+
+  @override
+  String referirEnviado(String nombre) {
+    return 'Done, the dealership will contact $nombre.';
+  }
+
+  @override
+  String get referirDuplicado => 'That person is already with the dealership.';
+
+  @override
+  String get referirLimite =>
+      'You already have the maximum friends in follow-up. Wait until the dealership reaches them.';
+
+  @override
+  String get referirError =>
+      'We couldn\'t sign up your friend. Please try again.';
+
+  @override
+  String get referirListaTitulo => 'Your referrals';
+
+  @override
+  String get referirVacio => 'You haven\'t referred anyone yet.';
+
+  @override
+  String get referirListaError => 'We couldn\'t load your referrals.';
+
+  @override
+  String get referirPuntosAyuda =>
+      'You earn points once for each friend who buys.';
+
+  @override
+  String get referidoEstadoRegistrado => 'Registered';
+
+  @override
+  String get referidoEstadoSeguimiento => 'In follow-up';
+
+  @override
+  String get referidoEstadoCompro => 'Bought';
+
+  @override
+  String get referidoEstadoDescartado => 'No purchase';
+
+  @override
+  String referidoDesde(String estado, String fecha) {
+    return '$estado · since $fecha';
+  }
+
+  @override
+  String referidoGanaste(String puntos) {
+    return '+$puntos';
+  }
+
+  @override
+  String get estadoErrorTitulo => 'We could not load this';
+
+  @override
+  String get estadoErrorMensaje => 'Try again in a moment.';
+
+  @override
+  String get estadoErrorSinConexionTitulo => 'No connection';
+
+  @override
+  String get estadoErrorSinConexionMensaje =>
+      'Check your internet and try again.';
+
+  @override
+  String get estadoErrorReintentar => 'Retry';
+
+  @override
+  String citasMisCitasCuando(String dia, String inicio, String fin) {
+    return '$dia, $inicio - $fin';
+  }
+
+  @override
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo) {
+    return '$vehiculo · $motivo';
+  }
 }

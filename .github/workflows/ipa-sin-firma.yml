@@ -7,7 +7,9 @@ name: IPA sin firma
 #
 # No corre en cada push: los minutos de macOS cuestan diez veces los de Linux.
 # Se lanza a mano (Actions → IPA sin firma → Run workflow) y lo llama Release
-# al empujar una etiqueta vX.Y.Z, para adjuntar el IPA junto al APK.
+# al empujar una etiqueta vX.Y.Z, para adjuntar el IPA junto al APK. Release solo
+# lo llama si la variable de repositorio MACOS_ACTIVO vale "true" (pausa de
+# macOS, docs/pausa-de-macos.md); a mano se puede lanzar siempre.
 on:
   workflow_dispatch: {}
   workflow_call:

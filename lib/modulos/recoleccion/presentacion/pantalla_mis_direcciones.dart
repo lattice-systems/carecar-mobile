@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -11,7 +13,7 @@ import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/direccion_guardada.dart';
-import 'componentes/marco_pantalla_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'pantalla_direccion.dart';
 import 'proveedores_recoleccion.dart';
 
@@ -28,7 +30,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final direcciones = ref.watch(direccionesProvider);
 
-    Widget estado(Widget hijo) => MarcoPantallaRecoleccion.estado(
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       estado: hijo,
@@ -51,7 +53,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
             EstadoVacio(
               titulo: textos.recoleccionDireccionesVacioTitulo,
               mensaje: textos.recoleccionDireccionesVacioMensaje,
-              icono: Icons.location_off_outlined,
+              icono: LucideIcons300.mapPinOff,
               textoAccion: textos.recoleccionDireccionesAgregar,
               alAccion: () => abrirFormularioDireccion(context),
             ),
@@ -90,18 +92,18 @@ class _Lista extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
 
-    return MarcoPantallaRecoleccion(
+    return MarcoPantalla(
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       alRefrescar: () async {
         ref.invalidate(direccionesProvider);
         await ref.read(direccionesProvider.future);
       },
-      barraInferior: BarraInferiorRecoleccion(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.recoleccionDireccionesAgregar,
-            icono: Icons.add_location_alt_outlined,
+            icono: LucideIcons300.mapPinPlus,
             expandido: true,
             alPresionar: () => abrirFormularioDireccion(context),
           ),
@@ -119,7 +121,7 @@ class _Lista extends ConsumerWidget {
                   FilaGrupo(
                     titulo: d.alias,
                     subtitulo: d.resumen,
-                    icono: Icons.place_outlined,
+                    icono: LucideIcons300.mapPin,
                     colorIcono: c.acento,
                     alToque: () =>
                         abrirFormularioDireccion(context, editando: d),

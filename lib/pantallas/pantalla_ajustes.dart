@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../api/carecar_api.dart';
-import '../nucleo/analitica/interruptor_analitica.dart';
 import '../nucleo/diseno/tema_pista.dart';
-import '../nucleo/idioma/selector_idioma.dart';
-import '../widgets/pagina_carecar.dart';
-import '../widgets/pantalla.dart';
 import 'perfil/pantalla_perfil.dart';
 
-/// Ajustes: el perfil del cliente, su cuenta, ayuda y cerrar sesion.
+/// Ajustes: el idioma, el perfil del cliente, su cuenta, ayuda y cerrar sesion.
+///
+/// Esta en el lenguaje del sistema de diseno v2 (V2-T02.24): el marco, las
+/// listas y el selector de idioma son los de las demas pantallas. Lleva su
+/// propio tema Pista (claro u oscuro segun el sistema) porque la v1 aun no
+/// esta bajo el tema v2 global (V2-T01.05).
 class PantallaAjustes extends StatelessWidget {
   const PantallaAjustes({
     required this.api,
@@ -19,31 +20,13 @@ class PantallaAjustes extends StatelessWidget {
   final VoidCallback alCerrarSesion;
 
   @override
-  Widget build(BuildContext context) => PaginaCareCar(
-    titulo: 'Ajustes',
-    anchoMaximo: Pantalla.anchoLectura,
-    expandir: true,
-    alCerrarSesion: alCerrarSesion,
-    contenido: Column(
-      children: [
-        // PROVISIONAL: el selector pasa a la pantalla de Ajustes v2 cuando
-        // V2-T02.08 retire esta. La v1 aun no usa el tema Pista, asi que el
-        // selector lo trae puesto.
-        Theme(
-          data: TemaPista.claro(),
-          child: const Padding(
-            padding: EdgeInsets.fromLTRB(16, 12, 16, 0),
-            child: SelectorIdioma(),
-          ),
-        ),
-        const InterruptorAnalitica(),
-        Expanded(
-          child: PantallaPerfil(
-            api: api,
-            alCerrarSesion: () async => alCerrarSesion(),
-          ),
-        ),
-      ],
+  Widget build(BuildContext context) => Theme(
+    data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
+        ? TemaPista.oscuro()
+        : TemaPista.claro(),
+    child: PantallaPerfil(
+      api: api,
+      alCerrarSesion: () async => alCerrarSesion(),
     ),
   );
 }

@@ -9,6 +9,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/tokens/radios.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -22,7 +24,7 @@ class MapaProvisional extends ConsumerStatefulWidget {
     super.key,
     this.alElegir,
     this.alto = 260,
-    this.icono = Icons.location_on,
+    this.icono = LucideIcons300.mapPin,
     this.descripcion,
   });
 

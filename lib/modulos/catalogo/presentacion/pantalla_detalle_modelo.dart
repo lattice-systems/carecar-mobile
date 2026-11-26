@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -10,7 +12,8 @@ import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -36,16 +39,23 @@ class PantallaDetalleModelo extends ConsumerWidget {
     final detalle = ref.watch(detalleModeloProvider(modeloId));
     final textos = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(textos.catalogoDetalleTitulo)),
-      body: detalle.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => error is NoEncontrado
+    final titulo = textos.catalogoDetalleTitulo;
+
+    return detalle.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
+      ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: error is NoEncontrado
             ? EstadoVacio(
                 titulo: textos.catalogoNoEncontradoTitulo,
                 mensaje: textos.catalogoNoEncontradoMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               )
             : EstadoError(
                 causa: error is SinConexion
@@ -54,10 +64,19 @@ class PantallaDetalleModelo extends ConsumerWidget {
                 alReintentar: () =>
                     ref.invalidate(detalleModeloProvider(modeloId)),
               ),
-        data: (d) => RefreshIndicator(
-          onRefresh: () => ref.refresh(detalleModeloProvider(modeloId).future),
-          child: _Detalle(detalle: d, modeloId: modeloId),
-        ),
+      ),
+      data: (d) => MarcoPantalla(
+        titulo: titulo,
+        conRegreso: true,
+        alRefrescar: () => ref.refresh(detalleModeloProvider(modeloId).future),
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(Espaciado.e4),
+              child: _Detalle(detalle: d, modeloId: modeloId),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -109,8 +128,8 @@ class _Detalle extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
 
-    return ListView(
-      padding: const EdgeInsets.all(Espaciado.e4),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TarjetaVehiculo(
           nombre: m.titulo,
@@ -137,7 +156,7 @@ class _Detalle extends StatelessWidget {
             Expanded(
               child: BotonPildora(
                 texto: textos.estrenoQuieroProbarlo,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
                 expandido: true,
                 alPresionar: () => context.push(rutaPruebaManejo(modeloId)),
               ),
@@ -146,7 +165,7 @@ class _Detalle extends StatelessWidget {
             Expanded(
               child: BotonPildora(
                 texto: textos.estrenoCotizar,
-                icono: Icons.request_quote_outlined,
+                icono: LucideIcons300.fileText,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => context.push(rutaCotizarEstreno(modeloId)),
@@ -167,18 +186,22 @@ class _Detalle extends StatelessWidget {
         ],
         if (detalle.versiones.isNotEmpty) ...[
           _Encabezado(textos.catalogoVersiones),
-          for (final v in detalle.versiones)
-            FilaLista(
-              titulo: v.nombre,
-              subtitulo: v.id == modeloId
-                  ? textos.catalogoVersionActual
-                  : (v.precioDesde == null
-                        ? textos.catalogoSinPrecio
-                        : textos.precioDesde(_pesos.format(v.precioDesde))),
-              alToque: v.id == modeloId
-                  ? null
-                  : () => context.push(rutaDetalleModelo(v.id)),
-            ),
+          GrupoLista(
+            filas: [
+              for (final v in detalle.versiones)
+                FilaGrupo(
+                  titulo: v.nombre,
+                  subtitulo: v.id == modeloId
+                      ? textos.catalogoVersionActual
+                      : (v.precioDesde == null
+                            ? textos.catalogoSinPrecio
+                            : textos.precioDesde(_pesos.format(v.precioDesde))),
+                  alToque: v.id == modeloId
+                      ? null
+                      : () => context.push(rutaDetalleModelo(v.id)),
+                ),
+            ],
+          ),
         ],
         if (detalle.ficha.isNotEmpty) ...[
           _Encabezado(textos.catalogoFicha),
@@ -253,7 +276,8 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).catalogoDetalleCargando,
       liveRegion: true,
-      child: const Padding(
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [

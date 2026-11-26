@@ -3,15 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
+import '../../../nucleo/diseno/componentes/cuadro_fecha.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -23,8 +27,7 @@ import '../dominio/motivo_cita.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'componentes/grupo_citas.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
-import 'componentes/marco_pantalla_cita.dart';
-import 'componentes/seccion_cita.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/vacio_ilustrado.dart';
 import 'proveedores_citas.dart';
 import 'rutas_citas.dart';
@@ -55,7 +58,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final citas = ref.watch(misCitasProvider);
 
     if (citas.hasError && !citas.hasValue) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
@@ -68,7 +71,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       );
     }
     if (!citas.hasValue) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
@@ -76,14 +79,14 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       );
     }
     if (citas.requireValue.citas.isEmpty) {
-      return MarcoPantallaCita.estado(
+      return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
         conRegreso: true,
         acciones: const [],
         estado: VacioIlustrado(
           titulo: textos.citasMisCitasVacioTitulo,
           mensaje: textos.citasMisCitasVacioMensaje,
-          icono: Icons.event_note_outlined,
+          icono: LucideIcons300.calendarDays,
           textoAccion: textos.citasMisCitasAgendar,
           alAccion: () => context.push(rutaAgendarCita),
         ),
@@ -112,7 +115,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     final destacada = proximas.isEmpty ? null : proximas.first;
     final otras = proximas.length > 1 ? proximas.sublist(1) : <CitaCliente>[];
 
-    Widget seccionVacia(String encabezado, String texto) => SeccionCita(
+    Widget seccionVacia(String encabezado, String texto) => SeccionPantalla(
       titulo: encabezado,
       hijo: Text(
         texto,
@@ -122,13 +125,13 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ),
     );
 
-    return MarcoPantallaCita(
+    return MarcoPantalla(
       titulo: textos.citasMisCitasTitulo,
       conRegreso: true,
       acciones: [
         BotonCircular(
           etiqueta: textos.citasMisCitasAgendar,
-          icono: Icons.add_rounded,
+          icono: LucideIcons300.plus,
           variante: VarianteBotonCircular.acento,
           alPresionar: () => context.push(rutaAgendarCita),
         ),
@@ -200,7 +203,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                     child: BotonPildora(
                       texto: textos.citasCargarMas,
                       variante: VarianteBotonPildora.vidrio,
-                      icono: Icons.expand_more_rounded,
+                      icono: LucideIcons300.chevronDown,
                       alPresionar: estado.cargandoMas
                           ? null
                           : () =>
@@ -367,7 +370,10 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       };
 }
 
-/// Tarjeta héroe de la próxima cita, al estilo «reproduciendo ahora».
+/// La próxima cita: la misma tarjeta del inicio (el cuadro con el día, qué día
+/// y a qué hora, el vehículo y el motivo) con su estado, y debajo lo que se
+/// puede hacer con ella. Sin degradados ni cifras gigantes: lo que destaca es
+/// el dato, y el estado va con texto e icono además del color.
 class _TarjetaProxima extends StatelessWidget {
   const _TarjetaProxima({
     required this.cita,
@@ -390,24 +396,11 @@ class _TarjetaProxima extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
     final idioma = Localizations.localeOf(context).toString();
     final semana = toBeginningOfSentenceCase(
       DateFormat.EEEE(idioma).format(cita.fecha),
     );
-    final mesAnio = DateFormat.yMMMM(idioma).format(cita.fecha);
-    final dia = cita.fecha.day.toString();
-    final horario = '${cita.horaInicio} - ${cita.horaFin}';
     final tono = _EstadoPantallaMisCitas._tonoEstado(cita.estado);
-    final oscuro = tokens.brillo == Brightness.dark;
-    final etiquetaInfo = [
-      textos.citasMisCitasProximaEtiqueta,
-      textos.citasFilaTitulo(cita.fecha, cita.horaInicio),
-      vehiculo,
-      textoEstado,
-    ].join('. ');
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(
@@ -416,114 +409,36 @@ class _TarjetaProxima extends StatelessWidget {
         Espaciado.e4,
         Espaciado.e2,
       ),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: Radios.bordeHoja,
-          boxShadow: tokens.sombras,
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.alphaBlend(
-                c.acento.withValues(alpha: oscuro ? 0.34 : 0.20),
-                c.superficie,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TarjetaResumen(
+            titulo: textos.citasMisCitasProximaEtiqueta,
+            subtitulo: textos.citasMisCitasCuando(
+              semana,
+              cita.horaInicio,
+              cita.horaFin,
+            ),
+            detalle: switch (textoMotivo) {
+              final motivo? => textos.citasMisCitasVehiculoYMotivo(
+                vehiculo,
+                motivo,
               ),
-              c.superficie,
-            ],
+              null => vehiculo,
+            },
+            visual: CuadroFecha(fecha: cita.fecha, tono: tono),
+            estado: textoEstado,
+            tonoEstado: tono,
+            estadoConIcono: true,
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(Espaciado.e5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Semantics(
-                container: true,
-                label: etiquetaInfo,
-                excludeSemantics: true,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: Espaciado.e2,
-                      runSpacing: Espaciado.e2,
-                      children: [
-                        Text(
-                          textos.citasMisCitasProximaEtiqueta.toUpperCase(),
-                          style: t.micro.copyWith(color: c.acento),
-                        ),
-                        Insignia(
-                          texto: textoEstado,
-                          tono: tono,
-                          conIcono: true,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.end,
-                      spacing: Espaciado.e3,
-                      children: [
-                        Text(
-                          dia,
-                          style: t.display.copyWith(
-                            fontSize: 84,
-                            height: 1,
-                            color: c.texto,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: Espaciado.e2),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                semana,
-                                style: t.titulo3.copyWith(color: c.texto),
-                              ),
-                              Text(
-                                mesAnio,
-                                style: t.cuerpo.copyWith(
-                                  color: c.textoSecundario,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Espaciado.e3),
-                    Text(
-                      horario,
-                      style: t.cifra.copyWith(
-                        fontSize: 28,
-                        height: 1.2,
-                        color: c.acento,
-                      ),
-                    ),
-                    const SizedBox(height: Espaciado.e2),
-                    Text(
-                      textoMotivo == null
-                          ? vehiculo
-                          : '$vehiculo · $textoMotivo',
-                      style: t.cuerpoFuerte.copyWith(color: c.texto),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: Espaciado.e5),
-              _AccionesCita(
-                cita: cita,
-                ocupado: ocupado,
-                cancelando: cancelando,
-                alCancelar: alCancelar,
-              ),
-            ],
+          const SizedBox(height: Espaciado.e3),
+          _AccionesCita(
+            cita: cita,
+            ocupado: ocupado,
+            cancelando: cancelando,
+            alCancelar: alCancelar,
           ),
-        ),
+        ],
       ),
     );
   }
@@ -563,7 +478,7 @@ class _AccionesCita extends StatelessWidget {
           children: [
             BotonPildora(
               texto: textos.citasHeroComprobante,
-              icono: Icons.qr_code_2_rounded,
+              icono: LucideIcons300.qrCode,
               alPresionar: ocupado
                   ? null
                   : () {
@@ -573,7 +488,7 @@ class _AccionesCita extends StatelessWidget {
             ),
             BotonPildora(
               texto: textos.citasReprogramar,
-              icono: Icons.event_repeat_rounded,
+              icono: LucideIcons300.calendarSync,
               variante: VarianteBotonPildora.vidrio,
               alPresionar: ocupado
                   ? null
@@ -618,7 +533,7 @@ class _Cargando extends StatelessWidget {
           padding: EdgeInsets.all(Espaciado.e4),
           child: Column(
             children: [
-              Esqueleto(alto: 280, radio: 28),
+              Esqueleto(alto: 176, radio: Radios.tarjeta),
               SizedBox(height: Espaciado.e4),
               Esqueleto(alto: 72),
               SizedBox(height: Espaciado.e3),

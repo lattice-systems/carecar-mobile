@@ -4,6 +4,8 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/datos/repositorio_toma_a_cuenta_api.dart';
+import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fake.dart';
+import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_metrica.dart';
@@ -17,6 +19,7 @@ import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
 import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
+import '../valuacion/ayudas_valuacion.dart' show sustitutos;
 
 const _leyenda =
     'Estimación no vinculante. No es una oferta de compra: el valor final lo '
@@ -57,11 +60,13 @@ Widget _app(
   ApiFalsa api, {
   int? modeloId,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [carecarApiProvider.overrideWithValue(api)],
   child: conTemaPista(
     PantallaCalculadora(modeloId: modeloId),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 
@@ -84,6 +89,36 @@ Future<void> _calcular(WidgetTester tester) async {
 
 void main() {
   pruebasDeDiferencia();
+
+  testWidgets('el resultado deja pedir la valuacion formal (V2-M26.01)', (
+    tester,
+  ) async {
+    _pantallaAlta(tester);
+    final repo = RepositorioValuacionFake(
+      rechazo: MotivoRechazoValuacion.sinVehiculo,
+    );
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          carecarApiProvider.overrideWithValue(_api()),
+          ...sustitutos(repositorio: repo),
+        ],
+        child: conTemaPista(const PantallaCalculadora()),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byType(BotonPedirValuacion), findsNothing);
+
+    await _calcular(tester);
+    await tester.ensureVisible(find.text('Pedir valuación formal'));
+    await tester.tap(find.text('Pedir valuación formal'));
+    await tester.pumpAndSettle();
+
+    expect(
+      find.textContaining('pide la valuación en la agencia'),
+      findsOneWidget,
+    );
+  });
 
   group('leerKilometraje', () {
     test('acepta digitos con separadores de miles', () {
@@ -385,6 +420,21 @@ void main() {
     await auditarAccesibilidad(tester);
   });
 
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(_api(), escenario: escenario, ancho: anchoTelefonoChico),
+      );
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
+  });
+
   group('rutas', () {
     Future<void> montar(WidgetTester tester, ApiFalsa api) async {
       _pantallaAlta(tester);
@@ -572,6 +622,9 @@ void pruebasDeDiferencia() {
       tester,
     ) async {
       _pantallaAlta(tester);
+      // Con el boton de la valuacion la lista crecio: a 200 % necesita mas alto
+      // para que el formulario siga construido.
+      tester.view.physicalSize = const Size(800, 4000);
       for (final e in Escenario.values) {
         final api = _api()..alEstimar = _responde(369900);
         await tester.pumpWidget(_app(api, modeloId: 2, escenario: e));

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../../nucleo/diseno/movimiento_contexto.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/movimiento.dart';
@@ -66,7 +68,7 @@ class TarjetaVehiculoCita extends StatelessWidget {
                         ),
                         child: Center(
                           child: Icon(
-                            Icons.directions_car_filled_outlined,
+                            LucideIcons300.carFront,
                             size: 44,
                             color: c.acento,
                           ),
@@ -78,7 +80,7 @@ class TarjetaVehiculoCita extends StatelessWidget {
                         top: Espaciado.e2,
                         right: Espaciado.e2,
                         child: Icon(
-                          Icons.check_circle,
+                          LucideIcons300.circleCheck,
                           size: 24,
                           color: c.acento,
                         ),

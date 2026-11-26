@@ -38,6 +38,7 @@ class ServicioDetalle {
     required this.iva,
     required this.total,
     this.fechaCierre,
+    this.puntosGanados,
   });
 
   factory ServicioDetalle.fromJson(
@@ -56,6 +57,7 @@ class ServicioDetalle {
     subtotal: leerDecimal(json['subtotal'], 'subtotal'),
     iva: leerDecimal(json['iva'], 'iva'),
     total: leerDecimal(json['total'], 'total'),
+    puntosGanados: leerEnteroOpcional(json['puntosGanados'], 'puntosGanados'),
   );
 
   final int id;
@@ -71,6 +73,9 @@ class ServicioDetalle {
   final double subtotal;
   final double iva;
   final double total;
+
+  /// Puntos de lealtad que dio la orden (V2-M12.02); nulo si no dio.
+  final int? puntosGanados;
 }
 
 List<RenglonTicket> _renglones(Object? valor, String campo) {

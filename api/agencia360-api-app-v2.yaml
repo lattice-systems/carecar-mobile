@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.13.0
+  version: 2.24.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -48,6 +48,8 @@ servers:
   - url: /api/v1/app
 
 tags:
+  - name: Tienda
+    description: Productos compatibles, apartados y pedidos (V2-M14)
   - name: Acceso
     description: APP-2.1, APP-2.2 y APP-2.3
   - name: Vehículos
@@ -72,8 +74,20 @@ tags:
     description: V2-M04.01, V2-M04.02, V2-M04.04 y V2-M04.05
   - name: Mantenimiento
     description: V2-M05.01, V2-M05.02, V2-M05.03 y V2-M05.06
+  - name: Garantía y campañas
+    description: V2-M10.01, V2-M10.02 y V2-M10.03
+  - name: Lealtad
+    description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
+  - name: Pagos y facturas
+    description: |
+      V2-M08.05 · Datos fiscales. Los pagos y las facturas de M08 son simulados (ADR 0009 de
+      carecar-mobile): no hay procesador ni proveedor de timbrado externos.
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
+  - name: Privacidad
+    description: V2-M22.01, V2-M22.02 y V2-M22.03
+  - name: Valuación
+    description: V2-M26.01 a V2-M26.05
 
 security:
   - bearerAuth: []
@@ -295,6 +309,71 @@ paths:
           $ref: '#/components/responses/NoAutenticado'
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
+
+  /sesiones:
+    get:
+      tags: [Acceso]
+      summary: Sesiones abiertas del cliente
+      description: >
+        V2-M01.09 · Las sesiones **vigentes** de la cuenta: ni revocadas ni vencidas.
+        Vienen ordenadas por `ultimoUso` descendente, y las que nunca se han refrescado
+        al final. No se devuelve nada derivado del refresh token.
+      responses:
+        '200':
+          description: Sesiones vigentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SesionActiva'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    delete:
+      tags: [Acceso]
+      summary: Cerrar todas las sesiones
+      description: >
+        V2-M01.09 · Revoca **todas** las sesiones de la cuenta, **incluida la de quien
+        llama**: es «cerrar sesión en todos los dispositivos». El access token en curso
+        sigue valiendo hasta que expire, igual que en `/auth/cerrar-sesion`.
+      responses:
+        '204':
+          description: Sesiones revocadas
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /sesiones/{id}:
+    delete:
+      tags: [Acceso]
+      summary: Cerrar una sesión
+      description: >
+        V2-M01.09 · Revoca esa sesión. Idempotente: una sesión ya revocada responde 204
+        igual. Una sesión de otra cuenta responde **404**, no 403, como el resto del
+        contrato para un recurso ajeno.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Sesión revocada
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: No existe o no es de este cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /vehiculos:
     get:
@@ -1262,6 +1341,162 @@ paths:
         '401':
           $ref: '#/components/responses/NoAutenticado'
 
+  /privacidad/aviso:
+    get:
+      tags: [Privacidad]
+      summary: El aviso de privacidad vigente y si ya lo acepté
+      description: |
+        V2-M22.01 · Texto versionado: un aviso publicado nunca se edita, la agencia publica una versión
+        nueva. `aceptado` es `false` en el primer ingreso y cada vez que hay una versión nueva; la app pide
+        aceptarla antes de seguir. El servidor no bloquea el resto de la API por no haberla aceptado.
+      responses:
+        '200':
+          description: Aviso vigente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AvisoPrivacidad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/aceptaciones:
+    post:
+      tags: [Privacidad]
+      summary: Aceptar el aviso de privacidad vigente
+      description: |
+        V2-M22.01 · Registra que esta cuenta aceptó esa versión. Es idempotente: aceptar otra vez la misma
+        versión devuelve la primera aceptación sin duplicarla.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AceptarAviso'
+      responses:
+        '200':
+          description: Aceptación registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AceptacionAviso'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: El aviso ya no es el vigente (`AVISO_NO_VIGENTE`), porque la agencia publicó una versión nueva que hay que leer y aceptar
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /privacidad/arco:
+    get:
+      tags: [Privacidad]
+      summary: Mis solicitudes de derechos ARCO
+      description: |
+        V2-M22.02 · Las últimas 20, más recientes primero, con su estado. Una solicitud de acceso
+        `RESUELTA` trae su archivo hasta `venceEn`; después pasa a `VENCIDA` y hay que pedir otra.
+      responses:
+        '200':
+          description: Solicitudes de la cuenta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SolicitudArco'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/arco/acceso:
+    post:
+      tags: [Privacidad]
+      summary: Pedir una copia de mis datos (acceso ARCO)
+      description: |
+        V2-M22.02 · Sin cuerpo. Responde 202 y prepara el archivo (JSON con los datos personales de la
+        cuenta) sin hacer esperar; al estar listo llega el evento `arco.estado` de `GET /eventos` y la
+        app consulta `GET /privacidad/arco`. Si ya hay una solicitud de acceso `PENDIENTE` la devuelve
+        con 200 en vez de abrir otra. Pedir una nueva borra el archivo de la anterior.
+      responses:
+        '200':
+          description: Ya había una solicitud de acceso pendiente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '202':
+          description: Solicitud recibida; el archivo se prepara
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+
+  /privacidad/arco/cancelacion:
+    post:
+      tags: [Privacidad]
+      summary: Borrar mi cuenta (cancelación ARCO)
+      description: |
+        V2-M22.03 · No se puede deshacer. Pide la contraseña como confirmación. Desactiva la cuenta
+        (el siguiente request con cualquier token de ella responde 403 `CUENTA_DESACTIVADA`), cierra
+        sus sesiones y borra o anonimiza los datos personales que ninguna ley obliga a conservar:
+        contacto, direcciones, preguntas al asistente, estimaciones y solicitudes de estreno,
+        bitácora de gastos y kilometraje, y la ubicación de las solicitudes de asistencia. Lo fiscal y
+        comercial (ventas, pagos, facturas), el historial de servicio de los vehículos y la prueba de
+        las aceptaciones del aviso de privacidad se conservan. La contraseña equivocada cuenta como
+        intento fallido: a los 5 se bloquea 15 minutos y responde 429.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelarCuenta'
+      responses:
+        '200':
+          description: Cuenta cancelada; la solicitud queda `RESUELTA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolicitudArco'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '429':
+          $ref: '#/components/responses/DemasiadosIntentos'
+
+  /privacidad/arco/{solicitudId}/archivo:
+    get:
+      tags: [Privacidad]
+      summary: Descargar el archivo de una solicitud de acceso
+      description: |
+        V2-M22.02 · Solo la cuenta dueña, con su sesión; no hay enlace público. Responde el JSON como
+        adjunto y sin caché. 404 si la solicitud no existe, es de otra cuenta, no está `RESUELTA` o ya
+        venció.
+      parameters:
+        - name: solicitudId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Archivo con los datos de la cuenta
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /toma-a-cuenta/estimaciones:
     get:
       tags: [Toma a cuenta]
@@ -1335,6 +1570,546 @@ paths:
             La agencia todavía no tiene parámetros para esa marca, modelo y año
             (`codigo` SIN_PARAMETROS_DE_VALUACION). La app lo explica y ofrece pedir una
             valuación formal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones:
+    get:
+      tags: [Valuación]
+      summary: Listar mis valuaciones formales
+      description: |
+        V2-M26.01 · Las valuaciones del cliente, la más reciente primero, con su estado al día:
+        una oferta cuya vigencia pasó llega como `VENCIDA` y una valuación cuya cita de
+        inspección se canceló llega como `SOLICITADA` sin `cita`.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Valuaciones del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaValuaciones'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Valuación]
+      summary: Pedir una valuación formal desde una estimación
+      description: |
+        V2-M26.01 · Crea la solicitud ligada a una estimación del cliente hecha con uno de sus
+        vehículos registrados, porque la inspección se agenda para ese vehículo. Hay una sola
+        valuación abierta (`SOLICITADA`, `CITA_AGENDADA` u `OFERTADA`) por vehículo: si ya
+        existe, responde 200 con ella y no crea otra, así que reintentar es seguro. La agencia
+        recibe al cliente como prospecto de ventas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaValuacion'
+      responses:
+        '200':
+          description: Ya había una valuación abierta para ese vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '201':
+          description: Valuación creada en `SOLICITADA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '422':
+          description: |
+            La estimación se hizo capturando el auto a mano, sin un vehículo registrado
+            (`codigo` VALUACION_SIN_VEHICULO). La app explica que esa valuación se pide en la
+            agencia.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}:
+    get:
+      tags: [Valuación]
+      summary: Ver una valuación
+      description: |
+        V2-M26.01 · Con sus fotos (URL temporal firmada, vence a los 15 minutos), la cita de
+        inspección, la oferta y el asesor.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      responses:
+        '200':
+          description: La valuación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /valuaciones/{valuacionId}/fotos/{toma}:
+    post:
+      tags: [Valuación]
+      summary: Subir o reemplazar una foto guiada
+      description: |
+        V2-M26.02 · Una foto por petición, en `multipart/form-data`. Volver a subir una toma
+        la reemplaza, así que reintentar es seguro. Acepta JPEG o PNG de hasta 8 MB y 40
+        megapíxeles. El servidor la reescribe sin EXIF ni ubicación antes de guardarla.
+        Responde 400 `DATOS_INVALIDOS` si la toma no existe o el archivo no es una imagen
+        válida.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+        - name: toma
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/TomaValuacion'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [imagen]
+              properties:
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: La valuación con la foto nueva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La valuación ya no admite fotos porque no está en `SOLICITADA` ni en
+            `CITA_AGENDADA` (`codigo` VALUACION_CERRADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}/cita:
+    post:
+      tags: [Valuación]
+      summary: Agendar la inspección física
+      description: |
+        V2-M26.03 · Usa la agenda del taller con las mismas reglas que `POST /citas` y motivo
+        `valuacion`. La disponibilidad se consulta con `GET /agenda/disponibilidad`. Se puede
+        agendar en `SOLICITADA`, o en `CITA_AGENDADA` cuando la cita ya pasó hace más de 7
+        días (configurable en el servidor) y no hubo oferta. Cancelar y reprogramar se hace
+        con las rutas de `/citas`.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendarInspeccion'
+      responses:
+        '201':
+          description: Cita confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La valuación ya tiene cita o ya no se puede agendar (`codigo`
+            VALUACION_NO_AGENDABLE), la franja se llenó (`codigo` FRANJA_SIN_CUPO) o el
+            vehículo ya tiene una cita ese día (`codigo` CITA_DUPLICADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}/respuesta:
+    post:
+      tags: [Valuación]
+      summary: Aceptar o rechazar la oferta
+      description: |
+        V2-M26.04 · `monto` es el que el cliente vio en pantalla. Si no es el de la oferta
+        actual no se registra nada. Repetir la misma decisión con el mismo monto responde 200
+        sin cambios.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RespuestaOferta'
+      responses:
+        '200':
+          description: La valuación en `ACEPTADA` o `RECHAZADA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La vigencia de la oferta ya pasó (`codigo` OFERTA_VENCIDA), o no hay una oferta
+            que responder con ese monto o ya se respondió lo contrario (`codigo`
+            OFERTA_NO_DISPONIBLE). La app vuelve a consultar la valuación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /vehiculos/{vehiculoId}/valor-estimado:
+    get:
+      tags: [Valuación]
+      summary: Cómo cambia el valor estimado de mi auto por mes
+      description: |
+        V2-M26.05 · Un punto por cada mes (hora de la agencia) en el que el cliente guardó una
+        estimación de ese vehículo, con la más reciente de ese mes. Un mes sin estimación no
+        aparece: no se interpola ni se recalcula hacia atrás. Del más antiguo al más reciente.
+        Sin estimaciones responde la lista vacía. Es un historial no vinculante.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - name: meses
+          in: query
+          required: false
+          description: Cuántos meses hacia atrás, contando el actual
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 36
+            default: 12
+      responses:
+        '200':
+          description: El historial por mes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValorEstimado'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /tienda/productos:
+    get:
+      tags: [Tienda]
+      summary: Ver los productos de la tienda
+      description: |
+        V2-M14.01 · Productos publicados en la app, por nombre. Con `vehiculoId` solo salen los
+        universales y los compatibles con el modelo y año de ese vehículo. `existencia` son las
+        piezas disponibles (las apartadas ya no cuentan). Un producto agotado sí se lista, con
+        `existencia` en 0.
+      parameters:
+        - name: vehiculoId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+        - name: categoria
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/CategoriaProducto'
+        - name: q
+          in: query
+          required: false
+          description: Texto a buscar en el nombre o el código, sin distinguir mayúsculas.
+          schema:
+            type: string
+            maxLength: 80
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Productos publicados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaProductos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /tienda/productos/{productoId}:
+    get:
+      tags: [Tienda]
+      summary: Ver un producto
+      description: |
+        V2-M14.01 · Con `vehiculoId`, `compatible` dice si le queda a ese vehículo. Sin él no
+        viene. Un producto sin publicar responde 404.
+      parameters:
+        - name: productoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: vehiculoId
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Producto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /tienda/pedidos:
+    get:
+      tags: [Tienda]
+      summary: Listar mis pedidos
+      description: V2-M14.05 · El más reciente primero. Un apartado vencido llega como `cancelado`.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Pedidos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaPedidos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Tienda]
+      summary: Apartar productos
+      description: |
+        V2-M14.02 y V2-M14.03 · Crea un pedido `apartado` y reserva las piezas por tiempo
+        limitado (48 horas, o hasta el final del día siguiente a la cita si es para instalar).
+        O se apartan todos los renglones o ninguno. El precio queda fijo. No se cobra en la app:
+        se paga en caja. Con `entrega: cita` hace falta `citaId` de una cita confirmada del
+        cliente que no ha pasado, y todos los productos deben quedarle a ese vehículo. Repetir
+        la misma `Idempotency-Key` responde 200 con el pedido ya creado.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPedido'
+      responses:
+        '200':
+          description: El pedido ya creado con esa llave
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '201':
+          description: Pedido apartado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `SIN_EXISTENCIA` (no alcanzan las piezas), `CITA_NO_DISPONIBLE` (la cita está cancelada
+            o ya pasó) o `LIMITE_APARTADOS` (ya hay 3 pedidos sin entregar).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            `PRODUCTO_INCOMPATIBLE`: algún producto no le queda al vehículo de la cita.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /tienda/pedidos/{pedidoId}:
+    get:
+      tags: [Tienda]
+      summary: Ver un pedido
+      description: V2-M14.05 · Con sus renglones, su cita y la hora de cada cambio de estado.
+      parameters:
+        - name: pedidoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Pedido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /tienda/pedidos/{pedidoId}/cancelar:
+    post:
+      tags: [Tienda]
+      summary: Cancelar un pedido
+      description: |
+        V2-M14.02 · Libera las piezas. Vale en `apartado` y `listo`. Repetirlo sobre un pedido
+        ya cancelado responde 200.
+      parameters:
+        - name: pedidoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Pedido cancelado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `PEDIDO_NO_CANCELABLE`: ya se entregó.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /tienda/pedidos/{pedidoId}/instalacion:
+    put:
+      tags: [Tienda]
+      summary: Elegir si el pedido se instala en una cita
+      description: |
+        V2-M14.03 · Con `citaId` el pedido pasa a `entrega: cita` y su vigencia llega hasta el
+        final del día siguiente a la cita. Con `citaId` nulo vuelve a recogerse en mostrador,
+        con 48 horas de vigencia. Si la cita se cancela, el pedido vuelve solo a mostrador, y si
+        se reprograma su vigencia se mueve con ella.
+      parameters:
+        - name: pedidoId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstalacionPedido'
+      responses:
+        '200':
+          description: Pedido actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pedido'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `CITA_NO_DISPONIBLE` o `PEDIDO_NO_MODIFICABLE` (ya se entregó o se canceló).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            `PRODUCTO_INCOMPATIBLE`.
           content:
             application/json:
               schema:
@@ -1479,6 +2254,419 @@ paths:
           $ref: '#/components/responses/NoEncontrado'
         '422':
           $ref: '#/components/responses/KmInvalido'
+
+  /vehiculos/{vehiculoId}/garantia:
+    get:
+      tags: [Garantía y campañas]
+      summary: Garantía del vehículo
+      description: |
+        V2-M10.01 · Cada componente cubierto con su fecha y km límite contra el km actual del
+        auto (el mismo del mantenimiento, V2-M05.02). La que vence primero va arriba. Por vencer
+        a 60 días o a 1 000 km del límite; vencida en cuanto pasa la fecha o el km. Sin
+        coberturas registradas responde 200 con `coberturas` vacío.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Garantía del vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GarantiaVehiculo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/campanas:
+    get:
+      tags: [Garantía y campañas]
+      summary: Campañas de seguridad del vehículo
+      description: |
+        V2-M10.02 · Las campañas (recalls) que aplican al vehículo por modelo, año y, si la
+        campaña lo trae, rango de VIN. Abiertas primero (la más grave arriba), luego agendadas
+        y atendidas. Una agendada cuya cita se canceló vuelve a `ABIERTA`. Sin campañas
+        responde 200 con la lista vacía. La app muestra la insignia en el garaje si alguna está
+        `ABIERTA`.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Campañas del vehículo
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampanaSeguridad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /vehiculos/{vehiculoId}/campanas/{campanaId}/cita:
+    post:
+      tags: [Garantía y campañas]
+      summary: Agendar la atención de una campaña
+      description: |
+        V2-M10.03 · Agenda una cita en la franja y el día elegidos (como `POST /citas`) con
+        `motivo` `campana`, y la campaña pasa a `AGENDADA` con esa cita. Si la cita se cancela,
+        la campaña vuelve a `ABIERTA`.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - name: campanaId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendarCampana'
+      responses:
+        '201':
+          description: Cita confirmada para atender la campaña
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La campaña ya está agendada o atendida (`codigo` CAMPANA_NO_AGENDABLE), la franja ya no
+            tiene cupo (`codigo` FRANJA_SIN_CUPO) o el vehículo ya tiene una cita ese día
+            (`codigo` CITA_DUPLICADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /catalogos-fiscales:
+    get:
+      tags: [Pagos y facturas]
+      summary: Catálogos del SAT para los datos fiscales
+      description: |
+        V2-M08.05 · `c_RegimenFiscal` y `c_UsoCFDI` de CFDI 4.0 con la persona a la que aplica
+        cada clave (`fisica`, `moral`) y los regímenes del receptor que acepta cada uso. El
+        formulario de la app solo ofrece las combinaciones que el servidor acepta. Sin `CP01`
+        (Pagos) ni `CN01` (Nómina), que no sirven para facturar un servicio.
+      responses:
+        '200':
+          description: Catálogos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogoFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /perfiles-fiscales:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis datos fiscales
+      description: V2-M08.05 · El predeterminado primero y luego del más viejo al más nuevo.
+      responses:
+        '200':
+          description: Perfiles fiscales del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerfilFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Pagos y facturas]
+      summary: Agregar datos fiscales
+      description: |
+        V2-M08.05 · RFC de 12 (moral) o 13 (física) caracteres con fecha real y dígito verificador
+        del SAT (los genéricos no se aceptan), razón social, código postal de 5 dígitos, régimen y
+        uso de CFDI del catálogo y válidos para el tipo de persona, el uso aceptado por el régimen y
+        correo opcional. El RFC y la razón social se guardan en mayúsculas. El primero queda como
+        predeterminado; otro lo es con `predeterminado: true`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntradaPerfilFiscal'
+      responses:
+        '201':
+          description: Perfil guardado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '400':
+          $ref: '#/components/responses/DatosFiscalesInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /perfiles-fiscales/{perfilId}:
+    parameters:
+      - name: perfilId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags: [Pagos y facturas]
+      summary: Ver un perfil fiscal
+      description: V2-M08.05 · Uno ajeno responde 404.
+      responses:
+        '200':
+          description: El perfil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    put:
+      tags: [Pagos y facturas]
+      summary: Corregir datos fiscales
+      description: |
+        V2-M08.05 · Reemplaza los datos con las mismas reglas del alta. `predeterminado: true` lo
+        vuelve el predeterminado; `false` o sin él no cambia cuál es. Uno ajeno responde 404.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntradaPerfilFiscal'
+      responses:
+        '200':
+          description: Perfil corregido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '400':
+          $ref: '#/components/responses/DatosFiscalesInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    delete:
+      tags: [Pagos y facturas]
+      summary: Borrar datos fiscales
+      description: |
+        V2-M08.05 · Si era el predeterminado, lo toma el más viejo de los que quedan. Uno ajeno
+        responde 404.
+      responses:
+        '204':
+          description: Borrado
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /lealtad:
+    get:
+      tags: [Lealtad]
+      summary: Mis puntos y nivel
+      description: |
+        V2-M12.01 · El saldo es la suma de los movimientos del cliente. El nivel sale de los puntos
+        **ganados** en los últimos 12 meses (servicios, referidos y ajustes) con las reglas del
+        servidor (`app.lealtad.*`; hoy Plata desde 1 500 y Oro desde 4 000). `siguienteNivel` es
+        `null` en Oro. Un cliente sin movimientos responde 0 en `BRONCE`. También trae el código
+        del cliente para referir amigos (V2-M12.04).
+      responses:
+        '200':
+          description: Resumen de lealtad
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumenLealtad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/movimientos:
+    get:
+      tags: [Lealtad]
+      summary: Mis movimientos de puntos
+      description: |
+        V2-M12.05 · Del más reciente al más viejo. La suma de todos es el saldo de `GET /lealtad`.
+        Los puntos de un servicio (V2-M12.02) llegan al entregarse la orden: un punto por cada
+        $10 del total, una sola vez por orden.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Página de movimientos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaMovimientosPuntos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/recompensas:
+    get:
+      tags: [Lealtad]
+      summary: Recompensas
+      description: V2-M12.03 · Las activas, de la más barata a la más cara.
+      responses:
+        '200':
+          description: Recompensas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recompensa'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/canjes:
+    get:
+      tags: [Lealtad]
+      summary: Mis canjes
+      description: V2-M12.03 · Del más nuevo al más viejo, con su código y estado.
+      responses:
+        '200':
+          description: Canjes del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Canje'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Lealtad]
+      summary: Canjear una recompensa
+      description: |
+        V2-M12.03 · Descuenta los puntos de la recompensa y crea un código de 8 caracteres que la
+        app muestra como QR, vigente 30 días. Dos canjes a la vez nunca dejan el saldo negativo.
+        Si vence sin usarse, sus puntos regresan con un movimiento `DEVOLUCION_CANJE`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CanjearRecompensa'
+      responses:
+        '201':
+          description: Canje creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Canje'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            No alcanzan los puntos (`codigo` SALDO_INSUFICIENTE) o la recompensa se agotó
+            (`codigo` RECOMPENSA_AGOTADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /lealtad/referidos:
+    get:
+      tags: [Lealtad]
+      summary: Mis referidos
+      description: |
+        V2-M12.04 · Del más nuevo al más viejo. `EN_SEGUIMIENTO` cuando ya es prospecto de un
+        vendedor, `COMPRO` cuando su venta se finalizó (el cliente ganó sus puntos) y
+        `DESCARTADO` si el prospecto se cerró sin venta.
+      responses:
+        '200':
+          description: Referidos del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Referido'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Lealtad]
+      summary: Referir a un amigo
+      description: |
+        V2-M12.04 · Registra a un amigo con nombre y teléfono o correo, y la confirmación de que
+        aceptó que la agencia lo contacte. La agencia lo atiende como prospecto. Cuando su venta
+        se finaliza, el cliente gana 500 puntos (regla del servidor) una sola vez.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferirAmigo'
+      responses:
+        '201':
+          description: Referido registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referido'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '409':
+          description: |
+            Esa persona ya es cliente o ya la refirieron (`codigo` REFERIDO_DUPLICADO; no se dice
+            quién) o el cliente ya tiene 10 referidos en seguimiento (`codigo` LIMITE_REFERIDOS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /vehiculos/{vehiculoId}/gastos:
     get:
@@ -1752,8 +2940,8 @@ paths:
       description: |
         V2-T05.08 · Conexión abierta con `Accept: text/event-stream`. Cuando cambia una orden de
         servicio de un vehículo del cliente llega el evento `orden` con `data` en JSON
-        (`AvisoOrden`); la app vuelve a consultar la orden. Llega un comentario de latido cada
-        25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
+        (`AvisoOrden`); la app vuelve a consultar la orden, también la que muestra en ese momento
+        (V2-M04.03). Llega un comentario de latido cada 25 s. El servidor cierra la conexión a los 30 min y la app se reconecta con su token.
 
         Eventos de asistencia y traslados (solo al cliente dueño, `data` en JSON):
         - `asistencia.estado` (V2-M11.04), `AvisoAsistencia`: cada vez que el personal cambia el
@@ -1763,6 +2951,28 @@ paths:
         - `traslado.ubicacion` (V2-M17.03), `AvisoTrasladoUbicacion`: cada vez que el chofer
           reporta su posición en `en_camino` o `de_regreso`; trae el punto, sin necesidad de
           consultar.
+        - `mantenimiento.recordatorio` (V2-M05.05), `AvisoMantenimientoRecordatorio`: una vez por
+          servicio del plan, cuando el próximo servicio de un vehículo del cliente está a 1 000 km
+          o 14 días (configurable en el servidor). La app muestra el aviso; el push (V2-M06.07)
+          escuchará este mismo evento.
+        - `arco.estado` (V2-M22.02), `AvisoArco`: cuando una solicitud de derechos ARCO cambia de
+          estado (el archivo de acceso quedó listo, o falló). La app vuelve a consultar
+          `GET /privacidad/arco`.
+        - `campana.nueva` (V2-M10.04), `AvisoCampanaNueva`: cuando la agencia publica una campaña
+          de seguridad que aplica a un vehículo del cliente. `critica` en `true` pide que el push
+          (V2-M06.07) no se pueda silenciar. La app vuelve a consultar
+          `GET /vehiculos/{vehiculoId}/campanas`.
+        - `garantia.por_vencer` (V2-M10.05), `AvisoGarantiaPorVencer`: una sola vez a 60 días, a
+          15 días y a 1 000 km del límite de cada cobertura. La app vuelve a consultar
+          `GET /vehiculos/{vehiculoId}/garantia`.
+        - `puntos.movidos` (V2-M12.02), `AvisoPuntosMovidos`: cada vez que cambia el saldo de
+          puntos del cliente (servicio entregado, canje, devolución o referido). La app vuelve a
+          consultar `GET /lealtad` y sus movimientos.
+        - `valuacion.oferta` (V2-M26.04), `AvisoValuacionOferta`: cuando la agencia captura o
+          renueva la oferta de una valuación del cliente. No trae el monto. La app vuelve a
+          consultar `GET /valuaciones/{valuacionId}`.
+        - `pedido.estado` (V2-M14.05), `AvisoPedido`: cada vez que cambia el estado de un pedido
+          de la tienda del cliente. La app vuelve a consultar `GET /tienda/pedidos/{pedidoId}`.
 
         Ejemplo en el flujo:
         ```
@@ -1780,6 +2990,9 @@ paths:
                   - $ref: '#/components/schemas/AvisoAsistencia'
                   - $ref: '#/components/schemas/AvisoTrasladoEstado'
                   - $ref: '#/components/schemas/AvisoTrasladoUbicacion'
+                  - $ref: '#/components/schemas/AvisoMantenimientoRecordatorio'
+                  - $ref: '#/components/schemas/AvisoArco'
+                  - $ref: '#/components/schemas/AvisoValuacionOferta'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -1794,6 +3007,7 @@ paths:
         para entrega, la más reciente primero. Al entregarse dejan de aparecer: la tarjeta de
         Inicio se muestra solo si la lista trae algo. Las órdenes registradas ya hechas en el
         expediente no tienen línea de tiempo y no aparecen. Lista vacía si no hay ninguna.
+        V2-M04.06 · La orden lista para entrega trae su total y `horarioEntrega`.
       responses:
         '200':
           description: Órdenes en curso
@@ -1818,6 +3032,11 @@ paths:
         videos, y los trabajos adicionales con los totales. Las URL de las evidencias son
         temporales y firmadas (vencen a los 15 minutos): si vencieron, la app vuelve a pedir la
         orden.
+
+        V2-M04.06 y V2-M04.07 · Lista para entrega trae `horarioEntrega`. Al quedar lista, los
+        adicionales aprobados pasan a ser renglones de la orden: su ticket es el de
+        `GET /servicios/{servicioId}` con el mismo id, y al entregarse aparece en el historial del
+        vehículo.
       parameters:
         - $ref: '#/components/parameters/OrdenId'
       responses:
@@ -1939,6 +3158,13 @@ components:
       schema:
         type: integer
         format: int64
+    ValuacionId:
+      name: valuacionId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
     Tamano:
       name: tamano
       in: query
@@ -2002,6 +3228,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Problema'
+    DatosFiscalesInvalidos:
+      description: |
+        Un dato fiscal no cumple las reglas del SAT (`codigo` DATOS_FISCALES_INVALIDOS). `campos`
+        dice qué corregir en cada uno, con el nombre del campo de la petición.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+          example:
+            timestamp: '2026-11-26T18:00:00Z'
+            status: 400
+            error: Bad Request
+            message: El dígito verificador del RFC no coincide; revisa la homoclave
+            codigo: DATOS_FISCALES_INVALIDOS
+            campos:
+              rfc: El dígito verificador del RFC no coincide; revisa la homoclave
+            path: /api/v1/app/perfiles-fiscales
 
   schemas:
     PreguntaAsistente:
@@ -2092,6 +3335,13 @@ components:
         contrasena:
           type: string
           format: password
+        dispositivo:
+          type: string
+          maxLength: 80
+          description: >
+            V2-M01.09 · Nombre que la app le pone a este aparato («Pixel 7 · Android 14»),
+            para que el cliente reconozca sus sesiones. Opcional: si no llega, la sesión
+            queda sin nombre y la app muestra un texto genérico.
 
     LoginResponse:
       type: object
@@ -2153,6 +3403,40 @@ components:
           minLength: 8
           maxLength: 72
           description: Al menos una letra y un número
+
+    SesionActiva:
+      type: object
+      required: [id, expiraEn]
+      description: V2-M01.09 · Una sesión abierta del cliente.
+      properties:
+        id:
+          type: integer
+          format: int64
+        dispositivo:
+          type: string
+          maxLength: 80
+          nullable: true
+          description: >
+            Nombre que mandó la app al entrar. Nulo en las sesiones anteriores a
+            V2-M01.09 y en las de un cliente que no lo manda.
+        ultimoUso:
+          type: string
+          format: date-time
+          nullable: true
+          description: Cuándo se refrescó por última vez. Nulo si nunca se ha refrescado.
+        iniciadaEn:
+          type: string
+          format: date-time
+          description: >
+            Cuándo empezó la sesión de verdad, no cuándo se refrescó por última vez:
+            se conserva entre refrescos. Nulo en las sesiones anteriores a V2-M01.09.
+          nullable: true
+        expiraEn:
+          type: string
+          format: date-time
+          description: >
+            A los 30 días del **último refresco**, no del inicio: cada refresco emite
+            una sesión nueva con 30 días por delante. Usar la app la mantiene viva.
 
     Perfil:
       type: object
@@ -2315,6 +3599,10 @@ components:
           type: number
           format: double
           description: totalManoDeObra + totalRefacciones, con IVA incluido
+        puntosGanados:
+          type: integer
+          nullable: true
+          description: V2-M12.02 · Puntos de lealtad que dio la orden al entregarse; nulo si no dio
 
     RenglonTicket:
       type: object
@@ -2598,8 +3886,13 @@ components:
     MotivoCita:
       type: string
       nullable: true
-      description: V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en minúsculas.
-      enum: [mantenimiento, reparacion, revision, garantia, otro]
+      description: |
+        V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en
+        minúsculas. V2-M10.03 · `campana` es el de las citas que atienden una campaña de
+        seguridad; se agendan desde la campaña. V2-M26.03 · `valuacion` es el de las inspecciones
+        de una valuación formal. Solo se crea con `POST /valuaciones/{valuacionId}/cita`:
+        `POST /citas` con ese motivo responde 400 `DATOS_INVALIDOS`.
+      enum: [mantenimiento, reparacion, revision, garantia, campana, valuacion, otro]
 
     ReprogramarCita:
       type: object
@@ -3027,6 +4320,104 @@ components:
         creadaEn:
           type: string
           format: date-time
+    AvisoPrivacidad:
+      type: object
+      required: [id, version, texto, vigenteDesde, aceptado]
+      properties:
+        id:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          example: 1
+        texto:
+          type: string
+          description: Texto completo del aviso; los párrafos van separados por una línea en blanco
+        vigenteDesde:
+          type: string
+          format: date-time
+        aceptado:
+          type: boolean
+          description: Si esta cuenta ya aceptó esta versión
+        aceptadoEn:
+          type: string
+          format: date-time
+          nullable: true
+    AceptarAviso:
+      type: object
+      required: [avisoId]
+      properties:
+        avisoId:
+          type: integer
+          format: int64
+          description: El `id` del aviso que se leyó; debe ser el vigente
+    AceptacionAviso:
+      type: object
+      required: [avisoId, version, aceptadoEn]
+      properties:
+        avisoId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+        aceptadoEn:
+          type: string
+          format: date-time
+    CancelarCuenta:
+      type: object
+      description: V2-M22.03 · La contraseña actual confirma que quien pide borrar la cuenta es su titular
+      required: [contrasena]
+      properties:
+        contrasena:
+          type: string
+          format: password
+
+    SolicitudArco:
+      type: object
+      description: V2-M22.02 · Una solicitud de derechos ARCO de esta cuenta
+      required: [id, tipo, estado, creadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [ACCESO, RECTIFICACION, CANCELACION, OPOSICION]
+        estado:
+          type: string
+          enum: [PENDIENTE, RESUELTA, FALLIDA, VENCIDA]
+          description: |
+            `PENDIENTE` se está preparando; `RESUELTA` ya se atendió (en el acceso, el archivo se puede
+            descargar); `FALLIDA` no se pudo preparar y hay que pedirla otra vez; `VENCIDA` el archivo
+            ya no está disponible.
+        creadaEn:
+          type: string
+          format: date-time
+        resueltaEn:
+          type: string
+          format: date-time
+          nullable: true
+        venceEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: Hasta cuándo se puede descargar el archivo (7 días después de resolverse)
+
+    AvisoArco:
+      type: object
+      description: V2-M22.02 · `data` del evento `arco.estado`
+      required: [solicitudId, tipo, estado]
+      properties:
+        solicitudId:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [ACCESO, RECTIFICACION, CANCELACION, OPOSICION]
+        estado:
+          type: string
+          enum: [PENDIENTE, RESUELTA, FALLIDA, VENCIDA]
+
     EstimacionTomaCuenta:
       type: object
       description: |
@@ -3093,10 +4484,436 @@ components:
         totalPaginas:
           type: integer
 
+    NuevaValuacion:
+      type: object
+      required: [estimacionTomaCuentaId]
+      properties:
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+
+    EstadoValuacion:
+      type: string
+      enum: [SOLICITADA, CITA_AGENDADA, OFERTADA, ACEPTADA, RECHAZADA, VENCIDA]
+
+    TomaValuacion:
+      type: string
+      description: V2-M26.02 · Las 8 tomas guiadas, en el orden en que la app las pide.
+      enum:
+        - FRENTE
+        - TRASERA
+        - LATERAL_IZQUIERDO
+        - LATERAL_DERECHO
+        - INTERIOR_DELANTERO
+        - INTERIOR_TRASERO
+        - TABLERO_KM
+        - CAJUELA
+
+    FotoValuacion:
+      type: object
+      required: [toma, url, subidaEn]
+      properties:
+        toma:
+          $ref: '#/components/schemas/TomaValuacion'
+        url:
+          type: string
+          description: URL temporal firmada, relativa al servidor. Vence a los 15 minutos.
+        subidaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
+    InspeccionValuacion:
+      type: object
+      required: [citaId, fecha, horaInicio, horaFin]
+      properties:
+        citaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        horaInicio:
+          type: string
+          example: '09:00'
+        horaFin:
+          type: string
+          example: '10:00'
+
+    OfertaValuacion:
+      type: object
+      description: |
+        V2-M26.04 · La oferta formal de la agencia, a diferencia de la estimación. No se edita
+        mientras está vigente.
+      required: [monto, vigenciaHasta, ofertadaEn]
+      properties:
+        monto:
+          type: number
+          description: Pesos con IVA
+        vigenciaHasta:
+          type: string
+          format: date
+          description: Último día en que se puede responder, hora de la agencia, inclusive
+        nota:
+          type: string
+          nullable: true
+          maxLength: 500
+        ofertadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
+    AvisoPedido:
+      type: object
+      description: V2-M14.05 · `data` del evento `pedido.estado`
+      required: [pedidoId, estado]
+      properties:
+        pedidoId:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoPedido'
+
+    CategoriaProducto:
+      type: string
+      enum: [accesorio, refaccion, cuidado]
+
+    EntregaPedido:
+      type: string
+      enum: [mostrador, cita]
+
+    EstadoPedido:
+      type: string
+      enum: [apartado, listo, entregado, cancelado]
+
+    Producto:
+      type: object
+      required: [id, codigo, nombre, categoria, precio, existencia, universal, compatibilidad]
+      properties:
+        id:
+          type: integer
+          format: int64
+        codigo:
+          type: string
+        nombre:
+          type: string
+        descripcion:
+          type: string
+        categoria:
+          $ref: '#/components/schemas/CategoriaProducto'
+        precio:
+          type: number
+          description: Precio final en pesos.
+        fotoUrl:
+          type: string
+        existencia:
+          type: integer
+          minimum: 0
+        universal:
+          type: boolean
+          description: Le queda a cualquier vehículo.
+        compatibilidad:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibilidadProducto'
+        compatible:
+          type: boolean
+          description: Solo viene cuando se pidió con `vehiculoId`.
+
+    CompatibilidadProducto:
+      type: object
+      required: [modelo, anioDesde, anioHasta]
+      properties:
+        modelo:
+          type: string
+        anioDesde:
+          type: integer
+        anioHasta:
+          type: integer
+
+    PaginaProductos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Producto'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    NuevoPedido:
+      type: object
+      required: [renglones, entrega]
+      properties:
+        renglones:
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: object
+            required: [productoId, cantidad]
+            properties:
+              productoId:
+                type: integer
+                format: int64
+              cantidad:
+                type: integer
+                minimum: 1
+                maximum: 10
+        entrega:
+          $ref: '#/components/schemas/EntregaPedido'
+        citaId:
+          type: integer
+          format: int64
+          description: Obligatorio con `entrega` `cita`.
+
+    InstalacionPedido:
+      type: object
+      properties:
+        citaId:
+          type: integer
+          format: int64
+          nullable: true
+
+    Pedido:
+      type: object
+      required: [id, estado, entrega, total, creadoEn, renglones]
+      properties:
+        id:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoPedido'
+        entrega:
+          $ref: '#/components/schemas/EntregaPedido'
+        total:
+          type: number
+        creadoEn:
+          type: string
+          format: date-time
+        venceEn:
+          type: string
+          format: date-time
+          description: Solo en `apartado` y `listo`. Pasada esa hora el pedido se cancela y libera las piezas.
+        listoEn:
+          type: string
+          format: date-time
+        entregadoEn:
+          type: string
+          format: date-time
+        canceladoEn:
+          type: string
+          format: date-time
+        motivoCancelacion:
+          type: string
+          enum: [cliente, vencido, agencia]
+        cita:
+          $ref: '#/components/schemas/CitaDePedido'
+        renglones:
+          type: array
+          items:
+            $ref: '#/components/schemas/RenglonPedido'
+
+    CitaDePedido:
+      type: object
+      required: [id, fecha, hora, vehiculoId]
+      properties:
+        id:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        hora:
+          type: string
+          example: '09:00'
+        vehiculoId:
+          type: integer
+          format: int64
+
+    RenglonPedido:
+      type: object
+      required: [productoId, nombre, cantidad, precio, importe]
+      properties:
+        productoId:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        cantidad:
+          type: integer
+        precio:
+          type: number
+        importe:
+          type: number
+
+    PaginaPedidos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pedido'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    Valuacion:
+      type: object
+      required: [id, estado, creadaEn, vehiculoId, estimacion, fotos, puedeAgendar]
+      properties:
+        id:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoValuacion'
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        vehiculoId:
+          type: integer
+          format: int64
+        estimacion:
+          $ref: '#/components/schemas/EstimacionTomaCuenta'
+        fotos:
+          type: array
+          description: Solo las tomas ya subidas, en el orden de `TomaValuacion`
+          items:
+            $ref: '#/components/schemas/FotoValuacion'
+        puedeAgendar:
+          type: boolean
+          description: Si `POST /valuaciones/{valuacionId}/cita` se admite ahora
+        cita:
+          allOf:
+            - $ref: '#/components/schemas/InspeccionValuacion'
+          nullable: true
+        oferta:
+          allOf:
+            - $ref: '#/components/schemas/OfertaValuacion'
+          nullable: true
+        respondidaEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: En UTC
+        asesor:
+          type: string
+          nullable: true
+          description: Nombre del vendedor del prospecto ligado, cuando ya lo hay
+
+    PaginaValuaciones:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Valuacion'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    AgendarInspeccion:
+      type: object
+      required: [franjaId, fecha]
+      properties:
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+
+    RespuestaOferta:
+      type: object
+      required: [aceptada, monto]
+      properties:
+        aceptada:
+          type: boolean
+        monto:
+          type: number
+          description: El monto de la oferta que el cliente está respondiendo
+
+    ValorEstimado:
+      type: object
+      required: [vehiculoId, puntos]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        puntos:
+          type: array
+          items:
+            $ref: '#/components/schemas/PuntoValorEstimado'
+
+    PuntoValorEstimado:
+      type: object
+      required: [mes, estimacionTomaCuentaId, creadaEn, minimo, maximo, medio, km, estado]
+      properties:
+        mes:
+          type: string
+          pattern: '^\d{4}-\d{2}$'
+          example: '2026-11'
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        minimo:
+          type: number
+        maximo:
+          type: number
+        medio:
+          type: number
+          description: Promedio de `minimo` y `maximo`, con 2 decimales. Es lo que se grafica.
+        km:
+          type: integer
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+
+    AvisoValuacionOferta:
+      type: object
+      description: V2-M26.04 · `data` del evento `valuacion.oferta`
+      required: [valuacionId, vehiculoId, vigenciaHasta]
+      properties:
+        valuacionId:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        vigenciaHasta:
+          type: string
+          format: date
+
     AvisoOrden:
       type: object
       description: V2-T05.08 · `data` del evento `orden`
-      required: [ordenId, vehiculoId, estatus]
+      required: [ordenId, vehiculoId, estatus, motivo]
       properties:
         ordenId:
           type: integer
@@ -3107,6 +4924,18 @@ components:
         estatus:
           type: string
           enum: [RECIBIDO, EN_PROCESO, TERMINADO, ENTREGADO]
+        etapa:
+          allOf:
+            - $ref: '#/components/schemas/EtapaTaller'
+          nullable: true
+          description: V2-M04.03 · Nula si la orden se registró ya hecha, sin línea de tiempo
+        motivo:
+          type: string
+          description: |
+            V2-M04.03 · Qué cambió: `REGISTRO` (servicio registrado ya hecho), `APERTURA`,
+            `ETAPA`, `INSPECCION` (punto o evidencia), `ADICIONAL` (propuesto), `RESPUESTA` (del
+            cliente) o `RENGLON` (cargado al ticket).
+          enum: [REGISTRO, APERTURA, ETAPA, INSPECCION, ADICIONAL, RESPUESTA, RENGLON]
 
     AvisoAsistencia:
       type: object
@@ -3118,6 +4947,381 @@ components:
           format: int64
         estado:
           $ref: '#/components/schemas/EstadoAsistencia'
+
+    GarantiaVehiculo:
+      type: object
+      description: V2-M10.01 · La garantía de un vehículo
+      required: [vehiculoId, coberturas]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        kmActual:
+          type: integer
+          nullable: true
+          description: El km actual del auto (V2-M05.02); nulo si no se conoce.
+        coberturas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CoberturaGarantia'
+
+    CoberturaGarantia:
+      type: object
+      description: V2-M10.01 · Lo que cubre la garantía de un componente y hasta cuándo
+      required: [id, componente, iniciaEn, venceEn, diasRestantes, consumo, estado, limite]
+      properties:
+        id:
+          type: integer
+          format: int64
+        componente:
+          type: string
+          example: Motor y transmisión
+        descripcion:
+          type: string
+          nullable: true
+        iniciaEn:
+          type: string
+          format: date
+        venceEn:
+          type: string
+          format: date
+        kmLimite:
+          type: integer
+          nullable: true
+          example: 60000
+        diasRestantes:
+          type: integer
+          description: Días hasta `venceEn`; 0 si ya pasó.
+        kmRestantes:
+          type: integer
+          nullable: true
+          description: Km hasta `kmLimite`; nulo si no tiene km límite o no se conoce el km del auto.
+        consumo:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Porcentaje usado del tiempo o del km, lo que vaya más adelante.
+        estado:
+          type: string
+          enum: [VIGENTE, POR_VENCER, VENCIDA]
+        limite:
+          type: string
+          enum: [fecha, km]
+          description: El límite que se alcanza primero, o el que la venció.
+
+    CampanaSeguridad:
+      type: object
+      description: V2-M10.02 · Una campaña de seguridad para un vehículo del cliente
+      required: [id, codigo, titulo, descripcion, queHacer, gravedad, estado, publicadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id de la campaña; el mismo para todos los vehículos a los que aplica.
+        codigo:
+          type: string
+          example: RC-24-017
+        titulo:
+          type: string
+          example: Bolsa de aire del conductor
+        descripcion:
+          type: string
+        queHacer:
+          type: string
+          example: Agenda una revisión; el cambio no tiene costo.
+        gravedad:
+          type: string
+          enum: [BAJA, MEDIA, ALTA, CRITICA]
+        estado:
+          type: string
+          enum: [ABIERTA, AGENDADA, ATENDIDA]
+        citaId:
+          type: integer
+          format: int64
+          nullable: true
+          description: La cita que la atiende; nula si aún no se agenda.
+        publicadaEn:
+          type: string
+          format: date-time
+
+    AgendarCampana:
+      type: object
+      description: V2-M10.03 · Franja y día para atender la campaña
+      required: [franjaId, fecha]
+      properties:
+        franjaId:
+          type: integer
+          format: int64
+          description: Id de `franja_horario`; debe ser del día de `fecha`.
+        fecha:
+          type: string
+          format: date
+
+    AvisoCampanaNueva:
+      type: object
+      description: V2-M10.04 · `data` del evento `campana.nueva`
+      required: [vehiculoId, campanaId, codigo, titulo, gravedad, critica]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        campanaId:
+          type: integer
+          format: int64
+        codigo:
+          type: string
+        titulo:
+          type: string
+        gravedad:
+          type: string
+          enum: [BAJA, MEDIA, ALTA, CRITICA]
+        critica:
+          type: boolean
+          description: El push no se puede silenciar si es `true`.
+
+    AvisoGarantiaPorVencer:
+      type: object
+      description: V2-M10.05 · `data` del evento `garantia.por_vencer`
+      required: [vehiculoId, garantiaId, componente, venceEn, diasRestantes, motivo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        garantiaId:
+          type: integer
+          format: int64
+        componente:
+          type: string
+        venceEn:
+          type: string
+          format: date
+        diasRestantes:
+          type: integer
+        kmRestantes:
+          type: integer
+          description: Solo si la cobertura tiene km límite y se conoce el km del auto.
+        motivo:
+          type: string
+          enum: [dias_60, dias_15, km_1000]
+
+    NivelLealtad:
+      type: string
+      enum: [BRONCE, PLATA, ORO]
+    ResumenLealtad:
+      type: object
+      required: [saldo, nivel, ganados, puntosParaSiguiente, codigoReferido]
+      properties:
+        saldo:
+          type: integer
+          format: int64
+          example: 1240
+        nivel:
+          $ref: '#/components/schemas/NivelLealtad'
+        ganados:
+          type: integer
+          format: int64
+          description: Puntos ganados en los últimos 12 meses; deciden el nivel
+          example: 1640
+        siguienteNivel:
+          allOf:
+            - $ref: '#/components/schemas/NivelLealtad'
+          nullable: true
+          description: null si ya está en Oro
+        puntosParaSiguiente:
+          type: integer
+          format: int64
+          description: Los que le faltan ganar; 0 en Oro
+          example: 2360
+        codigoReferido:
+          type: string
+          example: CC0000Z
+    MovimientoPuntos:
+      type: object
+      required: [id, puntos, motivo, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        puntos:
+          type: integer
+          description: Positivo si ganó, negativo si gastó
+          example: 165
+        motivo:
+          type: string
+          enum: [SERVICIO, CANJE, DEVOLUCION_CANJE, REFERIDO, AJUSTE]
+        referenciaTipo:
+          type: string
+          nullable: true
+          enum: [ORDEN, CANJE, REFERIDO]
+          description: De dónde salió; null en un ajuste manual
+        referenciaId:
+          type: integer
+          format: int64
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+    PaginaMovimientosPuntos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/MovimientoPuntos'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+    Recompensa:
+      type: object
+      required: [id, nombre, puntos]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Lavado exprés
+        descripcion:
+          type: string
+          nullable: true
+        puntos:
+          type: integer
+          example: 300
+        existencia:
+          type: integer
+          nullable: true
+          description: null si no tiene límite
+    CanjearRecompensa:
+      type: object
+      required: [recompensaId]
+      properties:
+        recompensaId:
+          type: integer
+          format: int64
+    Canje:
+      type: object
+      required: [id, codigo, recompensa, puntos, estado, venceEn, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        codigo:
+          type: string
+          minLength: 8
+          maxLength: 8
+          description: Lo que la app muestra como QR y el personal usa en la agencia
+          example: K7XQ2MPA
+        recompensa:
+          type: string
+          example: Lavado exprés
+        puntos:
+          type: integer
+          example: 300
+        estado:
+          type: string
+          enum: [VIGENTE, USADO, VENCIDO]
+        venceEn:
+          type: string
+          format: date-time
+        usadoEn:
+          type: string
+          format: date-time
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+    ReferirAmigo:
+      type: object
+      required: [nombre, consentimiento]
+      description: Necesita `telefono` o `correo`
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 120
+          example: Luis Pérez
+        telefono:
+          type: string
+          maxLength: 20
+          nullable: true
+          description: 10 dígitos; se aceptan espacios, guiones y el prefijo +52
+          example: '4421234567'
+        correo:
+          type: string
+          format: email
+          maxLength: 254
+          nullable: true
+        consentimiento:
+          type: boolean
+          description: El amigo aceptó que la agencia lo contacte; debe ser true
+    Referido:
+      type: object
+      required: [id, nombre, estado, puntos, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Luis Pérez
+        estado:
+          type: string
+          enum: [REGISTRADO, EN_SEGUIMIENTO, COMPRO, DESCARTADO]
+        puntos:
+          type: integer
+          description: Los que ganó el cliente si compró; 0 si no
+          example: 500
+        creadoEn:
+          type: string
+          format: date-time
+        recompensadoEn:
+          type: string
+          format: date-time
+          nullable: true
+    AvisoPuntosMovidos:
+      type: object
+      description: Evento SSE `puntos.movidos` (V2-M12.02)
+      required: [puntos, motivo, saldo]
+      properties:
+        puntos:
+          type: integer
+          example: 165
+        motivo:
+          type: string
+          enum: [SERVICIO, CANJE, DEVOLUCION_CANJE, REFERIDO, AJUSTE]
+        saldo:
+          type: integer
+          format: int64
+          example: 1405
+    AvisoMantenimientoRecordatorio:
+      type: object
+      description: V2-M05.05 · `data` del evento `mantenimiento.recordatorio`
+      required: [vehiculoId, servicioId, nombre, faltanKm, faltanDias, motivo]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        servicioId:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Servicio de 20 000 km
+        faltanKm:
+          type: integer
+          description: Puede ser negativo si el servicio ya se pasó.
+        faltanDias:
+          type: integer
+        motivo:
+          type: string
+          enum: [km, tiempo]
 
     AvisoTrasladoEstado:
       type: object
@@ -3245,6 +5449,120 @@ components:
           minimum: -180
           maximum: 180
 
+    TipoPersona:
+      type: string
+      description: Lo dice el largo del RFC; 13 es persona física y 12 moral.
+      enum: [FISICA, MORAL]
+    RegimenFiscal:
+      type: object
+      required: [clave, descripcion, fisica, moral]
+      properties:
+        clave:
+          type: string
+          example: '612'
+        descripcion:
+          type: string
+          example: Personas Físicas con Actividades Empresariales y Profesionales
+        fisica:
+          type: boolean
+          description: Aplica a persona física
+        moral:
+          type: boolean
+          description: Aplica a persona moral
+    UsoCfdi:
+      type: object
+      required: [clave, descripcion, fisica, moral, regimenes]
+      properties:
+        clave:
+          type: string
+          example: G03
+        descripcion:
+          type: string
+          example: Gastos en general
+        fisica:
+          type: boolean
+        moral:
+          type: boolean
+        regimenes:
+          type: array
+          description: Claves de régimen del receptor que aceptan este uso, ordenadas
+          items:
+            type: string
+    CatalogoFiscal:
+      type: object
+      required: [regimenes, usosCfdi]
+      properties:
+        regimenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegimenFiscal'
+        usosCfdi:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsoCfdi'
+    PerfilFiscal:
+      type: object
+      required: [id, rfc, tipoPersona, razonSocial, regimenFiscal, codigoPostal, usoCfdi, predeterminado, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        rfc:
+          type: string
+          example: GODE561231GR8
+        tipoPersona:
+          $ref: '#/components/schemas/TipoPersona'
+        razonSocial:
+          type: string
+          description: En mayúsculas, como en la constancia de situación fiscal
+          example: DOLORES GÓMEZ
+        regimenFiscal:
+          type: string
+          example: '612'
+        codigoPostal:
+          type: string
+          description: Del domicilio fiscal
+          example: '76000'
+        usoCfdi:
+          type: string
+          example: G03
+        correo:
+          type: string
+          format: email
+          nullable: true
+          description: Adonde mandar la factura; opcional
+        predeterminado:
+          type: boolean
+        creadoEn:
+          type: string
+          format: date-time
+    EntradaPerfilFiscal:
+      type: object
+      description: Los campos se revisan en el servidor; los que fallan vuelven en `campos`.
+      properties:
+        rfc:
+          type: string
+          maxLength: 13
+        razonSocial:
+          type: string
+          maxLength: 254
+        regimenFiscal:
+          type: string
+          maxLength: 3
+        codigoPostal:
+          type: string
+          maxLength: 5
+        usoCfdi:
+          type: string
+          maxLength: 4
+        correo:
+          type: string
+          nullable: true
+          maxLength: 254
+        predeterminado:
+          type: boolean
+          nullable: true
+          description: "`true` lo vuelve el predeterminado; `false` o sin él no cambia cuál es"
     Direccion:
       allOf:
         - type: object
@@ -3458,12 +5776,40 @@ components:
           type: integer
           minimum: 0
           description: Trabajos adicionales que esperan la respuesta del cliente
+        totalEstimado:
+          type: number
+          format: double
+          description: V2-M04.06 · Con IVA; el de la orden más los adicionales aprobados
+        horarioEntrega:
+          allOf:
+            - $ref: '#/components/schemas/HorarioEntrega'
+          nullable: true
+          description: V2-M04.06 · Solo cuando está lista para entrega
+
+    HorarioEntrega:
+      type: object
+      description: |
+        V2-M04.06 · Cuándo recoger el auto: el primer día desde hoy con horario del taller, de la
+        primera hora a la última. Hoy cuenta solo si aún no cierra. Hora local de la agencia.
+      required: [fecha, desde, hasta]
+      properties:
+        fecha:
+          type: string
+          format: date
+          example: '2026-11-24'
+        desde:
+          type: string
+          example: '09:00'
+        hasta:
+          type: string
+          example: '17:00'
 
     OrdenEnVivo:
       type: object
       description: |
-        V2-M04.02, V2-M04.04 y V2-M04.05 · La orden en el taller. Los montos traen el IVA
-        incluido; `totalEstimado` es `totalOrden` más los adicionales aprobados.
+        V2-M04.02, V2-M04.04 a V2-M04.07 · La orden en el taller. Los montos traen el IVA
+        incluido; `totalEstimado` es `totalOrden` más los adicionales aprobados que aún no se
+        suman a la orden (se suman como renglones al quedar lista para entrega).
       required: [id, vehiculoId, vehiculo, estatus, etapa, avance, etapas, inspeccion, evidencias,
         adicionales, totalOrden, totalAdicionalesAprobados, totalAdicionalesPendientes, totalEstimado]
       properties:
@@ -3523,6 +5869,11 @@ components:
         totalEstimado:
           type: number
           format: double
+        horarioEntrega:
+          allOf:
+            - $ref: '#/components/schemas/HorarioEntrega'
+          nullable: true
+          description: V2-M04.06 · Solo cuando está lista para entrega
 
     PasoEtapa:
       type: object
@@ -3724,7 +6075,32 @@ components:
             - TRANSICION_INVALIDA
             - ESTRENO_SIN_PRECIO
             - ESTRENO_DUPLICADA
+            - AVISO_NO_VIGENTE
+            - CAMPANA_NO_AGENDABLE
+            - SALDO_INSUFICIENTE
+            - RECOMPENSA_AGOTADA
+            - REFERIDO_DUPLICADO
+            - LIMITE_REFERIDOS
+            - VALUACION_SIN_VEHICULO
+            - VALUACION_CERRADA
+            - VALUACION_NO_AGENDABLE
+            - OFERTA_VENCIDA
+            - OFERTA_NO_DISPONIBLE
+            - SIN_EXISTENCIA
+            - CITA_NO_DISPONIBLE
+            - LIMITE_APARTADOS
+            - PEDIDO_NO_CANCELABLE
+            - PEDIDO_NO_MODIFICABLE
+            - PRODUCTO_INCOMPATIBLE
+            - DATOS_FISCALES_INVALIDOS
           example: FRANJA_SIN_CUPO
+        campos:
+          type: object
+          description: |
+            Qué está mal en cada campo de la petición (nombre del campo → por qué). Solo viene en
+            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS.
+          additionalProperties:
+            type: string
         path:
           type: string
           example: /api/v1/app/citas

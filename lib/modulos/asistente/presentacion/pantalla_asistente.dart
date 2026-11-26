@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/camara/selector_foto.dart';
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -72,13 +75,13 @@ class _PantallaAsistenteState extends ConsumerState<PantallaAsistente> {
         filas: [
           FilaGrupo(
             titulo: textos.asistenteFotoTomar,
-            icono: Icons.photo_camera_outlined,
+            icono: LucideIcons300.camera,
             colorIcono: c.acento,
             alToque: () => Navigator.of(hoja).pop(OrigenFoto.camara),
           ),
           FilaGrupo(
             titulo: textos.asistenteFotoGaleria,
-            icono: Icons.photo_library_outlined,
+            icono: LucideIcons300.images,
             colorIcono: c.marca,
             alToque: () => Navigator.of(hoja).pop(OrigenFoto.galeria),
           ),
@@ -159,90 +162,99 @@ class _ContenidoAsistente extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.asistenteTitulo)),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Espaciado.e4,
-                Espaciado.e2,
-                Espaciado.e4,
-                0,
-              ),
-              child: Aviso(
-                mensaje: textos.asistenteAvisoIa,
-                tono: Tono.informacion,
-              ),
-            ),
-            if (sinPermiso)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  Espaciado.e4,
-                  Espaciado.e2,
-                  Espaciado.e4,
-                  0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Aviso(
-                      mensaje: textos.asistentePermisoCamara,
-                      tono: Tono.advertencia,
+      body: Column(
+        children: [
+          BarraPantalla(titulo: textos.asistenteTitulo),
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      Espaciado.e4,
+                      Espaciado.e2,
+                      Espaciado.e4,
+                      0,
                     ),
-                    const SizedBox(height: Espaciado.e2),
-                    BotonPildora(
-                      texto: textos.asistenteAbrirAjustes,
-                      icono: Icons.settings_outlined,
-                      variante: VarianteBotonPildora.vidrio,
-                      alPresionar: alAbrirAjustes,
+                    child: Aviso(
+                      mensaje: textos.asistenteAvisoIa,
+                      tono: Tono.informacion,
                     ),
-                  ],
-                ),
-              ),
-            Expanded(
-              child: mensajes.isEmpty
-                  ? CentradoDesplazable(
+                  ),
+                  if (sinPermiso)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Espaciado.e4,
+                        Espaciado.e2,
+                        Espaciado.e4,
+                        0,
+                      ),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          EstadoVacio(
-                            titulo: textos.asistenteVacioTitulo,
-                            mensaje: textos.asistenteVacioMensaje,
-                            icono: Icons.auto_awesome_outlined,
+                          Aviso(
+                            mensaje: textos.asistentePermisoCamara,
+                            tono: Tono.advertencia,
                           ),
-                          _PreguntasSugeridas(alElegir: conversacion.preguntar),
+                          const SizedBox(height: Espaciado.e2),
+                          BotonPildora(
+                            texto: textos.asistenteAbrirAjustes,
+                            icono: LucideIcons300.settings,
+                            variante: VarianteBotonPildora.vidrio,
+                            alPresionar: alAbrirAjustes,
+                          ),
                         ],
                       ),
-                    )
-                  : ListView.separated(
-                      reverse: true,
-                      padding: const EdgeInsets.all(Espaciado.e4),
-                      itemCount: elementos.length,
-                      separatorBuilder: (_, _) =>
-                          const SizedBox(height: Espaciado.e3),
-                      itemBuilder: (_, i) => elementos[i],
                     ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Espaciado.e3,
-                0,
-                Espaciado.e3,
-                Espaciado.e3,
+                  Expanded(
+                    child: mensajes.isEmpty
+                        ? CentradoDesplazable(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                EstadoVacio(
+                                  titulo: textos.asistenteVacioTitulo,
+                                  mensaje: textos.asistenteVacioMensaje,
+                                  icono: LucideIcons300.sparkles,
+                                ),
+                                _PreguntasSugeridas(
+                                  alElegir: conversacion.preguntar,
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.separated(
+                            reverse: true,
+                            padding: const EdgeInsets.all(Espaciado.e4),
+                            itemCount: elementos.length,
+                            separatorBuilder: (_, _) =>
+                                const SizedBox(height: Espaciado.e3),
+                            itemBuilder: (_, i) => elementos[i],
+                          ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                      Espaciado.e3,
+                      0,
+                      Espaciado.e3,
+                      Espaciado.e3,
+                    ),
+                    child: CampoMensaje(
+                      alEnviar: conversacion.preguntar,
+                      alAdjuntar: alTomarFoto,
+                      iconoAdjuntar: LucideIcons300.camera,
+                      etiquetaAdjuntar: textos.asistenteFotoAdjuntar,
+                      habilitado: !esperando,
+                      sugerencia: textos.asistenteSugerencia,
+                      etiquetaEnviar: textos.asistenteEnviar,
+                    ),
+                  ),
+                ],
               ),
-              child: CampoMensaje(
-                alEnviar: conversacion.preguntar,
-                alAdjuntar: alTomarFoto,
-                iconoAdjuntar: Icons.photo_camera_outlined,
-                etiquetaAdjuntar: textos.asistenteFotoAdjuntar,
-                habilitado: !esperando,
-                sugerencia: textos.asistenteSugerencia,
-                etiquetaEnviar: textos.asistenteEnviar,
-              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -381,13 +393,13 @@ class _Mensaje extends StatelessWidget {
             if (roja)
               BotonPildora(
                 texto: textos.asistentePedirAyuda,
-                icono: Icons.sos_rounded,
+                icono: LucideIcons300.siren,
                 alPresionar: () => context.push(rutaPedirAyuda),
               ),
             if (ofrecerAgendar)
               BotonPildora(
                 texto: textos.asistenteAgendarRevision,
-                icono: Icons.event_available_outlined,
+                icono: LucideIcons300.calendarCheck,
                 variante: VarianteBotonPildora.vidrio,
                 alPresionar: () => context.push(
                   rutaAgendarCitaCon(
@@ -399,15 +411,15 @@ class _Mensaje extends StatelessWidget {
             if (mensaje.consultaId != null) ...[
               BotonCircular(
                 etiqueta: textos.asistenteMeSirvio,
-                icono: Icons.thumb_up_outlined,
-                iconoMarcado: Icons.thumb_up,
+                icono: LucideIcons300.thumbsUp,
+                iconoMarcado: LucideIcons300.thumbsUp,
                 marcado: mensaje.util == true,
                 alPresionar: () => alCalificar(true),
               ),
               BotonCircular(
                 etiqueta: textos.asistenteNoMeSirvio,
-                icono: Icons.thumb_down_outlined,
-                iconoMarcado: Icons.thumb_down,
+                icono: LucideIcons300.thumbsDown,
+                iconoMarcado: LucideIcons300.thumbsDown,
                 marcado: mensaje.util == false,
                 alPresionar: () => alCalificar(false),
               ),

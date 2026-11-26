@@ -66,6 +66,17 @@ class CarecarApiHttp implements CarecarApi {
   Future<Perfil> miPerfil() => _cliente.obtener('/perfil', Perfil.fromJson);
 
   @override
+  Future<List<SesionActiva>> misSesiones() =>
+      _cliente.obtenerLista('/sesiones', SesionActiva.fromJson);
+
+  @override
+  Future<void> cerrarSesionActiva(int sesionId) =>
+      _cliente.eliminar('/sesiones/$sesionId');
+
+  @override
+  Future<void> cerrarTodasLasSesiones() => _cliente.eliminar('/sesiones');
+
+  @override
   Future<List<Vehiculo>> misVehiculos() =>
       _cliente.obtenerLista('/vehiculos', Vehiculo.fromJson);
 
@@ -275,4 +286,39 @@ class CarecarApiHttp implements CarecarApi {
     pagina: pagina,
     tamano: tamano,
   );
+
+  @override
+  Future<AvisoPrivacidad> avisoDePrivacidad() =>
+      _cliente.obtener('/privacidad/aviso', AvisoPrivacidad.fromJson);
+
+  @override
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId) =>
+      _cliente.enviar(
+        '/privacidad/aceptaciones',
+        cuerpo: {'avisoId': avisoId},
+        leer: AceptacionAviso.fromJson,
+      );
+
+  @override
+  Future<List<SolicitudArco>> misSolicitudesArco() =>
+      _cliente.obtenerLista('/privacidad/arco', SolicitudArco.fromJson);
+
+  @override
+  Future<SolicitudArco> pedirAccesoArco() => _cliente.enviar(
+    '/privacidad/arco/acceso',
+    cuerpo: const {},
+    leer: SolicitudArco.fromJson,
+  );
+
+  @override
+  Future<Uint8List> descargarArchivoArco(int solicitudId) =>
+      _cliente.descargar('/privacidad/arco/$solicitudId/archivo');
+
+  @override
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena) =>
+      _cliente.enviar(
+        '/privacidad/arco/cancelacion',
+        cuerpo: {'contrasena': contrasena},
+        leer: SolicitudArco.fromJson,
+      );
 }

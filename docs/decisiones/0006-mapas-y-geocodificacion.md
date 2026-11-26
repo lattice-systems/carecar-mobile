@@ -57,4 +57,4 @@ Hay tres decisiones, no una: quién dibuja el mapa, de dónde sale la posición 
 
 ## Implementación
 
-Hecho: dependencias (`flutter_map`, `latlong2`, `geolocator`, `geocoding`), permisos de ubicación en primer plano en Android e iOS y `lib/nucleo/mapas/` con las interfaces, implementaciones, fakes y proveedores Riverpod. Pendiente: el componente `Mapa` (V2-T02.09), que será el único que importe `flutter_map`.
+Hecho: dependencias (`flutter_map`, `latlong2`, `geolocator`, `geocoding`), permisos de ubicación en primer plano en Android e iOS y `lib/nucleo/mapas/` con las interfaces, implementaciones, fakes y proveedores Riverpod. El componente `Mapa` (V2-T02.09) está en `lib/nucleo/diseno/componentes/mapa.dart` y es el que importa `flutter_map` y `latlong2`. Mientras M17 no retire su mapa provisional, ese archivo también los importa. Sigue abierto, antes de producción, el proveedor de teselas contratado y su costo.

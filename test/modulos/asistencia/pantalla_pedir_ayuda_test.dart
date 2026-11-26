@@ -9,12 +9,15 @@ import 'package:carecar_mobile/modulos/asistencia/presentacion/pantalla_pedir_ay
 import 'package:carecar_mobile/modulos/asistencia/presentacion/proveedores_asistencia.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 
 /// Repositorio cuyo POST responde 409 y cuyo GET ya trae la solicitud abierta
@@ -54,6 +57,7 @@ Future<void> _montar(
   UbicacionFalsa? ubicacion,
   Size tamano = const Size(800, 1800),
   double escala = 1,
+  List<Override> overrides = const [],
 }) async {
   tester.view.physicalSize = tamano;
   tester.view.devicePixelRatio = 1;
@@ -71,6 +75,7 @@ Future<void> _montar(
         proveedorUbicacionProvider.overrideWithValue(
           ubicacion ?? UbicacionFalsa(),
         ),
+        ...overrides,
       ],
       child: MaterialApp(
         theme: TemaPista.claro(),
@@ -112,6 +117,32 @@ Future<void> _llenarLoBasico(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('se cierra con el mismo botón de cierre que el resto de la app', (
+    tester,
+  ) async {
+    await _montar(tester);
+
+    // Antes llevaba su propio círculo azul: ahora es el BotonCerrar del marco.
+    expect(find.byType(BotonCerrar), findsOneWidget);
+    expect(find.byTooltip('Cerrar'), findsOneWidget);
+    expect(find.byType(BotonRegresar), findsNothing);
+  });
+
+  testWidgets('los tres encabezados del formulario tienen el mismo estilo', (
+    tester,
+  ) async {
+    await _montar(tester);
+
+    // El primero era la etiqueta pequeña de la lista y los otros dos títulos:
+    // tres títulos de sección de dos tamaños en una misma pantalla.
+    TextStyle? estilo(String texto) =>
+        tester.widget<Text>(find.text(texto)).style;
+    final vehiculo = estilo('¿Qué vehículo necesita ayuda?');
+    expect(vehiculo, isNotNull);
+    expect(estilo('¿Qué pasó?'), vehiculo);
+    expect(estilo('Tu ubicación'), vehiculo);
+  });
+
   testWidgets('trae vehiculos, tipos, ubicacion y el control de deslizar', (
     tester,
   ) async {
@@ -241,10 +272,33 @@ void main() {
     await _deslizar(tester);
     expect(find.textContaining('Sin conexión'), findsOneWidget);
     expect(find.textContaining('911'), findsOneWidget);
+    expect(find.text('Llamar a Emergencias'), findsOneWidget);
+    expect(find.text('Llamar a La agencia'), findsOneWidget);
     expect(find.text('Desliza para pedir ayuda'), findsOneWidget);
     repo.fallo = null;
     await _deslizar(tester);
     expect(find.text('Folio 1'), findsOneWidget);
+  });
+
+  testWidgets('sin conexion el atajo llama al 911 con el marcador', (
+    tester,
+  ) async {
+    final llamadas = <Uri>[];
+    final repo = RepositorioAsistenciaFake(fallo: const SinConexion());
+    await _montar(
+      tester,
+      repo: repo,
+      overrides: [
+        abrirLlamadaProvider.overrideWithValue((uri) async {
+          llamadas.add(uri);
+          return true;
+        }),
+      ],
+    );
+    await _llenarLoBasico(tester);
+    await _deslizar(tester);
+    await _tocar(tester, 'Llamar a Emergencias');
+    expect(llamadas, [Uri.parse('tel:911')]);
   });
 
   testWidgets('vehiculo ajeno (404) explica y deja elegir otro', (

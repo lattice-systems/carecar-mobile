@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -9,6 +11,7 @@ import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -75,77 +78,90 @@ class _PantallaMisSolicitudesState
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
     final pagina = ref.watch(misSolicitudesProvider);
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      appBar: AppBar(title: Text(textos.estrenoMisSolicitudes)),
-      body: SafeArea(
-        child: pagina.when(
-          loading: () => Semantics(
-            label: textos.estrenoCargando,
-            liveRegion: true,
-            child: const Padding(
-              padding: EdgeInsets.all(Espaciado.e4),
-              child: Column(
-                children: [
-                  Esqueleto(alto: 72),
-                  SizedBox(height: Espaciado.e3),
-                  Esqueleto(alto: 72),
-                ],
-              ),
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      titulo: textos.estrenoMisSolicitudes,
+      conRegreso: true,
+      estado: hijo,
+    );
+
+    return pagina.when(
+      loading: () => estado(
+        Semantics(
+          label: textos.estrenoCargando,
+          liveRegion: true,
+          child: const Padding(
+            padding: EdgeInsets.all(Espaciado.e4),
+            child: Column(
+              children: [
+                Esqueleto(alto: 72),
+                SizedBox(height: Espaciado.e3),
+                Esqueleto(alto: 72),
+              ],
             ),
           ),
-          error: (error, _) => EstadoError(
-            causa: error is EstrenoSinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(misSolicitudesProvider),
-          ),
-          data: (p) => p.solicitudes.isEmpty
-              ? EstadoVacio(
-                  titulo: textos.estrenoVacioTitulo,
-                  mensaje: textos.estrenoVacioMensaje,
-                  icono: Icons.directions_car_filled_outlined,
-                )
-              : RefreshIndicator(
-                  onRefresh: _recargar,
-                  child: ListView(
-                    // Siempre desplazable para que jalar a recargar funcione
-                    // con pocas filas.
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.all(Espaciado.e4),
-                    children: [
-                      GrupoLista(
-                        filas: [
-                          for (final s in [...p.solicitudes, ..._siguientes])
-                            _fila(context, textos, s),
-                        ],
-                      ),
-                      if (_falloMas) ...[
-                        const SizedBox(height: Espaciado.e3),
-                        Aviso(
-                          mensaje: textos.estrenoErrorMas,
-                          tono: Tono.peligro,
-                        ),
-                      ],
-                      if (_hayMas ?? p.hayMas) ...[
-                        const SizedBox(height: Espaciado.e3),
-                        BotonPildora(
-                          texto: _cargandoMas
-                              ? textos.estrenoCargandoMas
-                              : textos.estrenoVerMas,
-                          variante: VarianteBotonPildora.vidrio,
-                          expandido: true,
-                          alPresionar: _cargandoMas ? null : () => _verMas(p),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
         ),
       ),
+      error: (error, _) => estado(
+        EstadoError(
+          causa: error is EstrenoSinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(misSolicitudesProvider),
+        ),
+      ),
+      data: (p) => p.solicitudes.isEmpty
+          ? estado(
+              EstadoVacio(
+                titulo: textos.estrenoVacioTitulo,
+                mensaje: textos.estrenoVacioMensaje,
+                icono: LucideIcons300.carFront,
+              ),
+            )
+          : MarcoPantalla(
+              titulo: textos.estrenoMisSolicitudes,
+              conRegreso: true,
+              alRefrescar: _recargar,
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Espaciado.margenTelefono,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        GrupoLista(
+                          filas: [
+                            for (final s in [...p.solicitudes, ..._siguientes])
+                              _fila(context, textos, s),
+                          ],
+                        ),
+                        if (_falloMas) ...[
+                          const SizedBox(height: Espaciado.e3),
+                          Aviso(
+                            mensaje: textos.estrenoErrorMas,
+                            tono: Tono.peligro,
+                          ),
+                        ],
+                        if (_hayMas ?? p.hayMas) ...[
+                          const SizedBox(height: Espaciado.e3),
+                          BotonPildora(
+                            texto: _cargandoMas
+                                ? textos.estrenoCargandoMas
+                                : textos.estrenoVerMas,
+                            variante: VarianteBotonPildora.vidrio,
+                            expandido: true,
+                            alPresionar: _cargandoMas ? null : () => _verMas(p),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 
@@ -185,8 +201,8 @@ class _PantallaMisSolicitudesState
       titulo: s.modelo,
       subtitulo: detalle,
       icono: s.tipo == TipoSolicitud.pruebaManejo
-          ? Icons.directions_car_outlined
-          : Icons.request_quote_outlined,
+          ? LucideIcons300.car
+          : LucideIcons300.fileText,
       colorIcono: c.acento,
       fin: Insignia(texto: estado, tono: tono),
     );

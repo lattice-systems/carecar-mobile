@@ -66,6 +66,30 @@ abstract interface class CarecarApi {
   /// `GET /perfil`. Informacion de solo lectura del cliente autenticado.
   Future<Perfil> miPerfil();
 
+  // --- Sesiones y dispositivos activos · V2-M01.09 ---
+
+  /// `GET /sesiones`: las sesiones **vigentes** de la cuenta, ni revocadas ni
+  /// vencidas.
+  ///
+  /// Vienen ordenadas por `ultimoUso` descendente y las que nunca se
+  /// refrescaron al final. La app **no reordena**: si lo hiciera tendria que
+  /// decidir que hacer con los nulos y acabaria discrepando del servidor.
+  Future<List<SesionActiva>> misSesiones();
+
+  /// `DELETE /sesiones/{id}`: revoca esa sesion.
+  ///
+  /// Idempotente: una sesion ya revocada responde 204 igual. Una sesion de otra
+  /// cuenta lanza `NoEncontrado` (404, no 403), que es la regla del contrato
+  /// para un recurso ajeno: un 403 revelaria que existe.
+  Future<void> cerrarSesionActiva(int sesionId);
+
+  /// `DELETE /sesiones`: revoca **todas** las sesiones de la cuenta, **incluida
+  /// la de quien llama**. Es «cerrar sesión en todos los dispositivos».
+  ///
+  /// Igual que `cerrarSesion`, el access token en curso sigue valiendo hasta
+  /// que expire, asi que quien llame tiene que cerrar la sesion local tambien.
+  Future<void> cerrarTodasLasSesiones();
+
   // --- Vehiculos · APP-3.1 y ADM-1 ---
 
   /// `GET /vehiculos`. Solo los del cliente de la sesion.
@@ -225,4 +249,40 @@ abstract interface class CarecarApi {
     int pagina = 0,
     int tamano = 20,
   });
+
+  // --- Privacidad · V2-M22.01 ---
+
+  /// `GET /privacidad/aviso`: el aviso vigente y si esta cuenta ya lo acepto.
+  Future<AvisoPrivacidad> avisoDePrivacidad();
+
+  /// `POST /privacidad/aceptaciones`: registra que se leyo esa version. Es
+  /// idempotente. 404 si el aviso no existe; 409 `AVISO_NO_VIGENTE` si ya hay
+  /// una version mas nueva.
+  Future<AceptacionAviso> aceptarAvisoDePrivacidad(int avisoId);
+
+  // --- Derechos ARCO · V2-M22.02 ---
+
+  /// `GET /privacidad/arco`: las ultimas solicitudes de esta cuenta, mas
+  /// recientes primero.
+  Future<List<SolicitudArco>> misSolicitudesArco();
+
+  /// `POST /privacidad/arco/acceso`: pide una copia de mis datos. El archivo se
+  /// prepara aparte; si ya habia una pendiente devuelve esa.
+  Future<SolicitudArco> pedirAccesoArco();
+
+  /// `GET /privacidad/arco/{id}/archivo`: el JSON con los datos. 404 si no es
+  /// de esta cuenta, no esta lista o ya vencio.
+  Future<Uint8List> descargarArchivoArco(int solicitudId);
+
+  // --- Cancelacion de la cuenta · V2-M22.03 ---
+
+  /// `POST /privacidad/arco/cancelacion`: borra mi cuenta. **No se puede
+  /// deshacer.** La contrasena confirma que quien lo pide es el titular.
+  ///
+  /// Una contrasena equivocada es un 400 (`DatosInvalidos`), a proposito y no un
+  /// 401: la app lee un 401 como sesion vencida y cerraria la sesion sin
+  /// explicar nada. A los 5 intentos fallidos, `DemasiadosIntentos` (429) con el
+  /// tiempo en `Retry-After`. Al terminar, cualquier token de la cuenta responde
+  /// 403.
+  Future<SolicitudArco> cancelarCuentaArco(String contrasena);
 }

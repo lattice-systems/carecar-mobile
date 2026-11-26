@@ -28,5 +28,5 @@ Saber si la app falla y si cumple sus objetivos (O1–O10), sin rastrear de más
 - El [catálogo](../../docs/analitica/eventos.md) define las propiedades y la fuente de cada evento. El interruptor de Ajustes guarda una elección por dispositivo y empieza apagado.
 - La agenda v1 y v2 emite los pasos de disponibilidad, elección y confirmación. El backend deriva la asistencia de la cita o de una orden cerrada vinculada.
 - La app en profile o release registra arranque de Dart hasta el primer cuadro, primera pantalla visible al terminar la cortina y cuadros perdidos estimados según la frecuencia de pantalla. La muestra inicial usa hasta 120 cuadros y termina cinco segundos después de la primera pantalla si no alcanza ese límite.
-- El [ADR de diagnóstico](../../docs/decisiones/0009-diagnostico-de-carecar.md) detalla los conteos de Flutter y de cierres por fallo en Android 11 o posterior, el consentimiento y los símbolos de distribución. La validación de iOS se aplazó.
+- El [ADR de diagnóstico](../../docs/decisiones/0010-diagnostico-de-carecar.md) detalla los conteos de Flutter y de cierres por fallo en Android 11 o posterior, el consentimiento y los símbolos de distribución. La validación de iOS se aplazó.
 - El [tablero](../../docs/analitica/tablero.md) enlaza los diez objetivos y declara qué indicadores requieren más fuentes.

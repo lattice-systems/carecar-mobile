@@ -24,7 +24,7 @@ El workflow **IPA sin firma** ([`.github/workflows/ipa-sin-firma.yml`](../.githu
 4. Espera a que la corrida termine en verde (unos 5 minutos). El IPA es del flavor `produccion` (CareCar, bundle id `com.carecar.carecarMobile`).
 5. Entra a la corrida y baja hasta **Artifacts**. Haz clic en `carecar-vX.Y.Z-build<n>.ipa`: se descarga el `.ipa` directo (unos 30 MB), sin zip alrededor.
 
-El artefacto dura **30 días**. Cada versión etiquetada (`vX.Y.Z`) también trae su IPA en **Releases** (`carecar-vX.Y.Z.ipa`), junto al APK, unos minutos después de publicarse.
+El artefacto dura **30 días**. Cada versión etiquetada (`vX.Y.Z`) también trae su IPA en **Releases** (`carecar-vX.Y.Z.ipa`), junto al APK, unos minutos después de publicarse. Eso último solo pasa con los runners de macOS activos (hoy están en pausa, ver [`pausa-de-macos.md`](pausa-de-macos.md)); el lanzamiento a mano de arriba funciona siempre.
 
 La app apunta al backend en Azure por HTTPS (dirección por omisión del flavor `produccion`; si existe la variable de repositorio `API_BASE_URL`, la sobrescribe y debe ser `https`). No hay que configurar nada en el teléfono.
 

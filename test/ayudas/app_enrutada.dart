@@ -22,6 +22,8 @@ class AppEnrutadaDePrueba extends StatelessWidget {
     required this.controlador,
     this.overrides = const [],
     this.interruptor,
+    this.envolver,
+    this.idioma,
     super.key,
   });
 
@@ -33,8 +35,18 @@ class AppEnrutadaDePrueba extends StatelessWidget {
 
   /// Que modulos estan en v2 (V2-T01.05). Por omision todos, para que las
   /// pruebas de rutas de los modulos v2 no dependan del valor por defecto de
-  /// la app (todo en v1).
+  /// la app (que es todo v2 desde V2-T01.09, pero un modulo nuevo no lo estara
+  /// hasta que este completo). Las pruebas de la v1 pasan
+  /// `InterruptorModulos.todoV1`.
   final InterruptorModulos? interruptor;
+
+  /// Envuelve la app como lo hace `main.dart` con lo que no pinta nada (el
+  /// verificador del aviso de privacidad, por ejemplo).
+  final Widget Function(Widget app)? envolver;
+
+  /// Idioma fijo. Por omisión el de la prueba (inglés); las que miran textos
+  /// del inicio en español lo piden.
+  final Locale? idioma;
 
   @override
   Widget build(BuildContext context) => ProviderScope(
@@ -53,9 +65,13 @@ class AppEnrutadaDePrueba extends StatelessWidget {
           theme: TemaCareCar.claro,
           localizationsDelegates: delegadasDeIdioma,
           supportedLocales: idiomasSoportados,
+          locale: idioma,
           localeResolutionCallback: resolverIdioma,
           routerConfig: ref.watch(enrutadorProvider),
-          builder: (context, child) => ShadAppBuilder(child: child!),
+          builder: (context, child) {
+            final app = ShadAppBuilder(child: child!);
+            return envolver?.call(app) ?? app;
+          },
         ),
       ),
     ),

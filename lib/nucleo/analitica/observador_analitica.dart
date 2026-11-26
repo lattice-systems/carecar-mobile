@@ -59,8 +59,9 @@ class _ObservadorAnaliticaState extends State<ObservadorAnalitica> {
       _revision = widget.analitica.revision;
       binding.addTimingsCallback(_medirCuadros);
       binding.addPostFrameCallback((_) {
-        if (mounted && _revision != null)
+        if (mounted && _revision != null) {
           _arranque = widget.reloj.elapsedMilliseconds;
+        }
       });
     }
   }
@@ -112,8 +113,9 @@ class _ObservadorAnaliticaState extends State<ObservadorAnalitica> {
     if (arranque == null ||
         primera == null ||
         _medidos == 0 ||
-        widget.analitica.revision != permiso)
+        widget.analitica.revision != permiso) {
       return;
+    }
     unawaited(
       widget.analitica.registrar({
         'tipo': 'RENDIMIENTO',
@@ -126,8 +128,9 @@ class _ObservadorAnaliticaState extends State<ObservadorAnalitica> {
   }
 
   void _detenerMedicion() {
-    if (_revision != null)
+    if (_revision != null) {
       WidgetsBinding.instance.removeTimingsCallback(_medirCuadros);
+    }
     _revision = null;
     _temporizador?.cancel();
   }
@@ -137,10 +140,12 @@ class _ObservadorAnaliticaState extends State<ObservadorAnalitica> {
     _detenerMedicion();
     if (!kDebugMode) {
       final dispatcher = WidgetsBinding.instance.platformDispatcher;
-      if (FlutterError.onError == _flutter)
+      if (FlutterError.onError == _flutter) {
         FlutterError.onError = _flutterAnterior;
-      if (dispatcher.onError == _asincrono)
+      }
+      if (dispatcher.onError == _asincrono) {
         dispatcher.onError = _asincronoAnterior;
+      }
     }
     super.dispose();
   }

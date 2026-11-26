@@ -107,6 +107,8 @@ El workflow `.github/workflows/ci.yml` corre en cada PR hacia `main` y en cada p
 | `CI / Pruebas (flutter test)` | Pruebas unitarias y de widgets |
 | `CI / Build Android (APK)` | Que la app compile para Android (`flutter build apk --debug`) |
 
+El job `Build iOS (sin firma)` (runner de macOS) no es un check requerido y hoy está en pausa: se salta mientras la variable de repositorio `MACOS_ACTIVO` no valga `true` ([`pausa-de-macos.md`](pausa-de-macos.md)).
+
 El workflow `.github/workflows/autoria.yml` corre en cada PR hacia `main`:
 
 | Check | Qué revisa |
@@ -135,7 +137,7 @@ No corren en los PR ni bloquean el merge:
 
 | Workflow | Cuándo corre | Qué hace |
 | --- | --- | --- |
-| `Release` (`release.yml`) | Al empujar una etiqueta `vX.Y.Z` | Publica un GitHub Release con el APK y después le adjunta el IPA sin firmar |
+| `Release` (`release.yml`) | Al empujar una etiqueta `vX.Y.Z` | Publica un GitHub Release con el APK y después le adjunta el IPA sin firmar (solo con la variable `MACOS_ACTIVO` en `true`; hoy en pausa, ver [`pausa-de-macos.md`](pausa-de-macos.md)) |
 | `IPA sin firma` (`ipa-sin-firma.yml`) | A mano (Actions → Run workflow) y llamado por `Release` | Compila iOS en release sin firmar en macOS, lo empaqueta en `Payload/` como `carecar-<versión>.ipa` y lo sube como artefacto por 30 días. Se instala con Sideloadly: [`guia-instalar-ios-sin-mac.md`](guia-instalar-ios-sin-mac.md) |
 
 Las pruebas viven en `test/` con el sufijo `_test.dart` (por ejemplo, `test/widget_test.dart`).

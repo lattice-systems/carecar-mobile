@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/ficha_tecnica_vehiculo.dart';
@@ -49,28 +51,17 @@ class PantallaFichaTecnica extends ConsumerWidget {
               EstadoVacio(
                 titulo: textos.vehiculosFichaVacioTitulo,
                 mensaje: textos.vehiculosFichaVacioMensaje,
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
               ),
             )
           : SliverToBoxAdapter(child: _Ficha(ficha: f)),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.vehiculosFichaTitulo,
-              translucido: true,
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.vehiculosFichaTitulo,
+      conRegreso: true,
+      alRefrescar: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),
+      slivers: [contenido],
     );
   }
 }
@@ -151,13 +142,15 @@ class _SeccionFichaState extends State<_SeccionFicha> {
       filas: [
         FilaGrupo(
           titulo: widget.titulo,
-          icono: Icons.fact_check_outlined,
+          icono: LucideIcons300.clipboardCheck,
           colorIcono: widget.color,
           fin: Icon(
-            _abierta ? Icons.expand_less : Icons.expand_more,
+            _abierta ? LucideIcons300.chevronUp : LucideIcons300.chevronDown,
             color: c.textoSecundario,
           ),
           alToque: () => setState(() => _abierta = !_abierta),
+          // Desplegar no lleva a otra pantalla: la flecha de desplegar basta.
+          conChevron: false,
         ),
         if (_abierta)
           for (final (clave, valor) in widget.filas)

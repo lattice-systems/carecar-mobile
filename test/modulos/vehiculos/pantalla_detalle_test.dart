@@ -5,12 +5,14 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_detalle_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -51,8 +53,9 @@ void main() {
   _prueba('muestra vin, placas, anio, color, version y km', (tester) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
-    expect(find.text('Detalle del vehículo'), findsOneWidget);
+    // El auto es el titulo del encabezado; las placas, su subtitulo.
     expect(find.text('Mazda CX-5 2024'), findsOneWidget);
+    expect(find.text('Placas ABC-123'), findsOneWidget);
     expect(find.text('JM3KFBDM0R0123456'), findsOneWidget);
     expect(find.text('ABC-123'), findsOneWidget);
     expect(find.text('Rojo'), findsOneWidget);
@@ -118,13 +121,24 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('Tu auto ofrece ficha e historial como tarjetas', (tester) async {
+  _prueba('Tu auto ofrece ficha e historial como filas de lista', (
+    tester,
+  ) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
       expect(find.text(texto), findsOneWidget);
     }
-    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(4));
+    // Seis destinos en un solo grupo con chevron (V2-T02.23).
+    // Una flecha por fila de la lista (la tarjeta del próximo servicio lleva la
+    // suya, fuera de la lista).
+    expect(
+      find.descendant(
+        of: find.byType(GrupoLista),
+        matching: find.byIcon(LucideIcons300.chevronRight),
+      ),
+      findsNWidgets(6),
+    );
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);
@@ -143,6 +157,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Mantenimiento'), findsOneWidget);
     expect(find.bySemanticsLabel('Mantenimiento'), findsOneWidget);
+  });
+
+  _prueba('garantia y campanas son accesos del grupo Tu auto (V2-M10)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioGarajeFake()));
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel('Garantía'), findsOneWidget);
+    expect(find.bySemanticsLabel('Campañas de seguridad'), findsOneWidget);
   });
 
   _prueba('un id que no esta en el garaje explica y no deja en blanco', (
@@ -183,7 +206,7 @@ void main() {
   _prueba('sin conexion y sin copia guardada lo dice distinto', (tester) async {
     await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
-    expect(find.text('Sin conexion'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
   });
 
   _prueba('en ingles traduce los textos', (tester) async {
@@ -191,7 +214,7 @@ void main() {
       _app(RepositorioGarajeFake(), idioma: const Locale('en')),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Vehicle details'), findsOneWidget);
+    expect(find.text('Plates ABC-123'), findsOneWidget);
     expect(find.text('Service history'), findsOneWidget);
     expect(find.text('Coming soon'), findsNothing);
     expect(find.textContaining('Updated by the workshop on'), findsOneWidget);

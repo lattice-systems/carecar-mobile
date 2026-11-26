@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -16,7 +18,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../citas/citas.dart';
 import '../../recoleccion/recoleccion.dart' show formatearPesos;
 import '../dominio/plan_mantenimiento.dart';
-import 'componentes/marco_pantalla_mantenimiento.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 
@@ -45,11 +47,11 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
 
     return plan.when(
       skipLoadingOnReload: true,
-      loading: () => MarcoPantallaMantenimiento.estado(
+      loading: () => MarcoPantalla.estado(
         titulo: textos.mantenimientoTitulo,
         estado: const _Cargando(),
       ),
-      error: (error, _) => MarcoPantallaMantenimiento.estado(
+      error: (error, _) => MarcoPantalla.estado(
         titulo: textos.mantenimientoTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -62,25 +64,25 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
       data: (p) {
         final servicio = p.servicioPorId(servicioId);
         if (servicio == null) {
-          return MarcoPantallaMantenimiento.estado(
+          return MarcoPantalla.estado(
             titulo: textos.mantenimientoTitulo,
             estado: EstadoVacio(
               titulo: textos.mantenimientoServicioNoEncontradoTitulo,
               mensaje: textos.mantenimientoServicioNoEncontradoMensaje,
-              icono: Icons.build_circle_outlined,
+              icono: LucideIcons300.wrench,
             ),
           );
         }
-        return MarcoPantallaMantenimiento(
+        return MarcoPantalla(
           titulo: servicio.nombre,
           alRefrescar: () =>
               ref.refresh(planMantenimientoProvider(vehiculoId).future),
           barraInferior: servicio.sePuedeAgendar
-              ? BarraInferiorMantenimiento(
+              ? BarraInferior(
                   hijos: [
                     BotonPildora(
                       texto: textos.mantenimientoAgendar,
-                      icono: Icons.event_available_outlined,
+                      icono: LucideIcons300.calendarCheck,
                       expandido: true,
                       alPresionar: () => context.push(
                         rutaAgendarCitaCon(
@@ -159,7 +161,7 @@ class _Servicio extends StatelessWidget {
               for (final concepto in servicio.conceptos)
                 FilaGrupo(
                   titulo: concepto,
-                  icono: Icons.check_rounded,
+                  icono: LucideIcons300.check,
                   colorIcono: c.exito,
                 ),
             ],

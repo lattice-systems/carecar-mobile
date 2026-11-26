@@ -1,4 +1,4 @@
-import 'package:carecar_mobile/modulos/mantenimiento/presentacion/componentes/marco_pantalla_mantenimiento.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -15,10 +15,8 @@ void main() {
             child: TextButton(
               onPressed: () => Navigator.of(context).push<void>(
                 MaterialPageRoute(
-                  builder: (_) => const MarcoPantallaMantenimiento(
-                    titulo: 'Plan',
-                    slivers: [],
-                  ),
+                  builder: (_) =>
+                      const MarcoPantalla(titulo: 'Plan', slivers: []),
                 ),
               ),
               child: const Text('abrir'),
@@ -36,6 +34,6 @@ void main() {
     await tester.tap(find.byType(BotonCircular));
     await tester.pumpAndSettle();
     expect(find.text('abrir'), findsOneWidget);
-    expect(find.byType(MarcoPantallaMantenimiento), findsNothing);
+    expect(find.byType(MarcoPantalla), findsNothing);
   });
 }

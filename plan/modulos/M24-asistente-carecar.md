@@ -125,3 +125,7 @@ Proyecto del equipo creado sin facturación, cuota anotada en el ADR y llave en 
 ## Cumplimiento de la ficha
 
 Mueve las dos filas de la sección 21 en [`../cumplimiento-ficha.md`](../cumplimiento-ficha.md): "Preguntas sobre el manual del vehículo" con V2-M24.02 y V2-M24.03, e "Identificación de testigos del tablero" con V2-M24.05.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+La pantalla del asistente usa `BarraPantalla` (regreso y título en una línea) en lugar del `AppBar` de Material, para que la barra no crezca con la letra grande y le quite alto al chat.

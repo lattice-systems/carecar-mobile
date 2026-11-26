@@ -26,7 +26,7 @@ Sobre `flutter_lints` se activan `avoid_void_async` para conservar el `Future` d
 
 ## V2-T03.02 · Pruebas golden
 
-Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Inter, JetBrains Mono y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
+Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Geist, Geist Mono, sus respaldos y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
 
 ## V2-T03.03 · Flujo principal en Android
 

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../ayudas/tema_pista.dart';
 
 const _casa = DireccionGuardada(
@@ -230,7 +232,7 @@ void main() {
       'Mi colonia',
       reason: 'no se pisa lo escrito',
     );
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
   });
 
   _prueba('sin permiso de ubicación lo explica y deja poner el pin a mano', (
@@ -246,10 +248,10 @@ void main() {
     await tester.tap(find.text('Usar mi ubicación'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Necesitamos tu permiso'), findsOneWidget);
-    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.byIcon(LucideIcons300.mapPin), findsNothing);
 
     await _ponerPinEnElMapa(tester);
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
   });
 
   _prueba('con la ubicación apagada lo avisa', (tester) async {
@@ -281,7 +283,7 @@ void main() {
     await tester.tap(find.byTooltip('Buscar'));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
     final cp = tester.widget<TextField>(_campo('Código postal'));
     expect(cp.controller!.text, '06600');
   });

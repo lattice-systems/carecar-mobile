@@ -7,7 +7,7 @@ import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/radios.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../dominio/disponibilidad_taller.dart';
-import 'seccion_cita.dart';
+import '../../../../nucleo/diseno/componentes/marco_pantalla.dart';
 
 /// Secciones «Día» y «Horario» compartidas por disponibilidad, agendar y
 /// reprogramar: calendario en tarjeta redondeada y franjas del día elegido.
@@ -53,7 +53,7 @@ class SeleccionDiaHorario extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SeccionCita(
+        SeccionPantalla(
           titulo: textos.citasAgendarDia,
           nota: textos.citasNotaDiasSinCupo,
           hijo: DecoratedBox(
@@ -77,7 +77,7 @@ class SeleccionDiaHorario extends StatelessWidget {
             ),
           ),
         ),
-        SeccionCita(
+        SeccionPantalla(
           titulo: textos.citasAgendarHorario,
           hijo: elegido == null
               ? Text(

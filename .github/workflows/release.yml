@@ -1,7 +1,9 @@
 name: Release
 
 # Publica un GitHub Release con el APK al empujar una etiqueta vX.Y.Z y luego le
-# adjunta el IPA sin firmar (workflow ipa-sin-firma.yml, para Sideloadly).
+# adjunta el IPA sin firmar (workflow ipa-sin-firma.yml, para Sideloadly). El IPA
+# solo se genera si la variable de repositorio MACOS_ACTIVO vale "true"; hoy los
+# runners de macOS están en pausa (docs/pausa-de-macos.md).
 # Cómo sacar una versión: ver plan/modulos/T04-entrega-continua.md.
 on:
   push:
@@ -124,11 +126,19 @@ jobs:
           ETIQUETA: ${{ github.ref_name }}
           NUMERO: ${{ github.run_number }}
           FIRMADO: ${{ steps.firma.outputs.firmado }}
+          MACOS_ACTIVO: ${{ vars.MACOS_ACTIVO }}
         run: |
           if [ "$FIRMADO" = true ]; then
             firma="Firmado con la llave de producción."
           else
             firma="**Aviso:** firmado con la llave de debug porque el repositorio aún no tiene los secretos de producción (V2-T04.02, scripts/crear-llaves-android.sh). Sirve para pruebas internas."
+          fi
+          # El IPA lo sube el job `adjuntar-ipa`, que solo corre con macOS activo
+          # (variable de repositorio MACOS_ACTIVO): las notas deben decir la verdad.
+          if [ "$MACOS_ACTIVO" = true ]; then
+            ios="El IPA de iOS (sin firmar, para instalar con Sideloadly) se adjunta unos minutos después; guía en docs/guia-instalar-ios-sin-mac.md."
+          else
+            ios="Esta versión no trae IPA de iOS: los runners de macOS están en pausa (docs/pausa-de-macos.md)."
           fi
           # V2-T04.05: qué cambió, de los commits convencionales desde la
           # etiqueta anterior.
@@ -142,15 +152,17 @@ jobs:
 
           APK de Android $ETIQUETA (build $NUMERO). $firma
 
-          El IPA de iOS (sin firmar, para instalar con Sideloadly) se adjunta unos minutos después; guía en docs/guia-instalar-ios-sin-mac.md."
+          $ios"
 
   # El IPA va en un job aparte, después del Release: si la etiqueta no pasa la
   # verificación no se gastan minutos de macOS, y si falla el build de iOS el
   # APK ya quedó publicado. La compilación es la misma que la del lanzamiento
-  # manual (ipa-sin-firma.yml), así hay una sola receta.
+  # manual (ipa-sin-firma.yml), así hay una sola receta. En pausa: solo corre si
+  # la variable de repositorio MACOS_ACTIVO vale "true" (docs/pausa-de-macos.md).
   ipa:
     name: IPA sin firma
     needs: release
+    if: vars.MACOS_ACTIVO == 'true'
     permissions:
       contents: read
     uses: ./.github/workflows/ipa-sin-firma.yml
@@ -160,6 +172,8 @@ jobs:
   adjuntar-ipa:
     name: Adjuntar el IPA al Release
     needs: ipa
+    # Se saltaría solo cuando `ipa` se salta; la condición queda explícita.
+    if: vars.MACOS_ACTIVO == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el IPA

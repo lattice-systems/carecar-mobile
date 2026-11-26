@@ -44,14 +44,14 @@ void main() {
     ) async {
       await _montar(tester, _controlador(ApiFalsa()));
 
-      final logo = tester.widget<Image>(find.byKey(PantallaLogin.logo));
-      expect(logo.image, isA<AssetImage>());
+      final logo = tester.widget<SvgPicture>(find.byKey(PantallaLogin.logo));
+      expect(logo.bytesLoader, isA<SvgAssetLoader>());
       expect(
-        (logo.image as AssetImage).assetName,
-        'assets/marca/agencia360-logo-oscuro.png',
+        (logo.bytesLoader as SvgAssetLoader).assetName,
+        'assets/marca/agencia360-logo-oscuro.svg',
       );
       // Un logotipo sin texto siempre lleva etiqueta accesible.
-      expect(logo.semanticLabel, 'Agencia360');
+      expect(logo.semanticsLabel, 'Agencia360');
       // La guia pide 120 px de ancho minimo para el logo horizontal.
       expect(logo.width, greaterThanOrEqualTo(120));
     });

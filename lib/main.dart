@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,9 +11,12 @@ import 'api/api_config.dart';
 import 'api/carecar_api.dart';
 import 'api/carecar_api_http.dart';
 import 'api/cliente_api.dart';
+import 'api/cliente_http_fijado.dart';
 import 'cache/carecar_api_con_cache.dart';
+import 'cache/cifrador_de_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
+import 'modulos/privacidad/privacidad.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/analitica/ambito_analitica.dart';
 import 'nucleo/analitica/analitica.dart';
@@ -23,11 +25,15 @@ import 'nucleo/analitica/observador_analitica.dart';
 import 'nucleo/analitica/proveedores_analitica.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/datos/reintento.dart';
+import 'nucleo/dispositivo/lector_del_dispositivo.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
+import 'nucleo/privacidad/estado_aviso.dart';
+import 'nucleo/seguridad/aviso_conexion_no_segura.dart';
 import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
 import 'nucleo/seguridad/detector_integridad.dart';
+import 'nucleo/seguridad/estado_de_conexion_segura.dart';
 import 'nucleo/seguridad/politica_datos_locales.dart';
 import 'nucleo/seguridad/proveedores_seguridad.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
@@ -108,6 +114,10 @@ class _AppCareCarState extends State<AppCareCar> {
   ClienteApi? _cliente;
   CarecarApi? _api;
   EnviarAnalitica? _enviarAnalitica;
+
+  /// Si el certificado del servidor se rechazó (V2-M22.15): lo escribe el
+  /// cliente de la API y lo lee el aviso global.
+  EstadoDeConexionSegura? _conexionSegura;
   Object? _errorDeArranque;
 
   /// Mientras se lee la sesion guardada no se sabe si hay que mostrar el login.
@@ -136,9 +146,13 @@ class _AppCareCarState extends State<AppCareCar> {
 
       // El cliente pide el token al almacen en cada peticion, asi que iniciar
       // o cerrar sesion no obliga a reconstruirlo.
+      final conexionSegura = EstadoDeConexionSegura();
       final cliente = ClienteApi(
         config: ApiConfig.desdeEntorno(),
         obtenerToken: () async => (await almacen.leer())?.accessToken,
+        // V2-M22.15: un certificado rechazado se explica en vez de decir
+        // «sin conexión» en cada pantalla.
+        alVerificarCertificado: conexionSegura.actualizar,
         // RIC-3: ante un 401 se intenta refrescar una vez.
         renovarSesion: () => sesion.renovar(),
       );
@@ -149,30 +163,30 @@ class _AppCareCarState extends State<AppCareCar> {
           : CarecarApiConCache(
               CarecarApiHttp(cliente),
               prefs,
+              // V2-M22.13: la llave de las copias vive en el Keystore o el
+              // Keychain, igual que la sesión.
+              CifradorAesGcm(AlmacenamientoDelSistema()),
               politica: widget.politica,
             );
-      sesion = ControladorSesion(api, almacen);
+      sesion = ControladorSesion(
+        api,
+        almacen,
+        // V2-M01.09: el nombre del equipo viaja en el login para que «mis
+        // sesiones abiertas» no muestre todas las sesiones iguales. Si no se
+        // puede leer, se entra sin nombre.
+        leerDatosDelDispositivo,
+      );
       _enviarAnalitica = (evento, siguePermitido) async {
         final estado = sesion.estado;
         if (estado is! Autenticada || estado.debeCambiarContrasena) return;
-        final guardada = await almacen.leer();
-        if (guardada == null ||
-            !identical(sesion.estado, estado) ||
-            !siguePermitido())
-          return;
-        await http
-            .post(
-              cliente.config.ruta('/analitica/eventos'),
-              headers: {
-                'Authorization': 'Bearer ${guardada.accessToken}',
-                'Content-Type': 'application/json',
-              },
-              body: jsonEncode(evento),
-            )
-            .timeout(const Duration(seconds: 5));
+        await cliente.enviarEventoAnalitica(
+          evento,
+          () => identical(sesion.estado, estado) && siguePermitido(),
+        );
       };
 
       _cliente = cliente;
+      _conexionSegura = conexionSegura;
       _api = api;
       _sesion = sesion;
 
@@ -180,6 +194,10 @@ class _AppCareCarState extends State<AppCareCar> {
     } on ApiConfigInvalida catch (e) {
       // Falta --dart-define=API_BASE_URL. Es preferible decirlo con el comando
       // exacto que arrancar apuntando a ningun lado.
+      _errorDeArranque = e;
+    } on ConfianzaTlsInvalida catch (e) {
+      // V2-M22.04: la direccion no tiene certificados fijados. Se prefiere no
+      // arrancar a conectarse sin fijar sin que nadie lo note.
       _errorDeArranque = e;
     }
   }
@@ -198,6 +216,7 @@ class _AppCareCarState extends State<AppCareCar> {
   @override
   void dispose() {
     _cliente?.cerrar();
+    _conexionSegura?.dispose();
     _sesion?.dispose();
     super.dispose();
   }
@@ -222,11 +241,22 @@ class _AppCareCarState extends State<AppCareCar> {
         if (widget.politica != null)
           politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
+        if (_conexionSegura != null)
+          estadoConexionSeguraProvider.overrideWithValue(_conexionSegura!),
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
           controladorSesionProvider.overrideWithValue(_sesion!),
         if (_enviarAnalitica != null)
-          transporteAnaliticaProvider.overrideWithValue(_enviarAnalitica),
+          transporteAnaliticaProvider.overrideWith((ref) {
+            final enviar = _enviarAnalitica!;
+            return (evento, siguePermitido) => enviar(
+              evento,
+              () =>
+                  ref.mounted &&
+                  ref.read(estadoAvisoProvider) == EstadoAviso.aceptado &&
+                  siguePermitido(),
+            );
+          }),
       ],
       child: _construirApp(),
     );
@@ -252,68 +282,77 @@ class _AppCareCarState extends State<AppCareCar> {
         // Navegacion declarativa (ADR 0003, V2-T01.03): el enrutador junta las
         // rutas del nucleo y de los modulos y decide por la sesion.
         return Consumer(
-          builder: (context, ref, _) => MaterialApp.router(
-            title: 'CareCar',
-            theme: TemaCareCar.conFuentes(),
-            localizationsDelegates: delegadasDeIdioma,
-            supportedLocales: idiomasSoportados,
-            locale: ref.watch(idiomaElegidoProvider),
-            localeResolutionCallback: resolverIdioma,
-            debugShowCheckedModeBanner: false,
-            routerConfig: ref.watch(enrutadorProvider),
-            // La cortina tapa la app mientras se restaura la sesion: asi no se
-            // ve el login un instante antes de saltar a inicio ni a un enlace.
-            // Los accesos del icono (V2-M25.04) se registran aqui porque
-            // necesitan los textos del idioma activo y el enrutador. El widget
-            // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
-            // lo mismo y porque observa la sesion.
-            // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
-            // tapar tambien la cortina y los dialogos en el selector de apps.
-            builder: (context, child) {
-              final analitica = ref.read(analiticaProvider);
-              final prefs = widget.prefs;
-              final sesion = _sesion?.estado;
-              if (!kDebugMode &&
-                  !kIsWeb &&
-                  defaultTargetPlatform == TargetPlatform.android &&
-                  !_diagnosticoAndroidIniciado &&
-                  !_restaurando &&
-                  sesion is Autenticada &&
-                  !sesion.debeCambiarContrasena &&
-                  prefs != null) {
-                _diagnosticoAndroidIniciado = true;
-                unawaited(reportarCrashesAndroid(analitica, prefs));
-              }
-              Widget contenido([VoidCallback? primeraPantalla]) =>
-                  CubiertaEnSegundoPlano(
-                    child: InstaladorDeAccesosRapidos(
-                      child: SincronizadorDeWidgets(
-                        child: ShadAppBuilder(
-                          child: AvisoEquipoComprometido(
-                            child: CortinaArranque(
-                              listo: !_restaurando,
-                              duracionMinima: widget.duracionArranque,
-                              alTerminar: primeraPantalla,
-                              siguiente: (_) => AmbitoAnalitica(
-                                analitica: analitica,
-                                child: child!,
+          builder: (context, ref, _) {
+            final avisoAceptado =
+                ref.watch(estadoAvisoProvider) == EstadoAviso.aceptado;
+            return MaterialApp.router(
+              title: 'CareCar',
+              theme: TemaCareCar.conFuentes(),
+              localizationsDelegates: delegadasDeIdioma,
+              supportedLocales: idiomasSoportados,
+              locale: ref.watch(idiomaElegidoProvider),
+              localeResolutionCallback: resolverIdioma,
+              debugShowCheckedModeBanner: false,
+              routerConfig: ref.watch(enrutadorProvider),
+              // La cortina tapa la app mientras se restaura la sesion: asi no se
+              // ve el login un instante antes de saltar a inicio ni a un enlace.
+              // Los accesos del icono (V2-M25.04) se registran aqui porque
+              // necesitan los textos del idioma activo y el enrutador. El widget
+              // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
+              // lo mismo y porque observa la sesion.
+              // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
+              // tapar tambien la cortina y los dialogos en el selector de apps.
+              builder: (context, child) {
+                final analitica = ref.read(analiticaProvider);
+                final prefs = widget.prefs;
+                final sesion = _sesion?.estado;
+                if (!kDebugMode &&
+                    !kIsWeb &&
+                    defaultTargetPlatform == TargetPlatform.android &&
+                    !_diagnosticoAndroidIniciado &&
+                    !_restaurando &&
+                    avisoAceptado &&
+                    sesion is Autenticada &&
+                    !sesion.debeCambiarContrasena &&
+                    prefs != null) {
+                  _diagnosticoAndroidIniciado = true;
+                  unawaited(reportarCrashesAndroid(analitica, prefs));
+                }
+                Widget contenido([VoidCallback? primeraPantalla]) =>
+                    CubiertaEnSegundoPlano(
+                      child: InstaladorDeAccesosRapidos(
+                        child: SincronizadorDeWidgets(
+                          child: ShadAppBuilder(
+                            child: AvisoEquipoComprometido(
+                              child: AvisoConexionNoSegura(
+                                child: VerificadorDeAviso(
+                                  child: CortinaArranque(
+                                    listo: !_restaurando,
+                                    duracionMinima: widget.duracionArranque,
+                                    alTerminar: primeraPantalla,
+                                    siguiente: (_) => AmbitoAnalitica(
+                                      analitica: analitica,
+                                      child: child!,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-              final reloj = widget.relojArranque;
-              return reloj == null
-                  ? contenido()
-                  : ObservadorAnalitica(
-                      analitica: analitica,
-                      reloj: reloj,
-                      construir: contenido,
                     );
-            },
-          ),
+                final reloj = widget.relojArranque;
+                return reloj == null
+                    ? contenido()
+                    : ObservadorAnalitica(
+                        analitica: analitica,
+                        reloj: reloj,
+                        construir: contenido,
+                      );
+              },
+            );
+          },
         );
       },
     );
@@ -337,7 +376,7 @@ class _PantallaDeErrorDeArranque extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Icon(
-                Icons.settings_outlined,
+                LucideIcons300.settings,
                 size: 48,
                 color: TemaCareCar.peligro,
               ),

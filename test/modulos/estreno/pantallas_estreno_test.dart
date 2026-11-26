@@ -9,10 +9,14 @@ import 'package:carecar_mobile/modulos/estreno/presentacion/pantalla_cotizacion_
 import 'package:carecar_mobile/modulos/estreno/presentacion/pantalla_mis_solicitudes.dart';
 import 'package:carecar_mobile/modulos/estreno/presentacion/pantalla_prueba_manejo.dart';
 import 'package:carecar_mobile/modulos/estreno/presentacion/proveedores_estreno.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_pantalla.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -243,6 +247,51 @@ Future<void> _elegirDiaYTarde(WidgetTester tester) async {
 }
 
 void main() {
+  group('Marco del sistema (V2-T02.25)', () {
+    // Los formularios se abren encima de otra pantalla: llevan «Cerrar». La
+    // lista de solicitudes es una raíz: lleva «Regresar». Ninguna arma su
+    // propia barra: el título grande y el modelo de subtítulo son del marco.
+    _prueba('la prueba de manejo lleva el modelo de subtítulo y Cerrar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(const PantallaPruebaManejo(modeloId: 7), _Repo()),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarcoPantalla), findsOneWidget);
+      expect(find.byType(BotonCerrar), findsOneWidget);
+      expect(find.byType(BotonRegresar), findsNothing);
+      expect(find.byType(BarraPantalla), findsNothing);
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+    });
+
+    _prueba('la cotización lleva el modelo de subtítulo y Cerrar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        _app(const PantallaCotizacionEstreno(modeloId: 7), _Repo()),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarcoPantalla), findsOneWidget);
+      expect(find.byType(BotonCerrar), findsOneWidget);
+      expect(find.byType(BarraPantalla), findsNothing);
+      expect(find.text('Nissan Kicks 2026'), findsOneWidget);
+    });
+
+    _prueba('mis solicitudes lleva Regresar, también sin solicitudes', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(const PantallaMisSolicitudes(), _Repo()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(MarcoPantalla), findsOneWidget);
+      expect(find.byType(BotonRegresar), findsOneWidget);
+      expect(find.byType(BarraPantalla), findsNothing);
+    });
+  });
+
   group('Quiero probarlo (V2-M16.01)', () {
     _prueba('no deja enviar hasta elegir dia y franja, y confirma', (
       tester,

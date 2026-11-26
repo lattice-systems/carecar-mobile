@@ -1,6 +1,7 @@
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_detalle_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,59 +18,70 @@ Widget _app(Escenario escenario) => ProviderScope(
   ),
 );
 
-Future<List<Rect>> _tarjetas(WidgetTester tester, Escenario escenario) async {
+Future<void> _montar(WidgetTester tester, Escenario escenario) async {
   tester.view.physicalSize = const Size(360, 4000);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(_app(escenario));
   await tester.pumpAndSettle();
   expect(tester.takeException(), isNull);
-  final tarjetas = find.byKey(const Key('accion-tu-auto'));
-  expect(tarjetas, findsNWidgets(4));
-  return [for (var i = 0; i < 4; i++) tester.getRect(tarjetas.at(i))];
 }
 
+const _destinos = [
+  'Ficha técnica',
+  'Historial de servicios',
+  'Mantenimiento',
+  'Bitácora',
+  'Garantía',
+  'Campañas de seguridad',
+];
+
+/// El grupo de lista que lleva el encabezado «Tu auto».
+Finder _grupoTuAuto() =>
+    find.byWidgetPredicate((w) => w is GrupoLista && w.encabezado == 'Tu auto');
+
 void main() {
-  for (final escenario in [Escenario.claro, Escenario.oscuro]) {
-    testWidgets('Tu auto: cuadricula 2x2 de tarjetas iguales ($escenario)', (
-      tester,
-    ) async {
-      final r = await _tarjetas(tester, escenario);
-      for (final t in r) {
-        expect(t.width, closeTo(r[0].width, 0.5));
-        expect(t.height, closeTo(r[0].height, 0.5));
-      }
-      expect(r[1].top, closeTo(r[0].top, 0.5));
-      expect(r[3].top, closeTo(r[2].top, 0.5));
-      expect(r[2].left, closeTo(r[0].left, 0.5));
-      expect(r[3].left, closeTo(r[1].left, 0.5));
-      expect(r[1].left, greaterThan(r[0].right - 0.5));
-      expect(r[2].top, greaterThan(r[0].bottom - 0.5));
-    });
+  // V2-T02.23: la navegación a pantallas hijas es una lista con chevron, como
+  // en Privacidad y Mantenimiento, no una cuadrícula de tarjetas iguales con
+  // icono en medallón (otro lenguaje que el resto de la app).
+  for (final escenario in Escenario.values) {
+    testWidgets(
+      'Tu auto: filas de una lista agrupada, una bajo otra ($escenario)',
+      (tester) async {
+        await _montar(tester, escenario);
+
+        final grupo = _grupoTuAuto();
+        expect(grupo, findsOneWidget);
+        final filas = (tester.widget(grupo) as GrupoLista).filas;
+        expect([for (final f in filas) f.titulo], _destinos);
+        for (final f in filas) {
+          expect(f.alToque, isNotNull, reason: f.titulo);
+          expect(f.icono, isNotNull, reason: f.titulo);
+        }
+
+        // Una fila bajo la otra, todas del mismo ancho.
+        final cajas = [
+          for (final nombre in _destinos)
+            tester.getRect(
+              find.descendant(of: grupo, matching: find.text(nombre)),
+            ),
+        ];
+        for (var i = 1; i < cajas.length; i++) {
+          expect(cajas[i].top, greaterThan(cajas[i - 1].bottom - 0.5));
+          expect(cajas[i].left, closeTo(cajas[0].left, 0.5));
+        }
+        // Ya no es una cuadrícula.
+        expect(find.byType(GridView), findsNothing);
+      },
+    );
   }
 
-  testWidgets('Tu auto: con letra al 200 % pasa a una columna sin desbordar', (
-    tester,
-  ) async {
-    final r = await _tarjetas(tester, Escenario.letraGrande);
-    for (var i = 1; i < 4; i++) {
-      expect(r[i].left, closeTo(r[0].left, 0.5));
-      expect(r[i].width, closeTo(r[0].width, 0.5));
-      expect(r[i].top, greaterThan(r[i - 1].bottom - 0.5));
+  testWidgets('Tu auto: cada fila es un botón con su nombre', (tester) async {
+    final semantica = tester.ensureSemantics();
+    await _montar(tester, Escenario.claro);
+    for (final nombre in _destinos) {
+      expect(find.bySemanticsLabel(nombre), findsOneWidget, reason: nombre);
     }
-  });
-
-  testWidgets('Tu auto: cada tarjeta es un boton con su nombre', (
-    tester,
-  ) async {
-    await _tarjetas(tester, Escenario.claro);
-    for (final nombre in [
-      'Ficha técnica',
-      'Historial de servicios',
-      'Mantenimiento',
-      'Bitácora',
-    ]) {
-      expect(find.bySemanticsLabel(nombre), findsOneWidget);
-    }
+    semantica.dispose();
   });
 }

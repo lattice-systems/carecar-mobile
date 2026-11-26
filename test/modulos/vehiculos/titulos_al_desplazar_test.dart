@@ -83,19 +83,10 @@ void main() {
           ),
         );
         await tester.pumpAndSettle();
-        await tester.drag(find.byType(ListView), const Offset(0, -700));
+        await tester.drag(find.byType(CustomScrollView), const Offset(0, -700));
         await tester.pumpAndSettle();
-        expect(find.text('Detalle del vehículo').hitTestable(), findsOneWidget);
-        // La barra ya es opaca: nada se lee a traves del titulo.
-        final barra = tester.widget<Material>(
-          find
-              .descendant(
-                of: find.byType(AppBar),
-                matching: find.byType(Material),
-              )
-              .first,
-        );
-        expect(barra.color!.a, 1);
+        // Recogido el encabezado, el titulo queda en la barra y a la vista.
+        expect(find.text('Mazda CX-5 2024').hitTestable(), findsOneWidget);
       },
     );
   }

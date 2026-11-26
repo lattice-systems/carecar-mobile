@@ -43,7 +43,8 @@ void main() {
       );
       await _tocar(tester, find.byKey(PantallaLogin.botonEntrar));
 
-      await _tocar(tester, find.text('Mis vehículos'));
+      await _tocar(tester, find.text('Acepto el aviso de privacidad'));
+      await _tocar(tester, find.text('Vehículos'));
       await _esperar(tester, find.byType(PantallaGaraje));
       final vehiculo = find.text('Nissan March Sense 2020');
       await _esperar(tester, vehiculo, coincidencias: findsWidgets);

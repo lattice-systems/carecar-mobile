@@ -1,26 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show HapticFeedback;
 import 'package:go_router/go_router.dart';
-
-import '../../notificaciones/servicio_notificaciones.dart';
-
-import 'package:shadcn_ui/shadcn_ui.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
-
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
+import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
+import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
-import '../../tema/tema_carecar.dart';
+import '../../notificaciones/servicio_notificaciones.dart';
+import '../../nucleo/analitica/interruptor_analitica.dart';
+import '../../nucleo/diseno/componentes/avatar.dart';
+import '../../nucleo/diseno/componentes/boton_pildora.dart';
+import '../../nucleo/diseno/componentes/control_binario.dart';
+import '../../nucleo/diseno/componentes/dialogo.dart';
+import '../../nucleo/diseno/componentes/esqueleto.dart';
+import '../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../nucleo/diseno/componentes/hoja_inferior.dart';
+import '../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../nucleo/diseno/componentes/tarjeta_resumen.dart';
+import '../../nucleo/diseno/componentes/tono.dart';
+import '../../nucleo/diseno/tokens/espaciado.dart';
+import '../../nucleo/diseno/tokens/radios.dart';
+import '../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../nucleo/idioma/selector_idioma.dart';
+import '../../widgets/dialogos.dart' show mostrarToast;
+import '../../widgets/pagina_carecar.dart' show PaginaCareCar;
 import '../pantalla_cambiar_contrasena.dart';
-import '../../widgets/dialogos.dart';
-import '../../widgets/pagina_carecar.dart';
 
 /// APP-2.2 · Perfil del cliente: sus datos, la cuenta, ayuda y cerrar sesion.
+///
+/// En el lenguaje del sistema de diseno v2 (V2-T02.24): `MarcoPantalla` con
+/// titulo grande y regreso, el perfil en una `TarjetaResumen` y cada grupo de
+/// opciones en un `GrupoLista`. Los textos siguen escritos a mano porque la
+/// pantalla es de la v1 y aun no esta en `lib/modulos`.
 class PantallaPerfil extends StatefulWidget {
   const PantallaPerfil({
     required this.api,
@@ -38,6 +55,7 @@ class PantallaPerfil extends StatefulWidget {
   static const botonReintentar = Key('perfil_reintentar');
   static const avatar = Key('perfil_avatar');
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
+  static const botonMisPuntos = Key('perfil_mis_puntos');
   static const botonMisDirecciones = Key('perfil_mis_direcciones');
   static const botonContactar = Key('perfil_contactar');
   static const botonPrivacidad = Key('perfil_privacidad');
@@ -59,13 +77,6 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
 
   late Future<Perfil> _perfil;
   String _version = '';
-
-  /// Lo que dibuja el esqueleto mientras carga.
-  static const _deMentira = Perfil(
-    id: 0,
-    nombre: 'Nombre del cliente',
-    correo: 'correo@example.com',
-  );
 
   @override
   void initState() {
@@ -107,391 +118,259 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     );
   }
 
+  /// Abre «Mis puntos» (V2-M12.01). Solo se ofrece dentro de la app enrutada.
+  void _abrirMisPuntos() => GoRouter.of(context).push(rutaLealtad);
+
   /// Abre «Mis direcciones» (V2-M17.06). Solo se ofrece dentro de la app
   /// enrutada: sin enrutador no habria a donde ir.
   void _abrirDirecciones() => GoRouter.of(context).push(rutaMisDirecciones);
 
+  /// Las hojas y los dialogos se montan bajo el tema de la aplicacion, no bajo
+  /// el de esta pantalla; se vuelve a aplicar el de la pantalla (claro u
+  /// oscuro) para que se vean como ella.
+  Widget _conElTemaDeLaPantalla(Widget hijo) =>
+      Theme(data: Theme.of(context), child: hijo);
+
   void _contactar() {
-    showShadSheet<void>(
-      context: context,
-      side: ShadSheetSide.bottom,
-      builder: (_) => const ShadSheet(child: _HojaContacto()),
+    mostrarHojaInferior<void>(
+      context,
+      titulo: 'Contactar a la agencia',
+      builder: (_) => _conElTemaDeLaPantalla(const _HojaContacto()),
     );
   }
 
+  /// Privacidad y mis datos (V2-M22.01 y V2-M22.02): el aviso vigente del
+  /// servidor y la copia de mis datos. Sin enrutador (la v1 suelta, en pruebas)
+  /// queda el texto del aviso que la app trae incluido.
   void _privacidad() {
-    showShadDialog<void>(
-      context: context,
-      builder: (contexto) => ShadDialog(
-        title: const Text('Aviso de privacidad'),
-        actions: [
-          ShadButton(
-            onPressed: () => Navigator.of(contexto).pop(),
-            child: const Text('Entendido'),
+    if (GoRouter.maybeOf(context) != null) {
+      GoRouter.of(context).push(rutaPrivacidad);
+      return;
+    }
+    mostrarDialogo<void>(
+      context,
+      builder: (contexto) => _conElTemaDeLaPantalla(
+        Dialogo(
+          titulo: 'Aviso de privacidad',
+          contenido: const SingleChildScrollView(
+            child: Text(Agencia.avisoPrivacidad),
           ),
-        ],
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: SingleChildScrollView(child: Text(Agencia.avisoPrivacidad)),
+          textoPrincipal: 'Entendido',
+          alPrincipal: () => Navigator.of(contexto).pop(),
         ),
       ),
     );
   }
 
   Future<void> _confirmarCierre() async {
-    final confirmado = await confirmarAccion(
+    HapticFeedback.selectionClick();
+    final confirmado = await mostrarDialogo<bool>(
       context,
-      titulo: '¿Cerrar sesión?',
-      descripcion:
-          'Tendrás que escribir tu correo y contraseña para volver a entrar.',
-      textoConfirmar: 'Cerrar sesión',
-      destructiva: true,
-      llaveConfirmar: PantallaPerfil.botonConfirmarCierre,
-      llaveCancelar: PantallaPerfil.botonCancelarCierre,
+      builder: (contexto) => _conElTemaDeLaPantalla(
+        Dialogo(
+          titulo: '¿Cerrar sesión?',
+          mensaje:
+              'Tendrás que escribir tu correo y contraseña para volver a '
+              'entrar.',
+          textoPrincipal: 'Cerrar sesión',
+          alPrincipal: () => Navigator.of(contexto).pop(true),
+          llavePrincipal: PantallaPerfil.botonConfirmarCierre,
+          textoSecundario: 'Cancelar',
+          alSecundario: () => Navigator.of(contexto).pop(false),
+          llaveSecundario: PantallaPerfil.botonCancelarCierre,
+          peligro: true,
+        ),
+      ),
     );
-    if (confirmado) await widget.alCerrarSesion();
+    if (confirmado == true) await widget.alCerrarSesion();
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: _recargar,
-      color: TemaCareCar.azulAgencia,
-      child: FutureBuilder<Perfil>(
-        future: _perfil,
-        builder: (context, foto) {
-          final cargando = foto.connectionState != ConnectionState.done;
-          final conError = !cargando && foto.hasError;
-          final perfil = cargando || conError ? _deMentira : foto.data!;
+    return FutureBuilder<Perfil>(
+      future: _perfil,
+      builder: (context, foto) {
+        final cargando = foto.connectionState != ConnectionState.done;
+        final conError = !cargando && foto.hasError;
+        final perfil = cargando || conError ? null : foto.data;
 
-          final secciones = <Widget>[
-            _Seccion(
-              titulo: 'Cuenta',
-              opciones: [
+        final secciones = <_Seccion>[
+          _Seccion(
+            titulo: 'Cuenta',
+            opciones: [
+              _Opcion(
+                llave: PantallaPerfil.botonCambiarContrasena,
+                icono: LucideIcons300.keyRound,
+                titulo: 'Cambiar contraseña',
+                subtitulo: 'Actualiza la contraseña con la que entras',
+                alTocar: _cambiarContrasena,
+              ),
+              if (GoRouter.maybeOf(context) != null)
                 _Opcion(
-                  llave: PantallaPerfil.botonCambiarContrasena,
-                  icono: Icons.lock_reset_outlined,
-                  titulo: 'Cambiar contraseña',
-                  subtitulo: 'Actualiza la contraseña con la que entras',
-                  alTocar: _cambiarContrasena,
+                  llave: PantallaPerfil.botonMisPuntos,
+                  icono: LucideIcons300.award,
+                  titulo: 'Mis puntos',
+                  subtitulo: 'Tu saldo, nivel y recompensas',
+                  alTocar: _abrirMisPuntos,
                 ),
-                if (GoRouter.maybeOf(context) != null)
-                  _Opcion(
-                    llave: PantallaPerfil.botonMisDirecciones,
-                    icono: Icons.place_outlined,
-                    titulo: 'Mis direcciones',
-                    subtitulo: 'Donde recogemos y entregamos tu auto',
-                    alTocar: _abrirDirecciones,
-                  ),
-              ],
-            ),
-            _Seccion(
-              titulo: 'Notificaciones',
-              opciones: [
+              if (GoRouter.maybeOf(context) != null)
                 _Opcion(
-                  icono: Icons.notifications_active_outlined,
-                  titulo: 'Recordatorios de citas',
-                  subtitulo: 'Un día y dos horas antes de cada cita',
-                  alTocar: () => _cambiarRecordatorios(!_recordatorios),
-                  extremo: Switch(
-                    key: PantallaPerfil.interruptorRecordatorios,
-                    value: _recordatorios,
-                    activeTrackColor: TemaCareCar.turquesaOscuro,
-                    onChanged: _cambiarRecordatorios,
-                  ),
+                  llave: PantallaPerfil.botonMisDirecciones,
+                  icono: LucideIcons300.mapPin,
+                  titulo: 'Mis direcciones',
+                  subtitulo: 'Donde recogemos y entregamos tu auto',
+                  alTocar: _abrirDirecciones,
                 ),
-              ],
-            ),
-            _Seccion(
-              titulo: 'Ayuda',
-              opciones: [
-                _Opcion(
-                  llave: PantallaPerfil.botonContactar,
-                  icono: Icons.support_agent_outlined,
-                  titulo: 'Contactar a la agencia',
-                  subtitulo: 'Teléfono y correo de atención',
-                  alTocar: _contactar,
-                ),
-                _Opcion(
-                  llave: PantallaPerfil.botonPrivacidad,
-                  icono: Icons.privacy_tip_outlined,
-                  titulo: 'Aviso de privacidad',
-                  alTocar: _privacidad,
-                ),
-              ],
-            ),
-            _Seccion(
-              titulo: 'Acerca de',
-              opciones: [
-                _Opcion(
-                  icono: Icons.info_outline,
-                  titulo: 'CareCar',
-                  subtitulo: _version.isEmpty ? null : 'Versión $_version',
-                ),
-              ],
-            ),
-            _Seccion(
-              opciones: [
-                _Opcion(
-                  llave: PaginaCareCar.botonCerrarSesion,
-                  icono: Icons.logout,
-                  titulo: 'Cerrar sesión',
-                  peligro: true,
-                  alTocar: _confirmarCierre,
-                ),
-              ],
-            ),
-          ];
-
-          return ListView(
-            key: PantallaPerfil.lista,
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: EdgeInsets.zero,
-            children: [
-              if (conError)
-                _EncabezadoError(error: foto.error, alReintentar: _recargar)
-              else
-                Skeletonizer(
-                  enabled: cargando,
-                  child: _Encabezado(perfil: perfil),
-                ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    for (var i = 0; i < secciones.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: secciones[i]
-                            .animate(delay: (70 * i).ms)
-                            .fadeIn(duration: 350.ms)
-                            .slideY(begin: 0.12, curve: Curves.easeOutCubic),
-                      ),
-                  ],
-                ),
+            ],
+          ),
+          _Seccion(
+            titulo: 'Notificaciones',
+            opciones: [
+              _Opcion(
+                llave: PantallaPerfil.interruptorRecordatorios,
+                icono: LucideIcons300.bellRing,
+                titulo: 'Recordatorios de citas',
+                subtitulo: 'Un día y dos horas antes de cada cita',
+                alTocar: () => _cambiarRecordatorios(!_recordatorios),
+                extremo: ControlInterruptor(valor: _recordatorios),
               ),
             ],
-          );
-        },
-      ),
+          ),
+          _Seccion(
+            titulo: 'Ayuda',
+            opciones: [
+              _Opcion(
+                llave: PantallaPerfil.botonContactar,
+                icono: LucideIcons300.headset,
+                titulo: 'Contactar a la agencia',
+                subtitulo: 'Teléfono y correo de atención',
+                alTocar: _contactar,
+              ),
+              _Opcion(
+                llave: PantallaPerfil.botonPrivacidad,
+                icono: LucideIcons300.shieldAlert,
+                titulo: 'Privacidad y mis datos',
+                subtitulo: 'Aviso de privacidad y copia de tus datos',
+                alTocar: _privacidad,
+              ),
+            ],
+          ),
+          _Seccion(
+            titulo: 'Acerca de',
+            opciones: [
+              _Opcion(
+                icono: LucideIcons300.info,
+                titulo: 'CareCar',
+                subtitulo: _version.isEmpty ? null : 'Versión $_version',
+              ),
+            ],
+          ),
+          _Seccion(
+            opciones: [
+              _Opcion(
+                llave: PaginaCareCar.botonCerrarSesion,
+                icono: LucideIcons300.logOut,
+                titulo: 'Cerrar sesión',
+                peligro: true,
+                alTocar: _confirmarCierre,
+              ),
+            ],
+          ),
+        ];
+
+        return MarcoPantalla(
+          titulo: 'Ajustes',
+          conRegreso: true,
+          alRefrescar: _recargar,
+          slivers: [
+            SliverPadding(
+              key: PantallaPerfil.lista,
+              padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+              sliver: SliverList.list(
+                children: [
+                  const SizedBox(height: Espaciado.e2),
+                  if (cargando)
+                    const Esqueleto(
+                      alto: _altoTarjetaPerfil,
+                      radio: Radios.tarjeta,
+                    )
+                  else if (conError)
+                    _PerfilConError(error: foto.error, alReintentar: _recargar)
+                  else if (perfil != null)
+                    _TarjetaPerfil(perfil: perfil),
+                  const SizedBox(height: Espaciado.e4),
+                  const SelectorIdioma(),
+                  const InterruptorAnalitica(),
+                  const SizedBox(height: Espaciado.e4),
+                  for (final seccion in secciones) ...[
+                    seccion.aGrupo(context),
+                    const SizedBox(height: Espaciado.e4),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-/// Encabezado con el degradado de marca, el avatar y los datos del cliente.
-class _Encabezado extends StatelessWidget {
-  const _Encabezado({required this.perfil});
+/// Alto de la tarjeta del perfil; el esqueleto reserva ese lugar mientras
+/// llegan los datos, para que la lista no salte.
+const double _altoTarjetaPerfil = 72;
+
+/// Nombre y correo del cliente. Sin ninguno de los dos no se dibuja nada: no se
+/// inventa un nombre.
+class _TarjetaPerfil extends StatelessWidget {
+  const _TarjetaPerfil({required this.perfil});
 
   final Perfil perfil;
 
   @override
   Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    return _Fondo(
-      child: Column(
-        children: [
-          Container(
-            key: PantallaPerfil.avatar,
-            width: 92,
-            height: 92,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.12),
-              border: Border.all(color: TemaCareCar.turquesa, width: 2.5),
-            ),
-            child: Text(
-              _iniciales(perfil.nombre),
-              style: temas.headlineMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1,
-              ),
-            ),
-          ).animate().scale(
-            begin: const Offset(0.85, 0.85),
-            duration: 400.ms,
-            curve: Curves.easeOutBack,
-          ),
-          const SizedBox(height: 14),
-          Text(
-            perfil.nombre,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: temas.headlineSmall?.copyWith(color: Colors.white),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.mail_outline,
-                  size: 16,
-                  color: TemaCareCar.turquesa,
-                ),
-                const SizedBox(width: 6),
-                Flexible(
-                  child: Text(
-                    perfil.correo,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: temas.bodyMedium?.copyWith(
-                      color: Colors.white.withValues(alpha: 0.85),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    if (perfil.nombre.trim().isEmpty && perfil.correo.trim().isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return TarjetaResumen(
+      visual: Avatar(key: PantallaPerfil.avatar, nombre: perfil.nombre),
+      titulo: perfil.nombre,
+      subtitulo: perfil.correo,
     );
   }
 }
 
-/// El encabezado cuando no se pudo cargar el perfil: explica y reintenta.
-class _EncabezadoError extends StatelessWidget {
-  const _EncabezadoError({required this.error, required this.alReintentar});
+/// El perfil cuando no se pudo cargar: explica y reintenta. Lo demas de
+/// Ajustes (idioma, cerrar sesion) sigue a la vista.
+class _PerfilConError extends StatelessWidget {
+  const _PerfilConError({required this.error, required this.alReintentar});
 
   final Object? error;
   final VoidCallback alReintentar;
 
   @override
   Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
     final sinRed = error is SinConexion;
-    return _Fondo(
-      child: Column(
-        children: [
-          Icon(
-            sinRed ? Icons.wifi_off_rounded : Icons.error_outline,
-            size: 44,
-            color: TemaCareCar.turquesa,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            sinRed ? 'Sin conexión' : 'No pudimos cargar tu perfil',
-            textAlign: TextAlign.center,
-            style: temas.titleMedium?.copyWith(color: Colors.white),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            sinRed
-                ? 'Revisa tu conexión a internet e inténtalo de nuevo.'
-                : 'Ocurrió un problema con el servidor. Inténtalo de nuevo.',
-            textAlign: TextAlign.center,
-            style: temas.bodyMedium?.copyWith(
-              color: Colors.white.withValues(alpha: 0.75),
-            ),
-          ),
-          const SizedBox(height: 16),
-          ShadButton(
-            key: PantallaPerfil.botonReintentar,
-            backgroundColor: TemaCareCar.turquesa,
-            foregroundColor: TemaCareCar.azulProfundo,
-            onPressed: alReintentar,
-            leading: const Icon(Icons.refresh),
-            child: const Text('Reintentar'),
-          ),
-        ],
-      ).animate().fadeIn().shake(hz: 3, offset: const Offset(4, 0)),
-    );
-  }
-}
-
-/// Fondo con degradado y esquinas inferiores redondeadas.
-class _Fondo extends StatelessWidget {
-  const _Fondo({required this.child});
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: TemaCareCar.degradadoMarca,
-        borderRadius: BorderRadius.all(Radius.circular(24)),
-      ),
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      padding: const EdgeInsets.fromLTRB(24, 20, 24, 28),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'MI PERFIL',
-              style: temas.labelSmall?.copyWith(
-                color: TemaCareCar.turquesa,
-                letterSpacing: 2,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          child,
-        ],
-      ),
-    ).animate().fadeIn(duration: 400.ms);
-  }
-}
-
-/// Grupo de opciones con titulo, en una tarjeta de 20 px con borde.
-class _Seccion extends StatelessWidget {
-  const _Seccion({required this.opciones, this.titulo});
-
-  final String? titulo;
-  final List<_Opcion> opciones;
-
-  @override
-  Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (titulo != null)
-          Padding(
-            padding: const EdgeInsets.only(left: 6, bottom: 8),
-            child: Text(
-              titulo!.toUpperCase(),
-              style: temas.labelSmall?.copyWith(
-                color: TemaCareCar.textoSecundario,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-        Material(
-          color: TemaCareCar.tarjeta,
-          borderRadius: BorderRadius.circular(20),
-          clipBehavior: Clip.antiAlias,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: TemaCareCar.borde),
-            ),
-            child: Column(
-              children: [
-                for (var i = 0; i < opciones.length; i++) ...[
-                  if (i > 0)
-                    const Divider(
-                      height: 1,
-                      indent: 64,
-                      color: TemaCareCar.borde,
-                    ),
-                  opciones[i],
-                ],
-              ],
-            ),
+        TarjetaResumen(
+          titulo: sinRed ? 'Sin conexión' : 'No pudimos cargar tu perfil',
+          subtitulo: sinRed
+              ? 'Revisa tu conexión a internet e inténtalo de nuevo.'
+              : 'Ocurrió un problema con el servidor. Inténtalo de nuevo.',
+          icono: sinRed ? LucideIcons300.wifiOff : LucideIcons300.circleAlert,
+          tono: sinRed ? Tono.neutro : Tono.peligro,
+        ),
+        const SizedBox(height: Espaciado.e3),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: BotonPildora(
+            key: PantallaPerfil.botonReintentar,
+            texto: 'Reintentar',
+            icono: LucideIcons300.refreshCw,
+            variante: VarianteBotonPildora.tonal,
+            alPresionar: alReintentar,
           ),
         ),
       ],
@@ -499,8 +378,22 @@ class _Seccion extends StatelessWidget {
   }
 }
 
-/// Una fila de una seccion: icono en un cuadro suave, textos y flecha.
-class _Opcion extends StatelessWidget {
+/// Un grupo de opciones con titulo opcional: se dibuja como `GrupoLista`.
+class _Seccion {
+  const _Seccion({required this.opciones, this.titulo});
+
+  final String? titulo;
+  final List<_Opcion> opciones;
+
+  Widget aGrupo(BuildContext context) => GrupoLista(
+    encabezado: titulo,
+    filas: [for (final opcion in opciones) opcion.aFila(context)],
+  );
+}
+
+/// Una fila de una seccion: icono en un cuadro del color del tono, textos y
+/// flecha. Se dibuja como `FilaGrupo`.
+class _Opcion {
   const _Opcion({
     required this.icono,
     required this.titulo,
@@ -520,125 +413,68 @@ class _Opcion extends StatelessWidget {
   final Key? llave;
   final bool peligro;
 
-  @override
-  Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    final color = peligro ? TemaCareCar.peligro : TemaCareCar.azulAgencia;
-    return InkWell(
-      key: llave,
-      onTap: alTocar,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 60),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          child: Row(
-            children: [
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: peligro
-                      ? TemaCareCar.peligroFondo
-                      : TemaCareCar.azulSuave,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icono, size: 20, color: color),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      titulo,
-                      style: temas.titleSmall?.copyWith(
-                        color: peligro
-                            ? TemaCareCar.peligro
-                            : TemaCareCar.textoPrincipal,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (subtitulo != null)
-                      Text(
-                        subtitulo!,
-                        style: temas.bodySmall?.copyWith(
-                          color: TemaCareCar.textoSecundario,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              if (extremo != null)
-                extremo!
-              else if (alTocar != null && !peligro)
-                const Icon(
-                  Icons.chevron_right,
-                  color: TemaCareCar.textoSecundario,
-                ),
-            ],
-          ),
-        ),
-      ),
+  FilaGrupo aFila(BuildContext context) {
+    final c = TokensPista.de(context).colores;
+    return FilaGrupo(
+      llave: llave,
+      titulo: titulo,
+      subtitulo: subtitulo,
+      icono: icono,
+      colorIcono: peligro ? c.peligro : c.acento,
+      fin: extremo,
+      alToque: alTocar,
+      // Cerrar sesion no lleva a otra pantalla, y una fila con interruptor
+      // tampoco: sin flecha.
+      conChevron: peligro || extremo != null ? false : null,
     );
   }
 }
 
-/// Hoja inferior con los datos de contacto de la agencia.
+/// Contenido de la hoja con los datos de contacto de la agencia.
 class _HojaContacto extends StatelessWidget {
   const _HojaContacto();
 
   @override
   Widget build(BuildContext context) {
-    final temas = Theme.of(context).textTheme;
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text('Contactar a la agencia', style: temas.titleLarge),
-            const SizedBox(height: 4),
-            Text(
-              'Estamos para ayudarte con tus vehículos y tus citas.',
-              style: temas.bodyMedium?.copyWith(
-                color: TemaCareCar.textoSecundario,
+    final tokens = TokensPista.de(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Estamos para ayudarte con tus vehículos y tus citas.',
+          style: tokens.tipografia.cuerpo.copyWith(
+            color: tokens.colores.textoSecundario,
+          ),
+        ),
+        const SizedBox(height: Espaciado.e4),
+        _Seccion(
+          opciones: [
+            _Opcion(
+              icono: LucideIcons300.phone,
+              titulo: 'Teléfono',
+              subtitulo: Agencia.telefono,
+              alTocar: () => _abrir(
+                context,
+                Uri(scheme: 'tel', path: Agencia.telefono.replaceAll(' ', '')),
               ),
             ),
-            const SizedBox(height: 18),
-            _Seccion(
-              opciones: [
-                _Opcion(
-                  icono: Icons.phone_outlined,
-                  titulo: 'Teléfono',
-                  subtitulo: Agencia.telefono,
-                  alTocar: () => _abrir(
-                    context,
-                    Uri(
-                      scheme: 'tel',
-                      path: Agencia.telefono.replaceAll(' ', ''),
-                    ),
-                  ),
-                ),
-                _Opcion(
-                  icono: Icons.alternate_email,
-                  titulo: 'Correo',
-                  subtitulo: Agencia.correo,
-                  alTocar: () => _abrir(
-                    context,
-                    Uri(scheme: 'mailto', path: Agencia.correo),
-                  ),
-                ),
-                const _Opcion(
-                  icono: Icons.place_outlined,
-                  titulo: 'Dirección',
-                  subtitulo: Agencia.direccion,
-                ),
-              ],
+            _Opcion(
+              icono: LucideIcons300.atSign,
+              titulo: 'Correo',
+              subtitulo: Agencia.correo,
+              alTocar: () =>
+                  _abrir(context, Uri(scheme: 'mailto', path: Agencia.correo)),
+            ),
+            const _Opcion(
+              icono: LucideIcons300.mapPin,
+              titulo: 'Dirección',
+              subtitulo: Agencia.direccion,
             ),
           ],
-        ),
-      ),
+        ).aGrupo(context),
+        const SizedBox(height: Espaciado.e4),
+      ],
     );
   }
 }
@@ -660,10 +496,4 @@ Future<void> _abrir(BuildContext context, Uri uri) async {
       );
     }
   }
-}
-
-/// «Laura Méndez» → «LM».
-String _iniciales(String nombre) {
-  final partes = nombre.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty);
-  return partes.take(2).map((p) => p[0].toUpperCase()).join();
 }

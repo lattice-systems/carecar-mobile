@@ -4,7 +4,8 @@ import 'package:carecar_mobile/modulos/galeria/presentacion/pantalla_galeria.dar
 import 'package:carecar_mobile/modulos/galeria/presentacion/seccion_galeria.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_base.dart';
 import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_compuestos.dart';
-import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_portada.dart';
+import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_mapa.dart';
+import 'package:carecar_mobile/modulos/galeria/presentacion/secciones_pantalla.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -14,7 +15,8 @@ void main() {
   final secciones = <SeccionGaleria>[
     ...seccionesBase(),
     ...seccionesCompuestos(),
-    ...seccionesPortada(),
+    ...seccionesMapa(),
+    ...seccionesPantalla(),
   ];
 
   test(
@@ -25,6 +27,30 @@ void main() {
       expect(secciones.length, greaterThanOrEqualTo(15));
     },
   );
+
+  test('el mapa está en la galería', () {
+    expect(secciones.map((s) => s.titulo), contains('Mapa'));
+  });
+
+  testWidgets('el chofer de la galería avanza al pedirlo', (tester) async {
+    final mapa = secciones.firstWhere((s) => s.titulo == 'Mapa');
+    await tester.pumpWidget(
+      conTemaPista(
+        SingleChildScrollView(child: Builder(builder: mapa.construir)),
+      ),
+    );
+    await tester.pumpAndSettle();
+    final chofer = find.byKey(const ValueKey('mapa-en-movimiento'));
+    final boton = find.text('Avanzar chofer');
+    await tester.ensureVisible(boton);
+    await tester.pumpAndSettle();
+    final antes = tester.getCenter(chofer);
+
+    await tester.tap(boton);
+    await tester.pumpAndSettle();
+
+    expect(tester.getCenter(chofer), isNot(antes));
+  });
 
   for (final seccion in secciones) {
     testWidgets('"${seccion.titulo}" se ve en claro, oscuro y letra al 200 %', (

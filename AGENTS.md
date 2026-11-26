@@ -70,7 +70,7 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 - Criterios de aceptación de la historia comprobados (prueba automática por criterio cuando se pueda).
 - `dart format`, `flutter analyze` sin avisos, `flutter test` verde, CI verde.
 - Cumple R1–R4; documentación y tablero actualizados en el mismo PR.
-- UI: usa solo tokens/componentes del sistema de diseño v2; probado en claro, oscuro, letra grande (200 %) y pantalla chica; textos con lector de pantalla.
+- UI: usa solo tokens/componentes del sistema de diseño v2; probado en claro, oscuro, letra grande (200 %) y pantalla chica; textos con lector de pantalla; revisada contra [`docs/diseno/antipatrones-de-ia.md`](docs/diseno/antipatrones-de-ia.md).
 - Errores de red, vacío, carga y sin conexión resueltos (nada de pantallas en blanco).
 - Revisado por otra persona del equipo cuando sea posible (recomendado, no obligatorio por ahora).
 
@@ -94,8 +94,8 @@ cd mock_api && npm install && npm start   # API simulada en :3000
 
 ## 8. Diseño
 
-El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) con su historia `V2-T02.xx`. Mientras esa historia no se integra, la pantalla que lo necesita no espera: usa un **provisional** en `lib/modulos/<modulo>/presentacion/provisional/`, hecho solo con tokens y componentes existentes y marcado `// PROVISIONAL: se reemplaza por <Componente> de V2-T02.xx` ([`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md), sección 4). Ningún hito cierra con provisionales. En `lib/modulos/` no se usan botones, campos, tarjetas ni chips de Material directo ni nada de la v1: lo vigila `test/arquitectura/solo_componentes_del_sistema_test.dart` (V2-T02.18).
+El diseño v1 queda **retirado**. Todo lo nuevo sigue [`docs/diseno/sistema-de-diseno-v2.md`](docs/diseno/sistema-de-diseno-v2.md): si un componente no existe ahí, se agrega primero al sistema (doc + componente + prueba golden) con su historia `V2-T02.xx`. Mientras esa historia no se integra, la pantalla que lo necesita no espera: usa un **provisional** en `lib/modulos/<modulo>/presentacion/provisional/`, hecho solo con tokens y componentes existentes y marcado `// PROVISIONAL: se reemplaza por <Componente> de V2-T02.xx` ([`plan/trabajo-en-paralelo.md`](plan/trabajo-en-paralelo.md), sección 4). Ningún hito cierra con provisionales. En `lib/modulos/` no se usan botones, campos, tarjetas ni chips de Material directo ni nada de la v1: lo vigila `test/arquitectura/solo_componentes_del_sistema_test.dart` (V2-T02.18). Lo que se rechaza por genérico y la lista de revisión de cada PR con interfaz: [`docs/diseno/antipatrones-de-ia.md`](docs/diseno/antipatrones-de-ia.md).
 
 ## 9. Seguridad
 
-Tokens solo en `flutter_secure_storage`; nunca registrar datos personales en logs; HTTPS fuera de local; OWASP Mobile Top 10 como checklist en cada historia que toque datos del cliente.
+Tokens solo en `flutter_secure_storage`; nunca registrar datos personales en logs (se usa `Registro.depurar`, que tapa correo, teléfono, VIN y token; lo vigila `test/arquitectura/registro_sin_datos_personales_test.dart`); HTTPS fuera de local; OWASP Mobile Top 10 como checklist en cada historia que toque datos del cliente.

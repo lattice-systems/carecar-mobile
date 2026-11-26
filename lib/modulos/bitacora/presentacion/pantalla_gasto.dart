@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -18,7 +20,7 @@ import '../dominio/fallos_bitacora.dart';
 import '../dominio/gasto.dart';
 import '../dominio/lector_ticket.dart';
 import '../dominio/parser_ticket.dart';
-import 'componentes/marco_bitacora.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_bitacora.dart';
 import 'proveedores_bitacora.dart';
 
@@ -306,9 +308,9 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
         if (t != TipoGasto.gasolina) t,
     ];
 
-    return MarcoBitacora(
+    return MarcoPantalla(
       titulo: _titulo(textos),
-      barraInferior: BarraInferiorBitacora(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.bitacoraGuardar,
@@ -319,7 +321,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: textos.bitacoraBorrar,
-              icono: Icons.delete_outline,
+              icono: LucideIcons300.trash2,
               variante: VarianteBotonPildora.tonal,
               expandido: true,
               alPresionar: _ocupado ? null : _confirmarBorrado,
@@ -343,7 +345,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                   child: _avisoWidget(textos, _aviso!),
                 ),
               if (_esCarga && !editando)
-                SeccionBitacora(
+                SeccionPantalla(
                   titulo: textos.bitacoraTicketTitulo,
                   hijo: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -366,7 +368,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                       else ...[
                         BotonPildora(
                           texto: textos.bitacoraTicketTomar,
-                          icono: Icons.photo_camera_outlined,
+                          icono: LucideIcons300.camera,
                           variante: VarianteBotonPildora.tonal,
                           expandido: true,
                           alPresionar: _ocupado
@@ -376,7 +378,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                         const SizedBox(height: Espaciado.e2),
                         BotonPildora(
                           texto: textos.bitacoraTicketElegir,
-                          icono: Icons.photo_library_outlined,
+                          icono: LucideIcons300.images,
                           variante: VarianteBotonPildora.tonal,
                           expandido: true,
                           alPresionar: _ocupado
@@ -387,7 +389,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                     ],
                   ),
                 ),
-              SeccionBitacora(
+              SeccionPantalla(
                 titulo: _esCarga
                     ? textos.bitacoraTipoGasolina
                     : textos.bitacoraCampoTipo,
@@ -457,7 +459,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
                       filas: [
                         FilaGrupo(
                           titulo: textos.bitacoraCampoFecha,
-                          icono: Icons.calendar_today_outlined,
+                          icono: LucideIcons300.calendar,
                           colorIcono: c.acento,
                           fin: Text(
                             fechaCorta(context, _fecha),

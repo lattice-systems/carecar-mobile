@@ -3,17 +3,19 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -123,7 +125,7 @@ class _EstadoAdicionales extends ConsumerState<PantallaAdicionales> {
               child: EstadoVacio(
                 titulo: textos.tallerAdicionalesVacio,
                 mensaje: textos.tallerAdicionalesVacioMensaje,
-                icono: Icons.handyman_outlined,
+                icono: LucideIcons300.hammer,
               ),
             )
           : SliverToBoxAdapter(
@@ -136,24 +138,13 @@ class _EstadoAdicionales extends ConsumerState<PantallaAdicionales> {
             ),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.refresh(ordenTallerProvider(widget.ordenId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.tallerAdicionalesTitulo,
-              subtitulo: orden.value?.vehiculo,
-              translucido: true,
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.tallerAdicionalesTitulo,
+      subtitulo: orden.value?.vehiculo,
+      conRegreso: true,
+      alRefrescar: () =>
+          ref.refresh(ordenTallerProvider(widget.ordenId).future),
+      slivers: [contenido],
     );
   }
 }

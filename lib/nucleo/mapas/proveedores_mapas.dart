@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'configuracion_teselas.dart';
+import 'fuente_teselas.dart';
 import 'geocodificador.dart';
 import 'geocodificador_nativo.dart';
 import 'proveedor_ubicacion.dart';
@@ -22,4 +23,11 @@ final geocodificadorProvider = Provider<Geocodificador>(
 final configuracionTeselasProvider = Provider<ConfiguracionTeselas>(
   (ref) => ConfiguracionTeselas.delEntorno,
   name: 'configuracionTeselasProvider',
+);
+
+/// Nulo en la app: las teselas se descargan del servidor configurado. Las
+/// pruebas de una pantalla con mapa lo sustituyen por `TeselasLisas`.
+final fuenteTeselasProvider = Provider<FuenteTeselas?>(
+  (ref) => null,
+  name: 'fuenteTeselasProvider',
 );

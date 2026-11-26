@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/problema.dart';
 import '../../../l10n/app_localizations.dart';
@@ -79,7 +81,7 @@ class _BotonAgregarAWalletState extends ConsumerState<BotonAgregarAWallet> {
   Widget _pildora(BuildContext context, String texto, PlataformaWallet p) {
     final pildora = BotonPildora(
       texto: texto,
-      icono: Icons.account_balance_wallet_outlined,
+      icono: LucideIcons300.wallet,
       expandido: true,
       alPresionar: _cargando ? null : () => _agregar(p),
     );
@@ -108,7 +110,7 @@ class _BotonAgregarAWalletState extends ConsumerState<BotonAgregarAWallet> {
         else
           Boton(
             texto: textos.citasWalletAgregar,
-            icono: Icons.account_balance_wallet_outlined,
+            icono: LucideIcons300.wallet,
             variante: VarianteBoton.secundario,
             anchoCompleto: true,
             cargando: _cargando,

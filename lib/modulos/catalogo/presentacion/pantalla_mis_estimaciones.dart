@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
+import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../valuacion/valuacion.dart';
 import '../dominio/toma_a_cuenta.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
@@ -105,45 +111,64 @@ class _EstadoPantallaMisEstimaciones
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
+    final acciones = [
+      BotonCircular(
+        etiqueta: t.valuacionMisTitulo,
+        icono: LucideIcons300.badgeCheck,
+        colorIcono: TokensPista.de(context).colores.texto,
+        alPresionar: () => context.push(rutaValuaciones),
+      ),
+    ];
 
-    final Widget cuerpo;
-    if (_cargandoInicial) {
-      cuerpo = const _Cargando();
-    } else if (_error != null && _estimaciones.isEmpty) {
-      cuerpo = EstadoError(
-        causa: _error is SinConexion
-            ? CausaError.sinConexion
-            : CausaError.generico,
-        alReintentar: _recargar,
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      titulo: t.misEstimacionesTitulo,
+      conRegreso: true,
+      acciones: acciones,
+      estado: hijo,
+    );
+
+    if (_cargandoInicial) return estado(const _Cargando());
+    if (_error != null && _estimaciones.isEmpty) {
+      return estado(
+        EstadoError(
+          causa: _error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: _recargar,
+        ),
       );
-    } else if (_estimaciones.isEmpty) {
-      cuerpo = EstadoVacio(
-        titulo: t.misEstimacionesVacioTitulo,
-        mensaje: t.misEstimacionesVacioMensaje,
-        icono: Icons.calculate_outlined,
-        textoAccion: t.misEstimacionesVacioAccion,
-        alAccion: () => context.pushReplacement(rutaCalculadora),
+    }
+    if (_estimaciones.isEmpty) {
+      return estado(
+        EstadoVacio(
+          titulo: t.misEstimacionesVacioTitulo,
+          mensaje: t.misEstimacionesVacioMensaje,
+          icono: LucideIcons300.calculator,
+          textoAccion: t.misEstimacionesVacioAccion,
+          alAccion: () => context.pushReplacement(rutaCalculadora),
+        ),
       );
-    } else {
-      cuerpo = RefreshIndicator(
-        onRefresh: _recargar,
-        child: _Lista(
+    }
+    return MarcoPantalla(
+      titulo: t.misEstimacionesTitulo,
+      conRegreso: true,
+      acciones: acciones,
+      alRefrescar: _recargar,
+      slivers: [
+        _Lista(
           estimaciones: _estimaciones,
           hayMas: _hayMas,
           cargandoMas: _cargandoMas,
           falloMas: _falloMas,
           alVerMas: _verMas,
         ),
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(title: Text(t.misEstimacionesTitulo)),
-      body: cuerpo,
+      ],
     );
   }
 }
 
+/// Las estimaciones en una lista agrupada, como el resto de las listas de la
+/// app, con «Ver más» al final cuando faltan páginas.
 class _Lista extends StatelessWidget {
   const _Lista({
     required this.estimaciones,
@@ -162,57 +187,70 @@ class _Lista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = AppLocalizations.of(context);
-    return ListView(
-      // Siempre desplazable para que jalar a recargar funcione con pocas filas.
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: const EdgeInsets.symmetric(vertical: Espaciado.e2),
-      children: [
-        for (final e in estimaciones)
-          FilaLista(
-            titulo: e.titulo,
-            subtitulo: [
-              t.misEstimacionesFila(
-                e.creadaEn.toLocal(),
-                t.calculadoraRango(
-                  formatoPesos.format(e.minimo),
-                  formatoPesos.format(e.maximo),
-                ),
+    final c = TokensPista.de(context).colores;
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: Espaciado.margenTelefono,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            GrupoLista(
+              filas: [
+                for (final e in estimaciones)
+                  FilaGrupo(
+                    titulo: e.titulo,
+                    subtitulo: [
+                      t.misEstimacionesFila(
+                        e.creadaEn.toLocal(),
+                        t.calculadoraRango(
+                          formatoPesos.format(e.minimo),
+                          formatoPesos.format(e.maximo),
+                        ),
+                      ),
+                      if (e.modeloDestino != null)
+                        t.calculadoraContra(e.modeloDestino!),
+                    ].join(' · '),
+                    icono: LucideIcons300.calculator,
+                    colorIcono: c.acento,
+                    alToque: () => _abrirDetalle(context, e),
+                  ),
+              ],
+            ),
+            if (falloMas) ...[
+              const SizedBox(height: Espaciado.e3),
+              Aviso(mensaje: t.misEstimacionesErrorMas, tono: Tono.peligro),
+            ],
+            if (hayMas) ...[
+              const SizedBox(height: Espaciado.e3),
+              BotonPildora(
+                texto: t.misEstimacionesVerMas,
+                variante: VarianteBotonPildora.vidrio,
+                expandido: true,
+                cargando: cargandoMas,
+                alPresionar: alVerMas,
               ),
-              if (e.modeloDestino != null)
-                t.calculadoraContra(e.modeloDestino!),
-            ].join(' · '),
-            alToque: () => _abrirDetalle(context, e),
-          ),
-        if (falloMas)
-          Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Aviso(
-              mensaje: t.misEstimacionesErrorMas,
-              tono: Tono.peligro,
-            ),
-          ),
-        if (hayMas)
-          Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Boton(
-              texto: t.misEstimacionesVerMas,
-              variante: VarianteBoton.secundario,
-              anchoCompleto: true,
-              cargando: cargandoMas,
-              alPresionar: alVerMas,
-            ),
-          ),
-      ],
+            ],
+          ],
+        ),
+      ),
     );
   }
 }
 
 void _abrirDetalle(BuildContext context, Estimacion e) {
   final t = AppLocalizations.of(context);
+  // Se cierra la hoja y se navega desde la pantalla de abajo.
+  void irA(BuildContext hoja, String ruta) {
+    Navigator.of(hoja).pop();
+    context.push(ruta);
+  }
+
   mostrarHojaInferior<void>(
     context,
     titulo: e.titulo,
-    builder: (_) {
+    builder: (hoja) {
       final diferencia = diferenciaAPagar(e);
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -228,6 +266,21 @@ void _abrirDetalle(BuildContext context, Estimacion e) {
               modelo: e.modeloDestino,
               precio: e.precioDestino!,
               diferencia: diferencia,
+            ),
+          ],
+          const SizedBox(height: Espaciado.e4),
+          BotonPedirValuacion(
+            estimacionId: e.id,
+            alAbrir: (id) => irA(hoja, rutaValuacion(id)),
+          ),
+          if (e.vehiculoId case final vehiculoId?) ...[
+            const SizedBox(height: Espaciado.e2),
+            BotonPildora(
+              texto: t.valuacionVerValor,
+              icono: LucideIcons300.chartLine,
+              variante: VarianteBotonPildora.tonal,
+              expandido: true,
+              alPresionar: () => irA(hoja, rutaValorVehiculo(vehiculoId)),
             ),
           ],
         ],

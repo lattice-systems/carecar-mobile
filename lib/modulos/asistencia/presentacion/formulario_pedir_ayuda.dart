@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
+import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -16,6 +19,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/mapas/mapas.dart';
 import '../../vehiculos/vehiculos.dart' show VehiculoGaraje;
+import '../dominio/contacto_de_llamada.dart';
 import '../dominio/repositorio_asistencia.dart';
 import '../dominio/solicitud_asistencia.dart';
 import 'estilo_solicitud.dart';
@@ -83,6 +87,7 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
   _Ubicacion _ubicacion = const _Apagada();
   bool _enviando = false;
   String? _error;
+  bool _errorDeRed = false;
 
   /// Descarta la lectura de ubicacion que ya no importa (se apago el
   /// interruptor o se pidio otra).
@@ -135,11 +140,24 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
     }
   }
 
+  Future<void> _marcar(String telefono) async {
+    final contacto = ContactoDeLlamada(
+      tipo: TipoContacto.emergencias,
+      telefono: telefono,
+    );
+    try {
+      await ref.read(abrirLlamadaProvider)(contacto.enlace);
+    } on Object {
+      // Sin marcador no hay mas que hacer aqui: el aviso ya muestra el 911.
+    }
+  }
+
   Future<void> _enviar() async {
     if (!_puedeEnviar) return;
     setState(() {
       _enviando = true;
       _error = null;
+      _errorDeRed = false;
     });
     final textos = AppLocalizations.of(context);
     final repositorio = ref.read(repositorioAsistenciaProvider);
@@ -162,7 +180,12 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
         setState(() => _error = textos.asistenciaErrorEnviar);
       }
     } on SinConexion {
-      if (mounted) setState(() => _error = textos.asistenciaErrorSinConexion);
+      if (mounted) {
+        setState(() {
+          _error = textos.asistenciaErrorSinConexion;
+          _errorDeRed = true;
+        });
+      }
     } on NoEncontrado {
       if (mounted) setState(() => _error = textos.asistenciaErrorVehiculo);
     } on Object {
@@ -196,18 +219,19 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          _Encabezado(textos.asistenciaPedirVehiculoEncabezado),
+          const SizedBox(height: Espaciado.e2),
           GrupoLista(
-            encabezado: textos.asistenciaPedirVehiculoEncabezado,
             filas: [
               for (final v in widget.vehiculos)
                 FilaGrupo(
                   titulo: v.titulo,
                   subtitulo: v.placas,
-                  icono: Icons.directions_car_outlined,
+                  icono: LucideIcons300.car,
                   colorIcono: _vehiculoId == v.id ? c.acento : null,
                   fin: _vehiculoId == v.id
                       ? Icon(
-                          Icons.check_circle,
+                          LucideIcons300.circleCheck,
                           color: c.acento,
                           semanticLabel: textos.asistenciaPedirSeleccionado,
                         )
@@ -265,6 +289,29 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
           const SizedBox(height: Espaciado.e6),
           if (_error != null) ...[
             Aviso(tono: Tono.peligro, mensaje: _error!),
+            if (_errorDeRed) ...[
+              const SizedBox(height: Espaciado.e3),
+              // Atajo a llamar (V2-M11.02): el marcador no necesita datos.
+              BotonPildora(
+                texto: textos.asistenciaLlamarAccion(
+                  textos.asistenciaLlamarEmergencias,
+                ),
+                icono: LucideIcons300.phone,
+                expandido: true,
+                variante: VarianteBotonPildora.peligro,
+                alPresionar: () => _marcar(telefonoEmergencias),
+              ),
+              const SizedBox(height: Espaciado.e2),
+              BotonPildora(
+                texto: textos.asistenciaLlamarAccion(
+                  textos.asistenciaLlamarAgencia,
+                ),
+                icono: LucideIcons300.phone,
+                expandido: true,
+                variante: VarianteBotonPildora.tonal,
+                alPresionar: () => _marcar(Agencia.telefono),
+              ),
+            ],
             const SizedBox(height: Espaciado.e4),
           ],
           if (_enviando)
@@ -390,7 +437,7 @@ class _EstadoUbicacion extends StatelessWidget {
               const SizedBox(height: Espaciado.e3),
               BotonPildora(
                 texto: textos.asistenciaUbicacionReintentar,
-                icono: Icons.refresh,
+                icono: LucideIcons300.refreshCw,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alReintentar,
@@ -398,7 +445,7 @@ class _EstadoUbicacion extends StatelessWidget {
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: textos.asistenciaUbicacionSinUbicacion,
-                icono: Icons.location_off_outlined,
+                icono: LucideIcons300.mapPinOff,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alEnviarSin,

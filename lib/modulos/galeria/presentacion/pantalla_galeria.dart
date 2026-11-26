@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -7,7 +8,8 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'seccion_galeria.dart';
 import 'secciones_base.dart';
 import 'secciones_compuestos.dart';
-import 'secciones_portada.dart';
+import 'secciones_mapa.dart';
+import 'secciones_pantalla.dart';
 
 /// Galeria del sistema de diseno v2 (V2-T02.06): todos los componentes con sus
 /// estados, y tres interruptores para verlos en oscuro y con letra al 150 % y
@@ -26,7 +28,8 @@ class _PantallaGaleriaState extends State<PantallaGaleria> {
   final List<SeccionGaleria> _secciones = [
     ...seccionesBase(),
     ...seccionesCompuestos(),
-    ...seccionesPortada(),
+    ...seccionesMapa(),
+    ...seccionesPantalla(),
   ];
 
   @override
@@ -44,16 +47,9 @@ class _PantallaGaleriaState extends State<PantallaGaleria> {
             final t = tokens.tipografia;
             return Scaffold(
               backgroundColor: c.fondo,
-              appBar: AppBar(
-                backgroundColor: c.fondo,
-                foregroundColor: c.texto,
-                title: Text(
-                  'Galeria del sistema',
-                  style: t.titulo3.copyWith(color: c.texto),
-                ),
-              ),
               body: Column(
                 children: [
+                  const BarraPantalla(titulo: 'Galeria del sistema'),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: Espaciado.e4,

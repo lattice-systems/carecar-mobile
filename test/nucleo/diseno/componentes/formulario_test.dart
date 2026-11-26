@@ -1,8 +1,11 @@
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_texto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/control_binario.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/selector.dart';
+import 'package:carecar_mobile/nucleo/diseno/tokens/tokens_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../ayudas/tema_pista.dart';
 
@@ -39,7 +42,7 @@ void main() {
       );
       expect(find.text('Escribe un correo valido'), findsOneWidget);
       expect(find.text('Tu correo'), findsNothing);
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleAlert), findsOneWidget);
     });
 
     testWidgets('deshabilitado no deja escribir', (tester) async {
@@ -209,6 +212,67 @@ void main() {
     });
   });
 
+  group('ControlInterruptor', () {
+    // El interruptor sin su fila: para una `FilaGrupo` que ya trae el ícono, el
+    // título y el toque. No recibe toques por sí mismo: los atiende la fila.
+    testWidgets('dibuja el estado y no atiende toques por su cuenta', (
+      tester,
+    ) async {
+      var toques = 0;
+      await tester.pumpWidget(
+        conTemaPista(
+          // La fila real (InkWell) es opaca: recibe el toque aunque el control
+          // lo deje pasar.
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => toques++,
+            child: const ControlInterruptor(valor: true),
+          ),
+        ),
+      );
+
+      final interruptor = tester.widget<Switch>(find.byType(Switch));
+      expect(interruptor.value, isTrue);
+      // El toque pasa a quien lo envuelve (la fila), no lo consume el control.
+      await tester.tap(find.byType(Switch));
+      expect(toques, 1);
+    });
+
+    testWidgets('queda deshabilitado con habilitado: false', (tester) async {
+      await tester.pumpWidget(
+        conTemaPista(const ControlInterruptor(valor: false, habilitado: false)),
+      );
+
+      expect(tester.widget<Switch>(find.byType(Switch)).onChanged, isNull);
+    });
+
+    testWidgets('usa los colores del sistema en claro y en oscuro', (
+      tester,
+    ) async {
+      for (final (escenario, paleta) in [
+        (Escenario.claro, TokensPista.claro.colores),
+        (Escenario.oscuro, TokensPista.oscuro.colores),
+      ]) {
+        await tester.pumpWidget(
+          conTemaPista(
+            const ControlInterruptor(valor: true),
+            escenario: escenario,
+          ),
+        );
+        // El cambio de tema se anima: se espera a que termine.
+        await tester.pumpAndSettle();
+
+        final interruptor = tester.widget<Switch>(find.byType(Switch));
+        expect(
+          interruptor.activeTrackColor,
+          paleta.acento,
+          reason: '$escenario',
+        );
+        expect(interruptor.activeThumbColor, paleta.sobreAcento);
+      }
+    });
+  });
+
   group('Selector', () {
     const opciones = [
       OpcionSelector(valor: 1, texto: 'Servicio'),
@@ -261,7 +325,7 @@ void main() {
         ),
       );
       expect(find.text('Elige un motivo'), findsOneWidget);
-      expect(find.byIcon(Icons.error_outline), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleAlert), findsOneWidget);
     });
 
     testWidgets('no desborda en los tres escenarios', (tester) async {

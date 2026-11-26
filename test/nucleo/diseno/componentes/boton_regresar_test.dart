@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:carecar_mobile/l10n/idiomas.dart';
-import 'package:carecar_mobile/nucleo/diseno/componentes/barra_portada.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/encabezado_grande.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
@@ -42,10 +42,13 @@ Widget _conEncabezado() => Scaffold(
   ),
 );
 
-Widget _conBarra() => Scaffold(
-  extendBodyBehindAppBar: true,
-  appBar: const BarraPortada(titulo: 'Mantenimiento'),
-  body: const SizedBox.expand(),
+Widget _conBarra() => const Scaffold(
+  body: Column(
+    children: [
+      BarraPantalla(titulo: 'Manual'),
+      Expanded(child: SizedBox.expand()),
+    ],
+  ),
 );
 
 void main() {
@@ -98,7 +101,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('la barra de portada tambien trae Regresar', (tester) async {
+  testWidgets('la barra fija tambien trae Regresar', (tester) async {
     await tester.pumpWidget(_app(_enRaiz(pantalla: _conBarra())));
     await tester.pumpAndSettle();
     expect(find.byType(BotonRegresar), findsOneWidget);

@@ -57,6 +57,7 @@ Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb`
 | Acciones de sesión (iniciar, cerrar) | `ref.read(controladorSesionProvider)` (`lib/nucleo/sesion/`) |
 | Reaccionar a la sesión | `ref.watch(estadoSesionProvider)` |
 | Componentes y tokens | `lib/nucleo/diseno/` |
+| Números con separador de miles (kilómetros, cifras) | `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el español usa el formato de México, no copies la regla |
 | Errores tipados | `Fallo` y sus preguntas (`lib/nucleo/datos/fallo.dart`) |
 | Base del repositorio | `with RepositorioBase` (`lib/nucleo/datos/repositorio_base.dart`) |
 | Los cinco estados | `VistaAsincrona` (`lib/nucleo/datos/vista_asincrona.dart`) |
@@ -98,6 +99,24 @@ class RepositorioCatalogoApi with RepositorioBase implements RepositorioCatalogo
 ```
 
 El mapeo va dentro de `pedir` a propósito: el cliente ya tipa sus errores, pero **la traducción del DTO no estaba protegida** y un campo que cambia en el backend llegaba a la pantalla sin tipar. Los `Error` (un `TypeError`, un índice fuera de rango) se propagan tal cual: son bugs nuestros, no fallas previstas, y conviene que el reporte de fallos vea su tipo real.
+
+⚠️ **Traducir a un fallo de dominio va FUERA de `pedir`, no dentro.** Un fallo de dominio (`FranjaSinCupo`, `EnlaceNoValido`…) es una `Exception` normal, y `pedir` tipa todo lo que no sea `ExcepcionApi`: traducir dentro lo convertiría en `ErrorDelServidor` y la pantalla perdería el único dato que necesita.
+
+```dart
+@override
+Future<void> restablecerConEnlace({required String token, required String nueva}) async {
+  try {
+    await pedir(() => _api.restablecerContrasena(...));
+  } on DatosInvalidos catch (e) {                      // la traducción, fuera
+    if (e.problema?.codigo == CodigoProblema.codigoInvalido) {
+      throw const EnlaceNoValido();
+    }
+    rethrow;
+  }
+}
+```
+
+Ejemplo real y con prueba del caso: `acceso/datos/repositorio_acceso_api.dart` y `test/modulos/acceso/datos/repositorio_acceso_api_test.dart`.
 
 ### 3 · La pantalla pinta los cinco estados
 

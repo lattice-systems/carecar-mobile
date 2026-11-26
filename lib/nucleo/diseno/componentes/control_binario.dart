@@ -140,6 +140,45 @@ class Casilla extends StatelessWidget {
   }
 }
 
+/// El interruptor sin su fila: solo el control, con los colores del sistema.
+///
+/// Es el `fin` de una `FilaGrupo` (ajustes con ícono, título y subtítulo) o el
+/// control de un [Interruptor]. No recibe toques: los atiende quien lo envuelve
+/// (la fila entera), así que ni el control ni su foco compiten con ella. Con
+/// `habilitado` falso se ve deshabilitado.
+class ControlInterruptor extends StatelessWidget {
+  const ControlInterruptor({
+    required this.valor,
+    super.key,
+    this.habilitado = true,
+  });
+
+  final bool valor;
+  final bool habilitado;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = TokensPista.de(context).colores;
+    return ExcludeFocus(
+      child: IgnorePointer(
+        child: Switch(
+          value: valor,
+          onChanged: habilitado ? (_) {} : null,
+          activeThumbColor: c.sobreAcento,
+          activeTrackColor: c.acento,
+          inactiveThumbColor: c.textoSecundario,
+          inactiveTrackColor: c.superficieHundida,
+          trackOutlineColor: WidgetStateProperty.resolveWith(
+            (e) =>
+                e.contains(WidgetState.selected) ? c.acento : c.contornoControl,
+          ),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      ),
+    );
+  }
+}
+
 /// Interruptor con etiqueta. Con `alCambiar` nulo queda deshabilitado.
 class Interruptor extends StatelessWidget {
   const Interruptor({
@@ -157,31 +196,13 @@ class Interruptor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
     return _FilaBinaria(
       etiqueta: etiqueta,
       descripcion: descripcion,
       valor: valor,
       alCambiar: alCambiar,
       esInterruptor: true,
-      control: ExcludeFocus(
-        child: IgnorePointer(
-          child: Switch(
-            value: valor,
-            onChanged: alCambiar == null ? null : (_) {},
-            activeThumbColor: c.sobreAcento,
-            activeTrackColor: c.acento,
-            inactiveThumbColor: c.textoSecundario,
-            inactiveTrackColor: c.superficieHundida,
-            trackOutlineColor: WidgetStateProperty.resolveWith(
-              (e) => e.contains(WidgetState.selected)
-                  ? c.acento
-                  : c.contornoControl,
-            ),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-        ),
-      ),
+      control: ControlInterruptor(valor: valor, habilitado: alCambiar != null),
     );
   }
 }

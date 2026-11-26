@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -14,6 +16,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../../sesion/controlador_sesion.dart';
 import '../dominio/bloqueo_por_intentos.dart';
+import '../dominio/correo.dart';
 import 'aviso_bloqueo.dart';
 import 'espera_servidor.dart';
 import 'proveedores_acceso.dart';
@@ -107,18 +110,13 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
     super.dispose();
   }
 
-  /// Validacion minima: que tenga algo, una arroba y un punto despues.
+  /// El mensaje de error del correo, o nulo si esta bien.
   ///
-  /// No se usa una expresion regular estricta a proposito: rechazar un correo
-  /// valido es peor que dejar pasar uno raro, porque el backend valida igual e
-  /// ignora mayusculas y espacios (RIC-8).
+  /// La heuristica vive en `dominio/correo.dart` porque la comparten el acceso
+  /// y la recuperacion; aqui solo se elige el texto.
   String? _revisarCorreo(AppLocalizations textos, String correo) {
     if (correo.isEmpty) return textos.accesoCorreoVacio;
-    final arroba = correo.indexOf('@');
-    if (arroba <= 0 || !correo.contains('.', arroba)) {
-      return textos.accesoCorreoInvalido;
-    }
-    return null;
+    return pareceCorreo(correo) ? null : textos.accesoCorreoInvalido;
   }
 
   Future<void> _entrar() async {
@@ -305,7 +303,7 @@ class _NotaSinRegistro extends StatelessWidget {
       children: [
         ExcludeSemantics(
           child: Icon(
-            Icons.info_outline,
+            LucideIcons300.info,
             size: 16,
             color: tokens.colores.textoSecundario,
           ),

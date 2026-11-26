@@ -25,6 +25,10 @@ class LecturaTaller {
       'entregaEstimada',
     ),
     asesor: _textoOpcional(json['asesor']),
+    totalEstimado: json['totalEstimado'] == null
+        ? null
+        : leerDecimal(json['totalEstimado'], 'totalEstimado'),
+    horarioEntrega: _horario(json['horarioEntrega']),
   );
 
   OrdenEnVivo orden(Map<String, Object?> json) => OrdenEnVivo(
@@ -88,7 +92,22 @@ class LecturaTaller {
       'totalAdicionalesPendientes',
     ),
     totalEstimado: leerDecimal(json['totalEstimado'], 'totalEstimado'),
+    horarioEntrega: _horario(json['horarioEntrega']),
   );
+
+  static HorarioEntrega? _horario(Object? valor) {
+    if (valor == null) return null;
+    if (valor is! Map<String, Object?>) {
+      throw FormatException(
+        'El campo «horarioEntrega» no es un objeto: $valor',
+      );
+    }
+    return HorarioEntrega(
+      fecha: leerFecha(valor['fecha'], 'fecha'),
+      desde: leerTexto(valor['desde'], 'desde'),
+      hasta: leerTexto(valor['hasta'], 'hasta'),
+    );
+  }
 
   List<Evidencia> _evidencias(Object? valor) => [
     for (final evidencia in _lista(valor, 'evidencias'))

@@ -3,31 +3,30 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/grupo_lista.dart';
-import '../../../nucleo/diseno/componentes/estante.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
+import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../garantia/garantia.dart';
 import '../dominio/vehiculo_garaje.dart';
-import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
 import 'rutas_vehiculos.dart';
 
-/// Garaje del cliente en estilo portada (V2-M02.01).
+/// Garaje del cliente (V2-M02.01): una tarjeta por auto con su modelo, placas
+/// y kilometraje; tocarla abre el detalle.
 ///
-/// Titulo grande translucido; con un solo auto es la portada protagonista y
-/// con varios un estante de portadas tipo album con un grupo de datos rapidos
-/// debajo. Resuelve los cinco estados: cargando con esqueleto, datos, vacio,
-/// error con reintento y sin conexion. Sin conexion la API del nucleo entrega
-/// la ultima copia guardada, asi que solo se ve el error si nunca hubo datos.
-/// Se puede recargar jalando hacia abajo.
+/// Resuelve los cinco estados: cargando con esqueleto, datos, vacio, error con
+/// reintento y sin conexion. Sin conexion la API del nucleo entrega la ultima
+/// copia guardada, asi que solo se ve el error si nunca hubo datos. Se puede
+/// recargar jalando hacia abajo.
 class PantallaGaraje extends ConsumerWidget {
   const PantallaGaraje({super.key});
 
@@ -35,16 +34,19 @@ class PantallaGaraje extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final vehiculos = ref.watch(garajeProvider);
     final textos = AppLocalizations.of(context);
-    final fondo = TokensPista.de(context).colores.fondo;
+    final titulo = textos.vehiculosTitulo;
 
-    Widget estado(Widget hijo) =>
-        SliverFillRemaining(hasScrollBody: true, child: hijo);
-
-    final contenido = vehiculos.when(
+    return vehiculos.when(
       skipLoadingOnReload: true,
-      loading: () => estado(const _Cargando()),
-      error: (error, _) => estado(
-        EstadoError(
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
+      ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
           causa: error is SinConexion
               ? CausaError.sinConexion
               : CausaError.generico,
@@ -52,152 +54,70 @@ class PantallaGaraje extends ConsumerWidget {
         ),
       ),
       data: (lista) => lista.isEmpty
-          ? estado(
-              EstadoVacio(
+          ? MarcoPantalla.estado(
+              titulo: titulo,
+              conRegreso: true,
+              estado: EstadoVacio(
                 titulo: textos.vehiculosVacioTitulo,
                 mensaje: textos.vehiculosVacioMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               ),
             )
-          : SliverToBoxAdapter(child: _Contenido(vehiculos: lista)),
-    );
-
-    return Scaffold(
-      backgroundColor: fondo,
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(garajeProvider.future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.vehiculosTitulo,
-              translucido: true,
+          : MarcoPantalla(
+              titulo: titulo,
               conRegreso: true,
+              alRefrescar: () => ref.refresh(garajeProvider.future),
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+                  sliver: SliverList.separated(
+                    itemCount: lista.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: Espaciado.e4),
+                    itemBuilder: (context, i) =>
+                        _TarjetaDelAuto(auto: lista[i]),
+                  ),
+                ),
+              ],
             ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
     );
   }
 }
 
-/// Un auto: portada protagonista. Varios: estante de portadas y datos rapidos.
-class _Contenido extends StatelessWidget {
-  const _Contenido({required this.vehiculos});
+/// La tarjeta de un auto del garaje; abre su detalle. Si el auto tiene una
+/// campana de seguridad pendiente, su insignia va debajo (V2-M10.02).
+class _TarjetaDelAuto extends ConsumerWidget {
+  const _TarjetaDelAuto({required this.auto});
 
-  final List<VehiculoGaraje> vehiculos;
+  final VehiculoGaraje auto;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-
-    if (vehiculos.length == 1) {
-      final v = vehiculos.single;
-      return CabeceraPortada(
-        titulo: v.titulo,
-        subtitulo: _detalle(context, v),
-        descripcion: textos.fotoDeModelo(v.titulo),
-        tinte: tinteDeColor(tokens, v.color),
-        portada: PortadaVehiculo(tinte: tinteDeColor(tokens, v.color)),
-        principal: AccionPortada(
-          texto: textos.vehiculosVerDetalle,
-          icono: Icons.directions_car_outlined,
-          alPresionar: () => context.push(rutaDetalleVehiculo(v.id)),
-        ),
-      );
-    }
-
-    const lado = 180.0;
-    final escala = MediaQuery.textScalerOf(context).scale(1);
+    final c = TokensPista.de(context).colores;
+    final km = auto.kilometraje;
+    final tarjeta = TarjetaAuto(
+      marca: auto.marcaAparte,
+      titulo: auto.modeloYAnio,
+      placas: auto.placas,
+      kilometraje: km == null
+          ? null
+          : textos.vehiculosKilometros(
+              NumberFormat.decimalPattern(_localeNumeros(context)).format(km),
+            ),
+      tinte: tinteDeColorAuto(c, auto.color),
+      alToque: () => context.push(rutaDetalleVehiculo(auto.id)),
+    );
+    if (!ref.watch(hayCampanaAbiertaProvider(auto.id))) return tarjeta;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Estante(
-          titulo: textos.vehiculosEncabezadoTuAuto,
-          anchoTarjeta: lado,
-          alto: lado + Espaciado.e3 + escala * 48,
-          hijos: [for (final v in vehiculos) _Album(vehiculo: v, lado: lado)],
-        ),
-        const SizedBox(height: Espaciado.e4),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-          child: GrupoLista(
-            encabezado: textos.vehiculosEncabezadoRapidos,
-            filas: [
-              for (final v in vehiculos)
-                FilaGrupo(
-                  titulo: v.titulo,
-                  subtitulo: _detalle(context, v),
-                  icono: Icons.directions_car_filled_outlined,
-                  colorIcono: tinteDeColor(tokens, v.color),
-                  alToque: () => context.push(rutaDetalleVehiculo(v.id)),
-                ),
-            ],
-          ),
-        ),
+        tarjeta,
+        const SizedBox(height: Espaciado.e2),
+        InsigniaCampanas(vehiculoId: auto.id),
       ],
     );
   }
-}
-
-/// Portada de album de un auto: arte cuadrado con su tinte y el nombre debajo.
-class _Album extends StatelessWidget {
-  const _Album({required this.vehiculo, required this.lado});
-
-  final VehiculoGaraje vehiculo;
-  final double lado;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    return Semantics(
-      button: true,
-      label: vehiculo.titulo,
-      excludeSemantics: true,
-      onTap: () => context.push(rutaDetalleVehiculo(vehiculo.id)),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(Radios.hoja),
-        onTap: () => context.push(rutaDetalleVehiculo(vehiculo.id)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            PortadaVehiculo(
-              tinte: tinteDeColor(tokens, vehiculo.color),
-              lado: lado,
-            ),
-            const SizedBox(height: Espaciado.e2),
-            Text(
-              vehiculo.titulo,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: t.cuerpoFuerte.copyWith(color: c.texto),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// "Placas ABC-123 · 12,500 km": lo que haya. Sin placas lo dice.
-String _detalle(BuildContext context, VehiculoGaraje v) {
-  final textos = AppLocalizations.of(context);
-  final km = v.kilometraje;
-  final placas = v.placas;
-  return [
-    placas == null || placas.isEmpty
-        ? textos.vehiculosSinPlacas
-        : textos.vehiculosPlacas(placas),
-    if (km != null)
-      textos.vehiculosKilometros(
-        NumberFormat.decimalPattern(_localeNumeros(context)).format(km),
-      ),
-  ].join(' · ');
 }
 
 /// Los numeros se escriben a la mexicana (`12,500`) tambien en espanol.
@@ -214,13 +134,14 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).vehiculosCargando,
       liveRegion: true,
-      child: const Padding(
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [
-            Esqueleto(alto: 240),
-            SizedBox(height: Espaciado.e3),
-            Esqueleto(alto: 56),
+            Esqueleto(alto: TarjetaAuto.altoBase, radio: 28),
+            SizedBox(height: Espaciado.e4),
+            Esqueleto(alto: TarjetaAuto.altoBase, radio: 28),
           ],
         ),
       ),

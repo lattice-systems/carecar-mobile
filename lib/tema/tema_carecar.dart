@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../nucleo/diseno/iconos_de_accion.dart';
 import '../nucleo/diseno/tokens/tokens_pista.dart';
 
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -124,6 +125,7 @@ abstract final class TemaCareCar {
 
     return ThemeData(
       useMaterial3: true,
+      actionIconTheme: iconosDeAccion,
       colorScheme: esquema,
       scaffoldBackgroundColor: fondo,
 

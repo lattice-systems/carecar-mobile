@@ -52,7 +52,7 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 | --- | --- | --- | --- | --- |
 | V2-M01.01 | Como cliente quiero iniciar sesión con la cuenta que me dio la agencia para entrar a mi app | Dado correo y contraseña válidos, cuando inicio sesión, entonces veo Inicio en menos de 2 s con red normal · credenciales malas → mensaje sin revelar si el correo existe · no hay botón de registro en ninguna pantalla · bloqueo por intentos muestra minutos restantes | | V2-T01.02, V2-T02.04 |
 | V2-M01.02 | Como cliente quiero ver una bienvenida la primera vez para entender qué puedo hacer | Solo aparece en el primer arranque · se puede saltar · accesible con lector de pantalla | | V2-T02.04 |
-| V2-M01.03 | Como cliente con contraseña temporal quiero cambiarla obligatoriamente para proteger mi cuenta | Dado `debe_cambiar_contrasena`, no puedo navegar a otra pantalla hasta cambiarla · reglas en vivo (largo, número, mayúscula) · no acepta la temporal como nueva | | V2-M01.01 |
+| V2-M01.03 | Como cliente con contraseña temporal quiero cambiarla obligatoriamente para proteger mi cuenta | Dado `debe_cambiar_contrasena`, no puedo navegar a otra pantalla hasta cambiarla · reglas en vivo (largo, letra, número) · no acepta la temporal como nueva | | V2-M01.01 |
 | V2-M01.04 | Como cliente quiero recuperar mi contraseña con un enlace de un solo uso enviado a mi correo para volver a entrar | Enlace abre la app (deep link) en Nueva contraseña · expira y sirve una sola vez (`usado`) · enlace vencido/usado → pantalla con opción de pedir otro · respuesta igual exista o no el correo | ✅ | V2-T05.04, V2-T01.03 |
 | V2-M01.05 | Como cliente quiero desbloquear con huella o rostro para no escribir mi contraseña cada vez | Opt-in tras primer login · si cambia la biometría del equipo se pide contraseña · se puede apagar en Seguridad | | V2-M01.01 |
 | V2-M01.06 | Como cliente quiero ver mi perfil para confirmar mis datos | Muestra nombre, correo, teléfono, cliente desde, vehículos · estados de carga/error/sin conexión | | V2-M01.01 |
@@ -96,3 +96,159 @@ Entrada segura y sin fricción con la cuenta que entrega la agencia, y control t
 - **El dominio no escribe textos.** Al contrario del `esperaLegible` de la v1, que devolvía «15 minutos» en español. Lo exige la regla del módulo y lo vigila `test/l10n/sin_cadenas_en_codigo_test.dart`, que de hecho rechazó un `Text('CareCar')` escrito a mano: la marca también vive en el ARB, con la nota de que es nombre propio y no se traduce.
 
 **Pendiente / fuera de alcance:** encender la ruta (pide V2-M01.03 y V2-M01.04); subir el reloj y la espera del servidor a `lib/nucleo/` (historia del núcleo); demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y una captura en claro, oscuro y letra grande para el PR.
+
+## Avance de V2-M01.03
+
+**Qué quedó**
+
+- `dominio/reglas_contrasena.dart` — las reglas de la contraseña, una respuesta por regla para poder marcarlas en vivo. Dart puro, cero imports.
+- `dominio/repositorio_acceso.dart` y `datos/repositorio_acceso_api.dart` — la frontera del módulo con el servidor. **Primer uso real de `RepositorioBase`** (V2-T01.08), que había quedado construido y sin adoptar.
+- `datos/repositorio_acceso_fake.dart` — el fake, que usa la misma base que el de verdad.
+- `presentacion/pantalla_cambiar_contrasena.dart` — la pantalla, con `ListaDeReglas` marcándose al escribir.
+- `presentacion/rutas_acceso.dart` — la ruta del cambio, **declarada y no registrada**.
+- **29 pruebas** y 15 claves nuevas en `app_es.arb` y `app_en.arb`.
+
+**El criterio decía «mayúscula» y se corrigió**
+
+El criterio pedía «reglas en vivo (largo, número, **mayúscula**)». Se verificó en las cuatro fuentes y la mayúscula no está en ninguna:
+
+| Fuente | Qué dice |
+| --- | --- |
+| **Ficha v2.1** (`.docx`) | Solo «Cambio obligatorio de la contraseña temporal». No define reglas de composición, y la palabra «mayúscula» **no aparece en todo el documento** |
+| **Contrato v1 (1.5.0) y v2 (2.1.0)** | `minLength 8`, `maxLength 72`, «Al menos una letra y un número; distinta de la actual» |
+| **`ReglasContrasena.java` del backend** | 8 a 72, `isLetter` y `isDigit`. **Sin mayúscula** |
+| Pantalla v1 | «Al menos 8 caracteres, con letra y número» |
+
+Pedirla habría rechazado contraseñas que el servidor acepta —`carecar2026`, que tiene su propia prueba— y habría mostrado una regla que nadie hace cumplir. Confirmado con el equipo: **manda lo que implementó Ricardo**. El criterio de arriba quedó corregido a «largo, letra, número».
+
+**Hallazgos**
+
+- **`contrasenaCambiadaProvider` no tenía ninguna prueba**, pese a que esta historia depende de él. Su comentario dice que se apaga al cerrar sesión y nada lo garantizaba: si se quedara encendido, **el siguiente cliente que entrara en ese teléfono con una contraseña temporal se saltaría el cambio obligatorio**. Funciona; ahora queda fijado desde `test/modulos/acceso/cambio_obligatorio_test.dart`.
+- **El backend usa `Character::isLetter` y `isDigit`, que son Unicode.** Con una expresión ASCII, `mañana2026` fallaría en la app y pasaría en el servidor. La app usa `\p{L}` y `\p{Nd}` para espejearlo, con prueba.
+- **Una de mis pruebas pasaba sin probar nada**: el `tap` del botón no lo alcanzaba porque la pantalla es más alta que el viewport de 360×800 y quedaba bajo el pliegue. Se arregla con `ensureVisible`, y queda comentado en el ayudante.
+
+**Decisiones**
+
+- **El botón se bloquea también tras un cambio exitoso**, no solo mientras guarda. Lo encontró la prueba del doble toque, y aquí es peor que en el login: el segundo intento manda la contraseña temporal, que ya dejó de ser válida, y el servidor responde un 401 sobre una operación que sí funcionó.
+- **Las reglas se muestran todas desde el principio**, no solo las que faltan, para que nadie descubra a base de errores qué se le pide. Y `estaVacia` se distingue de «mal»: a quien acaba de abrir la pantalla no se le reclaman tres reglas incumplidas.
+- **No se le pide al servidor lo que ya sabemos que va a rechazar**: sin reglas cumplidas o sin confirmación coincidente, no hay petición.
+- **La contraseña actual es opcional en las reglas**, porque en la recuperación por enlace (V2-M01.04) no se conoce y esa historia reutiliza esta clase.
+- **No se repitieron las pruebas del guardia.** Sus casos ya están en `test/nucleo/navegacion/guardia_sesion_test.dart`; lo que se fijó aquí es el apretón de manos, que la pantalla ponga exactamente la bandera que el guardia lee.
+
+**Pendiente / fuera de alcance:** encender las rutas del módulo, que ahora solo espera a **V2-M01.04** y a actualizar las trece pruebas ajenas; demostrar la pantalla en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅; y las capturas en claro, oscuro y letra grande.
+
+## Avance de V2-M01.04
+
+**Qué quedó**
+
+- `PeticionRestablecer.conEnlace` en `lib/api/modelos/sesion.dart` — la forma con `token` que declara el contrato v2, junto a la del código de 6 dígitos de la v1, que no se tocó.
+- `dominio/fallos_acceso.dart` — `EnlaceNoValido`.
+- `dominio/correo.dart` — `pareceCorreo`, que ahora comparten el acceso y la recuperación.
+- `dominio/repositorio_acceso.dart` y `datos/` — `pedirEnlaceDeRecuperacion` y `restablecerConEnlace`, con la traducción del código del contrato al fallo de dominio.
+- `presentacion/pantalla_recuperar.dart` y `presentacion/pantalla_nueva_contrasena.dart`.
+- Las rutas `/recuperar` y `/restablecer` declaradas, **sin registrar**.
+- **26 pruebas** y 18 claves nuevas en `app_es.arb` y `app_en.arb`.
+
+**Lo que ya estaba y no hubo que hacer**
+
+El andamiaje de enlaces profundos es de **V2-T01.03**: `Rutas.restablecer`, el mapeo de `carecar://restablecer?token=…` y del enlace universal `https://<host>/app/restablecer?token=…`, y la ruta ya figuraba entre las públicas. Esta historia solo le colgó pantallas. Hay una prueba de la vuelta completa: el enlace llega a la pantalla con su token, porque si el camino o el nombre del parámetro no coincidieran, el correo abriría una pantalla que dice «enlace roto».
+
+**Los dos 400 que no se pueden confundir**
+
+Es el filo de la historia. Un enlace vencido o usado y una contraseña que no cumple **llegan los dos como 400**, y solo los separa `Problema.codigo` (`CODIGO_INVALIDO` contra `DATOS_INVALIDOS`):
+
+| Qué pasó | Qué ve la persona |
+| --- | --- |
+| Enlace vencido o usado | Se **retira el formulario** y se ofrece **pedir otro enlace**. Ahí no hay nada que corregir |
+| Contraseña rechazada | Se **conserva el formulario** para corregir, y **no** se ofrece pedir otro: el enlace estaba bien, y mandar a pedir otro sería hacer empezar de cero sin motivo |
+| Sin conexión | Advertencia, y el enlace se conserva |
+
+**Hallazgos**
+
+- **Traducir a un fallo de dominio tiene que ir fuera de `pedir`, no dentro.** Un fallo de dominio es una `Exception` normal y `RepositorioBase.pedir` tipa todo lo que no sea `ExcepcionApi`, así que traducir dentro lo convertiría en `ErrorDelServidor` y la pantalla perdería el único dato que necesita. Soy la primera en adoptar `RepositorioBase` —`citas` traduce sus 409 sin usarlo—, así que esto habría esperado al siguiente. Queda en tres lugares: el aviso en el código, una prueba que falla si alguien lo mueve adentro, y la guía de [`lib/modulos/README.md`](../../lib/modulos/README.md#el-núcleo-de-datos).
+- **Un enlace sin token** (`carecar://restablecer` a secas) no estaba en los criterios. La pantalla arranca en el estado de enlace no válido sin pedir contraseña: pedírsela a quien de todos modos no va a poder guardarla es perderle el tiempo.
+- **El patrón del doble toque apareció por tercera vez.** En las tres pantallas, terminar la operación dejaba el botón otra vez habilitado. Aquí se previó desde la prueba en lugar de descubrirlo.
+
+**Decisiones**
+
+- **`PeticionRestablecer` gana una forma en vez de cambiar la que hay.** El contrato acepta las dos y la pantalla v1 sigue mandando correo y código sin tocarse. Cada forma manda **solo sus campos**: un `correo` vacío junto al token haría que el backend intentara la forma v1 y respondiera 400 por datos inválidos, y eso se vería como «el enlace no sirve» cuando el enlace estaba bien.
+- **El aviso de «revisa tu correo» dice «si ese correo tiene una cuenta».** El contrato responde 202 exista o no, para no revelar qué cuentas hay; una redacción descuidada en la app tiraría por la borda esa protección, y quien se equivocó al teclear tiene que entender que puede no llegarle nada.
+- **La validación del correo salió a `dominio/`** en vez de duplicarse, y la pantalla de acceso se reescribió para usarla. A diferencia del reloj y del aviso de espera del servidor —duplicados porque chocaban con R1 y R3 y no tenían dónde vivir—, esta sí tiene casa.
+- **`ListaDeReglas` gana `mostrarDistinta`**: en la recuperación no hay contraseña temporal que conocer, así que esa regla siempre se cumpliría y sólo confundiría.
+
+**Pendiente / fuera de alcance:** encender las rutas del módulo. **Esta historia cerró el segundo de los tres bloqueos**, así que ya solo falta actualizar las trece pruebas ajenas que comprueban la redirección por el widget y no por la ruta — es mecánico, pero toca código de otras cuatro personas y merece su propia historia. También falta demostrarlo en celular con un correo real, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅, y las capturas.
+
+## Avance de V2-M01.11
+
+**Qué quedó**
+
+`test/modulos/acceso/sesion_de_30_dias_test.dart`, con **cinco pruebas de integración**. Ni una línea de código de producción.
+
+**Por qué no hizo falta construir nada**
+
+Los dos criterios ya funcionaban, y conviene que quede escrito de dónde sale cada uno:
+
+| Criterio | Quién lo cumple ya |
+| --- | --- |
+| Refresco transparente | `ControladorSesion.renovar()` con su guardia `_refrescoEnCurso`, más el reintento ante 401 de `ClienteApi` (Sprint 3, TEC-6 T3/T4) |
+| Si falla, vuelve a login conservando el destino | `enrutadorProvider` escucha `estadoSesionProvider` con `refreshListenable`, y `redirigirPorSesion` arma `/acceso?desde=…` (V2-T01.03) |
+
+Las piezas estaban probadas **por separado**: el controlador rota el par (`test/sesion/controlador_sesion_test.dart`), el cliente reintenta una vez (`test/api/sesion_con_refresco_test.dart`) y el guardia sabe guardar el destino (`guardia_sesion_test.dart`). Lo que nadie había probado es **la suma**, que es justo lo que dicen los criterios y lo que pide la DoD.
+
+**Las dos pruebas que importan**
+
+- **«El par nuevo queda guardado, no el gastado.»** Es el riesgo más caro de esta historia. El refresh es de un solo uso y, según Ricardo, reusar uno gastado hace que el backend **cierre todas las sesiones de la cuenta** porque lo toma como posible robo. Se comprobó empíricamente en el Sprint 3 montando dos sesiones; ahora queda fijado desde el nivel de la app, no solo del almacén.
+- **«Si la sesión muere estando en una pantalla privada, se guarda el destino.»** Se agregó después de ver que la primera versión **no probaba el criterio**: comprobaba que iba a `/acceso`, pero el usuario estaba en el inicio y no había destino que conservar, así que la aserción pasaba sin probar nada. El criterio es otro: estabas en `/garaje`, el refresco murió y no deberías perder dónde ibas.
+
+**Pendiente / fuera de alcance:** el riesgo que no se puede cerrar desde la app —si el proceso muere entre que el servidor consume el token viejo y la app guarda el nuevo, el guardado ya está gastado y el siguiente refresco cierra todas las sesiones—. La única solución es que el servidor acepte el token anterior unos segundos; **vale proponérselo a Ricardo**. Y demostrar los 30 días en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md`.
+
+## Ajustes en el lenguaje v2 (V2-T02.24)
+
+Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto de la app: marco con regreso, el perfil en una tarjeta de resumen, grupos de lista, interruptor del sistema y diálogo y hoja del sistema. Es solo el aspecto: nada de lo que piden las historias de abajo cambia.
+
+- **V2-M01.06 (Ver mi perfil)** puede mover esta pantalla a un módulo `perfil` y completar sus estados; los textos siguen escritos a mano y habría que pasarlos a `app_es.arb`/`app_en.arb`.
+- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
+- Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
+
+## Avance de V2-M01.09
+
+**Qué quedó, en la app**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| `api/modelos/sesion.dart` | `SesionActiva` del contrato 2.22.0 y el `dispositivo` opcional del login |
+| `api/carecar_api.dart` + `carecar_api_http.dart` | Las tres operaciones de `/sesiones` |
+| `cache/carecar_api_con_cache.dart` | La lista **no se guarda en copia local**, a propósito (ver abajo) |
+| `nucleo/dispositivo/` | El nombre del equipo: la regla pura, aparte del plugin, y el borde que lee `device_info_plus` |
+| `sesion/controlador_sesion.dart` | El login manda el nombre, con el lector como tercer parámetro **opcional** |
+| `dominio/sesion_de_la_cuenta.dart` | El tipo de dominio, con `ultimaSenal` = último uso, o el inicio si nunca se refrescó |
+| `dominio/antiguedad.dart` | En qué tramo cae «hace cuánto». Devuelve números y un tramo, nunca texto |
+| `dominio/fallos_acceso.dart` | `SesionYaNoEsta`, para el 404 que no significa «ya no está» |
+| `presentacion/proveedores_acceso.dart` | `sesionesProvider`, con las dos formas de cerrar |
+| `presentacion/pantalla_sesiones.dart` | La pantalla, con los cinco estados |
+| `presentacion/rutas_acceso.dart` | `rutasSesiones`, **sí registrada** (ver abajo) |
+
+**Las tres decisiones que mandan en esta historia**
+
+1. **Nunca decir que una sesión se cerró si no se cerró.** El backend crea una fila nueva en cada refresco, así que el `id` que la pantalla tiene en mano envejece: si la otra sesión se refrescó entremedias, el `DELETE` responde **404 y la sesión sigue viva con otro id**. Quitarla de la lista ahí le diría al cliente que echó al intruso cuando no lo hizo, que es lo contrario de lo que esta pantalla existe para responder. Así que un 404 relee la lista —para que la sesión vuelva con su id nuevo y el reintento funcione— y avisa. Sin conexión tampoco la quita: no significa «ya no está», significa que no se sabe.
+2. **La lista no se guarda en copia local.** Una copia vieja diría que la sesión que se acaba de cerrar sigue abierta, o peor, que no hay ninguna intrusa cuando sí la hay. A «¿quién está dentro de mi cuenta ahora?» se responde con el servidor o no se responde. `cerrarTodas` sí limpia la copia, porque incluye la sesión de este teléfono.
+3. **Cerrar todas avisa antes y cierra también aquí.** El access token en curso sigue valiendo hasta que expire, así que si la app se quedara dentro el cliente creería que no se cerró nada.
+
+**Dos cosas que no eran obvias y conviene que queden escritas**
+
+- **`GrupoLista` no deja que el lector de pantalla alcance lo que va en `fin`** (su propia documentación lo dice: «el `fin` no se lee»), porque envuelve la fila en `Semantics(excludeSemantics: true)`. Un botón ahí sería **inalcanzable con lector de pantalla**. Por eso la acción de cada fila es la fila completa, con lo hablado en `etiquetaFin`, y cada cierre pide confirmación —que además evita echar a un dispositivo con un toque sin querer al desplazarse. **Si alguien necesita un `fin` interactivo, hay que cambiar el componente**: es candidato a una historia de `V2-T02.xx`.
+- **`/sesiones` sí se registra, hoy.** Va en su propia lista (`rutasSesiones`), aparte de `rutasAcceso`: las otras cuatro rutas del módulo siguen esperando a que el acceso se encienda porque sus caminos ya los sirven pantallas v1, pero `/sesiones` no existe en la v1, así que no choca con nada y no obliga a tocar las trece pruebas ajenas. Sin esto la pantalla existiría y nadie podría abrirla.
+
+**Lo que esta historia NO puede hacer**
+
+La lista **no marca «este dispositivo»**. El JWT lleva `uid` y `roles` pero no el id de la sesión, así que el servidor no sabe cuál de ellas está preguntando. Marcarlo exigiría un claim `sid` y tocar `JwtService`, `UsuarioAutenticado` y el filtro, que usan también el ERP y el CRM: es un cambio de `shared` con alcance mucho mayor que esta historia y **se propone aparte**. Mientras tanto, `DELETE /sesiones` se presenta como «cerrar sesión en todos los dispositivos», que incluye el propio y es la lectura segura.
+
+**Dependencia nueva:** `device_info_plus`, autorizada por Jael el 26 de noviembre de 2026. Nada de lo que ya había da el modelo del equipo, y sin nombre la lista muestra todas las sesiones iguales. Queda detrás de `LectorDelDispositivo`, así que cambiarla toca una clase. No se lee ningún identificador del equipo: en iOS se manda `modelName` y no `name`, porque `name` es el nombre que la persona le puso al teléfono y sí la identifica.
+
+**La parte del backend ya está** (`agencia-360-backend#108`): las tres columnas de `sesion_app` (V52), los tres endpoints y 16 pruebas de integración.
+
+**Y de paso destapó un defecto que no era de esta historia.** `refrescar` tomaba como posible robo **cualquier** refresh token revocado y cerraba todas las sesiones de la cuenta, sin distinguir por qué se revocó. Con `/auth/cerrar-sesion` eso nunca se notaba, porque el mismo dispositivo borra sus tokens y no reintenta; pero cerrar una sesión **ajena** sí lo alcanza, porque ese dispositivo conserva su token y lo usa en su siguiente intento. Resultado: cerrar la sesión de una tablet dejaba al cliente fuera de su propio celular, y cerrar la de un celular robado le regalaba al ladrón una negación de servicio.
+
+El arreglo guarda el motivo (`motivo_revocacion`, V53) y el cierre masivo se dispara **solo** cuando el token lo consumió un refresco, que es el único caso que delata una copia. La protección no se debilita y hay una prueba para eso. Ricardo, que definió la regla original, lo confirmó.
+
+**Pendiente:** demostrarlo en celular, que es lo único que le falta a la fila de `cumplimiento-ficha.md`.

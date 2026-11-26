@@ -8,6 +8,10 @@ int leerEntero(Object? valor, String campo) {
   throw FormatException('El campo «$campo» no es un entero: $valor');
 }
 
+/// Lee un entero que puede no venir; nulo si no viene o es nulo.
+int? leerEnteroOpcional(Object? valor, String campo) =>
+    valor == null ? null : leerEntero(valor, campo);
+
 /// Lee un decimal aunque llegue como entero.
 ///
 /// JSON no distingue `980` de `980.0`, y el contrato declara `total` como
@@ -58,6 +62,27 @@ DateTime? leerFechaHoraOpcional(Object? valor, String campo) {
     fecha.minute,
     fecha.second,
   );
+}
+
+/// Lee un `date-time` del contrato que es un instante: sin zona se toma como
+/// UTC, que es lo que el contrato declara. Una fecha rota falla: no se
+/// inventa una.
+DateTime leerMomentoUtc(Object? valor, String campo) {
+  final texto = leerTexto(valor, campo);
+  final momento = DateTime.tryParse(texto);
+  if (momento == null) {
+    throw FormatException('El campo «$campo» no es una fecha: $texto');
+  }
+  return momento.isUtc
+      ? momento
+      : DateTime.utc(
+          momento.year,
+          momento.month,
+          momento.day,
+          momento.hour,
+          momento.minute,
+          momento.second,
+        );
 }
 
 /// Escribe una fecha como `AAAA-MM-DD`, el formato que pide el contrato.

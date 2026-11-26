@@ -15,8 +15,7 @@ typedef EnviarAnalitica = Future<void> Function(
 );
 
 class Analitica {
-  const Analitica(this._habilitada, this._enviar, {int Function()? revision})
-    : _revision = revision;
+  const Analitica(this._habilitada, this._enviar, {this._revision});
 
   final bool Function() _habilitada;
   final EnviarAnalitica _enviar;
@@ -71,8 +70,9 @@ class EmbudoCitas {
     if (!analitica.habilitada ||
         _revision != analitica.revision ||
         intento == null ||
-        _eligio)
+        _eligio) {
       return;
+    }
     _eligio = true;
     await analitica.registrar({'tipo': 'FRANJA', 'intento': intento});
   }
@@ -86,8 +86,9 @@ class EmbudoCitas {
         _revision != analitica.revision ||
         intento == null ||
         intento != _intento ||
-        !_eligio)
+        !_eligio) {
       return;
+    }
     descartar();
     await analitica.registrar({
       'tipo': 'CONFIRMADA',

@@ -65,12 +65,17 @@ class Estimacion {
     required this.edadAnios,
     required this.kmEsperado,
     required this.margen,
+    this.vehiculoId,
     this.modeloDestino,
     this.precioDestino,
   });
 
   final int id;
   final DateTime creadaEn;
+
+  /// El vehiculo del cliente con el que se hizo; nulo si capturo el auto a
+  /// mano.
+  final int? vehiculoId;
   final String marca;
   final String modelo;
   final int anio;

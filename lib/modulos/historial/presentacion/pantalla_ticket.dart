@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -82,32 +84,21 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
       ),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.refresh(ticketServicioProvider(widget.servicioId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.historialTicketTitulo,
-              subtitulo: datos == null ? null : fechaDe(context, datos.fecha),
-              translucido: true,
-              acciones: [
-                if (datos != null)
-                  BotonCircular(
-                    etiqueta: textos.historialTicketCompartir,
-                    icono: Icons.ios_share_rounded,
-                    alPresionar: _compartiendo ? null : () => _compartir(datos),
-                  ),
-              ],
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.historialTicketTitulo,
+      subtitulo: datos == null ? null : fechaDe(context, datos.fecha),
+      conRegreso: true,
+      alRefrescar: () =>
+          ref.refresh(ticketServicioProvider(widget.servicioId).future),
+      acciones: [
+        if (datos != null)
+          BotonCircular(
+            etiqueta: textos.historialTicketCompartir,
+            icono: LucideIcons300.share,
+            alPresionar: _compartiendo ? null : () => _compartir(datos),
+          ),
+      ],
+      slivers: [contenido],
     );
   }
 }
@@ -168,7 +159,7 @@ class _Ticket extends StatelessWidget {
               FilaGrupo(
                 titulo: fechaDe(context, ticket.fecha),
                 subtitulo: textos.historialTicketFecha,
-                icono: Icons.event_outlined,
+                icono: LucideIcons300.calendar,
                 colorIcono: c.acento,
               ),
               FilaGrupo(
@@ -176,7 +167,7 @@ class _Ticket extends StatelessWidget {
                     ? textos.historialSinCierre
                     : fechaHoraDe(context, ticket.fechaCierre!),
                 subtitulo: textos.historialTicketCierre,
-                icono: Icons.task_alt_rounded,
+                icono: LucideIcons300.circleCheckBig,
                 colorIcono: c.exito,
               ),
               FilaGrupo(
@@ -186,7 +177,7 @@ class _Ticket extends StatelessWidget {
                   ).format(ticket.kilometraje),
                 ),
                 subtitulo: textos.historialTicketKilometraje,
-                icono: Icons.speed_rounded,
+                icono: LucideIcons300.gauge,
                 colorIcono: c.marca,
               ),
             ],
@@ -217,6 +208,18 @@ class _Ticket extends StatelessWidget {
               total(textos.historialTicketTotal, ticket.total, fuerte: true),
             ],
           ),
+          if (ticket.puntosGanados case final puntos? when puntos > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: Espaciado.e3),
+              child: Aviso(
+                mensaje: textos.historialTicketPuntosGanados(
+                  NumberFormat.decimalPattern(
+                    idioma.startsWith('es') ? 'es_MX' : 'en_US',
+                  ).format(puntos),
+                ),
+                tono: Tono.exito,
+              ),
+            ),
           if (!ticket.cuadra)
             Padding(
               padding: const EdgeInsets.only(top: Espaciado.e3),
@@ -236,7 +239,7 @@ class _Ticket extends StatelessWidget {
           const SizedBox(height: Espaciado.e4),
           BotonPildora(
             texto: textos.historialTicketCompartir,
-            icono: Icons.picture_as_pdf_outlined,
+            icono: LucideIcons300.fileText,
             expandido: true,
             alPresionar: compartiendo ? null : alCompartir,
           ),
