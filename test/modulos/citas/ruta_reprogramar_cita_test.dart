@@ -1,6 +1,5 @@
 import 'package:carecar_mobile/api/modelos/cita.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -58,7 +57,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaReprogramarCita(1));
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaReprogramarCita), findsNothing);
   });
 

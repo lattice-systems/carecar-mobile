@@ -21,4 +21,4 @@ export 'presentacion/pantalla_sesiones.dart' show PantallaSesiones;
 export 'presentacion/proveedores_acceso.dart'
     show relojAccesoProvider, repositorioAccesoProvider;
 export 'presentacion/rutas_acceso.dart'
-    show rutaSesiones, rutasAcceso, rutasSesiones;
+    show rutaSesiones, rutasAcceso, rutasRecuperacion, rutasSesiones;

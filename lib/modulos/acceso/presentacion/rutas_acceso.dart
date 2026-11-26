@@ -25,35 +25,16 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
   child: hijo,
 );
 
-/// Rutas que el modulo `acceso` entrega al enrutador.
+/// Inicio de sesion y cambio obligatorio de la contrasena temporal.
 ///
 /// Los caminos y los nombres salen de [Rutas] y [NombresRuta] a proposito, en
 /// vez de escribirse aqui: son los mismos que usa el guardia de sesion,
 /// `Rutas.localizacionAcceso` y `Rutas.localizacionCambiarContrasena`, asi
-/// que al encender el modulo nada mas tiene que cambiar.
+/// que el guardia no se entera de que version las sirve.
 ///
-/// ## Todavia no esta registrada
-///
-/// `registro_de_rutas.dart` **no** las incluye, y `ModuloMigrable` no tiene
-/// valor `acceso`: hoy `/acceso` y `/cambiar-contrasena` los sirven las
-/// pantallas v1 desde `rutas_del_nucleo.dart`.
-///
-/// **V2-M01.03 y V2-M01.04 cerraron dos de los tres bloqueos**: el cambio
-/// obligatorio y la recuperacion por enlace ya existen en v2, asi que ninguna
-/// de las cuatro pantallas del flujo salta a una vieja ni deja un boton
-/// muerto. **Queda uno solo:**
-///
-/// - Actualizar las **trece pruebas** que hoy comprueban el destino de la
-///   redireccion por el widget (`find.byType(PantallaLogin)`) y no por la
-///   ruta. `AppEnrutadaDePrueba` usa `InterruptorModulos.todoV2` por omision,
-///   asi que agregar el valor al enum las pone rojas de golpe, en los modulos
-///   de otras cuatro personas. Es mecanico, pero toca codigo ajeno y merece
-///   su propia historia.
-///
-/// Y al encenderlas, `rutas_del_nucleo.dart` tiene que dejar de registrar sus
-/// cuatro rutas de acceso cuando el modulo este en v2, o habria dos rutas con
-/// el mismo camino. Puede hacerlo con el enum, sin importar este modulo, asi que la
-/// regla R2 se respeta.
+/// Se registran por el interruptor (`ModuloMigrable.acceso`, encendido por
+/// defecto desde V2-T01.10). Con el modulo en v1, `rutas_del_nucleo.dart`
+/// sirve esos mismos caminos con las pantallas v1; nunca las dos a la vez.
 final rutasAcceso = <RouteBase>[
   GoRoute(
     path: Rutas.acceso,
@@ -66,6 +47,27 @@ final rutasAcceso = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCambiarContrasena()),
   ),
+];
+
+/// Recuperar y restablecer la contrasena con el enlace del correo (V2-M01.04).
+///
+/// Es un modulo del interruptor **aparte** (`ModuloMigrable.recuperacion`) y
+/// **no esta encendido por defecto**: la pantalla de restablecer espera un
+/// enlace que abra la app, y hoy no lo hace.
+///
+/// - El correo del backend trae `carecar://restablecer-contrasena?token=...`
+///   (`RECUPERACION_ENLACE`) y la app entiende `carecar://restablecer?token=...`.
+/// - El enlace universal `https://<host>/app/restablecer` apunta a
+///   `carecar.example.com`, un marcador: aun no hay dominio con
+///   `assetlinks.json` ni `apple-app-site-association`.
+/// - El mismo correo trae el codigo de 6 digitos, que solo la pantalla v1
+///   sabe recibir.
+///
+/// Mientras tanto la v1 resuelve la recuperacion con el codigo, y por eso
+/// sigue siendo la que se ve. Para encenderla falta: el dominio y los dos
+/// archivos de verificacion, que el backend mande un enlace que la app
+/// reconozca, y probarlo en un celular con un correo real.
+final rutasRecuperacion = <RouteBase>[
   GoRoute(
     path: Rutas.recuperar,
     name: NombresRuta.recuperar,
@@ -88,11 +90,8 @@ final rutasAcceso = <RouteBase>[
 
 /// Mis sesiones abiertas, aparte de [rutasAcceso] · V2-M01.09.
 ///
-/// Va en su propia lista **y si se registra hoy**. Las otras cuatro esperan a
-/// que el modulo se encienda porque sus caminos ya los sirven pantallas v1 y
-/// habria dos rutas iguales. Esta no: `/sesiones` no existe en la v1, asi que
-/// no choca con nada y no necesita el interruptor ni tocar las trece pruebas
-/// ajenas. Sin esto la pantalla existiria y nadie podria abrirla.
+/// Va en su propia lista y **se registra siempre**: `/sesiones` no existe en
+/// la v1, asi que no choca con nada y no necesita el interruptor.
 final rutasSesiones = <RouteBase>[
   GoRoute(
     path: rutaSesiones,
