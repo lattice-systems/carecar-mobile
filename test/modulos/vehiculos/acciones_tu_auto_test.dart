@@ -32,6 +32,8 @@ const _destinos = [
   'Historial de servicios',
   'Mantenimiento',
   'Bitácora',
+  'Garantía',
+  'Campañas de seguridad',
 ];
 
 /// El grupo de lista que lleva el encabezado «Tu auto».

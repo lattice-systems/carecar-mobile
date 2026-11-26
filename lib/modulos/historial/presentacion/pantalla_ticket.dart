@@ -206,6 +206,18 @@ class _Ticket extends StatelessWidget {
               total(textos.historialTicketTotal, ticket.total, fuerte: true),
             ],
           ),
+          if (ticket.puntosGanados case final puntos? when puntos > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: Espaciado.e3),
+              child: Aviso(
+                mensaje: textos.historialTicketPuntosGanados(
+                  NumberFormat.decimalPattern(
+                    idioma.startsWith('es') ? 'es_MX' : 'en_US',
+                  ).format(puntos),
+                ),
+                tono: Tono.exito,
+              ),
+            ),
           if (!ticket.cuadra)
             Padding(
               padding: const EdgeInsets.only(top: Espaciado.e3),

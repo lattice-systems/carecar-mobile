@@ -177,3 +177,27 @@ Es el filo de la historia. Un enlace vencido o usado y una contraseña que no cu
 - **`ListaDeReglas` gana `mostrarDistinta`**: en la recuperación no hay contraseña temporal que conocer, así que esa regla siempre se cumpliría y sólo confundiría.
 
 **Pendiente / fuera de alcance:** encender las rutas del módulo. **Esta historia cerró el segundo de los tres bloqueos**, así que ya solo falta actualizar las trece pruebas ajenas que comprueban la redirección por el widget y no por la ruta — es mecánico, pero toca código de otras cuatro personas y merece su propia historia. También falta demostrarlo en celular con un correo real, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅, y las capturas.
+
+## Avance de V2-M01.11
+
+**Qué quedó**
+
+`test/modulos/acceso/sesion_de_30_dias_test.dart`, con **cinco pruebas de integración**. Ni una línea de código de producción.
+
+**Por qué no hizo falta construir nada**
+
+Los dos criterios ya funcionaban, y conviene que quede escrito de dónde sale cada uno:
+
+| Criterio | Quién lo cumple ya |
+| --- | --- |
+| Refresco transparente | `ControladorSesion.renovar()` con su guardia `_refrescoEnCurso`, más el reintento ante 401 de `ClienteApi` (Sprint 3, TEC-6 T3/T4) |
+| Si falla, vuelve a login conservando el destino | `enrutadorProvider` escucha `estadoSesionProvider` con `refreshListenable`, y `redirigirPorSesion` arma `/acceso?desde=…` (V2-T01.03) |
+
+Las piezas estaban probadas **por separado**: el controlador rota el par (`test/sesion/controlador_sesion_test.dart`), el cliente reintenta una vez (`test/api/sesion_con_refresco_test.dart`) y el guardia sabe guardar el destino (`guardia_sesion_test.dart`). Lo que nadie había probado es **la suma**, que es justo lo que dicen los criterios y lo que pide la DoD.
+
+**Las dos pruebas que importan**
+
+- **«El par nuevo queda guardado, no el gastado.»** Es el riesgo más caro de esta historia. El refresh es de un solo uso y, según Ricardo, reusar uno gastado hace que el backend **cierre todas las sesiones de la cuenta** porque lo toma como posible robo. Se comprobó empíricamente en el Sprint 3 montando dos sesiones; ahora queda fijado desde el nivel de la app, no solo del almacén.
+- **«Si la sesión muere estando en una pantalla privada, se guarda el destino.»** Se agregó después de ver que la primera versión **no probaba el criterio**: comprobaba que iba a `/acceso`, pero el usuario estaba en el inicio y no había destino que conservar, así que la aserción pasaba sin probar nada. El criterio es otro: estabas en `/garaje`, el refresco murió y no deberías perder dónde ibas.
+
+**Pendiente / fuera de alcance:** el riesgo que no se puede cerrar desde la app —si el proceso muere entre que el servidor consume el token viejo y la app guarda el nuevo, el guardado ya está gastado y el siguiente refresco cierra todas las sesiones—. La única solución es que el servidor acepte el token anterior unos segundos; **vale proponérselo a Ricardo**. Y demostrar los 30 días en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md`.

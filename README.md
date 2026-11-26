@@ -74,6 +74,8 @@ Alcance del MVP según el documento de stack y arquitectura (v2):
 
 Además: manuales del vehículo (PDF de la agencia o incluido en la app) y Ajustes/Perfil (cambiar contraseña, contacto, aviso de privacidad, cerrar sesión).
 
+De la v2, la [tienda](plan/modulos/M14-tienda.md) deja ver accesorios y refacciones compatibles con el auto, apartarlos, pedir su instalación en una cita y seguir el pedido. Se paga en caja. Se abre desde el catálogo v2 o con el enlace `carecar://tienda`.
+
 ---
 
 ## 🧰 Stack tecnológico

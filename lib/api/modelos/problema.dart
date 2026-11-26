@@ -42,6 +42,55 @@ enum CodigoProblema {
   /// vigente; hay que leer el nuevo.
   avisoNoVigente('AVISO_NO_VIGENTE'),
 
+  /// V2-M10.03: la campana de seguridad ya esta agendada o atendida.
+  campanaNoAgendable('CAMPANA_NO_AGENDABLE'),
+
+  /// V2-M26.01: la estimacion se capturo a mano, sin un vehiculo registrado.
+  valuacionSinVehiculo('VALUACION_SIN_VEHICULO'),
+
+  /// V2-M26.02: la valuacion ya no admite fotos.
+  valuacionCerrada('VALUACION_CERRADA'),
+
+  /// V2-M26.03: la valuacion ya tiene cita o ya no se puede agendar.
+  valuacionNoAgendable('VALUACION_NO_AGENDABLE'),
+
+  /// V2-M26.04: la vigencia de la oferta ya paso.
+  ofertaVencida('OFERTA_VENCIDA'),
+
+  /// V2-M26.04: no hay una oferta que responder con ese monto o ya se
+  /// respondio lo contrario.
+  ofertaNoDisponible('OFERTA_NO_DISPONIBLE'),
+
+  /// V2-M12.03: no alcanzan los puntos para la recompensa.
+  saldoInsuficiente('SALDO_INSUFICIENTE'),
+
+  /// V2-M12.03: la recompensa se agoto.
+  recompensaAgotada('RECOMPENSA_AGOTADA'),
+
+  /// V2-M12.04: esa persona ya es cliente o ya la refirieron.
+  referidoDuplicado('REFERIDO_DUPLICADO'),
+
+  /// V2-M12.04: el cliente ya tiene el maximo de referidos en seguimiento.
+  limiteReferidos('LIMITE_REFERIDOS'),
+
+  /// V2-M14.02: no alcanzan las piezas para apartar.
+  sinExistencia('SIN_EXISTENCIA'),
+
+  /// V2-M14.03: la cita esta cancelada o ya paso.
+  citaNoDisponible('CITA_NO_DISPONIBLE'),
+
+  /// V2-M14.02: ya hay el maximo de pedidos sin entregar.
+  limiteApartados('LIMITE_APARTADOS'),
+
+  /// V2-M14.02: el pedido ya se entrego.
+  pedidoNoCancelable('PEDIDO_NO_CANCELABLE'),
+
+  /// V2-M14.03: el pedido ya se entrego o se cancelo.
+  pedidoNoModificable('PEDIDO_NO_MODIFICABLE'),
+
+  /// V2-M14.03: algun producto no le queda al vehiculo de la cita.
+  productoIncompatible('PRODUCTO_INCOMPATIBLE'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

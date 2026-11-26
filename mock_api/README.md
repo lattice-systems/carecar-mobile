@@ -156,7 +156,7 @@ Operaciones de la app y casos de error:
 | GET | `/vehiculos/{id}/ficha-tecnica` | Por modelo y año (V2-M02.04) · 404 si no hay ficha de ese modelo y año |
 | GET | `/vehiculos/{id}/servicios` | Orden cronológico, el más reciente primero; `anio` filtra por año y cada orden trae `fechaCierre` (V2-M02.05) |
 | GET | `/vehiculos/{id}/servicios/anios` | Años con servicios, del más reciente al más antiguo (V2-M02.05) |
-| GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) |
+| GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) y `puntosGanados` de lealtad: la orden 2 dio 230 (V2-M12.02) |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
 | GET | `/citas` | Solo las del cliente · cada cita con recolección trae `recoleccion` (traslados con su estado vigente, V2-M17.03) |
@@ -191,7 +191,30 @@ Operaciones de la app y casos de error:
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
+| GET | `/vehiculos/{id}/garantia` | Coberturas con días y km restantes, consumo y estado contra el km más alto conocido (el del taller o la última lectura del cliente) · por vencer a 60 días o 1 000 km · `cliente1` tiene tres del March (5); la batería está por vencer (V2-M10.01) · 404 si es ajeno |
+| GET | `/vehiculos/{id}/campanas` | Campañas de seguridad del vehículo, pendientes primero y las más graves arriba; la fila se crea al consultarla y una cita cancelada la reabre · el March tiene la crítica RC-24-017 pendiente y la RC-23-002 atendida (V2-M10.02) |
+| POST | `/vehiculos/{id}/campanas/{cid}/cita` | `{franjaId, fecha}` · 201 con la cita (`motivo: campana`) y la campaña queda agendada · 409 `CAMPANA_NO_AGENDABLE`, `FRANJA_SIN_CUPO` o `CITA_DUPLICADA` · 400 · 404 (V2-M10.03) |
+| GET | `/lealtad` | Saldo (suma de movimientos), nivel por lo ganado en 12 meses (Plata desde 1 500, Oro desde 4 000), lo que falta y el código de referido · `cliente1` está en Plata con 1,330 puntos (V2-M12.01) · antes de responder vence los canjes pasados de fecha y devuelve sus puntos |
+| GET | `/lealtad/movimientos` | Del más nuevo, paginado (`pagina`, `tamano`) con referencia a la orden, el canje o el referido (V2-M12.05) |
+| GET | `/lealtad/recompensas` | Activas, de la más barata · el «Termo CareCar» está agotado (V2-M12.03) |
+| POST | `/lealtad/canjes` | `{recompensaId}` · 201 con código de 8 caracteres vigente 30 días y movimiento `CANJE` · 409 `SALDO_INSUFICIENTE` o `RECOMPENSA_AGOTADA` · 404 |
+| GET | `/lealtad/canjes` | Mis canjes con estado (V2-M12.03) |
+| POST | `/lealtad/referidos` | `{nombre, telefono?, correo?, consentimiento}` · 201 en seguimiento · 400 sin contacto, sin consentimiento o teléfono que no tiene 10 dígitos · 409 `REFERIDO_DUPLICADO` (correo de una cuenta o contacto ya referido) o `LIMITE_REFERIDOS` (10 abiertos) (V2-M12.04) |
+| GET | `/lealtad/referidos` | Mis referidos con su estado y los puntos que dio el que compró |
 | GET | `/api/v1/archivos/evidencias/{id}` | Fuera de la base y sin token: una foto PNG de prueba. El video de la orden apunta a un MP4 público, así que se ve con internet |
+| POST | `/valuaciones` | `{estimacionTomaCuentaId}`. 201, o 200 con la abierta de ese vehículo. 400. 404 si la estimación es ajena. 422 `VALUACION_SIN_VEHICULO` si se capturó a mano (V2-M26.01) |
+| GET | `/valuaciones` y `/valuaciones/{id}` | Paginadas, la más reciente primero, con el estado al día: oferta pasada es `VENCIDA` y una cita cancelada la regresa a `SOLICITADA`. La semilla trae el Jetta (6) con una oferta vigente y estimaciones del March (5) en varios meses, y agrega franjas futuras si las de citas ya pasaron |
+| POST | `/valuaciones/{id}/fotos/{toma}` | Multipart `imagen` JPEG o PNG de hasta 8 MB, reemplaza la toma. 400 (también de 8 a 20 MB). 413 arriba de 20 MB. 404. 409 `VALUACION_CERRADA`. La imagen no se guarda: la URL entrega una de prueba (V2-M26.02) |
+| POST | `/valuaciones/{id}/cita` | `{franjaId, fecha}`. 201 con la cita (`motivo: valuacion`). 400. 404. 409 `VALUACION_NO_AGENDABLE`, `FRANJA_SIN_CUPO` o `CITA_DUPLICADA` (V2-M26.03) |
+| POST | `/valuaciones/{id}/respuesta` | `{aceptada, monto}`. Repetir lo mismo responde 200. 400. 404. 409 `OFERTA_VENCIDA` u `OFERTA_NO_DISPONIBLE` (V2-M26.04) |
+| GET | `/vehiculos/{id}/valor-estimado` | `meses` de 1 a 36 (12 por omisión). Un punto por mes con la última estimación de ese mes. 400. 404 (V2-M26.05) |
+| GET | `/api/v1/archivos/valuacion-fotos/{id}` | Fuera de la base y sin token: la imagen de prueba de una foto de valuación |
+| GET | `/tienda/productos` | `vehiculoId`, `categoria` (`accesorio`, `refaccion`, `cuidado`), `q`, `pagina` y `tamano`. Por nombre. Con `vehiculoId` solo salen los universales y los de su modelo y año, con `compatible`. Los agotados sí se listan. 400. 404 si el vehículo es ajeno (V2-M14.01) |
+| GET | `/tienda/productos/{id}` | Con `vehiculoId` dice `compatible`. 404 (V2-M14.01) |
+| POST | `/tienda/pedidos` | `Idempotency-Key` obligatoria. 201, o 200 con el pedido de esa llave. 400. 404. 409 `SIN_EXISTENCIA`, `CITA_NO_DISPONIBLE` o `LIMITE_APARTADOS` (3 sin entregar). 422 `PRODUCTO_INCOMPATIBLE`. Vence en 48 horas o al final del día siguiente a la cita (V2-M14.02 y V2-M14.03) |
+| GET | `/tienda/pedidos` y `/tienda/pedidos/{id}` | Del más reciente al más antiguo. Antes de responder vence lo pasado de hora y sigue a la cita ligada: cancelada regresa a mostrador y reprogramada mueve la vigencia (V2-M14.05) |
+| POST | `/tienda/pedidos/{id}/cancelar` | Libera las piezas. Repetirlo responde 200. 409 `PEDIDO_NO_CANCELABLE` (V2-M14.02) |
+| PUT | `/tienda/pedidos/{id}/instalacion` | `{citaId}`, o nulo para volver a mostrador. 409 `CITA_NO_DISPONIBLE` o `PEDIDO_NO_MODIFICABLE`. 422 `PRODUCTO_INCOMPATIBLE` (V2-M14.03) |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
 
@@ -237,6 +260,22 @@ curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: appli
 # V2-M04.03, V2-M04.06 y V2-M04.07 · el taller pasa la orden 41 a lista y luego la entrega
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"LISTO_PARA_ENTREGA"}'
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"ENTREGADO"}'
+# V2-M10.04 · se publica una campaña para el March (5) y llega `campana.nueva`
+curl -X POST localhost:3000/__mock/campanas -H 'content-type: application/json' -d '{"codigo":"RC-26-001","titulo":"Freno de estacionamiento","gravedad":"ALTA","vehiculoIds":[5]}'
+# V2-M10.03 · el taller marca atendida la campaña 1 del March
+curl -X POST localhost:3000/__mock/campanas/1/vehiculos/5/atendida
+# V2-M26.04: ventas captura o renueva la oferta de la valuación 1 (debe tener cita) y llega `valuacion.oferta`
+curl -X POST localhost:3000/__mock/valuaciones/1/oferta -H 'content-type: application/json' -d '{"monto":125000,"nota":"Oferta de prueba"}'
+# V2-M14.05: la agencia marca el pedido 1 como listo, entregado o cancelado y llega `pedido.estado`
+curl -X POST localhost:3000/__mock/pedidos/1/estado -H 'content-type: application/json' -d '{"estado":"listo"}'
+# V2-M10.05 · aviso de garantía por vencer de la batería (motivo opcional: dias_60, dias_15 o km_1000)
+curl -X POST localhost:3000/__mock/garantias/1/aviso -H 'content-type: application/json' -d '{"motivo":"dias_60"}'
+# V2-M12.02 · el cliente 1 gana 165 puntos por un servicio y llega `puntos.movidos`
+curl -X POST localhost:3000/__mock/puntos -H 'content-type: application/json' -d '{"clienteId":1,"puntos":165,"ordenId":2}'
+# V2-M12.03 · el personal marca usado un canje vigente (código de la app)
+curl -X POST localhost:3000/__mock/canjes/K7XQ2MPA/usar
+# V2-M12.04 · la venta del referido 2 se finaliza: el cliente gana 500 puntos una sola vez
+curl -X POST localhost:3000/__mock/referidos/2/compro
 ```
 
 Cada cambio de la orden (etapa nueva o respuesta a un adicional) llega como evento `orden` con `ordenId`, `vehiculoId`, `estatus`, `etapa` y `motivo`. Lista o entregada, la orden suma los adicionales aprobados, trae `horarioEntrega` de 09:00 a 17:00 y queda en el historial (`/servicios/{id}` con el mismo id). La etapa debe ir después de la actual (400) y una orden entregada ya no cambia (409 `ORDEN_CERRADA`).

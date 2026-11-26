@@ -2,6 +2,8 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/datos/repositorio_toma_a_cuenta_api.dart';
+import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fake.dart';
+import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
@@ -17,6 +19,7 @@ import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
 import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
+import '../valuacion/ayudas_valuacion.dart' show sustitutos;
 
 const _leyenda =
     'Estimación no vinculante. No es una oferta de compra: el valor final lo '
@@ -29,8 +32,10 @@ EstimacionTomaCuenta _estimacion(
   double maximo = 120000,
   String? destino,
   double? precio,
+  int? vehiculoId,
 }) => EstimacionTomaCuenta(
   id: id,
+  vehiculoId: vehiculoId,
   creadaEn: DateTime.utc(2026, 11, 22, 12),
   marca: 'Nissan',
   modelo: modelo,
@@ -243,6 +248,100 @@ void main() {
     await tester.pumpWidget(_app(api));
     await tester.pumpAndSettle();
     await auditarAccesibilidad(tester);
+  });
+
+  group('valuacion formal (V2-M26)', () {
+    Future<RepositorioValuacionFake> abrirDetalle(
+      WidgetTester tester, {
+      int? vehiculoId = 5,
+      MotivoRechazoValuacion? rechazo,
+    }) async {
+      _pantallaAlta(tester);
+      tester.platformDispatcher.accessibilityFeaturesTestValue =
+          const FakeAccessibilityFeatures(disableAnimations: true);
+      addTearDown(
+        tester.platformDispatcher.clearAccessibilityFeaturesTestValue,
+      );
+      tester.platformDispatcher.localesTestValue = const [Locale('es')];
+      addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+      final api = ApiFalsa()
+        ..estimaciones = [_estimacion(7, vehiculoId: vehiculoId)];
+      api.alPedirVehiculos = () async => [];
+      final repo = RepositorioValuacionFake(rechazo: rechazo);
+      final sesion = ControladorSesion(api, AlmacenEnMemoria());
+      addTearDown(sesion.dispose);
+      await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
+      await tester.pumpWidget(
+        AppEnrutadaDePrueba(
+          api: api,
+          controlador: sesion,
+          idioma: const Locale('es'),
+          overrides: sustitutos(repositorio: repo),
+        ),
+      );
+      await tester.pumpAndSettle();
+      enrutadorDe(tester).go(rutaMisEstimaciones);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Nissan March 2020'));
+      await tester.pumpAndSettle();
+      return repo;
+    }
+
+    testWidgets('pedirla desde el detalle cierra la hoja y la abre', (
+      tester,
+    ) async {
+      final repo = await abrirDetalle(tester);
+      await tester.tap(find.text('Pedir valuación formal'));
+      await tester.pumpAndSettle();
+
+      expect(repo.pedidas, [7]);
+      expect(find.byType(PantallaValuacion), findsOneWidget);
+      expect(find.text(_leyenda), findsOneWidget);
+    });
+
+    testWidgets('una capturada a mano explica que se pide en la agencia', (
+      tester,
+    ) async {
+      await abrirDetalle(
+        tester,
+        vehiculoId: null,
+        rechazo: MotivoRechazoValuacion.sinVehiculo,
+      );
+      expect(find.text('Ver cómo cambia el valor'), findsNothing);
+      await tester.tap(find.text('Pedir valuación formal'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.textContaining('pide la valuación en la agencia'),
+        findsOneWidget,
+      );
+      expect(find.byType(PantallaValuacion), findsNothing);
+    });
+
+    testWidgets('la hecha con un vehiculo lleva al valor en el tiempo', (
+      tester,
+    ) async {
+      await abrirDetalle(tester);
+      await tester.tap(find.text('Ver cómo cambia el valor'));
+      await tester.pumpAndSettle();
+
+      expect(
+        tester
+            .widget<PantallaValorVehiculo>(find.byType(PantallaValorVehiculo))
+            .vehiculoId,
+        5,
+      );
+    });
+
+    testWidgets('desde la barra se abren Mis valuaciones', (tester) async {
+      await abrirDetalle(tester);
+      tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Mis valuaciones'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PantallaMisValuaciones), findsOneWidget);
+    });
   });
 
   group('rutas', () {

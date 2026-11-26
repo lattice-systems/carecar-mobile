@@ -8,9 +8,11 @@ import '../../../manuales/servicio_manuales.dart';
 import '../../../nucleo/api/proveedores_api.dart';
 import '../../mantenimiento/mantenimiento.dart';
 import '../datos/compartir_manual.dart';
+import '../datos/indice_manual_local.dart';
 import '../datos/repositorio_ficha_tecnica_api.dart';
 import '../datos/repositorio_garaje_api.dart';
 import '../dominio/ficha_tecnica_vehiculo.dart';
+import '../dominio/indice_de_manual.dart';
 import '../dominio/repositorio_ficha_tecnica.dart';
 import '../dominio/repositorio_garaje.dart';
 import '../dominio/vehiculo_garaje.dart';
@@ -121,6 +123,25 @@ final manualProvider = FutureProvider.family<DocumentoManual?, int>(
   retry: (_, _) => null,
   name: 'manualProvider',
 );
+
+/// Índice de texto del manual empaquetado del vehículo `id`, o `null` si no hay
+/// (V2-M02.03). La pantalla ofrece buscar solo cuando este índice existe.
+final indiceDeManualProvider = FutureProvider.family<IndiceDeManual?, int>((
+  ref,
+  id,
+) async {
+  final v = await ref.watch(vehiculoProvider(id).future);
+  if (v == null) return null;
+  return cargarIndiceDeManual(
+    Vehiculo(
+      id: v.id,
+      vin: v.vin ?? '',
+      modelo: v.modelo,
+      anio: v.anio,
+      marca: v.marca,
+    ),
+  );
+}, name: 'indiceDeManualProvider');
 
 /// Guarda el PDF con el selector del sistema. Las pruebas lo sustituyen.
 final guardarManualProvider =

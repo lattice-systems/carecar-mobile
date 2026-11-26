@@ -63,6 +63,7 @@ class RepositorioHistorialApi implements RepositorioHistorial {
       subtotal: d.subtotal,
       iva: d.iva,
       total: d.total,
+      puntosGanados: d.puntosGanados,
     );
   }
 

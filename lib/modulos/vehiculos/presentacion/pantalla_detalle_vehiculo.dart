@@ -22,6 +22,7 @@ import '../../../nucleo/idioma/formato_numeros.dart';
 import '../../asistente/asistente.dart';
 import '../../bitacora/bitacora.dart';
 import '../../citas/citas.dart';
+import '../../garantia/garantia.dart';
 import '../../historial/historial.dart';
 import '../../mantenimiento/mantenimiento.dart';
 import '../dominio/vehiculo_garaje.dart';
@@ -199,6 +200,18 @@ class _DetalleState extends State<_Detalle> {
                     alToque: () => context.push(
                       rutaBitacoraVehiculo(v.id, nombre: v.titulo),
                     ),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.garantiaAcceso,
+                    icono: Icons.verified_user_outlined,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaGarantiaVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.campanasAcceso,
+                    icono: Icons.campaign_outlined,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaCampanasVehiculo(v.id)),
                   ),
                 ],
               ),

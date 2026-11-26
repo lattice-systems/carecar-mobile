@@ -951,6 +951,511 @@
       }
     }
   },
+  "tiendaAccionError": "Algo salió mal. Intenta de nuevo.",
+  "@tiendaAccionError": {
+    "description": "Falla inesperada en una acción."
+  },
+  "tiendaAccionSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@tiendaAccionSinConexion": {
+    "description": "Falla de red al cambiar un pedido."
+  },
+  "tiendaAgendarCita": "Agendar cita",
+  "@tiendaAgendarCita": {
+    "description": "Botón hacia agendar una cita."
+  },
+  "tiendaAgotado": "Agotado",
+  "@tiendaAgotado": {
+    "description": "Producto sin existencia."
+  },
+  "tiendaAgregado": "Agregado. Llevas {piezas} de este producto.",
+  "@tiendaAgregado": {
+    "description": "Confirmación al agregar.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaAgregar": "Agregar al carrito",
+  "@tiendaAgregar": {
+    "description": "Botón para agregar un producto."
+  },
+  "tiendaApartadoMensaje": "Pagas en caja. Tu apartado vence el {fecha}.",
+  "@tiendaApartadoMensaje": {
+    "description": "Detalle del cierre del apartado.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaApartadoTitulo": "Productos apartados",
+  "@tiendaApartadoTitulo": {
+    "description": "Cierre del apartado."
+  },
+  "tiendaApartar": "Apartar",
+  "@tiendaApartar": {
+    "description": "Botón que aparta el carrito."
+  },
+  "tiendaApartarSinConexion": "Sin conexión. Tu carrito se conserva: vuelve a intentar y no se apartará dos veces.",
+  "@tiendaApartarSinConexion": {
+    "description": "Falla de red al apartar."
+  },
+  "tiendaAvanceTitulo": "Avance",
+  "@tiendaAvanceTitulo": {
+    "description": "Sección de los estados del pedido."
+  },
+  "tiendaBuscar": "Buscar por nombre o código",
+  "@tiendaBuscar": {
+    "description": "Etiqueta del buscador."
+  },
+  "tiendaCambiarCita": "Cambiar de cita",
+  "@tiendaCambiarCita": {
+    "description": "Elige otra cita para instalar."
+  },
+  "tiendaCancelarConfirmar": "Sí, cancelar",
+  "@tiendaCancelarConfirmar": {
+    "description": "Confirma la cancelación."
+  },
+  "tiendaCancelarMensaje": "Las piezas se liberan y otra persona puede apartarlas.",
+  "@tiendaCancelarMensaje": {
+    "description": "Detalle de la confirmación."
+  },
+  "tiendaCancelarPedido": "Cancelar pedido",
+  "@tiendaCancelarPedido": {
+    "description": "Botón para cancelar."
+  },
+  "tiendaCancelarTitulo": "¿Cancelar el pedido?",
+  "@tiendaCancelarTitulo": {
+    "description": "Confirmación de cancelación."
+  },
+  "tiendaCancelarVolver": "Conservar",
+  "@tiendaCancelarVolver": {
+    "description": "No cancela."
+  },
+  "tiendaCantidad": "Cantidad",
+  "@tiendaCantidad": {
+    "description": "Etiqueta del selector de piezas."
+  },
+  "tiendaCargando": "Cargando la tienda",
+  "@tiendaCargando": {
+    "description": "Anuncio del esqueleto de carga."
+  },
+  "tiendaCarritoLleno": "El carrito admite hasta {maximo} productos distintos.",
+  "@tiendaCarritoLleno": {
+    "description": "Carrito lleno.",
+    "placeholders": {
+      "maximo": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaCarritoTitulo": "Carrito",
+  "@tiendaCarritoTitulo": {
+    "description": "Título del carrito."
+  },
+  "tiendaCarritoVacioMensaje": "Agrega productos desde la tienda para apartarlos.",
+  "@tiendaCarritoVacioMensaje": {
+    "description": "Detalle del carrito vacío."
+  },
+  "tiendaCarritoVacioTitulo": "Tu carrito está vacío",
+  "@tiendaCarritoVacioTitulo": {
+    "description": "Estado vacío del carrito."
+  },
+  "tiendaCategoriaAccesorio": "Accesorios",
+  "@tiendaCategoriaAccesorio": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaCuidado": "Cuidado del auto",
+  "@tiendaCategoriaCuidado": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaRefaccion": "Refacciones",
+  "@tiendaCategoriaRefaccion": {
+    "description": "Categoría de producto."
+  },
+  "tiendaCategoriaTodas": "Todo",
+  "@tiendaCategoriaTodas": {
+    "description": "Filtro sin categoría."
+  },
+  "tiendaCitaElegida": "Elegida",
+  "@tiendaCitaElegida": {
+    "description": "Marca de la cita elegida."
+  },
+  "tiendaCompatibilidadAnios": "{desde} a {hasta}",
+  "@tiendaCompatibilidadAnios": {
+    "description": "Rango de años de un modelo compatible.",
+    "placeholders": {
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaCompatibilidadTitulo": "Autos compatibles",
+  "@tiendaCompatibilidadTitulo": {
+    "description": "Encabezado de la lista de compatibilidad."
+  },
+  "tiendaCompatible": "Le queda a tu auto",
+  "@tiendaCompatible": {
+    "description": "Insignia de producto compatible."
+  },
+  "tiendaDetalleTitulo": "Mi pedido",
+  "@tiendaDetalleTitulo": {
+    "description": "Título del detalle de un pedido."
+  },
+  "tiendaElegirCita": "Elige la cita",
+  "@tiendaElegirCita": {
+    "description": "Encabezado del selector de citas."
+  },
+  "tiendaEntendido": "Entendido",
+  "@tiendaEntendido": {
+    "description": "Cierra un diálogo."
+  },
+  "tiendaEntradaDetalle": "Accesorios y refacciones originales para tu auto",
+  "@tiendaEntradaDetalle": {
+    "description": "Texto de la entrada a la tienda desde el catálogo."
+  },
+  "tiendaEntregaCita": "Instalar en mi cita",
+  "@tiendaEntregaCita": {
+    "description": "Entrega con instalación."
+  },
+  "tiendaEntregaMostrador": "Recoger en mostrador",
+  "@tiendaEntregaMostrador": {
+    "description": "Entrega en mostrador."
+  },
+  "tiendaEntregaTitulo": "Entrega",
+  "@tiendaEntregaTitulo": {
+    "description": "Sección de cómo se entrega."
+  },
+  "tiendaErrorCitas": "No pudimos consultar tus citas.",
+  "@tiendaErrorCitas": {
+    "description": "Falla al leer las citas."
+  },
+  "tiendaErrorMas": "No pudimos cargar más. Intenta de nuevo.",
+  "@tiendaErrorMas": {
+    "description": "Falla al pedir otra página."
+  },
+  "tiendaErrorMensaje": "Intenta de nuevo en un momento.",
+  "@tiendaErrorMensaje": {
+    "description": "Detalle del error genérico."
+  },
+  "tiendaErrorTitulo": "No pudimos cargar esto",
+  "@tiendaErrorTitulo": {
+    "description": "Error genérico."
+  },
+  "tiendaEstadoApartado": "Apartado",
+  "@tiendaEstadoApartado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoCancelado": "Cancelado",
+  "@tiendaEstadoCancelado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoEntregado": "Entregado",
+  "@tiendaEstadoEntregado": {
+    "description": "Estado del pedido."
+  },
+  "tiendaEstadoListo": "Listo",
+  "@tiendaEstadoListo": {
+    "description": "Estado del pedido."
+  },
+  "tiendaExistencia": "{piezas, plural, =1{Queda 1 pieza} other{Quedan {piezas} piezas}}",
+  "@tiendaExistencia": {
+    "description": "Piezas disponibles de un producto.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaFiltroAuto": "Compatible con",
+  "@tiendaFiltroAuto": {
+    "description": "Encabezado del filtro por vehículo."
+  },
+  "tiendaFotoDe": "Foto de {producto}",
+  "@tiendaFotoDe": {
+    "description": "Descripción de la foto de un producto.",
+    "placeholders": {
+      "producto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaInstalacionTitulo": "Instalación",
+  "@tiendaInstalacionTitulo": {
+    "description": "Sección de instalación del pedido."
+  },
+  "tiendaInstalarProxima": "Instalar en mi próxima cita",
+  "@tiendaInstalarProxima": {
+    "description": "Botón del producto para instalarlo en la cita."
+  },
+  "tiendaIrALaTienda": "Ir a la tienda",
+  "@tiendaIrALaTienda": {
+    "description": "Botón que lleva a la tienda."
+  },
+  "tiendaLeQueda": "Le queda a tu {auto}",
+  "@tiendaLeQueda": {
+    "description": "Aviso de compatibilidad en el producto.",
+    "placeholders": {
+      "auto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaMaximoAlcanzado": "Ya llevas {piezas}, el máximo de este producto.",
+  "@tiendaMaximoAlcanzado": {
+    "description": "No se pueden agregar más piezas de ese producto.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaMisPedidos": "Mis pedidos",
+  "@tiendaMisPedidos": {
+    "description": "Título y botón de la lista de pedidos."
+  },
+  "tiendaMotivoAgencia": "Lo canceló la agencia",
+  "@tiendaMotivoAgencia": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaMotivoCliente": "Lo cancelaste tú",
+  "@tiendaMotivoCliente": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaMotivoVencido": "El apartado venció",
+  "@tiendaMotivoVencido": {
+    "description": "Motivo de cancelación."
+  },
+  "tiendaNoLeQueda": "No le queda a tu {auto}",
+  "@tiendaNoLeQueda": {
+    "description": "Aviso de incompatibilidad en el producto.",
+    "placeholders": {
+      "auto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaNoSeApartoTitulo": "No se pudo apartar",
+  "@tiendaNoSeApartoTitulo": {
+    "description": "Título del diálogo de rechazo al apartar."
+  },
+  "tiendaNoSeCambioTitulo": "No se pudo cambiar el pedido",
+  "@tiendaNoSeCambioTitulo": {
+    "description": "Título del diálogo de rechazo al cambiar un pedido."
+  },
+  "tiendaPagoEnCaja": "No se cobra en la app: pagas en caja.",
+  "@tiendaPagoEnCaja": {
+    "description": "Cómo se paga."
+  },
+  "tiendaPedidoNoEncontradoMensaje": "Revisa tu lista de pedidos.",
+  "@tiendaPedidoNoEncontradoMensaje": {
+    "description": "Detalle de pedido inexistente."
+  },
+  "tiendaPedidoNoEncontradoTitulo": "No encontramos ese pedido",
+  "@tiendaPedidoNoEncontradoTitulo": {
+    "description": "Pedido ajeno o inexistente."
+  },
+  "tiendaPedidoResumen": "{total}, {piezas, plural, =1{1 pieza} other{{piezas} piezas}}",
+  "@tiendaPedidoResumen": {
+    "description": "Total y piezas de un pedido.",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      },
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaPedidoTitulo": "Pedido {numero}",
+  "@tiendaPedidoTitulo": {
+    "description": "Título de un pedido.",
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaPedidosVacioMensaje": "Lo que apartes en la tienda aparece aquí.",
+  "@tiendaPedidosVacioMensaje": {
+    "description": "Detalle de mis pedidos vacío."
+  },
+  "tiendaPedidosVacioTitulo": "Aún no tienes pedidos",
+  "@tiendaPedidosVacioTitulo": {
+    "description": "Estado vacío de mis pedidos."
+  },
+  "tiendaPrecioCadaUno": "{precio} cada uno",
+  "@tiendaPrecioCadaUno": {
+    "description": "Precio unitario.",
+    "placeholders": {
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaProductoNoEncontradoMensaje": "Puede que la agencia lo haya retirado de la tienda.",
+  "@tiendaProductoNoEncontradoMensaje": {
+    "description": "Detalle de producto retirado."
+  },
+  "tiendaProductoNoEncontradoTitulo": "Ese producto ya no está",
+  "@tiendaProductoNoEncontradoTitulo": {
+    "description": "Producto retirado o inexistente."
+  },
+  "tiendaProductoTitulo": "Producto",
+  "@tiendaProductoTitulo": {
+    "description": "Título de la pantalla de un producto."
+  },
+  "tiendaProductosTitulo": "Productos",
+  "@tiendaProductosTitulo": {
+    "description": "Sección de renglones del pedido."
+  },
+  "tiendaQuitar": "Quitar",
+  "@tiendaQuitar": {
+    "description": "Quita un producto del carrito."
+  },
+  "tiendaQuitarFiltros": "Ver todos los productos",
+  "@tiendaQuitarFiltros": {
+    "description": "Quita los filtros de la tienda."
+  },
+  "tiendaRechazoCitaNoDisponible": "Esa cita está cancelada o ya pasó. Elige otra o recoge en mostrador.",
+  "@tiendaRechazoCitaNoDisponible": {
+    "description": "Rechazo CITA_NO_DISPONIBLE."
+  },
+  "tiendaRechazoIncompatible": "Algún producto no le queda al auto de esa cita. Elige otra cita o recoge en mostrador.",
+  "@tiendaRechazoIncompatible": {
+    "description": "Rechazo PRODUCTO_INCOMPATIBLE."
+  },
+  "tiendaRechazoLimite": "Ya tienes 3 pedidos sin entregar. Recoge o cancela uno para apartar más.",
+  "@tiendaRechazoLimite": {
+    "description": "Rechazo LIMITE_APARTADOS."
+  },
+  "tiendaRechazoNoCancelable": "Este pedido ya se entregó y no se puede cancelar.",
+  "@tiendaRechazoNoCancelable": {
+    "description": "Rechazo PEDIDO_NO_CANCELABLE."
+  },
+  "tiendaRechazoNoModificable": "Este pedido ya se entregó o se canceló y no se puede cambiar.",
+  "@tiendaRechazoNoModificable": {
+    "description": "Rechazo PEDIDO_NO_MODIFICABLE."
+  },
+  "tiendaRechazoSinExistencia": "Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.",
+  "@tiendaRechazoSinExistencia": {
+    "description": "Rechazo SIN_EXISTENCIA."
+  },
+  "tiendaReintentar": "Reintentar",
+  "@tiendaReintentar": {
+    "description": "Botón de reintento."
+  },
+  "tiendaRenglonDetalle": "{cantidad} por {precio}",
+  "@tiendaRenglonDetalle": {
+    "description": "Cantidad y precio de un renglón.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int"
+      },
+      "precio": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaSeInstala": "Se instala en tu cita",
+  "@tiendaSeInstala": {
+    "description": "El pedido va ligado a una cita."
+  },
+  "tiendaSeRecoge": "Se recoge en mostrador",
+  "@tiendaSeRecoge": {
+    "description": "El pedido se recoge."
+  },
+  "tiendaSeguirComprando": "Seguir en la tienda",
+  "@tiendaSeguirComprando": {
+    "description": "Regresa a la tienda."
+  },
+  "tiendaSinCitaCompatible": "No le queda al auto de ninguna de tus próximas citas.",
+  "@tiendaSinCitaCompatible": {
+    "description": "Ninguna cita es de un auto compatible."
+  },
+  "tiendaSinCitas": "No tienes citas confirmadas por venir. Agenda una para que lo instalen.",
+  "@tiendaSinCitas": {
+    "description": "No hay cita donde instalar."
+  },
+  "tiendaSinConexionMensaje": "Revisa tu internet e intenta de nuevo.",
+  "@tiendaSinConexionMensaje": {
+    "description": "Detalle del error sin conexión."
+  },
+  "tiendaSinConexionTitulo": "Sin conexión",
+  "@tiendaSinConexionTitulo": {
+    "description": "Error sin conexión."
+  },
+  "tiendaTitulo": "Tienda",
+  "@tiendaTitulo": {
+    "description": "Título de la tienda y de su entrada."
+  },
+  "tiendaTodosLosProductos": "Todos los productos",
+  "@tiendaTodosLosProductos": {
+    "description": "Opción para no filtrar por vehículo."
+  },
+  "tiendaTotal": "Total",
+  "@tiendaTotal": {
+    "description": "Total del carrito o del pedido."
+  },
+  "tiendaUniversal": "Para cualquier auto",
+  "@tiendaUniversal": {
+    "description": "Producto universal."
+  },
+  "tiendaVacioMensaje": "Prueba con otra búsqueda, otra categoría u otro auto.",
+  "@tiendaVacioMensaje": {
+    "description": "Mensaje del estado vacío de la tienda."
+  },
+  "tiendaVacioTitulo": "No encontramos productos",
+  "@tiendaVacioTitulo": {
+    "description": "Estado vacío de la tienda."
+  },
+  "tiendaVence": "Vence el {fecha}",
+  "@tiendaVence": {
+    "description": "Cuándo vence un apartado.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaVenceDetalle": "Vence el {fecha}. Pasada esa hora se cancela y las piezas se liberan.",
+  "@tiendaVenceDetalle": {
+    "description": "Aviso de vencimiento en el pedido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaVerCarrito": "Ver carrito ({piezas})",
+  "@tiendaVerCarrito": {
+    "description": "Botón al carrito con el número de piezas.",
+    "placeholders": {
+      "piezas": {
+        "type": "int"
+      }
+    }
+  },
+  "tiendaVerMas": "Ver más",
+  "@tiendaVerMas": {
+    "description": "Pide la página siguiente."
+  },
+  "tiendaVerMiPedido": "Ver mi pedido",
+  "@tiendaVerMiPedido": {
+    "description": "Abre el pedido recién creado."
+  },
+  "tiendaVigenciaCita": "El apartado dura hasta el final del día siguiente a tu cita.",
+  "@tiendaVigenciaCita": {
+    "description": "Vigencia del apartado con instalación."
+  },
+  "tiendaVigenciaMostrador": "El apartado dura 48 horas. Si vence, las piezas se liberan.",
+  "@tiendaVigenciaMostrador": {
+    "description": "Vigencia del apartado en mostrador."
+  },
   "vehiculosAccesoFicha": "Ficha técnica",
   "@vehiculosAccesoFicha": {
     "description": "Acceso del detalle a la ficha técnica del vehículo."
@@ -4876,5 +5381,1390 @@
   "mantenimientoRecordatorioEnVivo": "Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.",
   "@mantenimientoRecordatorioEnVivo": {
     "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
+  },
+  "garantiaTitulo": "Garantía",
+  "@garantiaTitulo": {
+    "description": "Título de la pantalla de garantía (V2-M10.01)."
+  },
+  "garantiaAcceso": "Garantía",
+  "@garantiaAcceso": {
+    "description": "Acceso a la garantía desde el detalle del vehículo."
+  },
+  "garantiaKmActual": "Tu auto lleva {km} km",
+  "@garantiaKmActual": {
+    "description": "Subtítulo con el km actual; km ya viene con separadores.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVaciaTitulo": "Sin garantía registrada",
+  "@garantiaVaciaTitulo": {
+    "description": "Estado vacío de la garantía."
+  },
+  "garantiaVaciaMensaje": "Cuando la agencia registre la garantía de tu auto la verás aquí.",
+  "@garantiaVaciaMensaje": {
+    "description": "Mensaje del estado vacío de la garantía."
+  },
+  "garantiaEstadoVigente": "Vigente",
+  "@garantiaEstadoVigente": {
+    "description": "Insignia de una cobertura vigente."
+  },
+  "garantiaEstadoPorVencer": "Por vencer",
+  "@garantiaEstadoPorVencer": {
+    "description": "Insignia de una cobertura a 60 días o 1 000 km del límite."
+  },
+  "garantiaEstadoVencida": "Vencida",
+  "@garantiaEstadoVencida": {
+    "description": "Insignia de una cobertura vencida."
+  },
+  "garantiaVence": "Vence el {fecha}",
+  "@garantiaVence": {
+    "description": "Fecha límite de una cobertura sin km límite.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVenceOKm": "Vence el {fecha} o a los {km} km",
+  "@garantiaVenceOKm": {
+    "description": "Fecha y km límite de una cobertura; lo que llegue primero.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaQuedanDias": "{dias, plural, =1{Queda 1 día} other{Quedan {dias} días}}",
+  "@garantiaQuedanDias": {
+    "description": "Días que le quedan a la cobertura.",
+    "placeholders": {
+      "dias": {
+        "type": "int"
+      }
+    }
+  },
+  "garantiaQuedanKm": "Quedan {km} km",
+  "@garantiaQuedanKm": {
+    "description": "Km que le quedan a la cobertura; km ya viene con separadores.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVencidaPorFecha": "Venció por fecha",
+  "@garantiaVencidaPorFecha": {
+    "description": "Por qué venció la cobertura."
+  },
+  "garantiaVencidaPorKm": "Venció por kilometraje",
+  "@garantiaVencidaPorKm": {
+    "description": "Por qué venció la cobertura."
+  },
+  "campanasTitulo": "Campañas",
+  "@campanasTitulo": {
+    "description": "Título corto de la pantalla de campañas de seguridad (V2-M10.02)."
+  },
+  "campanasAcceso": "Campañas de seguridad",
+  "@campanasAcceso": {
+    "description": "Acceso a las campañas desde el detalle del vehículo y la garantía."
+  },
+  "campanasAccesoResumen": "Llamados del fabricante para tu auto",
+  "@campanasAccesoResumen": {
+    "description": "Subtítulo del acceso a las campañas desde la garantía."
+  },
+  "campanasInsignia": "Campaña de seguridad",
+  "@campanasInsignia": {
+    "description": "Insignia del garaje cuando el auto tiene una campaña pendiente."
+  },
+  "campanasVaciaTitulo": "Tu auto no tiene campañas",
+  "@campanasVaciaTitulo": {
+    "description": "Estado vacío de las campañas."
+  },
+  "campanasVaciaMensaje": "Si el fabricante publica una para tu auto, te avisamos.",
+  "@campanasVaciaMensaje": {
+    "description": "Mensaje del estado vacío de las campañas."
+  },
+  "campanasCodigo": "Campaña {codigo}",
+  "@campanasCodigo": {
+    "description": "Código de la campaña.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "campanasGravedadBaja": "Gravedad baja",
+  "@campanasGravedadBaja": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadMedia": "Gravedad media",
+  "@campanasGravedadMedia": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadAlta": "Gravedad alta",
+  "@campanasGravedadAlta": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadCritica": "Crítica",
+  "@campanasGravedadCritica": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasEstadoAbierta": "Pendiente",
+  "@campanasEstadoAbierta": {
+    "description": "Estado de la campaña: abierta, sin agendar."
+  },
+  "campanasEstadoAgendada": "Agendada",
+  "@campanasEstadoAgendada": {
+    "description": "Estado de la campaña: con cita."
+  },
+  "campanasEstadoAtendida": "Atendida",
+  "@campanasEstadoAtendida": {
+    "description": "Estado de la campaña: el taller ya la atendió."
+  },
+  "campanasQueHacer": "Qué hacer",
+  "@campanasQueHacer": {
+    "description": "Encabezado de lo que debe hacer el cliente."
+  },
+  "campanasAvisoCritica": "Atiende esta campaña cuanto antes",
+  "@campanasAvisoCritica": {
+    "description": "Aviso de una campaña crítica pendiente."
+  },
+  "campanasAgendar": "Agendar atención",
+  "@campanasAgendar": {
+    "description": "Botón para agendar la atención de la campaña (V2-M10.03)."
+  },
+  "garantiaReintentar": "Reintentar",
+  "@garantiaReintentar": {
+    "description": "Botón para reintentar en garantía y campañas."
+  },
+  "campanasAgendarSinDia": "Elige un día para ver sus horarios.",
+  "@campanasAgendarSinDia": {
+    "description": "Ayuda mientras no hay día elegido."
+  },
+  "campanasAgendarSinHorarios": "No quedan horarios ese día.",
+  "@campanasAgendarSinHorarios": {
+    "description": "El día elegido ya no tiene horarios con cupo."
+  },
+  "campanasAgendarSinCupoRango": "El taller no tiene horarios libres por ahora. Intenta más tarde.",
+  "@campanasAgendarSinCupoRango": {
+    "description": "Ningún día del rango tiene cupo."
+  },
+  "campanasAgendarVolver": "Volver a la campaña",
+  "@campanasAgendarVolver": {
+    "description": "Botón para volver a la campaña tras agendar."
+  },
+  "campanasVerCitas": "Ver mis citas",
+  "@campanasVerCitas": {
+    "description": "Botón de una campaña ya agendada."
+  },
+  "campanasAgendarTitulo": "Agendar campaña",
+  "@campanasAgendarTitulo": {
+    "description": "Título de la pantalla para agendar una campaña."
+  },
+  "campanasAgendarDia": "Elige el día",
+  "@campanasAgendarDia": {
+    "description": "Encabezado del calendario."
+  },
+  "campanasAgendarHora": "Elige la hora",
+  "@campanasAgendarHora": {
+    "description": "Encabezado de los horarios del día."
+  },
+  "campanasAgendarConfirmar": "Agendar",
+  "@campanasAgendarConfirmar": {
+    "description": "Botón que confirma la cita de la campaña."
+  },
+  "campanasAgendarSinCupo": "Ese horario se llenó. Elige otro.",
+  "@campanasAgendarSinCupo": {
+    "description": "El horario elegido ya no tiene cupo."
+  },
+  "campanasAgendarDuplicada": "Tu auto ya tiene una cita ese día. Elige otro día.",
+  "@campanasAgendarDuplicada": {
+    "description": "El vehículo ya tiene cita ese día."
+  },
+  "campanasAgendarYaAgendada": "Esta campaña ya está agendada.",
+  "@campanasAgendarYaAgendada": {
+    "description": "La campaña ya tenía cita o ya se atendió."
+  },
+  "campanasAgendarError": "No pudimos agendar. Intenta de nuevo.",
+  "@campanasAgendarError": {
+    "description": "Error al agendar la campaña."
+  },
+  "campanasAgendadaTitulo": "Listo, tu cita quedó agendada",
+  "@campanasAgendadaTitulo": {
+    "description": "Confirmación de la cita de la campaña."
+  },
+  "campanasAgendadaMensaje": "Te esperamos el {fecha} a las {hora}.",
+  "@campanasAgendadaMensaje": {
+    "description": "Día y hora de la cita de la campaña.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "campanasQuePasa": "Qué pasa",
+  "@campanasQuePasa": {
+    "description": "Título de la sección con la descripción de la campaña."
+  },
+  "campanasNoEncontradaTitulo": "Ya no encontramos esta campaña",
+  "@campanasNoEncontradaTitulo": {
+    "description": "Estado cuando la campaña abierta ya no aparece en la lista del vehículo."
+  },
+  "campanasNoEncontradaMensaje": "Vuelve a la lista para ver las campañas de tu auto.",
+  "@campanasNoEncontradaMensaje": {
+    "description": "Mensaje del estado de campaña no encontrada."
+  },
+  "campanasVerComprobante": "Ver comprobante",
+  "@campanasVerComprobante": {
+    "description": "Abre el comprobante con QR de la cita."
+  },
+  "vehiculosManualBuscarAccion": "Buscar en el manual",
+  "@vehiculosManualBuscarAccion": {"description": "Acción que abre la búsqueda dentro del manual."},
+  "vehiculosManualBuscarCerrar": "Cerrar la búsqueda",
+  "@vehiculosManualBuscarCerrar": {"description": "Acción que cierra la búsqueda."},
+  "vehiculosManualBuscarSugerencia": "Buscar en el manual",
+  "@vehiculosManualBuscarSugerencia": {"description": "Texto guía del campo de búsqueda."},
+  "vehiculosManualBuscarAyuda": "Escribe al menos dos letras para buscar en el manual.",
+  "@vehiculosManualBuscarAyuda": {"description": "Guía cuando la búsqueda es muy corta."},
+  "vehiculosManualSinResultados": "No encontramos «{consulta}» en el manual.",
+  "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "frenos"}}},
+  "vehiculosManualResultadoPagina": "Página {pagina}",
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}},
+  "valuacionAceptar": "Aceptar oferta",
+  "@valuacionAceptar": {
+    "description": "Texto del control deslizable que acepta la oferta (V2-M26.04)."
+  },
+  "valuacionAceptarMensaje": "Vas a aceptar la oferta de {monto}. La agencia registra tu decisión.",
+  "@valuacionAceptarMensaje": {
+    "description": "Confirmación accesible antes de aceptar la oferta.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaMensaje": "Te esperamos el {dia} a las {hora} para revisar tu auto.",
+  "@valuacionAgendadaMensaje": {
+    "description": "Cierre al agendar la inspección (V2-M26.03).",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaTitulo": "Inspección agendada",
+  "@valuacionAgendadaTitulo": {
+    "description": "Título del cierre al agendar la inspección."
+  },
+  "valuacionAgendadaVerCitas": "Ver mis citas",
+  "@valuacionAgendadaVerCitas": {
+    "description": "Acción principal del cierre al agendar."
+  },
+  "valuacionAgendadaVolver": "Volver a la valuación",
+  "@valuacionAgendadaVolver": {
+    "description": "Acción secundaria del cierre al agendar."
+  },
+  "valuacionAgendar": "Agendar inspección",
+  "@valuacionAgendar": {
+    "description": "Botón y título para agendar la inspección física."
+  },
+  "valuacionAgendarConfirmar": "Confirmar inspección",
+  "@valuacionAgendarConfirmar": {
+    "description": "Botón que crea la cita de inspección."
+  },
+  "valuacionAgendarDia": "Día",
+  "@valuacionAgendarDia": {
+    "description": "Sección del calendario."
+  },
+  "valuacionAgendarDuplicada": "Este auto ya tiene una cita ese día. Elige otro día.",
+  "@valuacionAgendarDuplicada": {
+    "description": "Rechazo CITA_DUPLICADA."
+  },
+  "valuacionAgendarError": "No pudimos agendar la inspección. Intenta de nuevo.",
+  "@valuacionAgendarError": {
+    "description": "Fallo genérico al agendar."
+  },
+  "valuacionAgendarHorario": "Horario",
+  "@valuacionAgendarHorario": {
+    "description": "Sección de franjas horarias."
+  },
+  "valuacionAgendarNoAgendable": "Esta valuación ya tiene cita o ya no se puede agendar. Revisa su detalle.",
+  "@valuacionAgendarNoAgendable": {
+    "description": "Rechazo VALUACION_NO_AGENDABLE."
+  },
+  "valuacionAgendarSinCupo": "Ese horario se acaba de llenar. Elige otro.",
+  "@valuacionAgendarSinCupo": {
+    "description": "Rechazo FRANJA_SIN_CUPO."
+  },
+  "valuacionAgendarSinDia": "Elige un día para ver sus horarios.",
+  "@valuacionAgendarSinDia": {
+    "description": "Ayuda mientras no hay día elegido."
+  },
+  "valuacionAgendarSinHorarios": "No quedan horarios ese día.",
+  "@valuacionAgendarSinHorarios": {
+    "description": "El día elegido ya no tiene cupo."
+  },
+  "valuacionAgendarVacioMensaje": "El taller no tiene horarios libres por ahora. Intenta más tarde.",
+  "@valuacionAgendarVacioMensaje": {
+    "description": "Ningún día del rango tiene cupo."
+  },
+  "valuacionAgendarVacioTitulo": "Sin horarios disponibles",
+  "@valuacionAgendarVacioTitulo": {
+    "description": "Título cuando no hay cupo en todo el rango."
+  },
+  "valuacionAsesorDetalle": "Tu asesor de ventas para esta valuación",
+  "@valuacionAsesorDetalle": {
+    "description": "Detalle bajo el nombre del asesor."
+  },
+  "valuacionAsesorTitulo": "Tu asesor",
+  "@valuacionAsesorTitulo": {
+    "description": "Sección del asesor."
+  },
+  "valuacionAvanceTitulo": "Avance",
+  "@valuacionAvanceTitulo": {
+    "description": "Sección de los tres pasos."
+  },
+  "valuacionCargando": "Cargando la valuación",
+  "@valuacionCargando": {
+    "description": "Anuncio del esqueleto de carga."
+  },
+  "valuacionDetalleTitulo": "Valuación formal",
+  "@valuacionDetalleTitulo": {
+    "description": "Título del detalle de una valuación."
+  },
+  "valuacionErrorMensaje": "Intenta de nuevo en un momento.",
+  "@valuacionErrorMensaje": {
+    "description": "Mensaje del error de carga."
+  },
+  "valuacionErrorTitulo": "No pudimos cargar esto",
+  "@valuacionErrorTitulo": {
+    "description": "Título del error de carga."
+  },
+  "valuacionEstadoAceptada": "Aceptada",
+  "@valuacionEstadoAceptada": {
+    "description": "Estado ACEPTADA."
+  },
+  "valuacionEstadoCitaAgendada": "Inspección agendada",
+  "@valuacionEstadoCitaAgendada": {
+    "description": "Estado CITA_AGENDADA."
+  },
+  "valuacionEstadoDesconocido": "En revisión",
+  "@valuacionEstadoDesconocido": {
+    "description": "Estado que la app aún no conoce."
+  },
+  "valuacionEstadoOfertada": "Con oferta",
+  "@valuacionEstadoOfertada": {
+    "description": "Estado OFERTADA."
+  },
+  "valuacionEstadoRechazada": "Rechazada",
+  "@valuacionEstadoRechazada": {
+    "description": "Estado RECHAZADA."
+  },
+  "valuacionEstadoSolicitada": "Por agendar",
+  "@valuacionEstadoSolicitada": {
+    "description": "Estado SOLICITADA."
+  },
+  "valuacionEstadoVencida": "Vencida",
+  "@valuacionEstadoVencida": {
+    "description": "Estado VENCIDA."
+  },
+  "valuacionEstimadaEl": "Estimado el {fecha}",
+  "@valuacionEstimadaEl": {
+    "description": "Fecha de la estimación de la que sale la valuación.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionEstimadoRango": "Rango estimado",
+  "@valuacionEstimadoRango": {
+    "description": "Etiqueta de la cifra del rango."
+  },
+  "valuacionEstimadoTitulo": "Estimación de partida",
+  "@valuacionEstimadoTitulo": {
+    "description": "Sección del rango no vinculante."
+  },
+  "valuacionFotoError": "No se pudo subir. La foto sigue aquí.",
+  "@valuacionFotoError": {
+    "description": "Fallo genérico al subir una toma (V2-M26.02)."
+  },
+  "valuacionFotoGaleria": "Elegir de la galería",
+  "@valuacionFotoGaleria": {
+    "description": "Botón para elegir una foto guardada."
+  },
+  "valuacionFotoInvalida": "La agencia no aceptó esa imagen. Usa una foto JPEG o PNG de hasta 8 MB.",
+  "@valuacionFotoInvalida": {
+    "description": "El servidor rechazó el archivo (400)."
+  },
+  "valuacionFotoPorSubir": "Foto por subir: {toma}",
+  "@valuacionFotoPorSubir": {
+    "description": "Descripción de una foto que aún no se sube.",
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSinConexion": "Sin conexión. La foto sigue aquí.",
+  "@valuacionFotoSinConexion": {
+    "description": "Fallo de red al subir una toma."
+  },
+  "valuacionFotoSubida": "Foto subida: {toma}",
+  "@valuacionFotoSubida": {
+    "description": "Descripción de una foto ya subida.",
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSubiendo": "Subiendo la foto",
+  "@valuacionFotoSubiendo": {
+    "description": "Anuncio mientras sube una toma."
+  },
+  "valuacionFotoTomar": "Tomar foto",
+  "@valuacionFotoTomar": {
+    "description": "Botón para abrir la cámara."
+  },
+  "valuacionFotosAbrirAjustes": "Abrir ajustes",
+  "@valuacionFotosAbrirAjustes": {
+    "description": "Botón para dar el permiso de cámara o fotos."
+  },
+  "valuacionFotosAvance": "{subidas} de {total} fotos",
+  "@valuacionFotosAvance": {
+    "description": "Avance de las tomas guiadas.",
+    "placeholders": {
+      "subidas": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "valuacionFotosCerrada": "Esta valuación ya no admite fotos.",
+  "@valuacionFotosCerrada": {
+    "description": "Valuación cerrada (VALUACION_CERRADA)."
+  },
+  "valuacionFotosGuiadasTitulo": "Fotos guiadas",
+  "@valuacionFotosGuiadasTitulo": {
+    "description": "Título de la pantalla de las 8 tomas."
+  },
+  "valuacionFotosPrivacidad": "Puedes agendar sin tener las 8 fotos. Cada foto se sube sola y la app no la guarda en tu teléfono.",
+  "@valuacionFotosPrivacidad": {
+    "description": "Aviso sobre las fotos."
+  },
+  "valuacionFotosSinCamara": "No pudimos abrir la cámara o la galería. Intenta de nuevo.",
+  "@valuacionFotosSinCamara": {
+    "description": "El selector de fotos falló."
+  },
+  "valuacionFotosSinPermiso": "Sin permiso para la cámara o las fotos. Actívalo en los ajustes.",
+  "@valuacionFotosSinPermiso": {
+    "description": "Permiso negado."
+  },
+  "valuacionFotosSubir": "Subir fotos guiadas",
+  "@valuacionFotosSubir": {
+    "description": "Botón del detalle hacia las fotos."
+  },
+  "valuacionFotosTitulo": "Fotos de tu auto",
+  "@valuacionFotosTitulo": {
+    "description": "Sección de fotos del detalle."
+  },
+  "valuacionFotosVacio": "Aún no subes fotos.",
+  "@valuacionFotosVacio": {
+    "description": "Galería sin fotos."
+  },
+  "valuacionInspeccionHorario": "De {inicio} a {fin}",
+  "@valuacionInspeccionHorario": {
+    "description": "Horario de la cita de inspección.",
+    "placeholders": {
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionInspeccionTitulo": "Inspección",
+  "@valuacionInspeccionTitulo": {
+    "description": "Sección de la cita."
+  },
+  "valuacionInspeccionVerCitas": "Ver en Mis citas",
+  "@valuacionInspeccionVerCitas": {
+    "description": "Botón hacia Mis citas."
+  },
+  "valuacionInstruccionCajuela": "Abre la cajuela y toma todo el espacio de carga.",
+  "@valuacionInstruccionCajuela": {
+    "description": "Instrucción de la toma de la cajuela."
+  },
+  "valuacionInstruccionFrente": "Párate de frente, con el auto completo y las placas a la vista.",
+  "@valuacionInstruccionFrente": {
+    "description": "Instrucción de la toma de frente."
+  },
+  "valuacionInstruccionInteriorDelantero": "Abre la puerta del conductor y toma los asientos delanteros y el volante.",
+  "@valuacionInstruccionInteriorDelantero": {
+    "description": "Instrucción del interior delantero."
+  },
+  "valuacionInstruccionInteriorTrasero": "Abre una puerta trasera y toma el asiento completo.",
+  "@valuacionInstruccionInteriorTrasero": {
+    "description": "Instrucción del interior trasero."
+  },
+  "valuacionInstruccionLateralDerecho": "Toma el costado del lado del pasajero, de defensa a defensa.",
+  "@valuacionInstruccionLateralDerecho": {
+    "description": "Instrucción del lateral derecho."
+  },
+  "valuacionInstruccionLateralIzquierdo": "Toma el costado del lado del conductor, de defensa a defensa.",
+  "@valuacionInstruccionLateralIzquierdo": {
+    "description": "Instrucción del lateral izquierdo."
+  },
+  "valuacionInstruccionTableroKm": "Enciende el tablero y toma el kilometraje de cerca, sin reflejos.",
+  "@valuacionInstruccionTableroKm": {
+    "description": "Instrucción del tablero."
+  },
+  "valuacionInstruccionTrasera": "Párate detrás, con el auto completo y las placas a la vista.",
+  "@valuacionInstruccionTrasera": {
+    "description": "Instrucción de la toma trasera."
+  },
+  "valuacionKm": "{km} km",
+  "@valuacionKm": {
+    "description": "Kilometraje del auto.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionMisErrorMas": "No pudimos cargar más valuaciones. Intenta de nuevo.",
+  "@valuacionMisErrorMas": {
+    "description": "Falló la siguiente página."
+  },
+  "valuacionMisTitulo": "Mis valuaciones",
+  "@valuacionMisTitulo": {
+    "description": "Título de la lista de valuaciones."
+  },
+  "valuacionMisVacioAccion": "Ir a Mis estimaciones",
+  "@valuacionMisVacioAccion": {
+    "description": "Acción del vacío de Mis valuaciones."
+  },
+  "valuacionMisVacioMensaje": "Pide una valuación formal desde una estimación hecha con uno de tus autos.",
+  "@valuacionMisVacioMensaje": {
+    "description": "Mensaje del vacío."
+  },
+  "valuacionMisVacioTitulo": "Aún no tienes valuaciones",
+  "@valuacionMisVacioTitulo": {
+    "description": "Título del vacío."
+  },
+  "valuacionMisVerMas": "Ver más",
+  "@valuacionMisVerMas": {
+    "description": "Botón de la siguiente página."
+  },
+  "valuacionNoEncontradaMensaje": "Puede que ya no exista o que no sea de tu cuenta.",
+  "@valuacionNoEncontradaMensaje": {
+    "description": "Mensaje de valuación no encontrada."
+  },
+  "valuacionNoEncontradaTitulo": "No encontramos esa valuación",
+  "@valuacionNoEncontradaTitulo": {
+    "description": "Título de valuación no encontrada."
+  },
+  "valuacionOfertaAceptada": "Aceptaste esta oferta. La agencia te dará seguimiento.",
+  "@valuacionOfertaAceptada": {
+    "description": "Oferta aceptada."
+  },
+  "valuacionOfertaConVigencia": "Oferta de {monto}, vigente hasta el {fecha}",
+  "@valuacionOfertaConVigencia": {
+    "description": "Oferta en la tarjeta de la lista.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionOfertaEtiqueta": "Oferta formal de la agencia",
+  "@valuacionOfertaEtiqueta": {
+    "description": "Etiqueta del monto ofertado."
+  },
+  "valuacionOfertaRechazada": "Rechazaste esta oferta.",
+  "@valuacionOfertaRechazada": {
+    "description": "Oferta rechazada."
+  },
+  "valuacionOfertaTitulo": "Tu oferta",
+  "@valuacionOfertaTitulo": {
+    "description": "Sección de la oferta."
+  },
+  "valuacionOfertaVencida": "Vencida. Ya no se puede responder, pero la agencia puede renovarla.",
+  "@valuacionOfertaVencida": {
+    "description": "Oferta vencida."
+  },
+  "valuacionOfertaVigencia": "Vigente hasta el {fecha}",
+  "@valuacionOfertaVigencia": {
+    "description": "Vigencia de la oferta.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPasoFotos": "Fotos",
+  "@valuacionPasoFotos": {
+    "description": "Primer paso del avance."
+  },
+  "valuacionPasoInspeccion": "Inspección",
+  "@valuacionPasoInspeccion": {
+    "description": "Segundo paso del avance."
+  },
+  "valuacionPasoOferta": "Oferta",
+  "@valuacionPasoOferta": {
+    "description": "Tercer paso del avance."
+  },
+  "valuacionPedidaEl": "Pedida el {fecha}",
+  "@valuacionPedidaEl": {
+    "description": "Fecha en que se pidió la valuación.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPedir": "Pedir valuación formal",
+  "@valuacionPedir": {
+    "description": "Botón en la calculadora y en el detalle de una estimación (V2-M26.01)."
+  },
+  "valuacionPedirError": "No pudimos pedir la valuación. Intenta de nuevo.",
+  "@valuacionPedirError": {
+    "description": "Fallo genérico al pedirla."
+  },
+  "valuacionPedirNoEncontrada": "No encontramos esa estimación.",
+  "@valuacionPedirNoEncontrada": {
+    "description": "La estimación no existe o es ajena (404)."
+  },
+  "valuacionPedirSinVehiculo": "Esta estimación se hizo capturando el auto a mano. Para valuarlo, pide la valuación en la agencia.",
+  "@valuacionPedirSinVehiculo": {
+    "description": "Rechazo VALUACION_SIN_VEHICULO."
+  },
+  "valuacionRechazar": "Rechazar oferta",
+  "@valuacionRechazar": {
+    "description": "Botón para rechazar la oferta."
+  },
+  "valuacionRechazarCancelar": "Cancelar",
+  "@valuacionRechazarCancelar": {
+    "description": "Cierra el diálogo sin rechazar."
+  },
+  "valuacionRechazarConfirmar": "Sí, rechazar",
+  "@valuacionRechazarConfirmar": {
+    "description": "Confirma el rechazo."
+  },
+  "valuacionRechazarMensaje": "Vas a rechazar la oferta de {monto}. No se puede deshacer.",
+  "@valuacionRechazarMensaje": {
+    "description": "Mensaje del diálogo de rechazo.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionRechazarTitulo": "¿Rechazar la oferta?",
+  "@valuacionRechazarTitulo": {
+    "description": "Título del diálogo de rechazo."
+  },
+  "valuacionReintentar": "Reintentar",
+  "@valuacionReintentar": {
+    "description": "Botón para reintentar."
+  },
+  "valuacionRespuestaError": "No pudimos registrar tu respuesta. Intenta de nuevo.",
+  "@valuacionRespuestaError": {
+    "description": "Fallo genérico al responder."
+  },
+  "valuacionRespuestaNoDisponible": "La oferta cambió y no se registró nada. Revisa la información actual.",
+  "@valuacionRespuestaNoDisponible": {
+    "description": "Rechazo OFERTA_NO_DISPONIBLE."
+  },
+  "valuacionRespuestaVencida": "La oferta venció y no se registró tu respuesta.",
+  "@valuacionRespuestaVencida": {
+    "description": "Rechazo OFERTA_VENCIDA."
+  },
+  "valuacionSinConexionAccion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@valuacionSinConexionAccion": {
+    "description": "Una acción falló por falta de red."
+  },
+  "valuacionSinConexionMensaje": "Revisa tu internet e intenta de nuevo.",
+  "@valuacionSinConexionMensaje": {
+    "description": "Mensaje del estado sin conexión."
+  },
+  "valuacionSinConexionTitulo": "Sin conexión",
+  "@valuacionSinConexionTitulo": {
+    "description": "Título del estado sin conexión."
+  },
+  "valuacionTomaCajuela": "Cajuela",
+  "@valuacionTomaCajuela": {
+    "description": "Nombre de la toma CAJUELA."
+  },
+  "valuacionTomaFrente": "Frente",
+  "@valuacionTomaFrente": {
+    "description": "Nombre de la toma FRENTE."
+  },
+  "valuacionTomaInteriorDelantero": "Interior delantero",
+  "@valuacionTomaInteriorDelantero": {
+    "description": "Nombre de la toma INTERIOR_DELANTERO."
+  },
+  "valuacionTomaInteriorTrasero": "Interior trasero",
+  "@valuacionTomaInteriorTrasero": {
+    "description": "Nombre de la toma INTERIOR_TRASERO."
+  },
+  "valuacionTomaLateralDerecho": "Lateral derecho",
+  "@valuacionTomaLateralDerecho": {
+    "description": "Nombre de la toma LATERAL_DERECHO."
+  },
+  "valuacionTomaLateralIzquierdo": "Lateral izquierdo",
+  "@valuacionTomaLateralIzquierdo": {
+    "description": "Nombre de la toma LATERAL_IZQUIERDO."
+  },
+  "valuacionTomaNumero": "{numero}. {toma}",
+  "@valuacionTomaNumero": {
+    "description": "Título de la tarjeta de una toma.",
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      },
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionTomaTableroKm": "Tablero con el kilometraje",
+  "@valuacionTomaTableroKm": {
+    "description": "Nombre de la toma TABLERO_KM."
+  },
+  "valuacionTomaTrasera": "Trasera",
+  "@valuacionTomaTrasera": {
+    "description": "Nombre de la toma TRASERA."
+  },
+  "valuacionValorGrafica": "Valor estimado medio por mes",
+  "@valuacionValorGrafica": {
+    "description": "Título de la gráfica (V2-M26.05)."
+  },
+  "valuacionValorMedio": "Valor estimado medio",
+  "@valuacionValorMedio": {
+    "description": "Etiqueta cuando solo hay un mes."
+  },
+  "valuacionValorNoEncontradoMensaje": "Puede que ya no esté en tu garaje.",
+  "@valuacionValorNoEncontradoMensaje": {
+    "description": "Vehículo no encontrado."
+  },
+  "valuacionValorNoEncontradoTitulo": "No encontramos ese auto",
+  "@valuacionValorNoEncontradoTitulo": {
+    "description": "Título de vehículo no encontrado."
+  },
+  "valuacionValorRangoDelMes": "{rango}, con {km} km",
+  "@valuacionValorRangoDelMes": {
+    "description": "Rango y kilometraje de un mes.",
+    "placeholders": {
+      "rango": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionValorRangos": "Rango de cada mes",
+  "@valuacionValorRangos": {
+    "description": "Encabezado de la lista de rangos."
+  },
+  "valuacionValorTitulo": "Valor de mi auto",
+  "@valuacionValorTitulo": {
+    "description": "Título de la pantalla del valor en el tiempo."
+  },
+  "valuacionValorUnMes": "La tendencia aparece cuando estimes tu auto en otros meses.",
+  "@valuacionValorUnMes": {
+    "description": "Explicación con un solo mes."
+  },
+  "valuacionValorVacioAccion": "Ir a la calculadora",
+  "@valuacionValorVacioAccion": {
+    "description": "Acción del vacío del valor."
+  },
+  "valuacionValorVacioMensaje": "Estima este auto con la calculadora para ver cómo cambia su valor.",
+  "@valuacionValorVacioMensaje": {
+    "description": "Mensaje del vacío del valor."
+  },
+  "valuacionValorVacioTitulo": "Aún no hay estimaciones de este auto",
+  "@valuacionValorVacioTitulo": {
+    "description": "Título del vacío del valor."
+  },
+  "valuacionVerValor": "Ver cómo cambia el valor",
+  "@valuacionVerValor": {
+    "description": "Botón hacia el valor en el tiempo."
+  },
+  "historialTicketPuntosGanados": "Ganaste {puntos} puntos de lealtad con este servicio.",
+  "@historialTicketPuntosGanados": {
+    "description": "Aviso del ticket con los puntos que dio la orden (V2-M12.02); puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadTitulo": "Mis puntos",
+  "@lealtadTitulo": {
+    "description": "Título de la pantalla de lealtad (V2-M12.01)."
+  },
+  "lealtadSubtitulo": "Gana puntos en cada servicio y canjéalos en la agencia.",
+  "@lealtadSubtitulo": {
+    "description": "Subtítulo de Mis puntos."
+  },
+  "lealtadPuntos": "{puntos} puntos",
+  "@lealtadPuntos": {
+    "description": "Saldo de puntos; puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivel": "Nivel {nivel}",
+  "@lealtadNivel": {
+    "description": "Nivel del cliente; nivel es Bronce, Plata u Oro.",
+    "placeholders": {
+      "nivel": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivelBronce": "Bronce",
+  "@lealtadNivelBronce": {
+    "description": "Nombre del nivel Bronce."
+  },
+  "lealtadNivelPlata": "Plata",
+  "@lealtadNivelPlata": {
+    "description": "Nombre del nivel Plata."
+  },
+  "lealtadNivelOro": "Oro",
+  "@lealtadNivelOro": {
+    "description": "Nombre del nivel Oro."
+  },
+  "lealtadFaltan": "Te faltan {puntos} puntos para {nivel}",
+  "@lealtadFaltan": {
+    "description": "Lo que falta para el siguiente nivel.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      },
+      "nivel": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadNivelMaximo": "Ya estás en el nivel más alto.",
+  "@lealtadNivelMaximo": {
+    "description": "Detalle en el nivel Oro."
+  },
+  "lealtadGanados": "{puntos} ganados en 12 meses",
+  "@lealtadGanados": {
+    "description": "Etiqueta de la barra de avance; puntos ya viene con separadores.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "lealtadCargando": "Cargando tus puntos",
+  "@lealtadCargando": {
+    "description": "Esqueleto de carga de las pantallas de lealtad para el lector de pantalla."
+  },
+  "lealtadReintentar": "Reintentar",
+  "@lealtadReintentar": {
+    "description": "Botón para volver a pedir los datos de lealtad."
+  },
+  "lealtadRecompensas": "Recompensas",
+  "@lealtadRecompensas": {
+    "description": "Acceso al catálogo de recompensas."
+  },
+  "lealtadRecompensasResumen": "Canjea tus puntos",
+  "@lealtadRecompensasResumen": {
+    "description": "Subtítulo del acceso a recompensas."
+  },
+  "lealtadCanjes": "Mis canjes",
+  "@lealtadCanjes": {
+    "description": "Acceso a mis canjes."
+  },
+  "lealtadCanjesResumen": "Códigos para usar en la agencia",
+  "@lealtadCanjesResumen": {
+    "description": "Subtítulo del acceso a mis canjes."
+  },
+  "lealtadMovimientos": "Movimientos",
+  "@lealtadMovimientos": {
+    "description": "Acceso a los movimientos de puntos."
+  },
+  "lealtadMovimientosResumen": "De dónde salen tus puntos",
+  "@lealtadMovimientosResumen": {
+    "description": "Subtítulo del acceso a movimientos."
+  },
+  "lealtadReferir": "Referir a un amigo",
+  "@lealtadReferir": {
+    "description": "Acceso a referir."
+  },
+  "lealtadReferirResumen": "Gana puntos si tu amigo compra su auto",
+  "@lealtadReferirResumen": {
+    "description": "Subtítulo del acceso a referir."
+  },
+  "recompensasTitulo": "Recompensas",
+  "@recompensasTitulo": {
+    "description": "Título del catálogo de recompensas (V2-M12.03)."
+  },
+  "recompensasSaldo": "Tienes {puntos} puntos",
+  "@recompensasSaldo": {
+    "description": "Subtítulo del catálogo con el saldo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasVaciaTitulo": "Aún no hay recompensas",
+  "@recompensasVaciaTitulo": {
+    "description": "Estado vacío del catálogo."
+  },
+  "recompensasVaciaMensaje": "Cuando la agencia publique recompensas las verás aquí.",
+  "@recompensasVaciaMensaje": {
+    "description": "Mensaje del catálogo vacío."
+  },
+  "recompensasCosto": "{puntos} puntos",
+  "@recompensasCosto": {
+    "description": "Costo de una recompensa.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasTeFaltan": "Te faltan {puntos}",
+  "@recompensasTeFaltan": {
+    "description": "Insignia de una recompensa que no alcanza.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasAgotada": "Agotada",
+  "@recompensasAgotada": {
+    "description": "Insignia de una recompensa sin existencia."
+  },
+  "recompensasDisponible": "Disponible",
+  "@recompensasDisponible": {
+    "description": "Insignia de una recompensa que se puede canjear."
+  },
+  "recompensasConfirmarTitulo": "¿Canjear {recompensa}?",
+  "@recompensasConfirmarTitulo": {
+    "description": "Título de la confirmación del canje.",
+    "placeholders": {
+      "recompensa": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasConfirmarMensaje": "Cuesta {costo} puntos. Te quedarán {quedan}.",
+  "@recompensasConfirmarMensaje": {
+    "description": "Mensaje de la confirmación con el costo y el saldo que queda.",
+    "placeholders": {
+      "costo": {
+        "type": "String"
+      },
+      "quedan": {
+        "type": "String"
+      }
+    }
+  },
+  "recompensasConfirmar": "Canjear",
+  "@recompensasConfirmar": {
+    "description": "Botón que confirma el canje."
+  },
+  "recompensasCancelar": "Cancelar",
+  "@recompensasCancelar": {
+    "description": "Botón que cancela el canje."
+  },
+  "recompensasNoSePudoTitulo": "No se pudo canjear",
+  "@recompensasNoSePudoTitulo": {
+    "description": "Título del diálogo de error al canjear."
+  },
+  "recompensasSinSaldo": "Ya no te alcanzan los puntos para esta recompensa.",
+  "@recompensasSinSaldo": {
+    "description": "Error SALDO_INSUFICIENTE."
+  },
+  "recompensasSeAgoto": "Esta recompensa se acaba de agotar.",
+  "@recompensasSeAgoto": {
+    "description": "Error RECOMPENSA_AGOTADA."
+  },
+  "recompensasError": "No pudimos canjear la recompensa. Intenta de nuevo.",
+  "@recompensasError": {
+    "description": "Error genérico al canjear."
+  },
+  "recompensasEntendido": "Entendido",
+  "@recompensasEntendido": {
+    "description": "Cierra el diálogo de error."
+  },
+  "canjesTitulo": "Mis canjes",
+  "@canjesTitulo": {
+    "description": "Título de mis canjes (V2-M12.03)."
+  },
+  "canjesVaciaTitulo": "Aún no canjeas nada",
+  "@canjesVaciaTitulo": {
+    "description": "Estado vacío de mis canjes."
+  },
+  "canjesVaciaMensaje": "Cambia tus puntos por recompensas y aquí tendrás su código.",
+  "@canjesVaciaMensaje": {
+    "description": "Mensaje de mis canjes vacío."
+  },
+  "canjesVerRecompensas": "Ver recompensas",
+  "@canjesVerRecompensas": {
+    "description": "Acción del estado vacío de mis canjes."
+  },
+  "canjesCodigo": "Código {codigo}",
+  "@canjesCodigo": {
+    "description": "Código del canje.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesVence": "Vence el {fecha}",
+  "@canjesVence": {
+    "description": "Vigencia de un canje vigente.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesUsado": "Usado el {fecha}",
+  "@canjesUsado": {
+    "description": "Fecha de uso de un canje.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesVencio": "Venció el {fecha}; tus puntos regresaron",
+  "@canjesVencio": {
+    "description": "Detalle de un canje vencido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "canjesEstadoVigente": "Vigente",
+  "@canjesEstadoVigente": {
+    "description": "Estado de canje vigente."
+  },
+  "canjesEstadoUsado": "Usado",
+  "@canjesEstadoUsado": {
+    "description": "Estado de canje usado."
+  },
+  "canjesEstadoVencido": "Vencido",
+  "@canjesEstadoVencido": {
+    "description": "Estado de canje vencido."
+  },
+  "canjeMuestralo": "Muestra este código en caja o en servicio para usar tu recompensa.",
+  "@canjeMuestralo": {
+    "description": "Indicación bajo el QR de un canje vigente."
+  },
+  "canjeQr": "Código QR del canje {codigo}",
+  "@canjeQr": {
+    "description": "Descripción del QR para el lector de pantalla.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "canjeYaUsado": "Este canje ya se usó.",
+  "@canjeYaUsado": {
+    "description": "Aviso de un canje usado."
+  },
+  "canjeYaVencio": "Este canje venció sin usarse y tus puntos regresaron a tu saldo.",
+  "@canjeYaVencio": {
+    "description": "Aviso de un canje vencido."
+  },
+  "canjeDetalles": "Detalles",
+  "@canjeDetalles": {
+    "description": "Encabezado de los detalles del canje."
+  },
+  "canjeCosto": "Costo",
+  "@canjeCosto": {
+    "description": "Fila del costo del canje."
+  },
+  "canjeCanjeado": "Canjeado",
+  "@canjeCanjeado": {
+    "description": "Fila de la fecha del canje."
+  },
+  "canjeVigencia": "Vigencia",
+  "@canjeVigencia": {
+    "description": "Fila de la vigencia del canje."
+  },
+  "canjeUsadoEl": "Usado",
+  "@canjeUsadoEl": {
+    "description": "Fila de la fecha de uso del canje."
+  },
+  "canjeNoEncontradoTitulo": "Ya no encontramos este canje",
+  "@canjeNoEncontradoTitulo": {
+    "description": "Estado cuando el canje no aparece en la lista."
+  },
+  "canjeNoEncontradoMensaje": "Vuelve a Mis canjes para ver tus códigos.",
+  "@canjeNoEncontradoMensaje": {
+    "description": "Mensaje del canje no encontrado."
+  },
+  "movimientosTitulo": "Movimientos",
+  "@movimientosTitulo": {
+    "description": "Título de los movimientos de puntos (V2-M12.05)."
+  },
+  "movimientosVaciaTitulo": "Aún no tienes movimientos",
+  "@movimientosVaciaTitulo": {
+    "description": "Estado vacío de los movimientos."
+  },
+  "movimientosVaciaMensaje": "Ganas puntos cada vez que recoges tu auto del taller.",
+  "@movimientosVaciaMensaje": {
+    "description": "Mensaje de movimientos vacío."
+  },
+  "movimientosMotivoServicio": "Servicio en el taller",
+  "@movimientosMotivoServicio": {
+    "description": "Motivo SERVICIO."
+  },
+  "movimientosMotivoCanje": "Canje de recompensa",
+  "@movimientosMotivoCanje": {
+    "description": "Motivo CANJE."
+  },
+  "movimientosMotivoDevolucion": "Canje vencido",
+  "@movimientosMotivoDevolucion": {
+    "description": "Motivo DEVOLUCION_CANJE."
+  },
+  "movimientosMotivoReferido": "Amigo referido",
+  "@movimientosMotivoReferido": {
+    "description": "Motivo REFERIDO."
+  },
+  "movimientosMotivoAjuste": "Ajuste de la agencia",
+  "@movimientosMotivoAjuste": {
+    "description": "Motivo AJUSTE."
+  },
+  "movimientosMotivoOtro": "Movimiento",
+  "@movimientosMotivoOtro": {
+    "description": "Motivo que la app no conoce."
+  },
+  "movimientosOrden": "Orden {id}",
+  "@movimientosOrden": {
+    "description": "Referencia a una orden de servicio.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "movimientosCanje": "Canje {id}",
+  "@movimientosCanje": {
+    "description": "Referencia a un canje.",
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "movimientosFechaYReferencia": "{fecha} · {referencia}",
+  "@movimientosFechaYReferencia": {
+    "description": "Fecha y a qué se refiere un movimiento.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "referencia": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosGanaste": "Ganaste {puntos} puntos",
+  "@movimientosGanaste": {
+    "description": "Lectura de un movimiento positivo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosUsaste": "Usaste {puntos} puntos",
+  "@movimientosUsaste": {
+    "description": "Lectura de un movimiento negativo.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
+  },
+  "movimientosCargandoMas": "Cargando más movimientos",
+  "@movimientosCargandoMas": {
+    "description": "Indicador al pedir la siguiente página."
+  },
+  "movimientosErrorMas": "No pudimos cargar más movimientos.",
+  "@movimientosErrorMas": {
+    "description": "Error al pedir la siguiente página."
+  },
+  "referirTitulo": "Referir a un amigo",
+  "@referirTitulo": {
+    "description": "Título de referir (V2-M12.04)."
+  },
+  "referirSubtitulo": "Si tu amigo compra su auto, ganas puntos.",
+  "@referirSubtitulo": {
+    "description": "Subtítulo de referir."
+  },
+  "referirCodigoTitulo": "Tu código",
+  "@referirCodigoTitulo": {
+    "description": "Sección con el código personal."
+  },
+  "referirCodigoAyuda": "Tu amigo lo menciona al visitar la agencia.",
+  "@referirCodigoAyuda": {
+    "description": "Ayuda bajo el código personal."
+  },
+  "referirCompartir": "Compartir mi código",
+  "@referirCompartir": {
+    "description": "Botón que comparte el código con la hoja del sistema."
+  },
+  "referirMensaje": "Te recomiendo la agencia. Menciona mi código {codigo} cuando vayas.",
+  "@referirMensaje": {
+    "description": "Texto que se comparte con el código.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "referirFormularioTitulo": "Registra a tu amigo",
+  "@referirFormularioTitulo": {
+    "description": "Sección del formulario de referido."
+  },
+  "referirFormularioNota": "Escribe su teléfono, su correo o los dos. La agencia solo los usa para contactarlo.",
+  "@referirFormularioNota": {
+    "description": "Nota bajo el formulario."
+  },
+  "referirNombre": "Nombre de tu amigo",
+  "@referirNombre": {
+    "description": "Campo de nombre."
+  },
+  "referirTelefono": "Teléfono",
+  "@referirTelefono": {
+    "description": "Campo de teléfono."
+  },
+  "referirTelefonoAyuda": "10 dígitos",
+  "@referirTelefonoAyuda": {
+    "description": "Ayuda del campo de teléfono."
+  },
+  "referirTelefonoInvalido": "Escribe los 10 dígitos.",
+  "@referirTelefonoInvalido": {
+    "description": "Error de teléfono incompleto."
+  },
+  "referirCorreo": "Correo",
+  "@referirCorreo": {
+    "description": "Campo de correo."
+  },
+  "referirCorreoInvalido": "Revisa el correo.",
+  "@referirCorreoInvalido": {
+    "description": "Error de correo inválido."
+  },
+  "referirConsentimiento": "Mi amigo aceptó que la agencia lo contacte",
+  "@referirConsentimiento": {
+    "description": "Casilla de consentimiento."
+  },
+  "referirEnviar": "Enviar",
+  "@referirEnviar": {
+    "description": "Botón que registra al amigo."
+  },
+  "referirEnviado": "Listo, la agencia contactará a {nombre}.",
+  "@referirEnviado": {
+    "description": "Aviso tras registrar al amigo.",
+    "placeholders": {
+      "nombre": {
+        "type": "String"
+      }
+    }
+  },
+  "referirDuplicado": "Esa persona ya está con la agencia.",
+  "@referirDuplicado": {
+    "description": "Error REFERIDO_DUPLICADO; no dice de quién."
+  },
+  "referirLimite": "Ya tienes el máximo de amigos en seguimiento. Espera a que la agencia los atienda.",
+  "@referirLimite": {
+    "description": "Error LIMITE_REFERIDOS."
+  },
+  "referirError": "No pudimos registrar a tu amigo. Intenta de nuevo.",
+  "@referirError": {
+    "description": "Error genérico al referir."
+  },
+  "referirListaTitulo": "Tus referidos",
+  "@referirListaTitulo": {
+    "description": "Sección con mis referidos."
+  },
+  "referirVacio": "Aún no refieres a nadie.",
+  "@referirVacio": {
+    "description": "Lista de referidos vacía."
+  },
+  "referirListaError": "No pudimos cargar tus referidos.",
+  "@referirListaError": {
+    "description": "Error al pedir los referidos."
+  },
+  "referirPuntosAyuda": "Ganas puntos una sola vez por cada amigo que compre.",
+  "@referirPuntosAyuda": {
+    "description": "Nota bajo la lista de referidos."
+  },
+  "referidoEstadoRegistrado": "Registrado",
+  "@referidoEstadoRegistrado": {
+    "description": "Estado REGISTRADO."
+  },
+  "referidoEstadoSeguimiento": "En seguimiento",
+  "@referidoEstadoSeguimiento": {
+    "description": "Estado EN_SEGUIMIENTO."
+  },
+  "referidoEstadoCompro": "Compró",
+  "@referidoEstadoCompro": {
+    "description": "Estado COMPRO."
+  },
+  "referidoEstadoDescartado": "Sin compra",
+  "@referidoEstadoDescartado": {
+    "description": "Estado DESCARTADO."
+  },
+  "referidoDesde": "{estado} · desde el {fecha}",
+  "@referidoDesde": {
+    "description": "Estado y fecha de un referido.",
+    "placeholders": {
+      "estado": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "referidoGanaste": "+{puntos}",
+  "@referidoGanaste": {
+    "description": "Puntos ganados por un referido que compró.",
+    "placeholders": {
+      "puntos": {
+        "type": "String"
+      }
+    }
   }
 }

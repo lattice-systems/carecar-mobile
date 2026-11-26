@@ -60,6 +60,33 @@ void main() {
     semantica.dispose();
   });
 
+  testWidgets('el lector oye el final de la fila cuando trae su etiqueta', (
+    tester,
+  ) async {
+    final semantica = tester.ensureSemantics();
+    await tester.pumpWidget(
+      conTemaPista(
+        const GrupoLista(
+          filas: [
+            FilaGrupo(
+              titulo: 'Servicio',
+              subtitulo: '30 ago 2026',
+              fin: Text('+230'),
+              etiquetaFin: 'Ganaste 230 puntos',
+            ),
+            FilaGrupo(titulo: 'Version', fin: Text('2.0')),
+          ],
+        ),
+      ),
+    );
+    expect(
+      find.bySemanticsLabel('Servicio. 30 ago 2026. Ganaste 230 puntos'),
+      findsOneWidget,
+    );
+    expect(find.bySemanticsLabel('Version'), findsOneWidget);
+    semantica.dispose();
+  });
+
   testWidgets('el encabezado se anuncia como encabezado', (tester) async {
     final semantica = tester.ensureSemantics();
     await tester.pumpWidget(conTemaPista(_grupo()));

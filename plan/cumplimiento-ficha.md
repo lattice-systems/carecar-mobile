@@ -12,7 +12,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01); su ruta **no está encendida** hasta V2-M01.03 y V2-M01.04, y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
+| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01) y la renovación de 30 días demostrada de punta a punta (V2-M01.11); **la ruta del módulo ya solo espera** a actualizar las trece pruebas ajenas, y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
 | Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 pantalla v2 con 15 pruebas y el apretón de manos con el guardia fijado (V2-M01.03); su ruta **no está encendida** hasta V2-M01.04, y falta demostrarla en celular | V2-M01.03 |
 | Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); las dos pantallas de la app con 26 pruebas (V2-M01.04), **la ruta del módulo no está encendida** y falta demostrarlo en celular con un correo real | V2-M01.04, V2-T05.04 |
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
@@ -27,7 +27,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | --- | --- | --- | --- |
 | Mis vehículos (garaje) | `cliente`, `vehiculo_cliente` | 🟡 | V2-M02.01 |
 | Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
-| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; backend con `manual.archivo_pdf`; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
+| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga, comparte y **busca** en el manual (índice de texto offline, sin motor de PDF); backend con `manual.archivo_pdf`; falta índice estructurado y probar en celular | V2-M02.03, V2-T05.05 |
 | Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 app v2 y backend (tabla y endpoint, rama `feat/v2-juan-pablo-citas-b`); la tabla aún sin datos, la app usa su respaldo | V2-M02.04 |
 | Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 app v2 con paginación infinita, filtro por año, fecha de cierre, estatus y total (`test/modulos/historial/`); backend con filtro y años (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.05, V2-T05.06 |
 | Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 app v2 con mano de obra y refacciones (cantidad × precio) que suman el total y PDF para compartir (`test/modulos/historial/`); backend `GET /servicios/{id}` (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.06, V2-T05.06 |
@@ -78,9 +78,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ | Ver M08 |
-| Métodos de pago guardados | `metodo_pago` | ⬜ | Ver M08 |
-| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ | Ver M08 |
+| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ procesador propuesto en la [ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md) (Stripe en modo de pruebas) | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07 |
+| Métodos de pago guardados | `metodo_pago` | ⬜ | V2-M08.04 |
+| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ `factura` existe (ERP, sin timbrado); se le agregan columnas para facturas de servicio y el timbrado va con Facturama en sandbox ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) | V2-M08.05, V2-M08.06 |
 
 ### 9. Documentos y vencimientos — plan [M09](modulos/M09-documentos-y-vencimientos.md)
 
@@ -93,8 +93,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Cobertura de garantía | `garantia`, `vehiculo_cliente` | ⬜ | Ver M10 |
-| Campañas de seguridad (recalls) | `campana_seguridad`, `campana_vehiculo`, `vehiculo_cliente`, `cita` | ⬜ | Ver M10 |
+| Cobertura de garantía | `garantia`, `vehiculo_cliente` | 🟡 backend con `garantia` y el estado por fecha y km contra el km actual (`GarantiaCampanasIntegrationTest`, `PoliticaGarantiaTest`) y aviso diario a 60 y 15 días y 1 000 km (`AvisosGarantiaServiceTest`); app con coberturas, consumo y recarga en vivo (`test/modulos/garantia/`); falta el push con la app cerrada (V2-M06.07) y demostrar en celular | V2-M10.01, V2-M10.05 |
+| Campañas de seguridad (recalls) | `campana_seguridad`, `campana_vehiculo`, `vehiculo_cliente`, `cita` | 🟡 backend con cruce por modelo, año y rango de VIN, `campana_vehiculo` y cita con motivo `CAMPANA` (`GarantiaCampanasIntegrationTest`, `CampanasAppServiceTest`); app con campañas, agendar, recarga en vivo e insignia en el garaje (`test/modulos/garantia/`, `test/modulos/vehiculos/garaje_campanas_test.dart`); falta el push con la app cerrada (V2-M06.07) y demostrar en celular | V2-M10.02, V2-M10.03, V2-M10.04 |
 
 ### 11. Asistencia en camino — plan [M11](modulos/M11-asistencia-en-camino.md)
 
@@ -106,9 +106,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Puntos y niveles | `movimiento_puntos` | ⬜ | Ver M12 |
-| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | ⬜ | Ver M12 |
-| Referidos | `referido`, `prospecto` | ⬜ | Ver M12 |
+| Puntos y niveles | `movimiento_puntos` | 🟡 backend con `movimiento_puntos`, saldo por suma, nivel por lo ganado en 12 meses y puntos al entregar la orden una sola vez (`LealtadIntegrationTest`, `ReglasLealtadTest`); app con Mis puntos, movimientos paginados, puntos en el ticket y recarga en vivo (`test/modulos/lealtad/`); reglas propuestas, pendientes del PO; falta sumar al confirmarse el pago (V2-M08.02) y demostrar en celular | V2-M12.01, V2-M12.02, V2-M12.05 |
+| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | 🟡 backend con canje bajo bloqueo del saldo y de la recompensa, código de 8 caracteres, vencimiento a 30 días con `DEVOLUCION_CANJE` y uso por el personal (`LealtadIntegrationTest`, `LealtadAppServiceTest`); app con catálogo, confirmación, mis canjes y QR (`test/modulos/lealtad/`); falta demostrar en celular | V2-M12.03 |
+| Referidos | `referido`, `prospecto` | 🟡 backend con `referido`, consentimiento, prospecto creado por evento en `ventascrm` y 500 puntos al finalizarse la venta una sola vez (`LealtadIntegrationTest`, `ReferidosAppServiceTest`); app con mi código para compartir, formulario y mis referidos (`test/modulos/lealtad/`); falta demostrar en celular | V2-M12.04 |
 
 ### 13. Promociones y novedades — plan [M13](modulos/M13-promociones.md)
 
@@ -120,8 +120,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | ⬜ | Ver M14 |
-| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | ⬜ | Ver M14 |
+| Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | 🟡 backend integrado (backend#107) y app lista con el contrato 2.21.0 y `mock_api`: filtro por vehículo, existencia visible, categorías y búsqueda (`test/modulos/tienda/pantalla_tienda_test.dart`, `pantalla_producto_test.dart` y `test/contrato/contrato_tienda_test.dart`). Falta probarla contra el backend real y demostrarla en celular | V2-M14.01 |
+| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | 🟡 backend integrado (backend#107) y app lista con `mock_api`: apartar con llave de idempotencia, vigencia, cancelar, instalar en una cita y mis pedidos en vivo (`pantalla_carrito_test.dart` y `pantalla_pedidos_test.dart`). Se paga en caja: el pago en la app (V2-M14.04) espera a V2-M08.02 y el push con la app cerrada a M06. Falta probarla contra el backend real y demostrarla en celular | V2-M14.02, V2-M14.03, V2-M14.05 |
 
 ### 15. Encuestas y NPS — plan [M15](modulos/M15-encuestas-nps.md)
 
@@ -171,7 +171,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Valuación y oferta de toma a cuenta | `valuacion`, `estimacion_toma_cuenta`, `cita` | ⬜ | Ver M26 |
+| Valuación y oferta de toma a cuenta | `valuacion`, `estimacion_toma_cuenta`, `cita` | 🟡 app lista contra `mock_api` con el contrato de la valuación: solicitud, fotos guiadas, inspección, oferta y valor en el tiempo (`test/modulos/valuacion/` y `test/contrato/contrato_valuacion_test.dart`). El backend se construye aparte: `valuacion` es nueva y la inspección reusa `cita` con motivo `VALUACION`. `estimacion_toma_cuenta` ya existe (`V34`). La oferta se captura con endpoints del personal porque el ERP y el CRM web están congelados. Falta integrar el backend y demostrarlo en celular | V2-M26.01 a V2-M26.05 |
 
 ### 23. Ayuda y sucursales — plan [M27](modulos/M27-ayuda-y-sucursales.md)
 

@@ -11,9 +11,11 @@ import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../tienda/tienda.dart';
 import '../dominio/comparativa.dart';
 import '../dominio/modelo_vigente.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
@@ -90,6 +92,8 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
                 titulo: textos.catalogoVacioTitulo,
                 mensaje: textos.catalogoVacioMensaje,
                 icono: Icons.directions_car_outlined,
+                textoAccion: textos.tiendaTitulo,
+                alAccion: () => context.push(rutaTienda),
               ),
             )
           : MarcoPantalla(
@@ -123,6 +127,24 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
                     )
                   : null,
               slivers: [
+                // La tienda (V2-M14) vive en Explorar, junto al catálogo.
+                if (!_comparando)
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(
+                      Espaciado.e4,
+                      Espaciado.e4,
+                      Espaciado.e4,
+                      0,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: TarjetaResumen(
+                        titulo: textos.tiendaTitulo,
+                        subtitulo: textos.tiendaEntradaDetalle,
+                        icono: Icons.shopping_bag_outlined,
+                        alToque: () => context.push(rutaTienda),
+                      ),
+                    ),
+                  ),
                 _Lista(
                   modelos: lista,
                   comparando: _comparando,
