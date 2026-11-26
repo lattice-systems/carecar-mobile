@@ -5394,6 +5394,90 @@
   "@mantenimientoRecordatorioEnVivo": {
     "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
   },
+  "mapaAyudaPin": "Arrastra el pin, toca el mapa o usa las flechas.",
+  "@mapaAyudaPin": {
+    "description": "Cómo mover el pin del mapa."
+  },
+  "mapaConPin": "Mapa con un pin.",
+  "@mapaConPin": {
+    "description": "Nombre del mapa para el lector de pantalla cuando hay pin."
+  },
+  "mapaConUbicacion": "Se muestra tu ubicación.",
+  "@mapaConUbicacion": {
+    "description": "Se suma al nombre del mapa cuando dibuja tu ubicación."
+  },
+  "mapaMiUbicacion": "Ver mi ubicación",
+  "@mapaMiUbicacion": {
+    "description": "Botón que muestra tu ubicación en el mapa."
+  },
+  "mapaMoverEste": "Mover el pin al este",
+  "@mapaMoverEste": {
+    "description": "Botón que mueve el pin sin arrastrar."
+  },
+  "mapaMoverNorte": "Mover el pin al norte",
+  "@mapaMoverNorte": {
+    "description": "Botón que mueve el pin sin arrastrar."
+  },
+  "mapaMoverOeste": "Mover el pin al oeste",
+  "@mapaMoverOeste": {
+    "description": "Botón que mueve el pin sin arrastrar."
+  },
+  "mapaMoverSur": "Mover el pin al sur",
+  "@mapaMoverSur": {
+    "description": "Botón que mueve el pin sin arrastrar."
+  },
+  "mapaPinAlCentro": "Poner el pin en el centro",
+  "@mapaPinAlCentro": {
+    "description": "Botón que pone el pin sin tocar el mapa."
+  },
+  "mapaPinMovidoEste": "Pin movido al este",
+  "@mapaPinMovidoEste": {
+    "description": "Anuncio del lector de pantalla."
+  },
+  "mapaPinMovidoNorte": "Pin movido al norte",
+  "@mapaPinMovidoNorte": {
+    "description": "Anuncio del lector de pantalla."
+  },
+  "mapaPinMovidoOeste": "Pin movido al oeste",
+  "@mapaPinMovidoOeste": {
+    "description": "Anuncio del lector de pantalla."
+  },
+  "mapaPinMovidoSur": "Pin movido al sur",
+  "@mapaPinMovidoSur": {
+    "description": "Anuncio del lector de pantalla."
+  },
+  "mapaReintentar": "Reintentar",
+  "@mapaReintentar": {
+    "description": "Botón que vuelve a pedir las imágenes del mapa."
+  },
+  "mapaSeguimiento": "Mapa de seguimiento.",
+  "@mapaSeguimiento": {
+    "description": "Nombre del mapa que solo sigue un marcador."
+  },
+  "mapaSinPin": "Mapa sin pin.",
+  "@mapaSinPin": {
+    "description": "Nombre del mapa para el lector de pantalla cuando no hay pin."
+  },
+  "mapaSinTeselas": "No pudimos cargar el mapa. Revisa tu internet y vuelve a intentarlo.",
+  "@mapaSinTeselas": {
+    "description": "Aviso cuando las imágenes del mapa no cargan."
+  },
+  "mapaUbicacionApagada": "La ubicación del teléfono está apagada. Enciéndela y vuelve a intentarlo.",
+  "@mapaUbicacionApagada": {
+    "description": "Aviso cuando el GPS está apagado."
+  },
+  "mapaUbicacionBloqueada": "La ubicación está bloqueada. Actívala para CareCar en los ajustes del teléfono.",
+  "@mapaUbicacionBloqueada": {
+    "description": "Aviso cuando el permiso ya no se puede pedir."
+  },
+  "mapaUbicacionDenegada": "No nos diste permiso para ver tu ubicación. Puedes usar el mapa sin ella.",
+  "@mapaUbicacionDenegada": {
+    "description": "Aviso cuando se niega el permiso de ubicación."
+  },
+  "mapaUbicacionTiempo": "Tu ubicación tardó demasiado. Vuelve a intentarlo.",
+  "@mapaUbicacionTiempo": {
+    "description": "Aviso cuando la posición no llega a tiempo."
+  },
   "garantiaTitulo": "Garantía",
   "@garantiaTitulo": {
     "description": "Título de la pantalla de garantía (V2-M10.01)."

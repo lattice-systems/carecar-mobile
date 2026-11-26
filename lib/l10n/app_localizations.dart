@@ -6924,6 +6924,132 @@ abstract class AppLocalizations {
   /// **'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.'**
   String get mantenimientoRecordatorioEnVivo;
 
+  /// Cómo mover el pin del mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Arrastra el pin, toca el mapa o usa las flechas.'**
+  String get mapaAyudaPin;
+
+  /// Nombre del mapa para el lector de pantalla cuando hay pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con un pin.'**
+  String get mapaConPin;
+
+  /// Se suma al nombre del mapa cuando dibuja tu ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Se muestra tu ubicación.'**
+  String get mapaConUbicacion;
+
+  /// Botón que muestra tu ubicación en el mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mi ubicación'**
+  String get mapaMiUbicacion;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al este'**
+  String get mapaMoverEste;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al norte'**
+  String get mapaMoverNorte;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al oeste'**
+  String get mapaMoverOeste;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al sur'**
+  String get mapaMoverSur;
+
+  /// Botón que pone el pin sin tocar el mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Poner el pin en el centro'**
+  String get mapaPinAlCentro;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al este'**
+  String get mapaPinMovidoEste;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al norte'**
+  String get mapaPinMovidoNorte;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al oeste'**
+  String get mapaPinMovidoOeste;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al sur'**
+  String get mapaPinMovidoSur;
+
+  /// Botón que vuelve a pedir las imágenes del mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get mapaReintentar;
+
+  /// Nombre del mapa que solo sigue un marcador.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa de seguimiento.'**
+  String get mapaSeguimiento;
+
+  /// Nombre del mapa para el lector de pantalla cuando no hay pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa sin pin.'**
+  String get mapaSinPin;
+
+  /// Aviso cuando las imágenes del mapa no cargan.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar el mapa. Revisa tu internet y vuelve a intentarlo.'**
+  String get mapaSinTeselas;
+
+  /// Aviso cuando el GPS está apagado.
+  ///
+  /// In es, this message translates to:
+  /// **'La ubicación del teléfono está apagada. Enciéndela y vuelve a intentarlo.'**
+  String get mapaUbicacionApagada;
+
+  /// Aviso cuando el permiso ya no se puede pedir.
+  ///
+  /// In es, this message translates to:
+  /// **'La ubicación está bloqueada. Actívala para CareCar en los ajustes del teléfono.'**
+  String get mapaUbicacionBloqueada;
+
+  /// Aviso cuando se niega el permiso de ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'No nos diste permiso para ver tu ubicación. Puedes usar el mapa sin ella.'**
+  String get mapaUbicacionDenegada;
+
+  /// Aviso cuando la posición no llega a tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación tardó demasiado. Vuelve a intentarlo.'**
+  String get mapaUbicacionTiempo;
+
   /// Título de la pantalla de garantía (V2-M10.01).
   ///
   /// In es, this message translates to:
