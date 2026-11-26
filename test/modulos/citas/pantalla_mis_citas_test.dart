@@ -7,6 +7,7 @@ import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.d
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/componentes/vacio_ilustrado.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/dialogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
@@ -94,17 +95,17 @@ void main() {
       expect(find.byType(Esqueleto), findsNothing);
     });
 
-    _prueba('la proxima va en tarjeta heroe y luego proximas y pasadas', (
+    _prueba('la proxima va en su tarjeta y luego proximas y pasadas', (
       tester,
     ) async {
       await tester.pumpWidget(_app(_repo(_conOtraProxima())));
       await tester.pumpAndSettle();
-      expect(find.text('TU PRÓXIMA CITA'), findsOneWidget);
+      expect(find.text('Tu próxima cita'), findsOneWidget);
       expect(find.text('Próximas'), findsOneWidget);
       expect(find.text('Pasadas'), findsOneWidget);
-      // La heroe, otra proxima y cuatro pasadas, cada una con su insignia.
+      // La proxima, otra proxima y cuatro pasadas, cada una con su insignia.
       expect(find.byType(Insignia), findsNWidgets(6));
-      final heroe = tester.getTopLeft(find.text('TU PRÓXIMA CITA')).dy;
+      final heroe = tester.getTopLeft(find.text('Tu próxima cita')).dy;
       final proximas = tester.getTopLeft(find.text('Próximas')).dy;
       final pasadas = tester.getTopLeft(find.text('Pasadas')).dy;
       expect(heroe, lessThan(proximas));
@@ -154,10 +155,11 @@ void main() {
     _prueba('muestra fecha, hora y vehiculo de la cita', (tester) async {
       await tester.pumpWidget(_app(_repo()));
       await tester.pumpAndSettle();
-      // La heroe dice el dia enorme, el dia de la semana y el horario.
+      // La proxima lleva su cuadro de fecha (el dia) y dice el dia de la
+      // semana y el horario, como la tarjeta del inicio.
+      expect(find.byType(CuadroFecha), findsWidgets);
       expect(find.text('26'), findsOneWidget);
-      expect(find.text('Jueves'), findsOneWidget);
-      expect(find.text('09:00 - 10:00'), findsOneWidget);
+      expect(find.text('Jueves, 09:00 - 10:00'), findsOneWidget);
       // Las pasadas llevan su fecha en la fila.
       expect(find.text('mar, 10 nov · 09:00'), findsOneWidget);
       expect(find.text('Mazda CX-5 2024'), findsWidgets);
@@ -228,7 +230,7 @@ void main() {
         _app(_repo(_conOtraProxima()), idioma: const Locale('en')),
       );
       await tester.pumpAndSettle();
-      expect(find.text('YOUR NEXT APPOINTMENT'), findsOneWidget);
+      expect(find.text('Your next appointment'), findsOneWidget);
       expect(find.text('Upcoming'), findsOneWidget);
       expect(find.text('Past'), findsOneWidget);
       expect(find.text('Attended'), findsOneWidget);
