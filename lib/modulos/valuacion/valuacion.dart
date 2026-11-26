@@ -26,6 +26,7 @@ export 'presentacion/pantalla_agendar_inspeccion.dart'
     show PantallaAgendarInspeccion;
 export 'presentacion/pantalla_fotos_valuacion.dart' show PantallaFotosValuacion;
 export 'presentacion/pantalla_mis_valuaciones.dart' show PantallaMisValuaciones;
+export 'presentacion/pantalla_valor_vehiculo.dart' show PantallaValorVehiculo;
 export 'presentacion/pantalla_valuacion.dart' show PantallaValuacion;
 export 'presentacion/proveedores_valuacion.dart'
     show repositorioValuacionProvider;

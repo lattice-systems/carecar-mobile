@@ -5,6 +5,7 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import 'pantalla_agendar_inspeccion.dart';
 import 'pantalla_fotos_valuacion.dart';
 import 'pantalla_mis_valuaciones.dart';
+import 'pantalla_valor_vehiculo.dart';
 import 'pantalla_valuacion.dart';
 
 /// Mis valuaciones: `/valuaciones`.
@@ -53,6 +54,15 @@ final rutasValuacion = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaMisValuaciones()),
     routes: [
+      // Va antes de ':valuacionId' para que "valor" no se lea como un id.
+      GoRoute(
+        path: 'valor/:vehiculoId',
+        name: 'valuacion-valor',
+        builder: (context, state) => _conTemaPista(
+          context,
+          PantallaValorVehiculo(vehiculoId: _entero(state, 'vehiculoId')),
+        ),
+      ),
       GoRoute(
         path: ':valuacionId',
         name: 'valuacion',
