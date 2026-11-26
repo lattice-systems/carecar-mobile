@@ -141,9 +141,9 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
                       ? null
                       : textos.recompensasSaldo(puntosLealtad(context, saldo)),
                   conRegreso: true,
-                  alRefrescar: () async {
+                  alRefrescar: () {
                     ref.invalidate(resumenLealtadProvider);
-                    await ref.refresh(recompensasProvider.future);
+                    return ref.refresh(recompensasProvider.future);
                   },
                   slivers: [
                     SliverPadding(

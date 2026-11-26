@@ -126,9 +126,9 @@ class _PantallaReferirState extends ConsumerState<PantallaReferir> {
       titulo: textos.referirTitulo,
       subtitulo: textos.referirSubtitulo,
       conRegreso: true,
-      alRefrescar: () async {
+      alRefrescar: () {
         ref.invalidate(resumenLealtadProvider);
-        await ref.refresh(referidosProvider.future);
+        return ref.refresh(referidosProvider.future);
       },
       slivers: [
         SliverToBoxAdapter(

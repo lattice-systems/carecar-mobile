@@ -221,7 +221,11 @@ class _Ticket extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: Espaciado.e3),
               child: Aviso(
-                mensaje: textos.historialTicketPuntosGanados(puntos),
+                mensaje: textos.historialTicketPuntosGanados(
+                  NumberFormat.decimalPattern(
+                    idioma.startsWith('es') ? 'es_MX' : 'en_US',
+                  ).format(puntos),
+                ),
                 tono: Tono.exito,
               ),
             ),
