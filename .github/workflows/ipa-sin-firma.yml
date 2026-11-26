@@ -95,7 +95,14 @@ jobs:
         run: |
           extra=()
           if [ -n "$API_BASE_URL" ]; then extra+=("--dart-define=API_BASE_URL=$API_BASE_URL"); fi
-          flutter build ios --release --no-codesign --flavor produccion -t lib/main_produccion.dart --build-name="$VERSION" --build-number="$NUMERO" "${extra[@]}"
+          flutter build ios --release --no-codesign --flavor produccion -t lib/main_produccion.dart --build-name="$VERSION" --build-number="$NUMERO" --split-debug-info=build/simbolos/ios "${extra[@]}"
+
+      - name: Conservar símbolos de iOS
+        uses: actions/upload-artifact@v7
+        with:
+          name: simbolos-ios-${{ github.run_number }}
+          path: build/simbolos/ios/
+          if-no-files-found: error
 
       # Un IPA es un zip con la app dentro de Payload/. -y guarda los enlaces
       # simbólicos de los frameworks tal cual.
