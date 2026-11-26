@@ -1,0 +1,31 @@
+{
+  "valuaciones": [],
+  "valuacionSemillaEstimaciones": [
+    {
+      "id": 901, "clienteId": 1, "vehiculoId": 5, "mesesAtras": 5, "marca": "Nissan", "modelo": "March", "anio": 2020, "km": 40000,
+      "estado": "BUENO", "minimo": 126000, "maximo": 148000,
+      "supuestos": { "valorBase": 260000, "edadAnios": 6, "kmEsperado": 90000, "ajusteKm": 1.1, "ajusteEstado": 1, "margen": 0.08 }
+    },
+    {
+      "id": 902, "clienteId": 1, "vehiculoId": 5, "mesesAtras": 3, "marca": "Nissan", "modelo": "March", "anio": 2020, "km": 43000,
+      "estado": "BUENO", "minimo": 122000, "maximo": 143200,
+      "supuestos": { "valorBase": 260000, "edadAnios": 6, "kmEsperado": 90000, "ajusteKm": 1.094, "ajusteEstado": 1, "margen": 0.08 }
+    },
+    {
+      "id": 903, "clienteId": 1, "vehiculoId": 5, "mesesAtras": 1, "marca": "Nissan", "modelo": "March", "anio": 2020, "km": 47000,
+      "estado": "BUENO", "minimo": 117500, "maximo": 138000,
+      "supuestos": { "valorBase": 260000, "edadAnios": 6, "kmEsperado": 90000, "ajusteKm": 1.086, "ajusteEstado": 1, "margen": 0.08 }
+    },
+    {
+      "id": 904, "clienteId": 1, "vehiculoId": 6, "mesesAtras": 0, "marca": "Volkswagen", "modelo": "Jetta", "anio": 2018, "km": 82000,
+      "estado": "BUENO", "minimo": 163000, "maximo": 191300,
+      "supuestos": { "valorBase": 420000, "edadAnios": 8, "kmEsperado": 120000, "ajusteKm": 1.076, "ajusteEstado": 1, "margen": 0.08 }
+    }
+  ],
+  "valuacionSemillaOfertas": [
+    {
+      "id": 901, "clienteId": 1, "vehiculoId": 6, "estimacionId": 904, "citaId": 901, "monto": 172500, "diasVigencia": 5,
+      "nota": "Incluye el juego de llantas que revisamos en la inspección.", "asesor": "Vera Vendedora"
+    }
+  ]
+}

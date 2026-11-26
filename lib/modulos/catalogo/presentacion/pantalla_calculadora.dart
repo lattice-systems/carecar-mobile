@@ -14,6 +14,7 @@ import '../../../nucleo/diseno/componentes/selector.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../valuacion/valuacion.dart';
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/toma_a_cuenta.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
@@ -232,6 +233,12 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
                       diferencia: diferencia,
                     ),
                   ],
+                  const SizedBox(height: Espaciado.e4),
+                  // Otra estimacion estrena boton: sin el aviso de la anterior.
+                  BotonPedirValuacion(
+                    key: ValueKey(_estimacion!.id),
+                    estimacionId: _estimacion!.id,
+                  ),
                 ],
                 if (_falla != null) ...[
                   const SizedBox(height: Espaciado.e4),

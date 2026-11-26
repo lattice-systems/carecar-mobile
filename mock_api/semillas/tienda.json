@@ -1,0 +1,60 @@
+{
+  "productosTienda": [
+    {
+      "id": 1,
+      "codigo": "ACC-TAP-MARCH",
+      "nombre": "Tapetes de uso rudo",
+      "descripcion": "Juego de cuatro tapetes a la medida.",
+      "categoria": "accesorio",
+      "precio": 850,
+      "existencia": 6,
+      "universal": false,
+      "compatibilidad": [{ "modelo": "March", "anioDesde": 2017, "anioHasta": 2022 }]
+    },
+    {
+      "id": 2,
+      "codigo": "CUI-SHA-01",
+      "nombre": "Champú con cera",
+      "descripcion": "Botella de un litro.",
+      "categoria": "cuidado",
+      "precio": 129.9,
+      "existencia": 25,
+      "universal": true,
+      "compatibilidad": []
+    },
+    {
+      "id": 3,
+      "codigo": "REF-FIL-JETTA",
+      "nombre": "Filtro de aire Jetta",
+      "categoria": "refaccion",
+      "precio": 320,
+      "existencia": 2,
+      "universal": false,
+      "compatibilidad": [{ "modelo": "Jetta", "anioDesde": 2015, "anioHasta": 2019 }]
+    },
+    {
+      "id": 4,
+      "codigo": "REF-PLU-VERSA",
+      "nombre": "Plumas limpiaparabrisas",
+      "categoria": "refaccion",
+      "precio": 410,
+      "existencia": 0,
+      "universal": false,
+      "compatibilidad": [
+        { "modelo": "Versa", "anioDesde": 2020, "anioHasta": 2026 },
+        { "modelo": "March", "anioDesde": 2017, "anioHasta": 2022 }
+      ]
+    },
+    {
+      "id": 5,
+      "codigo": "ACC-PORTA-01",
+      "nombre": "Portacelular para rejilla",
+      "categoria": "accesorio",
+      "precio": 245,
+      "existencia": 1,
+      "universal": true,
+      "compatibilidad": []
+    }
+  ],
+  "pedidosTienda": []
+}

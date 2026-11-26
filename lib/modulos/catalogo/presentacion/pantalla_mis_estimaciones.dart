@@ -7,6 +7,8 @@ import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
+import '../../../nucleo/diseno/componentes/boton_circular.dart';
+import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -14,6 +16,8 @@ import '../../../nucleo/diseno/componentes/fila_lista.dart';
 import '../../../nucleo/diseno/componentes/hoja_inferior.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../valuacion/valuacion.dart';
 import '../dominio/toma_a_cuenta.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
@@ -141,7 +145,17 @@ class _EstadoPantallaMisEstimaciones
     return Scaffold(
       body: Column(
         children: [
-          BarraPantalla(titulo: t.misEstimacionesTitulo),
+          BarraPantalla(
+            titulo: t.misEstimacionesTitulo,
+            acciones: [
+              BotonCircular(
+                etiqueta: t.valuacionMisTitulo,
+                icono: Icons.verified_outlined,
+                colorIcono: TokensPista.de(context).colores.texto,
+                alPresionar: () => context.push(rutaValuaciones),
+              ),
+            ],
+          ),
           Expanded(child: cuerpo),
         ],
       ),
@@ -214,10 +228,16 @@ class _Lista extends StatelessWidget {
 
 void _abrirDetalle(BuildContext context, Estimacion e) {
   final t = AppLocalizations.of(context);
+  // Se cierra la hoja y se navega desde la pantalla de abajo.
+  void irA(BuildContext hoja, String ruta) {
+    Navigator.of(hoja).pop();
+    context.push(ruta);
+  }
+
   mostrarHojaInferior<void>(
     context,
     titulo: e.titulo,
-    builder: (_) {
+    builder: (hoja) {
       final diferencia = diferenciaAPagar(e);
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -233,6 +253,21 @@ void _abrirDetalle(BuildContext context, Estimacion e) {
               modelo: e.modeloDestino,
               precio: e.precioDestino!,
               diferencia: diferencia,
+            ),
+          ],
+          const SizedBox(height: Espaciado.e4),
+          BotonPedirValuacion(
+            estimacionId: e.id,
+            alAbrir: (id) => irA(hoja, rutaValuacion(id)),
+          ),
+          if (e.vehiculoId case final vehiculoId?) ...[
+            const SizedBox(height: Espaciado.e2),
+            BotonPildora(
+              texto: t.valuacionVerValor,
+              icono: Icons.show_chart_rounded,
+              variante: VarianteBotonPildora.tonal,
+              expandido: true,
+              alPresionar: () => irA(hoja, rutaValorVehiculo(vehiculoId)),
             ),
           ],
         ],

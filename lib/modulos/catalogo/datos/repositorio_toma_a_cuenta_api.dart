@@ -51,6 +51,7 @@ class RepositorioTomaACuentaApi implements RepositorioTomaACuenta {
     return Estimacion(
       id: dto.id,
       creadaEn: dto.creadaEn,
+      vehiculoId: dto.vehiculoId,
       marca: dto.marca,
       modelo: dto.modelo,
       anio: dto.anio,

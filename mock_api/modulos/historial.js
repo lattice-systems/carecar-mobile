@@ -75,6 +75,7 @@ module.exports = function registrarHistorial(servidor, db, vehiculoDelCliente) {
       subtotal,
       iva: Math.round((servicio.total - subtotal) * 100) / 100,
       total: servicio.total,
+      puntosGanados: servicio.puntosGanados ?? null,
     });
   });
 

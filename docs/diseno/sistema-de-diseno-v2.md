@@ -192,7 +192,7 @@ Toda pantalla de detalle o de formulario se arma igual: **barra, título grande,
 
 **`Estante`.** Título grande (`titulo2`) como encabezado, enlace «Ver todo» opcional (48 de zona táctil, etiqueta «Ver todo: título») y carrusel horizontal de `hijos` de ancho `anchoTarjeta` que, al soltar, se alinea a una tarjeta con el resorte del sistema. El `alto` lo fija quien lo usa y debe dar cabida a la tarjeta con letra al 200 %.
 
-**`GrupoLista` y `FilaGrupo`.** Lista agrupada: tarjeta de radio `tarjeta` con filas separadas por líneas finas que empiezan después del ícono. Cada fila lleva ícono en cuadro redondeado de color (`colorIcono`), título, subtítulo, adorno final y chevron si es tocable. `encabezado` (etiqueta, como encabezado accesible) y `pie` (texto de apoyo) van fuera de la tarjeta. Cada fila es un solo nodo para el lector de pantalla.
+**`GrupoLista` y `FilaGrupo`.** Lista agrupada: tarjeta de radio `tarjeta` con filas separadas por líneas finas que empiezan después del ícono. Cada fila lleva ícono en cuadro redondeado de color (`colorIcono`), título, subtítulo, adorno final y chevron si es tocable. `encabezado` (etiqueta, como encabezado accesible) y `pie` (texto de apoyo) van fuera de la tarjeta. Cada fila es un solo nodo para el lector de pantalla con título y subtítulo; el adorno final no se lee, así que si es una cifra que importa (puntos, un importe) se dice en palabras con `etiquetaFin` («Ganaste 230 puntos» por «+230»).
 
 Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %). Todos están en la galería.
 

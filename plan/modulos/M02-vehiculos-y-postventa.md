@@ -90,7 +90,7 @@ Estado: **En revisión**.
 
 - **App:** módulo nuevo `lib/modulos/historial/` (carpeta de Ricardo). Rutas `/historial/{vehiculoId}` y `/historial/{vehiculoId}/ticket/{servicioId}`, también por enlace.
   - **Historial (V2-M02.05):** órdenes de la más reciente a la más antigua con fecha del servicio, estatus (texto e icono, no solo color), fecha de cierre y total. Paginación infinita: al llegar al final se pide la página siguiente; si falla, avisa y deja reintentar sin perder lo cargado. Filtro por año con los años que tienen servicios. Resuelve esqueleto, vacío, error con reintento y sin conexión; se recarga jalando.
-  - **Ticket (V2-M02.06):** mano de obra y refacciones, cada renglón con cantidad × precio e importe; totales de mano de obra, refacciones, subtotal sin IVA, IVA y total. Si la mano de obra más las refacciones no dan el total, lo avisa. «Compartir PDF» descarga el PDF y abre la hoja del sistema.
+  - **Ticket (V2-M02.06):** mano de obra y refacciones, cada renglón con cantidad × precio e importe; totales de mano de obra, refacciones, subtotal sin IVA, IVA y total. Si la mano de obra más las refacciones no dan el total, lo avisa. «Compartir PDF» descarga el PDF y abre la hoja del sistema. Si la orden dio puntos de lealtad (`puntosGanados`, V2-M12.02), lo dice en un aviso: «Ganaste N puntos de lealtad con este servicio.».
   - **Pruebas:** `test/modulos/historial/` (dominio, repositorio, pantallas en claro, oscuro y letra al 200 %, y rutas).
 - **Backend:** `GET /vehiculos/{id}/servicios?anio=` con `fechaCierre`, `GET /vehiculos/{id}/servicios/anios` y `GET /servicios/{id}` (backend#85). Contrato v2 en 2.5.0; copia en `api/`. `mock_api` con los mismos datos.
 - **Acceso desde el detalle:** la fila «Historial de servicios» del detalle del vehículo (carpeta de Juan Pablo) se conecta en un PR aparte, como pide la propiedad por carpeta.
@@ -205,7 +205,7 @@ Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId
 
 ## Avance de V2-M02.03
 
-Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
+Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: búsqueda resuelta; falta índice estructurado y probar en celular (ver pendientes). Solo la parte de app.
 
 - **Por modelo y año:** `manualProvider(id)` toma el vehículo del garaje y pide el manual con `ManualesDeLaAgencia` (código v1): primero `GET /vehiculos/{id}/manuales` (que el backend filtra por modelo y año) y, si no hay o falla la red, el PDF empaquetado en `assets/Manuales/<marca>/<tipo>/<año>/` (respaldo local). Sin manual en ninguna parte: estado vacío que lo explica.
 - **Visor:** `VisorPdf` del sistema v2 con zoom de pellizco y contador «Página N de M». La pantalla le entrega los bytes ya descargados, así el respaldo local y el de la agencia se ven igual.
@@ -213,11 +213,14 @@ Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`
 - **Compartir:** paquete nuevo `share_plus` (commits `build(deps)` aparte); abre la hoja del sistema con el PDF en memoria y nombre «Manual <modelo> <año>.pdf».
 - **Estados:** esqueleto, datos, vacío, error con reintento y sin conexión.
 - **Textos:** claves `vehiculosManual*` en los ARB es y en.
-- **Pruebas:** `test/modulos/vehiculos/pantalla_manual_test.dart` (visor falso porque el motor nativo de PDF no corre en pruebas; claro, oscuro, letra al 200 % e inglés) y las rutas en `ruta_garaje_test.dart`.
-- **Pendientes (criterios no cumplidos):**
-  - **Búsqueda dentro del PDF e índice:** `pdfx` no extrae texto ni ofrece marcadores, así que no se resolvió. Hay que decidir paquete (p. ej. `pdfrx`, que sí busca texto y lee el índice, o la extracción de `syncfusion_flutter_pdf`, con su licencia) y reemplazar el motor de `VisorPdf`, que es de `lib/nucleo/diseno` (Cristian). Hasta entonces la historia no debe pasar a `Hecha`.
-  - El respaldo solo cubre los manuales empaquetados (Nissan Kicks 2023, March 2020, Versa 2024); un manual bajado de la agencia no queda guardado para verlo sin red después.
-  - Probado en pruebas de widget; falta probar descarga, compartir y el visor real en un teléfono.
+- **Búsqueda dentro del manual (criterio «índice, búsqueda»):** sin sumar un motor de PDF al app ni tocar el `VisorPdf` de Cristian. El texto de cada manual empaquetado se extrae una sola vez con `pdftotext` (`tool/generar_indice_manuales.py`) a un `indice.json` junto al PDF; `IndiceDeManual` (dominio, puro) busca sobre él ignorando acentos y mayúsculas y devuelve páginas con un fragmento. Un panel sobre el visor (campo `CampoBusquedaLiquido`, resultados en `GrupoLista`) abre la página elegida reconstruyendo el `VisorPdf` con esa `paginaInicial`. El botón de buscar solo aparece cuando el vehículo tiene índice empaquetado (`indiceDeManualProvider`).
+  - **Decisión (por qué así):** `pdfx` no extrae texto; `pdfrx` o `syncfusion` habrían metido un motor nativo (conflicto con `pdfx`, no corre en pruebas) o una licencia. El sidecar de texto es offline, se prueba en CI (carga el `indice.json` real) y no entra en el terreno de Cristian.
+- **Pruebas:** `test/modulos/vehiculos/pantalla_manual_test.dart`, `indice_de_manual_test.dart` (búsqueda pura), `indice_manual_local_test.dart` (carga el índice real empaquetado) y `buscar_manual_test.dart` (panel, resultado con fragmento, salto de página); claro, oscuro, letra al 200 % e inglés; las rutas en `ruta_garaje_test.dart`.
+- **Pendientes:**
+  - La búsqueda cubre solo los manuales **empaquetados** (Kicks 2023, March 2020, Versa 2024); un manual distinto bajado de la agencia no tiene índice offline. A futuro podría usarse el índice del asistente (V2-M24) cuando haya red.
+  - **Índice estructurado (tabla de contenido):** los marcadores vienen inconsistentes entre los PDF (March no trae, Kicks sí), así que el criterio «índice» se cubre con la búsqueda + salto de página, no con un árbol de secciones. Si se quiere el árbol, se genera del `outline` cuando exista.
+  - Un manual bajado de la agencia no queda guardado para verlo sin red después.
+  - Probado en pruebas de widget; falta probar descarga, compartir, el visor real y la búsqueda en un teléfono. Por eso la historia no cumple aún la DoD de probar en celular.
 
 ## Avance de V2-M02.04
 

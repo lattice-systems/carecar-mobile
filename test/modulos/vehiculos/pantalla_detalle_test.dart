@@ -125,7 +125,7 @@ void main() {
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
       expect(find.text(texto), findsOneWidget);
     }
-    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(4));
+    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(6));
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);
@@ -144,6 +144,15 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Mantenimiento'), findsOneWidget);
     expect(find.bySemanticsLabel('Mantenimiento'), findsOneWidget);
+  });
+
+  _prueba('garantia y campanas son accesos del grupo Tu auto (V2-M10)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioGarajeFake()));
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel('Garantía'), findsOneWidget);
+    expect(find.bySemanticsLabel('Campañas de seguridad'), findsOneWidget);
   });
 
   _prueba('un id que no esta en el garaje explica y no deja en blanco', (

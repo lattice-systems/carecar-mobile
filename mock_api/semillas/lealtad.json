@@ -1,0 +1,122 @@
+{
+  "movimientosPuntos": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "puntos": 900,
+      "motivo": "AJUSTE",
+      "referenciaTipo": null,
+      "referenciaId": null,
+      "creadoEn": "2026-07-01T16:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "puntos": 230,
+      "motivo": "SERVICIO",
+      "referenciaTipo": "ORDEN",
+      "referenciaId": 2,
+      "creadoEn": "2026-08-30T19:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "clienteId": 1,
+      "puntos": 500,
+      "motivo": "REFERIDO",
+      "referenciaTipo": "REFERIDO",
+      "referenciaId": 1,
+      "creadoEn": "2026-10-05T17:45:00.000Z"
+    },
+    {
+      "id": 4,
+      "clienteId": 1,
+      "puntos": -300,
+      "motivo": "CANJE",
+      "referenciaTipo": "CANJE",
+      "referenciaId": 1,
+      "creadoEn": "2026-10-10T15:10:00.000Z"
+    }
+  ],
+  "recompensas": [
+    {
+      "id": 1,
+      "nombre": "Lavado exprés",
+      "descripcion": "Lavado exterior a mano mientras esperas.",
+      "puntos": 300,
+      "activa": true,
+      "existencia": null
+    },
+    {
+      "id": 2,
+      "nombre": "10 % en mano de obra",
+      "descripcion": "Descuento en la mano de obra de tu siguiente servicio.",
+      "puntos": 800,
+      "activa": true,
+      "existencia": null
+    },
+    {
+      "id": 3,
+      "nombre": "Revisión de frenos",
+      "descripcion": "Inspección de pastillas, discos y líquido de frenos.",
+      "puntos": 1200,
+      "activa": true,
+      "existencia": null
+    },
+    {
+      "id": 4,
+      "nombre": "Kit de tapetes",
+      "descripcion": "Juego de tapetes de hule a la medida de tu auto.",
+      "puntos": 1500,
+      "activa": true,
+      "existencia": 5
+    },
+    {
+      "id": 5,
+      "nombre": "Termo CareCar",
+      "descripcion": "Termo de acero inoxidable de edición limitada.",
+      "puntos": 400,
+      "activa": true,
+      "existencia": 0
+    }
+  ],
+  "canjes": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "recompensaId": 1,
+      "codigo": "K7XQ2MPA",
+      "recompensa": "Lavado exprés",
+      "puntos": 300,
+      "estado": "USADO",
+      "venceEn": "2026-11-09T15:10:00.000Z",
+      "usadoEn": "2026-10-12T18:30:00.000Z",
+      "creadoEn": "2026-10-10T15:10:00.000Z"
+    }
+  ],
+  "referidos": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "codigo": "CC00001",
+      "nombre": "Laura Méndez",
+      "telefono": "4421234567",
+      "correo": null,
+      "consentimientoEn": "2026-09-02T17:00:00.000Z",
+      "estado": "COMPRO",
+      "recompensadoEn": "2026-10-05T17:45:00.000Z",
+      "creadoEn": "2026-09-02T17:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "codigo": "CC00001",
+      "nombre": "Jorge Ruiz",
+      "telefono": null,
+      "correo": "jorge.ruiz@example.com",
+      "consentimientoEn": "2026-11-15T20:00:00.000Z",
+      "estado": "EN_SEGUIMIENTO",
+      "recompensadoEn": null,
+      "creadoEn": "2026-11-15T20:00:00.000Z"
+    }
+  ]
+}

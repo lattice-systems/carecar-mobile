@@ -243,6 +243,110 @@
   "mantenimientoYaToca": "Due now · past {km} km",
   "precioDesde": "From {precio}",
   "fotoDeModelo": "Photo of the {modelo}",
+  "tiendaAccionError": "Something went wrong. Try again.",
+  "tiendaAccionSinConexion": "No connection. Check your internet and try again.",
+  "tiendaAgendarCita": "Book appointment",
+  "tiendaAgotado": "Out of stock",
+  "tiendaAgregado": "Added. You have {piezas} of this product.",
+  "tiendaAgregar": "Add to cart",
+  "tiendaApartadoMensaje": "Pay at the counter. Your reservation expires on {fecha}.",
+  "tiendaApartadoTitulo": "Items reserved",
+  "tiendaApartar": "Reserve",
+  "tiendaApartarSinConexion": "No connection. Your cart is saved: try again and it will not be reserved twice.",
+  "tiendaAvanceTitulo": "Progress",
+  "tiendaBuscar": "Search by name or code",
+  "tiendaCambiarCita": "Change appointment",
+  "tiendaCancelarConfirmar": "Yes, cancel it",
+  "tiendaCancelarMensaje": "The items are released and someone else can reserve them.",
+  "tiendaCancelarPedido": "Cancel order",
+  "tiendaCancelarTitulo": "Cancel the order?",
+  "tiendaCancelarVolver": "Keep it",
+  "tiendaCantidad": "Quantity",
+  "tiendaCargando": "Loading the store",
+  "tiendaCarritoLleno": "The cart holds up to {maximo} different products.",
+  "tiendaCarritoTitulo": "Cart",
+  "tiendaCarritoVacioMensaje": "Add products from the store to reserve them.",
+  "tiendaCarritoVacioTitulo": "Your cart is empty",
+  "tiendaCategoriaAccesorio": "Accessories",
+  "tiendaCategoriaCuidado": "Car care",
+  "tiendaCategoriaRefaccion": "Parts",
+  "tiendaCategoriaTodas": "All",
+  "tiendaCitaElegida": "Selected",
+  "tiendaCompatibilidadAnios": "{desde} to {hasta}",
+  "tiendaCompatibilidadTitulo": "Compatible cars",
+  "tiendaCompatible": "Fits your car",
+  "tiendaDetalleTitulo": "My order",
+  "tiendaElegirCita": "Choose the appointment",
+  "tiendaEntendido": "Got it",
+  "tiendaEntradaDetalle": "Genuine accessories and parts for your car",
+  "tiendaEntregaCita": "Install at my appointment",
+  "tiendaEntregaMostrador": "Pick up at the counter",
+  "tiendaEntregaTitulo": "Delivery",
+  "tiendaErrorCitas": "We could not load your appointments.",
+  "tiendaErrorMas": "We could not load more. Try again.",
+  "tiendaErrorMensaje": "Try again in a moment.",
+  "tiendaErrorTitulo": "We could not load this",
+  "tiendaEstadoApartado": "Reserved",
+  "tiendaEstadoCancelado": "Cancelled",
+  "tiendaEstadoEntregado": "Delivered",
+  "tiendaEstadoListo": "Ready",
+  "tiendaExistencia": "{piezas, plural, =1{1 left} other{{piezas} left}}",
+  "tiendaFiltroAuto": "Fits",
+  "tiendaFotoDe": "Photo of {producto}",
+  "tiendaInstalacionTitulo": "Installation",
+  "tiendaInstalarProxima": "Install at my next appointment",
+  "tiendaIrALaTienda": "Go to the store",
+  "tiendaLeQueda": "Fits your {auto}",
+  "tiendaMaximoAlcanzado": "You already have {piezas}, the most for this product.",
+  "tiendaMisPedidos": "My orders",
+  "tiendaMotivoAgencia": "The dealership cancelled it",
+  "tiendaMotivoCliente": "You cancelled it",
+  "tiendaMotivoVencido": "The reservation expired",
+  "tiendaNoLeQueda": "Does not fit your {auto}",
+  "tiendaNoSeApartoTitulo": "We could not reserve it",
+  "tiendaNoSeCambioTitulo": "We could not change the order",
+  "tiendaPagoEnCaja": "The app does not charge you: pay at the counter.",
+  "tiendaPedidoNoEncontradoMensaje": "Check your list of orders.",
+  "tiendaPedidoNoEncontradoTitulo": "We could not find that order",
+  "tiendaPedidoResumen": "{total}, {piezas, plural, =1{1 item} other{{piezas} items}}",
+  "tiendaPedidoTitulo": "Order {numero}",
+  "tiendaPedidosVacioMensaje": "What you reserve in the store shows up here.",
+  "tiendaPedidosVacioTitulo": "You have no orders yet",
+  "tiendaPrecioCadaUno": "{precio} each",
+  "tiendaProductoNoEncontradoMensaje": "The dealership may have removed it from the store.",
+  "tiendaProductoNoEncontradoTitulo": "This product is no longer available",
+  "tiendaProductoTitulo": "Product",
+  "tiendaProductosTitulo": "Products",
+  "tiendaQuitar": "Remove",
+  "tiendaQuitarFiltros": "Show all products",
+  "tiendaRechazoCitaNoDisponible": "That appointment was cancelled or has passed. Choose another or pick up at the counter.",
+  "tiendaRechazoIncompatible": "One of the products does not fit the car of that appointment. Choose another or pick up at the counter.",
+  "tiendaRechazoLimite": "You already have 3 undelivered orders. Pick up or cancel one to reserve more.",
+  "tiendaRechazoNoCancelable": "This order was already delivered and cannot be cancelled.",
+  "tiendaRechazoNoModificable": "This order was delivered or cancelled and cannot be changed.",
+  "tiendaRechazoSinExistencia": "There are not enough items left. Check the stock and change the quantity.",
+  "tiendaReintentar": "Retry",
+  "tiendaRenglonDetalle": "{cantidad} at {precio}",
+  "tiendaSeInstala": "Installed at your appointment",
+  "tiendaSeRecoge": "Picked up at the counter",
+  "tiendaSeguirComprando": "Back to the store",
+  "tiendaSinCitaCompatible": "It does not fit the car of any of your upcoming appointments.",
+  "tiendaSinCitas": "You have no upcoming confirmed appointments. Book one to have it installed.",
+  "tiendaSinConexionMensaje": "Check your internet and try again.",
+  "tiendaSinConexionTitulo": "No connection",
+  "tiendaTitulo": "Store",
+  "tiendaTodosLosProductos": "All products",
+  "tiendaTotal": "Total",
+  "tiendaUniversal": "Fits any car",
+  "tiendaVacioMensaje": "Try another search, category or car.",
+  "tiendaVacioTitulo": "No products found",
+  "tiendaVence": "Expires on {fecha}",
+  "tiendaVenceDetalle": "Expires on {fecha}. After that it is cancelled and the items are released.",
+  "tiendaVerCarrito": "View cart ({piezas})",
+  "tiendaVerMas": "Show more",
+  "tiendaVerMiPedido": "View my order",
+  "tiendaVigenciaCita": "The reservation lasts until the end of the day after your appointment.",
+  "tiendaVigenciaMostrador": "The reservation lasts 48 hours. If it expires, the items are released.",
   "vehiculosAccesoFicha": "Technical specs",
   "@vehiculosAccesoFicha": {
     "description": "Acceso del detalle a la ficha técnica del vehículo."
@@ -2889,5 +2993,411 @@
   "mantenimientoRecordatorioEnVivo": "Your next service is coming up. You can book it whenever you like.",
   "@mantenimientoRecordatorioEnVivo": {
     "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
-  }
+  },
+  "garantiaTitulo": "Warranty",
+  "garantiaAcceso": "Warranty",
+  "garantiaKmActual": "Your car has {km} km",
+  "garantiaVaciaTitulo": "No warranty on file",
+  "garantiaVaciaMensaje": "When the dealership registers your car's warranty you'll see it here.",
+  "garantiaEstadoVigente": "Active",
+  "garantiaEstadoPorVencer": "Expiring soon",
+  "garantiaEstadoVencida": "Expired",
+  "garantiaVence": "Expires on {fecha}",
+  "garantiaVenceOKm": "Expires on {fecha} or at {km} km",
+  "garantiaQuedanDias": "{dias, plural, =1{1 day left} other{{dias} days left}}",
+  "garantiaQuedanKm": "{km} km left",
+  "garantiaVencidaPorFecha": "Expired by date",
+  "garantiaVencidaPorKm": "Expired by mileage",
+  "campanasTitulo": "Recalls",
+  "campanasAcceso": "Safety recalls",
+  "campanasAccesoResumen": "Manufacturer recalls for your car",
+  "campanasInsignia": "Safety recall",
+  "campanasVaciaTitulo": "Your car has no recalls",
+  "campanasVaciaMensaje": "If the manufacturer issues one for your car, we'll let you know.",
+  "campanasCodigo": "Recall {codigo}",
+  "campanasGravedadBaja": "Low severity",
+  "campanasGravedadMedia": "Medium severity",
+  "campanasGravedadAlta": "High severity",
+  "campanasGravedadCritica": "Critical",
+  "campanasEstadoAbierta": "Pending",
+  "campanasEstadoAgendada": "Scheduled",
+  "campanasEstadoAtendida": "Done",
+  "campanasQueHacer": "What to do",
+  "campanasAvisoCritica": "Take care of this recall as soon as possible",
+  "campanasAgendar": "Schedule service",
+  "garantiaReintentar": "Retry",
+  "campanasAgendarSinDia": "Pick a day to see its times.",
+  "campanasAgendarSinHorarios": "No times left that day.",
+  "campanasAgendarSinCupoRango": "The shop has no open times right now. Try again later.",
+  "campanasAgendarVolver": "Back to the recall",
+  "campanasVerCitas": "See my appointments",
+  "campanasAgendarTitulo": "Schedule recall",
+  "campanasAgendarDia": "Pick a day",
+  "campanasAgendarHora": "Pick a time",
+  "campanasAgendarConfirmar": "Schedule",
+  "campanasAgendarSinCupo": "That time slot filled up. Pick another.",
+  "campanasAgendarDuplicada": "Your car already has an appointment that day. Pick another day.",
+  "campanasAgendarYaAgendada": "This recall is already scheduled.",
+  "campanasAgendarError": "We couldn't schedule it. Try again.",
+  "campanasAgendadaTitulo": "Done, your appointment is booked",
+  "campanasAgendadaMensaje": "We'll see you on {fecha} at {hora}.",
+  "campanasQuePasa": "What's wrong",
+  "campanasNoEncontradaTitulo": "We can't find this recall anymore",
+  "campanasNoEncontradaMensaje": "Go back to the list to see your car's recalls.",
+  "campanasVerComprobante": "See confirmation",
+  "vehiculosManualBuscarAccion": "Search the manual",
+  "@vehiculosManualBuscarAccion": {"description": "Acción que abre la búsqueda dentro del manual."},
+  "vehiculosManualBuscarCerrar": "Close search",
+  "@vehiculosManualBuscarCerrar": {"description": "Acción que cierra la búsqueda."},
+  "vehiculosManualBuscarSugerencia": "Search the manual",
+  "@vehiculosManualBuscarSugerencia": {"description": "Texto guía del campo de búsqueda."},
+  "vehiculosManualBuscarAyuda": "Type at least two letters to search the manual.",
+  "@vehiculosManualBuscarAyuda": {"description": "Guía cuando la búsqueda es muy corta."},
+  "vehiculosManualSinResultados": "We couldn’t find “{consulta}” in the manual.",
+  "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "brakes"}}},
+  "vehiculosManualResultadoPagina": "Page {pagina}",
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}},
+  "valuacionAceptar": "Accept offer",
+  "valuacionAceptarMensaje": "You are about to accept the {monto} offer. The dealer records your decision.",
+  "@valuacionAceptarMensaje": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaMensaje": "See you on {dia} at {hora} to inspect your car.",
+  "@valuacionAgendadaMensaje": {
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaTitulo": "Inspection booked",
+  "valuacionAgendadaVerCitas": "See my appointments",
+  "valuacionAgendadaVolver": "Back to the appraisal",
+  "valuacionAgendar": "Book inspection",
+  "valuacionAgendarConfirmar": "Confirm inspection",
+  "valuacionAgendarDia": "Day",
+  "valuacionAgendarDuplicada": "This car already has an appointment that day. Pick another day.",
+  "valuacionAgendarError": "We could not book the inspection. Try again.",
+  "valuacionAgendarHorario": "Time",
+  "valuacionAgendarNoAgendable": "This appraisal already has an appointment or can no longer be booked. Check its details.",
+  "valuacionAgendarSinCupo": "That time just filled up. Pick another one.",
+  "valuacionAgendarSinDia": "Pick a day to see its times.",
+  "valuacionAgendarSinHorarios": "No times left that day.",
+  "valuacionAgendarVacioMensaje": "The workshop has no free times for now. Try again later.",
+  "valuacionAgendarVacioTitulo": "No times available",
+  "valuacionAsesorDetalle": "Your sales advisor for this appraisal",
+  "valuacionAsesorTitulo": "Your advisor",
+  "valuacionAvanceTitulo": "Progress",
+  "valuacionCargando": "Loading the appraisal",
+  "valuacionDetalleTitulo": "Formal appraisal",
+  "valuacionErrorMensaje": "Try again in a moment.",
+  "valuacionErrorTitulo": "We could not load this",
+  "valuacionEstadoAceptada": "Accepted",
+  "valuacionEstadoCitaAgendada": "Inspection booked",
+  "valuacionEstadoDesconocido": "In review",
+  "valuacionEstadoOfertada": "Offer received",
+  "valuacionEstadoRechazada": "Declined",
+  "valuacionEstadoSolicitada": "To be booked",
+  "valuacionEstadoVencida": "Expired",
+  "valuacionEstimadaEl": "Estimated on {fecha}",
+  "@valuacionEstimadaEl": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionEstimadoRango": "Estimated range",
+  "valuacionEstimadoTitulo": "Starting estimate",
+  "valuacionFotoError": "Upload failed. The photo is still here.",
+  "valuacionFotoGaleria": "Choose from gallery",
+  "valuacionFotoInvalida": "The dealer did not accept that image. Use a JPEG or PNG photo up to 8 MB.",
+  "valuacionFotoPorSubir": "Photo to upload: {toma}",
+  "@valuacionFotoPorSubir": {
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSinConexion": "No connection. The photo is still here.",
+  "valuacionFotoSubida": "Uploaded photo: {toma}",
+  "@valuacionFotoSubida": {
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSubiendo": "Uploading the photo",
+  "valuacionFotoTomar": "Take photo",
+  "valuacionFotosAbrirAjustes": "Open settings",
+  "valuacionFotosAvance": "{subidas} of {total} photos",
+  "@valuacionFotosAvance": {
+    "placeholders": {
+      "subidas": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "valuacionFotosCerrada": "This appraisal no longer accepts photos.",
+  "valuacionFotosGuiadasTitulo": "Guided photos",
+  "valuacionFotosPrivacidad": "You can book without all 8 photos. Each photo uploads on its own and the app does not keep it on your phone.",
+  "valuacionFotosSinCamara": "We could not open the camera or the gallery. Try again.",
+  "valuacionFotosSinPermiso": "No permission for the camera or photos. Turn it on in settings.",
+  "valuacionFotosSubir": "Upload guided photos",
+  "valuacionFotosTitulo": "Photos of your car",
+  "valuacionFotosVacio": "You have not uploaded photos yet.",
+  "valuacionInspeccionHorario": "From {inicio} to {fin}",
+  "@valuacionInspeccionHorario": {
+    "placeholders": {
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionInspeccionTitulo": "Inspection",
+  "valuacionInspeccionVerCitas": "See in My appointments",
+  "valuacionInstruccionCajuela": "Open the trunk and capture the whole cargo space.",
+  "valuacionInstruccionFrente": "Stand in front, with the whole car and the plates in view.",
+  "valuacionInstruccionInteriorDelantero": "Open the driver door and capture the front seats and the wheel.",
+  "valuacionInstruccionInteriorTrasero": "Open a rear door and capture the whole back seat.",
+  "valuacionInstruccionLateralDerecho": "Capture the passenger side, bumper to bumper.",
+  "valuacionInstruccionLateralIzquierdo": "Capture the driver side, bumper to bumper.",
+  "valuacionInstruccionTableroKm": "Turn the dashboard on and take a close, glare free shot of the mileage.",
+  "valuacionInstruccionTrasera": "Stand behind, with the whole car and the plates in view.",
+  "valuacionKm": "{km} km",
+  "@valuacionKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionMisErrorMas": "We could not load more appraisals. Try again.",
+  "valuacionMisTitulo": "My appraisals",
+  "valuacionMisVacioAccion": "Go to My estimates",
+  "valuacionMisVacioMensaje": "Request a formal appraisal from an estimate made with one of your cars.",
+  "valuacionMisVacioTitulo": "You have no appraisals yet",
+  "valuacionMisVerMas": "See more",
+  "valuacionNoEncontradaMensaje": "It may no longer exist or may not belong to your account.",
+  "valuacionNoEncontradaTitulo": "We could not find that appraisal",
+  "valuacionOfertaAceptada": "You accepted this offer. The dealer will follow up.",
+  "valuacionOfertaConVigencia": "{monto} offer, valid until {fecha}",
+  "@valuacionOfertaConVigencia": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionOfertaEtiqueta": "Formal dealer offer",
+  "valuacionOfertaRechazada": "You declined this offer.",
+  "valuacionOfertaTitulo": "Your offer",
+  "valuacionOfertaVencida": "Expired. You can no longer answer, but the dealer can renew it.",
+  "valuacionOfertaVigencia": "Valid until {fecha}",
+  "@valuacionOfertaVigencia": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPasoFotos": "Photos",
+  "valuacionPasoInspeccion": "Inspection",
+  "valuacionPasoOferta": "Offer",
+  "valuacionPedidaEl": "Requested on {fecha}",
+  "@valuacionPedidaEl": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPedir": "Request formal appraisal",
+  "valuacionPedirError": "We could not request the appraisal. Try again.",
+  "valuacionPedirNoEncontrada": "We could not find that estimate.",
+  "valuacionPedirSinVehiculo": "This estimate was made by typing the car in. To appraise it, ask at the dealership.",
+  "valuacionRechazar": "Decline offer",
+  "valuacionRechazarCancelar": "Cancel",
+  "valuacionRechazarConfirmar": "Yes, decline",
+  "valuacionRechazarMensaje": "You are about to decline the {monto} offer. This cannot be undone.",
+  "@valuacionRechazarMensaje": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionRechazarTitulo": "Decline the offer?",
+  "valuacionReintentar": "Try again",
+  "valuacionRespuestaError": "We could not record your answer. Try again.",
+  "valuacionRespuestaNoDisponible": "The offer changed and nothing was recorded. Check the current details.",
+  "valuacionRespuestaVencida": "The offer expired and your answer was not recorded.",
+  "valuacionSinConexionAccion": "No connection. Check your internet and try again.",
+  "valuacionSinConexionMensaje": "Check your internet and try again.",
+  "valuacionSinConexionTitulo": "No connection",
+  "valuacionTomaCajuela": "Trunk",
+  "valuacionTomaFrente": "Front",
+  "valuacionTomaInteriorDelantero": "Front interior",
+  "valuacionTomaInteriorTrasero": "Rear interior",
+  "valuacionTomaLateralDerecho": "Right side",
+  "valuacionTomaLateralIzquierdo": "Left side",
+  "valuacionTomaNumero": "{numero}. {toma}",
+  "@valuacionTomaNumero": {
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      },
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionTomaTableroKm": "Dashboard with mileage",
+  "valuacionTomaTrasera": "Rear",
+  "valuacionValorGrafica": "Average estimated value by month",
+  "valuacionValorMedio": "Average estimated value",
+  "valuacionValorNoEncontradoMensaje": "It may no longer be in your garage.",
+  "valuacionValorNoEncontradoTitulo": "We could not find that car",
+  "valuacionValorRangoDelMes": "{rango}, at {km} km",
+  "@valuacionValorRangoDelMes": {
+    "placeholders": {
+      "rango": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionValorRangos": "Range for each month",
+  "valuacionValorTitulo": "My car value",
+  "valuacionValorUnMes": "The trend appears once you estimate your car in other months.",
+  "valuacionValorVacioAccion": "Go to the calculator",
+  "valuacionValorVacioMensaje": "Estimate this car with the calculator to see how its value changes.",
+  "valuacionValorVacioTitulo": "No estimates for this car yet",
+  "valuacionVerValor": "See how the value changes",
+  "historialTicketPuntosGanados": "You earned {puntos} loyalty points with this service.",
+  "lealtadTitulo": "My points",
+  "lealtadSubtitulo": "Earn points with every service and redeem them at the dealership.",
+  "lealtadPuntos": "{puntos} points",
+  "lealtadNivel": "{nivel} level",
+  "lealtadNivelBronce": "Bronze",
+  "lealtadNivelPlata": "Silver",
+  "lealtadNivelOro": "Gold",
+  "lealtadFaltan": "{puntos} more points to reach {nivel}",
+  "lealtadNivelMaximo": "You're already at the top level.",
+  "lealtadGanados": "{puntos} earned in 12 months",
+  "lealtadCargando": "Loading your points",
+  "lealtadReintentar": "Try again",
+  "lealtadRecompensas": "Rewards",
+  "lealtadRecompensasResumen": "Redeem your points",
+  "lealtadCanjes": "My redemptions",
+  "lealtadCanjesResumen": "Codes to use at the dealership",
+  "lealtadMovimientos": "Activity",
+  "lealtadMovimientosResumen": "Where your points come from",
+  "lealtadReferir": "Refer a friend",
+  "lealtadReferirResumen": "Earn points if your friend buys a car",
+  "recompensasTitulo": "Rewards",
+  "recompensasSaldo": "You have {puntos} points",
+  "recompensasVaciaTitulo": "No rewards yet",
+  "recompensasVaciaMensaje": "When the dealership publishes rewards you'll see them here.",
+  "recompensasCosto": "{puntos} points",
+  "recompensasTeFaltan": "{puntos} more needed",
+  "recompensasAgotada": "Sold out",
+  "recompensasDisponible": "Available",
+  "recompensasConfirmarTitulo": "Redeem {recompensa}?",
+  "recompensasConfirmarMensaje": "It costs {costo} points. You'll have {quedan} left.",
+  "recompensasConfirmar": "Redeem",
+  "recompensasCancelar": "Cancel",
+  "recompensasNoSePudoTitulo": "Couldn't redeem",
+  "recompensasSinSaldo": "You no longer have enough points for this reward.",
+  "recompensasSeAgoto": "This reward just sold out.",
+  "recompensasError": "We couldn't redeem the reward. Please try again.",
+  "recompensasEntendido": "Got it",
+  "canjesTitulo": "My redemptions",
+  "canjesVaciaTitulo": "No redemptions yet",
+  "canjesVaciaMensaje": "Trade your points for rewards and their codes will show up here.",
+  "canjesVerRecompensas": "See rewards",
+  "canjesCodigo": "Code {codigo}",
+  "canjesVence": "Expires on {fecha}",
+  "canjesUsado": "Used on {fecha}",
+  "canjesVencio": "Expired on {fecha}; your points were returned",
+  "canjesEstadoVigente": "Active",
+  "canjesEstadoUsado": "Used",
+  "canjesEstadoVencido": "Expired",
+  "canjeMuestralo": "Show this code at the cashier or service desk to use your reward.",
+  "canjeQr": "QR code for redemption {codigo}",
+  "canjeYaUsado": "This redemption was already used.",
+  "canjeYaVencio": "This redemption expired unused and your points were returned.",
+  "canjeDetalles": "Details",
+  "canjeCosto": "Cost",
+  "canjeCanjeado": "Redeemed",
+  "canjeVigencia": "Valid until",
+  "canjeUsadoEl": "Used",
+  "canjeNoEncontradoTitulo": "We can't find this redemption anymore",
+  "canjeNoEncontradoMensaje": "Go back to My redemptions to see your codes.",
+  "movimientosTitulo": "Activity",
+  "movimientosVaciaTitulo": "No activity yet",
+  "movimientosVaciaMensaje": "You earn points every time you pick up your car from service.",
+  "movimientosMotivoServicio": "Service visit",
+  "movimientosMotivoCanje": "Reward redemption",
+  "movimientosMotivoDevolucion": "Expired redemption",
+  "movimientosMotivoReferido": "Referred friend",
+  "movimientosMotivoAjuste": "Dealership adjustment",
+  "movimientosMotivoOtro": "Activity",
+  "movimientosOrden": "Order {id}",
+  "movimientosCanje": "Redemption {id}",
+  "movimientosFechaYReferencia": "{fecha} · {referencia}",
+  "movimientosGanaste": "You earned {puntos} points",
+  "movimientosUsaste": "You used {puntos} points",
+  "movimientosCargandoMas": "Loading more activity",
+  "movimientosErrorMas": "We couldn't load more activity.",
+  "referirTitulo": "Refer a friend",
+  "referirSubtitulo": "If your friend buys a car, you earn points.",
+  "referirCodigoTitulo": "Your code",
+  "referirCodigoAyuda": "Your friend mentions it when visiting the dealership.",
+  "referirCompartir": "Share my code",
+  "referirMensaje": "I recommend the dealership. Mention my code {codigo} when you go.",
+  "referirFormularioTitulo": "Sign up your friend",
+  "referirFormularioNota": "Enter their phone, email or both. The dealership only uses them to contact your friend.",
+  "referirNombre": "Your friend's name",
+  "referirTelefono": "Phone",
+  "referirTelefonoAyuda": "10 digits",
+  "referirTelefonoInvalido": "Enter all 10 digits.",
+  "referirCorreo": "Email",
+  "referirCorreoInvalido": "Check the email.",
+  "referirConsentimiento": "My friend agreed to be contacted by the dealership",
+  "referirEnviar": "Send",
+  "referirEnviado": "Done, the dealership will contact {nombre}.",
+  "referirDuplicado": "That person is already with the dealership.",
+  "referirLimite": "You already have the maximum friends in follow-up. Wait until the dealership reaches them.",
+  "referirError": "We couldn't sign up your friend. Please try again.",
+  "referirListaTitulo": "Your referrals",
+  "referirVacio": "You haven't referred anyone yet.",
+  "referirListaError": "We couldn't load your referrals.",
+  "referirPuntosAyuda": "You earn points once for each friend who buys.",
+  "referidoEstadoRegistrado": "Registered",
+  "referidoEstadoSeguimiento": "In follow-up",
+  "referidoEstadoCompro": "Bought",
+  "referidoEstadoDescartado": "No purchase",
+  "referidoDesde": "{estado} · since {fecha}",
+  "referidoGanaste": "+{puntos}"
 }
