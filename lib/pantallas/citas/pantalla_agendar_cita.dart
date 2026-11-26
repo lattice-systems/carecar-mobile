@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../notificaciones/servicio_notificaciones.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../../widgets/dialogos.dart';
@@ -222,7 +223,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
         }
         if (foto.hasError) {
           return _AvisoEnLinea(
-            icono: Icons.error_outline,
+            icono: LucideIcons300.circleAlert,
             texto: 'No pudimos cargar tus vehículos.',
             alReintentar: _recargarTodo,
           );
@@ -230,7 +231,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
         final vehiculos = foto.data!;
         if (vehiculos.isEmpty) {
           return const _AvisoEnLinea(
-            icono: Icons.no_crash_outlined,
+            icono: LucideIcons300.shieldCheck,
             texto:
                 'No tienes vehículos registrados. La agencia debe registrar '
                 'tu unidad antes de agendar.',
@@ -307,8 +308,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
         if (!cargando && foto.hasError) {
           return _AvisoEnLinea(
             icono: foto.error is SinConexion
-                ? Icons.wifi_off_rounded
-                : Icons.error_outline,
+                ? LucideIcons300.wifiOff
+                : LucideIcons300.circleAlert,
             texto: foto.error is SinConexion
                 ? 'Sin conexión. Revisa tu internet.'
                 : 'No pudimos consultar los horarios.',
@@ -323,7 +324,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
 
         if (!cargando && delDia.isEmpty) {
           return _AvisoEnLinea(
-            icono: Icons.event_busy_outlined,
+            icono: LucideIcons300.calendarX,
             texto:
                 'No hay horarios disponibles el '
                 '${formatoFechaLarga(_dia).toLowerCase()}. Prueba otro día.',
@@ -431,7 +432,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
-                            Icons.event_available,
+                            LucideIcons300.calendarCheck,
                             size: 18,
                             color: TemaCareCar.turquesaOscuro,
                           ),
@@ -464,7 +465,7 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
                         color: Colors.white,
                       ),
                     )
-                  : const Icon(Icons.check, size: 18),
+                  : const Icon(LucideIcons300.check, size: 18),
               child: Text(_enviando ? 'Agendando…' : 'Confirmar cita'),
             ),
           ],
@@ -482,7 +483,7 @@ class _Encabezado extends StatelessWidget {
     etiqueta: 'NUEVA CITA',
     titulo: 'Tres pasos y listo',
     texto: 'Elige cuándo llevar tu vehículo al taller.',
-    icono: Icons.event_available_rounded,
+    icono: LucideIcons300.calendarCheck,
     color: TemaCareCar.turquesaOscuro,
     fondo: Color(0xFFE8F6F4),
   );
@@ -580,10 +581,7 @@ class _OpcionVehiculo extends StatelessWidget {
                   gradient: TemaCareCar.degradadoMarca,
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Icon(
-                  Icons.directions_car_filled,
-                  color: Colors.white,
-                ),
+                child: const Icon(LucideIcons300.carFront, color: Colors.white),
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -614,12 +612,12 @@ class _OpcionVehiculo extends StatelessWidget {
                     ScaleTransition(scale: animacion, child: hijo),
                 child: elegido
                     ? const Icon(
-                        Icons.check_circle,
+                        LucideIcons300.circleCheck,
                         key: ValueKey('si'),
                         color: TemaCareCar.azulAgencia,
                       )
                     : const Icon(
-                        Icons.radio_button_unchecked,
+                        LucideIcons300.circle,
                         key: ValueKey('no'),
                         color: TemaCareCar.bordeCampo,
                       ),

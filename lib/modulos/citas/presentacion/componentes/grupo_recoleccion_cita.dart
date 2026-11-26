@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../../l10n/app_localizations.dart';
 import '../../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -45,7 +47,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
           FilaGrupo(
             titulo: textos.citasResumenRecogemos,
             subtitulo: ventana(recoger),
-            icono: Icons.local_shipping_outlined,
+            icono: LucideIcons300.truck,
             colorIcono: c.marca,
             alToque: () => context.push(rutaSeguimientoTraslado(recoger.id)),
           ),
@@ -53,7 +55,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
           FilaGrupo(
             titulo: textos.citasResumenEntregamos,
             subtitulo: ventana(entregar),
-            icono: Icons.home_outlined,
+            icono: LucideIcons300.house,
             colorIcono: c.exito,
             alToque: () => context.push(rutaSeguimientoTraslado(entregar.id)),
           ),
@@ -61,7 +63,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
           FilaGrupo(
             titulo: textos.citasChecklistRecoger,
             subtitulo: textos.citasChecklistSubtitulo,
-            icono: Icons.fact_check_outlined,
+            icono: LucideIcons300.clipboardCheck,
             colorIcono: c.marca,
             alToque: () => context.push(
               rutaChecklistTraslado(recoger.id, contrario: entregar?.id),
@@ -71,7 +73,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
           FilaGrupo(
             titulo: textos.citasChecklistEntregar,
             subtitulo: textos.citasChecklistSubtitulo,
-            icono: Icons.fact_check_outlined,
+            icono: LucideIcons300.clipboardCheck,
             colorIcono: c.exito,
             alToque: () => context.push(
               rutaChecklistTraslado(
@@ -88,7 +90,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
           FilaGrupo(
             titulo: textos.citasChecklistComparar,
             subtitulo: textos.citasChecklistCompararSubtitulo,
-            icono: Icons.compare_outlined,
+            icono: LucideIcons300.squareSplitHorizontal,
             colorIcono: c.acento,
             alToque: () => context.push(
               rutaChecklistTraslado(
@@ -101,7 +103,7 @@ class GrupoRecoleccionCita extends StatelessWidget {
         FilaGrupo(
           titulo: textos.citasResumenRecoleccionCosto,
           subtitulo: formatearPesos(context, recoleccion.costoTotal),
-          icono: Icons.payments_outlined,
+          icono: LucideIcons300.banknote,
           colorIcono: c.advertencia,
         ),
       ],

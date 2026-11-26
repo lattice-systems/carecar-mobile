@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -136,7 +138,7 @@ class _PantallaAgendarCampanaState
                   estado: EstadoVacio(
                     titulo: textos.campanasAgendarTitulo,
                     mensaje: textos.campanasAgendarSinCupoRango,
-                    icono: Icons.event_busy_outlined,
+                    icono: LucideIcons300.calendarX,
                   ),
                 )
               : _formulario(context, taller, campana),
@@ -250,7 +252,7 @@ class _PantallaAgendarCampanaState
       ),
       principal: AccionPantalla(
         texto: textos.campanasVerComprobante,
-        icono: Icons.qr_code_2_rounded,
+        icono: LucideIcons300.qrCode,
         alPresionar: () =>
             context.pushReplacement(rutaComprobanteCita(cita.id)),
       ),

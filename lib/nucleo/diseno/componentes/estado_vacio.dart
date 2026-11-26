@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton.dart';
@@ -14,7 +16,7 @@ class EstadoVacio extends StatelessWidget {
     required this.titulo,
     super.key,
     this.mensaje,
-    this.icono = Icons.inbox_outlined,
+    this.icono = LucideIcons300.inbox,
     this.textoAccion,
     this.alAccion,
   }) : assert(

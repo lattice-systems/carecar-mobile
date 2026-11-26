@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -102,7 +104,7 @@ class _ConGaraje extends ConsumerWidget {
               estado: EstadoVacio(
                 titulo: textos.asistenciaGarajeVacioTitulo,
                 mensaje: textos.asistenciaGarajeVacioMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               ),
             )
           : MarcoPantalla(

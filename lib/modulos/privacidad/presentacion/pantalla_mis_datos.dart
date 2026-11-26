@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -173,7 +175,7 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
         espacio,
         BotonPildora(
           texto: _descargando ? textos.arcoDescargando : textos.arcoDescargar,
-          icono: Icons.download_outlined,
+          icono: LucideIcons300.download,
           expandido: true,
           alPresionar: _descargando || _pidiendo
               ? null
@@ -199,7 +201,7 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
       if (aviso != null) ...[aviso, espacio],
       BotonPildora(
         texto: _pidiendo ? textos.arcoPidiendo : textos.arcoPedir,
-        icono: Icons.folder_copy_outlined,
+        icono: LucideIcons300.folders,
         expandido: true,
         alPresionar: _pidiendo ? null : _pedir,
       ),
@@ -295,7 +297,7 @@ class _Lista extends StatelessWidget {
           Row(
             children: [
               ExcludeSemantics(
-                child: Icon(Icons.check_circle_outline, color: c.exito),
+                child: Icon(LucideIcons300.circleCheck, color: c.exito),
               ),
               const SizedBox(width: Espaciado.e2),
               Expanded(

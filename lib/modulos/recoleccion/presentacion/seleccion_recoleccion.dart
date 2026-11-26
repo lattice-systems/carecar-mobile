@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -65,7 +67,7 @@ class SeleccionRecoleccion extends ConsumerWidget {
               ChipPista(
                 texto: textos.recoleccionSelectorQueRecojan,
                 seleccionado: pedida,
-                icono: Icons.local_shipping_outlined,
+                icono: LucideIcons300.truck,
                 alCambiar: (_) => alCambiarPedida(true),
               ),
             ],
@@ -128,10 +130,10 @@ class _Direcciones extends ConsumerWidget {
                     subtitulo: d.id == direccionId
                         ? '${textos.recoleccionSelectorElegida} · ${d.resumen}'
                         : d.resumen,
-                    icono: Icons.place_outlined,
+                    icono: LucideIcons300.mapPin,
                     colorIcono: c.acento,
                     fin: d.id == direccionId
-                        ? Icon(Icons.check_circle_rounded, color: c.acento)
+                        ? Icon(LucideIcons300.circleCheck, color: c.acento)
                         : null,
                     alToque: () => alElegir(d.id),
                   ),
@@ -143,8 +145,8 @@ class _Direcciones extends ConsumerWidget {
                 ? textos.recoleccionDireccionesAgregar
                 : textos.recoleccionSelectorAdministrar,
             icono: lista.isEmpty
-                ? Icons.add_location_alt_outlined
-                : Icons.edit_location_alt_outlined,
+                ? LucideIcons300.mapPinPlus
+                : LucideIcons300.mapPinPen,
             variante: VarianteBotonPildora.vidrio,
             expandido: true,
             alPresionar: () => lista.isEmpty
@@ -236,25 +238,25 @@ class _Detalle extends StatelessWidget {
         FilaGrupo(
           titulo: textos.recoleccionCotizacionRecogemos,
           subtitulo: ventana(cotizacion.recoleccion),
-          icono: Icons.local_shipping_outlined,
+          icono: LucideIcons300.truck,
           colorIcono: c.acento,
         ),
         FilaGrupo(
           titulo: textos.recoleccionCotizacionEntregamos,
           subtitulo: ventana(cotizacion.entrega),
-          icono: Icons.home_outlined,
+          icono: LucideIcons300.house,
           colorIcono: c.exito,
         ),
         FilaGrupo(
           titulo: textos.recoleccionCotizacionPorTraslado,
           subtitulo: formatearPesos(context, cotizacion.costoPorTraslado),
-          icono: Icons.sync_alt_rounded,
+          icono: LucideIcons300.arrowRightLeft,
           colorIcono: c.marca,
         ),
         FilaGrupo(
           titulo: textos.recoleccionCotizacionTotal,
           subtitulo: formatearPesos(context, cotizacion.costoTotal),
-          icono: Icons.payments_outlined,
+          icono: LucideIcons300.banknote,
           colorIcono: c.advertencia,
         ),
       ],

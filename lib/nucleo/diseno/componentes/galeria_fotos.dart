@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
@@ -120,7 +122,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                             errorBuilder: (_, _, _) => ColoredBox(
                               color: c.superficieHundida,
                               child: Icon(
-                                Icons.broken_image_outlined,
+                                LucideIcons300.imageOff,
                                 color: c.textoTerciario,
                               ),
                             ),
@@ -134,7 +136,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                       alignment: Alignment.centerLeft,
                       child: _Flecha(
                         llave: GaleriaFotos.flechaAnterior,
-                        icono: Icons.chevron_left,
+                        icono: LucideIcons300.chevronLeft,
                         tooltip: textos.galeriaFotoAnterior,
                         alPresionar: _actual > 0
                             ? () => _ir(_actual - 1)
@@ -145,7 +147,7 @@ class _GaleriaFotosState extends State<GaleriaFotos> {
                       alignment: Alignment.centerRight,
                       child: _Flecha(
                         llave: GaleriaFotos.flechaSiguiente,
-                        icono: Icons.chevron_right,
+                        icono: LucideIcons300.chevronRight,
                         tooltip: textos.galeriaFotoSiguiente,
                         alPresionar: _actual < total - 1
                             ? () => _ir(_actual + 1)
@@ -245,7 +247,7 @@ class _VisorFoto extends StatelessWidget {
                   backgroundColor: Colors.black54,
                   foregroundColor: Colors.white,
                 ),
-                icon: const Icon(Icons.close),
+                icon: const Icon(LucideIcons300.x),
               ),
             ),
           ),

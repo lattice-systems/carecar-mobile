@@ -8,6 +8,7 @@ import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'seccion_galeria.dart';
 import 'secciones_base.dart';
 import 'secciones_compuestos.dart';
+import 'secciones_mapa.dart';
 import 'secciones_pantalla.dart';
 
 /// Galeria del sistema de diseno v2 (V2-T02.06): todos los componentes con sus
@@ -27,6 +28,7 @@ class _PantallaGaleriaState extends State<PantallaGaleria> {
   final List<SeccionGaleria> _secciones = [
     ...seccionesBase(),
     ...seccionesCompuestos(),
+    ...seccionesMapa(),
     ...seccionesPantalla(),
   ];
 

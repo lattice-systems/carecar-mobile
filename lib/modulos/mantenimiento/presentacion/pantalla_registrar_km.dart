@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -111,7 +113,7 @@ class _EstadoPantallaRegistrarKm extends ConsumerState<PantallaRegistrarKm> {
             label: _enviando ? textos.mantenimientoKmGuardando : null,
             child: BotonPildora(
               texto: textos.mantenimientoKmGuardar,
-              icono: Icons.check_rounded,
+              icono: LucideIcons300.check,
               expandido: true,
               alPresionar: _enviando ? null : _guardar,
             ),

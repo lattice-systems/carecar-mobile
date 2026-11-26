@@ -9,6 +9,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 final _png = base64Decode(
@@ -16,15 +18,15 @@ final _png = base64Decode(
 );
 
 const _destinos = [
-  DestinoNavegacion(etiqueta: 'Inicio', icono: Icons.home_outlined),
-  DestinoNavegacion(etiqueta: 'Mi auto', icono: Icons.directions_car_outlined),
+  DestinoNavegacion(etiqueta: 'Inicio', icono: LucideIcons300.house),
+  DestinoNavegacion(etiqueta: 'Mi auto', icono: LucideIcons300.car),
   DestinoNavegacion(
     etiqueta: 'Servicio',
-    icono: Icons.build_outlined,
+    icono: LucideIcons300.wrench,
     conteo: 3,
   ),
-  DestinoNavegacion(etiqueta: 'Explorar', icono: Icons.explore_outlined),
-  DestinoNavegacion(etiqueta: 'Cuenta', icono: Icons.person_outline),
+  DestinoNavegacion(etiqueta: 'Explorar', icono: LucideIcons300.compass),
+  DestinoNavegacion(etiqueta: 'Cuenta', icono: LucideIcons300.user),
 ];
 
 void main() {
@@ -87,8 +89,12 @@ void main() {
         conTemaPista(
           BarraNavegacion(
             destinos: const [
-              DestinoNavegacion(etiqueta: 'A', icono: Icons.home, conteo: 150),
-              DestinoNavegacion(etiqueta: 'B', icono: Icons.home),
+              DestinoNavegacion(
+                etiqueta: 'A',
+                icono: LucideIcons300.house,
+                conteo: 150,
+              ),
+              DestinoNavegacion(etiqueta: 'B', icono: LucideIcons300.house),
             ],
             indice: 0,
             alCambiar: (_) {},
@@ -117,7 +123,9 @@ void main() {
           const EncabezadoGrande(
             titulo: 'Mis citas',
             subtitulo: 'Tus proximos servicios',
-            acciones: [IconButton(onPressed: null, icon: Icon(Icons.add))],
+            acciones: [
+              IconButton(onPressed: null, icon: Icon(LucideIcons300.plus)),
+            ],
           ),
           SliverList.builder(
             itemCount: 40,
@@ -233,7 +241,7 @@ void main() {
             TarjetaAccion(
               titulo: 'Pedir ayuda en el camino',
               descripcion: 'Comparte tu ubicacion con la agencia',
-              icono: Icons.sos,
+              icono: LucideIcons300.siren,
               tono: Tono.peligro,
               alToque: () {},
             ),
@@ -251,7 +259,7 @@ void main() {
         conTemaPista(
           TarjetaAccion(
             titulo: 'Agendar',
-            icono: Icons.event,
+            icono: LucideIcons300.calendar,
             alToque: () => veces++,
           ),
         ),
@@ -269,7 +277,7 @@ void main() {
         conTemaPista(
           const TarjetaAccion(
             titulo: 'Agendar',
-            icono: Icons.event,
+            icono: LucideIcons300.calendar,
             alToque: null,
           ),
         ),
@@ -286,7 +294,7 @@ void main() {
           TarjetaAccion(
             titulo: 'Agendar',
             descripcion: 'Elige fecha y hora',
-            icono: Icons.event,
+            icono: LucideIcons300.calendar,
             alToque: () {},
           ),
         ),

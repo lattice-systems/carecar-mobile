@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../api/excepciones.dart';
@@ -64,7 +65,7 @@ class PantallaCanje extends ConsumerWidget {
                 estado: EstadoVacio(
                   titulo: textos.canjeNoEncontradoTitulo,
                   mensaje: textos.canjeNoEncontradoMensaje,
-                  icono: Icons.qr_code_2_rounded,
+                  icono: LucideIcons300.qrCode,
                 ),
               );
             }
@@ -134,7 +135,7 @@ class _Canje extends StatelessWidget {
             FilaGrupo(
               titulo: textos.canjesCodigo(canje.codigo),
               subtitulo: textoEstadoCanje(textos, canje.estado),
-              icono: Icons.qr_code_2_rounded,
+              icono: LucideIcons300.qrCode,
               colorIcono: c.exito,
             ),
             FilaGrupo(
@@ -142,27 +143,27 @@ class _Canje extends StatelessWidget {
               subtitulo: textos.recompensasCosto(
                 puntosLealtad(context, canje.puntos),
               ),
-              icono: Icons.workspace_premium_outlined,
+              icono: LucideIcons300.award,
               colorIcono: c.marca,
             ),
             FilaGrupo(
               titulo: textos.canjeCanjeado,
               subtitulo: fechaLealtad(context, canje.creadoEn),
-              icono: Icons.event_outlined,
+              icono: LucideIcons300.calendar,
               colorIcono: c.acento,
             ),
             if (usadoEn != null)
               FilaGrupo(
                 titulo: textos.canjeUsadoEl,
                 subtitulo: fechaLealtad(context, usadoEn),
-                icono: Icons.task_alt_rounded,
+                icono: LucideIcons300.circleCheckBig,
                 colorIcono: c.exito,
               )
             else
               FilaGrupo(
                 titulo: textos.canjeVigencia,
                 subtitulo: fechaLealtad(context, canje.venceEn),
-                icono: Icons.schedule_outlined,
+                icono: LucideIcons300.clock,
                 colorIcono: c.advertencia,
               ),
           ],

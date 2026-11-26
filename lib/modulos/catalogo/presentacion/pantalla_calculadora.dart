@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/barra_pantalla.dart';
@@ -208,7 +210,7 @@ class _EstadoPantallaCalculadora extends ConsumerState<PantallaCalculadora> {
             acciones: [
               BotonCircular(
                 etiqueta: t.misEstimacionesTitulo,
-                icono: Icons.history,
+                icono: LucideIcons300.history,
                 colorIcono: c.texto,
                 alPresionar: () => context.push(rutaMisEstimaciones),
               ),

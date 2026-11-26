@@ -6,6 +6,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/contraste.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -40,7 +42,7 @@ void main() {
           const Insignia(texto: 'Listo', tono: Tono.exito, conIcono: true),
         ),
       );
-      expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.circleCheck), findsOneWidget);
     });
 
     testWidgets('sin icono no lo muestra', (tester) async {

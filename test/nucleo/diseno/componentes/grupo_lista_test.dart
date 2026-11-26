@@ -2,6 +2,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 Widget _grupo({VoidCallback? alToque}) => GrupoLista(
@@ -11,12 +13,12 @@ Widget _grupo({VoidCallback? alToque}) => GrupoLista(
     FilaGrupo(
       titulo: 'Perfil',
       subtitulo: 'Nombre y telefono',
-      icono: Icons.person,
+      icono: LucideIcons300.user,
       alToque: alToque,
     ),
     FilaGrupo(
       titulo: 'Seguridad',
-      icono: Icons.lock,
+      icono: LucideIcons300.lock,
       colorIcono: Colors.green,
       alToque: alToque,
     ),
@@ -46,7 +48,7 @@ void main() {
   ) async {
     var toques = 0;
     await tester.pumpWidget(conTemaPista(_grupo(alToque: () => toques++)));
-    expect(find.byIcon(Icons.chevron_right), findsNWidgets(2));
+    expect(find.byIcon(LucideIcons300.chevronRight), findsNWidgets(2));
     await tester.tap(find.text('Perfil'));
     expect(toques, 1);
   });
@@ -95,7 +97,7 @@ void main() {
     );
 
     // Solo la fila que lleva a otra pantalla muestra la flecha.
-    expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.chevronRight), findsOneWidget);
     await tester.tap(find.text('Recordatorios'));
     expect(toques, 1);
   });

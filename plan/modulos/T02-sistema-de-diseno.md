@@ -125,7 +125,28 @@ La galería del sistema vive en `lib/modulos/galeria/` y se abre en la ruta `/ga
 
 ## Nota sobre V2-T02.09
 
-`Mapa` está bloqueada por una decisión: el criterio exige elegir proveedor de mapas y geocodificación en una ADR. Se propone en [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, todo detrás de interfaces en `lib/nucleo/mapas/`). Mientras esté en `Propuesta` no se escribe código del componente. Lo que falta para aceptarla es que el PO confirme el proveedor de teselas de producción y su costo.
+La decisión que pide el criterio, [`docs/decisiones/0006-mapas-y-geocodificacion.md`](../../docs/decisiones/0006-mapas-y-geocodificacion.md) (`flutter_map` con teselas configurables, `geolocator` y `geocoding` nativo, con interfaces en `lib/nucleo/mapas/`), está **Aceptada**, así que el componente ya no está bloqueado. Sigue abierto, antes de publicar en producción, qué proveedor de teselas contrata el PO y cuánto cuesta. No cambia el código: se configura con `TILES_URL` y `TILES_ATTRIBUTION`.
+
+## Avance de V2-T02.09
+
+`Mapa` y `MarcadorEnMovimiento` viven en `lib/nucleo/diseno/componentes/mapa.dart`. La anatomía, los estados y la accesibilidad están en la sección 8 del sistema de diseño.
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Pin arrastrable | `alMoverPin`: arrastre, toque y, sin arrastrar, botones de 48 para ponerlo y moverlo |
+| Ubicación propia | `miUbicacion` o «Ver mi ubicación» con `ProveedorUbicacion`. Permiso negado, permiso bloqueado, GPS apagado y tiempo agotado se explican |
+| Marcador en movimiento | `enMovimiento`: se desliza con `base` y salta con reducir movimiento |
+| Proveedor y geocodificación en una ADR | Decisión 0006, aceptada |
+| Golden claro, oscuro y 200 % | `mapa_golden_test.dart` |
+
+También quedan el aviso sin conexión con reintento, las teselas inyectables para probar sin red (`TeselasLisas`, `TeselasSinConexion`, `fuenteTeselasProvider`), `ClienteTeselas` para que los errores no lleven la dirección de la tesela, la sección «Mapa» de la galería y la prueba de arquitectura de los paquetes de mapas.
+
+**Pendiente fuera de esta historia:**
+
+- `MapaProvisional` de `recoleccion` sigue en uso. Por la regla de provisionales ([`trabajo-en-paralelo.md`](../trabajo-en-paralelo.md), sección 4) lo reemplaza el dueño de M17 en su siguiente cambio a esas pantallas. Mientras exista no tiene el arrastre, la alternativa sin arrastre ni el aviso sin conexión, y sus errores de descarga sí pueden llevar a la consola la dirección de la tesela.
+- `lib/nucleo/camara/selector_foto.dart` importa `geolocator` solo para abrir los ajustes de la app. Queda anotado como excepción en la prueba de arquitectura.
+- El crédito del mapa es texto, no un enlace a la página de licencia de OpenStreetMap.
+- Falta probar el componente en un teléfono con teselas reales.
 
 ## Avance del estilo portada
 
@@ -226,3 +247,29 @@ Ajustes se abre desde el avatar del inicio en toda compilación y era lo más le
 - **Higiene**: doce PNG de diferencias de golden fallido se habían colado en un commit; se quitan y `failures/` queda ignorado.
 
 **Sigue en v1 desde Ajustes:** «Cambiar contraseña» abre la pantalla v1 (`PantallaCambiarContrasena`); su versión v2 es V2-M01.10 (Jael). Los avisos breves (`mostrarToast`) también son de la v1. V2-M01.06 puede mover Ajustes a un módulo `perfil` sin cambiar su aspecto.
+## Avance de V2-T02.02
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Fuentes en `assets/fonts` sin descarga en tiempo de ejecución | Geist 400, 500 y 600 y Geist Mono 500 en TTF estáticos, con `Geist-OFL.txt`, declaradas en `pubspec.yaml`. No hay `google_fonts` ni direcciones de fuentes en `lib/` |
+| Escala tipográfica del documento | Se comparó `Tipografia` con la tabla de la sección 3 del sistema de diseño: los diez estilos coinciden en tamaño, interlineado, peso y tracking, así que no cambió ningún valor. Lo cubre `tipografia_test.dart` |
+
+- `fuentes_empaquetadas_test.dart` comprueba que cada familia declara solo los pesos de la escala, que cada archivo existe y trae ese peso, que la licencia está y que nada descarga fuentes.
+- La versión, la dirección y las huellas están en [la sección 3 del sistema de diseño](../../docs/diseno/sistema-de-diseno-v2.md#origen-de-las-fuentes). El APK crece unos 249 KB (estimado con deflate, sin compilarlo).
+- Se regeneraron los 18 golden en Linux con Flutter 3.47.9, el parche del CI. Antes se comprobó que ese entorno reproduce sin diferencias las referencias anteriores.
+- Inter y JetBrains Mono se quedan: las usa la v1 y son el respaldo de los tokens.
+- Algunos componentes e inicio piden peso 700 con `copyWith`. Con Geist se pinta en 600. Falta decidir si pasan a 600 en el código o si la escala suma el 700.
+- Con letra al 200 %, el golden de `GrupoLista` parte «Notificaciones» a media palabra cuando la fila lleva un valor a la derecha. Ya pasaba con Inter y se corrige aparte.
+
+## Avance de V2-T02.07
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Set de íconos único | Lucide de trazo 1.5 (`LucideIcons300`) en toda la app, también en las pantallas v1 y en los botones que dibuja Material. Lo vigila `test/arquitectura/un_solo_set_de_iconos_test.dart` |
+| Logo SVG claro y oscuro | `assets/marca/agencia360-logo.svg` y `agencia360-logo-oscuro.svg`, trazados del logo anterior sin rediseño. Sustituyen a los PNG |
+| Ícono adaptativo | `mipmap-anydpi-v26/ic_launcher.xml` con fondo, símbolo en vector y capa monocroma. Los sabores desarrollo y pruebas conservan su franja |
+| Splash | Azul de marca del sistema y cortina de Flutter con el símbolo en SVG |
+
+- Los PNG del ícono para Android 7 o anterior y para iOS se quedan, porque el dibujo no cambió.
+- Falta ver el ícono adaptativo y el splash en un teléfono real.
+- La splash y el ícono de iOS no se probaron en un Mac, porque las pruebas de macOS están en pausa.

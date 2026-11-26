@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -55,7 +57,7 @@ class ResultadoPantalla extends StatelessWidget {
         width: _marca,
         height: _marca,
         child: Icon(
-          icono ?? Icons.check_rounded,
+          icono ?? LucideIcons300.check,
           size: 52,
           color: colores.frente,
         ),

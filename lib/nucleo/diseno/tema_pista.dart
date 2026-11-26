@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'iconos_de_accion.dart';
 import 'tokens/tokens_pista.dart';
 
 /// Construye el `ThemeData` del sistema de diseno v2 «Pista».
@@ -56,6 +57,7 @@ abstract final class TemaPista {
 
     return ThemeData(
       useMaterial3: true,
+      actionIconTheme: iconosDeAccion,
       brightness: tokens.brillo,
       colorScheme: esquema,
       scaffoldBackgroundColor: c.fondo,

@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/camara/selector_foto.dart';
@@ -92,7 +94,7 @@ class _PantallaFotosValuacionState
                 ? EstadoVacio(
                     titulo: t.valuacionNoEncontradaTitulo,
                     mensaje: t.valuacionNoEncontradaMensaje,
-                    icono: Icons.search_off_rounded,
+                    icono: LucideIcons300.searchX,
                   )
                 : ErrorValuacion(
                     error: error,
@@ -266,7 +268,7 @@ class _TarjetaToma extends ConsumerWidget {
                     child: SizedBox(
                       height: _altoFoto,
                       child: Icon(
-                        Icons.broken_image_outlined,
+                        LucideIcons300.imageOff,
                         color: c.textoTerciario,
                       ),
                     ),
@@ -302,7 +304,7 @@ class _TarjetaToma extends ConsumerWidget {
                 const SizedBox(height: Espaciado.e2),
                 BotonPildora(
                   texto: t.valuacionReintentar,
-                  icono: Icons.refresh_rounded,
+                  icono: LucideIcons300.refreshCw,
                   expandido: true,
                   alPresionar: alReintentar,
                 ),
@@ -312,7 +314,7 @@ class _TarjetaToma extends ConsumerWidget {
               const SizedBox(height: Espaciado.e3),
               BotonPildora(
                 texto: t.valuacionFotoTomar,
-                icono: Icons.photo_camera_outlined,
+                icono: LucideIcons300.camera,
                 variante: VarianteBotonPildora.tonal,
                 expandido: true,
                 cargando: subiendo,
@@ -321,7 +323,7 @@ class _TarjetaToma extends ConsumerWidget {
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: t.valuacionFotoGaleria,
-                icono: Icons.photo_library_outlined,
+                icono: LucideIcons300.images,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: subiendo

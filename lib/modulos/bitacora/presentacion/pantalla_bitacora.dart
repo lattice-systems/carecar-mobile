@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -119,13 +121,13 @@ class _Contenido extends ConsumerWidget {
               child: FilaAcciones(
                 principal: AccionPantalla(
                   texto: textos.bitacoraNuevaCarga,
-                  icono: Icons.local_gas_station_outlined,
+                  icono: LucideIcons300.fuel,
                   alPresionar: () =>
                       abrirFormularioGasto(context, vehiculoId: vehiculoId),
                 ),
                 secundaria: AccionPantalla(
                   texto: textos.bitacoraOtroGasto,
-                  icono: Icons.receipt_long_outlined,
+                  icono: LucideIcons300.receiptText,
                   alPresionar: () => abrirFormularioGasto(
                     context,
                     vehiculoId: vehiculoId,
@@ -139,7 +141,7 @@ class _Contenido extends ConsumerWidget {
               EstadoVacio(
                 titulo: textos.bitacoraVacioTitulo,
                 mensaje: textos.bitacoraVacioMensaje,
-                icono: Icons.local_gas_station_outlined,
+                icono: LucideIcons300.fuel,
               )
             else ...[
               Estante(
@@ -187,14 +189,14 @@ class _Contenido extends ConsumerWidget {
                   filas: [
                     FilaGrupo(
                       titulo: textos.bitacoraVerEstadisticas,
-                      icono: Icons.insights_outlined,
+                      icono: LucideIcons300.chartSpline,
                       colorIcono: c.acento,
                       alToque: () =>
                           context.push(rutaEstadisticasBitacora(vehiculoId)),
                     ),
                     FilaGrupo(
                       titulo: textos.bitacoraExportar,
-                      icono: Icons.ios_share_outlined,
+                      icono: LucideIcons300.share,
                       colorIcono: c.exito,
                       alToque: () => context.push(
                         rutaExportarBitacora(vehiculoId, nombre: nombre),

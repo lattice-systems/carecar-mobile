@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -105,7 +107,7 @@ class _EstadoPantallaPlanMantenimiento
               estado: EstadoVacio(
                 titulo: textos.mantenimientoVacioTitulo,
                 mensaje: textos.mantenimientoVacioMensaje,
-                icono: Icons.build_circle_outlined,
+                icono: LucideIcons300.wrench,
               ),
             )
           : _Plan(
@@ -187,19 +189,19 @@ class _Plan extends StatelessWidget {
                 principal: proximo == null
                     ? AccionPantalla(
                         texto: textos.mantenimientoRegistrarKm,
-                        icono: Icons.speed_outlined,
+                        icono: LucideIcons300.gauge,
                         alPresionar: alRegistrarKm,
                       )
                     : AccionPantalla(
                         texto: textos.mantenimientoAgendar,
-                        icono: Icons.event_available_outlined,
+                        icono: LucideIcons300.calendarCheck,
                         alPresionar: alAgendar,
                       ),
                 secundaria: proximo == null
                     ? null
                     : AccionPantalla(
                         texto: textos.mantenimientoRegistrarKm,
-                        icono: Icons.speed_outlined,
+                        icono: LucideIcons300.gauge,
                         alPresionar: alRegistrarKm,
                       ),
               ),
@@ -214,7 +216,7 @@ class _Plan extends StatelessWidget {
                             formatearKm(context, plan.kmActual!),
                           ),
                     subtitulo: _fuenteKm(context, plan),
-                    icono: Icons.speed_outlined,
+                    icono: LucideIcons300.gauge,
                     colorIcono: c.acento,
                     alToque: alRegistrarKm,
                   ),
@@ -223,7 +225,7 @@ class _Plan extends StatelessWidget {
                       titulo: textos.mantenimientoPromedio(
                         formatearKm(context, plan.promedioKmDiario!.round()),
                       ),
-                      icono: Icons.trending_up,
+                      icono: LucideIcons300.trendingUp,
                       colorIcono: c.marca,
                     ),
                 ],
@@ -249,7 +251,7 @@ class _Plan extends StatelessWidget {
       return TarjetaResumen(
         titulo: textos.mantenimientoSinProximoTitulo,
         subtitulo: textos.mantenimientoSinProximoMensaje,
-        icono: Icons.speed_outlined,
+        icono: LucideIcons300.gauge,
       );
     }
     return TarjetaProximoServicio(
@@ -285,10 +287,10 @@ class _Plan extends StatelessWidget {
     // El estado va en el texto: el lector de pantalla no lee el adorno final.
     final lineaDeEstado = '$estado · $resumen';
     final (icono, color) = switch (s.estado) {
-      EstadoServicio.hecho => (Icons.check_rounded, c.exito),
-      EstadoServicio.pendiente => (Icons.schedule_outlined, c.marca),
-      EstadoServicio.proximo => (Icons.event_outlined, c.acento),
-      EstadoServicio.vencido => (Icons.priority_high_rounded, c.peligro),
+      EstadoServicio.hecho => (LucideIcons300.check, c.exito),
+      EstadoServicio.pendiente => (LucideIcons300.clock, c.marca),
+      EstadoServicio.proximo => (LucideIcons300.calendar, c.acento),
+      EstadoServicio.vencido => (LucideIcons300.circleAlert, c.peligro),
     };
     return FilaGrupo(
       titulo: s.nombre,

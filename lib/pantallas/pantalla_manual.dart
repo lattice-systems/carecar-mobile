@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
@@ -174,7 +175,7 @@ class _PantallaManualState extends State<PantallaManual> {
               Expanded(child: _contador()),
               const SizedBox(width: 8),
               ShadButton(
-                leading: const Icon(Icons.download),
+                leading: const Icon(LucideIcons300.download),
                 onPressed: () => _descargar(documento),
                 child: const Text('Descargar PDF'),
               ),
@@ -242,7 +243,7 @@ class _IconoCargando extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         child: const Icon(
-          Icons.menu_book_rounded,
+          LucideIcons300.bookOpen,
           size: 40,
           color: TemaCareCar.azulAgencia,
         ),

@@ -6,6 +6,7 @@ export 'configuracion_teselas.dart';
 export 'coordenada.dart';
 export 'errores_mapas.dart';
 export 'falsos.dart';
+export 'fuente_teselas.dart';
 export 'geocodificador.dart';
 export 'proveedor_ubicacion.dart';
 export 'proveedores_mapas.dart';

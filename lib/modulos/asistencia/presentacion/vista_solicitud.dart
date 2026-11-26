@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
@@ -75,14 +77,14 @@ class VistaSolicitud extends ConsumerWidget {
                 FilaAcciones(
                   principal: AccionPantalla(
                     texto: textos.asistenciaSolicitudVerGuias,
-                    icono: Icons.menu_book_outlined,
+                    icono: LucideIcons300.bookOpen,
                     alPresionar: () => context.go(rutaAsistenciaGuias),
                   ),
                   secundaria: AccionPantalla(
                     texto: seguimiento.actualizando
                         ? textos.asistenciaSeguimientoActualizando
                         : textos.asistenciaSeguimientoActualizar,
-                    icono: Icons.refresh_rounded,
+                    icono: LucideIcons300.refreshCw,
                     alPresionar: seguimiento.actualizando
                         ? null
                         : ref
@@ -152,7 +154,7 @@ class VistaSolicitud extends ConsumerWidget {
                       FilaGrupo(
                         titulo: textos.asistenciaSolicitudVehiculo,
                         subtitulo: vehiculo.titulo,
-                        icono: Icons.directions_car_outlined,
+                        icono: LucideIcons300.car,
                       ),
                     FilaGrupo(
                       titulo: textos.asistenciaSolicitudProblema,
@@ -164,13 +166,13 @@ class VistaSolicitud extends ConsumerWidget {
                       subtitulo: solicitud.ubicacion == null
                           ? textos.asistenciaSolicitudUbicacionNoCompartida
                           : textos.asistenciaSolicitudUbicacionCompartida,
-                      icono: Icons.location_on_outlined,
+                      icono: LucideIcons300.mapPin,
                     ),
                     if (comentario != null)
                       FilaGrupo(
                         titulo: textos.asistenciaSolicitudComentario,
                         subtitulo: comentario,
-                        icono: Icons.notes_outlined,
+                        icono: LucideIcons300.textAlignStart,
                       ),
                   ],
                 ),
