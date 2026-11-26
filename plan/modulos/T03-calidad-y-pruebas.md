@@ -50,6 +50,10 @@ La [prueba de contrato](../../test/contrato/mock_api_v2_test.dart) coteja el inv
 
 La cobertura de respuestas autenticadas es por casos representativos. La variante `multipart/form-data` de `POST /vehiculos/{vehiculoId}/lecturas-km` queda pendiente en el simulador de M05.
 
+## V2-T03.07 · Pruebas en celular físico
+
+El [guion por hito](../../docs/pruebas/guion-por-hito.md) cubre H0–H7 y el [registro](../../docs/pruebas/evidencia.md) recibe resultados por caso y dispositivo. H1 requiere una primera corrida física con un backend real y cuenta de prueba para completar la evidencia de este bloque.
+
 ## V2-T03.08 · Mock por módulo
 
 `server.js` arranca json-server, registra guardia y módulos, y devuelve `Problema` en las rutas desconocidas. Las rutas y sus datos persistentes viven en `modulos/` y `semillas/`. `npm run reset` reúne las colecciones de todas las semillas y vuelve a crear `db.json`. Los módulos con colecciones incorporadas tras el primer MVP conservan la inicialización de los archivos persistidos anteriores. [Guía del mock](../../mock_api/README.md#agregar-un-módulo)
