@@ -13,6 +13,7 @@ import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
 import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../garantia/garantia.dart';
 import '../dominio/vehiculo_garaje.dart';
 import 'proveedores_vehiculos.dart';
 import 'rutas_vehiculos.dart';
@@ -81,18 +82,19 @@ class PantallaGaraje extends ConsumerWidget {
   }
 }
 
-/// La tarjeta de un auto del garaje; abre su detalle.
-class _TarjetaDelAuto extends StatelessWidget {
+/// La tarjeta de un auto del garaje; abre su detalle. Si el auto tiene una
+/// campana de seguridad pendiente, su insignia va debajo (V2-M10.02).
+class _TarjetaDelAuto extends ConsumerWidget {
   const _TarjetaDelAuto({required this.auto});
 
   final VehiculoGaraje auto;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
     final km = auto.kilometraje;
-    return TarjetaAuto(
+    final tarjeta = TarjetaAuto(
       marca: auto.marcaAparte,
       titulo: auto.modeloYAnio,
       placas: auto.placas,
@@ -103,6 +105,15 @@ class _TarjetaDelAuto extends StatelessWidget {
             ),
       tinte: tinteDeColorAuto(c, auto.color),
       alToque: () => context.push(rutaDetalleVehiculo(auto.id)),
+    );
+    if (!ref.watch(hayCampanaAbiertaProvider(auto.id))) return tarjeta;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        tarjeta,
+        const SizedBox(height: Espaciado.e2),
+        InsigniaCampanas(vehiculoId: auto.id),
+      ],
     );
   }
 }
