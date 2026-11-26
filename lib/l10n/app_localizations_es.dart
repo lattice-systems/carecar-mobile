@@ -285,10 +285,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get asistenciaHeroeAccion => 'Pedir ayuda';
 
   @override
-  String get asistenciaEstanteGuias => 'Guías rápidas';
-
-  @override
-  String get asistenciaGrupoGuias => 'Todas las guías';
+  String get asistenciaGrupoGuias => 'Guías';
 
   @override
   String asistenciaGuiaCantidadPasos(int pasos) {

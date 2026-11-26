@@ -578,16 +578,10 @@ abstract class AppLocalizations {
   /// **'Pedir ayuda'**
   String get asistenciaHeroeAccion;
 
-  /// Título del carrusel de guías.
-  ///
-  /// In es, this message translates to:
-  /// **'Guías rápidas'**
-  String get asistenciaEstanteGuias;
-
   /// Encabezado de la lista de guías.
   ///
   /// In es, this message translates to:
-  /// **'Todas las guías'**
+  /// **'Guías'**
   String get asistenciaGrupoGuias;
 
   /// Cuántos pasos tiene una guía.
