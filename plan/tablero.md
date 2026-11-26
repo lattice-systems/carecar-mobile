@@ -37,7 +37,7 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
 | V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Hecha | #106 |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
-| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | En curso | |
+| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | En revisión | |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | Hecha | #31, #33, #37, #41 |
