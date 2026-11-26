@@ -66,6 +66,7 @@ void main() {
         'subtotal': 690.52,
         'iva': 110.48,
         'total': 801.0,
+        'puntosGanados': 80,
       });
 
     final ticket = await RepositorioHistorialApi(api).ticket(21);
@@ -75,5 +76,6 @@ void main() {
     expect(ticket.manoDeObra.single.concepto, 'Cambio de aceite');
     expect(ticket.refacciones.single.importe, 351);
     expect(ticket.cuadra, isTrue);
+    expect(ticket.puntosGanados, 80);
   });
 }

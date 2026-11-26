@@ -7367,6 +7367,642 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ver cómo cambia el valor'**
   String get valuacionVerValor;
+
+  /// Aviso del ticket con los puntos que dio la orden (V2-M12.02); puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganaste {puntos} puntos de lealtad con este servicio.'**
+  String historialTicketPuntosGanados(String puntos);
+
+  /// Título de la pantalla de lealtad (V2-M12.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis puntos'**
+  String get lealtadTitulo;
+
+  /// Subtítulo de Mis puntos.
+  ///
+  /// In es, this message translates to:
+  /// **'Gana puntos en cada servicio y canjéalos en la agencia.'**
+  String get lealtadSubtitulo;
+
+  /// Saldo de puntos; puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} puntos'**
+  String lealtadPuntos(String puntos);
+
+  /// Nivel del cliente; nivel es Bronce, Plata u Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Nivel {nivel}'**
+  String lealtadNivel(String nivel);
+
+  /// Nombre del nivel Bronce.
+  ///
+  /// In es, this message translates to:
+  /// **'Bronce'**
+  String get lealtadNivelBronce;
+
+  /// Nombre del nivel Plata.
+  ///
+  /// In es, this message translates to:
+  /// **'Plata'**
+  String get lealtadNivelPlata;
+
+  /// Nombre del nivel Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Oro'**
+  String get lealtadNivelOro;
+
+  /// Lo que falta para el siguiente nivel.
+  ///
+  /// In es, this message translates to:
+  /// **'Te faltan {puntos} puntos para {nivel}'**
+  String lealtadFaltan(String puntos, String nivel);
+
+  /// Detalle en el nivel Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya estás en el nivel más alto.'**
+  String get lealtadNivelMaximo;
+
+  /// Etiqueta de la barra de avance; puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} ganados en 12 meses'**
+  String lealtadGanados(String puntos);
+
+  /// Esqueleto de carga de las pantallas de lealtad para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus puntos'**
+  String get lealtadCargando;
+
+  /// Botón para volver a pedir los datos de lealtad.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get lealtadReintentar;
+
+  /// Acceso al catálogo de recompensas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensas'**
+  String get lealtadRecompensas;
+
+  /// Subtítulo del acceso a recompensas.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjea tus puntos'**
+  String get lealtadRecompensasResumen;
+
+  /// Acceso a mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis canjes'**
+  String get lealtadCanjes;
+
+  /// Subtítulo del acceso a mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Códigos para usar en la agencia'**
+  String get lealtadCanjesResumen;
+
+  /// Acceso a los movimientos de puntos.
+  ///
+  /// In es, this message translates to:
+  /// **'Movimientos'**
+  String get lealtadMovimientos;
+
+  /// Subtítulo del acceso a movimientos.
+  ///
+  /// In es, this message translates to:
+  /// **'De dónde salen tus puntos'**
+  String get lealtadMovimientosResumen;
+
+  /// Acceso a referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Referir a un amigo'**
+  String get lealtadReferir;
+
+  /// Subtítulo del acceso a referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Gana puntos si tu amigo compra su auto'**
+  String get lealtadReferirResumen;
+
+  /// Título del catálogo de recompensas (V2-M12.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensas'**
+  String get recompensasTitulo;
+
+  /// Subtítulo del catálogo con el saldo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienes {puntos} puntos'**
+  String recompensasSaldo(String puntos);
+
+  /// Estado vacío del catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay recompensas'**
+  String get recompensasVaciaTitulo;
+
+  /// Mensaje del catálogo vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia publique recompensas las verás aquí.'**
+  String get recompensasVaciaMensaje;
+
+  /// Costo de una recompensa.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} puntos'**
+  String recompensasCosto(String puntos);
+
+  /// Insignia de una recompensa que no alcanza.
+  ///
+  /// In es, this message translates to:
+  /// **'Te faltan {puntos}'**
+  String recompensasTeFaltan(String puntos);
+
+  /// Insignia de una recompensa sin existencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Agotada'**
+  String get recompensasAgotada;
+
+  /// Insignia de una recompensa que se puede canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible'**
+  String get recompensasDisponible;
+
+  /// Título de la confirmación del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Canjear {recompensa}?'**
+  String recompensasConfirmarTitulo(String recompensa);
+
+  /// Mensaje de la confirmación con el costo y el saldo que queda.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuesta {costo} puntos. Te quedarán {quedan}.'**
+  String recompensasConfirmarMensaje(String costo, String quedan);
+
+  /// Botón que confirma el canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjear'**
+  String get recompensasConfirmar;
+
+  /// Botón que cancela el canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get recompensasCancelar;
+
+  /// Título del diálogo de error al canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo canjear'**
+  String get recompensasNoSePudoTitulo;
+
+  /// Error SALDO_INSUFICIENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no te alcanzan los puntos para esta recompensa.'**
+  String get recompensasSinSaldo;
+
+  /// Error RECOMPENSA_AGOTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa se acaba de agotar.'**
+  String get recompensasSeAgoto;
+
+  /// Error genérico al canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos canjear la recompensa. Intenta de nuevo.'**
+  String get recompensasError;
+
+  /// Cierra el diálogo de error.
+  ///
+  /// In es, this message translates to:
+  /// **'Entendido'**
+  String get recompensasEntendido;
+
+  /// Título de mis canjes (V2-M12.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis canjes'**
+  String get canjesTitulo;
+
+  /// Estado vacío de mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no canjeas nada'**
+  String get canjesVaciaTitulo;
+
+  /// Mensaje de mis canjes vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambia tus puntos por recompensas y aquí tendrás su código.'**
+  String get canjesVaciaMensaje;
+
+  /// Acción del estado vacío de mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver recompensas'**
+  String get canjesVerRecompensas;
+
+  /// Código del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Código {codigo}'**
+  String canjesCodigo(String codigo);
+
+  /// Vigencia de un canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String canjesVence(String fecha);
+
+  /// Fecha de uso de un canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado el {fecha}'**
+  String canjesUsado(String fecha);
+
+  /// Detalle de un canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció el {fecha}; tus puntos regresaron'**
+  String canjesVencio(String fecha);
+
+  /// Estado de canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get canjesEstadoVigente;
+
+  /// Estado de canje usado.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado'**
+  String get canjesEstadoUsado;
+
+  /// Estado de canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get canjesEstadoVencido;
+
+  /// Indicación bajo el QR de un canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Muestra este código en caja o en servicio para usar tu recompensa.'**
+  String get canjeMuestralo;
+
+  /// Descripción del QR para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Código QR del canje {codigo}'**
+  String canjeQr(String codigo);
+
+  /// Aviso de un canje usado.
+  ///
+  /// In es, this message translates to:
+  /// **'Este canje ya se usó.'**
+  String get canjeYaUsado;
+
+  /// Aviso de un canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Este canje venció sin usarse y tus puntos regresaron a tu saldo.'**
+  String get canjeYaVencio;
+
+  /// Encabezado de los detalles del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles'**
+  String get canjeDetalles;
+
+  /// Fila del costo del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo'**
+  String get canjeCosto;
+
+  /// Fila de la fecha del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjeado'**
+  String get canjeCanjeado;
+
+  /// Fila de la vigencia del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigencia'**
+  String get canjeVigencia;
+
+  /// Fila de la fecha de uso del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado'**
+  String get canjeUsadoEl;
+
+  /// Estado cuando el canje no aparece en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos este canje'**
+  String get canjeNoEncontradoTitulo;
+
+  /// Mensaje del canje no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a Mis canjes para ver tus códigos.'**
+  String get canjeNoEncontradoMensaje;
+
+  /// Título de los movimientos de puntos (V2-M12.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Movimientos'**
+  String get movimientosTitulo;
+
+  /// Estado vacío de los movimientos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes movimientos'**
+  String get movimientosVaciaTitulo;
+
+  /// Mensaje de movimientos vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganas puntos cada vez que recoges tu auto del taller.'**
+  String get movimientosVaciaMensaje;
+
+  /// Motivo SERVICIO.
+  ///
+  /// In es, this message translates to:
+  /// **'Servicio en el taller'**
+  String get movimientosMotivoServicio;
+
+  /// Motivo CANJE.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje de recompensa'**
+  String get movimientosMotivoCanje;
+
+  /// Motivo DEVOLUCION_CANJE.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje vencido'**
+  String get movimientosMotivoDevolucion;
+
+  /// Motivo REFERIDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Amigo referido'**
+  String get movimientosMotivoReferido;
+
+  /// Motivo AJUSTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Ajuste de la agencia'**
+  String get movimientosMotivoAjuste;
+
+  /// Motivo que la app no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Movimiento'**
+  String get movimientosMotivoOtro;
+
+  /// Referencia a una orden de servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden {id}'**
+  String movimientosOrden(int id);
+
+  /// Referencia a un canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje {id}'**
+  String movimientosCanje(int id);
+
+  /// Fecha y a qué se refiere un movimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {referencia}'**
+  String movimientosFechaYReferencia(String fecha, String referencia);
+
+  /// Lectura de un movimiento positivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganaste {puntos} puntos'**
+  String movimientosGanaste(String puntos);
+
+  /// Lectura de un movimiento negativo.
+  ///
+  /// In es, this message translates to:
+  /// **'Usaste {puntos} puntos'**
+  String movimientosUsaste(String puntos);
+
+  /// Indicador al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más movimientos'**
+  String get movimientosCargandoMas;
+
+  /// Error al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más movimientos.'**
+  String get movimientosErrorMas;
+
+  /// Título de referir (V2-M12.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Referir a un amigo'**
+  String get referirTitulo;
+
+  /// Subtítulo de referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Si tu amigo compra su auto, ganas puntos.'**
+  String get referirSubtitulo;
+
+  /// Sección con el código personal.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu código'**
+  String get referirCodigoTitulo;
+
+  /// Ayuda bajo el código personal.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu amigo lo menciona al visitar la agencia.'**
+  String get referirCodigoAyuda;
+
+  /// Botón que comparte el código con la hoja del sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir mi código'**
+  String get referirCompartir;
+
+  /// Texto que se comparte con el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te recomiendo la agencia. Menciona mi código {codigo} cuando vayas.'**
+  String referirMensaje(String codigo);
+
+  /// Sección del formulario de referido.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra a tu amigo'**
+  String get referirFormularioTitulo;
+
+  /// Nota bajo el formulario.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe su teléfono, su correo o los dos. La agencia solo los usa para contactarlo.'**
+  String get referirFormularioNota;
+
+  /// Campo de nombre.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre de tu amigo'**
+  String get referirNombre;
+
+  /// Campo de teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get referirTelefono;
+
+  /// Ayuda del campo de teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'10 dígitos'**
+  String get referirTelefonoAyuda;
+
+  /// Error de teléfono incompleto.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 10 dígitos.'**
+  String get referirTelefonoInvalido;
+
+  /// Campo de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get referirCorreo;
+
+  /// Error de correo inválido.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el correo.'**
+  String get referirCorreoInvalido;
+
+  /// Casilla de consentimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi amigo aceptó que la agencia lo contacte'**
+  String get referirConsentimiento;
+
+  /// Botón que registra al amigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar'**
+  String get referirEnviar;
+
+  /// Aviso tras registrar al amigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, la agencia contactará a {nombre}.'**
+  String referirEnviado(String nombre);
+
+  /// Error REFERIDO_DUPLICADO; no dice de quién.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa persona ya está con la agencia.'**
+  String get referirDuplicado;
+
+  /// Error LIMITE_REFERIDOS.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes el máximo de amigos en seguimiento. Espera a que la agencia los atienda.'**
+  String get referirLimite;
+
+  /// Error genérico al referir.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos registrar a tu amigo. Intenta de nuevo.'**
+  String get referirError;
+
+  /// Sección con mis referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus referidos'**
+  String get referirListaTitulo;
+
+  /// Lista de referidos vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no refieres a nadie.'**
+  String get referirVacio;
+
+  /// Error al pedir los referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar tus referidos.'**
+  String get referirListaError;
+
+  /// Nota bajo la lista de referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganas puntos una sola vez por cada amigo que compre.'**
+  String get referirPuntosAyuda;
+
+  /// Estado REGISTRADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado'**
+  String get referidoEstadoRegistrado;
+
+  /// Estado EN_SEGUIMIENTO.
+  ///
+  /// In es, this message translates to:
+  /// **'En seguimiento'**
+  String get referidoEstadoSeguimiento;
+
+  /// Estado COMPRO.
+  ///
+  /// In es, this message translates to:
+  /// **'Compró'**
+  String get referidoEstadoCompro;
+
+  /// Estado DESCARTADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin compra'**
+  String get referidoEstadoDescartado;
+
+  /// Estado y fecha de un referido.
+  ///
+  /// In es, this message translates to:
+  /// **'{estado} · desde el {fecha}'**
+  String referidoDesde(String estado, String fecha);
+
+  /// Puntos ganados por un referido que compró.
+  ///
+  /// In es, this message translates to:
+  /// **'+{puntos}'**
+  String referidoGanaste(String puntos);
 }
 
 class _AppLocalizationsDelegate

@@ -8,6 +8,10 @@ int leerEntero(Object? valor, String campo) {
   throw FormatException('El campo «$campo» no es un entero: $valor');
 }
 
+/// Lee un entero que puede no venir; nulo si no viene o es nulo.
+int? leerEnteroOpcional(Object? valor, String campo) =>
+    valor == null ? null : leerEntero(valor, campo);
+
 /// Lee un decimal aunque llegue como entero.
 ///
 /// JSON no distingue `980` de `980.0`, y el contrato declara `total` como

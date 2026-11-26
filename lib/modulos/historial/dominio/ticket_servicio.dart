@@ -32,6 +32,7 @@ class TicketServicio {
     required this.iva,
     required this.total,
     this.fechaCierre,
+    this.puntosGanados,
   });
 
   final int id;
@@ -47,6 +48,10 @@ class TicketServicio {
   final double subtotal;
   final double iva;
   final double total;
+
+  /// Puntos de lealtad que dio la orden al entregarse (V2-M12.02); nulo si no
+  /// dio.
+  final int? puntosGanados;
 
   static const _centavo = 0.005;
 

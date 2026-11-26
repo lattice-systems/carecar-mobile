@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/historial/datos/repositorio_historial_fake.dart';
+import 'package:carecar_mobile/modulos/historial/dominio/ticket_servicio.dart';
 import 'package:carecar_mobile/modulos/historial/presentacion/pantalla_ticket.dart';
 import 'package:carecar_mobile/modulos/historial/presentacion/proveedores_historial.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
@@ -52,6 +53,42 @@ void main() {
     expect(find.text(r'$351.00'), findsOneWidget);
     expect(find.text(r'4 × $120.25'), findsOneWidget);
     expect(find.text(r'$481.00'), findsOneWidget);
+  });
+
+  _prueba('dice cuantos puntos de lealtad dio la orden', (tester) async {
+    final e = ticketDeEjemplo;
+    final conPuntos = TicketServicio(
+      id: e.id,
+      vehiculoId: e.vehiculoId,
+      fecha: e.fecha,
+      fechaCierre: e.fechaCierre,
+      kilometraje: e.kilometraje,
+      estatus: e.estatus,
+      manoDeObra: e.manoDeObra,
+      refacciones: e.refacciones,
+      totalManoDeObra: e.totalManoDeObra,
+      totalRefacciones: e.totalRefacciones,
+      subtotal: e.subtotal,
+      iva: e.iva,
+      total: e.total,
+      puntosGanados: 128,
+    );
+    await tester.pumpWidget(
+      _app(RepositorioHistorialFake(tickets: {21: conPuntos})),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text('Ganaste 128 puntos de lealtad con este servicio.'),
+      findsOneWidget,
+    );
+  });
+
+  _prueba('sin puntos de lealtad no dice nada de ellos', (tester) async {
+    await tester.pumpWidget(_app(RepositorioHistorialFake()));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('puntos de lealtad'), findsNothing);
   });
 
   _prueba('la mano de obra mas las refacciones dan el total', (tester) async {
