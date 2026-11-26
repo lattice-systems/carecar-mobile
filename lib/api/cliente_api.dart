@@ -231,19 +231,22 @@ class ClienteApi {
   /// [conToken] en `false` para las rutas publicas del contrato. Ademas de no
   /// mandar el encabezado, apaga el reintento con sesion renovada, que en una
   /// ruta publica no tendria sentido.
+  ///
+  /// [encabezados] suma los que pida una ruta, como `Idempotency-Key`.
   Future<T> enviar<T>(
     String camino, {
     required Object? cuerpo,
     required T Function(Map<String, Object?>) leer,
     bool conToken = true,
+    Map<String, String>? encabezados,
   }) async {
     final respuesta = await _pedir(
       () async => _http.post(
         config.ruta(camino),
-        headers: await _encabezados(
-          conCuerpo: cuerpo != null,
-          conToken: conToken,
-        ),
+        headers: {
+          ...await _encabezados(conCuerpo: cuerpo != null, conToken: conToken),
+          ...?encabezados,
+        },
         body: cuerpo == null ? null : jsonEncode(cuerpo),
       ),
       conToken: conToken,
