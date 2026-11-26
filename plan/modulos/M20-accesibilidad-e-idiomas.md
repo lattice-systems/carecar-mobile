@@ -54,6 +54,12 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 - **Excepción aceptada en V2-M20.08:** en teléfonos de 320 de ancho cada día del `Calendario` mide unos 42 de ancho y conserva 48 de alto, porque siete columnas de 48 suman 336. Se acepta porque supera el mínimo de WCAG 2.2 AA (24 × 24) y las otras salidas, como desplazar el mes de lado, son peores para quien lo usa. La prueba de agendar inspección exige al menos 40 de ancho y 48 de alto.
 - Las tres historias siguen abiertas: faltan las pantallas de los demás módulos y la prueba con TalkBack y VoiceOver.
 
+### Pantallas de taller, historial, garantía, lealtad y pagos
+
+- Las pantallas de M04 (orden, inspección y adicionales), M02 (historial y ticket), M10 (garantía, campañas, campaña y agendar), M12 (lealtad, movimientos, recompensas, canjes y referir) y M08 (datos fiscales, perfil fiscal, pagar orden, mis pagos, pago y métodos de pago) pasan la auditoría en sus pruebas de módulo: `auditarAccesibilidad` en claro y oscuro a 320 de ancho, y sin desbordes con letra al 200 %.
+- Los ayudantes de prueba de esos módulos (`appTaller`, `appGarantia`, `appLealtad`, `appPagos` y `appCobro`) aceptan `ancho`, para montar cada pantalla en un teléfono chico.
+- Sigue manual la prueba con TalkBack y VoiceOver de esas pantallas.
+
 ## Avance de V2-M20.01 (fase 1)
 
 Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.
