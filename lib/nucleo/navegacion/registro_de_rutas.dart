@@ -11,6 +11,7 @@ import '../../modulos/estreno/estreno.dart';
 import '../../modulos/galeria/galeria.dart';
 import '../../modulos/garantia/garantia.dart';
 import '../../modulos/historial/historial.dart';
+import '../../modulos/lealtad/lealtad.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
 import '../../modulos/privacidad/privacidad.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
@@ -54,6 +55,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasGarantia,
   // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
   ...rutasHistorial,
+  // La lealtad (M12) es nueva en v2: no pasa por el interruptor.
+  ...rutasLealtad,
   // El mantenimiento (M05) es nuevo en v2: no pasa por el interruptor.
   ...rutasMantenimiento,
   // La privacidad (M22) es nueva en v2: no pasa por el interruptor.
