@@ -47,13 +47,23 @@ void main() {
       });
     });
 
-    test('solo id, iniciadaEn y expiraEn son obligatorios', () {
-      // `dispositivo` y `ultimoUso` llegan nulos en las sesiones anteriores a
-      // esta historia y en las de un cliente que no manda el nombre.
+    test('solo id y expiraEn son obligatorios', () {
+      // `dispositivo`, `ultimoUso` e `iniciadaEn` llegan nulos en las sesiones
+      // anteriores a esta historia; el refresco conserva `iniciadaEn` pero las
+      // que ya existian no lo tienen.
       final obligatorios = (esquemas['SesionActiva']['required'] as YamlList)
           .cast<String>()
           .toSet();
-      expect(obligatorios, {'id', 'iniciadaEn', 'expiraEn'});
+      expect(obligatorios, {'id', 'expiraEn'});
+    });
+
+    test('expiraEn se cuenta desde el ultimo refresco, no desde el inicio', () {
+      // Importa para la pantalla: decir «vence el 25 de diciembre» cuando en
+      // realidad se renueva en cada uso seria mentir. El texto del contrato lo
+      // deja claro para quien construya la lista.
+      final expira =
+          esquemas['SesionActiva']['properties']['expiraEn'] as YamlMap;
+      expect(expira['description'] as String, contains('último refresco'));
     });
 
     test('nunca se expone nada derivado del refresh token', () {
