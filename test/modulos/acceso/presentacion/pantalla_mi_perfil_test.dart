@@ -56,7 +56,9 @@ void main() {
     prueba('muestra nombre, correo, telefono y desde cuando es cliente', (
       tester,
     ) async {
-      await tester.pumpWidget(app(RepositorioAccesoFake()..perfilDelCliente = perfil()));
+      await tester.pumpWidget(
+        app(RepositorioAccesoFake()..perfilDelCliente = perfil()),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('María Elena Robles'), findsOneWidget);
@@ -81,7 +83,9 @@ void main() {
 
   group('los vehiculos', () {
     prueba('salen en la lista', (tester) async {
-      await tester.pumpWidget(app(RepositorioAccesoFake()..perfilDelCliente = perfil()));
+      await tester.pumpWidget(
+        app(RepositorioAccesoFake()..perfilDelCliente = perfil()),
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Versa 2024'), findsOneWidget);
@@ -143,7 +147,9 @@ void main() {
   prueba('ofrece ver las sesiones abiertas', (tester) async {
     // Es lo que vuelve alcanzable la pantalla de V2-M01.09: su ruta existe y
     // hasta ahora nada llevaba a ella.
-    await tester.pumpWidget(app(RepositorioAccesoFake()..perfilDelCliente = perfil()));
+    await tester.pumpWidget(
+      app(RepositorioAccesoFake()..perfilDelCliente = perfil()),
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Mis sesiones'), findsOneWidget);
