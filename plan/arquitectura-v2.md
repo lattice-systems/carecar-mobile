@@ -66,7 +66,7 @@ Riverpod sin generación de código. `lib/nucleo/api` y `lib/nucleo/sesion` expo
 
 ## Migrar un módulo con el interruptor v1/v2 (V2-T01.05)
 
-**Qué es.** `lib/nucleo/migracion/interruptor_modulos.dart`. Por cada módulo que existe en v1 (`lib/pantallas`) y en v2 (`lib/modulos/<m>`) decide cuál ve la persona usuaria. Es una decisión de compilación: un valor por defecto en código (desde V2-T01.09, **todo en v2**) que se sobrescribe con `--dart-define`; no es remoto y no lleva secretos.
+**Qué es.** `lib/nucleo/migracion/interruptor_modulos.dart`. Por cada módulo que existe en v1 (`lib/pantallas`) y en v2 (`lib/modulos/<m>`) decide cuál ve la persona usuaria. Es una decisión de compilación: un valor por defecto en código (desde V2-T01.09, **todo en v2**, salvo `recuperacion`: V2-T01.10) que se sobrescribe con `--dart-define`; no es remoto y no lleva secretos.
 
 | Estado del módulo | Rutas v2 | Tarjeta del menú v1 |
 | --- | --- | --- |
@@ -84,14 +84,14 @@ flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V1=catalogo
 flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V2=<modulo>
 ```
 
-En código, `interruptorModulosProvider` entrega el `InterruptorModulos`; las pruebas lo sustituyen con `overrideWithValue` (`AppEnrutadaDePrueba(interruptor: ...)`, por omisión todo en v2; las de la v1 pasan `InterruptorModulos.todoV1`).
+En código, `interruptorModulosProvider` entrega el `InterruptorModulos`; las pruebas lo sustituyen con `overrideWithValue` (`AppEnrutadaDePrueba(interruptor: ...)`, por omisión todo en v2, incluida la recuperación; las de la v1 pasan `InterruptorModulos.todoV1` y las que recorren los flujos de acceso, `InterruptorModulos.porDefecto`).
 
 **Guía paso a paso para migrar un módulo**
 
 1. **Carpeta.** Crea `lib/modulos/<modulo>/` copiando `lib/modulos/ejemplo/` (datos, dominio, presentación, `<modulo>.dart`, rutas). Detalle en [`lib/modulos/README.md`](../lib/modulos/README.md). La v1 no se toca: sigue en `lib/pantallas` usando `lib/api` y `lib/sesion` como hasta hoy.
 2. **Interruptor.** Agrega el módulo a `ModuloMigrable` (orden alfabético) y, en `lib/nucleo/navegacion/registro_de_rutas.dart`, envuelve su línea: `...interruptor.rutas(ModuloMigrable.<modulo>, rutas<Modulo>),`. Si la v1 tiene una tarjeta en el menú, agrega `ModuloMigrable.<modulo>: ruta<Principal>` a `destinosDeMenuV2` (el mismo archivo); el menú v1 la usará solo con el módulo en v2.
 3. **Pruebas.** (a) la de tu módulo con `AppEnrutadaDePrueba` (todo en v2 por omisión); (b) en `test/nucleo/migracion/interruptor_rutas_test.dart` agrega tu módulo a las dos tablas: en v1 su ruta cae en el inicio y la tarjeta abre la pantalla v1, en v2 abre la v2. Las pruebas de la v1 pasan `InterruptorModulos.todoV1` y no deben cambiar.
-4. **Encender.** Desarrollo y pruebas: `--dart-define=MODULOS_V2=<modulo>` (o el valor del flavor cuando V2-T01.04 llegue a `main`). Producción: el módulo queda en v1 hasta que esté **completo** (criterios de su historia, cinco estados, accesibilidad); entonces se enciende su valor por defecto en `InterruptorModulos.porDefecto` en un PR propio, que se puede revertir sin tocar el módulo. Los cuatro módulos que ya existían en v1 (asistencia, catálogo, citas y vehículos) se encendieron así en V2-T01.09; la salida de emergencia es `MODULOS_V1=todos`.
+4. **Encender.** Desarrollo y pruebas: `--dart-define=MODULOS_V2=<modulo>` (o el valor del flavor cuando V2-T01.04 llegue a `main`). Producción: el módulo queda en v1 hasta que esté **completo** (criterios de su historia, cinco estados, accesibilidad); entonces se enciende su valor por defecto en `InterruptorModulos.porDefecto` en un PR propio, que se puede revertir sin tocar el módulo. Los cuatro módulos que ya existían en v1 (asistencia, catálogo, citas y vehículos) se encendieron así en V2-T01.09 y el acceso en V2-T01.10; la salida de emergencia es `MODULOS_V1=todos`. **La recuperación de contraseña** es un módulo aparte que sigue en v1 hasta que el enlace del correo abra la app (ver [`T01`](modulos/T01-arquitectura-v2.md#avance-de-v2-t0110-el-acceso-en-v2)): un módulo puede quedarse atrás aunque el resto esté en v2 cuando su v2 depende de algo fuera de la app.
 5. **Un módulo, un PR.** El interruptor permite integrar la v2 a medias sin que se vea; no lo uses para mezclar dos migraciones en un mismo PR.
 
 **Cómo se retira (V2-T01.07).** Al cerrar H2, con todos los módulos en v2: se borran `lib/nucleo/migracion/` (con `todoV1`), `interruptorModulosProvider`, el parámetro `abrirEnV2` de `PantallaInicio` (que desaparece con `lib/pantallas`), `destinosDeMenuV2` y las pruebas de `test/nucleo/migracion/`; `registro_de_rutas.dart` vuelve a `...rutas<Modulo>,` sin envoltorio y el parámetro `interruptor` de `rutasDeLaApp` se quita. `grep -rn "migracion/\|ModuloMigrable\|MODULOS_V" lib test` debe quedar vacío.

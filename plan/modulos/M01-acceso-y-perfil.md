@@ -252,3 +252,25 @@ La lista **no marca «este dispositivo»**. El JWT lleva `uid` y `roles` pero no
 El arreglo guarda el motivo (`motivo_revocacion`, V53) y el cierre masivo se dispara **solo** cuando el token lo consumió un refresco, que es el único caso que delata una copia. La protección no se debilita y hay una prueba para eso. Ricardo, que definió la regla original, lo confirmó.
 
 **Pendiente:** demostrarlo en celular, que es lo único que le falta a la fila de `cumplimiento-ficha.md`.
+
+## Avance de V2-T01.10 (el acceso, encendido)
+
+El inicio de sesión y el cambio obligatorio de la contraseña temporal (V2-M01.01 y V2-M01.03) **ya son lo que ve quien abre la app** (`ModuloMigrable.acceso`, v2 por defecto). Lo hizo Daniel como parte de «terminar de pasar las pantallas a v2»; es un PR propio y reversible (`--dart-define=MODULOS_V1=acceso`). Los tres bloqueos que se habían anotado aquí quedaron así:
+
+| Bloqueo anotado | Cómo quedó |
+| --- | --- |
+| «¿Olvidaste tu contraseña?» muerto | **Era peor de lo anotado:** el botón de la v2 tenía el cuerpo vacío (`_olvide() {}`), no solo faltaba la pantalla de destino. Ahora va a `/recuperar` con el correo escrito (si parece correo) y lo sirve la recuperación que esté encendida |
+| La recuperación v2 (V2-M01.04) | **No se enciende**: es el módulo `recuperacion`, aparte, y sigue en v1. El motivo no es de la pantalla sino del correo (abajo) |
+| Las trece pruebas que miraban `PantallaLogin` | Diecinueve archivos de pruebas de rutas usan ahora `pantallaDeAcceso` (`test/ayudas/app_enrutada.dart`): una sola definición de qué pantalla es la de acceso |
+
+**Por qué la recuperación v2 espera.** Al revisar el correo que manda el backend (`RecuperacionContrasenaService`) aparecieron tres cosas que juntas dejarían sin salida a quien olvida su contraseña:
+
+1. El enlace es `carecar://restablecer-contrasena?token=…` (valor por omisión de `RECUPERACION_ENLACE`) y la app entiende `carecar://restablecer?token=…`. Tocarlo llevaría a una ruta que no existe.
+2. El enlace universal `https://<host>/app/restablecer` usa `carecar.example.com`, un marcador: sin dominio real con `assetlinks.json` y `apple-app-site-association` abre el navegador, no la app.
+3. El correo trae también el **código de 6 dígitos**, que solo la pantalla v1 sabe recibir. La v2 no tiene dónde escribirlo.
+
+La v1 sí funciona hoy (correo con código). Encender la v2 sin resolver esto cambiaría algo que sirve por algo que no.
+
+**Para encender la recuperación v2** (lo que sigue y a quién le toca decidir): (a) el dominio real y sus dos archivos de verificación (T01.03 lo dejó como `CONFIGURAR`), (b) que el backend mande el enlace que la app reconoce o que la app acepte también `restablecer-contrasena`, (c) probarlo en un celular con un correo real, que es también lo que le falta a la fila de `cumplimiento-ficha.md`, y (d) agregar `ModuloMigrable.recuperacion` a `InterruptorModulos.porDefecto`. Mientras tanto se prueba con `--dart-define=MODULOS_V2=recuperacion`.
+
+**Pendiente:** demostrar el inicio de sesión v2 en un celular real (fila de `cumplimiento-ficha.md`); V2-M01.10 (cambiar la contraseña desde Ajustes) sigue abriendo la pantalla v1.
