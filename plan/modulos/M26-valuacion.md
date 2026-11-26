@@ -35,7 +35,7 @@ El diseño técnico (tipos, checks, índices, migración, eventos y seguridad) e
 
 ## Reglas
 
-- **Estados:** `SOLICITADA` → `CITA_AGENDADA` → `OFERTADA` → `ACEPTADA` o `RECHAZADA`. Una oferta sin respuesta pasa a `VENCIDA` y la agencia puede renovarla. Si la cita se cancela, la valuación vuelve a `SOLICITADA`. Los calcula el servidor y la app no los deduce.
+- **Estados:** `SOLICITADA` → `CITA_AGENDADA` → `OFERTADA` → `ACEPTADA` o `RECHAZADA`. Una oferta sin respuesta pasa a `VENCIDA` y la agencia puede renovarla. Si la cita se cancela, la valuación vuelve a `SOLICITADA`. Los calcula el servidor y la app no los deduce. Ofrece «Agendar inspección» solo cuando `puedeAgendar` es verdadero.
 - **Vehículo registrado:** solo se valúa una estimación hecha con uno de los vehículos del cliente, porque la cita necesita un vehículo.
 - **Fotos:** se puede agendar sin las 8 y la oferta no las exige. La oferta formal sale de la inspección física.
 - **Oferta (ERP y CRM congelados):** la captura el personal de ventas con los endpoints protegidos `/api/v1/valuaciones`, fuera del contrato de la app. No hay pantalla web.
