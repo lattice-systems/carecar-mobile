@@ -220,14 +220,54 @@ Golden en `test/nucleo/diseno/componentes/goldens/` (claro, oscuro y 200 %). Tod
 
 Cada componente documenta: anatomía, variantes, estados (normal, presionado, foco, deshabilitado, cargando, error), accesibilidad (`Semantics`, orden de foco) y golden en claro, oscuro y 200 %.
 
+### Mapa
+
+`Mapa` (V2-T02.09, decisión [0006](../decisiones/0006-mapas-y-geocodificacion.md)) vive en `lib/nucleo/diseno/componentes/mapa.dart`. Es el único componente que importa `flutter_map` y `latlong2`: quien lo usa habla en `Coordenada` e importa `lib/nucleo/mapas/mapas.dart`.
+
+**Anatomía.** Un recuadro de radio `tarjeta` (260 de alto por omisión, `alto`) con las teselas, los marcadores y el crédito abajo a la derecha. Debajo, y solo cuando aplican, van el aviso de teselas con «Reintentar», «Ver mi ubicación», el aviso de ubicación y los controles del pin. Ningún control tapa el crédito.
+
+| Parte | Cómo se ve | Con qué se activa |
+| --- | --- | --- |
+| Pin | `location_on` de 48 en `acento` con aro `superficie`. La punta marca la coordenada | `pin` |
+| Pin editable | El mismo, se arrastra y trae sus botones | `alMoverPin` (sin él es de solo lectura) |
+| Ubicación propia | Punto de 24 en `acento` con aro | `miUbicacion` o `proveedorUbicacion` |
+| Marcador en movimiento | Ficha redonda de 48 con borde `acento` e ícono (`local_shipping` por omisión) | `enMovimiento` (`MarcadorEnMovimiento`) |
+
+**Pin.** La pantalla guarda la coordenada: el mapa la entrega al tocar, al soltar el arrastre (no en cada paso) o al usar los botones. Arrastrar el pin le gana al desplazamiento del mapa y al de la página que lo contiene, y no sale del recuadro. Para ponerlo y moverlo sin arrastrar hay «Poner el pin en el centro» (cuando no hay pin) y cuatro `BotonCircular` de 48 (norte, sur, oeste y este) que lo mueven 24 puntos de pantalla, así que cuanto más cerca está el mapa más fino es el paso.
+
+**Cámara.** Abre en el pin, el marcador en movimiento o la ubicación propia, en ese orden, y sin ninguno en `centroInicial` (León, Guanajuato). Si el pin o el marcador en movimiento cambian a un punto que no se ve, el mapa lo sigue. No se puede girar.
+
+**Ubicación propia y permiso.** Con `proveedorUbicacion` la posición se lee una sola vez, solo cuando la persona toca «Ver mi ubicación». El mapa no pide permisos al abrirse ni sigue la posición. Permiso negado, permiso bloqueado, ubicación apagada y tiempo agotado tienen cada uno su aviso, y el resto del mapa sigue funcionando.
+
+**Sin conexión.** Si una tesela falla aparece un aviso con «Reintentar». El pin, los marcadores y los botones siguen disponibles.
+
+**Movimiento.** El marcador en movimiento se desliza con el token `base`. Con «reducir movimiento» salta a la posición nueva sin animar, como pide la decisión 0006.
+
+**Oscuro.** Las teselas son claras, así que se atenúan con `fondo` al 40 %. No se invierten.
+
+**Accesibilidad.** El mapa es un solo nodo con nombre («Mapa con un pin.», «Mapa sin pin.» o «Mapa de seguimiento.») o con la `descripcion` que dé la pantalla, más la etiqueta del marcador y «Se muestra tu ubicación.» cuando aplican. El nombre por omisión no dice coordenadas. El crédito se lee aparte. Al mover el pin con un botón se anuncia, por ejemplo, «Pin movido al norte». Todos los controles miden al menos 48 y los avisos se anuncian solos.
+
+**Teselas y privacidad.** `teselas` es la `ConfiguracionTeselas` del build (`configuracionTeselasProvider`): URL y crédito se configuran, no se escriben en las pantallas. Por la política de OpenStreetMap, cada descarga lleva en el `User-Agent` el identificador de la app, el crédito está siempre a la vista, la caché del paquete queda activa y no se descarga por adelantado fuera de lo visible. Los errores de descarga salen sin la dirección de la tesela (`ClienteTeselas`), porque esa ruta dice qué zona mira la persona y el paquete los escribe en la consola.
+
+**Pruebas.** `fuenteTeselas` reemplaza la red con `TeselasLisas` o `TeselasSinConexion` (en pantallas, `fuenteTeselasProvider`). Pruebas en `test/nucleo/diseno/componentes/mapa_test.dart` y golden en `goldens/mapa_*.png`. `test/arquitectura/paquetes_de_mapas_test.dart` vigila que los paquetes no salgan de su sitio.
+
+```dart
+Mapa(
+  teselas: ref.watch(configuracionTeselasProvider),
+  fuenteTeselas: ref.watch(fuenteTeselasProvider),
+  pin: _pin,
+  alMoverPin: _ponerPin,
+)
+```
+
 ### Pruebas golden
 
-Las pruebas de Pantalla y Mensajes usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee de `assets/fonts/` los mismos pesos de Geist y Geist Mono que declara `pubspec.yaml`, más Inter y JetBrains Mono de respaldo. Material Icons sale del directorio de recursos que prepara `flutter test`. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
+Las pruebas de Pantalla, Mensajes y Mapa usan `matchesGoldenFile` de `flutter_test`. El ayudante `test/ayudas/fuentes_golden.dart` lee de `assets/fonts/` los mismos pesos de Geist y Geist Mono que declara `pubspec.yaml`, más Inter y JetBrains Mono de respaldo. Material Icons sale del directorio de recursos que prepara `flutter test`. Cada prueba fija el tamaño y la densidad de pantalla y compara una referencia por escenario.
 
-Desde la raíz de CareCar, corre las dos suites con Flutter y las dependencias ya instaladas:
+Desde la raíz de CareCar, corre las tres suites con Flutter y las dependencias ya instaladas:
 
 ```bash
-flutter test test/nucleo/diseno/componentes/pantalla_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart
+flutter test test/nucleo/diseno/componentes/pantalla_golden_test.dart test/nucleo/diseno/componentes/mensajes_golden_test.dart test/nucleo/diseno/componentes/mapa_golden_test.dart
 ```
 
 Las referencias se generan en Linux con el mismo parche de Flutter que usa CI. La rasterización de texto e íconos puede variar en Windows aunque el diseño sea el mismo. Si el cambio visual es intencional, agrega `--update-goldens` al comando en Linux y revisa las PNG resultantes antes de incluirlas en el PR. El check **Pruebas (flutter test)** ejecuta la comparación exacta en Ubuntu. Si falla, adjunta el artefacto `diferencias-golden`, donde `*_testImage.png` es la captura del runner y `*_masterImage.png` es la referencia con la que se comparó.
