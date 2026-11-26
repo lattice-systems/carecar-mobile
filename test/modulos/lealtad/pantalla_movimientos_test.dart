@@ -96,13 +96,23 @@ void main() {
     await tester.pumpWidget(appLealtad(_pantalla, repo));
     await tester.pumpAndSettle();
 
-    expect(find.text('No pudimos cargar más movimientos.'), findsOneWidget);
+    // El aviso queda al final de la lista, ya construido pero fuera de la
+    // vista; se busca tambien fuera de escena y se desplaza hasta el.
+    final aviso = find.text(
+      'No pudimos cargar más movimientos.',
+      skipOffstage: false,
+    );
+    expect(aviso, findsOneWidget);
     expect(_filas(tester), tamanoPaginaMovimientos);
 
     repo.fallaAlCargarMas = null;
-    await tester.tap(find.text('Reintentar'));
+    final reintentar = find.text('Reintentar', skipOffstage: false);
+    await tester.ensureVisible(reintentar);
+    await tester.pumpAndSettle();
+    await tester.tap(reintentar);
     await tester.pumpAndSettle();
     expect(_filas(tester), 25);
+    expect(aviso, findsNothing);
   });
 
   pruebaLealtad('con puntos.movidos vuelve a pedir la primera pagina', (
