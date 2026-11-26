@@ -137,6 +137,8 @@ Base: `Boton` (principal, secundario, terciario, peligro; chico/normal/grande; c
 
 Compuestos: `TarjetaVehiculo` (foto de un modelo del catálogo), `TarjetaAuto` (el auto del cliente), `TarjetaResumen`, `FilaLista`, `EncabezadoGrande` (colapsa al desplazar, opcionalmente translúcido), `BarraPantalla`, `MarcoPantalla` (con `BarraInferior` y `SeccionPantalla`), `FilaAcciones`, `ResultadoPantalla`, `BotonRegresar`, `BotonCerrar`, `Estante`, `GrupoLista`, `BotonPildora`, `BotonCircular`, `LineaDeTiempo`, `Calendario` (días con cupo), `SelectorFranja`, `EstadoVacio`, `EstadoError`, `Esqueleto`, `BarraNavegacion`, `TarjetaMetrica` (cifra + etiqueta), `TarjetaAccion`, `VisorPdf`, `GaleriaFotos`, `Semaforo` (inspección), `Firma`, `Mapa` (pin y seguimiento), `Grafica` (con tabla accesible), `DeslizarParaConfirmar`, `BurbujaMensaje` y `CampoMensaje` (chat).
 
+**Zona táctil del `Calendario`:** cada día mide 48 de alto. En teléfonos de 320 de ancho se angosta a unos 42, porque siete columnas de 48 no caben. Es la única excepción aceptada a los 48 (V2-M20.08) y cumple WCAG 2.2 AA.
+
 **Navegación en píldora (rediseño del inicio, V2-T02.21).** Inspirada en la app móvil de Claude: menos héroes y tarjetas de color, más aire y listas limpias.
 
 | Componente | Qué es |

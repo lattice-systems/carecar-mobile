@@ -15,6 +15,7 @@ import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/privacidad/privacidad.dart';
 import 'modulos/widgets/widgets.dart';
+import 'nucleo/dispositivo/lector_del_dispositivo.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/datos/reintento.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
@@ -151,7 +152,14 @@ class _AppCareCarState extends State<AppCareCar> {
               CifradorAesGcm(AlmacenamientoDelSistema()),
               politica: widget.politica,
             );
-      sesion = ControladorSesion(api, almacen);
+      sesion = ControladorSesion(
+        api,
+        almacen,
+        // V2-M01.09: el nombre del equipo viaja en el login para que «mis
+        // sesiones abiertas» no muestre todas las sesiones iguales. Si no se
+        // puede leer, se entra sin nombre.
+        leerDatosDelDispositivo,
+      );
 
       _cliente = cliente;
       _conexionSegura = conexionSegura;

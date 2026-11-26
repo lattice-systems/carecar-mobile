@@ -48,6 +48,12 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 - **Sigue manual:** la prueba con TalkBack y VoiceOver por pantalla que pide V2-M20.02. No se puede automatizar.
 - **Pendiente:** las pantallas v1 no se auditan, se retiran con V2-T02.08.
 
+### Pantallas de catálogo, tienda y valuación
+
+- Las pantallas de M03, M14 y M26 pasan las guías en sus pruebas de módulo, en claro, oscuro y letra al 200 %. Las de catálogo y valuación se prueban además en 320 de ancho, como ya hacía la tienda.
+- **Excepción aceptada en V2-M20.08:** en teléfonos de 320 de ancho cada día del `Calendario` mide unos 42 de ancho y conserva 48 de alto, porque siete columnas de 48 suman 336. Se acepta porque supera el mínimo de WCAG 2.2 AA (24 × 24) y las otras salidas, como desplazar el mes de lado, son peores para quien lo usa. La prueba de agendar inspección exige al menos 40 de ancho y 48 de alto.
+- Las tres historias siguen abiertas: faltan las pantallas de los demás módulos y la prueba con TalkBack y VoiceOver.
+
 ## Avance de V2-M20.01 (fase 1)
 
 Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.
