@@ -158,6 +158,7 @@ Widget appLealtad(
   EventosEnVivoFake? eventos,
   List<String>? compartidos,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [
     repositorioLealtadProvider.overrideWithValue(repo),
@@ -174,6 +175,7 @@ Widget appLealtad(
       ),
     ),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 

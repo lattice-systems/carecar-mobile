@@ -11,6 +11,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/selector_franja.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 import 'ayudas_garantia.dart';
 
@@ -26,11 +27,18 @@ Future<RepositorioGarantiaFake> _montar(
   RepositorioGarantiaFake? repo,
   RepositorioCitasFake? citas,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) async {
   final garantia =
       repo ?? RepositorioGarantiaFake(campanas: campanasDeEjemplo());
   await tester.pumpWidget(
-    appGarantia(_pantalla, garantia, citas: citas, escenario: escenario),
+    appGarantia(
+      _pantalla,
+      garantia,
+      citas: citas,
+      escenario: escenario,
+      ancho: ancho,
+    ),
   );
   await tester.pumpAndSettle();
   return garantia;
@@ -187,4 +195,16 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('pasa la auditoria de accesibilidad en 320 (V2-M20.02, '
+      'V2-M20.03 y V2-M20.08)', (tester) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await _montar(tester, escenario: escenario, ancho: anchoTelefonoChico);
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      if (escenario != Escenario.letraGrande) {
+        await auditarAccesibilidad(tester);
+      }
+    }
+  });
 }

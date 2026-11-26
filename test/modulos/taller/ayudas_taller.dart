@@ -27,6 +27,7 @@ Widget appTaller(
   Widget pantalla,
   RepositorioTallerFake repo, {
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
   bool abreVideo = true,
   Locale idioma = idiomaBase,
   EventosEnVivoFake? eventos,
@@ -49,6 +50,7 @@ Widget appTaller(
       ),
     ),
     escenario: escenario,
+    ancho: ancho,
     idioma: idioma,
   ),
 );
