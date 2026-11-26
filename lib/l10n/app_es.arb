@@ -409,11 +409,7 @@
   "@asistenciaHeroeAccion": {
     "description": "Botón de pedir ayuda, deshabilitado hasta que exista la solicitud de asistencia."
   },
-  "asistenciaEstanteGuias": "Guías rápidas",
-  "@asistenciaEstanteGuias": {
-    "description": "Título del carrusel de guías."
-  },
-  "asistenciaGrupoGuias": "Todas las guías",
+  "asistenciaGrupoGuias": "Guías",
   "@asistenciaGrupoGuias": {
     "description": "Encabezado de la lista de guías."
   },

@@ -310,3 +310,7 @@ Se retiró el estilo portada de las pantallas del módulo, sin cambiar lógica, 
 ## Rediseño: la próxima cita de «Mis citas» (V2-T02.25)
 
 La tarjeta héroe de la próxima cita (degradado, etiqueta en mayúsculas, día de 84 pt, hora grande) se reemplaza por la `TarjetaResumen` del inicio: `CuadroFecha` en el tono del estado, «Tu próxima cita» como título, el día de la semana con el horario, el vehículo con el motivo y el estado con texto e icono. «Comprobante», «Reprogramar» y «Cancelar cita» siguen debajo como píldoras (y en la hoja de las demás próximas); `GrupoCitas` usa la misma flecha que el resto de las listas. Los criterios de V2-M02.09 a V2-M02.13 no cambian.
+
+## Ajustes visuales (V2-T02.26)
+
+El comprobante de la cita pone el margen lateral a sus listas de detalles y de recolección, y las secciones de la ficha técnica muestran una sola flecha (la de desplegar). Los criterios de V2-M02.04 y V2-M02.11 no cambian.

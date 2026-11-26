@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/nucleo/diseno/tokens/radios.dart';
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
@@ -51,7 +52,7 @@ void main() {
     expect(find.text('Emergencias'), findsWidgets);
     expect(find.text('¿Necesitas ayuda ahora?'), findsOneWidget);
     expect(find.textContaining('comparte tu ubicación'), findsOneWidget);
-    expect(find.text('Guías rápidas'), findsOneWidget);
+    expect(find.text('Guías'), findsOneWidget);
   });
 
   testWidgets('la tarjeta de ayuda lleva a las llamadas rapidas', (
@@ -66,15 +67,44 @@ void main() {
     expect(find.byType(PantallaLlamarRapido), findsOneWidget);
   });
 
-  testWidgets('al tocar una portada del estante se abre su guia', (
+  testWidgets('cada guia sale una sola vez, en la lista', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
+    await tester.pumpAndSettle();
+    // Antes salian dos veces: como portada de color y como fila de la lista.
+    expect(find.text('Cambiar una llanta'), findsOneWidget);
+    expect(find.text('Pasar corriente'), findsOneWidget);
+    expect(find.text('Qué hacer en un choque'), findsOneWidget);
+  });
+
+  testWidgets('la tarjeta de ayuda redondea sus cuatro esquinas', (
     tester,
   ) async {
     await _montar(tester);
     enrutadorDe(tester).go(rutaAsistenciaGuias);
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text('Pasar corriente').first);
+    // Usaba el radio de las hojas, que solo redondea arriba.
+    final caja = tester.widget<DecoratedBox>(
+      find
+          .ancestor(
+            of: find.text('¿Necesitas ayuda ahora?'),
+            matching: find.byType(DecoratedBox),
+          )
+          .first,
+    );
+    expect(
+      (caja.decoration as BoxDecoration).borderRadius,
+      Radios.bordeTarjeta,
+    );
+  });
+
+  testWidgets('al tocar una guia de la lista se abre', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaAsistenciaGuias);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Pasar corriente').first);
+    await tester.ensureVisible(find.text('Pasar corriente'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pasar corriente'));
     await tester.pumpAndSettle();
     expect(find.byType(PantallaGuia), findsOneWidget);
     expect(find.text('Paso 1 de 6'), findsOneWidget);

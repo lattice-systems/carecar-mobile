@@ -23,6 +23,8 @@ Cada fila dice qué se rechaza, el caso real de CareCar donde apareció y la reg
 | Antipatrón | Caso en CareCar | Regla |
 | --- | --- | --- |
 | **Navegación repetida**: el cuerpo ofrece los mismos destinos que la barra | El inicio traía tres accesos redondos (Vehículos, Citas, Catálogo) con los destinos de la barra, y el botón flotante casi tapaba el último; Ajustes ofrecía «Cerrar sesión» arriba y abajo | Un destino vive en un solo lugar. El cuerpo muestra datos (V2-T02.22) |
+| **La misma lista dos veces** | Emergencias mostraba las tres guías como un estante de portadas de color con iconos de 64 px y, justo debajo, como la misma lista agrupada (V2-T02.26) | Un dato, un lugar: la lista agrupada; sin portadas de color |
+| **Dos flechas en una fila** | La ficha técnica mostraba la flecha de desplegar y, a su lado, la de «abre otra pantalla» (V2-T02.26) | Una fila que despliega en lugar de navegar lleva `conChevron: false` |
 | **Cuadrícula de tarjetas iguales** de icono y título | El detalle del auto presentaba su navegación (Ficha técnica, Historial, Mantenimiento, Bitácora) como cuatro tarjetas iguales en 2×2 | Ir a pantallas hijas es una lista con chevron: `GrupoLista` |
 | **Dos estilos de tarjeta en una pantalla** | El inicio dibujaba la tarjeta del taller (borde y medallón redondo) junto a la de citas (sombra y cuadro lleno) | Una familia: `TarjetaResumen` para resúmenes, `GrupoLista` para listas |
 | **Héroes decorativos**: degradados, resplandores, círculos de icono con brillo | Se retiraron en V2-T02.21 | Lleva color pleno solo lo que la pantalla trata: el auto, el QR, el avance |

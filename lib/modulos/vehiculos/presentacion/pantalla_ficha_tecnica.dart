@@ -149,6 +149,8 @@ class _SeccionFichaState extends State<_SeccionFicha> {
             color: c.textoSecundario,
           ),
           alToque: () => setState(() => _abierta = !_abierta),
+          // Desplegar no lleva a otra pantalla: la flecha de desplegar basta.
+          conChevron: false,
         ),
         if (_abierta)
           for (final (clave, valor) in widget.filas)

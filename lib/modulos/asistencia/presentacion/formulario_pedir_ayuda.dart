@@ -219,8 +219,9 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          _Encabezado(textos.asistenciaPedirVehiculoEncabezado),
+          const SizedBox(height: Espaciado.e2),
           GrupoLista(
-            encabezado: textos.asistenciaPedirVehiculoEncabezado,
             filas: [
               for (final v in widget.vehiculos)
                 FilaGrupo(
