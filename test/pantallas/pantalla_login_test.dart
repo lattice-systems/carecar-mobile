@@ -67,9 +67,7 @@ void main() {
   });
 
   group('el criterio de aceptacion de APP-2.1', () {
-    testWidgets('no muestra ningun flujo de registro de cuenta nueva', (
-      tester,
-    ) async {
+    testWidgets('V2-M01.01: la app no ofrece registro público', (tester) async {
       await _montar(tester, _controlador(ApiFalsa()));
 
       // El criterio es explicito: «la interfaz no debe mostrar botones ni
@@ -463,7 +461,9 @@ void main() {
   });
 
   group('al entrar bien', () {
-    testWidgets('avisa que la sesion quedo iniciada', (tester) async {
+    testWidgets('V2-M01.01: avisa que la sesión quedó iniciada', (
+      tester,
+    ) async {
       var avisos = 0;
       final controlador = _controlador(ApiFalsa());
       await tester.pumpWidget(

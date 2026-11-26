@@ -40,6 +40,10 @@ El job de pruebas publica `cobertura-carecar` con `coverage/lcov.info` y muestra
 
 Para reproducir el informe, ejecuta `flutter test --coverage` y `node tool/resumir_cobertura.js` desde la raíz del repo.
 
+## V2-T03.05 · Evidencia de los criterios de aceptación
+
+Las pruebas de aceptación usan el título `V2-Mxx.nn: <criterio>` y se enlazan en la [matriz de la ficha](../cumplimiento-ficha.md#evidencia-automática-por-criterio). La [prueba de arquitectura](../../test/arquitectura/criterios_en_matriz_test.dart) detecta pruebas identificadas sin enlace, enlaces obsoletos y nombres que no coinciden. El registro empieza con 18 pruebas existentes de acceso, garaje, citas, catálogo y asistente. Cada historia amplía su evidencia al cubrir más criterios.
+
 ## V2-T03.06 · Contrato de la API simulada
 
 La [prueba de contrato](../../test/contrato/mock_api_v2_test.dart) coteja el inventario real de métodos y rutas con `api/agencia360-api-app-v2.yaml`. Comprueba las respuestas `Problema` de las operaciones protegidas y casos autenticados de JSON, PDF y SSE. CI instala las dependencias del mock y ejecuta la prueba con semillas en memoria. [Ejecución local](../../mock_api/README.md#agregar-un-módulo)

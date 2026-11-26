@@ -145,7 +145,7 @@ void main() {
       },
     );
 
-    _prueba('pregunta, espera y muestra la respuesta con su pagina', (
+    _prueba('V2-M24.03: la respuesta del manual muestra la página citada', (
       tester,
     ) async {
       final respuesta = Completer<RespuestaDelAsistente>();
@@ -432,7 +432,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    _prueba('una luz roja dice que te detengas y ofrece pedir ayuda', (
+    _prueba('V2-M24.05: el testigo rojo indica detenerse y pedir ayuda', (
       tester,
     ) async {
       final repo = _Repo((_) async => _conCita)

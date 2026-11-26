@@ -6,6 +6,8 @@ Leyenda: ✅ cumple con prueba · 🟡 existe en v1, falta v2 o prueba · ❌ br
 
 Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backend` (PR #57).
 
+Consulta la [evidencia automática por criterio](#evidencia-automática-por-criterio) para abrir las pruebas por nombre.
+
 ## Funcionalidades
 
 ### 1. Acceso y perfil — plan [M01](modulos/M01-acceso-y-perfil.md)
@@ -182,6 +184,33 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
 
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
+
+## Evidencia automática por criterio
+
+Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
+
+| Criterio probado | Archivo |
+| --- | --- |
+| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M02.01: el garaje muestra los vehículos de la cuenta` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
+| `V2-M02.01: el garaje requiere iniciar sesión` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
+| `V2-M02.07: anuncia y deshabilita los días sin cupo` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |
+| `V2-M02.07: muestra las franjas y el cupo del día elegido` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |
+| `V2-M02.08: pide vehículo, día, horario y motivo antes de continuar` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: al confirmar agenda y muestra el resultado` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: ofrece horarios cercanos cuando se pierde el cupo` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: ante un duplicado muestra la cita existente` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.09: cada estado de cita tiene texto visible` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.09: muestra más citas al pedir la siguiente página` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.10: permite mantener la cita al confirmar la cancelación` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.10: cancela y avisa que el horario quedó libre` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.13: reprograma y libera el horario anterior` | [Prueba](../test/modulos/citas/pantalla_reprogramar_cita_test.dart) |
+| `V2-M03.03: compara tres modelos con precio y ficha` | [Prueba](../test/modulos/catalogo/comparador_test.dart) |
+| `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
+| `V2-M24.05: el testigo rojo indica detenerse y pedir ayuda` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
+
+Inicio de sesión, garaje, reserva y cancelación también se recorren juntos en la [prueba de integración Android](../integration_test/flujo_principal_test.dart). La tabla crece conforme se registra cobertura de más criterios.
 
 ## Tablas que hoy existen con otro nombre o faltan (backend)
 

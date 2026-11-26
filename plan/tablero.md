@@ -60,7 +60,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | En revisión | |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | En revisión | [Flujo Android](../integration_test/flujo_principal_test.dart) · CI pendiente |
 | V2-T03.04 | Cobertura visible | Haziel |  | — | En revisión | [Resumen LCOV](../tool/resumir_cobertura.js) · CI pendiente |
-| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
+| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | En revisión | [Evidencia por criterio](cumplimiento-ficha.md#evidencia-automática-por-criterio) |
 | V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | En curso | |
