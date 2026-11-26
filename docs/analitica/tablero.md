@@ -2,6 +2,13 @@
 
 El plan [O1–O10](../../plan/proposito.md#objetivos-de-producto-sin-fechas) define los indicadores y su alcance.
 
+El backend sirve el panel HTML en `GET /api/v1/analitica/objetivos`. Se consulta con un token del personal de administración o gerencia de marketing. El panel cubre los últimos 30 días y muestra como pendientes las fuentes aún ausentes.
+
+```bash
+curl --fail -H "Authorization: Bearer $TOKEN_PERSONAL" \
+  "$BASE_BACKEND/api/v1/analitica/objetivos" -o objetivos-carecar.html
+```
+
 | Objetivo | Fuente de evidencia |
 | --- | --- |
 | O1 | Matriz de cumplimiento con prueba automática y verificación física |
@@ -14,3 +21,5 @@ El plan [O1–O10](../../plan/proposito.md#objetivos-de-producto-sin-fechas) def
 | O8 | CI, cobertura, errores reportados y métricas de arranque y cuadros |
 | O9 | Auditoría de accesibilidad y comprobación de idiomas |
 | O10 | PR integrados por hito y participantes |
+
+El embudo cuenta intentos de reserva para la disponibilidad y la selección. Cuenta citas distintas para confirmación y asistencia. El indicador por canal queda pendiente porque la base actual no registra un total comparable de citas fuera de CareCar. El panel muestra los errores recibidos y las muestras de rendimiento por separado.

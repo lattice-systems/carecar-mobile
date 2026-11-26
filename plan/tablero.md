@@ -141,12 +141,12 @@ Total: **218 historias** + 4 de H0.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Lista | |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Lista | |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0009-diagnostico-de-carecar.md) · crashes nativos pendientes |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
-| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Lista | |
+| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
 | V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | Lista | |
-| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | Lista | |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
+| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
 
 ## H3 · Postventa viva
 
