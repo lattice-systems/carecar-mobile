@@ -63,6 +63,30 @@ void main() {
     }
   });
 
+  test('el sistema v2 no pide pesos que Geist no trae', () {
+    final empaquetados = declarados(Tipografia.familiaTexto).keys.toSet();
+    final peso = RegExp(r'FontWeight\.(w\d00|bold|normal)');
+    final fuera = <String>[];
+    for (final archivo
+        in Directory('lib/nucleo')
+            .listSync(recursive: true)
+            .whereType<File>()
+            .where((f) => f.path.endsWith('.dart'))) {
+      for (final m in peso.allMatches(archivo.readAsStringSync())) {
+        final pedido = switch (m[1]!) {
+          'bold' => 700,
+          'normal' => 400,
+          final w => int.parse(w.substring(1)),
+        };
+        if (!empaquetados.contains(pedido)) {
+          fuera.add('${archivo.path}: ${m[0]}');
+        }
+      }
+    }
+
+    expect(fuera, isEmpty);
+  });
+
   test('la licencia OFL de Geist viaja junto a las fuentes', () {
     final licencia = File('assets/fonts/Geist-OFL.txt');
 

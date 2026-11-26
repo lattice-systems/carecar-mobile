@@ -38,7 +38,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Hecha | #106 |
 | V2-T01.09 | Encender la v2 por defecto en los cuatro módulos migrables, con salida de emergencia (rediseño; no es historia de usuario) | Daniel |  | V2-T02.26 | En revisión | #173 |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
-| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Hecha | #170 |
+| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Hecha | #170, #181 |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | Hecha | #31, #33, #37, #41 |

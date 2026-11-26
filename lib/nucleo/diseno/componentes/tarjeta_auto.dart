@@ -107,7 +107,7 @@ class TarjetaAuto extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: t.titulo1.copyWith(
               color: frente,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
             ),
           ),
         if (placasAbajo && conPlacas) ...[
@@ -238,7 +238,7 @@ class _Placas extends StatelessWidget {
           texto,
           style: t.cuerpoChico.copyWith(
             color: color,
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w600,
             letterSpacing: 0.6,
           ),
         ),

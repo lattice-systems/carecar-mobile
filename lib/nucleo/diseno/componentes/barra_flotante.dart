@@ -190,7 +190,7 @@ class _Destino extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: t.micro.copyWith(
                     color: color,
-                    fontWeight: seleccionado ? FontWeight.w700 : null,
+                    fontWeight: seleccionado ? FontWeight.w600 : null,
                   ),
                 ),
               ],

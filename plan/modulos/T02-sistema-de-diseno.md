@@ -280,8 +280,8 @@ Con la v2 por defecto ([V2-T01.09](T01-arquitectura-v2.md)) se recorrieron en la
 - La versión, la dirección y las huellas están en [la sección 3 del sistema de diseño](../../docs/diseno/sistema-de-diseno-v2.md#origen-de-las-fuentes). El APK crece unos 249 KB (estimado con deflate, sin compilarlo).
 - Se regeneraron los 18 golden en Linux con Flutter 3.47.9, el parche del CI. Antes se comprobó que ese entorno reproduce sin diferencias las referencias anteriores.
 - Inter y JetBrains Mono se quedan: las usa la v1 y son el respaldo de los tokens.
-- Algunos componentes e inicio piden peso 700 con `copyWith`. Con Geist se pinta en 600. Falta decidir si pasan a 600 en el código o si la escala suma el 700.
-- Con letra al 200 %, el golden de `GrupoLista` parte «Notificaciones» a media palabra cuando la fila lleva un valor a la derecha. Ya pasaba con Inter y se corrige aparte.
+- Los componentes y el inicio que pedían peso 700 con `copyWith` ahora piden 600, que es lo que ya se pintaba. La escala no suma pesos y `fuentes_empaquetadas_test.dart` lo vigila en `lib/nucleo`.
+- Con letra al 200 %, `GrupoLista` partía «Notificaciones» a media palabra cuando la fila llevaba un valor a la derecha. Desde 1.5 de escala el valor pasa debajo del texto.
 
 ## Avance de V2-T02.07
 
