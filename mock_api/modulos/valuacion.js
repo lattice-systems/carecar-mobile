@@ -22,6 +22,8 @@ module.exports = function registrarValuacion(servidor, db, vehiculoDelCliente, e
   const DIAS_VIGENCIA = 7;
   const DIAS_PARA_REAGENDAR = 7;
   const TAMANO_MAXIMO = 8 * 1024 * 1024;
+  // Como el backend: entre 8 y 20 MB es un 400 y arriba de 20 MB, un 413.
+  const TAMANO_DE_CORTE = 20 * 1024 * 1024;
   const MS_POR_DIA = 24 * 60 * 60 * 1000;
   // Hora de la agencia (America/Mexico_City, sin horario de verano).
   const DESFASE_AGENCIA_MS = 6 * 60 * 60 * 1000;
@@ -245,6 +247,9 @@ module.exports = function registrarValuacion(servidor, db, vehiculoDelCliente, e
       const inicio = campo < 0 ? -1 : cuerpo.indexOf('\r\n\r\n', campo) + 4;
       const magia = inicio < 4 ? '' : cuerpo.slice(inicio, inicio + 4);
       const esImagen = magia.startsWith('\xff\xd8') || magia === '\x89PNG';
+      if (recibido > TAMANO_DE_CORTE) {
+        return problema(req, res, 413, 'El archivo es demasiado grande');
+      }
       if (!esImagen || recibido > TAMANO_MAXIMO + 4096) {
         return datosInvalidos(req, res, 'La foto debe ser una imagen JPEG o PNG de hasta 8 MB');
       }

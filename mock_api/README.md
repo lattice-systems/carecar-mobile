@@ -197,7 +197,7 @@ Operaciones de la app y casos de error:
 | GET | `/api/v1/archivos/evidencias/{id}` | Fuera de la base y sin token: una foto PNG de prueba. El video de la orden apunta a un MP4 público, así que se ve con internet |
 | POST | `/valuaciones` | `{estimacionTomaCuentaId}` · 201, o 200 con la abierta de ese vehículo · 400 · 404 si la estimación es ajena · 422 `VALUACION_SIN_VEHICULO` si se capturó a mano (V2-M26.01) |
 | GET | `/valuaciones` y `/valuaciones/{id}` | Paginadas, la más reciente primero, con el estado al día: oferta pasada es `VENCIDA` y una cita cancelada la regresa a `SOLICITADA`. La semilla trae el Jetta (6) con una oferta vigente y estimaciones del March (5) en varios meses, y agrega franjas futuras si las de citas ya pasaron |
-| POST | `/valuaciones/{id}/fotos/{toma}` | Multipart `imagen` JPEG o PNG de hasta 8 MB, reemplaza la toma · 400 · 404 · 409 `VALUACION_CERRADA`. La imagen no se guarda: la URL entrega una de prueba (V2-M26.02) |
+| POST | `/valuaciones/{id}/fotos/{toma}` | Multipart `imagen` JPEG o PNG de hasta 8 MB, reemplaza la toma · 400 (también de 8 a 20 MB) · 413 arriba de 20 MB · 404 · 409 `VALUACION_CERRADA`. La imagen no se guarda: la URL entrega una de prueba (V2-M26.02) |
 | POST | `/valuaciones/{id}/cita` | `{franjaId, fecha}` · 201 con la cita (`motivo: valuacion`) · 400 · 404 · 409 `VALUACION_NO_AGENDABLE`, `FRANJA_SIN_CUPO` o `CITA_DUPLICADA` (V2-M26.03) |
 | POST | `/valuaciones/{id}/respuesta` | `{aceptada, monto}` · repetir lo mismo responde 200 · 400 · 404 · 409 `OFERTA_VENCIDA` u `OFERTA_NO_DISPONIBLE` (V2-M26.04) |
 | GET | `/vehiculos/{id}/valor-estimado` | `meses` de 1 a 36 (12 por omisión) · un punto por mes con la última estimación de ese mes · 400 · 404 (V2-M26.05) |
