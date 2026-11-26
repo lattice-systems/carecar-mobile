@@ -22,11 +22,11 @@ Cada fila dice qué se rechaza, el caso real de CareCar donde apareció y la reg
 
 | Antipatrón | Caso en CareCar | Regla |
 | --- | --- | --- |
-| **Navegación repetida**: el cuerpo ofrece los mismos destinos que la barra | El inicio traía tres accesos redondos (Vehículos, Citas, Catálogo) con los destinos de la barra, y el botón flotante casi tapaba el último | Un destino vive en un solo lugar. El cuerpo muestra datos (V2-T02.22) |
+| **Navegación repetida**: el cuerpo ofrece los mismos destinos que la barra | El inicio traía tres accesos redondos (Vehículos, Citas, Catálogo) con los destinos de la barra, y el botón flotante casi tapaba el último; Ajustes ofrecía «Cerrar sesión» arriba y abajo | Un destino vive en un solo lugar. El cuerpo muestra datos (V2-T02.22) |
 | **Cuadrícula de tarjetas iguales** de icono y título | El detalle del auto presentaba su navegación (Ficha técnica, Historial, Mantenimiento, Bitácora) como cuatro tarjetas iguales en 2×2 | Ir a pantallas hijas es una lista con chevron: `GrupoLista` |
 | **Dos estilos de tarjeta en una pantalla** | El inicio dibujaba la tarjeta del taller (borde y medallón redondo) junto a la de citas (sombra y cuadro lleno) | Una familia: `TarjetaResumen` para resúmenes, `GrupoLista` para listas |
 | **Héroes decorativos**: degradados, resplandores, círculos de icono con brillo | Se retiraron en V2-T02.21 | Lleva color pleno solo lo que la pantalla trata: el auto, el QR, el avance |
-| **Etiquetas en MAYÚSCULAS sobre el contenido** («eyebrows») | Ajustes (todavía v1) abre con `MI PERFIL` y separa con `CUENTA`, `AYUDA` | `micro` es para metadatos. Los encabezados de sección van en minúsculas con la inicial en mayúscula |
+| **Etiquetas en MAYÚSCULAS sobre el contenido** («eyebrows») | Ajustes abría con `MI PERFIL` y separaba con `CUENTA`, `AYUDA` (v1; migrado en V2-T02.24) | `micro` es para metadatos. Los encabezados de sección van en minúsculas con la inicial en mayúscula |
 | **Un tono con el significado equivocado** | «Sin próximo servicio estimado» llevaba una palomita verde, pero lo que falta es el kilometraje: no es una buena noticia | Tono = significado (tabla de abajo) |
 | **El estado solo en color** | Falla con daltonismo y con lector de pantalla | Texto siempre; icono de tono en las insignias que piden una acción (`estadoConIcono`) |
 | **Lo vacío por encima de lo que hay** | La invitación a agendar iba antes que el próximo servicio | Lo vacío va al final |

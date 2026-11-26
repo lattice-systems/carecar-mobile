@@ -200,9 +200,9 @@ Daniel notó que el inicio repetía en el cuerpo la navegación que ya tiene la 
 - `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el inicio decía «18.450 km» y el resto «18,450 km». Los demás módulos tienen su copia de la regla `es_MX`; migrarlos a `formatearMiles` queda como limpieza.
 - Seis cadenas de los accesos salieron de los `.arb`.
 
-**Hallazgos de la revisión que V2-T02.22 no toca:** se atienden en V2-T02.23 (abajo) salvo los dos últimos.
+**Hallazgos de la revisión que V2-T02.22 no toca:** se atienden en V2-T02.23 y V2-T02.24 (abajo) salvo el último.
 
-- Ajustes sigue en v1 (cabecera héroe, etiquetas en mayúsculas, acentos verdeazulados) y no tiene versión v2: depende de V2-M01.06, de Jael.
+- Ajustes seguía en v1 (cabecera héroe, etiquetas en mayúsculas, acentos verdeazulados): se migró en V2-T02.24.
 - Con la configuración por omisión (`InterruptorModulos.porDefecto`, todo en v1) Vehículos, Citas y Catálogo abren las pantallas v1 aunque sus historias v2 estén hechas; la apariencia solo es una con `--dart-define=MODULOS_V2=todos`.
 
 ## Avance de V2-T02.23 (consistencia entre pantallas)
@@ -215,3 +215,14 @@ Segunda pasada de la revisión de V2-T02.22, pantalla por pantalla contra la app
 - La guía de revisión y los casos están en [`antipatrones-de-ia.md`](../../docs/diseno/antipatrones-de-ia.md).
 
 **Pendiente** (detectado, no tocado aquí): `Mis estimaciones`, `Mis solicitudes` (estreno) y `Comparar modelos` son listas pero usan `BarraPantalla` (título pequeño) en vez de `MarcoPantalla` (título grande) como `Mis citas`; `GrupoLista` usa `Icons.chevron_right` y `TarjetaResumen` `Icons.chevron_right_rounded`; la regla de números `es_MX` sigue copiada en otros módulos y se migra a `formatearMiles` poco a poco.
+
+## Avance de V2-T02.24 (Ajustes en el lenguaje v2)
+
+Ajustes se abre desde el avatar del inicio en toda compilación y era lo más lejano al resto: cabecera héroe de degradado, rótulos en MAYÚSCULAS («MI PERFIL», «CUENTA»), interruptor y acentos verdeazulados de la paleta retirada, «Cerrar sesión» arriba y abajo, animaciones en cascada y un diálogo y una hoja de shadcn.
+
+- **La pantalla** (`lib/pantallas/pantalla_ajustes.dart` y `perfil/pantalla_perfil.dart`) pasa a `MarcoPantalla`, `TarjetaResumen` con `Avatar`, un `GrupoLista` por tema y el selector de idioma. Se conservan el nombre de cada fila, sus llaves (`PantallaPerfil.boton…`), los textos y los flujos; las filas que otras personas agregan (como «Mis puntos») siguen siendo un `_Opcion(...)` más.
+- **Los overlays**: confirmar el cierre es un `Dialogo` de peligro y el contacto una `HojaInferior`, con el tema de la pantalla (el tema raíz v1 solo trae los tokens claros).
+- **El sistema** suma `FilaGrupo.llave`, `FilaGrupo.conChevron`, `ControlInterruptor` y las llaves de las acciones de `Dialogo`; y arregla `GrupoLista`: el adorno final ya no le quita la mitad del espacio al texto (afecta a todas las filas con adorno; se regeneraron los tres golden del grupo).
+- **Higiene**: doce PNG de diferencias de golden fallido se habían colado en un commit; se quitan y `failures/` queda ignorado.
+
+**Sigue en v1 desde Ajustes:** «Cambiar contraseña» abre la pantalla v1 (`PantallaCambiarContrasena`); su versión v2 es V2-M01.10 (Jael). Los avisos breves (`mostrarToast`) también son de la v1. V2-M01.06 puede mover Ajustes a un módulo `perfil` sin cambiar su aspecto.
