@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.23.0
+  version: 2.24.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -80,8 +80,12 @@ tags:
     description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
   - name: Pagos y facturas
     description: |
-      V2-M08.05 · Datos fiscales. Los pagos y las facturas de M08 son simulados (ADR 0009 de
-      carecar-mobile): no hay procesador ni proveedor de timbrado externos.
+      V2-M08.02, V2-M08.04, V2-M08.05 y V2-M08.07 · Pagar una orden, tarjetas guardadas, datos
+      fiscales y mis pagos. Los pagos y las facturas de M08 son simulados (ADR 0009 de
+      carecar-mobile): no hay procesador ni proveedor de timbrado externos y no se cobra nada.
+      La app nunca manda el número de una tarjeta: manda el token de una de las tarjetas de
+      prueba (`tok_sim_visa`, `tok_sim_mastercard`, `tok_sim_visa_debito`,
+      `tok_sim_fondos_insuficientes`, `tok_sim_3ds` y `tok_sim_3ds_falla`).
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
@@ -2464,6 +2468,226 @@ paths:
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
+  /ordenes/{ordenId}/pagos:
+    parameters:
+      - $ref: '#/components/parameters/OrdenId'
+    post:
+      tags: [Pagos y facturas]
+      summary: Pagar una orden
+      description: |
+        V2-M08.02 y V2-M08.04 · Cobra con el procesador simulado una orden del taller lista para
+        entrega o entregada. Con `tarjeta` se paga con una tarjeta de prueba nueva (token y
+        vencimiento) y `guardarTarjeta` la guarda al quedar pagada; con `metodoPagoId`, con una
+        guardada. El intento queda `PAGADO`, `FALLIDO` con `motivoFallo` o `PENDIENTE` con
+        `requiereAutenticacion` si el banco simulado pide 3-D Secure (se responde en
+        `POST /pagos/{pagoId}/autenticacion`; a los 15 minutos sin respuesta vence). Repetir la
+        misma `Idempotency-Key` responde 200 con el mismo intento y no cobra otra vez; para
+        reintentar un rechazo se usa una llave nueva. Al quedar pagada llega el evento
+        `pago.confirmado`.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPago'
+      responses:
+        '200':
+          description: El intento ya creado con esa llave
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '201':
+          description: Intento creado (pagado, fallido o esperando el 3-D Secure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `ORDEN_NO_PAGABLE` (no viene del taller, aún no está lista, no tiene total o ya está
+            pagada, también en caja) o `PAGO_EN_CURSO` (otro intento espera el 3-D Secure).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /pagos:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis pagos
+      description: V2-M08.07 · Del más nuevo al más viejo, con los fallidos.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Pagos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaPagos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /pagos/{pagoId}:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags: [Pagos y facturas]
+      summary: Ver un pago
+      description: V2-M08.02 y V2-M08.07 · Uno ajeno responde 404.
+      responses:
+        '200':
+          description: El pago
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /pagos/{pagoId}/autenticacion:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Pagos y facturas]
+      summary: Responder el 3-D Secure simulado
+      description: |
+        V2-M08.02 · Lo que la persona respondió en la pantalla simulada de su banco. Queda
+        `PAGADO` o `FALLIDO` con `AUTENTICACION_FALLIDA` (o `AUTENTICACION_VENCIDA` si pasaron
+        15 minutos).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutenticacionPago'
+      responses:
+        '200':
+          description: El pago ya resuelto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: '`PAGO_NO_PENDIENTE`: el pago ya no espera el 3-D Secure.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /metodos-pago:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis tarjetas guardadas
+      description: V2-M08.04 · La predeterminada primero. Sin número ni token.
+      responses:
+        '200':
+          description: Tarjetas del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetodoPago'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /metodos-pago/{metodoPagoId}:
+    parameters:
+      - name: metodoPagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      tags: [Pagos y facturas]
+      summary: Borrar una tarjeta guardada
+      description: |
+        V2-M08.04 · Si era la predeterminada, lo es la más vieja de las que quedan. Los pagos
+        hechos con ella se conservan. Una ajena responde 404.
+      responses:
+        '204':
+          description: Borrada
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /metodos-pago/{metodoPagoId}/predeterminado:
+    parameters:
+      - name: metodoPagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    put:
+      tags: [Pagos y facturas]
+      summary: Marcar la tarjeta predeterminada
+      description: V2-M08.04 · La que estaba deja de serlo. Una ajena responde 404.
+      responses:
+        '200':
+          description: La tarjeta, ya predeterminada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetodoPago'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /lealtad:
     get:
       tags: [Lealtad]
@@ -2946,6 +3170,8 @@ paths:
           consultar `GET /valuaciones/{valuacionId}`.
         - `pedido.estado` (V2-M14.05), `AvisoPedido`: cada vez que cambia el estado de un pedido
           de la tienda del cliente. La app vuelve a consultar `GET /tienda/pedidos/{pedidoId}`.
+        - `pago.confirmado` (V2-M08.02), `AvisoPagoConfirmado`: cuando una orden del cliente
+          queda pagada, en la app o en caja. La app vuelve a consultar el ticket y sus pagos.
 
         Ejemplo en el flujo:
         ```
@@ -3595,6 +3821,16 @@ components:
           type: integer
           nullable: true
           description: V2-M12.02 · Puntos de lealtad que dio la orden al entregarse; nulo si no dio
+        pago:
+          description: V2-M08.02 · El pago con que quedó pagada, en la app o en caja; nulo si no se ha pagado
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Pago'
+        pagable:
+          type: boolean
+          description: |
+            V2-M08.02 · Se puede pagar en la app: viene del taller, está lista para entrega o
+            entregada, tiene total y nadie la ha pagado.
 
     RenglonTicket:
       type: object
@@ -5277,6 +5513,181 @@ components:
           type: string
           format: date-time
           nullable: true
+    AvisoPagoConfirmado:
+      type: object
+      description: Evento SSE `pago.confirmado` (V2-M08.02)
+      required: [pagoId, ordenId, estado]
+      properties:
+        pagoId:
+          type: integer
+          format: int64
+        ordenId:
+          type: integer
+          format: int64
+        estado:
+          type: string
+          enum: [PAGADO]
+    Pago:
+      type: object
+      description: |
+        V2-M08.02 y V2-M08.07 · Un intento de pagar una orden. Nunca trae el número de la
+        tarjeta, solo la marca y los últimos 4.
+      required: [id, ordenId, vehiculoId, monto, moneda, medio, estado, requiereAutenticacion,
+        referencia, simulado, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        ordenId:
+          type: integer
+          format: int64
+          description: La orden de servicio; su ticket es `GET /servicios/{ordenId}`
+        vehiculoId:
+          type: integer
+          format: int64
+        monto:
+          type: number
+          format: double
+          description: Total de la orden, con IVA incluido
+          example: 1650.0
+        moneda:
+          type: string
+          enum: [MXN]
+        medio:
+          type: string
+          enum: [TARJETA, APPLE_PAY, GOOGLE_PAY, CAJA]
+        marca:
+          type: string
+          nullable: true
+          enum: [VISA, MASTERCARD]
+        ultimos4:
+          type: string
+          nullable: true
+          pattern: '^[0-9]{4}$'
+          example: '4242'
+        tipoTarjeta:
+          type: string
+          nullable: true
+          enum: [CREDITO, DEBITO]
+        estado:
+          type: string
+          enum: [PENDIENTE, PAGADO, FALLIDO, REEMBOLSADO]
+        motivoFallo:
+          type: string
+          nullable: true
+          enum: [FONDOS_INSUFICIENTES, AUTENTICACION_FALLIDA, AUTENTICACION_VENCIDA, PAGADA_EN_CAJA]
+          description: Solo en `FALLIDO`
+        requiereAutenticacion:
+          type: boolean
+          description: Sigue `PENDIENTE` porque el banco simulado pide 3-D Secure
+        referencia:
+          type: string
+          description: Folio del procesador simulado (`sim_pi_…`) o de caja
+          example: sim_pi_3f9a1c0b7e2d4a6c8b1e0f2a
+        simulado:
+          type: boolean
+          description: Lo cobró el procesador simulado; `false` si se pagó en caja
+        metodoPagoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: La tarjeta guardada con que se pagó o que se guardó al pagar
+        perfilFiscalId:
+          type: integer
+          format: int64
+          nullable: true
+        pagadoEn:
+          type: string
+          format: date-time
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+    PaginaPagos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pago'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+    NuevoPago:
+      type: object
+      description: |
+        V2-M08.02 · Una tarjeta de prueba nueva (`tarjeta`) o una guardada (`metodoPagoId`), no
+        las dos. Nunca el número ni el CVV.
+      properties:
+        tarjeta:
+          type: object
+          required: [token, mesVence, anioVence]
+          properties:
+            token:
+              type: string
+              maxLength: 64
+              example: tok_sim_visa
+            mesVence:
+              type: integer
+              minimum: 1
+              maximum: 12
+            anioVence:
+              type: integer
+              example: 2028
+        metodoPagoId:
+          type: integer
+          format: int64
+        guardarTarjeta:
+          type: boolean
+          default: false
+          description: Guarda la tarjeta nueva al quedar pagado (hasta 10 por cliente)
+        perfilFiscalId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Los datos fiscales para la factura (V2-M08.06)
+    AutenticacionPago:
+      type: object
+      required: [confirmada]
+      properties:
+        confirmada:
+          type: boolean
+          description: '`false` si la persona canceló en la pantalla de su banco'
+    MetodoPago:
+      type: object
+      description: V2-M08.04 · Una tarjeta guardada, sin número ni token
+      required: [id, marca, ultimos4, tipo, mesVence, anioVence, vencida, predeterminado, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+          enum: [VISA, MASTERCARD]
+        ultimos4:
+          type: string
+          pattern: '^[0-9]{4}$'
+        tipo:
+          type: string
+          enum: [CREDITO, DEBITO]
+        mesVence:
+          type: integer
+        anioVence:
+          type: integer
+        vencida:
+          type: boolean
+        predeterminado:
+          type: boolean
+        creadoEn:
+          type: string
+          format: date-time
     AvisoPuntosMovidos:
       type: object
       description: Evento SSE `puntos.movidos` (V2-M12.02)
@@ -6033,6 +6444,9 @@ components:
             - PEDIDO_NO_MODIFICABLE
             - PRODUCTO_INCOMPATIBLE
             - DATOS_FISCALES_INVALIDOS
+            - ORDEN_NO_PAGABLE
+            - PAGO_EN_CURSO
+            - PAGO_NO_PENDIENTE
           example: FRANJA_SIN_CUPO
         campos:
           type: object
