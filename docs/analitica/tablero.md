@@ -18,7 +18,7 @@ curl --fail -H "Authorization: Bearer $TOKEN_PERSONAL" \
 | O5 | Solicitudes de estreno, pagos y pedidos originados en CareCar |
 | O6 | Expediente documental y preferencias de aviso |
 | O7 | Encuestas y respuestas de la agencia |
-| O8 | CI, cobertura, errores reportados y métricas de arranque y cuadros |
+| O8 | CI, cobertura, errores de Flutter y Dart, cierres por fallo de Android y métricas de arranque y cuadros |
 | O9 | Auditoría de accesibilidad y comprobación de idiomas |
 | O10 | PR integrados por hito y participantes |
 

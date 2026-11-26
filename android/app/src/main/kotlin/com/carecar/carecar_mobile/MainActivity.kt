@@ -1,5 +1,8 @@
 package com.carecar.carecar_mobile
 
+import android.app.ActivityManager
+import android.app.ApplicationExitInfo
+import android.os.Build
 import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -30,9 +33,32 @@ class MainActivity : FlutterActivity() {
                     else -> resultado.notImplemented()
                 }
             }
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CANAL_DIAGNOSTICO)
+            .setMethodCallHandler { llamada, resultado ->
+                if (llamada.method != "crashesDesde") {
+                    resultado.notImplemented()
+                } else {
+                    val desde = (llamada.arguments as? Number)?.toLong()
+                    resultado.success(if (desde == null) emptyList<Long>() else crashesDesde(desde))
+                }
+            }
+    }
+
+    private fun crashesDesde(desde: Long): List<Long> {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return emptyList()
+        val actividad = getSystemService(ActivityManager::class.java) ?: return emptyList()
+        return actividad.getHistoricalProcessExitReasons(packageName, 0, 0)
+            .filter {
+                it.timestamp > desde &&
+                    (it.processName == packageName || it.processName.startsWith("$packageName:")) &&
+                    (it.reason == ApplicationExitInfo.REASON_CRASH ||
+                        it.reason == ApplicationExitInfo.REASON_CRASH_NATIVE)
+            }
+            .map { it.timestamp }
     }
 
     private companion object {
         const val CANAL_PRIVACIDAD = "mx.carecar/privacidad"
+        const val CANAL_DIAGNOSTICO = "mx.carecar/diagnostico"
     }
 }

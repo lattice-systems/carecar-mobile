@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +18,7 @@ import 'l10n/idiomas.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/analitica/ambito_analitica.dart';
 import 'nucleo/analitica/analitica.dart';
+import 'nucleo/analitica/crashes_android.dart';
 import 'nucleo/analitica/observador_analitica.dart';
 import 'nucleo/analitica/proveedores_analitica.dart';
 import 'nucleo/api/proveedores_api.dart';
@@ -112,6 +115,7 @@ class _AppCareCarState extends State<AppCareCar> {
   /// Sin esto se veria el login un instante y la app saltaria a inicio, que es
   /// peor que una espera corta.
   bool _restaurando = true;
+  bool _diagnosticoAndroidIniciado = false;
 
   @override
   void initState() {
@@ -267,6 +271,19 @@ class _AppCareCarState extends State<AppCareCar> {
             // tapar tambien la cortina y los dialogos en el selector de apps.
             builder: (context, child) {
               final analitica = ref.read(analiticaProvider);
+              final prefs = widget.prefs;
+              final sesion = _sesion?.estado;
+              if (!kDebugMode &&
+                  !kIsWeb &&
+                  defaultTargetPlatform == TargetPlatform.android &&
+                  !_diagnosticoAndroidIniciado &&
+                  !_restaurando &&
+                  sesion is Autenticada &&
+                  !sesion.debeCambiarContrasena &&
+                  prefs != null) {
+                _diagnosticoAndroidIniciado = true;
+                unawaited(reportarCrashesAndroid(analitica, prefs));
+              }
               Widget contenido([VoidCallback? primeraPantalla]) =>
                   CubiertaEnSegundoPlano(
                     child: InstaladorDeAccesosRapidos(

@@ -1,19 +1,29 @@
 # 0009 · Diagnóstico de CareCar
 
-**Estado** Propuesta para V2-M23.01.
+**Estado** Implementación de V2-M23.01. El alcance de validación de esta etapa es Android.
 
 ## Contexto
 
-El equipo necesita saber cuándo falla CareCar y conservar los símbolos de cada build. El diagnóstico tiene que respetar la misma elección de privacidad que la analítica de producto.
+El equipo necesita detectar errores y crashes y conservar los símbolos de las compilaciones. El diagnóstico respeta la opción **Compartir analítica**, que está apagada por defecto.
 
 ## Opciones
 
-Usar Agencia360 para recibir categorías fijas, o usar Sentry como capturador con soporte para fallos nativos y simbolización. Las cuentas, la configuración de privacidad y el registro de símbolos de Sentry requieren validación antes de activar el SDK.
+Agencia360 permite recibir categorías fijas y consultar conteos en el panel. Un proveedor externo facilitaría capturar y simbolizar crashes nativos. Se descartó incorporar Sentry para esta etapa.
 
 ## Decisión
 
-Usar la API de Agencia360 para contar errores de Flutter y del aislado principal con consentimiento activo. El reporte envía una categoría fija, como máximo una vez cada cinco segundos por categoría durante el proceso. Conserva el comportamiento de los manejadores de Flutter. El panel recibe totales diarios y las compilaciones de distribución guardan sus símbolos Dart como artefactos por plataforma y número de build.
+Usar la API de Agencia360 para contar errores de Flutter y del aislado principal en compilaciones profile y release con consentimiento activo. La app envía una categoría fija, como máximo una vez cada cinco segundos por categoría durante el proceso. Los mensajes, las trazas, el contenido de usuario y los identificadores personales quedan fuera del evento. Se conserva el comportamiento de los manejadores de Flutter.
+
+En Android 11 o posterior, la app consulta el historial de salidas del sistema al restaurar una sesión activa. Reporta `CRASH_ANDROID` por cierres causados por excepciones sin manejar en Java/Kotlin o fallos de código nativo durante el período vigente de consentimiento. El dispositivo usa las marcas de tiempo de Android para filtrar y evitar contar dos veces. La petición solo contiene `tipo` y Agencia360 acumula un total diario. Para instalaciones con una elección anterior a este cambio, el historial empieza en el primer arranque con sesión activa. Android 7–10 conserva los reportes de Flutter y Dart. [Historial de salidas de Android](https://developer.android.com/reference/android/app/ActivityManager#getHistoricalProcessExitReasons(java.lang.String,int,int))
+
+El workflow de distribución de Android prepara un artefacto con los símbolos Dart que genera `--split-debug-info` para el mismo build. Su publicación queda por comprobar en una corrida de GitHub Actions. La validación de iOS se aplaza por falta de un entorno iOS. [Símbolos de Flutter](https://docs.flutter.dev/deployment/obfuscate)
+
+## Validación de Android
+
+1. Ejecutar la suite de Flutter y la prueba de integración del flujo principal.
+2. Con el APK profile de desarrollo y una cuenta de prueba, activar **Compartir analítica**. Provocar un cierre de la instancia de prueba y volver a abrirla. Comprobar que la API responde 204 a `{"tipo":"CRASH_ANDROID"}` y que una segunda reapertura no repite el evento. Repetir con el interruptor apagado y verificar que la API no recibe el reporte.
+3. Comprobar que el workflow de distribución publica el artefacto de símbolos Dart del APK.
 
 ## Consecuencias
 
-Para fallos que terminan el proceso antes de poder enviar el reporte, se propone Sentry como proveedor de crashes de Flutter y nativos. Para completar esa parte hace falta configurar el proyecto, revisar qué datos salen de la app, vincular sus símbolos y probar un crash real en Android e iOS. El build y la API actuales pueden verificar la capa de diagnóstico de Agencia360 por separado. [Archivos de depuración de Sentry](https://docs.sentry.io/api/projects/list-a-projects-debug-information-files/) · [Símbolos de Flutter](https://docs.flutter.dev/deployment/obfuscate)
+Agencia360 conserva el diagnóstico operativo y el panel. El historial de Android es limitado y el envío es de mejor esfuerzo. El conteo se agrega al día de recepción. Los símbolos Dart sirven para inspeccionar trazas obtenidas por separado.

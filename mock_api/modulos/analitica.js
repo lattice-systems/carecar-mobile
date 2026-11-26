@@ -7,6 +7,7 @@ const campos = {
   CONFIRMADA: ['intento', 'citaId'],
   ERROR_FLUTTER: [],
   ERROR_ASINCRONO: [],
+  CRASH_ANDROID: [],
   RENDIMIENTO: ['arranqueMs', 'primeraPantallaMs', 'cuadrosMedidos', 'cuadrosPerdidos'],
 };
 const entero = (valor, minimo, maximo) => Number.isSafeInteger(valor) && valor >= minimo && valor <= maximo;

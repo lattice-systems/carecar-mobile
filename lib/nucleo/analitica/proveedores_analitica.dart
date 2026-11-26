@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../idioma/proveedores_idioma.dart';
 import 'analitica.dart';
+import 'crashes_android.dart';
 
 const claveConsentimientoAnalitica = 'compartir_analitica';
 
@@ -30,9 +31,17 @@ class ConsentimientoAnalitica extends Notifier<PreferenciaAnalitica> {
     final preferencias = ref.read(preferenciasProvider);
     var guardado = false;
     try {
-      guardado =
-          await preferencias?.setBool(claveConsentimientoAnalitica, activa) ??
-          false;
+      if (preferencias != null &&
+          (!activa ||
+              await preferencias.setInt(
+                claveInicioDiagnosticoAndroid,
+                DateTime.now().millisecondsSinceEpoch,
+              ))) {
+        guardado = await preferencias.setBool(
+          claveConsentimientoAnalitica,
+          activa,
+        );
+      }
     } on Exception {
       // El envío sigue apagado si la plataforma no puede guardar la opción.
     }

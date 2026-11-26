@@ -85,7 +85,7 @@ paths:
       description: |
         El cliente manda el evento solo con la preferencia de analitica activa.
         DISPONIBILIDAD y FRANJA llevan intento. CONFIRMADA lleva intento y citaId
-        de la cuenta que envia. ERROR_FLUTTER y ERROR_ASINCRONO solo llevan tipo.
+        de la cuenta que envia. ERROR_FLUTTER, ERROR_ASINCRONO y CRASH_ANDROID solo llevan tipo.
         RENDIMIENTO lleva los cuatro contadores de la muestra inicial.
         ATENDIDA se deriva en el backend y no se recibe desde el cliente.
       requestBody:
@@ -3640,7 +3640,7 @@ components:
           maxProperties: 3
         - properties:
             tipo:
-              enum: [ERROR_FLUTTER, ERROR_ASINCRONO]
+              enum: [ERROR_FLUTTER, ERROR_ASINCRONO, CRASH_ANDROID]
           maxProperties: 1
         - properties:
             tipo:
@@ -3650,7 +3650,7 @@ components:
       properties:
         tipo:
           type: string
-          enum: [DISPONIBILIDAD, FRANJA, CONFIRMADA, ERROR_FLUTTER, ERROR_ASINCRONO, RENDIMIENTO]
+          enum: [DISPONIBILIDAD, FRANJA, CONFIRMADA, ERROR_FLUTTER, ERROR_ASINCRONO, CRASH_ANDROID, RENDIMIENTO]
         intento:
           type: string
           format: uuid

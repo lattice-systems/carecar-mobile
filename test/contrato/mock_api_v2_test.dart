@@ -146,6 +146,24 @@ void main() {
               'POST',
               ruta,
               token: token,
+              cuerpo: {'tipo': 'CRASH_ANDROID'},
+            )).statusCode,
+            204,
+          );
+          expect(
+            (await pedir(
+              'POST',
+              ruta,
+              token: token,
+              cuerpo: {'tipo': 'CRASH_ANDROID', 'traza': 'dato no permitido'},
+            )).statusCode,
+            400,
+          );
+          expect(
+            (await pedir(
+              'POST',
+              ruta,
+              token: token,
               cuerpo: {'tipo': 'ERROR_FLUTTER', 'mensaje': 'dato no permitido'},
             )).statusCode,
             400,
