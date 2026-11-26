@@ -61,7 +61,7 @@ Total: **218 historias** + 4 de H0.
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
 | V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
 | V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
-| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
+| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
 | V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | En curso | |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |

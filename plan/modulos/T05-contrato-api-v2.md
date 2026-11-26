@@ -39,7 +39,7 @@ Estado: **En revisión**.
 Estado: **Hecha**.
 
 - **Backend:** `agencia-360-backend/docs/api/agencia360-api-app-v2.yaml`, versión 2.0.0. Es copia del v1 en 1.4.0 con la descripción de la v2; no agrega ni quita rutas, todas siguen bajo `/api/v1/app`. El v1 queda congelado en 1.4.0 como referencia de la app v1 instalada. Diseño en `agencia-360-backend/plan/historias-backend.md`.
-- **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
+- **App:** copia en `api/agencia360-api-app-v2.yaml`. La [prueba del simulador v2](../../test/contrato/mock_api_v2_test.dart) comprueba las operaciones registradas y respuestas HTTP contra esa copia. `contrato_test.dart` sigue cubriendo v1.
 - **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
 
 ## Avance de V2-T05.03
