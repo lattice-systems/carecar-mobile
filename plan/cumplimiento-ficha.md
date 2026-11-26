@@ -27,7 +27,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | --- | --- | --- | --- |
 | Mis vehículos (garaje) | `cliente`, `vehiculo_cliente` | 🟡 | V2-M02.01 |
 | Detalle del vehículo y kilometraje | `vehiculo_cliente`, `orden_servicio` | 🟡 | V2-M02.02 |
-| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga y comparte; backend con `manual.archivo_pdf`; faltan búsqueda e índice en el PDF | V2-M02.03, V2-T05.05 |
+| Manuales por modelo y año | `manual`, `vehiculo_cliente` | 🟡 app v2 abre, descarga, comparte y **busca** en el manual (índice de texto offline, sin motor de PDF); backend con `manual.archivo_pdf`; falta índice estructurado y probar en celular | V2-M02.03, V2-T05.05 |
 | Ficha técnica del vehículo | `ficha_tecnica_modelo`, `vehiculo_cliente` | 🟡 app v2 y backend (tabla y endpoint, rama `feat/v2-juan-pablo-citas-b`); la tabla aún sin datos, la app usa su respaldo | V2-M02.04 |
 | Historial de servicios | `orden_servicio`, `vehiculo_cliente` | 🟡 app v2 con paginación infinita, filtro por año, fecha de cierre, estatus y total (`test/modulos/historial/`); backend con filtro y años (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.05, V2-T05.06 |
 | Ticket del servicio | `orden_servicio`, `orden_refaccion`, `refaccion` | 🟡 app v2 con mano de obra y refacciones (cantidad × precio) que suman el total y PDF para compartir (`test/modulos/historial/`); backend `GET /servicios/{id}` (`ServiciosAppIntegrationTest`); falta demostrar en celular | V2-M02.06, V2-T05.06 |
