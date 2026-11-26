@@ -5145,5 +5145,577 @@
   "vehiculosManualSinResultados": "No encontramos «{consulta}» en el manual.",
   "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "frenos"}}},
   "vehiculosManualResultadoPagina": "Página {pagina}",
-  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}}
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}},
+  "valuacionAceptar": "Aceptar oferta",
+  "@valuacionAceptar": {
+    "description": "Texto del control deslizable que acepta la oferta (V2-M26.04)."
+  },
+  "valuacionAceptarMensaje": "Vas a aceptar la oferta de {monto}. La agencia registra tu decisión.",
+  "@valuacionAceptarMensaje": {
+    "description": "Confirmación accesible antes de aceptar la oferta.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaMensaje": "Te esperamos el {dia} a las {hora} para revisar tu auto.",
+  "@valuacionAgendadaMensaje": {
+    "description": "Cierre al agendar la inspección (V2-M26.03).",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaTitulo": "Inspección agendada",
+  "@valuacionAgendadaTitulo": {
+    "description": "Título del cierre al agendar la inspección."
+  },
+  "valuacionAgendadaVerCitas": "Ver mis citas",
+  "@valuacionAgendadaVerCitas": {
+    "description": "Acción principal del cierre al agendar."
+  },
+  "valuacionAgendadaVolver": "Volver a la valuación",
+  "@valuacionAgendadaVolver": {
+    "description": "Acción secundaria del cierre al agendar."
+  },
+  "valuacionAgendar": "Agendar inspección",
+  "@valuacionAgendar": {
+    "description": "Botón y título para agendar la inspección física."
+  },
+  "valuacionAgendarConfirmar": "Confirmar inspección",
+  "@valuacionAgendarConfirmar": {
+    "description": "Botón que crea la cita de inspección."
+  },
+  "valuacionAgendarDia": "Día",
+  "@valuacionAgendarDia": {
+    "description": "Sección del calendario."
+  },
+  "valuacionAgendarDuplicada": "Este auto ya tiene una cita ese día. Elige otro día.",
+  "@valuacionAgendarDuplicada": {
+    "description": "Rechazo CITA_DUPLICADA."
+  },
+  "valuacionAgendarError": "No pudimos agendar la inspección. Intenta de nuevo.",
+  "@valuacionAgendarError": {
+    "description": "Fallo genérico al agendar."
+  },
+  "valuacionAgendarHorario": "Horario",
+  "@valuacionAgendarHorario": {
+    "description": "Sección de franjas horarias."
+  },
+  "valuacionAgendarNoAgendable": "Esta valuación ya tiene cita o ya no se puede agendar. Revisa su detalle.",
+  "@valuacionAgendarNoAgendable": {
+    "description": "Rechazo VALUACION_NO_AGENDABLE."
+  },
+  "valuacionAgendarSinCupo": "Ese horario se acaba de llenar. Elige otro.",
+  "@valuacionAgendarSinCupo": {
+    "description": "Rechazo FRANJA_SIN_CUPO."
+  },
+  "valuacionAgendarSinDia": "Elige un día para ver sus horarios.",
+  "@valuacionAgendarSinDia": {
+    "description": "Ayuda mientras no hay día elegido."
+  },
+  "valuacionAgendarSinHorarios": "No quedan horarios ese día.",
+  "@valuacionAgendarSinHorarios": {
+    "description": "El día elegido ya no tiene cupo."
+  },
+  "valuacionAgendarVacioMensaje": "El taller no tiene horarios libres por ahora. Intenta más tarde.",
+  "@valuacionAgendarVacioMensaje": {
+    "description": "Ningún día del rango tiene cupo."
+  },
+  "valuacionAgendarVacioTitulo": "Sin horarios disponibles",
+  "@valuacionAgendarVacioTitulo": {
+    "description": "Título cuando no hay cupo en todo el rango."
+  },
+  "valuacionAsesorDetalle": "Tu asesor de ventas para esta valuación",
+  "@valuacionAsesorDetalle": {
+    "description": "Detalle bajo el nombre del asesor."
+  },
+  "valuacionAsesorTitulo": "Tu asesor",
+  "@valuacionAsesorTitulo": {
+    "description": "Sección del asesor."
+  },
+  "valuacionAvanceTitulo": "Avance",
+  "@valuacionAvanceTitulo": {
+    "description": "Sección de los tres pasos."
+  },
+  "valuacionCargando": "Cargando la valuación",
+  "@valuacionCargando": {
+    "description": "Anuncio del esqueleto de carga."
+  },
+  "valuacionDetalleTitulo": "Valuación formal",
+  "@valuacionDetalleTitulo": {
+    "description": "Título del detalle de una valuación."
+  },
+  "valuacionErrorMensaje": "Intenta de nuevo en un momento.",
+  "@valuacionErrorMensaje": {
+    "description": "Mensaje del error de carga."
+  },
+  "valuacionErrorTitulo": "No pudimos cargar esto",
+  "@valuacionErrorTitulo": {
+    "description": "Título del error de carga."
+  },
+  "valuacionEstadoAceptada": "Aceptada",
+  "@valuacionEstadoAceptada": {
+    "description": "Estado ACEPTADA."
+  },
+  "valuacionEstadoCitaAgendada": "Inspección agendada",
+  "@valuacionEstadoCitaAgendada": {
+    "description": "Estado CITA_AGENDADA."
+  },
+  "valuacionEstadoDesconocido": "En revisión",
+  "@valuacionEstadoDesconocido": {
+    "description": "Estado que la app aún no conoce."
+  },
+  "valuacionEstadoOfertada": "Con oferta",
+  "@valuacionEstadoOfertada": {
+    "description": "Estado OFERTADA."
+  },
+  "valuacionEstadoRechazada": "Rechazada",
+  "@valuacionEstadoRechazada": {
+    "description": "Estado RECHAZADA."
+  },
+  "valuacionEstadoSolicitada": "Por agendar",
+  "@valuacionEstadoSolicitada": {
+    "description": "Estado SOLICITADA."
+  },
+  "valuacionEstadoVencida": "Vencida",
+  "@valuacionEstadoVencida": {
+    "description": "Estado VENCIDA."
+  },
+  "valuacionEstimadaEl": "Estimado el {fecha}",
+  "@valuacionEstimadaEl": {
+    "description": "Fecha de la estimación de la que sale la valuación.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionEstimadoRango": "Rango estimado",
+  "@valuacionEstimadoRango": {
+    "description": "Etiqueta de la cifra del rango."
+  },
+  "valuacionEstimadoTitulo": "Estimación de partida",
+  "@valuacionEstimadoTitulo": {
+    "description": "Sección del rango no vinculante."
+  },
+  "valuacionFotoError": "No se pudo subir. La foto sigue aquí.",
+  "@valuacionFotoError": {
+    "description": "Fallo genérico al subir una toma (V2-M26.02)."
+  },
+  "valuacionFotoGaleria": "Elegir de la galería",
+  "@valuacionFotoGaleria": {
+    "description": "Botón para elegir una foto guardada."
+  },
+  "valuacionFotoInvalida": "La agencia no aceptó esa imagen. Usa una foto JPEG o PNG de hasta 8 MB.",
+  "@valuacionFotoInvalida": {
+    "description": "El servidor rechazó el archivo (400)."
+  },
+  "valuacionFotoPorSubir": "Foto por subir: {toma}",
+  "@valuacionFotoPorSubir": {
+    "description": "Descripción de una foto que aún no se sube.",
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSinConexion": "Sin conexión. La foto sigue aquí.",
+  "@valuacionFotoSinConexion": {
+    "description": "Fallo de red al subir una toma."
+  },
+  "valuacionFotoSubida": "Foto subida: {toma}",
+  "@valuacionFotoSubida": {
+    "description": "Descripción de una foto ya subida.",
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSubiendo": "Subiendo la foto",
+  "@valuacionFotoSubiendo": {
+    "description": "Anuncio mientras sube una toma."
+  },
+  "valuacionFotoTomar": "Tomar foto",
+  "@valuacionFotoTomar": {
+    "description": "Botón para abrir la cámara."
+  },
+  "valuacionFotosAbrirAjustes": "Abrir ajustes",
+  "@valuacionFotosAbrirAjustes": {
+    "description": "Botón para dar el permiso de cámara o fotos."
+  },
+  "valuacionFotosAvance": "{subidas} de {total} fotos",
+  "@valuacionFotosAvance": {
+    "description": "Avance de las tomas guiadas.",
+    "placeholders": {
+      "subidas": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "valuacionFotosCerrada": "Esta valuación ya no admite fotos.",
+  "@valuacionFotosCerrada": {
+    "description": "Valuación cerrada (VALUACION_CERRADA)."
+  },
+  "valuacionFotosGuiadasTitulo": "Fotos guiadas",
+  "@valuacionFotosGuiadasTitulo": {
+    "description": "Título de la pantalla de las 8 tomas."
+  },
+  "valuacionFotosPrivacidad": "Puedes agendar sin tener las 8 fotos. Cada foto se sube sola y la app no la guarda en tu teléfono.",
+  "@valuacionFotosPrivacidad": {
+    "description": "Aviso sobre las fotos."
+  },
+  "valuacionFotosSinCamara": "No pudimos abrir la cámara o la galería. Intenta de nuevo.",
+  "@valuacionFotosSinCamara": {
+    "description": "El selector de fotos falló."
+  },
+  "valuacionFotosSinPermiso": "Sin permiso para la cámara o las fotos. Actívalo en los ajustes.",
+  "@valuacionFotosSinPermiso": {
+    "description": "Permiso negado."
+  },
+  "valuacionFotosSubir": "Subir fotos guiadas",
+  "@valuacionFotosSubir": {
+    "description": "Botón del detalle hacia las fotos."
+  },
+  "valuacionFotosTitulo": "Fotos de tu auto",
+  "@valuacionFotosTitulo": {
+    "description": "Sección de fotos del detalle."
+  },
+  "valuacionFotosVacio": "Aún no subes fotos.",
+  "@valuacionFotosVacio": {
+    "description": "Galería sin fotos."
+  },
+  "valuacionInspeccionHorario": "De {inicio} a {fin}",
+  "@valuacionInspeccionHorario": {
+    "description": "Horario de la cita de inspección.",
+    "placeholders": {
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionInspeccionTitulo": "Inspección",
+  "@valuacionInspeccionTitulo": {
+    "description": "Sección de la cita."
+  },
+  "valuacionInspeccionVerCitas": "Ver en Mis citas",
+  "@valuacionInspeccionVerCitas": {
+    "description": "Botón hacia Mis citas."
+  },
+  "valuacionInstruccionCajuela": "Abre la cajuela y toma todo el espacio de carga.",
+  "@valuacionInstruccionCajuela": {
+    "description": "Instrucción de la toma de la cajuela."
+  },
+  "valuacionInstruccionFrente": "Párate de frente, con el auto completo y las placas a la vista.",
+  "@valuacionInstruccionFrente": {
+    "description": "Instrucción de la toma de frente."
+  },
+  "valuacionInstruccionInteriorDelantero": "Abre la puerta del conductor y toma los asientos delanteros y el volante.",
+  "@valuacionInstruccionInteriorDelantero": {
+    "description": "Instrucción del interior delantero."
+  },
+  "valuacionInstruccionInteriorTrasero": "Abre una puerta trasera y toma el asiento completo.",
+  "@valuacionInstruccionInteriorTrasero": {
+    "description": "Instrucción del interior trasero."
+  },
+  "valuacionInstruccionLateralDerecho": "Toma el costado del lado del pasajero, de defensa a defensa.",
+  "@valuacionInstruccionLateralDerecho": {
+    "description": "Instrucción del lateral derecho."
+  },
+  "valuacionInstruccionLateralIzquierdo": "Toma el costado del lado del conductor, de defensa a defensa.",
+  "@valuacionInstruccionLateralIzquierdo": {
+    "description": "Instrucción del lateral izquierdo."
+  },
+  "valuacionInstruccionTableroKm": "Enciende el tablero y toma el kilometraje de cerca, sin reflejos.",
+  "@valuacionInstruccionTableroKm": {
+    "description": "Instrucción del tablero."
+  },
+  "valuacionInstruccionTrasera": "Párate detrás, con el auto completo y las placas a la vista.",
+  "@valuacionInstruccionTrasera": {
+    "description": "Instrucción de la toma trasera."
+  },
+  "valuacionKm": "{km} km",
+  "@valuacionKm": {
+    "description": "Kilometraje del auto.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionMisErrorMas": "No pudimos cargar más valuaciones. Intenta de nuevo.",
+  "@valuacionMisErrorMas": {
+    "description": "Falló la siguiente página."
+  },
+  "valuacionMisTitulo": "Mis valuaciones",
+  "@valuacionMisTitulo": {
+    "description": "Título de la lista de valuaciones."
+  },
+  "valuacionMisVacioAccion": "Ir a Mis estimaciones",
+  "@valuacionMisVacioAccion": {
+    "description": "Acción del vacío de Mis valuaciones."
+  },
+  "valuacionMisVacioMensaje": "Pide una valuación formal desde una estimación hecha con uno de tus autos.",
+  "@valuacionMisVacioMensaje": {
+    "description": "Mensaje del vacío."
+  },
+  "valuacionMisVacioTitulo": "Aún no tienes valuaciones",
+  "@valuacionMisVacioTitulo": {
+    "description": "Título del vacío."
+  },
+  "valuacionMisVerMas": "Ver más",
+  "@valuacionMisVerMas": {
+    "description": "Botón de la siguiente página."
+  },
+  "valuacionNoEncontradaMensaje": "Puede que ya no exista o que no sea de tu cuenta.",
+  "@valuacionNoEncontradaMensaje": {
+    "description": "Mensaje de valuación no encontrada."
+  },
+  "valuacionNoEncontradaTitulo": "No encontramos esa valuación",
+  "@valuacionNoEncontradaTitulo": {
+    "description": "Título de valuación no encontrada."
+  },
+  "valuacionOfertaAceptada": "Aceptaste esta oferta. La agencia te dará seguimiento.",
+  "@valuacionOfertaAceptada": {
+    "description": "Oferta aceptada."
+  },
+  "valuacionOfertaConVigencia": "Oferta de {monto}, vigente hasta el {fecha}",
+  "@valuacionOfertaConVigencia": {
+    "description": "Oferta en la tarjeta de la lista.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionOfertaEtiqueta": "Oferta formal de la agencia",
+  "@valuacionOfertaEtiqueta": {
+    "description": "Etiqueta del monto ofertado."
+  },
+  "valuacionOfertaRechazada": "Rechazaste esta oferta.",
+  "@valuacionOfertaRechazada": {
+    "description": "Oferta rechazada."
+  },
+  "valuacionOfertaTitulo": "Tu oferta",
+  "@valuacionOfertaTitulo": {
+    "description": "Sección de la oferta."
+  },
+  "valuacionOfertaVencida": "Vencida. Ya no se puede responder, pero la agencia puede renovarla.",
+  "@valuacionOfertaVencida": {
+    "description": "Oferta vencida."
+  },
+  "valuacionOfertaVigencia": "Vigente hasta el {fecha}",
+  "@valuacionOfertaVigencia": {
+    "description": "Vigencia de la oferta.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPasoFotos": "Fotos",
+  "@valuacionPasoFotos": {
+    "description": "Primer paso del avance."
+  },
+  "valuacionPasoInspeccion": "Inspección",
+  "@valuacionPasoInspeccion": {
+    "description": "Segundo paso del avance."
+  },
+  "valuacionPasoOferta": "Oferta",
+  "@valuacionPasoOferta": {
+    "description": "Tercer paso del avance."
+  },
+  "valuacionPedidaEl": "Pedida el {fecha}",
+  "@valuacionPedidaEl": {
+    "description": "Fecha en que se pidió la valuación.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPedir": "Pedir valuación formal",
+  "@valuacionPedir": {
+    "description": "Botón en la calculadora y en el detalle de una estimación (V2-M26.01)."
+  },
+  "valuacionPedirError": "No pudimos pedir la valuación. Intenta de nuevo.",
+  "@valuacionPedirError": {
+    "description": "Fallo genérico al pedirla."
+  },
+  "valuacionPedirNoEncontrada": "No encontramos esa estimación.",
+  "@valuacionPedirNoEncontrada": {
+    "description": "La estimación no existe o es ajena (404)."
+  },
+  "valuacionPedirSinVehiculo": "Esta estimación se hizo capturando el auto a mano. Para valuarlo, pide la valuación en la agencia.",
+  "@valuacionPedirSinVehiculo": {
+    "description": "Rechazo VALUACION_SIN_VEHICULO."
+  },
+  "valuacionRechazar": "Rechazar oferta",
+  "@valuacionRechazar": {
+    "description": "Botón para rechazar la oferta."
+  },
+  "valuacionRechazarCancelar": "Cancelar",
+  "@valuacionRechazarCancelar": {
+    "description": "Cierra el diálogo sin rechazar."
+  },
+  "valuacionRechazarConfirmar": "Sí, rechazar",
+  "@valuacionRechazarConfirmar": {
+    "description": "Confirma el rechazo."
+  },
+  "valuacionRechazarMensaje": "Vas a rechazar la oferta de {monto}. No se puede deshacer.",
+  "@valuacionRechazarMensaje": {
+    "description": "Mensaje del diálogo de rechazo.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionRechazarTitulo": "¿Rechazar la oferta?",
+  "@valuacionRechazarTitulo": {
+    "description": "Título del diálogo de rechazo."
+  },
+  "valuacionReintentar": "Reintentar",
+  "@valuacionReintentar": {
+    "description": "Botón para reintentar."
+  },
+  "valuacionRespuestaError": "No pudimos registrar tu respuesta. Intenta de nuevo.",
+  "@valuacionRespuestaError": {
+    "description": "Fallo genérico al responder."
+  },
+  "valuacionRespuestaNoDisponible": "La oferta cambió y no se registró nada. Revisa la información actual.",
+  "@valuacionRespuestaNoDisponible": {
+    "description": "Rechazo OFERTA_NO_DISPONIBLE."
+  },
+  "valuacionRespuestaVencida": "La oferta venció y no se registró tu respuesta.",
+  "@valuacionRespuestaVencida": {
+    "description": "Rechazo OFERTA_VENCIDA."
+  },
+  "valuacionSinConexionAccion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@valuacionSinConexionAccion": {
+    "description": "Una acción falló por falta de red."
+  },
+  "valuacionSinConexionMensaje": "Revisa tu internet e intenta de nuevo.",
+  "@valuacionSinConexionMensaje": {
+    "description": "Mensaje del estado sin conexión."
+  },
+  "valuacionSinConexionTitulo": "Sin conexión",
+  "@valuacionSinConexionTitulo": {
+    "description": "Título del estado sin conexión."
+  },
+  "valuacionTomaCajuela": "Cajuela",
+  "@valuacionTomaCajuela": {
+    "description": "Nombre de la toma CAJUELA."
+  },
+  "valuacionTomaFrente": "Frente",
+  "@valuacionTomaFrente": {
+    "description": "Nombre de la toma FRENTE."
+  },
+  "valuacionTomaInteriorDelantero": "Interior delantero",
+  "@valuacionTomaInteriorDelantero": {
+    "description": "Nombre de la toma INTERIOR_DELANTERO."
+  },
+  "valuacionTomaInteriorTrasero": "Interior trasero",
+  "@valuacionTomaInteriorTrasero": {
+    "description": "Nombre de la toma INTERIOR_TRASERO."
+  },
+  "valuacionTomaLateralDerecho": "Lateral derecho",
+  "@valuacionTomaLateralDerecho": {
+    "description": "Nombre de la toma LATERAL_DERECHO."
+  },
+  "valuacionTomaLateralIzquierdo": "Lateral izquierdo",
+  "@valuacionTomaLateralIzquierdo": {
+    "description": "Nombre de la toma LATERAL_IZQUIERDO."
+  },
+  "valuacionTomaNumero": "{numero}. {toma}",
+  "@valuacionTomaNumero": {
+    "description": "Título de la tarjeta de una toma.",
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      },
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionTomaTableroKm": "Tablero con el kilometraje",
+  "@valuacionTomaTableroKm": {
+    "description": "Nombre de la toma TABLERO_KM."
+  },
+  "valuacionTomaTrasera": "Trasera",
+  "@valuacionTomaTrasera": {
+    "description": "Nombre de la toma TRASERA."
+  },
+  "valuacionValorGrafica": "Valor estimado medio por mes",
+  "@valuacionValorGrafica": {
+    "description": "Título de la gráfica (V2-M26.05)."
+  },
+  "valuacionValorMedio": "Valor estimado medio",
+  "@valuacionValorMedio": {
+    "description": "Etiqueta cuando solo hay un mes."
+  },
+  "valuacionValorNoEncontradoMensaje": "Puede que ya no esté en tu garaje.",
+  "@valuacionValorNoEncontradoMensaje": {
+    "description": "Vehículo no encontrado."
+  },
+  "valuacionValorNoEncontradoTitulo": "No encontramos ese auto",
+  "@valuacionValorNoEncontradoTitulo": {
+    "description": "Título de vehículo no encontrado."
+  },
+  "valuacionValorRangoDelMes": "{rango}, con {km} km",
+  "@valuacionValorRangoDelMes": {
+    "description": "Rango y kilometraje de un mes.",
+    "placeholders": {
+      "rango": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionValorRangos": "Rango de cada mes",
+  "@valuacionValorRangos": {
+    "description": "Encabezado de la lista de rangos."
+  },
+  "valuacionValorTitulo": "Valor de mi auto",
+  "@valuacionValorTitulo": {
+    "description": "Título de la pantalla del valor en el tiempo."
+  },
+  "valuacionValorUnMes": "La tendencia aparece cuando estimes tu auto en otros meses.",
+  "@valuacionValorUnMes": {
+    "description": "Explicación con un solo mes."
+  },
+  "valuacionValorVacioAccion": "Ir a la calculadora",
+  "@valuacionValorVacioAccion": {
+    "description": "Acción del vacío del valor."
+  },
+  "valuacionValorVacioMensaje": "Estima este auto con la calculadora para ver cómo cambia su valor.",
+  "@valuacionValorVacioMensaje": {
+    "description": "Mensaje del vacío del valor."
+  },
+  "valuacionValorVacioTitulo": "Aún no hay estimaciones de este auto",
+  "@valuacionValorVacioTitulo": {
+    "description": "Título del vacío del valor."
+  },
+  "valuacionVerValor": "Ver cómo cambia el valor",
+  "@valuacionVerValor": {
+    "description": "Botón hacia el valor en el tiempo."
+  }
 }

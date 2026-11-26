@@ -3979,4 +3979,429 @@ class AppLocalizationsEs extends AppLocalizations {
   String vehiculosManualResultadoPagina(int pagina) {
     return 'Página $pagina';
   }
+
+  @override
+  String get valuacionAceptar => 'Aceptar oferta';
+
+  @override
+  String valuacionAceptarMensaje(String monto) {
+    return 'Vas a aceptar la oferta de $monto. La agencia registra tu decisión.';
+  }
+
+  @override
+  String valuacionAgendadaMensaje(String dia, String hora) {
+    return 'Te esperamos el $dia a las $hora para revisar tu auto.';
+  }
+
+  @override
+  String get valuacionAgendadaTitulo => 'Inspección agendada';
+
+  @override
+  String get valuacionAgendadaVerCitas => 'Ver mis citas';
+
+  @override
+  String get valuacionAgendadaVolver => 'Volver a la valuación';
+
+  @override
+  String get valuacionAgendar => 'Agendar inspección';
+
+  @override
+  String get valuacionAgendarConfirmar => 'Confirmar inspección';
+
+  @override
+  String get valuacionAgendarDia => 'Día';
+
+  @override
+  String get valuacionAgendarDuplicada =>
+      'Este auto ya tiene una cita ese día. Elige otro día.';
+
+  @override
+  String get valuacionAgendarError =>
+      'No pudimos agendar la inspección. Intenta de nuevo.';
+
+  @override
+  String get valuacionAgendarHorario => 'Horario';
+
+  @override
+  String get valuacionAgendarNoAgendable =>
+      'Esta valuación ya tiene cita o ya no se puede agendar. Revisa su detalle.';
+
+  @override
+  String get valuacionAgendarSinCupo =>
+      'Ese horario se acaba de llenar. Elige otro.';
+
+  @override
+  String get valuacionAgendarSinDia => 'Elige un día para ver sus horarios.';
+
+  @override
+  String get valuacionAgendarSinHorarios => 'No quedan horarios ese día.';
+
+  @override
+  String get valuacionAgendarVacioMensaje =>
+      'El taller no tiene horarios libres por ahora. Intenta más tarde.';
+
+  @override
+  String get valuacionAgendarVacioTitulo => 'Sin horarios disponibles';
+
+  @override
+  String get valuacionAsesorDetalle =>
+      'Tu asesor de ventas para esta valuación';
+
+  @override
+  String get valuacionAsesorTitulo => 'Tu asesor';
+
+  @override
+  String get valuacionAvanceTitulo => 'Avance';
+
+  @override
+  String get valuacionCargando => 'Cargando la valuación';
+
+  @override
+  String get valuacionDetalleTitulo => 'Valuación formal';
+
+  @override
+  String get valuacionErrorMensaje => 'Intenta de nuevo en un momento.';
+
+  @override
+  String get valuacionErrorTitulo => 'No pudimos cargar esto';
+
+  @override
+  String get valuacionEstadoAceptada => 'Aceptada';
+
+  @override
+  String get valuacionEstadoCitaAgendada => 'Inspección agendada';
+
+  @override
+  String get valuacionEstadoDesconocido => 'En revisión';
+
+  @override
+  String get valuacionEstadoOfertada => 'Con oferta';
+
+  @override
+  String get valuacionEstadoRechazada => 'Rechazada';
+
+  @override
+  String get valuacionEstadoSolicitada => 'Por agendar';
+
+  @override
+  String get valuacionEstadoVencida => 'Vencida';
+
+  @override
+  String valuacionEstimadaEl(String fecha) {
+    return 'Estimado el $fecha';
+  }
+
+  @override
+  String get valuacionEstimadoRango => 'Rango estimado';
+
+  @override
+  String get valuacionEstimadoTitulo => 'Estimación de partida';
+
+  @override
+  String get valuacionFotoError => 'No se pudo subir. La foto sigue aquí.';
+
+  @override
+  String get valuacionFotoGaleria => 'Elegir de la galería';
+
+  @override
+  String get valuacionFotoInvalida =>
+      'La agencia no aceptó esa imagen. Usa una foto JPEG o PNG de hasta 8 MB.';
+
+  @override
+  String valuacionFotoPorSubir(String toma) {
+    return 'Foto por subir: $toma';
+  }
+
+  @override
+  String get valuacionFotoSinConexion => 'Sin conexión. La foto sigue aquí.';
+
+  @override
+  String valuacionFotoSubida(String toma) {
+    return 'Foto subida: $toma';
+  }
+
+  @override
+  String get valuacionFotoSubiendo => 'Subiendo la foto';
+
+  @override
+  String get valuacionFotoTomar => 'Tomar foto';
+
+  @override
+  String get valuacionFotosAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String valuacionFotosAvance(int subidas, int total) {
+    return '$subidas de $total fotos';
+  }
+
+  @override
+  String get valuacionFotosCerrada => 'Esta valuación ya no admite fotos.';
+
+  @override
+  String get valuacionFotosGuiadasTitulo => 'Fotos guiadas';
+
+  @override
+  String get valuacionFotosPrivacidad =>
+      'Puedes agendar sin tener las 8 fotos. Cada foto se sube sola y la app no la guarda en tu teléfono.';
+
+  @override
+  String get valuacionFotosSinCamara =>
+      'No pudimos abrir la cámara o la galería. Intenta de nuevo.';
+
+  @override
+  String get valuacionFotosSinPermiso =>
+      'Sin permiso para la cámara o las fotos. Actívalo en los ajustes.';
+
+  @override
+  String get valuacionFotosSubir => 'Subir fotos guiadas';
+
+  @override
+  String get valuacionFotosTitulo => 'Fotos de tu auto';
+
+  @override
+  String get valuacionFotosVacio => 'Aún no subes fotos.';
+
+  @override
+  String valuacionInspeccionHorario(String inicio, String fin) {
+    return 'De $inicio a $fin';
+  }
+
+  @override
+  String get valuacionInspeccionTitulo => 'Inspección';
+
+  @override
+  String get valuacionInspeccionVerCitas => 'Ver en Mis citas';
+
+  @override
+  String get valuacionInstruccionCajuela =>
+      'Abre la cajuela y toma todo el espacio de carga.';
+
+  @override
+  String get valuacionInstruccionFrente =>
+      'Párate de frente, con el auto completo y las placas a la vista.';
+
+  @override
+  String get valuacionInstruccionInteriorDelantero =>
+      'Abre la puerta del conductor y toma los asientos delanteros y el volante.';
+
+  @override
+  String get valuacionInstruccionInteriorTrasero =>
+      'Abre una puerta trasera y toma el asiento completo.';
+
+  @override
+  String get valuacionInstruccionLateralDerecho =>
+      'Toma el costado del lado del pasajero, de defensa a defensa.';
+
+  @override
+  String get valuacionInstruccionLateralIzquierdo =>
+      'Toma el costado del lado del conductor, de defensa a defensa.';
+
+  @override
+  String get valuacionInstruccionTableroKm =>
+      'Enciende el tablero y toma el kilometraje de cerca, sin reflejos.';
+
+  @override
+  String get valuacionInstruccionTrasera =>
+      'Párate detrás, con el auto completo y las placas a la vista.';
+
+  @override
+  String valuacionKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String get valuacionMisErrorMas =>
+      'No pudimos cargar más valuaciones. Intenta de nuevo.';
+
+  @override
+  String get valuacionMisTitulo => 'Mis valuaciones';
+
+  @override
+  String get valuacionMisVacioAccion => 'Ir a Mis estimaciones';
+
+  @override
+  String get valuacionMisVacioMensaje =>
+      'Pide una valuación formal desde una estimación hecha con uno de tus autos.';
+
+  @override
+  String get valuacionMisVacioTitulo => 'Aún no tienes valuaciones';
+
+  @override
+  String get valuacionMisVerMas => 'Ver más';
+
+  @override
+  String get valuacionNoEncontradaMensaje =>
+      'Puede que ya no exista o que no sea de tu cuenta.';
+
+  @override
+  String get valuacionNoEncontradaTitulo => 'No encontramos esa valuación';
+
+  @override
+  String get valuacionOfertaAceptada =>
+      'Aceptaste esta oferta. La agencia te dará seguimiento.';
+
+  @override
+  String valuacionOfertaConVigencia(String monto, String fecha) {
+    return 'Oferta de $monto, vigente hasta el $fecha';
+  }
+
+  @override
+  String get valuacionOfertaEtiqueta => 'Oferta formal de la agencia';
+
+  @override
+  String get valuacionOfertaRechazada => 'Rechazaste esta oferta.';
+
+  @override
+  String get valuacionOfertaTitulo => 'Tu oferta';
+
+  @override
+  String get valuacionOfertaVencida =>
+      'Vencida. Ya no se puede responder, pero la agencia puede renovarla.';
+
+  @override
+  String valuacionOfertaVigencia(String fecha) {
+    return 'Vigente hasta el $fecha';
+  }
+
+  @override
+  String get valuacionPasoFotos => 'Fotos';
+
+  @override
+  String get valuacionPasoInspeccion => 'Inspección';
+
+  @override
+  String get valuacionPasoOferta => 'Oferta';
+
+  @override
+  String valuacionPedidaEl(String fecha) {
+    return 'Pedida el $fecha';
+  }
+
+  @override
+  String get valuacionPedir => 'Pedir valuación formal';
+
+  @override
+  String get valuacionPedirError =>
+      'No pudimos pedir la valuación. Intenta de nuevo.';
+
+  @override
+  String get valuacionPedirNoEncontrada => 'No encontramos esa estimación.';
+
+  @override
+  String get valuacionPedirSinVehiculo =>
+      'Esta estimación se hizo capturando el auto a mano. Para valuarlo, pide la valuación en la agencia.';
+
+  @override
+  String get valuacionRechazar => 'Rechazar oferta';
+
+  @override
+  String get valuacionRechazarCancelar => 'Cancelar';
+
+  @override
+  String get valuacionRechazarConfirmar => 'Sí, rechazar';
+
+  @override
+  String valuacionRechazarMensaje(String monto) {
+    return 'Vas a rechazar la oferta de $monto. No se puede deshacer.';
+  }
+
+  @override
+  String get valuacionRechazarTitulo => '¿Rechazar la oferta?';
+
+  @override
+  String get valuacionReintentar => 'Reintentar';
+
+  @override
+  String get valuacionRespuestaError =>
+      'No pudimos registrar tu respuesta. Intenta de nuevo.';
+
+  @override
+  String get valuacionRespuestaNoDisponible =>
+      'La oferta cambió y no se registró nada. Revisa la información actual.';
+
+  @override
+  String get valuacionRespuestaVencida =>
+      'La oferta venció y no se registró tu respuesta.';
+
+  @override
+  String get valuacionSinConexionAccion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get valuacionSinConexionMensaje =>
+      'Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get valuacionSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String get valuacionTomaCajuela => 'Cajuela';
+
+  @override
+  String get valuacionTomaFrente => 'Frente';
+
+  @override
+  String get valuacionTomaInteriorDelantero => 'Interior delantero';
+
+  @override
+  String get valuacionTomaInteriorTrasero => 'Interior trasero';
+
+  @override
+  String get valuacionTomaLateralDerecho => 'Lateral derecho';
+
+  @override
+  String get valuacionTomaLateralIzquierdo => 'Lateral izquierdo';
+
+  @override
+  String valuacionTomaNumero(int numero, String toma) {
+    return '$numero. $toma';
+  }
+
+  @override
+  String get valuacionTomaTableroKm => 'Tablero con el kilometraje';
+
+  @override
+  String get valuacionTomaTrasera => 'Trasera';
+
+  @override
+  String get valuacionValorGrafica => 'Valor estimado medio por mes';
+
+  @override
+  String get valuacionValorMedio => 'Valor estimado medio';
+
+  @override
+  String get valuacionValorNoEncontradoMensaje =>
+      'Puede que ya no esté en tu garaje.';
+
+  @override
+  String get valuacionValorNoEncontradoTitulo => 'No encontramos ese auto';
+
+  @override
+  String valuacionValorRangoDelMes(String rango, String km) {
+    return '$rango, con $km km';
+  }
+
+  @override
+  String get valuacionValorRangos => 'Rango de cada mes';
+
+  @override
+  String get valuacionValorTitulo => 'Valor de mi auto';
+
+  @override
+  String get valuacionValorUnMes =>
+      'La tendencia aparece cuando estimes tu auto en otros meses.';
+
+  @override
+  String get valuacionValorVacioAccion => 'Ir a la calculadora';
+
+  @override
+  String get valuacionValorVacioMensaje =>
+      'Estima este auto con la calculadora para ver cómo cambia su valor.';
+
+  @override
+  String get valuacionValorVacioTitulo =>
+      'Aún no hay estimaciones de este auto';
+
+  @override
+  String get valuacionVerValor => 'Ver cómo cambia el valor';
 }
