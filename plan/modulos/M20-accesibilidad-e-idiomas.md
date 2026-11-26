@@ -48,6 +48,12 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 - **Sigue manual:** la prueba con TalkBack y VoiceOver por pantalla que pide V2-M20.02. No se puede automatizar.
 - **Pendiente:** las pantallas v1 no se auditan, se retiran con V2-T02.08.
 
+### Pantallas de catálogo, tienda y valuación
+
+- Las pantallas de M03, M14 y M26 pasan las guías en sus pruebas de módulo, en claro, oscuro y letra al 200 %. Las de catálogo y valuación se prueban además en 320 de ancho, como ya hacía la tienda.
+- **Excepción abierta para V2-M20.08:** en 320 de ancho cada día del `Calendario` mide unos 42 de ancho y no 48, porque siete columnas de 48 suman 336. Afecta a toda pantalla que use el componente. La prueba de agendar inspección revisa ahí desbordes, etiquetas y contraste, pero no la zona táctil. Falta que el equipo decida si se acepta o si el componente cambia de forma en teléfonos angostos.
+- Las tres historias siguen abiertas: faltan las pantallas de los demás módulos y la prueba con TalkBack y VoiceOver.
+
 ## Avance de V2-M20.01 (fase 1)
 
 Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.
