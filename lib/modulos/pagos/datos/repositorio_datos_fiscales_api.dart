@@ -71,7 +71,7 @@ class RepositorioDatosFiscalesApi implements RepositorioDatosFiscales {
       }
       throw DatosFiscalesRechazados({
         for (final MapEntry(:key, :value) in problema.campos.entries)
-          if (CampoFiscal.desde(key) case final campo?) campo: value,
+          ?CampoFiscal.desde(key): value,
       });
     }
   }
