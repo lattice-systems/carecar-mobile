@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Símbolo de assets/marca/agencia360-icono.svg (V2-T02.07). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <group android:scaleX="0.17" android:scaleY="0.17"
+        android:translateX="10.48" android:translateY="10.48">
+        <path android:pathData="M352.4,141.1 A150,150 0 1,1 182,125.5"
+            android:strokeColor="#2EC5B6" android:strokeWidth="34"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M173,86.5 L231,103.5 Q234,105 232.5,108 L200.5,156 Q197,159 195,155 L170,91 Q169,85.5 173,86.5 Z" android:fillColor="#2EC5B6" />
+        <path android:pathData="M194,338 L256,172 L318,338"
+            android:strokeColor="#FFFFFF" android:strokeWidth="30"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M256,266 L256,296 M256,322 L256,338"
+            android:strokeColor="#FFFFFF" android:strokeWidth="14"
+            android:strokeLineCap="round" android:strokeLineJoin="round" />
+    </group>
+    <path android:pathData="M18,68 L90,68 L90,80 L18,80 Z" android:fillColor="#E67E22" />
+    <path android:pathData="M46.12 78H44.05V76.59H46.04Q46.82 76.59 47.34 76.31Q47.86 76.04 48.13 75.47Q48.39 74.89 48.39 73.99Q48.39 73.1 48.12 72.53Q47.86 71.96 47.34 71.69Q46.82 71.41 46.05 71.41H44.01V70H46.15Q47.35 70 48.22 70.48Q49.09 70.96 49.55 71.86Q50.02 72.75 50.02 73.99Q50.02 75.25 49.55 76.14Q49.09 77.04 48.21 77.52Q47.34 78 46.12 78ZM44.95 70V78H43.31V70Z" android:fillColor="#FFFFFF" />
+    <path android:pathData="M51.25 78V70H56.6V71.36H52.89V73.29H56.32V74.63H52.89V76.64H56.61V78Z" android:fillColor="#FFFFFF" />
+    <path android:pathData="M60.27 78 57.47 70H59.29L60.57 73.86Q60.8 74.59 61.03 75.47Q61.27 76.35 61.53 77.39H61.18Q61.44 76.34 61.66 75.46Q61.89 74.59 62.11 73.86L63.34 70H65.15L62.41 78Z" android:fillColor="#FFFFFF" />
+</vector>
