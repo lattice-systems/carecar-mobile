@@ -191,6 +191,9 @@ Operaciones de la app y casos de error:
 | GET | `/ordenes/activas` | Órdenes en el taller sin entregar (V2-M04.01). `cliente1` tiene la orden 41 del March en reparación |
 | GET | `/ordenes/{id}` | Etapas con su hora, entrega estimada, inspección con fotos y un video, dos trabajos adicionales y totales (V2-M04.02 y V2-M04.04) · 404 si es ajena |
 | POST | `/ordenes/{id}/adicionales/{aid}/respuesta` | `{"aprobado": true, "firma": "<PNG en Base64>"}` · 200 con los totales recalculados · 400 si la firma no es PNG · 409 `ADICIONAL_YA_RESPONDIDO` u `ORDEN_CERRADA` (V2-M04.05) |
+| GET | `/vehiculos/{id}/garantia` | Coberturas con días y km restantes, consumo y estado contra el km más alto conocido (el del taller o la última lectura del cliente) · por vencer a 60 días o 1 000 km · `cliente1` tiene tres del March (5); la batería está por vencer (V2-M10.01) · 404 si es ajeno |
+| GET | `/vehiculos/{id}/campanas` | Campañas de seguridad del vehículo, pendientes primero y las más graves arriba; la fila se crea al consultarla y una cita cancelada la reabre · el March tiene la crítica RC-24-017 pendiente y la RC-23-002 atendida (V2-M10.02) |
+| POST | `/vehiculos/{id}/campanas/{cid}/cita` | `{franjaId, fecha}` · 201 con la cita (`motivo: campana`) y la campaña queda agendada · 409 `CAMPANA_NO_AGENDABLE`, `FRANJA_SIN_CUPO` o `CITA_DUPLICADA` · 400 · 404 (V2-M10.03) |
 | GET | `/api/v1/archivos/evidencias/{id}` | Fuera de la base y sin token: una foto PNG de prueba. El video de la orden apunta a un MP4 público, así que se ve con internet |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
@@ -237,6 +240,12 @@ curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: appli
 # V2-M04.03, V2-M04.06 y V2-M04.07 · el taller pasa la orden 41 a lista y luego la entrega
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"LISTO_PARA_ENTREGA"}'
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"ENTREGADO"}'
+# V2-M10.04 · se publica una campaña para el March (5) y llega `campana.nueva`
+curl -X POST localhost:3000/__mock/campanas -H 'content-type: application/json' -d '{"codigo":"RC-26-001","titulo":"Freno de estacionamiento","gravedad":"ALTA","vehiculoIds":[5]}'
+# V2-M10.03 · el taller marca atendida la campaña 1 del March
+curl -X POST localhost:3000/__mock/campanas/1/vehiculos/5/atendida
+# V2-M10.05 · aviso de garantía por vencer de la batería (motivo opcional: dias_60, dias_15 o km_1000)
+curl -X POST localhost:3000/__mock/garantias/1/aviso -H 'content-type: application/json' -d '{"motivo":"dias_60"}'
 ```
 
 Cada cambio de la orden (etapa nueva o respuesta a un adicional) llega como evento `orden` con `ordenId`, `vehiculoId`, `estatus`, `etapa` y `motivo`. Lista o entregada, la orden suma los adicionales aprobados, trae `horarioEntrega` de 09:00 a 17:00 y queda en el historial (`/servicios/{id}` con el mismo id). La etapa debe ir después de la actual (400) y una orden entregada ya no cambia (409 `ORDEN_CERRADA`).
