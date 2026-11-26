@@ -9,6 +9,14 @@ void prepararFuentesGolden() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
+    // Los mismos pesos que declara `pubspec.yaml`: con uno de más la captura
+    // pintaría una letra que la app no trae.
+    const geist = [
+      'assets/fonts/Geist-400.ttf',
+      'assets/fonts/Geist-500.ttf',
+      'assets/fonts/Geist-600.ttf',
+    ];
+    const geistMono = ['assets/fonts/GeistMono-500.ttf'];
     const inter = [
       'assets/fonts/Inter-400.ttf',
       'assets/fonts/Inter-500.ttf',
@@ -24,12 +32,10 @@ void prepararFuentesGolden() {
       throw StateError('Ejecuta los golden con flutter test desde CareCar.');
     }
 
-    // En pruebas, Ahem puede resolver un nombre ausente antes de que el
-    // motor llegue a la fuente de respaldo indicada por el token.
+    await _cargarFuentes(Tipografia.familiaTexto, geist);
+    await _cargarFuentes(Tipografia.familiaCifras, geistMono);
     await _cargarFuentes(Tipografia.respaldoTexto.first, inter);
-    await _cargarFuentes(Tipografia.familiaTexto, inter);
     await _cargarFuentes(Tipografia.respaldoCifras.first, jetBrainsMono);
-    await _cargarFuentes(Tipografia.familiaCifras, jetBrainsMono);
     await _cargarFuentes('MaterialIcons', [
       '$directorioAssets/fonts/MaterialIcons-Regular.otf',
     ]);
