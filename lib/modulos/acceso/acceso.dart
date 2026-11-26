@@ -17,6 +17,8 @@ export 'presentacion/pantalla_cambiar_contrasena.dart'
 export 'presentacion/pantalla_nueva_contrasena.dart'
     show PantallaNuevaContrasena;
 export 'presentacion/pantalla_recuperar.dart' show PantallaRecuperar;
+export 'presentacion/pantalla_sesiones.dart' show PantallaSesiones;
 export 'presentacion/proveedores_acceso.dart'
     show relojAccesoProvider, repositorioAccesoProvider;
-export 'presentacion/rutas_acceso.dart' show rutasAcceso;
+export 'presentacion/rutas_acceso.dart'
+    show rutaSesiones, rutasAcceso, rutasSesiones;

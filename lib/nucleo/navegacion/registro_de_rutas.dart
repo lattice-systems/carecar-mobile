@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../modulos/acceso/acceso.dart';
 import '../../modulos/asistencia/asistencia.dart';
 import '../../modulos/asistente/asistente.dart';
 import '../../modulos/bitacora/bitacora.dart';
@@ -38,6 +39,10 @@ import 'rutas_del_nucleo.dart';
 List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasDelNucleo(interruptor: interruptor, destinosV2: destinosDeMenuV2),
   // --- Un renglon por modulo, en orden alfabetico ---
+  // Del acceso (M01) solo se registra «mis sesiones» (V2-M01.09): sus otras
+  // cuatro rutas esperan a que el modulo se encienda, porque sus caminos ya
+  // los sirven pantallas v1. `/sesiones` no existe en la v1, asi que no choca.
+  ...rutasSesiones,
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
   // El asistente (M24) es nuevo en v2: no pasa por el interruptor.
   ...rutasAsistente,

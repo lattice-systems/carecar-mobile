@@ -7,6 +7,14 @@ import 'pantalla_acceso.dart';
 import 'pantalla_cambiar_contrasena.dart';
 import 'pantalla_nueva_contrasena.dart';
 import 'pantalla_recuperar.dart';
+import 'pantalla_sesiones.dart';
+
+/// Mis sesiones abiertas (V2-M01.09). Se abre desde el perfil.
+///
+/// Se declara **aqui y no en `Rutas`**: el nucleo guarda solo las rutas que el
+/// guardia de sesion necesita conocer, y esta no es una de ellas. Es la misma
+/// regla que sigue `rutas_privacidad.dart`.
+const rutaSesiones = '/sesiones';
 
 // Mientras la app no tenga el tema v2 global (V2-T01.05), la ruta de un
 // modulo v2 se envuelve con el tema Pista.
@@ -75,5 +83,21 @@ final rutasAcceso = <RouteBase>[
       // El token llega por enlace profundo; sin el, la pantalla lo dice.
       PantallaNuevaContrasena(token: state.uri.queryParameters['token']),
     ),
+  ),
+];
+
+/// Mis sesiones abiertas, aparte de [rutasAcceso] · V2-M01.09.
+///
+/// Va en su propia lista **y si se registra hoy**. Las otras cuatro esperan a
+/// que el modulo se encienda porque sus caminos ya los sirven pantallas v1 y
+/// habria dos rutas iguales. Esta no: `/sesiones` no existe en la v1, asi que
+/// no choca con nada y no necesita el interruptor ni tocar las trece pruebas
+/// ajenas. Sin esto la pantalla existiria y nadie podria abrirla.
+final rutasSesiones = <RouteBase>[
+  GoRoute(
+    path: rutaSesiones,
+    name: 'sesiones',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaSesiones()),
   ),
 ];
