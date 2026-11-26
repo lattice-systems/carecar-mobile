@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
+import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
 import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../tema/tema_carecar.dart';
@@ -39,6 +40,7 @@ class PantallaPerfil extends StatefulWidget {
   static const botonReintentar = Key('perfil_reintentar');
   static const avatar = Key('perfil_avatar');
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
+  static const botonMisPuntos = Key('perfil_mis_puntos');
   static const botonMisDirecciones = Key('perfil_mis_direcciones');
   static const botonContactar = Key('perfil_contactar');
   static const botonPrivacidad = Key('perfil_privacidad');
@@ -110,6 +112,8 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
 
   /// Abre «Mis direcciones» (V2-M17.06). Solo se ofrece dentro de la app
   /// enrutada: sin enrutador no habria a donde ir.
+  void _abrirMisPuntos() => GoRouter.of(context).push(rutaLealtad);
+
   void _abrirDirecciones() => GoRouter.of(context).push(rutaMisDirecciones);
 
   void _contactar() {
@@ -183,6 +187,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                   subtitulo: 'Actualiza la contraseña con la que entras',
                   alTocar: _cambiarContrasena,
                 ),
+                if (GoRouter.maybeOf(context) != null)
+                  _Opcion(
+                    llave: PantallaPerfil.botonMisPuntos,
+                    icono: Icons.workspace_premium_outlined,
+                    titulo: 'Mis puntos',
+                    subtitulo: 'Tu saldo, nivel y recompensas',
+                    alTocar: _abrirMisPuntos,
+                  ),
                 if (GoRouter.maybeOf(context) != null)
                   _Opcion(
                     llave: PantallaPerfil.botonMisDirecciones,
