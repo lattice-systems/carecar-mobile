@@ -57,11 +57,12 @@ class _PantallaFotosValuacionState
       _sinPermiso = false;
       _sinCamara = false;
     });
-    await _enviar(
-      ref
-          .read(subidasValuacionProvider(widget.valuacionId).notifier)
-          .subir(toma, foto),
+    final subidas = ref.read(
+      subidasValuacionProvider(widget.valuacionId).notifier,
     );
+    final derecha = await ref.read(enderezarFotoProvider)(foto);
+    if (!mounted) return;
+    await _enviar(subidas.subir(toma, derecha));
   }
 
   Future<void> _enviar(Future<bool> subida) async {
@@ -290,7 +291,9 @@ class _TarjetaToma extends ConsumerWidget {
               Aviso(
                 mensaje: switch (enCurso.fallo) {
                   SinConexion() => t.valuacionFotoSinConexion,
-                  DatosInvalidos() => t.valuacionFotoInvalida,
+                  // Arriba de 20 MB el servidor corta con 413.
+                  DatosInvalidos() ||
+                  ErrorDelServidor(status: 413) => t.valuacionFotoInvalida,
                   _ => t.valuacionFotoError,
                 },
                 tono: Tono.peligro,

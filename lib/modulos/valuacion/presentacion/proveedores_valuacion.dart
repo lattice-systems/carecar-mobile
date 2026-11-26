@@ -6,6 +6,7 @@ import '../../../nucleo/camara/selector_foto.dart';
 import '../../../nucleo/eventos/eventos_en_vivo.dart';
 import '../../../nucleo/eventos/proveedores_eventos.dart';
 import '../../citas/citas.dart';
+import '../datos/enderezar_foto.dart';
 import '../datos/repositorio_valuacion_api.dart';
 import '../dominio/repositorio_valuacion.dart';
 import '../dominio/valuacion.dart';
@@ -23,6 +24,14 @@ final selectorValuacionProvider = Provider<SelectorFoto>(
   (ref) => SelectorFotoDelSistema(),
   name: 'selectorValuacionProvider',
 );
+
+/// Gira los pixeles antes de subir, porque el servidor borra el EXIF sin
+/// aplicar la orientacion. En pruebas de pantalla se sustituye.
+final enderezarFotoProvider =
+    Provider<Future<FotoElegida> Function(FotoElegida)>(
+      (ref) => enderezarFoto,
+      name: 'enderezarFotoProvider',
+    );
 
 /// Imagen de una foto subida. La direccion que manda el servidor es relativa.
 /// En pruebas se sustituye por una en memoria para no salir a la red.

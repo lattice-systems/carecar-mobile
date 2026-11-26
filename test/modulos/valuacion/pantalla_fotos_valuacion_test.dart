@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fake.dart';
+import 'package:carecar_mobile/modulos/valuacion/presentacion/proveedores_valuacion.dart';
 import 'package:carecar_mobile/modulos/valuacion/presentacion/silueta_toma.dart';
 import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
 import 'package:carecar_mobile/nucleo/camara/selector_foto.dart';
@@ -98,6 +99,42 @@ void main() {
     expect(selector.pedidos, [OrigenFoto.camara, OrigenFoto.galeria]);
     expect(repo.subidas, [TomaValuacion.trasera, TomaValuacion.trasera]);
     expect(find.text('1 de 8 fotos'), findsOneWidget);
+  });
+
+  testWidgets('sube la foto ya enderezada, no la que dio la camara', (
+    tester,
+  ) async {
+    _pantallaDeFotos(tester);
+    final repo = _RepoQueAnota(valuaciones: [valuacion()]);
+    final derecha = FotoElegida(bytes: pixel, tipo: 'image/png');
+    await tester.pumpWidget(
+      app(
+        _pantalla,
+        repositorio: repo,
+        selector: SelectorFalso(),
+        extra: [enderezarFotoProvider.overrideWithValue((_) async => derecha)],
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Tomar foto').first);
+    await tester.pumpAndSettle();
+
+    expect(repo.tipos, ['image/png']);
+  });
+
+  testWidgets('un 413 por tamano explica el limite y conserva la foto', (
+    tester,
+  ) async {
+    final repo = RepositorioValuacionFake(valuaciones: [valuacion()]);
+    await _montar(tester, repo);
+
+    repo.falla = const ErrorDelServidor('x', status: 413);
+    await tester.tap(find.text('Tomar foto').first);
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('de hasta 8 MB'), findsOneWidget);
+    expect(find.text('Reintentar'), findsOneWidget);
   });
 
   testWidgets('cancelar la camara no sube nada', (tester) async {
@@ -233,6 +270,28 @@ void main() {
       await auditarAccesibilidad(tester);
     }
   });
+}
+
+class _RepoQueAnota extends RepositorioValuacionFake {
+  _RepoQueAnota({super.valuaciones});
+
+  final tipos = <String>[];
+
+  @override
+  Future<Valuacion> subirFoto({
+    required int valuacionId,
+    required TomaValuacion toma,
+    required List<int> bytes,
+    required String tipo,
+  }) {
+    tipos.add(tipo);
+    return super.subirFoto(
+      valuacionId: valuacionId,
+      toma: toma,
+      bytes: bytes,
+      tipo: tipo,
+    );
+  }
 }
 
 class _RepoLento extends RepositorioValuacionFake {
