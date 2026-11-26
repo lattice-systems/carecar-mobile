@@ -26,6 +26,15 @@ class IndiceDeManual {
   final String manual;
   final List<PaginaDeManual> paginas;
 
+  /// Arma el índice desde el JSON de `indice.json` (ver `tool/generar_indice_manuales.py`).
+  factory IndiceDeManual.desdeJson(Map<String, dynamic> json) => IndiceDeManual(
+    manual: json['manual'] as String? ?? '',
+    paginas: [
+      for (final p in (json['paginas'] as List? ?? const []))
+        PaginaDeManual((p as Map)['p'] as int, p['t'] as String),
+    ],
+  );
+
   /// Las páginas que contienen [consulta], en orden y sin repetir, con un
   /// fragmento alrededor. Una consulta de menos de dos letras no busca.
   List<ResultadoBusquedaManual> buscar(String consulta) {
