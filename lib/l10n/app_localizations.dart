@@ -6299,6 +6299,312 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.'**
   String get mantenimientoRecordatorioEnVivo;
+
+  /// Título de la pantalla de garantía (V2-M10.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Garantía'**
+  String get garantiaTitulo;
+
+  /// Acceso a la garantía desde el detalle del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Garantía'**
+  String get garantiaAcceso;
+
+  /// Subtítulo con el km actual; km ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto lleva {km} km'**
+  String garantiaKmActual(String km);
+
+  /// Estado vacío de la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin garantía registrada'**
+  String get garantiaVaciaTitulo;
+
+  /// Mensaje del estado vacío de la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia registre la garantía de tu auto la verás aquí.'**
+  String get garantiaVaciaMensaje;
+
+  /// Insignia de una cobertura vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get garantiaEstadoVigente;
+
+  /// Insignia de una cobertura a 60 días o 1 000 km del límite.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get garantiaEstadoPorVencer;
+
+  /// Insignia de una cobertura vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get garantiaEstadoVencida;
+
+  /// Fecha límite de una cobertura sin km límite.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String garantiaVence(String fecha);
+
+  /// Fecha y km límite de una cobertura; lo que llegue primero.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha} o a los {km} km'**
+  String garantiaVenceOKm(String fecha, String km);
+
+  /// Días que le quedan a la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{Queda 1 día} other{Quedan {dias} días}}'**
+  String garantiaQuedanDias(int dias);
+
+  /// Km que le quedan a la cobertura; km ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Quedan {km} km'**
+  String garantiaQuedanKm(String km);
+
+  /// Por qué venció la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció por fecha'**
+  String get garantiaVencidaPorFecha;
+
+  /// Por qué venció la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció por kilometraje'**
+  String get garantiaVencidaPorKm;
+
+  /// Título corto de la pantalla de campañas de seguridad (V2-M10.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Campañas'**
+  String get campanasTitulo;
+
+  /// Acceso a las campañas desde el detalle del vehículo y la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Campañas de seguridad'**
+  String get campanasAcceso;
+
+  /// Subtítulo del acceso a las campañas desde la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamados del fabricante para tu auto'**
+  String get campanasAccesoResumen;
+
+  /// Insignia del garaje cuando el auto tiene una campaña pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Campaña de seguridad'**
+  String get campanasInsignia;
+
+  /// Estado vacío de las campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto no tiene campañas'**
+  String get campanasVaciaTitulo;
+
+  /// Mensaje del estado vacío de las campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Si el fabricante publica una para tu auto, te avisamos.'**
+  String get campanasVaciaMensaje;
+
+  /// Código de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Campaña {codigo}'**
+  String campanasCodigo(String codigo);
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad baja'**
+  String get campanasGravedadBaja;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad media'**
+  String get campanasGravedadMedia;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad alta'**
+  String get campanasGravedadAlta;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Crítica'**
+  String get campanasGravedadCritica;
+
+  /// Estado de la campaña: abierta, sin agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get campanasEstadoAbierta;
+
+  /// Estado de la campaña: con cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendada'**
+  String get campanasEstadoAgendada;
+
+  /// Estado de la campaña: el taller ya la atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get campanasEstadoAtendida;
+
+  /// Encabezado de lo que debe hacer el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacer'**
+  String get campanasQueHacer;
+
+  /// Aviso de una campaña crítica pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Atiende esta campaña cuanto antes'**
+  String get campanasAvisoCritica;
+
+  /// Botón para agendar la atención de la campaña (V2-M10.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar atención'**
+  String get campanasAgendar;
+
+  /// Botón para reintentar en garantía y campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get garantiaReintentar;
+
+  /// Ayuda mientras no hay día elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día para ver sus horarios.'**
+  String get campanasAgendarSinDia;
+
+  /// El día elegido ya no tiene horarios con cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'No quedan horarios ese día.'**
+  String get campanasAgendarSinHorarios;
+
+  /// Ningún día del rango tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'El taller no tiene horarios libres por ahora. Intenta más tarde.'**
+  String get campanasAgendarSinCupoRango;
+
+  /// Botón para volver a la campaña tras agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a la campaña'**
+  String get campanasAgendarVolver;
+
+  /// Botón de una campaña ya agendada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis citas'**
+  String get campanasVerCitas;
+
+  /// Título de la pantalla para agendar una campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar campaña'**
+  String get campanasAgendarTitulo;
+
+  /// Encabezado del calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día'**
+  String get campanasAgendarDia;
+
+  /// Encabezado de los horarios del día.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige la hora'**
+  String get campanasAgendarHora;
+
+  /// Botón que confirma la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar'**
+  String get campanasAgendarConfirmar;
+
+  /// El horario elegido ya no tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese horario se llenó. Elige otro.'**
+  String get campanasAgendarSinCupo;
+
+  /// El vehículo ya tiene cita ese día.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto ya tiene una cita ese día. Elige otro día.'**
+  String get campanasAgendarDuplicada;
+
+  /// La campaña ya tenía cita o ya se atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta campaña ya está agendada.'**
+  String get campanasAgendarYaAgendada;
+
+  /// Error al agendar la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos agendar. Intenta de nuevo.'**
+  String get campanasAgendarError;
+
+  /// Confirmación de la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, tu cita quedó agendada'**
+  String get campanasAgendadaTitulo;
+
+  /// Día y hora de la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Te esperamos el {fecha} a las {hora}.'**
+  String campanasAgendadaMensaje(String fecha, String hora);
+
+  /// Título de la sección con la descripción de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué pasa'**
+  String get campanasQuePasa;
+
+  /// Estado cuando la campaña abierta ya no aparece en la lista del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos esta campaña'**
+  String get campanasNoEncontradaTitulo;
+
+  /// Mensaje del estado de campaña no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a la lista para ver las campañas de tu auto.'**
+  String get campanasNoEncontradaMensaje;
+
+  /// Abre el comprobante con QR de la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante'**
+  String get campanasVerComprobante;
 }
 
 class _AppLocalizationsDelegate

@@ -4888,5 +4888,250 @@
   "mantenimientoRecordatorioEnVivo": "Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.",
   "@mantenimientoRecordatorioEnVivo": {
     "description": "Aviso en vivo de V2-M05.05: el servicio está por tocar."
+  },
+  "garantiaTitulo": "Garantía",
+  "@garantiaTitulo": {
+    "description": "Título de la pantalla de garantía (V2-M10.01)."
+  },
+  "garantiaAcceso": "Garantía",
+  "@garantiaAcceso": {
+    "description": "Acceso a la garantía desde el detalle del vehículo."
+  },
+  "garantiaKmActual": "Tu auto lleva {km} km",
+  "@garantiaKmActual": {
+    "description": "Subtítulo con el km actual; km ya viene con separadores.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVaciaTitulo": "Sin garantía registrada",
+  "@garantiaVaciaTitulo": {
+    "description": "Estado vacío de la garantía."
+  },
+  "garantiaVaciaMensaje": "Cuando la agencia registre la garantía de tu auto la verás aquí.",
+  "@garantiaVaciaMensaje": {
+    "description": "Mensaje del estado vacío de la garantía."
+  },
+  "garantiaEstadoVigente": "Vigente",
+  "@garantiaEstadoVigente": {
+    "description": "Insignia de una cobertura vigente."
+  },
+  "garantiaEstadoPorVencer": "Por vencer",
+  "@garantiaEstadoPorVencer": {
+    "description": "Insignia de una cobertura a 60 días o 1 000 km del límite."
+  },
+  "garantiaEstadoVencida": "Vencida",
+  "@garantiaEstadoVencida": {
+    "description": "Insignia de una cobertura vencida."
+  },
+  "garantiaVence": "Vence el {fecha}",
+  "@garantiaVence": {
+    "description": "Fecha límite de una cobertura sin km límite.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVenceOKm": "Vence el {fecha} o a los {km} km",
+  "@garantiaVenceOKm": {
+    "description": "Fecha y km límite de una cobertura; lo que llegue primero.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaQuedanDias": "{dias, plural, =1{Queda 1 día} other{Quedan {dias} días}}",
+  "@garantiaQuedanDias": {
+    "description": "Días que le quedan a la cobertura.",
+    "placeholders": {
+      "dias": {
+        "type": "int"
+      }
+    }
+  },
+  "garantiaQuedanKm": "Quedan {km} km",
+  "@garantiaQuedanKm": {
+    "description": "Km que le quedan a la cobertura; km ya viene con separadores.",
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "garantiaVencidaPorFecha": "Venció por fecha",
+  "@garantiaVencidaPorFecha": {
+    "description": "Por qué venció la cobertura."
+  },
+  "garantiaVencidaPorKm": "Venció por kilometraje",
+  "@garantiaVencidaPorKm": {
+    "description": "Por qué venció la cobertura."
+  },
+  "campanasTitulo": "Campañas",
+  "@campanasTitulo": {
+    "description": "Título corto de la pantalla de campañas de seguridad (V2-M10.02)."
+  },
+  "campanasAcceso": "Campañas de seguridad",
+  "@campanasAcceso": {
+    "description": "Acceso a las campañas desde el detalle del vehículo y la garantía."
+  },
+  "campanasAccesoResumen": "Llamados del fabricante para tu auto",
+  "@campanasAccesoResumen": {
+    "description": "Subtítulo del acceso a las campañas desde la garantía."
+  },
+  "campanasInsignia": "Campaña de seguridad",
+  "@campanasInsignia": {
+    "description": "Insignia del garaje cuando el auto tiene una campaña pendiente."
+  },
+  "campanasVaciaTitulo": "Tu auto no tiene campañas",
+  "@campanasVaciaTitulo": {
+    "description": "Estado vacío de las campañas."
+  },
+  "campanasVaciaMensaje": "Si el fabricante publica una para tu auto, te avisamos.",
+  "@campanasVaciaMensaje": {
+    "description": "Mensaje del estado vacío de las campañas."
+  },
+  "campanasCodigo": "Campaña {codigo}",
+  "@campanasCodigo": {
+    "description": "Código de la campaña.",
+    "placeholders": {
+      "codigo": {
+        "type": "String"
+      }
+    }
+  },
+  "campanasGravedadBaja": "Gravedad baja",
+  "@campanasGravedadBaja": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadMedia": "Gravedad media",
+  "@campanasGravedadMedia": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadAlta": "Gravedad alta",
+  "@campanasGravedadAlta": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasGravedadCritica": "Crítica",
+  "@campanasGravedadCritica": {
+    "description": "Gravedad de la campaña."
+  },
+  "campanasEstadoAbierta": "Pendiente",
+  "@campanasEstadoAbierta": {
+    "description": "Estado de la campaña: abierta, sin agendar."
+  },
+  "campanasEstadoAgendada": "Agendada",
+  "@campanasEstadoAgendada": {
+    "description": "Estado de la campaña: con cita."
+  },
+  "campanasEstadoAtendida": "Atendida",
+  "@campanasEstadoAtendida": {
+    "description": "Estado de la campaña: el taller ya la atendió."
+  },
+  "campanasQueHacer": "Qué hacer",
+  "@campanasQueHacer": {
+    "description": "Encabezado de lo que debe hacer el cliente."
+  },
+  "campanasAvisoCritica": "Atiende esta campaña cuanto antes",
+  "@campanasAvisoCritica": {
+    "description": "Aviso de una campaña crítica pendiente."
+  },
+  "campanasAgendar": "Agendar atención",
+  "@campanasAgendar": {
+    "description": "Botón para agendar la atención de la campaña (V2-M10.03)."
+  },
+  "garantiaReintentar": "Reintentar",
+  "@garantiaReintentar": {
+    "description": "Botón para reintentar en garantía y campañas."
+  },
+  "campanasAgendarSinDia": "Elige un día para ver sus horarios.",
+  "@campanasAgendarSinDia": {
+    "description": "Ayuda mientras no hay día elegido."
+  },
+  "campanasAgendarSinHorarios": "No quedan horarios ese día.",
+  "@campanasAgendarSinHorarios": {
+    "description": "El día elegido ya no tiene horarios con cupo."
+  },
+  "campanasAgendarSinCupoRango": "El taller no tiene horarios libres por ahora. Intenta más tarde.",
+  "@campanasAgendarSinCupoRango": {
+    "description": "Ningún día del rango tiene cupo."
+  },
+  "campanasAgendarVolver": "Volver a la campaña",
+  "@campanasAgendarVolver": {
+    "description": "Botón para volver a la campaña tras agendar."
+  },
+  "campanasVerCitas": "Ver mis citas",
+  "@campanasVerCitas": {
+    "description": "Botón de una campaña ya agendada."
+  },
+  "campanasAgendarTitulo": "Agendar campaña",
+  "@campanasAgendarTitulo": {
+    "description": "Título de la pantalla para agendar una campaña."
+  },
+  "campanasAgendarDia": "Elige el día",
+  "@campanasAgendarDia": {
+    "description": "Encabezado del calendario."
+  },
+  "campanasAgendarHora": "Elige la hora",
+  "@campanasAgendarHora": {
+    "description": "Encabezado de los horarios del día."
+  },
+  "campanasAgendarConfirmar": "Agendar",
+  "@campanasAgendarConfirmar": {
+    "description": "Botón que confirma la cita de la campaña."
+  },
+  "campanasAgendarSinCupo": "Ese horario se llenó. Elige otro.",
+  "@campanasAgendarSinCupo": {
+    "description": "El horario elegido ya no tiene cupo."
+  },
+  "campanasAgendarDuplicada": "Tu auto ya tiene una cita ese día. Elige otro día.",
+  "@campanasAgendarDuplicada": {
+    "description": "El vehículo ya tiene cita ese día."
+  },
+  "campanasAgendarYaAgendada": "Esta campaña ya está agendada.",
+  "@campanasAgendarYaAgendada": {
+    "description": "La campaña ya tenía cita o ya se atendió."
+  },
+  "campanasAgendarError": "No pudimos agendar. Intenta de nuevo.",
+  "@campanasAgendarError": {
+    "description": "Error al agendar la campaña."
+  },
+  "campanasAgendadaTitulo": "Listo, tu cita quedó agendada",
+  "@campanasAgendadaTitulo": {
+    "description": "Confirmación de la cita de la campaña."
+  },
+  "campanasAgendadaMensaje": "Te esperamos el {fecha} a las {hora}.",
+  "@campanasAgendadaMensaje": {
+    "description": "Día y hora de la cita de la campaña.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "campanasQuePasa": "Qué pasa",
+  "@campanasQuePasa": {
+    "description": "Título de la sección con la descripción de la campaña."
+  },
+  "campanasNoEncontradaTitulo": "Ya no encontramos esta campaña",
+  "@campanasNoEncontradaTitulo": {
+    "description": "Estado cuando la campaña abierta ya no aparece en la lista del vehículo."
+  },
+  "campanasNoEncontradaMensaje": "Vuelve a la lista para ver las campañas de tu auto.",
+  "@campanasNoEncontradaMensaje": {
+    "description": "Mensaje del estado de campaña no encontrada."
+  },
+  "campanasVerComprobante": "Ver comprobante",
+  "@campanasVerComprobante": {
+    "description": "Abre el comprobante con QR de la cita."
   }
 }

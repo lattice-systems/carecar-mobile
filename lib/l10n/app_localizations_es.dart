@@ -3778,4 +3778,182 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get mantenimientoRecordatorioEnVivo =>
       'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.';
+
+  @override
+  String get garantiaTitulo => 'Garantía';
+
+  @override
+  String get garantiaAcceso => 'Garantía';
+
+  @override
+  String garantiaKmActual(String km) {
+    return 'Tu auto lleva $km km';
+  }
+
+  @override
+  String get garantiaVaciaTitulo => 'Sin garantía registrada';
+
+  @override
+  String get garantiaVaciaMensaje =>
+      'Cuando la agencia registre la garantía de tu auto la verás aquí.';
+
+  @override
+  String get garantiaEstadoVigente => 'Vigente';
+
+  @override
+  String get garantiaEstadoPorVencer => 'Por vencer';
+
+  @override
+  String get garantiaEstadoVencida => 'Vencida';
+
+  @override
+  String garantiaVence(String fecha) {
+    return 'Vence el $fecha';
+  }
+
+  @override
+  String garantiaVenceOKm(String fecha, String km) {
+    return 'Vence el $fecha o a los $km km';
+  }
+
+  @override
+  String garantiaQuedanDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'Quedan $dias días',
+      one: 'Queda 1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String garantiaQuedanKm(String km) {
+    return 'Quedan $km km';
+  }
+
+  @override
+  String get garantiaVencidaPorFecha => 'Venció por fecha';
+
+  @override
+  String get garantiaVencidaPorKm => 'Venció por kilometraje';
+
+  @override
+  String get campanasTitulo => 'Campañas';
+
+  @override
+  String get campanasAcceso => 'Campañas de seguridad';
+
+  @override
+  String get campanasAccesoResumen => 'Llamados del fabricante para tu auto';
+
+  @override
+  String get campanasInsignia => 'Campaña de seguridad';
+
+  @override
+  String get campanasVaciaTitulo => 'Tu auto no tiene campañas';
+
+  @override
+  String get campanasVaciaMensaje =>
+      'Si el fabricante publica una para tu auto, te avisamos.';
+
+  @override
+  String campanasCodigo(String codigo) {
+    return 'Campaña $codigo';
+  }
+
+  @override
+  String get campanasGravedadBaja => 'Gravedad baja';
+
+  @override
+  String get campanasGravedadMedia => 'Gravedad media';
+
+  @override
+  String get campanasGravedadAlta => 'Gravedad alta';
+
+  @override
+  String get campanasGravedadCritica => 'Crítica';
+
+  @override
+  String get campanasEstadoAbierta => 'Pendiente';
+
+  @override
+  String get campanasEstadoAgendada => 'Agendada';
+
+  @override
+  String get campanasEstadoAtendida => 'Atendida';
+
+  @override
+  String get campanasQueHacer => 'Qué hacer';
+
+  @override
+  String get campanasAvisoCritica => 'Atiende esta campaña cuanto antes';
+
+  @override
+  String get campanasAgendar => 'Agendar atención';
+
+  @override
+  String get garantiaReintentar => 'Reintentar';
+
+  @override
+  String get campanasAgendarSinDia => 'Elige un día para ver sus horarios.';
+
+  @override
+  String get campanasAgendarSinHorarios => 'No quedan horarios ese día.';
+
+  @override
+  String get campanasAgendarSinCupoRango =>
+      'El taller no tiene horarios libres por ahora. Intenta más tarde.';
+
+  @override
+  String get campanasAgendarVolver => 'Volver a la campaña';
+
+  @override
+  String get campanasVerCitas => 'Ver mis citas';
+
+  @override
+  String get campanasAgendarTitulo => 'Agendar campaña';
+
+  @override
+  String get campanasAgendarDia => 'Elige el día';
+
+  @override
+  String get campanasAgendarHora => 'Elige la hora';
+
+  @override
+  String get campanasAgendarConfirmar => 'Agendar';
+
+  @override
+  String get campanasAgendarSinCupo => 'Ese horario se llenó. Elige otro.';
+
+  @override
+  String get campanasAgendarDuplicada =>
+      'Tu auto ya tiene una cita ese día. Elige otro día.';
+
+  @override
+  String get campanasAgendarYaAgendada => 'Esta campaña ya está agendada.';
+
+  @override
+  String get campanasAgendarError => 'No pudimos agendar. Intenta de nuevo.';
+
+  @override
+  String get campanasAgendadaTitulo => 'Listo, tu cita quedó agendada';
+
+  @override
+  String campanasAgendadaMensaje(String fecha, String hora) {
+    return 'Te esperamos el $fecha a las $hora.';
+  }
+
+  @override
+  String get campanasQuePasa => 'Qué pasa';
+
+  @override
+  String get campanasNoEncontradaTitulo => 'Ya no encontramos esta campaña';
+
+  @override
+  String get campanasNoEncontradaMensaje =>
+      'Vuelve a la lista para ver las campañas de tu auto.';
+
+  @override
+  String get campanasVerComprobante => 'Ver comprobante';
 }

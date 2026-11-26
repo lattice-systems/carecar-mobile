@@ -3777,4 +3777,184 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mantenimientoRecordatorioEnVivo =>
       'Your next service is coming up. You can book it whenever you like.';
+
+  @override
+  String get garantiaTitulo => 'Warranty';
+
+  @override
+  String get garantiaAcceso => 'Warranty';
+
+  @override
+  String garantiaKmActual(String km) {
+    return 'Your car has $km km';
+  }
+
+  @override
+  String get garantiaVaciaTitulo => 'No warranty on file';
+
+  @override
+  String get garantiaVaciaMensaje =>
+      'When the dealership registers your car\'s warranty you\'ll see it here.';
+
+  @override
+  String get garantiaEstadoVigente => 'Active';
+
+  @override
+  String get garantiaEstadoPorVencer => 'Expiring soon';
+
+  @override
+  String get garantiaEstadoVencida => 'Expired';
+
+  @override
+  String garantiaVence(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String garantiaVenceOKm(String fecha, String km) {
+    return 'Expires on $fecha or at $km km';
+  }
+
+  @override
+  String garantiaQuedanDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: '$dias days left',
+      one: '1 day left',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String garantiaQuedanKm(String km) {
+    return '$km km left';
+  }
+
+  @override
+  String get garantiaVencidaPorFecha => 'Expired by date';
+
+  @override
+  String get garantiaVencidaPorKm => 'Expired by mileage';
+
+  @override
+  String get campanasTitulo => 'Recalls';
+
+  @override
+  String get campanasAcceso => 'Safety recalls';
+
+  @override
+  String get campanasAccesoResumen => 'Manufacturer recalls for your car';
+
+  @override
+  String get campanasInsignia => 'Safety recall';
+
+  @override
+  String get campanasVaciaTitulo => 'Your car has no recalls';
+
+  @override
+  String get campanasVaciaMensaje =>
+      'If the manufacturer issues one for your car, we\'ll let you know.';
+
+  @override
+  String campanasCodigo(String codigo) {
+    return 'Recall $codigo';
+  }
+
+  @override
+  String get campanasGravedadBaja => 'Low severity';
+
+  @override
+  String get campanasGravedadMedia => 'Medium severity';
+
+  @override
+  String get campanasGravedadAlta => 'High severity';
+
+  @override
+  String get campanasGravedadCritica => 'Critical';
+
+  @override
+  String get campanasEstadoAbierta => 'Pending';
+
+  @override
+  String get campanasEstadoAgendada => 'Scheduled';
+
+  @override
+  String get campanasEstadoAtendida => 'Done';
+
+  @override
+  String get campanasQueHacer => 'What to do';
+
+  @override
+  String get campanasAvisoCritica =>
+      'Take care of this recall as soon as possible';
+
+  @override
+  String get campanasAgendar => 'Schedule service';
+
+  @override
+  String get garantiaReintentar => 'Retry';
+
+  @override
+  String get campanasAgendarSinDia => 'Pick a day to see its times.';
+
+  @override
+  String get campanasAgendarSinHorarios => 'No times left that day.';
+
+  @override
+  String get campanasAgendarSinCupoRango =>
+      'The shop has no open times right now. Try again later.';
+
+  @override
+  String get campanasAgendarVolver => 'Back to the recall';
+
+  @override
+  String get campanasVerCitas => 'See my appointments';
+
+  @override
+  String get campanasAgendarTitulo => 'Schedule recall';
+
+  @override
+  String get campanasAgendarDia => 'Pick a day';
+
+  @override
+  String get campanasAgendarHora => 'Pick a time';
+
+  @override
+  String get campanasAgendarConfirmar => 'Schedule';
+
+  @override
+  String get campanasAgendarSinCupo =>
+      'That time slot filled up. Pick another.';
+
+  @override
+  String get campanasAgendarDuplicada =>
+      'Your car already has an appointment that day. Pick another day.';
+
+  @override
+  String get campanasAgendarYaAgendada => 'This recall is already scheduled.';
+
+  @override
+  String get campanasAgendarError => 'We couldn\'t schedule it. Try again.';
+
+  @override
+  String get campanasAgendadaTitulo => 'Done, your appointment is booked';
+
+  @override
+  String campanasAgendadaMensaje(String fecha, String hora) {
+    return 'We\'ll see you on $fecha at $hora.';
+  }
+
+  @override
+  String get campanasQuePasa => 'What\'s wrong';
+
+  @override
+  String get campanasNoEncontradaTitulo => 'We can\'t find this recall anymore';
+
+  @override
+  String get campanasNoEncontradaMensaje =>
+      'Go back to the list to see your car\'s recalls.';
+
+  @override
+  String get campanasVerComprobante => 'See confirmation';
 }
