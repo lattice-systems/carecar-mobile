@@ -5,6 +5,7 @@ import '../../../api/modelos/sesion.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
 import '../dominio/fallos_acceso.dart';
 import '../dominio/repositorio_acceso.dart';
+import '../dominio/sesion_de_la_cuenta.dart';
 
 /// Habla con la API real · M01.
 ///
@@ -55,4 +56,25 @@ class RepositorioAccesoApi with RepositorioBase implements RepositorioAcceso {
       rethrow;
     }
   }
+
+  @override
+  Future<List<SesionDeLaCuenta>> sesiones() => pedir(() async {
+    final dto = await _api.misSesiones();
+    return dto.map(_aSesion).toList(growable: false);
+  });
+
+  @override
+  Future<void> cerrarUnaSesion(int sesionId) =>
+      pedir(() => _api.cerrarSesionActiva(sesionId));
+
+  @override
+  Future<void> cerrarTodasLasSesiones() => pedir(_api.cerrarTodasLasSesiones);
+
+  static SesionDeLaCuenta _aSesion(SesionActiva s) => SesionDeLaCuenta(
+    id: s.id,
+    dispositivo: s.dispositivo,
+    ultimoUso: s.ultimoUso,
+    iniciadaEn: s.iniciadaEn,
+    expiraEn: s.expiraEn,
+  );
 }

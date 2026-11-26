@@ -60,11 +60,13 @@ Widget _app(
   ApiFalsa api, {
   int? modeloId,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [carecarApiProvider.overrideWithValue(api)],
   child: conTemaPista(
     PantallaCalculadora(modeloId: modeloId),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 
@@ -416,6 +418,21 @@ void main() {
     await tester.pumpAndSettle();
     await _calcular(tester);
     await auditarAccesibilidad(tester);
+  });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(_api(), escenario: escenario, ancho: anchoTelefonoChico),
+      );
+      await tester.pumpAndSettle();
+      await _calcular(tester);
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
   });
 
   group('rutas', () {

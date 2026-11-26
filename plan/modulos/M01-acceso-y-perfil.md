@@ -201,3 +201,40 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 - **«Si la sesión muere estando en una pantalla privada, se guarda el destino.»** Se agregó después de ver que la primera versión **no probaba el criterio**: comprobaba que iba a `/acceso`, pero el usuario estaba en el inicio y no había destino que conservar, así que la aserción pasaba sin probar nada. El criterio es otro: estabas en `/garaje`, el refresco murió y no deberías perder dónde ibas.
 
 **Pendiente / fuera de alcance:** el riesgo que no se puede cerrar desde la app —si el proceso muere entre que el servidor consume el token viejo y la app guarda el nuevo, el guardado ya está gastado y el siguiente refresco cierra todas las sesiones—. La única solución es que el servidor acepte el token anterior unos segundos; **vale proponérselo a Ricardo**. Y demostrar los 30 días en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md`.
+
+## Avance de V2-M01.09
+
+**Qué quedó, en la app**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| `api/modelos/sesion.dart` | `SesionActiva` del contrato 2.22.0 y el `dispositivo` opcional del login |
+| `api/carecar_api.dart` + `carecar_api_http.dart` | Las tres operaciones de `/sesiones` |
+| `cache/carecar_api_con_cache.dart` | La lista **no se guarda en copia local**, a propósito (ver abajo) |
+| `nucleo/dispositivo/` | El nombre del equipo: la regla pura, aparte del plugin, y el borde que lee `device_info_plus` |
+| `sesion/controlador_sesion.dart` | El login manda el nombre, con el lector como tercer parámetro **opcional** |
+| `dominio/sesion_de_la_cuenta.dart` | El tipo de dominio, con `ultimaSenal` = último uso, o el inicio si nunca se refrescó |
+| `dominio/antiguedad.dart` | En qué tramo cae «hace cuánto». Devuelve números y un tramo, nunca texto |
+| `dominio/fallos_acceso.dart` | `SesionYaNoEsta`, para el 404 que no significa «ya no está» |
+| `presentacion/proveedores_acceso.dart` | `sesionesProvider`, con las dos formas de cerrar |
+| `presentacion/pantalla_sesiones.dart` | La pantalla, con los cinco estados |
+| `presentacion/rutas_acceso.dart` | `rutasSesiones`, **sí registrada** (ver abajo) |
+
+**Las tres decisiones que mandan en esta historia**
+
+1. **Nunca decir que una sesión se cerró si no se cerró.** El backend crea una fila nueva en cada refresco, así que el `id` que la pantalla tiene en mano envejece: si la otra sesión se refrescó entremedias, el `DELETE` responde **404 y la sesión sigue viva con otro id**. Quitarla de la lista ahí le diría al cliente que echó al intruso cuando no lo hizo, que es lo contrario de lo que esta pantalla existe para responder. Así que un 404 relee la lista —para que la sesión vuelva con su id nuevo y el reintento funcione— y avisa. Sin conexión tampoco la quita: no significa «ya no está», significa que no se sabe.
+2. **La lista no se guarda en copia local.** Una copia vieja diría que la sesión que se acaba de cerrar sigue abierta, o peor, que no hay ninguna intrusa cuando sí la hay. A «¿quién está dentro de mi cuenta ahora?» se responde con el servidor o no se responde. `cerrarTodas` sí limpia la copia, porque incluye la sesión de este teléfono.
+3. **Cerrar todas avisa antes y cierra también aquí.** El access token en curso sigue valiendo hasta que expire, así que si la app se quedara dentro el cliente creería que no se cerró nada.
+
+**Dos cosas que no eran obvias y conviene que queden escritas**
+
+- **`GrupoLista` no deja que el lector de pantalla alcance lo que va en `fin`** (su propia documentación lo dice: «el `fin` no se lee»), porque envuelve la fila en `Semantics(excludeSemantics: true)`. Un botón ahí sería **inalcanzable con lector de pantalla**. Por eso la acción de cada fila es la fila completa, con lo hablado en `etiquetaFin`, y cada cierre pide confirmación —que además evita echar a un dispositivo con un toque sin querer al desplazarse. **Si alguien necesita un `fin` interactivo, hay que cambiar el componente**: es candidato a una historia de `V2-T02.xx`.
+- **`/sesiones` sí se registra, hoy.** Va en su propia lista (`rutasSesiones`), aparte de `rutasAcceso`: las otras cuatro rutas del módulo siguen esperando a que el acceso se encienda porque sus caminos ya los sirven pantallas v1, pero `/sesiones` no existe en la v1, así que no choca con nada y no obliga a tocar las trece pruebas ajenas. Sin esto la pantalla existiría y nadie podría abrirla.
+
+**Lo que esta historia NO puede hacer**
+
+La lista **no marca «este dispositivo»**. El JWT lleva `uid` y `roles` pero no el id de la sesión, así que el servidor no sabe cuál de ellas está preguntando. Marcarlo exigiría un claim `sid` y tocar `JwtService`, `UsuarioAutenticado` y el filtro, que usan también el ERP y el CRM: es un cambio de `shared` con alcance mucho mayor que esta historia y **se propone aparte**. Mientras tanto, `DELETE /sesiones` se presenta como «cerrar sesión en todos los dispositivos», que incluye el propio y es la lectura segura.
+
+**Dependencia nueva:** `device_info_plus`, autorizada por Jael el 26 de noviembre de 2026. Nada de lo que ya había da el modelo del equipo, y sin nombre la lista muestra todas las sesiones iguales. Queda detrás de `LectorDelDispositivo`, así que cambiarla toca una clase. No se lee ningún identificador del equipo: en iOS se manda `modelName` y no `name`, porque `name` es el nombre que la persona le puso al teléfono y sí la identifica.
+
+**Pendiente:** la parte del backend (las tres columnas de `sesion_app` y los tres endpoints) y demostrarlo en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md`.

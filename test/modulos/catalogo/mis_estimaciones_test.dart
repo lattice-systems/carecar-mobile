@@ -56,14 +56,18 @@ EstimacionTomaCuenta _estimacion(
   ),
 );
 
-Widget _app(ApiFalsa api, {Escenario escenario = Escenario.claro}) =>
-    ProviderScope(
-      overrides: [carecarApiProvider.overrideWithValue(api)],
-      child: conTemaPista(
-        const PantallaMisEstimaciones(),
-        escenario: escenario,
-      ),
-    );
+Widget _app(
+  ApiFalsa api, {
+  Escenario escenario = Escenario.claro,
+  double ancho = 360,
+}) => ProviderScope(
+  overrides: [carecarApiProvider.overrideWithValue(api)],
+  child: conTemaPista(
+    const PantallaMisEstimaciones(),
+    escenario: escenario,
+    ancho: ancho,
+  ),
+);
 
 void _pantallaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(800, 3000);
@@ -248,6 +252,25 @@ void main() {
     await tester.pumpWidget(_app(api));
     await tester.pumpAndSettle();
     await auditarAccesibilidad(tester);
+  });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      final api = ApiFalsa()
+        ..estimaciones = [
+          _estimacion(2, destino: 'Nissan Versa 2025', precio: 369900),
+          _estimacion(1),
+        ];
+      await tester.pumpWidget(
+        _app(api, escenario: escenario, ancho: anchoTelefonoChico),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
   });
 
   group('valuacion formal (V2-M26)', () {
