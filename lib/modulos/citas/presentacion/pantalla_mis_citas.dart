@@ -412,10 +412,18 @@ class _TarjetaProxima extends StatelessWidget {
         children: [
           TarjetaResumen(
             titulo: textos.citasMisCitasProximaEtiqueta,
-            subtitulo: '$semana, ${cita.horaInicio} - ${cita.horaFin}',
-            detalle: textoMotivo == null
-                ? vehiculo
-                : '$vehiculo · $textoMotivo',
+            subtitulo: textos.citasMisCitasCuando(
+              semana,
+              cita.horaInicio,
+              cita.horaFin,
+            ),
+            detalle: switch (textoMotivo) {
+              final motivo? => textos.citasMisCitasVehiculoYMotivo(
+                vehiculo,
+                motivo,
+              ),
+              null => vehiculo,
+            },
             visual: CuadroFecha(fecha: cita.fecha, tono: tono),
             estado: textoEstado,
             tonoEstado: tono,

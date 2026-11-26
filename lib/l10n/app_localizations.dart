@@ -8621,6 +8621,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Reintentar'**
   String get estadoErrorReintentar;
+
+  /// Día de la semana y horario de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{dia}, {inicio} - {fin}'**
+  String citasMisCitasCuando(String dia, String inicio, String fin);
+
+  /// Vehículo y motivo de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{vehiculo} · {motivo}'**
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo);
 }
 
 class _AppLocalizationsDelegate

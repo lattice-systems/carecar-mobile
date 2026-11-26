@@ -6786,5 +6786,32 @@
   "estadoErrorReintentar": "Reintentar",
   "@estadoErrorReintentar": {
     "description": "Botón que vuelve a pedir lo que no cargó (estado de error de carga)."
+  },
+  "citasMisCitasCuando": "{dia}, {inicio} - {fin}",
+  "@citasMisCitasCuando": {
+    "description": "Día de la semana y horario de la próxima cita en «Mis citas».",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "citasMisCitasVehiculoYMotivo": "{vehiculo} · {motivo}",
+  "@citasMisCitasVehiculoYMotivo": {
+    "description": "Vehículo y motivo de la próxima cita en «Mis citas».",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      },
+      "motivo": {
+        "type": "String"
+      }
+    }
   }
 }

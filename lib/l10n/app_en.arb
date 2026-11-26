@@ -3419,5 +3419,32 @@
   "estadoErrorReintentar": "Retry",
   "@estadoErrorReintentar": {
     "description": "Button that asks again for what did not load (load error state)."
+  },
+  "citasMisCitasCuando": "{dia}, {inicio} - {fin}",
+  "@citasMisCitasCuando": {
+    "description": "Weekday and time range of the next appointment in My appointments.",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "citasMisCitasVehiculoYMotivo": "{vehiculo} · {motivo}",
+  "@citasMisCitasVehiculoYMotivo": {
+    "description": "Vehicle and reason of the next appointment in My appointments.",
+    "placeholders": {
+      "vehiculo": {
+        "type": "String"
+      },
+      "motivo": {
+        "type": "String"
+      }
+    }
   }
 }

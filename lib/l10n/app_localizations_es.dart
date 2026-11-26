@@ -5158,4 +5158,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get estadoErrorReintentar => 'Reintentar';
+
+  @override
+  String citasMisCitasCuando(String dia, String inicio, String fin) {
+    return '$dia, $inicio - $fin';
+  }
+
+  @override
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo) {
+    return '$vehiculo · $motivo';
+  }
 }
