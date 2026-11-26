@@ -204,6 +204,29 @@ Daniel pidió que las pantallas dejaran de verse como plantilla: «que no se vea
 
 Documentado en §8 del sistema de diseño. La galería y los golden (`pantalla_golden_test.dart`) muestran las tarjetas nuevas. Después se migraron las pantallas que usaban un `AppBar` de Material: catálogo (lista, detalle, comparador, calculadora, mis estimaciones), privacidad (puerta del aviso, aviso, hub, mis datos, eliminar cuenta), estreno, asistente y el PDF del comprobante. Las listas, detalles y formularios usan `MarcoPantalla`; el chat, el visor, la calculadora y los formularios de estreno usan `BarraPantalla`. Quedan fuera las pantallas de la v1 (se retiran con V2-T01.07) y los ejemplos.
 
+## Avance de V2-T02.22 (inicio con datos del auto)
+
+Daniel notó que el inicio repetía en el cuerpo la navegación que ya tiene la barra («¿no sería ideal que se vieran datos más relevantes?») y pidió revisar que todas las pantallas se vean como una sola. No es historia de usuario: es un rediseño, como V2-T02.21. Para revisar se corrió la app en web contra `mock_api` y se recorrieron las pantallas v2 en claro; el resultado y las reglas que quedan están en [`antipatrones-de-ia.md`](../../docs/diseno/antipatrones-de-ia.md).
+
+**Inicio**
+
+- Se quitaron los tres accesos redondos (repetían la barra y el botón flotante casi tapaba el último). `InicioNuevo` recibe los destinos como `alAbrirVehiculos`, `alAbrirCitas` y `alAbrirCatalogo`, que usa la barra y las tarjetas.
+- Muestra, en este orden, el taller en curso, la próxima cita y el próximo servicio **del auto que se ve en el carrusel** (`servicioDelAuto`); la invitación a agendar va al final. `AutoInicio` lleva `id` y `marcaAparte` (la marca no se repite si el modelo ya la trae, como en el garaje).
+- Cada tarjeta lleva su separación inferior: se acabó el hueco de 44 px entre el taller y la cita.
+
+**Consistencia**
+
+- `TarjetaOrdenEnCurso` pasó a `TarjetaResumen`; antes dibujaba otra tarjeta (borde y medallón) en la misma pantalla.
+- `TarjetaResumen` suma `pista` (lector de pantalla) y `estadoConIcono`.
+- `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el inicio decía «18.450 km» y el resto «18,450 km». Los demás módulos tienen su copia de la regla `es_MX`; migrarlos a `formatearMiles` queda como limpieza.
+- Seis cadenas de los accesos salieron de los `.arb`.
+
+**Hallazgos de la revisión que este cambio no toca** (quedan para otra pasada):
+
+- El detalle del auto presenta su navegación como una cuadrícula 2×2 de tarjetas iguales, junto a filas de `GrupoLista` con otro estilo de icono.
+- Cinco pantallas (`historial`, `taller/orden`, `inspección`, `adicionales` y la ficha técnica) arman `EncabezadoGrande` sin `conRegreso`: no tienen botón visible para volver. «Pedir ayuda» cierra con un `BotonCircular` azul en vez de `BotonCerrar`.
+- Ajustes sigue en v1 (cabecera héroe, etiquetas en mayúsculas, acentos verdeazulados) y no tiene versión v2: depende de V2-M01.06, de Jael.
+- Con la configuración por omisión (`InterruptorModulos.porDefecto`, todo en v1) Vehículos, Citas y Catálogo abren las pantallas v1 aunque sus historias v2 estén hechas; la apariencia solo es una con `--dart-define=MODULOS_V2=todos`.
 ## Avance de V2-T02.02
 
 | Criterio | Dónde se cumple |

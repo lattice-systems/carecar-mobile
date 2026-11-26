@@ -23,6 +23,7 @@ import '../dominio/plan_mantenimiento.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 import 'rutas_mantenimiento.dart';
+import 'tarjeta_proximo_servicio.dart';
 
 /// Plan de mantenimiento de un vehículo (V2-M05.01 y V2-M05.02): el próximo
 /// servicio en una tarjeta de resumen (cuánto falta, fecha estimada y por qué
@@ -241,57 +242,22 @@ class _Plan extends StatelessWidget {
     );
   }
 
-  /// La tarjeta del próximo servicio: qué toca, por qué y cuánto falta. Cuando
-  /// toca por kilometraje lleva una barra del avance desde el último servicio
-  /// hecho; sin ella (toca por tiempo) el «cuánto falta» va como detalle.
+  /// El próximo servicio en la misma tarjeta que usa el inicio. Sin próximo
+  /// servicio estimado falta el kilometraje: es un aviso informativo con el
+  /// icono del tablero, no una buena noticia (de ahí que no lleve palomita).
   Widget _resumenProximo(BuildContext context, ProximoServicio? proximo) {
     final textos = AppLocalizations.of(context);
     if (proximo == null) {
       return TarjetaResumen(
         titulo: textos.mantenimientoSinProximoTitulo,
         subtitulo: textos.mantenimientoSinProximoMensaje,
-        icono: LucideIcons300.check,
-        tono: Tono.exito,
+        icono: LucideIcons300.gauge,
       );
     }
-    final motivo = switch (proximo.motivo) {
-      MotivoProximo.km => textos.mantenimientoMotivoKm,
-      MotivoProximo.tiempo => textos.mantenimientoMotivoTiempo,
-    };
-    final falta = proximo.yaToca
-        ? textos.mantenimientoYaToca(formatearKm(context, proximo.kmObjetivo))
-        : textos.mantenimientoFaltan(
-            formatearKm(context, proximo.faltanKm),
-            formatearFecha(context, proximo.fechaEstimada),
-          );
-    final progreso = _progresoKm(proximo);
-    return TarjetaResumen(
-      titulo: proximo.nombre,
-      subtitulo: motivo,
-      detalle: progreso == null ? falta : null,
-      icono: LucideIcons300.wrench,
-      tono: proximo.yaToca ? Tono.advertencia : Tono.informacion,
-      progreso: progreso,
-      etiquetaProgreso: progreso == null ? null : falta,
+    return TarjetaProximoServicio(
+      proximo: proximo,
+      avance: plan.avanceDelProximo,
     );
-  }
-
-  /// Avance del kilometraje entre el último servicio hecho (o el cero) y el
-  /// que toca; `null` si toca por tiempo o no hay kilometraje vigente.
-  double? _progresoKm(ProximoServicio proximo) {
-    final km = plan.kmActual;
-    if (proximo.motivo != MotivoProximo.km || km == null) return null;
-    var base = 0;
-    for (final s in plan.servicios) {
-      if (s.estado == EstadoServicio.hecho &&
-          s.km < proximo.kmObjetivo &&
-          s.km > base) {
-        base = s.km;
-      }
-    }
-    final total = proximo.kmObjetivo - base;
-    if (total <= 0) return null;
-    return ((km - base) / total).clamp(0.0, 1.0);
   }
 
   /// Quién dejó el km vigente y cuándo; sin dato lo dice.

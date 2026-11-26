@@ -2,6 +2,7 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/taller/datos/repositorio_taller_fake.dart';
 import 'package:carecar_mobile/modulos/taller/taller.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_resumen.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,11 +33,30 @@ void main() {
       find.text('En reparación · entrega ${hora(DateTime(2026, 11, 24, 18))}'),
       findsOneWidget,
     );
+    // El avance se lee debajo de la barra y el lector lo dice en porcentaje.
+    expect(find.text('Avance de 43 %'), findsOneWidget);
     expect(find.bySemanticsLabel(RegExp('Avance de 43 %')), findsOneWidget);
     expect(
       find.widgetWithText(Insignia, '2 trabajos por aprobar'),
       findsOneWidget,
     );
+  });
+
+  pruebaTaller('es la misma tarjeta de resumen que usa el resto del inicio', (
+    tester,
+  ) async {
+    final semantica = tester.ensureSemantics();
+    await tester.pumpWidget(_app(RepositorioTallerFake()));
+    await tester.pumpAndSettle();
+
+    final tarjeta = find.byType(TarjetaResumen);
+    expect(tarjeta, findsOneWidget);
+    // Un solo nodo para el lector, con lo que pasa al tocarla y el avance.
+    final nodo = tester.getSemantics(tarjeta);
+    expect(nodo.hint, 'Ver el avance de tu orden');
+    expect(nodo.value, '43 %');
+    expect(nodo.label, contains('Tu Nissan March 2026 está en el taller'));
+    semantica.dispose();
   });
 
   pruebaTaller('al entregarse la orden la tarjeta desaparece', (tester) async {

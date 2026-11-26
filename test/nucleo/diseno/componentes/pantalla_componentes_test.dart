@@ -9,6 +9,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/resultado_pantalla.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/silueta_auto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_auto.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_resumen.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
@@ -484,6 +485,42 @@ void main() {
         expect(find.byIcon(LucideIcons300.chevronRight), findsOneWidget);
         await tester.tap(find.byType(TarjetaResumen));
         expect(toques, 1);
+      },
+    );
+
+    testWidgets(
+      'la pista de lectura y el icono de la insignia son opcionales',
+      (tester) async {
+        await _telefono(tester);
+        final semantica = tester.ensureSemantics();
+        Widget tarjeta({required bool conIcono}) => _app(
+          Scaffold(
+            body: TarjetaResumen(
+              titulo: 'Tu auto está en el taller',
+              icono: Icons.car_repair_rounded,
+              estado: '2 trabajos por aprobar',
+              tonoEstado: Tono.advertencia,
+              estadoConIcono: conIcono,
+              pista: 'Ver el avance de tu orden',
+              alToque: () {},
+            ),
+          ),
+        );
+        Finder iconoDeLaInsignia() => find.descendant(
+          of: find.byType(Insignia),
+          matching: find.byType(Icon),
+        );
+
+        await tester.pumpWidget(tarjeta(conIcono: true));
+        expect(iconoDeLaInsignia(), findsOneWidget);
+        expect(
+          tester.getSemantics(find.byType(TarjetaResumen)).hint,
+          'Ver el avance de tu orden',
+        );
+
+        await tester.pumpWidget(tarjeta(conIcono: false));
+        expect(iconoDeLaInsignia(), findsNothing);
+        semantica.dispose();
       },
     );
 

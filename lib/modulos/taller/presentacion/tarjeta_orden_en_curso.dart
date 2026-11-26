@@ -5,15 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
-import '../../../nucleo/diseno/componentes/insignia.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/radios.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/orden_taller.dart';
 import 'formato_taller.dart';
-import 'pantalla_orden.dart';
 import 'proveedores_taller.dart';
 import 'rutas_taller.dart';
 
@@ -22,6 +19,11 @@ import 'rutas_taller.dart';
 /// entregarse la orden, no ocupa lugar. Al tocarla abre la orden y, al volver,
 /// se recarga. Cuando la orden queda lista cambia sola a «Listo» con el total
 /// y el horario para recogerlo (V2-M04.06).
+///
+/// Es la misma [TarjetaResumen] que usan la próxima cita y el próximo
+/// servicio, para que las tarjetas del inicio se lean como una sola familia.
+/// Cada una lleva su separación inferior, así que el inicio no suma huecos
+/// cuando no hay ninguna.
 class TarjetaOrdenEnCurso extends ConsumerWidget {
   const TarjetaOrdenEnCurso({super.key});
 
@@ -33,24 +35,21 @@ class TarjetaOrdenEnCurso extends ConsumerWidget {
       data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
           ? TemaPista.oscuro()
           : TemaPista.claro(),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: Espaciado.e4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (final orden in ordenes)
-              Padding(
-                padding: const EdgeInsets.only(bottom: Espaciado.e3),
-                child: _Tarjeta(
-                  orden: orden,
-                  alToque: () async {
-                    await context.push(rutaOrdenTaller(orden.id));
-                    if (context.mounted) ref.invalidate(ordenesEnCursoProvider);
-                  },
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final orden in ordenes)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Espaciado.e4),
+              child: _Tarjeta(
+                orden: orden,
+                alToque: () async {
+                  await context.push(rutaOrdenTaller(orden.id));
+                  if (context.mounted) ref.invalidate(ordenesEnCursoProvider);
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -62,111 +61,48 @@ class _Tarjeta extends StatelessWidget {
   final OrdenEnCurso orden;
   final VoidCallback alToque;
 
-  static const double _medallon = 44;
-
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
     final lista = orden.lista;
-    final etapa = textoEtapa(textos, orden.etapa);
     final entrega = orden.entregaEstimada;
     final total = orden.totalEstimado;
-    final detalles = lista
-        ? [
-            if (total != null)
-              textos.tallerTarjetaListoTotal(monedaTaller(context, total)),
-            textoHorarioEntrega(context, orden.horarioEntrega),
-          ]
-        : [
-            entrega == null
+    final pendientes = orden.adicionalesPendientes;
+    final etapa = textoEtapa(textos, orden.etapa);
+
+    // Lista: lo que hay que pagar y cuándo recogerlo. En proceso: la etapa con
+    // la hora de entrega y, debajo de la barra, el avance. Lo que pide una
+    // respuesta del cliente (trabajos por aprobar) va como insignia de alerta.
+    return TarjetaResumen(
+      titulo: lista
+          ? textos.tallerTarjetaListoTitulo(orden.vehiculo)
+          : textos.tallerTarjetaTitulo(orden.vehiculo),
+      subtitulo: lista
+          ? (total == null
+                ? null
+                : textos.tallerTarjetaListoTotal(monedaTaller(context, total)))
+          : (entrega == null
                 ? etapa
                 : textos.tallerTarjetaEtapaYEntrega(
                     etapa,
                     horaTaller(context, entrega),
-                  ),
-          ];
-
-    return Semantics(
-      button: true,
-      hint: textos.tallerTarjetaAbrir,
-      child: Material(
-        color: c.superficie,
-        shape: RoundedRectangleBorder(
-          borderRadius: Radios.bordeTarjeta,
-          side: BorderSide(color: c.borde),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: alToque,
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: _medallon,
-                  height: _medallon,
-                  decoration: BoxDecoration(
-                    color: lista ? c.exitoSuave : c.acentoSuave,
-                    borderRadius: Radios.bordePildora,
-                  ),
-                  child: Icon(
-                    lista ? LucideIcons300.circleCheck : LucideIcons300.wrench,
-                    color: lista ? c.exito : c.acento,
-                  ),
-                ),
-                const SizedBox(width: Espaciado.e3),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        lista
-                            ? textos.tallerTarjetaListoTitulo(orden.vehiculo)
-                            : textos.tallerTarjetaTitulo(orden.vehiculo),
-                        style: t.cuerpoFuerte.copyWith(color: c.texto),
-                      ),
-                      for (final detalle in detalles) ...[
-                        const SizedBox(height: Espaciado.e1),
-                        Text(
-                          detalle,
-                          style: t.cuerpoChico.copyWith(
-                            color: c.textoSecundario,
-                          ),
-                        ),
-                      ],
-                      const SizedBox(height: Espaciado.e3),
-                      if (lista)
-                        Insignia(
-                          texto: textos.tallerEtapaListoParaEntrega,
-                          tono: Tono.exito,
-                          conIcono: true,
-                        )
-                      else
-                        BarraAvance(avance: orden.avance),
-                      if (orden.adicionalesPendientes > 0) ...[
-                        const SizedBox(height: Espaciado.e3),
-                        Insignia(
-                          texto: textos.tallerTarjetaPendientes(
-                            orden.adicionalesPendientes,
-                          ),
-                          tono: Tono.advertencia,
-                          conIcono: true,
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                const SizedBox(width: Espaciado.e2),
-                Icon(LucideIcons300.chevronRight, color: c.textoTerciario),
-              ],
-            ),
-          ),
-        ),
-      ),
+                  )),
+      detalle: lista
+          ? textoHorarioEntrega(context, orden.horarioEntrega)
+          : null,
+      icono: lista ? LucideIcons300.circleCheck : LucideIcons300.wrench,
+      tono: lista ? Tono.exito : Tono.informacion,
+      estado: lista
+          ? textos.tallerEtapaListoParaEntrega
+          : (pendientes > 0
+                ? textos.tallerTarjetaPendientes(pendientes)
+                : null),
+      tonoEstado: lista ? Tono.exito : Tono.advertencia,
+      estadoConIcono: true,
+      progreso: lista ? null : (orden.avance / 100).clamp(0.0, 1.0),
+      etiquetaProgreso: lista ? null : textos.tallerTarjetaAvance(orden.avance),
+      pista: textos.tallerTarjetaAbrir,
+      alToque: alToque,
     );
   }
 }

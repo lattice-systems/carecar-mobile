@@ -70,7 +70,8 @@ Future<void> _tocar(WidgetTester tester, String texto) async {
     return;
   }
   // En el inicio los destinos se tocan en la barra flotante, que siempre está a
-  // la vista; la lista de accesos queda debajo de ella con letra grande.
+  // la vista. «Mis vehículos» es el nombre que tenía el acceso del cuerpo; se
+  // conserva como alias para no reescribir todas las pruebas.
   // (la arnés usa el idioma por omisión, inglés: se acepta el nombre en ambos)
   const enLaBarra = {
     'Mis vehículos': ['Vehículos', 'Vehicles'],
@@ -185,9 +186,17 @@ void main() {
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
       expect(find.byType(InicioNuevo), findsOneWidget);
-      // Cada acceso sale en la lista y, salvo vehículos, también en la barra.
-      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo']) {
-        expect(find.text(opcion), findsWidgets);
+      // Los destinos viven solo en la barra: el cuerpo ya no los repite.
+      for (final opcion in ['Vehículos', 'Citas', 'Catálogo']) {
+        expect(find.text(opcion), findsOneWidget, reason: opcion);
+        expect(
+          find.descendant(
+            of: find.byType(BarraFlotante),
+            matching: find.text(opcion),
+          ),
+          findsOneWidget,
+          reason: opcion,
+        );
       }
       expect(_botonPerfil(), findsOneWidget);
       expect(api.llamadasAlLogin, 1);

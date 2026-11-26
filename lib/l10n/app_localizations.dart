@@ -4624,42 +4624,6 @@ abstract class AppLocalizations {
   /// **'Catálogo'**
   String get inicioDestinoCatalogo;
 
-  /// Título del acceso a los vehículos en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Mis vehículos'**
-  String get inicioAccesoVehiculosTitulo;
-
-  /// Subtítulo del acceso a los vehículos.
-  ///
-  /// In es, this message translates to:
-  /// **'Tus autos, fichas y manuales'**
-  String get inicioAccesoVehiculosSubtitulo;
-
-  /// Título del acceso a las citas en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Citas'**
-  String get inicioAccesoCitasTitulo;
-
-  /// Subtítulo del acceso a las citas.
-  ///
-  /// In es, this message translates to:
-  /// **'Agenda y revisa tus citas'**
-  String get inicioAccesoCitasSubtitulo;
-
-  /// Título del acceso al catálogo en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Catálogo'**
-  String get inicioAccesoCatalogoTitulo;
-
-  /// Subtítulo del acceso al catálogo.
-  ///
-  /// In es, this message translates to:
-  /// **'Conoce los modelos Nissan'**
-  String get inicioAccesoCatalogoSubtitulo;
-
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
   /// In es, this message translates to:
