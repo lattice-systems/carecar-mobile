@@ -11,6 +11,9 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:carecar_mobile/pantallas/perfil/pantalla_perfil.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -202,15 +205,19 @@ void main() {
       expect(api.llamadasAlLogin, 1);
       await tester.tap(_botonPerfil());
       await tester.pumpAndSettle();
-      final cerrar = find.byKey(PantallaInicio.botonCerrarSesion).last;
-      if (cerrar.evaluate().isEmpty) {
-        await tester.scrollUntilVisible(
-          find.byKey(PantallaInicio.botonCerrarSesion),
-          300,
-          scrollable: find.byType(Scrollable).first,
-        );
-      }
-      await tester.ensureVisible(cerrar);
+      // La lista de Ajustes es perezosa: la fila de cerrar sesión (la última)
+      // se construye al desplazar, dentro de la propia pantalla de Ajustes.
+      final cerrar = find.byKey(PantallaInicio.botonCerrarSesion);
+      await tester.scrollUntilVisible(
+        cerrar,
+        300,
+        scrollable: find
+            .descendant(
+              of: find.byType(MarcoPantalla),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
       await tester.pumpAndSettle();
       await tester.tap(cerrar);
       await tester.pumpAndSettle();
@@ -327,7 +334,10 @@ void main() {
     expect(find.text('cliente1@example.com'), findsOneWidget);
     // Una del saludo del menu y otra de Ajustes.
     expect(api.llamadasAPerfil, 2);
-    await _tocar(tester, 'Regresar');
+    // Ajustes se cierra con el botón de regreso del sistema (círculo, sin
+    // texto), no con el «Regresar» de la v1.
+    await tester.tap(find.byType(BotonRegresar));
+    await tester.pumpAndSettle();
     expect(find.byType(InicioNuevo), findsOneWidget);
   });
 
@@ -339,8 +349,10 @@ void main() {
     await _montar(tester, api);
     await tester.tap(_botonPerfil());
     await tester.pump();
-    // Mientras carga se ve el esqueleto, no un texto de espera.
-    expect(find.text('Nombre del cliente'), findsOneWidget);
+    // Mientras carga se ve el esqueleto del sistema, no un texto de espera ni
+    // un nombre inventado.
+    expect(find.byType(Esqueleto), findsWidgets);
+    expect(find.text('Nombre del cliente'), findsNothing);
     espera.completeError(const SinConexion('Sin conexión de prueba'));
     await tester.pumpAndSettle();
     expect(find.text('Sin conexión'), findsOneWidget);

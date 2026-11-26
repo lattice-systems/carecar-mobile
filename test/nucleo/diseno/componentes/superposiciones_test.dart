@@ -36,6 +36,35 @@ void main() {
       }
     });
 
+    testWidgets('las acciones se pueden identificar con una llave', (
+      tester,
+    ) async {
+      var principal = 0;
+      var secundaria = 0;
+      const llavePrincipal = Key('dialogo-principal');
+      const llaveSecundaria = Key('dialogo-secundaria');
+      await tester.pumpWidget(
+        conTemaPista(
+          Dialogo(
+            titulo: 'Cerrar sesión',
+            mensaje: 'Tendrás que volver a entrar.',
+            textoPrincipal: 'Cerrar sesión',
+            alPrincipal: () => principal++,
+            llavePrincipal: llavePrincipal,
+            textoSecundario: 'Cancelar',
+            alSecundario: () => secundaria++,
+            llaveSecundario: llaveSecundaria,
+            peligro: true,
+          ),
+        ),
+      );
+
+      await tester.tap(find.byKey(llaveSecundaria));
+      await tester.tap(find.byKey(llavePrincipal));
+
+      expect((principal, secundaria), (1, 1));
+    });
+
     testWidgets('mostrarDialogo entrega el valor al cerrar', (tester) async {
       String? resultado;
       await tester.pumpWidget(

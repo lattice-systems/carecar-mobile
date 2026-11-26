@@ -10,10 +10,12 @@ import 'rebote_tactil.dart';
 /// Una fila de un [GrupoLista].
 ///
 /// `icono` se dibuja sobre un cuadro redondeado de `colorIcono` (por defecto el
-/// acento). Con `alToque` la fila entera es tocable y muestra un chevron. El
-/// lector de pantalla recibe un solo nodo con titulo, subtitulo y
-/// `etiquetaFin`; el `fin` no se lee, asi que una cifra que importa va tambien
-/// en `etiquetaFin` dicha en palabras.
+/// acento). Con `alToque` la fila entera es tocable y muestra un chevron, salvo
+/// que `conChevron` sea falso (una fila con interruptor responde al toque pero
+/// no lleva a otra pantalla). El lector de pantalla recibe un solo nodo con
+/// titulo, subtitulo y `etiquetaFin`; el `fin` no se lee, asi que una cifra
+/// que importa va tambien en `etiquetaFin` dicha en palabras. `llave` identifica
+/// la fila (pruebas y anclas de desplazamiento).
 class FilaGrupo {
   const FilaGrupo({
     required this.titulo,
@@ -23,6 +25,8 @@ class FilaGrupo {
     this.fin,
     this.etiquetaFin,
     this.alToque,
+    this.conChevron,
+    this.llave,
   });
 
   final String titulo;
@@ -37,6 +41,10 @@ class FilaGrupo {
   /// «+230»; nulo si el `fin` es solo adorno.
   final String? etiquetaFin;
   final VoidCallback? alToque;
+
+  /// Si la fila muestra la flecha; por omisión, la muestra cuando es tocable.
+  final bool? conChevron;
+  final Key? llave;
 }
 
 /// Lista agrupada tipo "inset": una tarjeta redondeada con filas separadas por
@@ -145,58 +153,67 @@ class _Fila extends StatelessWidget {
           horizontal: Espaciado.e4,
           vertical: Espaciado.e2,
         ),
-        child: Row(
-          children: [
-            if (fila.icono != null) ...[
-              ExcludeSemantics(
-                child: Container(
-                  width: GrupoLista._cuadroIcono,
-                  height: GrupoLista._cuadroIcono,
-                  decoration: BoxDecoration(
-                    color: fila.colorIcono ?? c.acento,
-                    borderRadius: Radios.bordeControl,
-                  ),
-                  child: Icon(fila.icono, size: 20, color: c.sobreAcento),
-                ),
-              ),
-              const SizedBox(width: Espaciado.e3),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    fila.titulo,
-                    style: t.cuerpoFuerte.copyWith(color: c.texto),
-                  ),
-                  if (fila.subtitulo != null)
-                    Text(
-                      fila.subtitulo!,
-                      style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+        child: LayoutBuilder(
+          builder: (context, caja) => Row(
+            children: [
+              if (fila.icono != null) ...[
+                ExcludeSemantics(
+                  child: Container(
+                    width: GrupoLista._cuadroIcono,
+                    height: GrupoLista._cuadroIcono,
+                    decoration: BoxDecoration(
+                      color: fila.colorIcono ?? c.acento,
+                      borderRadius: Radios.bordeControl,
                     ),
-                ],
-              ),
-            ),
-            if (fila.fin != null) ...[
-              const SizedBox(width: Espaciado.e3),
-              Flexible(child: fila.fin!),
-            ],
-            if (tocable) ...[
-              const SizedBox(width: Espaciado.e2),
-              ExcludeSemantics(
-                child: Icon(
-                  LucideIcons300.chevronRight,
-                  color: c.textoTerciario,
+                    child: Icon(fila.icono, size: 20, color: c.sobreAcento),
+                  ),
+                ),
+                const SizedBox(width: Espaciado.e3),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      fila.titulo,
+                      style: t.cuerpoFuerte.copyWith(color: c.texto),
+                    ),
+                    if (fila.subtitulo != null)
+                      Text(
+                        fila.subtitulo!,
+                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+                      ),
+                  ],
                 ),
               ),
+              if (fila.fin != null) ...[
+                const SizedBox(width: Espaciado.e3),
+                // El `fin` toma su ancho natural, hasta la mitad de la fila, y
+                // el texto el resto. Antes los dos repartian el espacio libre
+                // a partes iguales y el texto se partia aunque cupiera.
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: caja.maxWidth / 2),
+                  child: fila.fin!,
+                ),
+              ],
+              if (fila.conChevron ?? tocable) ...[
+                const SizedBox(width: Espaciado.e2),
+                ExcludeSemantics(
+                  child: Icon(
+                    LucideIcons300.chevronRight,
+                    color: c.textoTerciario,
+                  ),
+                ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
 
     return Semantics(
+      key: fila.llave,
       container: true,
       button: tocable,
       label: [fila.titulo, ?fila.subtitulo, ?fila.etiquetaFin].join('. '),
