@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../mapas/cliente_teselas.dart';
 import '../../mapas/mapas.dart';
 import '../movimiento_contexto.dart';
+import '../tokens/colores.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
@@ -506,7 +507,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
                             width: _tamanoMarcador,
                             height: _tamanoMarcador,
                             alignment: Alignment.topCenter,
-                            child: _marcadorDelPin(c.acento, pin),
+                            child: _marcadorDelPin(c, pin),
                           ),
                         ],
                       ),
@@ -532,7 +533,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
                     container: true,
                     child: Text(
                       widget.teselas.atribucion,
-                      style: tokens.tipografia.micro.copyWith(
+                      style: tokens.tipografia.etiqueta.copyWith(
                         color: c.textoSecundario,
                       ),
                     ),
@@ -546,11 +547,17 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _marcadorDelPin(Color color, Coordenada? pin) {
+  Widget _marcadorDelPin(PaletaColores c, Coordenada? pin) {
+    // El aro lo separa de cualquier tesela, en claro y en oscuro.
+    final aro = Shadow(color: c.superficie, blurRadius: Espaciado.e1);
     final dibujo = Transform.translate(
-      key: const ValueKey('mapa-pin-dibujo'),
       offset: const Offset(0, _huecoBajoElPin),
-      child: Icon(Icons.location_on, size: _tamanoMarcador, color: color),
+      child: Icon(
+        Icons.location_on,
+        size: _tamanoMarcador,
+        color: c.acento,
+        shadows: [aro, aro, aro],
+      ),
     );
     if (widget.alMoverPin == null || pin == null) {
       return SizedBox(key: const ValueKey('mapa-pin'), child: dibujo);
