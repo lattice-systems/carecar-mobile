@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../mapas/cliente_teselas.dart';
 import '../../mapas/mapas.dart';
@@ -26,7 +28,7 @@ class MarcadorEnMovimiento {
   const MarcadorEnMovimiento({
     required this.posicion,
     required this.etiqueta,
-    this.icono = Icons.local_shipping,
+    this.icono = LucideIcons300.truck,
   });
 
   /// La última posición conocida.
@@ -39,10 +41,10 @@ class MarcadorEnMovimiento {
 
 /// Hacia dónde mueve el pin cada botón, en puntos de pantalla.
 enum _Rumbo {
-  norte(Offset(0, -1), Icons.north),
-  sur(Offset(0, 1), Icons.south),
-  oeste(Offset(-1, 0), Icons.west),
-  este(Offset(1, 0), Icons.east);
+  norte(Offset(0, -1), LucideIcons300.arrowUp),
+  sur(Offset(0, 1), LucideIcons300.arrowDown),
+  oeste(Offset(-1, 0), LucideIcons300.arrowLeft),
+  este(Offset(1, 0), LucideIcons300.arrowRight);
 
   const _Rumbo(this.direccion, this.icono);
 
@@ -334,7 +336,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
           const SizedBox(height: Espaciado.e2),
           BotonPildora(
             texto: textos.mapaReintentar,
-            icono: Icons.refresh,
+            icono: LucideIcons300.refreshCw,
             variante: VarianteBotonPildora.tonal,
             expandido: true,
             alPresionar: () => setState(() {
@@ -347,7 +349,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
           separacion,
           BotonPildora(
             texto: textos.mapaMiUbicacion,
-            icono: Icons.my_location_outlined,
+            icono: LucideIcons300.locateFixed,
             variante: VarianteBotonPildora.vidrio,
             expandido: true,
             cargando: _ubicando,
@@ -387,7 +389,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
       if (pin == null)
         BotonPildora(
           texto: textos.mapaPinAlCentro,
-          icono: Icons.add_location_alt_outlined,
+          icono: LucideIcons300.mapPinPlus,
           variante: VarianteBotonPildora.vidrio,
           expandido: true,
           alPresionar: () =>
@@ -553,7 +555,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
     final dibujo = Transform.translate(
       offset: const Offset(0, _huecoBajoElPin),
       child: Icon(
-        Icons.location_on,
+        LucideIcons300.mapPin,
         size: _tamanoMarcador,
         color: c.acento,
         shadows: [aro, aro, aro],

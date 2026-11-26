@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
 import '../tokens/radios.dart';
@@ -124,7 +126,7 @@ class _CampoBusquedaLiquidoState extends State<CampoBusquedaLiquido> {
           child: Row(
             children: [
               Icon(
-                Icons.search_rounded,
+                LucideIcons300.search,
                 size: 20,
                 color: _conFoco ? c.acento : c.textoSecundario,
               ),
@@ -165,7 +167,7 @@ class _CampoBusquedaLiquidoState extends State<CampoBusquedaLiquido> {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons.close_rounded,
+                        LucideIcons300.x,
                         size: 14,
                         color: c.textoSecundario,
                       ),

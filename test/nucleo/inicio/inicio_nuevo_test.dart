@@ -4,6 +4,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.d
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 const _march = AutoInicio(
   modelo: 'March',
@@ -44,19 +45,19 @@ Future<List<String>> _montar(
           AccesoInicio(
             titulo: 'Mis vehículos',
             subtitulo: 'Tus autos, fichas y manuales',
-            icono: Icons.directions_car_outlined,
+            icono: LucideIcons300.car,
             alPulsar: () => toques.add('vehiculos'),
           ),
           AccesoInicio(
             titulo: 'Citas',
             subtitulo: 'Agenda y revisa tus citas',
-            icono: Icons.calendar_month_outlined,
+            icono: LucideIcons300.calendarDays,
             alPulsar: () => toques.add('citas'),
           ),
           AccesoInicio(
             titulo: 'Catálogo',
             subtitulo: 'Conoce los modelos Nissan',
-            icono: Icons.grid_view_outlined,
+            icono: LucideIcons300.layoutGrid,
             alPulsar: () => toques.add('catalogo'),
           ),
         ],

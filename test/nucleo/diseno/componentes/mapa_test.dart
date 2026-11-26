@@ -4,6 +4,8 @@ import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 const _teselas = ConfiguracionTeselas(
@@ -416,7 +418,7 @@ void main() {
       await tester.pump();
 
       expect(find.byKey(_movil), findsOneWidget);
-      expect(find.byIcon(Icons.local_shipping), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.truck), findsOneWidget);
       expect(find.bySemanticsLabel(RegExp('Chofer')), findsOneWidget);
     });
 

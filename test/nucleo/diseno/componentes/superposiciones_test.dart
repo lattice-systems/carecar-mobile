@@ -5,6 +5,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/pestanas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -145,7 +147,11 @@ void main() {
             etiqueta: 'Mas opciones',
             alSeleccionar: (v) => elegido = v,
             items: const [
-              ItemMenu(valor: 'editar', texto: 'Editar', icono: Icons.edit),
+              ItemMenu(
+                valor: 'editar',
+                texto: 'Editar',
+                icono: LucideIcons300.pencil,
+              ),
               ItemMenu(valor: 'borrar', texto: 'Borrar', peligro: true),
               ItemMenu(valor: 'x', texto: 'Apagada', habilitado: false),
             ],

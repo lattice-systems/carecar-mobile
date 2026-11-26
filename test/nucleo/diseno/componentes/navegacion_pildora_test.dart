@@ -8,20 +8,19 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_acciones_pildora.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 const _destinos = [
-  DestinoNavegacion(etiqueta: 'Inicio', icono: Icons.home_outlined),
-  DestinoNavegacion(
-    etiqueta: 'Vehículos',
-    icono: Icons.directions_car_outlined,
-  ),
+  DestinoNavegacion(etiqueta: 'Inicio', icono: LucideIcons300.house),
+  DestinoNavegacion(etiqueta: 'Vehículos', icono: LucideIcons300.car),
   DestinoNavegacion(
     etiqueta: 'Citas',
-    icono: Icons.calendar_month_outlined,
+    icono: LucideIcons300.calendarDays,
     conteo: 2,
   ),
-  DestinoNavegacion(etiqueta: 'Catálogo', icono: Icons.grid_view_outlined),
+  DestinoNavegacion(etiqueta: 'Catálogo', icono: LucideIcons300.layoutGrid),
 ];
 
 void main() {
@@ -123,12 +122,12 @@ void main() {
             child: GrupoAccionesPildora(
               acciones: [
                 AccionIcono(
-                  icono: Icons.calendar_month_outlined,
+                  icono: LucideIcons300.calendarDays,
                   etiqueta: 'Mis citas',
                   alPresionar: () => citas++,
                 ),
                 AccionIcono(
-                  icono: Icons.help_outline,
+                  icono: LucideIcons300.circleQuestionMark,
                   etiqueta: 'Ayuda',
                   alPresionar: () => ayuda++,
                 ),
@@ -157,17 +156,17 @@ void main() {
               child: GrupoAccionesPildora(
                 acciones: [
                   AccionIcono(
-                    icono: Icons.search,
+                    icono: LucideIcons300.search,
                     etiqueta: 'Buscar',
                     alPresionar: () {},
                   ),
                   AccionIcono(
-                    icono: Icons.tune,
+                    icono: LucideIcons300.slidersHorizontal,
                     etiqueta: 'Filtrar',
                     alPresionar: () {},
                   ),
                   AccionIcono(
-                    icono: Icons.history,
+                    icono: LucideIcons300.history,
                     etiqueta: 'Historial',
                     alPresionar: () {},
                   ),
@@ -190,7 +189,7 @@ void main() {
           Center(
             child: BotonAccionFlotante(
               texto: 'Agendar cita',
-              icono: Icons.add,
+              icono: LucideIcons300.plus,
               alPresionar: () => toques++,
             ),
           ),
@@ -198,7 +197,7 @@ void main() {
       );
 
       expect(find.text('Agendar cita'), findsOneWidget);
-      expect(find.byIcon(Icons.add), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.plus), findsOneWidget);
       await tester.tap(find.text('Agendar cita'));
       expect(toques, 1);
       expect(
@@ -214,7 +213,7 @@ void main() {
           Center(
             child: BotonAccionFlotante(
               texto: 'Agendar cita',
-              icono: Icons.add,
+              icono: LucideIcons300.plus,
               alPresionar: () {},
             ),
           ),
@@ -234,7 +233,7 @@ void main() {
             Center(
               child: BotonAccionFlotante(
                 texto: 'Agendar cita',
-                icono: Icons.add,
+                icono: LucideIcons300.plus,
                 alPresionar: () {},
               ),
             ),

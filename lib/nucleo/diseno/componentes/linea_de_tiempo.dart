@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
@@ -307,7 +309,12 @@ class _PuntoState extends State<_Punto> with SingleTickerProviderStateMixin {
     const diametro = _Paso._punto;
 
     final (fondo, borde, icono, colorIcono) = switch (widget.estado) {
-      EstadoPaso.hecho => (c.acento, c.acento, Icons.check, c.sobreAcento),
+      EstadoPaso.hecho => (
+        c.acento,
+        c.acento,
+        LucideIcons300.check,
+        c.sobreAcento,
+      ),
       EstadoPaso.actual => (c.acentoSuave, c.acento, null, c.acento),
       EstadoPaso.pendiente => (
         c.superficie,
