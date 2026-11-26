@@ -22,7 +22,8 @@ class ClienteTeselas extends http.BaseClient {
     } on Exception {
       throw http.ClientException('No se pudo descargar una tesela.');
     }
-    if (respuesta.statusCode >= 400) {
+    // Con cualquier otro estado el paquete lanza un error con la dirección.
+    if (respuesta.statusCode != 200 && respuesta.statusCode != 304) {
       await respuesta.stream.drain<void>();
       throw http.ClientException(
         'No se pudo descargar una tesela (estado ${respuesta.statusCode}).',

@@ -41,6 +41,15 @@ void main() {
     expect(mensaje, isNot(contains('teselas.ejemplo')));
   });
 
+  test('cualquier otra respuesta sin imagen también falla aquí', () async {
+    final mensaje = await _fallo(
+      MockClient((_) async => http.Response('', 204)),
+    );
+
+    expect(mensaje, contains('204'));
+    expect(mensaje, isNot(contains('14574')));
+  });
+
   test('sin conexión no deja la tesela en el mensaje', () async {
     final mensaje = await _fallo(
       MockClient(
