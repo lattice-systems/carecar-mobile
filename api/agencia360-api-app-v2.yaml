@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.18.0
+  version: 2.19.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -78,6 +78,8 @@ tags:
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
     description: V2-M22.01, V2-M22.02 y V2-M22.03
+  - name: Valuación
+    description: V2-M26.01 a V2-M26.05
 
 security:
   - bearerAuth: []
@@ -1473,6 +1475,271 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /valuaciones:
+    get:
+      tags: [Valuación]
+      summary: Listar mis valuaciones formales
+      description: |
+        V2-M26.01 · Las valuaciones del cliente, la más reciente primero, con su estado al día:
+        una oferta cuya vigencia pasó llega como `VENCIDA` y una valuación cuya cita de
+        inspección se canceló llega como `SOLICITADA` sin `cita`.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Valuaciones del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaValuaciones'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Valuación]
+      summary: Pedir una valuación formal desde una estimación
+      description: |
+        V2-M26.01 · Crea la solicitud ligada a una estimación del cliente hecha con uno de sus
+        vehículos registrados, porque la inspección se agenda para ese vehículo. Hay una sola
+        valuación abierta (`SOLICITADA`, `CITA_AGENDADA` u `OFERTADA`) por vehículo: si ya
+        existe, responde 200 con ella y no crea otra, así que reintentar es seguro. La agencia
+        recibe al cliente como prospecto de ventas.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaValuacion'
+      responses:
+        '200':
+          description: Ya había una valuación abierta para ese vehículo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '201':
+          description: Valuación creada en `SOLICITADA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '422':
+          description: |
+            La estimación se hizo capturando el auto a mano, sin un vehículo registrado
+            (`codigo` VALUACION_SIN_VEHICULO). La app explica que esa valuación se pide en la
+            agencia.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}:
+    get:
+      tags: [Valuación]
+      summary: Ver una valuación
+      description: |
+        V2-M26.01 · Con sus fotos (URL temporal firmada, vence a los 15 minutos), la cita de
+        inspección, la oferta y el asesor.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      responses:
+        '200':
+          description: La valuación
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /valuaciones/{valuacionId}/fotos/{toma}:
+    post:
+      tags: [Valuación]
+      summary: Subir o reemplazar una foto guiada
+      description: |
+        V2-M26.02 · Una foto por petición, en `multipart/form-data`. Volver a subir una toma
+        la reemplaza, así que reintentar es seguro. Acepta JPEG o PNG de hasta 8 MB y 40
+        megapíxeles. El servidor la reescribe sin EXIF ni ubicación antes de guardarla.
+        Responde 400 `DATOS_INVALIDOS` si la toma no existe o el archivo no es una imagen
+        válida.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+        - name: toma
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/TomaValuacion'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [imagen]
+              properties:
+                imagen:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: La valuación con la foto nueva
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La valuación ya no admite fotos porque no está en `SOLICITADA` ni en
+            `CITA_AGENDADA` (`codigo` VALUACION_CERRADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}/cita:
+    post:
+      tags: [Valuación]
+      summary: Agendar la inspección física
+      description: |
+        V2-M26.03 · Usa la agenda del taller con las mismas reglas que `POST /citas` y motivo
+        `valuacion`. La disponibilidad se consulta con `GET /agenda/disponibilidad`. Se puede
+        agendar en `SOLICITADA`, o en `CITA_AGENDADA` cuando la cita ya pasó hace más de 7
+        días (configurable en el servidor) y no hubo oferta. Cancelar y reprogramar se hace
+        con las rutas de `/citas`.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendarInspeccion'
+      responses:
+        '201':
+          description: Cita confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cita'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La valuación ya tiene cita o ya no se puede agendar (`codigo`
+            VALUACION_NO_AGENDABLE), la franja se llenó (`codigo` FRANJA_SIN_CUPO) o el
+            vehículo ya tiene una cita ese día (`codigo` CITA_DUPLICADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /valuaciones/{valuacionId}/respuesta:
+    post:
+      tags: [Valuación]
+      summary: Aceptar o rechazar la oferta
+      description: |
+        V2-M26.04 · `monto` es el que el cliente vio en pantalla. Si no es el de la oferta
+        actual no se registra nada. Repetir la misma decisión con el mismo monto responde 200
+        sin cambios.
+      parameters:
+        - $ref: '#/components/parameters/ValuacionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RespuestaOferta'
+      responses:
+        '200':
+          description: La valuación en `ACEPTADA` o `RECHAZADA`
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Valuacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            La vigencia de la oferta ya pasó (`codigo` OFERTA_VENCIDA), o no hay una oferta
+            que responder con ese monto o ya se respondió lo contrario (`codigo`
+            OFERTA_NO_DISPONIBLE). La app vuelve a consultar la valuación.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /vehiculos/{vehiculoId}/valor-estimado:
+    get:
+      tags: [Valuación]
+      summary: Cómo cambia el valor estimado de mi auto por mes
+      description: |
+        V2-M26.05 · Un punto por cada mes (hora de la agencia) en el que el cliente guardó una
+        estimación de ese vehículo, con la más reciente de ese mes. Un mes sin estimación no
+        aparece: no se interpola ni se recalcula hacia atrás. Del más antiguo al más reciente.
+        Sin estimaciones responde la lista vacía. Es un historial no vinculante.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+        - name: meses
+          in: query
+          required: false
+          description: Cuántos meses hacia atrás, contando el actual
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 36
+            default: 12
+      responses:
+        '200':
+          description: El historial por mes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValorEstimado'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /asistente/preguntas:
     post:
       tags: [Asistente]
@@ -2010,6 +2277,9 @@ paths:
         - `garantia.por_vencer` (V2-M10.05), `AvisoGarantiaPorVencer`: una sola vez a 60 días, a
           15 días y a 1 000 km del límite de cada cobertura. La app vuelve a consultar
           `GET /vehiculos/{vehiculoId}/garantia`.
+        - `valuacion.oferta` (V2-M26.04), `AvisoValuacionOferta`: cuando la agencia captura o
+          renueva la oferta de una valuación del cliente. No trae el monto. La app vuelve a
+          consultar `GET /valuaciones/{valuacionId}`.
 
         Ejemplo en el flujo:
         ```
@@ -2029,6 +2299,7 @@ paths:
                   - $ref: '#/components/schemas/AvisoTrasladoUbicacion'
                   - $ref: '#/components/schemas/AvisoMantenimientoRecordatorio'
                   - $ref: '#/components/schemas/AvisoArco'
+                  - $ref: '#/components/schemas/AvisoValuacionOferta'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -2189,6 +2460,13 @@ components:
         default: 0
     GastoId:
       name: gastoId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    ValuacionId:
+      name: valuacionId
       in: path
       required: true
       schema:
@@ -2856,8 +3134,10 @@ components:
       description: |
         V2-M02.08 · Opcional. Se acepta sin importar mayúsculas y siempre se devuelve en
         minúsculas. V2-M10.03 · `campana` es el de las citas que atienden una campaña de
-        seguridad; se agendan desde la campaña.
-      enum: [mantenimiento, reparacion, revision, garantia, campana, otro]
+        seguridad; se agendan desde la campaña. V2-M26.03 · `valuacion` es el de las inspecciones
+        de una valuación formal. Solo se crea con `POST /valuaciones/{valuacionId}/cita`:
+        `POST /citas` con ese motivo responde 400 `DATOS_INVALIDOS`.
+      enum: [mantenimiento, reparacion, revision, garantia, campana, valuacion, otro]
 
     ReprogramarCita:
       type: object
@@ -3448,6 +3728,222 @@ components:
           format: int64
         totalPaginas:
           type: integer
+
+    NuevaValuacion:
+      type: object
+      required: [estimacionTomaCuentaId]
+      properties:
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+
+    EstadoValuacion:
+      type: string
+      enum: [SOLICITADA, CITA_AGENDADA, OFERTADA, ACEPTADA, RECHAZADA, VENCIDA]
+
+    TomaValuacion:
+      type: string
+      description: V2-M26.02 · Las 8 tomas guiadas, en el orden en que la app las pide.
+      enum:
+        - FRENTE
+        - TRASERA
+        - LATERAL_IZQUIERDO
+        - LATERAL_DERECHO
+        - INTERIOR_DELANTERO
+        - INTERIOR_TRASERO
+        - TABLERO_KM
+        - CAJUELA
+
+    FotoValuacion:
+      type: object
+      required: [toma, url, subidaEn]
+      properties:
+        toma:
+          $ref: '#/components/schemas/TomaValuacion'
+        url:
+          type: string
+          description: URL temporal firmada, relativa al servidor. Vence a los 15 minutos.
+        subidaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
+    InspeccionValuacion:
+      type: object
+      required: [citaId, fecha, horaInicio, horaFin]
+      properties:
+        citaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+        horaInicio:
+          type: string
+          example: '09:00'
+        horaFin:
+          type: string
+          example: '10:00'
+
+    OfertaValuacion:
+      type: object
+      description: |
+        V2-M26.04 · La oferta formal de la agencia, a diferencia de la estimación. No se edita
+        mientras está vigente.
+      required: [monto, vigenciaHasta, ofertadaEn]
+      properties:
+        monto:
+          type: number
+          description: Pesos con IVA
+        vigenciaHasta:
+          type: string
+          format: date
+          description: Último día en que se puede responder, hora de la agencia, inclusive
+        nota:
+          type: string
+          nullable: true
+          maxLength: 500
+        ofertadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+
+    Valuacion:
+      type: object
+      required: [id, estado, creadaEn, vehiculoId, estimacion, fotos]
+      properties:
+        id:
+          type: integer
+          format: int64
+        estado:
+          $ref: '#/components/schemas/EstadoValuacion'
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        vehiculoId:
+          type: integer
+          format: int64
+        estimacion:
+          $ref: '#/components/schemas/EstimacionTomaCuenta'
+        fotos:
+          type: array
+          description: Solo las tomas ya subidas, en el orden de `TomaValuacion`
+          items:
+            $ref: '#/components/schemas/FotoValuacion'
+        puedeAgendar:
+          type: boolean
+          description: Si `POST /valuaciones/{valuacionId}/cita` se admite ahora
+        cita:
+          allOf:
+            - $ref: '#/components/schemas/InspeccionValuacion'
+          nullable: true
+        oferta:
+          allOf:
+            - $ref: '#/components/schemas/OfertaValuacion'
+          nullable: true
+        respondidaEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: En UTC
+        asesor:
+          type: string
+          nullable: true
+          description: Nombre del vendedor del prospecto ligado, cuando ya lo hay
+
+    PaginaValuaciones:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Valuacion'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+
+    AgendarInspeccion:
+      type: object
+      required: [franjaId, fecha]
+      properties:
+        franjaId:
+          type: integer
+          format: int64
+        fecha:
+          type: string
+          format: date
+
+    RespuestaOferta:
+      type: object
+      required: [aceptada, monto]
+      properties:
+        aceptada:
+          type: boolean
+        monto:
+          type: number
+          description: El monto de la oferta que el cliente está respondiendo
+
+    ValorEstimado:
+      type: object
+      required: [vehiculoId, puntos]
+      properties:
+        vehiculoId:
+          type: integer
+          format: int64
+        puntos:
+          type: array
+          items:
+            $ref: '#/components/schemas/PuntoValorEstimado'
+
+    PuntoValorEstimado:
+      type: object
+      required: [mes, estimacionTomaCuentaId, creadaEn, minimo, maximo, medio, km, estado]
+      properties:
+        mes:
+          type: string
+          pattern: '^\d{4}-\d{2}$'
+          example: '2026-11'
+        estimacionTomaCuentaId:
+          type: integer
+          format: int64
+        creadaEn:
+          type: string
+          format: date-time
+          description: En UTC
+        minimo:
+          type: number
+        maximo:
+          type: number
+        medio:
+          type: number
+          description: Promedio de `minimo` y `maximo`, con 2 decimales. Es lo que se grafica.
+        km:
+          type: integer
+        estado:
+          $ref: '#/components/schemas/EstadoVehiculo'
+
+    AvisoValuacionOferta:
+      type: object
+      description: V2-M26.04 · `data` del evento `valuacion.oferta`
+      required: [valuacionId, vehiculoId, vigenciaHasta]
+      properties:
+        valuacionId:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        vigenciaHasta:
+          type: string
+          format: date
 
     AvisoOrden:
       type: object
