@@ -77,6 +77,27 @@ void main() {
       expect(p.codigo, CodigoProblema.desconocido);
     });
 
+    test('lee que corregir en cada campo (V2-M08.05)', () {
+      final p = Problema.fromJson(const {
+        'timestamp': 't',
+        'status': 400,
+        'error': 'Bad Request',
+        'message': 'x',
+        'codigo': 'DATOS_FISCALES_INVALIDOS',
+        'campos': {'rfc': 'Revisa la homoclave', 'raro': 3},
+        'path': '/p',
+      });
+
+      expect(p.codigo, CodigoProblema.datosFiscalesInvalidos);
+      expect(p.campos, {'rfc': 'Revisa la homoclave'});
+    });
+
+    test('sin campos queda vacio', () {
+      final p = Problema.fromJson(const {'status': 404, 'campos': 'no'});
+
+      expect(p.campos, isEmpty);
+    });
+
     test('todos los valores del contrato estan mapeados', () {
       const enElContrato = {
         'CREDENCIALES_INVALIDAS',
@@ -121,6 +142,7 @@ void main() {
         'PEDIDO_NO_CANCELABLE',
         'PEDIDO_NO_MODIFICABLE',
         'PRODUCTO_INCOMPATIBLE',
+        'DATOS_FISCALES_INVALIDOS',
       };
 
       final queLaAppMapea = CodigoProblema.values
