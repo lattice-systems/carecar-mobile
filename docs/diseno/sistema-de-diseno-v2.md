@@ -110,7 +110,10 @@ Momentos firma: la foto del auto viaja (héroe) de Garaje a Detalle; la etapa ac
 
 ## 6. Iconografía e imagen
 
-- Un solo set de íconos de trazo (Lucide, trazo 1.75) — decisión final en T02.07.
+- **Un solo set de íconos (V2-T02.07):** Lucide de trazo 1.5, desde `LucideIcons300` (paquete `lucide_icons_flutter`). Se eligió 1.5 porque la fuente no trae el 1.75 que se había propuesto y el trazo fino acompaña mejor a Geist. Lucide no tiene variantes rellenas, así que el estado marcado se distingue por color, píldora y lector de pantalla, nunca por el ícono. Los botones que Material dibuja solo (regresar, cerrar, menú) usan el mismo set por `actionIconTheme`. La prueba `test/arquitectura/un_solo_set_de_iconos_test.dart` impide volver a `Icons` o `CupertinoIcons`.
+- **Logo (V2-T02.07):** `assets/marca/agencia360-logo.svg` (letras marino, para fondo claro) y `agencia360-logo-oscuro.svg` (letras claras, para fondo oscuro). Son un trazado del logo que ya existía, sin rediseño. `agencia360-icono.svg` es el símbolo sobre su cuadro marino.
+- **Ícono de app (V2-T02.07):** en Android 8 o posterior es adaptativo, con fondo `azul_arranque`, el símbolo en vector dentro de la zona segura y capa monocroma para los íconos temáticos. Los sabores desarrollo y pruebas conservan su franja.
+- **Splash (V2-T02.07):** el del sistema es solo el azul de marca y la cortina de Flutter dibuja el símbolo en SVG, para que no haya salto entre los dos.
 - Fotos del auto con fondo transparente por modelo y color (`assets/autos/`); si falta el color exacto, silueta del modelo en `textoTerciario`.
 - Ilustraciones de estados vacíos en línea, monocromas con toque de `acento`.
 
@@ -161,7 +164,7 @@ Propuesta de estilo hecha con Daniel: superficies de vidrio y controles redondos
   - reemplaza la salpicadura de Material con un encogimiento corto al presionar (`Movimiento.toqueBajada` de 70 ms y `toqueSubida` de 100 ms);
   - con reducir movimiento no se encoge;
   - el interruptor además vibra levemente.
-- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.png`) y barra de estado en claro.
+- **Login:** oscuro, con resplandor azul, campos de vidrio en píldora, logo con letras claras (`agencia360-logo-oscuro.svg`) y barra de estado en claro.
 
 ### Mensajes (chat)
 

@@ -217,3 +217,16 @@ Documentado en §8 del sistema de diseño. La galería y los golden (`pantalla_g
 - Inter y JetBrains Mono se quedan: las usa la v1 y son el respaldo de los tokens.
 - Algunos componentes e inicio piden peso 700 con `copyWith`. Con Geist se pinta en 600. Falta decidir si pasan a 600 en el código o si la escala suma el 700.
 - Con letra al 200 %, el golden de `GrupoLista` parte «Notificaciones» a media palabra cuando la fila lleva un valor a la derecha. Ya pasaba con Inter y se corrige aparte.
+
+## Avance de V2-T02.07
+
+| Criterio | Dónde se cumple |
+| --- | --- |
+| Set de íconos único | Lucide de trazo 1.5 (`LucideIcons300`) en toda la app, también en las pantallas v1 y en los botones que dibuja Material. Lo vigila `test/arquitectura/un_solo_set_de_iconos_test.dart` |
+| Logo SVG claro y oscuro | `assets/marca/agencia360-logo.svg` y `agencia360-logo-oscuro.svg`, trazados del logo anterior sin rediseño. Sustituyen a los PNG |
+| Ícono adaptativo | `mipmap-anydpi-v26/ic_launcher.xml` con fondo, símbolo en vector y capa monocroma. Los sabores desarrollo y pruebas conservan su franja |
+| Splash | Azul de marca del sistema y cortina de Flutter con el símbolo en SVG |
+
+- Los PNG del ícono para Android 7 o anterior y para iOS se quedan, porque el dibujo no cambió.
+- Falta ver el ícono adaptativo y el splash en un teléfono real.
+- La splash y el ícono de iOS no se probaron en un Mac, porque las pruebas de macOS están en pausa.
