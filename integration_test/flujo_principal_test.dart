@@ -2,12 +2,14 @@ import 'package:carecar_mobile/config/flavor.dart';
 import 'package:carecar_mobile/main.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/calendario.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_seguro.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -44,12 +46,20 @@ void main() {
       await _tocar(tester, find.byKey(PantallaLogin.botonEntrar));
 
       await _tocar(tester, find.text('Acepto el aviso de privacidad'));
-      await _tocar(tester, find.text('Vehículos'));
+      final barra = find.byType(BarraFlotante);
+      final citas = find.descendant(
+        of: barra,
+        matching: find.byIcon(LucideIcons300.calendarDays),
+      );
+      await _tocar(
+        tester,
+        find.descendant(of: barra, matching: find.byIcon(LucideIcons300.car)),
+      );
       await _esperar(tester, find.byType(PantallaGaraje));
       final vehiculo = find.text('Nissan March Sense 2020');
       await _esperar(tester, vehiculo, coincidencias: findsWidgets);
       await _tocar(tester, find.byTooltip('Regresar'));
-      await _tocar(tester, find.text('Citas'));
+      await _tocar(tester, citas);
       await _esperar(tester, find.byType(PantallaMisCitas));
       await _tocar(tester, find.text('Agendar cita'));
       await _tocar(tester, vehiculo);
@@ -80,7 +90,7 @@ void main() {
         find.text('Cita cancelada. El horario quedó libre.'),
       );
       await _tocar(tester, find.byTooltip('Regresar'));
-      await _tocar(tester, find.text('Citas'));
+      await _tocar(tester, citas);
       await _esperar(tester, find.text('Cancelada'));
       expect(find.text('Cancelar cita'), findsNothing);
     },
