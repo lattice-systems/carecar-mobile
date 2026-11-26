@@ -1,6 +1,7 @@
 import 'package:carecar_mobile/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 /// Monta la app real y la deja avanzar un momento. No se usa
 /// `pumpAndSettle`: con dirección por flavor la app arranca de verdad
@@ -33,7 +34,7 @@ void main() {
   ) async {
     await _montarApp(tester);
 
-    expect(find.byIcon(Icons.add), findsNothing);
+    expect(find.byIcon(LucideIcons300.plus), findsNothing);
     expect(find.textContaining('You have pushed the button'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });

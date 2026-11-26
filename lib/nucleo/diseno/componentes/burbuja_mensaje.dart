@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -216,7 +218,7 @@ class _Fuente extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.menu_book_outlined, size: 16, color: color),
+              Icon(LucideIcons300.bookOpen, size: 16, color: color),
               const SizedBox(width: Espaciado.e1),
               Flexible(
                 child: Text(

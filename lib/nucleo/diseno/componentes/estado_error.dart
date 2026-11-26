@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton.dart';
@@ -57,7 +59,9 @@ class EstadoError extends StatelessWidget {
             children: [
               ExcludeSemantics(
                 child: Icon(
-                  sinConexion ? Icons.wifi_off : Icons.error_outline,
+                  sinConexion
+                      ? LucideIcons300.wifiOff
+                      : LucideIcons300.circleAlert,
                   size: _tamanoIcono,
                   color: sinConexion ? c.textoSecundario : c.peligro,
                 ),
@@ -77,7 +81,7 @@ class EstadoError extends StatelessWidget {
               const SizedBox(height: Espaciado.e5),
               Boton(
                 texto: textoReintentar,
-                icono: Icons.refresh,
+                icono: LucideIcons300.refreshCw,
                 alPresionar: alReintentar,
               ),
             ],

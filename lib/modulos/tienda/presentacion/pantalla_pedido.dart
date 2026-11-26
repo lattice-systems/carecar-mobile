@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -112,7 +114,7 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
                 ? EstadoVacio(
                     titulo: t.tiendaPedidoNoEncontradoTitulo,
                     mensaje: t.tiendaPedidoNoEncontradoMensaje,
-                    icono: Icons.search_off_rounded,
+                    icono: LucideIcons300.searchX,
                     textoAccion: t.tiendaMisPedidos,
                     alAccion: () => context.go(rutaMisPedidos),
                   )
@@ -151,7 +153,7 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
                 subtitulo: motivo == null
                     ? null
                     : textoMotivoCancelacion(t, motivo),
-                icono: Icons.shopping_bag_outlined,
+                icono: LucideIcons300.shoppingBag,
                 estado: textoEstadoPedido(t, pedido.estado),
                 tonoEstado: tonoEstadoPedido(pedido.estado),
               ),
@@ -236,9 +238,7 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
                 ? diaYHoraTienda(context, cita.fecha, cita.hora)
                 : null,
             detalle: enCita ? nombreDeAuto(garaje, cita.vehiculoId) : null,
-            icono: enCita
-                ? Icons.build_circle_outlined
-                : Icons.storefront_outlined,
+            icono: enCita ? LucideIcons300.wrench : LucideIcons300.store,
           ),
           if (pedido.abierto) ...[
             const SizedBox(height: Espaciado.e2),

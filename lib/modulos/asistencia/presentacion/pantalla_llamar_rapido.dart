@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -93,13 +95,13 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
       TipoContacto.emergencias => (
         textos.asistenciaLlamarEmergencias,
         textos.asistenciaLlamarEmergenciasDetalle,
-        Icons.local_hospital_outlined,
+        LucideIcons300.hospital,
         c.peligro,
       ),
       TipoContacto.agencia => (
         textos.asistenciaLlamarAgencia,
         contacto.telefono ?? '',
-        Icons.storefront_outlined,
+        LucideIcons300.store,
         c.acento,
       ),
       TipoContacto.aseguradora => (
@@ -107,14 +109,14 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
         contacto.puedeLlamar
             ? contacto.telefono!
             : textos.asistenciaLlamarAseguradoraFalta,
-        Icons.shield_outlined,
+        LucideIcons300.shield,
         c.acento,
       ),
     };
     return FilaGrupo(
       titulo: titulo,
       subtitulo: detalle,
-      icono: contacto.puedeLlamar ? Icons.call_outlined : icono,
+      icono: contacto.puedeLlamar ? LucideIcons300.phone : icono,
       colorIcono: color,
       alToque: contacto.puedeLlamar ? () => _llamar(contacto) : null,
     );

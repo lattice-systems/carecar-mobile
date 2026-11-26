@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/traslado.dart';
 import '../../../l10n/app_localizations.dart';
@@ -164,7 +166,7 @@ class _VistaChecklist extends ConsumerWidget {
               EstadoVacio(
                 titulo: textos.recoleccionChecklistVacioTitulo,
                 mensaje: textos.recoleccionChecklistVacioMensaje,
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
               ),
             )
           : _Datos(checklist: datos, conMarco: conMarco),
@@ -232,13 +234,13 @@ class _Datos extends ConsumerWidget {
               FilaGrupo(
                 titulo: textos.recoleccionChecklistKm,
                 subtitulo: textos.recoleccionChecklistKmValor(checklist.km),
-                icono: Icons.speed_outlined,
+                icono: LucideIcons300.gauge,
                 colorIcono: c.marca,
               ),
               FilaGrupo(
                 titulo: textos.recoleccionChecklistGasolina,
                 subtitulo: nivel,
-                icono: Icons.local_gas_station_outlined,
+                icono: LucideIcons300.fuel,
                 colorIcono: c.advertencia,
                 fin: IndicadorGasolina(
                   cuartos: checklist.gasolina.cuartos,
@@ -249,7 +251,7 @@ class _Datos extends ConsumerWidget {
                 FilaGrupo(
                   titulo: textos.recoleccionChecklistNotas,
                   subtitulo: notas,
-                  icono: Icons.notes_outlined,
+                  icono: LucideIcons300.textAlignStart,
                   colorIcono: c.acento,
                 ),
             ],
@@ -339,7 +341,7 @@ class _Comparacion extends ConsumerWidget {
             : recoger == null
             ? textos.recoleccionComparacionFaltaRecoger
             : textos.recoleccionComparacionFaltaEntregar,
-        icono: Icons.compare_outlined,
+        icono: LucideIcons300.squareSplitHorizontal,
       );
     }
     return _DatosComparacion(recoger: recoger, entregar: entregar);
@@ -378,7 +380,7 @@ class _DatosComparacion extends ConsumerWidget {
                     recoger.km,
                     entregar.km,
                   ),
-                  icono: Icons.speed_outlined,
+                  icono: LucideIcons300.gauge,
                   colorIcono: c.marca,
                   fin: Text(
                     textos.recoleccionChecklistKmValor(
@@ -393,7 +395,7 @@ class _DatosComparacion extends ConsumerWidget {
                     textos.nombreDeGasolina(recoger.gasolina),
                     textos.nombreDeGasolina(entregar.gasolina),
                   ),
-                  icono: Icons.local_gas_station_outlined,
+                  icono: LucideIcons300.fuel,
                   colorIcono: c.advertencia,
                 ),
               ],

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -69,7 +71,7 @@ class PantallaCampana extends ConsumerWidget {
                 estado: EstadoVacio(
                   titulo: textos.campanasNoEncontradaTitulo,
                   mensaje: textos.campanasNoEncontradaMensaje,
-                  icono: Icons.campaign_outlined,
+                  icono: LucideIcons300.megaphone,
                 ),
               );
             }
@@ -104,13 +106,13 @@ class _Detalle extends StatelessWidget {
     final accion = switch (campana.estado) {
       EstadoCampana.abierta => AccionPantalla(
         texto: textos.campanasAgendar,
-        icono: Icons.event_available_outlined,
+        icono: LucideIcons300.calendarCheck,
         alPresionar: () =>
             context.push(rutaAgendarCampana(vehiculoId, campana.id)),
       ),
       EstadoCampana.agendada => AccionPantalla(
         texto: textos.campanasVerCitas,
-        icono: Icons.event_note_outlined,
+        icono: LucideIcons300.calendarDays,
         alPresionar: () => context.push(rutaMisCitas),
       ),
       EstadoCampana.atendida => null,

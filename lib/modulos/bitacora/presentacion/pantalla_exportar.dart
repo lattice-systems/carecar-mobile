@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../api/modelos/comun.dart';
 import '../../../l10n/app_localizations.dart';
@@ -76,7 +78,7 @@ class PantallaExportar extends ConsumerWidget {
               EstadoVacio(
                 titulo: textos.bitacoraVacioTitulo,
                 mensaje: textos.bitacoraVacioMensaje,
-                icono: Icons.ios_share_outlined,
+                icono: LucideIcons300.share,
               ),
             )
           : _Formulario(gastos: lista, nombre: nombre),
@@ -201,14 +203,14 @@ class _EstadoFormulario extends ConsumerState<_Formulario> {
         hijos: [
           BotonPildora(
             texto: textos.bitacoraExportarCsv,
-            icono: Icons.table_chart_outlined,
+            icono: LucideIcons300.table,
             expandido: true,
             alPresionar: _ocupado ? null : () => _exportar(pdf: false),
           ),
           const SizedBox(height: Espaciado.e2),
           BotonPildora(
             texto: textos.bitacoraExportarPdf,
-            icono: Icons.picture_as_pdf_outlined,
+            icono: LucideIcons300.fileText,
             variante: VarianteBotonPildora.tonal,
             expandido: true,
             alPresionar: _ocupado ? null : () => _exportar(pdf: true),

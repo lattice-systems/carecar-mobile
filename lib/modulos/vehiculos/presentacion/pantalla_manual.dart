@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../manuales/guardar_pdf.dart';
@@ -106,7 +108,9 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
                   acciones: [
                     if (indice != null)
                       AccionIcono(
-                        icono: _buscando ? Icons.close : Icons.search_outlined,
+                        icono: _buscando
+                            ? LucideIcons300.x
+                            : LucideIcons300.search,
                         etiqueta: _buscando
                             ? textos.vehiculosManualBuscarCerrar
                             : textos.vehiculosManualBuscarAccion,
@@ -114,12 +118,12 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
                             setState(() => _buscando = !_buscando),
                       ),
                     AccionIcono(
-                      icono: Icons.download_outlined,
+                      icono: LucideIcons300.download,
                       etiqueta: textos.vehiculosBotonDescargar,
                       alPresionar: () => _descargar(doc),
                     ),
                     AccionIcono(
-                      icono: Icons.share_outlined,
+                      icono: LucideIcons300.share2,
                       etiqueta: textos.vehiculosBotonCompartir,
                       alPresionar: () => _compartir(doc),
                     ),
@@ -153,7 +157,7 @@ class _PantallaManualState extends ConsumerState<PantallaManual> {
                   ? EstadoVacio(
                       titulo: textos.vehiculosManualVacioTitulo,
                       mensaje: textos.vehiculosManualVacioMensaje,
-                      icono: Icons.menu_book_outlined,
+                      icono: LucideIcons300.bookOpen,
                     )
                   : Stack(
                       children: [
@@ -240,7 +244,7 @@ class _PanelBusqueda extends StatelessWidget {
                   : resultados.isEmpty
                   ? EstadoVacio(
                       titulo: textos.vehiculosManualSinResultados(consulta),
-                      icono: Icons.search_off_outlined,
+                      icono: LucideIcons300.searchX,
                     )
                   : ListView(
                       padding: const EdgeInsets.fromLTRB(
@@ -258,7 +262,7 @@ class _PanelBusqueda extends StatelessWidget {
                                   r.pagina,
                                 ),
                                 subtitulo: r.fragmento,
-                                icono: Icons.menu_book_outlined,
+                                icono: LucideIcons300.bookOpen,
                                 colorIcono: c.acento,
                                 alToque: () => alElegir(r.pagina),
                               ),

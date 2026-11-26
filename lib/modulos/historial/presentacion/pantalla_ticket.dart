@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -92,7 +94,7 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
         if (datos != null)
           BotonCircular(
             etiqueta: textos.historialTicketCompartir,
-            icono: Icons.ios_share_rounded,
+            icono: LucideIcons300.share,
             alPresionar: _compartiendo ? null : () => _compartir(datos),
           ),
       ],
@@ -157,7 +159,7 @@ class _Ticket extends StatelessWidget {
               FilaGrupo(
                 titulo: fechaDe(context, ticket.fecha),
                 subtitulo: textos.historialTicketFecha,
-                icono: Icons.event_outlined,
+                icono: LucideIcons300.calendar,
                 colorIcono: c.acento,
               ),
               FilaGrupo(
@@ -165,7 +167,7 @@ class _Ticket extends StatelessWidget {
                     ? textos.historialSinCierre
                     : fechaHoraDe(context, ticket.fechaCierre!),
                 subtitulo: textos.historialTicketCierre,
-                icono: Icons.task_alt_rounded,
+                icono: LucideIcons300.circleCheckBig,
                 colorIcono: c.exito,
               ),
               FilaGrupo(
@@ -175,7 +177,7 @@ class _Ticket extends StatelessWidget {
                   ).format(ticket.kilometraje),
                 ),
                 subtitulo: textos.historialTicketKilometraje,
-                icono: Icons.speed_rounded,
+                icono: LucideIcons300.gauge,
                 colorIcono: c.marca,
               ),
             ],
@@ -237,7 +239,7 @@ class _Ticket extends StatelessWidget {
           const SizedBox(height: Espaciado.e4),
           BotonPildora(
             texto: textos.historialTicketCompartir,
-            icono: Icons.picture_as_pdf_outlined,
+            icono: LucideIcons300.fileText,
             expandido: true,
             alPresionar: compartiendo ? null : alCompartir,
           ),

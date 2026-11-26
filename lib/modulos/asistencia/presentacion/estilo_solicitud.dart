@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../dominio/solicitud_asistencia.dart';
 import 'ubicacion_para_ayuda.dart';
@@ -8,11 +10,11 @@ import 'ubicacion_para_ayuda.dart';
 /// solicitud enviada.
 extension EstiloDeTipoAsistencia on TipoAsistencia {
   IconData get icono => switch (this) {
-    TipoAsistencia.llanta => Icons.tire_repair_outlined,
-    TipoAsistencia.bateria => Icons.battery_charging_full_outlined,
-    TipoAsistencia.choque => Icons.car_crash_outlined,
-    TipoAsistencia.sinGasolina => Icons.local_gas_station_outlined,
-    TipoAsistencia.otro => Icons.help_outline,
+    TipoAsistencia.llanta => LucideIcons300.lifeBuoy,
+    TipoAsistencia.bateria => LucideIcons300.batteryCharging,
+    TipoAsistencia.choque => LucideIcons300.triangleAlert,
+    TipoAsistencia.sinGasolina => LucideIcons300.fuel,
+    TipoAsistencia.otro => LucideIcons300.circleQuestionMark,
   };
 }
 

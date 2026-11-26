@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -143,7 +145,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         EstadoVacio(
           titulo: textos.citasSinVehiculosTitulo,
           mensaje: textos.citasSinVehiculosMensaje,
-          icono: Icons.directions_car_outlined,
+          icono: LucideIcons300.car,
         ),
       );
     }
@@ -153,7 +155,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         EstadoVacio(
           titulo: textos.citasVacioTitulo,
           mensaje: textos.citasVacioMensaje,
-          icono: Icons.event_busy_outlined,
+          icono: LucideIcons300.calendarX,
         ),
       );
     }
@@ -326,7 +328,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                   FilaGrupo(
                     titulo: textos.citasResumenFecha,
                     subtitulo: fecha,
-                    icono: Icons.calendar_today_outlined,
+                    icono: LucideIcons300.calendar,
                     colorIcono: c.acento,
                   ),
                   FilaGrupo(
@@ -335,13 +337,13 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                       franja.horaInicio,
                       franja.horaFin,
                     ),
-                    icono: Icons.schedule_outlined,
+                    icono: LucideIcons300.clock,
                     colorIcono: c.exito,
                   ),
                   FilaGrupo(
                     titulo: textos.citasResumenMotivo,
                     subtitulo: _textoMotivo(textos, _motivo!),
-                    icono: Icons.build_outlined,
+                    icono: LucideIcons300.wrench,
                     colorIcono: c.marca,
                   ),
                 ],
@@ -387,25 +389,25 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                     direccion.alias,
                     direccion.resumen,
                   ),
-            icono: Icons.place_outlined,
+            icono: LucideIcons300.mapPin,
             colorIcono: c.acento,
           ),
           FilaGrupo(
             titulo: textos.citasResumenRecogemos,
             subtitulo: ventana(cotizacion.recoleccion),
-            icono: Icons.local_shipping_outlined,
+            icono: LucideIcons300.truck,
             colorIcono: c.marca,
           ),
           FilaGrupo(
             titulo: textos.citasResumenEntregamos,
             subtitulo: ventana(cotizacion.entrega),
-            icono: Icons.home_outlined,
+            icono: LucideIcons300.house,
             colorIcono: c.exito,
           ),
           FilaGrupo(
             titulo: textos.citasResumenRecoleccionCosto,
             subtitulo: formatearPesos(context, cotizacion.costoTotal),
-            icono: Icons.payments_outlined,
+            icono: LucideIcons300.banknote,
             colorIcono: c.advertencia,
           ),
         ],
@@ -505,7 +507,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       mensaje: textos.citasListoMensaje(cita.fecha, cita.horaInicio),
       principal: AccionPantalla(
         texto: textos.citasListoVerComprobante,
-        icono: Icons.qr_code_2_rounded,
+        icono: LucideIcons300.qrCode,
         // La ruta nueva no cuelga del tema Pista de esta pantalla: se le pasa
         // el mismo para que el comprobante se vea igual.
         alPresionar: () => Navigator.of(context).push<void>(

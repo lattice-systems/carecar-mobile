@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
@@ -62,10 +64,10 @@ String textoCategoria(AppLocalizations t, CategoriaProducto? categoria) =>
     };
 
 IconData iconoCategoria(CategoriaProducto? categoria) => switch (categoria) {
-  CategoriaProducto.accesorio => Icons.auto_awesome_outlined,
-  CategoriaProducto.refaccion => Icons.build_outlined,
-  CategoriaProducto.cuidado => Icons.water_drop_outlined,
-  null => Icons.shopping_bag_outlined,
+  CategoriaProducto.accesorio => LucideIcons300.sparkles,
+  CategoriaProducto.refaccion => LucideIcons300.wrench,
+  CategoriaProducto.cuidado => LucideIcons300.droplet,
+  null => LucideIcons300.shoppingBag,
 };
 
 String textoExistencia(AppLocalizations t, Producto producto) =>

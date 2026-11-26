@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -128,7 +130,7 @@ class _PantallaAgendarInspeccionState
                   estado: EstadoVacio(
                     titulo: t.valuacionAgendarVacioTitulo,
                     mensaje: t.valuacionAgendarVacioMensaje,
-                    icono: Icons.event_busy_outlined,
+                    icono: LucideIcons300.calendarX,
                   ),
                 )
               : _formulario(context, taller, auto),
@@ -242,7 +244,7 @@ class _PantallaAgendarInspeccionState
       ),
       principal: AccionPantalla(
         texto: t.valuacionAgendadaVerCitas,
-        icono: Icons.event_outlined,
+        icono: LucideIcons300.calendar,
         alPresionar: () => context.pushReplacement(rutaMisCitas),
       ),
       secundaria: AccionPantalla(

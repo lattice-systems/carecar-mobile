@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -60,7 +62,7 @@ class PantallaGarantia extends ConsumerWidget {
                   estado: EstadoVacio(
                     titulo: textos.garantiaVaciaTitulo,
                     mensaje: textos.garantiaVaciaMensaje,
-                    icono: Icons.verified_user_outlined,
+                    icono: LucideIcons300.shieldCheck,
                   ),
                 )
               : _Garantia(
@@ -107,7 +109,7 @@ class _Garantia extends StatelessWidget {
                   FilaGrupo(
                     titulo: textos.campanasAcceso,
                     subtitulo: textos.campanasAccesoResumen,
-                    icono: Icons.campaign_outlined,
+                    icono: LucideIcons300.megaphone,
                     colorIcono: c.advertencia,
                     alToque: () =>
                         context.push(rutaCampanasVehiculo(garantia.vehiculoId)),
@@ -139,9 +141,9 @@ class TarjetaCobertura extends StatelessWidget {
       subtitulo: textoLimiteCobertura(context, cobertura),
       detalle: cobertura.descripcion,
       icono: switch (cobertura.estado) {
-        EstadoCobertura.vigente => Icons.verified_user_outlined,
-        EstadoCobertura.porVencer => Icons.schedule_outlined,
-        EstadoCobertura.vencida => Icons.gpp_bad_outlined,
+        EstadoCobertura.vigente => LucideIcons300.shieldCheck,
+        EstadoCobertura.porVencer => LucideIcons300.clock,
+        EstadoCobertura.vencida => LucideIcons300.shieldX,
       },
       tono: tono,
       estado: textoEstadoCobertura(textos, cobertura.estado),
