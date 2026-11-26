@@ -3413,7 +3413,10 @@ components:
 
     Perfil:
       type: object
-      required: [id, nombre, correo]
+      required: [id, nombre, correo, clienteDesde]
+      description: >
+        Datos de solo lectura del cliente autenticado. Editarlos es V2-M01.07, con su
+        verificación por código.
       properties:
         id:
           type: integer
@@ -3423,6 +3426,22 @@ components:
         correo:
           type: string
           format: email
+        telefono:
+          type: string
+          maxLength: 20
+          nullable: true
+          description: >
+            V2-M01.06 · Nulo cuando la agencia no lo capturó al dar de alta al cliente, que
+            pasa seguido. La app lo muestra como un dato que falta, no como un error.
+        clienteDesde:
+          type: string
+          format: date
+          description: >
+            V2-M01.06 · Desde cuándo es cliente de la agencia. **Siempre viene**:
+            `cliente.created_at` es `not null` desde la V7. Es una **fecha**, no un instante:
+            sale de ese `created_at` resuelto en la zona de la agencia, porque convertirlo en
+            el celular haría que quien se registró el 1 de marzo a las 02:00 UTC apareciera
+            como «desde febrero» en México.
 
     Vehiculo:
       type: object

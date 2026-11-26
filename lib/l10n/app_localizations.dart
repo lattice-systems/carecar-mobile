@@ -242,6 +242,24 @@ abstract class AppLocalizations {
   /// **'Escribe tu correo.'**
   String get accesoCorreoVacio;
 
+  /// Explica por qué el enlace de recuperación dejó de servir.
+  ///
+  /// In es, this message translates to:
+  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
+  String get accesoEnlaceNoValidoMensaje;
+
+  /// Título cuando el enlace de recuperación venció o ya se usó.
+  ///
+  /// In es, this message translates to:
+  /// **'El enlace ya no sirve'**
+  String get accesoEnlaceNoValidoTitulo;
+
+  /// Botón que lleva a pedir un enlace de recuperación nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro enlace'**
+  String get accesoEnlacePedirOtro;
+
   /// Texto del botón mientras el servidor responde al inicio de sesión.
   ///
   /// In es, this message translates to:
@@ -265,24 +283,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'CareCar'**
   String get accesoMarca;
-
-  /// Explica por qué el enlace de recuperación dejó de servir.
-  ///
-  /// In es, this message translates to:
-  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
-  String get accesoEnlaceNoValidoMensaje;
-
-  /// Título cuando el enlace de recuperación venció o ya se usó.
-  ///
-  /// In es, this message translates to:
-  /// **'El enlace ya no sirve'**
-  String get accesoEnlaceNoValidoTitulo;
-
-  /// Botón que lleva a pedir un enlace de recuperación nuevo.
-  ///
-  /// In es, this message translates to:
-  /// **'Pedir otro enlace'**
-  String get accesoEnlacePedirOtro;
 
   /// Explica qué hace la pantalla a la que abre el enlace.
   ///
@@ -337,6 +337,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
+
+  /// Lo que anuncia el lector de pantalla mientras carga el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu perfil…'**
+  String get accesoPerfilCargando;
+
+  /// Etiqueta de la fecha en que la persona se volvió cliente de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cliente desde'**
+  String get accesoPerfilClienteDesde;
+
+  /// Etiqueta del correo en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get accesoPerfilCorreo;
+
+  /// Encabezado de la sección del perfil con las opciones de la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta'**
+  String get accesoPerfilCuentaEncabezado;
+
+  /// Encabezado de la sección del perfil con los datos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus datos'**
+  String get accesoPerfilDatosEncabezado;
+
+  /// Fila del perfil que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis sesiones'**
+  String get accesoPerfilMisSesiones;
+
+  /// Explicación de la fila que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mira y cierra las sesiones abiertas en otros dispositivos'**
+  String get accesoPerfilMisSesionesDetalle;
+
+  /// Etiqueta del nombre en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get accesoPerfilNombre;
+
+  /// Pie de los datos del perfil. Son de solo lectura hasta que exista la edición (V2-M01.07), y conviene decir qué hacer mientras tanto en vez de dejar al cliente buscando un botón que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Para cambiar tu teléfono o tu correo, comunícate con la agencia.'**
+  String get accesoPerfilPie;
+
+  /// Lo que se muestra cuando la agencia no capturó el teléfono del cliente, en vez de dejar el renglón vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin teléfono registrado'**
+  String get accesoPerfilSinTelefono;
+
+  /// Lo que dice la sección de vehículos del perfil cuando la cuenta no tiene ninguno.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes vehículos registrados'**
+  String get accesoPerfilSinVehiculos;
+
+  /// Etiqueta del teléfono en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get accesoPerfilTelefono;
+
+  /// Título de la pantalla del perfil del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi perfil'**
+  String get accesoPerfilTitulo;
+
+  /// Encabezado de la sección del perfil con los vehículos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus vehículos'**
+  String get accesoPerfilVehiculosEncabezado;
+
+  /// Aviso dentro del perfil cuando la lista de vehículos falla. El resto del perfil se sigue viendo, porque son dos lecturas distintas.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos traer tus vehículos'**
+  String get accesoPerfilVehiculosFallo;
 
   /// Título del aviso tras pedir el enlace de recuperación.
   ///

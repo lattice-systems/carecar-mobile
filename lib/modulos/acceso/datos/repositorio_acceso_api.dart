@@ -4,6 +4,7 @@ import '../../../api/modelos/problema.dart';
 import '../../../api/modelos/sesion.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
 import '../dominio/fallos_acceso.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -56,6 +57,17 @@ class RepositorioAccesoApi with RepositorioBase implements RepositorioAcceso {
       rethrow;
     }
   }
+
+  @override
+  Future<PerfilDelCliente> perfil() => pedir(() async {
+    final dto = await _api.miPerfil();
+    return PerfilDelCliente(
+      nombre: dto.nombre,
+      correo: dto.correo,
+      telefono: dto.telefono,
+      clienteDesde: dto.clienteDesde,
+    );
+  });
 
   @override
   Future<List<SesionDeLaCuenta>> sesiones() => pedir(() async {

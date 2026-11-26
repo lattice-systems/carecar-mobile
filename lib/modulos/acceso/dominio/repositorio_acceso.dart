@@ -1,4 +1,5 @@
 import 'fallos_acceso.dart';
+import 'perfil_del_cliente.dart';
 import 'sesion_de_la_cuenta.dart';
 
 /// Lo que el modulo `acceso` necesita del servidor · M01.
@@ -34,6 +35,11 @@ abstract interface class RepositorioAcceso {
     required String token,
     required String contrasenaNueva,
   });
+
+  /// `GET /perfil`: los datos del cliente que inicio sesion · V2-M01.06.
+  ///
+  /// De solo lectura: editarlos es V2-M01.07.
+  Future<PerfilDelCliente> perfil();
 
   /// `GET /sesiones`: las sesiones vigentes de la cuenta · V2-M01.09.
   ///

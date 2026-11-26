@@ -1,5 +1,6 @@
 import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -76,6 +77,32 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
     final f = fallaDelEnlace;
     if (f != null) throw f;
   }
+
+  // --- Perfil · V2-M01.06 ---
+
+  /// Lo que devuelve [perfil]. Si es nulo, uno cualquiera con telefono.
+  PerfilDelCliente? perfilDelCliente;
+
+  /// Si no es nulo, **solo** leer el perfil falla con esto.
+  Fallo? fallaAlLeerPerfil;
+
+  int llamadasAlPerfil = 0;
+
+  @override
+  Future<PerfilDelCliente> perfil() => pedir(() async {
+    llamadasAlPerfil++;
+    final espera = esperar;
+    if (espera != null) await espera;
+    final f = fallaAlLeerPerfil ?? falla;
+    if (f != null) throw f;
+    return perfilDelCliente ??
+        PerfilDelCliente(
+          nombre: 'Maria Elena Robles',
+          correo: 'cliente1@example.com',
+          telefono: '477 123 4567',
+          clienteDesde: DateTime(2022, 5, 18),
+        );
+  });
 
   // --- Sesiones activas · V2-M01.09 ---
 
