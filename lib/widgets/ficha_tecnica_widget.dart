@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../config/ficha_tecnica.dart';
 import '../tema/tema_carecar.dart';
 
@@ -16,13 +18,13 @@ class TarjetaFichaTecnica extends StatelessWidget {
   Widget build(BuildContext context) {
     final temas = Theme.of(context).textTheme;
     final datos = <(IconData, String, String)>[
-      (Icons.directions_car_outlined, 'Carrocería', ficha.carroceria),
-      (Icons.event_seat_outlined, 'Pasajeros', ficha.pasajeros),
-      (Icons.local_gas_station_outlined, 'Propulsión', ficha.propulsion),
-      (Icons.settings_outlined, 'Motor', ficha.motor),
-      (Icons.bolt_outlined, 'Potencia', ficha.potencia),
-      (Icons.tune, 'Transmisión', ficha.transmision),
-      (Icons.alt_route, 'Tracción', ficha.traccion),
+      (LucideIcons300.car, 'Carrocería', ficha.carroceria),
+      (LucideIcons300.armchair, 'Pasajeros', ficha.pasajeros),
+      (LucideIcons300.fuel, 'Propulsión', ficha.propulsion),
+      (LucideIcons300.settings, 'Motor', ficha.motor),
+      (LucideIcons300.zap, 'Potencia', ficha.potencia),
+      (LucideIcons300.slidersHorizontal, 'Transmisión', ficha.transmision),
+      (LucideIcons300.route, 'Tracción', ficha.traccion),
     ];
     return Container(
       key: clave,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 /// Aviso emergente (toast) de shadcn_ui para exito y errores.
@@ -28,7 +29,7 @@ void mostrarToast(
             title: titulo == null ? null : Text(titulo),
             description: Row(
               children: [
-                const Icon(Icons.check_circle_outline, size: 20),
+                const Icon(LucideIcons300.circleCheck, size: 20),
                 const SizedBox(width: 8),
                 Expanded(child: contenido),
               ],
@@ -100,7 +101,11 @@ Future<void> mostrarCheckExito(BuildContext context) {
                   color: Color(0xFF1B6E3A),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.check, color: Colors.white, size: 64),
+                child: const Icon(
+                  LucideIcons300.check,
+                  color: Colors.white,
+                  size: 64,
+                ),
               )
               .animate(onComplete: (_) => Navigator.of(contexto).pop())
               .scale(

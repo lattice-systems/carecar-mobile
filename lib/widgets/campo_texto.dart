@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../nucleo/diseno/componentes/superficie_liquida.dart';
 import '../nucleo/diseno/tokens/movimiento.dart';
 import '../nucleo/diseno/tokens/radios.dart';
@@ -243,7 +245,7 @@ class _CampoTextoState extends State<CampoTexto> {
                 child: Row(
                   children: [
                     const Icon(
-                      Icons.error_outline,
+                      LucideIcons300.circleAlert,
                       size: 14,
                       color: Color(0xFFE54D2E),
                     ),
