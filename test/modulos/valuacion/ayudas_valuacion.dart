@@ -150,6 +150,7 @@ Widget app(
   SelectorFoto? selector,
   List<Override> extra = const [],
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   // Cada escenario monta proveedores nuevos.
   key: UniqueKey(),
@@ -159,7 +160,7 @@ Widget app(
     selector: selector,
     extra: extra,
   ),
-  child: conTemaPista(pantalla, escenario: escenario),
+  child: conTemaPista(pantalla, escenario: escenario, ancho: ancho),
 );
 
 void pantallaAlta(WidgetTester tester) {

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.21.0
+  version: 2.22.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -278,6 +278,71 @@ paths:
           $ref: '#/components/responses/NoAutenticado'
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
+
+  /sesiones:
+    get:
+      tags: [Acceso]
+      summary: Sesiones abiertas del cliente
+      description: >
+        V2-M01.09 · Las sesiones **vigentes** de la cuenta: ni revocadas ni vencidas.
+        Vienen ordenadas por `ultimoUso` descendente, y las que nunca se han refrescado
+        al final. No se devuelve nada derivado del refresh token.
+      responses:
+        '200':
+          description: Sesiones vigentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SesionActiva'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    delete:
+      tags: [Acceso]
+      summary: Cerrar todas las sesiones
+      description: >
+        V2-M01.09 · Revoca **todas** las sesiones de la cuenta, **incluida la de quien
+        llama**: es «cerrar sesión en todos los dispositivos». El access token en curso
+        sigue valiendo hasta que expire, igual que en `/auth/cerrar-sesion`.
+      responses:
+        '204':
+          description: Sesiones revocadas
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /sesiones/{id}:
+    delete:
+      tags: [Acceso]
+      summary: Cerrar una sesión
+      description: >
+        V2-M01.09 · Revoca esa sesión. Idempotente: una sesión ya revocada responde 204
+        igual. Una sesión de otra cuenta responde **404**, no 403, como el resto del
+        contrato para un recurso ajeno.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Sesión revocada
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: No existe o no es de este cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /vehiculos:
     get:
@@ -3086,6 +3151,13 @@ components:
         contrasena:
           type: string
           format: password
+        dispositivo:
+          type: string
+          maxLength: 80
+          description: >
+            V2-M01.09 · Nombre que la app le pone a este aparato («Pixel 7 · Android 14»),
+            para que el cliente reconozca sus sesiones. Opcional: si no llega, la sesión
+            queda sin nombre y la app muestra un texto genérico.
 
     LoginResponse:
       type: object
@@ -3147,6 +3219,40 @@ components:
           minLength: 8
           maxLength: 72
           description: Al menos una letra y un número
+
+    SesionActiva:
+      type: object
+      required: [id, expiraEn]
+      description: V2-M01.09 · Una sesión abierta del cliente.
+      properties:
+        id:
+          type: integer
+          format: int64
+        dispositivo:
+          type: string
+          maxLength: 80
+          nullable: true
+          description: >
+            Nombre que mandó la app al entrar. Nulo en las sesiones anteriores a
+            V2-M01.09 y en las de un cliente que no lo manda.
+        ultimoUso:
+          type: string
+          format: date-time
+          nullable: true
+          description: Cuándo se refrescó por última vez. Nulo si nunca se ha refrescado.
+        iniciadaEn:
+          type: string
+          format: date-time
+          description: >
+            Cuándo empezó la sesión de verdad, no cuándo se refrescó por última vez:
+            se conserva entre refrescos. Nulo en las sesiones anteriores a V2-M01.09.
+          nullable: true
+        expiraEn:
+          type: string
+          format: date-time
+          description: >
+            A los 30 días del **último refresco**, no del inicio: cada refresco emite
+            una sesión nueva con 30 días por delante. Usar la app la mantiene viva.
 
     Perfil:
       type: object

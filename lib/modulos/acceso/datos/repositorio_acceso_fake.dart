@@ -1,6 +1,7 @@
 import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
 import '../dominio/repositorio_acceso.dart';
+import '../dominio/sesion_de_la_cuenta.dart';
 
 /// Repositorio de acceso en memoria, para pruebas y desarrollo · M01.
 ///
@@ -75,4 +76,59 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
     final f = fallaDelEnlace;
     if (f != null) throw f;
   }
+
+  // --- Sesiones activas · V2-M01.09 ---
+
+  /// Lo que devuelve [sesiones], en el orden en que se le ponga: el repositorio
+  /// real conserva el del servidor y el fake tiene que poder mentir igual.
+  List<SesionDeLaCuenta> sesionesAbiertas = const [];
+
+  /// Si no es nulo, **solo** leer las sesiones falla con esto.
+  ///
+  /// Se separa de [falla] para montar el caso de la pantalla: la lista carga y
+  /// el cierre es el que truena, o al contrario.
+  Fallo? fallaAlLeerSesiones;
+
+  /// Si no es nulo, **solo** cerrar falla con esto.
+  Fallo? fallaAlCerrar;
+
+  int llamadasAlLeerSesiones = 0;
+
+  /// Los ids que se mandaron a cerrar, en orden. Cerrar todas se anota en
+  /// [cerroTodas], no aqui.
+  final sesionesCerradas = <int>[];
+
+  bool cerroTodas = false;
+
+  @override
+  Future<List<SesionDeLaCuenta>> sesiones() => pedir(() async {
+    llamadasAlLeerSesiones++;
+    final espera = esperar;
+    if (espera != null) await espera;
+    final f = fallaAlLeerSesiones ?? falla;
+    if (f != null) throw f;
+    return sesionesAbiertas;
+  });
+
+  @override
+  Future<void> cerrarUnaSesion(int sesionId) => pedir(() async {
+    final espera = esperar;
+    if (espera != null) await espera;
+    final f = fallaAlCerrar ?? falla;
+    if (f != null) throw f;
+    sesionesCerradas.add(sesionId);
+    sesionesAbiertas = sesionesAbiertas
+        .where((s) => s.id != sesionId)
+        .toList(growable: false);
+  });
+
+  @override
+  Future<void> cerrarTodasLasSesiones() => pedir(() async {
+    final espera = esperar;
+    if (espera != null) await espera;
+    final f = fallaAlCerrar ?? falla;
+    if (f != null) throw f;
+    cerroTodas = true;
+    sesionesAbiertas = const [];
+  });
 }

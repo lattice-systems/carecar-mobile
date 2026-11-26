@@ -168,6 +168,117 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoServidorDespertandoTitulo => 'Despertando el servidor…';
 
   @override
+  String get accesoSesionesActivaAhora => 'Activa ahora';
+
+  @override
+  String get accesoSesionesCambio =>
+      'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.';
+
+  @override
+  String get accesoSesionesCancelar => 'Cancelar';
+
+  @override
+  String get accesoSesionesCargando => 'Cargando tus sesiones…';
+
+  @override
+  String get accesoSesionesCerrada => 'Listo, esa sesión se cerró.';
+
+  @override
+  String get accesoSesionesCerrar => 'Cerrar';
+
+  @override
+  String accesoSesionesCerrarEtiqueta(String dispositivo) {
+    return 'Cerrar la sesión de $dispositivo';
+  }
+
+  @override
+  String get accesoSesionesCerrarTodas => 'Cerrar todas las sesiones';
+
+  @override
+  String get accesoSesionesCerrarTodasConfirmar => 'Cerrar todas';
+
+  @override
+  String get accesoSesionesCerrarTodasMensaje =>
+      'Se cerrarán en todos tus dispositivos, incluido este. Tendrás que entrar otra vez.';
+
+  @override
+  String get accesoSesionesCerrarTodasTitulo => '¿Cerrar todas las sesiones?';
+
+  @override
+  String get accesoSesionesCerrarUnaMensaje =>
+      'Ese dispositivo tendrá que entrar otra vez con tu correo y tu contraseña.';
+
+  @override
+  String accesoSesionesCerrarUnaTitulo(String dispositivo) {
+    return '¿Cerrar la sesión de $dispositivo?';
+  }
+
+  @override
+  String get accesoSesionesEncabezado => 'Dispositivos con tu sesión abierta';
+
+  @override
+  String get accesoSesionesEquipoSinNombre => 'Dispositivo sin nombre';
+
+  @override
+  String get accesoSesionesFalloCerrar =>
+      'No pudimos cerrar esa sesión. Inténtalo otra vez.';
+
+  @override
+  String accesoSesionesHaceDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'Hace $dias días',
+      one: 'Hace 1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String accesoSesionesHaceHoras(int horas) {
+    String _temp0 = intl.Intl.pluralLogic(
+      horas,
+      locale: localeName,
+      other: 'Hace $horas horas',
+      one: 'Hace 1 hora',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String accesoSesionesHaceMinutos(int minutos) {
+    String _temp0 = intl.Intl.pluralLogic(
+      minutos,
+      locale: localeName,
+      other: 'Hace $minutos minutos',
+      one: 'Hace 1 minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accesoSesionesPie =>
+      'Si ves un dispositivo que no reconoces, ciérralo y cambia tu contraseña.';
+
+  @override
+  String get accesoSesionesSinActividad => 'Sin actividad registrada';
+
+  @override
+  String get accesoSesionesTitulo => 'Mis sesiones';
+
+  @override
+  String accesoSesionesUltimoUsoFecha(String fecha) {
+    return 'El $fecha';
+  }
+
+  @override
+  String get accesoSesionesVacioMensaje =>
+      'Cuando entres desde un dispositivo, aparecerá aquí.';
+
+  @override
+  String get accesoSesionesVacioTitulo => 'No hay sesiones abiertas';
+
+  @override
   String get accesoSinConexionTitulo => 'Sin conexión';
 
   @override

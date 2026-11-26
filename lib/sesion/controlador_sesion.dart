@@ -4,6 +4,7 @@ import '../notificaciones/servicio_notificaciones.dart';
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
 import '../api/modelos/modelos.dart';
+import '../nucleo/dispositivo/nombre_del_dispositivo.dart';
 import 'almacen_sesion.dart';
 
 /// Estado de la sesion.
@@ -82,7 +83,14 @@ class ControladorSesion extends ChangeNotifier {
   ///
   /// Van posicionales, y no con nombre, porque los campos son privados y Dart
   /// no admite parametros con nombre que empiecen con guion bajo.
-  ControladorSesion(this._api, this._almacen);
+  /// El tercero, el lector del nombre del equipo, es **opcional** a proposito
+  /// (V2-M01.09): si no se inyecta, el login no manda nombre y el contrato lo
+  /// acepta igual. Asi las pruebas no tocan la plataforma y nada del flujo v1
+  /// cambia.
+  ControladorSesion(this._api, this._almacen, [this._lectorDelDispositivo]);
+
+  /// De donde sale el nombre del equipo, si alguien lo inyecto.
+  final LectorDelDispositivo? _lectorDelDispositivo;
 
   final CarecarApi _api;
   final AlmacenSesion _almacen;
@@ -149,6 +157,15 @@ class ControladorSesion extends ChangeNotifier {
     }
   }
 
+  /// El nombre del equipo, o nulo si no hay lector o no se pudo leer.
+  ///
+  /// `nombreDelDispositivo` ya se traga cualquier error: entrar a la app no
+  /// puede depender de saber como se llama el telefono.
+  Future<String?> _nombreDelEquipo() async {
+    final leer = _lectorDelDispositivo;
+    return leer == null ? null : nombreDelDispositivo(leer: leer);
+  }
+
   Future<void> iniciarSesion({
     required String correo,
     required String contrasena,
@@ -160,7 +177,11 @@ class ControladorSesion extends ChangeNotifier {
 
     try {
       final sesion = await _api.iniciarSesion(
-        PeticionLogin(correo: correo, contrasena: contrasena),
+        PeticionLogin(
+          correo: correo,
+          contrasena: contrasena,
+          dispositivo: await _nombreDelEquipo(),
+        ),
       );
       await _almacen.guardar(TokensSesion.deRespuesta(sesion));
       _cambiarA(
