@@ -150,6 +150,8 @@ void main() {
           'id': 1,
           'nombre': 'María Robles',
           'correo': 'cliente1@example.com',
+          'telefono': '477 123 4567',
+          'clienteDesde': '2024-03-01',
         });
       }),
     );
@@ -160,6 +162,8 @@ void main() {
     expect(peticion.headers['authorization'], 'Bearer token-del-cliente');
     expect(perfil.nombre, 'María Robles');
     expect(perfil.correo, 'cliente1@example.com');
+    expect(perfil.telefono, '477 123 4567');
+    expect(perfil.clienteDesde, DateTime(2024, 3));
   });
 
   test('manualesDe llama GET /vehiculos/{id}/manuales', () async {

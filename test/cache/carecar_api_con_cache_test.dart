@@ -18,7 +18,13 @@ const _auto = Vehiculo(
   placas: 'ABC-1',
 );
 
-const _perfil = Perfil(id: 1, nombre: 'Ana Lopez', correo: 'ana@correo.com');
+final _perfil = Perfil(
+  id: 1,
+  nombre: 'Ana Lopez',
+  correo: 'ana@correo.com',
+  telefono: '477 123 4567',
+  clienteDesde: DateTime(2024, 3),
+);
 
 void main() {
   late ApiFalsa base;
