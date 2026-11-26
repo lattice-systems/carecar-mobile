@@ -148,7 +148,7 @@ class _EstadoMapa extends State<Mapa> with SingleTickerProviderStateMixin {
   /// Tramo que está recorriendo el marcador en movimiento.
   LatLng? _desde;
   LatLng? _hasta;
-  Curve _curva = Curves.linear;
+  Curve _curva = Movimiento.base.curva;
 
   /// Posición del pin mientras el dedo lo arrastra.
   LatLng? _arrastre;
