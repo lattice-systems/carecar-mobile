@@ -6,7 +6,7 @@
 | Dueño | Cristian |
 | Revisa | Ricardo |
 | Ficha técnica | ✅ Sección 14. Tienda de refacciones y accesorios |
-| Estado | Listo para historias |
+| Estado | V2-M14.01, 02, 03 y 05 hechas. V2-M14.04 en borrador, espera a V2-M08.02 |
 
 ## Propósito
 
