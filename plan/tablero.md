@@ -194,11 +194,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M07.03 | Mandar fotos y audios | Jael | B | V2-M07.01 | Borrador | |
 | V2-M07.04 | Saber si mi mensaje fue leído | Jael | B | V2-M07.02 | Borrador | |
 | V2-M07.05 | Escribir sin conexión y que se envíe después | Jael |  | V2-M21.03 | Borrador | |
-| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Borrador | |
-| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Borrador | |
-| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Borrador | |
-| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Borrador | |
-| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Borrador | |
+| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Lista | |
+| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Lista | |
+| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Lista | |
+| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Lista | |
+| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Lista | |
 | V2-M13.01 | Ver promociones que apliquen a mi auto | Haziel | B | V2-M02.01 | Borrador | |
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
@@ -217,13 +217,13 @@ Total: **228 historias** (una descartada) + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Borrador | |
-| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Borrador | |
-| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Borrador | |
-| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Borrador | |
-| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Borrador | |
-| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05 | Borrador | |
-| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Borrador | |
+| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | En revisión | |
+| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Lista | |
+| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Lista | |
+| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Lista | |
+| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Lista | |
+| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Lista | |
+| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Lista | |
 | V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Borrador | |
 | V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 | Borrador | |
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
