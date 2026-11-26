@@ -5,11 +5,21 @@ import 'package:go_router/go_router.dart';
 
 void main() {
   group('valor por defecto en codigo', () {
-    test('todo modulo arranca en v1', () {
+    test('todo modulo arranca en v2 (V2-T01.09)', () {
       const interruptor = InterruptorModulos.porDefecto;
       for (final m in ModuloMigrable.values) {
-        expect(interruptor.de(m), VersionModulo.v1, reason: m.name);
-        expect(interruptor.esV2(m), isFalse);
+        expect(interruptor.de(m), VersionModulo.v2, reason: m.name);
+        expect(interruptor.esV2(m), isTrue);
+      }
+    });
+
+    test('todoV1 apaga cada modulo: es la v1 de las pruebas', () {
+      for (final m in ModuloMigrable.values) {
+        expect(
+          InterruptorModulos.todoV1.de(m),
+          VersionModulo.v1,
+          reason: m.name,
+        );
       }
     });
 
@@ -21,12 +31,19 @@ void main() {
   });
 
   group('sobrescribir con --dart-define', () {
-    test('MODULOS_V2 enciende solo los modulos nombrados', () {
-      final i = InterruptorModulos.desdeValores(v2: 'vehiculos, citas');
-      expect(i.esV2(ModuloMigrable.vehiculos), isTrue);
-      expect(i.esV2(ModuloMigrable.citas), isTrue);
-      expect(i.esV2(ModuloMigrable.catalogo), isFalse);
-      expect(i.esV2(ModuloMigrable.asistencia), isFalse);
+    test('MODULOS_V1 apaga solo los modulos nombrados', () {
+      final i = InterruptorModulos.desdeValores(v1: 'vehiculos, citas');
+      expect(i.esV2(ModuloMigrable.vehiculos), isFalse);
+      expect(i.esV2(ModuloMigrable.citas), isFalse);
+      expect(i.esV2(ModuloMigrable.catalogo), isTrue);
+      expect(i.esV2(ModuloMigrable.asistencia), isTrue);
+    });
+
+    test('MODULOS_V1=todos devuelve todo a la v1: la salida de emergencia', () {
+      final i = InterruptorModulos.desdeValores(v1: 'todos');
+      for (final m in ModuloMigrable.values) {
+        expect(i.esV2(m), isFalse, reason: m.name);
+      }
     });
 
     test('"todos" enciende todos y MODULOS_V1 apaga los que se indiquen', () {
@@ -43,7 +60,7 @@ void main() {
     test('sin valores queda el valor por defecto', () {
       final i = InterruptorModulos.desdeValores();
       for (final m in ModuloMigrable.values) {
-        expect(i.esV2(m), isFalse);
+        expect(i.esV2(m), isTrue);
       }
     });
 
@@ -61,8 +78,9 @@ void main() {
     });
 
     test('ignora mayusculas, espacios y entradas vacias', () {
-      final i = InterruptorModulos.desdeValores(v2: ' Citas ,, ');
-      expect(i.esV2(ModuloMigrable.citas), isTrue);
+      final i = InterruptorModulos.desdeValores(v1: ' Citas ,, ');
+      expect(i.esV2(ModuloMigrable.citas), isFalse);
+      expect(i.esV2(ModuloMigrable.vehiculos), isTrue);
     });
   });
 
@@ -73,7 +91,7 @@ void main() {
 
     test('en v1 el modulo no entrega rutas v2', () {
       expect(
-        InterruptorModulos.porDefecto.rutas(ModuloMigrable.citas, rutas),
+        InterruptorModulos.todoV1.rutas(ModuloMigrable.citas, rutas),
         isEmpty,
       );
     });

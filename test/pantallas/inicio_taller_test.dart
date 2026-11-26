@@ -28,7 +28,7 @@ Future<void> _montar(WidgetTester tester, RepositorioTallerFake repo) async {
     AppEnrutadaDePrueba(
       api: api,
       controlador: sesion,
-      interruptor: InterruptorModulos.porDefecto,
+      interruptor: InterruptorModulos.todoV1,
       overrides: [repositorioTallerProvider.overrideWithValue(repo)],
     ),
   );

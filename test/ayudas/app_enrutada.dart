@@ -35,7 +35,9 @@ class AppEnrutadaDePrueba extends StatelessWidget {
 
   /// Que modulos estan en v2 (V2-T01.05). Por omision todos, para que las
   /// pruebas de rutas de los modulos v2 no dependan del valor por defecto de
-  /// la app (todo en v1).
+  /// la app (que es todo v2 desde V2-T01.09, pero un modulo nuevo no lo estara
+  /// hasta que este completo). Las pruebas de la v1 pasan
+  /// `InterruptorModulos.todoV1`.
   final InterruptorModulos? interruptor;
 
   /// Envuelve la app como lo hace `main.dart` con lo que no pinta nada (el

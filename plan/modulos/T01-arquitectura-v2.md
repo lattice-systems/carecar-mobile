@@ -99,7 +99,7 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 **Decisiones**
 
 - Con todo en v1 las rutas v2 **no existen** (no solo están ocultas): así una pantalla incompleta no se alcanza ni por `carecar://`. Consecuencia: los accesos rápidos y el widget de cita (M25) caen en el inicio mientras su módulo siga en v1.
-- El valor por defecto es todo v1 hasta que cada módulo esté completo. Cuando V2-T01.04 (flavors) llegue a `main`, `desarrollo` y `pruebas` pueden pasar `MODULOS_V2` por flavor; no se acopló a `kDebugMode` para no esconder el comportamiento en el modo de compilación.
+- El valor por defecto era todo v1 hasta que cada módulo estuviera completo (cambió en V2-T01.09, abajo). Cuando V2-T01.04 (flavors) llegue a `main`, `desarrollo` y `pruebas` pueden pasar `MODULOS_V2` por flavor; no se acopló a `kDebugMode` para no esconder el comportamiento en el modo de compilación.
 - La galería y el ejemplo siguen con `kDebugMode`, fuera del interruptor (no tienen v1).
 
 **Pendiente / fuera de alcance:** mover físicamente `lib/api` y `lib/sesion` al núcleo (se hace con el primer módulo que lo necesite o en V2-T01.07); cablear `MODULOS_V2` por flavor (V2-T01.04); retirar todo en V2-T01.07.
@@ -159,3 +159,14 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 - **En «sin conexión» manda el texto del sistema de diseño**, no el del fallo: es una condición del teléfono y no una respuesta del servidor, y el componente ya dice qué hacer.
 
 **Pendiente / fuera de alcance:** migrar los módulos que ya existen (historia nueva; `vehiculoProvider` es el caso con efecto hoy); que `lib/nucleo/datos_locales/` del árbol lo cree M21; reconocer TLS (`HandshakeException`) como sin conexión, que no entró por no agregar código sin prueba; y el comentario desacomodado de `lib/api/excepciones.dart`.
+
+## Avance de V2-T01.09 (la v2 por defecto)
+
+Daniel decidió (2026-11-26) que será v2 sí o sí, así que la v2 deja de ser opcional. Es un PR propio y reversible, como pide la [guía de migración](../arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
+
+- `InterruptorModulos.porDefecto` enciende los cuatro módulos migrables (asistencia, catálogo, citas y vehículos); un módulo nuevo sigue en v1 hasta que esté completo. Nuevo `InterruptorModulos.todoV1`.
+- **Salida de emergencia sin tocar código:** `--dart-define=MODULOS_V1=todos` (o el nombre de un módulo) vuelve a la v1 y gana sobre `MODULOS_V2`.
+- Las pruebas de la v1 (inicio v1 y las tablas de `interruptor_rutas_test`) pasan `todoV1`. Pruebas nuevas: el valor por defecto, `MODULOS_V1=todos` y que la barra del inicio abre las pantallas v2.
+- **Qué ve quien usa la app sin opciones:** Vehículos, Citas, Catálogo y asistencia abren sus pantallas v2, y con ellas todo lo que cuelga del detalle v2 del vehículo (mantenimiento, garantía, campañas, bitácora, historial).
+- **Qué sigue en v1 por defecto:** el acceso (iniciar sesión, recuperar y cambio obligatorio de contraseña) y «Cambiar contraseña» dentro de Ajustes (V2-M01.10). El módulo `acceso` v2 existe pero no está registrado: falta actualizar las pruebas de rutas (hoy unas veinte comprueban el destino por el widget `PantallaLogin` y no por la ruta; ver `rutas_acceso.dart`). Es el último bloque de v1 que se alcanza por defecto antes de V2-T01.07.
+

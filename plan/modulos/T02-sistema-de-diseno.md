@@ -224,7 +224,7 @@ Daniel notó que el inicio repetía en el cuerpo la navegación que ya tiene la 
 **Hallazgos de la revisión que V2-T02.22 no toca:** se atienden en V2-T02.23 y V2-T02.24 (abajo) salvo el último.
 
 - Ajustes seguía en v1 (cabecera héroe, etiquetas en mayúsculas, acentos verdeazulados): se migró en V2-T02.24.
-- Con la configuración por omisión (`InterruptorModulos.porDefecto`, todo en v1) Vehículos, Citas y Catálogo abren las pantallas v1 aunque sus historias v2 estén hechas; la apariencia solo es una con `--dart-define=MODULOS_V2=todos`.
+- Con la configuración por omisión (`InterruptorModulos.porDefecto`, todo en v1) Vehículos, Citas y Catálogo abren las pantallas v1 aunque sus historias v2 estén hechas; la apariencia solo era una con `--dart-define=MODULOS_V2=todos` (resuelto en [V2-T01.09](T01-arquitectura-v2.md): la v2 es el valor por defecto).
 
 ## Avance de V2-T02.23 (consistencia entre pantallas)
 

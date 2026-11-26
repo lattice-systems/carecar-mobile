@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **233 historias** (una descartada) + 4 de H0.
+Total: **234 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -36,6 +36,7 @@ Total: **233 historias** (una descartada) + 4 de H0.
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Hecha | #74 |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
 | V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Hecha | #106 |
+| V2-T01.09 | Encender la v2 por defecto en los cuatro módulos migrables, con salida de emergencia (rediseño; no es historia de usuario) | Daniel |  | V2-T02.26 | En revisión | #173 |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
 | V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Hecha | #170 |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
