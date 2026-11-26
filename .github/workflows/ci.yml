@@ -107,7 +107,7 @@ jobs:
         run: flutter pub get
 
       - name: Revisar el código con las reglas de analysis_options.yaml
-        run: flutter analyze
+        run: flutter analyze --fatal-infos --fatal-warnings
 
   pruebas:
     name: Pruebas (flutter test)

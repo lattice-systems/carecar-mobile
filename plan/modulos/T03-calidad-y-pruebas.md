@@ -20,6 +20,10 @@
 | V2-T03.07 | Como equipo queremos pruebas en celular físico por hito | Guion de prueba manual en `docs/pruebas/` y evidencia por hito | | — |
 | V2-T03.08 | Como equipo queremos la API simulada partida por módulo para que varias personas agreguen endpoints a la vez sin chocar | Rutas de cada módulo en `mock_api/modulos/<modulo>.js` y su semilla en `mock_api/semillas/<modulo>.json` · `server.js` solo los junta · los endpoints de hoy responden igual (mismos casos de error y formato `Problema`) · `npm run reset` arma la base desde todas las semillas · `mock_api/README.md` explica cómo agregar un módulo | | — |
 
+## V2-T03.01 · Análisis estático
+
+Sobre `flutter_lints` se activan `avoid_void_async` para conservar el `Future` de las operaciones asíncronas, `no_adjacent_strings_in_list` para detectar comas omitidas en listas y `prefer_final_in_for_each` para declarar inmutable la variable de iteración cuando corresponda. El job de análisis exige cero avisos e informes con `flutter analyze --fatal-infos --fatal-warnings`.
+
 ## V2-T03.02 · Pruebas golden
 
 Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Inter, JetBrains Mono y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).

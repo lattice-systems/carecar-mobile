@@ -179,19 +179,20 @@ ContenidoWidget contenidoDeBitacora(
   final etiqueta = t.widgetsBitacoraGastoMes(
     DateFormat.MMMM(idioma).format(ahora),
   );
+  final unidad = t.widgetsBitacoraRendimientoUnidad;
+  final etiquetaRendimiento = t.widgetsBitacoraRendimientoEtiqueta;
   return ContenidoWidget.bitacora(
     titulo: t.widgetsBitacoraTitulo,
     rendimiento: rendimientoTexto,
-    unidad: t.widgetsBitacoraRendimientoUnidad,
-    etiquetaRendimiento: t.widgetsBitacoraRendimientoEtiqueta,
+    unidad: unidad,
+    etiquetaRendimiento: etiquetaRendimiento,
     gasto: gasto,
     etiquetaGasto: etiqueta,
     vehiculo: vehiculo.titulo,
     descripcion: _unir([
       t.widgetsBitacoraTitulo,
       if (rendimientoTexto != null)
-        '${t.widgetsBitacoraRendimientoEtiqueta} $rendimientoTexto '
-            '${t.widgetsBitacoraRendimientoUnidad}',
+        '$etiquetaRendimiento $rendimientoTexto $unidad',
       '$etiqueta $gasto',
       vehiculo.titulo,
     ]),
