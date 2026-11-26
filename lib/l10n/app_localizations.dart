@@ -6605,6 +6605,42 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ver comprobante'**
   String get campanasVerComprobante;
+
+  /// Acción que abre la búsqueda dentro del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar en el manual'**
+  String get vehiculosManualBuscarAccion;
+
+  /// Acción que cierra la búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar la búsqueda'**
+  String get vehiculosManualBuscarCerrar;
+
+  /// Texto guía del campo de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar en el manual'**
+  String get vehiculosManualBuscarSugerencia;
+
+  /// Guía cuando la búsqueda es muy corta.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe al menos dos letras para buscar en el manual.'**
+  String get vehiculosManualBuscarAyuda;
+
+  /// Sin coincidencias.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos «{consulta}» en el manual.'**
+  String vehiculosManualSinResultados(String consulta);
+
+  /// Título de un resultado de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Página {pagina}'**
+  String vehiculosManualResultadoPagina(int pagina);
 }
 
 class _AppLocalizationsDelegate
