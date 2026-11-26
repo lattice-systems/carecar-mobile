@@ -108,6 +108,18 @@
   "@accesoCorreoVacio": {
     "description": "Error bajo el campo cuando se intenta entrar sin correo."
   },
+  "accesoEnlaceNoValidoMensaje": "Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.",
+  "@accesoEnlaceNoValidoMensaje": {
+    "description": "Explica por qué el enlace de recuperación dejó de servir."
+  },
+  "accesoEnlaceNoValidoTitulo": "El enlace ya no sirve",
+  "@accesoEnlaceNoValidoTitulo": {
+    "description": "Título cuando el enlace de recuperación venció o ya se usó."
+  },
+  "accesoEnlacePedirOtro": "Pedir otro enlace",
+  "@accesoEnlacePedirOtro": {
+    "description": "Botón que lleva a pedir un enlace de recuperación nuevo."
+  },
   "accesoEntrando": "Entrando…",
   "@accesoEntrando": {
     "description": "Texto del botón mientras el servidor responde al inicio de sesión."
@@ -123,18 +135,6 @@
   "accesoMarca": "CareCar",
   "@accesoMarca": {
     "description": "Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce."
-  },
-  "accesoEnlaceNoValidoMensaje": "Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.",
-  "@accesoEnlaceNoValidoMensaje": {
-    "description": "Explica por qué el enlace de recuperación dejó de servir."
-  },
-  "accesoEnlaceNoValidoTitulo": "El enlace ya no sirve",
-  "@accesoEnlaceNoValidoTitulo": {
-    "description": "Título cuando el enlace de recuperación venció o ya se usó."
-  },
-  "accesoEnlacePedirOtro": "Pedir otro enlace",
-  "@accesoEnlacePedirOtro": {
-    "description": "Botón que lleva a pedir un enlace de recuperación nuevo."
   },
   "accesoNuevaExplicacion": "Elige una contraseña nueva. Este enlace sirve una sola vez.",
   "@accesoNuevaExplicacion": {
