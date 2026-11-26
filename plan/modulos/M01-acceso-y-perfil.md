@@ -245,4 +245,10 @@ La lista **no marca «este dispositivo»**. El JWT lleva `uid` y `roles` pero no
 
 **Dependencia nueva:** `device_info_plus`, autorizada por Jael el 26 de noviembre de 2026. Nada de lo que ya había da el modelo del equipo, y sin nombre la lista muestra todas las sesiones iguales. Queda detrás de `LectorDelDispositivo`, así que cambiarla toca una clase. No se lee ningún identificador del equipo: en iOS se manda `modelName` y no `name`, porque `name` es el nombre que la persona le puso al teléfono y sí la identifica.
 
-**Pendiente:** la parte del backend (las tres columnas de `sesion_app` y los tres endpoints) y demostrarlo en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md`.
+**La parte del backend ya está** (`agencia-360-backend#108`): las tres columnas de `sesion_app` (V52), los tres endpoints y 16 pruebas de integración.
+
+**Y de paso destapó un defecto que no era de esta historia.** `refrescar` tomaba como posible robo **cualquier** refresh token revocado y cerraba todas las sesiones de la cuenta, sin distinguir por qué se revocó. Con `/auth/cerrar-sesion` eso nunca se notaba, porque el mismo dispositivo borra sus tokens y no reintenta; pero cerrar una sesión **ajena** sí lo alcanza, porque ese dispositivo conserva su token y lo usa en su siguiente intento. Resultado: cerrar la sesión de una tablet dejaba al cliente fuera de su propio celular, y cerrar la de un celular robado le regalaba al ladrón una negación de servicio.
+
+El arreglo guarda el motivo (`motivo_revocacion`, V53) y el cierre masivo se dispara **solo** cuando el token lo consumió un refresco, que es el único caso que delata una copia. La protección no se debilita y hay una prueba para eso. Ricardo, que definió la regla original, lo confirmó.
+
+**Pendiente:** demostrarlo en celular, que es lo único que le falta a la fila de `cumplimiento-ficha.md`.
