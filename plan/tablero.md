@@ -223,11 +223,11 @@ Total: **234 historias** (una descartada) + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | En revisión | |
+| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Hecha | #178 |
 | V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Lista | |
 | V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Lista | |
 | V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Lista | |
-| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Lista | |
+| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Hecha | backend#109, #178, #183 |
 | V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Lista | |
 | V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Lista | |
 | V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |

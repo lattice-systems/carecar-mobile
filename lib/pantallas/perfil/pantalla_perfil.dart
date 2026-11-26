@@ -11,6 +11,7 @@ import '../../config/agencia.dart';
 import '../../config/version_app.dart';
 import '../../modulos/acceso/acceso.dart' show rutaMiPerfil;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
+import '../../modulos/pagos/pagos.dart' show rutaDatosFiscales;
 import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../notificaciones/servicio_notificaciones.dart';
@@ -57,6 +58,7 @@ class PantallaPerfil extends StatefulWidget {
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
   static const botonMisPuntos = Key('perfil_mis_puntos');
   static const botonMisDirecciones = Key('perfil_mis_direcciones');
+  static const botonDatosFiscales = Key('perfil_datos_fiscales');
   static const botonMiPerfil = Key('perfil_mi_perfil');
   static const botonContactar = Key('perfil_contactar');
   static const botonPrivacidad = Key('perfil_privacidad');
@@ -125,6 +127,9 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   /// Abre «Mis direcciones» (V2-M17.06). Solo se ofrece dentro de la app
   /// enrutada: sin enrutador no habria a donde ir.
   void _abrirDirecciones() => GoRouter.of(context).push(rutaMisDirecciones);
+
+  /// Abre «Datos fiscales» (V2-M08.05), para facturar los servicios.
+  void _abrirDatosFiscales() => GoRouter.of(context).push(rutaDatosFiscales);
 
   /// Abre «Mi perfil» (V2-M01.06). Solo se ofrece dentro de la app enrutada.
   void _abrirMiPerfil() => GoRouter.of(context).push(rutaMiPerfil);
@@ -232,6 +237,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                   titulo: 'Mis direcciones',
                   subtitulo: 'Donde recogemos y entregamos tu auto',
                   alTocar: _abrirDirecciones,
+                ),
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonDatosFiscales,
+                  icono: LucideIcons300.fileText,
+                  titulo: 'Datos fiscales',
+                  subtitulo: 'Tu RFC y régimen para facturar tus servicios',
+                  alTocar: _abrirDatosFiscales,
                 ),
             ],
           ),
