@@ -25,11 +25,10 @@ void main() {
         reason: 'Este flujo crea citas de prueba y requiere el mock local.',
       );
 
-      tester.binding.platformDispatcher.localeTestValue = const Locale(
-        'es',
-        'MX',
-      );
-      addTearDown(tester.binding.platformDispatcher.clearLocaleTestValue);
+      tester.binding.platformDispatcher.localesTestValue = const [
+        Locale('es', 'MX'),
+      ];
+      addTearDown(tester.binding.platformDispatcher.clearLocalesTestValue);
       final almacen = AlmacenSeguro.delSistema();
       await almacen.borrar();
       addTearDown(almacen.borrar);
@@ -47,7 +46,7 @@ void main() {
       await _tocar(tester, find.text('Mis vehículos'));
       await _esperar(tester, find.byType(PantallaGaraje));
       final vehiculo = find.text('Nissan March Sense 2020');
-      await _esperar(tester, vehiculo.first);
+      await _esperar(tester, vehiculo, coincidencias: findsWidgets);
       await _tocar(tester, find.byTooltip('Regresar'));
       await _tocar(tester, find.text('Citas'));
       await _esperar(tester, find.byType(PantallaMisCitas));
@@ -87,13 +86,17 @@ void main() {
   );
 }
 
-Future<void> _esperar(WidgetTester tester, Finder control) async {
+Future<void> _esperar(
+  WidgetTester tester,
+  Finder control, {
+  Matcher coincidencias = findsOneWidget,
+}) async {
   final reloj = Stopwatch()..start();
   while (control.evaluate().isEmpty &&
       reloj.elapsed < const Duration(seconds: 20)) {
     await tester.pump(const Duration(milliseconds: 100));
   }
-  expect(control, findsOneWidget);
+  expect(control, coincidencias);
 }
 
 Future<void> _tocar(WidgetTester tester, Finder control) async {

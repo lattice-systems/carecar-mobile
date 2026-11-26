@@ -26,6 +26,8 @@ El workflow de distribución de Android prepara un artefacto con los símbolos D
 
 En el emulador API 37, con el APK profile de desarrollo, Android clasificó los cierres controlados con `SIGSEGV` como fallos de código nativo. El simulador recibió un evento con `tipo` como único campo y devolvió 204. La segunda apertura no repitió el envío. Un nuevo cierre con la opción apagada quedó fuera del reporte. Una sonda temporal reportó `ERROR_FLUTTER` al activar el permiso. Tanto esa categoría como `CRASH_ANDROID` quedaron fuera del envío con la opción apagada. El archivo de símbolos Dart x86_64 y `libapp.so` del APK tienen el mismo identificador de compilación.
 
+El flujo de acceso, garaje, reserva y cancelación también pasó en el mismo emulador con el simulador de Agencia360. [Prueba de integración](../../integration_test/flujo_principal_test.dart)
+
 ## Consecuencias
 
 Agencia360 conserva el diagnóstico operativo y el panel. El historial de Android es limitado y el envío es de mejor esfuerzo. El conteo se agrega al día de recepción. Los símbolos Dart sirven para inspeccionar trazas obtenidas por separado.
