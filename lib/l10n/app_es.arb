@@ -6766,5 +6766,25 @@
         "type": "String"
       }
     }
+  },
+  "estadoErrorTitulo": "No pudimos cargar esto",
+  "@estadoErrorTitulo": {
+    "description": "Título del estado de error de carga (EstadoError) cuando la pantalla no dice otro."
+  },
+  "estadoErrorMensaje": "Intenta de nuevo en un momento.",
+  "@estadoErrorMensaje": {
+    "description": "Mensaje del estado de error de carga (EstadoError) cuando la pantalla no dice otro."
+  },
+  "estadoErrorSinConexionTitulo": "Sin conexión",
+  "@estadoErrorSinConexionTitulo": {
+    "description": "Título del estado de error de carga cuando el teléfono no tiene conexión."
+  },
+  "estadoErrorSinConexionMensaje": "Revisa tu internet e intenta de nuevo.",
+  "@estadoErrorSinConexionMensaje": {
+    "description": "Mensaje del estado de error de carga cuando el teléfono no tiene conexión."
+  },
+  "estadoErrorReintentar": "Reintentar",
+  "@estadoErrorReintentar": {
+    "description": "Botón que vuelve a pedir lo que no cargó (estado de error de carga)."
   }
 }

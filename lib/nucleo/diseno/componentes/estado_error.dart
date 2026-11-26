@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton.dart';
@@ -12,7 +13,8 @@ enum CausaError { generico, sinConexion }
 ///
 /// Se anuncia solo al lector de pantalla cuando aparece. `sinConexion` usa
 /// textos distintos para que la persona sepa que el problema no es suyo ni del
-/// servidor.
+/// servidor. Los textos por omision salen del idioma de la app (con tilde y
+/// traducidos); una pantalla solo los pasa si tiene algo mas que decir.
 class EstadoError extends StatelessWidget {
   const EstadoError({
     required this.alReintentar,
@@ -20,14 +22,14 @@ class EstadoError extends StatelessWidget {
     this.causa = CausaError.generico,
     this.titulo,
     this.mensaje,
-    this.textoReintentar = 'Reintentar',
+    this.textoReintentar,
   });
 
   final VoidCallback? alReintentar;
   final CausaError causa;
   final String? titulo;
   final String? mensaje;
-  final String textoReintentar;
+  final String? textoReintentar;
 
   static const double _tamanoIcono = 48;
 
@@ -36,15 +38,19 @@ class EstadoError extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
+    final textos = AppLocalizations.of(context);
     final sinConexion = causa == CausaError.sinConexion;
 
     final tituloFinal =
-        titulo ?? (sinConexion ? 'Sin conexion' : 'No pudimos cargar esto');
+        titulo ??
+        (sinConexion
+            ? textos.estadoErrorSinConexionTitulo
+            : textos.estadoErrorTitulo);
     final mensajeFinal =
         mensaje ??
         (sinConexion
-            ? 'Revisa tu internet e intenta de nuevo.'
-            : 'Intenta de nuevo en un momento.');
+            ? textos.estadoErrorSinConexionMensaje
+            : textos.estadoErrorMensaje);
 
     return Semantics(
       container: true,
@@ -76,7 +82,7 @@ class EstadoError extends StatelessWidget {
               ),
               const SizedBox(height: Espaciado.e5),
               Boton(
-                texto: textoReintentar,
+                texto: textoReintentar ?? textos.estadoErrorReintentar,
                 icono: Icons.refresh,
                 alPresionar: alReintentar,
               ),

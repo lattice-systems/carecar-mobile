@@ -105,7 +105,7 @@ void main() {
   ) async {
     await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
-    expect(find.text('Sin conexion'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
   });
 
   testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {

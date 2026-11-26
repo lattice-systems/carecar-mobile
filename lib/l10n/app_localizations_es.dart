@@ -5142,4 +5142,20 @@ class AppLocalizationsEs extends AppLocalizations {
   String referidoGanaste(String puntos) {
     return '+$puntos';
   }
+
+  @override
+  String get estadoErrorTitulo => 'No pudimos cargar esto';
+
+  @override
+  String get estadoErrorMensaje => 'Intenta de nuevo en un momento.';
+
+  @override
+  String get estadoErrorSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String get estadoErrorSinConexionMensaje =>
+      'Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get estadoErrorReintentar => 'Reintentar';
 }

@@ -196,7 +196,7 @@ void main() {
   _prueba('sin conexion y sin copia guardada lo dice distinto', (tester) async {
     await tester.pumpWidget(_app(_Repo(() async => throw const SinConexion())));
     await tester.pumpAndSettle();
-    expect(find.text('Sin conexion'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
   });
 
   _prueba('en ingles traduce los textos', (tester) async {

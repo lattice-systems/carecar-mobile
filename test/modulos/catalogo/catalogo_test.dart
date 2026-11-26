@@ -181,7 +181,7 @@ void main() {
         _app(_Repo(() async => throw const SinConexion())),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Sin conexion'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsOneWidget);
     });
 
     testWidgets('jalar hacia abajo recarga el catalogo', (tester) async {

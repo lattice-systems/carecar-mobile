@@ -221,7 +221,7 @@ void main() {
     );
     await tester.pumpAndSettle();
     expect(find.byType(EstadoError), findsOneWidget);
-    expect(find.text('Sin conexion'), findsOneWidget);
+    expect(find.text('Sin conexión'), findsOneWidget);
   });
 
   _prueba('cualquier otro error muestra el error genérico', (tester) async {
