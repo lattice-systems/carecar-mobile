@@ -7033,5 +7033,269 @@
         "type": "String"
       }
     }
+  },
+  "datosFiscalesTitulo": "Datos fiscales",
+  "@datosFiscalesTitulo": {
+    "description": "Título de mis datos fiscales (V2-M08.05)."
+  },
+  "datosFiscalesSubtitulo": "Para facturar tus servicios",
+  "@datosFiscalesSubtitulo": {
+    "description": "Subtítulo de mis datos fiscales."
+  },
+  "datosFiscalesCargando": "Cargando tus datos fiscales",
+  "@datosFiscalesCargando": {
+    "description": "Esqueleto de carga para el lector de pantalla."
+  },
+  "datosFiscalesReintentar": "Reintentar",
+  "@datosFiscalesReintentar": {
+    "description": "Botón para volver a pedir los datos fiscales."
+  },
+  "datosFiscalesVacioTitulo": "Aún no tienes datos fiscales",
+  "@datosFiscalesVacioTitulo": {
+    "description": "Estado vacío de mis datos fiscales."
+  },
+  "datosFiscalesVacioMensaje": "Agrégalos para pedir factura de tus servicios.",
+  "@datosFiscalesVacioMensaje": {
+    "description": "Mensaje del estado vacío."
+  },
+  "datosFiscalesAgregar": "Agregar datos fiscales",
+  "@datosFiscalesAgregar": {
+    "description": "Botón para dar de alta un perfil fiscal."
+  },
+  "datosFiscalesEncabezado": "Tus perfiles",
+  "@datosFiscalesEncabezado": {
+    "description": "Encabezado de la lista de perfiles."
+  },
+  "datosFiscalesPie": "Escríbelos como en tu constancia de situación fiscal. Por ahora las facturas de la app son simuladas, sin validez fiscal.",
+  "@datosFiscalesPie": {
+    "description": "Pie de la lista: cómo capturarlos y que la facturación es simulada (ADR 0009)."
+  },
+  "datosFiscalesFilaSubtitulo": "{rfc} · {persona} · Régimen {regimen}",
+  "@datosFiscalesFilaSubtitulo": {
+    "description": "RFC, tipo de persona y régimen de un perfil.",
+    "placeholders": {
+      "rfc": {
+        "type": "String"
+      },
+      "persona": {
+        "type": "String"
+      },
+      "regimen": {
+        "type": "String"
+      }
+    }
+  },
+  "datosFiscalesPredeterminado": "Predeterminado",
+  "@datosFiscalesPredeterminado": {
+    "description": "Insignia del perfil predeterminado."
+  },
+  "datosFiscalesNuevoTitulo": "Nuevos datos fiscales",
+  "@datosFiscalesNuevoTitulo": {
+    "description": "Título del alta."
+  },
+  "datosFiscalesEditarTitulo": "Editar datos fiscales",
+  "@datosFiscalesEditarTitulo": {
+    "description": "Título de la edición."
+  },
+  "datosFiscalesSeccionContribuyente": "Contribuyente",
+  "@datosFiscalesSeccionContribuyente": {
+    "description": "Sección con RFC, nombre y código postal."
+  },
+  "datosFiscalesSeccionFacturar": "Para facturar",
+  "@datosFiscalesSeccionFacturar": {
+    "description": "Sección con régimen, uso de CFDI y correo."
+  },
+  "datosFiscalesRfc": "RFC",
+  "@datosFiscalesRfc": {
+    "description": "Campo del RFC."
+  },
+  "datosFiscalesRfcSugerencia": "GODE561231GR8",
+  "@datosFiscalesRfcSugerencia": {
+    "description": "Ejemplo de RFC dentro del campo."
+  },
+  "datosFiscalesRfcAyuda": "13 caracteres si eres persona física; 12 si es una empresa.",
+  "@datosFiscalesRfcAyuda": {
+    "description": "Ayuda del RFC mientras no se sabe el tipo de persona."
+  },
+  "datosFiscalesPersonaFisica": "Persona física",
+  "@datosFiscalesPersonaFisica": {
+    "description": "Tipo de persona física."
+  },
+  "datosFiscalesPersonaMoral": "Persona moral",
+  "@datosFiscalesPersonaMoral": {
+    "description": "Tipo de persona moral."
+  },
+  "datosFiscalesRazonSocial": "Nombre o razón social",
+  "@datosFiscalesRazonSocial": {
+    "description": "Campo de la razón social."
+  },
+  "datosFiscalesRazonSocialAyuda": "Igual que en tu constancia, sin el régimen societario (S.A. de C.V.).",
+  "@datosFiscalesRazonSocialAyuda": {
+    "description": "Ayuda de la razón social para CFDI 4.0."
+  },
+  "datosFiscalesCodigoPostal": "Código postal fiscal",
+  "@datosFiscalesCodigoPostal": {
+    "description": "Campo del código postal."
+  },
+  "datosFiscalesCodigoPostalAyuda": "El de tu domicilio fiscal.",
+  "@datosFiscalesCodigoPostalAyuda": {
+    "description": "Ayuda del código postal."
+  },
+  "datosFiscalesRegimen": "Régimen fiscal",
+  "@datosFiscalesRegimen": {
+    "description": "Selector del régimen."
+  },
+  "datosFiscalesRegimenSugerencia": "Elige tu régimen",
+  "@datosFiscalesRegimenSugerencia": {
+    "description": "Texto del selector de régimen vacío."
+  },
+  "datosFiscalesUso": "Uso del CFDI",
+  "@datosFiscalesUso": {
+    "description": "Selector del uso de CFDI."
+  },
+  "datosFiscalesUsoSugerencia": "Elige el uso",
+  "@datosFiscalesUsoSugerencia": {
+    "description": "Texto del selector de uso vacío."
+  },
+  "datosFiscalesUsoAyuda": "Solo aparecen los que acepta tu régimen.",
+  "@datosFiscalesUsoAyuda": {
+    "description": "Ayuda del uso de CFDI."
+  },
+  "datosFiscalesOpcion": "{clave} · {descripcion}",
+  "@datosFiscalesOpcion": {
+    "description": "Opción de un catálogo del SAT con su clave.",
+    "placeholders": {
+      "clave": {
+        "type": "String"
+      },
+      "descripcion": {
+        "type": "String"
+      }
+    }
+  },
+  "datosFiscalesCorreo": "Correo para la factura (opcional)",
+  "@datosFiscalesCorreo": {
+    "description": "Campo del correo."
+  },
+  "datosFiscalesHacerPredeterminado": "Usar como predeterminado",
+  "@datosFiscalesHacerPredeterminado": {
+    "description": "Casilla para volverlo el predeterminado."
+  },
+  "datosFiscalesHacerPredeterminadoAyuda": "Es el que se propone al pagar.",
+  "@datosFiscalesHacerPredeterminadoAyuda": {
+    "description": "Descripción de la casilla."
+  },
+  "datosFiscalesGuardar": "Guardar",
+  "@datosFiscalesGuardar": {
+    "description": "Botón que guarda el perfil."
+  },
+  "datosFiscalesBorrar": "Borrar",
+  "@datosFiscalesBorrar": {
+    "description": "Botón que borra el perfil."
+  },
+  "datosFiscalesBorrarTitulo": "¿Borrar estos datos fiscales?",
+  "@datosFiscalesBorrarTitulo": {
+    "description": "Título de la confirmación de borrado."
+  },
+  "datosFiscalesBorrarMensaje": "Se borra el perfil {rfc}. Las facturas que ya tengas no cambian.",
+  "@datosFiscalesBorrarMensaje": {
+    "description": "Mensaje de la confirmación de borrado.",
+    "placeholders": {
+      "rfc": {
+        "type": "String"
+      }
+    }
+  },
+  "datosFiscalesBorrarConfirmar": "Borrar",
+  "@datosFiscalesBorrarConfirmar": {
+    "description": "Confirma el borrado."
+  },
+  "datosFiscalesBorrarCancelar": "Cancelar",
+  "@datosFiscalesBorrarCancelar": {
+    "description": "Cancela el borrado."
+  },
+  "datosFiscalesRevisa": "Revisa los campos marcados.",
+  "@datosFiscalesRevisa": {
+    "description": "Aviso cuando hay campos con error."
+  },
+  "datosFiscalesSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@datosFiscalesSinConexion": {
+    "description": "Aviso sin conexión al guardar o borrar."
+  },
+  "datosFiscalesErrorGuardar": "No pudimos guardar tus datos fiscales. Intenta de nuevo.",
+  "@datosFiscalesErrorGuardar": {
+    "description": "Error genérico al guardar."
+  },
+  "datosFiscalesErrorBorrar": "No pudimos borrar estos datos fiscales. Intenta de nuevo.",
+  "@datosFiscalesErrorBorrar": {
+    "description": "Error genérico al borrar."
+  },
+  "datosFiscalesNoEncontradoTitulo": "Ya no encontramos estos datos fiscales",
+  "@datosFiscalesNoEncontradoTitulo": {
+    "description": "Estado cuando el perfil no aparece."
+  },
+  "datosFiscalesNoEncontradoMensaje": "Vuelve a Datos fiscales para ver tus perfiles.",
+  "@datosFiscalesNoEncontradoMensaje": {
+    "description": "Mensaje del perfil no encontrado."
+  },
+  "datosFiscalesErrorRfcVacio": "Escribe el RFC.",
+  "@datosFiscalesErrorRfcVacio": {
+    "description": "Error: RFC vacío."
+  },
+  "datosFiscalesErrorRfcLargo": "El RFC tiene 12 caracteres (persona moral) o 13 (persona física).",
+  "@datosFiscalesErrorRfcLargo": {
+    "description": "Error: largo del RFC."
+  },
+  "datosFiscalesErrorRfcForma": "El RFC no tiene la forma del SAT.",
+  "@datosFiscalesErrorRfcForma": {
+    "description": "Error: forma del RFC."
+  },
+  "datosFiscalesErrorRfcGenerico": "El RFC genérico no se usa en un perfil.",
+  "@datosFiscalesErrorRfcGenerico": {
+    "description": "Error: RFC genérico."
+  },
+  "datosFiscalesErrorRfcFecha": "La fecha del RFC no existe.",
+  "@datosFiscalesErrorRfcFecha": {
+    "description": "Error: fecha del RFC."
+  },
+  "datosFiscalesErrorRfcDigito": "El último carácter no coincide; revisa la homoclave.",
+  "@datosFiscalesErrorRfcDigito": {
+    "description": "Error: dígito verificador del RFC."
+  },
+  "datosFiscalesErrorRazonVacia": "Escribe el nombre o la razón social.",
+  "@datosFiscalesErrorRazonVacia": {
+    "description": "Error: razón social vacía."
+  },
+  "datosFiscalesErrorRazonLarga": "El nombre es demasiado largo.",
+  "@datosFiscalesErrorRazonLarga": {
+    "description": "Error: razón social larga."
+  },
+  "datosFiscalesErrorCodigoPostal": "Escribe los 5 dígitos.",
+  "@datosFiscalesErrorCodigoPostal": {
+    "description": "Error: código postal."
+  },
+  "datosFiscalesErrorRegimenFalta": "Elige tu régimen fiscal.",
+  "@datosFiscalesErrorRegimenFalta": {
+    "description": "Error: falta el régimen."
+  },
+  "datosFiscalesErrorRegimenNoAplica": "Ese régimen no aplica a tu tipo de persona.",
+  "@datosFiscalesErrorRegimenNoAplica": {
+    "description": "Error: régimen de otra persona."
+  },
+  "datosFiscalesErrorUsoFalta": "Elige el uso del CFDI.",
+  "@datosFiscalesErrorUsoFalta": {
+    "description": "Error: falta el uso."
+  },
+  "datosFiscalesErrorUsoNoAplica": "Ese uso no aplica a tu tipo de persona.",
+  "@datosFiscalesErrorUsoNoAplica": {
+    "description": "Error: uso de otra persona."
+  },
+  "datosFiscalesErrorUsoNoAceptaRegimen": "Ese uso no se puede con tu régimen.",
+  "@datosFiscalesErrorUsoNoAceptaRegimen": {
+    "description": "Error: uso que el régimen no acepta."
+  },
+  "datosFiscalesErrorCorreo": "Revisa el correo.",
+  "@datosFiscalesErrorCorreo": {
+    "description": "Error: correo."
   }
 }

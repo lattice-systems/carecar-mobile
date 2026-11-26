@@ -8909,6 +8909,366 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{vehiculo} · {motivo}'**
   String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo);
+
+  /// Título de mis datos fiscales (V2-M08.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get datosFiscalesTitulo;
+
+  /// Subtítulo de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar tus servicios'**
+  String get datosFiscalesSubtitulo;
+
+  /// Esqueleto de carga para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus datos fiscales'**
+  String get datosFiscalesCargando;
+
+  /// Botón para volver a pedir los datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get datosFiscalesReintentar;
+
+  /// Estado vacío de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes datos fiscales'**
+  String get datosFiscalesVacioTitulo;
+
+  /// Mensaje del estado vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Agrégalos para pedir factura de tus servicios.'**
+  String get datosFiscalesVacioMensaje;
+
+  /// Botón para dar de alta un perfil fiscal.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get datosFiscalesAgregar;
+
+  /// Encabezado de la lista de perfiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus perfiles'**
+  String get datosFiscalesEncabezado;
+
+  /// Pie de la lista: cómo capturarlos y que la facturación es simulada (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelos como en tu constancia de situación fiscal. Por ahora las facturas de la app son simuladas, sin validez fiscal.'**
+  String get datosFiscalesPie;
+
+  /// RFC, tipo de persona y régimen de un perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {persona} · Régimen {regimen}'**
+  String datosFiscalesFilaSubtitulo(String rfc, String persona, String regimen);
+
+  /// Insignia del perfil predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminado'**
+  String get datosFiscalesPredeterminado;
+
+  /// Título del alta.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevos datos fiscales'**
+  String get datosFiscalesNuevoTitulo;
+
+  /// Título de la edición.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar datos fiscales'**
+  String get datosFiscalesEditarTitulo;
+
+  /// Sección con RFC, nombre y código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Contribuyente'**
+  String get datosFiscalesSeccionContribuyente;
+
+  /// Sección con régimen, uso de CFDI y correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar'**
+  String get datosFiscalesSeccionFacturar;
+
+  /// Campo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'RFC'**
+  String get datosFiscalesRfc;
+
+  /// Ejemplo de RFC dentro del campo.
+  ///
+  /// In es, this message translates to:
+  /// **'GODE561231GR8'**
+  String get datosFiscalesRfcSugerencia;
+
+  /// Ayuda del RFC mientras no se sabe el tipo de persona.
+  ///
+  /// In es, this message translates to:
+  /// **'13 caracteres si eres persona física; 12 si es una empresa.'**
+  String get datosFiscalesRfcAyuda;
+
+  /// Tipo de persona física.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona física'**
+  String get datosFiscalesPersonaFisica;
+
+  /// Tipo de persona moral.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona moral'**
+  String get datosFiscalesPersonaMoral;
+
+  /// Campo de la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre o razón social'**
+  String get datosFiscalesRazonSocial;
+
+  /// Ayuda de la razón social para CFDI 4.0.
+  ///
+  /// In es, this message translates to:
+  /// **'Igual que en tu constancia, sin el régimen societario (S.A. de C.V.).'**
+  String get datosFiscalesRazonSocialAyuda;
+
+  /// Campo del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Código postal fiscal'**
+  String get datosFiscalesCodigoPostal;
+
+  /// Ayuda del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'El de tu domicilio fiscal.'**
+  String get datosFiscalesCodigoPostalAyuda;
+
+  /// Selector del régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Régimen fiscal'**
+  String get datosFiscalesRegimen;
+
+  /// Texto del selector de régimen vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen'**
+  String get datosFiscalesRegimenSugerencia;
+
+  /// Selector del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Uso del CFDI'**
+  String get datosFiscalesUso;
+
+  /// Texto del selector de uso vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso'**
+  String get datosFiscalesUsoSugerencia;
+
+  /// Ayuda del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo aparecen los que acepta tu régimen.'**
+  String get datosFiscalesUsoAyuda;
+
+  /// Opción de un catálogo del SAT con su clave.
+  ///
+  /// In es, this message translates to:
+  /// **'{clave} · {descripcion}'**
+  String datosFiscalesOpcion(String clave, String descripcion);
+
+  /// Campo del correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo para la factura (opcional)'**
+  String get datosFiscalesCorreo;
+
+  /// Casilla para volverlo el predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminado'**
+  String get datosFiscalesHacerPredeterminado;
+
+  /// Descripción de la casilla.
+  ///
+  /// In es, this message translates to:
+  /// **'Es el que se propone al pagar.'**
+  String get datosFiscalesHacerPredeterminadoAyuda;
+
+  /// Botón que guarda el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get datosFiscalesGuardar;
+
+  /// Botón que borra el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar estos datos fiscales?'**
+  String get datosFiscalesBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borra el perfil {rfc}. Las facturas que ya tengas no cambian.'**
+  String datosFiscalesBorrarMensaje(String rfc);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrarConfirmar;
+
+  /// Cancela el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get datosFiscalesBorrarCancelar;
+
+  /// Aviso cuando hay campos con error.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los campos marcados.'**
+  String get datosFiscalesRevisa;
+
+  /// Aviso sin conexión al guardar o borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get datosFiscalesSinConexion;
+
+  /// Error genérico al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tus datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorGuardar;
+
+  /// Error genérico al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos borrar estos datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorBorrar;
+
+  /// Estado cuando el perfil no aparece.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos estos datos fiscales'**
+  String get datosFiscalesNoEncontradoTitulo;
+
+  /// Mensaje del perfil no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a Datos fiscales para ver tus perfiles.'**
+  String get datosFiscalesNoEncontradoMensaje;
+
+  /// Error: RFC vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el RFC.'**
+  String get datosFiscalesErrorRfcVacio;
+
+  /// Error: largo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC tiene 12 caracteres (persona moral) o 13 (persona física).'**
+  String get datosFiscalesErrorRfcLargo;
+
+  /// Error: forma del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC no tiene la forma del SAT.'**
+  String get datosFiscalesErrorRfcForma;
+
+  /// Error: RFC genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC genérico no se usa en un perfil.'**
+  String get datosFiscalesErrorRfcGenerico;
+
+  /// Error: fecha del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'La fecha del RFC no existe.'**
+  String get datosFiscalesErrorRfcFecha;
+
+  /// Error: dígito verificador del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El último carácter no coincide; revisa la homoclave.'**
+  String get datosFiscalesErrorRfcDigito;
+
+  /// Error: razón social vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el nombre o la razón social.'**
+  String get datosFiscalesErrorRazonVacia;
+
+  /// Error: razón social larga.
+  ///
+  /// In es, this message translates to:
+  /// **'El nombre es demasiado largo.'**
+  String get datosFiscalesErrorRazonLarga;
+
+  /// Error: código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 5 dígitos.'**
+  String get datosFiscalesErrorCodigoPostal;
+
+  /// Error: falta el régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen fiscal.'**
+  String get datosFiscalesErrorRegimenFalta;
+
+  /// Error: régimen de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese régimen no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorRegimenNoAplica;
+
+  /// Error: falta el uso.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso del CFDI.'**
+  String get datosFiscalesErrorUsoFalta;
+
+  /// Error: uso de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorUsoNoAplica;
+
+  /// Error: uso que el régimen no acepta.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no se puede con tu régimen.'**
+  String get datosFiscalesErrorUsoNoAceptaRegimen;
+
+  /// Error: correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el correo.'**
+  String get datosFiscalesErrorCorreo;
 }
 
 class _AppLocalizationsDelegate
