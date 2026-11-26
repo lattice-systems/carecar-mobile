@@ -6641,6 +6641,732 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Página {pagina}'**
   String vehiculosManualResultadoPagina(int pagina);
+
+  /// Texto del control deslizable que acepta la oferta (V2-M26.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar oferta'**
+  String get valuacionAceptar;
+
+  /// Confirmación accesible antes de aceptar la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a aceptar la oferta de {monto}. La agencia registra tu decisión.'**
+  String valuacionAceptarMensaje(String monto);
+
+  /// Cierre al agendar la inspección (V2-M26.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Te esperamos el {dia} a las {hora} para revisar tu auto.'**
+  String valuacionAgendadaMensaje(String dia, String hora);
+
+  /// Título del cierre al agendar la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección agendada'**
+  String get valuacionAgendadaTitulo;
+
+  /// Acción principal del cierre al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis citas'**
+  String get valuacionAgendadaVerCitas;
+
+  /// Acción secundaria del cierre al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a la valuación'**
+  String get valuacionAgendadaVolver;
+
+  /// Botón y título para agendar la inspección física.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar inspección'**
+  String get valuacionAgendar;
+
+  /// Botón que crea la cita de inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar inspección'**
+  String get valuacionAgendarConfirmar;
+
+  /// Sección del calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Día'**
+  String get valuacionAgendarDia;
+
+  /// Rechazo CITA_DUPLICADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Este auto ya tiene una cita ese día. Elige otro día.'**
+  String get valuacionAgendarDuplicada;
+
+  /// Fallo genérico al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos agendar la inspección. Intenta de nuevo.'**
+  String get valuacionAgendarError;
+
+  /// Sección de franjas horarias.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get valuacionAgendarHorario;
+
+  /// Rechazo VALUACION_NO_AGENDABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta valuación ya tiene cita o ya no se puede agendar. Revisa su detalle.'**
+  String get valuacionAgendarNoAgendable;
+
+  /// Rechazo FRANJA_SIN_CUPO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese horario se acaba de llenar. Elige otro.'**
+  String get valuacionAgendarSinCupo;
+
+  /// Ayuda mientras no hay día elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día para ver sus horarios.'**
+  String get valuacionAgendarSinDia;
+
+  /// El día elegido ya no tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'No quedan horarios ese día.'**
+  String get valuacionAgendarSinHorarios;
+
+  /// Ningún día del rango tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'El taller no tiene horarios libres por ahora. Intenta más tarde.'**
+  String get valuacionAgendarVacioMensaje;
+
+  /// Título cuando no hay cupo en todo el rango.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin horarios disponibles'**
+  String get valuacionAgendarVacioTitulo;
+
+  /// Detalle bajo el nombre del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor de ventas para esta valuación'**
+  String get valuacionAsesorDetalle;
+
+  /// Sección del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor'**
+  String get valuacionAsesorTitulo;
+
+  /// Sección de los tres pasos.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get valuacionAvanceTitulo;
+
+  /// Anuncio del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la valuación'**
+  String get valuacionCargando;
+
+  /// Título del detalle de una valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Valuación formal'**
+  String get valuacionDetalleTitulo;
+
+  /// Mensaje del error de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get valuacionErrorMensaje;
+
+  /// Título del error de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get valuacionErrorTitulo;
+
+  /// Estado ACEPTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptada'**
+  String get valuacionEstadoAceptada;
+
+  /// Estado CITA_AGENDADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección agendada'**
+  String get valuacionEstadoCitaAgendada;
+
+  /// Estado que la app aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'En revisión'**
+  String get valuacionEstadoDesconocido;
+
+  /// Estado OFERTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Con oferta'**
+  String get valuacionEstadoOfertada;
+
+  /// Estado RECHAZADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazada'**
+  String get valuacionEstadoRechazada;
+
+  /// Estado SOLICITADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Por agendar'**
+  String get valuacionEstadoSolicitada;
+
+  /// Estado VENCIDA.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get valuacionEstadoVencida;
+
+  /// Fecha de la estimación de la que sale la valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimado el {fecha}'**
+  String valuacionEstimadaEl(String fecha);
+
+  /// Etiqueta de la cifra del rango.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango estimado'**
+  String get valuacionEstimadoRango;
+
+  /// Sección del rango no vinculante.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación de partida'**
+  String get valuacionEstimadoTitulo;
+
+  /// Fallo genérico al subir una toma (V2-M26.02).
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo subir. La foto sigue aquí.'**
+  String get valuacionFotoError;
+
+  /// Botón para elegir una foto guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de la galería'**
+  String get valuacionFotoGaleria;
+
+  /// El servidor rechazó el archivo (400).
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia no aceptó esa imagen. Usa una foto JPEG o PNG de hasta 8 MB.'**
+  String get valuacionFotoInvalida;
+
+  /// Descripción de una foto que aún no se sube.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto por subir: {toma}'**
+  String valuacionFotoPorSubir(String toma);
+
+  /// Fallo de red al subir una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. La foto sigue aquí.'**
+  String get valuacionFotoSinConexion;
+
+  /// Descripción de una foto ya subida.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto subida: {toma}'**
+  String valuacionFotoSubida(String toma);
+
+  /// Anuncio mientras sube una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'Subiendo la foto'**
+  String get valuacionFotoSubiendo;
+
+  /// Botón para abrir la cámara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get valuacionFotoTomar;
+
+  /// Botón para dar el permiso de cámara o fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get valuacionFotosAbrirAjustes;
+
+  /// Avance de las tomas guiadas.
+  ///
+  /// In es, this message translates to:
+  /// **'{subidas} de {total} fotos'**
+  String valuacionFotosAvance(int subidas, int total);
+
+  /// Valuación cerrada (VALUACION_CERRADA).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta valuación ya no admite fotos.'**
+  String get valuacionFotosCerrada;
+
+  /// Título de la pantalla de las 8 tomas.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos guiadas'**
+  String get valuacionFotosGuiadasTitulo;
+
+  /// Aviso sobre las fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes agendar sin tener las 8 fotos. Cada foto se sube sola y la app no la guarda en tu teléfono.'**
+  String get valuacionFotosPrivacidad;
+
+  /// El selector de fotos falló.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir la cámara o la galería. Intenta de nuevo.'**
+  String get valuacionFotosSinCamara;
+
+  /// Permiso negado.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin permiso para la cámara o las fotos. Actívalo en los ajustes.'**
+  String get valuacionFotosSinPermiso;
+
+  /// Botón del detalle hacia las fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir fotos guiadas'**
+  String get valuacionFotosSubir;
+
+  /// Sección de fotos del detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos de tu auto'**
+  String get valuacionFotosTitulo;
+
+  /// Galería sin fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no subes fotos.'**
+  String get valuacionFotosVacio;
+
+  /// Horario de la cita de inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'De {inicio} a {fin}'**
+  String valuacionInspeccionHorario(String inicio, String fin);
+
+  /// Sección de la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get valuacionInspeccionTitulo;
+
+  /// Botón hacia Mis citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver en Mis citas'**
+  String get valuacionInspeccionVerCitas;
+
+  /// Instrucción de la toma de la cajuela.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre la cajuela y toma todo el espacio de carga.'**
+  String get valuacionInstruccionCajuela;
+
+  /// Instrucción de la toma de frente.
+  ///
+  /// In es, this message translates to:
+  /// **'Párate de frente, con el auto completo y las placas a la vista.'**
+  String get valuacionInstruccionFrente;
+
+  /// Instrucción del interior delantero.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre la puerta del conductor y toma los asientos delanteros y el volante.'**
+  String get valuacionInstruccionInteriorDelantero;
+
+  /// Instrucción del interior trasero.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre una puerta trasera y toma el asiento completo.'**
+  String get valuacionInstruccionInteriorTrasero;
+
+  /// Instrucción del lateral derecho.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma el costado del lado del pasajero, de defensa a defensa.'**
+  String get valuacionInstruccionLateralDerecho;
+
+  /// Instrucción del lateral izquierdo.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma el costado del lado del conductor, de defensa a defensa.'**
+  String get valuacionInstruccionLateralIzquierdo;
+
+  /// Instrucción del tablero.
+  ///
+  /// In es, this message translates to:
+  /// **'Enciende el tablero y toma el kilometraje de cerca, sin reflejos.'**
+  String get valuacionInstruccionTableroKm;
+
+  /// Instrucción de la toma trasera.
+  ///
+  /// In es, this message translates to:
+  /// **'Párate detrás, con el auto completo y las placas a la vista.'**
+  String get valuacionInstruccionTrasera;
+
+  /// Kilometraje del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String valuacionKm(String km);
+
+  /// Falló la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más valuaciones. Intenta de nuevo.'**
+  String get valuacionMisErrorMas;
+
+  /// Título de la lista de valuaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis valuaciones'**
+  String get valuacionMisTitulo;
+
+  /// Acción del vacío de Mis valuaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a Mis estimaciones'**
+  String get valuacionMisVacioAccion;
+
+  /// Mensaje del vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide una valuación formal desde una estimación hecha con uno de tus autos.'**
+  String get valuacionMisVacioMensaje;
+
+  /// Título del vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes valuaciones'**
+  String get valuacionMisVacioTitulo;
+
+  /// Botón de la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get valuacionMisVerMas;
+
+  /// Mensaje de valuación no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no exista o que no sea de tu cuenta.'**
+  String get valuacionNoEncontradaMensaje;
+
+  /// Título de valuación no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa valuación'**
+  String get valuacionNoEncontradaTitulo;
+
+  /// Oferta aceptada.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptaste esta oferta. La agencia te dará seguimiento.'**
+  String get valuacionOfertaAceptada;
+
+  /// Oferta en la tarjeta de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta de {monto}, vigente hasta el {fecha}'**
+  String valuacionOfertaConVigencia(String monto, String fecha);
+
+  /// Etiqueta del monto ofertado.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta formal de la agencia'**
+  String get valuacionOfertaEtiqueta;
+
+  /// Oferta rechazada.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazaste esta oferta.'**
+  String get valuacionOfertaRechazada;
+
+  /// Sección de la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu oferta'**
+  String get valuacionOfertaTitulo;
+
+  /// Oferta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida. Ya no se puede responder, pero la agencia puede renovarla.'**
+  String get valuacionOfertaVencida;
+
+  /// Vigencia de la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente hasta el {fecha}'**
+  String valuacionOfertaVigencia(String fecha);
+
+  /// Primer paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos'**
+  String get valuacionPasoFotos;
+
+  /// Segundo paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get valuacionPasoInspeccion;
+
+  /// Tercer paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta'**
+  String get valuacionPasoOferta;
+
+  /// Fecha en que se pidió la valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedida el {fecha}'**
+  String valuacionPedidaEl(String fecha);
+
+  /// Botón en la calculadora y en el detalle de una estimación (V2-M26.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir valuación formal'**
+  String get valuacionPedir;
+
+  /// Fallo genérico al pedirla.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir la valuación. Intenta de nuevo.'**
+  String get valuacionPedirError;
+
+  /// La estimación no existe o es ajena (404).
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa estimación.'**
+  String get valuacionPedirNoEncontrada;
+
+  /// Rechazo VALUACION_SIN_VEHICULO.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta estimación se hizo capturando el auto a mano. Para valuarlo, pide la valuación en la agencia.'**
+  String get valuacionPedirSinVehiculo;
+
+  /// Botón para rechazar la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar oferta'**
+  String get valuacionRechazar;
+
+  /// Cierra el diálogo sin rechazar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get valuacionRechazarCancelar;
+
+  /// Confirma el rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, rechazar'**
+  String get valuacionRechazarConfirmar;
+
+  /// Mensaje del diálogo de rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a rechazar la oferta de {monto}. No se puede deshacer.'**
+  String valuacionRechazarMensaje(String monto);
+
+  /// Título del diálogo de rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Rechazar la oferta?'**
+  String get valuacionRechazarTitulo;
+
+  /// Botón para reintentar.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get valuacionReintentar;
+
+  /// Fallo genérico al responder.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos registrar tu respuesta. Intenta de nuevo.'**
+  String get valuacionRespuestaError;
+
+  /// Rechazo OFERTA_NO_DISPONIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'La oferta cambió y no se registró nada. Revisa la información actual.'**
+  String get valuacionRespuestaNoDisponible;
+
+  /// Rechazo OFERTA_VENCIDA.
+  ///
+  /// In es, this message translates to:
+  /// **'La oferta venció y no se registró tu respuesta.'**
+  String get valuacionRespuestaVencida;
+
+  /// Una acción falló por falta de red.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get valuacionSinConexionAccion;
+
+  /// Mensaje del estado sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get valuacionSinConexionMensaje;
+
+  /// Título del estado sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get valuacionSinConexionTitulo;
+
+  /// Nombre de la toma CAJUELA.
+  ///
+  /// In es, this message translates to:
+  /// **'Cajuela'**
+  String get valuacionTomaCajuela;
+
+  /// Nombre de la toma FRENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Frente'**
+  String get valuacionTomaFrente;
+
+  /// Nombre de la toma INTERIOR_DELANTERO.
+  ///
+  /// In es, this message translates to:
+  /// **'Interior delantero'**
+  String get valuacionTomaInteriorDelantero;
+
+  /// Nombre de la toma INTERIOR_TRASERO.
+  ///
+  /// In es, this message translates to:
+  /// **'Interior trasero'**
+  String get valuacionTomaInteriorTrasero;
+
+  /// Nombre de la toma LATERAL_DERECHO.
+  ///
+  /// In es, this message translates to:
+  /// **'Lateral derecho'**
+  String get valuacionTomaLateralDerecho;
+
+  /// Nombre de la toma LATERAL_IZQUIERDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Lateral izquierdo'**
+  String get valuacionTomaLateralIzquierdo;
+
+  /// Título de la tarjeta de una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'{numero}. {toma}'**
+  String valuacionTomaNumero(int numero, String toma);
+
+  /// Nombre de la toma TABLERO_KM.
+  ///
+  /// In es, this message translates to:
+  /// **'Tablero con el kilometraje'**
+  String get valuacionTomaTableroKm;
+
+  /// Nombre de la toma TRASERA.
+  ///
+  /// In es, this message translates to:
+  /// **'Trasera'**
+  String get valuacionTomaTrasera;
+
+  /// Título de la gráfica (V2-M26.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Valor estimado medio por mes'**
+  String get valuacionValorGrafica;
+
+  /// Etiqueta cuando solo hay un mes.
+  ///
+  /// In es, this message translates to:
+  /// **'Valor estimado medio'**
+  String get valuacionValorMedio;
+
+  /// Vehículo no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no esté en tu garaje.'**
+  String get valuacionValorNoEncontradoMensaje;
+
+  /// Título de vehículo no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese auto'**
+  String get valuacionValorNoEncontradoTitulo;
+
+  /// Rango y kilometraje de un mes.
+  ///
+  /// In es, this message translates to:
+  /// **'{rango}, con {km} km'**
+  String valuacionValorRangoDelMes(String rango, String km);
+
+  /// Encabezado de la lista de rangos.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango de cada mes'**
+  String get valuacionValorRangos;
+
+  /// Título de la pantalla del valor en el tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Valor de mi auto'**
+  String get valuacionValorTitulo;
+
+  /// Explicación con un solo mes.
+  ///
+  /// In es, this message translates to:
+  /// **'La tendencia aparece cuando estimes tu auto en otros meses.'**
+  String get valuacionValorUnMes;
+
+  /// Acción del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a la calculadora'**
+  String get valuacionValorVacioAccion;
+
+  /// Mensaje del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Estima este auto con la calculadora para ver cómo cambia su valor.'**
+  String get valuacionValorVacioMensaje;
+
+  /// Título del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay estimaciones de este auto'**
+  String get valuacionValorVacioTitulo;
+
+  /// Botón hacia el valor en el tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver cómo cambia el valor'**
+  String get valuacionVerValor;
 }
 
 class _AppLocalizationsDelegate

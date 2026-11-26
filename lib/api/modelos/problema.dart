@@ -45,6 +45,34 @@ enum CodigoProblema {
   /// V2-M10.03: la campana de seguridad ya esta agendada o atendida.
   campanaNoAgendable('CAMPANA_NO_AGENDABLE'),
 
+  /// V2-M26.01: la estimacion se capturo a mano, sin un vehiculo registrado.
+  valuacionSinVehiculo('VALUACION_SIN_VEHICULO'),
+
+  /// V2-M26.02: la valuacion ya no admite fotos.
+  valuacionCerrada('VALUACION_CERRADA'),
+
+  /// V2-M26.03: la valuacion ya tiene cita o ya no se puede agendar.
+  valuacionNoAgendable('VALUACION_NO_AGENDABLE'),
+
+  /// V2-M26.04: la vigencia de la oferta ya paso.
+  ofertaVencida('OFERTA_VENCIDA'),
+
+  /// V2-M26.04: no hay una oferta que responder con ese monto o ya se
+  /// respondio lo contrario.
+  ofertaNoDisponible('OFERTA_NO_DISPONIBLE'),
+
+  /// V2-M12.03: no alcanzan los puntos para la recompensa.
+  saldoInsuficiente('SALDO_INSUFICIENTE'),
+
+  /// V2-M12.03: la recompensa se agoto.
+  recompensaAgotada('RECOMPENSA_AGOTADA'),
+
+  /// V2-M12.04: esa persona ya es cliente o ya la refirieron.
+  referidoDuplicado('REFERIDO_DUPLICADO'),
+
+  /// V2-M12.04: el cliente ya tiene el maximo de referidos en seguimiento.
+  limiteReferidos('LIMITE_REFERIDOS'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

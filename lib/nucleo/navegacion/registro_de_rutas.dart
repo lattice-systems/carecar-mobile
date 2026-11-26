@@ -15,6 +15,7 @@ import '../../modulos/mantenimiento/mantenimiento.dart';
 import '../../modulos/privacidad/privacidad.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
 import '../../modulos/taller/taller.dart';
+import '../../modulos/valuacion/valuacion.dart';
 import '../../modulos/vehiculos/vehiculos.dart';
 import '../migracion/interruptor_modulos.dart';
 import 'rutas_del_nucleo.dart';
@@ -60,6 +61,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.
   ...rutasRecoleccion,
   ...rutasTaller,
+  // La valuacion (M26) es nueva en v2: no pasa por el interruptor.
+  ...rutasValuacion,
   ...interruptor.rutas(ModuloMigrable.vehiculos, rutasVehiculos),
 ];
 

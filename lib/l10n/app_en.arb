@@ -2964,5 +2964,242 @@
   "vehiculosManualSinResultados": "We couldn’t find “{consulta}” in the manual.",
   "@vehiculosManualSinResultados": {"description": "Sin coincidencias.", "placeholders": {"consulta": {"type": "String", "example": "brakes"}}},
   "vehiculosManualResultadoPagina": "Page {pagina}",
-  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}}
+  "@vehiculosManualResultadoPagina": {"description": "Título de un resultado de búsqueda.", "placeholders": {"pagina": {"type": "int", "example": "12"}}},
+  "valuacionAceptar": "Accept offer",
+  "valuacionAceptarMensaje": "You are about to accept the {monto} offer. The dealer records your decision.",
+  "@valuacionAceptarMensaje": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaMensaje": "See you on {dia} at {hora} to inspect your car.",
+  "@valuacionAgendadaMensaje": {
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      },
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionAgendadaTitulo": "Inspection booked",
+  "valuacionAgendadaVerCitas": "See my appointments",
+  "valuacionAgendadaVolver": "Back to the appraisal",
+  "valuacionAgendar": "Book inspection",
+  "valuacionAgendarConfirmar": "Confirm inspection",
+  "valuacionAgendarDia": "Day",
+  "valuacionAgendarDuplicada": "This car already has an appointment that day. Pick another day.",
+  "valuacionAgendarError": "We could not book the inspection. Try again.",
+  "valuacionAgendarHorario": "Time",
+  "valuacionAgendarNoAgendable": "This appraisal already has an appointment or can no longer be booked. Check its details.",
+  "valuacionAgendarSinCupo": "That time just filled up. Pick another one.",
+  "valuacionAgendarSinDia": "Pick a day to see its times.",
+  "valuacionAgendarSinHorarios": "No times left that day.",
+  "valuacionAgendarVacioMensaje": "The workshop has no free times for now. Try again later.",
+  "valuacionAgendarVacioTitulo": "No times available",
+  "valuacionAsesorDetalle": "Your sales advisor for this appraisal",
+  "valuacionAsesorTitulo": "Your advisor",
+  "valuacionAvanceTitulo": "Progress",
+  "valuacionCargando": "Loading the appraisal",
+  "valuacionDetalleTitulo": "Formal appraisal",
+  "valuacionErrorMensaje": "Try again in a moment.",
+  "valuacionErrorTitulo": "We could not load this",
+  "valuacionEstadoAceptada": "Accepted",
+  "valuacionEstadoCitaAgendada": "Inspection booked",
+  "valuacionEstadoDesconocido": "In review",
+  "valuacionEstadoOfertada": "Offer received",
+  "valuacionEstadoRechazada": "Declined",
+  "valuacionEstadoSolicitada": "To be booked",
+  "valuacionEstadoVencida": "Expired",
+  "valuacionEstimadaEl": "Estimated on {fecha}",
+  "@valuacionEstimadaEl": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionEstimadoRango": "Estimated range",
+  "valuacionEstimadoTitulo": "Starting estimate",
+  "valuacionFotoError": "Upload failed. The photo is still here.",
+  "valuacionFotoGaleria": "Choose from gallery",
+  "valuacionFotoInvalida": "The dealer did not accept that image. Use a JPEG or PNG photo up to 8 MB.",
+  "valuacionFotoPorSubir": "Photo to upload: {toma}",
+  "@valuacionFotoPorSubir": {
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSinConexion": "No connection. The photo is still here.",
+  "valuacionFotoSubida": "Uploaded photo: {toma}",
+  "@valuacionFotoSubida": {
+    "placeholders": {
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionFotoSubiendo": "Uploading the photo",
+  "valuacionFotoTomar": "Take photo",
+  "valuacionFotosAbrirAjustes": "Open settings",
+  "valuacionFotosAvance": "{subidas} of {total} photos",
+  "@valuacionFotosAvance": {
+    "placeholders": {
+      "subidas": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "valuacionFotosCerrada": "This appraisal no longer accepts photos.",
+  "valuacionFotosGuiadasTitulo": "Guided photos",
+  "valuacionFotosPrivacidad": "You can book without all 8 photos. Each photo uploads on its own and the app does not keep it on your phone.",
+  "valuacionFotosSinCamara": "We could not open the camera or the gallery. Try again.",
+  "valuacionFotosSinPermiso": "No permission for the camera or photos. Turn it on in settings.",
+  "valuacionFotosSubir": "Upload guided photos",
+  "valuacionFotosTitulo": "Photos of your car",
+  "valuacionFotosVacio": "You have not uploaded photos yet.",
+  "valuacionInspeccionHorario": "From {inicio} to {fin}",
+  "@valuacionInspeccionHorario": {
+    "placeholders": {
+      "inicio": {
+        "type": "String"
+      },
+      "fin": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionInspeccionTitulo": "Inspection",
+  "valuacionInspeccionVerCitas": "See in My appointments",
+  "valuacionInstruccionCajuela": "Open the trunk and capture the whole cargo space.",
+  "valuacionInstruccionFrente": "Stand in front, with the whole car and the plates in view.",
+  "valuacionInstruccionInteriorDelantero": "Open the driver door and capture the front seats and the wheel.",
+  "valuacionInstruccionInteriorTrasero": "Open a rear door and capture the whole back seat.",
+  "valuacionInstruccionLateralDerecho": "Capture the passenger side, bumper to bumper.",
+  "valuacionInstruccionLateralIzquierdo": "Capture the driver side, bumper to bumper.",
+  "valuacionInstruccionTableroKm": "Turn the dashboard on and take a close, glare free shot of the mileage.",
+  "valuacionInstruccionTrasera": "Stand behind, with the whole car and the plates in view.",
+  "valuacionKm": "{km} km",
+  "@valuacionKm": {
+    "placeholders": {
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionMisErrorMas": "We could not load more appraisals. Try again.",
+  "valuacionMisTitulo": "My appraisals",
+  "valuacionMisVacioAccion": "Go to My estimates",
+  "valuacionMisVacioMensaje": "Request a formal appraisal from an estimate made with one of your cars.",
+  "valuacionMisVacioTitulo": "You have no appraisals yet",
+  "valuacionMisVerMas": "See more",
+  "valuacionNoEncontradaMensaje": "It may no longer exist or may not belong to your account.",
+  "valuacionNoEncontradaTitulo": "We could not find that appraisal",
+  "valuacionOfertaAceptada": "You accepted this offer. The dealer will follow up.",
+  "valuacionOfertaConVigencia": "{monto} offer, valid until {fecha}",
+  "@valuacionOfertaConVigencia": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionOfertaEtiqueta": "Formal dealer offer",
+  "valuacionOfertaRechazada": "You declined this offer.",
+  "valuacionOfertaTitulo": "Your offer",
+  "valuacionOfertaVencida": "Expired. You can no longer answer, but the dealer can renew it.",
+  "valuacionOfertaVigencia": "Valid until {fecha}",
+  "@valuacionOfertaVigencia": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPasoFotos": "Photos",
+  "valuacionPasoInspeccion": "Inspection",
+  "valuacionPasoOferta": "Offer",
+  "valuacionPedidaEl": "Requested on {fecha}",
+  "@valuacionPedidaEl": {
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionPedir": "Request formal appraisal",
+  "valuacionPedirError": "We could not request the appraisal. Try again.",
+  "valuacionPedirNoEncontrada": "We could not find that estimate.",
+  "valuacionPedirSinVehiculo": "This estimate was made by typing the car in. To appraise it, ask at the dealership.",
+  "valuacionRechazar": "Decline offer",
+  "valuacionRechazarCancelar": "Cancel",
+  "valuacionRechazarConfirmar": "Yes, decline",
+  "valuacionRechazarMensaje": "You are about to decline the {monto} offer. This cannot be undone.",
+  "@valuacionRechazarMensaje": {
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionRechazarTitulo": "Decline the offer?",
+  "valuacionReintentar": "Try again",
+  "valuacionRespuestaError": "We could not record your answer. Try again.",
+  "valuacionRespuestaNoDisponible": "The offer changed and nothing was recorded. Check the current details.",
+  "valuacionRespuestaVencida": "The offer expired and your answer was not recorded.",
+  "valuacionSinConexionAccion": "No connection. Check your internet and try again.",
+  "valuacionSinConexionMensaje": "Check your internet and try again.",
+  "valuacionSinConexionTitulo": "No connection",
+  "valuacionTomaCajuela": "Trunk",
+  "valuacionTomaFrente": "Front",
+  "valuacionTomaInteriorDelantero": "Front interior",
+  "valuacionTomaInteriorTrasero": "Rear interior",
+  "valuacionTomaLateralDerecho": "Right side",
+  "valuacionTomaLateralIzquierdo": "Left side",
+  "valuacionTomaNumero": "{numero}. {toma}",
+  "@valuacionTomaNumero": {
+    "placeholders": {
+      "numero": {
+        "type": "int"
+      },
+      "toma": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionTomaTableroKm": "Dashboard with mileage",
+  "valuacionTomaTrasera": "Rear",
+  "valuacionValorGrafica": "Average estimated value by month",
+  "valuacionValorMedio": "Average estimated value",
+  "valuacionValorNoEncontradoMensaje": "It may no longer be in your garage.",
+  "valuacionValorNoEncontradoTitulo": "We could not find that car",
+  "valuacionValorRangoDelMes": "{rango}, at {km} km",
+  "@valuacionValorRangoDelMes": {
+    "placeholders": {
+      "rango": {
+        "type": "String"
+      },
+      "km": {
+        "type": "String"
+      }
+    }
+  },
+  "valuacionValorRangos": "Range for each month",
+  "valuacionValorTitulo": "My car value",
+  "valuacionValorUnMes": "The trend appears once you estimate your car in other months.",
+  "valuacionValorVacioAccion": "Go to the calculator",
+  "valuacionValorVacioMensaje": "Estimate this car with the calculator to see how its value changes.",
+  "valuacionValorVacioTitulo": "No estimates for this car yet",
+  "valuacionVerValor": "See how the value changes"
 }
