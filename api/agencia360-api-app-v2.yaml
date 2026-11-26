@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.19.1
+  version: 2.20.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -74,6 +74,8 @@ tags:
     description: V2-M05.01, V2-M05.02, V2-M05.03 y V2-M05.06
   - name: Garantía y campañas
     description: V2-M10.01, V2-M10.02 y V2-M10.03
+  - name: Lealtad
+    description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
@@ -1980,6 +1982,183 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /lealtad:
+    get:
+      tags: [Lealtad]
+      summary: Mis puntos y nivel
+      description: |
+        V2-M12.01 · El saldo es la suma de los movimientos del cliente. El nivel sale de los puntos
+        **ganados** en los últimos 12 meses (servicios, referidos y ajustes) con las reglas del
+        servidor (`app.lealtad.*`; hoy Plata desde 1 500 y Oro desde 4 000). `siguienteNivel` es
+        `null` en Oro. Un cliente sin movimientos responde 0 en `BRONCE`. También trae el código
+        del cliente para referir amigos (V2-M12.04).
+      responses:
+        '200':
+          description: Resumen de lealtad
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumenLealtad'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/movimientos:
+    get:
+      tags: [Lealtad]
+      summary: Mis movimientos de puntos
+      description: |
+        V2-M12.05 · Del más reciente al más viejo. La suma de todos es el saldo de `GET /lealtad`.
+        Los puntos de un servicio (V2-M12.02) llegan al entregarse la orden: un punto por cada
+        $10 del total, una sola vez por orden.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Página de movimientos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaMovimientosPuntos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/recompensas:
+    get:
+      tags: [Lealtad]
+      summary: Recompensas
+      description: V2-M12.03 · Las activas, de la más barata a la más cara.
+      responses:
+        '200':
+          description: Recompensas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recompensa'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /lealtad/canjes:
+    get:
+      tags: [Lealtad]
+      summary: Mis canjes
+      description: V2-M12.03 · Del más nuevo al más viejo, con su código y estado.
+      responses:
+        '200':
+          description: Canjes del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Canje'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Lealtad]
+      summary: Canjear una recompensa
+      description: |
+        V2-M12.03 · Descuenta los puntos de la recompensa y crea un código de 8 caracteres que la
+        app muestra como QR, vigente 30 días. Dos canjes a la vez nunca dejan el saldo negativo.
+        Si vence sin usarse, sus puntos regresan con un movimiento `DEVOLUCION_CANJE`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CanjearRecompensa'
+      responses:
+        '201':
+          description: Canje creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Canje'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            No alcanzan los puntos (`codigo` SALDO_INSUFICIENTE) o la recompensa se agotó
+            (`codigo` RECOMPENSA_AGOTADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /lealtad/referidos:
+    get:
+      tags: [Lealtad]
+      summary: Mis referidos
+      description: |
+        V2-M12.04 · Del más nuevo al más viejo. `EN_SEGUIMIENTO` cuando ya es prospecto de un
+        vendedor, `COMPRO` cuando su venta se finalizó (el cliente ganó sus puntos) y
+        `DESCARTADO` si el prospecto se cerró sin venta.
+      responses:
+        '200':
+          description: Referidos del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Referido'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Lealtad]
+      summary: Referir a un amigo
+      description: |
+        V2-M12.04 · Registra a un amigo con nombre y teléfono o correo, y la confirmación de que
+        aceptó que la agencia lo contacte. La agencia lo atiende como prospecto. Cuando su venta
+        se finaliza, el cliente gana 500 puntos (regla del servidor) una sola vez.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferirAmigo'
+      responses:
+        '201':
+          description: Referido registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referido'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '409':
+          description: |
+            Esa persona ya es cliente o ya la refirieron (`codigo` REFERIDO_DUPLICADO; no se dice
+            quién) o el cliente ya tiene 10 referidos en seguimiento (`codigo` LIMITE_REFERIDOS)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
   /vehiculos/{vehiculoId}/gastos:
     get:
       tags: [Bitácora]
@@ -2277,6 +2456,9 @@ paths:
         - `garantia.por_vencer` (V2-M10.05), `AvisoGarantiaPorVencer`: una sola vez a 60 días, a
           15 días y a 1 000 km del límite de cada cobertura. La app vuelve a consultar
           `GET /vehiculos/{vehiculoId}/garantia`.
+        - `puntos.movidos` (V2-M12.02), `AvisoPuntosMovidos`: cada vez que cambia el saldo de
+          puntos del cliente (servicio entregado, canje, devolución o referido). La app vuelve a
+          consultar `GET /lealtad` y sus movimientos.
         - `valuacion.oferta` (V2-M26.04), `AvisoValuacionOferta`: cuando la agencia captura o
           renueva la oferta de una valuación del cliente. No trae el monto. La app vuelve a
           consultar `GET /valuaciones/{valuacionId}`.
@@ -2848,6 +3030,10 @@ components:
           type: number
           format: double
           description: totalManoDeObra + totalRefacciones, con IVA incluido
+        puntosGanados:
+          type: integer
+          nullable: true
+          description: V2-M12.02 · Puntos de lealtad que dio la orden al entregarse; nulo si no dio
 
     RenglonTicket:
       type: object
@@ -4139,6 +4325,202 @@ components:
           type: string
           enum: [dias_60, dias_15, km_1000]
 
+    NivelLealtad:
+      type: string
+      enum: [BRONCE, PLATA, ORO]
+    ResumenLealtad:
+      type: object
+      required: [saldo, nivel, ganados, puntosParaSiguiente, codigoReferido]
+      properties:
+        saldo:
+          type: integer
+          format: int64
+          example: 1240
+        nivel:
+          $ref: '#/components/schemas/NivelLealtad'
+        ganados:
+          type: integer
+          format: int64
+          description: Puntos ganados en los últimos 12 meses; deciden el nivel
+          example: 1640
+        siguienteNivel:
+          allOf:
+            - $ref: '#/components/schemas/NivelLealtad'
+          nullable: true
+          description: null si ya está en Oro
+        puntosParaSiguiente:
+          type: integer
+          format: int64
+          description: Los que le faltan ganar; 0 en Oro
+          example: 2360
+        codigoReferido:
+          type: string
+          example: CC0000Z
+    MovimientoPuntos:
+      type: object
+      required: [id, puntos, motivo, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        puntos:
+          type: integer
+          description: Positivo si ganó, negativo si gastó
+          example: 165
+        motivo:
+          type: string
+          enum: [SERVICIO, CANJE, DEVOLUCION_CANJE, REFERIDO, AJUSTE]
+        referenciaTipo:
+          type: string
+          nullable: true
+          enum: [ORDEN, CANJE, REFERIDO]
+          description: De dónde salió; null en un ajuste manual
+        referenciaId:
+          type: integer
+          format: int64
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+    PaginaMovimientosPuntos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/MovimientoPuntos'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+    Recompensa:
+      type: object
+      required: [id, nombre, puntos]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Lavado exprés
+        descripcion:
+          type: string
+          nullable: true
+        puntos:
+          type: integer
+          example: 300
+        existencia:
+          type: integer
+          nullable: true
+          description: null si no tiene límite
+    CanjearRecompensa:
+      type: object
+      required: [recompensaId]
+      properties:
+        recompensaId:
+          type: integer
+          format: int64
+    Canje:
+      type: object
+      required: [id, codigo, recompensa, puntos, estado, venceEn, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        codigo:
+          type: string
+          minLength: 8
+          maxLength: 8
+          description: Lo que la app muestra como QR y el personal usa en la agencia
+          example: K7XQ2MPA
+        recompensa:
+          type: string
+          example: Lavado exprés
+        puntos:
+          type: integer
+          example: 300
+        estado:
+          type: string
+          enum: [VIGENTE, USADO, VENCIDO]
+        venceEn:
+          type: string
+          format: date-time
+        usadoEn:
+          type: string
+          format: date-time
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+    ReferirAmigo:
+      type: object
+      required: [nombre, consentimiento]
+      description: Necesita `telefono` o `correo`
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 120
+          example: Luis Pérez
+        telefono:
+          type: string
+          maxLength: 20
+          nullable: true
+          description: 10 dígitos; se aceptan espacios, guiones y el prefijo +52
+          example: '4421234567'
+        correo:
+          type: string
+          format: email
+          maxLength: 254
+          nullable: true
+        consentimiento:
+          type: boolean
+          description: El amigo aceptó que la agencia lo contacte; debe ser true
+    Referido:
+      type: object
+      required: [id, nombre, estado, puntos, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+          example: Luis Pérez
+        estado:
+          type: string
+          enum: [REGISTRADO, EN_SEGUIMIENTO, COMPRO, DESCARTADO]
+        puntos:
+          type: integer
+          description: Los que ganó el cliente si compró; 0 si no
+          example: 500
+        creadoEn:
+          type: string
+          format: date-time
+        recompensadoEn:
+          type: string
+          format: date-time
+          nullable: true
+    AvisoPuntosMovidos:
+      type: object
+      description: Evento SSE `puntos.movidos` (V2-M12.02)
+      required: [puntos, motivo, saldo]
+      properties:
+        puntos:
+          type: integer
+          example: 165
+        motivo:
+          type: string
+          enum: [SERVICIO, CANJE, DEVOLUCION_CANJE, REFERIDO, AJUSTE]
+        saldo:
+          type: integer
+          format: int64
+          example: 1405
     AvisoMantenimientoRecordatorio:
       type: object
       description: V2-M05.05 · `data` del evento `mantenimiento.recordatorio`
@@ -4750,6 +5132,10 @@ components:
             - ESTRENO_DUPLICADA
             - AVISO_NO_VIGENTE
             - CAMPANA_NO_AGENDABLE
+            - SALDO_INSUFICIENTE
+            - RECOMPENSA_AGOTADA
+            - REFERIDO_DUPLICADO
+            - LIMITE_REFERIDOS
             - VALUACION_SIN_VEHICULO
             - VALUACION_CERRADA
             - VALUACION_NO_AGENDABLE

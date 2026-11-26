@@ -106,6 +106,15 @@ void main() {
         'ESTRENO_DUPLICADA',
         'AVISO_NO_VIGENTE',
         'CAMPANA_NO_AGENDABLE',
+        'VALUACION_SIN_VEHICULO',
+        'VALUACION_CERRADA',
+        'VALUACION_NO_AGENDABLE',
+        'OFERTA_VENCIDA',
+        'OFERTA_NO_DISPONIBLE',
+        'SALDO_INSUFICIENTE',
+        'RECOMPENSA_AGOTADA',
+        'REFERIDO_DUPLICADO',
+        'LIMITE_REFERIDOS',
       };
 
       final queLaAppMapea = CodigoProblema.values

@@ -61,6 +61,18 @@ enum CodigoProblema {
   /// respondio lo contrario.
   ofertaNoDisponible('OFERTA_NO_DISPONIBLE'),
 
+  /// V2-M12.03: no alcanzan los puntos para la recompensa.
+  saldoInsuficiente('SALDO_INSUFICIENTE'),
+
+  /// V2-M12.03: la recompensa se agoto.
+  recompensaAgotada('RECOMPENSA_AGOTADA'),
+
+  /// V2-M12.04: esa persona ya es cliente o ya la refirieron.
+  referidoDuplicado('REFERIDO_DUPLICADO'),
+
+  /// V2-M12.04: el cliente ya tiene el maximo de referidos en seguimiento.
+  limiteReferidos('LIMITE_REFERIDOS'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 
