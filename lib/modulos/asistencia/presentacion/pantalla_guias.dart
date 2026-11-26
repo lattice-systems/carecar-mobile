@@ -6,9 +6,9 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/estante.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/tokens/colores.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -31,68 +31,60 @@ class PantallaGuias extends StatelessWidget {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      body: CustomScrollView(
-        slivers: [
-          EncabezadoGrande(
-            titulo: textos.asistenciaListaTitulo,
-            translucido: true,
-            conRegreso: true,
+    return MarcoPantalla(
+      titulo: textos.asistenciaListaTitulo,
+      conRegreso: true,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+            child: const _TarjetaHeroe(),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-              child: const _TarjetaHeroe(),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              Espaciado.e4,
+              Espaciado.e3,
+              Espaciado.e4,
+              0,
             ),
+            child: Aviso(mensaje: textos.asistenciaGuiasAvisoSinConexion),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(
-                Espaciado.e4,
-                Espaciado.e3,
-                Espaciado.e4,
-                0,
-              ),
-              child: Aviso(mensaje: textos.asistenciaGuiasAvisoSinConexion),
-            ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
+        SliverToBoxAdapter(
+          child: Estante(
+            titulo: textos.asistenciaEstanteGuias,
+            anchoTarjeta: 168,
+            // Con letra grande la portada crece con el texto: sin esto el
+            // titulo y los pasos desbordan la tarjeta.
+            alto: 236 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
+            hijos: [
+              for (final guia in guiasDeEmergencia) _PortadaGuia(guia: guia),
+            ],
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          SliverToBoxAdapter(
-            child: Estante(
-              titulo: textos.asistenciaEstanteGuias,
-              anchoTarjeta: 168,
-              // Con letra grande la portada crece con el texto: sin esto el
-              // titulo y los pasos desbordan la tarjeta.
-              alto: 236 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
-              hijos: [
-                for (final guia in guiasDeEmergencia) _PortadaGuia(guia: guia),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+            child: GrupoLista(
+              encabezado: textos.asistenciaGrupoGuias,
+              filas: [
+                for (final guia in guiasDeEmergencia)
+                  FilaGrupo(
+                    titulo: textos.tituloDeGuia(guia.tipo),
+                    subtitulo: textos.asistenciaGuiaCantidadPasos(guia.pasos),
+                    icono: guia.tipo.icono,
+                    colorIcono: guia.tipo.color(c),
+                    alToque: () => context.go(rutaGuiaDeEmergencia(guia.tipo)),
+                  ),
               ],
             ),
           ),
-          const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-              child: GrupoLista(
-                encabezado: textos.asistenciaGrupoGuias,
-                filas: [
-                  for (final guia in guiasDeEmergencia)
-                    FilaGrupo(
-                      titulo: textos.tituloDeGuia(guia.tipo),
-                      subtitulo: textos.asistenciaGuiaCantidadPasos(guia.pasos),
-                      icono: guia.tipo.icono,
-                      colorIcono: guia.tipo.color(c),
-                      alToque: () =>
-                          context.go(rutaGuiaDeEmergencia(guia.tipo)),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -272,7 +272,7 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 ## Ajustes visuales (rama `fix/v2-juan-pablo-ajustes-visuales`)
 
 - **Detalle del vehículo:** la portada ya no se mete bajo la barra. `CabeceraPortada` reserva la altura de la barra cuando el `Scaffold` usa `extendBodyBehindAppBar`, y al desplazar la barra se vuelve opaca, así nada atraviesa el título.
-- **«Tu auto»:** las acciones van en cuadrícula 2×2 de tarjetas iguales (una columna con letra grande).
+- **«Tu auto»:** Ficha técnica, Historial, Mantenimiento y Bitácora van como filas de un `GrupoLista` con chevron, igual que Privacidad y Mantenimiento (V2-T02.23). Antes eran una cuadrícula 2×2 de tarjetas iguales con icono en medallón, otro lenguaje que el de las filas de «Datos» de la misma pantalla.
 - **Regresar:** `BotonRegresar` (cierra con `pop` si se puede; si no, va al inicio; semántica «Regresar») en Mi garaje, y en las barras de portada del detalle, manual y ficha.
 
 ## Avance de V2-M02.12

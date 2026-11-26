@@ -13,6 +13,11 @@ Future<void> _montar(WidgetTester tester, {bool conSesion = true}) async {
   // La plataforma de pruebas habla ingles; los textos que se comprueban son es.
   tester.platformDispatcher.localesTestValue = const [Locale('es')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+  // El marco limita el contenido a 640 de ancho, así que la lista queda más
+  // alta; con pantalla alta todo se construye sin desplazar.
+  tester.view.physicalSize = const Size(800, 2400);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
   final api = ApiFalsa();
   final sesion = ControladorSesion(api, AlmacenEnMemoria());
   addTearDown(sesion.dispose);

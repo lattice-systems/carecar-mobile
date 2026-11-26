@@ -6,8 +6,8 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -52,46 +52,39 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
       aseguradora: aseguradora,
     );
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      body: CustomScrollView(
-        slivers: [
-          EncabezadoGrande(
-            titulo: textos.asistenciaLlamarTitulo,
-            translucido: true,
-            conRegreso: true,
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-            sliver: SliverList.list(
-              children: [
-                Text(
-                  textos.asistenciaLlamarIntro,
-                  style: tokens.tipografia.cuerpo.copyWith(
-                    color: c.textoSecundario,
-                  ),
+    return MarcoPantalla(
+      titulo: textos.asistenciaLlamarTitulo,
+      conRegreso: true,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+          sliver: SliverList.list(
+            children: [
+              Text(
+                textos.asistenciaLlamarIntro,
+                style: tokens.tipografia.cuerpo.copyWith(
+                  color: c.textoSecundario,
                 ),
-                const SizedBox(height: Espaciado.e4),
-                if (_error != null) ...[
-                  Aviso(tono: Tono.peligro, mensaje: _error!),
-                  const SizedBox(height: Espaciado.e3),
-                ],
-                GrupoLista(
-                  encabezado: textos.asistenciaLlamarGrupo,
-                  filas: [
-                    for (final contacto in contactos) _fila(context, contacto),
-                  ],
-                ),
-                if (aseguradora == null) ...[
-                  const SizedBox(height: Espaciado.e3),
-                  Aviso(mensaje: textos.asistenciaLlamarAseguradoraComoAgregar),
-                ],
-                const SizedBox(height: Espaciado.e6),
+              ),
+              const SizedBox(height: Espaciado.e4),
+              if (_error != null) ...[
+                Aviso(tono: Tono.peligro, mensaje: _error!),
+                const SizedBox(height: Espaciado.e3),
               ],
-            ),
+              GrupoLista(
+                encabezado: textos.asistenciaLlamarGrupo,
+                filas: [
+                  for (final contacto in contactos) _fila(context, contacto),
+                ],
+              ),
+              if (aseguradora == null) ...[
+                const SizedBox(height: Espaciado.e3),
+                Aviso(mensaje: textos.asistenciaLlamarAseguradoraComoAgregar),
+              ],
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

@@ -5,12 +5,14 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_detalle_vehiculo.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -119,13 +121,24 @@ void main() {
     expect(find.text('VIN copiado'), findsOneWidget);
   });
 
-  _prueba('Tu auto ofrece ficha e historial como tarjetas', (tester) async {
+  _prueba('Tu auto ofrece ficha e historial como filas de lista', (
+    tester,
+  ) async {
     await tester.pumpWidget(_app(RepositorioGarajeFake()));
     await tester.pumpAndSettle();
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
       expect(find.text(texto), findsOneWidget);
     }
-    expect(find.byKey(const Key('accion-tu-auto')), findsNWidgets(6));
+    // Seis destinos en un solo grupo con chevron (V2-T02.23).
+    // Una flecha por fila de la lista (la tarjeta del próximo servicio lleva la
+    // suya, fuera de la lista).
+    expect(
+      find.descendant(
+        of: find.byType(GrupoLista),
+        matching: find.byIcon(LucideIcons300.chevronRight),
+      ),
+      findsNWidgets(6),
+    );
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);
     expect(find.text('Disponible pronto'), findsNothing);

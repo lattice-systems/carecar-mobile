@@ -4,6 +4,7 @@ import 'package:carecar_mobile/modulos/historial/presentacion/pantalla_historial
 import 'package:carecar_mobile/modulos/historial/presentacion/proveedores_historial.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,17 @@ void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) {
 }
 
 void main() {
+  _prueba('tiene un botón visible para regresar al detalle del auto', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioHistorialFake()));
+    await tester.pumpAndSettle();
+
+    // Antes armaba su encabezado a mano y no traía ningún botón de salida.
+    expect(find.byType(BotonRegresar), findsOneWidget);
+    expect(find.byTooltip('Regresar'), findsOneWidget);
+  });
+
   _prueba('muestra cada orden con su total y su estatus', (tester) async {
     await tester.pumpWidget(_app(RepositorioHistorialFake()));
     await tester.pumpAndSettle();

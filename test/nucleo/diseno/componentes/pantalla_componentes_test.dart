@@ -497,7 +497,7 @@ void main() {
           Scaffold(
             body: TarjetaResumen(
               titulo: 'Tu auto está en el taller',
-              icono: Icons.car_repair_rounded,
+              icono: LucideIcons300.wrench,
               estado: '2 trabajos por aprobar',
               tonoEstado: Tono.advertencia,
               estadoConIcono: conIcono,

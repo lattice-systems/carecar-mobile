@@ -221,12 +221,21 @@ Daniel notó que el inicio repetía en el cuerpo la navegación que ya tiene la 
 - `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el inicio decía «18.450 km» y el resto «18,450 km». Los demás módulos tienen su copia de la regla `es_MX`; migrarlos a `formatearMiles` queda como limpieza.
 - Seis cadenas de los accesos salieron de los `.arb`.
 
-**Hallazgos de la revisión que este cambio no toca** (quedan para otra pasada):
+**Hallazgos de la revisión que V2-T02.22 no toca:** se atienden en V2-T02.23 (abajo) salvo los dos últimos.
 
-- El detalle del auto presenta su navegación como una cuadrícula 2×2 de tarjetas iguales, junto a filas de `GrupoLista` con otro estilo de icono.
-- Cinco pantallas (`historial`, `taller/orden`, `inspección`, `adicionales` y la ficha técnica) arman `EncabezadoGrande` sin `conRegreso`: no tienen botón visible para volver. «Pedir ayuda» cierra con un `BotonCircular` azul en vez de `BotonCerrar`.
 - Ajustes sigue en v1 (cabecera héroe, etiquetas en mayúsculas, acentos verdeazulados) y no tiene versión v2: depende de V2-M01.06, de Jael.
 - Con la configuración por omisión (`InterruptorModulos.porDefecto`, todo en v1) Vehículos, Citas y Catálogo abren las pantallas v1 aunque sus historias v2 estén hechas; la apariencia solo es una con `--dart-define=MODULOS_V2=todos`.
+
+## Avance de V2-T02.23 (consistencia entre pantallas)
+
+Segunda pasada de la revisión de V2-T02.22, pantalla por pantalla contra la app corriendo.
+
+- **Salida visible.** `historial`, `ticket`, `taller/orden`, `inspección`, `adicionales` y la ficha técnica armaban `EncabezadoGrande` a mano y quedaban sin botón de regreso; «Pedir ayuda» llevaba una copia del marco con un cierre azul, y guías y llamar rápido otra. Las nueve pasan a `MarcoPantalla` (con `conRegreso` los detalles). Una prueba de arquitectura (`solo_componentes_del_sistema_test.dart`) falla si un módulo vuelve a armar el encabezado: así no se puede olvidar el botón.
+- **«Tu auto»** (detalle del vehículo) pasa de cuadrícula 2×2 de tarjetas iguales a un `GrupoLista` con chevron, como el resto de la app; se van unas 150 líneas de medición manual de texto. El kilometraje usa `formatearMiles`.
+- **`CuadroFecha`** sube al sistema de diseño y reemplaza a las dos copias (la del inicio y la de la lista de citas, que se veían distintas).
+- La guía de revisión y los casos están en [`antipatrones-de-ia.md`](../../docs/diseno/antipatrones-de-ia.md).
+
+**Pendiente** (detectado, no tocado aquí): `Mis estimaciones`, `Mis solicitudes` (estreno) y `Comparar modelos` son listas pero usan `BarraPantalla` (título pequeño) en vez de `MarcoPantalla` (título grande) como `Mis citas`; `GrupoLista` usa `Icons.chevron_right` y `TarjetaResumen` `Icons.chevron_right_rounded`; la regla de números `es_MX` sigue copiada en otros módulos y se migra a `formatearMiles` poco a poco.
 ## Avance de V2-T02.02
 
 | Criterio | Dónde se cumple |
