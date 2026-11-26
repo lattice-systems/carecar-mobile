@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -98,7 +100,7 @@ class TarjetaPuntos extends StatelessWidget {
               puntosLealtad(context, resumen.puntosParaSiguiente),
               textoNivel(textos, siguiente),
             ),
-      icono: Icons.workspace_premium_outlined,
+      icono: LucideIcons300.award,
       tono: tonoNivel(resumen.nivel),
       estado: nivel,
       tonoEstado: tonoNivel(resumen.nivel),
@@ -122,28 +124,28 @@ class _Accesos extends StatelessWidget {
         FilaGrupo(
           titulo: textos.lealtadRecompensas,
           subtitulo: textos.lealtadRecompensasResumen,
-          icono: Icons.card_giftcard_outlined,
+          icono: LucideIcons300.gift,
           colorIcono: c.marca,
           alToque: () => context.push(rutaRecompensas),
         ),
         FilaGrupo(
           titulo: textos.lealtadCanjes,
           subtitulo: textos.lealtadCanjesResumen,
-          icono: Icons.qr_code_2_rounded,
+          icono: LucideIcons300.qrCode,
           colorIcono: c.exito,
           alToque: () => context.push(rutaCanjes),
         ),
         FilaGrupo(
           titulo: textos.lealtadMovimientos,
           subtitulo: textos.lealtadMovimientosResumen,
-          icono: Icons.receipt_long_outlined,
+          icono: LucideIcons300.receiptText,
           colorIcono: c.acento,
           alToque: () => context.push(rutaMovimientos),
         ),
         FilaGrupo(
           titulo: textos.lealtadReferir,
           subtitulo: textos.lealtadReferirResumen,
-          icono: Icons.group_add_outlined,
+          icono: LucideIcons300.userPlus,
           colorIcono: c.advertencia,
           alToque: () => context.push(rutaReferir),
         ),

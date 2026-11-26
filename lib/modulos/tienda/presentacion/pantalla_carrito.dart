@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -82,7 +84,7 @@ class _PantallaCarritoState extends ConsumerState<PantallaCarrito> {
         estado: EstadoVacio(
           titulo: t.tiendaCarritoVacioTitulo,
           mensaje: t.tiendaCarritoVacioMensaje,
-          icono: Icons.shopping_bag_outlined,
+          icono: LucideIcons300.shoppingBag,
           textoAccion: t.tiendaIrALaTienda,
           alAccion: () => context.go(rutaTienda),
         ),
@@ -332,7 +334,7 @@ class _Renglon extends StatelessWidget {
           const SizedBox(height: Espaciado.e2),
           BotonPildora(
             texto: t.tiendaQuitar,
-            icono: Icons.delete_outline_rounded,
+            icono: LucideIcons300.trash2,
             variante: VarianteBotonPildora.tonal,
             alPresionar: alQuitar,
           ),

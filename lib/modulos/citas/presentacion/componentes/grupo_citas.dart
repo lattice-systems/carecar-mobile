@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../../nucleo/diseno/componentes/tono.dart';
 import '../../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../../nucleo/diseno/tokens/radios.dart';
@@ -155,7 +157,10 @@ class _Fila extends StatelessWidget {
             if (tocable) ...[
               const SizedBox(width: Espaciado.e2),
               ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoTerciario),
+                child: Icon(
+                  LucideIcons300.chevronRight,
+                  color: c.textoTerciario,
+                ),
               ),
             ],
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
@@ -32,14 +34,14 @@ class PantallaPrivacidad extends StatelessWidget {
                   FilaGrupo(
                     titulo: textos.privacidadHubAviso,
                     subtitulo: textos.privacidadHubAvisoDetalle,
-                    icono: Icons.privacy_tip_outlined,
+                    icono: LucideIcons300.shieldAlert,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaAvisoPrivacidad),
                   ),
                   FilaGrupo(
                     titulo: textos.privacidadHubDatos,
                     subtitulo: textos.privacidadHubDatosDetalle,
-                    icono: Icons.download_outlined,
+                    icono: LucideIcons300.download,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaMisDatos),
                   ),
@@ -52,7 +54,7 @@ class PantallaPrivacidad extends StatelessWidget {
                   FilaGrupo(
                     titulo: textos.privacidadHubEliminar,
                     subtitulo: textos.privacidadHubEliminarDetalle,
-                    icono: Icons.delete_outline,
+                    icono: LucideIcons300.trash2,
                     colorIcono: c.peligro,
                     alToque: () => context.push(rutaEliminarCuenta),
                   ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../nucleo/diseno/tokens/colores.dart';
 import '../dominio/guia_emergencia.dart';
 
@@ -7,9 +9,9 @@ import '../dominio/guia_emergencia.dart';
 /// pantalla de pasos para que una guía se reconozca de un vistazo.
 extension EstiloDeGuia on TipoGuia {
   IconData get icono => switch (this) {
-    TipoGuia.llanta => Icons.tire_repair_outlined,
-    TipoGuia.corriente => Icons.battery_charging_full_outlined,
-    TipoGuia.choque => Icons.car_crash_outlined,
+    TipoGuia.llanta => LucideIcons300.lifeBuoy,
+    TipoGuia.corriente => LucideIcons300.batteryCharging,
+    TipoGuia.choque => LucideIcons300.triangleAlert,
   };
 
   /// Color de la guía tomado de la paleta, nunca un valor suelto.

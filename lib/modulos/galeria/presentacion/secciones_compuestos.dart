@@ -3,6 +3,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../nucleo/diseno/componentes/barra_navegacion.dart';
 import '../../../nucleo/diseno/componentes/burbuja_mensaje.dart';
 import '../../../nucleo/diseno/componentes/calendario.dart';
@@ -94,13 +96,13 @@ List<SeccionGaleria> seccionesCompuestos() => [
         TarjetaAccion(
           titulo: 'Agendar cita',
           descripcion: 'Elige fecha y hora',
-          icono: Icons.event,
+          icono: LucideIcons300.calendar,
           alToque: () {},
         ),
         const SizedBox(height: Espaciado.e2),
         TarjetaAccion(
           titulo: 'Pedir ayuda en el camino',
-          icono: Icons.sos,
+          icono: LucideIcons300.siren,
           tono: Tono.peligro,
           alToque: () {},
         ),
@@ -114,7 +116,7 @@ List<SeccionGaleria> seccionesCompuestos() => [
         FilaLista(
           titulo: 'Mazda CX-5 2024',
           subtitulo: 'Proximo servicio en 1 200 km',
-          inicio: const Icon(Icons.directions_car),
+          inicio: const Icon(LucideIcons300.car),
           alToque: () {},
         ),
         const FilaLista(titulo: 'Sin toque', subtitulo: 'No es tocable'),
@@ -262,21 +264,18 @@ List<SeccionGaleria> seccionesCompuestos() => [
       inicial: 0,
       construir: (valor, cambiar) => BarraNavegacion(
         destinos: const [
-          DestinoNavegacion(etiqueta: 'Inicio', icono: Icons.home_outlined),
-          DestinoNavegacion(
-            etiqueta: 'Mi auto',
-            icono: Icons.directions_car_outlined,
-          ),
+          DestinoNavegacion(etiqueta: 'Inicio', icono: LucideIcons300.house),
+          DestinoNavegacion(etiqueta: 'Mi auto', icono: LucideIcons300.car),
           DestinoNavegacion(
             etiqueta: 'Servicio',
-            icono: Icons.build_outlined,
+            icono: LucideIcons300.wrench,
             conteo: 3,
           ),
           DestinoNavegacion(
             etiqueta: 'Explorar',
-            icono: Icons.explore_outlined,
+            icono: LucideIcons300.compass,
           ),
-          DestinoNavegacion(etiqueta: 'Cuenta', icono: Icons.person_outline),
+          DestinoNavegacion(etiqueta: 'Cuenta', icono: LucideIcons300.user),
         ],
         indice: valor,
         alCambiar: cambiar,
@@ -335,7 +334,7 @@ List<SeccionGaleria> seccionesCompuestos() => [
           padding: const EdgeInsets.all(Espaciado.e4),
           child: Row(
             children: [
-              const Icon(Icons.auto_awesome, color: Color(0xFF2457F5)),
+              const Icon(LucideIcons300.sparkles, color: Color(0xFF2457F5)),
               const SizedBox(width: Espaciado.e3),
               Expanded(
                 child: Column(
