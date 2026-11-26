@@ -3,6 +3,8 @@ import 'package:carecar_mobile/main.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/calendario.dart';
 import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_seguro.dart';
@@ -45,7 +47,15 @@ void main() {
       );
       await _tocar(tester, find.byKey(PantallaLogin.botonEntrar));
 
-      await _tocar(tester, find.text('Acepto el aviso de privacidad'));
+      await _tocar(
+        tester,
+        find.byWidgetPredicate(
+          (w) =>
+              w is BotonPildora &&
+              w.texto == 'Acepto el aviso de privacidad' &&
+              w.alPresionar != null,
+        ),
+      );
       final barra = find.byType(BarraFlotante);
       final citas = find.descendant(
         of: barra,
@@ -61,7 +71,14 @@ void main() {
       await _tocar(tester, find.byTooltip('Regresar'));
       await _tocar(tester, citas);
       await _esperar(tester, find.byType(PantallaMisCitas));
-      await _tocar(tester, find.text('Agendar cita'));
+      await _tocar(
+        tester,
+        find.byWidgetPredicate(
+          (w) =>
+              (w is BotonPildora && w.texto == 'Agendar cita') ||
+              (w is BotonCircular && w.etiqueta == 'Agendar cita'),
+        ),
+      );
       await _tocar(tester, vehiculo);
 
       final hoy = DateTime.now();
@@ -91,7 +108,11 @@ void main() {
       );
       await _tocar(tester, find.byTooltip('Regresar'));
       await _tocar(tester, citas);
-      await _esperar(tester, find.text('Cancelada'));
+      await _esperar(
+        tester,
+        find.text('Cancelada'),
+        coincidencias: findsWidgets,
+      );
       expect(find.text('Cancelar cita'), findsNothing);
     },
   );
