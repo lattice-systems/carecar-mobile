@@ -17,13 +17,13 @@ void main() {
   });
 
   group('el contrato v2 trae las sesiones activas (V2-M01.09)', () {
-    test('la version es 2.20.0 o posterior', () {
+    test('la version es 2.22.0 o posterior', () {
       final partes = (contrato['info']['version'] as String)
           .split('.')
           .map(int.parse)
           .toList();
       expect(partes[0], 2);
-      expect(partes[1], greaterThanOrEqualTo(20));
+      expect(partes[1], greaterThanOrEqualTo(22));
     });
 
     test('las tres operaciones existen', () {

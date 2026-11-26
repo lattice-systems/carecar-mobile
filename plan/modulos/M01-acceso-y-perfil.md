@@ -208,7 +208,7 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 
 | Pieza | Qué resuelve |
 | --- | --- |
-| `api/modelos/sesion.dart` | `SesionActiva` del contrato 2.20.0 y el `dispositivo` opcional del login |
+| `api/modelos/sesion.dart` | `SesionActiva` del contrato 2.22.0 y el `dispositivo` opcional del login |
 | `api/carecar_api.dart` + `carecar_api_http.dart` | Las tres operaciones de `/sesiones` |
 | `cache/carecar_api_con_cache.dart` | La lista **no se guarda en copia local**, a propósito (ver abajo) |
 | `nucleo/dispositivo/` | El nombre del equipo: la regla pura, aparte del plugin, y el borde que lee `device_info_plus` |
