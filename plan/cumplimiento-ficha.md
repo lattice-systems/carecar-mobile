@@ -78,9 +78,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ | Ver M08 |
-| Métodos de pago guardados | `metodo_pago` | ⬜ | Ver M08 |
-| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ | Ver M08 |
+| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ procesador propuesto en la [ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md) (Stripe en modo de pruebas) | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07 |
+| Métodos de pago guardados | `metodo_pago` | ⬜ | V2-M08.04 |
+| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | ⬜ `factura` existe (ERP, sin timbrado); se le agregan columnas para facturas de servicio y el timbrado va con Facturama en sandbox ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) | V2-M08.05, V2-M08.06 |
 
 ### 9. Documentos y vencimientos — plan [M09](modulos/M09-documentos-y-vencimientos.md)
 
@@ -106,9 +106,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Puntos y niveles | `movimiento_puntos` | ⬜ | Ver M12 |
-| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | ⬜ | Ver M12 |
-| Referidos | `referido`, `prospecto` | ⬜ | Ver M12 |
+| Puntos y niveles | `movimiento_puntos` | ⬜ reglas propuestas en M12, pendientes del PO | V2-M12.01, V2-M12.02, V2-M12.05 |
+| Canje de recompensas | `recompensa`, `canje`, `movimiento_puntos` | ⬜ | V2-M12.03 |
+| Referidos | `referido`, `prospecto` | ⬜ | V2-M12.04 |
 
 ### 13. Promociones y novedades — plan [M13](modulos/M13-promociones.md)
 
