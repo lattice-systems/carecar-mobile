@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
@@ -138,7 +140,7 @@ class _PantallaEliminarCuentaState
               const SizedBox(height: Espaciado.e5),
               _Lista(
                 titulo: textos.eliminarCuentaSeBorraTitulo,
-                icono: Icons.delete_outline,
+                icono: LucideIcons300.trash2,
                 lineas: [
                   textos.eliminarCuentaBorra1,
                   textos.eliminarCuentaBorra2,
@@ -149,7 +151,7 @@ class _PantallaEliminarCuentaState
               const SizedBox(height: Espaciado.e4),
               _Lista(
                 titulo: textos.eliminarCuentaConservaTitulo,
-                icono: Icons.inventory_2_outlined,
+                icono: LucideIcons300.package,
                 lineas: [textos.eliminarCuentaConserva],
               ),
               const SizedBox(height: Espaciado.e5),

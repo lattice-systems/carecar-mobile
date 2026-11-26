@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
@@ -88,7 +90,7 @@ class _Tarjeta extends StatelessWidget {
       detalle: lista
           ? textoHorarioEntrega(context, orden.horarioEntrega)
           : null,
-      icono: lista ? Icons.check_rounded : Icons.car_repair_rounded,
+      icono: lista ? LucideIcons300.circleCheck : LucideIcons300.wrench,
       tono: lista ? Tono.exito : Tono.informacion,
       estado: lista
           ? textos.tallerEtapaListoParaEntrega

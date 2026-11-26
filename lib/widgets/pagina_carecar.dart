@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tema/tema_carecar.dart';
 import 'logo_carecar.dart';
 import 'menu_carecar.dart';
@@ -258,7 +260,7 @@ class _Encabezado extends StatelessWidget {
                         ),
                       ),
                       onPressed: () => Navigator.of(context).maybePop(),
-                      icon: const Icon(Icons.arrow_back, size: 20),
+                      icon: const Icon(LucideIcons300.arrowLeft, size: 20),
                       // En horizontal basta la flecha: el espacio es del titulo.
                       label: baja
                           ? const SizedBox.shrink()
@@ -279,7 +281,7 @@ class _Encabezado extends StatelessWidget {
                   key: PaginaCareCar.botonCerrarSesion,
                   onPressed: alCerrarSesion,
                   color: blanco,
-                  icon: const Icon(Icons.logout),
+                  icon: const Icon(LucideIcons300.logOut),
                   tooltip: 'Cerrar sesión',
                 ),
               ],

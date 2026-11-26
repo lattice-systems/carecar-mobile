@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -85,7 +87,11 @@ class CampoBase extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.error_outline, size: _tamanoIcono, color: c.peligro),
+                Icon(
+                  LucideIcons300.circleAlert,
+                  size: _tamanoIcono,
+                  color: c.peligro,
+                ),
                 const SizedBox(width: Espaciado.e1),
                 Expanded(
                   child: Text(

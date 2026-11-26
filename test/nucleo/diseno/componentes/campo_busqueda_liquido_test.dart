@@ -2,6 +2,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/campo_busqueda_liquido.
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -13,7 +15,7 @@ void main() {
     );
 
     expect(find.text('Buscar vehículo o servicio…'), findsOneWidget);
-    expect(find.byIcon(Icons.search_rounded), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.search), findsOneWidget);
   });
 
   testWidgets('al escribir muestra el boton de limpiar y responde', (
@@ -33,9 +35,9 @@ void main() {
     await tester.pump();
 
     expect(cambio, 'Sentra');
-    expect(find.byIcon(Icons.close_rounded), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.x), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.close_rounded));
+    await tester.tap(find.byIcon(LucideIcons300.x));
     await tester.pump();
 
     expect(find.text('Sentra'), findsNothing);

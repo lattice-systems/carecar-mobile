@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -52,7 +53,7 @@ class TarjetaProximoServicio extends StatelessWidget {
       titulo: proximo.nombre,
       subtitulo: motivo,
       detalle: avance == null ? falta : null,
-      icono: Icons.build_circle_outlined,
+      icono: LucideIcons300.wrench,
       tono: proximo.yaToca ? Tono.advertencia : Tono.informacion,
       progreso: avance,
       etiquetaProgreso: avance == null ? null : falta,

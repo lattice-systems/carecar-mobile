@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
@@ -132,7 +134,7 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
                   estado: EstadoVacio(
                     titulo: textos.recompensasVaciaTitulo,
                     mensaje: textos.recompensasVaciaMensaje,
-                    icono: Icons.card_giftcard_outlined,
+                    icono: LucideIcons300.gift,
                   ),
                 )
               : MarcoPantalla(
@@ -211,7 +213,7 @@ class TarjetaRecompensa extends StatelessWidget {
         puntosLealtad(context, recompensa.puntos),
       ),
       detalle: recompensa.descripcion,
-      icono: Icons.card_giftcard_outlined,
+      icono: LucideIcons300.gift,
       tono: alcanza ? Tono.informacion : Tono.neutro,
       estado: estado,
       tonoEstado: tono,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import 'aviso.dart';
 
 /// Cuanto se espera una respuesta antes de avisar que el servidor tarda.
@@ -23,7 +25,7 @@ class AvisoServidorDespertando extends StatelessWidget {
       titulo: 'Despertando el servidor…',
       detalle:
           'La primera vez después de un rato puede tardar hasta un minuto.',
-      icono: Icons.hourglass_top_outlined,
+      icono: LucideIcons300.hourglass,
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -84,7 +86,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
         estado: VacioIlustrado(
           titulo: textos.citasMisCitasVacioTitulo,
           mensaje: textos.citasMisCitasVacioMensaje,
-          icono: Icons.event_note_outlined,
+          icono: LucideIcons300.calendarDays,
           textoAccion: textos.citasMisCitasAgendar,
           alAccion: () => context.push(rutaAgendarCita),
         ),
@@ -129,7 +131,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       acciones: [
         BotonCircular(
           etiqueta: textos.citasMisCitasAgendar,
-          icono: Icons.add_rounded,
+          icono: LucideIcons300.plus,
           variante: VarianteBotonCircular.acento,
           alPresionar: () => context.push(rutaAgendarCita),
         ),
@@ -201,7 +203,7 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
                     child: BotonPildora(
                       texto: textos.citasCargarMas,
                       variante: VarianteBotonPildora.vidrio,
-                      icono: Icons.expand_more_rounded,
+                      icono: LucideIcons300.chevronDown,
                       alPresionar: estado.cargandoMas
                           ? null
                           : () =>
@@ -476,7 +478,7 @@ class _AccionesCita extends StatelessWidget {
           children: [
             BotonPildora(
               texto: textos.citasHeroComprobante,
-              icono: Icons.qr_code_2_rounded,
+              icono: LucideIcons300.qrCode,
               alPresionar: ocupado
                   ? null
                   : () {
@@ -486,7 +488,7 @@ class _AccionesCita extends StatelessWidget {
             ),
             BotonPildora(
               texto: textos.citasReprogramar,
-              icono: Icons.event_repeat_rounded,
+              icono: LucideIcons300.calendarSync,
               variante: VarianteBotonPildora.vidrio,
               alPresionar: ocupado
                   ? null

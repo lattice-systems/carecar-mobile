@@ -3,6 +3,8 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/chip_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -35,7 +37,7 @@ void main() {
           ),
         ),
       );
-      expect(find.byIcon(Icons.check), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.check), findsOneWidget);
       await tester.tap(find.byType(ChipPista));
       expect(recibido, isFalse);
     });

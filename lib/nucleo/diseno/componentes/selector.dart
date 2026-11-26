@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 import 'campo_base.dart';
@@ -53,7 +55,7 @@ class Selector<T> extends StatelessWidget {
         onChanged: alCambiar,
         borderRadius: Radios.bordeControl,
         dropdownColor: tokens.superficieNivel(2),
-        icon: Icon(Icons.expand_more, color: c.textoSecundario),
+        icon: Icon(LucideIcons300.chevronDown, color: c.textoSecundario),
         style: tokens.tipografia.cuerpo.copyWith(color: c.texto),
         decoration: CampoBase.decoracion(
           context,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -49,7 +51,7 @@ class PantallaFichaTecnica extends ConsumerWidget {
               EstadoVacio(
                 titulo: textos.vehiculosFichaVacioTitulo,
                 mensaje: textos.vehiculosFichaVacioMensaje,
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
               ),
             )
           : SliverToBoxAdapter(child: _Ficha(ficha: f)),
@@ -140,10 +142,10 @@ class _SeccionFichaState extends State<_SeccionFicha> {
       filas: [
         FilaGrupo(
           titulo: widget.titulo,
-          icono: Icons.fact_check_outlined,
+          icono: LucideIcons300.clipboardCheck,
           colorIcono: widget.color,
           fin: Icon(
-            _abierta ? Icons.expand_less : Icons.expand_more,
+            _abierta ? LucideIcons300.chevronUp : LucideIcons300.chevronDown,
             color: c.textoSecundario,
           ),
           alToque: () => setState(() => _abierta = !_abierta),

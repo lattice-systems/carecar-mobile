@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -134,7 +135,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byType(GrupoLista),
-        matching: find.byIcon(Icons.chevron_right_rounded),
+        matching: find.byIcon(LucideIcons300.chevronRight),
       ),
       findsNWidgets(6),
     );

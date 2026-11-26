@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -112,7 +114,7 @@ class _EstadoPantallaMisEstimaciones
     final acciones = [
       BotonCircular(
         etiqueta: t.valuacionMisTitulo,
-        icono: Icons.verified_outlined,
+        icono: LucideIcons300.badgeCheck,
         colorIcono: TokensPista.de(context).colores.texto,
         alPresionar: () => context.push(rutaValuaciones),
       ),
@@ -141,7 +143,7 @@ class _EstadoPantallaMisEstimaciones
         EstadoVacio(
           titulo: t.misEstimacionesVacioTitulo,
           mensaje: t.misEstimacionesVacioMensaje,
-          icono: Icons.calculate_outlined,
+          icono: LucideIcons300.calculator,
           textoAccion: t.misEstimacionesVacioAccion,
           alAccion: () => context.pushReplacement(rutaCalculadora),
         ),
@@ -210,7 +212,7 @@ class _Lista extends StatelessWidget {
                       if (e.modeloDestino != null)
                         t.calculadoraContra(e.modeloDestino!),
                     ].join(' · '),
-                    icono: Icons.calculate_outlined,
+                    icono: LucideIcons300.calculator,
                     colorIcono: c.acento,
                     alToque: () => _abrirDetalle(context, e),
                   ),
@@ -275,7 +277,7 @@ void _abrirDetalle(BuildContext context, Estimacion e) {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: t.valuacionVerValor,
-              icono: Icons.show_chart_rounded,
+              icono: LucideIcons300.chartLine,
               variante: VarianteBotonPildora.tonal,
               expandido: true,
               alPresionar: () => irA(hoja, rutaValorVehiculo(vehiculoId)),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../api/carecar_api.dart';
@@ -154,7 +155,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                         tono: _errorDeRed
                             ? TonoAviso.advertencia
                             : TonoAviso.error,
-                        icono: _errorDeRed ? Icons.wifi_off_outlined : null,
+                        icono: _errorDeRed ? LucideIcons300.wifiOff : null,
                         titulo: _errorDeRed
                             ? 'Sin conexión'
                             : 'No pudimos cambiar tu contraseña',
@@ -172,7 +173,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                           ? 'La que te dio la agencia'
                           : 'La que usas para entrar',
                       habilitado: !_guardando,
-                      icono: Icons.lock_clock_outlined,
+                      icono: LucideIcons300.lockKeyhole,
                       ocultar: !_ver,
                       enfocar: true,
                       textInputAction: TextInputAction.next,
@@ -189,7 +190,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                       etiqueta: 'Contraseña nueva',
                       ayuda: 'Al menos 8 caracteres, con letra y número',
                       habilitado: !_guardando,
-                      icono: Icons.lock_outline,
+                      icono: LucideIcons300.lock,
                       ocultar: !_ver,
                       textInputAction: TextInputAction.next,
                       sufijo: IconButton(
@@ -197,9 +198,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                             ? null
                             : () => setState(() => _ver = !_ver),
                         icon: Icon(
-                          _ver
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
+                          _ver ? LucideIcons300.eyeOff : LucideIcons300.eye,
                         ),
                         tooltip: _ver
                             ? 'Ocultar las contraseñas'
@@ -216,7 +215,7 @@ class _PantallaCambiarContrasenaState extends State<PantallaCambiarContrasena> {
                       controlador: _confirmar,
                       etiqueta: 'Repite la contraseña nueva',
                       habilitado: !_guardando,
-                      icono: Icons.lock_outline,
+                      icono: LucideIcons300.lock,
                       ocultar: !_ver,
                       textInputAction: TextInputAction.done,
                       alEnviar: _guardando ? null : _guardar,

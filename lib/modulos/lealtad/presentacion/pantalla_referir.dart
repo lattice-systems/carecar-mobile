@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -198,7 +200,7 @@ class _PantallaReferirState extends ConsumerState<PantallaReferir> {
                     const SizedBox(height: Espaciado.e4),
                     BotonPildora(
                       texto: textos.referirEnviar,
-                      icono: Icons.send_rounded,
+                      icono: LucideIcons300.send,
                       expandido: true,
                       cargando: _enviando,
                       alPresionar: _listo ? _enviar : null,
@@ -244,7 +246,7 @@ class _MiCodigo extends ConsumerWidget {
                 const SizedBox(height: Espaciado.e3),
                 BotonPildora(
                   texto: textos.referirCompartir,
-                  icono: Icons.ios_share_rounded,
+                  icono: LucideIcons300.share,
                   variante: VarianteBotonPildora.vidrio,
                   expandido: true,
                   alPresionar: () =>
@@ -289,7 +291,7 @@ class _MisReferidos extends ConsumerWidget {
             BotonPildora(
               texto: textos.lealtadReintentar,
               variante: VarianteBotonPildora.vidrio,
-              icono: Icons.refresh_rounded,
+              icono: LucideIcons300.refreshCw,
               alPresionar: () => ref.invalidate(referidosProvider),
             ),
           ],
@@ -315,10 +317,10 @@ FilaGrupo filaReferido(BuildContext context, Referido r) {
       fechaLealtad(context, r.creadoEn),
     ),
     icono: switch (r.estado) {
-      EstadoReferido.registrado => Icons.person_add_alt_outlined,
-      EstadoReferido.enSeguimiento => Icons.support_agent_outlined,
-      EstadoReferido.compro => Icons.celebration_outlined,
-      EstadoReferido.descartado => Icons.person_off_outlined,
+      EstadoReferido.registrado => LucideIcons300.userPlus,
+      EstadoReferido.enSeguimiento => LucideIcons300.headset,
+      EstadoReferido.compro => LucideIcons300.partyPopper,
+      EstadoReferido.descartado => LucideIcons300.userX,
     },
     colorIcono: switch (r.estado) {
       EstadoReferido.registrado => c.acento,

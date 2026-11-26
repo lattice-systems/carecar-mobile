@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -58,7 +60,9 @@ class Menu<T> extends StatelessWidget {
         side: BorderSide(color: c.borde),
       ),
       constraints: const BoxConstraints(minWidth: 180),
-      icon: disparador == null ? Icon(Icons.more_vert, color: c.texto) : null,
+      icon: disparador == null
+          ? Icon(LucideIcons300.ellipsisVertical, color: c.texto)
+          : null,
       child: disparador == null
           ? null
           : Semantics(

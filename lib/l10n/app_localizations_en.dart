@@ -4133,6 +4133,73 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your next service is coming up. You can book it whenever you like.';
 
   @override
+  String get mapaAyudaPin => 'Drag the pin, tap the map or use the arrows.';
+
+  @override
+  String get mapaConPin => 'Map with a pin.';
+
+  @override
+  String get mapaConUbicacion => 'Your location is shown.';
+
+  @override
+  String get mapaMiUbicacion => 'Show my location';
+
+  @override
+  String get mapaMoverEste => 'Move the pin east';
+
+  @override
+  String get mapaMoverNorte => 'Move the pin north';
+
+  @override
+  String get mapaMoverOeste => 'Move the pin west';
+
+  @override
+  String get mapaMoverSur => 'Move the pin south';
+
+  @override
+  String get mapaPinAlCentro => 'Place the pin in the center';
+
+  @override
+  String get mapaPinMovidoEste => 'Pin moved east';
+
+  @override
+  String get mapaPinMovidoNorte => 'Pin moved north';
+
+  @override
+  String get mapaPinMovidoOeste => 'Pin moved west';
+
+  @override
+  String get mapaPinMovidoSur => 'Pin moved south';
+
+  @override
+  String get mapaReintentar => 'Try again';
+
+  @override
+  String get mapaSeguimiento => 'Tracking map.';
+
+  @override
+  String get mapaSinPin => 'Map without a pin.';
+
+  @override
+  String get mapaSinTeselas =>
+      'We couldn\'t load the map. Check your internet and try again.';
+
+  @override
+  String get mapaUbicacionApagada =>
+      'Your phone\'s location is off. Turn it on and try again.';
+
+  @override
+  String get mapaUbicacionBloqueada =>
+      'Location is blocked. Turn it on for CareCar in your phone settings.';
+
+  @override
+  String get mapaUbicacionDenegada =>
+      'You didn\'t let us see your location. You can use the map without it.';
+
+  @override
+  String get mapaUbicacionTiempo => 'Your location took too long. Try again.';
+
+  @override
   String get garantiaTitulo => 'Warranty';
 
   @override

@@ -87,7 +87,7 @@ De la v2, la [tienda](plan/modulos/M14-tienda.md) deja ver accesorios y refaccio
 | `http`          | Cliente de la API escrito a mano                      |
 | `flutter_secure_storage` | Guarda la sesión (tokens) cifrada            |
 | `flutter_animate`, `skeletonizer` | Animaciones y esqueletos de carga   |
-| `google_fonts`  | Inter y JetBrains Mono (hoy se descargan en runtime)  |
+| Geist y Geist Mono | Letra de la v2, empaquetada en `assets/fonts` (la v1 usa Inter y JetBrains Mono, también empaquetadas) |
 | `pdfx`          | Visor de manuales y tickets en PDF                    |
 | `flutter_lints` | Reglas de análisis estático (`analysis_options.yaml`) |
 | `flutter_test`  | Pruebas unitarias y de widgets                        |

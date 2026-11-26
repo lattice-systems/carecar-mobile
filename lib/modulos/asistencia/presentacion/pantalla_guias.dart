@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -99,7 +101,7 @@ class _TarjetaHeroe extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ExcludeSemantics(
-                child: Icon(Icons.sos_outlined, size: 56, color: c.peligro),
+                child: Icon(LucideIcons300.siren, size: 56, color: c.peligro),
               ),
               const SizedBox(height: Espaciado.e3),
               Semantics(
@@ -117,14 +119,14 @@ class _TarjetaHeroe extends StatelessWidget {
               const SizedBox(height: Espaciado.e4),
               BotonPildora(
                 texto: textos.asistenciaHeroeAccion,
-                icono: Icons.sos_outlined,
+                icono: LucideIcons300.siren,
                 expandido: true,
                 alPresionar: () => context.go(rutaPedirAyuda),
               ),
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: textos.asistenciaLlamarAtajo,
-                icono: Icons.call_outlined,
+                icono: LucideIcons300.phone,
                 variante: VarianteBotonPildora.tonal,
                 expandido: true,
                 alPresionar: () => context.go(rutaLlamarRapido),

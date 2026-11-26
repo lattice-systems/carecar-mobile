@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../tema/tema_carecar.dart';
 
@@ -47,13 +48,11 @@ class LogoCareCar extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radio),
-        child: Image.asset(
-          'assets/marca/agencia360-icono.png',
+        child: SvgPicture.asset(
+          'assets/marca/agencia360-icono.svg',
           width: tamano,
           height: tamano,
-          filterQuality: FilterQuality.high,
-          isAntiAlias: true,
-          semanticLabel: 'CareCar',
+          semanticsLabel: 'CareCar',
         ),
       ),
     );

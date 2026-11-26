@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
@@ -74,7 +76,11 @@ class Aviso extends StatelessWidget {
                     minHeight: 48,
                   ),
                   padding: EdgeInsets.zero,
-                  icon: Icon(Icons.close, size: _tamanoIcono, color: c.texto),
+                  icon: Icon(
+                    LucideIcons300.x,
+                    size: _tamanoIcono,
+                    color: c.texto,
+                  ),
                 ),
             ],
           ),

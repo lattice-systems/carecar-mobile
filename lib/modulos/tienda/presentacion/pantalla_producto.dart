@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -180,7 +182,7 @@ class _PantallaProductoState extends ConsumerState<PantallaProducto> {
                 ? EstadoVacio(
                     titulo: t.tiendaProductoNoEncontradoTitulo,
                     mensaje: t.tiendaProductoNoEncontradoMensaje,
-                    icono: Icons.search_off_rounded,
+                    icono: LucideIcons300.searchX,
                     textoAccion: t.tiendaIrALaTienda,
                     alAccion: () => context.go(rutaTienda),
                   )
@@ -276,14 +278,14 @@ class _PantallaProductoState extends ConsumerState<PantallaProducto> {
         ],
         BotonPildora(
           texto: t.tiendaAgregar,
-          icono: Icons.add_shopping_cart_rounded,
+          icono: LucideIcons300.shoppingCart,
           expandido: true,
           alPresionar: p.agotado ? null : () => _agregar(p),
         ),
         const SizedBox(height: Espaciado.e2),
         BotonPildora(
           texto: t.tiendaInstalarProxima,
-          icono: Icons.build_circle_outlined,
+          icono: LucideIcons300.wrench,
           variante: VarianteBotonPildora.tonal,
           expandido: true,
           cargando: _buscandoCita,
@@ -306,7 +308,7 @@ class _PantallaProductoState extends ConsumerState<PantallaProducto> {
           const SizedBox(height: Espaciado.e2),
           BotonPildora(
             texto: t.tiendaVerCarrito(carrito.piezas),
-            icono: Icons.shopping_bag_outlined,
+            icono: LucideIcons300.shoppingBag,
             variante: VarianteBotonPildora.vidrio,
             expandido: true,
             alPresionar: () => context.push(rutaCarrito),

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -53,7 +55,7 @@ class PantallaDetalleModelo extends ConsumerWidget {
             ? EstadoVacio(
                 titulo: textos.catalogoNoEncontradoTitulo,
                 mensaje: textos.catalogoNoEncontradoMensaje,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
               )
             : EstadoError(
                 causa: error is SinConexion
@@ -154,7 +156,7 @@ class _Detalle extends StatelessWidget {
             Expanded(
               child: BotonPildora(
                 texto: textos.estrenoQuieroProbarlo,
-                icono: Icons.directions_car_outlined,
+                icono: LucideIcons300.car,
                 expandido: true,
                 alPresionar: () => context.push(rutaPruebaManejo(modeloId)),
               ),
@@ -163,7 +165,7 @@ class _Detalle extends StatelessWidget {
             Expanded(
               child: BotonPildora(
                 texto: textos.estrenoCotizar,
-                icono: Icons.request_quote_outlined,
+                icono: LucideIcons300.fileText,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: () => context.push(rutaCotizarEstreno(modeloId)),

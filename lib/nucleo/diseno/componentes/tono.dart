@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/colores.dart';
 
 /// Intencion de color compartida por insignia y aviso.
@@ -25,27 +27,27 @@ class ColoresTono {
       Tono.neutro => ColoresTono(
         fondo: c.superficieHundida,
         frente: c.textoSecundario,
-        icono: Icons.circle_outlined,
+        icono: LucideIcons300.circle,
       ),
       Tono.informacion => ColoresTono(
         fondo: c.acentoSuave,
         frente: c.acento,
-        icono: Icons.info_outline,
+        icono: LucideIcons300.info,
       ),
       Tono.exito => ColoresTono(
         fondo: c.exitoSuave,
         frente: c.exito,
-        icono: Icons.check_circle_outline,
+        icono: LucideIcons300.circleCheck,
       ),
       Tono.advertencia => ColoresTono(
         fondo: c.advertenciaSuave,
         frente: c.advertencia,
-        icono: Icons.warning_amber_rounded,
+        icono: LucideIcons300.triangleAlert,
       ),
       Tono.peligro => ColoresTono(
         fondo: c.peligroSuave,
         frente: c.peligro,
-        icono: Icons.error_outline,
+        icono: LucideIcons300.circleAlert,
       ),
     };
   }

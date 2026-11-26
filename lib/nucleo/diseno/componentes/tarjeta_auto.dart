@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -80,7 +82,7 @@ class TarjetaAuto extends StatelessWidget {
     final detalle = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.speed_rounded, size: 16, color: suave),
+        Icon(LucideIcons300.gauge, size: 16, color: suave),
         const SizedBox(width: Espaciado.e1),
         Flexible(
           child: Text(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../movimiento_contexto.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/movimiento.dart';
@@ -75,7 +77,7 @@ class ChipPista extends StatelessWidget {
                     children: [
                       if (seleccionado || icono != null) ...[
                         Icon(
-                          seleccionado ? Icons.check : icono,
+                          seleccionado ? LucideIcons300.check : icono,
                           size: _tamanoIcono,
                           color: frente,
                         ),
