@@ -42,6 +42,9 @@ enum CodigoProblema {
   /// vigente; hay que leer el nuevo.
   avisoNoVigente('AVISO_NO_VIGENTE'),
 
+  /// V2-M10.03: la campana de seguridad ya esta agendada o atendida.
+  campanaNoAgendable('CAMPANA_NO_AGENDABLE'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

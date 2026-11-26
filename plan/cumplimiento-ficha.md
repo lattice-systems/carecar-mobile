@@ -93,8 +93,8 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Cobertura de garantía | `garantia`, `vehiculo_cliente` | ⬜ | Ver M10 |
-| Campañas de seguridad (recalls) | `campana_seguridad`, `campana_vehiculo`, `vehiculo_cliente`, `cita` | ⬜ | Ver M10 |
+| Cobertura de garantía | `garantia`, `vehiculo_cliente` | 🟡 backend con `garantia` y el estado por fecha y km contra el km actual (`GarantiaCampanasIntegrationTest`, `PoliticaGarantiaTest`) y aviso diario a 60 y 15 días y 1 000 km (`AvisosGarantiaServiceTest`); app con coberturas, consumo y recarga en vivo (`test/modulos/garantia/`); falta el push con la app cerrada (V2-M06.07) y demostrar en celular | V2-M10.01, V2-M10.05 |
+| Campañas de seguridad (recalls) | `campana_seguridad`, `campana_vehiculo`, `vehiculo_cliente`, `cita` | 🟡 backend con cruce por modelo, año y rango de VIN, `campana_vehiculo` y cita con motivo `CAMPANA` (`GarantiaCampanasIntegrationTest`, `CampanasAppServiceTest`); app con campañas, agendar y recarga en vivo (`test/modulos/garantia/`); falta la insignia en el garaje (PR del módulo `vehiculos`), el push con la app cerrada (V2-M06.07) y demostrar en celular | V2-M10.02, V2-M10.03, V2-M10.04 |
 
 ### 11. Asistencia en camino — plan [M11](modulos/M11-asistencia-en-camino.md)
 

@@ -9,6 +9,7 @@ import '../../modulos/citas/citas.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/estreno/estreno.dart';
 import '../../modulos/galeria/galeria.dart';
+import '../../modulos/garantia/garantia.dart';
 import '../../modulos/historial/historial.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
 import '../../modulos/privacidad/privacidad.dart';
@@ -48,6 +49,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   // La galeria del sistema de diseno es solo para desarrollo (V2-T02.06).
   // Cuando exista el flavor `desarrollo` (V2-T01.04) se condiciona a el.
   if (kDebugMode) ...rutasGaleria,
+  // La garantia (M10) es nueva en v2: no pasa por el interruptor.
+  ...rutasGarantia,
   // El historial v2 (M02.05) se abre desde el detalle v2 del vehiculo.
   ...rutasHistorial,
   // El mantenimiento (M05) es nuevo en v2: no pasa por el interruptor.
