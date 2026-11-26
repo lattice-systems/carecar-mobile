@@ -3810,7 +3810,7 @@ components:
 
     Valuacion:
       type: object
-      required: [id, estado, creadaEn, vehiculoId, estimacion, fotos]
+      required: [id, estado, creadaEn, vehiculoId, estimacion, fotos, puedeAgendar]
       properties:
         id:
           type: integer
