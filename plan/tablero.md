@@ -179,11 +179,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
 | V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Lista | |
-| V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Lista | |
-| V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Lista | |
-| V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Lista | |
-| V2-M10.04 | Un aviso cuando salga una campaña | Ricardo | B | V2-M06.02 | Lista | |
-| V2-M10.05 | Saber que mi garantía está por vencer | Ricardo | B | V2-M06.02 | Lista | |
+| V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Hecha | backend#103, #157 |
+| V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Hecha | backend#103, #157, #158 |
+| V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Hecha | backend#103, #157 |
+| V2-M10.04 | Un aviso cuando salga una campaña | Ricardo | B | V2-M06.02 | Hecha | backend#103, #157 |
+| V2-M10.05 | Saber que mi garantía está por vencer | Ricardo | B | V2-M06.02 | Hecha | backend#103, #157 |
 
 ## H4 · Cliente conectado
 
