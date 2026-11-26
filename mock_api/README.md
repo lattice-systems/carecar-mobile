@@ -209,6 +209,12 @@ Operaciones de la app y casos de error:
 | POST | `/valuaciones/{id}/respuesta` | `{aceptada, monto}`. Repetir lo mismo responde 200. 400. 404. 409 `OFERTA_VENCIDA` u `OFERTA_NO_DISPONIBLE` (V2-M26.04) |
 | GET | `/vehiculos/{id}/valor-estimado` | `meses` de 1 a 36 (12 por omisión). Un punto por mes con la última estimación de ese mes. 400. 404 (V2-M26.05) |
 | GET | `/api/v1/archivos/valuacion-fotos/{id}` | Fuera de la base y sin token: la imagen de prueba de una foto de valuación |
+| GET | `/tienda/productos` | `vehiculoId`, `categoria` (`accesorio`, `refaccion`, `cuidado`), `q`, `pagina` y `tamano`. Por nombre. Con `vehiculoId` solo salen los universales y los de su modelo y año, con `compatible`. Los agotados sí se listan. 400. 404 si el vehículo es ajeno (V2-M14.01) |
+| GET | `/tienda/productos/{id}` | Con `vehiculoId` dice `compatible`. 404 (V2-M14.01) |
+| POST | `/tienda/pedidos` | `Idempotency-Key` obligatoria. 201, o 200 con el pedido de esa llave. 400. 404. 409 `SIN_EXISTENCIA`, `CITA_NO_DISPONIBLE` o `LIMITE_APARTADOS` (3 sin entregar). 422 `PRODUCTO_INCOMPATIBLE`. Vence en 48 horas o al final del día siguiente a la cita (V2-M14.02 y V2-M14.03) |
+| GET | `/tienda/pedidos` y `/tienda/pedidos/{id}` | Del más reciente al más antiguo. Antes de responder vence lo pasado de hora y sigue a la cita ligada: cancelada regresa a mostrador y reprogramada mueve la vigencia (V2-M14.05) |
+| POST | `/tienda/pedidos/{id}/cancelar` | Libera las piezas. Repetirlo responde 200. 409 `PEDIDO_NO_CANCELABLE` (V2-M14.02) |
+| PUT | `/tienda/pedidos/{id}/instalacion` | `{citaId}`, o nulo para volver a mostrador. 409 `CITA_NO_DISPONIBLE` o `PEDIDO_NO_MODIFICABLE`. 422 `PRODUCTO_INCOMPATIBLE` (V2-M14.03) |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
 
@@ -260,6 +266,8 @@ curl -X POST localhost:3000/__mock/campanas -H 'content-type: application/json' 
 curl -X POST localhost:3000/__mock/campanas/1/vehiculos/5/atendida
 # V2-M26.04: ventas captura o renueva la oferta de la valuación 1 (debe tener cita) y llega `valuacion.oferta`
 curl -X POST localhost:3000/__mock/valuaciones/1/oferta -H 'content-type: application/json' -d '{"monto":125000,"nota":"Oferta de prueba"}'
+# V2-M14.05: la agencia marca el pedido 1 como listo, entregado o cancelado y llega `pedido.estado`
+curl -X POST localhost:3000/__mock/pedidos/1/estado -H 'content-type: application/json' -d '{"estado":"listo"}'
 # V2-M10.05 · aviso de garantía por vencer de la batería (motivo opcional: dias_60, dias_15 o km_1000)
 curl -X POST localhost:3000/__mock/garantias/1/aviso -H 'content-type: application/json' -d '{"motivo":"dias_60"}'
 # V2-M12.02 · el cliente 1 gana 165 puntos por un servicio y llega `puntos.movidos`

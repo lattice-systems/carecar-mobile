@@ -224,11 +224,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Lista | |
 | V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Lista | |
 | V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Lista | |
-| V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Borrador | |
-| V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 | Borrador | |
-| V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
+| V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |
+| V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 (simulable) | Hecha | #168, backend#107 |
+| V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02 (simulable), V2-M02.08 | Hecha | #168, backend#107 |
 | V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Borrador | |
-| V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M06.02 | Borrador | |
+| V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M14.02 (simulable), V2-M06.02 (solo push) | Hecha | #168, backend#107 |
 | V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Hecha | #118, backend#93, backend#94 |
@@ -239,11 +239,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Hecha | #104, backend#88, #119, backend#95 |
 | V2-M17.05 | Cancelar o reprogramar la cita mueve sus traslados | Juan Pablo | B | V2-M17.02 | Hecha | backend#88 |
 | V2-M17.06 | Entrar a «Mis direcciones» desde el perfil | Juan Pablo |  | V2-M17.01 | Hecha | #104 |
-| V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | En revisión | #164, backend#106 |
-| V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 (simulable) | En revisión | #164, backend#106 |
-| V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01 (simulable), V2-M02.08 | En revisión | #164, backend#106 |
-| V2-M26.04 | Recibir la oferta y aceptarla o rechazarla | Cristian | B | V2-M26.03 (simulable) | En revisión | #164, backend#106 |
-| V2-M26.05 | Ver cómo cambia el valor de mi auto con el tiempo | Cristian | B | V2-M03.04 | En revisión | #164, backend#106 |
+| V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Hecha | #164, backend#106 |
+| V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 (simulable) | Hecha | #164, backend#106 |
+| V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01 (simulable), V2-M02.08 | Hecha | #164, backend#106 |
+| V2-M26.04 | Recibir la oferta y aceptarla o rechazarla | Cristian | B | V2-M26.03 (simulable) | Hecha | #164, backend#106 |
+| V2-M26.05 | Ver cómo cambia el valor de mi auto con el tiempo | Cristian | B | V2-M03.04 | Hecha | #164, backend#106 |
 
 ## H6 · Inteligencia y extras
 

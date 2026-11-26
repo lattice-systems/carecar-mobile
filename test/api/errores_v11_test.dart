@@ -115,6 +115,12 @@ void main() {
         'RECOMPENSA_AGOTADA',
         'REFERIDO_DUPLICADO',
         'LIMITE_REFERIDOS',
+        'SIN_EXISTENCIA',
+        'CITA_NO_DISPONIBLE',
+        'LIMITE_APARTADOS',
+        'PEDIDO_NO_CANCELABLE',
+        'PEDIDO_NO_MODIFICABLE',
+        'PRODUCTO_INCOMPATIBLE',
       };
 
       final queLaAppMapea = CodigoProblema.values
