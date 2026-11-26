@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.22.0
+  version: 2.23.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -78,6 +78,10 @@ tags:
     description: V2-M10.01, V2-M10.02 y V2-M10.03
   - name: Lealtad
     description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
+  - name: Pagos y facturas
+    description: |
+      V2-M08.05 · Datos fiscales. Los pagos y las facturas de M08 son simulados (ADR 0009 de
+      carecar-mobile): no hay procesador ni proveedor de timbrado externos.
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
@@ -2324,6 +2328,142 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /catalogos-fiscales:
+    get:
+      tags: [Pagos y facturas]
+      summary: Catálogos del SAT para los datos fiscales
+      description: |
+        V2-M08.05 · `c_RegimenFiscal` y `c_UsoCFDI` de CFDI 4.0 con la persona a la que aplica
+        cada clave (`fisica`, `moral`) y los regímenes del receptor que acepta cada uso. El
+        formulario de la app solo ofrece las combinaciones que el servidor acepta. Sin `CP01`
+        (Pagos) ni `CN01` (Nómina), que no sirven para facturar un servicio.
+      responses:
+        '200':
+          description: Catálogos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogoFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /perfiles-fiscales:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis datos fiscales
+      description: V2-M08.05 · El predeterminado primero y luego del más viejo al más nuevo.
+      responses:
+        '200':
+          description: Perfiles fiscales del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PerfilFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    post:
+      tags: [Pagos y facturas]
+      summary: Agregar datos fiscales
+      description: |
+        V2-M08.05 · RFC de 12 (moral) o 13 (física) caracteres con fecha real y dígito verificador
+        del SAT (los genéricos no se aceptan), razón social, código postal de 5 dígitos, régimen y
+        uso de CFDI del catálogo y válidos para el tipo de persona, el uso aceptado por el régimen y
+        correo opcional. El RFC y la razón social se guardan en mayúsculas. El primero queda como
+        predeterminado; otro lo es con `predeterminado: true`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntradaPerfilFiscal'
+      responses:
+        '201':
+          description: Perfil guardado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '400':
+          $ref: '#/components/responses/DatosFiscalesInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /perfiles-fiscales/{perfilId}:
+    parameters:
+      - name: perfilId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags: [Pagos y facturas]
+      summary: Ver un perfil fiscal
+      description: V2-M08.05 · Uno ajeno responde 404.
+      responses:
+        '200':
+          description: El perfil
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    put:
+      tags: [Pagos y facturas]
+      summary: Corregir datos fiscales
+      description: |
+        V2-M08.05 · Reemplaza los datos con las mismas reglas del alta. `predeterminado: true` lo
+        vuelve el predeterminado; `false` o sin él no cambia cuál es. Uno ajeno responde 404.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntradaPerfilFiscal'
+      responses:
+        '200':
+          description: Perfil corregido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfilFiscal'
+        '400':
+          $ref: '#/components/responses/DatosFiscalesInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+    delete:
+      tags: [Pagos y facturas]
+      summary: Borrar datos fiscales
+      description: |
+        V2-M08.05 · Si era el predeterminado, lo toma el más viejo de los que quedan. Uno ajeno
+        responde 404.
+      responses:
+        '204':
+          description: Borrado
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /lealtad:
     get:
       tags: [Lealtad]
@@ -3061,6 +3201,23 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Problema'
+    DatosFiscalesInvalidos:
+      description: |
+        Un dato fiscal no cumple las reglas del SAT (`codigo` DATOS_FISCALES_INVALIDOS). `campos`
+        dice qué corregir en cada uno, con el nombre del campo de la petición.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problema'
+          example:
+            timestamp: '2026-11-26T18:00:00Z'
+            status: 400
+            error: Bad Request
+            message: El dígito verificador del RFC no coincide; revisa la homoclave
+            codigo: DATOS_FISCALES_INVALIDOS
+            campos:
+              rfc: El dígito verificador del RFC no coincide; revisa la homoclave
+            path: /api/v1/app/perfiles-fiscales
 
   schemas:
     PreguntaAsistente:
@@ -5265,6 +5422,120 @@ components:
           minimum: -180
           maximum: 180
 
+    TipoPersona:
+      type: string
+      description: Lo dice el largo del RFC; 13 es persona física y 12 moral.
+      enum: [FISICA, MORAL]
+    RegimenFiscal:
+      type: object
+      required: [clave, descripcion, fisica, moral]
+      properties:
+        clave:
+          type: string
+          example: '612'
+        descripcion:
+          type: string
+          example: Personas Físicas con Actividades Empresariales y Profesionales
+        fisica:
+          type: boolean
+          description: Aplica a persona física
+        moral:
+          type: boolean
+          description: Aplica a persona moral
+    UsoCfdi:
+      type: object
+      required: [clave, descripcion, fisica, moral, regimenes]
+      properties:
+        clave:
+          type: string
+          example: G03
+        descripcion:
+          type: string
+          example: Gastos en general
+        fisica:
+          type: boolean
+        moral:
+          type: boolean
+        regimenes:
+          type: array
+          description: Claves de régimen del receptor que aceptan este uso, ordenadas
+          items:
+            type: string
+    CatalogoFiscal:
+      type: object
+      required: [regimenes, usosCfdi]
+      properties:
+        regimenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegimenFiscal'
+        usosCfdi:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsoCfdi'
+    PerfilFiscal:
+      type: object
+      required: [id, rfc, tipoPersona, razonSocial, regimenFiscal, codigoPostal, usoCfdi, predeterminado, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        rfc:
+          type: string
+          example: GODE561231GR8
+        tipoPersona:
+          $ref: '#/components/schemas/TipoPersona'
+        razonSocial:
+          type: string
+          description: En mayúsculas, como en la constancia de situación fiscal
+          example: DOLORES GÓMEZ
+        regimenFiscal:
+          type: string
+          example: '612'
+        codigoPostal:
+          type: string
+          description: Del domicilio fiscal
+          example: '76000'
+        usoCfdi:
+          type: string
+          example: G03
+        correo:
+          type: string
+          format: email
+          nullable: true
+          description: Adonde mandar la factura; opcional
+        predeterminado:
+          type: boolean
+        creadoEn:
+          type: string
+          format: date-time
+    EntradaPerfilFiscal:
+      type: object
+      description: Los campos se revisan en el servidor; los que fallan vuelven en `campos`.
+      properties:
+        rfc:
+          type: string
+          maxLength: 13
+        razonSocial:
+          type: string
+          maxLength: 254
+        regimenFiscal:
+          type: string
+          maxLength: 3
+        codigoPostal:
+          type: string
+          maxLength: 5
+        usoCfdi:
+          type: string
+          maxLength: 4
+        correo:
+          type: string
+          nullable: true
+          maxLength: 254
+        predeterminado:
+          type: boolean
+          nullable: true
+          description: "`true` lo vuelve el predeterminado; `false` o sin él no cambia cuál es"
     Direccion:
       allOf:
         - type: object
@@ -5742,7 +6013,15 @@ components:
             - PEDIDO_NO_CANCELABLE
             - PEDIDO_NO_MODIFICABLE
             - PRODUCTO_INCOMPATIBLE
+            - DATOS_FISCALES_INVALIDOS
           example: FRANJA_SIN_CUPO
+        campos:
+          type: object
+          description: |
+            Qué está mal en cada campo de la petición (nombre del campo → por qué). Solo viene en
+            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS.
+          additionalProperties:
+            type: string
         path:
           type: string
           example: /api/v1/app/citas
