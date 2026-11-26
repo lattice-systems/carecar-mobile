@@ -270,7 +270,32 @@ class CarecarApiConCache implements CarecarApi {
     }
   }
 
+  /// Las sesiones activas **nunca se guardan en copia** (V2-M01.09).
+  ///
+  /// No es por el tamano: una copia vieja le diria al cliente que la sesion
+  /// que acaba de cerrar sigue abierta, o peor, que no hay ninguna intrusa
+  /// cuando si la hay. Esta pantalla existe justo para responder «¿quien esta
+  /// dentro de mi cuenta ahora?», y a eso o se responde con el servidor o no
+  /// se responde: sin conexion sale `SinConexion` y la pantalla lo dice.
+  @override
+  Future<List<SesionActiva>> misSesiones() => _api.misSesiones();
+
+  /// Cerrar todas incluye la sesion de este celular, asi que la copia local
+  /// deja de tener dueno: se limpia igual que al cerrar sesion.
+  @override
+  Future<void> cerrarTodasLasSesiones() async {
+    try {
+      await _api.cerrarTodasLasSesiones();
+    } finally {
+      await limpiar();
+    }
+  }
+
   // Delegados sin cambio.
+
+  @override
+  Future<void> cerrarSesionActiva(int sesionId) =>
+      _api.cerrarSesionActiva(sesionId);
 
   @override
   Future<RespuestaLogin> refrescar(String refreshToken) =>

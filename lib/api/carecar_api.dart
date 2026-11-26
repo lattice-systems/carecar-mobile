@@ -66,6 +66,30 @@ abstract interface class CarecarApi {
   /// `GET /perfil`. Informacion de solo lectura del cliente autenticado.
   Future<Perfil> miPerfil();
 
+  // --- Sesiones y dispositivos activos · V2-M01.09 ---
+
+  /// `GET /sesiones`: las sesiones **vigentes** de la cuenta, ni revocadas ni
+  /// vencidas.
+  ///
+  /// Vienen ordenadas por `ultimoUso` descendente y las que nunca se
+  /// refrescaron al final. La app **no reordena**: si lo hiciera tendria que
+  /// decidir que hacer con los nulos y acabaria discrepando del servidor.
+  Future<List<SesionActiva>> misSesiones();
+
+  /// `DELETE /sesiones/{id}`: revoca esa sesion.
+  ///
+  /// Idempotente: una sesion ya revocada responde 204 igual. Una sesion de otra
+  /// cuenta lanza `NoEncontrado` (404, no 403), que es la regla del contrato
+  /// para un recurso ajeno: un 403 revelaria que existe.
+  Future<void> cerrarSesionActiva(int sesionId);
+
+  /// `DELETE /sesiones`: revoca **todas** las sesiones de la cuenta, **incluida
+  /// la de quien llama**. Es «cerrar sesión en todos los dispositivos».
+  ///
+  /// Igual que `cerrarSesion`, el access token en curso sigue valiendo hasta
+  /// que expire, asi que quien llame tiene que cerrar la sesion local tambien.
+  Future<void> cerrarTodasLasSesiones();
+
   // --- Vehiculos · APP-3.1 y ADM-1 ---
 
   /// `GET /vehiculos`. Solo los del cliente de la sesion.

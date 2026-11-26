@@ -61,14 +61,19 @@ const _vacio = <String, Object?>{
   'especificaciones': <Object?>[],
 };
 
-Widget _app(ApiFalsa api, int id, {Escenario escenario = Escenario.claro}) =>
-    ProviderScope(
-      overrides: [carecarApiProvider.overrideWithValue(api)],
-      child: conTemaPista(
-        PantallaDetalleModelo(modeloId: id),
-        escenario: escenario,
-      ),
-    );
+Widget _app(
+  ApiFalsa api,
+  int id, {
+  Escenario escenario = Escenario.claro,
+  double ancho = 360,
+}) => ProviderScope(
+  overrides: [carecarApiProvider.overrideWithValue(api)],
+  child: conTemaPista(
+    PantallaDetalleModelo(modeloId: id),
+    escenario: escenario,
+    ancho: ancho,
+  ),
+);
 
 void _pantallaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(800, 3000);
@@ -191,6 +196,22 @@ void main() {
     await tester.pumpWidget(_app(api, 2));
     await tester.pumpAndSettle();
     await auditarAccesibilidad(tester);
+  });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      final api = ApiFalsa()
+        ..detallesCatalogo = {2: DetalleModeloCatalogo.fromJson(_json)};
+      await tester.pumpWidget(
+        _app(api, 2, escenario: escenario, ancho: anchoTelefonoChico),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
   });
 
   group('rutas', () {

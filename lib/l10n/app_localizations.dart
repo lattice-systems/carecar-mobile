@@ -392,6 +392,156 @@ abstract class AppLocalizations {
   /// **'Despertando el servidor…'**
   String get accesoServidorDespertandoTitulo;
 
+  /// Último uso de una sesión que se usó hace menos de un minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Activa ahora'**
+  String get accesoSesionesActivaAhora;
+
+  /// Aviso cuando cerrar una sesión falla porque su identificador ya cambió: la sesión sigue abierta con otro identificador.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.'**
+  String get accesoSesionesCambio;
+
+  /// Acción secundaria del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get accesoSesionesCancelar;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus sesiones…'**
+  String get accesoSesionesCargando;
+
+  /// Confirmación después de cerrar una sesión de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, esa sesión se cerró.'**
+  String get accesoSesionesCerrada;
+
+  /// Botón de cada fila para cerrar esa sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get accesoSesionesCerrar;
+
+  /// Etiqueta para lector de pantalla del botón de cerrar una sesión, para que no diga solo «Cerrar».
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar la sesión de {dispositivo}'**
+  String accesoSesionesCerrarEtiqueta(String dispositivo);
+
+  /// Botón inferior que cierra la sesión en todos los dispositivos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar todas las sesiones'**
+  String get accesoSesionesCerrarTodas;
+
+  /// Acción principal del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar todas'**
+  String get accesoSesionesCerrarTodasConfirmar;
+
+  /// Mensaje del diálogo de cerrar todas: avisa que la sesión de este mismo teléfono también se cierra.
+  ///
+  /// In es, this message translates to:
+  /// **'Se cerrarán en todos tus dispositivos, incluido este. Tendrás que entrar otra vez.'**
+  String get accesoSesionesCerrarTodasMensaje;
+
+  /// Título del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar todas las sesiones?'**
+  String get accesoSesionesCerrarTodasTitulo;
+
+  /// Mensaje del diálogo que confirma cerrar una sesión de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese dispositivo tendrá que entrar otra vez con tu correo y tu contraseña.'**
+  String get accesoSesionesCerrarUnaMensaje;
+
+  /// Título del diálogo que confirma cerrar una sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar la sesión de {dispositivo}?'**
+  String accesoSesionesCerrarUnaTitulo(String dispositivo);
+
+  /// Encabezado de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Dispositivos con tu sesión abierta'**
+  String get accesoSesionesEncabezado;
+
+  /// Nombre que se muestra cuando la sesión no trae el nombre del dispositivo, como las abiertas antes de esta función.
+  ///
+  /// In es, this message translates to:
+  /// **'Dispositivo sin nombre'**
+  String get accesoSesionesEquipoSinNombre;
+
+  /// Aviso cuando cerrar una sesión falla por un error de red o del servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cerrar esa sesión. Inténtalo otra vez.'**
+  String get accesoSesionesFalloCerrar;
+
+  /// Último uso de una sesión, en días.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{Hace 1 día} other{Hace {dias} días}}'**
+  String accesoSesionesHaceDias(int dias);
+
+  /// Último uso de una sesión, en horas.
+  ///
+  /// In es, this message translates to:
+  /// **'{horas, plural, =1{Hace 1 hora} other{Hace {horas} horas}}'**
+  String accesoSesionesHaceHoras(int horas);
+
+  /// Último uso de una sesión, en minutos.
+  ///
+  /// In es, this message translates to:
+  /// **'{minutos, plural, =1{Hace 1 minuto} other{Hace {minutos} minutos}}'**
+  String accesoSesionesHaceMinutos(int minutos);
+
+  /// Pie de la lista de sesiones: qué hacer si hay un dispositivo desconocido.
+  ///
+  /// In es, this message translates to:
+  /// **'Si ves un dispositivo que no reconoces, ciérralo y cambia tu contraseña.'**
+  String get accesoSesionesPie;
+
+  /// Último uso de una sesión abierta antes de esta función, que no guardó ninguna fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin actividad registrada'**
+  String get accesoSesionesSinActividad;
+
+  /// Título de la pantalla de sesiones y dispositivos activos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis sesiones'**
+  String get accesoSesionesTitulo;
+
+  /// Último uso de una sesión de hace más de una semana, con la fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'El {fecha}'**
+  String accesoSesionesUltimoUsoFecha(String fecha);
+
+  /// Mensaje del estado vacío de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando entres desde un dispositivo, aparecerá aquí.'**
+  String get accesoSesionesVacioMensaje;
+
+  /// Título del estado vacío de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay sesiones abiertas'**
+  String get accesoSesionesVacioTitulo;
+
   /// Título del aviso cuando no se pudo llegar al servidor al intentar entrar.
   ///
   /// In es, this message translates to:

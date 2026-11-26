@@ -100,7 +100,7 @@ Total: **233 historias** (una descartada) + 4 de H0.
 | V2-M01.06 | Ver mi perfil | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | Lista | |
 | V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Lista | |
+| V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Hecha | #175 |
 | V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
 | V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Hecha | #162 |
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
@@ -125,13 +125,13 @@ Total: **233 historias** (una descartada) + 4 de H0.
 | V2-M03.06 | Que la estimación salga de parámetros que puedo ajustar | Cristian | B | V2-M03.04 | Hecha | #91, backend#84 |
 | V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | Hecha | #67, #90, backend#69 |
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Hecha | #49, #60 |
-| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
-| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
+| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | #174 |
+| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | #174 |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Hecha | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
-| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | |
+| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | #174 |
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
