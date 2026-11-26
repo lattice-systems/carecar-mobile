@@ -24,6 +24,12 @@
 
 Se usa `matchesGoldenFile` de `flutter_test`. Las suites Portada y Mensajes cargan directamente los archivos de Inter, JetBrains Mono y Material Icons y cubren cinco muestras de la galería en claro, oscuro y letra al 200 %. El job de pruebas de Linux compara las imágenes y usa el reporte expandido para registrar los errores de preparación. El procedimiento de ejecución y regeneración está en el [sistema de diseño v2](../../docs/diseno/sistema-de-diseno-v2.md#pruebas-golden).
 
+## V2-T03.03 · Flujo principal en Android
+
+La [prueba de integración](../../integration_test/flujo_principal_test.dart) arranca CareCar, inicia sesión, abre el garaje, agenda y cancela en la interfaz. Al regresar a Mis citas verifica que la cancelación sigue visible después de volver a consultar el servidor. CI usa un emulador Android de API 35 y el mock en memoria, con franjas de fecha relativa para que el guion siga funcionando con el calendario real.
+
+Desde la raíz del repo, puedes correr `npm ci --prefix mock_api` y `bash tool/probar_flujo_android.sh emulator-5554` con un emulador abierto. En PowerShell inicia `node mock_api/pruebas/servidor_flujo.js` en una terminal. En otra ejecuta `flutter test integration_test/flujo_principal_test.dart -d emulator-5554 --flavor desarrollo '--dart-define=MODULOS_V2=vehiculos,citas'`. Usa una instalación de desarrollo dedicada a pruebas porque el guion reinicia su sesión local.
+
 ## V2-T03.06 · Contrato de la API simulada
 
 La [prueba de contrato](../../test/contrato/mock_api_v2_test.dart) coteja el inventario real de métodos y rutas con `api/agencia360-api-app-v2.yaml`. Comprueba las respuestas `Problema` de las operaciones protegidas y casos autenticados de JSON, PDF y SSE. CI instala las dependencias del mock y ejecuta la prueba con semillas en memoria. [Ejecución local](../../mock_api/README.md#agregar-un-módulo)
