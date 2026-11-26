@@ -257,6 +257,18 @@ Se repasaron una por una las pantallas de los módulos antes de encender la v2 p
 - **La próxima cita** de `Mis citas` era otra tarjeta héroe (degradado, etiqueta en mayúsculas, día de 84 px). Ahora es la `TarjetaResumen` del inicio con el `CuadroFecha` en el tono del estado; Comprobante, Reprogramar y Cancelar quedan debajo. El inicio, que solo muestra citas confirmadas, pinta el mismo cuadro en el mismo tono: antes la misma cita era azul en el inicio y verde en «Mis citas».
 - **Una sola flecha.** Filas y tarjetas tocables llevan la misma (`LucideIcons300.chevronRight`, el set único de V2-T02.07) en el mismo color, `textoTerciario`: `FilaLista` y `Semaforo` la llevaban en `textoSecundario`. Las pruebas que contaban flechas cuentan las de la lista, sin confundirse con la de una tarjeta.
 - **`EstadoError` traducido.** Sus textos por omisión estaban escritos a mano («Sin conexion», sin tilde y siempre en español) y los usan 44 pantallas; ahora salen de `AppLocalizations` (cinco cadenas nuevas).
+
+## Avance de V2-T02.26 (segunda pasada a las pantallas v2)
+
+Con la v2 por defecto ([V2-T01.09](T01-arquitectura-v2.md)) se recorrieron en la app corriendo las pantallas que V2-T02.25 no tocó (asistencia, vehículos, garantía, lealtad, tienda, valuación, privacidad, taller, citas, catálogo). La mayoría ya era coherente; esto es lo que no:
+
+- **Comprobante de la cita:** la lista «Detalles de la cita» (y la de recolección) iba sin el margen lateral de los botones y la tarjeta llegaba de borde a borde.
+- **Ficha técnica:** cada sección mostraba dos flechas (desplegar y «abre otra pantalla»); queda la de desplegar (`conChevron: false`).
+- **Emergencias:** las guías salían dos veces (estante de portadas de color y lista); queda la lista, con el encabezado «Guías». La tarjeta «¿Necesitas ayuda ahora?» usaba `bordeHoja` (solo redondea arriba) y se veía con la base recta.
+- **Pedir ayuda:** el primer título era la etiqueta pequeña de la lista y los otros dos, títulos de sección; los tres son ahora el mismo.
+
+**Sigue como estaba:** la calculadora de toma a cuenta conserva `BarraPantalla` (título pequeño) porque desplaza a mano hasta el resultado con un controlador propio; pasarla a `MarcoPantalla` pide darle un controlador al marco.
+
 ## Avance de V2-T02.02
 
 | Criterio | Dónde se cumple |

@@ -6,10 +6,8 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/estante.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
-import '../../../nucleo/diseno/tokens/colores.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -18,11 +16,13 @@ import 'estilo_guias.dart';
 import 'rutas_asistencia.dart';
 import 'textos_guias.dart';
 
-/// Lista de guias de emergencia (V2-M11.03), en estilo portada.
+/// Lista de guias de emergencia (V2-M11.03).
 ///
-/// Titulo grande translucido, tarjeta heroe de pedir ayuda, un estante con las
-/// guias como portadas y debajo la misma lista agrupada. Las guias vienen
-/// empaquetadas en la app: no hay carga, vacio ni error de red.
+/// Titulo grande, la tarjeta de pedir ayuda, el aviso de que las guias
+/// funcionan sin conexion y la lista agrupada de guias. Antes habia ademas un
+/// estante con las mismas guias como portadas de color: era la misma lista dos
+/// veces (V2-T02.26). Las guias vienen empaquetadas en la app: no hay carga,
+/// vacio ni error de red.
 class PantallaGuias extends StatelessWidget {
   const PantallaGuias({super.key});
 
@@ -50,19 +50,6 @@ class PantallaGuias extends StatelessWidget {
               0,
             ),
             child: Aviso(mensaje: textos.asistenciaGuiasAvisoSinConexion),
-          ),
-        ),
-        const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-        SliverToBoxAdapter(
-          child: Estante(
-            titulo: textos.asistenciaEstanteGuias,
-            anchoTarjeta: 168,
-            // Con letra grande la portada crece con el texto: sin esto el
-            // titulo y los pasos desbordan la tarjeta.
-            alto: 236 * MediaQuery.textScalerOf(context).scale(1).clamp(1, 2),
-            hijos: [
-              for (final guia in guiasDeEmergencia) _PortadaGuia(guia: guia),
-            ],
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
@@ -106,7 +93,7 @@ class _TarjetaHeroe extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: c.peligroSuave,
-          borderRadius: Radios.bordeHoja,
+          borderRadius: Radios.bordeTarjeta,
         ),
         child: Padding(
           padding: const EdgeInsets.all(Espaciado.e5),
@@ -145,71 +132,6 @@ class _TarjetaHeroe extends StatelessWidget {
                 alPresionar: () => context.go(rutaLlamarRapido),
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Portada de una guia en el estante: icono grande sobre su color.
-class _PortadaGuia extends StatelessWidget {
-  const _PortadaGuia({required this.guia});
-
-  final GuiaEmergencia guia;
-
-  @override
-  Widget build(BuildContext context) {
-    final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
-    final PaletaColores c = tokens.colores;
-    final color = guia.tipo.color(c);
-    final titulo = textos.tituloDeGuia(guia.tipo);
-
-    return Semantics(
-      button: true,
-      label: [
-        titulo,
-        textos.asistenciaGuiaCantidadPasos(guia.pasos),
-      ].join(', '),
-      excludeSemantics: true,
-      onTap: () => context.go(rutaGuiaDeEmergencia(guia.tipo)),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: Radios.bordeTarjeta,
-          onTap: () => context.go(rutaGuiaDeEmergencia(guia.tipo)),
-          child: Ink(
-            decoration: BoxDecoration(
-              color: Color.alphaBlend(
-                color.withValues(alpha: 0.22),
-                c.superficie,
-              ),
-              borderRadius: Radios.bordeTarjeta,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(Espaciado.e4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(guia.tipo.icono, size: 64, color: color),
-                  const Spacer(),
-                  Text(
-                    titulo,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: tokens.tipografia.titulo3.copyWith(color: c.texto),
-                  ),
-                  const SizedBox(height: Espaciado.e1),
-                  Text(
-                    textos.asistenciaGuiaCantidadPasos(guia.pasos),
-                    style: tokens.tipografia.cuerpoChico.copyWith(
-                      color: c.textoSecundario,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
         ),
       ),

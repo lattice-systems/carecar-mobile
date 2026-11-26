@@ -396,10 +396,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get asistenciaHeroeAccion => 'Ask for help';
 
   @override
-  String get asistenciaEstanteGuias => 'Quick guides';
-
-  @override
-  String get asistenciaGrupoGuias => 'All guides';
+  String get asistenciaGrupoGuias => 'Guides';
 
   @override
   String asistenciaGuiaCantidadPasos(int pasos) {

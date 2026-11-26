@@ -168,43 +168,53 @@ class _Comprobante extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: Espaciado.e6),
-        GrupoLista(
-          encabezado: textos.citasComprobanteDetalles,
-          filas: [
-            if (datos.vehiculoNombre != null)
-              FilaGrupo(
-                titulo: textos.citasResumenVehiculo,
-                subtitulo: datos.vehiculoNombre,
-                icono: LucideIcons300.carFront,
-                colorIcono: c.acento,
+        // Los grupos van con el mismo margen lateral que los botones de arriba:
+        // sin el, la tarjeta llegaba de borde a borde.
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              GrupoLista(
+                encabezado: textos.citasComprobanteDetalles,
+                filas: [
+                  if (datos.vehiculoNombre != null)
+                    FilaGrupo(
+                      titulo: textos.citasResumenVehiculo,
+                      subtitulo: datos.vehiculoNombre,
+                      icono: LucideIcons300.carFront,
+                      colorIcono: c.acento,
+                    ),
+                  FilaGrupo(
+                    titulo: textos.citasResumenFecha,
+                    subtitulo: fecha,
+                    icono: LucideIcons300.calendar,
+                    colorIcono: c.marca,
+                  ),
+                  FilaGrupo(
+                    titulo: textos.citasResumenHorario,
+                    subtitulo: textos.citasResumenHorarioValor(
+                      datos.horaInicio,
+                      datos.horaFin,
+                    ),
+                    icono: LucideIcons300.clock,
+                    colorIcono: c.advertencia,
+                  ),
+                  FilaGrupo(
+                    titulo: textos.citasComprobanteRecepcion,
+                    subtitulo: textos.citasComprobanteIndicacion,
+                    icono: LucideIcons300.scanQrCode,
+                    colorIcono: c.exito,
+                  ),
+                ],
               ),
-            FilaGrupo(
-              titulo: textos.citasResumenFecha,
-              subtitulo: fecha,
-              icono: LucideIcons300.calendar,
-              colorIcono: c.marca,
-            ),
-            FilaGrupo(
-              titulo: textos.citasResumenHorario,
-              subtitulo: textos.citasResumenHorarioValor(
-                datos.horaInicio,
-                datos.horaFin,
-              ),
-              icono: LucideIcons300.clock,
-              colorIcono: c.advertencia,
-            ),
-            FilaGrupo(
-              titulo: textos.citasComprobanteRecepcion,
-              subtitulo: textos.citasComprobanteIndicacion,
-              icono: LucideIcons300.scanQrCode,
-              colorIcono: c.exito,
-            ),
-          ],
+              if (recoleccion != null) ...[
+                const SizedBox(height: Espaciado.e4),
+                GrupoRecoleccionCita(recoleccion: recoleccion!),
+              ],
+            ],
+          ),
         ),
-        if (recoleccion != null) ...[
-          const SizedBox(height: Espaciado.e4),
-          GrupoRecoleccionCita(recoleccion: recoleccion!),
-        ],
       ],
     );
   }
