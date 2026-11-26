@@ -66,9 +66,14 @@ Widget _app(
   ApiFalsa api,
   List<int> ids, {
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [carecarApiProvider.overrideWithValue(api)],
-  child: conTemaPista(PantallaComparador(ids: ids), escenario: escenario),
+  child: conTemaPista(
+    PantallaComparador(ids: ids),
+    escenario: escenario,
+    ancho: ancho,
+  ),
 );
 
 void _pantallaAlta(WidgetTester tester) {
@@ -236,6 +241,25 @@ void main() {
     await tester.pumpWidget(_app(_api(), [1, 2, 3]));
     await tester.pumpAndSettle();
     await auditarAccesibilidad(tester);
+  });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(
+          _api(),
+          [1, 2, 3],
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
   });
 
   group('modo comparar en el catalogo', () {

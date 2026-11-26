@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
 
 /// Auditoria automatica de accesibilidad para una pantalla ya montada
@@ -25,4 +27,15 @@ Future<void> auditarAccesibilidad(WidgetTester tester) async {
   } finally {
     semantica.dispose();
   }
+}
+
+/// Ancho de un teléfono chico, para comprobar que nada se corta (V2-M20.03).
+const anchoTelefonoChico = 320.0;
+
+/// Pone la vista en el ancho de un teléfono chico. El alto es grande a
+/// propósito: así las listas construyen y se miden todas sus filas.
+void telefonoChicoYAlto(WidgetTester tester, {double alto = 12000}) {
+  tester.view.physicalSize = Size(anchoTelefonoChico, alto);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
 }

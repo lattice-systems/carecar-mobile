@@ -21,10 +21,12 @@ Widget _app(
   RepositorioValuacionFake repo, {
   RepositorioCitasFake? citas,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => app(
   _pantalla,
   repositorio: repo,
   escenario: escenario,
+  ancho: ancho,
   extra: [
     repositorioCitasProvider.overrideWithValue(citas ?? citasConCupo()),
     relojCitasProvider.overrideWithValue(() => lunes),
@@ -168,6 +170,40 @@ void main() {
       await _elegirDiaYHora(tester);
       expect(tester.takeException(), isNull, reason: escenario.name);
       await auditarAccesibilidad(tester);
+    }
+  });
+
+  testWidgets('en 320 de ancho no se corta y se lee en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(
+          RepositorioValuacionFake(valuaciones: [valuacion()]),
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      await _elegirDiaYHora(tester);
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      // Excepción aceptada (M20): en 320 no caben siete columnas de 48, así
+      // que cada día del Calendario mide unos 42 de ancho y conserva 48 de
+      // alto. La guía baja a 40 de ancho para que no se encoja más.
+      final semantica = tester.ensureSemantics();
+      await expectLater(
+        tester,
+        meetsGuideline(
+          const MinimumTapTargetGuideline(
+            size: Size(40, 48),
+            link: 'https://www.w3.org/TR/WCAG22/#target-size-minimum',
+          ),
+        ),
+      );
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+      semantica.dispose();
     }
   });
 }

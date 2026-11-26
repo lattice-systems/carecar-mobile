@@ -128,4 +128,25 @@ void main() {
       await auditarAccesibilidad(tester);
     }
   });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        app(
+          _pantalla,
+          repositorio: RepositorioValuacionFake(
+            puntos: [punto(9, 115000), punto(11, 110000)],
+          ),
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
+  });
 }
