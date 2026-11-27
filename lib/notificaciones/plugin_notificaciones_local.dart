@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz_datos;
 import 'package:timezone/timezone.dart' as tz;
@@ -14,10 +13,15 @@ class PluginNotificacionesLocal implements PluginNotificaciones {
   PluginNotificacionesLocal({required this.alTocar});
 
   /// Se llama cuando el usuario toca un aviso con la app viva.
-  final VoidCallback alTocar;
+  ///
+  /// Recibe el destino que traia el aviso, si traia uno (V2-M06.03).
+  final void Function(String? destino) alTocar;
 
   @override
   bool abiertaDesdeAviso = false;
+
+  @override
+  String? destinoDeArranque;
 
   final _plugin = FlutterLocalNotificationsPlugin();
 
@@ -53,10 +57,15 @@ class PluginNotificacionesLocal implements PluginNotificaciones {
           requestSoundPermission: false,
         ),
       ),
-      onDidReceiveNotificationResponse: (_) => alTocar(),
+      onDidReceiveNotificationResponse: (r) => alTocar(r.payload),
     );
     final arranque = await _plugin.getNotificationAppLaunchDetails();
     abiertaDesdeAviso = arranque?.didNotificationLaunchApp ?? false;
+    // Con la app cerrada no hay toque que escuchar: el destino solo esta aqui
+    // (V2-M06.03). Es el unico camino para el arranque en frio.
+    if (abiertaDesdeAviso) {
+      destinoDeArranque = arranque?.notificationResponse?.payload;
+    }
   }
 
   @override
@@ -81,11 +90,17 @@ class PluginNotificacionesLocal implements PluginNotificaciones {
   }
 
   @override
-  Future<void> mostrar(int id, String titulo, String cuerpo) => _plugin.show(
+  Future<void> mostrar(
+    int id,
+    String titulo,
+    String cuerpo, {
+    String? destino,
+  }) => _plugin.show(
     id: id,
     title: titulo,
     body: cuerpo,
     notificationDetails: _detalles,
+    payload: destino,
   );
 
   @override
@@ -93,8 +108,9 @@ class PluginNotificacionesLocal implements PluginNotificaciones {
     int id,
     DateTime cuando,
     String titulo,
-    String cuerpo,
-  ) => _plugin.zonedSchedule(
+    String cuerpo, {
+    String? destino,
+  }) => _plugin.zonedSchedule(
     id: id,
     scheduledDate: tz.TZDateTime(
       _zona,
@@ -108,6 +124,7 @@ class PluginNotificacionesLocal implements PluginNotificaciones {
     androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
     title: titulo,
     body: cuerpo,
+    payload: destino,
   );
 
   @override

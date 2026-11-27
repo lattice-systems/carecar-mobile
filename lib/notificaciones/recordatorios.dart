@@ -6,6 +6,13 @@ library;
 
 import '../api/modelos/cita.dart';
 
+/// A donde lleva un aviso de cita (V2-M06.03).
+///
+/// Se escribe aqui y no se importa de `modulos/citas` porque este archivo es
+/// de la v1 y lo usan las dos: el camino es el mismo, `rutaMisCitas`. Lo
+/// vigila `destino_de_aviso_test.dart`.
+const destinoDeCitas = '/citas';
+
 /// Un aviso listo para programar.
 class Recordatorio {
   const Recordatorio({
@@ -13,6 +20,7 @@ class Recordatorio {
     required this.cuando,
     required this.titulo,
     required this.cuerpo,
+    this.destino,
   });
 
   final int id;
@@ -21,6 +29,9 @@ class Recordatorio {
   final DateTime cuando;
   final String titulo;
   final String cuerpo;
+
+  /// A donde lleva tocarlo (V2-M06.03). `null` solo abre la app.
+  final String? destino;
 }
 
 /// Ids deterministas: cada cita reserva un bloque de 10.
@@ -82,12 +93,14 @@ List<Recordatorio> recordatoriosDe(
       cuando: inicio.subtract(const Duration(hours: 24)),
       titulo: 'Recordatorio de cita',
       cuerpo: 'Tu cita en Agencia360 es mañana a las $hora${_sufijo(nombre)}',
+      destino: destinoDeCitas,
     ),
     Recordatorio(
       id: IdsNotificacion.dosHoras(cita.id),
       cuando: inicio.subtract(const Duration(hours: 2)),
       titulo: 'Tu cita es pronto',
       cuerpo: 'Tu cita en Agencia360 es hoy a las $hora${_sufijo(nombre)}',
+      destino: destinoDeCitas,
     ),
   ];
   return [
