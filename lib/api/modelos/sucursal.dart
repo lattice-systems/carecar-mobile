@@ -1,6 +1,6 @@
 import 'comun.dart';
 
-/// Una sucursal de la agencia (`Sucursal` del contrato 2.27.0, V2-M27.02).
+/// Una sucursal de la agencia (`Sucursal` del contrato 2.28.0, V2-M27.02).
 ///
 /// `abiertaAhora` y el `abiertoAhora` de cada horario los calcula el servidor
 /// con la hora de la agencia, no el teléfono.
