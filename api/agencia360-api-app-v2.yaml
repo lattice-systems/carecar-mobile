@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.26.0
+  version: 2.27.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -80,12 +80,15 @@ tags:
     description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
   - name: Pagos y facturas
     description: |
-      V2-M08.02, V2-M08.04, V2-M08.05 y V2-M08.07 · Pagar una orden, tarjetas guardadas, datos
-      fiscales y mis pagos. Los pagos y las facturas de M08 son simulados (ADR 0009 de
+      V2-M08.02 a V2-M08.07 · Pagar una orden, billeteras, tarjetas guardadas, datos fiscales,
+      facturas y mis pagos. Los pagos y las facturas de M08 son simulados (ADR 0009 de
       carecar-mobile): no hay procesador ni proveedor de timbrado externos y no se cobra nada.
       La app nunca manda el número de una tarjeta: manda el token de una de las tarjetas de
       prueba (`tok_sim_visa`, `tok_sim_mastercard`, `tok_sim_visa_debito`,
-      `tok_sim_fondos_insuficientes`, `tok_sim_3ds` y `tok_sim_3ds_falla`).
+      `tok_sim_fondos_insuficientes`, `tok_sim_3ds` y `tok_sim_3ds_falla`). Apple Pay y Google Pay
+      también son simulados (V2-M08.03): no usan la billetera del teléfono. La factura es un XML
+      con la estructura de CFDI 4.0 y un timbre simulado, y su PDF dice «Factura simulada, sin
+      validez fiscal» (V2-M08.06).
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
@@ -2792,6 +2795,118 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /pagos/{pagoId}/factura:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Pagos y facturas]
+      summary: Facturar un pago
+      description: |
+        V2-M08.06 · Timbra (simulado) la factura de un pago `PAGADO` que se hizo sin datos
+        fiscales, o cuya factura automática se rechazó. Si al pagar se eligieron datos fiscales, la
+        factura se timbra sola al confirmarse el pago y llega `factura.timbrada`. Un pago de caja
+        se factura en la agencia. Los datos ajenos responden 404.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaFactura'
+      responses:
+        '201':
+          description: La factura timbrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `YA_FACTURADO`: el pago ya tiene factura. `PAGO_NO_FACTURABLE`: el pago no está
+            `PAGADO` o se pagó en caja.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            `TIMBRADO_RECHAZADO`: el timbrado (simulado) rechazó los datos fiscales; `campos` dice
+            qué corregir del perfil fiscal (por ejemplo `razonSocial` o `codigoPostal`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /facturas/{facturaId}/pdf:
+    parameters:
+      - $ref: '#/components/parameters/FacturaId'
+    get:
+      tags: [Pagos y facturas]
+      summary: Descargar el PDF de una factura
+      description: |
+        V2-M08.06 · Se descarga con el mismo token Bearer, como el ticket. El PDF dice «Factura
+        simulada, sin validez fiscal». Se guarda en el módulo `archivos` al timbrar y no cambia.
+      responses:
+        '200':
+          description: La factura en PDF
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="factura-{folio}.pdf"`'
+              schema:
+                type: string
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /facturas/{facturaId}/xml:
+    parameters:
+      - $ref: '#/components/parameters/FacturaId'
+    get:
+      tags: [Pagos y facturas]
+      summary: Descargar el XML de una factura
+      description: |
+        V2-M08.06 · XML con la estructura de CFDI 4.0 (emisor, receptor, conceptos e IVA) y el
+        complemento `TimbreFiscalDigital` simulado: sellos `SIMULADO`, sin validez fiscal.
+      responses:
+        '200':
+          description: La factura en XML
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="factura-{folio}.xml"`'
+              schema:
+                type: string
+          content:
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /metodos-pago:
     get:
       tags: [Pagos y facturas]
@@ -3347,6 +3462,9 @@ paths:
           cliente queda pagada, en la app o en caja, o un pedido de la tienda queda pagado en la
           app. Con `ordenId` la app vuelve a consultar el ticket y sus pagos, y con `pedidoId`, el
           pedido y la lista de pedidos.
+        - `factura.timbrada` (V2-M08.06), `AvisoFacturaTimbrada`: cuando queda timbrada la factura
+          de un pago del cliente, al confirmarse el pago o al facturarlo desde la app. La app
+          vuelve a consultar `GET /pagos/{pagoId}`.
 
         Ejemplo en el flujo:
         ```
@@ -3511,6 +3629,13 @@ components:
         format: int64
     OrdenId:
       name: ordenId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    FacturaId:
+      name: facturaId
       in: path
       required: true
       schema:
@@ -5772,7 +5897,7 @@ components:
         tienda. Exactamente uno de `ordenId` y `pedidoId` viene lleno. Nunca trae el número de la
         tarjeta, solo la marca y los últimos 4.
       required: [id, ordenId, pedidoId, vehiculoId, monto, moneda, medio, estado,
-        requiereAutenticacion, referencia, simulado, creadoEn]
+        requiereAutenticacion, referencia, simulado, creadoEn, factura, facturable]
       properties:
         id:
           type: integer
@@ -5807,6 +5932,9 @@ components:
         medio:
           type: string
           enum: [TARJETA, APPLE_PAY, GOOGLE_PAY, CAJA]
+          description: |
+            `APPLE_PAY` y `GOOGLE_PAY` son billeteras simuladas (V2-M08.03): sin marca ni últimos 4,
+            con `tipoTarjeta` `CREDITO`.
         marca:
           type: string
           nullable: true
@@ -5854,6 +5982,16 @@ components:
         creadoEn:
           type: string
           format: date-time
+        factura:
+          nullable: true
+          description: V2-M08.06 · La factura timbrada del pago; nula si aún no tiene
+          allOf:
+            - $ref: '#/components/schemas/Factura'
+        facturable:
+          type: boolean
+          description: |
+            V2-M08.06 · Se puede facturar desde la app ahora (`POST /pagos/{pagoId}/factura`):
+            está `PAGADO`, no se pagó en caja y aún no tiene factura.
     PaginaPagos:
       type: object
       required: [contenido, pagina, tamano, totalElementos, totalPaginas]
@@ -5874,8 +6012,9 @@ components:
     NuevoPago:
       type: object
       description: |
-        V2-M08.02 · Una tarjeta de prueba nueva (`tarjeta`) o una guardada (`metodoPagoId`), no
-        las dos. Nunca el número ni el CVV.
+        V2-M08.02 y V2-M08.03 · Una tarjeta de prueba nueva (`tarjeta`), una guardada
+        (`metodoPagoId`) o una billetera simulada (`billetera`): exactamente una. Nunca el número
+        ni el CVV.
       properties:
         tarjeta:
           type: object
@@ -5895,6 +6034,12 @@ components:
         metodoPagoId:
           type: integer
           format: int64
+        billetera:
+          type: string
+          enum: [APPLE_PAY, GOOGLE_PAY]
+          description: |
+            V2-M08.03 · Billetera simulada: no usa la del teléfono ni pide cuentas. Se aprueba sin
+            3-D Secure y no se guarda como tarjeta.
         guardarTarjeta:
           type: boolean
           default: false
@@ -5904,6 +6049,64 @@ components:
           format: int64
           nullable: true
           description: Los datos fiscales para la factura (V2-M08.06)
+    Factura:
+      type: object
+      description: |
+        V2-M08.06 · La factura (simulada) de un pago, con la copia del receptor que se timbró.
+      required: [id, pagoId, folio, uuid, rfcReceptor, razonSocialReceptor, usoCfdi, total,
+        simulada, timbradaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        pagoId:
+          type: integer
+          format: int64
+        folio:
+          type: string
+          example: A-000124
+        uuid:
+          type: string
+          format: uuid
+          description: Folio fiscal del timbre simulado
+        rfcReceptor:
+          type: string
+          example: GODE561231GR8
+        razonSocialReceptor:
+          type: string
+          example: DOLORES GÓMEZ
+        usoCfdi:
+          type: string
+          example: G03
+        total:
+          type: number
+          format: double
+          example: 1650.0
+        simulada:
+          type: boolean
+          description: Siempre `true`, sin validez fiscal (ADR 0009)
+        timbradaEn:
+          type: string
+          format: date-time
+    NuevaFactura:
+      type: object
+      required: [perfilFiscalId]
+      properties:
+        perfilFiscalId:
+          type: integer
+          format: int64
+          description: Los datos fiscales con que se timbra
+    AvisoFacturaTimbrada:
+      type: object
+      description: Evento SSE `factura.timbrada` (V2-M08.06)
+      required: [facturaId, pagoId]
+      properties:
+        facturaId:
+          type: integer
+          format: int64
+        pagoId:
+          type: integer
+          format: int64
     AutenticacionPago:
       type: object
       required: [confirmada]
@@ -6700,12 +6903,16 @@ components:
             - PAGO_NO_PENDIENTE
             - PEDIDO_NO_PAGABLE
             - PEDIDO_PAGADO
+            - YA_FACTURADO
+            - PAGO_NO_FACTURABLE
+            - TIMBRADO_RECHAZADO
           example: FRANJA_SIN_CUPO
         campos:
           type: object
           description: |
             Qué está mal en cada campo de la petición (nombre del campo → por qué). Solo viene en
-            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS.
+            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS y
+            TIMBRADO_RECHAZADO.
           additionalProperties:
             type: string
         path:

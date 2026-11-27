@@ -64,6 +64,8 @@ const _propiedadesPagos = <String, Set<String>>{
     'perfilFiscalId',
     'pagadoEn',
     'creadoEn',
+    'factura',
+    'facturable',
   },
   'PaginaPagos': {
     'contenido',
@@ -72,7 +74,13 @@ const _propiedadesPagos = <String, Set<String>>{
     'totalElementos',
     'totalPaginas',
   },
-  'NuevoPago': {'tarjeta', 'metodoPagoId', 'guardarTarjeta', 'perfilFiscalId'},
+  'NuevoPago': {
+    'tarjeta',
+    'metodoPagoId',
+    'billetera',
+    'guardarTarjeta',
+    'perfilFiscalId',
+  },
   'AutenticacionPago': {'confirmada'},
   'MetodoPago': {
     'id',
@@ -86,6 +94,29 @@ const _propiedadesPagos = <String, Set<String>>{
     'creadoEn',
   },
   'AvisoPagoConfirmado': {'pagoId', 'ordenId', 'pedidoId', 'estado'},
+};
+
+const _propiedadesFacturas = <String, Set<String>>{
+  'Factura': {
+    'id',
+    'pagoId',
+    'folio',
+    'uuid',
+    'rfcReceptor',
+    'razonSocialReceptor',
+    'usoCfdi',
+    'total',
+    'simulada',
+    'timbradaEn',
+  },
+  'NuevaFactura': {'perfilFiscalId'},
+  'AvisoFacturaTimbrada': {'facturaId', 'pagoId'},
+};
+
+const _operacionesFacturas = <String>{
+  'POST /pagos/{pagoId}/factura',
+  'GET /facturas/{facturaId}/pdf',
+  'GET /facturas/{facturaId}/xml',
 };
 
 const _operacionesPagos = <String>{
@@ -297,6 +328,75 @@ void main() {
           (esquemas['Problema']['properties']['codigo']['enum'] as YamlList)
               .cast<String>();
       for (final codigo in ['PEDIDO_NO_PAGABLE', 'PEDIDO_PAGADO']) {
+        expect(codigos, contains(codigo));
+        expect(
+          CodigoProblema.values.map((c) => c.enElContrato),
+          contains(codigo),
+        );
+      }
+    });
+  });
+
+  group('el contrato v2 trae la factura simulada y las billeteras '
+      '(V2-M08.03 y V2-M08.06)', () {
+    test('la version es 2.27.0 o posterior', () {
+      final partes = (contrato['info']['version'] as String)
+          .split('.')
+          .map(int.parse)
+          .toList();
+      expect(partes[0], 2);
+      expect(partes[1], greaterThanOrEqualTo(27));
+    });
+
+    test('cada esquema tiene exactamente sus propiedades', () {
+      _propiedadesFacturas.forEach((nombre, esperadas) {
+        final reales = (esquemas[nombre]['properties'] as YamlMap).keys.toSet();
+        expect(reales, esperadas, reason: nombre);
+      });
+    });
+
+    test('declara sus operaciones', () {
+      expect(
+        _operacionesDe(contrato).containsAll(_operacionesFacturas),
+        isTrue,
+      );
+    });
+
+    test('la billetera es Apple Pay o Google Pay, como en la app', () {
+      expect(_enum(esquemas['NuevoPago'] as YamlMap, 'billetera'), [
+        MedioPago.applePay.enLaApi,
+        MedioPago.googlePay.enLaApi,
+      ]);
+    });
+
+    test('un Pago dice su factura y si se puede facturar', () {
+      final pago = esquemas['Pago'] as YamlMap;
+      expect(pago['properties']['factura']['nullable'], isTrue);
+      expect(
+        (pago['required'] as YamlList).cast<String>(),
+        containsAll(['factura', 'facturable']),
+      );
+    });
+
+    test('facturar explica el 409 y el 422', () {
+      final facturar =
+          (contrato['paths'] as YamlMap)['/pagos/{pagoId}/factura']['post']
+              as YamlMap;
+      expect(
+        (facturar['responses'] as YamlMap).keys,
+        containsAll(['201', '404', '409', '422']),
+      );
+    });
+
+    test('los codigos de facturas estan en el contrato y la app los mapea', () {
+      final codigos =
+          (esquemas['Problema']['properties']['codigo']['enum'] as YamlList)
+              .cast<String>();
+      for (final codigo in [
+        'YA_FACTURADO',
+        'PAGO_NO_FACTURABLE',
+        'TIMBRADO_RECHAZADO',
+      ]) {
         expect(codigos, contains(codigo));
         expect(
           CodigoProblema.values.map((c) => c.enElContrato),
