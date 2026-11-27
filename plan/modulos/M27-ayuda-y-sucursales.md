@@ -65,3 +65,7 @@ Resolver dudas sin llamar y saber dónde y cuándo está la agencia. Reemplaza l
   - **Sin conexión** el dato de la sucursal no está en el teléfono (V2-M27.02 decidió no guardar sucursales por «abierto ahora»): sin red ni sucursal leída antes en la sesión, se usa `Agencia`. Historia nueva sugerida (Borrador): guardar solo teléfono, correo y dirección de la sucursal principal (no el «abierto ahora») para que el atajo sin conexión de V2-M11.02 marque el número real aunque la app abra sin datos.
   - Mientras la sucursal carga se usa `Agencia`; si la sucursal llega después, las filas cambian solas.
   - **Antes de entregar** hay que reemplazar los valores de ejemplo de `Agencia` por los reales (siguen siendo el respaldo); `PantallaCuentaDesactivada` (módulo `acceso`) aún usa `Agencia` directo: se conectaría igual con `contactoDeAgenciaProvider` (sin sesión no hay sucursales, así que su valor real es el de `Agencia`).
+
+### V2-M27.05 · Versión, licencias y términos
+
+La [corrida en Android físico](../../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) comprobó la versión instalada, la pantalla de licencias y el contenido del documento local de términos en el WebView. Se usó la implementación local de Acerca de. Quedan pendientes su integración y la comprobación en iOS.

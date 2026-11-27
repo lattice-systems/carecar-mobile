@@ -153,7 +153,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
 | V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
 | V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | [Muestra profile en Android físico](../docs/pruebas/evidencia.md#rendimiento-en-android-físico) |
 | V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
 
 ## H3 · Postventa viva
@@ -181,11 +181,11 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
 | V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | En revisión | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda); FCM real pendiente de credenciales |
 | V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | En revisión | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 |
-| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
-| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
+| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | [Cámara probada en la implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
+| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | [PDF probados en la implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
-| V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Lista | |
+| V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Lista | [Calendario probado en la implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 | V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Hecha | backend#103, #157 |
 | V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Hecha | backend#103, #157, #158 |
 | V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Hecha | backend#103, #157 |
@@ -218,7 +218,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | En revisión | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
-| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
+| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | [Acerca de probado en la implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 
 ## H5 · Comercio
 
