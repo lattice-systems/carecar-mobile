@@ -10,6 +10,12 @@ import 'package:carecar_mobile/modulos/taller/taller.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/modulos/widgets/widgets.dart';
+import 'package:carecar_mobile/modulos/widgets/datos/repositorio_actividad_en_vivo_fake.dart';
+import 'package:carecar_mobile/modulos/widgets/datos/servicio_actividad_en_vivo_canal.dart';
+import 'package:carecar_mobile/modulos/widgets/datos/servicio_actividad_en_vivo_fake.dart';
+import 'package:carecar_mobile/modulos/widgets/datos/servicio_actividad_en_vivo_nulo.dart';
+import 'package:carecar_mobile/modulos/widgets/dominio/actividad_en_vivo.dart';
+import 'package:carecar_mobile/modulos/widgets/presentacion/proveedores_widgets.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/seguridad/detector_integridad.dart';
@@ -18,6 +24,7 @@ import 'package:carecar_mobile/nucleo/seguridad/proveedores_seguridad.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -148,6 +155,8 @@ Future<_Escenario> _montar(
   bool conSesion = true,
   Locale idioma = const Locale('es'),
   PoliticaDatosLocales? politica,
+  ServicioActividadEnVivo? actividad,
+  RepositorioActividadEnVivo? registroActividad,
 }) async {
   tester.platformDispatcher.localesTestValue = [idioma];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -193,6 +202,12 @@ Future<_Escenario> _montar(
         controladorSesionProvider.overrideWithValue(controlador),
         if (politica != null)
           politicaDatosLocalesProvider.overrideWithValue(politica),
+        if (actividad != null)
+          servicioActividadEnVivoProvider.overrideWithValue(actividad),
+        if (registroActividad != null)
+          repositorioActividadEnVivoProvider.overrideWithValue(
+            registroActividad,
+          ),
       ],
       child: MaterialApp(
         localizationsDelegates: delegadasDeIdioma,
@@ -531,6 +546,136 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('inicio'), findsOneWidget);
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('Live Activity del taller (V2-M25.05)', () {
+    testWidgets('con una orden en curso la inicia y registra su token', (
+      tester,
+    ) async {
+      final actividad = ServicioActividadEnVivoFake();
+      final registro = RepositorioActividadEnVivoFake();
+      await _montar(
+        tester,
+        ordenes: [_orden()],
+        actividad: actividad,
+        registroActividad: registro,
+      );
+
+      expect(actividad.vivas[41], EstadoDeActividad.deOrden(_orden()));
+
+      actividad.emitirToken(41, 'aabbcc');
+      await tester.pumpAndSettle();
+
+      expect(registro.registrados, [(41, 'aabbcc')]);
+    });
+
+    testWidgets('el evento orden la repinta y al entregar termina', (
+      tester,
+    ) async {
+      final actividad = ServicioActividadEnVivoFake();
+      final e = await _montar(
+        tester,
+        ordenes: [_orden()],
+        actividad: actividad,
+        registroActividad: RepositorioActividadEnVivoFake(),
+      );
+
+      final lista = _orden(etapa: EtapaTaller.listoParaEntrega);
+      e.taller.abiertas = [lista];
+      e.eventos.emitir('orden', {'ordenId': 41});
+      await tester.pumpAndSettle();
+      expect(actividad.vivas[41], EstadoDeActividad.deOrden(lista));
+
+      e.taller.abiertas = [];
+      e.eventos.emitir('orden', {'ordenId': 41});
+      await tester.pumpAndSettle();
+      expect(actividad.vivas, isEmpty);
+      expect(
+        actividad.finales[41],
+        EstadoDeActividad.deOrden(lista).entregada(),
+      );
+    });
+
+    testWidgets('al cerrar sesion la da de baja y la termina', (tester) async {
+      final actividad = ServicioActividadEnVivoFake();
+      final registro = RepositorioActividadEnVivoFake();
+      final e = await _montar(
+        tester,
+        ordenes: [_orden()],
+        actividad: actividad,
+        registroActividad: registro,
+      );
+      actividad.emitirToken(41, 'aabbcc');
+      await tester.pumpAndSettle();
+
+      await e.controlador.cerrarSesion();
+      await tester.pumpAndSettle();
+
+      expect(registro.bajas, [(41, 'aabbcc')]);
+      expect(actividad.vivas, isEmpty);
+    });
+
+    testWidgets('en un equipo comprometido la termina', (tester) async {
+      final actividad = ServicioActividadEnVivoFake();
+      final politica = PoliticaDatosLocales();
+      await _montar(
+        tester,
+        ordenes: [_orden()],
+        politica: politica,
+        actividad: actividad,
+        registroActividad: RepositorioActividadEnVivoFake(),
+      );
+      expect(actividad.vivas, isNotEmpty);
+
+      politica.actualizar(EstadoIntegridad.comprometido);
+      await tester.pumpAndSettle();
+
+      expect(actividad.vivas, isEmpty);
+    });
+
+    testWidgets('sin red al registrar no afecta a la app', (tester) async {
+      final actividad = ServicioActividadEnVivoFake();
+      await _montar(
+        tester,
+        ordenes: [_orden()],
+        actividad: actividad,
+        registroActividad: RepositorioActividadEnVivoFake(
+          falla: Exception('sin red'),
+        ),
+      );
+
+      actividad.emitirToken(41, 'aabbcc');
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(actividad.vivas.keys, [41]);
+    });
+
+    testWidgets('en iPhone sin el puente enlazado no pasa nada', (
+      tester,
+    ) async {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+      addTearDown(() => debugDefaultTargetPlatformOverride = null);
+      final e = await _montar(tester, ordenes: [_orden()]);
+
+      expect(
+        e.contenedor(tester).read(servicioActividadEnVivoProvider),
+        isA<ServicioActividadEnVivoCanal>(),
+      );
+      await e.controlador.cerrarSesion();
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
+      debugDefaultTargetPlatformOverride = null;
+    });
+
+    testWidgets('fuera de iPhone usa el servicio nulo', (tester) async {
+      final e = await _montar(tester, ordenes: [_orden()]);
+
+      expect(
+        e.contenedor(tester).read(servicioActividadEnVivoProvider),
+        isA<ServicioActividadEnVivoNulo>(),
+      );
     });
   });
 }
