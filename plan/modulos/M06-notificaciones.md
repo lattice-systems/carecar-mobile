@@ -55,6 +55,34 @@ pasar por la explicación aunque entre con otra cuenta en el mismo equipo.
 **Lo que esta historia no hace:** registrar el token FCM ni recibir push. Eso
 es **V2-M06.02**, que ya encuentra el permiso resuelto.
 
+## A dónde lleva tocar un aviso (V2-M06.03)
+
+El destino viaja **dentro** del aviso, en su carga útil, y no en el código que
+lo recibe. Antes no viajaba nada: `mostrar` y `programar` no mandaban
+`payload`, el manejador del toque descartaba la respuesta y **cualquier** aviso
+abría «Mis citas», con la ruta escrita a mano en la pantalla de inicio v1.
+
+Los tres estados del criterio salen de por dónde entra el destino:
+
+| Estado de la app | Cómo llega |
+| --- | --- |
+| Abierta o en segundo plano | El plugin entrega el toque con su carga útil; el servicio lo publica y el enrutador navega con `go` |
+| **Cerrada** | No hay toque que escuchar: el sistema arranca la app y el destino solo está en `getNotificationAppLaunchDetails`. Se usa como `initialLocation` del enrutador, no con `go` —llamar a `go` antes de montarlo truena— |
+
+El cuarto criterio, «si requiere login, vuelve al destino tras entrar», **no
+necesitó código nuevo**: la guardia ya manda al acceso con `desde` y regresa
+sola. Queda comprobado en `test/nucleo/avisos/tocar_un_aviso_test.dart`.
+
+**El destino es dato de fuera, no ruta de confianza.** En un push lo escribe el
+servidor, así que `destinoDeAviso()` solo acepta una ruta interna: nada con
+esquema, nada de `//host`. Es la misma regla que la guardia aplica a `desde`, y
+por lo mismo: un destino sin revisar es una redirección abierta.
+
+**Sobre la dependencia de V2-M06.02:** esa historia decide **de dónde sale** el
+aviso, no cómo se encamina el toque. Esto quedo hecho contra los avisos locales
+que ya existen —los recordatorios de cita, que ahora llevan a `/citas`— y el
+push de M06.02 entra por el mismo camino sin cambiarlo.
+
 ## Datos
 
 | Tabla | Campos | Notas |

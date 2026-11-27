@@ -62,7 +62,7 @@ Future<void> arrancar(Flavor flavor) async {
   // Recordatorios de citas con notificaciones locales (sin servidor).
   late final ServicioNotificaciones servicio;
   final plugin = PluginNotificacionesLocal(
-    alTocar: () => servicio.notificarToque(),
+    alTocar: (destino) => servicio.notificarToque(destino),
   );
   servicio = ServicioNotificaciones(plugin, prefs);
   Notificaciones.actual = servicio;
