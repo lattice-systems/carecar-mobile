@@ -150,6 +150,7 @@ void main() {
         'total': 10,
         'creadoEn': '2026-11-26T18:00:00Z',
         'renglones': <Object?>[],
+        'pagable': true,
       };
       expect(minimo.keys.toSet(), requeridos);
       expect(const LecturaTienda().pedido(minimo).abierto, isTrue);
