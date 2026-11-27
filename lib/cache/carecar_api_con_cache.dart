@@ -250,6 +250,12 @@ class CarecarApiConCache implements CarecarApi {
     (j) => _lista(j, ModeloCatalogo.fromJson),
   );
 
+  /// Sin copia local: «abierto ahora» lo calcula el servidor, y una copia
+  /// vieja diría «abierto» con la agencia ya cerrada (V2-M27.02). Sin conexión
+  /// la pantalla pide reintentar.
+  @override
+  Future<List<SucursalApi>> sucursales() => _api.sucursales();
+
   @override
   Future<DetalleModeloCatalogo> detalleModelo(int id) =>
       _leer<DetalleModeloCatalogo>(
