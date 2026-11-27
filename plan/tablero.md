@@ -127,13 +127,13 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M03.06 | Que la estimación salga de parámetros que puedo ajustar | Cristian | B | V2-M03.04 | Hecha | #91, backend#84 |
 | V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | Hecha | #67, #90, backend#69 |
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Hecha | #49, #60 |
-| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | #174, #185 |
-| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | #174, #185 |
+| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
+| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Hecha | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
-| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | #174, #185 |
+| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
