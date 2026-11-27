@@ -174,6 +174,14 @@ Llamar con un toque al 911, a la agencia o a la aseguradora, sin depender de la 
 - Probar el marcador real en un teléfono. En pruebas solo se comprueba el `tel:`.
 - La historia no pasa a `Hecha` hasta tener la aseguradora real: queda `En revisión`.
 
+### Aseguradora real (con V2-M09.01)
+
+- `aseguradoraProvider` ya no devuelve `null` fijo: toma, entre los documentos de **todos** los autos del garaje, la póliza no vencida con aseguradora y teléfono (`polizaParaLlamar` del módulo `documentos`). Es `autoDispose`, así que se relee cada vez que se abre la pantalla.
+- `aseguradoraCargandoProvider` (nuevo en el contrato público) dice si aún se está leyendo: mientras tanto la fila dice «Buscando tu póliza…» y no aparece «Aún no registras tu aseguradora», que sería falso un instante para quien sí la tiene.
+- Si el garaje o los documentos fallan, no hay aseguradora y la pantalla explica cómo agregarla: llamar al 911 y a la agencia nunca depende de esa lectura.
+- Pruebas: `aseguradora_provider_test.dart` (póliza vigente, por vencer, vencida, sin teléfono, varios autos, fallo) y `ruta_llamar_rapido_test.dart` (llamar a la aseguradora guardada, el estado de búsqueda y sin póliza).
+- Con esto queda cerrado el pendiente «conectar la aseguradora real» de arriba. No probado en el celular.
+
 ## Rediseño: encabezados ligeros (V2-T02.21)
 
 `PantallaGuia` y la solicitud enviada (`VistaSolicitud`) usan `MarcoPantalla`: el título de la guía o el folio y su estado en el encabezado grande, los pasos o la línea de tiempo debajo y, en la solicitud, `FilaAcciones` («Ver guías», «Actualizar»). Sin portada con icono grande; los pasos conservan el color de la guía.
