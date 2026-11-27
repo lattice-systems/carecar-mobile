@@ -235,6 +235,7 @@ class _MiCodigo extends ConsumerWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Alto de objetivo táctil: se mantiene presionado para copiar.
                 ConstrainedBox(
                   constraints: const BoxConstraints(
                     minHeight: Espaciado.objetivoTactilMinimo,

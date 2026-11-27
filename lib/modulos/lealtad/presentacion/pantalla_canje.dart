@@ -109,6 +109,7 @@ class _Canje extends StatelessWidget {
               if (vigente) ...[
                 _TarjetaQr(codigo: canje.codigo),
                 const SizedBox(height: Espaciado.e4),
+                // Alto de objetivo táctil: se mantiene presionado para copiar.
                 ConstrainedBox(
                   constraints: const BoxConstraints(
                     minHeight: Espaciado.objetivoTactilMinimo,
