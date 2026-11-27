@@ -110,7 +110,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Hecha | #65, #161 |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Hecha | #65, backend#70 |
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Hecha | backend#85, #92 |
-| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92 |
+| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92, #186 |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58, backend#70 |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Hecha | #65 |
@@ -201,7 +201,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M07.04 | Saber si mi mensaje fue leído | Jael | B | V2-M07.02 | Borrador | |
 | V2-M07.05 | Escribir sin conexión y que se envíe después | Jael |  | V2-M21.03 | Borrador | |
 | V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Hecha | backend#105, #165, #166 |
-| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Hecha | backend#105, #165 |
+| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Hecha | backend#105, #165, backend#111, #186 |
 | V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
 | V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
 | V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Hecha | backend#105, #163, #165 |
@@ -224,12 +224,12 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Hecha | #178 |
-| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Lista | |
+| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Hecha | backend#111, #186 |
 | V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Lista | |
-| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Lista | |
+| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
 | V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Hecha | backend#109, #178, #183 |
 | V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Lista | |
-| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Lista | |
+| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
 | V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |
 | V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 (simulable) | Hecha | #168, backend#107 |
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02 (simulable), V2-M02.08 | Hecha | #168, backend#107 |

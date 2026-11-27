@@ -6,7 +6,7 @@
 | Dueño | Ricardo |
 | Revisa | Daniel |
 | Ficha técnica | ✅ Sección 8. Pagos y facturas |
-| Estado | En curso: V2-M08.01 y V2-M08.05 hechas; V2-M08.02, V2-M08.04 y V2-M08.07 en revisión; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
+| Estado | En curso: V2-M08.01, V2-M08.02, V2-M08.04, V2-M08.05 y V2-M08.07 hechas; faltan V2-M08.03 y V2-M08.06; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
 
 ## Propósito
 
