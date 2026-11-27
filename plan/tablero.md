@@ -214,7 +214,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
 | V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
-| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | En curso | tomada por Juan Pablo (R6), aviso a Haziel |
+| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | En revisión | tomada por Juan Pablo (R6), aviso a Haziel · backend en rama `feat/v2-m27-02-sucursales` |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Haziel |  | V2-M27.02 | Lista | |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
