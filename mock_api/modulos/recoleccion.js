@@ -226,14 +226,14 @@ module.exports = function registrarRecoleccion(servidor, db, emitirEvento) {
       .forEach((t) => cambiarEstadoTraslado(t, 'cancelado'));
   }
 
-  servidor.get(`${BASE}/traslados/:id`, (req, res) => {
-    const t = trasladoDelCliente(req, req.params.id);
+  servidor.get(`${BASE}/traslados/:trasladoId`, (req, res) => {
+    const t = trasladoDelCliente(req, req.params.trasladoId);
     if (!t) return noEncontrado(req, res);
     res.jsonp(comoTraslado(t));
   });
 
-  servidor.get(`${BASE}/traslados/:id/checklist`, (req, res) => {
-    const t = trasladoDelCliente(req, req.params.id);
+  servidor.get(`${BASE}/traslados/:trasladoId/checklist`, (req, res) => {
+    const t = trasladoDelCliente(req, req.params.trasladoId);
     if (!t) return noEncontrado(req, res);
     const checklist = checklists.get(t.id);
     if (!checklist) return noEncontrado(req, res);

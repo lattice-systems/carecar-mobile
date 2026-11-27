@@ -44,7 +44,7 @@ void main() {
     expect(find.text('noviembre de 2026'), findsOneWidget);
   });
 
-  testWidgets('el dia sin cupo se anuncia y no se puede elegir', (
+  testWidgets('V2-M02.07: anuncia y deshabilita los días sin cupo', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
@@ -65,7 +65,7 @@ void main() {
     expect(find.bySemanticsLabel('22 de noviembre, sin cupo'), findsOneWidget);
   });
 
-  testWidgets('al elegir un dia con cupo muestra sus franjas con el cupo', (
+  testWidgets('V2-M02.07: muestra las franjas y el cupo del día elegido', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));

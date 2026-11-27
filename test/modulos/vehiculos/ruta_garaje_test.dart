@@ -56,7 +56,7 @@ Future<void> _montar(WidgetTester tester, {bool conSesion = true}) async {
 }
 
 void main() {
-  testWidgets('/garaje con sesion muestra los vehiculos de la API', (
+  testWidgets('V2-M02.01: el garaje muestra los vehículos de la cuenta', (
     tester,
   ) async {
     await _montar(tester);
@@ -66,7 +66,7 @@ void main() {
     expect(find.text('CX-5 2024'), findsOneWidget);
   });
 
-  testWidgets('/garaje sin sesion manda al inicio de sesion', (tester) async {
+  testWidgets('V2-M02.01: el garaje requiere iniciar sesión', (tester) async {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();

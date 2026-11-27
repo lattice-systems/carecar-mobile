@@ -171,8 +171,7 @@ void main() {
         );
         await servicio.iniciar();
         expect(escrito, [
-          'No se pudieron iniciar las notificaciones: '
-              'Exception: sin permiso para [correo]',
+          'No se pudieron iniciar las notificaciones: Exception: sin permiso para [correo]',
         ]);
       },
     );

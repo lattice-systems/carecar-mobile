@@ -115,8 +115,8 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     res.jsonp(deCliente(req.sesion.clienteId).map(publico));
   });
 
-  servidor.get(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
-    const perfil = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId: req.sesion.clienteId }).value();
+  servidor.get(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
+    const perfil = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId: req.sesion.clienteId }).value();
     if (!perfil) return noEncontrado(req, res);
     res.jsonp(publico(perfil));
   });
@@ -135,9 +135,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   });
 
   // `predeterminado: true` lo vuelve el predeterminado; `false` no cambia cuál es.
-  servidor.put(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
+  servidor.put(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
     const clienteId = req.sesion.clienteId;
-    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId }).value();
+    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId }).value();
     if (!actual) return noEncontrado(req, res);
     const { errores, datos } = validar(req.body || {});
     if (errores) return rechazar(req, res, errores);
@@ -148,9 +148,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   });
 
   // Si era el predeterminado, lo toma el más viejo de los que quedan.
-  servidor.delete(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
+  servidor.delete(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
     const clienteId = req.sesion.clienteId;
-    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId }).value();
+    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId }).value();
     if (!actual) return noEncontrado(req, res);
     db.get('perfilesFiscales').remove({ id: actual.id }).write();
     if (actual.predeterminado) {
@@ -634,28 +634,36 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     res.status(201).jsonp(publicaFactura(timbrar(pago, perfil)));
   });
 
-  servidor.get(`${BASE}/facturas/:facturaId/:formato(pdf|xml)`, (req, res) => {
-    const factura = db.get('facturasApp').find({ id: Number(req.params.facturaId), clienteId: req.sesion.clienteId }).value();
-    if (!factura) return noEncontrado(req, res);
-    const nombre = `factura-${factura.folio}.${req.params.formato}`;
-    res.set('Content-Disposition', `attachment; filename="${nombre}"`);
-    res.set('Cache-Control', 'no-store');
-    if (req.params.formato === 'xml') return res.type('application/xml').send(xmlDe(factura));
-    const r = factura.receptor;
-    res.type('application/pdf').send(
-      construirTicketPdf([
-        'FACTURA SIMULADA, SIN VALIDEZ FISCAL (API simulada)',
-        '',
-        `Folio ${factura.folio}`,
-        `Folio fiscal: ${factura.uuid}`,
-        `Emisor: ${EMISOR.nombre} (${EMISOR.rfc})`,
-        `Receptor: ${r.razonSocial} (${r.rfc}) - Uso del CFDI ${r.usoCfdi}`,
-        `Total: $${factura.total.toFixed(2)} MXN - Forma de pago ${factura.formaPago} - PUE`,
-        '',
-        'Este documento no es un CFDI: el timbre y los sellos son simulados.',
-      ]),
-    );
-  });
+  function descargarFactura(formato) {
+    return (req, res) => {
+      const factura = db
+        .get('facturasApp')
+        .find({ id: Number(req.params.facturaId), clienteId: req.sesion.clienteId })
+        .value();
+      if (!factura) return noEncontrado(req, res);
+      const nombre = `factura-${factura.folio}.${formato}`;
+      res.set('Content-Disposition', `attachment; filename="${nombre}"`);
+      res.set('Cache-Control', 'no-store');
+      if (formato === 'xml') return res.type('application/xml').send(xmlDe(factura));
+      const r = factura.receptor;
+      res.type('application/pdf').send(
+        construirTicketPdf([
+          'FACTURA SIMULADA, SIN VALIDEZ FISCAL (API simulada)',
+          '',
+          `Folio ${factura.folio}`,
+          `Folio fiscal: ${factura.uuid}`,
+          `Emisor: ${EMISOR.nombre} (${EMISOR.rfc})`,
+          `Receptor: ${r.razonSocial} (${r.rfc}) - Uso del CFDI ${r.usoCfdi}`,
+          `Total: $${factura.total.toFixed(2)} MXN - Forma de pago ${factura.formaPago} - PUE`,
+          '',
+          'Este documento no es un CFDI: el timbre y los sellos son simulados.',
+        ]),
+      );
+    };
+  }
+
+  servidor.get(`${BASE}/facturas/:facturaId/pdf`, descargarFactura('pdf'));
+  servidor.get(`${BASE}/facturas/:facturaId/xml`, descargarFactura('xml'));
 
   servidor.get(`${BASE}/metodos-pago`, (req, res) => {
     res.jsonp(metodosDe(req.sesion.clienteId).map(publicoMetodo));

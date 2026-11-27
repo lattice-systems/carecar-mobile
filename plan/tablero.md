@@ -59,18 +59,18 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
 | V2-T02.21 | Navegación en píldora, inicio nuevo y encabezados ligeros (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148, #151, #153, #154 |
-| V2-T02.22 | Inicio con datos del auto: sin accesos repetidos, próximo servicio y tarjetas con un solo estilo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.21 | Hecha | #155 |
-| V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | Hecha | #156 |
-| V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | Hecha | #169 |
-| V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | Hecha | #171 |
-| V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | Hecha | #172 |
-| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
+| V2-T02.22 | Inicio con datos del auto: sin accesos repetidos, próximo servicio y tarjetas con un solo estilo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.21 | En revisión | #155 |
+| V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | En revisión | #156 |
+| V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | En revisión | #169 |
+| V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | En revisión | #171 |
+| V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | En revisión | #172 |
+| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | En revisión | [Reglas](../analysis_options.yaml) · CI pendiente |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
-| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
-| V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
-| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
-| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
-| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
+| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | En revisión | [Flujo Android](../integration_test/flujo_principal_test.dart) · CI pendiente |
+| V2-T03.04 | Cobertura visible | Haziel |  | — | En revisión | [Resumen LCOV](../tool/resumir_cobertura.js) · CI pendiente |
+| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | En revisión | [Evidencia por criterio](cumplimiento-ficha.md#evidencia-automática-por-criterio) |
+| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
+| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En curso | [Guion y registro](../docs/pruebas/guion-por-hito.md) · falta corrida física |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Hecha | #128 |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
@@ -149,12 +149,12 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
-| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Lista | |
-| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Lista | |
-| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | Lista | |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | Lista | |
-| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | Lista | |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
+| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
+| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
+| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
+| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
 
 ## H3 · Postventa viva
 

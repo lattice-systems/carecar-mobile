@@ -291,6 +291,22 @@ class ClienteApi {
     _verificarEstado(respuesta);
   }
 
+  /// El envío de analítica usa el cliente de la app y caduca con el permiso.
+  Future<void> enviarEventoAnalitica(
+    Map<String, Object> evento,
+    bool Function() siguePermitido,
+  ) async {
+    final encabezados = await _encabezados(conCuerpo: true);
+    if (!encabezados.containsKey('authorization') || !siguePermitido()) return;
+    await _http
+        .post(
+          config.ruta('/analitica/eventos'),
+          headers: encabezados,
+          body: jsonEncode(evento),
+        )
+        .timeout(const Duration(seconds: 5));
+  }
+
   /// POST `multipart/form-data` con un archivo y campos de texto, que devuelve
   /// un objeto (V2-M24.05: la foto de un testigo).
   Future<T> enviarArchivo<T>(

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.28.0
+  version: 2.29.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -102,6 +102,33 @@ security:
   - bearerAuth: []
 
 paths:
+  /analitica/eventos:
+    post:
+      summary: Registrar telemetria consentida de CareCar
+      description: |
+        El cliente manda el evento solo con la preferencia de analitica activa.
+        DISPONIBILIDAD y FRANJA llevan intento. CONFIRMADA lleva intento y citaId
+        de la cuenta que envia. ERROR_FLUTTER, ERROR_ASINCRONO y CRASH_ANDROID solo llevan tipo.
+        RENDIMIENTO lleva los cuatro contadores de la muestra inicial.
+        ATENDIDA se deriva en el backend y no se recibe desde el cliente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventoAnalitica'
+      responses:
+        '204':
+          description: Evento aceptado
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /auth/login:
     post:
       tags: [Acceso]
@@ -6916,6 +6943,58 @@ components:
           type: string
           format: byte
           description: La firma en pantalla como PNG en Base64, de 1 MB como máximo
+
+    EventoAnalitica:
+      type: object
+      additionalProperties: false
+      required: [tipo]
+      oneOf:
+        - properties:
+            tipo:
+              enum: [DISPONIBILIDAD, FRANJA]
+          required: [intento]
+          maxProperties: 2
+        - properties:
+            tipo:
+              enum: [CONFIRMADA]
+          required: [intento, citaId]
+          maxProperties: 3
+        - properties:
+            tipo:
+              enum: [ERROR_FLUTTER, ERROR_ASINCRONO, CRASH_ANDROID]
+          maxProperties: 1
+        - properties:
+            tipo:
+              enum: [RENDIMIENTO]
+          required: [arranqueMs, primeraPantallaMs, cuadrosMedidos, cuadrosPerdidos]
+          maxProperties: 5
+      properties:
+        tipo:
+          type: string
+          enum: [DISPONIBILIDAD, FRANJA, CONFIRMADA, ERROR_FLUTTER, ERROR_ASINCRONO, CRASH_ANDROID, RENDIMIENTO]
+        intento:
+          type: string
+          format: uuid
+        citaId:
+          type: integer
+          format: int64
+          minimum: 1
+        arranqueMs:
+          type: integer
+          minimum: 0
+          maximum: 600000
+        primeraPantallaMs:
+          type: integer
+          minimum: 0
+          maximum: 600000
+        cuadrosMedidos:
+          type: integer
+          minimum: 1
+          maximum: 120
+        cuadrosPerdidos:
+          type: integer
+          minimum: 0
+          maximum: 60000
 
     Problema:
       type: object

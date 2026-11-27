@@ -78,18 +78,19 @@ void main() {
     expect(find.byType(Esqueleto), findsNothing);
   });
 
-  _prueba('no deja continuar hasta elegir todo y dice que falta', (
-    tester,
-  ) async {
-    await tester.pumpWidget(_app(RepositorioCitasFake()));
-    await tester.pumpAndSettle();
-    expect(
-      find.text('Elige vehículo, día, horario y motivo para continuar.'),
-      findsOneWidget,
-    );
-    await _tocar(tester, find.text('Revisar y confirmar'));
-    expect(find.text('Resumen de tu cita'), findsNothing);
-  });
+  _prueba(
+    'V2-M02.08: pide vehículo, día, horario y motivo antes de continuar',
+    (tester) async {
+      await tester.pumpWidget(_app(RepositorioCitasFake()));
+      await tester.pumpAndSettle();
+      expect(
+        find.text('Elige vehículo, día, horario y motivo para continuar.'),
+        findsOneWidget,
+      );
+      await _tocar(tester, find.text('Revisar y confirmar'));
+      expect(find.text('Resumen de tu cita'), findsNothing);
+    },
+  );
 
   _prueba('el vehiculo se elige en tarjetas y la elegida queda marcada', (
     tester,
@@ -133,7 +134,7 @@ void main() {
     expect(find.text('Mantenimiento'), findsOneWidget);
   });
 
-  _prueba('confirmar agenda y avisa que la cita quedo confirmada', (
+  _prueba('V2-M02.08: al confirmar agenda y muestra el resultado', (
     tester,
   ) async {
     await tester.pumpWidget(_app(RepositorioCitasFake()));
@@ -176,7 +177,7 @@ void main() {
     expect(find.text('Folio 1'), findsOneWidget);
   });
 
-  _prueba('sin cupo al confirmar ofrece franjas cercanas y las cambia', (
+  _prueba('V2-M02.08: ofrece horarios cercanos cuando se pierde el cupo', (
     tester,
   ) async {
     await tester.pumpWidget(_app(_RepoQueSeLlena()));
@@ -195,7 +196,7 @@ void main() {
     expect(find.text('Cita confirmada'), findsOneWidget);
   });
 
-  _prueba('cita duplicada muestra la existente y no deja confirmar', (
+  _prueba('V2-M02.08: ante un duplicado muestra la cita existente', (
     tester,
   ) async {
     final repo = _RepoQueFalla(

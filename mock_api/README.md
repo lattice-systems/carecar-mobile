@@ -113,6 +113,19 @@ npm run reset
 
 ### Agregar un módulo
 
+Al agregar o cambiar una operación de la app, actualiza su manejo en el
+simulador junto con la copia de OpenAPI v2 en `api/`. La prueba de contrato
+compara las operaciones registradas, comprueba las respuestas sin sesión y
+ejercita respuestas JSON, PDF y SSE. El job de pruebas de CI la ejecuta en un
+puerto libre con las semillas en memoria. Las operaciones de catálogos y
+perfiles fiscales de M08.05 se mantienen en el contrato compartido y están
+pendientes de simulación. Puedes correrla desde la raíz:
+
+```bash
+npm ci --prefix mock_api
+flutter test test/contrato/mock_api_v2_test.dart --dart-define=PROBAR_MOCK_API=true
+```
+
 1. Crea `modulos/<modulo>.js` con una función CommonJS que registre las rutas en
    `servidor`. Recibe `db` si necesita leer o escribir colecciones. Usa `BASE`,
    `problema` y `noEncontrado` de `comun/http.js` para las rutas y errores del

@@ -19,7 +19,8 @@ module.exports = function registrarEventos(servidor) {
   servidor.get(`${BASE}/eventos`, (req, res) => {
     res.status(200).set({
       'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache',
+      // Evita que la compresión retenga el comentario inicial y los eventos.
+      'Cache-Control': 'no-cache, no-transform',
       Connection: 'keep-alive',
     });
     res.flushHeaders();

@@ -16,6 +16,7 @@ import '../../modulos/pagos/pagos.dart'
 import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../notificaciones/servicio_notificaciones.dart';
+import '../../nucleo/analitica/interruptor_analitica.dart';
 import '../../nucleo/diseno/componentes/avatar.dart';
 import '../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../nucleo/diseno/componentes/control_binario.dart';
@@ -360,6 +361,7 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                     _TarjetaPerfil(perfil: perfil),
                   const SizedBox(height: Espaciado.e4),
                   const SelectorIdioma(),
+                  const InterruptorAnalitica(),
                   const SizedBox(height: Espaciado.e4),
                   for (final seccion in secciones) ...[
                     seccion.aGrupo(context),

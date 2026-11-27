@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
@@ -15,12 +18,18 @@ import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
 import 'modulos/privacidad/privacidad.dart';
 import 'modulos/widgets/widgets.dart';
-import 'nucleo/dispositivo/lector_del_dispositivo.dart';
+import 'nucleo/analitica/ambito_analitica.dart';
+import 'nucleo/analitica/analitica.dart';
+import 'nucleo/analitica/crashes_android.dart';
+import 'nucleo/analitica/observador_analitica.dart';
+import 'nucleo/analitica/proveedores_analitica.dart';
 import 'nucleo/api/proveedores_api.dart';
 import 'nucleo/datos/reintento.dart';
+import 'nucleo/dispositivo/lector_del_dispositivo.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
+import 'nucleo/privacidad/estado_aviso.dart';
 import 'nucleo/seguridad/aviso_conexion_no_segura.dart';
 import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
 import 'nucleo/seguridad/detector_integridad.dart';
@@ -43,6 +52,7 @@ Future<void> main() => arrancar(Flavor.produccion);
 
 /// Arranca la app en el [flavor] dado (V2-T01.04).
 Future<void> arrancar(Flavor flavor) async {
+  final relojArranque = Stopwatch()..start();
   Flavor.actual = flavor;
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
@@ -61,7 +71,9 @@ Future<void> arrancar(Flavor flavor) async {
   );
   // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
   // alcance anidado no vería los proveedores del enrutador.
-  runApp(AppCareCar(prefs: prefs, politica: politica));
+  runApp(
+    AppCareCar(prefs: prefs, politica: politica, relojArranque: relojArranque),
+  );
 }
 
 /// Arma la app y conecta las piezas.
@@ -78,11 +90,13 @@ class AppCareCar extends StatefulWidget {
     super.key,
     this.prefs,
     this.politica,
+    this.relojArranque,
     this.duracionArranque = const Duration(milliseconds: 1200),
   });
 
   /// Tiempo minimo que se ve la cortina de arranque (cero en pruebas).
   final Duration duracionArranque;
+  final Stopwatch? relojArranque;
 
   /// Que se puede guardar en el equipo segun su integridad (V2-M22.05). Sin
   /// ella la app se comporta como en un equipo sin señal de riesgo.
@@ -99,6 +113,7 @@ class _AppCareCarState extends State<AppCareCar> {
   ControladorSesion? _sesion;
   ClienteApi? _cliente;
   CarecarApi? _api;
+  EnviarAnalitica? _enviarAnalitica;
 
   /// Si el certificado del servidor se rechazó (V2-M22.15): lo escribe el
   /// cliente de la API y lo lee el aviso global.
@@ -110,6 +125,7 @@ class _AppCareCarState extends State<AppCareCar> {
   /// Sin esto se veria el login un instante y la app saltaria a inicio, que es
   /// peor que una espera corta.
   bool _restaurando = true;
+  bool _diagnosticoAndroidIniciado = false;
 
   @override
   void initState() {
@@ -163,6 +179,14 @@ class _AppCareCarState extends State<AppCareCar> {
         // puede leer, se entra sin nombre.
         leerDatosDelDispositivo,
       );
+      _enviarAnalitica = (evento, siguePermitido) async {
+        final estado = sesion.estado;
+        if (estado is! Autenticada || estado.debeCambiarContrasena) return;
+        await cliente.enviarEventoAnalitica(
+          evento,
+          () => identical(sesion.estado, estado) && siguePermitido(),
+        );
+      };
 
       _cliente = cliente;
       _conexionSegura = conexionSegura;
@@ -225,6 +249,17 @@ class _AppCareCarState extends State<AppCareCar> {
         if (_api != null) carecarApiProvider.overrideWithValue(_api!),
         if (_sesion != null)
           controladorSesionProvider.overrideWithValue(_sesion!),
+        if (_enviarAnalitica != null)
+          transporteAnaliticaProvider.overrideWith((ref) {
+            final enviar = _enviarAnalitica!;
+            return (evento, siguePermitido) => enviar(
+              evento,
+              () =>
+                  ref.mounted &&
+                  ref.read(estadoAvisoProvider) == EstadoAviso.aceptado &&
+                  siguePermitido(),
+            );
+          }),
       ],
       child: _construirApp(),
     );
@@ -250,49 +285,77 @@ class _AppCareCarState extends State<AppCareCar> {
         // Navegacion declarativa (ADR 0003, V2-T01.03): el enrutador junta las
         // rutas del nucleo y de los modulos y decide por la sesion.
         return Consumer(
-          builder: (context, ref, _) => MaterialApp.router(
-            title: 'CareCar',
-            theme: TemaCareCar.conFuentes(),
-            localizationsDelegates: delegadasDeIdioma,
-            supportedLocales: idiomasSoportados,
-            locale: ref.watch(idiomaElegidoProvider),
-            localeResolutionCallback: resolverIdioma,
-            debugShowCheckedModeBanner: false,
-            routerConfig: ref.watch(enrutadorProvider),
-            // La cortina tapa la app mientras se restaura la sesion: asi no se
-            // ve el login un instante antes de saltar a inicio ni a un enlace.
-            // Los accesos del icono (V2-M25.04) se registran aqui porque
-            // necesitan los textos del idioma activo y el enrutador. El widget
-            // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
-            // lo mismo y porque observa la sesion.
-            // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
-            // tapar tambien la cortina y los dialogos en el selector de apps.
-            builder: (context, child) => CubiertaEnSegundoPlano(
-              child: InstaladorDeAccesosRapidos(
-                child: SincronizadorDeWidgets(
-                  child: ShadAppBuilder(
-                    child: AvisoEquipoComprometido(
-                      // El aviso de conexion no segura (V2-M22.15) explica
-                      // por que se corto la conexion si el certificado del
-                      // servidor no valida.
-                      child: AvisoConexionNoSegura(
-                        // El aviso de privacidad (V2-M22.01) se verifica con
-                        // cada sesion; la guardia del enrutador lleva a la
-                        // puerta si falta aceptarlo.
-                        child: VerificadorDeAviso(
-                          child: CortinaArranque(
-                            listo: !_restaurando,
-                            duracionMinima: widget.duracionArranque,
-                            siguiente: (_) => child!,
+          builder: (context, ref, _) {
+            final avisoAceptado =
+                ref.watch(estadoAvisoProvider) == EstadoAviso.aceptado;
+            return MaterialApp.router(
+              title: 'CareCar',
+              theme: TemaCareCar.conFuentes(),
+              localizationsDelegates: delegadasDeIdioma,
+              supportedLocales: idiomasSoportados,
+              locale: ref.watch(idiomaElegidoProvider),
+              localeResolutionCallback: resolverIdioma,
+              debugShowCheckedModeBanner: false,
+              routerConfig: ref.watch(enrutadorProvider),
+              // La cortina tapa la app mientras se restaura la sesion: asi no se
+              // ve el login un instante antes de saltar a inicio ni a un enlace.
+              // Los accesos del icono (V2-M25.04) se registran aqui porque
+              // necesitan los textos del idioma activo y el enrutador. El widget
+              // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
+              // lo mismo y porque observa la sesion.
+              // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
+              // tapar tambien la cortina y los dialogos en el selector de apps.
+              builder: (context, child) {
+                final analitica = ref.read(analiticaProvider);
+                final prefs = widget.prefs;
+                final sesion = _sesion?.estado;
+                if (!kDebugMode &&
+                    !kIsWeb &&
+                    defaultTargetPlatform == TargetPlatform.android &&
+                    !_diagnosticoAndroidIniciado &&
+                    !_restaurando &&
+                    avisoAceptado &&
+                    sesion is Autenticada &&
+                    !sesion.debeCambiarContrasena &&
+                    prefs != null) {
+                  _diagnosticoAndroidIniciado = true;
+                  unawaited(reportarCrashesAndroid(analitica, prefs));
+                }
+                Widget contenido([VoidCallback? primeraPantalla]) =>
+                    CubiertaEnSegundoPlano(
+                      child: InstaladorDeAccesosRapidos(
+                        child: SincronizadorDeWidgets(
+                          child: ShadAppBuilder(
+                            child: AvisoEquipoComprometido(
+                              child: AvisoConexionNoSegura(
+                                child: VerificadorDeAviso(
+                                  child: CortinaArranque(
+                                    listo: !_restaurando,
+                                    duracionMinima: widget.duracionArranque,
+                                    alTerminar: primeraPantalla,
+                                    siguiente: (_) => AmbitoAnalitica(
+                                      analitica: analitica,
+                                      child: child!,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+                    );
+                final reloj = widget.relojArranque;
+                return reloj == null
+                    ? contenido()
+                    : ObservadorAnalitica(
+                        analitica: analitica,
+                        reloj: reloj,
+                        construir: contenido,
+                      );
+              },
+            );
+          },
         );
       },
     );
