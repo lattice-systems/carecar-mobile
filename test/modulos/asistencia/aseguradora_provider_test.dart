@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/modulos/documentos/datos/repositorio_documentos_fake.dart';
-import 'package:carecar_mobile/modulos/documentos/dominio/documento_vehiculo.dart';
 import 'package:carecar_mobile/modulos/documentos/dominio/repositorio_documentos.dart';
 import 'package:carecar_mobile/modulos/documentos/documentos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
