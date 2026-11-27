@@ -16,6 +16,7 @@ import 'cache/carecar_api_con_cache.dart';
 import 'cache/cifrador_de_cache.dart';
 import 'config/flavor.dart';
 import 'l10n/idiomas.dart';
+import 'modulos/notificaciones/notificaciones.dart';
 import 'modulos/privacidad/privacidad.dart';
 import 'modulos/widgets/widgets.dart';
 import 'nucleo/analitica/ambito_analitica.dart';
@@ -60,10 +61,10 @@ Future<void> arrancar(Flavor flavor) async {
   final prefs = await SharedPreferences.getInstance();
   // Recordatorios de citas con notificaciones locales (sin servidor).
   late final ServicioNotificaciones servicio;
-  servicio = ServicioNotificaciones(
-    PluginNotificacionesLocal(alTocar: () => servicio.notificarToque()),
-    prefs,
+  final plugin = PluginNotificacionesLocal(
+    alTocar: () => servicio.notificarToque(),
   );
+  servicio = ServicioNotificaciones(plugin, prefs);
   Notificaciones.actual = servicio;
   await servicio.iniciar();
   // Root o jailbreak (V2-M22.05): se evalua antes de abrir la app para que
@@ -74,7 +75,12 @@ Future<void> arrancar(Flavor flavor) async {
   // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
   // alcance anidado no vería los proveedores del enrutador.
   runApp(
-    AppCareCar(prefs: prefs, politica: politica, relojArranque: relojArranque),
+    AppCareCar(
+      prefs: prefs,
+      politica: politica,
+      relojArranque: relojArranque,
+      avisos: AvisosDelSistemaReal(plugin),
+    ),
   );
 }
 
@@ -92,6 +98,7 @@ class AppCareCar extends StatefulWidget {
     super.key,
     this.prefs,
     this.politica,
+    this.avisos,
     this.relojArranque,
     this.duracionArranque = const Duration(milliseconds: 1200),
   });
@@ -103,6 +110,10 @@ class AppCareCar extends StatefulWidget {
   /// Que se puede guardar en el equipo segun su integridad (V2-M22.05). Sin
   /// ella la app se comporta como en un equipo sin señal de riesgo.
   final PoliticaDatosLocales? politica;
+
+  /// Quien pide el permiso de avisos al sistema (V2-M06.01). Sin el, la
+  /// pantalla explica igual pero aceptar no concede nada.
+  final AvisosDelSistema? avisos;
 
   /// Si viene, las lecturas se guardan para verlas sin conexion.
   final SharedPreferences? prefs;
@@ -246,6 +257,8 @@ class _AppCareCarState extends State<AppCareCar> {
         // V2-M01.05: el candado de huella o rostro. Sin esto el candado no se
         // ofrece y la app se comporta como antes de la historia.
         lectorBiometricoProvider.overrideWithValue(LectorBiometricoLocalAuth()),
+        if (widget.avisos != null)
+          avisosDelSistemaProvider.overrideWithValue(widget.avisos),
         if (widget.politica != null)
           politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),

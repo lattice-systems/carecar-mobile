@@ -7,6 +7,7 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/biometria/candado_biometrico.dart';
 import '../../../nucleo/biometria/lector_biometrico.dart';
+import '../../notificaciones/notificaciones.dart';
 import '../../../nucleo/datos/vista_asincrona.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/control_binario.dart';
@@ -127,6 +128,24 @@ class _Contenido extends ConsumerWidget {
                       icono: LucideIcons300.monitorSmartphone,
                       colorIcono: c.acento,
                       alToque: () => context.push(rutaSesiones),
+                    ),
+                    // V2-M06.01: la puerta para reactivar los avisos
+                    // despues de negarlos. En Android 13 y despues el dialogo
+                    // del sistema ya no vuelve, asi que si no esta aqui no
+                    // hay forma de prenderlos.
+                    FilaGrupo(
+                      titulo: textos.accesoPerfilAvisos,
+                      subtitulo: switch (ref.watch(permisoDeAvisosProvider)) {
+                        EstadoAvisos.permitidos =>
+                          textos.accesoPerfilAvisosPrendidos,
+                        EstadoAvisos.negados =>
+                          textos.accesoPerfilAvisosApagados,
+                        EstadoAvisos.sinPreguntar =>
+                          textos.accesoPerfilAvisosSinPreguntar,
+                      },
+                      icono: LucideIcons300.bell,
+                      colorIcono: c.acento,
+                      alToque: () => context.push(rutaPermisoAvisos),
                     ),
                   ],
                 ),

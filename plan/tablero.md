@@ -98,7 +98,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Hecha | #195 |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Hecha | #143 |
 | V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Hecha | #152 |
-| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | En revisión | #202 |
+| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Hecha | #202 |
 | V2-M01.06 | Ver mi perfil | Jael | B | V2-M01.01 | Hecha | #180, backend #110 |
 | V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | En curso | #190, backend #113 · **el correo ya está; el teléfono espera un proveedor de SMS** |
 | V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Hecha | #195 |
@@ -173,7 +173,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
 | V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98 |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
-| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
+| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | En revisión | #206 |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 | Lista | |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 | Lista | |

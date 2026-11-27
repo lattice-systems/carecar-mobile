@@ -1768,6 +1768,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avisoCerrar => 'Close notice';
 
   @override
+  String get avisosPermisoTitulo => 'Why we notify you';
+
+  @override
+  String get avisosPermisoExplicacion =>
+      'We only write to you when something happens with your car. Nothing else.';
+
+  @override
+  String get avisosPermisoTaller =>
+      'How your car is doing at the shop, step by step.';
+
+  @override
+  String get avisosPermisoCitas =>
+      'Your appointment, reminded 24 and 2 hours ahead.';
+
+  @override
+  String get avisosPermisoRespuestas =>
+      'When your advisor replies or your documents are ready.';
+
+  @override
+  String get avisosPermisoSinPublicidad =>
+      'We do not send ads, and you can turn them off whenever you want.';
+
+  @override
+  String get avisosPermisoActivar => 'Turn on notifications';
+
+  @override
+  String get avisosPermisoAhoraNo => 'Not now';
+
+  @override
+  String get avisosPermisoListoTitulo => 'Done, we will keep you posted';
+
+  @override
+  String get avisosPermisoListoMensaje =>
+      'You can turn them off from your profile whenever you want.';
+
+  @override
+  String get avisosPermisoNegadosTitulo => 'Notifications are off';
+
+  @override
+  String get avisosPermisoNegadosMensaje =>
+      'Your phone will not let us ask again, but you can turn them on in the system settings.';
+
+  @override
+  String get avisosPermisoAbrirAjustes => 'Open settings';
+
+  @override
+  String get accesoPerfilAvisos => 'Notifications';
+
+  @override
+  String get accesoPerfilAvisosPrendidos => 'On';
+
+  @override
+  String get accesoPerfilAvisosApagados => 'Off';
+
+  @override
+  String get accesoPerfilAvisosSinPreguntar => 'Not set up';
+
+  @override
   String get navegacionPrincipal => 'Main navigation';
 
   @override

@@ -1764,6 +1764,63 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avisoCerrar => 'Cerrar aviso';
 
   @override
+  String get avisosPermisoTitulo => 'Para qué te avisamos';
+
+  @override
+  String get avisosPermisoExplicacion =>
+      'Solo te escribimos cuando pasa algo con tu auto. Nada más.';
+
+  @override
+  String get avisosPermisoTaller =>
+      'Cómo va tu auto en el taller, paso a paso.';
+
+  @override
+  String get avisosPermisoCitas => 'Tu cita, recordada 24 y 2 horas antes.';
+
+  @override
+  String get avisosPermisoRespuestas =>
+      'Cuando tu asesor te contesta o tus documentos ya están listos.';
+
+  @override
+  String get avisosPermisoSinPublicidad =>
+      'No mandamos publicidad, y los puedes apagar cuando quieras.';
+
+  @override
+  String get avisosPermisoActivar => 'Activar avisos';
+
+  @override
+  String get avisosPermisoAhoraNo => 'Ahora no';
+
+  @override
+  String get avisosPermisoListoTitulo => 'Listo, te vamos a avisar';
+
+  @override
+  String get avisosPermisoListoMensaje =>
+      'Puedes apagarlos cuando quieras desde tu perfil.';
+
+  @override
+  String get avisosPermisoNegadosTitulo => 'Los avisos están apagados';
+
+  @override
+  String get avisosPermisoNegadosMensaje =>
+      'Tu teléfono ya no nos deja preguntarte otra vez, pero los puedes prender en los ajustes del sistema.';
+
+  @override
+  String get avisosPermisoAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String get accesoPerfilAvisos => 'Avisos';
+
+  @override
+  String get accesoPerfilAvisosPrendidos => 'Prendidos';
+
+  @override
+  String get accesoPerfilAvisosApagados => 'Apagados';
+
+  @override
+  String get accesoPerfilAvisosSinPreguntar => 'Sin configurar';
+
+  @override
   String get navegacionPrincipal => 'Navegación principal';
 
   @override

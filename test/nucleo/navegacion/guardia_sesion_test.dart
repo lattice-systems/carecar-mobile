@@ -14,6 +14,7 @@ String? _va(
   bool aviso = false,
   bool bienvenida = false,
   bool candado = false,
+  bool avisos = false,
 }) => redirigirPorSesion(
   destino: Uri.parse(destino),
   estado: estado,
@@ -21,9 +22,44 @@ String? _va(
   avisoPorAceptar: aviso,
   bienvenidaPendiente: bienvenida,
   candadoPorAbrir: candado,
+  avisosPorExplicar: avisos,
 );
 
 void main() {
+  group('explicar los avisos (V2-M06.01)', () {
+    test('con sesion y sin explicar, lleva a la pantalla previa', () {
+      expect(_va('/', _normal, avisos: true), Rutas.permisoAvisos);
+      expect(_va('/mis-citas', _normal, avisos: true), Rutas.permisoAvisos);
+    });
+
+    test('ya en la pantalla previa, se queda', () {
+      expect(_va(Rutas.permisoAvisos, _normal, avisos: true), isNull);
+    });
+
+    test('va DESPUES del aviso de privacidad y del cambio obligatorio', () {
+      // Explicar los avisos puede esperar; aceptar el aviso de privacidad no.
+      expect(
+        _va('/', _normal, aviso: true, avisos: true),
+        Rutas.localizacionAceptarAviso(),
+      );
+      expect(
+        _va('/', _temporal, avisos: true),
+        Rutas.localizacionCambiarContrasena(),
+      );
+      // Y despues del candado, que es lo primero con la app cerrada.
+      expect(_va('/', _normal, candado: true, avisos: true), Rutas.desbloquear);
+    });
+
+    test('sin sesion no se explica nada: primero hay que entrar', () {
+      expect(_va('/', _sinSesion, avisos: true), Rutas.localizacionAcceso());
+    });
+
+    test('explicado ya, la pantalla sigue abierta desde el perfil', () {
+      // No es un paso obligado: se entra a verla cuando la persona quiera.
+      expect(_va(Rutas.permisoAvisos, _normal), isNull);
+    });
+  });
+
   group('candado de huella (V2-M01.05)', () {
     test('con sesion y sin abrir, todo lleva al desbloqueo', () {
       // Va antes que cambiar la contrasena temporal: con la app cerrada no se

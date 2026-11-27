@@ -10,6 +10,8 @@ import 'rutas.dart';
 /// - Con sesion y contrasena temporal sin cambiar: al cambio obligatorio.
 /// - Con sesion y el aviso de privacidad por aceptar (V2-M22.01), resuelta ya
 ///   la contrasena: a la puerta del aviso, guardando el destino.
+/// - Con sesion y los avisos sin explicar (V2-M06.01), ya resuelto lo de
+///   arriba: a la pantalla que los explica antes de pedir el permiso.
 /// - Con sesion en acceso o en un paso ya resuelto: a `desde`, o al inicio.
 ///
 /// Devuelve `null` si no hay que redirigir.
@@ -20,6 +22,7 @@ String? redirigirPorSesion({
   bool avisoPorAceptar = false,
   bool bienvenidaPendiente = false,
   bool candadoPorAbrir = false,
+  bool avisosPorExplicar = false,
 }) {
   final camino = destino.path;
 
@@ -67,6 +70,13 @@ String? redirigirPorSesion({
           ? desdeEnConsulta
           : _destinoParaVolver(destino),
     );
+  }
+
+  // V2-M06.01: lo ultimo de la fila, y con razon. Explicar para que sirven
+  // los avisos puede esperar a que la cuenta este en orden; el aviso de
+  // privacidad no. Negarlos no estorba: la pantalla deja pasar igual.
+  if (avisosPorExplicar) {
+    return camino == Rutas.permisoAvisos ? null : Rutas.permisoAvisos;
   }
 
   if (camino == Rutas.acceso ||
