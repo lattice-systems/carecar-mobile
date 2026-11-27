@@ -1,7 +1,5 @@
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/citas/datos/repositorio_citas_fake.dart';
-import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
-import 'package:carecar_mobile/modulos/citas/presentacion/proveedores_citas.dart';
 import 'package:carecar_mobile/modulos/notificaciones/notificaciones.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
