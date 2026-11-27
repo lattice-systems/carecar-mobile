@@ -51,9 +51,7 @@ Widget _app(
     configuracionTeselasProvider.overrideWithValue(
       ConfiguracionTeselas.openStreetMapDesarrollo,
     ),
-    abrirEnlaceDeSucursalProvider.overrideWithValue(
-      abrir ?? (_) async => true,
-    ),
+    abrirEnlaceDeSucursalProvider.overrideWithValue(abrir ?? (_) async => true),
   ],
   child: conTemaPista(
     const PantallaSucursales(),
@@ -62,11 +60,20 @@ Widget _app(
   ),
 );
 
+/// Pantalla alta para que la lista construya todas sus filas sin desplazarse.
+void _pantallaAlta(WidgetTester tester) {
+  tester.view
+    ..devicePixelRatio = 1
+    ..physicalSize = const Size(360, 2400);
+  addTearDown(tester.view.reset);
+}
+
 Future<void> _montar(
   WidgetTester tester,
   RepositorioSucursales repo, {
   Future<bool> Function(Uri)? abrir,
 }) async {
+  _pantallaAlta(tester);
   await tester.pumpWidget(_app(repo, abrir: abrir));
   await tester.pumpAndSettle();
 }
@@ -106,7 +113,10 @@ void main() {
       ),
     );
     expect(find.text('Todas las sucursales'), findsOneWidget);
-    expect(find.bySemanticsLabel(RegExp('ubicación de CareCar León')), findsOne);
+    expect(
+      find.bySemanticsLabel(RegExp('ubicación de CareCar León')),
+      findsOne,
+    );
 
     await tester.tap(find.text('Av. Norte 450, León, Gto.').last);
     await tester.pumpAndSettle();
@@ -240,6 +250,7 @@ void main() {
   testWidgets('en inglés traduce días, departamentos y botones', (
     tester,
   ) async {
+    _pantallaAlta(tester);
     await tester.pumpWidget(
       _app(RepositorioSucursalesFake(), idioma: const Locale('en')),
     );
@@ -255,6 +266,7 @@ void main() {
   testWidgets('se ve en claro, oscuro y letra al 200 % sin desbordar', (
     tester,
   ) async {
+    _pantallaAlta(tester);
     for (final escenario in Escenario.values) {
       await tester.pumpWidget(
         _app(
