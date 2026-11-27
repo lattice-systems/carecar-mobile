@@ -24,6 +24,11 @@ const _permisosRevisados = <String, String>{
       'pedir ayuda en carretera y agendar la recolección',
   'android.permission.ACCESS_COARSE_LOCATION':
       'lo mismo, si la persona solo da la ubicación aproximada',
+  // V2-M01.05. Lo pide `local_auth` para usar BiometricPrompt. No da acceso a
+  // ningún dato biométrico: la app solo recibe un sí o un no del sistema.
+  // Revisado en AUTH-2 y PRIVACY-1 de `docs/seguridad/revision-masvs-l1.md`.
+  'android.permission.USE_BIOMETRIC':
+      'desbloquear la app con huella o rostro, si la persona lo prende',
 };
 
 /// Dependencias que traen una superficie que esta revisión no cubre. Agregar
