@@ -44,7 +44,11 @@ void main() {
   });
 
   test('las coordenadas enteras se leen como decimales', () {
-    final s = SucursalApi.fromJson({...json(), 'latitud': 21, 'longitud': -101});
+    final s = SucursalApi.fromJson({
+      ...json(),
+      'latitud': 21,
+      'longitud': -101,
+    });
 
     expect(s.latitud, 21.0);
     expect(s.longitud, -101.0);
