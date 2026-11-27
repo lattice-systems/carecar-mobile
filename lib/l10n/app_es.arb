@@ -8528,5 +8528,46 @@
   "recoleccionSeguimientoMarcadorChofer": "Tu chofer",
   "@recoleccionSeguimientoMarcadorChofer": {
     "description": "Etiqueta del marcador del chofer en el mapa del seguimiento."
+  },
+  "contactoTitulo": "Contacto",
+  "@contactoTitulo": {
+    "description": "Título de la pantalla para contactar a la agencia."
+  },
+  "contactoIntro": "Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.",
+  "@contactoIntro": {
+    "description": "Texto de apoyo bajo el título de Contacto."
+  },
+  "contactoGrupoMedios": "Medios de contacto",
+  "@contactoGrupoMedios": {
+    "description": "Encabezado del grupo de medios de contacto (llamar y correo)."
+  },
+  "contactoLlamar": "Llamar a la agencia",
+  "@contactoLlamar": {
+    "description": "Fila que abre el marcador con el teléfono de la agencia."
+  },
+  "contactoCorreo": "Escribir un correo",
+  "@contactoCorreo": {
+    "description": "Fila que abre la app de correo con el correo de la agencia."
+  },
+  "contactoGrupoDonde": "Dónde estamos",
+  "@contactoGrupoDonde": {
+    "description": "Encabezado del grupo que lleva a las sucursales."
+  },
+  "contactoVerSucursales": "Sucursales y horarios",
+  "@contactoVerSucursales": {
+    "description": "Fila que abre la pantalla de sucursales con mapa."
+  },
+  "contactoVerSucursalesDetalle": "Mapa, horarios y cómo llegar",
+  "@contactoVerSucursalesDetalle": {
+    "description": "Detalle de la fila de sucursales cuando aún no se conoce la sucursal principal."
+  },
+  "contactoNoSePudoCorreo": "No pudimos abrir tu app de correo. Escríbenos a {correo}.",
+  "@contactoNoSePudoCorreo": {
+    "description": "Aviso cuando el teléfono no tiene app de correo.",
+    "placeholders": {
+      "correo": {
+        "type": "String"
+      }
+    }
   }
 }
