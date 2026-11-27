@@ -3008,6 +3008,24 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título del aviso global cuando el servidor no contesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión con la agencia'**
+  String get conexionSinRedTitulo;
+
+  /// Explica que la app sigue sirviendo sin red y qué pasa con lo demás.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes seguir viendo lo que ya tenías guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la señal.'**
+  String get conexionSinRedMensaje;
+
+  /// Explicación de una acción deshabilitada por falta de conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesita internet. Lo intentamos cuando vuelva la señal.'**
+  String get conexionAccionSinRed;
+
   /// Título de la pantalla que explica los avisos antes de pedir el permiso.
   ///
   /// In es, this message translates to:

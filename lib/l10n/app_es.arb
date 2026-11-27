@@ -2152,6 +2152,18 @@
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
   },
+  "conexionSinRedTitulo": "Sin conexi\u00f3n con la agencia",
+  "@conexionSinRedTitulo": {
+    "description": "T\u00edtulo del aviso global cuando el servidor no contesta."
+  },
+  "conexionSinRedMensaje": "Puedes seguir viendo lo que ya ten\u00edas guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la se\u00f1al.",
+  "@conexionSinRedMensaje": {
+    "description": "Explica que la app sigue sirviendo sin red y qu\u00e9 pasa con lo dem\u00e1s."
+  },
+  "conexionAccionSinRed": "Necesita internet. Lo intentamos cuando vuelva la se\u00f1al.",
+  "@conexionAccionSinRed": {
+    "description": "Explicaci\u00f3n de una acci\u00f3n deshabilitada por falta de conexi\u00f3n."
+  },
   "avisosPermisoTitulo": "Para qu\u00e9 te avisamos",
   "@avisosPermisoTitulo": {
     "description": "T\u00edtulo de la pantalla que explica los avisos antes de pedir el permiso."

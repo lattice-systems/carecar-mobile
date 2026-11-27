@@ -1764,6 +1764,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avisoCerrar => 'Cerrar aviso';
 
   @override
+  String get conexionSinRedTitulo => 'Sin conexión con la agencia';
+
+  @override
+  String get conexionSinRedMensaje =>
+      'Puedes seguir viendo lo que ya tenías guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la señal.';
+
+  @override
+  String get conexionAccionSinRed =>
+      'Necesita internet. Lo intentamos cuando vuelva la señal.';
+
+  @override
   String get avisosPermisoTitulo => 'Para qué te avisamos';
 
   @override
