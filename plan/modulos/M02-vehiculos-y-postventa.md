@@ -287,12 +287,13 @@ Agregar la cita al calendario del teléfono, desde el comprobante. Solo la parte
 
 **Decisiones sobre trabajo de otras personas**
 
-- **Dirección del taller (V2-M27.02, Haziel):** las sucursales no están integradas. Se usa `Agencia.direccion` (`lib/config/agencia.dart`, hoy un valor de ejemplo que hay que reemplazar antes de entregar). Al integrar V2-M27.02, `BotonAgregarAlCalendario` debe tomar la dirección de la sucursal de la cita; el único sitio a cambiar es el comentario `SUPUESTO` de ese widget.
+- **Dirección del taller (V2-M27.02, ya integrada):** el lugar del evento sale de la sucursal principal como «Nombre, dirección» (`contactoDeAgenciaProvider` del módulo `ayuda`, ver V2-M27.03). Si la lectura falla, aún carga o no hay sucursales, queda `Agencia.direccion` (`lib/config/agencia.dart`, un valor de ejemplo que hay que reemplazar antes de entregar). El comentario `SUPUESTO` del widget se quitó; las pruebas cubren la sucursal, sin sucursales y el fallo de lectura.
 - **Por qué `.ics` y no un paquete de calendario:** un paquete como `add_2_calendar` pide permisos de calendario y cambia el manifiesto de Android y el `Info.plist` de iOS; el `.ics` abre Google Calendar y el de Apple sin permisos ni código nativo. Si Diseño prefiere el alta directa, solo se cambia la entrega (`EntregaDeEvento`).
 
 **Pendiente**
 
 - Probar en un teléfono real que la hoja de compartir ofrece el calendario (Android e iOS); en pruebas solo se comprueba el contenido del `.ics`.
+- El evento usa la sucursal **principal**, no la de la cita: la cita aún no guarda sucursal (el contrato no la trae). Si la agencia tiene varias, habrá que agregarla a la cita (historia nueva, Borrador, cuando se necesite).
 - Desde «Mis citas» (V2-M02.09) no hay acceso al calendario: solo desde el comprobante.
 - Tablero: queda `En revisión` hasta integrar el PR; no pasa a `Hecha` mientras no se pruebe en celular.
 

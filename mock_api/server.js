@@ -34,6 +34,7 @@ function crearServidor(datos, { logger = true } = {}) {
   require('./modulos/pagos')(servidor, db, vehiculoDelCliente, emitirEvento);
   require('./modulos/tienda')(servidor, db, vehiculoDelCliente, emitirEvento);
   require('./modulos/sucursales')(servidor, db);
+  require('./modulos/documentos')(servidor, db, vehiculoDelCliente);
   require('./modulos/notificaciones')(servidor, db);
 
   servidor.use(BASE, (req, res) => {

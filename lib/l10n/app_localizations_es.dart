@@ -6574,4 +6574,177 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recoleccionSeguimientoMarcadorChofer => 'Tu chofer';
+
+  @override
+  String get contactoTitulo => 'Contacto';
+
+  @override
+  String get contactoIntro =>
+      'Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.';
+
+  @override
+  String get contactoGrupoMedios => 'Medios de contacto';
+
+  @override
+  String get contactoLlamar => 'Llamar a la agencia';
+
+  @override
+  String get contactoCorreo => 'Escribir un correo';
+
+  @override
+  String get contactoGrupoDonde => 'Dónde estamos';
+
+  @override
+  String get contactoVerSucursales => 'Sucursales y horarios';
+
+  @override
+  String get contactoVerSucursalesDetalle => 'Mapa, horarios y cómo llegar';
+
+  @override
+  String contactoNoSePudoCorreo(String correo) {
+    return 'No pudimos abrir tu app de correo. Escríbenos a $correo.';
+  }
+
+  @override
+  String get documentosTitulo => 'Documentos';
+
+  @override
+  String get documentosCargando => 'Cargando documentos';
+
+  @override
+  String get documentosVaciaTitulo => 'Aún no hay documentos';
+
+  @override
+  String get documentosVaciaMensaje =>
+      'Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.';
+
+  @override
+  String documentosSubtitulo(int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total documentos',
+      one: '1 documento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosResumenAtencion(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad documentos necesitan atención',
+      one: '1 documento necesita atención',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosResumenAlDia => 'Todo en orden';
+
+  @override
+  String get documentosResumenAlDiaDetalle => 'Tus documentos están al día.';
+
+  @override
+  String documentosResumenVence(String nombre, String cuando) {
+    return '$nombre vence $cuando.';
+  }
+
+  @override
+  String documentosResumenVencio(String nombre, String cuando) {
+    return '$nombre venció $cuando.';
+  }
+
+  @override
+  String get documentosGrupoPorVencer => 'Por vencer';
+
+  @override
+  String get documentosGrupoVencidos => 'Vencidos';
+
+  @override
+  String get documentosGrupoVigentes => 'Vigentes';
+
+  @override
+  String get documentosGrupoSinFecha => 'Sin fecha de vencimiento';
+
+  @override
+  String get documentosEstadoVigente => 'Vigente';
+
+  @override
+  String get documentosEstadoPorVencer => 'Por vencer';
+
+  @override
+  String get documentosEstadoVencido => 'Vencido';
+
+  @override
+  String get documentosEstadoSinFecha => 'Sin fecha';
+
+  @override
+  String documentosVenceEl(String fecha) {
+    return 'Vence el $fecha';
+  }
+
+  @override
+  String documentosVencioEl(String fecha) {
+    return 'Venció el $fecha';
+  }
+
+  @override
+  String documentosEnDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'en $dias días',
+      one: 'mañana',
+      zero: 'hoy',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosHaceDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'hace $dias días',
+      one: 'hace 1 día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosNumero(String numero) {
+    return 'N.º $numero';
+  }
+
+  @override
+  String get documentosCargadoPorAgencia => 'Cargado por la agencia';
+
+  @override
+  String get documentosTipoPoliza => 'Póliza de seguro';
+
+  @override
+  String get documentosTipoTarjetaCirculacion => 'Tarjeta de circulación';
+
+  @override
+  String get documentosTipoVerificacion => 'Verificación vehicular';
+
+  @override
+  String get documentosTipoTenencia => 'Tenencia y refrendo';
+
+  @override
+  String get documentosTipoLicencia => 'Licencia de conducir';
+
+  @override
+  String get documentosTipoGarantia => 'Póliza de garantía';
+
+  @override
+  String get documentosTipoFactura => 'Factura de compra';
+
+  @override
+  String get documentosTipoOtro => 'Otro documento';
+
+  @override
+  String get asistenciaLlamarAseguradoraBuscando => 'Buscando tu póliza…';
 }

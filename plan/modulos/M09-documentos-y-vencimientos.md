@@ -47,3 +47,32 @@ La guantera digital: póliza de seguro, tarjeta de circulación, verificación, 
 ## Privacidad de pantalla
 
 Las pantallas con documentos y su visor se envuelven con `PantallaSegura` (`lib/nucleo/privacidad/`, V2-M22.06) para bloquear capturas en Android; ver [`docs/seguridad/ocultar-en-selector.md`](../../docs/seguridad/ocultar-en-selector.md). Su prueba usa `ProteccionDeCapturaFake`.
+
+## Avance de V2-M09.01
+
+> **Le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda).** La tomó porque V2-M11.02 (llamar a la aseguradora) dependía de ella. Haziel sigue siendo dueño del módulo y de V2-M09.02 a V2-M09.06.
+
+Ver los documentos de cada auto con su estado de vencimiento. Backend y app.
+
+**Backend** (`agencia-360-backend`, diseño en `plan/historias-backend.md`, «Diseño técnico — V2-M09.01»)
+
+- Migración `V61__crear_documento_vehiculo.sql`: tabla `documento_vehiculo` con los campos de la ficha (`id`, `vehiculo_cliente_id`, `tipo`, `archivo_url`, `vence_en`, `origen`, `creado_en`) más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora` (R1 permite agregar). `archivo_url` es opcional hasta V2-M09.02.
+- `GET /api/v1/app/vehiculos/{id}/documentos`: el estado (`VIGENTE`, `POR_VENCER` de 0 a 30 días, `VENCIDO`, `SIN_FECHA`) y `diasRestantes` se calculan con la fecha de la agencia (`America/Mexico_City`), no la del teléfono; orden por vencimiento con los que no tienen fecha al final; 404 para un auto ajeno igual que uno que no existe; 401 sin sesión. No expone la dirección del archivo (`tieneArchivo` solo dice si hay).
+- Contrato v2 (etiqueta `Documentos`, esquema `Documento`), script de sembrado para una base ya cargada y datos de ejemplo de Diego en `docs/datos-de-ejemplo.md`.
+
+**App** (`lib/modulos/documentos/`)
+
+- Dominio `DocumentoVehiculo` con `TipoDocumento` y `EstadoDocumento`; `polizaParaLlamar(...)` elige la póliza no vencida con aseguradora y teléfono: prefiere una vigente a una por vencer y, entre iguales, la que vence más tarde.
+- `RepositorioDocumentosApi` con `ApiCliente` y `RepositorioDocumentosFake`; `documentosProvider(vehiculoId)`.
+- Pantalla `PantallaDocumentos` en `/documentos/:vehiculoId` (exige sesión y va dentro de `PantallaSegura`, sin capturas en Android): portada con el resumen de lo que necesita atención, grupos por estado de lo más urgente a lo menos, insignia de estado, fecha y días, número y aseguradora de la póliza; cinco estados (cargando, datos, vacío, error con reintento y sin conexión). Solo componentes y tokens de `lib/nucleo/diseno/`.
+- Acceso «Documentos» en el grupo «Tu auto» del detalle del vehículo.
+- `mock_api/modulos/documentos.js` con la misma regla de estado y orden; la semilla usa `venceEnDias` para que siempre haya un documento de cada estado.
+
+**Pruebas:** `dominio_documentos_test.dart`, `repositorio_documentos_test.dart`, `ruta_documentos_test.dart` (ruta, sesión y bloqueo de capturas), `pantalla_documentos_test.dart` (estados, orden, claro y oscuro, letra al 200 % en 320×568 sin desbordes también con textos largos, pantalla ancha, nada atraviesa el título al desplazar, un nodo por documento para el lector de pantalla, inglés) y `test/accesibilidad/rutas/documentos_test.dart`. En el backend, `DocumentosAppIntegrationTest`, `DocumentosAppServiceTest` y `DocumentoVehiculoTest` (estado por fecha).
+
+**Decisiones**
+
+- El estado lo calcula el servidor y la app no lo recalcula: así el teléfono con la hora mal puesta no cambia lo que se ve.
+- La aseguradora de V2-M11.02 sale de la póliza (no de una tabla aparte), porque la ficha no define otra y la póliza ya trae la aseguradora.
+
+**No probado:** en el celular. Subir o fotografiar un documento es V2-M09.02.

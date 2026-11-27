@@ -10,6 +10,7 @@ import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
 import '../../modulos/acceso/acceso.dart' show rutaMiContrasena, rutaMiPerfil;
+import '../../modulos/ayuda/ayuda.dart' show rutaContacto, rutaSucursales;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
 import '../../modulos/pagos/pagos.dart'
     show rutaDatosFiscales, rutaMetodosPago, rutaMisPagos;
@@ -65,6 +66,7 @@ class PantallaPerfil extends StatefulWidget {
   static const botonMetodosPago = Key('perfil_metodos_pago');
   static const botonMiPerfil = Key('perfil_mi_perfil');
   static const botonContactar = Key('perfil_contactar');
+  static const botonSucursales = Key('perfil_sucursales');
   static const botonPrivacidad = Key('perfil_privacidad');
   static const botonConfirmarCierre = Key('perfil_confirmar_cierre');
   static const botonCancelarCierre = Key('perfil_cancelar_cierre');
@@ -151,6 +153,9 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   /// Abre «Métodos de pago» (V2-M08.04): las tarjetas guardadas.
   void _abrirMetodosPago() => GoRouter.of(context).push(rutaMetodosPago);
 
+  /// Abre «Sucursales» (V2-M27.02): mapa, horarios y cómo llegar.
+  void _abrirSucursales() => GoRouter.of(context).push(rutaSucursales);
+
   /// Abre «Mi perfil» (V2-M01.06). Solo se ofrece dentro de la app enrutada.
   void _abrirMiPerfil() => GoRouter.of(context).push(rutaMiPerfil);
 
@@ -160,7 +165,15 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   Widget _conElTemaDeLaPantalla(Widget hijo) =>
       Theme(data: Theme.of(context), child: hijo);
 
+  /// Contacto con la agencia (V2-M27.03): con enrutador abre la pantalla del
+  /// modulo `ayuda` (llamar, correo y sucursales con datos de la sucursal
+  /// principal); sin enrutador (la v1 suelta, en pruebas) queda la hoja con los
+  /// datos de la config.
   void _contactar() {
+    if (GoRouter.maybeOf(context) != null) {
+      GoRouter.of(context).push(rutaContacto);
+      return;
+    }
     mostrarHojaInferior<void>(
       context,
       titulo: 'Contactar a la agencia',
@@ -304,9 +317,19 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                 llave: PantallaPerfil.botonContactar,
                 icono: LucideIcons300.headset,
                 titulo: 'Contactar a la agencia',
-                subtitulo: 'Teléfono y correo de atención',
+                subtitulo: 'Llamar, escribir y ver dónde estamos',
                 alTocar: _contactar,
               ),
+              // Sin enrutador no hay a donde ir: solo se ofrece dentro de la
+              // app enrutada.
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonSucursales,
+                  icono: LucideIcons300.mapPin,
+                  titulo: 'Sucursales y horarios',
+                  subtitulo: 'Mapa, horarios y cómo llegar',
+                  alTocar: _abrirSucursales,
+                ),
               _Opcion(
                 llave: PantallaPerfil.botonPrivacidad,
                 icono: LucideIcons300.shieldAlert,

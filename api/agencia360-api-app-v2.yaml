@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.31.0
+  version: 2.32.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -99,6 +99,8 @@ tags:
     description: V2-M27.02
   - name: Notificaciones
     description: V2-M06.04 (bandeja) y V2-M06.05 (preferencias)
+  - name: Documentos
+    description: V2-M09.01
 
 security:
   - bearerAuth: []
@@ -978,6 +980,12 @@ paths:
         El pase vence al terminar la cita. Una cita cancelada no emite pase (409); un pase ya
         emitido no se revoca desde el servidor, pero recepción valida el QR contra el estado
         actual de la cita.
+
+        V2-M25.06 · Con credenciales de Apple y una URL pública HTTPS configurada, el pase de
+        Apple lleva `webServiceURL` y `authenticationToken`, y Wallet lo mantiene al día: al
+        cancelar la cita queda `voided` y al reprogramarla trae la fecha nueva. Ese servicio web
+        lo llama Wallet (no la app) en `/v1/devices`, `/v1/passes` y `/v1/log`, fuera de este
+        contrato y de `/api/v1/app`. En Google el pase se marca `EXPIRED` o con el horario nuevo.
       parameters:
         - name: citaId
           in: path
@@ -2420,6 +2428,38 @@ paths:
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
+  /vehiculos/{vehiculoId}/documentos:
+    get:
+      tags: [Documentos]
+      summary: Documentos del vehículo con su estado de vencimiento
+      description: |
+        V2-M09.01 · Póliza, tarjeta de circulación, verificación, tenencia, licencia, garantía,
+        factura de compra y otros. Orden por vencimiento (el que vence primero arriba) y los que no
+        tienen fecha al final. El estado lo calcula el servidor con la fecha de la agencia
+        (`America/Mexico_City`), no el teléfono: `VENCIDO` si la fecha ya pasó, `POR_VENCER` si
+        vence hoy o en los siguientes 30 días, `VIGENTE` si falta más y `SIN_FECHA` si no tiene
+        vencimiento. Sin documentos responde 200 con una lista vacía. No incluye la dirección del
+        archivo: `tieneArchivo` solo indica si hay uno (la descarga firmada llega con V2-M09.02).
+        La póliza trae `aseguradora` y `telefonoAseguradora`, que usa V2-M11.02.
+        Un vehículo que no es del cliente responde 404, igual que uno que no existe.
+      parameters:
+        - $ref: '#/components/parameters/VehiculoId'
+      responses:
+        '200':
+          description: Documentos del vehículo (puede ser una lista vacía)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Documento'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
   /vehiculos/{vehiculoId}/campanas:
     get:
       tags: [Garantía y campañas]
@@ -3767,6 +3807,67 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /ordenes/{ordenId}/actividad-en-vivo:
+    put:
+      tags: [Taller en vivo]
+      summary: Registrar la Live Activity de una orden
+      description: |
+        V2-M25.05 · La app inicia la Live Activity de la orden en iOS y manda aquí el push token
+        que le da ActivityKit (hexadecimal). Con él el servidor actualiza la pantalla bloqueada
+        al cambiar de etapa, al proponer o responder un trabajo adicional, y la termina al
+        entregar el auto, aunque la app esté cerrada. Repetir el mismo token es seguro; un token
+        dado de baja se reactiva. Sin credenciales de APNs en el servidor no se manda nada y la
+        respuesta es la misma.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActividadEnVivoToken'
+      responses:
+        '204':
+          description: Registrada
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La orden ya se entregó (`codigo` ORDEN_CERRADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+    delete:
+      tags: [Taller en vivo]
+      summary: Dar de baja la Live Activity de una orden
+      description: |
+        V2-M25.05 · Al cerrar sesión o terminar la actividad desde el teléfono. Con `pushToken`
+        quita solo esa actividad; sin él, todas las que el cliente tenga en la orden. Es
+        idempotente.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+        - name: pushToken
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 300
+      responses:
+        '204':
+          description: Dada de baja (o no había ninguna)
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -3922,6 +4023,16 @@ components:
             path: /api/v1/app/perfiles-fiscales
 
   schemas:
+    ActividadEnVivoToken:
+      type: object
+      required: [pushToken]
+      properties:
+        pushToken:
+          type: string
+          maxLength: 300
+          pattern: '^[0-9a-fA-F]+$'
+          description: Push token de la Live Activity, en hexadecimal
+          example: aabbccddeeff00112233445566778899
     CategoriaNotificacion:
       type: string
       description: |
@@ -4945,6 +5056,58 @@ components:
           description: HH:mm en la hora de la agencia; siempre después de `abre`
         abiertoAhora:
           type: boolean
+
+    Documento:
+      type: object
+      description: Un documento del vehículo con su estado de vencimiento (V2-M09.01)
+      required: [id, vehiculoId, tipo, estado, origen, tieneArchivo]
+      properties:
+        id:
+          type: integer
+          format: int64
+        vehiculoId:
+          type: integer
+          format: int64
+        tipo:
+          type: string
+          enum: [POLIZA, TARJETA_CIRCULACION, VERIFICACION, TENENCIA, LICENCIA, GARANTIA, FACTURA, OTRO]
+        titulo:
+          type: string
+          nullable: true
+          description: Nombre libre; siempre viene con `OTRO`
+        numero:
+          type: string
+          nullable: true
+          description: Folio o número de póliza
+        emitidoEn:
+          type: string
+          format: date
+          nullable: true
+        venceEn:
+          type: string
+          format: date
+          nullable: true
+        estado:
+          type: string
+          enum: [SIN_FECHA, VIGENTE, POR_VENCER, VENCIDO]
+          description: Calculado con la fecha de la agencia; `POR_VENCER` es de 0 a 30 días
+        diasRestantes:
+          type: integer
+          nullable: true
+          description: Negativo si ya venció; nulo si no tiene fecha de vencimiento
+        origen:
+          type: string
+          enum: [CLIENTE, AGENCIA]
+        tieneArchivo:
+          type: boolean
+        aseguradora:
+          type: string
+          nullable: true
+          description: Solo en la póliza
+        telefonoAseguradora:
+          type: string
+          nullable: true
+          description: Solo en la póliza; con lada, la app lo usa en `tel:`
 
     DetalleModeloCatalogo:
       type: object
