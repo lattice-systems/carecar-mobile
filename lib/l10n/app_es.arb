@@ -2152,6 +2152,51 @@
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
   },
+  "bandejaTitulo": "Avisos",
+  "@bandejaTitulo": {
+    "description": "T\u00edtulo de la bandeja de avisos."
+  },
+  "bandejaCargando": "Cargando tus avisos",
+  "@bandejaCargando": {
+    "description": "Anuncio al lector de pantalla mientras carga la bandeja."
+  },
+  "bandejaVacioTitulo": "Todav\u00eda no tienes avisos",
+  "@bandejaVacioTitulo": {
+    "description": "T\u00edtulo de la bandeja vac\u00eda."
+  },
+  "bandejaVacioMensaje": "Aqu\u00ed te vamos a decir c\u00f3mo va tu auto en el taller, cu\u00e1ndo es tu cita y cu\u00e1ndo est\u00e1n listos tus documentos.",
+  "@bandejaVacioMensaje": {
+    "description": "Mensaje de la bandeja vac\u00eda."
+  },
+  "bandejaMarcarTodos": "Marcar todos como le\u00eddos",
+  "@bandejaMarcarTodos": {
+    "description": "Bot\u00f3n que marca toda la bandeja como le\u00edda."
+  },
+  "bandejaSinLeerUno": "Sin leer",
+  "@bandejaSinLeerUno": {
+    "description": "Lo que el lector de pantalla dice antes de un aviso sin leer."
+  },
+  "bandejaErrorMasTitulo": "No pudimos cargar m\u00e1s avisos",
+  "@bandejaErrorMasTitulo": {
+    "description": "T\u00edtulo del aviso cuando falla cargar otra p\u00e1gina."
+  },
+  "bandejaErrorMasMensaje": "Lo que ya se carg\u00f3 sigue aqu\u00ed. Desliza hacia abajo para intentarlo otra vez.",
+  "@bandejaErrorMasMensaje": {
+    "description": "Explica que no se perdi\u00f3 lo cargado."
+  },
+  "accesoPerfilMisAvisos": "Mis avisos",
+  "@accesoPerfilMisAvisos": {
+    "description": "Fila del perfil que abre la bandeja."
+  },
+  "bandejaSinLeer": "{n, plural, =1{1 sin leer} other{{n} sin leer}}",
+  "@bandejaSinLeer": {
+    "description": "Cuantos avisos sin leer hay en la cuenta.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "conexionSinRedTitulo": "Sin conexi\u00f3n con la agencia",
   "@conexionSinRedTitulo": {
     "description": "T\u00edtulo del aviso global cuando el servidor no contesta."

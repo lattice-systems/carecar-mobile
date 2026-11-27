@@ -5,6 +5,8 @@ library;
 
 export 'datos/avisos_del_sistema_real.dart' show AvisosDelSistemaReal;
 export 'dominio/avisos_del_sistema.dart' show AvisosDelSistema;
+export 'dominio/aviso_cliente.dart'
+    show AvisoCliente, CategoriaDeAviso, PaginaDeAvisos, RepositorioAvisos;
 export 'dominio/recordatorios_de_cita.dart' show RecordatoriosDeCita;
 export 'presentacion/estado_avisos.dart'
     show
@@ -12,7 +14,9 @@ export 'presentacion/estado_avisos.dart'
         PermisoDeAvisos,
         avisosDelSistemaProvider,
         permisoDeAvisosProvider;
+export 'presentacion/proveedores_bandeja.dart'
+    show avisosSinLeerProvider, bandejaProvider, repositorioAvisosProvider;
 export 'presentacion/proveedores_recordatorios.dart'
     show recordatoriosDeCitaProvider;
 export 'presentacion/rutas_notificaciones.dart'
-    show rutaPermisoAvisos, rutasNotificaciones;
+    show rutaBandeja, rutaPermisoAvisos, rutasNotificaciones;
