@@ -257,6 +257,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoOlvide => 'Forgot your password?';
 
   @override
+  String get accesoPerfilCandado => 'Sign in with fingerprint or face';
+
+  @override
+  String get accesoPerfilCandadoDetalle =>
+      'To open the app without typing your password';
+
+  @override
+  String get accesoPerfilCandadoMotivo =>
+      'Confirm your fingerprint to turn unlocking on.';
+
+  @override
+  String get accesoPerfilCandadoNoSePudo =>
+      'We could not confirm your fingerprint. Unlocking stays off.';
+
+  @override
   String get accesoPerfilCargando => 'Loading your profile…';
 
   @override
@@ -339,6 +354,36 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accesoSesionesCambio =>
       'That session changed while you were looking. Check the list and try again.';
+
+  @override
+  String get desbloqueoCambioMensaje =>
+      'For your safety we turned fingerprint unlocking off. Sign in with your password and you can turn it back on.';
+
+  @override
+  String get desbloqueoCambioTitulo => 'Your phone\'s biometrics changed';
+
+  @override
+  String get desbloqueoContrasena => 'Sign in with my password';
+
+  @override
+  String get desbloqueoExplicacion =>
+      'Use your fingerprint or your face to get in.';
+
+  @override
+  String get desbloqueoFalloMensaje =>
+      'Try again or sign in with your password.';
+
+  @override
+  String get desbloqueoFalloTitulo => 'We did not recognize you';
+
+  @override
+  String get desbloqueoIntentar => 'Use my fingerprint or face';
+
+  @override
+  String get desbloqueoMotivo => 'Confirm it is you to get into CareCar.';
+
+  @override
+  String get desbloqueoTitulo => 'Unlock CareCar';
 
   @override
   String get accesoSesionesCancelar => 'Cancel';

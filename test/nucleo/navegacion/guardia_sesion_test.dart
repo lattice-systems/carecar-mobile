@@ -13,15 +13,36 @@ String? _va(
   bool cambiada = false,
   bool aviso = false,
   bool bienvenida = false,
+  bool candado = false,
 }) => redirigirPorSesion(
   destino: Uri.parse(destino),
   estado: estado,
   contrasenaCambiada: cambiada,
   avisoPorAceptar: aviso,
   bienvenidaPendiente: bienvenida,
+  candadoPorAbrir: candado,
 );
 
 void main() {
+  group('candado de huella (V2-M01.05)', () {
+    test('con sesion y sin abrir, todo lleva al desbloqueo', () {
+      // Va antes que cambiar la contrasena temporal: con la app cerrada no se
+      // decide nada de la cuenta.
+      expect(_va('/', _normal, candado: true), Rutas.desbloquear);
+      expect(_va('/ejemplo/avisos', _normal, candado: true), Rutas.desbloquear);
+      expect(_va('/', _temporal, candado: true), Rutas.desbloquear);
+    });
+
+    test('en el desbloqueo se queda', () {
+      expect(_va(Rutas.desbloquear, _normal, candado: true), isNull);
+    });
+
+    test('sin sesion no aplica: manda el login', () {
+      expect(_va('/', _sinSesion, candado: true), isNotNull);
+      expect(_va(Rutas.desbloquear, _sinSesion, candado: true), isNotNull);
+    });
+  });
+
   group('bienvenida (V2-M01.02)', () {
     test('pendiente, va antes que el login', () {
       // Es del primer arranque, no de la cuenta: quien no ha entrado tambien

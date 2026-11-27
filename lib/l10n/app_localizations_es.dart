@@ -257,6 +257,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
 
   @override
+  String get accesoPerfilCandado => 'Entrar con huella o rostro';
+
+  @override
+  String get accesoPerfilCandadoDetalle =>
+      'Para abrir la app sin escribir tu contraseña';
+
+  @override
+  String get accesoPerfilCandadoMotivo =>
+      'Confirma tu huella para prender el desbloqueo.';
+
+  @override
+  String get accesoPerfilCandadoNoSePudo =>
+      'No pudimos confirmar tu huella. El desbloqueo sigue apagado.';
+
+  @override
   String get accesoPerfilCargando => 'Cargando tu perfil…';
 
   @override
@@ -339,6 +354,35 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get accesoSesionesCambio =>
       'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.';
+
+  @override
+  String get desbloqueoCambioMensaje =>
+      'Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.';
+
+  @override
+  String get desbloqueoCambioTitulo => 'La biometría de tu teléfono cambió';
+
+  @override
+  String get desbloqueoContrasena => 'Entrar con mi contraseña';
+
+  @override
+  String get desbloqueoExplicacion => 'Usa tu huella o tu rostro para entrar.';
+
+  @override
+  String get desbloqueoFalloMensaje =>
+      'Intenta otra vez o entra con tu contraseña.';
+
+  @override
+  String get desbloqueoFalloTitulo => 'No te reconocimos';
+
+  @override
+  String get desbloqueoIntentar => 'Usar mi huella o mi rostro';
+
+  @override
+  String get desbloqueoMotivo => 'Confirma que eres tú para entrar a CareCar.';
+
+  @override
+  String get desbloqueoTitulo => 'Desbloquea CareCar';
 
   @override
   String get accesoSesionesCancelar => 'Cancelar';

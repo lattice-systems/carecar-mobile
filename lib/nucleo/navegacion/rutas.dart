@@ -27,6 +27,11 @@ abstract final class Rutas {
   /// usar la app en el primer ingreso y cuando hay una version nueva.
   static const aceptarAviso = '/privacidad/aceptar';
 
+  /// Desbloqueo con huella o rostro (V2-M01.05). La sirve el modulo `acceso`.
+  ///
+  /// **No es publica**: solo tiene sentido con sesion. Sin ella manda el login.
+  static const desbloquear = '/desbloquear';
+
   /// Bienvenida del primer arranque (V2-M01.02). La sirve el modulo `acceso`.
   static const bienvenida = '/bienvenida';
 

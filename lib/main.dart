@@ -24,6 +24,8 @@ import 'nucleo/analitica/crashes_android.dart';
 import 'nucleo/analitica/observador_analitica.dart';
 import 'nucleo/analitica/proveedores_analitica.dart';
 import 'nucleo/api/proveedores_api.dart';
+import 'nucleo/biometria/lector_biometrico.dart';
+import 'nucleo/biometria/lector_biometrico_local_auth.dart';
 import 'nucleo/datos/reintento.dart';
 import 'nucleo/dispositivo/lector_del_dispositivo.dart';
 import 'nucleo/idioma/proveedores_idioma.dart';
@@ -241,6 +243,9 @@ class _AppCareCarState extends State<AppCareCar> {
       retry: reintentoDelNucleo,
       overrides: [
         preferenciasProvider.overrideWithValue(widget.prefs),
+        // V2-M01.05: el candado de huella o rostro. Sin esto el candado no se
+        // ofrece y la app se comporta como antes de la historia.
+        lectorBiometricoProvider.overrideWithValue(LectorBiometricoLocalAuth()),
         if (widget.politica != null)
           politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),

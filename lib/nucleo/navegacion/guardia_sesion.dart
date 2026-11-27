@@ -4,6 +4,7 @@ import 'rutas.dart';
 /// Regla de redireccion por sesion, pura y sin Flutter (V2-T01.03).
 ///
 /// - Primer arranque con la bienvenida sin ver: a la bienvenida, antes de todo.
+/// - Con sesion y el candado de huella sin abrir: al desbloqueo (V2-M01.05).
 /// - Sin sesion porque la agencia desactivo la cuenta: al aviso que lo explica.
 /// - Sin sesion y ruta privada: al acceso, guardando a donde volver (`desde`).
 /// - Con sesion y contrasena temporal sin cambiar: al cambio obligatorio.
@@ -18,6 +19,7 @@ String? redirigirPorSesion({
   required bool contrasenaCambiada,
   bool avisoPorAceptar = false,
   bool bienvenidaPendiente = false,
+  bool candadoPorAbrir = false,
 }) {
   final camino = destino.path;
 
@@ -40,6 +42,12 @@ String? redirigirPorSesion({
     }
     if (Rutas.publicas.contains(camino)) return null;
     return Rutas.localizacionAcceso(desde: _destinoParaVolver(destino));
+  }
+
+  // V2-M01.05: el candado de huella va antes que todo lo de la cuenta. Con la
+  // app cerrada no se decide nada mas, ni cambiar la contrasena.
+  if (candadoPorAbrir) {
+    return camino == Rutas.desbloquear ? null : Rutas.desbloquear;
   }
 
   final debeCambiar = estado.debeCambiarContrasena && !contrasenaCambiada;

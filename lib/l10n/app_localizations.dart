@@ -548,6 +548,30 @@ abstract class AppLocalizations {
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
 
+  /// Interruptor de V2-M01.05 en mi perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con huella o rostro'**
+  String get accesoPerfilCandado;
+
+  /// Descripción del interruptor del desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Para abrir la app sin escribir tu contraseña'**
+  String get accesoPerfilCandadoDetalle;
+
+  /// Texto que muestra el sistema al prender el desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma tu huella para prender el desbloqueo.'**
+  String get accesoPerfilCandadoMotivo;
+
+  /// Aviso cuando no se reconoce la huella al prenderlo.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar tu huella. El desbloqueo sigue apagado.'**
+  String get accesoPerfilCandadoNoSePudo;
+
   /// Lo que anuncia el lector de pantalla mientras carga el perfil.
   ///
   /// In es, this message translates to:
@@ -703,6 +727,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.'**
   String get accesoSesionesCambio;
+
+  /// Qué hacer cuando cambió la biometría del equipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.'**
+  String get desbloqueoCambioMensaje;
+
+  /// Título del aviso cuando la biometría ya no es la de antes.
+  ///
+  /// In es, this message translates to:
+  /// **'La biometría de tu teléfono cambió'**
+  String get desbloqueoCambioTitulo;
+
+  /// Salida siempre disponible del desbloqueo: cierra la sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con mi contraseña'**
+  String get desbloqueoContrasena;
+
+  /// Explicación de la pantalla de desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa tu huella o tu rostro para entrar.'**
+  String get desbloqueoExplicacion;
+
+  /// Qué hacer cuando el sistema no reconoció la huella.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta otra vez o entra con tu contraseña.'**
+  String get desbloqueoFalloMensaje;
+
+  /// Título del aviso cuando falla el reconocimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'No te reconocimos'**
+  String get desbloqueoFalloTitulo;
+
+  /// Botón que vuelve a pedir la biometría.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar mi huella o mi rostro'**
+  String get desbloqueoIntentar;
+
+  /// Texto que muestra el sistema en el diálogo de biometría.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma que eres tú para entrar a CareCar.'**
+  String get desbloqueoMotivo;
+
+  /// Título de la pantalla de V2-M01.05.
+  ///
+  /// In es, this message translates to:
+  /// **'Desbloquea CareCar'**
+  String get desbloqueoTitulo;
 
   /// Acción secundaria del diálogo que confirma cerrar todas las sesiones.
   ///

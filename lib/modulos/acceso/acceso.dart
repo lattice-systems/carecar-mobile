@@ -18,6 +18,7 @@ export 'presentacion/pantalla_bienvenida.dart' show PantallaBienvenida;
 export 'presentacion/pantalla_cambiar_contrasena.dart'
     show ListaDeReglas, PantallaCambiarContrasena;
 export 'presentacion/pantalla_cambiar_correo.dart' show PantallaCambiarCorreo;
+export 'presentacion/pantalla_desbloqueo.dart' show PantallaDesbloqueo;
 export 'presentacion/pantalla_cuenta_desactivada.dart'
     show PantallaCuentaDesactivada;
 export 'presentacion/pantalla_mi_contrasena.dart' show PantallaMiContrasena;

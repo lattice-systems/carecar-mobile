@@ -210,6 +210,24 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 - **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
 
+## Avance de V2-M01.05
+
+**Es un candado local, no otra forma de iniciar sesión.** Los tokens siguen en el almacén seguro y la sesión se renueva igual (V2-M01.11); la biometría solo decide si la app se abre sin escribir la contraseña. Decirlo importa porque la otra lectura —«entrar con la huella»— haría pensar que la huella sustituye a la contraseña en el servidor, y no.
+
+`local_auth` queda detrás de `LectorBiometrico` (`lib/nucleo/biometria/`), con un solo archivo que lo importa. Pide configuración nativa: `MainActivity` hereda de `FlutterFragmentActivity` —el `BiometricPrompt` de Android se monta como fragmento, y con `FlutterActivity` falla en tiempo de ejecución—, el manifiesto declara `USE_BIOMETRIC` y el `Info.plist` describe el uso de Face ID.
+
+**Siempre hay salida con la contraseña**, y es lo que vuelve segura la comodidad: si el sensor falla o la biometría se borra, nadie se queda fuera de su cuenta. Esa salida **cierra la sesión** a propósito: si solo navegara, la guardia traería de vuelta al desbloqueo en el siguiente toque.
+
+**Prenderlo exige identificarse ahí mismo.** Prenderlo sin comprobar que funciona dejaría a la persona encerrada fuera en el siguiente arranque. Y el interruptor va **suelto** en el perfil, no como `fin` de una fila de `GrupoLista`: ese grupo envuelve la fila en `Semantics(excludeSemantics: true)` y el lector de pantalla no lo leería.
+
+**Quien acaba de escribir su contraseña no tiene que poner la huella encima.** El candado se abre solo cuando el login pasa por `Autenticando`, que es justo lo que distingue entrar escribiendo de restaurar la sesión guardada.
+
+### El criterio del cambio de biometría, con su límite escrito
+
+Al prenderlo se guarda una **firma**: qué clases de biometría tenía el equipo. Si al abrir no coincide, el candado se apaga y se pide la contraseña. Eso cubre que se borren todas, que se quite el rostro o que aparezca una clase nueva. **No cubre que alguien agregue otra huella del mismo tipo**: el sistema sigue reportando «huella» y `local_auth` no expone más. Verlo exigiría una llave del Keystore creada con `setInvalidatedByBiometricEnrollment`, es decir un canal nativo propio por plataforma. Queda anotado aquí y en la revisión MASVS (AUTH-2) en vez de fingir que el criterio cubre más de lo que cubre.
+
+Diez pruebas, con un lector falso porque en una prueba no hay `BiometricPrompt`: el estado del candado, la comparación de firmas —incluido que sin firma guardada se pida la contraseña, por el lado seguro—, la guardia, y la app enrutada abriendo con huella buena, fallando y con la biometría cambiada. **Falta probarlo en un celular de verdad**: aquí no hay RAM para el emulador y iOS no se compila.
+
 ## Avance de V2-M01.02
 
 Quien decide mostrarla es la **guardia de rutas**, y va antes que todo, incluido el login: la bienvenida es del primer arranque, no de la cuenta, así que tiene que verla también quien todavía no ha entrado. Por eso el estado vive en `lib/nucleo/bienvenida/` y no en el módulo: la guardia está en el núcleo y no puede importar un módulo.
