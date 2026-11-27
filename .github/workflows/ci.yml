@@ -1,13 +1,17 @@
 name: CI
 
-# Corre en cada PR hacia main y en cada push a main (al integrar). Las ramas de
-# feature no corren con su push: las cubre su PR, así cada cambio compila una
-# vez y no dos. Abre el PR temprano (aunque sea en borrador) para tener CI.
+# Dos niveles para que integrar no sea un cuello de botella:
+#   - PR hacia `dev` (y push a `dev`): solo lo rápido (formato, análisis y
+#     `flutter test`). Se integra en minutos.
+#   - PR `dev` -> `main` y push a `main`: CI completa (además, integración en
+#     emulador Android, APK e iOS). Corre una vez por tanda, no por cada PR.
+# Las ramas de feature no corren con su push: las cubre su PR. Abre el PR
+# temprano (aunque sea en borrador) para tener CI.
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   workflow_dispatch: {}
 
 permissions:
@@ -40,11 +44,25 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       codigo: ${{ steps.revisar.outputs.codigo }}
+      # Los jobs pesados solo corren hacia main (PR dev->main o push a main).
+      completa: ${{ steps.nivel.outputs.completa }}
     steps:
       - name: Descargar el código
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+
+      - name: Decidir el nivel de CI
+        id: nivel
+        env:
+          BASE: ${{ github.base_ref || github.ref_name }}
+        run: |
+          if [ "$BASE" = "dev" ]; then
+            echo "completa=false" >> "$GITHUB_OUTPUT"
+            echo "Rama dev: solo CI rápida."
+          else
+            echo "completa=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Revisar qué archivos cambiaron
         id: revisar
@@ -164,7 +182,7 @@ jobs:
   integracion-android:
     name: Integración Android con mock_api
     needs: cambios
-    if: needs.cambios.outputs.codigo == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -217,7 +235,7 @@ jobs:
   build-android:
     name: Build Android (APK)
     needs: cambios
-    if: needs.cambios.outputs.codigo == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -267,7 +285,7 @@ jobs:
     # veces los de Linux y a veces no hay runners). No es un check requerido.
     # Para activarlo: gh variable set MACOS_ACTIVO --body true
     # (docs/pausa-de-macos.md).
-    if: needs.cambios.outputs.codigo == 'true' && vars.MACOS_ACTIVO == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true' && vars.MACOS_ACTIVO == 'true'
     # Xcode solo existe en macOS. Se compila sin firmar: comprueba que el
     # proyecto iOS compila sin certificados ni perfiles de Apple.
     runs-on: macos-latest
