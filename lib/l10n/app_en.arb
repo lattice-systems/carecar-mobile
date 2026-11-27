@@ -3863,5 +3863,6 @@
   "documentosTipoLicencia": "Driver's license",
   "documentosTipoGarantia": "Warranty policy",
   "documentosTipoFactura": "Purchase invoice",
-  "documentosTipoOtro": "Other document"
+  "documentosTipoOtro": "Other document",
+  "asistenciaLlamarAseguradoraBuscando": "Looking for your policy…"
 }
