@@ -176,7 +176,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En curso | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend hecho (`PUT`/`DELETE /dispositivos/{instalacionId}`, FCM HTTP v1 detrás de `EnvioPush`); falta la parte de la app; FCM real pendiente de credenciales |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
-| V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | En revisión | #216 |
+| V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | Hecha | #216 |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
 | V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | En revisión | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda); FCM real pendiente de credenciales |
