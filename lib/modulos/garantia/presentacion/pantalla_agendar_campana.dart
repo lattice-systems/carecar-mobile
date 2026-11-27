@@ -190,27 +190,33 @@ class _PantallaAgendarCampanaState
             children: [
               SeccionPantalla(
                 titulo: textos.campanasAgendarDia,
-                hijo: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: c.superficie,
-                    borderRadius: Radios.bordeTarjeta,
-                    boxShadow: tokens.sombras,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(Espaciado.e3),
-                    child: Calendario(
-                      mes: _mes ?? rango.desde,
-                      seleccionado: dia,
-                      primerDia: rango.desde,
-                      ultimoDia: rango.hasta,
-                      hoy: rango.desde,
-                      habilitado: taller.tieneCupo,
-                      alCambiarMes: (mes) => setState(() => _mes = mes),
-                      alSeleccionar: (elegido) => setState(() {
-                        _dia = elegido;
-                        _franja = null;
-                        _rechazo = null;
-                      }),
+                conMargen: false,
+                hijo: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Espaciado.e3),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: c.superficie,
+                      borderRadius: Radios.bordeTarjeta,
+                      boxShadow: tokens.sombras,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: Espaciado.e3,
+                      ),
+                      child: Calendario(
+                        mes: _mes ?? rango.desde,
+                        seleccionado: dia,
+                        primerDia: rango.desde,
+                        ultimoDia: rango.hasta,
+                        hoy: rango.desde,
+                        habilitado: taller.tieneCupo,
+                        alCambiarMes: (mes) => setState(() => _mes = mes),
+                        alSeleccionar: (elegido) => setState(() {
+                          _dia = elegido;
+                          _franja = null;
+                          _rechazo = null;
+                        }),
+                      ),
                     ),
                   ),
                 ),

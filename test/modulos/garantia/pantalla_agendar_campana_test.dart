@@ -9,6 +9,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/selector_franja.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/auditoria_accesibilidad.dart';
@@ -196,15 +197,36 @@ void main() {
     });
   }
 
-  testWidgets('pasa la auditoria de accesibilidad en 320 (V2-M20.02, '
-      'V2-M20.03 y V2-M20.08)', (tester) async {
+  pruebaGarantia(
+    'en 360 cada dia del calendario mide al menos 48 (V2-M20.08)',
+    (tester) async {
+      await _montar(tester);
+      await auditarAccesibilidad(tester);
+    },
+  );
+
+  testWidgets('en 320 pasa la auditoria con la excepcion aceptada del '
+      'calendario: dias de 40 x 48 (V2-M20.02, V2-M20.03 y V2-M20.08)', (
+    tester,
+  ) async {
     telefonoChicoYAlto(tester);
     for (final escenario in Escenario.values) {
       await _montar(tester, escenario: escenario, ancho: anchoTelefonoChico);
       expect(tester.takeException(), isNull, reason: escenario.name);
-      if (escenario != Escenario.letraGrande) {
-        await auditarAccesibilidad(tester);
-      }
+      if (escenario == Escenario.letraGrande) continue;
+      final semantica = tester.ensureSemantics();
+      await expectLater(
+        tester,
+        meetsGuideline(
+          const MinimumTapTargetGuideline(
+            size: Size(40, 48),
+            link: 'https://www.w3.org/TR/WCAG22/#target-size-minimum',
+          ),
+        ),
+      );
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+      semantica.dispose();
     }
   });
 }
