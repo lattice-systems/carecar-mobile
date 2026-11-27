@@ -220,7 +220,8 @@ Operaciones de la app y casos de error:
 | GET | `/tienda/productos/{id}` | Con `vehiculoId` dice `compatible`. 404 (V2-M14.01) |
 | POST | `/tienda/pedidos` | `Idempotency-Key` obligatoria. 201, o 200 con el pedido de esa llave. 400. 404. 409 `SIN_EXISTENCIA`, `CITA_NO_DISPONIBLE` o `LIMITE_APARTADOS` (3 sin entregar). 422 `PRODUCTO_INCOMPATIBLE`. Vence en 48 horas o al final del día siguiente a la cita (V2-M14.02 y V2-M14.03) |
 | GET | `/tienda/pedidos` y `/tienda/pedidos/{id}` | Del más reciente al más antiguo. Antes de responder vence lo pasado de hora y sigue a la cita ligada: cancelada regresa a mostrador y reprogramada mueve la vigencia (V2-M14.05) |
-| POST | `/tienda/pedidos/{id}/cancelar` | Libera las piezas. Repetirlo responde 200. 409 `PEDIDO_NO_CANCELABLE` (V2-M14.02) |
+| POST | `/pedidos/{id}/pagos` | Paga el pedido en la app con el mismo cuerpo, la misma `Idempotency-Key`, las mismas tarjetas de prueba y el mismo `Pago` que `/ordenes/{id}/pagos`. 400 (también si la llave ya pagó otra orden o pedido). 404 si es ajeno. 409 `PEDIDO_NO_PAGABLE` (no está apartado ni listo, venció, no tiene total o ya está pagado) o `PAGO_EN_CURSO`. Pagado no suma puntos, ya no vence y emite `pago.confirmado` con `pedidoId`. El pedido trae `pagable`, `pago` y `pagadoEn` (V2-M14.04) |
+| POST | `/tienda/pedidos/{id}/cancelar` | Libera las piezas. Repetirlo responde 200. 409 `PEDIDO_NO_CANCELABLE` (V2-M14.02). 409 `PEDIDO_PAGADO` si ya se pagó en la app: se cancela en mostrador (V2-M14.04) |
 | PUT | `/tienda/pedidos/{id}/instalacion` | `{citaId}`, o nulo para volver a mostrador. 409 `CITA_NO_DISPONIBLE` o `PEDIDO_NO_MODIFICABLE`. 422 `PRODUCTO_INCOMPATIBLE` (V2-M14.03) |
 
 Además, respeta tres reglas del contrato que son fáciles de pasar por alto:
