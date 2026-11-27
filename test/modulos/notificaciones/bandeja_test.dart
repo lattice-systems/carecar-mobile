@@ -53,25 +53,6 @@ void main() {
       expect(estado.avisos, isEmpty);
       expect(estado.noLeidos, 0);
     });
-
-    test(
-      'un destino que no es ruta interna se descarta, no el aviso',
-      () async {
-        final repo = RepositorioAvisosFake(
-          avisos: [
-            aviso(1, destino: '/citas'),
-            aviso(2),
-          ],
-        );
-        final c = contenedor(repo);
-        final estado = await c.read(bandejaProvider.future);
-
-        // El falso ya entrega dominio, así que esto comprueba la forma: un
-        // destino nulo no esconde el aviso. La validación en sí se prueba en
-        // `destino_de_aviso_test.dart`.
-        expect(estado.avisos, hasLength(2));
-      },
-    );
   });
 
   group('paginar', () {
