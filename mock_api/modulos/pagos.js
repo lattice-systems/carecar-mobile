@@ -115,8 +115,8 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     res.jsonp(deCliente(req.sesion.clienteId).map(publico));
   });
 
-  servidor.get(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
-    const perfil = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId: req.sesion.clienteId }).value();
+  servidor.get(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
+    const perfil = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId: req.sesion.clienteId }).value();
     if (!perfil) return noEncontrado(req, res);
     res.jsonp(publico(perfil));
   });
@@ -135,9 +135,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   });
 
   // `predeterminado: true` lo vuelve el predeterminado; `false` no cambia cuál es.
-  servidor.put(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
+  servidor.put(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
     const clienteId = req.sesion.clienteId;
-    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId }).value();
+    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId }).value();
     if (!actual) return noEncontrado(req, res);
     const { errores, datos } = validar(req.body || {});
     if (errores) return rechazar(req, res, errores);
@@ -148,9 +148,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   });
 
   // Si era el predeterminado, lo toma el más viejo de los que quedan.
-  servidor.delete(`${BASE}/perfiles-fiscales/:id`, (req, res) => {
+  servidor.delete(`${BASE}/perfiles-fiscales/:perfilId`, (req, res) => {
     const clienteId = req.sesion.clienteId;
-    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.id), clienteId }).value();
+    const actual = db.get('perfilesFiscales').find({ id: Number(req.params.perfilId), clienteId }).value();
     if (!actual) return noEncontrado(req, res);
     db.get('perfilesFiscales').remove({ id: actual.id }).write();
     if (actual.predeterminado) {
