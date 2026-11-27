@@ -9,11 +9,7 @@
 library;
 
 export 'dominio/documento_vehiculo.dart'
-    show
-        DocumentoVehiculo,
-        EstadoDocumento,
-        OrigenDocumento,
-        TipoDocumento;
+    show DocumentoVehiculo, EstadoDocumento, OrigenDocumento, TipoDocumento;
 export 'dominio/poliza_para_llamar.dart' show polizaParaLlamar;
 export 'presentacion/pantalla_documentos.dart' show PantallaDocumentos;
 export 'presentacion/proveedores_documentos.dart'
