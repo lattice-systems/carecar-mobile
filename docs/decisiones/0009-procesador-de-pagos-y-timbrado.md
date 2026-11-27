@@ -46,7 +46,7 @@ La primera versión de esta ADR comparó procesadores y proveedores de timbrado 
   - arma el XML con la estructura de CFDI 4.0 (emisor, receptor, conceptos e IVA) y un timbre simulado (UUID, fecha y un sello que dice `SIMULADO`);
   - genera el PDF con OpenPDF, que ya es dependencia del backend;
   - rechaza como lo haría un PAC (`TIMBRADO_RECHAZADO` con el dato a corregir).
-- El PDF y el XML se guardan en el módulo `archivos` con URL firmada de vida corta.
+- El PDF y el XML se guardan en el módulo `archivos` y la app los descarga con su token por `GET /facturas/{id}/pdf` y `/xml` (ver «Ajustes al implementar»).
 - **Emisor de prueba:** el RFC de prueba del SAT `EKU9003173C9` («ESCUELA KEMPER URGATE», código postal 42501, régimen 601) en `application.properties`. No es secreto. Cambiar al de la agencia es cambiar esas propiedades.
 - **Qué dice la factura:**
   - un concepto por renglón del ticket;
@@ -83,6 +83,17 @@ La primera versión de esta ADR comparó procesadores y proveedores de timbrado 
   - La factura copia los datos del receptor, así que borrar un perfil fiscal no la cambia.
 - **Datos fiscales:** se validan con las reglas de CFDI 4.0 (V2-M08.05). Entran en la copia de mis datos (V2-M22.02) y se borran al cancelar la cuenta (V2-M22.03). Las facturas se conservan.
 - **Puntos de lealtad (V2-M12.02):** se dan al pagar o al entregar la orden, lo que pase primero, y una sola vez por orden.
+
+## Ajustes al implementar V2-M08.03 y V2-M08.06
+
+Cambian el cómo, no la decisión:
+
+- **Descarga por endpoint, no por URL firmada.** El PDF y el XML se sirven en el cuerpo de `GET /facturas/{id}/pdf` y `/xml`, como adjunto, `no-store` y solo para el dueño (404 si es ajena), igual que el ticket. Una URL firmada no agrega nada a la app y pediría otra llave.
+- **El ERP no ve las facturas de la app.** Su entidad `Factura` (`facturacion`) gana `@SQLRestriction("tipo = 'VENTA_UNIDAD'")`; lo demás de ese módulo no cambia. Las de la app son `FacturaApp` en `carecarapp`, con la restricción contraria, y comparten la secuencia de folios con la serie `A`.
+- **También se facturan los pagos de pedidos de la tienda** (V2-M14.04): `tipo` `PEDIDO_APP` con `pedido_app_id`; los conceptos son los renglones del pedido.
+- **Claves de los conceptos:** mano de obra 78181500/E48 y refacciones 25174800/H87 (accesorios y partes de vehículos, pieza). El IVA se desglosa de los precios con IVA del ticket y el total de la factura es el del pago.
+- **Rechazos del timbrado simulado:** razón social de persona moral con el régimen societario («S.A. de C.V.», como pide CFDI 4.0) y código postal menor a 01000; responden 422 `TIMBRADO_RECHAZADO` con `campos`. Si el timbrado al pagar falla, el pago queda `facturable` y se factura después.
+- **El XML solo se acepta en la carpeta `facturas`** del módulo `archivos`; las demás siguen sin aceptarlo.
 
 ## Fuentes de la primera propuesta (consultadas el 2026-11-25)
 
