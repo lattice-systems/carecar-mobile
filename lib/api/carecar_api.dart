@@ -240,6 +240,14 @@ abstract interface class CarecarApi {
   /// Lanza `NoEncontrado` si no existe o ya esta retirado.
   Future<DetalleModeloCatalogo> detalleModelo(int id);
 
+  // --- Sucursales · V2-M27.02 ---
+
+  /// `GET /sucursales`. Las activas, la principal primero; puede venir vacia.
+  ///
+  /// `abiertaAhora` lo calcula el servidor con la hora de la agencia. Por eso
+  /// la copia sin conexion no la guarda (ver `CarecarApiConCache`).
+  Future<List<SucursalApi>> sucursales();
+
   // --- Toma a cuenta · V2-M03.04 y V2-M03.07 ---
 
   /// `POST /toma-a-cuenta/estimaciones`. Calcula el rango y lo guarda.
