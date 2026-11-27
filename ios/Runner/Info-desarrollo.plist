@@ -55,6 +55,8 @@
 		<string>CareCar usa tu ubicación solo mientras la app está abierta, para compartirla cuando pides ayuda y para marcar la dirección de tu recolección.</string>
 		<key>NSCameraUsageDescription</key>
 		<string>CareCar usa la cámara solo cuando fotografías un ticket de gasolina para llenar tu bitácora; la foto se lee en tu teléfono y no se guarda ni se sube.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>CareCar usa Face ID solo para abrir la app sin que escribas tu contraseña, si tú lo prendes. CareCar no ve ni guarda tu rostro: el sistema solo le dice si eres tú.</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UIApplicationSceneManifest</key>
