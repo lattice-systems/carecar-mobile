@@ -137,7 +137,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
-| V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | En curso | |
+| V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | En revisión | #210 |
 | V2-M21.05 | Resolver conflictos de forma predecible | Jael | B | V2-M21.03 | Lista | |
 | V2-M21.06 | Que la app sincronice en segundo plano | Jael |  | V2-M21.02 | Lista | |
 | V2-M22.01 | Leer el aviso de privacidad real | Daniel | B | V2-M01.01 | Hecha | #127, backend#96 |
