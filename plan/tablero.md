@@ -239,7 +239,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Hecha | #118, backend#93, backend#94 |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Hecha | #94, backend#86, #121 |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Hecha | #94, backend#86, #121, #193 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Hecha | #94, backend#86 |
 | V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95 |
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Hecha | #104, backend#88, #119, backend#95 |
