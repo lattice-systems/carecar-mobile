@@ -105,6 +105,13 @@ enum CodigoProblema {
   /// V2-M08.02: el pago ya no espera el 3-D Secure.
   pagoNoPendiente('PAGO_NO_PENDIENTE'),
 
+  /// V2-M14.04: el pedido no se puede pagar en la app (no esta apartado ni
+  /// listo, ya vencio, no tiene total o ya esta pagado).
+  pedidoNoPagable('PEDIDO_NO_PAGABLE'),
+
+  /// V2-M14.04: el pedido ya esta pagado y no se cancela desde la app.
+  pedidoPagado('PEDIDO_PAGADO'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 
