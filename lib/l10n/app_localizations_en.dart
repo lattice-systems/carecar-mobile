@@ -6278,6 +6278,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sucursalesAbiertoAhora => 'Open now';
 
   @override
+  String get sucursalesAbierto => 'Open';
+
+  @override
   String get sucursalesCerrado => 'Closed';
 
   @override
