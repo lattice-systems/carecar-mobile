@@ -48,7 +48,15 @@ class Avatar extends StatelessWidget {
                 : tokens.tipografia.etiqueta)
             .copyWith(color: c.acento);
 
-    final texto = Center(child: Text(iniciales(nombre), style: letra));
+    final texto = Padding(
+      padding: EdgeInsets.all(diametro / 8),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(iniciales(nombre), style: letra, maxLines: 1),
+        ),
+      ),
+    );
 
     return Semantics(
       image: true,

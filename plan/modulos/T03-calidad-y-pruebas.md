@@ -52,7 +52,7 @@ La cobertura de respuestas autenticadas es por casos representativos. La variant
 
 ## V2-T03.07 · Pruebas en celular físico
 
-El [guion por hito](../../docs/pruebas/guion-por-hito.md) cubre H0–H7 y el [registro](../../docs/pruebas/evidencia.md) recibe resultados por caso y dispositivo. H1 requiere una primera corrida física con un backend real y cuenta de prueba para completar la evidencia de este bloque.
+El [guion por hito](../../docs/pruebas/guion-por-hito.md) cubre H0–H7 y el [registro](../../docs/pruebas/evidencia.md) recibe resultados por caso y dispositivo. La primera corrida física H1 pasó en un Samsung con Android 13 y un backend local de Agencia360 con PostgreSQL aislado. El registro conserva los resultados de enlaces, galería y reserva y cancelación.
 
 ## V2-T03.08 · Mock por módulo
 
