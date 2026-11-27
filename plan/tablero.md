@@ -175,7 +175,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | En revisión | #206 |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
-| V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 | Lista | |
+| V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | En curso | |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 | Lista | |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Lista | |
