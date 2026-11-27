@@ -71,7 +71,7 @@ void main() {
     enrutadorDe(tester).go(rutaContacto);
     await tester.pumpAndSettle();
 
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaContacto), findsNothing);
   });
 
