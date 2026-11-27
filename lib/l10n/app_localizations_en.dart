@@ -6641,4 +6641,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get documentosTipoOtro => 'Other document';
+
+  @override
+  String get asistenciaLlamarAseguradoraBuscando => 'Looking for your policy…';
 }
