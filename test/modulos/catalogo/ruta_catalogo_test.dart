@@ -1,7 +1,6 @@
 import 'package:carecar_mobile/api/modelos/modelo_catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,7 +44,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaCatalogo);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaCatalogo), findsNothing);
   });
 

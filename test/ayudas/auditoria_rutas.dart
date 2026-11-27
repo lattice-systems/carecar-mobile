@@ -1,4 +1,4 @@
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
+import 'package:carecar_mobile/modulos/acceso/acceso.dart' show PantallaAcceso;
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +11,14 @@ import 'auditoria_accesibilidad.dart';
 
 /// Monta la app con el enrutador real, en español, sin animaciones y con
 /// sesión, lista para recorrer sus pantallas.
+///
+/// Las pantallas de acceso se ven sin sesión o en otros estados de ella:
+/// [prepararSesion] reemplaza el inicio de sesión de siempre.
 Future<void> montarParaAuditar(
   WidgetTester tester, {
   ApiFalsa? api,
   List<Override> overrides = const [],
+  Future<void> Function(ControladorSesion sesion)? prepararSesion,
 }) async {
   telefonoChicoYAlto(tester, alto: 4000);
   tester.platformDispatcher.localesTestValue = const [Locale('es')];
@@ -24,7 +28,9 @@ Future<void> montarParaAuditar(
   final apiUsada = api ?? ApiFalsa();
   final sesion = ControladorSesion(apiUsada, AlmacenEnMemoria());
   addTearDown(sesion.dispose);
-  await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
+  await (prepararSesion ??
+      (s) =>
+          s.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026'))(sesion);
   await tester.pumpWidget(
     AppEnrutadaDePrueba(
       api: apiUsada,
@@ -72,8 +78,11 @@ Future<void> auditarRutas(
         await tester.pumpAndSettle();
         enrutadorDe(tester).go(ruta);
         await tester.pumpAndSettle();
+        // La guardia manda al acceso a quien no debe ver la pantalla pedida:
+        // solo se acepta el acceso cuando es justo lo que se audita.
         if (find.byType(pantalla).evaluate().isEmpty ||
-            find.byType(PantallaLogin).evaluate().isNotEmpty) {
+            (pantalla != PantallaAcceso &&
+                pantallaDeAcceso.evaluate().isNotEmpty)) {
           faltas.add('$donde: no abrió $pantalla');
           continue;
         }

@@ -1,7 +1,7 @@
 import 'package:carecar_mobile/modulos/acceso/acceso.dart';
 import 'package:carecar_mobile/nucleo/bienvenida/estado_bienvenida.dart';
 import 'package:carecar_mobile/nucleo/idioma/proveedores_idioma.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
+import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +26,7 @@ void main() {
       controlador: ControladorSesion(api, AlmacenEnMemoria()),
       overrides: [preferenciasProvider.overrideWithValue(prefs)],
       idioma: const Locale('es'),
+      interruptor: InterruptorModulos.porDefecto,
     );
   }
 
@@ -35,7 +36,7 @@ void main() {
 
     expect(find.byType(PantallaBienvenida), findsOneWidget);
     expect(find.text('Tus autos, en un solo lugar'), findsOneWidget);
-    expect(find.byType(PantallaLogin), findsNothing);
+    expect(pantallaDeAcceso, findsNothing);
   });
 
   testWidgets('se puede saltar y entonces lleva al acceso', (tester) async {
@@ -45,9 +46,7 @@ void main() {
     await tester.tap(find.byKey(PantallaBienvenida.botonSaltar));
     await tester.pumpAndSettle();
 
-    // `/acceso` lo sirve todavia la pantalla v1: el modulo `acceso` no esta
-    // encendido (ver `rutas_acceso.dart`).
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaBienvenida), findsNothing);
   });
 
@@ -56,8 +55,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PantallaBienvenida), findsNothing);
-    // `/acceso` lo sirve todavia la pantalla v1: el modulo `acceso` no esta
-    // encendido (ver `rutas_acceso.dart`).
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 }

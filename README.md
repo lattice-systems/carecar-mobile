@@ -161,7 +161,7 @@ flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V1=todos
 flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V1=catalogo,citas
 ```
 
-Módulos válidos: `asistencia`, `catalogo`, `citas`, `vehiculos` (o `todos`); `MODULOS_V2` enciende un módulo nuevo que aún no está en el valor por defecto. Un nombre mal escrito detiene el arranque. Guía completa en [`plan/arquitectura-v2.md`](plan/arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
+Módulos válidos: `acceso`, `asistencia`, `catalogo`, `citas`, `recuperacion`, `vehiculos` (o `todos`); `MODULOS_V2` enciende un módulo que aún no está en el valor por defecto (hoy, `recuperacion`: la recuperación de contraseña sigue en v1 porque su enlace del correo todavía no abre la app). Un nombre mal escrito detiene el arranque. Guía completa en [`plan/arquitectura-v2.md`](plan/arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
 
 > [!NOTE]
 > **Arranque en frío del backend en la nube.** Azure Container Apps apaga el servidor sin tráfico; la primera petición tras un rato de inactividad (por ejemplo el primer inicio de sesión) tarda ~35 s en despertarlo. La app espera hasta 60 s en lugar de fallar, y tras 8 s muestra «Despertando el servidor…» (V2-M01.12). Si aun así ves «Sin conexión», el servidor tardó más de un minuto o no hay red.

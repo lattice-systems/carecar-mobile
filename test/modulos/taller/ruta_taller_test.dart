@@ -6,7 +6,6 @@ import 'package:carecar_mobile/modulos/taller/presentacion/pantalla_inspeccion.d
 import 'package:carecar_mobile/modulos/taller/presentacion/pantalla_orden.dart';
 import 'package:carecar_mobile/modulos/taller/presentacion/proveedores_taller.dart';
 import 'package:carecar_mobile/modulos/taller/taller.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +127,6 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaInspeccionTaller(41));
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 }

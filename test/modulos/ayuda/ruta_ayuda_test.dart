@@ -1,7 +1,6 @@
 import 'package:carecar_mobile/api/modelos/sucursal.dart';
 import 'package:carecar_mobile/modulos/ayuda/ayuda.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +53,7 @@ void main() {
     enrutadorDe(tester).go(rutaSucursales);
     await tester.pumpAndSettle();
 
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaSucursales), findsNothing);
   });
 

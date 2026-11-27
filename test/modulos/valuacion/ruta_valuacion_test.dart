@@ -4,7 +4,6 @@ import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fak
 import 'package:carecar_mobile/modulos/valuacion/presentacion/rutas_valuacion.dart'
     show rutaDeLaCalculadora, rutaDeMisEstimaciones;
 import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +100,6 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaValuaciones);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 }
