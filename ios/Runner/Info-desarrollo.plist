@@ -57,6 +57,9 @@
 		<string>CareCar usa la cámara solo cuando fotografías un ticket de gasolina para llenar tu bitácora; la foto se lee en tu teléfono y no se guarda ni se sube.</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<!-- Live Activity del taller (V2-M25.05): sin esta llave ActivityKit no deja iniciarla. -->
+		<key>NSSupportsLiveActivities</key>
+		<true/>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>
