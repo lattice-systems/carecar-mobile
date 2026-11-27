@@ -308,17 +308,25 @@ void main() {
       );
     });
 
-    testWidgets('la cuenta desactivada tambien se muestra', (tester) async {
+    // Antes se esperaba el mensaje del servidor dentro del login. **V2-M01.08
+    // lo cambia a proposito**: una cuenta desactivada no se arregla volviendo
+    // a escribir la contrasena, asi que sale del login y la guardia lleva al
+    // aviso que lo explica y ofrece contactar a la agencia. Esta prueba monta
+    // la pantalla sin enrutador, asi que aqui solo se ve el estado.
+    testWidgets('la cuenta desactivada sale del login', (tester) async {
       final api = ApiFalsa.queFalla(
         const CuentaDesactivada('La cuenta esta desactivada'),
       );
-      await _montar(tester, _controlador(api));
+      final controlador = _controlador(api);
+      await _montar(tester, controlador);
 
       await _escribirCredenciales(tester);
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
 
-      expect(find.text('La cuenta esta desactivada'), findsOneWidget);
+      expect(find.byKey(PantallaLogin.avisoDeError), findsNothing);
+      final estado = controlador.estado;
+      expect((estado as SinSesion).porCuentaDesactivada, isTrue);
     });
 
     testWidgets('el error se borra al reintentar', (tester) async {

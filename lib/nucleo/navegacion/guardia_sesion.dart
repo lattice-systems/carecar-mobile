@@ -3,6 +3,8 @@ import 'rutas.dart';
 
 /// Regla de redireccion por sesion, pura y sin Flutter (V2-T01.03).
 ///
+/// - Primer arranque con la bienvenida sin ver: a la bienvenida, antes de todo.
+/// - Sin sesion porque la agencia desactivo la cuenta: al aviso que lo explica.
 /// - Sin sesion y ruta privada: al acceso, guardando a donde volver (`desde`).
 /// - Con sesion y contrasena temporal sin cambiar: al cambio obligatorio.
 /// - Con sesion y el aviso de privacidad por aceptar (V2-M22.01), resuelta ya
@@ -15,13 +17,27 @@ String? redirigirPorSesion({
   required EstadoSesion estado,
   required bool contrasenaCambiada,
   bool avisoPorAceptar = false,
+  bool bienvenidaPendiente = false,
 }) {
   final camino = destino.path;
+
+  // V2-M01.02: la bienvenida va antes que todo, incluido el login. Es del
+  // primer arranque, no de la cuenta: explica que puede hacer la app a quien
+  // todavia no entro.
+  if (bienvenidaPendiente) {
+    return camino == Rutas.bienvenida ? null : Rutas.bienvenida;
+  }
   final desdeEnConsulta = _desdeValido(
     destino.queryParameters[Rutas.parametroDesde],
   );
 
   if (estado is! Autenticada) {
+    // V2-M01.08: una cuenta desactivada no se arregla volviendo a escribir la
+    // contrasena, asi que el login no es la salida; se explica y se ofrece
+    // contactar a la agencia.
+    if (estado is SinSesion && estado.porCuentaDesactivada) {
+      return camino == Rutas.cuentaDesactivada ? null : Rutas.cuentaDesactivada;
+    }
     if (Rutas.publicas.contains(camino)) return null;
     return Rutas.localizacionAcceso(desde: _destinoParaVolver(destino));
   }

@@ -164,6 +164,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoCorreoVacio => 'Enter your email.';
 
   @override
+  String get accesoDesactivadaEscribir => 'Send an email';
+
+  @override
+  String get accesoDesactivadaExplicacion =>
+      'The dealership turned off access for this account. We cannot turn it back on from the app: get in touch with them and they will help you.';
+
+  @override
+  String get accesoDesactivadaLlamar => 'Call the dealership';
+
+  @override
+  String get accesoDesactivadaNoSePudo => 'This device could not open it.';
+
+  @override
+  String get accesoDesactivadaTitulo => 'Your account is deactivated';
+
+  @override
+  String get accesoDesactivadaVolver => 'Back to sign in';
+
+  @override
   String get accesoEnlaceNoValidoMensaje =>
       'Links expire soon and work only once. Ask for a new one and check your email.';
 
@@ -184,6 +203,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoMiContrasenaCerrarOtras => 'Sign out on all my devices';
+
+  @override
+  String get accesoMiContrasenaCerrarOtrasDetalle =>
+      'This phone included: you will have to sign in again with your new password.';
+
+  @override
+  String get accesoMiContrasenaExplicacion =>
+      'We ask for your current password to confirm it is you.';
+
+  @override
+  String get accesoMiContrasenaGuardar => 'Save the new password';
+
+  @override
+  String get accesoMiContrasenaListo => 'Your password is updated';
+
+  @override
+  String get accesoMiContrasenaListoMensaje =>
+      'Use it the next time you sign in.';
+
+  @override
+  String get accesoMiContrasenaTitulo => 'Change my password';
 
   @override
   String get accesoNuevaExplicacion =>
@@ -1681,6 +1724,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navegacionPrincipal => 'Main navigation';
+
+  @override
+  String get bienvenidaDosTexto =>
+      'Pick the day and time that suit you, and reschedule or cancel from here.';
+
+  @override
+  String get bienvenidaDosTitulo => 'Book a visit without calling';
+
+  @override
+  String get bienvenidaEmpezar => 'Get started';
+
+  @override
+  String get bienvenidaSaltar => 'Skip';
+
+  @override
+  String get bienvenidaSiguiente => 'Next';
+
+  @override
+  String get bienvenidaTresTexto =>
+      'We let you know how your car is doing at the shop and when you can pick it up.';
+
+  @override
+  String get bienvenidaTresTitulo => 'Follow your service';
+
+  @override
+  String get bienvenidaUnoTexto =>
+      'Check its service history, its documents and what comes next in its maintenance.';
+
+  @override
+  String get bienvenidaUnoTitulo => 'Your cars, all in one place';
 
   @override
   String botonCargando(String texto) {
