@@ -1,6 +1,12 @@
 import 'package:carecar_mobile/api/modelos/sucursal.dart';
 import 'package:carecar_mobile/config/agencia.dart';
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
+import 'package:carecar_mobile/modulos/documentos/datos/repositorio_documentos_fake.dart';
+import 'package:carecar_mobile/modulos/documentos/dominio/documento_vehiculo.dart';
+import 'package:carecar_mobile/modulos/documentos/dominio/repositorio_documentos.dart';
+import 'package:carecar_mobile/modulos/documentos/documentos.dart';
+import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
+import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +14,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
+import '../documentos/ayudas_documentos.dart';
 
 Future<List<Uri>> _montar(
   WidgetTester tester, {
@@ -15,6 +22,8 @@ Future<List<Uri>> _montar(
   bool abre = true,
   double letra = 1,
   List<SucursalApi> sucursales = const [],
+  bool buscando = false,
+  RepositorioDocumentos? documentos,
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('es')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -30,7 +39,15 @@ Future<List<Uri>> _montar(
       api: api,
       controlador: sesion,
       overrides: [
-        aseguradoraProvider.overrideWithValue(aseguradora),
+        // Con `documentos` la aseguradora sale de la poliza del auto, como en
+        // la app; sin ellos se fija el resultado para probar solo la pantalla.
+        if (documentos == null) ...[
+          aseguradoraProvider.overrideWithValue(aseguradora),
+          aseguradoraCargandoProvider.overrideWithValue(buscando),
+        ] else ...[
+          repositorioGarajeProvider.overrideWithValue(RepositorioGarajeFake()),
+          repositorioDocumentosProvider.overrideWithValue(documentos),
+        ],
         abrirLlamadaProvider.overrideWithValue((uri) async {
           llamadas.add(uri);
           return abre;
@@ -144,5 +161,44 @@ void main() {
     addTearDown(tester.view.reset);
     await _montar(tester, letra: 2);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('mientras busca la poliza no dice que falta', (tester) async {
+    await _montar(tester, buscando: true);
+    expect(find.text('Buscando tu póliza…'), findsOneWidget);
+    expect(find.textContaining('Aún no registras'), findsNothing);
+  });
+
+  testWidgets('con la poliza guardada en documentos llama a esa aseguradora', (
+    tester,
+  ) async {
+    final llamadas = await _montar(
+      tester,
+      documentos: RepositorioDocumentosFake(
+        documentos: [
+          documento(
+            vehiculoId: 1,
+            tipo: TipoDocumento.poliza,
+            aseguradora: 'Seguros Ejemplo',
+            telefono: '+52 800 000 1234',
+          ),
+        ],
+      ),
+    );
+    expect(find.text('Seguros Ejemplo'), findsOneWidget);
+    expect(find.textContaining('Aún no registras'), findsNothing);
+    await tester.tap(find.text('Seguros Ejemplo'));
+    await tester.pumpAndSettle();
+    expect(llamadas, [Uri.parse('tel:+528000001234')]);
+  });
+
+  testWidgets('sin poliza en documentos sigue pidiendo agregarla', (
+    tester,
+  ) async {
+    await _montar(tester, documentos: RepositorioDocumentosFake());
+    expect(
+      find.textContaining('Aún no registras tu aseguradora'),
+      findsWidgets,
+    );
   });
 }
