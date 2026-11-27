@@ -17,6 +17,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../historial/historial.dart' show rutaTicketServicio;
+import '../../tienda/tienda.dart' show rutaPedido;
 import '../dominio/pagos.dart';
 import 'confirmar_con_el_banco.dart';
 import 'esqueleto_pagos.dart';
@@ -25,7 +26,8 @@ import 'proveedores_pagos.dart';
 
 /// Un pago (V2-M08.02 y V2-M08.07): estado, monto, con que, cuando, la
 /// referencia y, si fallo, por que. Si sigue esperando al banco simulado se
-/// puede confirmar desde aqui. Lleva al ticket de la orden. Se actualiza solo
+/// puede confirmar desde aqui. Lleva al ticket de la orden o al pedido de la
+/// tienda (V2-M14.04). Se actualiza solo
 /// con `pago.confirmado`. Resuelve esqueleto, datos, no encontrado, error y
 /// sin conexion.
 class PantallaPago extends ConsumerWidget {
@@ -67,7 +69,7 @@ class PantallaPago extends ConsumerWidget {
           ),
           data: (pago) => MarcoPantalla(
             titulo: titulo,
-            subtitulo: textos.pagosOrden('${pago.ordenId}'),
+            subtitulo: textoObjetivoPago(textos, pago),
             conRegreso: true,
             alRefrescar: () => ref.refresh(pagoProvider(pagoId).future),
             slivers: [SliverToBoxAdapter(child: _Pago(pago: pago))],
@@ -130,6 +132,9 @@ class _EstadoPago extends ConsumerState<_Pago> {
     final pago = widget.pago;
     final error = _error;
     final pagado = pago.pagadoEn;
+    final ordenId = pago.ordenId;
+    final vehiculoId = pago.vehiculoId;
+    final pedidoId = pago.pedidoId;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Espaciado.margenTelefono),
@@ -205,15 +210,26 @@ class _EstadoPago extends ConsumerState<_Pago> {
               alPresionar: _confirmando ? null : _confirmar,
             ),
           ],
-          const SizedBox(height: Espaciado.e4),
-          BotonPildora(
-            texto: textos.pagosVerTicket,
-            icono: LucideIcons300.receiptText,
-            variante: VarianteBotonPildora.tonal,
-            expandido: true,
-            alPresionar: () =>
-                context.push(rutaTicketServicio(pago.vehiculoId, pago.ordenId)),
-          ),
+          if (pedidoId != null) ...[
+            const SizedBox(height: Espaciado.e4),
+            BotonPildora(
+              texto: textos.pagosVerPedido,
+              icono: LucideIcons300.shoppingBag,
+              variante: VarianteBotonPildora.tonal,
+              expandido: true,
+              alPresionar: () => context.push(rutaPedido(pedidoId)),
+            ),
+          ] else if (ordenId != null && vehiculoId != null) ...[
+            const SizedBox(height: Espaciado.e4),
+            BotonPildora(
+              texto: textos.pagosVerTicket,
+              icono: LucideIcons300.receiptText,
+              variante: VarianteBotonPildora.tonal,
+              expandido: true,
+              alPresionar: () =>
+                  context.push(rutaTicketServicio(vehiculoId, ordenId)),
+            ),
+          ],
           const SizedBox(height: Espaciado.e4),
         ],
       ),

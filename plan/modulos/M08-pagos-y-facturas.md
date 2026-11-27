@@ -23,7 +23,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 
 | Tabla | Campos | Notas |
 | --- | --- | --- |
-| `pago_app` ➕ | id, orden_servicio_id, cliente_id, monto, moneda, procesador, intencion_id, llave_idempotencia, metodo (tarjeta/apple_pay/google_pay/caja), marca, ultimos4, estado (pendiente/pagado/fallido/reembolsado), motivo_fallo, perfil_fiscal_id, pagado_en, creado_en | Integrada en V55 (V2-M08.02). `procesador` = `SIMULADO`; `intencion_id` con prefijo `sim_pi_`. `intencion_id` y (`cliente_id`, `llave_idempotencia`) únicos; índices únicos parciales: un solo pago `PAGADO` y un solo `PENDIENTE` por orden. Campos agregados: `vehiculo_cliente_id`, `tipo_tarjeta`, `token_procesador`, `mes_vence`, `anio_vence`, `guardar_tarjeta`, `metodo_pago_id`, `autenticacion` (3-D Secure), `referencia_caja`, `registrado_por` y `actualizado_en`. El dinero no se borra: un reembolso es otra fila con monto negativo que apunta a la original. |
+| `pago_app` ➕ | id, orden_servicio_id, cliente_id, monto, moneda, procesador, intencion_id, llave_idempotencia, metodo (tarjeta/apple_pay/google_pay/caja), marca, ultimos4, estado (pendiente/pagado/fallido/reembolsado), motivo_fallo, perfil_fiscal_id, pagado_en, creado_en | Integrada en V55 (V2-M08.02). `procesador` = `SIMULADO`; `intencion_id` con prefijo `sim_pi_`. `intencion_id` y (`cliente_id`, `llave_idempotencia`) únicos; índices únicos parciales: un solo pago `PAGADO` y un solo `PENDIENTE` por orden. Campos agregados: `vehiculo_cliente_id`, `tipo_tarjeta`, `token_procesador`, `mes_vence`, `anio_vence`, `guardar_tarjeta`, `metodo_pago_id`, `autenticacion` (3-D Secure), `referencia_caja`, `registrado_por` y `actualizado_en`. El dinero no se borra: un reembolso es otra fila con monto negativo que apunta a la original. V2-M14.04 (V56) agrega `pedido_app_id` y deja `orden_servicio_id` con nulo permitido: un pago es de una orden o de un pedido de la tienda (`ck_pago_app_objeto`), con un solo `PAGADO` y un solo `PENDIENTE` por pedido. No se quita ni se renombra ninguna columna. |
 | `metodo_pago` ➕ | id, cliente_id, procesador, cliente_procesador_id, token_procesador, marca, ultimos4, mes_vence, anio_vence, predeterminado, creado_en | Integrada en V55 (V2-M08.04). Sin PAN ni CVV; `token_procesador` es el de la tarjeta de prueba (`tok_sim_…`) y `cliente_procesador_id` es `sim_cus_<id>`. Se agrega `tipo` (crédito o débito). Una tarjeta por cliente y token; un índice único parcial deja una sola predeterminada; hasta 10 por cliente. |
 | `perfil_fiscal` ➕ | id, cliente_id, rfc, razon_social, regimen_fiscal, codigo_postal, uso_cfdi, correo, predeterminado, creado_en | Integrada en V54 (V2-M08.05). RFC de 12 (moral) o 13 (física) caracteres con dígito verificador; régimen y uso con los catálogos del SAT de CFDI 4.0; `actualizado_en`; índice único parcial para un solo predeterminado. |
 | `factura` (existe) | se agregan tipo (VENTA_UNIDAD/SERVICIO), orden_servicio_id, pago_app_id, perfil_fiscal_id, uuid_fiscal, xml_archivo_id, pdf_archivo_id, timbrada_en | Se reutiliza (R1). Las columnas de la venta de un auto dejan de ser obligatorias y `ck_factura_tipo` exige las de cada tipo ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)). |
@@ -34,6 +34,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 | Método | Ruta | Uso | Errores |
 | --- | --- | --- | --- |
 | POST | `/ordenes/{id}/pagos` | Crea el intento de pago `pendiente` con el token de prueba, la marca y los últimos 4 que manda la hoja propia. Header `Idempotency-Key`. Si la tarjeta de prueba pide 3-D Secure, lo dice. | 404 orden ajena · 409 `ORDEN_NO_PAGABLE` (no está lista o ya está pagada) · 409 `PAGO_EN_CURSO` |
+| POST | `/pedidos/{id}/pagos` | V2-M14.04: paga un pedido de la tienda con el mismo cuerpo, la misma llave y el mismo `Pago` que una orden. `Pago` trae `ordenId` o `pedidoId`, los dos nulables. | 400, 404, 409 `PEDIDO_NO_PAGABLE` o 409 `PAGO_EN_CURSO` |
 | GET | `/pagos/{id}` | Estado de un pago (la app consulta al volver de la hoja). | 404 |
 | POST | `/pagos/{id}/autenticacion` | Resultado del 3-D Secure simulado; confirma o falla el pago. | 404 · 409 `PAGO_NO_PENDIENTE` |
 | GET | `/pagos` | Mis pagos, paginado y del más nuevo al más viejo. | — |
@@ -43,7 +44,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 | GET · POST · PUT · DELETE | `/perfiles-fiscales` · `/perfiles-fiscales/{id}` | Datos fiscales; el primero queda predeterminado. | 400 `DATOS_FISCALES_INVALIDOS` con `campos` · 404 ajeno |
 | POST | `/pagos/{id}/factura` | Facturar un pago que se hizo sin perfil fiscal. | 409 `YA_FACTURADO` · 422 `TIMBRADO_RECHAZADO` |
 | GET | `/facturas/{id}/pdf` · `/facturas/{id}/xml` | URL firmada de vida corta para descargar. | 404 |
-| GET | `/eventos` | `pago.confirmado` y `factura.timbrada` en vivo. | — |
+| GET | `/eventos` | `pago.confirmado` (con `ordenId` o `pedidoId`, los dos nulables desde 2.25.0) y `factura.timbrada` en vivo. | — |
 | POST | `/api/v1/caja/ordenes/{id}/pagada-en-caja` | Personal (roles `CAJA` y `ADMINISTRADOR`): marca la orden como pagada en caja, con su referencia opcional, para que no se pague dos veces en la app. Un intento pendiente queda `fallido` con `PAGADA_EN_CAJA`. | 404 · 409 `ORDEN_NO_PAGABLE` |
 
 ## Historias
@@ -64,7 +65,8 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 - Fuera de M08: OXXO, transferencias, meses sin intereses, propinas y pagar citas por adelantado. Los reembolsos los hace la agencia (no hay botón en la app); la app solo muestra el estado `reembolsado`.
 - Apple Pay y Google Pay reales quedan fuera: necesitan cuentas (Apple Developer cuesta $99 USD al año). M08.03 se cumple con billeteras simuladas.
 - Emisor de prueba: RFC `EKU9003173C9` («ESCUELA KEMPER URGATE», CP 42501, régimen 601) en `application.properties`. Conceptos: mano de obra 78181500 con unidad E48, refacciones con su clave, IVA 16 %, PUE, forma de pago 04 o 28.
-- Los puntos por pagar (V2-M12.02) escuchan `pago.confirmado` (V2-M08.02): se suman al pagar o al entregar, lo que pase primero, una sola vez por orden.
+- Los puntos por pagar (V2-M12.02) escuchan `pago.confirmado` (V2-M08.02): se suman al pagar o al entregar, lo que pase primero, una sola vez por orden. Un pago de pedido de la tienda (V2-M14.04) no suma puntos.
+- **Pedidos de la tienda (V2-M14.04):** la tienda reusa esta pantalla de pago sin duplicarla. En `lib/modulos/pagos` se generalizó lo mínimo: `ObjetivoCobro` (orden o pedido) con `PedidoPorPagar`, `RepositorioPagos.pedido` y `pagarPedido`, `PantallaPagarPedido` y `rutaPagarPedido` (exportados en `pagos.dart`), `Pago.pedidoId` y `Pago.ordenId` y `Pago.vehiculoId` nulables, y Mis pagos con «Pedido N» que abre el pedido. Detalle en [M14](M14-tienda.md#avance-de-v2-m1404).
 
 ## Avance de V2-M08.01
 

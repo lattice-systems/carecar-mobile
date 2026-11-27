@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.24.0
+  version: 2.25.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -2034,7 +2034,8 @@ paths:
           $ref: '#/components/responses/NoEncontrado'
         '409':
           description: |
-            `PEDIDO_NO_CANCELABLE`: ya se entregó.
+            `PEDIDO_NO_CANCELABLE` (ya se entregó), `PEDIDO_PAGADO` (V2-M14.04: ya se pagó en la app
+            y se cancela en mostrador) o `PAGO_EN_CURSO` (un intento de pago espera el 3-D Secure).
           content:
             application/json:
               schema:
@@ -2528,11 +2529,77 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /pedidos/{pedidoId}/pagos:
+    parameters:
+      - name: pedidoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Tienda, Pagos y facturas]
+      summary: Pagar un pedido de la tienda
+      description: |
+        V2-M14.04: Cobra el total del pedido con el procesador simulado, igual que
+        `POST /ordenes/{ordenId}/pagos`: el mismo cuerpo, las mismas respuestas y el mismo `Pago`,
+        con `pedidoId` lleno y `ordenId` nulo. El pedido tiene que estar `apartado` o `listo`, sin
+        vencer, con total y sin pagar. El 3-D Secure se responde en
+        `POST /pagos/{pagoId}/autenticacion`. Repetir la misma `Idempotency-Key` responde 200 con el
+        mismo intento, y usarla con otra orden o con otro pedido es 400. Un pedido pagado ya no vence
+        y no se cancela desde la app. No suma puntos de lealtad. Al quedar pagado llega el evento
+        `pago.confirmado` con `pedidoId`.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPago'
+      responses:
+        '200':
+          description: El intento ya creado con esa llave
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '201':
+          description: Intento creado (pagado, fallido o esperando el 3-D Secure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `PEDIDO_NO_PAGABLE` (no está apartado ni listo, ya venció, no tiene total o ya está
+            pagado) o `PAGO_EN_CURSO` (otro intento espera el 3-D Secure).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
   /pagos:
     get:
       tags: [Pagos y facturas]
       summary: Mis pagos
-      description: V2-M08.07 · Del más nuevo al más viejo, con los fallidos.
+      description: |
+        V2-M08.07 y V2-M14.04: Del más nuevo al más viejo, con los fallidos. Trae los pagos de
+        órdenes y los de pedidos de la tienda.
       parameters:
         - $ref: '#/components/parameters/Pagina'
         - $ref: '#/components/parameters/Tamano'
@@ -2588,7 +2655,8 @@ paths:
       tags: [Pagos y facturas]
       summary: Responder el 3-D Secure simulado
       description: |
-        V2-M08.02 · Lo que la persona respondió en la pantalla simulada de su banco. Queda
+        V2-M08.02 y V2-M14.04: Lo que la persona respondió en la pantalla simulada de su banco,
+        para el pago de una orden o de un pedido. Queda
         `PAGADO` o `FALLIDO` con `AUTENTICACION_FALLIDA` (o `AUTENTICACION_VENCIDA` si pasaron
         15 minutos).
       requestBody:
@@ -3170,8 +3238,10 @@ paths:
           consultar `GET /valuaciones/{valuacionId}`.
         - `pedido.estado` (V2-M14.05), `AvisoPedido`: cada vez que cambia el estado de un pedido
           de la tienda del cliente. La app vuelve a consultar `GET /tienda/pedidos/{pedidoId}`.
-        - `pago.confirmado` (V2-M08.02), `AvisoPagoConfirmado`: cuando una orden del cliente
-          queda pagada, en la app o en caja. La app vuelve a consultar el ticket y sus pagos.
+        - `pago.confirmado` (V2-M08.02 y V2-M14.04), `AvisoPagoConfirmado`: cuando una orden del
+          cliente queda pagada, en la app o en caja, o un pedido de la tienda queda pagado en la
+          app. Con `ordenId` la app vuelve a consultar el ticket y sus pagos, y con `pedidoId`, el
+          pedido y la lista de pedidos.
 
         Ejemplo en el flujo:
         ```
@@ -4913,7 +4983,7 @@ components:
 
     Pedido:
       type: object
-      required: [id, estado, entrega, total, creadoEn, renglones]
+      required: [id, estado, entrega, total, creadoEn, renglones, pagable]
       properties:
         id:
           type: integer
@@ -4949,6 +5019,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RenglonPedido'
+        pagable:
+          type: boolean
+          description: |
+            V2-M14.04: Se puede pagar en la app: está `apartado` o `listo`, no ha vencido, tiene
+            total y no está pagado.
+        pago:
+          allOf:
+            - $ref: '#/components/schemas/Pago'
+          nullable: true
+          description: V2-M14.04. El pago con que quedó pagado. No viene si no está pagado.
+        pagadoEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: V2-M14.04. Cuándo quedó pagado en la app. Ya no vence ni se cancela desde la app.
 
     CitaDePedido:
       type: object
@@ -5515,8 +5600,10 @@ components:
           nullable: true
     AvisoPagoConfirmado:
       type: object
-      description: Evento SSE `pago.confirmado` (V2-M08.02)
-      required: [pagoId, ordenId, estado]
+      description: |
+        Evento SSE `pago.confirmado` (V2-M08.02 y V2-M14.04). Exactamente uno de `ordenId` y
+        `pedidoId` viene lleno.
+      required: [pagoId, estado]
       properties:
         pagoId:
           type: integer
@@ -5524,16 +5611,22 @@ components:
         ordenId:
           type: integer
           format: int64
+          nullable: true
+        pedidoId:
+          type: integer
+          format: int64
+          nullable: true
         estado:
           type: string
           enum: [PAGADO]
     Pago:
       type: object
       description: |
-        V2-M08.02 y V2-M08.07 · Un intento de pagar una orden. Nunca trae el número de la
+        V2-M08.02, V2-M08.07 y V2-M14.04: Un intento de pagar una orden o un pedido de la
+        tienda. Exactamente uno de `ordenId` y `pedidoId` viene lleno. Nunca trae el número de la
         tarjeta, solo la marca y los últimos 4.
-      required: [id, ordenId, vehiculoId, monto, moneda, medio, estado, requiereAutenticacion,
-        referencia, simulado, creadoEn]
+      required: [id, ordenId, pedidoId, vehiculoId, monto, moneda, medio, estado,
+        requiereAutenticacion, referencia, simulado, creadoEn]
       properties:
         id:
           type: integer
@@ -5541,14 +5634,26 @@ components:
         ordenId:
           type: integer
           format: int64
-          description: La orden de servicio; su ticket es `GET /servicios/{ordenId}`
+          nullable: true
+          description: |
+            La orden de servicio, con su ticket en `GET /servicios/{ordenId}`. Nulo en el pago de un
+            pedido.
+        pedidoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: |
+            V2-M14.04. El pedido de la tienda, que se ve en `GET /tienda/pedidos/{pedidoId}`. Nulo en
+            el pago de una orden.
         vehiculoId:
           type: integer
           format: int64
+          nullable: true
+          description: El vehículo de la orden. Nulo en el pago de un pedido.
         monto:
           type: number
           format: double
-          description: Total de la orden, con IVA incluido
+          description: Total de la orden o del pedido, con IVA incluido
           example: 1650.0
         moneda:
           type: string
@@ -6447,6 +6552,8 @@ components:
             - ORDEN_NO_PAGABLE
             - PAGO_EN_CURSO
             - PAGO_NO_PENDIENTE
+            - PEDIDO_NO_PAGABLE
+            - PEDIDO_PAGADO
           example: FRANJA_SIN_CUPO
         campos:
           type: object

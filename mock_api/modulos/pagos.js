@@ -165,6 +165,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   // sin responder vence a los 15 minutos y la tarjeta se guarda al quedar
   // pagado si se pidio. Una orden se paga si viene del taller (`delTaller`),
   // esta TERMINADO o ENTREGADO, tiene total y nadie la ha pagado.
+  // V2-M14.04: Un pedido de la tienda se paga con las mismas tarjetas si es
+  // del cliente, esta apartado o listo, no ha vencido, tiene total y nadie lo
+  // ha pagado. Pagado no suma puntos (son por servicio) y ya no vence.
   db.defaults({ pagosApp: [], metodosPago: [] }).write();
 
   const TARJETAS = {
@@ -186,8 +189,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
 
   const publicoPago = (p) => ({
     id: p.id,
-    ordenId: p.ordenId,
-    vehiculoId: p.vehiculoId,
+    ordenId: p.ordenId ?? null,
+    pedidoId: p.pedidoId ?? null,
+    vehiculoId: p.vehiculoId ?? null,
     monto: p.monto,
     moneda: p.moneda,
     medio: p.medio,
@@ -226,6 +230,7 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       .orderBy([(m) => (m.predeterminado ? 0 : 1), 'id'])
       .value();
   const pagadoDe = (ordenId) => db.get('pagosApp').find({ ordenId, estado: 'PAGADO' }).value();
+  const pagadoDelPedido = (pedidoId) => db.get('pagosApp').find({ pedidoId, estado: 'PAGADO' }).value();
 
   function vencerPendientes(filtro) {
     const limite = Date.now() - VIGENCIA_MS;
@@ -238,6 +243,7 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   }
 
   function puntosPorServicio(pago) {
+    if (pago.ordenId == null) return;
     const yaSumo = db
       .get('movimientosPuntos')
       .find({ motivo: 'SERVICIO', referenciaTipo: 'ORDEN', referenciaId: pago.ordenId })
@@ -288,7 +294,15 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       }
     }
     puntosPorServicio(pago);
-    emitirEvento(pago.clienteId, 'pago.confirmado', { pagoId: pago.id, ordenId: pago.ordenId, estado: 'PAGADO' });
+    if (pago.pedidoId != null) {
+      db.get('pedidosTienda').find({ id: pago.pedidoId }).assign({ pagadoEn: pago.pagadoEn }).write();
+    }
+    emitirEvento(pago.clienteId, 'pago.confirmado', {
+      pagoId: pago.id,
+      ordenId: pago.ordenId ?? null,
+      pedidoId: pago.pedidoId ?? null,
+      estado: 'PAGADO',
+    });
   }
 
   function aplicar(pago, respuesta) {
@@ -307,9 +321,11 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     }
   }
 
-  servidor.post(`${BASE}/ordenes/:ordenId/pagos`, (req, res) => {
+  // Lo comun de pagar una orden o un pedido. `objetivo` dice cual es y
+  // `revisar` responde el 404 o 409 propio, o devuelve el monto y el vehiculo.
+  function cobrar(req, res, objetivo, revisar) {
     const clienteId = req.sesion.clienteId;
-    const ordenId = Number(req.params.ordenId);
+    const { ordenId = null, pedidoId = null } = objetivo;
     const llave = String(req.get('Idempotency-Key') || '').trim();
     if (llave.length < 8 || llave.length > 64) {
       return problema(req, res, 400, 'La llave Idempotency-Key debe tener entre 8 y 64 caracteres', 'DATOS_INVALIDOS');
@@ -321,20 +337,18 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     }
     const repetido = db.get('pagosApp').find({ clienteId, llave }).value();
     if (repetido) {
-      if (repetido.ordenId !== ordenId) {
-        return problema(req, res, 400, 'Esa llave Idempotency-Key ya se usó para pagar otra orden', 'DATOS_INVALIDOS');
+      if ((repetido.ordenId ?? null) !== ordenId || (repetido.pedidoId ?? null) !== pedidoId) {
+        return problema(req, res, 400, 'Esa llave Idempotency-Key ya se usó para pagar otra orden o pedido', 'DATOS_INVALIDOS');
       }
       return res.status(200).jsonp(publicoPago(repetido));
     }
-    const servicio = db.get('servicios').find({ id: ordenId }).value();
-    if (!servicio || !vehiculoDelCliente(req, servicio.vehiculoId)) return noEncontrado(req, res);
-    if (pagadoDe(ordenId)) return problema(req, res, 409, 'La orden ya está pagada', 'ORDEN_NO_PAGABLE');
-    if (!['TERMINADO', 'ENTREGADO'].includes(servicio.estatus) || !(servicio.total > 0) || servicio.delTaller !== true) {
-      return problema(req, res, 409, 'La orden no se puede pagar en la app', 'ORDEN_NO_PAGABLE');
-    }
-    vencerPendientes((p) => p.ordenId === ordenId);
-    if (db.get('pagosApp').find({ ordenId, estado: 'PENDIENTE' }).value()) {
-      return problema(req, res, 409, 'Ya hay un pago de esta orden esperando la confirmación de tu banco', 'PAGO_EN_CURSO');
+    const cobro = revisar();
+    if (!cobro) return;
+    const delMismo = (p) => (ordenId != null ? p.ordenId === ordenId : p.pedidoId === pedidoId);
+    vencerPendientes(delMismo);
+    if (db.get('pagosApp').find((p) => delMismo(p) && p.estado === 'PENDIENTE').value()) {
+      const de = ordenId != null ? 'esta orden' : 'este pedido';
+      return problema(req, res, 409, `Ya hay un pago de ${de} esperando la confirmación de tu banco`, 'PAGO_EN_CURSO');
     }
     let token;
     let mesVence;
@@ -365,8 +379,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       id: siguiente('pagosApp'),
       clienteId,
       ordenId,
-      vehiculoId: servicio.vehiculoId,
-      monto: servicio.total,
+      pedidoId,
+      vehiculoId: cobro.vehiculoId,
+      monto: cobro.monto,
       moneda: 'MXN',
       medio: 'TARJETA',
       marca: tarjeta.marca,
@@ -396,6 +411,44 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     aplicar(pago, respuesta);
     db.get('pagosApp').push(pago).write();
     res.status(201).jsonp(publicoPago(pago));
+  }
+
+  servidor.post(`${BASE}/ordenes/:ordenId/pagos`, (req, res) => {
+    const ordenId = Number(req.params.ordenId);
+    cobrar(req, res, { ordenId }, () => {
+      const servicio = db.get('servicios').find({ id: ordenId }).value();
+      if (!servicio || !vehiculoDelCliente(req, servicio.vehiculoId)) {
+        noEncontrado(req, res);
+        return null;
+      }
+      if (pagadoDe(ordenId)) {
+        problema(req, res, 409, 'La orden ya está pagada', 'ORDEN_NO_PAGABLE');
+        return null;
+      }
+      if (!['TERMINADO', 'ENTREGADO'].includes(servicio.estatus) || !(servicio.total > 0) || servicio.delTaller !== true) {
+        problema(req, res, 409, 'La orden no se puede pagar en la app', 'ORDEN_NO_PAGABLE');
+        return null;
+      }
+      return { monto: servicio.total, vehiculoId: servicio.vehiculoId };
+    });
+  });
+
+  // V2-M14.04: mismo cuerpo, mismas respuestas y mismo Pago que una orden.
+  servidor.post(`${BASE}/pedidos/:pedidoId/pagos`, (req, res) => {
+    const pedidoId = Number(req.params.pedidoId);
+    cobrar(req, res, { pedidoId }, () => {
+      const pedido = db.get('pedidosTienda').find({ id: pedidoId }).value();
+      if (!pedido || pedido.clienteId !== req.sesion.clienteId) {
+        noEncontrado(req, res);
+        return null;
+      }
+      const vencido = pedido.venceEn && Date.parse(pedido.venceEn) <= Date.now();
+      if (pagadoDelPedido(pedidoId) || !['apartado', 'listo'].includes(pedido.estado) || vencido || !(pedido.total > 0)) {
+        problema(req, res, 409, 'El pedido no se puede pagar en la app', 'PEDIDO_NO_PAGABLE');
+        return null;
+      }
+      return { monto: pedido.total, vehiculoId: null };
+    });
   });
 
   servidor.post(`${BASE}/pagos/:pagoId/autenticacion`, (req, res) => {

@@ -28,6 +28,10 @@ const rutaMisPedidos = '$rutaTienda/pedidos';
 /// Un pedido: `/tienda/pedidos/5`.
 String rutaPedido(int pedidoId) => '$rutaMisPedidos/$pedidoId';
 
+/// Un pedido que abre su pago al llegar: `/tienda/pedidos/5?pagar=1`
+/// (V2-M14.04). Al volver del pago se queda en el pedido.
+String rutaPedidoPagando(int pedidoId) => '${rutaPedido(pedidoId)}?pagar=1';
+
 Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
   data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
       ? TemaPista.oscuro()
@@ -76,7 +80,10 @@ final rutasTienda = <RouteBase>[
             name: 'tienda-pedido',
             builder: (context, state) => _conTemaPista(
               context,
-              PantallaPedido(pedidoId: _id(state, 'pedidoId')),
+              PantallaPedido(
+                pedidoId: _id(state, 'pedidoId'),
+                pagarAlAbrir: state.uri.queryParameters['pagar'] == '1',
+              ),
             ),
           ),
         ],

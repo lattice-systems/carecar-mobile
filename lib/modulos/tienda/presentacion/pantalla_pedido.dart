@@ -7,6 +7,7 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -19,6 +20,7 @@ import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../citas/citas.dart';
+import '../../pagos/pagos.dart' show rutaPagarPedido;
 import '../../vehiculos/vehiculos.dart';
 import '../dominio/tienda.dart';
 import 'formato_tienda.dart';
@@ -28,12 +30,23 @@ import 'rutas_tienda.dart';
 
 /// El detalle de un pedido (V2-M14.05): estado, avance con sus horas, cuándo
 /// vence y productos. Mientras está abierto deja cancelarlo (V2-M14.02) y
-/// elegir en qué cita se instala (V2-M14.03). Se actualiza solo con su aviso
-/// `pedido.estado`.
+/// elegir en qué cita se instala (V2-M14.03). Si se puede, se paga en la app
+/// con la pantalla de pago de `pagos`. Ya pagado dice con qué y solo se
+/// cancela en el mostrador (V2-M14.04). Se actualiza solo con su aviso
+/// `pedido.estado` y con su `pago.confirmado`.
 class PantallaPedido extends ConsumerStatefulWidget {
-  const PantallaPedido({required this.pedidoId, super.key});
+  const PantallaPedido({
+    required this.pedidoId,
+    this.pagarAlAbrir = false,
+    super.key,
+  });
 
   final int pedidoId;
+
+  /// Abre el pago al llegar, como «Pagar ahora» al apartar.
+  final bool pagarAlAbrir;
+
+  static const botonPagar = Key('tienda_pagar_pedido');
 
   @override
   ConsumerState<PantallaPedido> createState() => _PantallaPedidoState();
@@ -44,6 +57,25 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
 
   PedidoNotifier get _notifier =>
       ref.read(pedidoTiendaProvider(widget.pedidoId).notifier);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.pagarAlAbrir) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _pagar();
+      });
+    }
+  }
+
+  /// Abre el pago del pedido. Al volver se vuelve a pedir sin pasar por carga,
+  /// por si el aviso en vivo no llegó.
+  Future<void> _pagar() async {
+    await context.push(rutaPagarPedido(widget.pedidoId));
+    if (!mounted) return;
+    ref.invalidate(misPedidosProvider);
+    await _notifier.recargar();
+  }
 
   Future<void> _hacer(Future<void> Function() accion) async {
     if (_guardando) return;
@@ -127,6 +159,18 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
           data: (pedido) => MarcoPantalla(
             titulo: titulo,
             conRegreso: true,
+            barraInferior: pedido.pagable
+                ? BarraInferior(
+                    hijos: [
+                      Boton(
+                        key: PantallaPedido.botonPagar,
+                        texto: t.tiendaPagar(pesosTienda(pedido.total)),
+                        anchoCompleto: true,
+                        alPresionar: _guardando ? null : _pagar,
+                      ),
+                    ],
+                  )
+                : null,
             alRefrescar: () =>
                 ref.refresh(pedidoTiendaProvider(widget.pedidoId).future),
             slivers: [SliverToBoxAdapter(child: _contenido(context, pedido))],
@@ -137,7 +181,11 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
   Widget _contenido(BuildContext context, Pedido pedido) {
     final t = AppLocalizations.of(context);
     final vence = pedido.venceEn;
+    final pagadoEn = pedido.pagadoEn;
     final motivo = pedido.motivoCancelacion;
+    final comoSePaga = pedido.pagable
+        ? t.tiendaPagoEnAppOCaja
+        : t.tiendaPagoEnCaja;
     const lados = EdgeInsets.symmetric(horizontal: Espaciado.e4);
 
     return Column(
@@ -157,18 +205,29 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
                 estado: textoEstadoPedido(t, pedido.estado),
                 tonoEstado: tonoEstadoPedido(pedido.estado),
               ),
-              if (pedido.abierto) ...[
+              if (pagadoEn != null) ...[
+                const SizedBox(height: Espaciado.e3),
+                Aviso(
+                  titulo: t.tiendaPagadoAviso(
+                    textoPagoDePedido(t, pedido.pago),
+                  ),
+                  mensaje: t.tiendaPagadoMensaje(
+                    momentoTienda(context, pagadoEn),
+                  ),
+                  tono: Tono.exito,
+                ),
+              ] else if (pedido.abierto) ...[
                 const SizedBox(height: Espaciado.e3),
                 if (vence != null)
                   Aviso(
-                    titulo: t.tiendaPagoEnCaja,
+                    titulo: comoSePaga,
                     mensaje: t.tiendaVenceDetalle(
                       momentoTienda(context, vence),
                     ),
                     tono: Tono.advertencia,
                   )
                 else
-                  Aviso(mensaje: t.tiendaPagoEnCaja),
+                  Aviso(mensaje: comoSePaga),
               ],
             ],
           ),
@@ -206,7 +265,7 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
         ),
         if (pedido.abierto || pedido.cita != null)
           _instalacion(context, pedido),
-        if (pedido.abierto)
+        if (pedido.cancelableEnLaApp)
           Padding(
             padding: lados.add(const EdgeInsets.only(top: Espaciado.e6)),
             child: BotonPildora(
@@ -216,6 +275,11 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
               cargando: _guardando,
               alPresionar: _confirmarCancelacion,
             ),
+          )
+        else if (pedido.abierto)
+          Padding(
+            padding: lados.add(const EdgeInsets.only(top: Espaciado.e6)),
+            child: Aviso(mensaje: t.tiendaPagadoCancelarEnMostrador),
           ),
       ],
     );

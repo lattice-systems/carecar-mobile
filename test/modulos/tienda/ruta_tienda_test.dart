@@ -100,7 +100,7 @@ void main() {
     expect(carrito.citaId, 31);
 
     await _tocar(tester, 'Apartar');
-    await _tocar(tester, 'Ver mi pedido');
+    await _tocar(tester, 'Pagar en caja');
     expect(find.byType(PantallaPedido), findsOneWidget);
   });
 

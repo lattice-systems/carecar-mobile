@@ -71,8 +71,8 @@ enum TipoTarjeta {
   }
 }
 
-/// Un intento de pagar una orden (V2-M08.02 y V2-M08.07). Nunca trae el
-/// numero de la tarjeta.
+/// Un intento de pagar una orden (V2-M08.02 y V2-M08.07) o un pedido de la
+/// tienda (V2-M14.04). Nunca trae el numero de la tarjeta.
 class Pago {
   const Pago({
     required this.id,
@@ -92,13 +92,21 @@ class Pago {
     this.metodoPagoId,
     this.perfilFiscalId,
     this.pagadoEn,
+    this.pedidoId,
   });
 
   final int id;
-  final int ordenId;
-  final int vehiculoId;
 
-  /// Total de la orden con IVA, en pesos.
+  /// La orden pagada. Nula si el pago es de un pedido de la tienda.
+  final int? ordenId;
+
+  /// El pedido de la tienda pagado (V2-M14.04). Nulo si es de una orden.
+  final int? pedidoId;
+
+  /// El vehiculo de la orden. Un pedido de la tienda puede no traerlo.
+  final int? vehiculoId;
+
+  /// Total de la orden con IVA o del pedido, en pesos.
   final double monto;
   final MedioPago medio;
   final String? marca;
@@ -157,9 +165,22 @@ class MetodoPago {
   final bool predeterminado;
 }
 
+/// Lo que se cobra en la app: una orden de servicio (V2-M08.02) o un pedido
+/// de la tienda (V2-M14.04). La pantalla de pago es la misma para los dos.
+sealed class ObjetivoCobro {
+  const ObjetivoCobro();
+
+  double get total;
+
+  bool get pagable;
+
+  /// El pago con que quedo pagado, si ya se pago.
+  Pago? get pago;
+}
+
 /// Lo que se cobra de una orden, leido de su ticket: el desglose, si se puede
 /// pagar en la app y, si ya se pago, con que.
-class OrdenPorPagar {
+class OrdenPorPagar extends ObjetivoCobro {
   const OrdenPorPagar({
     required this.ordenId,
     required this.vehiculoId,
@@ -180,8 +201,31 @@ class OrdenPorPagar {
   final double totalRefacciones;
   final double subtotal;
   final double iva;
+  @override
   final double total;
+  @override
   final bool pagable;
+  @override
+  final Pago? pago;
+}
+
+/// Lo que se cobra de un pedido de la tienda (V2-M14.04), leido del pedido:
+/// el total de sus renglones, si se puede pagar en la app y, si ya se pago,
+/// con que.
+class PedidoPorPagar extends ObjetivoCobro {
+  const PedidoPorPagar({
+    required this.pedidoId,
+    required this.total,
+    required this.pagable,
+    this.pago,
+  });
+
+  final int pedidoId;
+  @override
+  final double total;
+  @override
+  final bool pagable;
+  @override
   final Pago? pago;
 }
 
@@ -214,7 +258,14 @@ class TarjetaGuardada extends MedioElegido {
 }
 
 /// Por que el servidor no tomo el pago.
-enum MotivoRechazoPago { ordenNoPagable, pagoEnCurso, pagoNoPendiente }
+enum MotivoRechazoPago {
+  ordenNoPagable,
+  pagoEnCurso,
+  pagoNoPendiente,
+
+  /// V2-M14.04: el pedido ya no se puede pagar en la app.
+  pedidoNoPagable,
+}
 
 /// El servidor no tomo el pago por una regla (409).
 class PagoRechazado implements Exception {

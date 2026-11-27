@@ -146,6 +146,8 @@ void main() {
         'ORDEN_NO_PAGABLE',
         'PAGO_EN_CURSO',
         'PAGO_NO_PENDIENTE',
+        'PEDIDO_NO_PAGABLE',
+        'PEDIDO_PAGADO',
       };
 
       final queLaAppMapea = CodigoProblema.values

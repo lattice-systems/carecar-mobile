@@ -105,7 +105,21 @@ String textoRechazo(AppLocalizations t, MotivoRechazoPedido motivo) =>
       MotivoRechazoPedido.noCancelable => t.tiendaRechazoNoCancelable,
       MotivoRechazoPedido.noModificable => t.tiendaRechazoNoModificable,
       MotivoRechazoPedido.productoIncompatible => t.tiendaRechazoIncompatible,
+      MotivoRechazoPedido.pagado => t.tiendaRechazoPagado,
     };
+
+/// «Visa •••• 4242», o «tarjeta» si el pago no trae la marca (V2-M14.04).
+String textoPagoDePedido(AppLocalizations t, PagoDePedido? pago) {
+  final marca = pago?.marca;
+  final ultimos4 = pago?.ultimos4;
+  if (marca == null || ultimos4 == null) return t.tiendaMedioTarjeta;
+  final nombre = switch (marca) {
+    'VISA' => 'Visa',
+    'MASTERCARD' => 'Mastercard',
+    _ => marca,
+  };
+  return t.tiendaTarjeta(nombre, ultimos4);
+}
 
 /// Lo que se le dice a la persona cuando una acción falla. [sinConexion] es el
 /// texto propio de cada acción para cuando no hay red.

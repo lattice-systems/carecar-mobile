@@ -9,7 +9,8 @@ import '../dominio/pagos.dart';
 import '../dominio/repositorio_pagos.dart';
 import '../dominio/tarjetas.dart';
 
-/// Aviso en vivo de que una orden del cliente quedo pagada (V2-M08.02).
+/// Aviso en vivo de que una orden (V2-M08.02) o un pedido de la tienda
+/// (V2-M14.04) del cliente quedo pagado. Trae `ordenId` o `pedidoId`.
 const eventoPagoConfirmado = 'pago.confirmado';
 
 /// Cuantos pagos se piden por pagina (V2-M08.07).
@@ -47,6 +48,14 @@ final ordenPorPagarProvider = FutureProvider.autoDispose
       (ref, ordenId) => ref.watch(repositorioPagosProvider).orden(ordenId),
       retry: (_, _) => null,
       name: 'ordenPorPagarProvider',
+    );
+
+/// Lo que se cobra de un pedido de la tienda y si se puede pagar (V2-M14.04).
+final pedidoPorPagarProvider = FutureProvider.autoDispose
+    .family<PedidoPorPagar, int>(
+      (ref, pedidoId) => ref.watch(repositorioPagosProvider).pedido(pedidoId),
+      retry: (_, _) => null,
+      name: 'pedidoPorPagarProvider',
     );
 
 /// Un pago. Se recarga solo con `pago.confirmado`.

@@ -1,15 +1,17 @@
 import '../../../api/modelos/comun.dart';
 import '../dominio/pagos.dart';
 
-/// Lee `Pago`, `MetodoPago` y el ticket (`ServicioDetalle`) del contrato. Lanza
-/// [FormatException] si falta algo obligatorio.
+/// Lee `Pago`, `MetodoPago`, el ticket (`ServicioDetalle`) y lo que se cobra
+/// del pedido de la tienda (`Pedido`) del contrato. Lanza [FormatException] si
+/// falta algo obligatorio.
 class LecturaPagos {
   const LecturaPagos();
 
   Pago pago(Map<String, Object?> json) => Pago(
     id: leerEntero(json['id'], 'id'),
-    ordenId: leerEntero(json['ordenId'], 'ordenId'),
-    vehiculoId: leerEntero(json['vehiculoId'], 'vehiculoId'),
+    ordenId: leerEnteroOpcional(json['ordenId'], 'ordenId'),
+    pedidoId: leerEnteroOpcional(json['pedidoId'], 'pedidoId'),
+    vehiculoId: leerEnteroOpcional(json['vehiculoId'], 'vehiculoId'),
     monto: leerDecimal(json['monto'], 'monto'),
     medio: MedioPago.desde(json['medio'] as String?),
     marca: json['marca'] as String?,
@@ -58,6 +60,17 @@ class LecturaPagos {
       ),
       subtotal: leerDecimal(json['subtotal'], 'subtotal'),
       iva: leerDecimal(json['iva'], 'iva'),
+      total: leerDecimal(json['total'], 'total'),
+      pagable: json['pagable'] == true,
+      pago: pago is Map ? this.pago(pago.cast<String, Object?>()) : null,
+    );
+  }
+
+  /// Solo lo que se cobra del `Pedido` de la tienda (V2-M14.04).
+  PedidoPorPagar pedido(Map<String, Object?> json) {
+    final pago = json['pago'];
+    return PedidoPorPagar(
+      pedidoId: leerEntero(json['id'], 'id'),
       total: leerDecimal(json['total'], 'total'),
       pagable: json['pagable'] == true,
       pago: pago is Map ? this.pago(pago.cast<String, Object?>()) : null,

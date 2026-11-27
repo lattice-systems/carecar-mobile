@@ -31,6 +31,9 @@ const rutaMetodosPago = '/metodos-pago';
 /// Pagar una orden de servicio: `/pagar-orden/41`.
 String rutaPagarOrden(int ordenId) => '/pagar-orden/$ordenId';
 
+/// Pagar un pedido de la tienda: `/pagar-pedido/7` (V2-M14.04).
+String rutaPagarPedido(int pedidoId) => '/pagar-pedido/$pedidoId';
+
 int _numero(GoRouterState state, String parametro) =>
     int.tryParse(state.pathParameters[parametro] ?? '') ?? -1;
 
@@ -97,6 +100,14 @@ final rutasPagos = <RouteBase>[
     builder: (context, state) => _segura(
       context,
       PantallaPagarOrden(ordenId: _numero(state, 'ordenId')),
+    ),
+  ),
+  GoRoute(
+    path: '/pagar-pedido/:pedidoId',
+    name: 'pagar-pedido',
+    builder: (context, state) => _segura(
+      context,
+      PantallaPagarPedido(pedidoId: _numero(state, 'pedidoId')),
     ),
   ),
 ];

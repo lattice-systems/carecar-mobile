@@ -47,6 +47,7 @@ const _propiedadesPagos = <String, Set<String>>{
   'Pago': {
     'id',
     'ordenId',
+    'pedidoId',
     'vehiculoId',
     'monto',
     'moneda',
@@ -84,11 +85,12 @@ const _propiedadesPagos = <String, Set<String>>{
     'predeterminado',
     'creadoEn',
   },
-  'AvisoPagoConfirmado': {'pagoId', 'ordenId', 'estado'},
+  'AvisoPagoConfirmado': {'pagoId', 'ordenId', 'pedidoId', 'estado'},
 };
 
 const _operacionesPagos = <String>{
   'POST /ordenes/{ordenId}/pagos',
+  'POST /pedidos/{pedidoId}/pagos',
   'POST /pagos/{pagoId}/autenticacion',
   'GET /pagos',
   'GET /pagos/{pagoId}',
@@ -247,6 +249,54 @@ void main() {
         'PAGO_EN_CURSO',
         'PAGO_NO_PENDIENTE',
       ]) {
+        expect(codigos, contains(codigo));
+        expect(
+          CodigoProblema.values.map((c) => c.enElContrato),
+          contains(codigo),
+        );
+      }
+    });
+  });
+
+  group('el contrato v2 trae el pago de pedidos de la tienda (V2-M14.04)', () {
+    test('la version es 2.25.0 o posterior', () {
+      final partes = (contrato['info']['version'] as String)
+          .split('.')
+          .map(int.parse)
+          .toList();
+      expect(partes[0], 2);
+      expect(partes[1], greaterThanOrEqualTo(25));
+    });
+
+    test('un Pago trae ordenId o pedidoId, los dos nulables', () {
+      final propiedades = esquemas['Pago']['properties'] as YamlMap;
+      expect(propiedades['ordenId']['nullable'], isTrue);
+      expect(propiedades['pedidoId']['nullable'], isTrue);
+      final aviso = esquemas['AvisoPagoConfirmado']['properties'] as YamlMap;
+      expect(aviso['ordenId']['nullable'], isTrue);
+      expect(aviso['pedidoId']['nullable'], isTrue);
+    });
+
+    test('pagar un pedido pide la llave y responde como una orden', () {
+      final pagar =
+          (contrato['paths'] as YamlMap)['/pedidos/{pedidoId}/pagos']['post']
+              as YamlMap;
+      final llave = (pagar['parameters'] as YamlList)
+          .cast<YamlMap>()
+          .firstWhere((p) => p['name'] == 'Idempotency-Key');
+      expect(llave['in'], 'header');
+      expect(llave['required'], isTrue);
+      expect(
+        (pagar['responses'] as YamlMap).keys,
+        containsAll(['200', '201', '400', '404', '409']),
+      );
+    });
+
+    test('PEDIDO_NO_PAGABLE y PEDIDO_PAGADO estan y la app los mapea', () {
+      final codigos =
+          (esquemas['Problema']['properties']['codigo']['enum'] as YamlList)
+              .cast<String>();
+      for (final codigo in ['PEDIDO_NO_PAGABLE', 'PEDIDO_PAGADO']) {
         expect(codigos, contains(codigo));
         expect(
           CodigoProblema.values.map((c) => c.enElContrato),

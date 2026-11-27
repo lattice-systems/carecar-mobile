@@ -89,9 +89,23 @@ String textoEscenario(AppLocalizations textos, EscenarioTarjeta escenario) =>
         textos.pagosEscenarioConfirmacionFalla,
     };
 
-String textoRechazo(AppLocalizations textos, MotivoRechazoPago motivo) =>
-    switch (motivo) {
-      MotivoRechazoPago.ordenNoPagable => textos.pagosOrdenNoPagable,
-      MotivoRechazoPago.pagoEnCurso => textos.pagosPagoEnCurso,
-      MotivoRechazoPago.pagoNoPendiente => textos.pagosPagoNoPendiente,
-    };
+/// Con [pedido] el intento en curso se explica como de un pedido de la tienda.
+String textoRechazo(
+  AppLocalizations textos,
+  MotivoRechazoPago motivo, {
+  bool pedido = false,
+}) => switch (motivo) {
+  MotivoRechazoPago.ordenNoPagable => textos.pagosOrdenNoPagable,
+  MotivoRechazoPago.pagoEnCurso =>
+    pedido ? textos.pagosPedidoPagoEnCurso : textos.pagosPagoEnCurso,
+  MotivoRechazoPago.pagoNoPendiente => textos.pagosPagoNoPendiente,
+  MotivoRechazoPago.pedidoNoPagable => textos.pagosPedidoNoPagable,
+};
+
+/// «Orden 41» o «Pedido 7»: lo que se pago.
+String textoObjetivoPago(AppLocalizations textos, Pago pago) {
+  final pedidoId = pago.pedidoId;
+  return pedidoId != null
+      ? textos.pagosPedido('$pedidoId')
+      : textos.pagosOrden('${pago.ordenId ?? ''}');
+}

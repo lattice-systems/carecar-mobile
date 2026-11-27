@@ -1030,7 +1030,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String tiendaApartadoMensaje(String fecha) {
-    return 'Pay at the counter. Your reservation expires on $fecha.';
+    return 'Your reservation expires on $fecha. Pay now in the app or at the counter when you pick it up.';
   }
 
   @override
@@ -1200,6 +1200,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get tiendaMedioTarjeta => 'card';
+
+  @override
   String get tiendaMisPedidos => 'My orders';
 
   @override
@@ -1221,6 +1224,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tiendaNoSeCambioTitulo => 'We could not change the order';
+
+  @override
+  String get tiendaPagado => 'Paid';
+
+  @override
+  String tiendaPagadoAviso(String medio) {
+    return 'Paid with $medio';
+  }
+
+  @override
+  String get tiendaPagadoCancelarEnMostrador =>
+      'It\'s already paid: to cancel it, ask at the counter.';
+
+  @override
+  String tiendaPagadoMensaje(String fecha) {
+    return 'On $fecha. It no longer expires.';
+  }
+
+  @override
+  String tiendaPagar(String monto) {
+    return 'Pay $monto';
+  }
+
+  @override
+  String get tiendaPagarAhora => 'Pay now';
+
+  @override
+  String get tiendaPagarEnCaja => 'Pay at the counter';
+
+  @override
+  String get tiendaPagoEnAppOCaja =>
+      'Pay in the app from your order or at the counter when you pick it up.';
 
   @override
   String get tiendaPagoEnCaja =>
@@ -1301,6 +1336,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'This order was delivered or cancelled and cannot be changed.';
 
   @override
+  String get tiendaRechazoPagado =>
+      'This order is already paid and can\'t be canceled in the app: cancel it at the counter.';
+
+  @override
   String get tiendaRechazoSinExistencia =>
       'There are not enough items left. Check the stock and change the quantity.';
 
@@ -1334,6 +1373,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tiendaSinConexionTitulo => 'No connection';
+
+  @override
+  String tiendaTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
 
   @override
   String get tiendaTitulo => 'Store';
@@ -5936,6 +5980,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pagosVerTicket => 'See the receipt';
+
+  @override
+  String get pagosPagarPedidoTitulo => 'Pay store order';
+
+  @override
+  String pagosPedido(String pedido) {
+    return 'Store order $pedido';
+  }
+
+  @override
+  String get pagosPedidoYaPagadoTitulo => 'This store order is already paid';
+
+  @override
+  String get pagosPedidoNoPagableTitulo =>
+      'This store order can\'t be paid in the app';
+
+  @override
+  String get pagosPedidoNoPagableMensaje =>
+      'It can be paid in the app while it\'s reserved or ready and hasn\'t expired. Otherwise, pay at the counter.';
+
+  @override
+  String get pagosPedidoNoPagable =>
+      'This store order can no longer be paid in the app.';
+
+  @override
+  String get pagosPedidoPagoEnCurso =>
+      'A payment for this store order is already waiting for your bank\'s confirmation. Check it in My payments.';
+
+  @override
+  String get pagosPedidoPagadoTitulo => 'Store order paid!';
+
+  @override
+  String get pagosVerPedido => 'See the store order';
 
   @override
   String get pagosNoEncontradoTitulo => 'We couldn\'t find this payment';

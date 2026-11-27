@@ -30,6 +30,7 @@ class LecturaTienda {
 
   Pedido pedido(Map<String, Object?> json) {
     final cita = json['cita'];
+    final pago = json['pago'];
     return Pedido(
       id: leerEntero(json['id'], 'id'),
       estado: _valor(EstadoPedido.values, json['estado'], 'estado'),
@@ -48,6 +49,16 @@ class LecturaTienda {
               fecha: leerFecha(cita['fecha'], 'cita.fecha'),
               hora: leerTexto(cita['hora'], 'cita.hora'),
               vehiculoId: leerEntero(cita['vehiculoId'], 'cita.vehiculoId'),
+            )
+          : null,
+      pagable: json['pagable'] == true,
+      pagadoEn: _momento(json['pagadoEn'], 'pagadoEn'),
+      pago: pago is Map<String, Object?>
+          ? PagoDePedido(
+              id: leerEntero(pago['id'], 'pago.id'),
+              marca: pago['marca'] as String?,
+              ultimos4: pago['ultimos4'] as String?,
+              pagadoEn: _momento(pago['pagadoEn'], 'pago.pagadoEn'),
             )
           : null,
       renglones: _lista(

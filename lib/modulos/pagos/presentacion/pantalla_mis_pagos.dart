@@ -15,14 +15,16 @@ import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../tienda/tienda.dart' show rutaPedido;
 import '../dominio/pagos.dart';
 import 'esqueleto_pagos.dart';
 import 'formato_pagos.dart';
 import 'proveedores_pagos.dart';
 import 'rutas_pagos.dart';
 
-/// Mis pagos (V2-M08.07), del mas nuevo, de 20 en 20: la orden, el estado, con
-/// que y cuando, y el monto. La pagina siguiente se pide al llegar al final;
+/// Mis pagos (V2-M08.07), del mas nuevo, de 20 en 20: la orden o el pedido de
+/// la tienda (V2-M14.04), el estado, con que y cuando, y el monto. Un pago de
+/// pedido abre el pedido. La pagina siguiente se pide al llegar al final;
 /// si falla, lo cargado se queda con un reintento. Se actualiza sola con
 /// `pago.confirmado`. Desde aqui se llega a las tarjetas guardadas. Resuelve
 /// esqueleto, datos, vacio, error y sin conexion; se recarga jalando hacia
@@ -113,7 +115,7 @@ class PantallaMisPagos extends ConsumerWidget {
                 filaPago(
                   context,
                   pago,
-                  alToque: () => context.push(rutaPago(pago.id)),
+                  alToque: () => context.push(_destino(pago)),
                 ),
             ],
           ),
@@ -150,7 +152,13 @@ class PantallaMisPagos extends ConsumerWidget {
   }
 }
 
-/// Un pago como fila: la orden, el estado y la fecha con que se pago, y el
+/// Un pago de pedido lleva al pedido (V2-M14.04) y uno de orden, a su detalle.
+String _destino(Pago pago) {
+  final pedidoId = pago.pedidoId;
+  return pedidoId != null ? rutaPedido(pedidoId) : rutaPago(pago.id);
+}
+
+/// Un pago como fila: la orden o el pedido, el estado y la fecha con que se pago, y el
 /// monto al final. El lector oye el monto en palabras con su estado.
 FilaGrupo filaPago(BuildContext context, Pago pago, {VoidCallback? alToque}) {
   final textos = AppLocalizations.of(context);
@@ -160,7 +168,7 @@ FilaGrupo filaPago(BuildContext context, Pago pago, {VoidCallback? alToque}) {
   final monto = pesos(context, pago.monto);
   return FilaGrupo(
     llave: ValueKey('pago-${pago.id}'),
-    titulo: textos.pagosOrden('${pago.ordenId}'),
+    titulo: textoObjetivoPago(textos, pago),
     subtitulo: textos.pagosFilaSubtitulo(
       estado,
       textoMedio(textos, pago),

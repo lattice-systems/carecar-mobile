@@ -5,20 +5,24 @@ import '../dominio/tarjetas.dart';
 /// Repositorio de pagos en memoria para pruebas y desarrollo. Cobra como el
 /// procesador simulado: decide por la tarjeta de prueba, repetir la llave
 /// devuelve el mismo intento, `tok_sim_3ds` espera la confirmacion y la
-/// tarjeta se guarda al quedar pagado si se pidio.
+/// tarjeta se guarda al quedar pagado si se pidio. Cobra ordenes y pedidos de
+/// la tienda igual.
 class RepositorioPagosFake implements RepositorioPagos {
   RepositorioPagosFake({
     Map<int, OrdenPorPagar> ordenes = const {},
+    Map<int, PedidoPorPagar> pedidos = const {},
     List<Pago> pagos = const [],
     List<MetodoPago> metodos = const [],
     this.falla,
     this.fallaAlPagar,
     this.ahora,
   }) : _ordenes = Map.of(ordenes),
+       _pedidos = Map.of(pedidos),
        _pagos = List.of(pagos),
        _metodos = List.of(metodos);
 
   final Map<int, OrdenPorPagar> _ordenes;
+  final Map<int, PedidoPorPagar> _pedidos;
   final List<Pago> _pagos;
   final List<MetodoPago> _metodos;
 
@@ -79,6 +83,22 @@ class RepositorioPagosFake implements RepositorioPagos {
   }
 
   @override
+  Future<PedidoPorPagar> pedido(int pedidoId) async {
+    _quizasFallar();
+    final pedido = _pedidos[pedidoId];
+    if (pedido == null) throw StateError('No hay pedido $pedidoId');
+    final pagado = _pagos
+        .where((p) => p.pedidoId == pedidoId && p.estado == EstadoPago.pagado)
+        .firstOrNull;
+    return PedidoPorPagar(
+      pedidoId: pedido.pedidoId,
+      total: pedido.total,
+      pagable: pedido.pagable && pagado == null,
+      pago: pagado ?? pedido.pago,
+    );
+  }
+
+  @override
   Future<Pago> pagar(
     int ordenId, {
     required String llave,
@@ -86,11 +106,8 @@ class RepositorioPagosFake implements RepositorioPagos {
     int? perfilFiscalId,
   }) async {
     _quizasFallarAlPagar();
-    llavesRecibidas.add(llave);
-    mediosRecibidos.add(medio);
-    perfilesRecibidos.add(perfilFiscalId);
-    final repetido = _porLlave[llave];
-    if (repetido != null) return _pagos.firstWhere((p) => p.id == repetido);
+    final repetido = _registrar(llave, medio, perfilFiscalId);
+    if (repetido != null) return repetido;
     final orden = await this.orden(ordenId);
     if (!orden.pagable) {
       throw const PagoRechazado(MotivoRechazoPago.ordenNoPagable);
@@ -100,6 +117,63 @@ class RepositorioPagosFake implements RepositorioPagos {
     )) {
       throw const PagoRechazado(MotivoRechazoPago.pagoEnCurso);
     }
+    return _cobrar(
+      llave,
+      medio,
+      perfilFiscalId,
+      ordenId: ordenId,
+      vehiculoId: orden.vehiculoId,
+      monto: orden.total,
+    );
+  }
+
+  @override
+  Future<Pago> pagarPedido(
+    int pedidoId, {
+    required String llave,
+    required MedioElegido medio,
+    int? perfilFiscalId,
+  }) async {
+    _quizasFallarAlPagar();
+    final repetido = _registrar(llave, medio, perfilFiscalId);
+    if (repetido != null) return repetido;
+    final pedido = await this.pedido(pedidoId);
+    if (!pedido.pagable) {
+      throw const PagoRechazado(MotivoRechazoPago.pedidoNoPagable);
+    }
+    if (_pagos.any(
+      (p) => p.pedidoId == pedidoId && p.estado == EstadoPago.pendiente,
+    )) {
+      throw const PagoRechazado(MotivoRechazoPago.pagoEnCurso);
+    }
+    return _cobrar(
+      llave,
+      medio,
+      perfilFiscalId,
+      pedidoId: pedidoId,
+      monto: pedido.total,
+    );
+  }
+
+  /// Anota lo recibido y devuelve el intento ya hecho con esa [llave].
+  Pago? _registrar(String llave, MedioElegido medio, int? perfilFiscalId) {
+    llavesRecibidas.add(llave);
+    mediosRecibidos.add(medio);
+    perfilesRecibidos.add(perfilFiscalId);
+    final repetido = _porLlave[llave];
+    if (repetido == null) return null;
+    return _pagos.firstWhere((p) => p.id == repetido);
+  }
+
+  Pago _cobrar(
+    String llave,
+    MedioElegido medio,
+    int? perfilFiscalId, {
+    required double monto,
+    int? ordenId,
+    int? pedidoId,
+    int? vehiculoId,
+  }) {
     final (token, marca, ultimos4, tipo, metodoId) = switch (medio) {
       TarjetaNueva(:final token) => _deToken(token),
       TarjetaGuardada(:final metodoPagoId) => _deMetodo(metodoPagoId),
@@ -112,8 +186,9 @@ class RepositorioPagosFake implements RepositorioPagos {
     final pago = Pago(
       id: id,
       ordenId: ordenId,
-      vehiculoId: orden.vehiculoId,
-      monto: orden.total,
+      pedidoId: pedidoId,
+      vehiculoId: vehiculoId,
+      monto: monto,
       medio: MedioPago.tarjeta,
       marca: marca,
       ultimos4: ultimos4,
@@ -287,6 +362,7 @@ class RepositorioPagosFake implements RepositorioPagos {
   }) => Pago(
     id: pago.id,
     ordenId: pago.ordenId,
+    pedidoId: pago.pedidoId,
     vehiculoId: pago.vehiculoId,
     monto: pago.monto,
     medio: pago.medio,
