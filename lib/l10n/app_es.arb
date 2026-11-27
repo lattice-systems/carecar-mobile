@@ -8569,5 +8569,195 @@
         "type": "String"
       }
     }
+  },
+  "documentosTitulo": "Documentos",
+  "@documentosTitulo": {
+    "description": "Título de la pantalla de documentos del vehículo (V2-M09.01) y de su acceso desde el detalle."
+  },
+  "documentosCargando": "Cargando documentos",
+  "@documentosCargando": {
+    "description": "Lo que oye el lector de pantalla mientras cargan los documentos."
+  },
+  "documentosVaciaTitulo": "Aún no hay documentos",
+  "@documentosVaciaTitulo": {
+    "description": "Título del estado vacío de documentos."
+  },
+  "documentosVaciaMensaje": "Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.",
+  "@documentosVaciaMensaje": {
+    "description": "Mensaje del estado vacío de documentos."
+  },
+  "documentosSubtitulo": "{total, plural, =1{1 documento} other{{total} documentos}}",
+  "@documentosSubtitulo": {
+    "description": "Subtítulo de la pantalla: cuántos documentos hay.",
+    "placeholders": {
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "documentosResumenAtencion": "{cantidad, plural, =1{1 documento necesita atención} other{{cantidad} documentos necesitan atención}}",
+  "@documentosResumenAtencion": {
+    "description": "Resumen de la portada cuando hay documentos por vencer o vencidos.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "documentosResumenAlDia": "Todo en orden",
+  "@documentosResumenAlDia": {
+    "description": "Resumen de la portada cuando ningún documento está por vencer ni vencido."
+  },
+  "documentosResumenAlDiaDetalle": "Tus documentos están al día.",
+  "@documentosResumenAlDiaDetalle": {
+    "description": "Detalle del resumen cuando todo está en orden."
+  },
+  "documentosResumenVence": "{nombre} vence {cuando}.",
+  "@documentosResumenVence": {
+    "description": "Lo más urgente del resumen de portada, cuando aún no vence. «cuando» es «hoy», «mañana» o «en 12 días».",
+    "placeholders": {
+      "nombre": {
+        "type": "String",
+        "example": "Póliza de seguro"
+      },
+      "cuando": {
+        "type": "String",
+        "example": "en 12 días"
+      }
+    }
+  },
+  "documentosResumenVencio": "{nombre} venció {cuando}.",
+  "@documentosResumenVencio": {
+    "description": "Lo más urgente del resumen de portada, cuando ya venció. «cuando» es «hace 35 días».",
+    "placeholders": {
+      "nombre": {
+        "type": "String",
+        "example": "Verificación vehicular"
+      },
+      "cuando": {
+        "type": "String",
+        "example": "hace 35 días"
+      }
+    }
+  },
+  "documentosGrupoPorVencer": "Por vencer",
+  "@documentosGrupoPorVencer": {
+    "description": "Encabezado del grupo de documentos que vencen en 30 días o menos."
+  },
+  "documentosGrupoVencidos": "Vencidos",
+  "@documentosGrupoVencidos": {
+    "description": "Encabezado del grupo de documentos vencidos."
+  },
+  "documentosGrupoVigentes": "Vigentes",
+  "@documentosGrupoVigentes": {
+    "description": "Encabezado del grupo de documentos vigentes."
+  },
+  "documentosGrupoSinFecha": "Sin fecha de vencimiento",
+  "@documentosGrupoSinFecha": {
+    "description": "Encabezado del grupo de documentos sin vencimiento."
+  },
+  "documentosEstadoVigente": "Vigente",
+  "@documentosEstadoVigente": {
+    "description": "Insignia de un documento vigente."
+  },
+  "documentosEstadoPorVencer": "Por vencer",
+  "@documentosEstadoPorVencer": {
+    "description": "Insignia de un documento que vence en 30 días o menos."
+  },
+  "documentosEstadoVencido": "Vencido",
+  "@documentosEstadoVencido": {
+    "description": "Insignia de un documento vencido."
+  },
+  "documentosEstadoSinFecha": "Sin fecha",
+  "@documentosEstadoSinFecha": {
+    "description": "Insignia de un documento sin fecha de vencimiento."
+  },
+  "documentosVenceEl": "Vence el {fecha}",
+  "@documentosVenceEl": {
+    "description": "Fecha de vencimiento de un documento vigente o por vencer.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "12 dic 2026"
+      }
+    }
+  },
+  "documentosVencioEl": "Venció el {fecha}",
+  "@documentosVencioEl": {
+    "description": "Fecha de vencimiento de un documento vencido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "23 oct 2026"
+      }
+    }
+  },
+  "documentosEnDias": "{dias, plural, =0{hoy} =1{mañana} other{en {dias} días}}",
+  "@documentosEnDias": {
+    "description": "Cuándo vence: hoy, mañana o en N días.",
+    "placeholders": {
+      "dias": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "documentosHaceDias": "{dias, plural, =1{hace 1 día} other{hace {dias} días}}",
+  "@documentosHaceDias": {
+    "description": "Hace cuánto venció un documento.",
+    "placeholders": {
+      "dias": {
+        "type": "int",
+        "example": "35"
+      }
+    }
+  },
+  "documentosNumero": "N.º {numero}",
+  "@documentosNumero": {
+    "description": "Número o folio del documento.",
+    "placeholders": {
+      "numero": {
+        "type": "String",
+        "example": "POL-501"
+      }
+    }
+  },
+  "documentosCargadoPorAgencia": "Cargado por la agencia",
+  "@documentosCargadoPorAgencia": {
+    "description": "Origen de un documento que subió la agencia."
+  },
+  "documentosTipoPoliza": "Póliza de seguro",
+  "@documentosTipoPoliza": {
+    "description": "Tipo de documento: póliza de seguro."
+  },
+  "documentosTipoTarjetaCirculacion": "Tarjeta de circulación",
+  "@documentosTipoTarjetaCirculacion": {
+    "description": "Tipo de documento: tarjeta de circulación."
+  },
+  "documentosTipoVerificacion": "Verificación vehicular",
+  "@documentosTipoVerificacion": {
+    "description": "Tipo de documento: verificación vehicular."
+  },
+  "documentosTipoTenencia": "Tenencia y refrendo",
+  "@documentosTipoTenencia": {
+    "description": "Tipo de documento: tenencia y refrendo."
+  },
+  "documentosTipoLicencia": "Licencia de conducir",
+  "@documentosTipoLicencia": {
+    "description": "Tipo de documento: licencia de conducir."
+  },
+  "documentosTipoGarantia": "Póliza de garantía",
+  "@documentosTipoGarantia": {
+    "description": "Tipo de documento: póliza de garantía."
+  },
+  "documentosTipoFactura": "Factura de compra",
+  "@documentosTipoFactura": {
+    "description": "Tipo de documento: factura de compra."
+  },
+  "documentosTipoOtro": "Otro documento",
+  "@documentosTipoOtro": {
+    "description": "Tipo de documento: otro, cuando no trae título propio."
   }
 }
