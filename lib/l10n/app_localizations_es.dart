@@ -1764,6 +1764,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avisoCerrar => 'Cerrar aviso';
 
   @override
+  String get bandejaTitulo => 'Avisos';
+
+  @override
+  String get bandejaCargando => 'Cargando tus avisos';
+
+  @override
+  String get bandejaVacioTitulo => 'Todavía no tienes avisos';
+
+  @override
+  String get bandejaVacioMensaje =>
+      'Aquí te vamos a decir cómo va tu auto en el taller, cuándo es tu cita y cuándo están listos tus documentos.';
+
+  @override
+  String get bandejaMarcarTodos => 'Marcar todos como leídos';
+
+  @override
+  String get bandejaSinLeerUno => 'Sin leer';
+
+  @override
+  String get bandejaErrorMasTitulo => 'No pudimos cargar más avisos';
+
+  @override
+  String get bandejaErrorMasMensaje =>
+      'Lo que ya se cargó sigue aquí. Desliza hacia abajo para intentarlo otra vez.';
+
+  @override
+  String get accesoPerfilMisAvisos => 'Mis avisos';
+
+  @override
+  String bandejaSinLeer(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n sin leer',
+      one: '1 sin leer',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get conexionSinRedTitulo => 'Sin conexión con la agencia';
 
   @override

@@ -1768,6 +1768,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avisoCerrar => 'Close notice';
 
   @override
+  String get bandejaTitulo => 'Notifications';
+
+  @override
+  String get bandejaCargando => 'Loading your notifications';
+
+  @override
+  String get bandejaVacioTitulo => 'No notifications yet';
+
+  @override
+  String get bandejaVacioMensaje =>
+      'Here we will tell you how your car is doing at the shop, when your appointment is, and when your documents are ready.';
+
+  @override
+  String get bandejaMarcarTodos => 'Mark all as read';
+
+  @override
+  String get bandejaSinLeerUno => 'Unread';
+
+  @override
+  String get bandejaErrorMasTitulo => 'We could not load more notifications';
+
+  @override
+  String get bandejaErrorMasMensaje =>
+      'What already loaded is still here. Pull down to try again.';
+
+  @override
+  String get accesoPerfilMisAvisos => 'My notifications';
+
+  @override
+  String bandejaSinLeer(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n unread',
+      one: '1 unread',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get conexionSinRedTitulo => 'No connection to the dealership';
 
   @override

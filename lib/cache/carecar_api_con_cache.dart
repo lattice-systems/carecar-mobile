@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
+import '../api/modelos/notificacion.dart';
 import '../api/modelos/comun.dart';
 import '../api/modelos/modelos.dart';
 import '../nucleo/seguridad/politica_datos_locales.dart';
@@ -210,6 +211,21 @@ class CarecarApiConCache implements CarecarApi {
   @override
   Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) =>
       _api.paginaDeCitas(pagina: pagina, tamano: tamano);
+
+  // La bandeja no se guarda en cache todavia: leerla sin red es V2-M21.02, y
+  // ahi va con la base local de la ADR 0005, no con estos archivos.
+  @override
+  Future<PaginaDeNotificaciones> paginaDeNotificaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _api.paginaDeNotificaciones(pagina: pagina, tamano: tamano);
+
+  @override
+  Future<void> marcarAvisoLeido(int notificacionId) =>
+      _api.marcarAvisoLeido(notificacionId);
+
+  @override
+  Future<void> marcarAvisosLeidos() => _api.marcarAvisosLeidos();
 
   @override
   Future<List<Cita>> misCitas() => _leer<List<Cita>>(

@@ -3008,6 +3008,66 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título de la bandeja de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Avisos'**
+  String get bandejaTitulo;
+
+  /// Anuncio al lector de pantalla mientras carga la bandeja.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus avisos'**
+  String get bandejaCargando;
+
+  /// Título de la bandeja vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tienes avisos'**
+  String get bandejaVacioTitulo;
+
+  /// Mensaje de la bandeja vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí te vamos a decir cómo va tu auto en el taller, cuándo es tu cita y cuándo están listos tus documentos.'**
+  String get bandejaVacioMensaje;
+
+  /// Botón que marca toda la bandeja como leída.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar todos como leídos'**
+  String get bandejaMarcarTodos;
+
+  /// Lo que el lector de pantalla dice antes de un aviso sin leer.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin leer'**
+  String get bandejaSinLeerUno;
+
+  /// Título del aviso cuando falla cargar otra página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más avisos'**
+  String get bandejaErrorMasTitulo;
+
+  /// Explica que no se perdió lo cargado.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que ya se cargó sigue aquí. Desliza hacia abajo para intentarlo otra vez.'**
+  String get bandejaErrorMasMensaje;
+
+  /// Fila del perfil que abre la bandeja.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis avisos'**
+  String get accesoPerfilMisAvisos;
+
+  /// Cuantos avisos sin leer hay en la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'{n, plural, =1{1 sin leer} other{{n} sin leer}}'**
+  String bandejaSinLeer(int n);
+
   /// Título del aviso global cuando el servidor no contesta.
   ///
   /// In es, this message translates to:

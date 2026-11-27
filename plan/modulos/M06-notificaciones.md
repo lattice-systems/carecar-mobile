@@ -211,3 +211,49 @@ adelante.
 **Pendiente del equipo**, no de esta historia: volver a sincronizar las dos
 copias, y copiar estas rutas al backend como pide §7. También falta
 `agencia-360-backend/plan/historias-backend.md`, que §4.3 menciona y no existe.
+
+## Cómo quedó la bandeja (V2-M06.04)
+
+Se construyó contra el contrato v2 2.31.0 y `mock_api`, porque el endpoint HTTP
+del backend todavía no existe: las tablas sí (migración V60) y la `Bandeja`
+interna también, pero nada expuesto. Es lo que `plan/trabajo-en-paralelo.md`
+pide hacer en vez de esperar.
+
+Los tres criterios:
+
+| Criterio | Cómo queda |
+| --- | --- |
+| Paginada | `BandejaNotifier` con `cargarMas`, que pide la siguiente página 400 px antes del fondo. Si esa página falla, **se conserva lo cargado** y se dice; no se pierde lo que la persona estaba leyendo |
+| No leídos con contador | `noLeidos` viene en cada página y es de **toda la cuenta**, no de lo cargado. Con la bandeja a medio paginar, contar lo cargado daría un número más chico que el real |
+| Marcar todas como leídas | Un botón que desaparece cuando ya no hay nada sin leer, y una sola llamada |
+
+### Dos decisiones que conviene revisar
+
+**Se pinta leído antes de que el servidor conteste.** Abrir un aviso no debe
+sentirse lento, el endpoint es idempotente y la próxima carga manda la verdad.
+Si la llamada falla, lo peor es que el aviso vuelva a verse sin leer.
+
+**El no leído se distingue con punto, con negrita y con texto**, no solo con
+color: un punto de color no lo ve quien no distingue tonos. El lector de
+pantalla lo anuncia como «Sin leer. <título>».
+
+### El contador en el ícono de la barra: pendiente de T02
+
+El criterio dice «no leídos con contador en el ícono». El contador está en la
+fila **Mis avisos** del perfil, que es la entrada a la bandeja. Ponerlo en el
+ícono de la barra de navegación necesita que `DestinoNavegacion` acepte una
+insignia, y eso vive en `lib/nucleo/diseno/componentes/`, carpeta de Cristian
+(T02). **Queda como PR chico aparte que hay que pedirle**, como manda
+`plan/trabajo-en-paralelo.md` sección 5.
+
+### La categoría desconocida no tumba la bandeja
+
+`CategoriaDeAviso.desconocida` no la manda el servidor: existe para que agregar
+una categoría del lado del backend no rompa la pantalla. Un aviso de categoría
+nueva se sigue leyendo; solo pierde su icono propio y cae en la campana.
+
+El `destino` se valida **al traducir** con la regla de V2-M06.03, no al tocar:
+así la pantalla recibe un destino que sirve o un nulo, y no tiene que
+desconfiar de él. Un destino inválido no esconde el aviso — se pierde el toque,
+no el mensaje.
+
