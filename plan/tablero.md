@@ -95,15 +95,15 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Hecha | #107 |
-| V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | En revisión | #195 |
+| V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Hecha | #195 |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Hecha | #143 |
 | V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Hecha | #152 |
-| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
+| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Hecha | #202 |
 | V2-M01.06 | Ver mi perfil | Jael | B | V2-M01.01 | Hecha | #180, backend #110 |
 | V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | En curso | #190, backend #113 · **el correo ya está; el teléfono espera un proveedor de SMS** |
-| V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | En revisión | #195 |
+| V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Hecha | #195 |
 | V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Hecha | #175, backend #108 |
-| V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | En revisión | #195 |
+| V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Hecha | #195 |
 | V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Hecha | #162 |
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54, #121 |
@@ -127,13 +127,13 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M03.06 | Que la estimación salga de parámetros que puedo ajustar | Cristian | B | V2-M03.04 | Hecha | #91, backend#84 |
 | V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | Hecha | #67, #90, backend#69 |
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Hecha | #49, #60 |
-| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | #174, #185 |
-| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | #174, #185 |
+| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
+| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Hecha | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
-| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | #174, #185 |
+| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
@@ -173,9 +173,9 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
 | V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #130, backend#98, backend#117 · el recordatorio ya sale como push y queda en la bandeja (backend#117); llega al teléfono cuando haya FCM real y la app registre el token (V2-M06.02) |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
-| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
+| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En curso | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend hecho (`PUT`/`DELETE /dispositivos/{instalacionId}`, FCM HTTP v1 detrás de `EnvioPush`); falta la parte de la app; FCM real pendiente de credenciales |
-| V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 | Lista | |
+| V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | En revisión | #207 |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 | Lista | |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Lista | |

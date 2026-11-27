@@ -8,6 +8,7 @@ import 'pantalla_bienvenida.dart';
 import 'pantalla_cambiar_contrasena.dart';
 import 'pantalla_cambiar_correo.dart';
 import 'pantalla_cuenta_desactivada.dart';
+import 'pantalla_desbloqueo.dart';
 import 'pantalla_mi_contrasena.dart';
 import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
@@ -133,6 +134,12 @@ final rutasSesiones = <RouteBase>[
     name: 'bienvenida',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaBienvenida()),
+  ),
+  GoRoute(
+    path: Rutas.desbloquear,
+    name: 'desbloquear',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaDesbloqueo()),
   ),
   GoRoute(
     path: Rutas.cuentaDesactivada,

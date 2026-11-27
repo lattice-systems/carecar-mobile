@@ -15,10 +15,17 @@ abstract interface class PluginNotificaciones {
   /// Pide permiso al sistema; true si quedo concedido.
   Future<bool> pedirPermiso();
 
-  Future<void> mostrar(int id, String titulo, String cuerpo);
+  /// `destino` es la ruta interna a la que lleva tocarlo (V2-M06.03).
+  Future<void> mostrar(int id, String titulo, String cuerpo, {String? destino});
 
   /// `cuando` es hora de pared en la zona de la agencia.
-  Future<void> programar(int id, DateTime cuando, String titulo, String cuerpo);
+  Future<void> programar(
+    int id,
+    DateTime cuando,
+    String titulo,
+    String cuerpo, {
+    String? destino,
+  });
 
   Future<void> cancelar(int id);
 
@@ -32,6 +39,9 @@ abstract interface class PluginNotificaciones {
 
   /// true si la app arranco porque se toco un aviso.
   bool get abiertaDesdeAviso;
+
+  /// El destino del aviso que arranco la app, si traia uno (V2-M06.03).
+  String? get destinoDeArranque;
 }
 
 /// Recordatorios de citas: decide que se programa y cuando se cancela.
@@ -53,6 +63,18 @@ class ServicioNotificaciones {
   /// Pendiente de abrir «Mis citas» porque la app arranco desde un aviso.
   bool abrirCitasAlEntrar = false;
 
+  /// El destino del ultimo aviso que se toco (V2-M06.03).
+  ///
+  /// Se lee junto con [toques]: primero se guarda aqui y despues se avisa, asi
+  /// quien escucha siempre encuentra el destino que corresponde al toque.
+  String? ultimoDestino;
+
+  /// El destino del aviso que arranco la app, si traia uno (V2-M06.03).
+  ///
+  /// Con la app cerrada no hay toque que escuchar: el sistema la arranca y el
+  /// destino solo esta aqui. Quien lo atiende lo deja en `null`.
+  String? destinoAlEntrar;
+
   bool _listo = false;
 
   bool get activo => _prefs?.getBool(_claveActivo) ?? true;
@@ -62,6 +84,7 @@ class ServicioNotificaciones {
     try {
       await _plugin.inicializar();
       abrirCitasAlEntrar = _plugin.abiertaDesdeAviso;
+      destinoAlEntrar = _plugin.destinoDeArranque;
       _listo = true;
     } catch (e) {
       // Sin notificaciones la app sigue funcionando.
@@ -70,7 +93,10 @@ class ServicioNotificaciones {
   }
 
   /// Avisa que se toco una notificacion con la app viva.
-  void notificarToque() => toques.value++;
+  void notificarToque([String? destino]) {
+    ultimoDestino = destino;
+    toques.value++;
+  }
 
   /// Pide permiso una sola vez; despues el usuario decide en el sistema.
   Future<void> pedirPermisoSiHaceFalta() async {
@@ -100,6 +126,7 @@ class ServicioNotificaciones {
         IdsNotificacion.confirmacion(cita.id),
         texto.titulo,
         texto.cuerpo,
+        destino: destinoDeCitas,
       ),
     );
     await _programar(cita, vehiculo, const {});
@@ -150,7 +177,13 @@ class ServicioNotificaciones {
     for (final r in lista) {
       if (omitir.contains(r.id)) continue;
       await _seguro(
-        () => _plugin.programar(r.id, r.cuando, r.titulo, r.cuerpo),
+        () => _plugin.programar(
+          r.id,
+          r.cuando,
+          r.titulo,
+          r.cuerpo,
+          destino: r.destino,
+        ),
       );
     }
   }
@@ -181,14 +214,20 @@ class PluginNulo implements PluginNotificaciones {
   @override
   Future<bool> pedirPermiso() async => false;
   @override
-  Future<void> mostrar(int id, String titulo, String cuerpo) async {}
+  Future<void> mostrar(
+    int id,
+    String titulo,
+    String cuerpo, {
+    String? destino,
+  }) async {}
   @override
   Future<void> programar(
     int id,
     DateTime cuando,
     String titulo,
-    String cuerpo,
-  ) async {}
+    String cuerpo, {
+    String? destino,
+  }) async {}
   @override
   Future<void> cancelar(int id) async {}
   @override
@@ -199,4 +238,6 @@ class PluginNulo implements PluginNotificaciones {
   DateTime ahora() => DateTime.now();
   @override
   bool get abiertaDesdeAviso => false;
+  @override
+  String? get destinoDeArranque => null;
 }

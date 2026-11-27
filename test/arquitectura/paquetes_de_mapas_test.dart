@@ -12,6 +12,10 @@ const _permitidos = <String, Set<String>>{
   // Solo abre los ajustes de la app cuando se niega la cámara (V2-M24.05); no
   // lee la ubicación.
   'lib/nucleo/camara/selector_foto.dart': {'geolocator'},
+  // Lo mismo, ya compartido: abre los ajustes de la app y no lee la
+  // ubicación (V2-M06.01). Que viva aquí es justo lo que evita que un módulo
+  // importe `geolocator` para abrir una pantalla.
+  'lib/nucleo/sistema/ajustes_de_la_app.dart': {'geolocator'},
 };
 
 final _importacion = RegExp(

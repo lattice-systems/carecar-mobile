@@ -257,6 +257,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoOlvide => 'Forgot your password?';
 
   @override
+  String get accesoPerfilCandado => 'Sign in with fingerprint or face';
+
+  @override
+  String get accesoPerfilCandadoDetalle =>
+      'To open the app without typing your password';
+
+  @override
+  String get accesoPerfilCandadoMotivo =>
+      'Confirm your fingerprint to turn unlocking on.';
+
+  @override
+  String get accesoPerfilCandadoNoSePudo =>
+      'We could not confirm your fingerprint. Unlocking stays off.';
+
+  @override
   String get accesoPerfilCargando => 'Loading your profile…';
 
   @override
@@ -339,6 +354,36 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accesoSesionesCambio =>
       'That session changed while you were looking. Check the list and try again.';
+
+  @override
+  String get desbloqueoCambioMensaje =>
+      'For your safety we turned fingerprint unlocking off. Sign in with your password and you can turn it back on.';
+
+  @override
+  String get desbloqueoCambioTitulo => 'Your phone\'s biometrics changed';
+
+  @override
+  String get desbloqueoContrasena => 'Sign in with my password';
+
+  @override
+  String get desbloqueoExplicacion =>
+      'Use your fingerprint or your face to get in.';
+
+  @override
+  String get desbloqueoFalloMensaje =>
+      'Try again or sign in with your password.';
+
+  @override
+  String get desbloqueoFalloTitulo => 'We did not recognize you';
+
+  @override
+  String get desbloqueoIntentar => 'Use my fingerprint or face';
+
+  @override
+  String get desbloqueoMotivo => 'Confirm it is you to get into CareCar.';
+
+  @override
+  String get desbloqueoTitulo => 'Unlock CareCar';
 
   @override
   String get accesoSesionesCancelar => 'Cancel';
@@ -1721,6 +1766,64 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get avisoCerrar => 'Close notice';
+
+  @override
+  String get avisosPermisoTitulo => 'Why we notify you';
+
+  @override
+  String get avisosPermisoExplicacion =>
+      'We only write to you when something happens with your car. Nothing else.';
+
+  @override
+  String get avisosPermisoTaller =>
+      'How your car is doing at the shop, step by step.';
+
+  @override
+  String get avisosPermisoCitas =>
+      'Your appointment, reminded 24 and 2 hours ahead.';
+
+  @override
+  String get avisosPermisoRespuestas =>
+      'When your advisor replies or your documents are ready.';
+
+  @override
+  String get avisosPermisoSinPublicidad =>
+      'We do not send ads, and you can turn them off whenever you want.';
+
+  @override
+  String get avisosPermisoActivar => 'Turn on notifications';
+
+  @override
+  String get avisosPermisoAhoraNo => 'Not now';
+
+  @override
+  String get avisosPermisoListoTitulo => 'Done, we will keep you posted';
+
+  @override
+  String get avisosPermisoListoMensaje =>
+      'You can turn them off from your profile whenever you want.';
+
+  @override
+  String get avisosPermisoNegadosTitulo => 'Notifications are off';
+
+  @override
+  String get avisosPermisoNegadosMensaje =>
+      'Your phone will not let us ask again, but you can turn them on in the system settings.';
+
+  @override
+  String get avisosPermisoAbrirAjustes => 'Open settings';
+
+  @override
+  String get accesoPerfilAvisos => 'Notifications';
+
+  @override
+  String get accesoPerfilAvisosPrendidos => 'On';
+
+  @override
+  String get accesoPerfilAvisosApagados => 'Off';
+
+  @override
+  String get accesoPerfilAvisosSinPreguntar => 'Not set up';
 
   @override
   String get navegacionPrincipal => 'Main navigation';

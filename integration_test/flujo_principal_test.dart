@@ -3,6 +3,7 @@ import 'package:carecar_mobile/main.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_acceso.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_bienvenida.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
+import 'package:carecar_mobile/modulos/notificaciones/presentacion/pantalla_permiso_avisos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
@@ -60,6 +61,10 @@ void main() {
               w.alPresionar != null,
         ),
       );
+      // V2-M06.01: los avisos se explican despues del aviso de privacidad, y
+      // antes de dejar entrar. «Ahora no» sigue de largo sin tocar el sistema.
+      await _tocar(tester, find.byKey(PantallaPermisoAvisos.botonAhoraNo));
+
       final barra = find.byType(BarraFlotante);
       final citas = find.descendant(
         of: barra,

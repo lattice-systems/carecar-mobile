@@ -42,13 +42,13 @@
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>NSCameraUsageDescription</key>
-		<string>CareCar usa la cámara solo cuando tomas la foto de una luz del tablero para saber qué significa. La foto no se guarda.</string>
+		<string>CareCar usa la cámara solo cuando tú tomas la foto: la de una luz del tablero, para decirte qué significa, o la de un ticket de gasolina, para llenar tu bitácora. La foto se lee en tu teléfono y no se guarda ni se sube.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>CareCar abre tus fotos solo para que elijas la de una luz del tablero. No guarda ni sube nada más.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>CareCar usa tu ubicación solo mientras la app está abierta, para compartirla cuando pides ayuda y para marcar la dirección de tu recolección.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>CareCar usa la cámara solo cuando fotografías un ticket de gasolina para llenar tu bitácora; la foto se lee en tu teléfono y no se guarda ni se sube.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>CareCar usa Face ID solo para abrir la app sin que escribas tu contraseña, si tú lo prendes. CareCar no ve ni guarda tu rostro: el sistema solo le dice si eres tú.</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<!-- Live Activity del taller (V2-M25.05): sin esta llave ActivityKit no deja iniciarla. -->

@@ -257,6 +257,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
 
   @override
+  String get accesoPerfilCandado => 'Entrar con huella o rostro';
+
+  @override
+  String get accesoPerfilCandadoDetalle =>
+      'Para abrir la app sin escribir tu contraseña';
+
+  @override
+  String get accesoPerfilCandadoMotivo =>
+      'Confirma tu huella para prender el desbloqueo.';
+
+  @override
+  String get accesoPerfilCandadoNoSePudo =>
+      'No pudimos confirmar tu huella. El desbloqueo sigue apagado.';
+
+  @override
   String get accesoPerfilCargando => 'Cargando tu perfil…';
 
   @override
@@ -339,6 +354,35 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get accesoSesionesCambio =>
       'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.';
+
+  @override
+  String get desbloqueoCambioMensaje =>
+      'Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.';
+
+  @override
+  String get desbloqueoCambioTitulo => 'La biometría de tu teléfono cambió';
+
+  @override
+  String get desbloqueoContrasena => 'Entrar con mi contraseña';
+
+  @override
+  String get desbloqueoExplicacion => 'Usa tu huella o tu rostro para entrar.';
+
+  @override
+  String get desbloqueoFalloMensaje =>
+      'Intenta otra vez o entra con tu contraseña.';
+
+  @override
+  String get desbloqueoFalloTitulo => 'No te reconocimos';
+
+  @override
+  String get desbloqueoIntentar => 'Usar mi huella o mi rostro';
+
+  @override
+  String get desbloqueoMotivo => 'Confirma que eres tú para entrar a CareCar.';
+
+  @override
+  String get desbloqueoTitulo => 'Desbloquea CareCar';
 
   @override
   String get accesoSesionesCancelar => 'Cancelar';
@@ -1718,6 +1762,63 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get avisoCerrar => 'Cerrar aviso';
+
+  @override
+  String get avisosPermisoTitulo => 'Para qué te avisamos';
+
+  @override
+  String get avisosPermisoExplicacion =>
+      'Solo te escribimos cuando pasa algo con tu auto. Nada más.';
+
+  @override
+  String get avisosPermisoTaller =>
+      'Cómo va tu auto en el taller, paso a paso.';
+
+  @override
+  String get avisosPermisoCitas => 'Tu cita, recordada 24 y 2 horas antes.';
+
+  @override
+  String get avisosPermisoRespuestas =>
+      'Cuando tu asesor te contesta o tus documentos ya están listos.';
+
+  @override
+  String get avisosPermisoSinPublicidad =>
+      'No mandamos publicidad, y los puedes apagar cuando quieras.';
+
+  @override
+  String get avisosPermisoActivar => 'Activar avisos';
+
+  @override
+  String get avisosPermisoAhoraNo => 'Ahora no';
+
+  @override
+  String get avisosPermisoListoTitulo => 'Listo, te vamos a avisar';
+
+  @override
+  String get avisosPermisoListoMensaje =>
+      'Puedes apagarlos cuando quieras desde tu perfil.';
+
+  @override
+  String get avisosPermisoNegadosTitulo => 'Los avisos están apagados';
+
+  @override
+  String get avisosPermisoNegadosMensaje =>
+      'Tu teléfono ya no nos deja preguntarte otra vez, pero los puedes prender en los ajustes del sistema.';
+
+  @override
+  String get avisosPermisoAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String get accesoPerfilAvisos => 'Avisos';
+
+  @override
+  String get accesoPerfilAvisosPrendidos => 'Prendidos';
+
+  @override
+  String get accesoPerfilAvisosApagados => 'Apagados';
+
+  @override
+  String get accesoPerfilAvisosSinPreguntar => 'Sin configurar';
 
   @override
   String get navegacionPrincipal => 'Navegación principal';

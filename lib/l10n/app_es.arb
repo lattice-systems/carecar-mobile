@@ -324,6 +324,22 @@
   "@accesoOlvide": {
     "description": "Enlace a la recuperación de contraseña desde la pantalla de acceso."
   },
+  "accesoPerfilCandado": "Entrar con huella o rostro",
+  "@accesoPerfilCandado": {
+    "description": "Interruptor de V2-M01.05 en mi perfil."
+  },
+  "accesoPerfilCandadoDetalle": "Para abrir la app sin escribir tu contraseña",
+  "@accesoPerfilCandadoDetalle": {
+    "description": "Descripción del interruptor del desbloqueo."
+  },
+  "accesoPerfilCandadoMotivo": "Confirma tu huella para prender el desbloqueo.",
+  "@accesoPerfilCandadoMotivo": {
+    "description": "Texto que muestra el sistema al prender el desbloqueo."
+  },
+  "accesoPerfilCandadoNoSePudo": "No pudimos confirmar tu huella. El desbloqueo sigue apagado.",
+  "@accesoPerfilCandadoNoSePudo": {
+    "description": "Aviso cuando no se reconoce la huella al prenderlo."
+  },
   "accesoPerfilCargando": "Cargando tu perfil…",
   "@accesoPerfilCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras carga el perfil."
@@ -427,6 +443,42 @@
   "accesoSesionesCambio": "Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.",
   "@accesoSesionesCambio": {
     "description": "Aviso cuando cerrar una sesión falla porque su identificador ya cambió: la sesión sigue abierta con otro identificador."
+  },
+  "desbloqueoCambioMensaje": "Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.",
+  "@desbloqueoCambioMensaje": {
+    "description": "Qué hacer cuando cambió la biometría del equipo."
+  },
+  "desbloqueoCambioTitulo": "La biometría de tu teléfono cambió",
+  "@desbloqueoCambioTitulo": {
+    "description": "Título del aviso cuando la biometría ya no es la de antes."
+  },
+  "desbloqueoContrasena": "Entrar con mi contraseña",
+  "@desbloqueoContrasena": {
+    "description": "Salida siempre disponible del desbloqueo: cierra la sesión."
+  },
+  "desbloqueoExplicacion": "Usa tu huella o tu rostro para entrar.",
+  "@desbloqueoExplicacion": {
+    "description": "Explicación de la pantalla de desbloqueo."
+  },
+  "desbloqueoFalloMensaje": "Intenta otra vez o entra con tu contraseña.",
+  "@desbloqueoFalloMensaje": {
+    "description": "Qué hacer cuando el sistema no reconoció la huella."
+  },
+  "desbloqueoFalloTitulo": "No te reconocimos",
+  "@desbloqueoFalloTitulo": {
+    "description": "Título del aviso cuando falla el reconocimiento."
+  },
+  "desbloqueoIntentar": "Usar mi huella o mi rostro",
+  "@desbloqueoIntentar": {
+    "description": "Botón que vuelve a pedir la biometría."
+  },
+  "desbloqueoMotivo": "Confirma que eres tú para entrar a CareCar.",
+  "@desbloqueoMotivo": {
+    "description": "Texto que muestra el sistema en el diálogo de biometría."
+  },
+  "desbloqueoTitulo": "Desbloquea CareCar",
+  "@desbloqueoTitulo": {
+    "description": "Título de la pantalla de V2-M01.05."
   },
   "accesoSesionesCancelar": "Cancelar",
   "@accesoSesionesCancelar": {
@@ -2099,6 +2151,74 @@
   "avisoCerrar": "Cerrar aviso",
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
+  },
+  "avisosPermisoTitulo": "Para qu\u00e9 te avisamos",
+  "@avisosPermisoTitulo": {
+    "description": "T\u00edtulo de la pantalla que explica los avisos antes de pedir el permiso."
+  },
+  "avisosPermisoExplicacion": "Solo te escribimos cuando pasa algo con tu auto. Nada m\u00e1s.",
+  "@avisosPermisoExplicacion": {
+    "description": "Entrada de la pantalla previa al permiso de avisos."
+  },
+  "avisosPermisoTaller": "C\u00f3mo va tu auto en el taller, paso a paso.",
+  "@avisosPermisoTaller": {
+    "description": "Primer motivo por el que la app manda avisos."
+  },
+  "avisosPermisoCitas": "Tu cita, recordada 24 y 2 horas antes.",
+  "@avisosPermisoCitas": {
+    "description": "Segundo motivo por el que la app manda avisos."
+  },
+  "avisosPermisoRespuestas": "Cuando tu asesor te contesta o tus documentos ya est\u00e1n listos.",
+  "@avisosPermisoRespuestas": {
+    "description": "Tercer motivo por el que la app manda avisos."
+  },
+  "avisosPermisoSinPublicidad": "No mandamos publicidad, y los puedes apagar cuando quieras.",
+  "@avisosPermisoSinPublicidad": {
+    "description": "Promesa que cierra la pantalla previa al permiso."
+  },
+  "avisosPermisoActivar": "Activar avisos",
+  "@avisosPermisoActivar": {
+    "description": "Bot\u00f3n que acepta y dispara el di\u00e1logo del sistema."
+  },
+  "avisosPermisoAhoraNo": "Ahora no",
+  "@avisosPermisoAhoraNo": {
+    "description": "Bot\u00f3n que sale sin pedir el permiso al sistema."
+  },
+  "avisosPermisoListoTitulo": "Listo, te vamos a avisar",
+  "@avisosPermisoListoTitulo": {
+    "description": "Confirmaci\u00f3n cuando el sistema concede el permiso."
+  },
+  "avisosPermisoListoMensaje": "Puedes apagarlos cuando quieras desde tu perfil.",
+  "@avisosPermisoListoMensaje": {
+    "description": "Detalle de la confirmaci\u00f3n del permiso de avisos."
+  },
+  "avisosPermisoNegadosTitulo": "Los avisos est\u00e1n apagados",
+  "@avisosPermisoNegadosTitulo": {
+    "description": "Aviso cuando el permiso qued\u00f3 negado."
+  },
+  "avisosPermisoNegadosMensaje": "Tu tel\u00e9fono ya no nos deja preguntarte otra vez, pero los puedes prender en los ajustes del sistema.",
+  "@avisosPermisoNegadosMensaje": {
+    "description": "Explica por qu\u00e9 hay que ir a los ajustes del sistema para reactivar."
+  },
+  "avisosPermisoAbrirAjustes": "Abrir ajustes",
+  "@avisosPermisoAbrirAjustes": {
+    "description": "Bot\u00f3n que lleva a la pantalla de ajustes de la app en el sistema."
+  },
+  "accesoPerfilAvisos": "Avisos",
+  "@accesoPerfilAvisos": {
+    "description": "Fila del perfil que lleva a los avisos."
+  },
+  "accesoPerfilAvisosPrendidos": "Prendidos",
+  "@accesoPerfilAvisosPrendidos": {
+    "description": "Estado de la fila de avisos cuando el permiso est\u00e1 concedido."
+  },
+  "accesoPerfilAvisosApagados": "Apagados",
+  "@accesoPerfilAvisosApagados": {
+    "description": "Estado de la fila de avisos cuando el permiso est\u00e1 negado."
+  },
+  "accesoPerfilAvisosSinPreguntar": "Sin configurar",
+  "@accesoPerfilAvisosSinPreguntar": {
+    "description": "Estado de la fila de avisos cuando nunca se pregunt\u00f3."
   },
   "navegacionPrincipal": "Navegación principal",
   "@navegacionPrincipal": {
