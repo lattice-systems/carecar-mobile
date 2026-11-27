@@ -978,6 +978,12 @@ paths:
         El pase vence al terminar la cita. Una cita cancelada no emite pase (409); un pase ya
         emitido no se revoca desde el servidor, pero recepción valida el QR contra el estado
         actual de la cita.
+
+        V2-M25.06 · Con credenciales de Apple y una URL pública HTTPS configurada, el pase de
+        Apple lleva `webServiceURL` y `authenticationToken`, y Wallet lo mantiene al día: al
+        cancelar la cita queda `voided` y al reprogramarla trae la fecha nueva. Ese servicio web
+        lo llama Wallet (no la app) en `/v1/devices`, `/v1/passes` y `/v1/log`, fuera de este
+        contrato y de `/api/v1/app`. En Google el pase se marca `EXPIRED` o con el horario nuevo.
       parameters:
         - name: citaId
           in: path
@@ -3677,6 +3683,67 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /ordenes/{ordenId}/actividad-en-vivo:
+    put:
+      tags: [Taller en vivo]
+      summary: Registrar la Live Activity de una orden
+      description: |
+        V2-M25.05 · La app inicia la Live Activity de la orden en iOS y manda aquí el push token
+        que le da ActivityKit (hexadecimal). Con él el servidor actualiza la pantalla bloqueada
+        al cambiar de etapa, al proponer o responder un trabajo adicional, y la termina al
+        entregar el auto, aunque la app esté cerrada. Repetir el mismo token es seguro; un token
+        dado de baja se reactiva. Sin credenciales de APNs en el servidor no se manda nada y la
+        respuesta es la misma.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActividadEnVivoToken'
+      responses:
+        '204':
+          description: Registrada
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: La orden ya se entregó (`codigo` ORDEN_CERRADA)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+    delete:
+      tags: [Taller en vivo]
+      summary: Dar de baja la Live Activity de una orden
+      description: |
+        V2-M25.05 · Al cerrar sesión o terminar la actividad desde el teléfono. Con `pushToken`
+        quita solo esa actividad; sin él, todas las que el cliente tenga en la orden. Es
+        idempotente.
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+        - name: pushToken
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 300
+      responses:
+        '204':
+          description: Dada de baja (o no había ninguna)
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -3832,6 +3899,16 @@ components:
             path: /api/v1/app/perfiles-fiscales
 
   schemas:
+    ActividadEnVivoToken:
+      type: object
+      required: [pushToken]
+      properties:
+        pushToken:
+          type: string
+          maxLength: 300
+          pattern: '^[0-9a-fA-F]+$'
+          description: Push token de la Live Activity, en hexadecimal
+          example: aabbccddeeff00112233445566778899
     PreguntaAsistente:
       type: object
       required: [vehiculoId, pregunta]
