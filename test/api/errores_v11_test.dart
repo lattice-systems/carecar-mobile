@@ -148,6 +148,9 @@ void main() {
         'PAGO_NO_PENDIENTE',
         'PEDIDO_NO_PAGABLE',
         'PEDIDO_PAGADO',
+        'YA_FACTURADO',
+        'PAGO_NO_FACTURABLE',
+        'TIMBRADO_RECHAZADO',
       };
 
       final queLaAppMapea = CodigoProblema.values
