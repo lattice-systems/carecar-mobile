@@ -81,7 +81,7 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 
 | Control | Estado | Evidencia | Pendiente |
 | --- | --- | --- | --- |
-| **PRIVACY-1** Minimiza el acceso a datos y recursos sensibles | ✅ | Permisos de Android revisados, cada uno con su motivo, y una prueba que falla si aparece uno nuevo: red, notificaciones, reinicio (recordatorios), ubicación precisa y aproximada (ayuda en carretera y recolección) y `USE_BIOMETRIC` (el candado opcional de V2-M01.05, que no expone ningún dato biométrico). La cámara y las fotos van por el selector del sistema, sin el permiso `CAMERA`; en iOS cada uso tiene su descripción. | — |
+| **PRIVACY-1** Minimiza el acceso a datos y recursos sensibles | ✅ | Permisos de Android revisados, cada uno con su motivo, y una prueba que falla si aparece uno nuevo: red, notificaciones, reinicio (recordatorios), ubicación precisa y aproximada (ayuda en carretera y recolección) y `USE_BIOMETRIC` (el candado opcional de V2-M01.05, que no expone ningún dato biométrico). La cámara y las fotos van por el selector del sistema, sin el permiso `CAMERA`; en iOS cada permiso tiene **una sola** descripción, que cubre todos sus usos, y una prueba falla si se declara dos veces (F9). | — |
 | **PRIVACY-2** Evita identificar a la persona | 🟡 | Sin SDK de analítica ni publicidad; registros redactados (M22.07). | Las teselas de OpenStreetMap reciben la IP y la zona que se mira, y el geocodificador del sistema recibe direcciones y coordenadas. Desde la versión 2 del aviso (V2-M22.10) se le dice a la persona (F3). |
 | **PRIVACY-3** Es transparente sobre qué datos usa y para qué | 🟡 | Aviso de privacidad versionado, con aceptación obligatoria al entrar y al cambiar de versión (M22.01). | Desde la versión 2 (V2-M22.10) el aviso nombra a quién recibe datos: Azure, Neon, OpenStreetMap, el geocodificador del teléfono y Gemini (F3). Falta la revisión legal del texto y que la agencia publique el definitivo. |
 | **PRIVACY-4** Da control sobre los datos | ✅ | Descargar mis datos (M22.02) y eliminar mi cuenta (M22.03). La rectificación y la oposición se atienden en la agencia. | — |
@@ -98,6 +98,7 @@ La revisión encontró **una brecha real, corregida en el mismo PR** (copias de 
 | **F6** | No hay escaneo periódico de dependencias. | CODE-3 | **Riesgo aceptado** (V2-M22.11 se quitó): cada PR pasa por Revisión de dependencias y el backend ya corre Trivy cada semana. Un escaneo semanal del móvil se agrega copiando `trivy.yml` del backend (binario con checksum fijo) y apuntándolo a `pubspec.lock`; sin `gradle.lockfile` ni `Podfile.lock` no hay Gradle ni Pods que escanear. |
 | **F7** | Los pines de certificados no cubren las imágenes y un fallo se ve como «sin conexión». | NETWORK-2 | **Cerrado a medias** con V2-M22.15: un certificado rechazado sale como `ConexionNoSegura` y un aviso global lo explica («No pudimos verificar que la conexión sea segura»). Las imágenes (`NetworkImage`) siguen con la tienda del sistema: **riesgo aceptado**, vienen de dominios de terceros y las del catálogo son públicas. [Detalle](fijar-certificados.md). |
 | **F8** | Los builds de release no se ofuscan. | RESILIENCE-3 | **Riesgo aceptado** (V2-M22.16 se quitó): la ofuscación es del perfil de resiliencia (R), no de L1, y sin reportes de fallos (V2-M23.01) los símbolos no tendrían dónde subirse. |
+| **F9** | `NSCameraUsageDescription` estaba declarado dos veces en los dos `Info.plist`, con textos distintos. iOS se queda con el primero, así que quien fotografiaba un ticket de gasolina leía el motivo de la luz del tablero. | PRIVACY-1/3 | **Corregido aquí** (V2-M01.05): una sola descripción que nombra los dos usos, y una prueba en `flavors_nativos_test.dart` que falla si un permiso se explica dos veces. |
 
 Las historias que se hicieron (M22.10, M22.13 y M22.15) están en el [tablero](../../plan/tablero.md); las otras cuatro propuestas se quitaron y su razón es la de esta tabla.
 
@@ -107,7 +108,7 @@ Las historias que se hicieron (M22.10, M22.13 y M22.15) están en el [tablero](.
 | --- | --- |
 | `test/arquitectura/superficie_nativa_test.dart` | STORAGE-2 (copias), PLATFORM-1 (componentes accesibles), PLATFORM-2 (sin WebViews), PRIVACY-1 (permisos) |
 | `test/arquitectura/registro_sin_datos_personales_test.dart` | STORAGE-2, PRIVACY-2 (registros) |
-| `test/config/flavors_nativos_test.dart`, `test/api/api_config_test.dart` | NETWORK-1 |
+| `test/config/flavors_nativos_test.dart`, `test/api/api_config_test.dart` | NETWORK-1, PRIVACY-1 (descripciones de permisos de iOS) |
 | `test/api/cliente_http_fijado_test.dart`, `test/config/pines_tls_test.dart`, `test/api/conexion_no_segura_test.dart`, `test/nucleo/seguridad/aviso_conexion_no_segura_test.dart` | NETWORK-2 |
 | `test/nucleo/navegacion/guardia_sesion_test.dart`, `enlaces_test.dart` | PLATFORM-1, CODE-4 |
 | `test/sesion/` | AUTH-1 |
