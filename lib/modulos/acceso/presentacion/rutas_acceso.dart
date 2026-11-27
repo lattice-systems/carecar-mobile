@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
+import 'pantalla_bienvenida.dart';
 import 'pantalla_cambiar_contrasena.dart';
 import 'pantalla_cambiar_correo.dart';
 import 'pantalla_cuenta_desactivada.dart';
@@ -125,8 +126,15 @@ final rutasSesiones = <RouteBase>[
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCambiarCorreo()),
   ),
-  // V2-M01.08. El camino vive en `Rutas` y no aqui porque la guardia de sesion
-  // tiene que conocerlo, y esta en el nucleo: no puede importar un modulo.
+  // V2-M01.02 y V2-M01.08. Sus caminos viven en `Rutas` y no aqui porque la
+  // guardia de sesion tiene que conocerlos, y esta en el nucleo: no puede
+  // importar un modulo.
+  GoRoute(
+    path: Rutas.bienvenida,
+    name: 'bienvenida',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaBienvenida()),
+  ),
   GoRoute(
     path: Rutas.cuentaDesactivada,
     name: 'cuenta-desactivada',

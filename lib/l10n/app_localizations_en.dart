@@ -1726,6 +1726,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navegacionPrincipal => 'Main navigation';
 
   @override
+  String get bienvenidaDosTexto =>
+      'Pick the day and time that suit you, and reschedule or cancel from here.';
+
+  @override
+  String get bienvenidaDosTitulo => 'Book a visit without calling';
+
+  @override
+  String get bienvenidaEmpezar => 'Get started';
+
+  @override
+  String get bienvenidaSaltar => 'Skip';
+
+  @override
+  String get bienvenidaSiguiente => 'Next';
+
+  @override
+  String get bienvenidaTresTexto =>
+      'We let you know how your car is doing at the shop and when you can pick it up.';
+
+  @override
+  String get bienvenidaTresTitulo => 'Follow your service';
+
+  @override
+  String get bienvenidaUnoTexto =>
+      'Check its service history, its documents and what comes next in its maintenance.';
+
+  @override
+  String get bienvenidaUnoTitulo => 'Your cars, all in one place';
+
+  @override
   String botonCargando(String texto) {
     return '$texto, loading';
   }

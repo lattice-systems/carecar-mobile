@@ -553,6 +553,15 @@
   "@navegacionPrincipal": {
     "description": "Nombre de la barra de navegación para el lector de pantalla."
   },
+  "bienvenidaDosTexto": "Pick the day and time that suit you, and reschedule or cancel from here.",
+  "bienvenidaDosTitulo": "Book a visit without calling",
+  "bienvenidaEmpezar": "Get started",
+  "bienvenidaSaltar": "Skip",
+  "bienvenidaSiguiente": "Next",
+  "bienvenidaTresTexto": "We let you know how your car is doing at the shop and when you can pick it up.",
+  "bienvenidaTresTitulo": "Follow your service",
+  "bienvenidaUnoTexto": "Check its service history, its documents and what comes next in its maintenance.",
+  "bienvenidaUnoTitulo": "Your cars, all in one place",
   "botonCargando": "{texto}, loading",
   "@botonCargando": {
     "description": "Lo que anuncia un botón mientras trabaja.",

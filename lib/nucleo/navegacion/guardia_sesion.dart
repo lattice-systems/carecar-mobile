@@ -3,6 +3,7 @@ import 'rutas.dart';
 
 /// Regla de redireccion por sesion, pura y sin Flutter (V2-T01.03).
 ///
+/// - Primer arranque con la bienvenida sin ver: a la bienvenida, antes de todo.
 /// - Sin sesion porque la agencia desactivo la cuenta: al aviso que lo explica.
 /// - Sin sesion y ruta privada: al acceso, guardando a donde volver (`desde`).
 /// - Con sesion y contrasena temporal sin cambiar: al cambio obligatorio.
@@ -16,8 +17,16 @@ String? redirigirPorSesion({
   required EstadoSesion estado,
   required bool contrasenaCambiada,
   bool avisoPorAceptar = false,
+  bool bienvenidaPendiente = false,
 }) {
   final camino = destino.path;
+
+  // V2-M01.02: la bienvenida va antes que todo, incluido el login. Es del
+  // primer arranque, no de la cuenta: explica que puede hacer la app a quien
+  // todavia no entro.
+  if (bienvenidaPendiente) {
+    return camino == Rutas.bienvenida ? null : Rutas.bienvenida;
+  }
   final desdeEnConsulta = _desdeValido(
     destino.queryParameters[Rutas.parametroDesde],
   );

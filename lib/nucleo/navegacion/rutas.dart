@@ -27,6 +27,9 @@ abstract final class Rutas {
   /// usar la app en el primer ingreso y cuando hay una version nueva.
   static const aceptarAviso = '/privacidad/aceptar';
 
+  /// Bienvenida del primer arranque (V2-M01.02). La sirve el modulo `acceso`.
+  static const bienvenida = '/bienvenida';
+
   /// Aviso de cuenta desactivada (V2-M01.08). La sirve el modulo `acceso`.
   static const cuentaDesactivada = '/cuenta-desactivada';
 
@@ -35,7 +38,13 @@ abstract final class Rutas {
 
   /// Rutas que se pueden ver sin sesion. Todo lo demas, incluidas las de los
   /// modulos, exige sesion.
-  static const publicas = {acceso, recuperar, restablecer, cuentaDesactivada};
+  static const publicas = {
+    acceso,
+    recuperar,
+    restablecer,
+    cuentaDesactivada,
+    bienvenida,
+  };
 
   /// Acceso, con la ruta a la que volver despues de entrar.
   static String localizacionAcceso({String? desde}) =>

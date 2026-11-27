@@ -12,14 +12,34 @@ String? _va(
   EstadoSesion estado, {
   bool cambiada = false,
   bool aviso = false,
+  bool bienvenida = false,
 }) => redirigirPorSesion(
   destino: Uri.parse(destino),
   estado: estado,
   contrasenaCambiada: cambiada,
   avisoPorAceptar: aviso,
+  bienvenidaPendiente: bienvenida,
 );
 
 void main() {
+  group('bienvenida (V2-M01.02)', () {
+    test('pendiente, va antes que el login', () {
+      // Es del primer arranque, no de la cuenta: quien no ha entrado tambien
+      // merece saber que hace la app.
+      expect(_va('/', _sinSesion, bienvenida: true), Rutas.bienvenida);
+      expect(_va(Rutas.acceso, _sinSesion, bienvenida: true), Rutas.bienvenida);
+      expect(_va('/', _normal, bienvenida: true), Rutas.bienvenida);
+    });
+
+    test('en la bienvenida se queda', () {
+      expect(_va(Rutas.bienvenida, _sinSesion, bienvenida: true), isNull);
+    });
+
+    test('vista, no estorba', () {
+      expect(_va('/', _normal), isNull);
+    });
+  });
+
   group('cuenta desactivada (V2-M01.08)', () {
     const desactivada = SinSesion(porCuentaDesactivada: true);
 

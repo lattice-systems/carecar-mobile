@@ -2104,6 +2104,42 @@
   "@navegacionPrincipal": {
     "description": "Nombre de la barra de navegación para el lector de pantalla."
   },
+  "bienvenidaDosTexto": "Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.",
+  "@bienvenidaDosTexto": {
+    "description": "Segunda lámina de la bienvenida: las citas."
+  },
+  "bienvenidaDosTitulo": "Pide tu cita sin llamar",
+  "@bienvenidaDosTitulo": {
+    "description": "Título de la segunda lámina."
+  },
+  "bienvenidaEmpezar": "Empezar",
+  "@bienvenidaEmpezar": {
+    "description": "Botón de la última lámina de la bienvenida."
+  },
+  "bienvenidaSaltar": "Saltar",
+  "@bienvenidaSaltar": {
+    "description": "Salida de la bienvenida, disponible desde la primera lámina."
+  },
+  "bienvenidaSiguiente": "Siguiente",
+  "@bienvenidaSiguiente": {
+    "description": "Avanza a la siguiente lámina de la bienvenida."
+  },
+  "bienvenidaTresTexto": "Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.",
+  "@bienvenidaTresTexto": {
+    "description": "Tercera lámina de la bienvenida: el seguimiento y los avisos."
+  },
+  "bienvenidaTresTitulo": "Sigue tu servicio al día",
+  "@bienvenidaTresTitulo": {
+    "description": "Título de la tercera lámina."
+  },
+  "bienvenidaUnoTexto": "Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.",
+  "@bienvenidaUnoTexto": {
+    "description": "Primera lámina de la bienvenida: los vehículos."
+  },
+  "bienvenidaUnoTitulo": "Tus autos, en un solo lugar",
+  "@bienvenidaUnoTitulo": {
+    "description": "Título de la primera lámina."
+  },
   "botonCargando": "{texto}, cargando",
   "@botonCargando": {
     "description": "Lo que anuncia un botón mientras trabaja.",

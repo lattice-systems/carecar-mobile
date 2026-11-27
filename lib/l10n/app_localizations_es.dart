@@ -1723,6 +1723,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navegacionPrincipal => 'Navegación principal';
 
   @override
+  String get bienvenidaDosTexto =>
+      'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.';
+
+  @override
+  String get bienvenidaDosTitulo => 'Pide tu cita sin llamar';
+
+  @override
+  String get bienvenidaEmpezar => 'Empezar';
+
+  @override
+  String get bienvenidaSaltar => 'Saltar';
+
+  @override
+  String get bienvenidaSiguiente => 'Siguiente';
+
+  @override
+  String get bienvenidaTresTexto =>
+      'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.';
+
+  @override
+  String get bienvenidaTresTitulo => 'Sigue tu servicio al día';
+
+  @override
+  String get bienvenidaUnoTexto =>
+      'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.';
+
+  @override
+  String get bienvenidaUnoTitulo => 'Tus autos, en un solo lugar';
+
+  @override
   String botonCargando(String texto) {
     return '$texto, cargando';
   }

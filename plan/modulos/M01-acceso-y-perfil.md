@@ -210,6 +210,18 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 - **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
 
+## Avance de V2-M01.02
+
+Quien decide mostrarla es la **guardia de rutas**, y va antes que todo, incluido el login: la bienvenida es del primer arranque, no de la cuenta, así que tiene que verla también quien todavía no ha entrado. Por eso el estado vive en `lib/nucleo/bienvenida/` y no en el módulo: la guardia está en el núcleo y no puede importar un módulo.
+
+«Una sola vez» se recuerda en las preferencias del dispositivo (`bienvenida_vista`), con las mismas que ya usaba el idioma. **Sin preferencias se responde que no falta verla**: mostrarla sin poder recordarlo la repetiría en cada arranque, y eso es peor que no mostrarla.
+
+Saltarla y terminarla hacen lo mismo —marcar que ya se vio—, porque el criterio es que no vuelva a estorbar, no que se lea completa. «Saltar» está arriba y alcanzable desde la primera lámina, no al final del recorrido.
+
+Lector de pantalla: cada lámina anuncia su título como **encabezado** y luego el texto; los puntos de abajo quedan fuera del árbol de semántica, porque son decorativos y repetir «paso 2 de 3» en tres nodos solo estorba.
+
+Seis pruebas: la guardia (pendiente va antes del login, en la bienvenida se queda, vista no estorba), el estado (primer arranque, que lo recuerde, y sin preferencias) y la app enrutada (aparece, se salta y lleva al acceso, y no vuelve).
+
 ## Avance de V2-M01.08
 
 El 403 se atiende **en un solo lugar**: `ClienteApi._pedir`, el embudo por el que pasan todas las peticiones con token. La cuenta se puede desactivar con la persona dentro, así que el 403 puede llegar en cualquier pantalla; resolverlo pantalla por pantalla habría dejado huecos. Ahí se avisa con `alCuentaDesactivada` —un callback, como `renovarSesion`, para que la capa de datos no dependa de la de sesión— y `ControladorSesion` borra la sesión local y marca `SinSesion(porCuentaDesactivada: true)`. Solo se avisa si **hay** token: un 403 sin sesión no tiene sesión que cerrar.

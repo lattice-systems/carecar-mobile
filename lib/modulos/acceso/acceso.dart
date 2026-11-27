@@ -14,6 +14,7 @@ export 'dominio/reglas_contrasena.dart'
 export 'dominio/repositorio_acceso.dart' show RepositorioAcceso;
 export 'dominio/sesion_de_la_cuenta.dart' show SesionDeLaCuenta;
 export 'presentacion/pantalla_acceso.dart' show PantallaAcceso;
+export 'presentacion/pantalla_bienvenida.dart' show PantallaBienvenida;
 export 'presentacion/pantalla_cambiar_contrasena.dart'
     show ListaDeReglas, PantallaCambiarContrasena;
 export 'presentacion/pantalla_cambiar_correo.dart' show PantallaCambiarCorreo;

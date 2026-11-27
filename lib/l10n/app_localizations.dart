@@ -2936,6 +2936,60 @@ abstract class AppLocalizations {
   /// **'Navegación principal'**
   String get navegacionPrincipal;
 
+  /// Segunda lámina de la bienvenida: las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.'**
+  String get bienvenidaDosTexto;
+
+  /// Título de la segunda lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide tu cita sin llamar'**
+  String get bienvenidaDosTitulo;
+
+  /// Botón de la última lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Empezar'**
+  String get bienvenidaEmpezar;
+
+  /// Salida de la bienvenida, disponible desde la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Saltar'**
+  String get bienvenidaSaltar;
+
+  /// Avanza a la siguiente lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Siguiente'**
+  String get bienvenidaSiguiente;
+
+  /// Tercera lámina de la bienvenida: el seguimiento y los avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.'**
+  String get bienvenidaTresTexto;
+
+  /// Título de la tercera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue tu servicio al día'**
+  String get bienvenidaTresTitulo;
+
+  /// Primera lámina de la bienvenida: los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.'**
+  String get bienvenidaUnoTexto;
+
+  /// Título de la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, en un solo lugar'**
+  String get bienvenidaUnoTitulo;
+
   /// Lo que anuncia un botón mientras trabaja.
   ///
   /// In es, this message translates to:
