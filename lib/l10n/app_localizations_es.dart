@@ -32,6 +32,80 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCambiarConfirmarEtiqueta => 'Confirma la contraseña nueva';
 
   @override
+  String get accesoCambiarCorreoCodigoCorto => 'El código tiene 6 dígitos';
+
+  @override
+  String get accesoCambiarCorreoCodigoEtiqueta => 'Código de 6 dígitos';
+
+  @override
+  String get accesoCambiarCorreoCodigoInvalido =>
+      'Ese código no es válido, ya se usó o venció';
+
+  @override
+  String get accesoCambiarCorreoConfirmando => 'Confirmando…';
+
+  @override
+  String get accesoCambiarCorreoConfirmar => 'Confirmar';
+
+  @override
+  String get accesoCambiarCorreoContrasenaEtiqueta => 'Tu contraseña';
+
+  @override
+  String get accesoCambiarCorreoContrasenaFalta => 'Escribe tu contraseña';
+
+  @override
+  String get accesoCambiarCorreoContrasenaNoCoincide =>
+      'Tu contraseña no coincide';
+
+  @override
+  String get accesoCambiarCorreoContrasenaPista =>
+      'Con tu correo se entra a la app, así que confirmamos que eres tú.';
+
+  @override
+  String get accesoCambiarCorreoCorreoEnUso => 'Ese correo ya está en uso';
+
+  @override
+  String get accesoCambiarCorreoCorreoEtiqueta => 'Correo nuevo';
+
+  @override
+  String get accesoCambiarCorreoCorreoInvalido => 'Escribe un correo válido';
+
+  @override
+  String get accesoCambiarCorreoEnviando => 'Enviando…';
+
+  @override
+  String get accesoCambiarCorreoEnviar => 'Enviar el código';
+
+  @override
+  String get accesoCambiarCorreoExplicacion =>
+      'Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.';
+
+  @override
+  String get accesoCambiarCorreoFalloTitulo => 'No pudimos pedir el cambio';
+
+  @override
+  String accesoCambiarCorreoListoMensaje(String correo) {
+    return 'A partir de ahora entras con $correo.';
+  }
+
+  @override
+  String get accesoCambiarCorreoListoTitulo => 'Tu correo quedó actualizado';
+
+  @override
+  String accesoCambiarCorreoPasoDosExplicacion(String correo) {
+    return 'Te mandamos un código a $correo. Vence en 15 minutos.';
+  }
+
+  @override
+  String get accesoCambiarCorreoPedirOtro => 'Pedir otro código';
+
+  @override
+  String get accesoCambiarCorreoTitulo => 'Cambiar mi correo';
+
+  @override
+  String get accesoCambiarCorreoVencio => 'El código venció. Pide otro.';
+
+  @override
   String get accesoCambiarExplicacion =>
       'La agencia te dio una contraseña temporal. Elige una nueva para continuar.';
 
@@ -164,7 +238,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoPerfilPie =>
-      'Para cambiar tu teléfono o tu correo, comunícate con la agencia.';
+      'Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.';
 
   @override
   String get accesoPerfilSinTelefono => 'Sin teléfono registrado';

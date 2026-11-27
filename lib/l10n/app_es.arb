@@ -36,6 +36,106 @@
   "@accesoCambiarConfirmarEtiqueta": {
     "description": "Etiqueta del campo de confirmación."
   },
+  "accesoCambiarCorreoCodigoCorto": "El código tiene 6 dígitos",
+  "@accesoCambiarCorreoCodigoCorto": {
+    "description": "Error del campo del código cuando no están los seis dígitos."
+  },
+  "accesoCambiarCorreoCodigoEtiqueta": "Código de 6 dígitos",
+  "@accesoCambiarCorreoCodigoEtiqueta": {
+    "description": "Etiqueta del campo donde se escribe el código que llegó al correo nuevo."
+  },
+  "accesoCambiarCorreoCodigoInvalido": "Ese código no es válido, ya se usó o venció",
+  "@accesoCambiarCorreoCodigoInvalido": {
+    "description": "Los tres casos llegan iguales del servidor a propósito: responder distinto permitiría averiguar qué códigos existen."
+  },
+  "accesoCambiarCorreoConfirmando": "Confirmando…",
+  "@accesoCambiarCorreoConfirmando": {
+    "description": "Botón de confirmar mientras el servidor responde."
+  },
+  "accesoCambiarCorreoConfirmar": "Confirmar",
+  "@accesoCambiarCorreoConfirmar": {
+    "description": "Botón que manda el código y aplica el cambio de correo."
+  },
+  "accesoCambiarCorreoContrasenaEtiqueta": "Tu contraseña",
+  "@accesoCambiarCorreoContrasenaEtiqueta": {
+    "description": "Etiqueta de la contraseña actual, que se pide para cambiar el correo."
+  },
+  "accesoCambiarCorreoContrasenaFalta": "Escribe tu contraseña",
+  "@accesoCambiarCorreoContrasenaFalta": {
+    "description": "Error del campo de la contraseña cuando está vacío."
+  },
+  "accesoCambiarCorreoContrasenaNoCoincide": "Tu contraseña no coincide",
+  "@accesoCambiarCorreoContrasenaNoCoincide": {
+    "description": "El servidor dice que la contraseña actual no es la correcta. Llega en el mismo 400 que un correo mal escrito y solo los separa el código, así que la pantalla tiene que culpar al campo correcto."
+  },
+  "accesoCambiarCorreoContrasenaPista": "Con tu correo se entra a la app, así que confirmamos que eres tú.",
+  "@accesoCambiarCorreoContrasenaPista": {
+    "description": "Explica por qué se pide la contraseña para cambiar el correo."
+  },
+  "accesoCambiarCorreoCorreoEnUso": "Ese correo ya está en uso",
+  "@accesoCambiarCorreoCorreoEnUso": {
+    "description": "El correo nuevo ya es de otro cliente."
+  },
+  "accesoCambiarCorreoCorreoEtiqueta": "Correo nuevo",
+  "@accesoCambiarCorreoCorreoEtiqueta": {
+    "description": "Etiqueta del campo del correo nuevo."
+  },
+  "accesoCambiarCorreoCorreoInvalido": "Escribe un correo válido",
+  "@accesoCambiarCorreoCorreoInvalido": {
+    "description": "Error del campo del correo cuando no tiene formato. Se detecta en la app, sin viajar al servidor."
+  },
+  "accesoCambiarCorreoEnviando": "Enviando…",
+  "@accesoCambiarCorreoEnviando": {
+    "description": "Botón de enviar el código mientras el servidor responde."
+  },
+  "accesoCambiarCorreoEnviar": "Enviar el código",
+  "@accesoCambiarCorreoEnviar": {
+    "description": "Botón que pide el cambio y manda el código al correo nuevo."
+  },
+  "accesoCambiarCorreoExplicacion": "Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.",
+  "@accesoCambiarCorreoExplicacion": {
+    "description": "Explica el primer paso del cambio de correo."
+  },
+  "accesoCambiarCorreoFalloTitulo": "No pudimos pedir el cambio",
+  "@accesoCambiarCorreoFalloTitulo": {
+    "description": "Título del aviso cuando falla pedir el cambio por una razón que no es la contraseña ni el correo en uso."
+  },
+  "accesoCambiarCorreoListoMensaje": "A partir de ahora entras con {correo}.",
+  "@accesoCambiarCorreoListoMensaje": {
+    "description": "Mensaje al terminar el cambio. Dice lo que de verdad cambió: con qué correo se entra.",
+    "placeholders": {
+      "correo": {
+        "type": "String",
+        "example": "maria.nueva@example.com"
+      }
+    }
+  },
+  "accesoCambiarCorreoListoTitulo": "Tu correo quedó actualizado",
+  "@accesoCambiarCorreoListoTitulo": {
+    "description": "Título al terminar el cambio de correo."
+  },
+  "accesoCambiarCorreoPasoDosExplicacion": "Te mandamos un código a {correo}. Vence en 15 minutos.",
+  "@accesoCambiarCorreoPasoDosExplicacion": {
+    "description": "Explica el segundo paso y recuerda a qué correo fue el código.",
+    "placeholders": {
+      "correo": {
+        "type": "String",
+        "example": "maria.nueva@example.com"
+      }
+    }
+  },
+  "accesoCambiarCorreoPedirOtro": "Pedir otro código",
+  "@accesoCambiarCorreoPedirOtro": {
+    "description": "Vuelve al primer paso para pedir un código nuevo."
+  },
+  "accesoCambiarCorreoTitulo": "Cambiar mi correo",
+  "@accesoCambiarCorreoTitulo": {
+    "description": "Título de la pantalla que cambia el correo del cliente."
+  },
+  "accesoCambiarCorreoVencio": "El código venció. Pide otro.",
+  "@accesoCambiarCorreoVencio": {
+    "description": "Aviso cuando pasaron los 15 minutos antes de escribir el código. Se detecta en la app, sin gastar un viaje condenado."
+  },
   "accesoCambiarExplicacion": "La agencia te dio una contraseña temporal. Elige una nueva para continuar.",
   "@accesoCambiarExplicacion": {
     "description": "Explica por qué no se puede seguir sin cambiarla."
@@ -204,7 +304,7 @@
   "@accesoPerfilNombre": {
     "description": "Etiqueta del nombre en el perfil."
   },
-  "accesoPerfilPie": "Para cambiar tu teléfono o tu correo, comunícate con la agencia.",
+  "accesoPerfilPie": "Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.",
   "@accesoPerfilPie": {
     "description": "Pie de los datos del perfil. Son de solo lectura hasta que exista la edición (V2-M01.07), y conviene decir qué hacer mientras tanto en vez de dejar al cliente buscando un botón que no existe."
   },

@@ -32,6 +32,82 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoCambiarConfirmarEtiqueta => 'Confirm the new password';
 
   @override
+  String get accesoCambiarCorreoCodigoCorto => 'The code has 6 digits';
+
+  @override
+  String get accesoCambiarCorreoCodigoEtiqueta => '6-digit code';
+
+  @override
+  String get accesoCambiarCorreoCodigoInvalido =>
+      'That code is not valid, was already used or expired';
+
+  @override
+  String get accesoCambiarCorreoConfirmando => 'Confirming…';
+
+  @override
+  String get accesoCambiarCorreoConfirmar => 'Confirm';
+
+  @override
+  String get accesoCambiarCorreoContrasenaEtiqueta => 'Your password';
+
+  @override
+  String get accesoCambiarCorreoContrasenaFalta => 'Enter your password';
+
+  @override
+  String get accesoCambiarCorreoContrasenaNoCoincide =>
+      'Your password doesn\'t match';
+
+  @override
+  String get accesoCambiarCorreoContrasenaPista =>
+      'You sign in with your email, so we confirm it\'s you.';
+
+  @override
+  String get accesoCambiarCorreoCorreoEnUso => 'That email is already in use';
+
+  @override
+  String get accesoCambiarCorreoCorreoEtiqueta => 'New email';
+
+  @override
+  String get accesoCambiarCorreoCorreoInvalido => 'Enter a valid email';
+
+  @override
+  String get accesoCambiarCorreoEnviando => 'Sending…';
+
+  @override
+  String get accesoCambiarCorreoEnviar => 'Send the code';
+
+  @override
+  String get accesoCambiarCorreoExplicacion =>
+      'We\'ll send a code to the new email to confirm it\'s yours. Your email doesn\'t change until you enter it.';
+
+  @override
+  String get accesoCambiarCorreoFalloTitulo =>
+      'We couldn\'t request the change';
+
+  @override
+  String accesoCambiarCorreoListoMensaje(String correo) {
+    return 'From now on you sign in with $correo.';
+  }
+
+  @override
+  String get accesoCambiarCorreoListoTitulo => 'Your email is updated';
+
+  @override
+  String accesoCambiarCorreoPasoDosExplicacion(String correo) {
+    return 'We sent a code to $correo. It expires in 15 minutes.';
+  }
+
+  @override
+  String get accesoCambiarCorreoPedirOtro => 'Ask for another code';
+
+  @override
+  String get accesoCambiarCorreoTitulo => 'Change my email';
+
+  @override
+  String get accesoCambiarCorreoVencio =>
+      'The code expired. Ask for another one.';
+
+  @override
   String get accesoCambiarExplicacion =>
       'The dealership gave you a temporary password. Choose a new one to continue.';
 
@@ -164,7 +240,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accesoPerfilPie =>
-      'To change your phone or email, get in touch with the dealership.';
+      'Tap your email to change it. For your phone, get in touch with the dealership.';
 
   @override
   String get accesoPerfilSinTelefono => 'No phone on file';

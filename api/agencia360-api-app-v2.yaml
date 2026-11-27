@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.25.0
+  version: 2.26.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -274,7 +274,7 @@ paths:
     get:
       tags: [Acceso]
       summary: Datos del cliente que inició sesión
-      description: APP-2.2 · Solo lectura; la edición del perfil se define en APP-2.2.
+      description: APP-2.2 · Solo lectura. Editar el correo es `PATCH /perfil`.
       responses:
         '200':
           description: Datos del cliente
@@ -286,6 +286,111 @@ paths:
           $ref: '#/components/responses/NoAutenticado'
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
+    patch:
+      tags: [Acceso]
+      summary: Pedir el cambio del correo
+      description: |
+        V2-M01.07 · **No cambia nada todavía**: crea una verificación y manda un código de
+        6 dígitos al correo nuevo. El cambio se aplica en
+        `POST /perfil/verificaciones/{id}/confirmar`.
+
+        Guardar el correo antes de confirmarlo dejaría al cliente con uno que no ha probado
+        que es suyo y, como `cuenta_app.usuario` sigue al correo, **sin poder entrar**.
+
+        **Pide la contraseña actual.** El correo es la identidad con la que se entra, así que
+        sin eso alguien con el celular desbloqueado del cliente podría cambiarlo al suyo,
+        recibir el código en su propio buzón y quedarse con la cuenta. Es el mismo requisito
+        que para cancelar la cuenta.
+
+        El teléfono **todavía no se puede cambiar**: verificarlo exige mandar un código por
+        SMS y no hay con qué. Se agregará aquí cuando exista.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CambioDeCorreoRequest'
+      responses:
+        '202':
+          description: Verificación creada; el código va al correo nuevo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificacionPendiente'
+        '400':
+          description: |
+            Se distinguen por `codigo`, y la pantalla necesita distinguirlos:
+            `CREDENCIALES_INVALIDAS` si la contraseña no coincide (400 y no 401 a propósito:
+            la app lee un 401 como sesión vencida y cerraría la sesión sin explicar nada) y
+            `DATOS_INVALIDOS` si el correo no tiene formato o falta un campo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '409':
+          description: Ese correo ya es de otro cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /perfil/verificaciones/{id}/confirmar:
+    post:
+      tags: [Acceso]
+      summary: Confirmar el cambio con el código
+      description: >
+        V2-M01.07 · Aplica el cambio pedido en `PATCH /perfil`. El código vence a los 15
+        minutos y sirve una sola vez. Al cambiar el correo cambia también
+        `cuenta_app.usuario` (V2-T05.03). **No cierra las demás sesiones**: es la misma
+        persona y echarla de sus otros dispositivos por corregir su correo sería gratuito.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmarVerificacionRequest'
+      responses:
+        '200':
+          description: El perfil ya actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+        '400':
+          description: >
+            `CODIGO_INVALIDO` si el código es equivocado, venció o ya se usó, igual que al
+            restablecer la contraseña; `DATOS_INVALIDOS` si no viene el código.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: No existe esa verificación o no es de este cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '409':
+          description: Ese correo ya es de otro cliente (alguien lo tomó mientras se verificaba)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /sesiones:
     get:
@@ -3706,6 +3811,47 @@ components:
           description: >
             A los 30 días del **último refresco**, no del inicio: cada refresco emite
             una sesión nueva con 30 días por delante. Usar la app la mantiene viva.
+
+    CambioDeCorreoRequest:
+      type: object
+      required: [correo, contrasenaActual]
+      description: V2-M01.07 · Lo que se manda para pedir el cambio de correo.
+      properties:
+        correo:
+          type: string
+          format: email
+          maxLength: 120
+        contrasenaActual:
+          type: string
+          format: password
+          description: >
+            Confirma que quien lo pide es el titular. Si no coincide, 400 con
+            `CREDENCIALES_INVALIDAS`.
+
+    VerificacionPendiente:
+      type: object
+      required: [id, expira]
+      description: >
+        V2-M01.07 · La verificación que se acaba de crear. No trae el correo nuevo: quien
+        pidió el cambio ya lo escribió, y repetirlo solo sería un dato personal más viajando.
+      properties:
+        id:
+          type: integer
+          format: int64
+        expira:
+          type: string
+          format: date-time
+          description: A los 15 minutos, igual que el código de recuperación.
+
+    ConfirmarVerificacionRequest:
+      type: object
+      required: [codigo]
+      description: V2-M01.07 · El código de 6 dígitos que llegó al correo nuevo.
+      properties:
+        codigo:
+          type: string
+          minLength: 6
+          maxLength: 6
 
     Perfil:
       type: object

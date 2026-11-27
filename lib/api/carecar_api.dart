@@ -66,6 +66,35 @@ abstract interface class CarecarApi {
   /// `GET /perfil`. Informacion de solo lectura del cliente autenticado.
   Future<Perfil> miPerfil();
 
+  /// `PATCH /perfil`: pide cambiar el correo · V2-M01.07.
+  ///
+  /// **No cambia nada todavia**: crea una verificacion y manda un codigo de 6
+  /// digitos al correo nuevo. Guardarlo antes de confirmarlo dejaria al cliente
+  /// con un correo que no ha probado que es suyo y, como `cuenta_app.usuario`
+  /// lo sigue, sin poder entrar.
+  ///
+  /// Pide la contrasena actual porque el correo es la identidad con la que se
+  /// entra. Si no coincide, lanza `DatosInvalidos` con codigo
+  /// `CREDENCIALES_INVALIDAS` -400 y no 401, para que la app no lo lea como
+  /// sesion vencida-. Un correo mal escrito llega igual como `DatosInvalidos`
+  /// pero con `DATOS_INVALIDOS`, y uno que ya es de otro cliente como
+  /// `Conflicto`.
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  });
+
+  /// `POST /perfil/verificaciones/{id}/confirmar`: aplica el cambio · V2-M01.07.
+  ///
+  /// Devuelve el perfil ya actualizado, asi que quien llame no tiene que volver
+  /// a pedirlo. El codigo vence a los 15 minutos y sirve una sola vez:
+  /// equivocado, usado o vencido llegan igual, como `DatosInvalidos` con
+  /// `CODIGO_INVALIDO`.
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  });
+
   // --- Sesiones y dispositivos activos · V2-M01.09 ---
 
   /// `GET /sesiones`: las sesiones **vigentes** de la cuenta, ni revocadas ni

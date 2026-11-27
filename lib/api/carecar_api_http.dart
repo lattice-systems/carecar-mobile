@@ -66,6 +66,29 @@ class CarecarApiHttp implements CarecarApi {
   Future<Perfil> miPerfil() => _cliente.obtener('/perfil', Perfil.fromJson);
 
   @override
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) => _cliente.parchar(
+    '/perfil',
+    // El correo se recorta, como en el login: el teclado del celular mete
+    // espacios con facilidad. La contrasena no se toca, un espacio puede ser
+    // parte de ella.
+    cuerpo: {'correo': correo.trim(), 'contrasenaActual': contrasenaActual},
+    leer: VerificacionPendiente.fromJson,
+  );
+
+  @override
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  }) => _cliente.enviar(
+    '/perfil/verificaciones/$id/confirmar',
+    cuerpo: {'codigo': codigo.trim()},
+    leer: Perfil.fromJson,
+  );
+
+  @override
   Future<List<SesionActiva>> misSesiones() =>
       _cliente.obtenerLista('/sesiones', SesionActiva.fromJson);
 
