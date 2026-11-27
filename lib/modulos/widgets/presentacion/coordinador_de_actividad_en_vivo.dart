@@ -65,18 +65,25 @@ class CoordinadorDeActividadEnVivo {
   /// Cerrar sesion: corre antes de avisar al servidor, con la sesion viva
   /// (`ControladorSesion.registrarAntesDeCerrarSesion`).
   Future<void> alCerrarSesion() => _enCola(() async {
-    final ordenes = {..._vivas.keys, ...await _servicio.activas()};
-    if (ordenes.isNotEmpty) {
-      final repositorio = _repositorio();
-      await Future.wait([
-        for (final ordenId in ordenes)
-          repositorio
-              .darDeBaja(ordenId: ordenId, pushToken: _vivas[ordenId]?.token)
-              .then<void>((_) {}, onError: (Object _) {}),
-      ]);
+    try {
+      await _darDeBajaTodas();
+    } on Object {
+      // Sin baja en el backend la actividad igual se quita del telefono.
     }
     await _terminarTodas();
   });
+
+  Future<void> _darDeBajaTodas() async {
+    final ordenes = {..._vivas.keys, ...await _servicio.activas()};
+    if (ordenes.isEmpty) return;
+    final repositorio = _repositorio();
+    await Future.wait([
+      for (final ordenId in ordenes)
+        repositorio
+            .darDeBaja(ordenId: ordenId, pushToken: _vivas[ordenId]?.token)
+            .then<void>((_) {}, onError: (Object _) {}),
+    ]);
+  }
 
   /// La sesion termino sin pasar por cerrar sesion (vencio, cuenta
   /// desactivada, equipo comprometido): ya no hay token para avisar al
