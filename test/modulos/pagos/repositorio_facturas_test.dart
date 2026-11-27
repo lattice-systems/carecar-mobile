@@ -59,7 +59,7 @@ http.Response _problema(int status, String codigo, {Object? campos}) =>
       'error': 'No',
       'message': 'No',
       'codigo': codigo,
-      if (campos != null) 'campos': campos,
+      'campos': ?campos,
       'path': '/api/v1/app/pagos/7/factura',
     });
 
