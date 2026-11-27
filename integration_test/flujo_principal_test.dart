@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/config/flavor.dart';
 import 'package:carecar_mobile/main.dart';
+import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_bienvenida.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
@@ -37,6 +38,9 @@ void main() {
       await almacen.borrar();
       addTearDown(almacen.borrar);
       await arrancar(Flavor.desarrollo);
+
+      // La bienvenida aparece antes del acceso en una instalación nueva.
+      await _tocar(tester, find.byKey(PantallaBienvenida.botonSaltar));
 
       final correo = find.byKey(PantallaLogin.campoCorreo);
       await _esperar(tester, correo);
