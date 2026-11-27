@@ -11067,6 +11067,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Otro documento'**
   String get documentosTipoOtro;
+
+  /// Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando tu póliza…'**
+  String get asistenciaLlamarAseguradoraBuscando;
 }
 
 class _AppLocalizationsDelegate
