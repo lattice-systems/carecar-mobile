@@ -134,6 +134,138 @@ abstract class AppLocalizations {
   /// **'Confirma la contraseña nueva'**
   String get accesoCambiarConfirmarEtiqueta;
 
+  /// Error del campo del código cuando no están los seis dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'El código tiene 6 dígitos'**
+  String get accesoCambiarCorreoCodigoCorto;
+
+  /// Etiqueta del campo donde se escribe el código que llegó al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get accesoCambiarCorreoCodigoEtiqueta;
+
+  /// Los tres casos llegan iguales del servidor a propósito: responder distinto permitiría averiguar qué códigos existen.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese código no es válido, ya se usó o venció'**
+  String get accesoCambiarCorreoCodigoInvalido;
+
+  /// Botón de confirmar mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmando…'**
+  String get accesoCambiarCorreoConfirmando;
+
+  /// Botón que manda el código y aplica el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get accesoCambiarCorreoConfirmar;
+
+  /// Etiqueta de la contraseña actual, que se pide para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get accesoCambiarCorreoContrasenaEtiqueta;
+
+  /// Error del campo de la contraseña cuando está vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu contraseña'**
+  String get accesoCambiarCorreoContrasenaFalta;
+
+  /// El servidor dice que la contraseña actual no es la correcta. Llega en el mismo 400 que un correo mal escrito y solo los separa el código, así que la pantalla tiene que culpar al campo correcto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña no coincide'**
+  String get accesoCambiarCorreoContrasenaNoCoincide;
+
+  /// Explica por qué se pide la contraseña para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tu correo se entra a la app, así que confirmamos que eres tú.'**
+  String get accesoCambiarCorreoContrasenaPista;
+
+  /// El correo nuevo ya es de otro cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese correo ya está en uso'**
+  String get accesoCambiarCorreoCorreoEnUso;
+
+  /// Etiqueta del campo del correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo nuevo'**
+  String get accesoCambiarCorreoCorreoEtiqueta;
+
+  /// Error del campo del correo cuando no tiene formato. Se detecta en la app, sin viajar al servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un correo válido'**
+  String get accesoCambiarCorreoCorreoInvalido;
+
+  /// Botón de enviar el código mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get accesoCambiarCorreoEnviando;
+
+  /// Botón que pide el cambio y manda el código al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar el código'**
+  String get accesoCambiarCorreoEnviar;
+
+  /// Explica el primer paso del cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.'**
+  String get accesoCambiarCorreoExplicacion;
+
+  /// Título del aviso cuando falla pedir el cambio por una razón que no es la contraseña ni el correo en uso.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir el cambio'**
+  String get accesoCambiarCorreoFalloTitulo;
+
+  /// Mensaje al terminar el cambio. Dice lo que de verdad cambió: con qué correo se entra.
+  ///
+  /// In es, this message translates to:
+  /// **'A partir de ahora entras con {correo}.'**
+  String accesoCambiarCorreoListoMensaje(String correo);
+
+  /// Título al terminar el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu correo quedó actualizado'**
+  String get accesoCambiarCorreoListoTitulo;
+
+  /// Explica el segundo paso y recuerda a qué correo fue el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandamos un código a {correo}. Vence en 15 minutos.'**
+  String accesoCambiarCorreoPasoDosExplicacion(String correo);
+
+  /// Vuelve al primer paso para pedir un código nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro código'**
+  String get accesoCambiarCorreoPedirOtro;
+
+  /// Título de la pantalla que cambia el correo del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi correo'**
+  String get accesoCambiarCorreoTitulo;
+
+  /// Aviso cuando pasaron los 15 minutos antes de escribir el código. Se detecta en la app, sin gastar un viaje condenado.
+  ///
+  /// In es, this message translates to:
+  /// **'El código venció. Pide otro.'**
+  String get accesoCambiarCorreoVencio;
+
   /// Explica por qué no se puede seguir sin cambiarla.
   ///
   /// In es, this message translates to:
@@ -242,6 +374,60 @@ abstract class AppLocalizations {
   /// **'Escribe tu correo.'**
   String get accesoCorreoVacio;
 
+  /// Botón secundario del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get accesoDesactivadaEscribir;
+
+  /// Explica por qué no se puede entrar y qué sí se puede hacer.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.'**
+  String get accesoDesactivadaExplicacion;
+
+  /// Botón principal del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get accesoDesactivadaLlamar;
+
+  /// Aviso cuando el celular no puede abrir el teléfono o el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir en este dispositivo.'**
+  String get accesoDesactivadaNoSePudo;
+
+  /// Título de la pantalla de V2-M01.08.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está desactivada'**
+  String get accesoDesactivadaTitulo;
+
+  /// Salida del aviso: regresa al login si fue un error.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a iniciar sesión'**
+  String get accesoDesactivadaVolver;
+
+  /// Explica por qué el enlace de recuperación dejó de servir.
+  ///
+  /// In es, this message translates to:
+  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
+  String get accesoEnlaceNoValidoMensaje;
+
+  /// Título cuando el enlace de recuperación venció o ya se usó.
+  ///
+  /// In es, this message translates to:
+  /// **'El enlace ya no sirve'**
+  String get accesoEnlaceNoValidoTitulo;
+
+  /// Botón que lleva a pedir un enlace de recuperación nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro enlace'**
+  String get accesoEnlacePedirOtro;
+
   /// Texto del botón mientras el servidor responde al inicio de sesión.
   ///
   /// In es, this message translates to:
@@ -266,11 +452,257 @@ abstract class AppLocalizations {
   /// **'CareCar'**
   String get accesoMarca;
 
+  /// Casilla opcional de V2-M01.10, apagada por omisión.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión en todos mis dispositivos'**
+  String get accesoMiContrasenaCerrarOtras;
+
+  /// Dice que cerrar todas también cierra la de este dispositivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.'**
+  String get accesoMiContrasenaCerrarOtrasDetalle;
+
+  /// Explica por qué se pide la contraseña actual.
+  ///
+  /// In es, this message translates to:
+  /// **'Te pedimos la contraseña de ahora para confirmar que eres tú.'**
+  String get accesoMiContrasenaExplicacion;
+
+  /// Botón principal de «cambiar mi contraseña».
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar la contraseña nueva'**
+  String get accesoMiContrasenaGuardar;
+
+  /// Título del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó actualizada'**
+  String get accesoMiContrasenaListo;
+
+  /// Mensaje del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Úsala la próxima vez que inicies sesión.'**
+  String get accesoMiContrasenaListoMensaje;
+
+  /// Título de la pantalla de V2-M01.10, abierta desde Ajustes.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi contraseña'**
+  String get accesoMiContrasenaTitulo;
+
+  /// Explica qué hace la pantalla a la que abre el enlace.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una contraseña nueva. Este enlace sirve una sola vez.'**
+  String get accesoNuevaExplicacion;
+
+  /// Título del aviso cuando el servidor rechaza la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tu contraseña'**
+  String get accesoNuevaFalloTitulo;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardando…'**
+  String get accesoNuevaGuardando;
+
+  /// Botón que guarda la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar contraseña'**
+  String get accesoNuevaGuardar;
+
+  /// Botón que lleva al acceso tras guardar la contraseña nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Iniciar sesión'**
+  String get accesoNuevaIrAlAcceso;
+
+  /// Detalle del aviso de contraseña guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya puedes iniciar sesión con ella.'**
+  String get accesoNuevaListoMensaje;
+
+  /// Título del aviso cuando la contraseña nueva se guardó.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó lista'**
+  String get accesoNuevaListoTitulo;
+
+  /// Título de la pantalla a la que abre el enlace del correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu contraseña nueva'**
+  String get accesoNuevaTitulo;
+
   /// Enlace a la recuperación de contraseña desde la pantalla de acceso.
   ///
   /// In es, this message translates to:
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
+
+  /// Interruptor de V2-M01.05 en mi perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con huella o rostro'**
+  String get accesoPerfilCandado;
+
+  /// Descripción del interruptor del desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Para abrir la app sin escribir tu contraseña'**
+  String get accesoPerfilCandadoDetalle;
+
+  /// Texto que muestra el sistema al prender el desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma tu huella para prender el desbloqueo.'**
+  String get accesoPerfilCandadoMotivo;
+
+  /// Aviso cuando no se reconoce la huella al prenderlo.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos confirmar tu huella. El desbloqueo sigue apagado.'**
+  String get accesoPerfilCandadoNoSePudo;
+
+  /// Lo que anuncia el lector de pantalla mientras carga el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu perfil…'**
+  String get accesoPerfilCargando;
+
+  /// Etiqueta de la fecha en que la persona se volvió cliente de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cliente desde'**
+  String get accesoPerfilClienteDesde;
+
+  /// Etiqueta del correo en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get accesoPerfilCorreo;
+
+  /// Encabezado de la sección del perfil con las opciones de la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta'**
+  String get accesoPerfilCuentaEncabezado;
+
+  /// Encabezado de la sección del perfil con los datos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus datos'**
+  String get accesoPerfilDatosEncabezado;
+
+  /// Fila del perfil que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis sesiones'**
+  String get accesoPerfilMisSesiones;
+
+  /// Explicación de la fila que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mira y cierra las sesiones abiertas en otros dispositivos'**
+  String get accesoPerfilMisSesionesDetalle;
+
+  /// Etiqueta del nombre en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get accesoPerfilNombre;
+
+  /// Pie de los datos del perfil. Son de solo lectura hasta que exista la edición (V2-M01.07), y conviene decir qué hacer mientras tanto en vez de dejar al cliente buscando un botón que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.'**
+  String get accesoPerfilPie;
+
+  /// Lo que se muestra cuando la agencia no capturó el teléfono del cliente, en vez de dejar el renglón vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin teléfono registrado'**
+  String get accesoPerfilSinTelefono;
+
+  /// Lo que dice la sección de vehículos del perfil cuando la cuenta no tiene ninguno.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes vehículos registrados'**
+  String get accesoPerfilSinVehiculos;
+
+  /// Etiqueta del teléfono en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get accesoPerfilTelefono;
+
+  /// Título de la pantalla del perfil del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi perfil'**
+  String get accesoPerfilTitulo;
+
+  /// Encabezado de la sección del perfil con los vehículos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus vehículos'**
+  String get accesoPerfilVehiculosEncabezado;
+
+  /// Aviso dentro del perfil cuando la lista de vehículos falla. El resto del perfil se sigue viendo, porque son dos lecturas distintas.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos traer tus vehículos'**
+  String get accesoPerfilVehiculosFallo;
+
+  /// Título del aviso tras pedir el enlace de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu correo'**
+  String get accesoRecuperarEnviado;
+
+  /// Explica que el enlace puede no llegar si el correo no tiene cuenta, para que nadie se quede esperando.
+  ///
+  /// In es, this message translates to:
+  /// **'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.'**
+  String get accesoRecuperarEnviadoMensaje;
+
+  /// Texto del botón mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get accesoRecuperarEnviando;
+
+  /// Botón que pide el enlace de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviarme el enlace'**
+  String get accesoRecuperarEnviar;
+
+  /// Explica qué hace la pantalla de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.'**
+  String get accesoRecuperarExplicacion;
+
+  /// Título del aviso cuando falla la petición del enlace.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos enviar el enlace'**
+  String get accesoRecuperarFalloTitulo;
+
+  /// Título de la pantalla de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Recupera tu contraseña'**
+  String get accesoRecuperarTitulo;
 
   /// Detalle del aviso cuando el servidor está despertando y la petición sigue en curso.
   ///
@@ -283,6 +715,210 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Despertando el servidor…'**
   String get accesoServidorDespertandoTitulo;
+
+  /// Último uso de una sesión que se usó hace menos de un minuto.
+  ///
+  /// In es, this message translates to:
+  /// **'Activa ahora'**
+  String get accesoSesionesActivaAhora;
+
+  /// Aviso cuando cerrar una sesión falla porque su identificador ya cambió: la sesión sigue abierta con otro identificador.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.'**
+  String get accesoSesionesCambio;
+
+  /// Qué hacer cuando cambió la biometría del equipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.'**
+  String get desbloqueoCambioMensaje;
+
+  /// Título del aviso cuando la biometría ya no es la de antes.
+  ///
+  /// In es, this message translates to:
+  /// **'La biometría de tu teléfono cambió'**
+  String get desbloqueoCambioTitulo;
+
+  /// Salida siempre disponible del desbloqueo: cierra la sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con mi contraseña'**
+  String get desbloqueoContrasena;
+
+  /// Explicación de la pantalla de desbloqueo.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa tu huella o tu rostro para entrar.'**
+  String get desbloqueoExplicacion;
+
+  /// Qué hacer cuando el sistema no reconoció la huella.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta otra vez o entra con tu contraseña.'**
+  String get desbloqueoFalloMensaje;
+
+  /// Título del aviso cuando falla el reconocimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'No te reconocimos'**
+  String get desbloqueoFalloTitulo;
+
+  /// Botón que vuelve a pedir la biometría.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar mi huella o mi rostro'**
+  String get desbloqueoIntentar;
+
+  /// Texto que muestra el sistema en el diálogo de biometría.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma que eres tú para entrar a CareCar.'**
+  String get desbloqueoMotivo;
+
+  /// Título de la pantalla de V2-M01.05.
+  ///
+  /// In es, this message translates to:
+  /// **'Desbloquea CareCar'**
+  String get desbloqueoTitulo;
+
+  /// Acción secundaria del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get accesoSesionesCancelar;
+
+  /// Lo que anuncia el lector de pantalla mientras carga la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus sesiones…'**
+  String get accesoSesionesCargando;
+
+  /// Confirmación después de cerrar una sesión de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, esa sesión se cerró.'**
+  String get accesoSesionesCerrada;
+
+  /// Botón de cada fila para cerrar esa sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get accesoSesionesCerrar;
+
+  /// Etiqueta para lector de pantalla del botón de cerrar una sesión, para que no diga solo «Cerrar».
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar la sesión de {dispositivo}'**
+  String accesoSesionesCerrarEtiqueta(String dispositivo);
+
+  /// Botón inferior que cierra la sesión en todos los dispositivos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar todas las sesiones'**
+  String get accesoSesionesCerrarTodas;
+
+  /// Acción principal del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar todas'**
+  String get accesoSesionesCerrarTodasConfirmar;
+
+  /// Mensaje del diálogo de cerrar todas: avisa que la sesión de este mismo teléfono también se cierra.
+  ///
+  /// In es, this message translates to:
+  /// **'Se cerrarán en todos tus dispositivos, incluido este. Tendrás que entrar otra vez.'**
+  String get accesoSesionesCerrarTodasMensaje;
+
+  /// Título del diálogo que confirma cerrar todas las sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar todas las sesiones?'**
+  String get accesoSesionesCerrarTodasTitulo;
+
+  /// Mensaje del diálogo que confirma cerrar una sesión de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese dispositivo tendrá que entrar otra vez con tu correo y tu contraseña.'**
+  String get accesoSesionesCerrarUnaMensaje;
+
+  /// Título del diálogo que confirma cerrar una sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar la sesión de {dispositivo}?'**
+  String accesoSesionesCerrarUnaTitulo(String dispositivo);
+
+  /// Encabezado de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Dispositivos con tu sesión abierta'**
+  String get accesoSesionesEncabezado;
+
+  /// Nombre que se muestra cuando la sesión no trae el nombre del dispositivo, como las abiertas antes de esta función.
+  ///
+  /// In es, this message translates to:
+  /// **'Dispositivo sin nombre'**
+  String get accesoSesionesEquipoSinNombre;
+
+  /// Aviso cuando cerrar una sesión falla por un error de red o del servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cerrar esa sesión. Inténtalo otra vez.'**
+  String get accesoSesionesFalloCerrar;
+
+  /// Último uso de una sesión, en días.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{Hace 1 día} other{Hace {dias} días}}'**
+  String accesoSesionesHaceDias(int dias);
+
+  /// Último uso de una sesión, en horas.
+  ///
+  /// In es, this message translates to:
+  /// **'{horas, plural, =1{Hace 1 hora} other{Hace {horas} horas}}'**
+  String accesoSesionesHaceHoras(int horas);
+
+  /// Último uso de una sesión, en minutos.
+  ///
+  /// In es, this message translates to:
+  /// **'{minutos, plural, =1{Hace 1 minuto} other{Hace {minutos} minutos}}'**
+  String accesoSesionesHaceMinutos(int minutos);
+
+  /// Pie de la lista de sesiones: qué hacer si hay un dispositivo desconocido.
+  ///
+  /// In es, this message translates to:
+  /// **'Si ves un dispositivo que no reconoces, ciérralo y cambia tu contraseña.'**
+  String get accesoSesionesPie;
+
+  /// Último uso de una sesión abierta antes de esta función, que no guardó ninguna fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin actividad registrada'**
+  String get accesoSesionesSinActividad;
+
+  /// Título de la pantalla de sesiones y dispositivos activos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis sesiones'**
+  String get accesoSesionesTitulo;
+
+  /// Último uso de una sesión de hace más de una semana, con la fecha.
+  ///
+  /// In es, this message translates to:
+  /// **'El {fecha}'**
+  String accesoSesionesUltimoUsoFecha(String fecha);
+
+  /// Mensaje del estado vacío de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando entres desde un dispositivo, aparecerá aquí.'**
+  String get accesoSesionesVacioMensaje;
+
+  /// Título del estado vacío de la lista de sesiones.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay sesiones abiertas'**
+  String get accesoSesionesVacioTitulo;
 
   /// Título del aviso cuando no se pudo llegar al servidor al intentar entrar.
   ///
@@ -470,16 +1106,10 @@ abstract class AppLocalizations {
   /// **'Pedir ayuda'**
   String get asistenciaHeroeAccion;
 
-  /// Título del carrusel de guías.
-  ///
-  /// In es, this message translates to:
-  /// **'Guías rápidas'**
-  String get asistenciaEstanteGuias;
-
   /// Encabezado de la lista de guías.
   ///
   /// In es, this message translates to:
-  /// **'Todas las guías'**
+  /// **'Guías'**
   String get asistenciaGrupoGuias;
 
   /// Cuántos pasos tiene una guía.
@@ -926,10 +1556,16 @@ abstract class AppLocalizations {
   /// **'No pudimos reprogramar tu cita. Intenta de nuevo.'**
   String get citasReprogramarError;
 
+  /// Título de la pantalla que confirma que la cita se movió a otro horario.
+  ///
+  /// In es, this message translates to:
+  /// **'Cita reprogramada'**
+  String get citasReprogramadaTitulo;
+
   /// Aviso tras reprogramar.
   ///
   /// In es, this message translates to:
-  /// **'Cita reprogramada para el {fecha} a las {hora}. El horario anterior quedó libre.'**
+  /// **'Te esperamos el {fecha} a las {hora}. El horario anterior quedó libre.'**
   String citasReprogramarListo(DateTime fecha, String hora);
 
   /// 409: la cita ya no está confirmada o pasó el plazo.
@@ -1358,6 +1994,696 @@ abstract class AppLocalizations {
   /// **'Foto del {modelo}'**
   String fotoDeModelo(String modelo);
 
+  /// Falla inesperada en una acción.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal. Intenta de nuevo.'**
+  String get tiendaAccionError;
+
+  /// Falla de red al cambiar un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get tiendaAccionSinConexion;
+
+  /// Botón hacia agendar una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar cita'**
+  String get tiendaAgendarCita;
+
+  /// Producto sin existencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Agotado'**
+  String get tiendaAgotado;
+
+  /// Confirmación al agregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregado. Llevas {piezas} de este producto.'**
+  String tiendaAgregado(int piezas);
+
+  /// Botón para agregar un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar al carrito'**
+  String get tiendaAgregar;
+
+  /// Detalle del cierre del apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu apartado vence el {fecha}. Págalo ahora en la app o en caja al recoger.'**
+  String tiendaApartadoMensaje(String fecha);
+
+  /// Cierre del apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Productos apartados'**
+  String get tiendaApartadoTitulo;
+
+  /// Botón que aparta el carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Apartar'**
+  String get tiendaApartar;
+
+  /// Falla de red al apartar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Tu carrito se conserva: vuelve a intentar y no se apartará dos veces.'**
+  String get tiendaApartarSinConexion;
+
+  /// Sección de los estados del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get tiendaAvanceTitulo;
+
+  /// Etiqueta del buscador.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar por nombre o código'**
+  String get tiendaBuscar;
+
+  /// Elige otra cita para instalar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar de cita'**
+  String get tiendaCambiarCita;
+
+  /// Confirma la cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, cancelar'**
+  String get tiendaCancelarConfirmar;
+
+  /// Detalle de la confirmación.
+  ///
+  /// In es, this message translates to:
+  /// **'Las piezas se liberan y otra persona puede apartarlas.'**
+  String get tiendaCancelarMensaje;
+
+  /// Botón para cancelar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar pedido'**
+  String get tiendaCancelarPedido;
+
+  /// Confirmación de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cancelar el pedido?'**
+  String get tiendaCancelarTitulo;
+
+  /// No cancela.
+  ///
+  /// In es, this message translates to:
+  /// **'Conservar'**
+  String get tiendaCancelarVolver;
+
+  /// Etiqueta del selector de piezas.
+  ///
+  /// In es, this message translates to:
+  /// **'Cantidad'**
+  String get tiendaCantidad;
+
+  /// Anuncio del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la tienda'**
+  String get tiendaCargando;
+
+  /// Carrito lleno.
+  ///
+  /// In es, this message translates to:
+  /// **'El carrito admite hasta {maximo} productos distintos.'**
+  String tiendaCarritoLleno(int maximo);
+
+  /// Título del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Carrito'**
+  String get tiendaCarritoTitulo;
+
+  /// Detalle del carrito vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Agrega productos desde la tienda para apartarlos.'**
+  String get tiendaCarritoVacioMensaje;
+
+  /// Estado vacío del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu carrito está vacío'**
+  String get tiendaCarritoVacioTitulo;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesorios'**
+  String get tiendaCategoriaAccesorio;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuidado del auto'**
+  String get tiendaCategoriaCuidado;
+
+  /// Categoría de producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get tiendaCategoriaRefaccion;
+
+  /// Filtro sin categoría.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo'**
+  String get tiendaCategoriaTodas;
+
+  /// Marca de la cita elegida.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegida'**
+  String get tiendaCitaElegida;
+
+  /// Rango de años de un modelo compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String tiendaCompatibilidadAnios(String desde, String hasta);
+
+  /// Encabezado de la lista de compatibilidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Autos compatibles'**
+  String get tiendaCompatibilidadTitulo;
+
+  /// Insignia de producto compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'Le queda a tu auto'**
+  String get tiendaCompatible;
+
+  /// Título del detalle de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi pedido'**
+  String get tiendaDetalleTitulo;
+
+  /// Encabezado del selector de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige la cita'**
+  String get tiendaElegirCita;
+
+  /// Cierra un diálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Entendido'**
+  String get tiendaEntendido;
+
+  /// Texto de la entrada a la tienda desde el catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Accesorios y refacciones originales para tu auto'**
+  String get tiendaEntradaDetalle;
+
+  /// Entrega con instalación.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalar en mi cita'**
+  String get tiendaEntregaCita;
+
+  /// Entrega en mostrador.
+  ///
+  /// In es, this message translates to:
+  /// **'Recoger en mostrador'**
+  String get tiendaEntregaMostrador;
+
+  /// Sección de cómo se entrega.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrega'**
+  String get tiendaEntregaTitulo;
+
+  /// Falla al leer las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos consultar tus citas.'**
+  String get tiendaErrorCitas;
+
+  /// Falla al pedir otra página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más. Intenta de nuevo.'**
+  String get tiendaErrorMas;
+
+  /// Detalle del error genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get tiendaErrorMensaje;
+
+  /// Error genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get tiendaErrorTitulo;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Apartado'**
+  String get tiendaEstadoApartado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelado'**
+  String get tiendaEstadoCancelado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Entregado'**
+  String get tiendaEstadoEntregado;
+
+  /// Estado del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get tiendaEstadoListo;
+
+  /// Piezas disponibles de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'{piezas, plural, =1{Queda 1 pieza} other{Quedan {piezas} piezas}}'**
+  String tiendaExistencia(int piezas);
+
+  /// Encabezado del filtro por vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Compatible con'**
+  String get tiendaFiltroAuto;
+
+  /// Descripción de la foto de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto de {producto}'**
+  String tiendaFotoDe(String producto);
+
+  /// Sección de instalación del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalación'**
+  String get tiendaInstalacionTitulo;
+
+  /// Botón del producto para instalarlo en la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Instalar en mi próxima cita'**
+  String get tiendaInstalarProxima;
+
+  /// Botón que lleva a la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a la tienda'**
+  String get tiendaIrALaTienda;
+
+  /// Aviso de compatibilidad en el producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Le queda a tu {auto}'**
+  String tiendaLeQueda(String auto);
+
+  /// No se pueden agregar más piezas de ese producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya llevas {piezas}, el máximo de este producto.'**
+  String tiendaMaximoAlcanzado(int piezas);
+
+  /// Con qué se pagó si no se sabe la marca.
+  ///
+  /// In es, this message translates to:
+  /// **'tarjeta'**
+  String get tiendaMedioTarjeta;
+
+  /// Título y botón de la lista de pedidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis pedidos'**
+  String get tiendaMisPedidos;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo canceló la agencia'**
+  String get tiendaMotivoAgencia;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo cancelaste tú'**
+  String get tiendaMotivoCliente;
+
+  /// Motivo de cancelación.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado venció'**
+  String get tiendaMotivoVencido;
+
+  /// Aviso de incompatibilidad en el producto.
+  ///
+  /// In es, this message translates to:
+  /// **'No le queda a tu {auto}'**
+  String tiendaNoLeQueda(String auto);
+
+  /// Título del diálogo de rechazo al apartar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo apartar'**
+  String get tiendaNoSeApartoTitulo;
+
+  /// Título del diálogo de rechazo al cambiar un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo cambiar el pedido'**
+  String get tiendaNoSeCambioTitulo;
+
+  /// Un pedido ya pagado en la app (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get tiendaPagado;
+
+  /// Título del aviso de un pedido pagado en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado con {medio}'**
+  String tiendaPagadoAviso(String medio);
+
+  /// En lugar del botón de cancelar de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.'**
+  String get tiendaPagadoCancelarEnMostrador;
+
+  /// Cuándo se pagó el pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'El {fecha}. Ya no vence.'**
+  String tiendaPagadoMensaje(String fecha);
+
+  /// Botón que abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String tiendaPagar(String monto);
+
+  /// Cierre del apartado: abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar ahora'**
+  String get tiendaPagarAhora;
+
+  /// Cierre del apartado: abre el pedido para pagarlo al recogerlo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar en caja'**
+  String get tiendaPagarEnCaja;
+
+  /// Cómo se paga un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Paga en la app desde tu pedido o en caja al recoger.'**
+  String get tiendaPagoEnAppOCaja;
+
+  /// Cómo se paga.
+  ///
+  /// In es, this message translates to:
+  /// **'No se cobra en la app: pagas en caja.'**
+  String get tiendaPagoEnCaja;
+
+  /// Detalle de pedido inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu lista de pedidos.'**
+  String get tiendaPedidoNoEncontradoMensaje;
+
+  /// Pedido ajeno o inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese pedido'**
+  String get tiendaPedidoNoEncontradoTitulo;
+
+  /// Total y piezas de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'{total}, {piezas, plural, =1{1 pieza} other{{piezas} piezas}}'**
+  String tiendaPedidoResumen(String total, int piezas);
+
+  /// Título de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedido {numero}'**
+  String tiendaPedidoTitulo(int numero);
+
+  /// Detalle de mis pedidos vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que apartes en la tienda aparece aquí.'**
+  String get tiendaPedidosVacioMensaje;
+
+  /// Estado vacío de mis pedidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes pedidos'**
+  String get tiendaPedidosVacioTitulo;
+
+  /// Precio unitario.
+  ///
+  /// In es, this message translates to:
+  /// **'{precio} cada uno'**
+  String tiendaPrecioCadaUno(String precio);
+
+  /// Detalle de producto retirado.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que la agencia lo haya retirado de la tienda.'**
+  String get tiendaProductoNoEncontradoMensaje;
+
+  /// Producto retirado o inexistente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese producto ya no está'**
+  String get tiendaProductoNoEncontradoTitulo;
+
+  /// Título de la pantalla de un producto.
+  ///
+  /// In es, this message translates to:
+  /// **'Producto'**
+  String get tiendaProductoTitulo;
+
+  /// Sección de renglones del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Productos'**
+  String get tiendaProductosTitulo;
+
+  /// Quita un producto del carrito.
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar'**
+  String get tiendaQuitar;
+
+  /// Quita los filtros de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todos los productos'**
+  String get tiendaQuitarFiltros;
+
+  /// Rechazo CITA_NO_DISPONIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa cita está cancelada o ya pasó. Elige otra o recoge en mostrador.'**
+  String get tiendaRechazoCitaNoDisponible;
+
+  /// Rechazo PRODUCTO_INCOMPATIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Algún producto no le queda al auto de esa cita. Elige otra cita o recoge en mostrador.'**
+  String get tiendaRechazoIncompatible;
+
+  /// Rechazo LIMITE_APARTADOS.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes 3 pedidos sin entregar. Recoge o cancela uno para apartar más.'**
+  String get tiendaRechazoLimite;
+
+  /// Rechazo PEDIDO_NO_CANCELABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya se entregó y no se puede cancelar.'**
+  String get tiendaRechazoNoCancelable;
+
+  /// Rechazo PEDIDO_NO_MODIFICABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya se entregó o se canceló y no se puede cambiar.'**
+  String get tiendaRechazoNoModificable;
+
+  /// Rechazo PEDIDO_PAGADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.'**
+  String get tiendaRechazoPagado;
+
+  /// Rechazo SIN_EXISTENCIA.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.'**
+  String get tiendaRechazoSinExistencia;
+
+  /// Botón de reintento.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get tiendaReintentar;
+
+  /// Cantidad y precio de un renglón.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad} por {precio}'**
+  String tiendaRenglonDetalle(int cantidad, String precio);
+
+  /// El pedido va ligado a una cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Se instala en tu cita'**
+  String get tiendaSeInstala;
+
+  /// El pedido se recoge.
+  ///
+  /// In es, this message translates to:
+  /// **'Se recoge en mostrador'**
+  String get tiendaSeRecoge;
+
+  /// Regresa a la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Seguir en la tienda'**
+  String get tiendaSeguirComprando;
+
+  /// Ninguna cita es de un auto compatible.
+  ///
+  /// In es, this message translates to:
+  /// **'No le queda al auto de ninguna de tus próximas citas.'**
+  String get tiendaSinCitaCompatible;
+
+  /// No hay cita donde instalar.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes citas confirmadas por venir. Agenda una para que lo instalen.'**
+  String get tiendaSinCitas;
+
+  /// Detalle del error sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get tiendaSinConexionMensaje;
+
+  /// Error sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get tiendaSinConexionTitulo;
+
+  /// La tarjeta con que se pagó: marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String tiendaTarjeta(String marca, String ultimos4);
+
+  /// Título de la tienda y de su entrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienda'**
+  String get tiendaTitulo;
+
+  /// Opción para no filtrar por vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Todos los productos'**
+  String get tiendaTodosLosProductos;
+
+  /// Total del carrito o del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get tiendaTotal;
+
+  /// Producto universal.
+  ///
+  /// In es, this message translates to:
+  /// **'Para cualquier auto'**
+  String get tiendaUniversal;
+
+  /// Mensaje del estado vacío de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con otra búsqueda, otra categoría u otro auto.'**
+  String get tiendaVacioMensaje;
+
+  /// Estado vacío de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos productos'**
+  String get tiendaVacioTitulo;
+
+  /// Cuándo vence un apartado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String tiendaVence(String fecha);
+
+  /// Aviso de vencimiento en el pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}. Pasada esa hora se cancela y las piezas se liberan.'**
+  String tiendaVenceDetalle(String fecha);
+
+  /// Botón al carrito con el número de piezas.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver carrito ({piezas})'**
+  String tiendaVerCarrito(int piezas);
+
+  /// Pide la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get tiendaVerMas;
+
+  /// Abre el pedido recién creado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mi pedido'**
+  String get tiendaVerMiPedido;
+
+  /// Vigencia del apartado con instalación.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado dura hasta el final del día siguiente a tu cita.'**
+  String get tiendaVigenciaCita;
+
+  /// Vigencia del apartado en mostrador.
+  ///
+  /// In es, this message translates to:
+  /// **'El apartado dura 48 horas. Si vence, las piezas se liberan.'**
+  String get tiendaVigenciaMostrador;
+
   /// Acceso del detalle a la ficha técnica del vehículo.
   ///
   /// In es, this message translates to:
@@ -1687,6 +3013,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Navegación principal'**
   String get navegacionPrincipal;
+
+  /// Segunda lámina de la bienvenida: las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.'**
+  String get bienvenidaDosTexto;
+
+  /// Título de la segunda lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide tu cita sin llamar'**
+  String get bienvenidaDosTitulo;
+
+  /// Botón de la última lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Empezar'**
+  String get bienvenidaEmpezar;
+
+  /// Salida de la bienvenida, disponible desde la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Saltar'**
+  String get bienvenidaSaltar;
+
+  /// Avanza a la siguiente lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Siguiente'**
+  String get bienvenidaSiguiente;
+
+  /// Tercera lámina de la bienvenida: el seguimiento y los avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.'**
+  String get bienvenidaTresTexto;
+
+  /// Título de la tercera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue tu servicio al día'**
+  String get bienvenidaTresTitulo;
+
+  /// Primera lámina de la bienvenida: los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.'**
+  String get bienvenidaUnoTexto;
+
+  /// Título de la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, en un solo lugar'**
+  String get bienvenidaUnoTitulo;
 
   /// Lo que anuncia un botón mientras trabaja.
   ///
@@ -2167,6 +3547,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Aún no hay servicios'**
   String get historialVacioTitulo;
+
+  /// Etiqueta del interruptor de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir analítica'**
+  String get analiticaTitulo;
+
+  /// Explica los datos opcionales de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'Comparte métricas de uso y diagnóstico para mejorar CareCar.'**
+  String get analiticaDescripcion;
+
+  /// Error al guardar la preferencia de analitica.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar la preferencia. Intenta de nuevo.'**
+  String get analiticaError;
 
   /// Etiqueta del selector de idioma de la app.
   ///
@@ -2791,6 +4189,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Opciones de tu cita'**
   String get citasAccionesCita;
+
+  /// Nombre del botón que cierra la pantalla actual (X de los encabezados).
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get cerrarPantalla;
 
   /// Nombre accesible del botón que regresa a la pantalla anterior, o al inicio si no hay anterior.
   ///
@@ -3729,42 +5133,6 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Catálogo'**
   String get inicioDestinoCatalogo;
-
-  /// Título del acceso a los vehículos en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Mis vehículos'**
-  String get inicioAccesoVehiculosTitulo;
-
-  /// Subtítulo del acceso a los vehículos.
-  ///
-  /// In es, this message translates to:
-  /// **'Tus autos, fichas y manuales'**
-  String get inicioAccesoVehiculosSubtitulo;
-
-  /// Título del acceso a las citas en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Citas'**
-  String get inicioAccesoCitasTitulo;
-
-  /// Subtítulo del acceso a las citas.
-  ///
-  /// In es, this message translates to:
-  /// **'Agenda y revisa tus citas'**
-  String get inicioAccesoCitasSubtitulo;
-
-  /// Título del acceso al catálogo en el inicio.
-  ///
-  /// In es, this message translates to:
-  /// **'Catálogo'**
-  String get inicioAccesoCatalogoTitulo;
-
-  /// Subtítulo del acceso al catálogo.
-  ///
-  /// In es, this message translates to:
-  /// **'Conoce los modelos Nissan'**
-  String get inicioAccesoCatalogoSubtitulo;
 
   /// Título de la pantalla del asistente y acceso desde el detalle del vehículo.
   ///
@@ -6179,6 +7547,3358 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tu próximo servicio ya se acerca. Puedes agendarlo cuando quieras.'**
   String get mantenimientoRecordatorioEnVivo;
+
+  /// Cómo mover el pin del mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Arrastra el pin, toca el mapa o usa las flechas.'**
+  String get mapaAyudaPin;
+
+  /// Nombre del mapa para el lector de pantalla cuando hay pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con un pin.'**
+  String get mapaConPin;
+
+  /// Se suma al nombre del mapa cuando dibuja tu ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'Se muestra tu ubicación.'**
+  String get mapaConUbicacion;
+
+  /// Botón que muestra tu ubicación en el mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mi ubicación'**
+  String get mapaMiUbicacion;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al este'**
+  String get mapaMoverEste;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al norte'**
+  String get mapaMoverNorte;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al oeste'**
+  String get mapaMoverOeste;
+
+  /// Botón que mueve el pin sin arrastrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Mover el pin al sur'**
+  String get mapaMoverSur;
+
+  /// Botón que pone el pin sin tocar el mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Poner el pin en el centro'**
+  String get mapaPinAlCentro;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al este'**
+  String get mapaPinMovidoEste;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al norte'**
+  String get mapaPinMovidoNorte;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al oeste'**
+  String get mapaPinMovidoOeste;
+
+  /// Anuncio del lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Pin movido al sur'**
+  String get mapaPinMovidoSur;
+
+  /// Botón que vuelve a pedir las imágenes del mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get mapaReintentar;
+
+  /// Nombre del mapa que solo sigue un marcador.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa de seguimiento.'**
+  String get mapaSeguimiento;
+
+  /// Nombre del mapa para el lector de pantalla cuando no hay pin.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa sin pin.'**
+  String get mapaSinPin;
+
+  /// Aviso cuando las imágenes del mapa no cargan.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar el mapa. Revisa tu internet y vuelve a intentarlo.'**
+  String get mapaSinTeselas;
+
+  /// Aviso cuando el GPS está apagado.
+  ///
+  /// In es, this message translates to:
+  /// **'La ubicación del teléfono está apagada. Enciéndela y vuelve a intentarlo.'**
+  String get mapaUbicacionApagada;
+
+  /// Aviso cuando el permiso ya no se puede pedir.
+  ///
+  /// In es, this message translates to:
+  /// **'La ubicación está bloqueada. Actívala para CareCar en los ajustes del teléfono.'**
+  String get mapaUbicacionBloqueada;
+
+  /// Aviso cuando se niega el permiso de ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'No nos diste permiso para ver tu ubicación. Puedes usar el mapa sin ella.'**
+  String get mapaUbicacionDenegada;
+
+  /// Aviso cuando la posición no llega a tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu ubicación tardó demasiado. Vuelve a intentarlo.'**
+  String get mapaUbicacionTiempo;
+
+  /// Título de la pantalla de garantía (V2-M10.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Garantía'**
+  String get garantiaTitulo;
+
+  /// Acceso a la garantía desde el detalle del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Garantía'**
+  String get garantiaAcceso;
+
+  /// Subtítulo con el km actual; km ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto lleva {km} km'**
+  String garantiaKmActual(String km);
+
+  /// Estado vacío de la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin garantía registrada'**
+  String get garantiaVaciaTitulo;
+
+  /// Mensaje del estado vacío de la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia registre la garantía de tu auto la verás aquí.'**
+  String get garantiaVaciaMensaje;
+
+  /// Insignia de una cobertura vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get garantiaEstadoVigente;
+
+  /// Insignia de una cobertura a 60 días o 1 000 km del límite.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get garantiaEstadoPorVencer;
+
+  /// Insignia de una cobertura vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get garantiaEstadoVencida;
+
+  /// Fecha límite de una cobertura sin km límite.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String garantiaVence(String fecha);
+
+  /// Fecha y km límite de una cobertura; lo que llegue primero.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha} o a los {km} km'**
+  String garantiaVenceOKm(String fecha, String km);
+
+  /// Días que le quedan a la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{Queda 1 día} other{Quedan {dias} días}}'**
+  String garantiaQuedanDias(int dias);
+
+  /// Km que le quedan a la cobertura; km ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Quedan {km} km'**
+  String garantiaQuedanKm(String km);
+
+  /// Por qué venció la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció por fecha'**
+  String get garantiaVencidaPorFecha;
+
+  /// Por qué venció la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció por kilometraje'**
+  String get garantiaVencidaPorKm;
+
+  /// Título corto de la pantalla de campañas de seguridad (V2-M10.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Campañas'**
+  String get campanasTitulo;
+
+  /// Acceso a las campañas desde el detalle del vehículo y la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Campañas de seguridad'**
+  String get campanasAcceso;
+
+  /// Subtítulo del acceso a las campañas desde la garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamados del fabricante para tu auto'**
+  String get campanasAccesoResumen;
+
+  /// Insignia del garaje cuando el auto tiene una campaña pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Campaña de seguridad'**
+  String get campanasInsignia;
+
+  /// Estado vacío de las campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto no tiene campañas'**
+  String get campanasVaciaTitulo;
+
+  /// Mensaje del estado vacío de las campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Si el fabricante publica una para tu auto, te avisamos.'**
+  String get campanasVaciaMensaje;
+
+  /// Código de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Campaña {codigo}'**
+  String campanasCodigo(String codigo);
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad baja'**
+  String get campanasGravedadBaja;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad media'**
+  String get campanasGravedadMedia;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Gravedad alta'**
+  String get campanasGravedadAlta;
+
+  /// Gravedad de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Crítica'**
+  String get campanasGravedadCritica;
+
+  /// Estado de la campaña: abierta, sin agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get campanasEstadoAbierta;
+
+  /// Estado de la campaña: con cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendada'**
+  String get campanasEstadoAgendada;
+
+  /// Estado de la campaña: el taller ya la atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Atendida'**
+  String get campanasEstadoAtendida;
+
+  /// Encabezado de lo que debe hacer el cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué hacer'**
+  String get campanasQueHacer;
+
+  /// Aviso de una campaña crítica pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Atiende esta campaña cuanto antes'**
+  String get campanasAvisoCritica;
+
+  /// Botón para agendar la atención de la campaña (V2-M10.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar atención'**
+  String get campanasAgendar;
+
+  /// Botón para reintentar en garantía y campañas.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get garantiaReintentar;
+
+  /// Ayuda mientras no hay día elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día para ver sus horarios.'**
+  String get campanasAgendarSinDia;
+
+  /// El día elegido ya no tiene horarios con cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'No quedan horarios ese día.'**
+  String get campanasAgendarSinHorarios;
+
+  /// Ningún día del rango tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'El taller no tiene horarios libres por ahora. Intenta más tarde.'**
+  String get campanasAgendarSinCupoRango;
+
+  /// Botón para volver a la campaña tras agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a la campaña'**
+  String get campanasAgendarVolver;
+
+  /// Botón de una campaña ya agendada.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis citas'**
+  String get campanasVerCitas;
+
+  /// Título de la pantalla para agendar una campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar campaña'**
+  String get campanasAgendarTitulo;
+
+  /// Encabezado del calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día'**
+  String get campanasAgendarDia;
+
+  /// Encabezado de los horarios del día.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige la hora'**
+  String get campanasAgendarHora;
+
+  /// Botón que confirma la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar'**
+  String get campanasAgendarConfirmar;
+
+  /// El horario elegido ya no tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese horario se llenó. Elige otro.'**
+  String get campanasAgendarSinCupo;
+
+  /// El vehículo ya tiene cita ese día.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto ya tiene una cita ese día. Elige otro día.'**
+  String get campanasAgendarDuplicada;
+
+  /// La campaña ya tenía cita o ya se atendió.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta campaña ya está agendada.'**
+  String get campanasAgendarYaAgendada;
+
+  /// Error al agendar la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos agendar. Intenta de nuevo.'**
+  String get campanasAgendarError;
+
+  /// Confirmación de la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, tu cita quedó agendada'**
+  String get campanasAgendadaTitulo;
+
+  /// Día y hora de la cita de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Te esperamos el {fecha} a las {hora}.'**
+  String campanasAgendadaMensaje(String fecha, String hora);
+
+  /// Título de la sección con la descripción de la campaña.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué pasa'**
+  String get campanasQuePasa;
+
+  /// Estado cuando la campaña abierta ya no aparece en la lista del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos esta campaña'**
+  String get campanasNoEncontradaTitulo;
+
+  /// Mensaje del estado de campaña no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a la lista para ver las campañas de tu auto.'**
+  String get campanasNoEncontradaMensaje;
+
+  /// Abre el comprobante con QR de la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver comprobante'**
+  String get campanasVerComprobante;
+
+  /// Acción que abre la búsqueda dentro del manual.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar en el manual'**
+  String get vehiculosManualBuscarAccion;
+
+  /// Acción que cierra la búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar la búsqueda'**
+  String get vehiculosManualBuscarCerrar;
+
+  /// Texto guía del campo de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar en el manual'**
+  String get vehiculosManualBuscarSugerencia;
+
+  /// Guía cuando la búsqueda es muy corta.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe al menos dos letras para buscar en el manual.'**
+  String get vehiculosManualBuscarAyuda;
+
+  /// Sin coincidencias.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos «{consulta}» en el manual.'**
+  String vehiculosManualSinResultados(String consulta);
+
+  /// Título de un resultado de búsqueda.
+  ///
+  /// In es, this message translates to:
+  /// **'Página {pagina}'**
+  String vehiculosManualResultadoPagina(int pagina);
+
+  /// Texto del control deslizable que acepta la oferta (V2-M26.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar oferta'**
+  String get valuacionAceptar;
+
+  /// Confirmación accesible antes de aceptar la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a aceptar la oferta de {monto}. La agencia registra tu decisión.'**
+  String valuacionAceptarMensaje(String monto);
+
+  /// Cierre al agendar la inspección (V2-M26.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Te esperamos el {dia} a las {hora} para revisar tu auto.'**
+  String valuacionAgendadaMensaje(String dia, String hora);
+
+  /// Título del cierre al agendar la inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección agendada'**
+  String get valuacionAgendadaTitulo;
+
+  /// Acción principal del cierre al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis citas'**
+  String get valuacionAgendadaVerCitas;
+
+  /// Acción secundaria del cierre al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a la valuación'**
+  String get valuacionAgendadaVolver;
+
+  /// Botón y título para agendar la inspección física.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar inspección'**
+  String get valuacionAgendar;
+
+  /// Botón que crea la cita de inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar inspección'**
+  String get valuacionAgendarConfirmar;
+
+  /// Sección del calendario.
+  ///
+  /// In es, this message translates to:
+  /// **'Día'**
+  String get valuacionAgendarDia;
+
+  /// Rechazo CITA_DUPLICADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Este auto ya tiene una cita ese día. Elige otro día.'**
+  String get valuacionAgendarDuplicada;
+
+  /// Fallo genérico al agendar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos agendar la inspección. Intenta de nuevo.'**
+  String get valuacionAgendarError;
+
+  /// Sección de franjas horarias.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario'**
+  String get valuacionAgendarHorario;
+
+  /// Rechazo VALUACION_NO_AGENDABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta valuación ya tiene cita o ya no se puede agendar. Revisa su detalle.'**
+  String get valuacionAgendarNoAgendable;
+
+  /// Rechazo FRANJA_SIN_CUPO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese horario se acaba de llenar. Elige otro.'**
+  String get valuacionAgendarSinCupo;
+
+  /// Ayuda mientras no hay día elegido.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige un día para ver sus horarios.'**
+  String get valuacionAgendarSinDia;
+
+  /// El día elegido ya no tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'No quedan horarios ese día.'**
+  String get valuacionAgendarSinHorarios;
+
+  /// Ningún día del rango tiene cupo.
+  ///
+  /// In es, this message translates to:
+  /// **'El taller no tiene horarios libres por ahora. Intenta más tarde.'**
+  String get valuacionAgendarVacioMensaje;
+
+  /// Título cuando no hay cupo en todo el rango.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin horarios disponibles'**
+  String get valuacionAgendarVacioTitulo;
+
+  /// Detalle bajo el nombre del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor de ventas para esta valuación'**
+  String get valuacionAsesorDetalle;
+
+  /// Sección del asesor.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu asesor'**
+  String get valuacionAsesorTitulo;
+
+  /// Sección de los tres pasos.
+  ///
+  /// In es, this message translates to:
+  /// **'Avance'**
+  String get valuacionAvanceTitulo;
+
+  /// Anuncio del esqueleto de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando la valuación'**
+  String get valuacionCargando;
+
+  /// Título del detalle de una valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Valuación formal'**
+  String get valuacionDetalleTitulo;
+
+  /// Mensaje del error de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get valuacionErrorMensaje;
+
+  /// Título del error de carga.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get valuacionErrorTitulo;
+
+  /// Estado ACEPTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptada'**
+  String get valuacionEstadoAceptada;
+
+  /// Estado CITA_AGENDADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección agendada'**
+  String get valuacionEstadoCitaAgendada;
+
+  /// Estado que la app aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'En revisión'**
+  String get valuacionEstadoDesconocido;
+
+  /// Estado OFERTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Con oferta'**
+  String get valuacionEstadoOfertada;
+
+  /// Estado RECHAZADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazada'**
+  String get valuacionEstadoRechazada;
+
+  /// Estado SOLICITADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Por agendar'**
+  String get valuacionEstadoSolicitada;
+
+  /// Estado VENCIDA.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get valuacionEstadoVencida;
+
+  /// Fecha de la estimación de la que sale la valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimado el {fecha}'**
+  String valuacionEstimadaEl(String fecha);
+
+  /// Etiqueta de la cifra del rango.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango estimado'**
+  String get valuacionEstimadoRango;
+
+  /// Sección del rango no vinculante.
+  ///
+  /// In es, this message translates to:
+  /// **'Estimación de partida'**
+  String get valuacionEstimadoTitulo;
+
+  /// Fallo genérico al subir una toma (V2-M26.02).
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo subir. La foto sigue aquí.'**
+  String get valuacionFotoError;
+
+  /// Botón para elegir una foto guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de la galería'**
+  String get valuacionFotoGaleria;
+
+  /// El servidor rechazó el archivo (400).
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia no aceptó esa imagen. Usa una foto JPEG o PNG de hasta 8 MB.'**
+  String get valuacionFotoInvalida;
+
+  /// Descripción de una foto que aún no se sube.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto por subir: {toma}'**
+  String valuacionFotoPorSubir(String toma);
+
+  /// Fallo de red al subir una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. La foto sigue aquí.'**
+  String get valuacionFotoSinConexion;
+
+  /// Descripción de una foto ya subida.
+  ///
+  /// In es, this message translates to:
+  /// **'Foto subida: {toma}'**
+  String valuacionFotoSubida(String toma);
+
+  /// Anuncio mientras sube una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'Subiendo la foto'**
+  String get valuacionFotoSubiendo;
+
+  /// Botón para abrir la cámara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar foto'**
+  String get valuacionFotoTomar;
+
+  /// Botón para dar el permiso de cámara o fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get valuacionFotosAbrirAjustes;
+
+  /// Avance de las tomas guiadas.
+  ///
+  /// In es, this message translates to:
+  /// **'{subidas} de {total} fotos'**
+  String valuacionFotosAvance(int subidas, int total);
+
+  /// Valuación cerrada (VALUACION_CERRADA).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta valuación ya no admite fotos.'**
+  String get valuacionFotosCerrada;
+
+  /// Título de la pantalla de las 8 tomas.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos guiadas'**
+  String get valuacionFotosGuiadasTitulo;
+
+  /// Aviso sobre las fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes agendar sin tener las 8 fotos. Cada foto se sube sola y la app no la guarda en tu teléfono.'**
+  String get valuacionFotosPrivacidad;
+
+  /// El selector de fotos falló.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir la cámara o la galería. Intenta de nuevo.'**
+  String get valuacionFotosSinCamara;
+
+  /// Permiso negado.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin permiso para la cámara o las fotos. Actívalo en los ajustes.'**
+  String get valuacionFotosSinPermiso;
+
+  /// Botón del detalle hacia las fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Subir fotos guiadas'**
+  String get valuacionFotosSubir;
+
+  /// Sección de fotos del detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos de tu auto'**
+  String get valuacionFotosTitulo;
+
+  /// Galería sin fotos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no subes fotos.'**
+  String get valuacionFotosVacio;
+
+  /// Horario de la cita de inspección.
+  ///
+  /// In es, this message translates to:
+  /// **'De {inicio} a {fin}'**
+  String valuacionInspeccionHorario(String inicio, String fin);
+
+  /// Sección de la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get valuacionInspeccionTitulo;
+
+  /// Botón hacia Mis citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver en Mis citas'**
+  String get valuacionInspeccionVerCitas;
+
+  /// Instrucción de la toma de la cajuela.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre la cajuela y toma todo el espacio de carga.'**
+  String get valuacionInstruccionCajuela;
+
+  /// Instrucción de la toma de frente.
+  ///
+  /// In es, this message translates to:
+  /// **'Párate de frente, con el auto completo y las placas a la vista.'**
+  String get valuacionInstruccionFrente;
+
+  /// Instrucción del interior delantero.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre la puerta del conductor y toma los asientos delanteros y el volante.'**
+  String get valuacionInstruccionInteriorDelantero;
+
+  /// Instrucción del interior trasero.
+  ///
+  /// In es, this message translates to:
+  /// **'Abre una puerta trasera y toma el asiento completo.'**
+  String get valuacionInstruccionInteriorTrasero;
+
+  /// Instrucción del lateral derecho.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma el costado del lado del pasajero, de defensa a defensa.'**
+  String get valuacionInstruccionLateralDerecho;
+
+  /// Instrucción del lateral izquierdo.
+  ///
+  /// In es, this message translates to:
+  /// **'Toma el costado del lado del conductor, de defensa a defensa.'**
+  String get valuacionInstruccionLateralIzquierdo;
+
+  /// Instrucción del tablero.
+  ///
+  /// In es, this message translates to:
+  /// **'Enciende el tablero y toma el kilometraje de cerca, sin reflejos.'**
+  String get valuacionInstruccionTableroKm;
+
+  /// Instrucción de la toma trasera.
+  ///
+  /// In es, this message translates to:
+  /// **'Párate detrás, con el auto completo y las placas a la vista.'**
+  String get valuacionInstruccionTrasera;
+
+  /// Kilometraje del auto.
+  ///
+  /// In es, this message translates to:
+  /// **'{km} km'**
+  String valuacionKm(String km);
+
+  /// Falló la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más valuaciones. Intenta de nuevo.'**
+  String get valuacionMisErrorMas;
+
+  /// Título de la lista de valuaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis valuaciones'**
+  String get valuacionMisTitulo;
+
+  /// Acción del vacío de Mis valuaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a Mis estimaciones'**
+  String get valuacionMisVacioAccion;
+
+  /// Mensaje del vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide una valuación formal desde una estimación hecha con uno de tus autos.'**
+  String get valuacionMisVacioMensaje;
+
+  /// Título del vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes valuaciones'**
+  String get valuacionMisVacioTitulo;
+
+  /// Botón de la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver más'**
+  String get valuacionMisVerMas;
+
+  /// Mensaje de valuación no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no exista o que no sea de tu cuenta.'**
+  String get valuacionNoEncontradaMensaje;
+
+  /// Título de valuación no encontrada.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa valuación'**
+  String get valuacionNoEncontradaTitulo;
+
+  /// Oferta aceptada.
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptaste esta oferta. La agencia te dará seguimiento.'**
+  String get valuacionOfertaAceptada;
+
+  /// Oferta en la tarjeta de la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta de {monto}, vigente hasta el {fecha}'**
+  String valuacionOfertaConVigencia(String monto, String fecha);
+
+  /// Etiqueta del monto ofertado.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta formal de la agencia'**
+  String get valuacionOfertaEtiqueta;
+
+  /// Oferta rechazada.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazaste esta oferta.'**
+  String get valuacionOfertaRechazada;
+
+  /// Sección de la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu oferta'**
+  String get valuacionOfertaTitulo;
+
+  /// Oferta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida. Ya no se puede responder, pero la agencia puede renovarla.'**
+  String get valuacionOfertaVencida;
+
+  /// Vigencia de la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente hasta el {fecha}'**
+  String valuacionOfertaVigencia(String fecha);
+
+  /// Primer paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Fotos'**
+  String get valuacionPasoFotos;
+
+  /// Segundo paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Inspección'**
+  String get valuacionPasoInspeccion;
+
+  /// Tercer paso del avance.
+  ///
+  /// In es, this message translates to:
+  /// **'Oferta'**
+  String get valuacionPasoOferta;
+
+  /// Fecha en que se pidió la valuación.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedida el {fecha}'**
+  String valuacionPedidaEl(String fecha);
+
+  /// Botón en la calculadora y en el detalle de una estimación (V2-M26.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir valuación formal'**
+  String get valuacionPedir;
+
+  /// Fallo genérico al pedirla.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir la valuación. Intenta de nuevo.'**
+  String get valuacionPedirError;
+
+  /// La estimación no existe o es ajena (404).
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos esa estimación.'**
+  String get valuacionPedirNoEncontrada;
+
+  /// Rechazo VALUACION_SIN_VEHICULO.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta estimación se hizo capturando el auto a mano. Para valuarlo, pide la valuación en la agencia.'**
+  String get valuacionPedirSinVehiculo;
+
+  /// Botón para rechazar la oferta.
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazar oferta'**
+  String get valuacionRechazar;
+
+  /// Cierra el diálogo sin rechazar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get valuacionRechazarCancelar;
+
+  /// Confirma el rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, rechazar'**
+  String get valuacionRechazarConfirmar;
+
+  /// Mensaje del diálogo de rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a rechazar la oferta de {monto}. No se puede deshacer.'**
+  String valuacionRechazarMensaje(String monto);
+
+  /// Título del diálogo de rechazo.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Rechazar la oferta?'**
+  String get valuacionRechazarTitulo;
+
+  /// Botón para reintentar.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get valuacionReintentar;
+
+  /// Fallo genérico al responder.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos registrar tu respuesta. Intenta de nuevo.'**
+  String get valuacionRespuestaError;
+
+  /// Rechazo OFERTA_NO_DISPONIBLE.
+  ///
+  /// In es, this message translates to:
+  /// **'La oferta cambió y no se registró nada. Revisa la información actual.'**
+  String get valuacionRespuestaNoDisponible;
+
+  /// Rechazo OFERTA_VENCIDA.
+  ///
+  /// In es, this message translates to:
+  /// **'La oferta venció y no se registró tu respuesta.'**
+  String get valuacionRespuestaVencida;
+
+  /// Una acción falló por falta de red.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get valuacionSinConexionAccion;
+
+  /// Mensaje del estado sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get valuacionSinConexionMensaje;
+
+  /// Título del estado sin conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get valuacionSinConexionTitulo;
+
+  /// Nombre de la toma CAJUELA.
+  ///
+  /// In es, this message translates to:
+  /// **'Cajuela'**
+  String get valuacionTomaCajuela;
+
+  /// Nombre de la toma FRENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Frente'**
+  String get valuacionTomaFrente;
+
+  /// Nombre de la toma INTERIOR_DELANTERO.
+  ///
+  /// In es, this message translates to:
+  /// **'Interior delantero'**
+  String get valuacionTomaInteriorDelantero;
+
+  /// Nombre de la toma INTERIOR_TRASERO.
+  ///
+  /// In es, this message translates to:
+  /// **'Interior trasero'**
+  String get valuacionTomaInteriorTrasero;
+
+  /// Nombre de la toma LATERAL_DERECHO.
+  ///
+  /// In es, this message translates to:
+  /// **'Lateral derecho'**
+  String get valuacionTomaLateralDerecho;
+
+  /// Nombre de la toma LATERAL_IZQUIERDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Lateral izquierdo'**
+  String get valuacionTomaLateralIzquierdo;
+
+  /// Título de la tarjeta de una toma.
+  ///
+  /// In es, this message translates to:
+  /// **'{numero}. {toma}'**
+  String valuacionTomaNumero(int numero, String toma);
+
+  /// Nombre de la toma TABLERO_KM.
+  ///
+  /// In es, this message translates to:
+  /// **'Tablero con el kilometraje'**
+  String get valuacionTomaTableroKm;
+
+  /// Nombre de la toma TRASERA.
+  ///
+  /// In es, this message translates to:
+  /// **'Trasera'**
+  String get valuacionTomaTrasera;
+
+  /// Título de la gráfica (V2-M26.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Valor estimado medio por mes'**
+  String get valuacionValorGrafica;
+
+  /// Etiqueta cuando solo hay un mes.
+  ///
+  /// In es, this message translates to:
+  /// **'Valor estimado medio'**
+  String get valuacionValorMedio;
+
+  /// Vehículo no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que ya no esté en tu garaje.'**
+  String get valuacionValorNoEncontradoMensaje;
+
+  /// Título de vehículo no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos ese auto'**
+  String get valuacionValorNoEncontradoTitulo;
+
+  /// Rango y kilometraje de un mes.
+  ///
+  /// In es, this message translates to:
+  /// **'{rango}, con {km} km'**
+  String valuacionValorRangoDelMes(String rango, String km);
+
+  /// Encabezado de la lista de rangos.
+  ///
+  /// In es, this message translates to:
+  /// **'Rango de cada mes'**
+  String get valuacionValorRangos;
+
+  /// Título de la pantalla del valor en el tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Valor de mi auto'**
+  String get valuacionValorTitulo;
+
+  /// Explicación con un solo mes.
+  ///
+  /// In es, this message translates to:
+  /// **'La tendencia aparece cuando estimes tu auto en otros meses.'**
+  String get valuacionValorUnMes;
+
+  /// Acción del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Ir a la calculadora'**
+  String get valuacionValorVacioAccion;
+
+  /// Mensaje del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Estima este auto con la calculadora para ver cómo cambia su valor.'**
+  String get valuacionValorVacioMensaje;
+
+  /// Título del vacío del valor.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay estimaciones de este auto'**
+  String get valuacionValorVacioTitulo;
+
+  /// Botón hacia el valor en el tiempo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver cómo cambia el valor'**
+  String get valuacionVerValor;
+
+  /// Aviso del ticket con los puntos que dio la orden (V2-M12.02); puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganaste {puntos} puntos de lealtad con este servicio.'**
+  String historialTicketPuntosGanados(String puntos);
+
+  /// Título de la pantalla de lealtad (V2-M12.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis puntos'**
+  String get lealtadTitulo;
+
+  /// Subtítulo de Mis puntos.
+  ///
+  /// In es, this message translates to:
+  /// **'Gana puntos en cada servicio y canjéalos en la agencia.'**
+  String get lealtadSubtitulo;
+
+  /// Saldo de puntos; puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} puntos'**
+  String lealtadPuntos(String puntos);
+
+  /// Nivel del cliente; nivel es Bronce, Plata u Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Nivel {nivel}'**
+  String lealtadNivel(String nivel);
+
+  /// Nombre del nivel Bronce.
+  ///
+  /// In es, this message translates to:
+  /// **'Bronce'**
+  String get lealtadNivelBronce;
+
+  /// Nombre del nivel Plata.
+  ///
+  /// In es, this message translates to:
+  /// **'Plata'**
+  String get lealtadNivelPlata;
+
+  /// Nombre del nivel Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Oro'**
+  String get lealtadNivelOro;
+
+  /// Lo que falta para el siguiente nivel.
+  ///
+  /// In es, this message translates to:
+  /// **'Te faltan {puntos} puntos para {nivel}'**
+  String lealtadFaltan(String puntos, String nivel);
+
+  /// Detalle en el nivel Oro.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya estás en el nivel más alto.'**
+  String get lealtadNivelMaximo;
+
+  /// Etiqueta de la barra de avance; puntos ya viene con separadores.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} ganados en 12 meses'**
+  String lealtadGanados(String puntos);
+
+  /// Esqueleto de carga de las pantallas de lealtad para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus puntos'**
+  String get lealtadCargando;
+
+  /// Botón para volver a pedir los datos de lealtad.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get lealtadReintentar;
+
+  /// Acceso al catálogo de recompensas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensas'**
+  String get lealtadRecompensas;
+
+  /// Subtítulo del acceso a recompensas.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjea tus puntos'**
+  String get lealtadRecompensasResumen;
+
+  /// Acceso a mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis canjes'**
+  String get lealtadCanjes;
+
+  /// Subtítulo del acceso a mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Códigos para usar en la agencia'**
+  String get lealtadCanjesResumen;
+
+  /// Acceso a los movimientos de puntos.
+  ///
+  /// In es, this message translates to:
+  /// **'Movimientos'**
+  String get lealtadMovimientos;
+
+  /// Subtítulo del acceso a movimientos.
+  ///
+  /// In es, this message translates to:
+  /// **'De dónde salen tus puntos'**
+  String get lealtadMovimientosResumen;
+
+  /// Acceso a referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Referir a un amigo'**
+  String get lealtadReferir;
+
+  /// Subtítulo del acceso a referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Gana puntos si tu amigo compra su auto'**
+  String get lealtadReferirResumen;
+
+  /// Título del catálogo de recompensas (V2-M12.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensas'**
+  String get recompensasTitulo;
+
+  /// Subtítulo del catálogo con el saldo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tienes {puntos} puntos'**
+  String recompensasSaldo(String puntos);
+
+  /// Estado vacío del catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay recompensas'**
+  String get recompensasVaciaTitulo;
+
+  /// Mensaje del catálogo vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia publique recompensas las verás aquí.'**
+  String get recompensasVaciaMensaje;
+
+  /// Costo de una recompensa.
+  ///
+  /// In es, this message translates to:
+  /// **'{puntos} puntos'**
+  String recompensasCosto(String puntos);
+
+  /// Insignia de una recompensa que no alcanza.
+  ///
+  /// In es, this message translates to:
+  /// **'Te faltan {puntos}'**
+  String recompensasTeFaltan(String puntos);
+
+  /// Insignia de una recompensa sin existencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Agotada'**
+  String get recompensasAgotada;
+
+  /// Insignia de una recompensa que se puede canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'Disponible'**
+  String get recompensasDisponible;
+
+  /// Título de la confirmación del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Canjear {recompensa}?'**
+  String recompensasConfirmarTitulo(String recompensa);
+
+  /// Mensaje de la confirmación con el costo y el saldo que queda.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuesta {costo} puntos. Te quedarán {quedan}.'**
+  String recompensasConfirmarMensaje(String costo, String quedan);
+
+  /// Botón que confirma el canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjear'**
+  String get recompensasConfirmar;
+
+  /// Botón que cancela el canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get recompensasCancelar;
+
+  /// Título del diálogo de error al canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo canjear'**
+  String get recompensasNoSePudoTitulo;
+
+  /// Error SALDO_INSUFICIENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no te alcanzan los puntos para esta recompensa.'**
+  String get recompensasSinSaldo;
+
+  /// Error RECOMPENSA_AGOTADA.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa se acaba de agotar.'**
+  String get recompensasSeAgoto;
+
+  /// Error genérico al canjear.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos canjear la recompensa. Intenta de nuevo.'**
+  String get recompensasError;
+
+  /// Cierra el diálogo de error.
+  ///
+  /// In es, this message translates to:
+  /// **'Entendido'**
+  String get recompensasEntendido;
+
+  /// Título de mis canjes (V2-M12.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis canjes'**
+  String get canjesTitulo;
+
+  /// Estado vacío de mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no canjeas nada'**
+  String get canjesVaciaTitulo;
+
+  /// Mensaje de mis canjes vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambia tus puntos por recompensas y aquí tendrás su código.'**
+  String get canjesVaciaMensaje;
+
+  /// Acción del estado vacío de mis canjes.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver recompensas'**
+  String get canjesVerRecompensas;
+
+  /// Código del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Código {codigo}'**
+  String canjesCodigo(String codigo);
+
+  /// Vigencia de un canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String canjesVence(String fecha);
+
+  /// Fecha de uso de un canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado el {fecha}'**
+  String canjesUsado(String fecha);
+
+  /// Detalle de un canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció el {fecha}; tus puntos regresaron'**
+  String canjesVencio(String fecha);
+
+  /// Estado de canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get canjesEstadoVigente;
+
+  /// Estado de canje usado.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado'**
+  String get canjesEstadoUsado;
+
+  /// Estado de canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get canjesEstadoVencido;
+
+  /// Indicación bajo el QR de un canje vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Muestra este código en caja o en servicio para usar tu recompensa.'**
+  String get canjeMuestralo;
+
+  /// Descripción del QR para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Código QR del canje {codigo}'**
+  String canjeQr(String codigo);
+
+  /// Aviso de un canje usado.
+  ///
+  /// In es, this message translates to:
+  /// **'Este canje ya se usó.'**
+  String get canjeYaUsado;
+
+  /// Aviso de un canje vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Este canje venció sin usarse y tus puntos regresaron a tu saldo.'**
+  String get canjeYaVencio;
+
+  /// Encabezado de los detalles del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Detalles'**
+  String get canjeDetalles;
+
+  /// Fila del costo del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Costo'**
+  String get canjeCosto;
+
+  /// Fila de la fecha del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canjeado'**
+  String get canjeCanjeado;
+
+  /// Fila de la vigencia del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigencia'**
+  String get canjeVigencia;
+
+  /// Fila de la fecha de uso del canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Usado'**
+  String get canjeUsadoEl;
+
+  /// Estado cuando el canje no aparece en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos este canje'**
+  String get canjeNoEncontradoTitulo;
+
+  /// Mensaje del canje no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a Mis canjes para ver tus códigos.'**
+  String get canjeNoEncontradoMensaje;
+
+  /// Título de los movimientos de puntos (V2-M12.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Movimientos'**
+  String get movimientosTitulo;
+
+  /// Estado vacío de los movimientos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes movimientos'**
+  String get movimientosVaciaTitulo;
+
+  /// Mensaje de movimientos vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganas puntos cada vez que recoges tu auto del taller.'**
+  String get movimientosVaciaMensaje;
+
+  /// Motivo SERVICIO.
+  ///
+  /// In es, this message translates to:
+  /// **'Servicio en el taller'**
+  String get movimientosMotivoServicio;
+
+  /// Motivo CANJE.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje de recompensa'**
+  String get movimientosMotivoCanje;
+
+  /// Motivo DEVOLUCION_CANJE.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje vencido'**
+  String get movimientosMotivoDevolucion;
+
+  /// Motivo REFERIDO.
+  ///
+  /// In es, this message translates to:
+  /// **'Amigo referido'**
+  String get movimientosMotivoReferido;
+
+  /// Motivo AJUSTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Ajuste de la agencia'**
+  String get movimientosMotivoAjuste;
+
+  /// Motivo que la app no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Movimiento'**
+  String get movimientosMotivoOtro;
+
+  /// Referencia a una orden de servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden {id}'**
+  String movimientosOrden(int id);
+
+  /// Referencia a un canje.
+  ///
+  /// In es, this message translates to:
+  /// **'Canje {id}'**
+  String movimientosCanje(int id);
+
+  /// Fecha y a qué se refiere un movimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {referencia}'**
+  String movimientosFechaYReferencia(String fecha, String referencia);
+
+  /// Lectura de un movimiento positivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganaste {puntos} puntos'**
+  String movimientosGanaste(String puntos);
+
+  /// Lectura de un movimiento negativo.
+  ///
+  /// In es, this message translates to:
+  /// **'Usaste {puntos} puntos'**
+  String movimientosUsaste(String puntos);
+
+  /// Indicador al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más movimientos'**
+  String get movimientosCargandoMas;
+
+  /// Error al pedir la siguiente página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más movimientos.'**
+  String get movimientosErrorMas;
+
+  /// Título de referir (V2-M12.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Referir a un amigo'**
+  String get referirTitulo;
+
+  /// Subtítulo de referir.
+  ///
+  /// In es, this message translates to:
+  /// **'Si tu amigo compra su auto, ganas puntos.'**
+  String get referirSubtitulo;
+
+  /// Sección con el código personal.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu código'**
+  String get referirCodigoTitulo;
+
+  /// Ayuda bajo el código personal.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu amigo lo menciona al visitar la agencia.'**
+  String get referirCodigoAyuda;
+
+  /// Botón que comparte el código con la hoja del sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Compartir mi código'**
+  String get referirCompartir;
+
+  /// Texto que se comparte con el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te recomiendo la agencia. Menciona mi código {codigo} cuando vayas.'**
+  String referirMensaje(String codigo);
+
+  /// Sección del formulario de referido.
+  ///
+  /// In es, this message translates to:
+  /// **'Registra a tu amigo'**
+  String get referirFormularioTitulo;
+
+  /// Nota bajo el formulario.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe su teléfono, su correo o los dos. La agencia solo los usa para contactarlo.'**
+  String get referirFormularioNota;
+
+  /// Campo de nombre.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre de tu amigo'**
+  String get referirNombre;
+
+  /// Campo de teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get referirTelefono;
+
+  /// Ayuda del campo de teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'10 dígitos'**
+  String get referirTelefonoAyuda;
+
+  /// Error de teléfono incompleto.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 10 dígitos.'**
+  String get referirTelefonoInvalido;
+
+  /// Campo de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get referirCorreo;
+
+  /// Error de correo inválido.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el correo.'**
+  String get referirCorreoInvalido;
+
+  /// Casilla de consentimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi amigo aceptó que la agencia lo contacte'**
+  String get referirConsentimiento;
+
+  /// Botón que registra al amigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar'**
+  String get referirEnviar;
+
+  /// Aviso tras registrar al amigo.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, la agencia contactará a {nombre}.'**
+  String referirEnviado(String nombre);
+
+  /// Error REFERIDO_DUPLICADO; no dice de quién.
+  ///
+  /// In es, this message translates to:
+  /// **'Esa persona ya está con la agencia.'**
+  String get referirDuplicado;
+
+  /// Error LIMITE_REFERIDOS.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya tienes el máximo de amigos en seguimiento. Espera a que la agencia los atienda.'**
+  String get referirLimite;
+
+  /// Error genérico al referir.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos registrar a tu amigo. Intenta de nuevo.'**
+  String get referirError;
+
+  /// Sección con mis referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus referidos'**
+  String get referirListaTitulo;
+
+  /// Lista de referidos vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no refieres a nadie.'**
+  String get referirVacio;
+
+  /// Error al pedir los referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar tus referidos.'**
+  String get referirListaError;
+
+  /// Nota bajo la lista de referidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Ganas puntos una sola vez por cada amigo que compre.'**
+  String get referirPuntosAyuda;
+
+  /// Estado REGISTRADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Registrado'**
+  String get referidoEstadoRegistrado;
+
+  /// Estado EN_SEGUIMIENTO.
+  ///
+  /// In es, this message translates to:
+  /// **'En seguimiento'**
+  String get referidoEstadoSeguimiento;
+
+  /// Estado COMPRO.
+  ///
+  /// In es, this message translates to:
+  /// **'Compró'**
+  String get referidoEstadoCompro;
+
+  /// Estado DESCARTADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin compra'**
+  String get referidoEstadoDescartado;
+
+  /// Estado y fecha de un referido.
+  ///
+  /// In es, this message translates to:
+  /// **'{estado} · desde el {fecha}'**
+  String referidoDesde(String estado, String fecha);
+
+  /// Puntos ganados por un referido que compró.
+  ///
+  /// In es, this message translates to:
+  /// **'+{puntos}'**
+  String referidoGanaste(String puntos);
+
+  /// Título del estado de error de carga (EstadoError) cuando la pantalla no dice otro.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar esto'**
+  String get estadoErrorTitulo;
+
+  /// Mensaje del estado de error de carga (EstadoError) cuando la pantalla no dice otro.
+  ///
+  /// In es, this message translates to:
+  /// **'Intenta de nuevo en un momento.'**
+  String get estadoErrorMensaje;
+
+  /// Título del estado de error de carga cuando el teléfono no tiene conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión'**
+  String get estadoErrorSinConexionTitulo;
+
+  /// Mensaje del estado de error de carga cuando el teléfono no tiene conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tu internet e intenta de nuevo.'**
+  String get estadoErrorSinConexionMensaje;
+
+  /// Botón que vuelve a pedir lo que no cargó (estado de error de carga).
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get estadoErrorReintentar;
+
+  /// Día de la semana y horario de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{dia}, {inicio} - {fin}'**
+  String citasMisCitasCuando(String dia, String inicio, String fin);
+
+  /// Vehículo y motivo de la próxima cita en «Mis citas».
+  ///
+  /// In es, this message translates to:
+  /// **'{vehiculo} · {motivo}'**
+  String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo);
+
+  /// Título de mis datos fiscales (V2-M08.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get datosFiscalesTitulo;
+
+  /// Subtítulo de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar tus servicios'**
+  String get datosFiscalesSubtitulo;
+
+  /// Esqueleto de carga para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus datos fiscales'**
+  String get datosFiscalesCargando;
+
+  /// Botón para volver a pedir los datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get datosFiscalesReintentar;
+
+  /// Estado vacío de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes datos fiscales'**
+  String get datosFiscalesVacioTitulo;
+
+  /// Mensaje del estado vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Agrégalos para pedir factura de tus servicios.'**
+  String get datosFiscalesVacioMensaje;
+
+  /// Botón para dar de alta un perfil fiscal.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get datosFiscalesAgregar;
+
+  /// Encabezado de la lista de perfiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus perfiles'**
+  String get datosFiscalesEncabezado;
+
+  /// Pie de la lista: cómo capturarlos y que la facturación es simulada (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelos como en tu constancia de situación fiscal. Por ahora las facturas de la app son simuladas, sin validez fiscal.'**
+  String get datosFiscalesPie;
+
+  /// RFC, tipo de persona y régimen de un perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {persona} · Régimen {regimen}'**
+  String datosFiscalesFilaSubtitulo(String rfc, String persona, String regimen);
+
+  /// Insignia del perfil predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminado'**
+  String get datosFiscalesPredeterminado;
+
+  /// Título del alta.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevos datos fiscales'**
+  String get datosFiscalesNuevoTitulo;
+
+  /// Título de la edición.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar datos fiscales'**
+  String get datosFiscalesEditarTitulo;
+
+  /// Sección con RFC, nombre y código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Contribuyente'**
+  String get datosFiscalesSeccionContribuyente;
+
+  /// Sección con régimen, uso de CFDI y correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar'**
+  String get datosFiscalesSeccionFacturar;
+
+  /// Campo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'RFC'**
+  String get datosFiscalesRfc;
+
+  /// Ejemplo de RFC dentro del campo.
+  ///
+  /// In es, this message translates to:
+  /// **'GODE561231GR8'**
+  String get datosFiscalesRfcSugerencia;
+
+  /// Ayuda del RFC mientras no se sabe el tipo de persona.
+  ///
+  /// In es, this message translates to:
+  /// **'13 caracteres si eres persona física; 12 si es una empresa.'**
+  String get datosFiscalesRfcAyuda;
+
+  /// Tipo de persona física.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona física'**
+  String get datosFiscalesPersonaFisica;
+
+  /// Tipo de persona moral.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona moral'**
+  String get datosFiscalesPersonaMoral;
+
+  /// Campo de la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre o razón social'**
+  String get datosFiscalesRazonSocial;
+
+  /// Ayuda de la razón social para CFDI 4.0.
+  ///
+  /// In es, this message translates to:
+  /// **'Igual que en tu constancia, sin el régimen societario (S.A. de C.V.).'**
+  String get datosFiscalesRazonSocialAyuda;
+
+  /// Campo del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Código postal fiscal'**
+  String get datosFiscalesCodigoPostal;
+
+  /// Ayuda del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'El de tu domicilio fiscal.'**
+  String get datosFiscalesCodigoPostalAyuda;
+
+  /// Selector del régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Régimen fiscal'**
+  String get datosFiscalesRegimen;
+
+  /// Texto del selector de régimen vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen'**
+  String get datosFiscalesRegimenSugerencia;
+
+  /// Selector del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Uso del CFDI'**
+  String get datosFiscalesUso;
+
+  /// Texto del selector de uso vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso'**
+  String get datosFiscalesUsoSugerencia;
+
+  /// Ayuda del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo aparecen los que acepta tu régimen.'**
+  String get datosFiscalesUsoAyuda;
+
+  /// Opción de un catálogo del SAT con su clave.
+  ///
+  /// In es, this message translates to:
+  /// **'{clave} · {descripcion}'**
+  String datosFiscalesOpcion(String clave, String descripcion);
+
+  /// Campo del correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo para la factura (opcional)'**
+  String get datosFiscalesCorreo;
+
+  /// Casilla para volverlo el predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminado'**
+  String get datosFiscalesHacerPredeterminado;
+
+  /// Descripción de la casilla.
+  ///
+  /// In es, this message translates to:
+  /// **'Es el que se propone al pagar.'**
+  String get datosFiscalesHacerPredeterminadoAyuda;
+
+  /// Botón que guarda el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get datosFiscalesGuardar;
+
+  /// Botón que borra el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar estos datos fiscales?'**
+  String get datosFiscalesBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borra el perfil {rfc}. Las facturas que ya tengas no cambian.'**
+  String datosFiscalesBorrarMensaje(String rfc);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrarConfirmar;
+
+  /// Cancela el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get datosFiscalesBorrarCancelar;
+
+  /// Aviso cuando hay campos con error.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los campos marcados.'**
+  String get datosFiscalesRevisa;
+
+  /// Aviso sin conexión al guardar o borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get datosFiscalesSinConexion;
+
+  /// Error genérico al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tus datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorGuardar;
+
+  /// Error genérico al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos borrar estos datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorBorrar;
+
+  /// Estado cuando el perfil no aparece.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos estos datos fiscales'**
+  String get datosFiscalesNoEncontradoTitulo;
+
+  /// Mensaje del perfil no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a Datos fiscales para ver tus perfiles.'**
+  String get datosFiscalesNoEncontradoMensaje;
+
+  /// Error: RFC vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el RFC.'**
+  String get datosFiscalesErrorRfcVacio;
+
+  /// Error: largo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC tiene 12 caracteres (persona moral) o 13 (persona física).'**
+  String get datosFiscalesErrorRfcLargo;
+
+  /// Error: forma del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC no tiene la forma del SAT.'**
+  String get datosFiscalesErrorRfcForma;
+
+  /// Error: RFC genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC genérico no se usa en un perfil.'**
+  String get datosFiscalesErrorRfcGenerico;
+
+  /// Error: fecha del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'La fecha del RFC no existe.'**
+  String get datosFiscalesErrorRfcFecha;
+
+  /// Error: dígito verificador del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El último carácter no coincide; revisa la homoclave.'**
+  String get datosFiscalesErrorRfcDigito;
+
+  /// Error: razón social vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el nombre o la razón social.'**
+  String get datosFiscalesErrorRazonVacia;
+
+  /// Error: razón social larga.
+  ///
+  /// In es, this message translates to:
+  /// **'El nombre es demasiado largo.'**
+  String get datosFiscalesErrorRazonLarga;
+
+  /// Error: código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 5 dígitos.'**
+  String get datosFiscalesErrorCodigoPostal;
+
+  /// Error: falta el régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen fiscal.'**
+  String get datosFiscalesErrorRegimenFalta;
+
+  /// Error: régimen de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese régimen no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorRegimenNoAplica;
+
+  /// Error: falta el uso.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso del CFDI.'**
+  String get datosFiscalesErrorUsoFalta;
+
+  /// Error: uso de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorUsoNoAplica;
+
+  /// Error: uso que el régimen no acepta.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no se puede con tu régimen.'**
+  String get datosFiscalesErrorUsoNoAceptaRegimen;
+
+  /// Error: correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el correo.'**
+  String get datosFiscalesErrorCorreo;
+
+  /// Esqueleto de carga de pagos para el lector de pantalla (V2-M08).
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus pagos'**
+  String get pagosCargando;
+
+  /// Botón para volver a pedir los pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get pagosReintentar;
+
+  /// Aviso fijo de la pantalla de pago (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobra nada. Usa una de las tarjetas de prueba.'**
+  String get pagosSimuladoAviso;
+
+  /// Pie de mis pagos (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos de la app son simulados: no se cobró nada.'**
+  String get pagosSimuladoPie;
+
+  /// Aviso del detalle de un pago simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobró nada.'**
+  String get pagosSimuladoCorto;
+
+  /// Aviso del detalle de un pago en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'Se pagó en la caja de la agencia.'**
+  String get pagosEnCaja;
+
+  /// Título de la pantalla para pagar una orden (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar orden'**
+  String get pagosPagarTitulo;
+
+  /// Número de la orden de servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden {orden}'**
+  String pagosOrden(String orden);
+
+  /// Encabezado del desglose del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que pagas'**
+  String get pagosDesglose;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get pagosManoDeObra;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get pagosRefacciones;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Subtotal sin IVA'**
+  String get pagosSubtotal;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'IVA'**
+  String get pagosIva;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get pagosTotal;
+
+  /// Pie del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Los precios incluyen IVA.'**
+  String get pagosPreciosConIva;
+
+  /// Sección para elegir la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué pagas'**
+  String get pagosConQue;
+
+  /// Selector de tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta'**
+  String get pagosTarjeta;
+
+  /// Opción para escribir una tarjeta nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Otra tarjeta'**
+  String get pagosOtraTarjeta;
+
+  /// Tarjeta guardada que ya venció en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} (vencida)'**
+  String pagosTarjetaVencida(String tarjeta);
+
+  /// Campo del número de tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de tarjeta'**
+  String get pagosNumero;
+
+  /// Ejemplo dentro del campo del número.
+  ///
+  /// In es, this message translates to:
+  /// **'4242 4242 4242 4242'**
+  String get pagosNumeroSugerencia;
+
+  /// Campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence (MM/AA)'**
+  String get pagosVencimiento;
+
+  /// Ejemplo dentro del campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'12/28'**
+  String get pagosVencimientoSugerencia;
+
+  /// Campo del código de seguridad.
+  ///
+  /// In es, this message translates to:
+  /// **'CVV'**
+  String get pagosCvv;
+
+  /// Ayuda bajo los campos de la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'El número y el CVV no salen de tu teléfono: solo se envía un token de la tarjeta de prueba.'**
+  String get pagosCvvAyuda;
+
+  /// Casilla para guardar la tarjeta (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar tarjeta'**
+  String get pagosGuardarTarjeta;
+
+  /// Descripción de la casilla para guardar la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Para pagar más rápido. Solo se guardan la marca, los últimos 4 y el vencimiento.'**
+  String get pagosGuardarTarjetaAyuda;
+
+  /// Encabezado de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjetas de prueba'**
+  String get pagosTarjetasDePrueba;
+
+  /// Pie de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca una para escribir su número. Sirve cualquier vencimiento futuro y cualquier CVV de 3 dígitos.'**
+  String get pagosTarjetasDePruebaPie;
+
+  /// Marca y qué hace el banco simulado con la tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} · {escenario}'**
+  String pagosTarjetaDePruebaDetalle(String marca, String escenario);
+
+  /// Tarjeta de prueba aprobada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se aprueba'**
+  String get pagosEscenarioAprobada;
+
+  /// Tarjeta de prueba rechazada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se rechaza por fondos insuficientes'**
+  String get pagosEscenarioFondos;
+
+  /// Tarjeta de prueba con 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosEscenarioConfirmar;
+
+  /// Tarjeta de prueba cuyo 3-D Secure falla.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirma'**
+  String get pagosEscenarioConfirmacionFalla;
+
+  /// Sección de datos fiscales al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get pagosFactura;
+
+  /// Selector del perfil fiscal para facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get pagosDatosFiscales;
+
+  /// Ayuda del selector de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tus datos fiscales se emite la factura simulada al pagar.'**
+  String get pagosFacturaAyuda;
+
+  /// Opción para pagar sin facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin factura'**
+  String get pagosSinFactura;
+
+  /// Un perfil fiscal en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {razonSocial}'**
+  String pagosPerfilFiscal(String rfc, String razonSocial);
+
+  /// Botón para pagar la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String pagosPagar(String monto);
+
+  /// Aviso cuando la tarjeta no pasa las reglas.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos de la tarjeta.'**
+  String get pagosRevisaTarjeta;
+
+  /// Aviso sin conexión al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo; no se cobrará dos veces.'**
+  String get pagosSinConexion;
+
+  /// Aviso de error al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos procesar el pago. Intenta de nuevo.'**
+  String get pagosErrorPagar;
+
+  /// 409 ORDEN_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya no se puede pagar en la app.'**
+  String get pagosOrdenNoPagable;
+
+  /// 409 PAGO_EN_CURSO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de esta orden esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPagoEnCurso;
+
+  /// 409 PAGO_NO_PENDIENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya no espera la confirmación de tu banco.'**
+  String get pagosPagoNoPendiente;
+
+  /// Error: falta el número.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el número de la tarjeta.'**
+  String get pagosErrorNumeroVacio;
+
+  /// Error: número incompleto.
+  ///
+  /// In es, this message translates to:
+  /// **'El número tiene 16 dígitos.'**
+  String get pagosErrorNumeroIncompleto;
+
+  /// Error: no pasa el algoritmo de Luhn.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese número no es válido; revísalo.'**
+  String get pagosErrorNumeroInvalido;
+
+  /// Error: no es una tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa una de las tarjetas de prueba.'**
+  String get pagosErrorNoEsDePrueba;
+
+  /// Error: falta el vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el vencimiento.'**
+  String get pagosErrorVencimientoVacio;
+
+  /// Error: vencimiento sin forma.
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelo como MM/AA.'**
+  String get pagosErrorVencimientoInvalido;
+
+  /// Error: tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'La tarjeta ya venció.'**
+  String get pagosErrorVencida;
+
+  /// Error: CVV.
+  ///
+  /// In es, this message translates to:
+  /// **'El CVV tiene 3 dígitos.'**
+  String get pagosErrorCvv;
+
+  /// Título de la pantalla simulada de 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosBancoTitulo;
+
+  /// Mensaje del 3-D Secure simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma el pago de {monto} con {tarjeta}. Esta pantalla del banco es simulada.'**
+  String pagosBancoMensaje(String monto, String tarjeta);
+
+  /// Botón para confirmar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get pagosBancoConfirmar;
+
+  /// Botón para cancelar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBancoCancelar;
+
+  /// Resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Orden pagada!'**
+  String get pagosPagadoTitulo;
+
+  /// Mensaje del resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. Es un pago simulado: no se cobró nada.'**
+  String pagosPagadoMensaje(String monto, String referencia);
+
+  /// Botón para cerrar el resultado del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get pagosListo;
+
+  /// Botón para ir a mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis pagos'**
+  String get pagosVerMisPagos;
+
+  /// Resultado de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo pagar'**
+  String get pagosFalloTitulo;
+
+  /// Botón para reintentar con una llave nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentar otra vez'**
+  String get pagosIntentarOtraVez;
+
+  /// Botón para salir del resultado.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver'**
+  String get pagosVolver;
+
+  /// Motivo: fondos insuficientes.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco rechazó la tarjeta por fondos insuficientes.'**
+  String get pagosMotivoFondos;
+
+  /// Motivo: 3-D Secure fallido o cancelado.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirmó el pago.'**
+  String get pagosMotivoAutenticacion;
+
+  /// Motivo: 3-D Secure vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie confirmó el pago a tiempo.'**
+  String get pagosMotivoVencida;
+
+  /// Motivo: pagada en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'La orden se pagó en caja.'**
+  String get pagosMotivoCaja;
+
+  /// Motivo que esta versión aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'El pago no se completó.'**
+  String get pagosMotivoOtro;
+
+  /// Estado de una orden pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya está pagada'**
+  String get pagosYaPagadaTitulo;
+
+  /// Con qué y cuándo se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'Con {medio} el {fecha}.'**
+  String pagosYaPagadaMensaje(String medio, String fecha);
+
+  /// Botón para ver el pago de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pago'**
+  String get pagosVerPago;
+
+  /// Estado de una orden que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden aún no se puede pagar'**
+  String get pagosNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app cuando está lista para entrega. Un servicio registrado ya hecho se paga en la agencia.'**
+  String get pagosNoPagableMensaje;
+
+  /// Título de mis pagos (V2-M08.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis pagos'**
+  String get pagosMisPagosTitulo;
+
+  /// Subtítulo de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Del más nuevo al más viejo'**
+  String get pagosMisPagosSubtitulo;
+
+  /// Estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes pagos'**
+  String get pagosMisPagosVacioTitulo;
+
+  /// Mensaje del estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí verás lo que pagues desde la app.'**
+  String get pagosMisPagosVacioMensaje;
+
+  /// Estado, con qué y cuándo de un pago en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{estado} · {medio} · {fecha}'**
+  String pagosFilaSubtitulo(String estado, String medio, String fecha);
+
+  /// Lo que oye el lector al final de la fila de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'{monto}, {estado}'**
+  String pagosMontoConEstado(String monto, String estado);
+
+  /// Indicador de la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más pagos'**
+  String get pagosCargandoMas;
+
+  /// Error al pedir la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más pagos.'**
+  String get pagosErrorCargarMas;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get pagosEstadoPendiente;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get pagosEstadoPagado;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Fallido'**
+  String get pagosEstadoFallido;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Reembolsado'**
+  String get pagosEstadoReembolsado;
+
+  /// Una tarjeta por su marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String pagosMedioTarjeta(String marca, String ultimos4);
+
+  /// Medio de pago: caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get pagosMedioCaja;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Apple Pay (simulado)'**
+  String get pagosMedioApplePay;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Google Pay (simulado)'**
+  String get pagosMedioGooglePay;
+
+  /// Título del detalle de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get pagosPagoTitulo;
+
+  /// Etiqueta del monto del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto'**
+  String get pagosMonto;
+
+  /// Fila del medio de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué se pagó'**
+  String get pagosMedio;
+
+  /// Fila de la fecha de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado el'**
+  String get pagosFechaPago;
+
+  /// Fila de la fecha de un intento sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentado el'**
+  String get pagosFechaIntento;
+
+  /// Fila de la referencia del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get pagosReferencia;
+
+  /// Fila del motivo de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'Por qué no se cobró'**
+  String get pagosMotivo;
+
+  /// Botón para responder un 3-D Secure pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar con tu banco'**
+  String get pagosConfirmarBanco;
+
+  /// Botón para abrir el ticket de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el ticket'**
+  String get pagosVerTicket;
+
+  /// Título del pago de un pedido de la tienda (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar pedido'**
+  String get pagosPagarPedidoTitulo;
+
+  /// Número del pedido de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedido {pedido}'**
+  String pagosPedido(String pedido);
+
+  /// Estado de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado'**
+  String get pagosPedidoYaPagadoTitulo;
+
+  /// Estado de un pedido que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app'**
+  String get pagosPedidoNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.'**
+  String get pagosPedidoNoPagableMensaje;
+
+  /// 409 PEDIDO_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app.'**
+  String get pagosPedidoNoPagable;
+
+  /// 409 PAGO_EN_CURSO de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPedidoPagoEnCurso;
+
+  /// Cierre de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Pedido pagado!'**
+  String get pagosPedidoPagadoTitulo;
+
+  /// Botón para abrir el pedido de la tienda pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pedido'**
+  String get pagosVerPedido;
+
+  /// Pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este pago'**
+  String get pagosNoEncontradoTitulo;
+
+  /// Mensaje del pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que sea de otra cuenta. Revisa Mis pagos.'**
+  String get pagosNoEncontradoMensaje;
+
+  /// Título de mis tarjetas guardadas (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Métodos de pago'**
+  String get pagosMetodosTitulo;
+
+  /// Estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes tarjetas guardadas'**
+  String get pagosMetodosVacioTitulo;
+
+  /// Mensaje del estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Al pagar, marca «Guardar tarjeta» para que aparezca aquí.'**
+  String get pagosMetodosVacioMensaje;
+
+  /// Pie de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo se guardan la marca, los últimos 4 y el vencimiento de tarjetas de prueba.'**
+  String get pagosMetodosPie;
+
+  /// Vencimiento de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence}'**
+  String pagosVence(String vence);
+
+  /// Vencimiento y tipo de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence} · {tipo}'**
+  String pagosVenceYTipo(String vence, String tipo);
+
+  /// Tarjeta de crédito.
+  ///
+  /// In es, this message translates to:
+  /// **'Crédito'**
+  String get pagosCredito;
+
+  /// Tarjeta de débito.
+  ///
+  /// In es, this message translates to:
+  /// **'Débito'**
+  String get pagosDebito;
+
+  /// Insignia de la tarjeta predeterminada.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminada'**
+  String get pagosPredeterminada;
+
+  /// Insignia de una tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get pagosVencidaInsignia;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminada'**
+  String get pagosUsarPredeterminada;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar tarjeta'**
+  String get pagosBorrarTarjeta;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar esta tarjeta?'**
+  String get pagosBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} ya no aparecerá al pagar. Los pagos que hiciste con ella se conservan.'**
+  String pagosBorrarMensaje(String tarjeta);
+
+  /// Botón para confirmar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get pagosBorrarConfirmar;
+
+  /// Botón para cancelar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBorrarCancelar;
+
+  /// Error al cambiar una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el cambio. Intenta de nuevo.'**
+  String get pagosErrorMetodo;
+
+  /// Encabezado del pago en el ticket (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get historialTicketPago;
+
+  /// La orden ya está pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get historialTicketPagado;
+
+  /// Con qué y cuándo se pagó la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'{medio} · {fecha}'**
+  String historialTicketPagadoDetalle(String medio, String fecha);
+
+  /// Se pagó en la caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get historialTicketPagadoEnCaja;
+
+  /// La tarjeta con que se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String historialTicketTarjeta(String marca, String ultimos4);
+
+  /// La referencia del pago en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get historialTicketReferencia;
+
+  /// Botón para pagar la orden desde su ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String historialTicketPagar(String monto);
+
+  /// Botón para pagar con la billetera simulada en iPhone (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Apple Pay'**
+  String get pagosBilleteraApplePay;
+
+  /// Botón para pagar con la billetera simulada en Android (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Google Pay'**
+  String get pagosBilleteraGooglePay;
+
+  /// Ayuda bajo el botón de la billetera (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.'**
+  String get pagosBilleteraAyuda;
+
+  /// Mensaje de la hoja simulada de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a pagar {monto} con {billetera}. Es simulado: no se cobra nada.'**
+  String pagosBilleteraMensaje(String monto, String billetera);
+
+  /// Confirma el pago en la hoja de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar'**
+  String get pagosBilleteraConfirmar;
+
+  /// Cierra la hoja de la billetera sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBilleteraCancelar;
+
+  /// Resultado de un pago aprobado que pidió factura (V2-M08.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. La factura simulada queda en el detalle del pago. No se cobró nada.'**
+  String pagosPagadoFacturaMensaje(String monto, String referencia);
+
+  /// Lleva del resultado del pago al detalle con su factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver la factura'**
+  String get pagosVerFactura;
+
+  /// Serie y folio de la factura simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura {folio}'**
+  String pagosFacturaFolio(String folio);
+
+  /// Subtítulo de la fecha de timbrado de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Timbrada'**
+  String get pagosFacturaTimbrada;
+
+  /// Subtítulo del UUID del timbre simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio fiscal'**
+  String get pagosFacturaFolioFiscal;
+
+  /// Subtítulo de los datos fiscales de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Receptor · uso {usoCfdi}'**
+  String pagosFacturaReceptor(String usoCfdi);
+
+  /// Comparte el PDF de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar PDF'**
+  String get pagosFacturaPdf;
+
+  /// Comparte el XML de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar XML'**
+  String get pagosFacturaXml;
+
+  /// Aviso fijo de la factura (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Factura simulada con estructura de CFDI 4.0, sin validez fiscal.'**
+  String get pagosFacturaSimulada;
+
+  /// Error al descargar el PDF o el XML.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar la factura. Intenta otra vez.'**
+  String get pagosFacturaErrorDescargar;
+
+  /// Botón para timbrar la factura de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Facturar'**
+  String get pagosFacturar;
+
+  /// Ayuda del selector de datos fiscales al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Con estos datos se timbra la factura simulada de este pago.'**
+  String get pagosFacturarAyuda;
+
+  /// Aviso cuando el cliente no tiene datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar este pago agrega tus datos fiscales.'**
+  String get pagosFacturaSinPerfiles;
+
+  /// Lleva al alta de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get pagosAgregarDatosFiscales;
+
+  /// Encabezado del error 422 TIMBRADO_RECHAZADO.
+  ///
+  /// In es, this message translates to:
+  /// **'El timbrado rechazó tus datos fiscales.'**
+  String get pagosTimbradoRechazado;
+
+  /// Qué corregir cuando se rechaza la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).'**
+  String get pagosTimbradoRazonSocial;
+
+  /// Qué corregir cuando se rechaza el código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el código postal de tu domicilio fiscal.'**
+  String get pagosTimbradoCodigoPostal;
+
+  /// Qué corregir cuando se rechaza otro campo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tus datos fiscales.'**
+  String get pagosTimbradoOtro;
+
+  /// Lleva a editar el perfil fiscal rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Corregir datos fiscales'**
+  String get pagosCorregirDatosFiscales;
+
+  /// Error 409 YA_FACTURADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya tiene factura.'**
+  String get pagosFacturaYaFacturada;
+
+  /// Error 409 PAGO_NO_FACTURABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago no se puede facturar desde la app.'**
+  String get pagosFacturaNoFacturable;
+
+  /// Error genérico al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo facturar. Intenta otra vez.'**
+  String get pagosFacturaErrorFacturar;
+
+  /// Aviso de un pago en caja sin factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos en caja se facturan en la agencia.'**
+  String get pagosFacturaEnLaAgencia;
+
+  /// Sin conexión al facturar o descargar la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get pagosFacturaSinConexion;
+
+  /// Título de la pantalla de sucursales con mapa y horarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales'**
+  String get sucursalesTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando sucursales'**
+  String get sucursalesCargando;
+
+  /// No description provided for @sucursalesVacioTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay sucursales'**
+  String get sucursalesVacioTitulo;
+
+  /// No description provided for @sucursalesVacioMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.'**
+  String get sucursalesVacioMensaje;
+
+  /// Nombre del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con la ubicación de {nombre}'**
+  String sucursalesMapaDe(String nombre);
+
+  /// No description provided for @sucursalesAbiertoAhora.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto ahora'**
+  String get sucursalesAbiertoAhora;
+
+  /// Estado corto de un departamento de la sucursal que atiende en este momento.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto'**
+  String get sucursalesAbierto;
+
+  /// No description provided for @sucursalesCerrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrado'**
+  String get sucursalesCerrado;
+
+  /// No description provided for @sucursalesLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar'**
+  String get sucursalesLlamar;
+
+  /// No description provided for @sucursalesComoLlegar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo llegar'**
+  String get sucursalesComoLlegar;
+
+  /// No description provided for @sucursalesHorarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Horarios'**
+  String get sucursalesHorarios;
+
+  /// No description provided for @sucursalesTodas.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las sucursales'**
+  String get sucursalesTodas;
+
+  /// No description provided for @sucursalesSeleccionada.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionada'**
+  String get sucursalesSeleccionada;
+
+  /// Nombre del departamento de la agencia que tiene su propio horario.
+  ///
+  /// In es, this message translates to:
+  /// **'{departamento, select, ventas{Ventas} servicio{Servicio} refacciones{Refacciones} other{Otro}}'**
+  String sucursalesDepartamento(String departamento);
+
+  /// Día de la semana abreviado; 1 es lunes y 7 domingo.
+  ///
+  /// In es, this message translates to:
+  /// **'{dia, select, 1{lun} 2{mar} 3{mié} 4{jue} 5{vie} 6{sáb} 7{dom} other{}}'**
+  String sucursalesDiaCorto(String dia);
+
+  /// Tramo de días seguidos de un horario, por ejemplo «lun a vie».
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String sucursalesDiasRango(String desde, String hasta);
+
+  /// Una línea de horario, por ejemplo «lun a vie: 08:00 a 18:00».
+  ///
+  /// In es, this message translates to:
+  /// **'{dias}: {abre} a {cierra}'**
+  String sucursalesTramo(String dias, String abre, String cierra);
+
+  /// Lo que lee el lector de pantalla en la fila de una sucursal.
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre}, {estado}. {direccion}'**
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  );
+
+  /// No description provided for @sucursalesNoSePudoLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir el marcador del teléfono.'**
+  String get sucursalesNoSePudoLlamar;
+
+  /// No description provided for @sucursalesNoSePudoMapa.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir la app de mapas.'**
+  String get sucursalesNoSePudoMapa;
+
+  /// Etiqueta del marcador del chofer en el mapa del seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu chofer'**
+  String get recoleccionSeguimientoMarcadorChofer;
 }
 
 class _AppLocalizationsDelegate

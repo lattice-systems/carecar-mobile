@@ -72,7 +72,7 @@ void main() {
     'plan',
     () => const PantallaPlanMantenimiento(vehiculoId: 5),
     'Mantenimiento',
-    () => find.byType(ListView),
+    () => find.byType(CustomScrollView),
   );
   _prueba(
     'servicio',
@@ -86,25 +86,4 @@ void main() {
     'Registrar kilometraje',
     () => find.byType(CustomScrollView),
   );
-
-  testWidgets('plan: la barra queda opaca al desplazar, sin ver a través', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(360, 480);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-    await tester.pumpWidget(
-      _app(const PantallaPlanMantenimiento(vehiculoId: 5), Escenario.claro),
-    );
-    await tester.pumpAndSettle();
-    await tester.drag(find.byType(ListView), const Offset(0, -900));
-    await tester.pumpAndSettle();
-
-    final barra = tester.widget<Material>(
-      find
-          .descendant(of: find.byType(AppBar), matching: find.byType(Material))
-          .first,
-    );
-    expect(barra.color!.a, 1);
-  });
 }

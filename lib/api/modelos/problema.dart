@@ -42,6 +42,87 @@ enum CodigoProblema {
   /// vigente; hay que leer el nuevo.
   avisoNoVigente('AVISO_NO_VIGENTE'),
 
+  /// V2-M10.03: la campana de seguridad ya esta agendada o atendida.
+  campanaNoAgendable('CAMPANA_NO_AGENDABLE'),
+
+  /// V2-M26.01: la estimacion se capturo a mano, sin un vehiculo registrado.
+  valuacionSinVehiculo('VALUACION_SIN_VEHICULO'),
+
+  /// V2-M26.02: la valuacion ya no admite fotos.
+  valuacionCerrada('VALUACION_CERRADA'),
+
+  /// V2-M26.03: la valuacion ya tiene cita o ya no se puede agendar.
+  valuacionNoAgendable('VALUACION_NO_AGENDABLE'),
+
+  /// V2-M26.04: la vigencia de la oferta ya paso.
+  ofertaVencida('OFERTA_VENCIDA'),
+
+  /// V2-M26.04: no hay una oferta que responder con ese monto o ya se
+  /// respondio lo contrario.
+  ofertaNoDisponible('OFERTA_NO_DISPONIBLE'),
+
+  /// V2-M12.03: no alcanzan los puntos para la recompensa.
+  saldoInsuficiente('SALDO_INSUFICIENTE'),
+
+  /// V2-M12.03: la recompensa se agoto.
+  recompensaAgotada('RECOMPENSA_AGOTADA'),
+
+  /// V2-M12.04: esa persona ya es cliente o ya la refirieron.
+  referidoDuplicado('REFERIDO_DUPLICADO'),
+
+  /// V2-M12.04: el cliente ya tiene el maximo de referidos en seguimiento.
+  limiteReferidos('LIMITE_REFERIDOS'),
+
+  /// V2-M14.02: no alcanzan las piezas para apartar.
+  sinExistencia('SIN_EXISTENCIA'),
+
+  /// V2-M14.03: la cita esta cancelada o ya paso.
+  citaNoDisponible('CITA_NO_DISPONIBLE'),
+
+  /// V2-M14.02: ya hay el maximo de pedidos sin entregar.
+  limiteApartados('LIMITE_APARTADOS'),
+
+  /// V2-M14.02: el pedido ya se entrego.
+  pedidoNoCancelable('PEDIDO_NO_CANCELABLE'),
+
+  /// V2-M14.03: el pedido ya se entrego o se cancelo.
+  pedidoNoModificable('PEDIDO_NO_MODIFICABLE'),
+
+  /// V2-M14.03: algun producto no le queda al vehiculo de la cita.
+  productoIncompatible('PRODUCTO_INCOMPATIBLE'),
+
+  /// V2-M08.05: un dato fiscal no cumple las reglas del SAT; [Problema.campos]
+  /// dice que corregir en cada uno.
+  datosFiscalesInvalidos('DATOS_FISCALES_INVALIDOS'),
+
+  /// V2-M08.02: la orden no se puede pagar en la app (aun no esta lista, no
+  /// viene del taller, no tiene total o ya esta pagada, tambien en caja).
+  ordenNoPagable('ORDEN_NO_PAGABLE'),
+
+  /// V2-M08.02: otro intento de pago de la orden espera el 3-D Secure.
+  pagoEnCurso('PAGO_EN_CURSO'),
+
+  /// V2-M08.02: el pago ya no espera el 3-D Secure.
+  pagoNoPendiente('PAGO_NO_PENDIENTE'),
+
+  /// V2-M14.04: el pedido no se puede pagar en la app (no esta apartado ni
+  /// listo, ya vencio, no tiene total o ya esta pagado).
+  pedidoNoPagable('PEDIDO_NO_PAGABLE'),
+
+  /// V2-M14.04: el pedido ya esta pagado y no se cancela desde la app.
+  pedidoPagado('PEDIDO_PAGADO'),
+
+  /// V2-M08.06: el pago ya tiene factura.
+  yaFacturado('YA_FACTURADO'),
+
+  /// V2-M08.06: el pago no esta pagado o se pago en caja (se factura en la
+  /// agencia).
+  pagoNoFacturable('PAGO_NO_FACTURABLE'),
+
+  /// V2-M08.06: el timbrado simulado rechazo los datos fiscales;
+  /// [Problema.campos] dice que corregir.
+  timbradoRechazado('TIMBRADO_RECHAZADO'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 
@@ -71,6 +152,7 @@ class Problema {
     required this.message,
     required this.path,
     this.codigo = CodigoProblema.desconocido,
+    this.campos = const {},
   });
 
   /// Tolerante a proposito: un cuerpo de error incompleto no debe provocar un
@@ -84,7 +166,15 @@ class Problema {
         : 'Ocurrió un error inesperado. Intenta de nuevo.',
     path: json['path'] as String? ?? '',
     codigo: CodigoProblema.desde(json['codigo'] as String?),
+    campos: _campos(json['campos']),
   );
+
+  static Map<String, String> _campos(Object? valor) => valor is Map
+      ? {
+          for (final MapEntry(:key, :value) in valor.entries)
+            if (key is String && value is String) key: value,
+        }
+      : const {};
 
   final String timestamp;
   final int status;
@@ -94,6 +184,11 @@ class Problema {
 
   /// El codigo propio del contrato, o [CodigoProblema.desconocido] si no vino.
   final CodigoProblema codigo;
+
+  /// Que esta mal en cada campo de la peticion (nombre del campo → por que),
+  /// escrito para la persona. Vacio si el error no lo explica por campo
+  /// (V2-M08.05, `DATOS_FISCALES_INVALIDOS`).
+  final Map<String, String> campos;
 
   /// `true` si el [message] del servidor se le puede enseñar al usuario.
   ///

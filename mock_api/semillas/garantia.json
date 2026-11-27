@@ -1,0 +1,65 @@
+{
+  "garantias": [
+    {
+      "id": 1,
+      "vehiculoId": 5,
+      "componente": "Batería",
+      "descripcion": "Falla de fábrica de la batería original.",
+      "iniciaEn": "2024-02-01",
+      "venceEn": "2027-01-15",
+      "kmLimite": null
+    },
+    {
+      "id": 2,
+      "vehiculoId": 5,
+      "componente": "Motor y transmisión",
+      "descripcion": "Defectos de fabricación del tren motriz.",
+      "iniciaEn": "2024-02-01",
+      "venceEn": "2029-02-01",
+      "kmLimite": 100000
+    },
+    {
+      "id": 3,
+      "vehiculoId": 5,
+      "componente": "Corrosión",
+      "descripcion": "Perforación de la carrocería por óxido.",
+      "iniciaEn": "2024-02-01",
+      "venceEn": "2031-02-01",
+      "kmLimite": null
+    },
+    {
+      "id": 4,
+      "vehiculoId": 6,
+      "componente": "Defensa a defensa",
+      "descripcion": null,
+      "iniciaEn": "2018-03-10",
+      "venceEn": "2021-03-10",
+      "kmLimite": 60000
+    }
+  ],
+  "campanasSeguridad": [
+    {
+      "id": 1,
+      "codigo": "RC-24-017",
+      "titulo": "Bolsa de aire del conductor",
+      "descripcion": "El inflador de la bolsa de aire del conductor puede activarse con más fuerza de la debida y soltar fragmentos.",
+      "queHacer": "Agenda una revisión. El cambio del inflador no tiene costo y toma cerca de una hora.",
+      "gravedad": "CRITICA",
+      "vehiculoIds": [5],
+      "publicadaEn": "2026-11-20T15:00:00Z"
+    },
+    {
+      "id": 2,
+      "codigo": "RC-23-002",
+      "titulo": "Tornillo del soporte del motor",
+      "descripcion": "Un tornillo del soporte del motor podía aflojarse con el tiempo.",
+      "queHacer": "Se revisa y se aprieta en el siguiente servicio, sin costo.",
+      "gravedad": "MEDIA",
+      "vehiculoIds": [5, 6],
+      "publicadaEn": "2025-03-02T15:00:00Z"
+    }
+  ],
+  "campanasVehiculo": [
+    { "campanaId": 2, "vehiculoId": 5, "estado": "ATENDIDA", "citaId": null }
+  ]
+}

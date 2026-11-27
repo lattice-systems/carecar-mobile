@@ -74,6 +74,8 @@ Alcance del MVP según el documento de stack y arquitectura (v2):
 
 Además: manuales del vehículo (PDF de la agencia o incluido en la app) y Ajustes/Perfil (cambiar contraseña, contacto, aviso de privacidad, cerrar sesión).
 
+De la v2, la [tienda](plan/modulos/M14-tienda.md) deja ver accesorios y refacciones compatibles con el auto, apartarlos, pedir su instalación en una cita y seguir el pedido. Se paga en caja. Se abre desde el catálogo v2 o con el enlace `carecar://tienda`.
+
 ---
 
 ## 🧰 Stack tecnológico
@@ -85,7 +87,7 @@ Además: manuales del vehículo (PDF de la agencia o incluido en la app) y Ajust
 | `http`          | Cliente de la API escrito a mano                      |
 | `flutter_secure_storage` | Guarda la sesión (tokens) cifrada            |
 | `flutter_animate`, `skeletonizer` | Animaciones y esqueletos de carga   |
-| `google_fonts`  | Inter y JetBrains Mono (hoy se descargan en runtime)  |
+| Geist y Geist Mono | Letra de la v2, empaquetada en `assets/fonts` (la v1 usa Inter y JetBrains Mono, también empaquetadas) |
 | `pdfx`          | Visor de manuales y tickets en PDF                    |
 | `flutter_lints` | Reglas de análisis estático (`analysis_options.yaml`) |
 | `flutter_test`  | Pruebas unitarias y de widgets                        |
@@ -152,14 +154,14 @@ flutter run --flavor desarrollo -t lib/main_desarrollo.dart --dart-define=API_BA
 | API simulada (`mock_api/`) | `http://localhost:3000/api/v1/app` |
 | Backend en Docker detrás de nginx (red local) | `http://IP-DE-LA-PC:8089/api/v1/app` |
 
-**Probar los módulos v2 (interruptor v1/v2, V2-T01.05).** Sin más opciones la app corre como la v1. Para ver un módulo ya migrado se enciende al compilar, sin servidor ni secretos:
+**Interruptor v1/v2 (V2-T01.05).** Desde V2-T01.09 la app corre la v2 sin más opciones. Para volver a la v1 (salida de emergencia hasta que se retire, V2-T01.07) o a una pantalla v1 concreta se indica al compilar, sin servidor ni secretos:
 
 ```bash
-flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V2=vehiculos,citas
-flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V2=todos --dart-define=MODULOS_V1=catalogo
+flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V1=todos
+flutter run --dart-define=API_BASE_URL=... --dart-define=MODULOS_V1=catalogo,citas
 ```
 
-Módulos válidos: `asistencia`, `catalogo`, `citas`, `vehiculos` (o `todos`). Un nombre mal escrito detiene el arranque. Guía completa en [`plan/arquitectura-v2.md`](plan/arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
+Módulos válidos: `acceso`, `asistencia`, `catalogo`, `citas`, `recuperacion`, `vehiculos` (o `todos`); `MODULOS_V2` enciende un módulo que aún no está en el valor por defecto (hoy, `recuperacion`: la recuperación de contraseña sigue en v1 porque su enlace del correo todavía no abre la app). Un nombre mal escrito detiene el arranque. Guía completa en [`plan/arquitectura-v2.md`](plan/arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105).
 
 > [!NOTE]
 > **Arranque en frío del backend en la nube.** Azure Container Apps apaga el servidor sin tráfico; la primera petición tras un rato de inactividad (por ejemplo el primer inicio de sesión) tarda ~35 s en despertarlo. La app espera hasta 60 s en lugar de fallar, y tras 8 s muestra «Despertando el servidor…» (V2-M01.12). Si aun así ves «Sin conexión», el servidor tardó más de un minuto o no hay red.

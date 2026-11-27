@@ -31,9 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  # Único set de íconos de la app (V2-T02.07): Lucide de trazo 1.5.
+  lucide_icons_flutter: ^4.0.3
   http: ^1.6.0
   flutter_svg: ^2.3.0
   pdfx: 2.11.0
@@ -85,8 +84,37 @@ dependencies:
   pdf: ^3.8.4
   cryptography: ^2.9.0
 
+  # Nombre del equipo para «mis sesiones abiertas» (V2-M01.09).
+  #
+  # Autorizada por Jael el 26 de noviembre de 2026. Hace falta porque
+  # `POST /auth/login` acepta un `dispositivo` opcional y es lo unico que luego
+  # le permite al cliente reconocer sus sesiones: sin nombre, en la lista todas
+  # se ven iguales y el criterio de la historia no se cumple. Nada en las
+  # dependencias de hoy da el modelo del equipo.
+  #
+  # Queda detras de `LectorDelDispositivo` (`lib/nucleo/dispositivo/`), asi que
+  # si el equipo prefiere un canal nativo propio se cambia una clase. No se lee
+  # ningun identificador: solo modelo y version del sistema, que no identifican
+  # a la persona.
+  device_info_plus: ^13.3.0
+  # Desbloqueo con huella o rostro (V2-M01.05).
+  #
+  # Autorizada por Jael el 27 de noviembre de 2026. Hace falta porque el
+  # criterio pide entrar con biometria y nada de las dependencias de hoy la
+  # expone; la alternativa era escribir un canal nativo propio por plataforma.
+  #
+  # Pide configuracion nativa en Android: `MainActivity` hereda de
+  # `FlutterFragmentActivity` -lo exige el BiometricPrompt- y el manifiesto
+  # declara USE_BIOMETRIC. Queda detras de `LectorBiometrico`
+  # (`lib/nucleo/biometria/`), asi que si el equipo prefiere otra se cambia una
+  # clase. **No guarda ni cifra nada**: solo pregunta al sistema si la persona
+  # se identifico. Los tokens siguen donde estaban (`AlmacenSesion`).
+  local_auth: ^3.0.2
+
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -122,6 +150,19 @@ flutter:
   # Cuando lleguen los SVG conviene regenerarlos, sobre todo la version blanca
   # para fondos oscuros, que no se puede derivar del JPEG.
   fonts:
+    # Letra del sistema de diseño v2 (V2-T02.02), con licencia SIL OFL en
+    # assets/fonts/Geist-OFL.txt. Solo van los pesos que usa la escala.
+    - family: Geist
+      fonts:
+        - asset: assets/fonts/Geist-400.ttf
+        - asset: assets/fonts/Geist-500.ttf
+          weight: 500
+        - asset: assets/fonts/Geist-600.ttf
+          weight: 600
+    - family: GeistMono
+      fonts:
+        - asset: assets/fonts/GeistMono-500.ttf
+          weight: 500
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-400.ttf
@@ -171,12 +212,11 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 # Icono de la app (se regenera con `dart run flutter_launcher_icons:main`).
+# El adaptativo de Android no sale de aqui: son los vectores ic_launcher_*.xml.
 flutter_icons:
   android: true
   ios: true
   image_path: assets/marca/agencia360-icono.png
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: assets/marca/agencia360-icono.png
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"
 

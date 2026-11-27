@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -71,7 +73,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
             mensaje: _anio == null
                 ? textos.historialVacioMensaje
                 : textos.historialVacioAnioMensaje('$_anio'),
-            icono: Icons.history,
+            icono: LucideIcons300.history,
           ),
         ),
       ];
@@ -79,28 +81,19 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
       contenido = _lista(context, historial.requireValue);
     }
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(aniosHistorialProvider(widget.vehiculoId));
-          ref.invalidate(historialProvider(_consulta));
-          await ref.read(historialProvider(_consulta).future);
-        },
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.historialTitulo,
-              subtitulo: vehiculo?.titulo,
-              translucido: true,
-            ),
-            SliverToBoxAdapter(child: _filtro(context)),
-            ...contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.historialTitulo,
+      subtitulo: vehiculo?.titulo,
+      conRegreso: true,
+      alRefrescar: () async {
+        ref.invalidate(aniosHistorialProvider(widget.vehiculoId));
+        ref.invalidate(historialProvider(_consulta));
+        await ref.read(historialProvider(_consulta).future);
+      },
+      slivers: [
+        SliverToBoxAdapter(child: _filtro(context)),
+        ...contenido,
+      ],
     );
   }
 
@@ -197,7 +190,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
                 BotonPildora(
                   texto: textos.historialReintentar,
                   variante: VarianteBotonPildora.vidrio,
-                  icono: Icons.refresh_rounded,
+                  icono: LucideIcons300.refreshCw,
                   alPresionar: () => ref
                       .read(historialProvider(_consulta).notifier)
                       .cargarMas(),
@@ -220,11 +213,11 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
 }
 
 IconData _iconoEstatus(EstatusOrden estatus) => switch (estatus) {
-  EstatusOrden.recibido => Icons.login_rounded,
-  EstatusOrden.enProceso => Icons.build_circle_outlined,
-  EstatusOrden.terminado => Icons.task_alt_rounded,
-  EstatusOrden.entregado => Icons.directions_car_filled_outlined,
-  EstatusOrden.desconocido => Icons.help_outline_rounded,
+  EstatusOrden.recibido => LucideIcons300.logIn,
+  EstatusOrden.enProceso => LucideIcons300.wrench,
+  EstatusOrden.terminado => LucideIcons300.circleCheckBig,
+  EstatusOrden.entregado => LucideIcons300.carFront,
+  EstatusOrden.desconocido => LucideIcons300.circleQuestionMark,
 };
 
 Color _colorEstatus(TokensPista tokens, EstatusOrden estatus) {

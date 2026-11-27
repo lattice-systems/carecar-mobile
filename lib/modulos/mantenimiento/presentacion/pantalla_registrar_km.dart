@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -10,7 +12,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/fallos_mantenimiento.dart';
-import 'componentes/marco_pantalla_mantenimiento.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_mantenimiento.dart';
 import 'proveedores_mantenimiento.dart';
 
@@ -98,9 +100,9 @@ class _EstadoPantallaRegistrarKm extends ConsumerState<PantallaRegistrarKm> {
       _Fallo.red || null => null,
     };
 
-    return MarcoPantallaMantenimiento(
+    return MarcoPantalla(
       titulo: textos.mantenimientoKmTitulo,
-      barraInferior: BarraInferiorMantenimiento(
+      barraInferior: BarraInferior(
         hijos: [
           if (_fallo == _Fallo.red) ...[
             Aviso(mensaje: textos.mantenimientoKmErrorRed, tono: Tono.peligro),
@@ -111,7 +113,7 @@ class _EstadoPantallaRegistrarKm extends ConsumerState<PantallaRegistrarKm> {
             label: _enviando ? textos.mantenimientoKmGuardando : null,
             child: BotonPildora(
               texto: textos.mantenimientoKmGuardar,
-              icono: Icons.check_rounded,
+              icono: LucideIcons300.check,
               expandido: true,
               alPresionar: _enviando ? null : _guardar,
             ),

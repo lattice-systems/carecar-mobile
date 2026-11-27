@@ -66,6 +66,40 @@ class CarecarApiHttp implements CarecarApi {
   Future<Perfil> miPerfil() => _cliente.obtener('/perfil', Perfil.fromJson);
 
   @override
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) => _cliente.parchar(
+    '/perfil',
+    // El correo se recorta, como en el login: el teclado del celular mete
+    // espacios con facilidad. La contrasena no se toca, un espacio puede ser
+    // parte de ella.
+    cuerpo: {'correo': correo.trim(), 'contrasenaActual': contrasenaActual},
+    leer: VerificacionPendiente.fromJson,
+  );
+
+  @override
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  }) => _cliente.enviar(
+    '/perfil/verificaciones/$id/confirmar',
+    cuerpo: {'codigo': codigo.trim()},
+    leer: Perfil.fromJson,
+  );
+
+  @override
+  Future<List<SesionActiva>> misSesiones() =>
+      _cliente.obtenerLista('/sesiones', SesionActiva.fromJson);
+
+  @override
+  Future<void> cerrarSesionActiva(int sesionId) =>
+      _cliente.eliminar('/sesiones/$sesionId');
+
+  @override
+  Future<void> cerrarTodasLasSesiones() => _cliente.eliminar('/sesiones');
+
+  @override
   Future<List<Vehiculo>> misVehiculos() =>
       _cliente.obtenerLista('/vehiculos', Vehiculo.fromJson);
 
@@ -221,6 +255,10 @@ class CarecarApiHttp implements CarecarApi {
   @override
   Future<DetalleModeloCatalogo> detalleModelo(int id) =>
       _cliente.obtener('/catalogo/$id', DetalleModeloCatalogo.fromJson);
+
+  @override
+  Future<List<SucursalApi>> sucursales() =>
+      _cliente.obtenerLista('/sucursales', SucursalApi.fromJson);
 
   @override
   Future<EstimacionTomaCuenta> estimarTomaACuenta(

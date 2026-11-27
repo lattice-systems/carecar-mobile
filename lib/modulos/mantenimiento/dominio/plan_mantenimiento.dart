@@ -133,6 +133,30 @@ class PlanMantenimiento {
   int get hechos =>
       servicios.where((s) => s.estado == EstadoServicio.hecho).length;
 
+  /// Cuánto del camino al próximo servicio ya se recorrió, de 0 a 1.
+  ///
+  /// Se mide en kilómetros desde el último servicio hecho (o desde cero si no
+  /// hay ninguno) hasta el que toca. `null` si toca por tiempo, no hay
+  /// kilometraje vigente o no hay próximo servicio: sin kilómetros no hay un
+  /// avance que dibujar.
+  double? get avanceDelProximo {
+    final siguiente = proximo;
+    final km = kmActual;
+    if (siguiente == null || km == null) return null;
+    if (siguiente.motivo != MotivoProximo.km) return null;
+    var base = 0;
+    for (final s in servicios) {
+      if (s.estado == EstadoServicio.hecho &&
+          s.km < siguiente.kmObjetivo &&
+          s.km > base) {
+        base = s.km;
+      }
+    }
+    final tramo = siguiente.kmObjetivo - base;
+    if (tramo <= 0) return null;
+    return ((km - base) / tramo).clamp(0.0, 1.0);
+  }
+
   ServicioMantenimiento? servicioPorId(int id) {
     for (final s in servicios) {
       if (s.id == id) return s;

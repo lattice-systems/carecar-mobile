@@ -9,6 +9,8 @@ import 'package:carecar_mobile/modulos/asistencia/presentacion/pantalla_pedir_ay
 import 'package:carecar_mobile/modulos/asistencia/presentacion/proveedores_asistencia.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
@@ -115,6 +117,32 @@ Future<void> _llenarLoBasico(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('se cierra con el mismo botón de cierre que el resto de la app', (
+    tester,
+  ) async {
+    await _montar(tester);
+
+    // Antes llevaba su propio círculo azul: ahora es el BotonCerrar del marco.
+    expect(find.byType(BotonCerrar), findsOneWidget);
+    expect(find.byTooltip('Cerrar'), findsOneWidget);
+    expect(find.byType(BotonRegresar), findsNothing);
+  });
+
+  testWidgets('los tres encabezados del formulario tienen el mismo estilo', (
+    tester,
+  ) async {
+    await _montar(tester);
+
+    // El primero era la etiqueta pequeña de la lista y los otros dos títulos:
+    // tres títulos de sección de dos tamaños en una misma pantalla.
+    TextStyle? estilo(String texto) =>
+        tester.widget<Text>(find.text(texto)).style;
+    final vehiculo = estilo('¿Qué vehículo necesita ayuda?');
+    expect(vehiculo, isNotNull);
+    expect(estilo('¿Qué pasó?'), vehiculo);
+    expect(estilo('Tu ubicación'), vehiculo);
+  });
+
   testWidgets('trae vehiculos, tipos, ubicacion y el control de deslizar', (
     tester,
   ) async {

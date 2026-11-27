@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
+import '../../../nucleo/diseno/componentes/mapa.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -15,9 +18,8 @@ import '../../../nucleo/mapas/mapas.dart';
 import '../dominio/direccion_guardada.dart';
 import '../dominio/fallos_recoleccion.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
-import 'componentes/marco_pantalla_recoleccion.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'proveedores_recoleccion.dart';
-import 'provisional/mapa_provisional.dart';
 
 /// Por qué no se pudo seguir: lo que se explica en un aviso dentro de la
 /// pantalla.
@@ -240,11 +242,11 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
     final c = tokens.colores;
     final editando = widget.editando != null;
 
-    return MarcoPantallaRecoleccion(
+    return MarcoPantalla(
       titulo: editando
           ? textos.recoleccionFormEditarTitulo
           : textos.recoleccionFormNuevaTitulo,
-      barraInferior: BarraInferiorRecoleccion(
+      barraInferior: BarraInferior(
         hijos: [
           BotonPildora(
             texto: textos.recoleccionGuardar,
@@ -255,7 +257,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
             const SizedBox(height: Espaciado.e2),
             BotonPildora(
               texto: textos.recoleccionBorrar,
-              icono: Icons.delete_outline,
+              icono: LucideIcons300.trash2,
               variante: VarianteBotonPildora.vidrio,
               expandido: true,
               alPresionar: _ocupado ? null : _confirmarBorrado,
@@ -278,12 +280,16 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                   ),
                   child: _avisoWidget(textos, _aviso!),
                 ),
-              SeccionRecoleccion(
+              SeccionPantalla(
                 titulo: textos.recoleccionFormUbicacionTitulo,
                 hijo: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    MapaProvisional(pin: _pin, alElegir: _ponerPin),
+                    Mapa(
+                      teselas: ref.watch(configuracionTeselasProvider),
+                      pin: _pin,
+                      alMoverPin: _ponerPin,
+                    ),
                     const SizedBox(height: Espaciado.e2),
                     Text(
                       textos.recoleccionFormPinAyuda,
@@ -307,7 +313,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                     const SizedBox(height: Espaciado.e3),
                     BotonPildora(
                       texto: textos.recoleccionFormUsarUbicacion,
-                      icono: Icons.my_location_outlined,
+                      icono: LucideIcons300.locateFixed,
                       variante: VarianteBotonPildora.vidrio,
                       expandido: true,
                       alPresionar: _ocupado ? null : _usarUbicacion,
@@ -321,7 +327,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                       alEnviar: (_) => _buscar(),
                       sufijo: BotonCircular(
                         etiqueta: textos.recoleccionFormBuscarAccion,
-                        icono: Icons.search_rounded,
+                        icono: LucideIcons300.search,
                         variante: VarianteBotonCircular.acento,
                         alPresionar: _ocupado ? null : _buscar,
                       ),
@@ -329,7 +335,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                   ],
                 ),
               ),
-              SeccionRecoleccion(
+              SeccionPantalla(
                 titulo: textos.recoleccionSelectorDireccion,
                 hijo: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

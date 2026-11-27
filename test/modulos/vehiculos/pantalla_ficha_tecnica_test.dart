@@ -13,6 +13,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -82,6 +83,18 @@ void main() {
     await tester.tap(find.text('Motor'));
     await tester.pumpAndSettle();
     expect(find.text('1.6 L'), findsNothing);
+  });
+
+  _prueba('cada sección lleva una sola flecha: la de desplegar', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(_Repo(() async => _ficha)));
+    await tester.pumpAndSettle();
+
+    // Antes cada fila mostraba la de desplegar y, a su lado, la de «abre otra
+    // pantalla», que aquí no existe.
+    expect(find.byIcon(LucideIcons300.chevronDown), findsNWidgets(2));
+    expect(find.byIcon(LucideIcons300.chevronRight), findsNothing);
   });
 
   _prueba('avisa cuando la ficha sale del respaldo local', (tester) async {

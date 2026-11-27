@@ -13,13 +13,10 @@ import '../../ayudas/api_falsa.dart';
 
 /// V2-M01.01 · la ruta del modulo `acceso`.
 ///
-/// Se monta con un enrutador propio porque **la ruta todavia no esta
-/// registrada** en `registro_de_rutas.dart`: hoy `/acceso` lo sirve la
-/// pantalla v1. Lo que falta para encenderla esta en `rutas_acceso.dart`.
-///
-/// Aun sin registrar, conviene probarla: asi el dia del encendido se sabe que
-/// el camino y el nombre son los que el guardia espera, y no se descubre en un
-/// enrutador roto.
+/// Se monta con un enrutador propio, sin el guardia ni el interruptor: asi se
+/// comprueba el modulo solo, que el camino y el nombre son los que el guardia
+/// espera. Que el acceso este encendido y que la recuperacion siga en v1 se
+/// prueba en `interruptor_rutas_test.dart`.
 void main() {
   Widget app(ControladorSesion sesion) => ProviderScope(
     overrides: [controladorSesionProvider.overrideWithValue(sesion)],
@@ -112,10 +109,59 @@ void main() {
     expect(find.byType(PantallaCambiarContrasena), findsOneWidget);
   });
 
-  testWidgets('las dos rutas del modulo no comparten camino', (tester) async {
-    final caminos = rutasAcceso.whereType<GoRoute>().map((r) => r.path);
+  testWidgets('las cuatro rutas del modulo no comparten camino', (
+    tester,
+  ) async {
+    final caminos = [
+      ...rutasAcceso,
+      ...rutasRecuperacion,
+    ].whereType<GoRoute>().map((r) => r.path);
     expect(caminos.toSet().length, caminos.length);
-    expect(caminos, containsAll([Rutas.acceso, Rutas.cambiarContrasena]));
+    expect(
+      caminos,
+      containsAll([
+        Rutas.acceso,
+        Rutas.cambiarContrasena,
+        Rutas.recuperar,
+        Rutas.restablecer,
+      ]),
+    );
+  });
+
+  testWidgets('el enlace del correo llega a la pantalla con su token', (
+    tester,
+  ) async {
+    // La vuelta completa del criterio: `carecar://restablecer?token=abc` lo
+    // traduce el nucleo a esta ruta, y la pantalla tiene que recibir el token
+    // por la consulta. Si el camino o el nombre del parametro no coincidieran,
+    // el enlace del correo abriria una pantalla que dice «enlace roto».
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          controladorSesionProvider.overrideWithValue(
+            ControladorSesion(ApiFalsa(), AlmacenEnMemoria()),
+          ),
+          repositorioAccesoProvider.overrideWithValue(RepositorioAccesoFake()),
+        ],
+        child: MaterialApp.router(
+          locale: idiomaBase,
+          localizationsDelegates: delegadasDeIdioma,
+          supportedLocales: idiomasSoportados,
+          routerConfig: GoRouter(
+            initialLocation: '${Rutas.restablecer}?token=abc123',
+            routes: rutasRecuperacion,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final pantalla = tester.widget<PantallaNuevaContrasena>(
+      find.byType(PantallaNuevaContrasena),
+    );
+    expect(pantalla.token, 'abc123');
+    // Y por tanto pide la contrasena en vez de decir que el enlace no sirve.
+    expect(find.byKey(PantallaNuevaContrasena.campoNueva), findsOneWidget);
   });
 
   testWidgets('la pantalla llega con el tema Pista, no con el de la v1', (

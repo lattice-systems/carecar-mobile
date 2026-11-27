@@ -48,6 +48,44 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 - **Sigue manual:** la prueba con TalkBack y VoiceOver por pantalla que pide V2-M20.02. No se puede automatizar.
 - **Pendiente:** las pantallas v1 no se auditan, se retiran con V2-T02.08.
 
+### Pantallas de catálogo, tienda y valuación
+
+- Las pantallas de M03, M14 y M26 pasan las guías en sus pruebas de módulo, en claro, oscuro y letra al 200 %. Las de catálogo y valuación se prueban además en 320 de ancho, como ya hacía la tienda.
+- **Excepción aceptada en V2-M20.08:** en teléfonos de 320 de ancho cada día del `Calendario` mide unos 42 de ancho y conserva 48 de alto, porque siete columnas de 48 suman 336. Se acepta porque supera el mínimo de WCAG 2.2 AA (24 × 24) y las otras salidas, como desplazar el mes de lado, son peores para quien lo usa. La prueba de agendar inspección exige al menos 40 de ancho y 48 de alto.
+
+### Recorrido por las rutas del resto de módulos
+
+`test/accesibilidad/rutas/` monta la app con el enrutador real y abre las pantallas de lealtad, pagos, garantía, taller, historial, mantenimiento, bitácora, recolección, asistencia, vehículos, citas, mi perfil y sesiones. Cada una se prueba en 320 de ancho, en claro y oscuro con las guías de Flutter y con letra al 200 % sin desbordes. El ayudante es `test/ayudas/auditoria_rutas.dart`: una pantalla nueva suma su ruta al archivo de su módulo.
+
+| Qué encontró | Cómo quedó |
+| --- | --- |
+| Días del calendario de 37.7 de ancho al agendar, reprogramar y agendar una campaña | El calendario usa todo el ancho de su tarjeta y mide 41.1, dentro de la excepción de arriba |
+| Código de canje y de referido con 34 de alto | Miden al menos 48 |
+| La tarjeta del asistente, en el detalle del auto, tenía un toque sin nombre para el lector | El encabezado es el único botón que abre el asistente |
+| El chat del asistente se desbordaba con letra al 200 % | Los avisos ocupan un tercio del alto como mucho y el texto de ayuda del campo, dos líneas |
+
+- Con el recorrido de rutas y el de acceso, las tres historias quedan cerradas (ver «Cierre» al final de la sección).
+
+### Pantallas de acceso v2
+
+El acceso ya se sirve en v2 por defecto (V2-T01.10), así que `test/accesibilidad/rutas/acceso_test.dart` audita el inicio de sesión, la bienvenida, la cuenta desactivada, el cambio obligatorio de contraseña, mi contraseña y cambiar correo, con la misma regla de 320 de ancho, claro y oscuro con las guías de Flutter y letra al 200 % sin desbordes.
+
+- Cada una pide un estado de sesión distinto (sin sesión, primer arranque, cuenta desactivada, contraseña temporal, sesión abierta), así que el ayudante `montarParaAuditar` acepta `prepararSesion`, y `auditarRutas` deja pasar al acceso cuando es la pantalla que se audita.
+- **Qué encontró:** nada. Las seis pantallas pasaron a la primera, sin cambios en ellas.
+
+### Cierre
+
+- **V2-M20.03 y V2-M20.08** se cierran con sus criterios cumplidos por prueba automática: letra al 200 % sin desbordes y controles de al menos 48 × 48 en todas las pantallas v2 que existen hoy, con la excepción del `Calendario` descrita arriba.
+- **V2-M20.02** se cierra con la parte automática: etiqueta en todo control tocable y contraste en claro y oscuro, con las guías de Flutter. El orden de foco no lo miden esas guías. La corrida con TalkBack y VoiceOver en teléfono no se hizo en esta historia. Pasa a la prueba en celular físico por hito (V2-T03.07), que ya recorre las pantallas en un equipo real.
+- Cada pantalla v2 nueva suma su ruta a `test/accesibilidad/rutas/` en su propio PR, así que el recorrido sigue vigilando aunque estas historias estén cerradas. Las pantallas v1 no se auditan: se retiran con V2-T02.08.
+- La recuperación de contraseña sigue en v1 y no se audita, como el resto de las pantallas v1. Cuando se encienda su módulo en v2 se suma a este archivo.
+
+### Pantallas de taller, historial, garantía, lealtad y pagos
+
+- Las pantallas de M04 (orden, inspección y adicionales), M02 (historial y ticket), M10 (garantía, campañas, campaña y agendar), M12 (lealtad, movimientos, recompensas, canjes y referir) y M08 (datos fiscales, perfil fiscal, pagar orden, mis pagos, pago y métodos de pago) pasan la auditoría en sus pruebas de módulo: `auditarAccesibilidad` en claro y oscuro a 320 de ancho, y sin desbordes con letra al 200 %.
+- Las pruebas de módulo encontraron además que Mis pagos tronaba sin pagos (el estado vacío pedía la altura intrínseca); ya se corrigió. Agendar una campaña se prueba con la excepción del calendario (40 × 48) y los códigos de canje y de referido con la corrección del recorrido por rutas.
+- Los ayudantes de prueba de esos módulos (`appTaller`, `appGarantia`, `appLealtad`, `appPagos` y `appCobro`) aceptan `ancho`, para montar cada pantalla en un teléfono chico.
+
 ## Avance de V2-M20.01 (fase 1)
 
 Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.

@@ -70,6 +70,6 @@ void main() {
     'comprobante',
     () =>
         const PantallaComprobanteCita(citaId: 7, fabricaVisorPdf: _visorFalso),
-    'Comprobante de cita',
+    'Folio 7',
   );
 }

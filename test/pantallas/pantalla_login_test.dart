@@ -44,14 +44,14 @@ void main() {
     ) async {
       await _montar(tester, _controlador(ApiFalsa()));
 
-      final logo = tester.widget<Image>(find.byKey(PantallaLogin.logo));
-      expect(logo.image, isA<AssetImage>());
+      final logo = tester.widget<SvgPicture>(find.byKey(PantallaLogin.logo));
+      expect(logo.bytesLoader, isA<SvgAssetLoader>());
       expect(
-        (logo.image as AssetImage).assetName,
-        'assets/marca/agencia360-logo-oscuro.png',
+        (logo.bytesLoader as SvgAssetLoader).assetName,
+        'assets/marca/agencia360-logo-oscuro.svg',
       );
       // Un logotipo sin texto siempre lleva etiqueta accesible.
-      expect(logo.semanticLabel, 'Agencia360');
+      expect(logo.semanticsLabel, 'Agencia360');
       // La guia pide 120 px de ancho minimo para el logo horizontal.
       expect(logo.width, greaterThanOrEqualTo(120));
     });
@@ -67,9 +67,7 @@ void main() {
   });
 
   group('el criterio de aceptacion de APP-2.1', () {
-    testWidgets('no muestra ningun flujo de registro de cuenta nueva', (
-      tester,
-    ) async {
+    testWidgets('V2-M01.01: la app no ofrece registro público', (tester) async {
       await _montar(tester, _controlador(ApiFalsa()));
 
       // El criterio es explicito: «la interfaz no debe mostrar botones ni
@@ -308,17 +306,25 @@ void main() {
       );
     });
 
-    testWidgets('la cuenta desactivada tambien se muestra', (tester) async {
+    // Antes se esperaba el mensaje del servidor dentro del login. **V2-M01.08
+    // lo cambia a proposito**: una cuenta desactivada no se arregla volviendo
+    // a escribir la contrasena, asi que sale del login y la guardia lleva al
+    // aviso que lo explica y ofrece contactar a la agencia. Esta prueba monta
+    // la pantalla sin enrutador, asi que aqui solo se ve el estado.
+    testWidgets('la cuenta desactivada sale del login', (tester) async {
       final api = ApiFalsa.queFalla(
         const CuentaDesactivada('La cuenta esta desactivada'),
       );
-      await _montar(tester, _controlador(api));
+      final controlador = _controlador(api);
+      await _montar(tester, controlador);
 
       await _escribirCredenciales(tester);
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
 
-      expect(find.text('La cuenta esta desactivada'), findsOneWidget);
+      expect(find.byKey(PantallaLogin.avisoDeError), findsNothing);
+      final estado = controlador.estado;
+      expect((estado as SinSesion).porCuentaDesactivada, isTrue);
     });
 
     testWidgets('el error se borra al reintentar', (tester) async {
@@ -463,7 +469,9 @@ void main() {
   });
 
   group('al entrar bien', () {
-    testWidgets('avisa que la sesion quedo iniciada', (tester) async {
+    testWidgets('V2-M01.01: avisa que la sesión quedó iniciada', (
+      tester,
+    ) async {
       var avisos = 0;
       final controlador = _controlador(ApiFalsa());
       await tester.pumpWidget(

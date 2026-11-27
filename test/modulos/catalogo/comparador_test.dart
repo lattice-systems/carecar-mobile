@@ -2,8 +2,11 @@ import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/barra_pantalla.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -63,9 +66,14 @@ Widget _app(
   ApiFalsa api,
   List<int> ids, {
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [carecarApiProvider.overrideWithValue(api)],
-  child: conTemaPista(PantallaComparador(ids: ids), escenario: escenario),
+  child: conTemaPista(
+    PantallaComparador(ids: ids),
+    escenario: escenario,
+    ancho: ancho,
+  ),
 );
 
 void _pantallaAlta(WidgetTester tester) {
@@ -140,7 +148,9 @@ void main() {
     });
   });
 
-  testWidgets('compara tres modelos con precio y ficha', (tester) async {
+  testWidgets('V2-M03.03: compara tres modelos con precio y ficha', (
+    tester,
+  ) async {
     _pantallaAlta(tester);
     await tester.pumpWidget(_app(_api(), [1, 2, 3]));
     await tester.pumpAndSettle();
@@ -155,6 +165,18 @@ void main() {
     // Sentra no trae precio ni ficha (4 celdas), Versa no trae cajuela y Kicks
     // no trae puertas (2 celdas mas).
     expect(find.text('Sin dato'), findsNWidgets(6));
+  });
+
+  testWidgets('usa el marco del sistema: título grande y regreso', (
+    tester,
+  ) async {
+    _pantallaAlta(tester);
+    await tester.pumpWidget(_app(_api(), [1, 2]));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(MarcoPantalla), findsOneWidget);
+    expect(find.byType(BotonRegresar), findsOneWidget);
+    expect(find.byType(BarraPantalla), findsNothing);
   });
 
   testWidgets('resalta el precio mas bajo', (tester) async {
@@ -175,6 +197,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(EstadoVacio), findsOneWidget);
     expect(find.text('Elige de dos a tres modelos'), findsOneWidget);
+    // Un estado no deja la pantalla sin salida: conserva el marco.
+    expect(find.byType(BotonRegresar), findsOneWidget);
   });
 
   testWidgets('un modelo retirado explica que ya no esta', (tester) async {
@@ -219,6 +243,25 @@ void main() {
     await tester.pumpWidget(_app(_api(), [1, 2, 3]));
     await tester.pumpAndSettle();
     await auditarAccesibilidad(tester);
+  });
+
+  testWidgets('en 320 de ancho pasa las guias en los tres escenarios', (
+    tester,
+  ) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(
+          _api(),
+          [1, 2, 3],
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      await auditarAccesibilidad(tester);
+    }
   });
 
   group('modo comparar en el catalogo', () {

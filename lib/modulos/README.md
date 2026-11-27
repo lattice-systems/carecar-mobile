@@ -38,7 +38,7 @@ Navegación con `go_router` (ADR 0003, V2-T01.03). **Cada módulo expone sus rut
 4. Reglas: nombres de ruta y caminos son de tu módulo y van en español sin acentos; para ir a otro módulo usa su constante (`<modulo>.dart`) o `context.goNamed`, nunca importes su `presentacion/`. Las rutas de módulos **exigen sesión** por defecto: sin sesión van al acceso y vuelven a ellas al entrar; el cambio obligatorio de contraseña también se respeta. Si una ruta debe ser pública, se agrega a `Rutas.publicas` (`nucleo/navegacion/rutas.dart`) con aviso al dueño de T01.
 5. Enlaces: `carecar://<ruta>` y `https://<host>/app/<ruta>` llegan a la misma ruta (`carecar://citas/5` → `/citas/5`), así que **toda ruta tuya ya es alcanzable por enlace**. Por eso: parámetros por camino/consulta (`:id`, `?token=`), nunca objetos en `extra`.
 6. Mientras no exista el tema v2 global, envuelve la pantalla con `Theme(data: TemaPista...)` como en `ejemplo/presentacion/rutas_ejemplo.dart`.
-7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`.
+7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`. Si pruebas que sin sesión te manda al acceso, usa `pantallaDeAcceso` (mismo archivo): **no** busques `PantallaLogin` ni `PantallaAcceso` por tipo, porque qué versión del acceso está encendida cambia (V2-T01.10).
 
 ## Pantallas de pago y documentos
 
@@ -57,6 +57,7 @@ Ninguna cadena visible va en el código. Agrega la clave a `lib/l10n/app_es.arb`
 | Acciones de sesión (iniciar, cerrar) | `ref.read(controladorSesionProvider)` (`lib/nucleo/sesion/`) |
 | Reaccionar a la sesión | `ref.watch(estadoSesionProvider)` |
 | Componentes y tokens | `lib/nucleo/diseno/` |
+| Números con separador de miles (kilómetros, cifras) | `formatearMiles` (`lib/nucleo/idioma/formato_numeros.dart`): el español usa el formato de México, no copies la regla |
 | Errores tipados | `Fallo` y sus preguntas (`lib/nucleo/datos/fallo.dart`) |
 | Base del repositorio | `with RepositorioBase` (`lib/nucleo/datos/repositorio_base.dart`) |
 | Los cinco estados | `VistaAsincrona` (`lib/nucleo/datos/vista_asincrona.dart`) |
@@ -98,6 +99,24 @@ class RepositorioCatalogoApi with RepositorioBase implements RepositorioCatalogo
 ```
 
 El mapeo va dentro de `pedir` a propósito: el cliente ya tipa sus errores, pero **la traducción del DTO no estaba protegida** y un campo que cambia en el backend llegaba a la pantalla sin tipar. Los `Error` (un `TypeError`, un índice fuera de rango) se propagan tal cual: son bugs nuestros, no fallas previstas, y conviene que el reporte de fallos vea su tipo real.
+
+⚠️ **Traducir a un fallo de dominio va FUERA de `pedir`, no dentro.** Un fallo de dominio (`FranjaSinCupo`, `EnlaceNoValido`…) es una `Exception` normal, y `pedir` tipa todo lo que no sea `ExcepcionApi`: traducir dentro lo convertiría en `ErrorDelServidor` y la pantalla perdería el único dato que necesita.
+
+```dart
+@override
+Future<void> restablecerConEnlace({required String token, required String nueva}) async {
+  try {
+    await pedir(() => _api.restablecerContrasena(...));
+  } on DatosInvalidos catch (e) {                      // la traducción, fuera
+    if (e.problema?.codigo == CodigoProblema.codigoInvalido) {
+      throw const EnlaceNoValido();
+    }
+    rethrow;
+  }
+}
+```
+
+Ejemplo real y con prueba del caso: `acceso/datos/repositorio_acceso_api.dart` y `test/modulos/acceso/datos/repositorio_acceso_api_test.dart`.
 
 ### 3 · La pantalla pinta los cinco estados
 

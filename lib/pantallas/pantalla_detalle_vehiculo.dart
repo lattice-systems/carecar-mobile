@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../api/carecar_api.dart';
 import '../api/modelos/vehiculo.dart';
 import '../tema/tema_carecar.dart';
@@ -253,7 +255,7 @@ class _DatosClave extends StatelessWidget {
           children: [
             celda(
               _Clave(
-                icono: Icons.speed_outlined,
+                icono: LucideIcons300.gauge,
                 etiqueta: 'Kilometraje',
                 valor: km == null
                     ? const Text('Sin capturar')
@@ -265,7 +267,7 @@ class _DatosClave extends StatelessWidget {
             ),
             celda(
               _Clave(
-                icono: Icons.pin_outlined,
+                icono: LucideIcons300.hash,
                 etiqueta: 'Placas',
                 valor: Text(
                   vehiculo.placas ?? 'Sin capturar',
@@ -275,7 +277,7 @@ class _DatosClave extends StatelessWidget {
             ),
             celda(
               _Clave(
-                icono: Icons.build_circle_outlined,
+                icono: LucideIcons300.wrench,
                 etiqueta: 'Próximo servicio',
                 valor: Text(proximo == null ? 'Sin dato' : formatoKm(proximo)),
                 nota: proximo == null || km == null

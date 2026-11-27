@@ -2,49 +2,59 @@ import 'package:flutter/gestures.dart' show PointerDeviceKind;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../l10n/app_localizations.dart';
 import '../diseno/componentes/avatar.dart';
 import '../diseno/componentes/barra_flotante.dart';
 import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
+import '../diseno/componentes/cuadro_fecha.dart';
 import '../diseno/componentes/esqueleto.dart';
-import '../diseno/componentes/rebote_tactil.dart';
+import '../diseno/componentes/tarjeta_auto.dart';
+import '../diseno/componentes/tarjeta_resumen.dart';
+import '../diseno/componentes/tinte_auto.dart';
+import '../diseno/componentes/tono.dart';
 import '../diseno/tema_pista.dart';
 import '../diseno/tokens/espaciado.dart';
 import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
-import 'silueta_auto.dart';
-
-/// Un acceso de la lista del inicio.
-class AccesoInicio {
-  const AccesoInicio({
-    required this.titulo,
-    required this.subtitulo,
-    required this.icono,
-    required this.alPulsar,
-  });
-
-  final String titulo;
-  final String subtitulo;
-  final IconData icono;
-  final VoidCallback alPulsar;
-}
+import '../idioma/formato_numeros.dart';
 
 /// Un auto del cliente, como lo muestra el inicio.
 class AutoInicio {
   const AutoInicio({
+    required this.id,
     required this.modelo,
     required this.anio,
     this.marca,
     this.placas,
     this.kilometraje,
+    this.color,
   });
 
+  /// El vehículo en el servidor: de él cuelgan los datos que el inicio pide
+  /// según el auto que se está viendo (el próximo servicio, por ejemplo).
+  final int id;
   final String modelo;
   final int anio;
   final String? marca;
   final String? placas;
   final int? kilometraje;
+
+  /// Nombre del color del auto; tiñe su tarjeta (ver `tinteDeColorAuto`).
+  final String? color;
+
+  /// La marca para mostrarla aparte, o `null` si falta o el modelo ya la trae
+  /// («Nissan March» no se vuelve «Nissan / Nissan March»). Es la misma regla
+  /// del garaje.
+  String? get marcaAparte {
+    final m = marca;
+    if (m == null || modelo.toLowerCase().startsWith(m.toLowerCase())) {
+      return null;
+    }
+    return m;
+  }
 }
 
 /// La próxima cita del cliente, como la muestra el inicio.
@@ -62,17 +72,23 @@ class CitaInicio {
 ///
 /// Arriba, el saludo y el avatar (abre perfil y ajustes). Luego el auto como
 /// protagonista (una tarjeta de color con su silueta, placas y kilometraje; se
-/// desliza si hay varios), lo que el taller tiene en curso, la próxima cita y
-/// tres accesos redondos. Abajo flotan la acción principal («Agendar cita») y la
-/// [BarraFlotante] con los destinos. Mientras la v1 conviva, los destinos de la
-/// barra abren su pantalla encima del inicio (`accesos[i]`) y el inicio sigue
-/// siendo el destino activo.
+/// desliza si hay varios) y, debajo, lo que le importa de él: lo que el taller
+/// tiene en curso, la próxima cita y el próximo servicio del auto que se está
+/// viendo. Abajo flotan la acción principal («Agendar cita») y la
+/// [BarraFlotante] con los destinos.
+///
+/// Los destinos viven solo en la barra: el cuerpo no los repite con accesos,
+/// sino que muestra datos. Mientras la v1 conviva, los destinos de la barra
+/// abren su pantalla encima del inicio y el inicio sigue siendo el destino
+/// activo.
 ///
 /// Lleva su propio tema Pista (claro u oscuro según el sistema) porque el
 /// inicio v1 aún no está bajo el tema v2 global (V2-T01.05).
 class InicioNuevo extends StatelessWidget {
   const InicioNuevo({
-    required this.accesos,
+    required this.alAbrirVehiculos,
+    required this.alAbrirCitas,
+    required this.alAbrirCatalogo,
     required this.alAbrirAjustes,
     required this.alAgendar,
     super.key,
@@ -80,17 +96,21 @@ class InicioNuevo extends StatelessWidget {
     this.ordenEnCurso,
     this.autos,
     this.proximaCita,
-  }) : assert(accesos.length == 3, 'El inicio lleva tres accesos');
+    this.servicioDelAuto,
+  });
 
-  /// Vehículos, citas y catálogo, en ese orden.
-  final List<AccesoInicio> accesos;
+  /// Destinos de la barra (y de las tarjetas que llevan a ellos).
+  final VoidCallback alAbrirVehiculos;
+  final VoidCallback alAbrirCitas;
+  final VoidCallback alAbrirCatalogo;
   final VoidCallback alAbrirAjustes;
   final VoidCallback alAgendar;
 
   /// Nombre completo del cliente; hasta que llega no se muestra saludo.
   final String? nombre;
 
-  /// Tarjeta de lo que el taller tiene en curso, si hay.
+  /// Tarjeta de lo que el taller tiene en curso, si hay. Lleva su propia
+  /// separación inferior y no ocupa lugar cuando no hay orden.
   final Widget? ordenEnCurso;
 
   /// Autos del cliente; `null` mientras cargan.
@@ -98,6 +118,11 @@ class InicioNuevo extends StatelessWidget {
 
   /// Próxima cita confirmada, si hay.
   final CitaInicio? proximaCita;
+
+  /// Tarjeta con el próximo servicio del auto cuyo `id` recibe, la del que se
+  /// está viendo en el carrusel. Igual que [ordenEnCurso], lleva su propia
+  /// separación inferior y no ocupa lugar si no hay qué mostrar.
+  final Widget Function(int vehiculoId)? servicioDelAuto;
 
   @override
   Widget build(BuildContext context) {
@@ -111,33 +136,40 @@ class InicioNuevo extends StatelessWidget {
   }
 }
 
-/// Esquinas de las tarjetas grandes del inicio (las cuatro; `Radios.bordeHoja`
-/// solo redondea arriba).
-const BorderRadius _bordeTarjetaGrande = BorderRadius.all(
-  Radius.circular(Radios.hoja),
-);
-
 /// Alto que se deja bajo la tarjeta del auto para que se vea su sombra.
-const double _huecoDeSombra = 20;
+const double _huecoDeSombra = 28;
 
 /// Por encima de esta escala de letra el botón flotante se esconde.
 const double _escalaMaximaDelBoton = 1.5;
 
-class _Cuerpo extends StatelessWidget {
+class _Cuerpo extends StatefulWidget {
   const _Cuerpo({required this.inicio});
 
   final InicioNuevo inicio;
 
   @override
+  State<_Cuerpo> createState() => _CuerpoState();
+}
+
+class _CuerpoState extends State<_Cuerpo> {
+  /// Posición en el carrusel del auto que se está viendo.
+  int _auto = 0;
+
+  @override
   Widget build(BuildContext context) {
+    final inicio = widget.inicio;
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
     final primero = (inicio.nombre ?? '').trim().split(RegExp(r'\s+')).first;
+    final autos = inicio.autos;
+    final enPantalla = autos == null || autos.isEmpty
+        ? null
+        : autos[_auto.clamp(0, autos.length - 1)];
     // Con letra grande la barra crece y el botón flotante taparía media
-    // pantalla: se esconde (Citas sigue en los accesos y en la barra) y la
-    // reserva del final de la lista crece con la letra.
+    // pantalla: se esconde (Citas sigue en la barra) y la reserva del final de
+    // la lista crece con la letra.
     final escala = MediaQuery.textScalerOf(context).scale(1);
     final conBotonFlotante = escala <= _escalaMaximaDelBoton;
     final reservaInferior =
@@ -150,7 +182,6 @@ class _Cuerpo extends StatelessWidget {
       backgroundColor: c.fondo,
       body: Stack(
         children: [
-          const Positioned.fill(child: _Aurora()),
           SafeArea(
             bottom: false,
             child: ListView(
@@ -170,7 +201,7 @@ class _Cuerpo extends StatelessWidget {
                               textos.inicioSaludo(primero),
                               style: t.titulo1.copyWith(
                                 color: c.texto,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                     ),
@@ -183,24 +214,34 @@ class _Cuerpo extends StatelessWidget {
                 ),
                 const SizedBox(height: Espaciado.e4),
                 _SeccionAutos(
-                  autos: inicio.autos,
-                  alToque: inicio.accesos[0].alPulsar,
+                  autos: autos,
+                  alToque: inicio.alAbrirVehiculos,
                   escala: escala,
+                  alCambiarDeAuto: (i) => setState(() => _auto = i),
                 ),
-                if (inicio.ordenEnCurso != null) ...[
-                  const SizedBox(height: Espaciado.e4),
-                  inicio.ordenEnCurso!,
+                const SizedBox(height: Espaciado.e4),
+                // Lo que importa del auto, de lo más concreto a lo más
+                // estimado. Cada tarjeta lleva su separación inferior, así que
+                // no sobran huecos cuando alguna no se ve. Lo vacío (la
+                // invitación a agendar) va al final: nunca por encima de lo
+                // que sí hay.
+                ?inicio.ordenEnCurso,
+                if (autos != null) ...[
+                  if (inicio.proximaCita != null)
+                    _TarjetaCita(
+                      cita: inicio.proximaCita,
+                      alAbrirCitas: inicio.alAbrirCitas,
+                      alAgendar: inicio.alAgendar,
+                    ),
+                  if (enPantalla != null)
+                    ?inicio.servicioDelAuto?.call(enPantalla.id),
+                  if (inicio.proximaCita == null)
+                    _TarjetaCita(
+                      cita: null,
+                      alAbrirCitas: inicio.alAbrirCitas,
+                      alAgendar: inicio.alAgendar,
+                    ),
                 ],
-                if (inicio.autos != null) ...[
-                  const SizedBox(height: Espaciado.e4),
-                  _TarjetaCita(
-                    cita: inicio.proximaCita,
-                    alAbrirCitas: inicio.accesos[1].alPulsar,
-                    alAgendar: inicio.alAgendar,
-                  ),
-                ],
-                const SizedBox(height: Espaciado.e6),
-                _Accesos(accesos: inicio.accesos),
               ],
             ),
           ),
@@ -217,7 +258,7 @@ class _Cuerpo extends StatelessWidget {
                     padding: const EdgeInsets.only(right: Espaciado.e4),
                     child: BotonAccionFlotante(
                       texto: textos.inicioAgendarCita,
-                      icono: Icons.add,
+                      icono: LucideIcons300.plus,
                       alPresionar: inicio.alAgendar,
                     ),
                   ),
@@ -225,29 +266,32 @@ class _Cuerpo extends StatelessWidget {
                 ],
                 BarraFlotante(
                   indice: 0,
-                  alCambiar: (i) {
-                    if (i > 0) inicio.accesos[i - 1].alPulsar();
+                  alCambiar: (i) => switch (i) {
+                    1 => inicio.alAbrirVehiculos(),
+                    2 => inicio.alAbrirCitas(),
+                    3 => inicio.alAbrirCatalogo(),
+                    _ => null,
                   },
                   destinos: [
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoInicio,
-                      icono: Icons.home_outlined,
-                      iconoActivo: Icons.home_rounded,
+                      icono: LucideIcons300.house,
+                      iconoActivo: LucideIcons300.house,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoVehiculos,
-                      icono: Icons.directions_car_outlined,
-                      iconoActivo: Icons.directions_car_rounded,
+                      icono: LucideIcons300.car,
+                      iconoActivo: LucideIcons300.car,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoCitas,
-                      icono: Icons.calendar_month_outlined,
-                      iconoActivo: Icons.calendar_month_rounded,
+                      icono: LucideIcons300.calendarDays,
+                      iconoActivo: LucideIcons300.calendarDays,
                     ),
                     DestinoNavegacion(
                       etiqueta: textos.inicioDestinoCatalogo,
-                      icono: Icons.grid_view_outlined,
-                      iconoActivo: Icons.grid_view_rounded,
+                      icono: LucideIcons300.layoutGrid,
+                      iconoActivo: LucideIcons300.layoutGrid,
                     ),
                   ],
                 ),
@@ -255,53 +299,6 @@ class _Cuerpo extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Resplandor de fondo, como el del login: un halo azul arriba a la izquierda
-/// y otro turquesa a la derecha, que se funden con la superficie.
-class _Aurora extends StatelessWidget {
-  const _Aurora();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    final oscuro = Theme.of(context).brightness == Brightness.dark;
-    final fuerza = oscuro ? 0.26 : 0.16;
-    Widget halo(
-      Color color, {
-      double? izquierda,
-      double? derecha,
-      required double arriba,
-      required double lado,
-    }) => Positioned(
-      left: izquierda,
-      right: derecha,
-      top: arriba,
-      width: lado,
-      height: lado,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: RadialGradient(
-            colors: [
-              color.withValues(alpha: fuerza),
-              color.withValues(alpha: 0),
-            ],
-          ),
-        ),
-      ),
-    );
-    return IgnorePointer(
-      child: ExcludeSemantics(
-        child: Stack(
-          children: [
-            halo(c.acento, izquierda: -140, arriba: -170, lado: 460),
-            halo(c.exito, derecha: -180, arriba: 300, lado: 380),
-          ],
-        ),
       ),
     );
   }
@@ -318,11 +315,15 @@ class _SeccionAutos extends StatefulWidget {
     required this.autos,
     required this.alToque,
     required this.escala,
+    required this.alCambiarDeAuto,
   });
 
   final List<AutoInicio>? autos;
   final VoidCallback alToque;
   final double escala;
+
+  /// Se llama con la posición del auto al que se desliza.
+  final ValueChanged<int> alCambiarDeAuto;
 
   @override
   State<_SeccionAutos> createState() => _SeccionAutosState();
@@ -344,12 +345,18 @@ class _SeccionAutosState extends State<_SeccionAutos> {
     final autos = widget.autos;
     // Con letra grande la tarjeta crece para que el texto no se encime a la
     // silueta.
-    final alto = 244 + (widget.escala - 1).clamp(0.0, 1.0) * 190;
+    final alto = TarjetaAuto.altoPara(conTitulo: true, escala: widget.escala);
     if (autos == null) {
       return Esqueleto(alto: alto, radio: Radios.hoja);
     }
     if (autos.isEmpty) {
-      return _AutosVacio(alToque: widget.alToque);
+      final textos = AppLocalizations.of(context);
+      return TarjetaResumen(
+        titulo: textos.inicioSinAutos,
+        subtitulo: textos.inicioSinAutosDetalle,
+        icono: LucideIcons300.car,
+        alToque: widget.alToque,
+      );
     }
     return Column(
       children: [
@@ -364,18 +371,21 @@ class _SeccionAutosState extends State<_SeccionAutos> {
             child: PageView.builder(
               controller: _controlador,
               itemCount: autos.length,
-              onPageChanged: (i) => setState(() => _pagina = i),
+              onPageChanged: (i) {
+                setState(() => _pagina = i);
+                widget.alCambiarDeAuto(i);
+              },
               itemBuilder: (context, i) => Padding(
                 padding: EdgeInsets.only(
                   left: autos.length > 1 ? Espaciado.e1 : 0,
                   right: autos.length > 1 ? Espaciado.e1 : 0,
                   bottom: _huecoDeSombra,
                 ),
-                child: _TarjetaAuto(
+                child: _TarjetaDelAuto(
                   auto: autos[i],
                   posicion: autos.length > 1 ? (i + 1, autos.length) : null,
                   alToque: widget.alToque,
-                  placasAbajo: widget.escala > 1.3,
+                  alto: alto,
                 ),
               ),
             ),
@@ -407,291 +417,47 @@ class _SeccionAutosState extends State<_SeccionAutos> {
   }
 }
 
-class _TarjetaAuto extends StatelessWidget {
-  const _TarjetaAuto({
+/// La tarjeta de un auto del cliente, con sus textos ya traducidos.
+class _TarjetaDelAuto extends StatelessWidget {
+  const _TarjetaDelAuto({
     required this.auto,
     required this.alToque,
+    required this.alto,
     this.posicion,
-    this.placasAbajo = false,
   });
 
   final AutoInicio auto;
   final VoidCallback alToque;
-
-  /// Con letra grande las placas bajan debajo del nombre para no quitarle el
-  /// ancho.
-  final bool placasAbajo;
+  final double alto;
 
   /// (n, total) cuando hay varios autos.
   final (int, int)? posicion;
 
   @override
   Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
-    final idioma = Localizations.localeOf(context).toLanguageTag();
-    final oscuro = tokens.brillo == Brightness.dark;
-    // `sobreAcento` es el color que el sistema define para leer sobre el
-    // relleno saturado: blanco en claro, casi negro en oscuro.
-    final frente = c.sobreAcento;
+    final c = TokensPista.de(context).colores;
     final km = auto.kilometraje == null
         ? null
-        : textos.inicioKilometros(
-            NumberFormat.decimalPattern(idioma).format(auto.kilometraje),
-          );
+        : textos.inicioKilometros(formatearMiles(context, auto.kilometraje!));
     final titulo = '${auto.modelo} ${auto.anio}';
-    final conPlacas = (auto.placas ?? '').isNotEmpty;
-    final partes = [
-      ?auto.marca,
+    final etiqueta = [
+      ?auto.marcaAparte,
       titulo,
       ?auto.placas,
       ?km,
       if (posicion != null)
         textos.inicioAutoDeTotal(posicion!.$1, posicion!.$2),
-    ];
-    return Semantics(
-      button: true,
-      container: true,
-      label: partes.join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: _bordeTarjetaGrande,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [c.acento, Color.lerp(c.acento, c.marca, 0.85)!],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: c.acento.withValues(alpha: 0.34),
-                blurRadius: 24,
-                spreadRadius: -12,
-                offset: const Offset(0, 14),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: _bordeTarjetaGrande,
-            child: Stack(
-              children: [
-                // Destello de luz arriba a la derecha.
-                Positioned(
-                  right: -70,
-                  top: -90,
-                  width: 260,
-                  height: 260,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          frente.withValues(alpha: 0.22),
-                          frente.withValues(alpha: 0),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    Espaciado.e5,
-                    Espaciado.e5,
-                    Espaciado.e5,
-                    Espaciado.e3,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (auto.marca != null)
-                                  Text(
-                                    auto.marca!,
-                                    style: t.cuerpoChico.copyWith(
-                                      color: frente.withValues(alpha: 0.85),
-                                    ),
-                                  ),
-                                Text(
-                                  titulo,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: t.titulo1.copyWith(
-                                    color: frente,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                if (placasAbajo && conPlacas) ...[
-                                  const SizedBox(height: Espaciado.e2),
-                                  _Placas(texto: auto.placas!, color: frente),
-                                ],
-                                if (km != null) ...[
-                                  const SizedBox(height: Espaciado.e1),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.speed_rounded,
-                                        size: 16,
-                                        color: frente.withValues(alpha: 0.85),
-                                      ),
-                                      const SizedBox(width: Espaciado.e1),
-                                      Flexible(
-                                        child: Text(
-                                          km,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: t.cuerpoChico.copyWith(
-                                            color: frente.withValues(
-                                              alpha: 0.85,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                          if (!placasAbajo && conPlacas) ...[
-                            const SizedBox(width: Espaciado.e3),
-                            _Placas(texto: auto.placas!, color: frente),
-                          ],
-                        ],
-                      ),
-                      // La silueta toma el alto que sobra y nunca más ancho que
-                      // 340: en pantallas anchas no crece hasta desbordar.
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 340),
-                            child: SiluetaAuto(
-                              carroceria: frente,
-                              cristal: c.marca.withValues(
-                                alpha: oscuro ? 0.9 : 0.85,
-                              ),
-                              llanta: oscuro
-                                  ? frente
-                                  : Color.lerp(c.marca, Colors.black, 0.5)!,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Placas extends StatelessWidget {
-  const _Placas({required this.texto, required this.color});
-
-  final String texto;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = TokensPista.de(context).tipografia;
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.16),
-        borderRadius: Radios.bordePildora,
-        border: Border.all(color: color.withValues(alpha: 0.4)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: Espaciado.e3,
-          vertical: Espaciado.e1,
-        ),
-        child: Text(
-          texto,
-          style: t.cuerpoChico.copyWith(
-            color: color,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.6,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AutosVacio extends StatelessWidget {
-  const _AutosVacio({required this.alToque});
-
-  final VoidCallback alToque;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    final textos = AppLocalizations.of(context);
-    final titulo = textos.inicioSinAutos;
-    final detalle = textos.inicioSinAutosDetalle;
-    return Semantics(
-      button: true,
-      container: true,
-      label: [titulo, detalle].join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            borderRadius: _bordeTarjetaGrande,
-            color: c.acentoSuave,
-            border: Border.all(color: c.acento.withValues(alpha: 0.25)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 300),
-                  child: SiluetaAuto(
-                    carroceria: c.acento.withValues(alpha: 0.35),
-                    cristal: c.acento.withValues(alpha: 0.55),
-                    llanta: c.acento.withValues(alpha: 0.7),
-                  ),
-                ),
-                const SizedBox(height: Espaciado.e3),
-                Text(
-                  titulo,
-                  style: t.titulo3.copyWith(
-                    color: c.texto,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                const SizedBox(height: Espaciado.e1),
-                Text(
-                  detalle,
-                  style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+    ].join(', ');
+    return TarjetaAuto(
+      marca: auto.marcaAparte,
+      titulo: titulo,
+      placas: auto.placas,
+      kilometraje: km,
+      tinte: auto.color == null ? null : tinteDeColorAuto(c, auto.color),
+      alToque: alToque,
+      etiqueta: etiqueta,
+      alto: alto,
     );
   }
 }
@@ -713,212 +479,34 @@ class _TarjetaCita extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
-    final idioma = Localizations.localeOf(context).toLanguageTag();
     final cita = this.cita;
-
-    final String rotulo;
-    final String titulo;
-    final String? detalle;
-    final Widget cabeza;
     if (cita == null) {
-      rotulo = textos.inicioSinCitas;
-      titulo = textos.inicioSinCitasDetalle;
-      detalle = null;
-      cabeza = DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.exitoSuave,
-          borderRadius: Radios.bordeTarjeta,
-        ),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 56, minHeight: 64),
-          child: Icon(Icons.event_available_outlined, color: c.exito),
-        ),
-      );
-    } else {
-      final dia = DateFormat.EEEE(idioma).format(cita.fecha);
-      final diaCapital = dia.isEmpty
-          ? dia
-          : '${dia[0].toUpperCase()}${dia.substring(1)}';
-      final numeroDia = cita.fecha.day.toString();
-      rotulo = textos.inicioProximaCita;
-      titulo = textos.inicioCitaCuando(diaCapital, cita.hora);
-      detalle = cita.vehiculo;
-      cabeza = DecoratedBox(
-        decoration: BoxDecoration(
-          color: c.acentoSuave,
-          borderRadius: Radios.bordeTarjeta,
-        ),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 56, minHeight: 64),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: Espaciado.e2),
-              Text(
-                numeroDia,
-                style: t.titulo2.copyWith(
-                  color: c.acento,
-                  fontWeight: FontWeight.w800,
-                  height: 1,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                DateFormat.MMM(idioma).format(cita.fecha),
-                style: t.micro.copyWith(color: c.acento),
-              ),
-              const SizedBox(height: Espaciado.e2),
-            ],
-          ),
+      return Padding(
+        padding: const EdgeInsets.only(bottom: Espaciado.e4),
+        child: TarjetaResumen(
+          titulo: textos.inicioSinCitas,
+          subtitulo: textos.inicioSinCitasDetalle,
+          icono: LucideIcons300.calendarCheck,
+          tono: Tono.exito,
+          alToque: alAgendar,
         ),
       );
     }
-    final alToque = cita == null ? alAgendar : alAbrirCitas;
-    return Semantics(
-      button: true,
-      container: true,
-      label: [rotulo, titulo, ?detalle].join(', '),
-      excludeSemantics: true,
-      onTap: alToque,
-      child: ReboteTactil(
-        alPulsar: alToque,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: c.superficie,
-            borderRadius: _bordeTarjetaGrande,
-            border: Border.all(color: c.borde),
-            boxShadow: tokens.sombras,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e4),
-            child: Row(
-              children: [
-                cabeza,
-                const SizedBox(width: Espaciado.e4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        rotulo,
-                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        titulo,
-                        style: t.cuerpoFuerte.copyWith(color: c.texto),
-                      ),
-                      if (detalle != null)
-                        Text(
-                          detalle,
-                          style: t.cuerpoChico.copyWith(
-                            color: c.textoSecundario,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                Icon(Icons.chevron_right_rounded, color: c.textoTerciario),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Accesos
-// ---------------------------------------------------------------------------
-
-/// Tres accesos redondos de color (acento, éxito y marca), con su nombre
-/// debajo.
-class _Accesos extends StatelessWidget {
-  const _Accesos({required this.accesos});
-
-  final List<AccesoInicio> accesos;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    final colores = [c.acento, c.exito, c.marca];
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        for (var i = 0; i < accesos.length; i++)
-          Expanded(
-            child: _Acceso(acceso: accesos[i], color: colores[i]),
-          ),
-      ],
-    );
-  }
-}
-
-class _Acceso extends StatelessWidget {
-  const _Acceso({required this.acceso, required this.color});
-
-  final AccesoInicio acceso;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    final t = tokens.tipografia;
-    final frente = c.sobreAcento;
-    final etiqueta = [acceso.titulo, acceso.subtitulo].join(', ');
-    final fin = Color.lerp(color, c.marca, 0.5)!;
-    return Semantics(
-      button: true,
-      label: etiqueta,
-      excludeSemantics: true,
-      onTap: acceso.alPulsar,
-      child: ReboteTactil(
-        alPulsar: acceso.alPulsar,
-        child: Column(
-          children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [color, fin],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: color.withValues(alpha: 0.32),
-                    blurRadius: 18,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
-              ),
-              child: SizedBox(
-                width: 64,
-                height: 64,
-                child: Icon(acceso.icono, size: 28, color: frente),
-              ),
-            ),
-            const SizedBox(height: Espaciado.e2),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: Espaciado.e1),
-              child: Text(
-                acceso.titulo,
-                textAlign: TextAlign.center,
-                style: t.cuerpoChico.copyWith(
-                  color: c.texto,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
+    final idioma = Localizations.localeOf(context).toLanguageTag();
+    final dia = DateFormat.EEEE(idioma).format(cita.fecha);
+    final diaCapital = dia.isEmpty
+        ? dia
+        : '${dia[0].toUpperCase()}${dia.substring(1)}';
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Espaciado.e4),
+      child: TarjetaResumen(
+        titulo: textos.inicioProximaCita,
+        subtitulo: textos.inicioCitaCuando(diaCapital, cita.hora),
+        detalle: cita.vehiculo,
+        // Solo se muestra una cita confirmada: el mismo tono que en Mis citas.
+        visual: CuadroFecha(fecha: cita.fecha, tono: Tono.exito),
+        alToque: alAbrirCitas,
       ),
     );
   }
@@ -954,7 +542,7 @@ class _BotonPerfil extends StatelessWidget {
             child: Center(
               child: conNombre
                   ? Avatar(nombre: nombre!)
-                  : Icon(Icons.person_outline, color: c.textoSecundario),
+                  : Icon(LucideIcons300.user, color: c.textoSecundario),
             ),
           ),
         ),

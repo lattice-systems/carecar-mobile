@@ -13,7 +13,7 @@ Marcas en **Depende de** (no bloquean; ver [`trabajo-en-paralelo.md`](trabajo-en
 
 Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (estado y PR); nunca se regenera ni se reformatea la tabla; en un conflicto se conserva en cada fila el **estado más avanzado** (`Borrador` < `Lista` < `En curso` < `En revisión` < `Hecha`) y se juntan los PR de ambos lados. Filas nuevas, totales y marcas, solo en PR del planificador.
 
-Total: **228 historias** (una descartada) + 4 de H0.
+Total: **235 historias** (una descartada) + 4 de H0.
 
 ## H0 · Base de trabajo
 
@@ -36,15 +36,17 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-T01.06 | Reglas de dependencia entre módulos verificadas | Daniel |  | V2-T01.02 | Hecha | #74 |
 | V2-T01.07 | Retirar el código v1 al terminar H2 | Daniel |  | H2 | Lista | |
 | V2-T01.08 | Un núcleo de datos común (errores, cinco estados, fakes) | Jael |  | V2-T01.02 | Hecha | #106 |
+| V2-T01.09 | Encender la v2 por defecto en los cuatro módulos migrables, con salida de emergencia (rediseño; no es historia de usuario) | Daniel |  | V2-T02.26 | Hecha | #173 |
+| V2-T01.10 | Encender el acceso en v2 (inicio de sesión y cambio obligatorio); la recuperación de contraseña sigue en v1 hasta tener enlaces reales (rediseño; no es historia de usuario) | Daniel |  | V2-T01.09 | Hecha | #179, #198 |
 | V2-T02.01 | Los tokens v2 en código | Cristian |  | V2-T01.02 | Hecha | #16 |
-| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Lista | |
+| V2-T02.02 | La tipografía v2 empaquetada | Cristian |  | V2-T02.01 | Hecha | #170, #181 |
 | V2-T02.03 | Movimiento consistente | Cristian |  | V2-T02.01 | Hecha | #18 |
 | V2-T02.04 | Los componentes base | Cristian |  | V2-T02.01 | Hecha | #19, #22, #23, #24 |
 | V2-T02.05 | Los componentes compuestos | Cristian |  | V2-T02.04 | Hecha | #31, #33, #37, #41 |
 | V2-T02.06 | Una galería del sistema dentro de la app | Cristian |  | V2-T02.05, V2-T02.13, V2-T02.14 | Hecha | #43 |
-| V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Lista | |
+| V2-T02.07 | Íconos, logo, ícono de app y splash nuevos | Cristian |  | V2-T02.01 | Hecha | #170 |
 | V2-T02.08 | Retirar `shadcn_ui` y la paleta v1 | Cristian |  | V2-T01.07 | Lista | |
-| V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Lista | |
+| V2-T02.09 | Componente `Mapa` | Cristian |  | V2-T02.04 | Hecha | #170 |
 | V2-T02.10 | Componente `Grafica` con tabla accesible | Cristian |  | V2-T02.04 | Hecha | #27 |
 | V2-T02.11 | Componente `DeslizarParaConfirmar` | Cristian |  | V2-T02.04 | Hecha | #26 |
 | V2-T02.12 | Componentes `GaleriaFotos` y `Firma` | Cristian |  | V2-T02.04 | Hecha | #28 |
@@ -56,14 +58,19 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-T02.18 | Los módulos v2 solo usan controles del sistema de diseño (regla en CI) | Daniel |  | V2-T02.17 | Hecha | #105 |
 | V2-T02.19 | Botones de vidrio de la propuesta en `BotonPildora` y `BotonCircular` | Daniel |  | V2-T02.17 | Hecha | #108 |
 | V2-T02.20 | Componentes de estilo portada | Juan Pablo |  | V2-T02.04 | Hecha | #71 |
-| V2-T02.21 | Navegación en píldora e inicio nuevo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148 |
-| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Lista | |
+| V2-T02.21 | Navegación en píldora, inicio nuevo y encabezados ligeros (rediseño; no es historia de usuario) | Daniel |  | V2-T02.19 | Hecha | #144, #146, #148, #151, #153, #154 |
+| V2-T02.22 | Inicio con datos del auto: sin accesos repetidos, próximo servicio y tarjetas con un solo estilo (rediseño; no es historia de usuario) | Daniel |  | V2-T02.21 | Hecha | #155 |
+| V2-T02.23 | Consistencia entre pantallas: salida visible en los detalles, marco único, «Tu auto» como lista y un solo cuadro de fecha (rediseño; no es historia de usuario) | Daniel |  | V2-T02.22 | Hecha | #156 |
+| V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | Hecha | #169 |
+| V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | Hecha | #171 |
+| V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | Hecha | #172 |
+| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | En revisión | [Reglas](../analysis_options.yaml) · CI pendiente |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
-| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Lista | |
-| V2-T03.04 | Cobertura visible | Haziel |  | — | Lista | |
-| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Lista | |
-| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Lista | |
-| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | Lista | |
+| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | En revisión | [Flujo Android](../integration_test/flujo_principal_test.dart) · CI pendiente |
+| V2-T03.04 | Cobertura visible | Haziel |  | — | En revisión | [Resumen LCOV](../tool/resumir_cobertura.js) · CI pendiente |
+| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | En revisión | [Evidencia por criterio](cumplimiento-ficha.md#evidencia-automática-por-criterio) |
+| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
+| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En curso | [Guion y registro](../docs/pruebas/guion-por-hito.md) · falta corrida física |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Hecha | #128 |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
@@ -80,7 +87,7 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | Hecha | backend#80, #85 |
 | V2-T05.08 | Eventos en vivo | Ricardo | B | V2-T05.01 | Hecha | backend#83, #89 |
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Hecha | backend#83, #89 |
-| V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
+| V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Hecha | backend#116 |
 | V2-T05.11 | Desplegar la API en Azure automáticamente en cada merge | Daniel | B | — | Hecha | backend#71 |
 
 ## H2 · Núcleo de la ficha (secciones 1–3)
@@ -88,23 +95,23 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M01.01 | Iniciar sesión con la cuenta que me dio la agencia | Jael |  | V2-T01.02, V2-T02.04 | Hecha | #107 |
-| V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Lista | |
+| V2-M01.02 | Ver una bienvenida la primera vez | Jael |  | V2-T02.04 | Hecha | #195 |
 | V2-M01.03 | Cambiar obligatoriamente la contraseña temporal | Jael |  | V2-M01.01 | Hecha | #143 |
-| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Lista | |
-| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.06 | Ver mi perfil | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | Lista | |
-| V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Lista | |
-| V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Lista | |
-| V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
-| V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Lista | |
+| V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Hecha | #152 |
+| V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | En revisión | #202 |
+| V2-M01.06 | Ver mi perfil | Jael | B | V2-M01.01 | Hecha | #180, backend #110 |
+| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | En curso | #190, backend #113 · **el correo ya está; el teléfono espera un proveedor de SMS** |
+| V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Hecha | #195 |
+| V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Hecha | #175, backend #108 |
+| V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Hecha | #195 |
+| V2-M01.11 | Que la sesión se renueve sola durante 30 días | Jael |  | V2-M01.01 | Hecha | #162 |
 | V2-M01.12 | Que el primer inicio de sesión espere al servidor dormido | Daniel |  | V2-M01.01 | Hecha | #50 |
 | V2-M02.01 | Ver mi garaje con todos mis vehículos | Juan Pablo |  | V2-T01.02, V2-T02.05 (provisional) | Hecha | #54, #121 |
 | V2-M02.02 | El detalle de un vehículo | Juan Pablo |  | V2-M02.01, V2-T05.06 (simulable) | Hecha | #57, #121 |
-| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Hecha | #65 |
+| V2-M02.03 | Abrir el manual de mi modelo y año | Juan Pablo |  | V2-M02.02 | Hecha | #65, #161 |
 | V2-M02.04 | La ficha técnica de mi vehículo | Juan Pablo | B | V2-M02.02 | Hecha | #65, backend#70 |
 | V2-M02.05 | El historial de servicios de mi auto | Ricardo | B | V2-T05.06 (simulable), V2-T02.13 (provisional) | Hecha | backend#85, #92 |
-| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92 |
+| V2-M02.06 | El ticket de cada servicio | Ricardo |  | V2-M02.05 | Hecha | backend#85, #92, #186 |
 | V2-M02.07 | Ver la disponibilidad del taller en un calendario | Juan Pablo |  | V2-T05.07 (simulable), V2-T02.14 (provisional) | Hecha | #55 |
 | V2-M02.08 | Agendar una cita eligiendo vehículo, fecha, franja y motivo | Juan Pablo | B | V2-M02.07 | Hecha | #58, backend#70 |
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Hecha | #65 |
@@ -120,13 +127,13 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M03.06 | Que la estimación salga de parámetros que puedo ajustar | Cristian | B | V2-M03.04 | Hecha | #91, backend#84 |
 | V2-M03.07 | Guardar y volver a ver mis estimaciones | Cristian | B | V2-M03.04 | Hecha | #67, #90, backend#69 |
 | V2-M20.01 | Textos fuera del código | Cristian |  | V2-T01.02 | Hecha | #49, #60 |
-| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Lista | |
-| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Lista | |
+| V2-M20.02 | Entender cada pantalla | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
+| V2-M20.03 | Que nada se corte | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M20.04 | Animaciones reducidas | Cristian |  | V2-T02.03 | Hecha | #29 |
 | V2-M20.05 | La app en inglés | Cristian |  | V2-M20.01 | Hecha | #61 |
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
-| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Lista | |
+| V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
 | V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
@@ -142,12 +149,12 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | Lista | |
-| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Lista | |
-| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Lista | |
-| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | Lista | |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | Lista | |
-| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | Lista | |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
+| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
+| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
+| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
+| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
 
 ## H3 · Postventa viva
 
@@ -179,11 +186,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
 | V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Lista | |
-| V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Lista | |
-| V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Lista | |
-| V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Lista | |
-| V2-M10.04 | Un aviso cuando salga una campaña | Ricardo | B | V2-M06.02 | Lista | |
-| V2-M10.05 | Saber que mi garantía está por vencer | Ricardo | B | V2-M06.02 | Lista | |
+| V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Hecha | backend#103, #157 |
+| V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Hecha | backend#103, #157, #158 |
+| V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Hecha | backend#103, #157 |
+| V2-M10.04 | Un aviso cuando salga una campaña | Ricardo | B | V2-M06.02 | Hecha | backend#103, #157 |
+| V2-M10.05 | Saber que mi garantía está por vencer | Ricardo | B | V2-M06.02 | Hecha | backend#103, #157 |
 
 ## H4 · Cliente conectado
 
@@ -194,11 +201,11 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M07.03 | Mandar fotos y audios | Jael | B | V2-M07.01 | Borrador | |
 | V2-M07.04 | Saber si mi mensaje fue leído | Jael | B | V2-M07.02 | Borrador | |
 | V2-M07.05 | Escribir sin conexión y que se envíe después | Jael |  | V2-M21.03 | Borrador | |
-| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Borrador | |
-| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Borrador | |
-| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Borrador | |
-| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Borrador | |
-| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Borrador | |
+| V2-M12.01 | Ver mis puntos y nivel | Ricardo | B | — | Hecha | backend#105, #165, #166 |
+| V2-M12.02 | Ganar puntos al pagar un servicio | Ricardo | B | V2-M04.07 | Hecha | backend#105, #165, backend#111, #186 |
+| V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
+| V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
+| V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Hecha | backend#105, #163, #165 |
 | V2-M13.01 | Ver promociones que apliquen a mi auto | Haziel | B | V2-M02.01 | Borrador | |
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
@@ -208,7 +215,7 @@ Total: **228 historias** (una descartada) + 4 de H0.
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
 | V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
-| V2-M27.02 | Ver sucursales en un mapa con horarios | Haziel | B | — | Lista | |
+| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | En revisión | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Haziel |  | V2-M27.02 | Lista | |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
@@ -217,33 +224,33 @@ Total: **228 historias** (una descartada) + 4 de H0.
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Borrador | |
-| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Borrador | |
-| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Borrador | |
-| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Borrador | |
-| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Borrador | |
-| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05 | Borrador | |
-| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Borrador | |
-| V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Borrador | |
-| V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 | Borrador | |
-| V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02, V2-M02.08 | Borrador | |
-| V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Borrador | |
-| V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M06.02 | Borrador | |
+| V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Hecha | #178 |
+| V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Hecha | backend#111, #186 |
+| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Hecha | backend#114, #192 |
+| V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
+| V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Hecha | backend#109, #178, #183 |
+| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Hecha | backend#114, #192 |
+| V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
+| V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |
+| V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 (simulable) | Hecha | #168, backend#107 |
+| V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02 (simulable), V2-M02.08 | Hecha | #168, backend#107 |
+| V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Hecha | #189, backend#112 |
+| V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M14.02 (simulable), V2-M06.02 (solo push) | Hecha | #168, backend#107 |
 | V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Hecha | #118, backend#93, backend#94 |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Hecha | #94, backend#86, #121 |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Hecha | #94, backend#86, #121, #193 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Hecha | #94, backend#86 |
-| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95 |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09, V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95, #193 |
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Hecha | #104, backend#88, #119, backend#95 |
 | V2-M17.05 | Cancelar o reprogramar la cita mueve sus traslados | Juan Pablo | B | V2-M17.02 | Hecha | backend#88 |
 | V2-M17.06 | Entrar a «Mis direcciones» desde el perfil | Juan Pablo |  | V2-M17.01 | Hecha | #104 |
-| V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Borrador | |
-| V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 | Borrador | |
-| V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01, V2-M02.08 | Borrador | |
-| V2-M26.04 | Recibir la oferta y aceptarla o rechazarla | Cristian | B | V2-M26.03 | Borrador | |
-| V2-M26.05 | Ver cómo cambia el valor de mi auto con el tiempo | Cristian | B | V2-M03.04 | Borrador | |
+| V2-M26.01 | Pedir una valuación formal desde mi estimación | Cristian | B | V2-M03.07 | Hecha | #164, backend#106 |
+| V2-M26.02 | Subir fotos guiadas de mi auto | Cristian | B | V2-M26.01 (simulable) | Hecha | #164, backend#106 |
+| V2-M26.03 | Agendar la inspección física | Cristian | B | V2-M26.01 (simulable), V2-M02.08 | Hecha | #164, backend#106 |
+| V2-M26.04 | Recibir la oferta y aceptarla o rechazarla | Cristian | B | V2-M26.03 (simulable) | Hecha | #164, backend#106 |
+| V2-M26.05 | Ver cómo cambia el valor de mi auto con el tiempo | Cristian | B | V2-M03.04 | Hecha | #164, backend#106 |
 
 ## H6 · Inteligencia y extras
 

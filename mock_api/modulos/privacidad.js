@@ -166,8 +166,8 @@ module.exports = function registrarPrivacidad(servidor, db, emitirEvento) {
     return res.status(202).json(comoSolicitudArco(solicitud));
   });
 
-  servidor.get(`${BASE}/privacidad/arco/:id/archivo`, (req, res) => {
-    const solicitud = solicitudesArco.find((s) => s.id === Number(req.params.id)
+  servidor.get(`${BASE}/privacidad/arco/:solicitudId/archivo`, (req, res) => {
+    const solicitud = solicitudesArco.find((s) => s.id === Number(req.params.solicitudId)
       && s.clienteId === req.sesion.clienteId);
     if (!solicitud || solicitud.tipo !== 'ACCESO' || comoSolicitudArco(solicitud).estado !== 'RESUELTA') {
       return noEncontrado(req, res);

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/semaforo.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
@@ -69,7 +71,7 @@ class _EstadoInspeccion extends ConsumerState<PantallaInspeccion> {
               child: EstadoVacio(
                 titulo: textos.tallerInspeccionVacia,
                 mensaje: textos.tallerInspeccionVaciaMensaje,
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
               ),
             )
           : SliverToBoxAdapter(
@@ -81,24 +83,13 @@ class _EstadoInspeccion extends ConsumerState<PantallaInspeccion> {
             ),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () =>
-            ref.refresh(ordenTallerProvider(widget.ordenId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.tallerInspeccionTitulo,
-              subtitulo: orden.value?.vehiculo,
-              translucido: true,
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.tallerInspeccionTitulo,
+      subtitulo: orden.value?.vehiculo,
+      conRegreso: true,
+      alRefrescar: () =>
+          ref.refresh(ordenTallerProvider(widget.ordenId).future),
+      slivers: [contenido],
     );
   }
 }
@@ -142,7 +133,7 @@ class _Inspeccion extends ConsumerWidget {
                 FilaGrupo(
                   titulo: textos.tallerInspeccionVerVideo(i + 1),
                   subtitulo: textos.tallerInspeccionVideoAbre,
-                  icono: Icons.play_circle_outline_rounded,
+                  icono: LucideIcons300.circlePlay,
                   colorIcono: TokensPista.de(context).colores.acento,
                   alToque: () => alAbrirVideo(video),
                 ),

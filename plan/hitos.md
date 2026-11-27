@@ -2,6 +2,8 @@
 
 Sin fechas. Un hito se cierra cuando **todos** sus criterios de salida se cumplen y están demostrados en un celular físico contra el backend real. El hito activo se marca con ▶.
 
+Usa el [guion de pruebas y su registro](../docs/pruebas/guion-por-hito.md) para documentar la ejecución por dispositivo.
+
 Los hitos ordenan prioridades, no bloquean a nadie: si una persona no tiene historias `Lista` en el hito activo, toma las del siguiente. **Nadie se queda sin trabajo.**
 
 | Hito | Nombre | Módulos | Objetivos |

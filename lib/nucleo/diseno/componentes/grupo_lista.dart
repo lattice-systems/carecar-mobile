@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -8,8 +10,12 @@ import 'rebote_tactil.dart';
 /// Una fila de un [GrupoLista].
 ///
 /// `icono` se dibuja sobre un cuadro redondeado de `colorIcono` (por defecto el
-/// acento). Con `alToque` la fila entera es tocable y muestra un chevron. El
-/// lector de pantalla recibe un solo nodo con titulo y subtitulo.
+/// acento). Con `alToque` la fila entera es tocable y muestra un chevron, salvo
+/// que `conChevron` sea falso (una fila con interruptor responde al toque pero
+/// no lleva a otra pantalla). El lector de pantalla recibe un solo nodo con
+/// titulo, subtitulo y `etiquetaFin`; el `fin` no se lee, asi que una cifra
+/// que importa va tambien en `etiquetaFin` dicha en palabras. `llave` identifica
+/// la fila (pruebas y anclas de desplazamiento).
 class FilaGrupo {
   const FilaGrupo({
     required this.titulo,
@@ -17,7 +23,10 @@ class FilaGrupo {
     this.icono,
     this.colorIcono,
     this.fin,
+    this.etiquetaFin,
     this.alToque,
+    this.conChevron,
+    this.llave,
   });
 
   final String titulo;
@@ -27,7 +36,15 @@ class FilaGrupo {
 
   /// Texto o adorno antes del chevron, por ejemplo un valor.
   final Widget? fin;
+
+  /// Lo que oye el lector del `fin`, por ejemplo «Ganaste 230 puntos» por
+  /// «+230»; nulo si el `fin` es solo adorno.
+  final String? etiquetaFin;
   final VoidCallback? alToque;
+
+  /// Si la fila muestra la flecha; por omisión, la muestra cuando es tocable.
+  final bool? conChevron;
+  final Key? llave;
 }
 
 /// Lista agrupada tipo "inset": una tarjeta redondeada con filas separadas por
@@ -43,6 +60,7 @@ class GrupoLista extends StatelessWidget {
   final String? pie;
 
   static const double _cuadroIcono = 32;
+  static const double _escalaQueApila = 1.5;
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +146,11 @@ class _Fila extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final tocable = fila.alToque != null;
+    // Desde letra grande el `fin` no cabe al lado sin partir palabras del
+    // título, así que baja y el texto recibe todo el ancho.
+    final apilado =
+        MediaQuery.textScalerOf(context).scale(16) >=
+        16 * GrupoLista._escalaQueApila;
 
     final contenido = ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 56),
@@ -136,60 +159,74 @@ class _Fila extends StatelessWidget {
           horizontal: Espaciado.e4,
           vertical: Espaciado.e2,
         ),
-        child: Row(
-          children: [
-            if (fila.icono != null) ...[
-              ExcludeSemantics(
-                child: Container(
-                  width: GrupoLista._cuadroIcono,
-                  height: GrupoLista._cuadroIcono,
-                  decoration: BoxDecoration(
-                    color: fila.colorIcono ?? c.acento,
-                    borderRadius: Radios.bordeControl,
+        child: LayoutBuilder(
+          builder: (context, caja) => Row(
+            children: [
+              if (fila.icono != null) ...[
+                ExcludeSemantics(
+                  child: Container(
+                    width: GrupoLista._cuadroIcono,
+                    height: GrupoLista._cuadroIcono,
+                    decoration: BoxDecoration(
+                      color: fila.colorIcono ?? c.acento,
+                      borderRadius: Radios.bordeControl,
+                    ),
+                    child: Icon(fila.icono, size: 20, color: c.sobreAcento),
                   ),
-                  child: Icon(fila.icono, size: 20, color: c.sobreAcento),
+                ),
+                const SizedBox(width: Espaciado.e3),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      fila.titulo,
+                      style: t.cuerpoFuerte.copyWith(color: c.texto),
+                    ),
+                    if (fila.subtitulo != null)
+                      Text(
+                        fila.subtitulo!,
+                        style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+                      ),
+                    if (apilado && fila.fin != null) ...[
+                      const SizedBox(height: Espaciado.e1),
+                      fila.fin!,
+                    ],
+                  ],
                 ),
               ),
-              const SizedBox(width: Espaciado.e3),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    fila.titulo,
-                    style: t.cuerpoFuerte.copyWith(color: c.texto),
+              if (!apilado && fila.fin != null) ...[
+                const SizedBox(width: Espaciado.e3),
+                // El `fin` toma su ancho natural, hasta la mitad de la fila, y
+                // el texto el resto. Antes los dos repartian el espacio libre
+                // a partes iguales y el texto se partia aunque cupiera.
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: caja.maxWidth / 2),
+                  child: fila.fin!,
+                ),
+              ],
+              if (fila.conChevron ?? tocable) ...[
+                const SizedBox(width: Espaciado.e2),
+                ExcludeSemantics(
+                  child: Icon(
+                    LucideIcons300.chevronRight,
+                    color: c.textoTerciario,
                   ),
-                  if (fila.subtitulo != null)
-                    Text(
-                      fila.subtitulo!,
-                      style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-                    ),
-                ],
-              ),
-            ),
-            if (fila.fin != null) ...[
-              const SizedBox(width: Espaciado.e3),
-              Flexible(child: fila.fin!),
+                ),
+              ],
             ],
-            if (tocable) ...[
-              const SizedBox(width: Espaciado.e2),
-              ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoTerciario),
-              ),
-            ],
-          ],
+          ),
         ),
       ),
     );
 
     return Semantics(
+      key: fila.llave,
       container: true,
       button: tocable,
-      label: fila.subtitulo == null
-          ? fila.titulo
-          : '${fila.titulo}. ${fila.subtitulo}',
+      label: [fila.titulo, ?fila.subtitulo, ?fila.etiquetaFin].join('. '),
       onTap: fila.alToque,
       excludeSemantics: true,
       child: tocable

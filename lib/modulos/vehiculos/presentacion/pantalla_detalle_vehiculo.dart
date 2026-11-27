@@ -1,39 +1,39 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/barra_portada.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
-import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
+import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../nucleo/idioma/formato_numeros.dart';
 import '../../asistente/asistente.dart';
 import '../../bitacora/bitacora.dart';
 import '../../citas/citas.dart';
+import '../../garantia/garantia.dart';
 import '../../historial/historial.dart';
 import '../../mantenimiento/mantenimiento.dart';
 import '../dominio/vehiculo_garaje.dart';
-import 'portada_vehiculo.dart';
 import 'proveedores_vehiculos.dart';
 import 'rutas_vehiculos.dart';
 
-/// Detalle de un vehiculo del garaje en estilo portada (V2-M02.02): el auto
-/// como portada con sus acciones, VIN copiable y kilometraje con la fecha en
-/// que el taller lo actualizo, datos del auto y accesos a manual, ficha tecnica
-/// e historial.
+/// Detalle de un vehiculo del garaje (V2-M02.02): el auto en su tarjeta con las
+/// acciones debajo, VIN copiable y kilometraje con la fecha en que el taller lo
+/// actualizo, datos del auto y accesos a manual, ficha tecnica e historial.
 ///
 /// Manual (V2-M02.03), ficha tecnica (V2-M02.04) e historial (V2-M02.05) abren
 /// su pantalla. Resuelve los cinco estados; si el id ya no esta en el garaje
@@ -48,50 +48,58 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
     final vehiculo = ref.watch(vehiculoProvider(vehiculoId));
     final textos = AppLocalizations.of(context);
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      appBar: BarraPortada(titulo: textos.vehiculosDetalleTitulo),
-      body: vehiculo.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => SafeArea(
-          child: EstadoError(
-            causa: error is SinConexion
-                ? CausaError.sinConexion
-                : CausaError.generico,
-            alReintentar: () => ref.invalidate(garajeProvider),
-          ),
-        ),
-        data: (v) => v == null
-            ? SafeArea(
-                child: EstadoVacio(
-                  titulo: textos.vehiculosNoEncontradoTitulo,
-                  mensaje: textos.vehiculosNoEncontradoMensaje,
-                  icono: Icons.directions_car_outlined,
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () => ref.refresh(garajeProvider.future),
-                child: _Detalle(
-                  vehiculo: v,
-                  // La fecha del km ya no viene en GET /vehiculos (V2-T05.06):
-                  // se lee del plan, y solo si el vehiculo no trae la suya.
-                  kmDelTaller: v.kilometrajeActualizadoEn == null
-                      ? ref.watch(kmDelTallerProvider(v.id)).value
-                      : null,
-                ),
-              ),
+    final titulo = textos.vehiculosDetalleTitulo;
+
+    return vehiculo.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
       ),
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
+          causa: error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          alReintentar: () => ref.invalidate(garajeProvider),
+        ),
+      ),
+      data: (v) => v == null
+          ? MarcoPantalla.estado(
+              titulo: titulo,
+              conRegreso: true,
+              estado: EstadoVacio(
+                titulo: textos.vehiculosNoEncontradoTitulo,
+                mensaje: textos.vehiculosNoEncontradoMensaje,
+                icono: LucideIcons300.car,
+              ),
+            )
+          : _Detalle(
+              vehiculo: v,
+              // La fecha del km ya no viene en GET /vehiculos (V2-T05.06): se
+              // lee del plan, y solo si el vehiculo no trae la suya.
+              kmDelTaller: v.kilometrajeActualizadoEn == null
+                  ? ref.watch(kmDelTallerProvider(v.id)).value
+                  : null,
+              alRefrescar: () => ref.refresh(garajeProvider.future),
+            ),
     );
   }
 }
 
 class _Detalle extends StatefulWidget {
-  const _Detalle({required this.vehiculo, this.kmDelTaller});
+  const _Detalle({
+    required this.vehiculo,
+    required this.alRefrescar,
+    this.kmDelTaller,
+  });
 
   final VehiculoGaraje vehiculo;
   final KmDelTaller? kmDelTaller;
+  final Future<void> Function() alRefrescar;
 
   @override
   State<_Detalle> createState() => _DetalleState();
@@ -111,38 +119,38 @@ class _DetalleState extends State<_Detalle> {
     final textos = AppLocalizations.of(context);
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
-    final tinte = tinteDeColor(tokens, v.color);
+    final tinte = tinteDeColorAuto(c, v.color);
     final vin = v.vin;
     final placas = v.placas;
     final sinPlacas = placas == null || placas.isEmpty;
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: Espaciado.e8),
-      children: [
-        CabeceraPortada(
-          titulo: v.titulo,
-          subtitulo: sinPlacas
-              ? textos.vehiculosSinPlacas
-              : textos.vehiculosPlacas(placas),
-          descripcion: textos.fotoDeModelo(v.titulo),
-          tinte: tinte,
-          portada: PortadaVehiculo(tinte: tinte),
-          principal: AccionPortada(
-            texto: textos.vehiculosAgendarServicio,
-            icono: Icons.event_available_outlined,
-            alPresionar: () => context.push(rutaAgendarCita),
-          ),
-          secundaria: AccionPortada(
-            texto: textos.vehiculosBotonManual,
-            icono: Icons.menu_book_outlined,
-            alPresionar: () => context.push(rutaManualVehiculo(v.id)),
-          ),
-        ),
-        Padding(
+    return MarcoPantalla(
+      titulo: v.titulo,
+      subtitulo: sinPlacas
+          ? textos.vehiculosSinPlacas
+          : textos.vehiculosPlacas(placas),
+      conRegreso: true,
+      alRefrescar: widget.alRefrescar,
+      slivers: [
+        SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          sliver: SliverList.list(
             children: [
+              const SizedBox(height: Espaciado.e2),
+              TarjetaAuto(tinte: tinte, alto: 150),
+              const SizedBox(height: Espaciado.e4),
+              FilaAcciones(
+                principal: AccionPantalla(
+                  texto: textos.vehiculosAgendarServicio,
+                  icono: LucideIcons300.calendarCheck,
+                  alPresionar: () => context.push(rutaAgendarCita),
+                ),
+                secundaria: AccionPantalla(
+                  texto: textos.vehiculosBotonManual,
+                  icono: LucideIcons300.bookOpen,
+                  alPresionar: () => context.push(rutaManualVehiculo(v.id)),
+                ),
+              ),
               const SizedBox(height: Espaciado.e4),
               _TarjetaCifras(
                 vehiculo: v,
@@ -163,57 +171,78 @@ class _DetalleState extends State<_Detalle> {
               const SizedBox(height: Espaciado.e4),
               TarjetaAsistente(vehiculoId: v.id),
               const SizedBox(height: Espaciado.e6),
-              _AccionesTuAuto(
-                titulo: textos.vehiculosEncabezadoTuAuto,
-                acciones: [
-                  (
-                    texto: textos.vehiculosAccesoFicha,
-                    icono: Icons.fact_check_outlined,
-                    ruta: rutaFichaTecnicaVehiculo(v.id),
+              // Ir a pantallas hijas es una lista con chevron, como en Privacidad
+              // y Mantenimiento (V2-T02.23).
+              GrupoLista(
+                encabezado: textos.vehiculosEncabezadoTuAuto,
+                filas: [
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoFicha,
+                    icono: LucideIcons300.clipboardCheck,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaFichaTecnicaVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.vehiculosAccesoHistorial,
-                    icono: Icons.history,
-                    ruta: rutaHistorialVehiculo(v.id),
+                  FilaGrupo(
+                    titulo: textos.vehiculosAccesoHistorial,
+                    icono: LucideIcons300.history,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaHistorialVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.mantenimientoAcceso,
-                    icono: Icons.build_circle_outlined,
-                    ruta: rutaMantenimientoVehiculo(v.id),
+                  FilaGrupo(
+                    titulo: textos.mantenimientoAcceso,
+                    icono: LucideIcons300.wrench,
+                    colorIcono: c.acento,
+                    alToque: () =>
+                        context.push(rutaMantenimientoVehiculo(v.id)),
                   ),
-                  (
-                    texto: textos.bitacoraAccesoFila,
-                    icono: Icons.local_gas_station_outlined,
-                    ruta: rutaBitacoraVehiculo(v.id, nombre: v.titulo),
+                  FilaGrupo(
+                    titulo: textos.bitacoraAccesoFila,
+                    icono: LucideIcons300.fuel,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(
+                      rutaBitacoraVehiculo(v.id, nombre: v.titulo),
+                    ),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.garantiaAcceso,
+                    icono: LucideIcons300.shieldCheck,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaGarantiaVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.campanasAcceso,
+                    icono: LucideIcons300.megaphone,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaCampanasVehiculo(v.id)),
                   ),
                 ],
               ),
-              const SizedBox(height: Espaciado.e6),
+              const SizedBox(height: Espaciado.e4),
               GrupoLista(
                 encabezado: textos.vehiculosEncabezadoDatos,
                 filas: [
                   _dato(
-                    Icons.pin_outlined,
+                    LucideIcons300.hash,
                     textos.vehiculosPlacasEtiqueta,
                     sinPlacas ? textos.vehiculosSinPlacas : placas,
                     c.acento,
                   ),
                   _dato(
-                    Icons.calendar_today_outlined,
+                    LucideIcons300.calendar,
                     textos.vehiculosAnio,
                     '${v.anio}',
                     c.marca,
                   ),
                   if (v.color != null)
                     _dato(
-                      Icons.palette_outlined,
+                      LucideIcons300.palette,
                       textos.vehiculosColor,
                       v.color!,
                       tinte,
                     ),
                   if (v.version != null)
                     _dato(
-                      Icons.tune,
+                      LucideIcons300.slidersHorizontal,
                       textos.vehiculosVersion,
                       v.version!,
                       c.exito,
@@ -262,7 +291,6 @@ class _TarjetaCifras extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final km = kmDelTaller?.km ?? vehiculo.kilometraje;
-    final idioma = Localizations.localeOf(context).languageCode;
     final cierre = vehiculo.kilometrajeActualizadoEn ?? kmDelTaller?.fecha;
     final vin = vehiculo.vin;
 
@@ -272,10 +300,7 @@ class _TarjetaCifras extends StatelessWidget {
       valorKm = textos.vehiculosKmSinDato;
       notaKm = '';
     } else {
-      valorKm = textos.vehiculosKilometros(
-        NumberFormat.decimalPattern(idioma == 'es' ? 'es_MX' : idioma)
-            .format(km),
-      );
+      valorKm = textos.vehiculosKilometros(formatearMiles(context, km));
       notaKm = cierre == null
           ? textos.vehiculosKmSinActualizar
           : textos.vehiculosKmActualizado(
@@ -286,7 +311,7 @@ class _TarjetaCifras extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: c.superficie,
-        borderRadius: BorderRadius.circular(Radios.tarjeta),
+        borderRadius: Radios.bordeTarjeta,
         boxShadow: tokens.sombras,
       ),
       child: Padding(
@@ -366,7 +391,7 @@ class _TarjetaCifras extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            Icon(Icons.copy_outlined, color: c.acento),
+                            Icon(LucideIcons300.copy, color: c.acento),
                           ],
                         ),
                       ),
@@ -390,177 +415,17 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).vehiculosCargando,
       liveRegion: true,
-      child: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(Espaciado.e4),
-          child: Column(
-            children: [
-              Esqueleto(alto: 240),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-              SizedBox(height: Espaciado.e3),
-              Esqueleto(alto: 56),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// «Tu auto» como cuadricula de tarjetas iguales de dos columnas (V2-M24.10):
-/// cada una con su icono en un medallon y el nombre centrado debajo. Las dos
-/// de una fila miden lo mismo; con letra al 200 % pasa a una sola columna para
-/// que el texto no se parta ni desborde.
-class _AccionesTuAuto extends StatelessWidget {
-  const _AccionesTuAuto({required this.titulo, required this.acciones});
-
-  final String titulo;
-  final List<({String texto, IconData icono, String ruta})> acciones;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final escala = MediaQuery.textScalerOf(context);
-    final columnas = escala.scale(1) > 1.3 ? 1 : 2;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Semantics(
-          header: true,
-          child: Text(
-            titulo,
-            style: tokens.tipografia.titulo3.copyWith(
-              color: tokens.colores.texto,
-            ),
-          ),
-        ),
-        const SizedBox(height: Espaciado.e3),
-        LayoutBuilder(
-          builder: (context, caja) {
-            // Alto unico de todas las tarjetas: se mide el nombre que mas
-            // lineas ocupa (hasta tres) con el ancho real de la tarjeta, para
-            // que un nombre largo no haga mas alta a una que a otra.
-            final ancho =
-                (caja.maxWidth - Espaciado.e3 * (columnas - 1)) / columnas -
-                _TarjetaTuAuto.relleno * 2 -
-                2;
-            var texto = 0.0;
-            for (final accion in acciones) {
-              final medida = TextPainter(
-                text: TextSpan(
-                  text: accion.texto,
-                  style: tokens.tipografia.cuerpoFuerte,
-                ),
-                textAlign: TextAlign.center,
-                textDirection: Directionality.of(context),
-                textScaler: escala,
-                maxLines: _TarjetaTuAuto.lineasMaximas,
-              )..layout(maxWidth: ancho);
-              texto = math.max(texto, medida.height);
-              medida.dispose();
-            }
-            final alto =
-                _TarjetaTuAuto.medallon +
-                Espaciado.e2 +
-                texto +
-                _TarjetaTuAuto.relleno * 2 +
-                2;
-            return GridView.count(
-              crossAxisCount: columnas,
-              mainAxisSpacing: Espaciado.e3,
-              crossAxisSpacing: Espaciado.e3,
-              mainAxisExtent: alto,
-              shrinkWrap: true,
-              padding: EdgeInsets.zero,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                for (final accion in acciones)
-                  _TarjetaTuAuto(
-                    texto: accion.texto,
-                    icono: accion.icono,
-                    alToque: () => context.push(accion.ruta),
-                  ),
-              ],
-            );
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class _TarjetaTuAuto extends StatelessWidget {
-  const _TarjetaTuAuto({
-    required this.texto,
-    required this.icono,
-    required this.alToque,
-  });
-
-  final String texto;
-  final IconData icono;
-  final VoidCallback alToque;
-
-  static const double medallon = 44;
-  static const double relleno = Espaciado.e4;
-  static const int lineasMaximas = 3;
-
-  @override
-  Widget build(BuildContext context) {
-    final tokens = TokensPista.de(context);
-    final c = tokens.colores;
-    return Semantics(
-      key: const Key('accion-tu-auto'),
-      container: true,
-      button: true,
-      label: texto,
-      onTap: alToque,
-      excludeSemantics: true,
-      child: ReboteTactil(
-        child: Material(
-          color: c.superficie,
-          borderRadius: Radios.bordeTarjeta,
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: alToque,
-            splashFactory: NoSplash.splashFactory,
-            child: Ink(
-              decoration: BoxDecoration(
-                borderRadius: Radios.bordeTarjeta,
-                border: Border.all(color: c.borde),
-              ),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 48),
-                child: Padding(
-                  padding: const EdgeInsets.all(relleno),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: medallon,
-                        height: medallon,
-                        decoration: BoxDecoration(
-                          color: c.acentoSuave,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(icono, size: 24, color: c.acento),
-                      ),
-                      const SizedBox(height: Espaciado.e2),
-                      Text(
-                        texto,
-                        maxLines: lineasMaximas,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: tokens.tipografia.cuerpoFuerte.copyWith(
-                          color: c.texto,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.all(Espaciado.e4),
+        child: Column(
+          children: [
+            Esqueleto(alto: 188, radio: 28),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+            SizedBox(height: Espaciado.e3),
+            Esqueleto(alto: 56),
+          ],
         ),
       ),
     );

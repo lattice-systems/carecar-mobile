@@ -66,6 +66,59 @@ abstract interface class CarecarApi {
   /// `GET /perfil`. Informacion de solo lectura del cliente autenticado.
   Future<Perfil> miPerfil();
 
+  /// `PATCH /perfil`: pide cambiar el correo · V2-M01.07.
+  ///
+  /// **No cambia nada todavia**: crea una verificacion y manda un codigo de 6
+  /// digitos al correo nuevo. Guardarlo antes de confirmarlo dejaria al cliente
+  /// con un correo que no ha probado que es suyo y, como `cuenta_app.usuario`
+  /// lo sigue, sin poder entrar.
+  ///
+  /// Pide la contrasena actual porque el correo es la identidad con la que se
+  /// entra. Si no coincide, lanza `DatosInvalidos` con codigo
+  /// `CREDENCIALES_INVALIDAS` -400 y no 401, para que la app no lo lea como
+  /// sesion vencida-. Un correo mal escrito llega igual como `DatosInvalidos`
+  /// pero con `DATOS_INVALIDOS`, y uno que ya es de otro cliente como
+  /// `Conflicto`.
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  });
+
+  /// `POST /perfil/verificaciones/{id}/confirmar`: aplica el cambio · V2-M01.07.
+  ///
+  /// Devuelve el perfil ya actualizado, asi que quien llame no tiene que volver
+  /// a pedirlo. El codigo vence a los 15 minutos y sirve una sola vez:
+  /// equivocado, usado o vencido llegan igual, como `DatosInvalidos` con
+  /// `CODIGO_INVALIDO`.
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  });
+
+  // --- Sesiones y dispositivos activos · V2-M01.09 ---
+
+  /// `GET /sesiones`: las sesiones **vigentes** de la cuenta, ni revocadas ni
+  /// vencidas.
+  ///
+  /// Vienen ordenadas por `ultimoUso` descendente y las que nunca se
+  /// refrescaron al final. La app **no reordena**: si lo hiciera tendria que
+  /// decidir que hacer con los nulos y acabaria discrepando del servidor.
+  Future<List<SesionActiva>> misSesiones();
+
+  /// `DELETE /sesiones/{id}`: revoca esa sesion.
+  ///
+  /// Idempotente: una sesion ya revocada responde 204 igual. Una sesion de otra
+  /// cuenta lanza `NoEncontrado` (404, no 403), que es la regla del contrato
+  /// para un recurso ajeno: un 403 revelaria que existe.
+  Future<void> cerrarSesionActiva(int sesionId);
+
+  /// `DELETE /sesiones`: revoca **todas** las sesiones de la cuenta, **incluida
+  /// la de quien llama**. Es «cerrar sesión en todos los dispositivos».
+  ///
+  /// Igual que `cerrarSesion`, el access token en curso sigue valiendo hasta
+  /// que expire, asi que quien llame tiene que cerrar la sesion local tambien.
+  Future<void> cerrarTodasLasSesiones();
+
   // --- Vehiculos · APP-3.1 y ADM-1 ---
 
   /// `GET /vehiculos`. Solo los del cliente de la sesion.
@@ -186,6 +239,14 @@ abstract interface class CarecarApi {
   ///
   /// Lanza `NoEncontrado` si no existe o ya esta retirado.
   Future<DetalleModeloCatalogo> detalleModelo(int id);
+
+  // --- Sucursales · V2-M27.02 ---
+
+  /// `GET /sucursales`. Las activas, la principal primero; puede venir vacia.
+  ///
+  /// `abiertaAhora` lo calcula el servidor con la hora de la agencia. Por eso
+  /// la copia sin conexion no la guarda (ver `CarecarApiConCache`).
+  Future<List<SucursalApi>> sucursales();
 
   // --- Toma a cuenta · V2-M03.04 y V2-M03.07 ---
 

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
@@ -10,8 +12,12 @@ import '../../../nucleo/diseno/componentes/control_binario.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
+import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../tienda/tienda.dart';
 import '../dominio/comparativa.dart';
 import '../dominio/modelo_vigente.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
@@ -60,59 +66,97 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
     final comparables =
         modelos.asData?.value.where((m) => m.id != null).length ?? 0;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(textos.catalogoTitulo),
-        actions: [
-          if (comparables >= minimoComparables)
-            BotonCircular(
-              etiqueta: _comparando
-                  ? textos.catalogoSalirDeComparar
-                  : textos.catalogoComparar,
-              icono: _comparando ? Icons.close : Icons.compare_arrows,
-              alPresionar: _alternarModo,
-            ),
-        ],
+    final titulo = textos.catalogoTitulo;
+    final c = TokensPista.de(context).colores;
+
+    return modelos.when(
+      skipLoadingOnReload: true,
+      loading: () => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: const _Cargando(),
       ),
-      bottomNavigationBar: _comparando
-          ? SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(Espaciado.e4),
-                child: Boton(
-                  texto: textos.catalogoCompararElegidos(_elegidos.length),
-                  anchoCompleto: true,
-                  alPresionar: _elegidos.length >= minimoComparables
-                      ? () => context.push(rutaComparadorDe(_elegidos))
-                      : null,
-                ),
-              ),
-            )
-          : null,
-      body: modelos.when(
-        skipLoadingOnReload: true,
-        loading: () => const _Cargando(),
-        error: (error, _) => EstadoError(
+      error: (error, _) => MarcoPantalla.estado(
+        titulo: titulo,
+        conRegreso: true,
+        estado: EstadoError(
           causa: error is SinConexion
               ? CausaError.sinConexion
               : CausaError.generico,
           alReintentar: () => ref.invalidate(catalogoProvider),
         ),
-        data: (lista) => lista.isEmpty
-            ? EstadoVacio(
+      ),
+      data: (lista) => lista.isEmpty
+          ? MarcoPantalla.estado(
+              titulo: titulo,
+              conRegreso: true,
+              estado: EstadoVacio(
                 titulo: textos.catalogoVacioTitulo,
                 mensaje: textos.catalogoVacioMensaje,
-                icono: Icons.directions_car_outlined,
-              )
-            : RefreshIndicator(
-                onRefresh: () => ref.refresh(catalogoProvider.future),
-                child: _Lista(
+                icono: LucideIcons300.car,
+                textoAccion: textos.tiendaTitulo,
+                alAccion: () => context.push(rutaTienda),
+              ),
+            )
+          : MarcoPantalla(
+              titulo: titulo,
+              conRegreso: true,
+              acciones: [
+                if (comparables >= minimoComparables)
+                  BotonCircular(
+                    etiqueta: _comparando
+                        ? textos.catalogoSalirDeComparar
+                        : textos.catalogoComparar,
+                    icono: _comparando
+                        ? LucideIcons300.x
+                        : LucideIcons300.arrowRightLeft,
+                    colorIcono: c.texto,
+                    alPresionar: _alternarModo,
+                  ),
+              ],
+              alRefrescar: () => ref.refresh(catalogoProvider.future),
+              barraInferior: _comparando
+                  ? BarraInferior(
+                      hijos: [
+                        Boton(
+                          texto: textos.catalogoCompararElegidos(
+                            _elegidos.length,
+                          ),
+                          anchoCompleto: true,
+                          alPresionar: _elegidos.length >= minimoComparables
+                              ? () => context.push(rutaComparadorDe(_elegidos))
+                              : null,
+                        ),
+                      ],
+                    )
+                  : null,
+              slivers: [
+                // La tienda (V2-M14) vive en Explorar, junto al catálogo.
+                if (!_comparando)
+                  SliverPadding(
+                    padding: const EdgeInsets.fromLTRB(
+                      Espaciado.e4,
+                      Espaciado.e4,
+                      Espaciado.e4,
+                      0,
+                    ),
+                    sliver: SliverToBoxAdapter(
+                      child: TarjetaResumen(
+                        titulo: textos.tiendaTitulo,
+                        subtitulo: textos.tiendaEntradaDetalle,
+                        icono: LucideIcons300.shoppingBag,
+                        alToque: () => context.push(rutaTienda),
+                      ),
+                    ),
+                  ),
+                _Lista(
                   modelos: lista,
                   comparando: _comparando,
                   elegidos: _elegidos,
                   alElegir: _elegir,
                 ),
-              ),
-      ),
+              ],
+            ),
     );
   }
 }
@@ -133,37 +177,39 @@ class _Lista extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    return ListView.separated(
+    return SliverPadding(
       padding: const EdgeInsets.all(Espaciado.e4),
-      itemCount: modelos.length,
-      separatorBuilder: (_, _) => const SizedBox(height: Espaciado.e3),
-      itemBuilder: (context, i) {
-        final m = modelos[i];
-        final tarjeta = TarjetaVehiculo(
-          nombre: m.titulo,
-          detalle: _detalle(context, m),
-          foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
-          descripcionFoto: textos.fotoDeModelo(m.titulo),
-          heroTag: m.id == null ? null : 'modelo-${m.id}',
-          alToque: m.id == null
-              ? null
-              : () => context.push(rutaDetalleModelo(m.id!)),
-        );
-        final id = m.id;
-        if (!comparando || id == null) return tarjeta;
-        final elegido = elegidos.contains(id);
-        final lleno = elegidos.length >= maximoComparables && !elegido;
-        return Column(
-          children: [
-            tarjeta,
-            Casilla(
-              etiqueta: textos.catalogoCompararModelo(m.titulo),
-              valor: elegido,
-              alCambiar: lleno ? null : (v) => alElegir(id, v),
-            ),
-          ],
-        );
-      },
+      sliver: SliverList.separated(
+        itemCount: modelos.length,
+        separatorBuilder: (_, _) => const SizedBox(height: Espaciado.e3),
+        itemBuilder: (context, i) {
+          final m = modelos[i];
+          final tarjeta = TarjetaVehiculo(
+            nombre: m.titulo,
+            detalle: _detalle(context, m),
+            foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
+            descripcionFoto: textos.fotoDeModelo(m.titulo),
+            heroTag: m.id == null ? null : 'modelo-${m.id}',
+            alToque: m.id == null
+                ? null
+                : () => context.push(rutaDetalleModelo(m.id!)),
+          );
+          final id = m.id;
+          if (!comparando || id == null) return tarjeta;
+          final elegido = elegidos.contains(id);
+          final lleno = elegidos.length >= maximoComparables && !elegido;
+          return Column(
+            children: [
+              tarjeta,
+              Casilla(
+                etiqueta: textos.catalogoCompararModelo(m.titulo),
+                valor: elegido,
+                alCambiar: lleno ? null : (v) => alElegir(id, v),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
@@ -195,7 +241,8 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).catalogoCargando,
       liveRegion: true,
-      child: const Padding(
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [

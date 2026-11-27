@@ -125,3 +125,11 @@ El backend ya está construido (backend#84). La fórmula vive en `CalculadoraTom
 - **Pruebas en el backend:** `CalculadoraTomaCuentaTest` cubre un auto nuevo, con los kilómetros esperados, con el doble y con cero, cada estado, los límites de 0.5 y 1.2 del ajuste por kilómetros y el redondeo a 100. `TomaCuentaIntegrationTest` cubre 201, 400, 404, 422, 401 y 403, el orden y la paginación del historial y que una estimación guardada no cambie si cambia el parámetro.
 - **Pendiente del PO:** los valores reales de `parametro_toma_cuenta`. La migración no trae filas, así que contra el backend real todo auto responde 422 (`SIN_PARAMETROS_DE_VALUACION`) hasta que se capturen por SQL, porque el ERP está congelado. Los parámetros de `mock_api` son solo ejemplos.
 - **Pendiente del PO:** el texto de la leyenda no vinculante es provisional y debe revisarlo.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+El catálogo, el detalle del modelo, el comparador, la calculadora y «Mis estimaciones» dejaron el `AppBar` de Material: el catálogo y el detalle usan `MarcoPantalla` (el botón de comparar va en la barra, con regreso a la izquierda; el botón «Comparar» de abajo es una `BarraInferior`) y el comparador, la calculadora y las estimaciones usan `BarraPantalla`. Sin cambios de lógica ni de criterios.
+
+## Rediseño: marco y listas del sistema (V2-T02.25)
+
+«Mis estimaciones» y «Comparar modelos» pasan de `BarraPantalla` a `MarcoPantalla` (título grande, «Regresar», recarga jalando, y cargando, vacío y error bajo el mismo título); «Mis valuaciones» sigue a un toque, en la barra. Las estimaciones y las versiones del detalle de un modelo se dibujan con `GrupoLista` en lugar de `FilaLista`. La calculadora conserva `BarraPantalla` (formulario con su propio desplazamiento). Sin cambios de lógica ni de criterios.

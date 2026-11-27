@@ -58,8 +58,8 @@ module.exports = function registrarAsistencia(servidor, vehiculoDelCliente, emit
   });
 
   // V2-M11.04 · estado de una solicitud. Una ajena responde 404 como inexistente.
-  servidor.get(`${BASE}/asistencia/:id`, (req, res) => {
-    const registro = historialAsistencia.get(Number(req.params.id));
+  servidor.get(`${BASE}/asistencia/:solicitudId`, (req, res) => {
+    const registro = historialAsistencia.get(Number(req.params.solicitudId));
     if (!registro || registro.clienteId !== req.sesion.clienteId) return noEncontrado(req, res);
     res.jsonp(registro.solicitud);
   });

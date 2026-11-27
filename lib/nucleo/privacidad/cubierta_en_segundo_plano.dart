@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../diseno/tokens/colores.dart';
 
@@ -76,8 +77,8 @@ class _Cubierta extends StatelessWidget {
         key: CubiertaEnSegundoPlano.cubierta,
         color: paleta.fondo,
         child: Center(
-          child: Image.asset(
-            'assets/marca/agencia360-icono.png',
+          child: SvgPicture.asset(
+            'assets/marca/agencia360-icono.svg',
             width: 96,
             height: 96,
             errorBuilder: (_, _, _) => const SizedBox.shrink(),

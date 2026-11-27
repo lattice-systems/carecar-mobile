@@ -105,7 +105,7 @@ Son los archivos que todos tocan. Cada uno tiene una regla para que dos PR no ch
 Para integrar pantallas a medias sin romper la app v1:
 
 - Hasta `V2-T01.05`, las pantallas v2 no se alcanzan desde la navegación v1: solo desde pruebas y, cuando existan, desde la galería de `V2-T02.06` en el flavor `desarrollo` (`V2-T01.04`).
-- Con `V2-T01.05` (hecho), cada módulo tiene su interruptor v1/v2 (`--dart-define=MODULOS_V2=...`, valor por defecto en código: todo en v1): se enciende en desarrollo y pruebas y queda apagado en producción hasta que el módulo esté completo (guía en [`arquitectura-v2.md`](arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105)); cablearlo por flavor llega con `V2-T01.04`. Así una pantalla incompleta llega a `main` sin que nadie la vea en el build de prueba.
+- Con `V2-T01.05` (hecho), cada módulo tiene su interruptor v1/v2 (`--dart-define=MODULOS_V2=...` / `MODULOS_V1=...`; desde `V2-T01.09` el valor por defecto en código es todo en v2; la recuperación de contraseña es la excepción, V2-T01.10): un módulo nuevo se prueba encendido en desarrollo y queda fuera del valor por defecto hasta que esté completo (guía en [`arquitectura-v2.md`](arquitectura-v2.md#migrar-un-módulo-con-el-interruptor-v1v2-v2-t0105)); cablearlo por flavor llega con `V2-T01.04`. Así una pantalla incompleta llega a `main` sin que nadie la vea en el build de prueba.
 - Nada que se integre puede romper un flujo v1 que hoy funciona.
 
 ## 9. Agentes

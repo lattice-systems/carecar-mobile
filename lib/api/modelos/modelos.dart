@@ -24,5 +24,6 @@ export 'recoleccion_cita.dart';
 export 'sesion.dart';
 export 'servicio.dart';
 export 'servicio_detalle.dart';
+export 'sucursal.dart';
 export 'traslado.dart';
 export 'vehiculo.dart';

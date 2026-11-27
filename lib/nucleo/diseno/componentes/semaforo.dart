@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
@@ -7,9 +9,9 @@ import 'tono.dart';
 
 /// Resultado de revisar un punto de la inspeccion.
 enum EstadoSemaforo {
-  bien('Bien', Tono.exito, Icons.check_circle),
-  atencion('Requiere atencion', Tono.advertencia, Icons.warning_amber_rounded),
-  urgente('Urgente', Tono.peligro, Icons.error);
+  bien('Bien', Tono.exito, LucideIcons300.circleCheck),
+  atencion('Requiere atencion', Tono.advertencia, LucideIcons300.triangleAlert),
+  urgente('Urgente', Tono.peligro, LucideIcons300.circleAlert);
 
   const EstadoSemaforo(this.texto, this.tono, this.icono);
 
@@ -77,7 +79,10 @@ class Semaforo extends StatelessWidget {
             ),
             if (tocable)
               ExcludeSemantics(
-                child: Icon(Icons.chevron_right, color: c.textoSecundario),
+                child: Icon(
+                  LucideIcons300.chevronRight,
+                  color: c.textoTerciario,
+                ),
               ),
           ],
         ),

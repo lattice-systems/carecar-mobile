@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
@@ -217,18 +219,19 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          _Encabezado(textos.asistenciaPedirVehiculoEncabezado),
+          const SizedBox(height: Espaciado.e2),
           GrupoLista(
-            encabezado: textos.asistenciaPedirVehiculoEncabezado,
             filas: [
               for (final v in widget.vehiculos)
                 FilaGrupo(
                   titulo: v.titulo,
                   subtitulo: v.placas,
-                  icono: Icons.directions_car_outlined,
+                  icono: LucideIcons300.car,
                   colorIcono: _vehiculoId == v.id ? c.acento : null,
                   fin: _vehiculoId == v.id
                       ? Icon(
-                          Icons.check_circle,
+                          LucideIcons300.circleCheck,
                           color: c.acento,
                           semanticLabel: textos.asistenciaPedirSeleccionado,
                         )
@@ -293,7 +296,7 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
                 texto: textos.asistenciaLlamarAccion(
                   textos.asistenciaLlamarEmergencias,
                 ),
-                icono: Icons.call_outlined,
+                icono: LucideIcons300.phone,
                 expandido: true,
                 variante: VarianteBotonPildora.peligro,
                 alPresionar: () => _marcar(telefonoEmergencias),
@@ -303,7 +306,7 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
                 texto: textos.asistenciaLlamarAccion(
                   textos.asistenciaLlamarAgencia,
                 ),
-                icono: Icons.call_outlined,
+                icono: LucideIcons300.phone,
                 expandido: true,
                 variante: VarianteBotonPildora.tonal,
                 alPresionar: () => _marcar(Agencia.telefono),
@@ -434,7 +437,7 @@ class _EstadoUbicacion extends StatelessWidget {
               const SizedBox(height: Espaciado.e3),
               BotonPildora(
                 texto: textos.asistenciaUbicacionReintentar,
-                icono: Icons.refresh,
+                icono: LucideIcons300.refreshCw,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alReintentar,
@@ -442,7 +445,7 @@ class _EstadoUbicacion extends StatelessWidget {
               const SizedBox(height: Espaciado.e2),
               BotonPildora(
                 texto: textos.asistenciaUbicacionSinUbicacion,
-                icono: Icons.location_off_outlined,
+                icono: LucideIcons300.mapPinOff,
                 variante: VarianteBotonPildora.vidrio,
                 expandido: true,
                 alPresionar: alEnviarSin,

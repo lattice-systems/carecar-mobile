@@ -14,6 +14,14 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../../ayudas/api_falsa.dart';
 import '../../ayudas/envolver_con_shad.dart';
 
+/// La lista de Ajustes se construye perezosamente y la fila de privacidad va
+/// casi al final: con una pantalla alta todas las filas existen.
+void _pantallaAlta(WidgetTester tester) {
+  tester.view.physicalSize = const Size(400, 3200);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.reset);
+}
+
 Future<void> _abrirAviso(WidgetTester tester) async {
   final fila = find.byKey(PantallaPerfil.botonPrivacidad);
   await tester.ensureVisible(fila);
@@ -25,6 +33,7 @@ Future<void> _abrirAviso(WidgetTester tester) async {
 void main() {
   testWidgets('con enrutador abre Privacidad y mis datos, no el texto que trae '
       'la app', (tester) async {
+    _pantallaAlta(tester);
     final enrutador = GoRouter(
       routes: [
         GoRoute(
@@ -65,6 +74,7 @@ void main() {
 
   testWidgets('sin enrutador (la v1 suelta) sigue mostrando el texto que la '
       'app trae', (tester) async {
+    _pantallaAlta(tester);
     await tester.pumpWidget(
       MaterialAppConShad(
         home: PantallaAjustes(api: ApiFalsa(), alCerrarSesion: () {}),

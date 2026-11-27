@@ -1,13 +1,15 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
-import 'package:carecar_mobile/modulos/recoleccion/presentacion/provisional/mapa_provisional.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_texto.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/mapa.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -87,8 +89,11 @@ Future<void> _abrir(WidgetTester tester) async {
 }
 
 Future<void> _ponerPinEnElMapa(WidgetTester tester) async {
-  await tester.tapAt(tester.getCenter(find.byType(MapaProvisional)));
-  await tester.pump(const Duration(milliseconds: 600));
+  expect(find.byType(Mapa), findsOneWidget);
+  // El componente pone el pin al centro con su botón y lo mueve con flechas.
+  final boton = find.text('Poner el pin en el centro');
+  await tester.ensureVisible(boton);
+  await tester.tap(boton);
   await tester.pumpAndSettle();
 }
 
@@ -230,7 +235,7 @@ void main() {
       'Mi colonia',
       reason: 'no se pisa lo escrito',
     );
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
   });
 
   _prueba('sin permiso de ubicación lo explica y deja poner el pin a mano', (
@@ -246,10 +251,10 @@ void main() {
     await tester.tap(find.text('Usar mi ubicación'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Necesitamos tu permiso'), findsOneWidget);
-    expect(find.byIcon(Icons.location_on), findsNothing);
+    expect(find.byIcon(LucideIcons300.mapPin), findsNothing);
 
     await _ponerPinEnElMapa(tester);
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
   });
 
   _prueba('con la ubicación apagada lo avisa', (tester) async {
@@ -281,7 +286,7 @@ void main() {
     await tester.tap(find.byTooltip('Buscar'));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(Icons.location_on), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
     final cp = tester.widget<TextField>(_campo('Código postal'));
     expect(cp.controller!.text, '06600');
   });

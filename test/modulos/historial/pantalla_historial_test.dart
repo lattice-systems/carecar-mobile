@@ -4,18 +4,21 @@ import 'package:carecar_mobile/modulos/historial/presentacion/pantalla_historial
 import 'package:carecar_mobile/modulos/historial/presentacion/proveedores_historial.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 
 Widget _app(
   RepositorioHistorialFake repo, {
   int tamano = 20,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [
     repositorioGarajeProvider.overrideWithValue(RepositorioGarajeFake()),
@@ -25,6 +28,7 @@ Widget _app(
   child: conTemaPista(
     const PantallaHistorial(vehiculoId: 1),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 
@@ -38,6 +42,17 @@ void _prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) {
 }
 
 void main() {
+  _prueba('tiene un botón visible para regresar al detalle del auto', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioHistorialFake()));
+    await tester.pumpAndSettle();
+
+    // Antes armaba su encabezado a mano y no traía ningún botón de salida.
+    expect(find.byType(BotonRegresar), findsOneWidget);
+    expect(find.byTooltip('Regresar'), findsOneWidget);
+  });
+
   _prueba('muestra cada orden con su total y su estatus', (tester) async {
     await tester.pumpWidget(_app(RepositorioHistorialFake()));
     await tester.pumpAndSettle();
@@ -108,4 +123,23 @@ void main() {
       expect(find.text('Historial'), findsOneWidget);
     });
   }
+
+  testWidgets('pasa la auditoria de accesibilidad en 320 (V2-M20.02, '
+      'V2-M20.03 y V2-M20.08)', (tester) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(
+          RepositorioHistorialFake(),
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      if (escenario != Escenario.letraGrande) {
+        await auditarAccesibilidad(tester);
+      }
+    }
+  });
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -8,7 +10,7 @@ import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../dominio/disponibilidad_taller.dart';
-import 'componentes/marco_pantalla_cita.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/seleccion_dia_horario.dart';
 import 'proveedores_citas.dart';
 
@@ -39,11 +41,11 @@ class _EstadoPantallaDisponibilidad
 
     return disponibilidad.when(
       skipLoadingOnReload: true,
-      loading: () => MarcoPantallaCita.estado(
+      loading: () => MarcoPantalla.estado(
         titulo: textos.citasTitulo,
         estado: const _Cargando(),
       ),
-      error: (error, _) => MarcoPantallaCita.estado(
+      error: (error, _) => MarcoPantalla.estado(
         titulo: textos.citasTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -53,15 +55,15 @@ class _EstadoPantallaDisponibilidad
         ),
       ),
       data: (taller) => taller.sinCupoEnTodoElRango
-          ? MarcoPantallaCita.estado(
+          ? MarcoPantalla.estado(
               titulo: textos.citasTitulo,
               estado: EstadoVacio(
                 titulo: textos.citasVacioTitulo,
                 mensaje: textos.citasVacioMensaje,
-                icono: Icons.event_busy_outlined,
+                icono: LucideIcons300.calendarX,
               ),
             )
-          : MarcoPantallaCita(
+          : MarcoPantalla(
               titulo: textos.citasTitulo,
               alRefrescar: () => ref.refresh(disponibilidadProvider.future),
               slivers: [SliverToBoxAdapter(child: _contenido(context, taller))],

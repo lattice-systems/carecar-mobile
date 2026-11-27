@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/api/carecar_api.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
+import 'package:carecar_mobile/modulos/acceso/acceso.dart' show PantallaAcceso;
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/nucleo/migracion/proveedores_migracion.dart';
@@ -13,6 +14,12 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
+/// La pantalla a la que la guardia manda a quien no tiene sesion.
+///
+/// Una sola definicion para las pruebas de rutas: asi no repiten que version
+/// del acceso esta encendida, y el dia que cambie se cambia aqui.
+Finder get pantallaDeAcceso => find.byType(PantallaAcceso);
 
 /// La app con el enrutador real (V2-T01.03) y la API y la sesion que se le
 /// pasen. Es lo que `main.dart` arma, sin cortina ni almacen del sistema.
@@ -35,7 +42,9 @@ class AppEnrutadaDePrueba extends StatelessWidget {
 
   /// Que modulos estan en v2 (V2-T01.05). Por omision todos, para que las
   /// pruebas de rutas de los modulos v2 no dependan del valor por defecto de
-  /// la app (todo en v1).
+  /// la app (que es todo v2 desde V2-T01.09, pero un modulo nuevo no lo estara
+  /// hasta que este completo). Las pruebas de la v1 pasan
+  /// `InterruptorModulos.todoV1`.
   final InterruptorModulos? interruptor;
 
   /// Envuelve la app como lo hace `main.dart` con lo que no pinta nada (el

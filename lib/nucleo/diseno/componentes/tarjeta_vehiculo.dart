@@ -5,6 +5,7 @@ import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 import 'insignia.dart';
 import 'rebote_tactil.dart';
+import 'silueta_auto.dart';
 import 'tono.dart';
 
 /// Tarjeta heroe de un vehiculo: su foto sobre el degradado del sistema, el
@@ -46,20 +47,22 @@ class TarjetaVehiculo extends StatelessWidget {
     final t = tokens.tipografia;
     final oscuro = tokens.brillo == Brightness.dark;
 
+    // Sin foto (o si falla) va la misma silueta de auto que usa `TarjetaAuto`,
+    // en tonos neutros.
+    final silueta = SizedBox(
+      width: 140,
+      child: SiluetaAuto(
+        carroceria: c.textoTerciario.withValues(alpha: 0.55),
+        cristal: c.superficieHundida,
+        llanta: c.textoTerciario,
+      ),
+    );
     Widget imagen = foto == null
-        ? Icon(
-            Icons.directions_car_filled_outlined,
-            size: 96,
-            color: c.textoTerciario,
-          )
+        ? silueta
         : Image(
             image: foto!,
             fit: BoxFit.contain,
-            errorBuilder: (_, _, _) => Icon(
-              Icons.directions_car_filled_outlined,
-              size: 96,
-              color: c.textoTerciario,
-            ),
+            errorBuilder: (_, _, _) => silueta,
           );
     if (heroTag != null) imagen = Hero(tag: heroTag!, child: imagen);
 

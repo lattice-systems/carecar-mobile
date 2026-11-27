@@ -1,17 +1,22 @@
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const _march = AutoInicio(
+  id: 5,
   modelo: 'March',
   anio: 2020,
   marca: 'Nissan',
   placas: 'XYZ-123',
   kilometraje: 24300,
 );
+
+const _versa = AutoInicio(id: 6, modelo: 'Versa', anio: 2022);
 
 Future<List<String>> _montar(
   WidgetTester tester, {
@@ -20,6 +25,7 @@ Future<List<String>> _montar(
   String? nombre = 'Maria Elena Robles',
   List<AutoInicio>? autos = const [_march],
   CitaInicio? cita,
+  bool conServicio = false,
   bool esperar = true,
 }) async {
   final toques = <String>[];
@@ -38,29 +44,19 @@ Future<List<String>> _montar(
         nombre: nombre,
         autos: autos,
         proximaCita: cita,
+        alAbrirVehiculos: () => toques.add('vehiculos'),
+        alAbrirCitas: () => toques.add('citas'),
+        alAbrirCatalogo: () => toques.add('catalogo'),
         alAbrirAjustes: () => toques.add('ajustes'),
         alAgendar: () => toques.add('agendar'),
-        accesos: [
-          AccesoInicio(
-            titulo: 'Mis vehículos',
-            subtitulo: 'Tus autos, fichas y manuales',
-            icono: Icons.directions_car_outlined,
-            alPulsar: () => toques.add('vehiculos'),
-          ),
-          AccesoInicio(
-            titulo: 'Citas',
-            subtitulo: 'Agenda y revisa tus citas',
-            icono: Icons.calendar_month_outlined,
-            alPulsar: () => toques.add('citas'),
-          ),
-          AccesoInicio(
-            titulo: 'Catálogo',
-            subtitulo: 'Conoce los modelos Nissan',
-            icono: Icons.grid_view_outlined,
-            alPulsar: () => toques.add('catalogo'),
-          ),
-        ],
         ordenEnCurso: const SizedBox(key: Key('orden'), height: 80),
+        servicioDelAuto: conServicio
+            ? (id) => SizedBox(
+                key: Key('servicio-$id'),
+                height: 80,
+                child: Text('Servicio del auto $id'),
+              )
+            : null,
       ),
     ),
   );
@@ -78,14 +74,12 @@ Future<void> _subir(WidgetTester tester) async {
 
 void main() {
   group('InicioNuevo (rediseño de navegación)', () {
-    testWidgets('saluda por el primer nombre y muestra los accesos', (
+    testWidgets('saluda por el primer nombre y muestra lo del taller', (
       tester,
     ) async {
       await _montar(tester);
 
       expect(find.text('Hola, Maria'), findsOneWidget);
-      expect(find.text('Mis vehículos'), findsOneWidget);
-      expect(find.text('Catálogo'), findsWidgets);
       expect(find.byKey(const Key('orden')), findsOneWidget);
     });
 
@@ -95,6 +89,30 @@ void main() {
       expect(find.textContaining('Hola'), findsNothing);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets(
+      'los destinos viven solo en la barra: el cuerpo no los repite',
+      (tester) async {
+        await _montar(tester);
+        await _subir(tester);
+
+        // Antes el cuerpo traía tres accesos redondos con los mismos destinos
+        // que la barra. Cada nombre debe aparecer una sola vez, en la barra.
+        for (final destino in ['Vehículos', 'Citas', 'Catálogo']) {
+          expect(find.text(destino), findsOneWidget, reason: destino);
+          expect(
+            find.descendant(
+              of: find.byType(BarraFlotante),
+              matching: find.text(destino),
+            ),
+            findsOneWidget,
+            reason: destino,
+          );
+        }
+        expect(find.text('Mis vehículos'), findsNothing);
+        expect(find.text('Conoce los modelos Nissan'), findsNothing);
+      },
+    );
 
     testWidgets(
       'la barra flotante tiene Inicio activo y lleva a cada destino',
@@ -138,16 +156,6 @@ void main() {
       expect(toques, isEmpty);
     });
 
-    testWidgets('los accesos de la lista abren su destino', (tester) async {
-      final toques = await _montar(tester);
-
-      await _subir(tester);
-      await tester.tap(find.text('Mis vehículos'));
-      await tester.tap(find.text('Catálogo').first);
-
-      expect(toques, ['vehiculos', 'catalogo']);
-    });
-
     testWidgets('el auto del cliente es el protagonista y abre sus vehículos', (
       tester,
     ) async {
@@ -156,28 +164,90 @@ void main() {
       expect(find.text('March 2020'), findsOneWidget);
       expect(find.text('Nissan'), findsOneWidget);
       expect(find.text('XYZ-123'), findsOneWidget);
-      expect(find.text('24.300 km'), findsOneWidget);
+      expect(find.text('24,300 km'), findsOneWidget);
 
       await tester.tap(find.text('March 2020'));
       expect(toques, ['vehiculos']);
     });
 
-    testWidgets('con varios autos se desliza y avisa la posición', (
+    testWidgets('la marca no se repite cuando el modelo ya la trae', (
       tester,
     ) async {
       await _montar(
         tester,
         autos: const [
-          _march,
-          AutoInicio(modelo: 'Versa', anio: 2022),
+          AutoInicio(
+            id: 5,
+            modelo: 'Nissan March Sense',
+            anio: 2020,
+            marca: 'Nissan',
+          ),
         ],
       );
+
+      expect(find.text('Nissan March Sense 2020'), findsOneWidget);
+      expect(find.text('Nissan'), findsNothing);
+    });
+
+    testWidgets('con varios autos se desliza y avisa la posición', (
+      tester,
+    ) async {
+      await _montar(tester, autos: const [_march, _versa]);
 
       expect(find.bySemanticsLabel(RegExp('Auto 1 de 2')), findsOneWidget);
       await tester.drag(find.text('March 2020'), const Offset(-300, 0));
       await tester.pumpAndSettle();
       expect(find.text('Versa 2022'), findsOneWidget);
     });
+
+    testWidgets('el próximo servicio sigue al auto que se está viendo', (
+      tester,
+    ) async {
+      await _montar(tester, autos: const [_march, _versa], conServicio: true);
+
+      expect(find.text('Servicio del auto 5'), findsOneWidget);
+      expect(find.text('Servicio del auto 6'), findsNothing);
+
+      await tester.drag(find.text('March 2020'), const Offset(-300, 0));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Servicio del auto 6'), findsOneWidget);
+      expect(find.text('Servicio del auto 5'), findsNothing);
+    });
+
+    testWidgets('sin autos, o mientras cargan, no hay próximo servicio', (
+      tester,
+    ) async {
+      await _montar(tester, autos: const [], conServicio: true);
+      expect(find.textContaining('Servicio del auto'), findsNothing);
+
+      await _montar(tester, autos: null, conServicio: true, esperar: false);
+      expect(find.textContaining('Servicio del auto'), findsNothing);
+    });
+
+    testWidgets(
+      'la cita va antes que el servicio; sin cita, la invitación al final',
+      (tester) async {
+        await _montar(
+          tester,
+          conServicio: true,
+          cita: CitaInicio(fecha: DateTime(2026, 11, 28), hora: '10:00'),
+        );
+        final citaY = tester.getTopLeft(find.text('Próxima cita')).dy;
+        final servicioY = tester
+            .getTopLeft(find.text('Servicio del auto 5'))
+            .dy;
+        expect(citaY, lessThan(servicioY));
+
+        // Lo vacío nunca se pone por encima de lo que sí hay.
+        await _montar(tester, conServicio: true);
+        final servicio = tester.getTopLeft(find.text('Servicio del auto 5')).dy;
+        final invitacion = tester
+            .getTopLeft(find.text('No tienes citas por venir'))
+            .dy;
+        expect(servicio, lessThan(invitacion));
+      },
+    );
 
     testWidgets('mientras cargan los autos no muestra vacío ni cita', (
       tester,
@@ -221,6 +291,25 @@ void main() {
       expect(toques, ['citas']);
     });
 
+    testWidgets(
+      'el cuadro de la fecha va en el tono de una cita confirmada, como en Mis citas',
+      (tester) async {
+        await _montar(
+          tester,
+          cita: CitaInicio(
+            fecha: DateTime(2026, 11, 28),
+            hora: '10:00',
+            vehiculo: 'March 2020',
+          ),
+        );
+
+        expect(
+          tester.widget<CuadroFecha>(find.byType(CuadroFecha)).tono,
+          Tono.exito,
+        );
+      },
+    );
+
     testWidgets('el botón flotante agenda y el avatar abre ajustes', (
       tester,
     ) async {
@@ -235,7 +324,12 @@ void main() {
     testWidgets('se ve en oscuro y con letra grande sin desbordar', (
       tester,
     ) async {
-      await _montar(tester, brillo: Brightness.dark, letra: 2);
+      await _montar(
+        tester,
+        brillo: Brightness.dark,
+        letra: 2,
+        conServicio: true,
+      );
 
       expect(find.text('Hola, Maria'), findsOneWidget);
       expect(tester.takeException(), isNull);

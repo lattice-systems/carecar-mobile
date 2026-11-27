@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
-import '../../../nucleo/diseno/componentes/encabezado_grande.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/linea_de_tiempo.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
@@ -55,23 +57,12 @@ class PantallaOrden extends ConsumerWidget {
       data: (o) => SliverToBoxAdapter(child: _Orden(orden: o)),
     );
 
-    return Scaffold(
-      backgroundColor: TokensPista.de(context).colores.fondo,
-      body: RefreshIndicator(
-        onRefresh: () => ref.refresh(ordenTallerProvider(ordenId).future),
-        child: CustomScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            EncabezadoGrande(
-              titulo: textos.tallerOrdenTitulo,
-              subtitulo: orden.value?.vehiculo,
-              translucido: true,
-            ),
-            contenido,
-            const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
-          ],
-        ),
-      ),
+    return MarcoPantalla(
+      titulo: textos.tallerOrdenTitulo,
+      subtitulo: orden.value?.vehiculo,
+      conRegreso: true,
+      alRefrescar: () => ref.refresh(ordenTallerProvider(ordenId).future),
+      slivers: [contenido],
     );
   }
 }
@@ -135,7 +126,7 @@ class _Orden extends StatelessWidget {
               FilaGrupo(
                 titulo: textoEtapa(textos, orden.etapa),
                 subtitulo: textos.tallerOrdenEtapaActual,
-                icono: Icons.build_circle_outlined,
+                icono: LucideIcons300.wrench,
                 colorIcono: c.acento,
                 fin: Text(
                   textos.tallerTarjetaAvance(orden.avance),
@@ -147,21 +138,21 @@ class _Orden extends StatelessWidget {
                     ? textos.tallerOrdenSinEntrega
                     : horaTaller(context, entrega),
                 subtitulo: textos.tallerOrdenEntregaEstimada,
-                icono: Icons.schedule_rounded,
+                icono: LucideIcons300.clock,
                 colorIcono: c.marca,
               ),
               if (orden.asesor case final asesor?)
                 FilaGrupo(
                   titulo: asesor,
                   subtitulo: textos.tallerOrdenAsesor,
-                  icono: Icons.support_agent_rounded,
+                  icono: LucideIcons300.headset,
                   colorIcono: c.exito,
                 ),
               if (cerrada)
                 FilaGrupo(
                   titulo: monedaTaller(context, orden.totalEstimado),
                   subtitulo: textos.tallerOrdenTotalAPagar,
-                  icono: Icons.payments_outlined,
+                  icono: LucideIcons300.banknote,
                   colorIcono: c.exito,
                 ),
             ],
@@ -180,14 +171,14 @@ class _Orden extends StatelessWidget {
                 subtitulo: textos.tallerOrdenInspeccionResumen(
                   orden.inspeccion.length,
                 ),
-                icono: Icons.fact_check_outlined,
+                icono: LucideIcons300.clipboardCheck,
                 colorIcono: c.acento,
                 alToque: () => context.push(rutaInspeccionTaller(orden.id)),
               ),
               FilaGrupo(
                 titulo: textos.tallerOrdenAdicionales,
                 subtitulo: textos.tallerOrdenAdicionalesResumen(pendientes),
-                icono: Icons.handyman_outlined,
+                icono: LucideIcons300.hammer,
                 colorIcono: pendientes > 0 ? c.advertencia : c.marca,
                 alToque: () => context.push(rutaAdicionalesTaller(orden.id)),
               ),
@@ -195,7 +186,7 @@ class _Orden extends StatelessWidget {
                 FilaGrupo(
                   titulo: textos.tallerOrdenVerTicket,
                   subtitulo: textos.tallerOrdenVerTicketResumen,
-                  icono: Icons.receipt_long_outlined,
+                  icono: LucideIcons300.receiptText,
                   colorIcono: c.marca,
                   alToque: () => context.push(
                     rutaTicketServicio(orden.vehiculoId, orden.id),
@@ -204,7 +195,7 @@ class _Orden extends StatelessWidget {
               if (orden.entregada)
                 FilaGrupo(
                   titulo: textos.tallerOrdenVerHistorial,
-                  icono: Icons.history_rounded,
+                  icono: LucideIcons300.history,
                   colorIcono: c.marca,
                   alToque: () =>
                       context.push(rutaHistorialVehiculo(orden.vehiculoId)),

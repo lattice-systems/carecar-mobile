@@ -1,0 +1,86 @@
+{
+  "perfilesFiscales": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "rfc": "GODE561231GR8",
+      "razonSocial": "DOLORES GÓMEZ",
+      "regimenFiscal": "612",
+      "codigoPostal": "76000",
+      "usoCfdi": "G03",
+      "correo": "cliente1@example.com",
+      "predeterminado": true,
+      "creadoEn": "2026-11-20T18:00:00.000Z"
+    }
+  ],
+  "metodosPago": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "procesador": "SIMULADO",
+      "clienteProcesadorId": "sim_cus_1",
+      "token": "tok_sim_visa",
+      "marca": "VISA",
+      "ultimos4": "4242",
+      "tipo": "CREDITO",
+      "mesVence": 12,
+      "anioVence": 2028,
+      "predeterminado": true,
+      "creadoEn": "2026-05-04T19:20:00.000Z"
+    }
+  ],
+  "pagosApp": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "ordenId": 2,
+      "vehiculoId": 1,
+      "monto": 2300,
+      "moneda": "MXN",
+      "medio": "TARJETA",
+      "marca": "VISA",
+      "ultimos4": "4242",
+      "tipoTarjeta": "CREDITO",
+      "estado": "PAGADO",
+      "motivoFallo": null,
+      "autenticacion": null,
+      "referencia": "sim_pi_5f1c0a9e2b7d4c3a8e6f1b20",
+      "simulado": true,
+      "metodoPagoId": 1,
+      "perfilFiscalId": 1,
+      "pagadoEn": "2026-05-04T19:20:00.000Z",
+      "creadoEn": "2026-05-04T19:20:00.000Z",
+      "token": "tok_sim_visa",
+      "llave": "semilla-pago-1",
+      "guardar": false,
+      "mesVence": 12,
+      "anioVence": 2028
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "ordenId": 3,
+      "vehiculoId": 1,
+      "monto": 6119.75,
+      "moneda": "MXN",
+      "medio": "TARJETA",
+      "marca": "VISA",
+      "ultimos4": "9995",
+      "tipoTarjeta": "CREDITO",
+      "estado": "FALLIDO",
+      "motivoFallo": "FONDOS_INSUFICIENTES",
+      "autenticacion": null,
+      "referencia": "sim_pi_9a3e7c1b0d2f4a6c8e1b3d50",
+      "simulado": true,
+      "metodoPagoId": null,
+      "perfilFiscalId": null,
+      "pagadoEn": null,
+      "creadoEn": "2026-11-20T17:05:00.000Z",
+      "token": "tok_sim_fondos_insuficientes",
+      "llave": "semilla-pago-2",
+      "guardar": false,
+      "mesVence": 10,
+      "anioVence": 2029
+    }
+  ]
+}

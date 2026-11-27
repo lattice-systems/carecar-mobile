@@ -181,7 +181,7 @@ void main() {
         _app(_Repo(() async => throw const SinConexion())),
       );
       await tester.pumpAndSettle();
-      expect(find.text('Sin conexion'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsOneWidget);
     });
 
     testWidgets('jalar hacia abajo recarga el catalogo', (tester) async {
@@ -195,7 +195,11 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      await tester.fling(find.byType(ListView), const Offset(0, 400), 1000);
+      await tester.fling(
+        find.byType(CustomScrollView),
+        const Offset(0, 400),
+        1000,
+      );
       await tester.pumpAndSettle();
       expect(cargas, 2);
     });

@@ -90,7 +90,7 @@ Estado: **En revisión**.
 
 - **App:** módulo nuevo `lib/modulos/historial/` (carpeta de Ricardo). Rutas `/historial/{vehiculoId}` y `/historial/{vehiculoId}/ticket/{servicioId}`, también por enlace.
   - **Historial (V2-M02.05):** órdenes de la más reciente a la más antigua con fecha del servicio, estatus (texto e icono, no solo color), fecha de cierre y total. Paginación infinita: al llegar al final se pide la página siguiente; si falla, avisa y deja reintentar sin perder lo cargado. Filtro por año con los años que tienen servicios. Resuelve esqueleto, vacío, error con reintento y sin conexión; se recarga jalando.
-  - **Ticket (V2-M02.06):** mano de obra y refacciones, cada renglón con cantidad × precio e importe; totales de mano de obra, refacciones, subtotal sin IVA, IVA y total. Si la mano de obra más las refacciones no dan el total, lo avisa. «Compartir PDF» descarga el PDF y abre la hoja del sistema.
+  - **Ticket (V2-M02.06):** mano de obra y refacciones, cada renglón con cantidad × precio e importe; totales de mano de obra, refacciones, subtotal sin IVA, IVA y total. Si la mano de obra más las refacciones no dan el total, lo avisa. «Compartir PDF» descarga el PDF y abre la hoja del sistema. Si la orden dio puntos de lealtad (`puntosGanados`, V2-M12.02), lo dice en un aviso: «Ganaste N puntos de lealtad con este servicio.».
   - **Pruebas:** `test/modulos/historial/` (dominio, repositorio, pantallas en claro, oscuro y letra al 200 %, y rutas).
 - **Backend:** `GET /vehiculos/{id}/servicios?anio=` con `fechaCierre`, `GET /vehiculos/{id}/servicios/anios` y `GET /servicios/{id}` (backend#85). Contrato v2 en 2.5.0; copia en `api/`. `mock_api` con los mismos datos.
 - **Acceso desde el detalle:** la fila «Historial de servicios» del detalle del vehículo (carpeta de Juan Pablo) se conecta en un PR aparte, como pide la propiedad por carpeta.
@@ -205,7 +205,7 @@ Pantalla `PantallaComprobanteCita` en `lib/modulos/citas/` (ruta `/citas/:citaId
 
 ## Avance de V2-M02.03
 
-Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: **En curso** (falta búsqueda e índice, ver pendientes). Solo la parte de app.
+Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`, exige sesión; se llega desde el acceso «Manuales» del detalle). Acepta `?pagina=N` para abrir en esa página; lo usa la cita del asistente (V2-M24.04). Estado: búsqueda resuelta; falta índice estructurado y probar en celular (ver pendientes). Solo la parte de app.
 
 - **Por modelo y año:** `manualProvider(id)` toma el vehículo del garaje y pide el manual con `ManualesDeLaAgencia` (código v1): primero `GET /vehiculos/{id}/manuales` (que el backend filtra por modelo y año) y, si no hay o falla la red, el PDF empaquetado en `assets/Manuales/<marca>/<tipo>/<año>/` (respaldo local). Sin manual en ninguna parte: estado vacío que lo explica.
 - **Visor:** `VisorPdf` del sistema v2 con zoom de pellizco y contador «Página N de M». La pantalla le entrega los bytes ya descargados, así el respaldo local y el de la agencia se ven igual.
@@ -213,11 +213,14 @@ Pantalla `PantallaManual` en `lib/modulos/vehiculos/` (ruta `/garaje/:id/manual`
 - **Compartir:** paquete nuevo `share_plus` (commits `build(deps)` aparte); abre la hoja del sistema con el PDF en memoria y nombre «Manual <modelo> <año>.pdf».
 - **Estados:** esqueleto, datos, vacío, error con reintento y sin conexión.
 - **Textos:** claves `vehiculosManual*` en los ARB es y en.
-- **Pruebas:** `test/modulos/vehiculos/pantalla_manual_test.dart` (visor falso porque el motor nativo de PDF no corre en pruebas; claro, oscuro, letra al 200 % e inglés) y las rutas en `ruta_garaje_test.dart`.
-- **Pendientes (criterios no cumplidos):**
-  - **Búsqueda dentro del PDF e índice:** `pdfx` no extrae texto ni ofrece marcadores, así que no se resolvió. Hay que decidir paquete (p. ej. `pdfrx`, que sí busca texto y lee el índice, o la extracción de `syncfusion_flutter_pdf`, con su licencia) y reemplazar el motor de `VisorPdf`, que es de `lib/nucleo/diseno` (Cristian). Hasta entonces la historia no debe pasar a `Hecha`.
-  - El respaldo solo cubre los manuales empaquetados (Nissan Kicks 2023, March 2020, Versa 2024); un manual bajado de la agencia no queda guardado para verlo sin red después.
-  - Probado en pruebas de widget; falta probar descarga, compartir y el visor real en un teléfono.
+- **Búsqueda dentro del manual (criterio «índice, búsqueda»):** sin sumar un motor de PDF al app ni tocar el `VisorPdf` de Cristian. El texto de cada manual empaquetado se extrae una sola vez con `pdftotext` (`tool/generar_indice_manuales.py`) a un `indice.json` junto al PDF; `IndiceDeManual` (dominio, puro) busca sobre él ignorando acentos y mayúsculas y devuelve páginas con un fragmento. Un panel sobre el visor (campo `CampoBusquedaLiquido`, resultados en `GrupoLista`) abre la página elegida reconstruyendo el `VisorPdf` con esa `paginaInicial`. El botón de buscar solo aparece cuando el vehículo tiene índice empaquetado (`indiceDeManualProvider`).
+  - **Decisión (por qué así):** `pdfx` no extrae texto; `pdfrx` o `syncfusion` habrían metido un motor nativo (conflicto con `pdfx`, no corre en pruebas) o una licencia. El sidecar de texto es offline, se prueba en CI (carga el `indice.json` real) y no entra en el terreno de Cristian.
+- **Pruebas:** `test/modulos/vehiculos/pantalla_manual_test.dart`, `indice_de_manual_test.dart` (búsqueda pura), `indice_manual_local_test.dart` (carga el índice real empaquetado) y `buscar_manual_test.dart` (panel, resultado con fragmento, salto de página); claro, oscuro, letra al 200 % e inglés; las rutas en `ruta_garaje_test.dart`.
+- **Pendientes:**
+  - La búsqueda cubre solo los manuales **empaquetados** (Kicks 2023, March 2020, Versa 2024); un manual distinto bajado de la agencia no tiene índice offline. A futuro podría usarse el índice del asistente (V2-M24) cuando haya red.
+  - **Índice estructurado (tabla de contenido):** los marcadores vienen inconsistentes entre los PDF (March no trae, Kicks sí), así que el criterio «índice» se cubre con la búsqueda + salto de página, no con un árbol de secciones. Si se quiere el árbol, se genera del `outline` cuando exista.
+  - Un manual bajado de la agencia no queda guardado para verlo sin red después.
+  - Probado en pruebas de widget; falta probar descarga, compartir, el visor real y la búsqueda en un teléfono. Por eso la historia no cumple aún la DoD de probar en celular.
 
 ## Avance de V2-M02.04
 
@@ -269,7 +272,7 @@ Las cinco pantallas de `lib/modulos/citas/presentacion/` se rediseñaron con «E
 ## Ajustes visuales (rama `fix/v2-juan-pablo-ajustes-visuales`)
 
 - **Detalle del vehículo:** la portada ya no se mete bajo la barra. `CabeceraPortada` reserva la altura de la barra cuando el `Scaffold` usa `extendBodyBehindAppBar`, y al desplazar la barra se vuelve opaca, así nada atraviesa el título.
-- **«Tu auto»:** las acciones van en cuadrícula 2×2 de tarjetas iguales (una columna con letra grande).
+- **«Tu auto»:** Ficha técnica, Historial, Mantenimiento y Bitácora van como filas de un `GrupoLista` con chevron, igual que Privacidad y Mantenimiento (V2-T02.23). Antes eran una cuadrícula 2×2 de tarjetas iguales con icono en medallón, otro lenguaje que el de las filas de «Datos» de la misma pantalla.
 - **Regresar:** `BotonRegresar` (cierra con `pop` si se puede; si no, va al inicio; semántica «Regresar») en Mi garaje, y en las barras de portada del detalle, manual y ficha.
 
 ## Avance de V2-M02.12
@@ -292,3 +295,22 @@ Agregar la cita al calendario del teléfono, desde el comprobante. Solo la parte
 - Probar en un teléfono real que la hoja de compartir ofrece el calendario (Android e iOS); en pruebas solo se comprueba el contenido del `.ics`.
 - Desde «Mis citas» (V2-M02.09) no hay acceso al calendario: solo desde el comprobante.
 - Tablero: queda `En revisión` hasta integrar el PR; no pasa a `Hecha` mientras no se pruebe en celular.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+Se retiró el estilo portada de las pantallas del módulo, sin cambiar lógica, rutas ni criterios de aceptación:
+
+- **Garaje:** `MarcoPantalla` con una `TarjetaAuto` por vehículo (modelo, placas, km; tocarla abre el detalle). Reemplaza al estante de portadas y a «Datos rápidos».
+- **Detalle:** el encabezado grande dice el modelo y las placas; debajo, `TarjetaAuto` con el tinte del color del auto, `FilaAcciones` («Agendar», «Manual») y el resto como antes.
+- **Manual:** `BarraPantalla` con «Descargar» y «Compartir» como acciones de icono; el visor ocupa el resto.
+- **Comprobante de cita:** el QR en su tarjeta blanca (negro sobre blanco, lo exige el escáner) bajo el encabezado «Folio N»; sin fondo difuminado.
+- **Agendar, resumen y confirmación:** el resumen usa el encabezado; «Cita confirmada» y «Cita reprogramada» son un `ResultadoPantalla`.
+- Los autos de color neutro o desconocido usan el acento (antes el marino de marca).
+
+## Rediseño: la próxima cita de «Mis citas» (V2-T02.25)
+
+La tarjeta héroe de la próxima cita (degradado, etiqueta en mayúsculas, día de 84 pt, hora grande) se reemplaza por la `TarjetaResumen` del inicio: `CuadroFecha` en el tono del estado, «Tu próxima cita» como título, el día de la semana con el horario, el vehículo con el motivo y el estado con texto e icono. «Comprobante», «Reprogramar» y «Cancelar cita» siguen debajo como píldoras (y en la hoja de las demás próximas); `GrupoCitas` usa la misma flecha que el resto de las listas. Los criterios de V2-M02.09 a V2-M02.13 no cambian.
+
+## Ajustes visuales (V2-T02.26)
+
+El comprobante de la cita pone el margen lateral a sus listas de detalles y de recolección, y las secciones de la ficha técnica muestran una sola flecha (la de desplegar). Los criterios de V2-M02.04 y V2-M02.11 no cambian.

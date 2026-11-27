@@ -19,6 +19,8 @@ export 'presentacion/pantalla_servicio_mantenimiento.dart'
     show PantallaServicioMantenimiento;
 export 'presentacion/proveedores_mantenimiento.dart'
     show planMantenimientoProvider, repositorioMantenimientoProvider;
+export 'presentacion/tarjeta_proximo_servicio.dart'
+    show TarjetaProximoServicio, TarjetaProximoServicioDelAuto;
 export 'presentacion/rutas_mantenimiento.dart'
     show
         rutaKilometraje,

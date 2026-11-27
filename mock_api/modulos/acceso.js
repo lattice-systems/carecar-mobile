@@ -130,28 +130,95 @@ module.exports = function registrarAcceso(servidor, db) {
   //
   // Vive en memoria y no en db.json a proposito: reiniciar el mock debe dejar
   // todas las sesiones cerradas, igual que reiniciar el backend en desarrollo.
+  // Cada refresh token apunta a una sesion: V2-M01.09 necesita saber de que
+  // aparato es y cuando se uso por ultima vez, no solo de quien.
   const refrescos = new Map();
   let contadorDeRefrescos = 0;
+  let contadorDeSesiones = 0;
 
-  function emitirRefresco(cuenta) {
+  const DIAS_DE_VIGENCIA = 30;
+  const unaFecha = (dias) =>
+    new Date(Date.now() + dias * 24 * 60 * 60 * 1000).toISOString();
+
+  // `previa` llega en el refresco: el refresh es de un solo uso, asi que cada
+  // refresco emite una sesion nueva. Si no se arrastraran el nombre del aparato
+  // y la fecha de inicio, el primer refresco -a la hora de entrar- dejaria la
+  // lista sin nombre y diciendo que la sesion empezo hace un minuto. Es el
+  // mismo comportamiento que el backend (ver `plan/historias-backend.md`).
+  function emitirRefresco(cuenta, { dispositivo = null, previa = null } = {}) {
     contadorDeRefrescos += 1;
+    contadorDeSesiones += 1;
     const token = `refresh-${cuenta.id}-${contadorDeRefrescos}`;
-    refrescos.set(token, cuenta.id);
+    refrescos.set(token, {
+      id: contadorDeSesiones,
+      cuentaId: cuenta.id,
+      dispositivo: previa ? previa.dispositivo : dispositivo,
+      iniciadaEn: previa ? previa.iniciadaEn : new Date().toISOString(),
+      ultimoUso: previa ? new Date().toISOString() : null,
+      expiraEn: unaFecha(DIAS_DE_VIGENCIA),
+    });
     return token;
   }
 
+  function sesionesDe(cuentaId) {
+    return [...refrescos.values()]
+      .filter((s) => s.cuentaId === cuentaId)
+      .map(({ id, dispositivo, ultimoUso, iniciadaEn, expiraEn }) => ({
+        id,
+        dispositivo,
+        ultimoUso,
+        iniciadaEn,
+        expiraEn,
+      }))
+      // Las mas usadas primero y las que nunca se refrescaron al final, como
+      // dice el contrato.
+      .sort((a, b) => {
+        if (a.ultimoUso === b.ultimoUso) return b.id - a.id;
+        if (a.ultimoUso === null) return 1;
+        if (b.ultimoUso === null) return -1;
+        return b.ultimoUso.localeCompare(a.ultimoUso);
+      });
+  }
+
+  // Las sesiones revocadas se recuerdan por cuenta. Hace falta para que
+  // borrar dos veces la misma sesion responda 204 las dos veces, como promete
+  // el contrato: en el backend la fila sigue ahi con `revocada_en`, aqui la
+  // entrada del token se borra y sin este registro no habria con que
+  // distinguir «ya la cerraste» de «no es tuya».
+  const revocadas = new Map();
+
+  function recordarRevocada(cuentaId, sesionId) {
+    if (!revocadas.has(cuentaId)) revocadas.set(cuentaId, new Set());
+    revocadas.get(cuentaId).add(sesionId);
+  }
+
+  function yaEstabaRevocada(cuentaId, sesionId) {
+    return revocadas.get(cuentaId)?.has(sesionId) === true;
+  }
+
+  function revocarSesion(cuentaId, sesionId) {
+    for (const [token, sesion] of refrescos) {
+      if (sesion.cuentaId === cuentaId && sesion.id === sesionId) {
+        refrescos.delete(token);
+        recordarRevocada(cuentaId, sesionId);
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// La respuesta que comparten `/auth/login` y `/auth/refrescar`.
-  function respuestaDeSesion(cuenta) {
+  function respuestaDeSesion(cuenta, opciones) {
     return {
       accessToken: firmarToken(cuenta),
       expiresIn: VIDA_TOKEN_SEGUNDOS,
-      refreshToken: emitirRefresco(cuenta),
+      refreshToken: emitirRefresco(cuenta, opciones),
       debeCambiarContrasena: cuenta.debeCambiarContrasena,
     };
   }
 
   servidor.post(`${BASE}/auth/login`, (req, res) => {
-    const { correo, contrasena } = req.body || {};
+    const { correo, contrasena, dispositivo } = req.body || {};
     if (!correo || !contrasena) {
       return problema(req, res, 400, 'Escribe tu correo y tu contrasena', 'DATOS_INVALIDOS');
     }
@@ -186,7 +253,13 @@ module.exports = function registrarAcceso(servidor, db) {
 
     intentos.delete(normalizado);
 
-    res.jsonp(respuestaDeSesion(cuenta));
+    // `dispositivo` es opcional (V2-M01.09): sin el, la sesion queda sin
+    // nombre y la app muestra un texto generico.
+    res.jsonp(
+      respuestaDeSesion(cuenta, {
+        dispositivo: dispositivo ? String(dispositivo).slice(0, 80) : null,
+      })
+    );
   });
 
   // RIC-2 · Cambia el refresh token por un par nuevo.
@@ -199,7 +272,8 @@ module.exports = function registrarAcceso(servidor, db) {
       return problema(req, res, 400, 'Falta el refreshToken', 'DATOS_INVALIDOS');
     }
 
-    const cuentaId = refrescos.get(refreshToken);
+    const previa = refrescos.get(refreshToken);
+    const cuentaId = previa === undefined ? undefined : previa.cuentaId;
     if (cuentaId === undefined) {
       // Vencido, ya usado o revocado: el contrato no los distingue.
       return problema(req, res, 401, 'La sesion termino. Vuelve a entrar.', 'CREDENCIALES_INVALIDAS');
@@ -217,7 +291,7 @@ module.exports = function registrarAcceso(servidor, db) {
       return problema(req, res, 403, 'La cuenta esta desactivada', 'CUENTA_DESACTIVADA');
     }
 
-    res.jsonp(respuestaDeSesion(cuenta));
+    res.jsonp(respuestaDeSesion(cuenta, { previa }));
   });
 
   // RIC-4 · Revoca el refresh token.
@@ -311,8 +385,180 @@ module.exports = function registrarAcceso(servidor, db) {
   });
 
   // Perfil v1.1: siempre el de la cuenta autenticada, nunca un id del cliente.
+  // V2-M01.09 · Sesiones y dispositivos activos. Las tres son privadas.
+  servidor.get(`${BASE}/sesiones`, (req, res) => {
+    res.jsonp(sesionesDe(req.sesion.cuenta.id));
+  });
+
+  // Cerrar todas, incluida la de quien llama: es «cerrar sesion en todos los
+  // dispositivos». El access token en curso sigue valiendo hasta que expire,
+  // igual que en `/auth/cerrar-sesion`.
+  servidor.delete(`${BASE}/sesiones`, (req, res) => {
+    const cuentaId = req.sesion.cuenta.id;
+    for (const [token, sesion] of refrescos) {
+      if (sesion.cuentaId === cuentaId) {
+        refrescos.delete(token);
+        recordarRevocada(cuentaId, sesion.id);
+      }
+    }
+    res.status(204).end();
+  });
+
+  servidor.delete(`${BASE}/sesiones/:id`, (req, res) => {
+    const cuentaId = req.sesion.cuenta.id;
+    const id = Number(req.params.id);
+
+    if (Number.isInteger(id) && revocarSesion(cuentaId, id)) {
+      return res.status(204).end();
+    }
+    // Idempotente: cerrarla dos veces responde 204 las dos veces.
+    if (Number.isInteger(id) && yaEstabaRevocada(cuentaId, id)) {
+      return res.status(204).end();
+    }
+    // Una sesion de otra cuenta, o que no existe, responde **404 y no 403**:
+    // el contrato no revela que exista algo ajeno.
+    return problema(req, res, 404, 'No encontramos esa sesion', null);
+  });
+
+  // ---------------------------------------------------------------------------
+  // V2-M01.07 · Cambiar el correo, con verificacion
+  //
+  // Solo el correo: verificar el telefono exige mandar un codigo AL telefono y
+  // no hay SMS en ningun lado, asi que esa mitad esta bloqueada.
+  //
+  // Las verificaciones viven en memoria: se pierden al reiniciar, igual que el
+  // resto del estado del mock.
+  // ---------------------------------------------------------------------------
+
+  const verificaciones = new Map();
+  let siguienteVerificacion = 1;
+  const VIGENCIA_VERIFICACION_MS = 15 * 60 * 1000;
+
+  // Fijo a proposito, y el mismo que usa la semilla para el codigo de
+  // recuperacion: en desarrollo el codigo no llega por correo a ningun lado, y
+  // uno aleatorio obligaria a mirar la consola en cada prueba. Cualquier otro
+  // codigo falla, que es como se prueba el camino del codigo equivocado.
+  const CODIGO_DE_DESARROLLO = '123456';
+
+  // Mismo criterio que la app: lo que no tiene arroba con algo a cada lado no
+  // es un correo. El backend real valida igual y responde 400.
+  const pareceCorreo = (valor) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(valor).trim());
+
+  servidor.patch(`${BASE}/perfil`, (req, res) => {
+    const { correo, contrasenaActual } = req.body || {};
+    if (!correo || !contrasenaActual) {
+      return problema(
+        req,
+        res,
+        400,
+        'Escribe el correo nuevo y tu contrasena actual',
+        'DATOS_INVALIDOS',
+      );
+    }
+    if (!pareceCorreo(correo)) {
+      return problema(req, res, 400, 'Ese correo no tiene formato valido', 'DATOS_INVALIDOS');
+    }
+
+    const cuenta = req.sesion.cuenta;
+    // 400 y no 401 a proposito: la app lee un 401 como sesion vencida y
+    // cerraria la sesion sin decirle nada a la persona.
+    if (cuenta.contrasena !== contrasenaActual) {
+      return problema(
+        req,
+        res,
+        400,
+        'La contrasena no coincide',
+        'CREDENCIALES_INVALIDAS',
+      );
+    }
+
+    const normalizado = String(correo).trim().toLowerCase();
+    const ajena = db
+      .get('cuentas')
+      .find((c) => c.id !== cuenta.id && String(c.correo).toLowerCase() === normalizado)
+      .value();
+    if (ajena) {
+      return problema(req, res, 409, 'Ese correo ya es de otro cliente', 'DATOS_INVALIDOS');
+    }
+
+    const id = siguienteVerificacion++;
+    const expira = new Date(Date.now() + VIGENCIA_VERIFICACION_MS).toISOString();
+    verificaciones.set(id, {
+      id,
+      clienteId: cuenta.clienteId,
+      tipo: 'CORREO',
+      valorNuevo: normalizado,
+      expira,
+      usado: false,
+    });
+
+    res.status(202).jsonp({ id, expira });
+  });
+
+  servidor.post(`${BASE}/perfil/verificaciones/:id/confirmar`, (req, res) => {
+    const { codigo } = req.body || {};
+    if (!codigo) {
+      return problema(req, res, 400, 'Escribe el codigo que te llego', 'DATOS_INVALIDOS');
+    }
+
+    const verificacion = verificaciones.get(Number(req.params.id));
+    // De otro cliente o inexistente responden igual: 404, sin revelar que
+    // existe algo ajeno.
+    if (!verificacion || verificacion.clienteId !== req.sesion.cuenta.clienteId) {
+      return problema(req, res, 404, 'No encontramos esa verificacion', null);
+    }
+
+    const vencida = new Date(verificacion.expira) < new Date();
+    // Equivocado, usado y vencido responden igual, como al restablecer la
+    // contrasena: responder distinto permitiria averiguar codigos.
+    if (verificacion.usado || vencida || String(codigo).trim() !== CODIGO_DE_DESARROLLO) {
+      return problema(
+        req,
+        res,
+        400,
+        'El codigo no es valido, ya se uso o vencio',
+        'CODIGO_INVALIDO',
+      );
+    }
+
+    const cuenta = req.sesion.cuenta;
+    const ajena = db
+      .get('cuentas')
+      .find((c) => c.id !== cuenta.id && String(c.correo).toLowerCase() === verificacion.valorNuevo)
+      .value();
+    // Alguien pudo tomar ese correo mientras se verificaba.
+    if (ajena) {
+      return problema(req, res, 409, 'Ese correo ya es de otro cliente', 'DATOS_INVALIDOS');
+    }
+
+    // En el backend real, `cuenta_app.usuario` sigue al correo (V2-T05.03).
+    // Aqui el login busca por `correo`, asi que cambiarlo es lo que hace
+    // observable lo mismo: a partir de ahora se entra con el correo nuevo.
+    db.get('cuentas').find({ id: cuenta.id }).assign({ correo: verificacion.valorNuevo }).write();
+    verificaciones.set(verificacion.id, { ...verificacion, usado: true });
+
+    const actualizada = db.get('cuentas').find({ id: cuenta.id }).value();
+    res.jsonp({
+      id: actualizada.clienteId,
+      nombre: actualizada.nombre,
+      correo: actualizada.correo,
+      telefono: actualizada.telefono ?? null,
+      clienteDesde: actualizada.clienteDesde,
+    });
+  });
+
   servidor.get(`${BASE}/perfil`, (req, res) => {
     const cuenta = req.sesion.cuenta;
-    res.jsonp({ id: cuenta.clienteId, nombre: cuenta.nombre, correo: cuenta.correo });
+    res.jsonp({
+      id: cuenta.clienteId,
+      nombre: cuenta.nombre,
+      correo: cuenta.correo,
+      // V2-M01.06. `telefono` puede ser nulo -la agencia no siempre lo captura- y
+      // cliente2 lo tiene asi a proposito, para poder ver ese caso en desarrollo
+      // sin tocar la semilla. `clienteDesde` es una fecha, no un instante: el
+      // servidor real la resuelve en la zona de la agencia.
+      telefono: cuenta.telefono ?? null,
+      clienteDesde: cuenta.clienteDesde,
+    });
   });
 };

@@ -12,7 +12,8 @@ import 'boton.dart';
 ///
 /// Lleva un titulo, un mensaje o contenido propio y hasta dos acciones. La
 /// accion principal es la que confirma. Con `peligro` la accion principal usa
-/// el estilo de peligro, para acciones que no se pueden deshacer.
+/// el estilo de peligro, para acciones que no se pueden deshacer. Las llaves
+/// de las acciones sirven para encontrarlas en pruebas.
 class Dialogo extends StatelessWidget {
   const Dialogo({
     required this.titulo,
@@ -24,6 +25,8 @@ class Dialogo extends StatelessWidget {
     this.textoSecundario,
     this.alSecundario,
     this.peligro = false,
+    this.llavePrincipal,
+    this.llaveSecundario,
   }) : assert(
          mensaje != null || contenido != null,
          'Un dialogo necesita mensaje o contenido',
@@ -37,6 +40,8 @@ class Dialogo extends StatelessWidget {
   final String? textoSecundario;
   final VoidCallback? alSecundario;
   final bool peligro;
+  final Key? llavePrincipal;
+  final Key? llaveSecundario;
 
   static const double _anchoMaximo = 400;
 
@@ -90,11 +95,13 @@ class Dialogo extends StatelessWidget {
                           children: [
                             if (textoSecundario != null)
                               Boton(
+                                key: llaveSecundario,
                                 texto: textoSecundario!,
                                 variante: VarianteBoton.terciario,
                                 alPresionar: alSecundario,
                               ),
                             Boton(
+                              key: llavePrincipal,
                               texto: textoPrincipal,
                               variante: peligro
                                   ? VarianteBoton.peligro

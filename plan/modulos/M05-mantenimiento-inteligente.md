@@ -80,7 +80,7 @@ El próximo servicio es el héroe del plan: título con el nombre del servicio, 
 
 Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (ver su `plan/historias-backend.md`, «Diseño técnico — V2-M05.05») y un aviso en la app.
 
-- **Backend:** un job diario avisa a 1 000 km o 14 días del próximo servicio (umbrales por entorno), una sola vez por vehículo y servicio (`recordatorio_mantenimiento`, migración `V44`), y publica el evento en vivo `mantenimiento.recordatorio` (contrato 2.14.0 del backend; a `api/` solo se copió este evento, porque el resto trae `AVISO_NO_VIGENTE` de V2-M22 que la app aún no mapea).
+- **Backend:** un job diario avisa a 1 000 km o 14 días del próximo servicio (umbrales por entorno), una sola vez por vehículo y servicio (`recordatorio_mantenimiento`, migración `V46`), y publica el evento en vivo `mantenimiento.recordatorio` (contrato 2.14.0 del backend; a `api/` solo se copió este evento, porque el resto trae `AVISO_NO_VIGENTE` de V2-M22 que la app aún no mapea).
 - **App:** `PantallaPlanMantenimiento` escucha el canal en vivo; si llega el recordatorio de **ese** vehículo muestra «Tu próximo servicio ya se acerca…» (aviso cerrable) y vuelve a pedir el plan. Pruebas: `test/modulos/mantenimiento/recordatorio_en_vivo_test.dart` (este vehículo, otro vehículo y otro tipo de evento).
 
 **Decisiones sobre trabajo de otras personas**
@@ -93,3 +93,16 @@ Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (
 ## Mock
 
 `mock_api/modulos/mantenimiento.js` simula ambos endpoints: plan de 8 servicios cada 5 000 km cuyo estado sale del km vigente, promedio diario de las lecturas (35 km/día por omisión), 404 para vehículo ajeno, 400 `DATOS_INVALIDOS` y 422 `KM_INVALIDO` en las lecturas. Los vehículos de 2014 o anteriores no tienen plan.
+
+## Rediseño: encabezados ligeros (V2-T02.21)
+
+`PantallaPlanMantenimiento` ya no lleva portada: `MarcoPantalla` con una `TarjetaResumen` del próximo servicio (qué toca, por qué y cuánto falta). Cuando toca por kilometraje la tarjeta trae una barra con el avance desde el último servicio hecho; el criterio de aceptación no cambia. «Agendar este servicio» y «Registrar km» van en `FilaAcciones`. La bitácora de combustible (V2-M18) sigue el mismo patrón.
+
+## Inicio: el próximo servicio a la vista (V2-T02.22)
+
+El próximo servicio también se ve en Inicio, sin entrar al plan: `TarjetaProximoServicioDelAuto` (exportada en `mantenimiento.dart`, como `TarjetaOrdenEnCurso` en `taller.dart`) pide el plan del auto que se está viendo en el carrusel y muestra `TarjetaProximoServicio`, la **misma** tarjeta del plan: qué toca, por qué y cuánto falta, con la barra de avance. Al tocarla abre `/mantenimiento/:vehiculoId`.
+
+- El cálculo del avance (`PlanMantenimiento.avanceDelProximo`) pasó al dominio y lo comparten el inicio y el plan.
+- Mientras carga deja un esqueleto del mismo alto; si el plan falla, el modelo no tiene plan o no hay próximo estimado, no ocupa lugar: el inicio no muestra errores de un extra.
+- «Sin próximo servicio estimado» (en el plan) ya no lleva palomita verde: falta el kilometraje, y eso es un aviso informativo, no una buena noticia.
+- El criterio de aceptación de V2-M05.02 no cambia; este es otro lugar donde se ve.

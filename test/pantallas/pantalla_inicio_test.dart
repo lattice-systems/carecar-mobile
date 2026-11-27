@@ -11,6 +11,9 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
 import 'package:carecar_mobile/pantallas/perfil/pantalla_perfil.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/marco_pantalla.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -47,7 +50,7 @@ Future<ControladorSesion> _montar(
     AppEnrutadaDePrueba(
       api: api,
       controlador: sesion,
-      interruptor: InterruptorModulos.porDefecto,
+      interruptor: InterruptorModulos.todoV1,
       idioma: const Locale('es'),
     ),
   );
@@ -70,7 +73,8 @@ Future<void> _tocar(WidgetTester tester, String texto) async {
     return;
   }
   // En el inicio los destinos se tocan en la barra flotante, que siempre está a
-  // la vista; la lista de accesos queda debajo de ella con letra grande.
+  // la vista. «Mis vehículos» es el nombre que tenía el acceso del cuerpo; se
+  // conserva como alias para no reescribir todas las pruebas.
   // (la arnés usa el idioma por omisión, inglés: se acepta el nombre en ambos)
   const enLaBarra = {
     'Mis vehículos': ['Vehículos', 'Vehicles'],
@@ -124,7 +128,7 @@ void main() {
       AppEnrutadaDePrueba(
         api: api,
         controlador: restaurada,
-        interruptor: InterruptorModulos.porDefecto,
+        interruptor: InterruptorModulos.todoV1,
       ),
     );
     await tester.pumpAndSettle();
@@ -185,23 +189,35 @@ void main() {
       await tester.tap(find.byKey(PantallaLogin.botonEntrar));
       await tester.pumpAndSettle();
       expect(find.byType(InicioNuevo), findsOneWidget);
-      // Cada acceso sale en la lista y, salvo vehículos, también en la barra.
-      for (final opcion in ['Mis vehículos', 'Citas', 'Catálogo']) {
-        expect(find.text(opcion), findsWidgets);
+      // Los destinos viven solo en la barra: el cuerpo ya no los repite.
+      for (final opcion in ['Vehículos', 'Citas', 'Catálogo']) {
+        expect(find.text(opcion), findsOneWidget, reason: opcion);
+        expect(
+          find.descendant(
+            of: find.byType(BarraFlotante),
+            matching: find.text(opcion),
+          ),
+          findsOneWidget,
+          reason: opcion,
+        );
       }
       expect(_botonPerfil(), findsOneWidget);
       expect(api.llamadasAlLogin, 1);
       await tester.tap(_botonPerfil());
       await tester.pumpAndSettle();
-      final cerrar = find.byKey(PantallaInicio.botonCerrarSesion).last;
-      if (cerrar.evaluate().isEmpty) {
-        await tester.scrollUntilVisible(
-          find.byKey(PantallaInicio.botonCerrarSesion),
-          300,
-          scrollable: find.byType(Scrollable).first,
-        );
-      }
-      await tester.ensureVisible(cerrar);
+      // La lista de Ajustes es perezosa: la fila de cerrar sesión (la última)
+      // se construye al desplazar, dentro de la propia pantalla de Ajustes.
+      final cerrar = find.byKey(PantallaInicio.botonCerrarSesion);
+      await tester.scrollUntilVisible(
+        cerrar,
+        300,
+        scrollable: find
+            .descendant(
+              of: find.byType(MarcoPantalla),
+              matching: find.byType(Scrollable),
+            )
+            .first,
+      );
       await tester.pumpAndSettle();
       await tester.tap(cerrar);
       await tester.pumpAndSettle();
@@ -318,7 +334,10 @@ void main() {
     expect(find.text('cliente1@example.com'), findsOneWidget);
     // Una del saludo del menu y otra de Ajustes.
     expect(api.llamadasAPerfil, 2);
-    await _tocar(tester, 'Regresar');
+    // Ajustes se cierra con el botón de regreso del sistema (círculo, sin
+    // texto), no con el «Regresar» de la v1.
+    await tester.tap(find.byType(BotonRegresar));
+    await tester.pumpAndSettle();
     expect(find.byType(InicioNuevo), findsOneWidget);
   });
 
@@ -330,12 +349,15 @@ void main() {
     await _montar(tester, api);
     await tester.tap(_botonPerfil());
     await tester.pump();
-    // Mientras carga se ve el esqueleto, no un texto de espera.
-    expect(find.text('Nombre del cliente'), findsOneWidget);
+    // Mientras carga se ve el esqueleto del sistema, no un texto de espera ni
+    // un nombre inventado.
+    expect(find.byType(Esqueleto), findsWidgets);
+    expect(find.text('Nombre del cliente'), findsNothing);
     espera.completeError(const SinConexion('Sin conexión de prueba'));
     await tester.pumpAndSettle();
     expect(find.text('Sin conexión'), findsOneWidget);
-    api.alPedirPerfil = () async => const Perfil(id: 1, nombre: '', correo: '');
+    api.alPedirPerfil = () async =>
+        Perfil(id: 1, nombre: '', correo: '', clienteDesde: DateTime(2024, 3));
     await _tocar(tester, 'Reintentar');
     // Con datos vacios el perfil no inventa nombre ni correo.
     expect(find.text('Nombre del cliente'), findsNothing);

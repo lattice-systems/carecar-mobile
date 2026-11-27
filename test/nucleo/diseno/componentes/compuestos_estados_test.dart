@@ -8,6 +8,8 @@ import 'package:carecar_mobile/nucleo/diseno/tokens/colores.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../ayudas/tema_pista.dart';
 
 void main() {
@@ -71,8 +73,23 @@ void main() {
           EstadoError(causa: CausaError.sinConexion, alReintentar: () {}),
         ),
       );
-      expect(find.text('Sin conexion'), findsOneWidget);
-      expect(find.byIcon(Icons.wifi_off), findsOneWidget);
+      expect(find.text('Sin conexión'), findsOneWidget);
+      expect(find.byIcon(LucideIcons300.wifiOff), findsOneWidget);
+    });
+
+    testWidgets('los textos por omisión siguen el idioma de la app', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        conTemaPista(
+          EstadoError(causa: CausaError.sinConexion, alReintentar: () {}),
+          idioma: const Locale('en'),
+        ),
+      );
+      expect(find.text('No connection'), findsOneWidget);
+      expect(find.text('Check your internet and try again.'), findsOneWidget);
+      expect(find.text('Retry'), findsOneWidget);
+      expect(find.text('Sin conexión'), findsNothing);
     });
 
     testWidgets('reintentar llama al callback', (tester) async {
@@ -216,7 +233,7 @@ void main() {
             FilaLista(
               titulo: 'Mazda CX-5 2024',
               subtitulo: 'Proximo servicio en 1 200 km',
-              inicio: const Icon(Icons.directions_car),
+              inicio: const Icon(LucideIcons300.car),
               fin: const Text('Ok'),
               alToque: () {},
             ),
@@ -243,7 +260,7 @@ void main() {
 
     testWidgets('sin toque no muestra chevron', (tester) async {
       await tester.pumpWidget(conTemaPista(const FilaLista(titulo: 'Citas')));
-      expect(find.byIcon(Icons.chevron_right), findsNothing);
+      expect(find.byIcon(LucideIcons300.chevronRight), findsNothing);
     });
 
     testWidgets('se anuncia como boton con titulo y subtitulo', (tester) async {

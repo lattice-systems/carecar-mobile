@@ -1,3 +1,5 @@
+import 'package:carecar_mobile/nucleo/diseno/componentes/mapa.dart';
+
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
@@ -6,17 +8,18 @@ import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
 import 'package:carecar_mobile/modulos/recoleccion/presentacion/pantalla_seguimiento_traslado.dart';
 import 'package:carecar_mobile/modulos/recoleccion/presentacion/proveedores_recoleccion.dart';
-import 'package:carecar_mobile/modulos/recoleccion/presentacion/provisional/mapa_provisional.dart';
 import 'package:carecar_mobile/modulos/recoleccion/presentacion/rutas_recoleccion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/linea_de_tiempo.dart';
 import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 TrasladoDetalle _traslado({
   EstadoTraslado estado = EstadoTraslado.programado,
@@ -118,7 +121,7 @@ void main() {
     ]) {
       expect(find.text(texto), findsWidgets, reason: texto);
     }
-    expect(find.byType(MapaProvisional), findsNothing);
+    expect(find.byType(Mapa), findsNothing);
   });
 
   testWidgets('un traslado de entregar lo dice en el titulo', (tester) async {
@@ -145,8 +148,13 @@ void main() {
     );
     await tester.pump();
 
-    expect(find.byType(MapaProvisional), findsOneWidget);
-    expect(find.byIcon(Icons.local_shipping), findsOneWidget);
+    expect(find.byType(Mapa), findsOneWidget);
+    expect(find.byIcon(LucideIcons300.truck), findsOneWidget);
+    expect(
+      tester.widget<Mapa>(find.byType(Mapa)).enMovimiento,
+      isNotNull,
+      reason: 'el chofer se sigue como marcador en movimiento',
+    );
     expect(find.text('Dónde va el chofer'), findsOneWidget);
     expect(find.textContaining('Ubicación actualizada a las'), findsOneWidget);
   });
@@ -163,14 +171,14 @@ void main() {
       ),
     );
 
-    expect(find.byType(MapaProvisional), findsNothing);
+    expect(find.byType(Mapa), findsNothing);
   });
 
   testWidgets('los eventos mueven el estado y el chofer sin recargar', (
     tester,
   ) async {
     final (canal, _) = await _montar(tester);
-    expect(find.byType(MapaProvisional), findsNothing);
+    expect(find.byType(Mapa), findsNothing);
 
     canal.emitir('traslado.estado', {'trasladoId': 5, 'estado': 'en_camino'});
     canal.emitir('traslado.ubicacion', {
@@ -182,13 +190,13 @@ void main() {
     await tester.pump();
     await tester.pump();
 
-    expect(find.byType(MapaProvisional), findsOneWidget);
+    expect(find.byType(Mapa), findsOneWidget);
 
     canal.emitir('traslado.estado', {'trasladoId': 5, 'estado': 'recogido'});
     await tester.pump();
     await tester.pump();
 
-    expect(find.byType(MapaProvisional), findsNothing);
+    expect(find.byType(Mapa), findsNothing);
   });
 
   testWidgets('un traslado cancelado cierra la linea en Cancelado', (
@@ -317,23 +325,12 @@ void main() {
   testWidgets('el titulo no queda tapado al desplazar', (tester) async {
     await _montar(tester, tamano: const Size(360, 480));
 
-    await tester.drag(
-      find.byType(SingleChildScrollView).first,
-      const Offset(0, -900),
-    );
+    await tester.drag(find.byType(CustomScrollView), const Offset(0, -900));
     await tester.pumpAndSettle();
 
-    final barra = tester
-        .widget<Material>(
-          find
-              .descendant(
-                of: find.byType(AppBar),
-                matching: find.byType(Material),
-              )
-              .first,
-        )
-        .color!;
-    expect(barra.a, 1);
+    // Recogido el encabezado, «Regresar» sigue a la vista y el titulo pequeño
+    // queda en la barra: nada pasa por encima.
+    expect(find.byType(BotonRegresar).hitTestable(), findsOneWidget);
   });
 }
 

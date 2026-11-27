@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -224,9 +226,19 @@ class _EstadoPantallaCambiarContrasena
 /// quien llega sabe que se le va a pedir antes de escribir, en vez de
 /// descubrirlo a base de errores.
 class ListaDeReglas extends StatelessWidget {
-  const ListaDeReglas({required this.revision, super.key});
+  const ListaDeReglas({
+    required this.revision,
+    this.mostrarDistinta = true,
+    super.key,
+  });
 
   final RevisionContrasena revision;
+
+  /// Si se muestra «distinta de la temporal».
+  ///
+  /// En la recuperacion por enlace (V2-M01.04) no hay contrasena temporal que
+  /// conocer, asi que esa regla siempre se cumple y ensenarla solo confunde.
+  final bool mostrarDistinta;
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +249,8 @@ class ListaDeReglas extends StatelessWidget {
       textos.accesoCambiarReglaLargo: revision.largoSuficiente,
       textos.accesoCambiarReglaLetra: revision.tieneLetra,
       textos.accesoCambiarReglaNumero: revision.tieneNumero,
-      textos.accesoCambiarReglaDistinta: revision.esDistintaDeLaActual,
+      if (mostrarDistinta)
+        textos.accesoCambiarReglaDistinta: revision.esDistintaDeLaActual,
     };
 
     return Column(
@@ -259,8 +272,8 @@ class ListaDeReglas extends StatelessWidget {
                 // solo del color (guia de estilos).
                 Icon(
                   regla.value
-                      ? Icons.check_circle_outline
-                      : Icons.circle_outlined,
+                      ? LucideIcons300.circleCheck
+                      : LucideIcons300.circle,
                   size: 16,
                   color: regla.value
                       ? tokens.colores.exito

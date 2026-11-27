@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
@@ -12,7 +14,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../dominio/estadisticas.dart';
 import '../dominio/gasto.dart';
-import 'componentes/marco_bitacora.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'formato_bitacora.dart';
 import 'proveedores_bitacora.dart';
 
@@ -33,7 +35,7 @@ class PantallaEstadisticas extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final gastos = ref.watch(gastosProvider(vehiculoId));
 
-    Widget estado(Widget hijo) => MarcoBitacora.estado(
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
       titulo: textos.bitacoraEstadisticasTitulo,
       estado: hijo,
     );
@@ -70,7 +72,7 @@ class PantallaEstadisticas extends ConsumerWidget {
             EstadoVacio(
               titulo: textos.bitacoraVacioTitulo,
               mensaje: textos.bitacoraVacioMensaje,
-              icono: Icons.insights_outlined,
+              icono: LucideIcons300.chartSpline,
             ),
           );
         }
@@ -98,14 +100,14 @@ class _Estadisticas extends StatelessWidget {
         : meses;
     final cargas = gastos.where((g) => g.esCarga && g.km != null).length;
 
-    return MarcoBitacora(
+    return MarcoPantalla(
       titulo: textos.bitacoraEstadisticasTitulo,
       slivers: [
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SeccionBitacora(
+              SeccionPantalla(
                 titulo: textos.bitacoraResumenTitulo,
                 hijo: rendimiento == null
                     ? Semantics(
@@ -160,7 +162,7 @@ class _Estadisticas extends StatelessWidget {
                         ],
                       ),
               ),
-              SeccionBitacora(
+              SeccionPantalla(
                 titulo: textos.bitacoraGraficaTitulo,
                 hijo: Grafica(
                   titulo: textos.bitacoraGraficaTitulo,

@@ -1,12 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/analitica/ambito_analitica.dart';
+import '../../../nucleo/analitica/analitica.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
+import '../../../nucleo/diseno/componentes/resultado_pantalla.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -14,9 +21,7 @@ import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/estante.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
-import '../../../nucleo/diseno/movimiento_contexto.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/movimiento.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../recoleccion/recoleccion.dart';
 import '../../vehiculos/vehiculos.dart';
@@ -24,10 +29,8 @@ import '../dominio/cita_agendada.dart';
 import '../dominio/disponibilidad_taller.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
-import 'componentes/barra_inferior_cita.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
-import 'componentes/marco_pantalla_cita.dart';
-import 'componentes/seccion_cita.dart';
 import 'componentes/seleccion_dia_horario.dart';
 import 'componentes/tarjeta_vehiculo_cita.dart';
 import 'pantalla_comprobante_cita.dart';
@@ -65,6 +68,7 @@ class PantallaAgendarCita extends ConsumerStatefulWidget {
 }
 
 class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
+  final _embudo = EmbudoCitas();
   _Paso _paso = _Paso.formulario;
   int? _vehiculoId;
   DateTime? _mes;
@@ -119,10 +123,8 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     final garaje = ref.watch(garajeProvider);
     final disponibilidad = ref.watch(disponibilidadProvider);
 
-    Widget estado(Widget hijo) => MarcoPantallaCita.estado(
-      titulo: textos.citasAgendarTitulo,
-      estado: hijo,
-    );
+    Widget estado(Widget hijo) =>
+        MarcoPantalla.estado(titulo: textos.citasAgendarTitulo, estado: hijo);
 
     final error = garaje.error ?? disponibilidad.error;
     if (error != null && !(garaje.hasValue && disponibilidad.hasValue)) {
@@ -148,9 +150,17 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         EstadoVacio(
           titulo: textos.citasSinVehiculosTitulo,
           mensaje: textos.citasSinVehiculosMensaje,
-          icono: Icons.directions_car_outlined,
+          icono: LucideIcons300.car,
         ),
       );
+    }
+    if (_paso == _Paso.formulario) {
+      final analitica = AmbitoAnalitica.de(context);
+      if (analitica != null && analitica.habilitada) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) unawaited(_embudo.mostrarDisponibilidad(analitica));
+        });
+      }
     }
     if (disponibilidad.requireValue.sinCupoEnTodoElRango &&
         _paso == _Paso.formulario) {
@@ -158,7 +168,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         EstadoVacio(
           titulo: textos.citasVacioTitulo,
           mensaje: textos.citasVacioMensaje,
-          icono: Icons.event_busy_outlined,
+          icono: LucideIcons300.calendarX,
         ),
       );
     }
@@ -188,14 +198,14 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     final indice = franjas.indexWhere((f) => f.franjaId == _franja?.franjaId);
     final escala = MediaQuery.textScalerOf(context).scale(1);
 
-    return MarcoPantallaCita(
+    return MarcoPantalla(
       titulo: textos.citasAgendarTitulo,
       alRefrescar: () async {
         ref.invalidate(garajeProvider);
         ref.invalidate(disponibilidadProvider);
         await ref.read(disponibilidadProvider.future);
       },
-      barraInferior: BarraInferiorCita(
+      barraInferior: BarraInferior(
         hijos: [
           if (!_completo) ...[
             Text(
@@ -250,9 +260,16 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                   _dia = d;
                   _franja = null;
                 }),
-                alElegirFranja: (i) => setState(() => _franja = franjas[i]),
+                alElegirFranja: (i) {
+                  setState(() => _franja = franjas[i]);
+                  final analitica = AmbitoAnalitica.de(context);
+                  if (analitica != null) {
+                    unawaited(_embudo.mostrarDisponibilidad(analitica));
+                    unawaited(_embudo.elegirFranja(analitica));
+                  }
+                },
               ),
-              SeccionCita(
+              SeccionPantalla(
                 titulo: textos.citasAgendarMotivo,
                 hijo: Wrap(
                   spacing: Espaciado.e2,
@@ -294,10 +311,11 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       Localizations.localeOf(context).toString(),
     ).format(franja.fecha);
 
-    return MarcoPantallaCita(
-      titulo: textos.citasAgendarTitulo,
+    return MarcoPantalla(
+      titulo: textos.citasResumenTitulo,
+      subtitulo: vehiculo.titulo,
       acciones: const [],
-      barraInferior: BarraInferiorCita(
+      barraInferior: BarraInferior(
         hijos: [
           if (_fallo != _Fallo.duplicada) ...[
             BotonPildora(
@@ -325,24 +343,12 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CabeceraPortada(
-                titulo: textos.citasResumenTitulo,
-                subtitulo: vehiculo.titulo,
-                portada: ColoredBox(
-                  color: c.acentoSuave,
-                  child: Icon(
-                    Icons.event_available_outlined,
-                    size: 96,
-                    color: c.acento,
-                  ),
-                ),
-              ),
               GrupoLista(
                 filas: [
                   FilaGrupo(
                     titulo: textos.citasResumenFecha,
                     subtitulo: fecha,
-                    icono: Icons.calendar_today_outlined,
+                    icono: LucideIcons300.calendar,
                     colorIcono: c.acento,
                   ),
                   FilaGrupo(
@@ -351,13 +357,13 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                       franja.horaInicio,
                       franja.horaFin,
                     ),
-                    icono: Icons.schedule_outlined,
+                    icono: LucideIcons300.clock,
                     colorIcono: c.exito,
                   ),
                   FilaGrupo(
                     titulo: textos.citasResumenMotivo,
                     subtitulo: _textoMotivo(textos, _motivo!),
-                    icono: Icons.build_outlined,
+                    icono: LucideIcons300.wrench,
                     colorIcono: c.marca,
                   ),
                 ],
@@ -403,25 +409,25 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                     direccion.alias,
                     direccion.resumen,
                   ),
-            icono: Icons.place_outlined,
+            icono: LucideIcons300.mapPin,
             colorIcono: c.acento,
           ),
           FilaGrupo(
             titulo: textos.citasResumenRecogemos,
             subtitulo: ventana(cotizacion.recoleccion),
-            icono: Icons.local_shipping_outlined,
+            icono: LucideIcons300.truck,
             colorIcono: c.marca,
           ),
           FilaGrupo(
             titulo: textos.citasResumenEntregamos,
             subtitulo: ventana(cotizacion.entrega),
-            icono: Icons.home_outlined,
+            icono: LucideIcons300.house,
             colorIcono: c.exito,
           ),
           FilaGrupo(
             titulo: textos.citasResumenRecoleccionCosto,
             subtitulo: formatearPesos(context, cotizacion.costoTotal),
-            icono: Icons.payments_outlined,
+            icono: LucideIcons300.banknote,
             colorIcono: c.advertencia,
           ),
         ],
@@ -514,71 +520,42 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
 
   Widget _listo(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final c = TokensPista.de(context).colores;
     final cita = _confirmada!;
     final tema = Theme.of(context);
-    return Scaffold(
-      backgroundColor: c.fondo,
-      body: SafeArea(
-        top: false,
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: Espaciado.anchoMaximoContenido,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CabeceraPortada(
-                    titulo: textos.citasListoTitulo,
-                    subtitulo: textos.citasListoMensaje(
-                      cita.fecha,
-                      cita.horaInicio,
-                    ),
-                    tinte: c.exito,
-                    lado: 200,
-                    portada: const _Celebracion(),
-                    principal: AccionPortada(
-                      texto: textos.citasListoVerComprobante,
-                      icono: Icons.qr_code_2_rounded,
-                      // La ruta nueva no cuelga del tema Pista de esta pantalla:
-                      // se le pasa el mismo para que el comprobante se vea igual.
-                      alPresionar: () => Navigator.of(context).push<void>(
-                        MaterialPageRoute(
-                          builder: (_) => Theme(
-                            data: tema,
-                            child: PantallaComprobanteCita(
-                              citaId: cita.id,
-                              recoleccion: cita.recoleccion,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    secundaria: AccionPortada(
-                      texto: textos.citasListoCerrar,
-                      alPresionar: () => Navigator.of(context).maybePop(),
-                    ),
-                  ),
-                  if (cita.recoleccion != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: Espaciado.e4),
-                      child: GrupoRecoleccionCita(
-                        recoleccion: cita.recoleccion!,
-                      ),
-                    ),
-                ],
+    return ResultadoPantalla(
+      titulo: textos.citasListoTitulo,
+      mensaje: textos.citasListoMensaje(cita.fecha, cita.horaInicio),
+      principal: AccionPantalla(
+        texto: textos.citasListoVerComprobante,
+        icono: LucideIcons300.qrCode,
+        // La ruta nueva no cuelga del tema Pista de esta pantalla: se le pasa
+        // el mismo para que el comprobante se vea igual.
+        alPresionar: () => Navigator.of(context).push<void>(
+          MaterialPageRoute(
+            builder: (_) => Theme(
+              data: tema,
+              child: PantallaComprobanteCita(
+                citaId: cita.id,
+                recoleccion: cita.recoleccion,
               ),
             ),
           ),
         ),
       ),
+      secundaria: AccionPantalla(
+        texto: textos.citasListoCerrar,
+        alPresionar: () => Navigator.of(context).maybePop(),
+      ),
+      contenido: cita.recoleccion == null
+          ? null
+          : GrupoRecoleccionCita(recoleccion: cita.recoleccion!),
     );
   }
 
   Future<void> _confirmar() async {
     final franja = _franja!;
+    final intento = _embudo.intento;
+    final analitica = AmbitoAnalitica.de(context);
     setState(() {
       _enviando = true;
       _fallo = null;
@@ -591,6 +568,9 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         motivo: _motivo!,
         direccionRecoleccionId: _recoleccion ? _direccionId : null,
       );
+      if (analitica != null) {
+        unawaited(_embudo.confirmar(analitica, cita.id, intento));
+      }
       ref.invalidate(disponibilidadProvider);
       // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
       // inicio (V2-M25.01) deben ver la nueva.
@@ -652,37 +632,6 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
 ///
 /// Entra con un resorte suave de escala; con «reducir movimiento» aparece ya
 /// en su sitio. Sobria a propósito: una sola pieza, sin confeti.
-class _Celebracion extends StatelessWidget {
-  const _Celebracion();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = TokensPista.de(context).colores;
-    final reducir = MediaQuery.disableAnimationsOf(context);
-    final palomita = Icon(
-      Icons.check_circle_rounded,
-      size: 104,
-      color: c.exito,
-    );
-
-    return ColoredBox(
-      color: c.exitoSuave,
-      child: Center(
-        child: reducir
-            ? palomita
-            : TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.6, end: 1),
-                duration: context.movimiento(Movimiento.enfatico).duracion,
-                curve: Curves.easeOutBack,
-                builder: (_, escala, hijo) =>
-                    Transform.scale(scale: escala, child: hijo),
-                child: palomita,
-              ),
-      ),
-    );
-  }
-}
-
 class _Cargando extends StatelessWidget {
   const _Cargando();
 

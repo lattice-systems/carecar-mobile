@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/chip_pista.dart';
 import '../../../nucleo/diseno/componentes/rebote_tactil.dart';
@@ -35,6 +37,8 @@ class TarjetaAsistente extends StatelessWidget {
       container: true,
       child: ReboteTactil(
         alPulsar: abrir,
+        // El encabezado ya es el botón con nombre que abre el asistente.
+        excluirDeSemantica: true,
         child: SuperficieLiquida(
           intensidadDesenfoque: 0,
           colorFondo: c.texto.withValues(alpha: _alfaVidrio),
@@ -57,7 +61,7 @@ class TarjetaAsistente extends StatelessWidget {
                           color: c.acentoSuave,
                         ),
                         child: Icon(
-                          Icons.auto_awesome,
+                          LucideIcons300.sparkles,
                           size: 18,
                           color: c.acento,
                         ),
@@ -83,7 +87,7 @@ class TarjetaAsistente extends StatelessWidget {
                       ),
                       ExcludeSemantics(
                         child: Icon(
-                          Icons.chevron_right_rounded,
+                          LucideIcons300.chevronRight,
                           color: c.textoTerciario,
                         ),
                       ),

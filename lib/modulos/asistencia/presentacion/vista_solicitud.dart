@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
-import '../../../nucleo/diseno/componentes/barra_portada.dart';
-import '../../../nucleo/diseno/componentes/cabecera_portada.dart';
+import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/linea_de_tiempo.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -55,155 +57,136 @@ class VistaSolicitud extends ConsumerWidget {
     final estado = seguimiento.estado ?? solicitud.estado;
     final nombreEstado = textos.nombreDeEstado(estado);
     final comentario = solicitud.comentario;
-    final resumen = [folio, tipo].join(', ');
 
-    return Scaffold(
-      backgroundColor: c.fondo,
-      extendBodyBehindAppBar: true,
-      appBar: const BarraPortada(),
-      body: RefreshIndicator(
-        onRefresh: ref
-            .read(seguimientoSolicitudProvider(solicitud.id).notifier)
-            .refrescar,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CabeceraPortada(
-                titulo: folio,
-                subtitulo: estado == EstadoSolicitud.recibida
-                    ? textos.asistenciaSolicitudRecibida
-                    : nombreEstado,
-                descripcion: resumen,
-                tinte: c.peligro,
-                portada: ColoredBox(
-                  color: c.superficieElevada,
-                  child: Icon(
-                    solicitud.tipo.icono,
-                    size: 120,
-                    color: c.peligro,
+    return MarcoPantalla(
+      titulo: folio,
+      subtitulo: estado == EstadoSolicitud.recibida
+          ? textos.asistenciaSolicitudRecibida
+          : nombreEstado,
+      conRegreso: true,
+      alRefrescar: ref
+          .read(seguimientoSolicitudProvider(solicitud.id).notifier)
+          .refrescar,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(Espaciado.e4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FilaAcciones(
+                  principal: AccionPantalla(
+                    texto: textos.asistenciaSolicitudVerGuias,
+                    icono: LucideIcons300.bookOpen,
+                    alPresionar: () => context.go(rutaAsistenciaGuias),
+                  ),
+                  secundaria: AccionPantalla(
+                    texto: seguimiento.actualizando
+                        ? textos.asistenciaSeguimientoActualizando
+                        : textos.asistenciaSeguimientoActualizar,
+                    icono: LucideIcons300.refreshCw,
+                    alPresionar: seguimiento.actualizando
+                        ? null
+                        : ref
+                              .read(
+                                seguimientoSolicitudProvider(solicitud.id)
+                                    .notifier,
+                              )
+                              .refrescar,
                   ),
                 ),
-                principal: AccionPortada(
-                  texto: textos.asistenciaSolicitudVerGuias,
-                  icono: Icons.menu_book_outlined,
-                  alPresionar: () => context.go(rutaAsistenciaGuias),
+                const SizedBox(height: Espaciado.e6),
+                if (yaAbierta) ...[
+                  Aviso(mensaje: textos.asistenciaSolicitudYaAbierta),
+                  const SizedBox(height: Espaciado.e4),
+                ],
+                if (seguimiento.fallo) ...[
+                  Aviso(
+                    mensaje: textos.asistenciaSeguimientoFallo,
+                    tono: Tono.advertencia,
+                  ),
+                  const SizedBox(height: Espaciado.e4),
+                ],
+                if (!estado.abierta) ...[
+                  Aviso(
+                    mensaje: textos.asistenciaSeguimientoUbicacionCerrada,
+                    tono: estado == EstadoSolicitud.atendida
+                        ? Tono.exito
+                        : Tono.informacion,
+                  ),
+                  const SizedBox(height: Espaciado.e4),
+                ],
+                Semantics(
+                  header: true,
+                  child: Text(
+                    textos.asistenciaSeguimientoEncabezado,
+                    style: t.titulo3.copyWith(color: c.texto),
+                  ),
                 ),
-                secundaria: AccionPortada(
-                  texto: seguimiento.actualizando
-                      ? textos.asistenciaSeguimientoActualizando
-                      : textos.asistenciaSeguimientoActualizar,
-                  icono: Icons.refresh_rounded,
-                  alPresionar: seguimiento.actualizando
-                      ? null
-                      : ref
-                            .read(
-                              seguimientoSolicitudProvider(solicitud.id)
-                                  .notifier,
-                            )
-                            .refrescar,
+                const SizedBox(height: Espaciado.e2),
+                Semantics(
+                  liveRegion: true,
+                  label: textos.asistenciaEstadoActual(nombreEstado),
+                  excludeSemantics: true,
+                  child: Text(
+                    nombreEstado,
+                    style: t.cuerpoFuerte.copyWith(color: c.acento),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(Espaciado.e4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (yaAbierta) ...[
-                      Aviso(mensaje: textos.asistenciaSolicitudYaAbierta),
-                      const SizedBox(height: Espaciado.e4),
-                    ],
-                    if (seguimiento.fallo) ...[
-                      Aviso(
-                        mensaje: textos.asistenciaSeguimientoFallo,
-                        tono: Tono.advertencia,
+                const SizedBox(height: Espaciado.e4),
+                LineaDeTiempo(
+                  pasos: _pasos(
+                    textos,
+                    estado,
+                    DateFormat.Hm(Localizations.localeOf(context).toString())
+                        .format(solicitud.creadaEn.toLocal()),
+                  ),
+                ),
+                const SizedBox(height: Espaciado.e5),
+                Text(
+                  textos.asistenciaSolicitudTexto,
+                  style: t.cuerpo.copyWith(color: c.textoSecundario),
+                ),
+                const SizedBox(height: Espaciado.e5),
+                GrupoLista(
+                  filas: [
+                    if (vehiculo != null)
+                      FilaGrupo(
+                        titulo: textos.asistenciaSolicitudVehiculo,
+                        subtitulo: vehiculo.titulo,
+                        icono: LucideIcons300.car,
                       ),
-                      const SizedBox(height: Espaciado.e4),
-                    ],
-                    if (!estado.abierta) ...[
-                      Aviso(
-                        mensaje: textos.asistenciaSeguimientoUbicacionCerrada,
-                        tono: estado == EstadoSolicitud.atendida
-                            ? Tono.exito
-                            : Tono.informacion,
+                    FilaGrupo(
+                      titulo: textos.asistenciaSolicitudProblema,
+                      subtitulo: tipo,
+                      icono: solicitud.tipo.icono,
+                    ),
+                    FilaGrupo(
+                      titulo: textos.asistenciaSolicitudUbicacion,
+                      subtitulo: solicitud.ubicacion == null
+                          ? textos.asistenciaSolicitudUbicacionNoCompartida
+                          : textos.asistenciaSolicitudUbicacionCompartida,
+                      icono: LucideIcons300.mapPin,
+                    ),
+                    if (comentario != null)
+                      FilaGrupo(
+                        titulo: textos.asistenciaSolicitudComentario,
+                        subtitulo: comentario,
+                        icono: LucideIcons300.textAlignStart,
                       ),
-                      const SizedBox(height: Espaciado.e4),
-                    ],
-                    Semantics(
-                      header: true,
-                      child: Text(
-                        textos.asistenciaSeguimientoEncabezado,
-                        style: t.titulo3.copyWith(color: c.texto),
-                      ),
-                    ),
-                    const SizedBox(height: Espaciado.e2),
-                    Semantics(
-                      liveRegion: true,
-                      label: textos.asistenciaEstadoActual(nombreEstado),
-                      excludeSemantics: true,
-                      child: Text(
-                        nombreEstado,
-                        style: t.cuerpoFuerte.copyWith(color: c.acento),
-                      ),
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                    LineaDeTiempo(
-                      pasos: _pasos(
-                        textos,
-                        estado,
-                        DateFormat.Hm(
-                          Localizations.localeOf(context).toString(),
-                        ).format(solicitud.creadaEn.toLocal()),
-                      ),
-                    ),
-                    const SizedBox(height: Espaciado.e5),
-                    Text(
-                      textos.asistenciaSolicitudTexto,
-                      style: t.cuerpo.copyWith(color: c.textoSecundario),
-                    ),
-                    const SizedBox(height: Espaciado.e5),
-                    GrupoLista(
-                      filas: [
-                        if (vehiculo != null)
-                          FilaGrupo(
-                            titulo: textos.asistenciaSolicitudVehiculo,
-                            subtitulo: vehiculo.titulo,
-                            icono: Icons.directions_car_outlined,
-                          ),
-                        FilaGrupo(
-                          titulo: textos.asistenciaSolicitudProblema,
-                          subtitulo: tipo,
-                          icono: solicitud.tipo.icono,
-                        ),
-                        FilaGrupo(
-                          titulo: textos.asistenciaSolicitudUbicacion,
-                          subtitulo: solicitud.ubicacion == null
-                              ? textos.asistenciaSolicitudUbicacionNoCompartida
-                              : textos.asistenciaSolicitudUbicacionCompartida,
-                          icono: Icons.location_on_outlined,
-                        ),
-                        if (comentario != null)
-                          FilaGrupo(
-                            titulo: textos.asistenciaSolicitudComentario,
-                            subtitulo: comentario,
-                            icono: Icons.notes_outlined,
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                    Text(
-                      textos.asistenciaSolicitudPrivacidad,
-                      style: t.cuerpoChico.copyWith(color: c.textoTerciario),
-                    ),
-                    const SizedBox(height: Espaciado.e6),
                   ],
                 ),
-              ),
-            ],
+                const SizedBox(height: Espaciado.e4),
+                Text(
+                  textos.asistenciaSolicitudPrivacidad,
+                  style: t.cuerpoChico.copyWith(color: c.textoTerciario),
+                ),
+                const SizedBox(height: Espaciado.e6),
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

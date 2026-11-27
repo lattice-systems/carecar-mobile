@@ -22,6 +22,40 @@ class RenglonTicket {
   final double importe;
 }
 
+/// El pago con que quedo pagada una orden (`Pago` del contrato, V2-M08.02):
+/// solo lo que el ticket muestra.
+class PagoDelServicio {
+  const PagoDelServicio({
+    required this.id,
+    required this.medio,
+    required this.referencia,
+    this.marca,
+    this.ultimos4,
+    this.pagadoEn,
+  });
+
+  factory PagoDelServicio.fromJson(Map<String, Object?> json) =>
+      PagoDelServicio(
+        id: leerEntero(json['id'], 'id'),
+        medio: leerTexto(json['medio'], 'medio'),
+        referencia: leerTexto(json['referencia'], 'referencia'),
+        marca: json['marca'] as String?,
+        ultimos4: json['ultimos4'] as String?,
+        pagadoEn: json['pagadoEn'] == null
+            ? null
+            : leerMomentoUtc(json['pagadoEn'], 'pagadoEn'),
+      );
+
+  final int id;
+
+  /// `TARJETA`, `APPLE_PAY`, `GOOGLE_PAY` o `CAJA`.
+  final String medio;
+  final String referencia;
+  final String? marca;
+  final String? ultimos4;
+  final DateTime? pagadoEn;
+}
+
 /// Ticket de una orden de servicio (`ServicioDetalle`, V2-M02.06).
 class ServicioDetalle {
   const ServicioDetalle({
@@ -38,6 +72,9 @@ class ServicioDetalle {
     required this.iva,
     required this.total,
     this.fechaCierre,
+    this.puntosGanados,
+    this.pago,
+    this.pagable = false,
   });
 
   factory ServicioDetalle.fromJson(
@@ -56,6 +93,13 @@ class ServicioDetalle {
     subtotal: leerDecimal(json['subtotal'], 'subtotal'),
     iva: leerDecimal(json['iva'], 'iva'),
     total: leerDecimal(json['total'], 'total'),
+    puntosGanados: leerEnteroOpcional(json['puntosGanados'], 'puntosGanados'),
+    pago: json['pago'] is Map
+        ? PagoDelServicio.fromJson(
+            (json['pago']! as Map).cast<String, Object?>(),
+          )
+        : null,
+    pagable: json['pagable'] == true,
   );
 
   final int id;
@@ -71,6 +115,15 @@ class ServicioDetalle {
   final double subtotal;
   final double iva;
   final double total;
+
+  /// Puntos de lealtad que dio la orden (V2-M12.02); nulo si no dio.
+  final int? puntosGanados;
+
+  /// El pago con que quedo pagada (V2-M08.02); nulo si no se ha pagado.
+  final PagoDelServicio? pago;
+
+  /// Se puede pagar en la app (V2-M08.02).
+  final bool pagable;
 }
 
 List<RenglonTicket> _renglones(Object? valor, String campo) {

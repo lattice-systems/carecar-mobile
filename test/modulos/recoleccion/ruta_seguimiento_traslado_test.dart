@@ -7,7 +7,6 @@ import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -131,7 +130,7 @@ void main() {
     enrutadorDe(tester).go(rutaSeguimientoTraslado(5));
     await tester.pumpAndSettle();
 
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaSeguimientoTraslado), findsNothing);
     expect(Rutas.publicas, isNot(contains(rutaSeguimientoTraslado(5))));
   });

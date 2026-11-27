@@ -4,7 +4,7 @@ const path = require('node:path');
 const RUTA_DB = path.join(__dirname, 'db.json');
 const RUTA_SEMILLAS = path.join(__dirname, 'semillas');
 
-function restaurarSemillas() {
+function leerSemillas() {
   const colecciones = new Map();
   const archivos = fs.readdirSync(RUTA_SEMILLAS).filter((nombre) => nombre.endsWith('.json')).sort();
 
@@ -21,10 +21,14 @@ function restaurarSemillas() {
     }
   }
 
-  fs.writeFileSync(RUTA_DB, JSON.stringify(Object.fromEntries(colecciones), null, 2) + '\n');
+  return Object.fromEntries(colecciones);
+}
+
+function restaurarSemillas() {
+  fs.writeFileSync(RUTA_DB, JSON.stringify(leerSemillas(), null, 2) + '\n');
   console.log('db.json restaurado desde semillas/');
 }
 
 if (require.main === module) restaurarSemillas();
 
-module.exports = { RUTA_DB, restaurarSemillas };
+module.exports = { RUTA_DB, leerSemillas, restaurarSemillas };

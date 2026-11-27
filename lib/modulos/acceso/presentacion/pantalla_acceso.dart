@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -11,9 +14,11 @@ import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../nucleo/navegacion/rutas.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../../sesion/controlador_sesion.dart';
 import '../dominio/bloqueo_por_intentos.dart';
+import '../dominio/correo.dart';
 import 'aviso_bloqueo.dart';
 import 'espera_servidor.dart';
 import 'proveedores_acceso.dart';
@@ -25,11 +30,11 @@ import 'proveedores_acceso.dart';
 /// ningun flujo de «crear cuenta», y una nota lo explica para que nadie la
 /// busque.
 ///
-/// **No navega.** Cuando la sesion queda autenticada, el guardia del enrutador
-/// saca al usuario de `/acceso` hacia donde iba, o al inicio
+/// **No navega al entrar.** Cuando la sesion queda autenticada, el guardia del
+/// enrutador saca al usuario de `/acceso` hacia donde iba, o al inicio
 /// (`nucleo/navegacion/guardia_sesion.dart`). Por eso esta pantalla no recibe
 /// callbacks de exito ni llama a `go`: solo pide la sesion y muestra lo que
-/// pasa.
+/// pasa. Lo unico que abre es «Olvide mi contrasena».
 class PantallaAcceso extends ConsumerStatefulWidget {
   const PantallaAcceso({super.key});
 
@@ -107,18 +112,13 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
     super.dispose();
   }
 
-  /// Validacion minima: que tenga algo, una arroba y un punto despues.
+  /// El mensaje de error del correo, o nulo si esta bien.
   ///
-  /// No se usa una expresion regular estricta a proposito: rechazar un correo
-  /// valido es peor que dejar pasar uno raro, porque el backend valida igual e
-  /// ignora mayusculas y espacios (RIC-8).
+  /// La heuristica vive en `dominio/correo.dart` porque la comparten el acceso
+  /// y la recuperacion; aqui solo se elige el texto.
   String? _revisarCorreo(AppLocalizations textos, String correo) {
     if (correo.isEmpty) return textos.accesoCorreoVacio;
-    final arroba = correo.indexOf('@');
-    if (arroba <= 0 || !correo.contains('.', arroba)) {
-      return textos.accesoCorreoInvalido;
-    }
-    return null;
+    return pareceCorreo(correo) ? null : textos.accesoCorreoInvalido;
   }
 
   Future<void> _entrar() async {
@@ -255,12 +255,18 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
     );
   }
 
-  /// La recuperacion es V2-M01.04 y todavia no existe en v2.
+  /// Lleva a la recuperacion con el correo que ya se escribio, para no pedirlo
+  /// otra vez; si lo escrito no parece un correo no se arrastra.
   ///
-  /// Se deja el enlace visible porque el criterio de la historia no lo quita y
-  /// esconderlo seria una regresion de lo que el cliente ya tiene en la v1. El
-  /// destino se cablea con las rutas, no desde aqui.
-  void _olvide() {}
+  /// Es la unica navegacion de esta pantalla y solo conoce el camino: quien
+  /// lo sirve (la recuperacion v1, con codigo, o la v2, con enlace) lo decide
+  /// el interruptor `ModuloMigrable.recuperacion`.
+  void _olvide() {
+    final correo = _correo.text.trim();
+    context.push(
+      Rutas.localizacionRecuperar(correo: pareceCorreo(correo) ? correo : null),
+    );
+  }
 }
 
 class _Encabezado extends StatelessWidget {
@@ -305,7 +311,7 @@ class _NotaSinRegistro extends StatelessWidget {
       children: [
         ExcludeSemantics(
           child: Icon(
-            Icons.info_outline,
+            LucideIcons300.info,
             size: 16,
             color: tokens.colores.textoSecundario,
           ),

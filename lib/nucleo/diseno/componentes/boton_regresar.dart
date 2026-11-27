@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../navegacion/rutas.dart';
-import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
+import 'boton_circular.dart';
 
-/// Flecha de regreso de las pantallas raiz de un modulo.
+/// Botón de regreso de las pantallas raíz de un módulo: un círculo de vidrio
+/// con la flecha en el color de texto, igual que el botón de cierre y el resto
+/// de los botones redondos de los encabezados.
 ///
-/// Con pantalla anterior la saca de la pila; si no la hay (se abrio desde un
+/// Con pantalla anterior la saca de la pila; si no la hay (se abrió desde un
 /// enlace o un widget) lleva al inicio, para que nunca falte una salida.
 /// `alRegresar` sustituye ese comportamiento. Mide 48 x 48 y se anuncia como
-/// boton «Regresar».
+/// botón «Regresar».
 class BotonRegresar extends StatelessWidget {
   const BotonRegresar({super.key, this.alRegresar});
 
@@ -20,23 +24,11 @@ class BotonRegresar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
-    final etiqueta = AppLocalizations.of(context).regresar;
-    return Semantics(
-      container: true,
-      button: true,
-      enabled: true,
-      label: etiqueta,
-      excludeSemantics: true,
-      onTap: () => _regresar(context),
-      child: IconButton(
-        tooltip: etiqueta,
-        constraints: const BoxConstraints(
-          minWidth: Espaciado.objetivoTactilMinimo,
-          minHeight: Espaciado.objetivoTactilMinimo,
-        ),
-        icon: Icon(Icons.arrow_back_ios_new_rounded, size: 20, color: c.texto),
-        onPressed: () => _regresar(context),
-      ),
+    return BotonCircular(
+      icono: LucideIcons300.chevronLeft,
+      etiqueta: AppLocalizations.of(context).regresar,
+      colorIcono: c.texto,
+      alPresionar: () => _regresar(context),
     );
   }
 

@@ -17,12 +17,14 @@ class CortinaArranque extends StatefulWidget {
   const CortinaArranque({
     required this.listo,
     required this.siguiente,
+    this.alTerminar,
     this.duracionMinima = const Duration(milliseconds: 1200),
     super.key,
   });
 
   final bool listo;
   final WidgetBuilder siguiente;
+  final VoidCallback? alTerminar;
   final Duration duracionMinima;
 
   static const logo = Key('arranque_logo');
@@ -43,6 +45,7 @@ class _CortinaArranqueState extends State<CortinaArranque>
   late bool _minimoCumplido = !_conMinimo;
   bool _terminada = false;
   bool _sinAnimar = false;
+  bool _notificada = false;
 
   @override
   void initState() {
@@ -98,7 +101,16 @@ class _CortinaArranqueState extends State<CortinaArranque>
 
   @override
   Widget build(BuildContext context) {
-    if (_terminada) return widget.siguiente(context);
+    if (_terminada) {
+      final notificar = widget.alTerminar;
+      if (!_notificada && notificar != null) {
+        _notificada = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) notificar();
+        });
+      }
+      return widget.siguiente(context);
+    }
     final abierta = widget.listo && _minimoCumplido;
     return Stack(
       fit: StackFit.expand,
