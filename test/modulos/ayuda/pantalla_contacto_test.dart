@@ -164,7 +164,9 @@ void main() {
     expect(abierto.toString(), 'mailto:contacto@agencia.example.com');
   });
 
-  testWidgets('si no hay marcador avisa sin cerrar la pantalla', (tester) async {
+  testWidgets('si no hay marcador avisa sin cerrar la pantalla', (
+    tester,
+  ) async {
     await _montar(
       tester,
       RepositorioSucursalesFake(),
