@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.30.0
+  version: 2.31.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -3938,7 +3938,7 @@ components:
 
     Notificacion:
       type: object
-      required: [id, categoria, titulo, cuerpo, creadaEn]
+      required: [id, categoria, titulo, cuerpo, destino, creadaEn]
       properties:
         id:
           type: integer
@@ -3951,11 +3951,13 @@ components:
           type: string
         destino:
           type: string
-          nullable: true
           description: |
             Ruta interna de la app a la que lleva tocarlo (V2-M06.03), por ejemplo `/citas` o
             `/citas/7/comprobante`. Nunca una URL: la app descarta cualquier cosa con esquema o
             con `//host`, porque un destino sin revisar es una redirección abierta.
+
+            Obligatorio: `notificacion.destino` es `not null` en la base (V60 del backend), así
+            que todo aviso lleva a algún lado.
           example: /citas
         leidaEn:
           type: string

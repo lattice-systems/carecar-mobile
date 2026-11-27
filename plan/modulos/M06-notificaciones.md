@@ -173,14 +173,41 @@ apagadas volvía imposible prender `PROMOCIONES`, porque al no estar en la lista
 caía otra vez en su valor por omisión. Lo encontró una prueba a mano contra el
 simulador, no la lectura del código.
 
-### El contrato v2 solo existe en este repositorio
+### El estado real del backend, al 27 de noviembre de 2026
+
+Juan Pablo (`PabloDev24`) construyó **hoy** el módulo `notificaciones` del
+backend. Esto es lo que ya existe en su `main`, comprobado contra `origin`:
+
+| Pieza | Estado |
+| --- | --- |
+| `PUT` y `DELETE /dispositivos/{instalacionId}` | **Hechos** y declarados en su contrato v2 2.30.0 |
+| Tablas `dispositivo_push` y `notificacion` | **Hechas** (migración V60) |
+| Envío por FCM (`EnvioPushFcm`, `AvisosService`) | **Hecho** — es el grueso de V2-M06.07 |
+| Endpoint HTTP de la bandeja | **No existe**: hay `Bandeja`/`BandejaJdbc` por dentro, pero nada expuesto |
+| `preferencia_notificacion` | **No existe**; la V60 dice literalmente que es de V2-M06.05 |
+
+Es decir: **la M06.02 ya no espera al backend** —espera la decisión de Firebase
+en un repositorio público—, y la M06.04 y la M06.05 sí siguen sin endpoint real,
+aunque ya se pueden construir contra `mock_api`.
+
+La tabla `notificacion` trae dos columnas que este contrato **no** expone,
+`evento` y `datos`, pensadas para que la app resuelva el destino y para
+depurar. Queda la pregunta para Juan Pablo: si la app las necesita, se agregan
+como opcionales sin romper nada.
+
+### Las dos copias del contrato v2 se separaron
 
 `AGENTS.md` §7 dice que un cambio de contrato se hace primero en
-`agencia-360-backend/docs/api/`. **Ahí solo está el contrato v1, en su versión
-1.2.0 y sin tocarse desde el 26 de octubre de 2026**: el v2 nunca se copió al
-backend. Así que para la v2 esa regla no tiene a dónde apuntar, y el contrato
-vivo —el que leen la app y `mock_api`— es el de aquí.
+`agencia-360-backend/docs/api/`. **El contrato v2 sí está ahí** y va en la
+**2.30.0**, con tres rutas que la copia de este repositorio no tiene:
+`/dispositivos/{instalacionId}`, `/ordenes/{ordenId}/actividad-en-vivo` y
+`/vehiculos/{vehiculoId}/documentos`. Esta copia, a su vez, tiene
+`/analitica/eventos`, que allá no está.
 
-**Queda para que el equipo decida** si el v2 se copia al backend o si la regla
-se reescribe. También falta `agencia-360-backend/plan/historias-backend.md`,
-que §4.3 menciona y no existe.
+Por eso estas rutas entran como **2.31.0** y no 2.30.0: ese número ya está
+tomado del otro lado y dos 2.30.0 distintas serían peor que ir una versión
+adelante.
+
+**Pendiente del equipo**, no de esta historia: volver a sincronizar las dos
+copias, y copiar estas rutas al backend como pide §7. También falta
+`agencia-360-backend/plan/historias-backend.md`, que §4.3 menciona y no existe.
