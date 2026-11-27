@@ -5,13 +5,14 @@ import '../dominio/sucursal.dart';
 /// falla como lo haría la API (por ejemplo con `SinConexion`).
 class RepositorioSucursalesFake implements RepositorioSucursales {
   RepositorioSucursalesFake({this.error, List<Sucursal>? sucursales})
-    : _sucursales = sucursales ?? _ejemplo;
+    : _sucursales = sucursales ?? ejemplo;
 
   /// Lo que se lanza en cada llamada; nulo no falla.
   final Object? error;
   final List<Sucursal> _sucursales;
 
-  static const _ejemplo = [
+  /// Datos de ejemplo: una sucursal con tres departamentos.
+  static const ejemplo = [
     Sucursal(
       id: 1,
       nombre: 'CareCar León',
