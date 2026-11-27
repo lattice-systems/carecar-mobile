@@ -68,6 +68,9 @@ Pago pagoDeEjemplo({
   String ultimos4 = '4242',
   double monto = 1650,
   DateTime? creadoEn,
+  int? perfilFiscalId,
+  Factura? factura,
+  bool facturable = false,
 }) => Pago(
   id: id,
   ordenId: ordenId,
@@ -84,6 +87,22 @@ Pago pagoDeEjemplo({
   simulado: medio != MedioPago.caja,
   creadoEn: creadoEn ?? DateTime.utc(2026, 11, 26, 18),
   pagadoEn: estado == EstadoPago.pagado ? DateTime.utc(2026, 11, 26, 18) : null,
+  perfilFiscalId: perfilFiscalId,
+  factura: factura,
+  facturable: facturable,
+);
+
+/// La factura simulada A-000124 del pago 7, a nombre de Dolores Gomez.
+final facturaDeEjemplo = Factura(
+  id: 1,
+  pagoId: 7,
+  folio: 'A-000124',
+  uuid: '6F1C2A3B-4D5E-4F60-8A7B-000000000001',
+  rfcReceptor: 'GODE561231GR8',
+  razonSocialReceptor: 'DOLORES GÓMEZ',
+  usoCfdi: 'G03',
+  total: 1650,
+  timbradaEn: DateTime.utc(2026, 11, 26, 18, 0, 5),
 );
 
 RepositorioPagosFake repoCobro({
@@ -101,14 +120,16 @@ RepositorioPagosFake repoCobro({
 List<Override> _overrides(
   RepositorioPagosFake pagos,
   RepositorioDatosFiscalesFake? fiscales,
-  EventosEnVivoFake? eventos,
-) => [
+  EventosEnVivoFake? eventos, [
+  List<Override> extra = const [],
+]) => [
   repositorioPagosProvider.overrideWithValue(pagos),
   repositorioDatosFiscalesProvider.overrideWithValue(
     fiscales ?? repoDeEjemplo(perfiles: const []),
   ),
   eventosEnVivoProvider.overrideWithValue(eventos ?? EventosEnVivoFake()),
   hoyPagosProvider.overrideWithValue(() => hoyDePrueba),
+  ...extra,
 ];
 
 /// Una pantalla de pagos con sus fakes y el tema Pista sin movimiento.
@@ -119,8 +140,9 @@ Widget appCobro(
   EventosEnVivoFake? eventos,
   Escenario escenario = Escenario.claro,
   double ancho = 360,
+  List<Override> extra = const [],
 }) => ProviderScope(
-  overrides: _overrides(pagos, fiscales, eventos),
+  overrides: _overrides(pagos, fiscales, eventos, extra),
   child: conTemaPista(
     Builder(
       builder: (context) => MediaQuery(
@@ -141,9 +163,10 @@ Widget appCobroEnrutada(
   RepositorioDatosFiscalesFake? fiscales,
   EventosEnVivoFake? eventos,
   ProteccionDeCapturaFake? proteccion,
+  List<Override> extra = const [],
 }) => ProviderScope(
   overrides: [
-    ..._overrides(pagos, fiscales, eventos),
+    ..._overrides(pagos, fiscales, eventos, extra),
     proteccionDeCapturaProvider.overrideWithValue(
       proteccion ?? ProteccionDeCapturaFake(),
     ),

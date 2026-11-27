@@ -52,6 +52,34 @@ String textoMedio(AppLocalizations textos, Pago pago) => switch (pago.medio) {
   ),
 };
 
+/// «Apple Pay (simulado)» o «Google Pay (simulado)».
+String textoBilletera(AppLocalizations textos, MedioPago billetera) =>
+    billetera == MedioPago.applePay
+    ? textos.pagosMedioApplePay
+    : textos.pagosMedioGooglePay;
+
+/// Que corregir del perfil fiscal por cada campo que rechazo el timbrado.
+List<String> textosTimbradoRechazado(
+  AppLocalizations textos,
+  Set<String> campos,
+) {
+  final lineas = <String>[
+    if (campos.contains('razonSocial')) textos.pagosTimbradoRazonSocial,
+    if (campos.contains('codigoPostal')) textos.pagosTimbradoCodigoPostal,
+  ];
+  final otros = campos.difference({'razonSocial', 'codigoPostal'});
+  if (lineas.isEmpty || otros.isNotEmpty) lineas.add(textos.pagosTimbradoOtro);
+  return lineas;
+}
+
+String textoRechazoFactura(
+  AppLocalizations textos,
+  MotivoRechazoFactura motivo,
+) => switch (motivo) {
+  MotivoRechazoFactura.yaFacturado => textos.pagosFacturaYaFacturada,
+  MotivoRechazoFactura.pagoNoFacturable => textos.pagosFacturaNoFacturable,
+};
+
 String textoTarjetaGuardada(AppLocalizations textos, MetodoPago metodo) =>
     textos.pagosMedioTarjeta(textoMarca(metodo.marca), metodo.ultimos4);
 
