@@ -13,6 +13,7 @@ library;
 export 'dominio/contacto_de_agencia.dart' show ContactoDeAgencia;
 export 'dominio/sucursal.dart'
     show Departamento, HorarioDeDepartamento, HorariosDelDepartamento, Sucursal;
+export 'presentacion/pantalla_contacto.dart' show PantallaContacto;
 export 'presentacion/pantalla_sucursales.dart' show PantallaSucursales;
 export 'presentacion/proveedores_ayuda.dart'
     show
@@ -21,4 +22,5 @@ export 'presentacion/proveedores_ayuda.dart'
         repositorioSucursalesProvider,
         sucursalPrincipalProvider,
         sucursalesProvider;
-export 'presentacion/rutas_ayuda.dart' show rutaSucursales, rutasAyuda;
+export 'presentacion/rutas_ayuda.dart'
+    show rutaContacto, rutaSucursales, rutasAyuda;
