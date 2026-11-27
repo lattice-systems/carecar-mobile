@@ -83,6 +83,40 @@ aviso, no cómo se encamina el toque. Esto quedo hecho contra los avisos locales
 que ya existen —los recordatorios de cita, que ahora llevan a `/citas`— y el
 push de M06.02 entra por el mismo camino sin cambiarlo.
 
+## Recordatorios sin red (V2-M06.06)
+
+**Al migrar a la v2 los recordatorios se quedaron sin disparador.** Existen y
+funcionan desde la v1, pero todo lo que los enciende vive en
+`lib/pantallas/citas/` y en el perfil v1; el módulo v2 de citas nunca llamaba
+al servicio. Desde que `V2-T01.09` dejó citas en v2, **agendar una cita no
+dejaba ningún recordatorio de 24 h ni de 2 h**. No era una migración pendiente
+de forma: era una función perdida.
+
+La costura es `RecordatoriosDeCita`, en este módulo: el de citas habla con ella
+y con sus propios tipos (`CitaCliente`, `CitaAgendada`), sin saber que debajo
+vive el servicio de la v1.
+
+| Método | Cuándo |
+| --- | --- |
+| `alConfirmar` | El taller acaba de confirmar una cita: aviso inmediato y los dos recordatorios |
+| `alAgendar` | Una cita de la lista: deja sus recordatorios al día |
+| `alCancelar` | Cita cancelada: se quitan |
+| `sincronizar` | Al abrir «Mis citas»: quita los que ya no van y agrega los que faltan |
+
+**La lógica de cuándo suena cada uno no se duplicó.** Vive en
+`recordatorios.dart` y ya estaba probada; `RecordatoriosDelServicioV1` traduce
+los tipos y la reusa. Copiarla para que hablara de tipos v2 habría sido copiar
+reglas de negocio, que es la forma de que un día dejen de coincidir.
+
+Son avisos **locales**, y ahí está el criterio: los programa el teléfono, no el
+servidor, así que suenan sin red.
+
+**Lo que falta y no puedo hacer yo:** las tres llamadas van dentro de
+`lib/modulos/citas/`, que es carpeta de Juan Pablo
+(`plan/trabajo-en-paralelo.md`, secciones 5 y 6). Las escribe la dueña de la
+historia o él en un PR chico aparte.
+
+
 ## Datos
 
 | Tabla | Campos | Notas |

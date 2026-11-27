@@ -66,7 +66,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); tocar un aviso lleva a su pantalla con la app abierta, en segundo plano y cerrada, y si el destino pide sesión vuelve ahí al entrar (V2-M06.03, `test/nucleo/avisos/tocar_un_aviso_test.dart`); falta el registro del token FCM y el envío (V2-M06.02, V2-M06.07) | Ver M06 |
+| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); tocar un aviso lleva a su pantalla con la app abierta, en segundo plano y cerrada, y si el destino pide sesión vuelve ahí al entrar (V2-M06.03, `test/nucleo/avisos/tocar_un_aviso_test.dart`); los recordatorios locales de cita (24 h y 2 h antes) vuelven a tener disparador en la v2 (V2-M06.06, `test/modulos/notificaciones/recordatorios_de_cita_test.dart`); falta el registro del token FCM y el envío (V2-M06.02, V2-M06.07) | Ver M06 |
 | Bandeja de avisos | `notificacion` | ⬜ | Ver M06 |
 | Preferencias de avisos | `preferencia_notificacion` | ⬜ | Ver M06 |
 
