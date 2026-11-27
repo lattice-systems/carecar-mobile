@@ -37,7 +37,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app y backend (`cita.motivo`, `CITA_DUPLICADA`) listos; falta demostrar en celular | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app v2 lista con estados y paginación; falta demostrar en celular | V2-M02.09 |
 | Cancelar y reprogramar cita | `cita`, `franja_horario` | 🟡 app y backend de cancelar y reprogramar listos; falta demostrar en celular | V2-M02.10, V2-M02.13 |
-| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; agregar al calendario como `.ics` hecho (V2-M02.12, falta la dirección de la sucursal de V2-M27.02 y probar en celular) | V2-M02.11, V2-M02.12 |
+| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; agregar al calendario como `.ics` hecho con la dirección de la sucursal principal (V2-M02.12 con V2-M27.02; falta probar en celular) | V2-M02.11, V2-M02.12 |
 
 ### 3. Catálogo y calculadora — plan [M03](modulos/M03-catalogo-y-calculadora.md)
 
@@ -102,7 +102,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia y la aseguradora hechas (V2-M11.02, la aseguradora espera a V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia (con el teléfono de la sucursal principal) y la aseguradora hechas (V2-M11.02, la aseguradora espera a V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
@@ -180,7 +180,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Preguntas frecuentes | `pregunta_frecuente` | ⬜ | Ver M27 |
-| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar (falta integrar backend y probar en celular) | V2-M27.02 |
+| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar, integrada en `main`; V2-M27.03: pantalla de contacto (llamar y correo) y entrada desde el perfil, con sucursal principal como fuente del teléfono, correo y dirección (falta el chat con V2-M07 y probar en celular) | V2-M27.02, V2-M27.03 |
 | Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
 
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
