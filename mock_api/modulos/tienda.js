@@ -8,6 +8,9 @@ module.exports = function registrarTienda(servidor, db, vehiculoDelCliente, emit
   // `existencia` ya no cuenta las piezas apartadas. No hay proceso programado:
   // cada consulta vence primero lo pasado de hora y sigue a la cita ligada.
   // La semilla tambien llena los `db.json` creados antes de la tienda.
+  // V2-M14.04: el pago en la app vive en `pagosApp` (modulo de pagos). Un
+  // pedido pagado ya no vence ni se cancela desde la app, y uno con un pago
+  // esperando el 3-D Secure tampoco vence mientras espera.
   db.defaults(require('../semillas/tienda.json')).write();
 
   const MS_VIGENCIA = 48 * 60 * 60 * 1000;
@@ -33,7 +36,47 @@ module.exports = function registrarTienda(servidor, db, vehiculoDelCliente, emit
 
   const publicoProducto = (p, vehiculo) => ({ ...p, ...(vehiculo ? { compatible: leQueda(p, vehiculo) } : {}) });
 
-  const publicoPedido = ({ clienteId, llave, ...p }) => p;
+  const MS_PAGO_PENDIENTE = 15 * 60 * 1000;
+  const pagoDe = (pedido) => db.get('pagosApp').find({ pedidoId: pedido.id, estado: 'PAGADO' }).value();
+  const pagoEnCurso = (pedido) =>
+    db
+      .get('pagosApp')
+      .find((p) => p.pedidoId === pedido.id && p.estado === 'PENDIENTE' && Date.parse(p.creadoEn) > Date.now() - MS_PAGO_PENDIENTE)
+      .value();
+
+  // El Pago con que quedo pagado, como lo publica el modulo de pagos.
+  const publicoPagoDePedido = (p) => ({
+    id: p.id,
+    ordenId: null,
+    pedidoId: p.pedidoId,
+    vehiculoId: null,
+    monto: p.monto,
+    moneda: p.moneda,
+    medio: p.medio,
+    marca: p.marca ?? null,
+    ultimos4: p.ultimos4 ?? null,
+    tipoTarjeta: p.tipoTarjeta ?? null,
+    estado: p.estado,
+    motivoFallo: null,
+    requiereAutenticacion: false,
+    referencia: p.referencia,
+    simulado: p.simulado,
+    metodoPagoId: p.metodoPagoId ?? null,
+    perfilFiscalId: p.perfilFiscalId ?? null,
+    pagadoEn: p.pagadoEn ?? null,
+    creadoEn: p.creadoEn,
+  });
+
+  const publicoPedido = ({ clienteId, llave, ...p }) => {
+    const pago = pagoDe(p);
+    const vencido = p.venceEn && Date.parse(p.venceEn) <= Date.now();
+    return {
+      ...p,
+      pagable: ABIERTOS.includes(p.estado) && !pago && !vencido && p.total > 0,
+      pago: pago ? publicoPagoDePedido(pago) : null,
+      pagadoEn: pago ? pago.pagadoEn : null,
+    };
+  };
 
   function moverExistencia(renglones, signo) {
     for (const r of renglones) {
@@ -96,6 +139,7 @@ module.exports = function registrarTienda(servidor, db, vehiculoDelCliente, emit
           avisar(pedido);
         }
       }
+      if (pagoDe(pedido) || pagoEnCurso(pedido)) continue;
       if (Date.parse(pedido.venceEn) <= Date.now()) cancelar(pedido, 'vencido');
     }
   }
@@ -251,6 +295,9 @@ module.exports = function registrarTienda(servidor, db, vehiculoDelCliente, emit
     if (!pedido) return;
     if (pedido.estado === 'entregado') {
       return rechazar(req, res, 409, 'PEDIDO_NO_CANCELABLE', 'El pedido ya se entregó');
+    }
+    if (pedido.estado !== 'cancelado' && pagoDe(pedido)) {
+      return rechazar(req, res, 409, 'PEDIDO_PAGADO', 'El pedido ya está pagado: se cancela en el mostrador');
     }
     res.jsonp(publicoPedido(pedido.estado === 'cancelado' ? pedido : cancelar(pedido, 'cliente')));
   });

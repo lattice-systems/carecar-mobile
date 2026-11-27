@@ -105,7 +105,7 @@ void main() {
 
       final activo = tester.widget<Text>(find.text('Citas')).style!;
       final inactivo = tester.widget<Text>(find.text('Inicio')).style!;
-      expect(activo.fontWeight, FontWeight.w700);
+      expect(activo.fontWeight, FontWeight.w600);
       expect(activo.color, isNot(inactivo.color));
     });
   });

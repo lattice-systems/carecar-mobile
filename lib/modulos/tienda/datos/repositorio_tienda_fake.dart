@@ -3,7 +3,8 @@ import '../dominio/repositorio_tienda.dart';
 import '../dominio/tienda.dart';
 
 /// Tienda en memoria para pruebas. Apartar descuenta existencia, cancelar la
-/// devuelve y repetir la llave devuelve el mismo pedido.
+/// devuelve y repetir la llave devuelve el mismo pedido. Un pedido nuevo se
+/// puede pagar en la app y uno pagado no se cancela.
 class RepositorioTiendaFake implements RepositorioTienda {
   RepositorioTiendaFake({
     List<Producto> productos = const [],
@@ -120,6 +121,7 @@ class RepositorioTiendaFake implements RepositorioTienda {
       total: carrito.total,
       creadoEn: ahora,
       venceEn: ahora.add(const Duration(hours: 48)),
+      pagable: carrito.total > 0,
       renglones: [
         for (final r in carrito.renglones)
           RenglonPedido(
@@ -187,6 +189,7 @@ class RepositorioTiendaFake implements RepositorioTienda {
     if (!actual.abierto) {
       throw const PedidoRechazado(MotivoRechazoPedido.noCancelable);
     }
+    if (actual.pagado) throw const PedidoRechazado(MotivoRechazoPedido.pagado);
     _mover(actual, 1);
     return _guardar(
       Pedido(
@@ -221,6 +224,9 @@ class RepositorioTiendaFake implements RepositorioTienda {
         creadoEn: actual.creadoEn,
         venceEn: actual.venceEn,
         listoEn: actual.listoEn,
+        pagable: actual.pagable,
+        pago: actual.pago,
+        pagadoEn: actual.pagadoEn,
         cita: citaId == null
             ? null
             : CitaDePedido(

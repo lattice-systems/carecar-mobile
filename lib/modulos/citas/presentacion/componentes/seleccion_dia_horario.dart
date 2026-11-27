@@ -63,7 +63,9 @@ class SeleccionDiaHorario extends StatelessWidget {
               boxShadow: tokens.sombras,
             ),
             child: Padding(
-              padding: const EdgeInsets.all(Espaciado.e3),
+              // Sin margen a los lados: en 320 de ancho cada día usa todo el que
+              // haya.
+              padding: const EdgeInsets.symmetric(vertical: Espaciado.e3),
               child: Calendario(
                 mes: mes,
                 seleccionado: elegido,

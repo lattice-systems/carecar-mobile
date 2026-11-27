@@ -174,12 +174,12 @@ class _PantallaMisSolicitudesState
     final tipo = s.tipo == TipoSolicitud.pruebaManejo
         ? textos.estrenoPruebaTitulo
         : textos.estrenoCotizacionTitulo;
+    final cotizacion = s.cotizacion;
     final datos = [
       tipo,
       if (s.fecha != null) diaCortoEstreno(context, s.fecha!),
-      if (s.cotizacion != null)
-        '${pesosEstreno.format(s.cotizacion!.mensualidad)} · '
-            '${textos.estrenoMeses(s.cotizacion!.plazoMeses)}',
+      if (cotizacion != null)
+        '${pesosEstreno.format(cotizacion.mensualidad)} · ${textos.estrenoMeses(cotizacion.plazoMeses)}',
     ].join(' · ');
     // Quien atiende va en su propia linea, no pegado al resto.
     final detalle = [

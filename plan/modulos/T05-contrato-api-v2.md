@@ -39,7 +39,7 @@ Estado: **En revisión**.
 Estado: **Hecha**.
 
 - **Backend:** `agencia-360-backend/docs/api/agencia360-api-app-v2.yaml`, versión 2.0.0. Es copia del v1 en 1.4.0 con la descripción de la v2; no agrega ni quita rutas, todas siguen bajo `/api/v1/app`. El v1 queda congelado en 1.4.0 como referencia de la app v1 instalada. Diseño en `agencia-360-backend/plan/historias-backend.md`.
-- **App:** copia en `api/agencia360-api-app-v2.yaml`. La prueba de contrato (`test/contrato/contrato_test.dart`) sigue leyendo el v1; pasarla al v2 es V2-T03.06.
+- **App:** copia en `api/agencia360-api-app-v2.yaml`. La [prueba del simulador v2](../../test/contrato/mock_api_v2_test.dart) comprueba las operaciones registradas y respuestas HTTP contra esa copia. `contrato_test.dart` sigue cubriendo v1.
 - **Desde aquí:** cada historia B escribe sus rutas en el v2 bajo la etiqueta de su módulo, sube la versión menor y copia el archivo a este repo al integrar.
 
 ## Avance de V2-T05.03
@@ -97,3 +97,21 @@ Estado: **En revisión**.
 - **Backend:** módulo `archivos` con `AlmacenArchivos` (guardar, leer, borrar, URL temporal). Por omisión guarda en la tabla `archivo` de PostgreSQL (Neon en producción); en desarrollo puede usar una carpeta. Solo JPEG, PNG, WebP y PDF hasta 20 MB.
 - **URL firmadas:** `/api/v1/archivos/{carpeta}/{id}?expira=&firma=`, vencen a los 15 minutos y no piden token.
 - **App:** sin cambios; recibirá estas URL en las evidencias (M04), documentos (M09) y traslados (M17).
+
+## Avance de V2-T05.10
+
+Estado: **Hecha** (backend#116).
+
+- **Backend:** `scripts/cargar-datos-de-ejemplo.sh` termina con los módulos de la app v2. El personal usa sus rutas (`servicio1` en el taller, garantías y campañas; `inventario1` en la tienda) y los clientes usan la API de la app con `CLIENTES_CONTRASENA` (`CareCar2026!`), así que todo pasa por las mismas reglas y no duplica al repetirse. Detalle y qué probar con cada cliente en `agencia-360-backend/docs/datos-de-ejemplo.md`.
+- **Qué deja:**
+  - **Taller en vivo:** una orden de Sofía con inspección y un trabajo adicional por aprobar, y una de Diego lista para entrega y por pagar.
+  - **Garantías y campañas:** campañas para March 2023 a 2026 y Kicks 2021 a 2022, y garantías con una batería por vencer.
+  - **Tienda:** 5 productos publicados y un apartado.
+  - **Pagos y facturas:**
+    - Carlos pagó con la Visa de prueba y tiene factura simulada.
+    - Ana pagó con Google Pay y sus datos fiscales hacen que el timbrado responda `TIMBRADO_RECHAZADO`.
+  - **Lealtad:** puntos, un canje y un referido.
+  - **Otros:** gastos en la bitácora, una dirección para la recolección y una prueba de manejo.
+- **Laura** se queda sin estos datos: su primer ingreso con la contraseña de Mailpit sigue siendo parte de la demostración, y solo le llega la campaña de su March.
+- **App:** sin cambios; con estos datos se demuestra contra el backend real lo que hoy se prueba con `mock_api`.
+

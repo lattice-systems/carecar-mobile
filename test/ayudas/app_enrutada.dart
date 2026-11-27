@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/api/carecar_api.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
+import 'package:carecar_mobile/modulos/acceso/acceso.dart' show PantallaAcceso;
 import 'package:carecar_mobile/nucleo/api/proveedores_api.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/nucleo/migracion/proveedores_migracion.dart';
@@ -13,6 +14,12 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+
+/// La pantalla a la que la guardia manda a quien no tiene sesion.
+///
+/// Una sola definicion para las pruebas de rutas: asi no repiten que version
+/// del acceso esta encendida, y el dia que cambie se cambia aqui.
+Finder get pantallaDeAcceso => find.byType(PantallaAcceso);
 
 /// La app con el enrutador real (V2-T01.03) y la API y la sesion que se le
 /// pasen. Es lo que `main.dart` arma, sin cortina ni almacen del sistema.

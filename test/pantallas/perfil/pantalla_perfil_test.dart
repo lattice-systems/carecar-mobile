@@ -92,14 +92,22 @@ void main() {
       tester,
     ) async {
       await _montar(tester, ApiFalsa());
-      bool valor() => tester.widget<Switch>(find.byType(Switch)).value;
+      final fila = find.byKey(PantallaPerfil.interruptorRecordatorios);
+      final interruptor = find.descendant(
+        of: fila,
+        matching: find.byType(Switch),
+      );
+      bool valor() => tester.widget<Switch>(interruptor).value;
 
       final antes = valor();
-      await tester.tap(find.text('Recordatorios de citas'));
+      await tester.tap(fila);
       await tester.pumpAndSettle();
 
       expect(valor(), !antes);
-      expect(find.byType(ControlInterruptor), findsOneWidget);
+      expect(
+        find.descendant(of: fila, matching: find.byType(ControlInterruptor)),
+        findsOneWidget,
+      );
     });
 
     for (final (nombre, brillo, letra) in [

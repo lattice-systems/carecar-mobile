@@ -95,9 +95,7 @@ void main() {
     expect(boton, findsOneWidget);
   });
 
-  _prueba('al confirmar mueve la cita y avisa que libero la anterior', (
-    tester,
-  ) async {
+  _prueba('V2-M02.13: reprograma y libera el horario anterior', (tester) async {
     final repo = _repo();
     await tester.pumpWidget(_app(repo));
     await tester.pumpAndSettle();

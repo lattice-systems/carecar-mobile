@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../../notificaciones/servicio_notificaciones.dart';
@@ -12,6 +14,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import '../../api/carecar_api.dart';
 import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
+import '../../nucleo/analitica/ambito_analitica.dart';
+import '../../nucleo/analitica/analitica.dart';
 import '../../tema/tema_carecar.dart';
 import '../../widgets/tarjeta_intro.dart';
 import '../../widgets/pagina_carecar.dart';
@@ -51,6 +55,7 @@ class PantallaAgendarCita extends StatefulWidget {
 }
 
 class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
+  final _embudo = EmbudoCitas();
   late final DateTime _hoy;
   late final List<DateTime> _dias;
 
@@ -105,6 +110,12 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
       );
       if (primero.isNotEmpty) setState(() => _dia = primero.first);
     }
+    if (mounted) {
+      final analitica = AmbitoAnalitica.de(context);
+      if (analitica != null) {
+        unawaited(_embudo.mostrarDisponibilidad(analitica));
+      }
+    }
     return franjas;
   }
 
@@ -129,6 +140,8 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
     final franja = _franja;
     final vehiculoId = _vehiculoId;
     if (franja == null || vehiculoId == null) return;
+    final intento = _embudo.intento;
+    final analitica = AmbitoAnalitica.de(context);
 
     setState(() => _enviando = true);
     try {
@@ -139,6 +152,9 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
           fecha: franja.fecha,
         ),
       );
+      if (analitica != null) {
+        unawaited(_embudo.confirmar(analitica, cita.id, intento));
+      }
       await Notificaciones.actual.alAgendar(cita);
       if (!mounted) return;
       await mostrarCheckExito(context);
@@ -374,7 +390,22 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
                                     mismoDia(_franja!.fecha, f.fecha),
                                 alTocar: cargando
                                     ? null
-                                    : () => setState(() => _franja = f),
+                                    : () {
+                                        setState(() => _franja = f);
+                                        final analitica = AmbitoAnalitica.de(
+                                          context,
+                                        );
+                                        if (analitica != null) {
+                                          unawaited(
+                                            _embudo.mostrarDisponibilidad(
+                                              analitica,
+                                            ),
+                                          );
+                                          unawaited(
+                                            _embudo.elegirFranja(analitica),
+                                          );
+                                        }
+                                      },
                               ),
                             )
                             .animate(delay: (40 * i).ms)

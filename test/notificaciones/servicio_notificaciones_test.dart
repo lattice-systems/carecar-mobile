@@ -13,8 +13,13 @@ class _PluginFalso implements PluginNotificaciones {
   final programadas = <int, DateTime>{};
   final mostradas = <int>[];
 
+  /// A donde lleva cada aviso que se mostro o programo (V2-M06.03).
+  final destinos = <int, String?>{};
+
   @override
   bool get abiertaDesdeAviso => false;
+  @override
+  String? get destinoDeArranque => null;
   @override
   DateTime ahora() => _ahora;
   @override
@@ -22,15 +27,28 @@ class _PluginFalso implements PluginNotificaciones {
   @override
   Future<bool> pedirPermiso() async => true;
   @override
-  Future<void> mostrar(int id, String titulo, String cuerpo) async =>
-      mostradas.add(id);
+  Future<void> mostrar(
+    int id,
+    String titulo,
+    String cuerpo, {
+    String? destino,
+  }) async {
+    mostradas.add(id);
+    destinos[id] = destino;
+  }
+
   @override
   Future<void> programar(
     int id,
     DateTime cuando,
     String titulo,
-    String cuerpo,
-  ) async => programadas[id] = cuando;
+    String cuerpo, {
+    String? destino,
+  }) async {
+    programadas[id] = cuando;
+    destinos[id] = destino;
+  }
+
   @override
   Future<void> cancelar(int id) async => programadas.remove(id);
   @override
@@ -55,8 +73,9 @@ class _PluginQueFalla extends _PluginFalso {
     int id,
     DateTime cuando,
     String titulo,
-    String cuerpo,
-  ) async => throw Exception('rechazo 55 1234 5678');
+    String cuerpo, {
+    String? destino,
+  }) async => throw Exception('rechazo 55 1234 5678');
 }
 
 Cita _cita(int id, DateTime dia, {EstadoCita estado = EstadoCita.confirmada}) =>
@@ -131,6 +150,16 @@ void main() {
       expect(plugin.programadas, isEmpty);
     });
 
+    test('cada aviso de cita lleva a «Mis citas» (V2-M06.03)', () async {
+      // Sin esto el aviso solo abriria la app, y tocarlo no llevaria a ningun
+      // lado: es lo que hace que el toque sepa a donde ir.
+      await servicio.alAgendar(_cita(5, DateTime(2026, 11, 25)));
+
+      expect(plugin.destinos[50], destinoDeCitas);
+      expect(plugin.destinos[51], destinoDeCitas);
+      expect(plugin.destinos[52], destinoDeCitas);
+    });
+
     test(
       'sincronizar cancela las no confirmadas y agrega las que faltan',
       () async {
@@ -171,8 +200,7 @@ void main() {
         );
         await servicio.iniciar();
         expect(escrito, [
-          'No se pudieron iniciar las notificaciones: '
-              'Exception: sin permiso para [correo]',
+          'No se pudieron iniciar las notificaciones: Exception: sin permiso para [correo]',
         ]);
       },
     );

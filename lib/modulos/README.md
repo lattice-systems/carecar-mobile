@@ -38,7 +38,7 @@ Navegación con `go_router` (ADR 0003, V2-T01.03). **Cada módulo expone sus rut
 4. Reglas: nombres de ruta y caminos son de tu módulo y van en español sin acentos; para ir a otro módulo usa su constante (`<modulo>.dart`) o `context.goNamed`, nunca importes su `presentacion/`. Las rutas de módulos **exigen sesión** por defecto: sin sesión van al acceso y vuelven a ellas al entrar; el cambio obligatorio de contraseña también se respeta. Si una ruta debe ser pública, se agrega a `Rutas.publicas` (`nucleo/navegacion/rutas.dart`) con aviso al dueño de T01.
 5. Enlaces: `carecar://<ruta>` y `https://<host>/app/<ruta>` llegan a la misma ruta (`carecar://citas/5` → `/citas/5`), así que **toda ruta tuya ya es alcanzable por enlace**. Por eso: parámetros por camino/consulta (`:id`, `?token=`), nunca objetos en `extra`.
 6. Mientras no exista el tema v2 global, envuelve la pantalla con `Theme(data: TemaPista...)` como en `ejemplo/presentacion/rutas_ejemplo.dart`.
-7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`.
+7. Prueba por ruta: monta `AppEnrutadaDePrueba` (`test/ayudas/app_enrutada.dart`) con tus fakes en `overrides`, `enrutadorDe(tester).go(tuRuta)` y comprueba la pantalla; ejemplo en `test/nucleo/navegacion/enrutador_test.dart`. Si pruebas que sin sesión te manda al acceso, usa `pantallaDeAcceso` (mismo archivo): **no** busques `PantallaLogin` ni `PantallaAcceso` por tipo, porque qué versión del acceso está encendida cambia (V2-T01.10).
 
 ## Pantallas de pago y documentos
 

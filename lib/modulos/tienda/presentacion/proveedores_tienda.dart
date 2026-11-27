@@ -8,6 +8,7 @@ import '../../../nucleo/eventos/eventos_en_vivo.dart';
 import '../../../nucleo/eventos/proveedores_eventos.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
 import '../../citas/citas.dart';
+import '../../pagos/pagos.dart' show eventoPagoConfirmado;
 import '../../vehiculos/vehiculos.dart';
 import '../datos/repositorio_tienda_api.dart';
 import '../dominio/repositorio_tienda.dart';
@@ -141,11 +142,18 @@ class ListaPaginada<T> {
 }
 
 bool _cambiaronPedidos(EventoEnVivo evento) =>
-    evento.nombre == eventoPedidoEstado || evento.nombre == eventoReconectado;
+    evento.nombre == eventoPedidoEstado ||
+    evento.nombre == eventoReconectado ||
+    _pagoDePedido(evento) != null;
 
-/// Base de las listas de la tienda. Un cambio de pedido (que mueve existencia)
-/// o la vuelta del canal las vuelven a pedir sin pasar por carga; si esa
-/// recarga falla, se queda lo que se ve.
+/// El pedido que quedó pagado en la app, si [evento] es su `pago.confirmado`
+/// (V2-M14.04). Los pagos de órdenes traen `pedidoId` nulo.
+Object? _pagoDePedido(EventoEnVivo evento) =>
+    evento.nombre == eventoPagoConfirmado ? evento.datos['pedidoId'] : null;
+
+/// Base de las listas de la tienda. Un cambio de pedido (que mueve existencia),
+/// el pago de uno o la vuelta del canal las vuelven a pedir sin pasar por
+/// carga. Si esa recarga falla, se queda lo que se ve.
 abstract class _ListaEnVivo<T> extends AsyncNotifier<ListaPaginada<T>> {
   var _turno = 0;
 
@@ -302,8 +310,8 @@ final misPedidosProvider =
       name: 'misPedidosProvider',
     );
 
-/// Un pedido. Su aviso `pedido.estado` o la vuelta del canal lo vuelven a
-/// pedir sin pasar por carga.
+/// Un pedido. Su aviso `pedido.estado`, su `pago.confirmado` (V2-M14.04) o la
+/// vuelta del canal lo vuelven a pedir sin pasar por carga.
 class PedidoNotifier extends AsyncNotifier<Pedido> {
   PedidoNotifier(this.pedidoId);
 
@@ -315,6 +323,7 @@ class PedidoNotifier extends AsyncNotifier<Pedido> {
     ref.listen(eventosProvider, (_, evento) {
       if (evento case AsyncData(:final value)
           when value.nombre == eventoReconectado ||
+              _pagoDePedido(value) == pedidoId ||
               (value.nombre == eventoPedidoEstado &&
                   value.datos['pedidoId'] == pedidoId)) {
         recargar();

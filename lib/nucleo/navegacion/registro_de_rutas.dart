@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../modulos/acceso/acceso.dart';
 import '../../modulos/asistencia/asistencia.dart';
 import '../../modulos/asistente/asistente.dart';
+import '../../modulos/ayuda/ayuda.dart';
 import '../../modulos/bitacora/bitacora.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
@@ -15,6 +16,7 @@ import '../../modulos/historial/historial.dart';
 import '../../modulos/lealtad/lealtad.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
 import '../../modulos/pagos/pagos.dart';
+import '../../modulos/notificaciones/notificaciones.dart';
 import '../../modulos/privacidad/privacidad.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
 import '../../modulos/taller/taller.dart';
@@ -40,13 +42,19 @@ import 'rutas_del_nucleo.dart';
 List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasDelNucleo(interruptor: interruptor, destinosV2: destinosDeMenuV2),
   // --- Un renglon por modulo, en orden alfabetico ---
-  // Del acceso (M01) solo se registra «mis sesiones» (V2-M01.09): sus otras
-  // cuatro rutas esperan a que el modulo se encienda, porque sus caminos ya
-  // los sirven pantallas v1. `/sesiones` no existe en la v1, asi que no choca.
+  // El acceso (M01) pasa por el interruptor: inicio de sesion y cambio
+  // obligatorio (V2-T01.10). La recuperacion de la contrasena es otro valor,
+  // porque su v2 espera un enlace del correo que aun no abre la app.
+  ...interruptor.rutas(ModuloMigrable.acceso, rutasAcceso),
+  ...interruptor.rutas(ModuloMigrable.recuperacion, rutasRecuperacion),
+  // `/sesiones` (V2-M01.09) no existe en la v1: se registra siempre.
   ...rutasSesiones,
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
   // El asistente (M24) es nuevo en v2: no pasa por el interruptor.
   ...rutasAsistente,
+  // La ayuda y las sucursales (M27) son nuevas en v2: no pasan por el
+  // interruptor.
+  ...rutasAyuda,
   // La bitacora (M18) es nueva en v2: no pasa por el interruptor.
   ...rutasBitacora,
   // El estreno (M16) es nuevo en v2: no pasa por el interruptor.
@@ -69,6 +77,8 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   // Los pagos y las facturas (M08) son nuevos en v2: no pasan por el
   // interruptor.
   ...rutasPagos,
+  // Los avisos (M06) son nuevos en v2: no pasan por el interruptor.
+  ...rutasNotificaciones,
   // La privacidad (M22) es nueva en v2: no pasa por el interruptor.
   ...rutasPrivacidad,
   // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.

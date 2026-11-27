@@ -5,8 +5,12 @@ import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/biometria/candado_biometrico.dart';
+import '../../../nucleo/biometria/lector_biometrico.dart';
+import '../../notificaciones/notificaciones.dart';
 import '../../../nucleo/datos/vista_asincrona.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
+import '../../../nucleo/diseno/componentes/control_binario.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
@@ -90,6 +94,9 @@ class _Contenido extends ConsumerWidget {
                       subtitulo: perfil.correo,
                       icono: LucideIcons300.mail,
                       colorIcono: c.acento,
+                      // Solo el correo se edita (V2-M01.07). El telefono no:
+                      // verificarlo exige un SMS y todavia no hay con que.
+                      alToque: () => context.push(rutaCambiarCorreo),
                     ),
                     FilaGrupo(
                       titulo: textos.accesoPerfilTelefono,
@@ -122,13 +129,110 @@ class _Contenido extends ConsumerWidget {
                       colorIcono: c.acento,
                       alToque: () => context.push(rutaSesiones),
                     ),
+                    // V2-M06.01: la puerta para reactivar los avisos
+                    // despues de negarlos. En Android 13 y despues el dialogo
+                    // del sistema ya no vuelve, asi que si no esta aqui no
+                    // hay forma de prenderlos.
+                    FilaGrupo(
+                      titulo: textos.accesoPerfilAvisos,
+                      subtitulo: switch (ref.watch(permisoDeAvisosProvider)) {
+                        EstadoAvisos.permitidos =>
+                          textos.accesoPerfilAvisosPrendidos,
+                        EstadoAvisos.negados =>
+                          textos.accesoPerfilAvisosApagados,
+                        EstadoAvisos.sinPreguntar =>
+                          textos.accesoPerfilAvisosSinPreguntar,
+                      },
+                      icono: LucideIcons300.bell,
+                      colorIcono: c.acento,
+                      alToque: () => context.push(rutaPermisoAvisos),
+                    ),
                   ],
                 ),
+                const SizedBox(height: Espaciado.e4),
+                const _CandadoBiometrico(),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+}
+
+/// El interruptor del desbloqueo con huella o rostro · V2-M01.05.
+///
+/// Va **fuera** del `GrupoLista`, suelto en la columna, y no como `fin` de una
+/// fila: `GrupoLista` envuelve la fila en `Semantics(excludeSemantics: true)`,
+/// así que un interruptor ahí dentro no lo leería el lector de pantalla. El
+/// componente `Interruptor` ya es una fila completa, con su etiqueta y su
+/// descripción.
+///
+/// Si el equipo no tiene biometría utilizable **no se pinta nada**: un
+/// interruptor que no se puede prender solo hace preguntarse qué falta.
+class _CandadoBiometrico extends ConsumerStatefulWidget {
+  const _CandadoBiometrico();
+
+  static const interruptor = Key('perfil_candado_biometrico');
+
+  @override
+  ConsumerState<_CandadoBiometrico> createState() => _EstadoCandadoBiometrico();
+}
+
+class _EstadoCandadoBiometrico extends ConsumerState<_CandadoBiometrico> {
+  bool? _hayBiometria;
+  bool _ocupado = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _preguntar();
+  }
+
+  Future<void> _preguntar() async {
+    final lector = ref.read(lectorBiometricoProvider);
+    final hay = lector != null && await lector.disponible();
+    if (mounted) setState(() => _hayBiometria = hay);
+  }
+
+  Future<void> _cambiar(bool prender) async {
+    final textos = AppLocalizations.of(context);
+    final candado = ref.read(candadoProvider.notifier);
+    if (!prender) {
+      await candado.apagar();
+      return;
+    }
+
+    final lector = ref.read(lectorBiometricoProvider);
+    if (lector == null) return;
+
+    setState(() => _ocupado = true);
+    // Se pide la huella **antes** de prenderlo: prenderlo sin comprobar que
+    // funciona dejaría a la persona encerrada fuera en el siguiente arranque.
+    final reconocido = await lector.identificar(
+      motivo: textos.accesoPerfilCandadoMotivo,
+    );
+    if (reconocido) await candado.prender(await lector.firma());
+    if (!mounted) return;
+    setState(() => _ocupado = false);
+    if (!reconocido) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(textos.accesoPerfilCandadoNoSePudo)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    if (_hayBiometria != true) return const SizedBox.shrink();
+
+    return Interruptor(
+      key: _CandadoBiometrico.interruptor,
+      etiqueta: textos.accesoPerfilCandado,
+      descripcion: textos.accesoPerfilCandadoDetalle,
+      valor: ref.watch(candadoProvider) != EstadoCandado.apagado,
+      alCambiar: _ocupado ? null : _cambiar,
     );
   }
 }

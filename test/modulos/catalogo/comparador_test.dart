@@ -148,7 +148,9 @@ void main() {
     });
   });
 
-  testWidgets('compara tres modelos con precio y ficha', (tester) async {
+  testWidgets('V2-M03.03: compara tres modelos con precio y ficha', (
+    tester,
+  ) async {
     _pantallaAlta(tester);
     await tester.pumpWidget(_app(_api(), [1, 2, 3]));
     await tester.pumpAndSettle();

@@ -11,13 +11,17 @@ class RepositorioHistorialFake implements RepositorioHistorial {
     Map<int, TicketServicio>? tickets,
     this.falla,
   }) : _ordenes = ordenes ?? ordenesDeEjemplo,
-       _tickets = tickets ?? {ticketDeEjemplo.id: ticketDeEjemplo};
+       _tickets = Map.of(tickets ?? {ticketDeEjemplo.id: ticketDeEjemplo});
 
   final List<OrdenHistorial> _ordenes;
   final Map<int, TicketServicio> _tickets;
 
   /// Si no es nulo, toda lectura lanza esto.
   Object? falla;
+
+  /// Reemplaza el ticket de su orden, como si se hubiera pagado mientras
+  /// tanto (V2-M08.02).
+  void cambiarTicket(TicketServicio ticket) => _tickets[ticket.id] = ticket;
 
   /// Paginas pedidas: (anio, pagina).
   final paginasPedidas = <(int?, int)>[];

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../nucleo/api/proveedores_api.dart';
@@ -96,3 +97,13 @@ final sesionesProvider =
       retry: (_, _) => null,
       name: 'sesionesProvider',
     );
+
+/// Como se abre un `tel:` o un `mailto:` · V2-M01.08.
+///
+/// Va detras de un proveedor para que la prueba del aviso de cuenta
+/// desactivada no toque la plataforma: `launchUrl` no existe en una prueba de
+/// widget y la pantalla no deberia saberlo.
+final abrirEnlaceProvider = Provider<Future<bool> Function(Uri)>(
+  (ref) => launchUrl,
+  name: 'abrirEnlaceProvider',
+);

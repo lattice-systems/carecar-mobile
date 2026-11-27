@@ -165,7 +165,9 @@ void main() {
       expect(find.text('Cancelar cita'), findsNWidgets(2));
     });
 
-    _prueba('cada estado lleva texto, no solo color', (tester) async {
+    _prueba('V2-M02.09: cada estado de cita tiene texto visible', (
+      tester,
+    ) async {
       await tester.pumpWidget(_app(_repo()));
       await tester.pumpAndSettle();
       expect(find.text('Confirmada'), findsNWidgets(2));
@@ -202,7 +204,9 @@ void main() {
       expect(find.text('Atendida'), findsOneWidget);
     });
 
-    _prueba('pagina: carga mas citas al pedirlo', (tester) async {
+    _prueba('V2-M02.09: muestra más citas al pedir la siguiente página', (
+      tester,
+    ) async {
       final citas = [
         for (var i = 1; i <= 5; i++)
           _cita(i, estado: EstadoDeCita.atendida, dia: i),
@@ -273,7 +277,7 @@ void main() {
       expect(find.text('Cancelar cita'), findsOneWidget);
     });
 
-    _prueba('pide confirmacion con un dialogo y deja mantenerla', (
+    _prueba('V2-M02.10: permite mantener la cita al confirmar la cancelación', (
       tester,
     ) async {
       final repo = _repo();
@@ -291,7 +295,7 @@ void main() {
       );
     });
 
-    _prueba('al confirmar cancela, avisa que libero el horario', (
+    _prueba('V2-M02.10: cancela y avisa que el horario quedó libre', (
       tester,
     ) async {
       final repo = _repo();

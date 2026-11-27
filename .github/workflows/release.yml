@@ -106,7 +106,14 @@ jobs:
         run: |
           extra=()
           if [ -n "$API_BASE_URL" ]; then extra+=("--dart-define=API_BASE_URL=$API_BASE_URL"); fi
-          flutter build apk --release --flavor produccion -t lib/main_produccion.dart --build-name="$NOMBRE" --build-number=${{ github.run_number }} "${extra[@]}"
+          flutter build apk --release --flavor produccion -t lib/main_produccion.dart --build-name="$NOMBRE" --build-number=${{ github.run_number }} --split-debug-info=build/simbolos/android "${extra[@]}"
+
+      - name: Conservar símbolos de Android
+        uses: actions/upload-artifact@v7
+        with:
+          name: simbolos-android-${{ github.run_number }}
+          path: build/simbolos/android/
+          if-no-files-found: error
 
       - name: Nombrar el APK con su versión
         env:

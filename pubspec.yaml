@@ -97,9 +97,24 @@ dependencies:
   # ningun identificador: solo modelo y version del sistema, que no identifican
   # a la persona.
   device_info_plus: ^13.3.0
+  # Desbloqueo con huella o rostro (V2-M01.05).
+  #
+  # Autorizada por Jael el 27 de noviembre de 2026. Hace falta porque el
+  # criterio pide entrar con biometria y nada de las dependencias de hoy la
+  # expone; la alternativa era escribir un canal nativo propio por plataforma.
+  #
+  # Pide configuracion nativa en Android: `MainActivity` hereda de
+  # `FlutterFragmentActivity` -lo exige el BiometricPrompt- y el manifiesto
+  # declara USE_BIOMETRIC. Queda detras de `LectorBiometrico`
+  # (`lib/nucleo/biometria/`), asi que si el equipo prefiere otra se cambia una
+  # clase. **No guarda ni cifra nada**: solo pregunta al sistema si la persona
+  # se identifico. Los tokens siguen donde estaban (`AlmacenSesion`).
+  local_auth: ^3.0.2
 
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to

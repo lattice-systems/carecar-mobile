@@ -18,6 +18,7 @@ export 'dominio/tienda.dart'
         MotivoCancelacion,
         PaginaDePedidos,
         PaginaDeProductos,
+        PagoDePedido,
         Pedido,
         Producto,
         RenglonCarrito,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
@@ -16,6 +17,7 @@ import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../pagos/pagos.dart' show rutaPagarOrden;
 import '../dominio/ticket_servicio.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import 'formato_historial.dart';
@@ -24,7 +26,9 @@ import 'proveedores_historial.dart';
 /// Ticket de una orden de servicio (V2-M02.06): mano de obra y refacciones,
 /// cada renglon con cantidad por precio e importe, y los totales donde la mano
 /// de obra mas las refacciones dan el total. El PDF se descarga y se comparte
-/// con la hoja del sistema. Resuelve esqueleto, datos, error y sin conexion.
+/// con la hoja del sistema. Si ya se pago dice con que y su referencia; si se
+/// puede pagar en la app lleva a pagarla (V2-M08.02) y al volver se recarga.
+/// Resuelve esqueleto, datos, error y sin conexion.
 class PantallaTicket extends ConsumerStatefulWidget {
   const PantallaTicket({required this.servicioId, super.key});
 
@@ -55,10 +59,16 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
     }
   }
 
+  Future<void> _pagar(TicketServicio ticket) async {
+    await context.push(rutaPagarOrden(ticket.id));
+    if (mounted) ref.invalidate(ticketServicioProvider(widget.servicioId));
+  }
+
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final ticket = ref.watch(ticketServicioProvider(widget.servicioId));
+    final conRutas = GoRouter.maybeOf(context) != null;
     final datos = ticket.value;
 
     final Widget contenido = ticket.when(
@@ -80,6 +90,7 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
           compartiendo: _compartiendo,
           errorAlCompartir: _errorAlCompartir,
           alCompartir: () => _compartir(t),
+          alPagar: conRutas && t.pagable ? () => _pagar(t) : null,
         ),
       ),
     );
@@ -109,12 +120,18 @@ class _Ticket extends StatelessWidget {
     required this.compartiendo,
     required this.errorAlCompartir,
     required this.alCompartir,
+    this.alPagar,
   });
 
   final TicketServicio ticket;
   final bool compartiendo;
   final bool errorAlCompartir;
   final VoidCallback alCompartir;
+
+  /// Lleva a pagar la orden; nulo si no se puede pagar en la app.
+  final VoidCallback? alPagar;
+
+  static const botonPagar = Key('ticket_pagar');
 
   @override
   Widget build(BuildContext context) {
@@ -220,6 +237,26 @@ class _Ticket extends StatelessWidget {
                 tono: Tono.exito,
               ),
             ),
+          if (ticket.pago case final pago?) ...[
+            const SizedBox(height: Espaciado.e4),
+            GrupoLista(
+              encabezado: textos.historialTicketPago,
+              filas: [
+                FilaGrupo(
+                  titulo: textos.historialTicketPagado,
+                  subtitulo: _textoPago(context, pago),
+                  icono: LucideIcons300.circleCheckBig,
+                  colorIcono: c.exito,
+                ),
+                FilaGrupo(
+                  titulo: pago.referencia,
+                  subtitulo: textos.historialTicketReferencia,
+                  icono: LucideIcons300.hash,
+                  colorIcono: c.textoSecundario,
+                ),
+              ],
+            ),
+          ],
           if (!ticket.cuadra)
             Padding(
               padding: const EdgeInsets.only(top: Espaciado.e3),
@@ -236,10 +273,23 @@ class _Ticket extends StatelessWidget {
                 tono: Tono.peligro,
               ),
             ),
+          if (alPagar case final pagar?) ...[
+            const SizedBox(height: Espaciado.e4),
+            BotonPildora(
+              key: botonPagar,
+              texto: textos.historialTicketPagar(dinero(ticket.total)),
+              icono: LucideIcons300.creditCard,
+              expandido: true,
+              alPresionar: pagar,
+            ),
+          ],
           const SizedBox(height: Espaciado.e4),
           BotonPildora(
             texto: textos.historialTicketCompartir,
             icono: LucideIcons300.fileText,
+            variante: alPagar == null
+                ? VarianteBotonPildora.lleno
+                : VarianteBotonPildora.tonal,
             expandido: true,
             alPresionar: compartiendo ? null : alCompartir,
           ),
@@ -247,6 +297,26 @@ class _Ticket extends StatelessWidget {
       ),
     );
   }
+}
+
+/// «Visa •••• 4242 · 26 nov 2026, 12:00» o «En caja · …».
+String _textoPago(BuildContext context, PagoDelTicket pago) {
+  final textos = AppLocalizations.of(context);
+  final marca = switch (pago.marca) {
+    'VISA' => 'Visa',
+    'MASTERCARD' => 'Mastercard',
+    final otra => otra ?? '',
+  };
+  final medio = pago.enCaja
+      ? textos.historialTicketPagadoEnCaja
+      : textos.historialTicketTarjeta(marca, pago.ultimos4 ?? '');
+  final cuando = pago.pagadoEn;
+  return cuando == null
+      ? medio
+      : textos.historialTicketPagadoDetalle(
+          medio,
+          fechaHoraDe(context, cuando.toLocal()),
+        );
 }
 
 class _Cargando extends StatelessWidget {

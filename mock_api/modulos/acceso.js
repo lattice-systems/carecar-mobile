@@ -420,6 +420,133 @@ module.exports = function registrarAcceso(servidor, db) {
     return problema(req, res, 404, 'No encontramos esa sesion', null);
   });
 
+  // ---------------------------------------------------------------------------
+  // V2-M01.07 · Cambiar el correo, con verificacion
+  //
+  // Solo el correo: verificar el telefono exige mandar un codigo AL telefono y
+  // no hay SMS en ningun lado, asi que esa mitad esta bloqueada.
+  //
+  // Las verificaciones viven en memoria: se pierden al reiniciar, igual que el
+  // resto del estado del mock.
+  // ---------------------------------------------------------------------------
+
+  const verificaciones = new Map();
+  let siguienteVerificacion = 1;
+  const VIGENCIA_VERIFICACION_MS = 15 * 60 * 1000;
+
+  // Fijo a proposito, y el mismo que usa la semilla para el codigo de
+  // recuperacion: en desarrollo el codigo no llega por correo a ningun lado, y
+  // uno aleatorio obligaria a mirar la consola en cada prueba. Cualquier otro
+  // codigo falla, que es como se prueba el camino del codigo equivocado.
+  const CODIGO_DE_DESARROLLO = '123456';
+
+  // Mismo criterio que la app: lo que no tiene arroba con algo a cada lado no
+  // es un correo. El backend real valida igual y responde 400.
+  const pareceCorreo = (valor) => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(valor).trim());
+
+  servidor.patch(`${BASE}/perfil`, (req, res) => {
+    const { correo, contrasenaActual } = req.body || {};
+    if (!correo || !contrasenaActual) {
+      return problema(
+        req,
+        res,
+        400,
+        'Escribe el correo nuevo y tu contrasena actual',
+        'DATOS_INVALIDOS',
+      );
+    }
+    if (!pareceCorreo(correo)) {
+      return problema(req, res, 400, 'Ese correo no tiene formato valido', 'DATOS_INVALIDOS');
+    }
+
+    const cuenta = req.sesion.cuenta;
+    // 400 y no 401 a proposito: la app lee un 401 como sesion vencida y
+    // cerraria la sesion sin decirle nada a la persona.
+    if (cuenta.contrasena !== contrasenaActual) {
+      return problema(
+        req,
+        res,
+        400,
+        'La contrasena no coincide',
+        'CREDENCIALES_INVALIDAS',
+      );
+    }
+
+    const normalizado = String(correo).trim().toLowerCase();
+    const ajena = db
+      .get('cuentas')
+      .find((c) => c.id !== cuenta.id && String(c.correo).toLowerCase() === normalizado)
+      .value();
+    if (ajena) {
+      return problema(req, res, 409, 'Ese correo ya es de otro cliente', 'DATOS_INVALIDOS');
+    }
+
+    const id = siguienteVerificacion++;
+    const expira = new Date(Date.now() + VIGENCIA_VERIFICACION_MS).toISOString();
+    verificaciones.set(id, {
+      id,
+      clienteId: cuenta.clienteId,
+      tipo: 'CORREO',
+      valorNuevo: normalizado,
+      expira,
+      usado: false,
+    });
+
+    res.status(202).jsonp({ id, expira });
+  });
+
+  servidor.post(`${BASE}/perfil/verificaciones/:id/confirmar`, (req, res) => {
+    const { codigo } = req.body || {};
+    if (!codigo) {
+      return problema(req, res, 400, 'Escribe el codigo que te llego', 'DATOS_INVALIDOS');
+    }
+
+    const verificacion = verificaciones.get(Number(req.params.id));
+    // De otro cliente o inexistente responden igual: 404, sin revelar que
+    // existe algo ajeno.
+    if (!verificacion || verificacion.clienteId !== req.sesion.cuenta.clienteId) {
+      return problema(req, res, 404, 'No encontramos esa verificacion', null);
+    }
+
+    const vencida = new Date(verificacion.expira) < new Date();
+    // Equivocado, usado y vencido responden igual, como al restablecer la
+    // contrasena: responder distinto permitiria averiguar codigos.
+    if (verificacion.usado || vencida || String(codigo).trim() !== CODIGO_DE_DESARROLLO) {
+      return problema(
+        req,
+        res,
+        400,
+        'El codigo no es valido, ya se uso o vencio',
+        'CODIGO_INVALIDO',
+      );
+    }
+
+    const cuenta = req.sesion.cuenta;
+    const ajena = db
+      .get('cuentas')
+      .find((c) => c.id !== cuenta.id && String(c.correo).toLowerCase() === verificacion.valorNuevo)
+      .value();
+    // Alguien pudo tomar ese correo mientras se verificaba.
+    if (ajena) {
+      return problema(req, res, 409, 'Ese correo ya es de otro cliente', 'DATOS_INVALIDOS');
+    }
+
+    // En el backend real, `cuenta_app.usuario` sigue al correo (V2-T05.03).
+    // Aqui el login busca por `correo`, asi que cambiarlo es lo que hace
+    // observable lo mismo: a partir de ahora se entra con el correo nuevo.
+    db.get('cuentas').find({ id: cuenta.id }).assign({ correo: verificacion.valorNuevo }).write();
+    verificaciones.set(verificacion.id, { ...verificacion, usado: true });
+
+    const actualizada = db.get('cuentas').find({ id: cuenta.id }).value();
+    res.jsonp({
+      id: actualizada.clienteId,
+      nombre: actualizada.nombre,
+      correo: actualizada.correo,
+      telefono: actualizada.telefono ?? null,
+      clienteDesde: actualizada.clienteDesde,
+    });
+  });
+
   servidor.get(`${BASE}/perfil`, (req, res) => {
     const cuenta = req.sesion.cuenta;
     res.jsonp({

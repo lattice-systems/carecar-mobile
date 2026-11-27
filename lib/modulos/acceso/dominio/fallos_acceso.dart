@@ -31,3 +31,43 @@ class SesionYaNoEsta implements Exception {
   @override
   String toString() => 'SesionYaNoEsta';
 }
+
+/// La contraseña actual no coincide · V2-M01.07.
+///
+/// Llega como **400 con `codigo: CREDENCIALES_INVALIDAS`**, el mismo código
+/// HTTP que un correo mal escrito (`DATOS_INVALIDOS`): solo los separa
+/// `Problema.codigo`. Si se confundieran, la pantalla culparía al correo
+/// cuando lo que falló fue la contraseña, y la persona corregiría lo que
+/// estaba bien.
+///
+/// El servidor responde 400 y no 401 a propósito: la app lee un 401 como
+/// sesión vencida y cerraría la sesión sin explicar nada.
+class ContrasenaNoCoincide implements Exception {
+  const ContrasenaNoCoincide();
+
+  @override
+  String toString() => 'ContrasenaNoCoincide';
+}
+
+/// Ese correo ya es de otro cliente · V2-M01.07.
+///
+/// Puede llegar en los dos pasos: al pedir el cambio, o al confirmarlo si
+/// alguien lo tomó mientras se verificaba.
+class CorreoEnUso implements Exception {
+  const CorreoEnUso();
+
+  @override
+  String toString() => 'CorreoEnUso';
+}
+
+/// El código de verificación no sirve · V2-M01.07.
+///
+/// Equivocado, ya usado o vencido llegan **igual**, y el contrato no los
+/// distingue a propósito: responder distinto permitiría averiguar qué códigos
+/// existen. En los tres casos la salida es la misma, pedir otro.
+class CodigoNoValido implements Exception {
+  const CodigoNoValido();
+
+  @override
+  String toString() => 'CodigoNoValido';
+}

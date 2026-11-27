@@ -39,44 +39,50 @@ List<RouteBase> rutasDelNucleo({
       ),
     ),
   ),
-  GoRoute(
-    path: Rutas.acceso,
-    name: NombresRuta.acceso,
-    builder: (context, state) => Consumer(
-      builder: (context, ref, _) => PantallaLogin(
-        controlador: ref.watch(controladorSesionProvider),
-        alOlvidarContrasena: (correo) =>
-            context.push(Rutas.localizacionRecuperar(correo: correo)),
+  // Las pantallas v1 del acceso solo se montan si su modulo sigue en v1: la
+  // v2 sirve los mismos caminos desde `lib/modulos/acceso` y nunca van las dos.
+  if (!interruptor.esV2(ModuloMigrable.acceso)) ...[
+    GoRoute(
+      path: Rutas.acceso,
+      name: NombresRuta.acceso,
+      builder: (context, state) => Consumer(
+        builder: (context, ref, _) => PantallaLogin(
+          controlador: ref.watch(controladorSesionProvider),
+          alOlvidarContrasena: (correo) =>
+              context.push(Rutas.localizacionRecuperar(correo: correo)),
+        ),
       ),
     ),
-  ),
-  GoRoute(
-    path: Rutas.recuperar,
-    name: NombresRuta.recuperar,
-    builder: (context, state) =>
-        _Recuperar(correo: state.uri.queryParameters['correo']),
-  ),
-  GoRoute(
-    path: Rutas.restablecer,
-    name: NombresRuta.restablecer,
-    builder: (context, state) => _Recuperar(
-      correo: state.uri.queryParameters['correo'],
-      codigo: state.uri.queryParameters['token'],
-    ),
-  ),
-  GoRoute(
-    path: Rutas.cambiarContrasena,
-    name: NombresRuta.cambiarContrasena,
-    builder: (context, state) => Consumer(
-      builder: (context, ref, _) => PantallaCambiarContrasena(
-        api: ref.watch(carecarApiProvider),
-        alCambiar: () =>
-            ref.read(contrasenaCambiadaProvider.notifier).marcarCambiada(),
-        alCerrarSesion: () =>
-            ref.read(controladorSesionProvider).cerrarSesion(),
+    GoRoute(
+      path: Rutas.cambiarContrasena,
+      name: NombresRuta.cambiarContrasena,
+      builder: (context, state) => Consumer(
+        builder: (context, ref, _) => PantallaCambiarContrasena(
+          api: ref.watch(carecarApiProvider),
+          alCambiar: () =>
+              ref.read(contrasenaCambiadaProvider.notifier).marcarCambiada(),
+          alCerrarSesion: () =>
+              ref.read(controladorSesionProvider).cerrarSesion(),
+        ),
       ),
     ),
-  ),
+  ],
+  if (!interruptor.esV2(ModuloMigrable.recuperacion)) ...[
+    GoRoute(
+      path: Rutas.recuperar,
+      name: NombresRuta.recuperar,
+      builder: (context, state) =>
+          _Recuperar(correo: state.uri.queryParameters['correo']),
+    ),
+    GoRoute(
+      path: Rutas.restablecer,
+      name: NombresRuta.restablecer,
+      builder: (context, state) => _Recuperar(
+        correo: state.uri.queryParameters['correo'],
+        codigo: state.uri.queryParameters['token'],
+      ),
+    ),
+  ],
 ];
 
 /// Recuperar y restablecer son la misma pantalla v1; cambia con que llega.

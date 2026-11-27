@@ -207,8 +207,58 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto de la app: marco con regreso, el perfil en una tarjeta de resumen, grupos de lista, interruptor del sistema y diálogo y hoja del sistema. Es solo el aspecto: nada de lo que piden las historias de abajo cambia.
 
 - **V2-M01.06 (Ver mi perfil)** puede mover esta pantalla a un módulo `perfil` y completar sus estados; los textos siguen escritos a mano y habría que pasarlos a `app_es.arb`/`app_en.arb`.
-- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
+- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
+
+## Avance de V2-M01.05
+
+**Es un candado local, no otra forma de iniciar sesión.** Los tokens siguen en el almacén seguro y la sesión se renueva igual (V2-M01.11); la biometría solo decide si la app se abre sin escribir la contraseña. Decirlo importa porque la otra lectura —«entrar con la huella»— haría pensar que la huella sustituye a la contraseña en el servidor, y no.
+
+`local_auth` queda detrás de `LectorBiometrico` (`lib/nucleo/biometria/`), con un solo archivo que lo importa. Pide configuración nativa: `MainActivity` hereda de `FlutterFragmentActivity` —el `BiometricPrompt` de Android se monta como fragmento, y con `FlutterActivity` falla en tiempo de ejecución—, el manifiesto declara `USE_BIOMETRIC` y el `Info.plist` describe el uso de Face ID.
+
+**Siempre hay salida con la contraseña**, y es lo que vuelve segura la comodidad: si el sensor falla o la biometría se borra, nadie se queda fuera de su cuenta. Esa salida **cierra la sesión** a propósito: si solo navegara, la guardia traería de vuelta al desbloqueo en el siguiente toque.
+
+**Prenderlo exige identificarse ahí mismo.** Prenderlo sin comprobar que funciona dejaría a la persona encerrada fuera en el siguiente arranque. Y el interruptor va **suelto** en el perfil, no como `fin` de una fila de `GrupoLista`: ese grupo envuelve la fila en `Semantics(excludeSemantics: true)` y el lector de pantalla no lo leería.
+
+**Quien acaba de escribir su contraseña no tiene que poner la huella encima.** El candado se abre solo cuando el login pasa por `Autenticando`, que es justo lo que distingue entrar escribiendo de restaurar la sesión guardada.
+
+### El criterio del cambio de biometría, con su límite escrito
+
+Al prenderlo se guarda una **firma**: qué clases de biometría tenía el equipo. Si al abrir no coincide, el candado se apaga y se pide la contraseña. Eso cubre que se borren todas, que se quite el rostro o que aparezca una clase nueva. **No cubre que alguien agregue otra huella del mismo tipo**: el sistema sigue reportando «huella» y `local_auth` no expone más. Verlo exigiría una llave del Keystore creada con `setInvalidatedByBiometricEnrollment`, es decir un canal nativo propio por plataforma. Queda anotado aquí y en la revisión MASVS (AUTH-2) en vez de fingir que el criterio cubre más de lo que cubre.
+
+Diez pruebas, con un lector falso porque en una prueba no hay `BiometricPrompt`: el estado del candado, la comparación de firmas —incluido que sin firma guardada se pida la contraseña, por el lado seguro—, la guardia, y la app enrutada abriendo con huella buena, fallando y con la biometría cambiada. **Falta probarlo en un celular de verdad**: aquí no hay RAM para el emulador y iOS no se compila.
+
+## Avance de V2-M01.02
+
+Quien decide mostrarla es la **guardia de rutas**, y va antes que todo, incluido el login: la bienvenida es del primer arranque, no de la cuenta, así que tiene que verla también quien todavía no ha entrado. Por eso el estado vive en `lib/nucleo/bienvenida/` y no en el módulo: la guardia está en el núcleo y no puede importar un módulo.
+
+«Una sola vez» se recuerda en las preferencias del dispositivo (`bienvenida_vista`), con las mismas que ya usaba el idioma. **Sin preferencias se responde que no falta verla**: mostrarla sin poder recordarlo la repetiría en cada arranque, y eso es peor que no mostrarla.
+
+Saltarla y terminarla hacen lo mismo —marcar que ya se vio—, porque el criterio es que no vuelva a estorbar, no que se lea completa. «Saltar» está arriba y alcanzable desde la primera lámina, no al final del recorrido.
+
+Lector de pantalla: cada lámina anuncia su título como **encabezado** y luego el texto; los puntos de abajo quedan fuera del árbol de semántica, porque son decorativos y repetir «paso 2 de 3» en tres nodos solo estorba.
+
+Seis pruebas: la guardia (pendiente va antes del login, en la bienvenida se queda, vista no estorba), el estado (primer arranque, que lo recuerde, y sin preferencias) y la app enrutada (aparece, se salta y lleva al acceso, y no vuelve).
+
+## Avance de V2-M01.08
+
+El 403 se atiende **en un solo lugar**: `ClienteApi._pedir`, el embudo por el que pasan todas las peticiones con token. La cuenta se puede desactivar con la persona dentro, así que el 403 puede llegar en cualquier pantalla; resolverlo pantalla por pantalla habría dejado huecos. Ahí se avisa con `alCuentaDesactivada` —un callback, como `renovarSesion`, para que la capa de datos no dependa de la de sesión— y `ControladorSesion` borra la sesión local y marca `SinSesion(porCuentaDesactivada: true)`. Solo se avisa si **hay** token: un 403 sin sesión no tiene sesión que cerrar.
+
+De ahí en adelante decide la guardia (`redirigirPorSesion`), que ya es pura y probada: con esa marca, **cualquier** ruta —incluido el login— lleva a `/cuenta-desactivada`. El camino vive en `Rutas` y no en el módulo porque la guardia está en el núcleo y no puede importar un módulo.
+
+**Dos pruebas que ya existían cambiaron de expectativa, a propósito.** Esperaban que un 403 al entrar se quedara en el login mostrando el mensaje del servidor (`controlador_sesion_test.dart` y la del login v1). Ese mensaje invitaba a reintentar algo que no se arregla reintentando, y el criterio pide una **pantalla dedicada**. Las dos quedaron reescritas diciendo por qué.
+
+La pantalla es un callejón a propósito: sin campos y sin «intentar de nuevo». Solo llamar a la agencia, escribirle, o volver al login si fue un error —y volver exige `reconocerCuentaDesactivada()`, porque si no la guardia regresaría ahí para siempre—. El `tel:` y el `mailto:` pasan por `abrirEnlaceProvider` para que la prueba no toque la plataforma.
+
+## Avance de V2-M01.10
+
+Pantalla propia (`PantallaMiContrasena`, ruta `/mi-contrasena`) y **no** un modo de la del cambio obligatorio: esa a propósito no tiene salida (V2-M01.03) y mezclarlas haría frágil justo el criterio que la define. Reusa `ReglasContrasena` y `ListaDeReglas`, así que la contraseña nueva se revisa con las mismas reglas en vivo. **No toca el contrato ni el backend.**
+
+**El criterio dice «cierra las demás sesiones» y eso no se puede hacer hoy.** El contrato solo tiene `DELETE /sesiones`, que cierra **todas, incluida la de quien llama**, y la app no puede saber cuál de la lista es este celular: eso espera el claim `sid` en el JWT, que es de `shared` y de otra persona. Las opciones eran tres: no ofrecerlo —y dejar sin salida a quien cambia su contraseña porque sospecha que alguien entró—, decir «las demás» y cerrar también esta —mentir—, o decirlo tal cual. Se eligió lo tercero: la casilla dice «cerrar sesión en todos mis dispositivos» y explica que incluye este, y al terminar la app suelta su propia sesión, porque el access token en curso sigue valiendo hasta que expire. **Cuando exista `sid`, esto se vuelve «las demás» sin tocar la pantalla**, solo el repositorio.
+
+La casilla viene **apagada**: cambiar la contraseña no debe sacar a nadie de sus otros dispositivos sin habérselo pedido. Y si el cambio funciona pero cerrar las sesiones falla, el aviso de éxito **se queda** y el fallo se muestra aparte: la contraseña ya cambió y decir lo contrario sería peor.
+
+Tres pruebas, una por criterio y una por el riesgo: que pida la actual y no toque las sesiones, que con la casilla marcada cierre todo y suelte esta sesión, y que un rechazo del servidor no cierre nada ni diga que se guardó.
 
 ## Avance de V2-M01.06
 
@@ -240,6 +290,40 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 - **En el backend, la zona de la agencia está definida en tres lugares** (`AgendaAppService`, `ServicioApp` y una copia privada en `RecoleccionService`). Se usó la de `ServicioApp`; unificarlas merece su propia historia.
 
 **Pendiente:** demostrarlo en celular, que es lo único que le falta a su fila de `cumplimiento-ficha.md`. Editar teléfono y correo es V2-M01.07, que esta historia desbloquea.
+
+## Avance de V2-M01.07
+
+**Se hizo la mitad del correo. La del teléfono está bloqueada.**
+
+El criterio pide confirmar con **un código enviado al dato nuevo**. Para el teléfono eso exige un SMS, y en el backend no hay nada: ni proveedor, ni configuración, solo SMTP. Se buscó antes de empezar. Mandar ese código al correo verificaría que el dueño de la cuenta autorizó el cambio, **no que el teléfono sea suyo**, que es justo para lo que sirve la verificación; y contratar un proveedor tiene costo, credenciales y configuración, así que es una decisión del equipo.
+
+⚠️ **Queda pendiente preguntárselo.** La tabla se diseñó para los dos tipos —el `check` acepta `TELEFONO`— para que esa mitad no necesite otra migración.
+
+**Qué quedó**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| Contrato 2.26.0 | `PATCH /perfil` y `POST /perfil/verificaciones/{id}/confirmar` |
+| `verificacion_contacto` (V57) | El dato nuevo espera aquí, con el código en BCrypt, 15 minutos y 5 intentos |
+| `CambioDeContactoService` | Los dos pasos, separado como `RecuperacionContrasenaService` |
+| `EnvioCorreos.enviarCodigoDeContacto` | El código va **al correo nuevo** |
+| App | `pedirCambioDeCorreo`, `confirmarVerificacion`, tres fallos de dominio y `PantallaCambiarCorreo` |
+
+**Las tres decisiones que mandan**
+
+1. **El correo no se guarda hasta confirmar.** Vive en `valor_nuevo`. Guardarlo antes dejaría al cliente con un correo que no ha probado que es suyo y, como `cuenta_app.usuario` lo sigue (V2-T05.03), **sin poder entrar**.
+2. **Pedir el cambio exige la contraseña actual.** No lo decía el criterio; se propuso aparte. El correo es la identidad con la que se entra, así que sin eso alguien con el celular desbloqueado podría cambiarlo al suyo, recibir el código en su buzón y quedarse con la cuenta. Mismo requisito y precedente que cancelar la cuenta.
+3. **Los tres errores se distinguen por `Problema.codigo`**, y los tres códigos ya existían. La contraseña equivocada y el correo mal escrito llegan los dos como **400**; la pantalla señala cada uno en su campo. Confundirlos le diría a la persona que corrija lo que estaba bien.
+
+**Lo que costó integrarlo, por si le sirve a alguien más**
+
+El CI del backend encontró tres cosas en cadena, ninguna visible en una máquina sin Docker:
+
+- **El PR no corría CI** porque tenía conflictos con `main`: GitHub no ejecuta los workflows de un PR que no puede fusionar, así que «no hay checks» se parece a «va despacio». Si un PR lleva minutos sin un solo check, revisar `mergeStateStatus` antes de esperar más.
+- **Choque de números de migración.** Entró otra V55 mientras la historia se construía. **El rebase no lo detecta** —son archivos distintos—; solo Flyway al arrancar. El número se toma *después* de rebasar, mirando el directorio.
+- **Dos constructores sin `@Autowired`**: el contexto de Spring no arranca. Ni `test-compile` ni `checkstyle` lo ven.
+
+**Pendiente:** la mitad del teléfono (bloqueada por el SMS) y demostrar el cambio de correo en celular.
 
 ## Avance de V2-M01.09
 
@@ -283,3 +367,25 @@ La lista **no marca «este dispositivo»**. El JWT lleva `uid` y `roles` pero no
 El arreglo guarda el motivo (`motivo_revocacion`, V53) y el cierre masivo se dispara **solo** cuando el token lo consumió un refresco, que es el único caso que delata una copia. La protección no se debilita y hay una prueba para eso. Ricardo, que definió la regla original, lo confirmó.
 
 **Pendiente:** demostrarlo en celular, que es lo único que le falta a la fila de `cumplimiento-ficha.md`.
+
+## Avance de V2-T01.10 (el acceso, encendido)
+
+El inicio de sesión y el cambio obligatorio de la contraseña temporal (V2-M01.01 y V2-M01.03) **ya son lo que ve quien abre la app** (`ModuloMigrable.acceso`, v2 por defecto). Lo hizo Daniel como parte de «terminar de pasar las pantallas a v2»; es un PR propio y reversible (`--dart-define=MODULOS_V1=acceso`). Los tres bloqueos que se habían anotado aquí quedaron así:
+
+| Bloqueo anotado | Cómo quedó |
+| --- | --- |
+| «¿Olvidaste tu contraseña?» muerto | **Era peor de lo anotado:** el botón de la v2 tenía el cuerpo vacío (`_olvide() {}`), no solo faltaba la pantalla de destino. Ahora va a `/recuperar` con el correo escrito (si parece correo) y lo sirve la recuperación que esté encendida |
+| La recuperación v2 (V2-M01.04) | **No se enciende**: es el módulo `recuperacion`, aparte, y sigue en v1. El motivo no es de la pantalla sino del correo (abajo) |
+| Las trece pruebas que miraban `PantallaLogin` | Diecinueve archivos de pruebas de rutas usan ahora `pantallaDeAcceso` (`test/ayudas/app_enrutada.dart`): una sola definición de qué pantalla es la de acceso |
+
+**Por qué la recuperación v2 espera.** Al revisar el correo que manda el backend (`RecuperacionContrasenaService`) aparecieron tres cosas que juntas dejarían sin salida a quien olvida su contraseña:
+
+1. El enlace es `carecar://restablecer-contrasena?token=…` (valor por omisión de `RECUPERACION_ENLACE`) y la app entiende `carecar://restablecer?token=…`. Tocarlo llevaría a una ruta que no existe.
+2. El enlace universal `https://<host>/app/restablecer` usa `carecar.example.com`, un marcador: sin dominio real con `assetlinks.json` y `apple-app-site-association` abre el navegador, no la app.
+3. El correo trae también el **código de 6 dígitos**, que solo la pantalla v1 sabe recibir. La v2 no tiene dónde escribirlo.
+
+La v1 sí funciona hoy (correo con código). Encender la v2 sin resolver esto cambiaría algo que sirve por algo que no.
+
+**Para encender la recuperación v2** (lo que sigue y a quién le toca decidir): (a) el dominio real y sus dos archivos de verificación (T01.03 lo dejó como `CONFIGURAR`), (b) que el backend mande el enlace que la app reconoce o que la app acepte también `restablecer-contrasena`, (c) probarlo en un celular con un correo real, que es también lo que le falta a la fila de `cumplimiento-ficha.md`, y (d) agregar `ModuloMigrable.recuperacion` a `InterruptorModulos.porDefecto`. Mientras tanto se prueba con `--dart-define=MODULOS_V2=recuperacion`.
+
+**Pendiente:** demostrar el inicio de sesión v2 en un celular real (fila de `cumplimiento-ficha.md`). V2-M01.10 ya conectó «Cambiar contraseña» de Ajustes con la pantalla v2 (`/mi-contrasena`), y la prueba `test/nucleo/migracion/convivencia_acceso_test.dart` lo comprueba con el acceso v2 por defecto.

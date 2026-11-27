@@ -15,13 +15,13 @@ import '../../../nucleo/diseno/componentes/estado_vacio.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
 import '../../../nucleo/diseno/componentes/linea_de_tiempo.dart';
+import '../../../nucleo/diseno/componentes/mapa.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/mapas/mapas.dart';
 import 'estilo_seguimiento.dart';
-import 'provisional/mapa_provisional.dart';
 import 'rutas_recoleccion.dart';
 import 'seguimiento_traslado.dart';
 
@@ -101,7 +101,7 @@ class _Cargando extends StatelessWidget {
   );
 }
 
-class _Contenido extends StatelessWidget {
+class _Contenido extends ConsumerWidget {
   const _Contenido({
     required this.traslado,
     required this.actualizando,
@@ -115,7 +115,7 @@ class _Contenido extends StatelessWidget {
   final Future<void> Function() alActualizar;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
@@ -192,12 +192,15 @@ class _Contenido extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: Espaciado.e3),
-                  MapaProvisional(
-                    pin: Coordenada(chofer.lat, chofer.lng),
-                    icono: LucideIcons300.truck,
+                  Mapa(
+                    teselas: ref.watch(configuracionTeselasProvider),
                     descripcion: textos.recoleccionSeguimientoMapaDescripcion(
                       '${chofer.lat}',
                       '${chofer.lng}',
+                    ),
+                    enMovimiento: MarcadorEnMovimiento(
+                      posicion: Coordenada(chofer.lat, chofer.lng),
+                      etiqueta: textos.recoleccionSeguimientoMarcadorChofer,
                     ),
                   ),
                   const SizedBox(height: Espaciado.e2),

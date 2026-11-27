@@ -69,6 +69,25 @@ void main() {
       expect(sinAts, base);
     });
 
+    test('ningun permiso se explica dos veces', () {
+      // iOS se queda con la PRIMERA declaracion: una segunda con otro texto
+      // nunca se muestra, asi que la persona lee un motivo que no es el suyo.
+      for (final ruta in [
+        'ios/Runner/Info.plist',
+        'ios/Runner/Info-desarrollo.plist',
+      ]) {
+        final llaves = RegExp(r'<key>(\w*UsageDescription)</key>')
+            .allMatches(File(ruta).readAsStringSync())
+            .map((m) => m[1]!)
+            .toList();
+        expect(
+          llaves.toSet().length,
+          llaves.length,
+          reason: '$ruta explica un permiso dos veces',
+        );
+      }
+    });
+
     for (final f in Flavor.values) {
       test('${f.name}: scheme, xcconfig y nombre existen', () {
         expect(

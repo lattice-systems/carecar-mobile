@@ -6,20 +6,22 @@ Leyenda: ✅ cumple con prueba · 🟡 existe en v1, falta v2 o prueba · ❌ br
 
 Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backend` (PR #57).
 
+Consulta la [evidencia automática por criterio](#evidencia-automática-por-criterio) para abrir las pruebas por nombre.
+
 ## Funcionalidades
 
 ### 1. Acceso y perfil — plan [M01](modulos/M01-acceso-y-perfil.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01) y la renovación de 30 días demostrada de punta a punta (V2-M01.11); **la ruta del módulo ya solo espera** a actualizar las trece pruebas ajenas, y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
+| Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01) y la renovación de 30 días demostrada de punta a punta (V2-M01.11); **ya es la pantalla que se ve por defecto** (V2-T01.10, con «Olvidé mi contraseña» conectado a la recuperación) y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
 | Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 pantalla v2 con 15 pruebas y el apretón de manos con el guardia fijado (V2-M01.03); su ruta **no está encendida** hasta V2-M01.04, y falta demostrarla en celular | V2-M01.03 |
 | Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); las dos pantallas de la app con 26 pruebas (V2-M01.04), **la ruta del módulo no está encendida** y falta demostrarlo en celular con un correo real | V2-M01.04, V2-T05.04 |
-| Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | ⬜ | V2-M01.05 |
+| Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | 🟡 **completo en la app** (V2-M01.05): candado opcional con `local_auth` detrás de `LectorBiometrico`, que se prende desde el perfil identificándose ahí mismo y se apaga igual. No sustituye al token: es un candado local sobre la sesión, y siempre queda la salida «entrar con mi contraseña», que cierra la sesión. Si cambia la biometría del equipo se apaga y se pide la contraseña, con el límite anotado en AUTH-2 de la revisión MASVS. 10 pruebas. **Falta probarlo en celular**, que es lo único que de verdad lo comprueba | V2-M01.05 |
 | Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 **completa de punta a punta** (V2-M01.06): la pantalla muestra nombre, correo, teléfono, desde cuándo es cliente y sus vehículos, con los cinco estados, y el backend suma `telefono` y `clienteDesde` a `GET /perfil` sin migración. 21 pruebas en la app y 2 de integración en el backend. Se abre desde Ajustes y desde ahí se llega a «mis sesiones». **Solo falta demostrarlo en celular.** Editar esos datos es V2-M01.07 | V2-M01.06 |
-| Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | ❌ backend con `cuenta_app.usuario` que sigue al correo (V2-T05.03); falta `verificacion_contacto` y la pantalla | V2-M01.07, V2-T05.03 |
-| Sesiones y dispositivos activos | `sesion_app` | 🟡 **completa de punta a punta** (V2-M01.09): la app lista dispositivo y último uso y cierra una o todas, y el backend trae las tres columnas (V52), el motivo de revocación (V53) y los tres endpoints. 76 pruebas en la app y 16 de integración en el backend. **Solo falta demostrarlo en celular.** La lista **no marca «este dispositivo»**: el JWT no lleva el id de la sesión, y marcarlo exige un claim en `shared` | V2-M01.09, V2-M01.10 |
-| Aviso de cuenta desactivada | `cuenta_app` | 🟡 | V2-M01.08 |
+| Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | 🟡 **el correo, completo de punta a punta** (V2-M01.07): `verificacion_contacto` (V57), `PATCH /perfil` y la confirmación por código, con la pantalla y 28 pruebas en la app más 11 de integración. Pedirlo exige la contraseña actual y el correo no se guarda hasta confirmar. **El teléfono no se puede hacer**: verificarlo exige mandar el código al teléfono y no hay proveedor de SMS; la tabla ya acepta `TELEFONO` para cuando lo haya. Falta demostrarlo en celular | V2-M01.07, V2-T05.03 |
+| Sesiones y dispositivos activos | `sesion_app` | 🟡 **completa de punta a punta** (V2-M01.09): la app lista dispositivo y último uso y cierra una o todas, y el backend trae las tres columnas (V52), el motivo de revocación (V53) y los tres endpoints. 76 pruebas en la app y 16 de integración en el backend. **Solo falta demostrarlo en celular.** La lista **no marca «este dispositivo»**: el JWT no lleva el id de la sesión, y marcarlo exige un claim en `shared`. **V2-M01.10** suma cambiar la contraseña desde Ajustes (`/mi-contrasena`), pidiendo la actual y con la opción de cerrar las sesiones; por lo mismo del claim, la casilla cierra **todas, incluida esta**, y lo dice | V2-M01.09, V2-M01.10 |
+| Aviso de cuenta desactivada | `cuenta_app` | 🟡 **completo en la app** (V2-M01.08): el 403 se atiende en el embudo de `ClienteApi`, así que también cuando la cuenta se desactiva con la persona dentro; se borra la sesión local y la guardia lleva a `/cuenta-desactivada`, que explica el motivo y ofrece llamar o escribir a la agencia. 8 pruebas. Falta demostrarlo en celular | V2-M01.08 |
 
 ### 2. Mis vehículos y postventa — plan [M02](modulos/M02-vehiculos-y-postventa.md)
 
@@ -64,7 +66,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | ⬜ | Ver M06 |
+| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); tocar un aviso lleva a su pantalla con la app abierta, en segundo plano y cerrada, y si el destino pide sesión vuelve ahí al entrar (V2-M06.03, `test/nucleo/avisos/tocar_un_aviso_test.dart`); falta el registro del token FCM y el envío (V2-M06.02, V2-M06.07) | Ver M06 |
 | Bandeja de avisos | `notificacion` | ⬜ | Ver M06 |
 | Preferencias de avisos | `preferencia_notificacion` | ⬜ | Ver M06 |
 
@@ -78,9 +80,9 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | ⬜ procesador simulado y propio, sin cuentas externas ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md), aceptada) | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07 |
-| Métodos de pago guardados | `metodo_pago` | ⬜ | V2-M08.04 |
-| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | 🟡 `perfil_fiscal` existe (backend V54) con RFC, régimen y uso de CFDI validados con CFDI 4.0, pantallas, mock y pruebas (V2-M08.05). `factura` existe (ERP, sin timbrado); se le agregan columnas para facturas de servicio y el timbrado es simulado ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) | V2-M08.05, V2-M08.06 |
+| Pago del servicio | `pago_app`, `orden_servicio`, `metodo_pago` | 🟡 `pago_app` existe (backend V55) con procesador simulado y propio, sin cuentas externas ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md), aceptada): idempotencia, 3-D Secure simulado, pagada en caja, `pago.confirmado`, pantallas, mock y pruebas (V2-M08.02, V2-M08.07). Con V2-M14.04 `pago_app` cobra también pedidos de la tienda: se agrega `pago_app.pedido_app_id` y `pago_app.orden_servicio_id` pasa a nulo permitido (uno u otro, `ck_pago_app_objeto`). Ninguna columna de la ficha se quita ni se renombra. Con V2-M08.03 paga también con Apple Pay o Google Pay simulados (`metodo` `APPLE_PAY` o `GOOGLE_PAY`, sin marca ni últimos 4, nunca se guardan; `pagar_con_billetera_test.dart`, `PagosAppServiceTest`). Falta demostrar en celular | V2-M08.01, V2-M08.02, V2-M08.03, V2-M08.07, V2-M14.04 |
+| Métodos de pago guardados | `metodo_pago` | 🟡 `metodo_pago` existe (backend V55): token de prueba, marca, últimos 4 y vencimiento, nunca el número; predeterminada y borrar con pantalla, mock y pruebas (V2-M08.04). Falta demostrar en celular | V2-M08.04 |
+| Datos fiscales y facturas | `perfil_fiscal`, `factura`, `pago_app` | 🟡 `perfil_fiscal` existe (backend V54) con RFC, régimen y uso de CFDI validados con CFDI 4.0, pantallas, mock y pruebas (V2-M08.05). `factura` existe (ERP) y con V2-M08.06 (backend V58) gana `tipo` (`VENTA_UNIDAD`, `SERVICIO`, `PEDIDO_APP`), `pago_app_id`, `perfil_fiscal_id`, `uuid_fiscal`, `xml_archivo_id`, `pdf_archivo_id`, `timbrada_en` y otras; las columnas de la venta de un auto pasan a nulo permitido con `ck_factura_tipo` por tipo y el ERP solo ve `VENTA_UNIDAD`. Timbrado simulado ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)): XML con estructura de CFDI 4.0 y timbre simulado, PDF con la leyenda «sin validez fiscal», al pagar con perfil o con «Facturar», rechazo 422 por campo y `factura.timbrada` (`FacturasAppIntegrationTest`, `seccion_factura_test.dart`). Ninguna columna de la ficha se quita ni se renombra. Falta demostrar en celular | V2-M08.05, V2-M08.06 |
 
 ### 9. Documentos y vencimientos — plan [M09](modulos/M09-documentos-y-vencimientos.md)
 
@@ -121,7 +123,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Catálogo compatible con mi vehículo | `refaccion`, `compatibilidad_refaccion` | 🟡 backend integrado (backend#107) y app lista con el contrato 2.21.0 y `mock_api`: filtro por vehículo, existencia visible, categorías y búsqueda (`test/modulos/tienda/pantalla_tienda_test.dart`, `pantalla_producto_test.dart` y `test/contrato/contrato_tienda_test.dart`). Falta probarla contra el backend real y demostrarla en celular | V2-M14.01 |
-| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | 🟡 backend integrado (backend#107) y app lista con `mock_api`: apartar con llave de idempotencia, vigencia, cancelar, instalar en una cita y mis pedidos en vivo (`pantalla_carrito_test.dart` y `pantalla_pedidos_test.dart`). Se paga en caja: el pago en la app (V2-M14.04) espera a V2-M08.02 y el push con la app cerrada a M06. Falta probarla contra el backend real y demostrarla en celular | V2-M14.02, V2-M14.03, V2-M14.05 |
+| Pedidos y apartados | `pedido_app`, `pedido_app_renglon`, `refaccion`, `movimiento_inventario`, `cita` | 🟡 backend integrado (backend#107) y app lista con `mock_api`: apartar con llave de idempotencia, vigencia, cancelar, instalar en una cita y mis pedidos en vivo (`pantalla_carrito_test.dart` y `pantalla_pedidos_test.dart`). Se paga en la app con la pantalla de M08 o en caja al recoger (V2-M14.04): app y `mock_api` listos contra el contrato 2.25.0 (`test/modulos/tienda/pagar_pedido_test.dart` y `test/modulos/pagos/pagar_pedido_test.dart`). Ninguna columna de la ficha se quita ni se renombra: se agrega `pedido_app.pagado_en`. El push con la app cerrada espera a M06. Falta probarla contra el backend real y demostrarla en celular | V2-M14.02, V2-M14.03, V2-M14.04, V2-M14.05 |
 
 ### 15. Encuestas y NPS — plan [M15](modulos/M15-encuestas-nps.md)
 
@@ -139,7 +141,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; faltan que estas pantallas pasen del mapa provisional al componente Mapa (ya existe, V2-T02.09), el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; las pantallas ya usan el componente Mapa (V2-T02.09); faltan el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
@@ -178,10 +180,43 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Preguntas frecuentes | `pregunta_frecuente` | ⬜ | Ver M27 |
-| Sucursales y horarios | `sucursal` | ⬜ | Ver M27 |
+| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar (falta integrar backend y probar en celular) | V2-M27.02 |
 | Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
 
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
+
+## Evidencia automática por criterio
+
+Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
+
+| Criterio probado | Archivo |
+| --- | --- |
+| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M02.01: el garaje muestra los vehículos de la cuenta` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
+| `V2-M02.01: el garaje requiere iniciar sesión` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
+| `V2-M02.07: anuncia y deshabilita los días sin cupo` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |
+| `V2-M02.07: muestra las franjas y el cupo del día elegido` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |
+| `V2-M02.08: pide vehículo, día, horario y motivo antes de continuar` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: al confirmar agenda y muestra el resultado` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: ofrece horarios cercanos cuando se pierde el cupo` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.08: ante un duplicado muestra la cita existente` | [Prueba](../test/modulos/citas/pantalla_agendar_cita_test.dart) |
+| `V2-M02.09: cada estado de cita tiene texto visible` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.09: muestra más citas al pedir la siguiente página` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.10: permite mantener la cita al confirmar la cancelación` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.10: cancela y avisa que el horario quedó libre` | [Prueba](../test/modulos/citas/pantalla_mis_citas_test.dart) |
+| `V2-M02.13: reprograma y libera el horario anterior` | [Prueba](../test/modulos/citas/pantalla_reprogramar_cita_test.dart) |
+| `V2-M03.03: compara tres modelos con precio y ficha` | [Prueba](../test/modulos/catalogo/comparador_test.dart) |
+| `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
+| `V2-M23.01: solo registra fallos nuevos del periodo consentido` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.01: descarta la consulta si cambia el consentimiento` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
+| `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
+| `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
+| `V2-M24.05: el testigo rojo indica detenerse y pedir ayuda` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
+
+Inicio de sesión, garaje, reserva y cancelación también se recorren juntos en la [prueba de integración Android](../integration_test/flujo_principal_test.dart). La tabla crece conforme se registra cobertura de más criterios.
 
 ## Tablas que hoy existen con otro nombre o faltan (backend)
 

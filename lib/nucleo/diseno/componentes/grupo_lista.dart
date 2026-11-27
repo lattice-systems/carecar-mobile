@@ -68,6 +68,7 @@ class GrupoLista extends StatelessWidget {
 
   static const double _cuadroIcono = 32;
   static const double _cuadroVisual = 40;
+  static const double _escalaQueApila = 1.5;
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +160,11 @@ class _Fila extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final tocable = fila.alToque != null;
+    // Desde letra grande el `fin` no cabe al lado sin partir palabras del
+    // título, así que baja y el texto recibe todo el ancho.
+    final apilado =
+        MediaQuery.textScalerOf(context).scale(16) >=
+        16 * GrupoLista._escalaQueApila;
 
     final contenido = ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 56),
@@ -201,10 +207,14 @@ class _Fila extends StatelessWidget {
                         fila.subtitulo!,
                         style: t.cuerpoChico.copyWith(color: c.textoSecundario),
                       ),
+                    if (apilado && fila.fin != null) ...[
+                      const SizedBox(height: Espaciado.e1),
+                      fila.fin!,
+                    ],
                   ],
                 ),
               ),
-              if (fila.fin != null) ...[
+              if (!apilado && fila.fin != null) ...[
                 const SizedBox(width: Espaciado.e3),
                 // El `fin` toma su ancho natural, hasta la mitad de la fila, y
                 // el texto el resto. Antes los dos repartian el espacio libre

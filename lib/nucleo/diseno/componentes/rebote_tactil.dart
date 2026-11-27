@@ -11,12 +11,16 @@ import '../tokens/movimiento.dart';
 /// suave sin oscilaciones lentas, logrando una sensación ágil y ligera.
 ///
 /// Si se pasa `alPulsar`, gestiona el evento de toque de forma nativa e instantánea.
+/// Con `excluirDeSemantica` ese toque no crea un nodo para el lector de
+/// pantalla: es para tarjetas que ya declaran el suyo con nombre.
+///
 /// Respeta la preferencia de «reducir movimiento» del sistema: si está activa,
 /// no escala y solo ejecuta la acción con el háptico.
 class ReboteTactil extends StatefulWidget {
   const ReboteTactil({
     required this.child,
     this.alPulsar,
+    this.excluirDeSemantica = false,
     this.escalaAlPresionar = 0.975,
     this.habilitado = true,
     this.activarHaptico = true,
@@ -25,6 +29,7 @@ class ReboteTactil extends StatefulWidget {
 
   final Widget child;
   final VoidCallback? alPulsar;
+  final bool excluirDeSemantica;
   final double escalaAlPresionar;
   final bool habilitado;
   final bool activarHaptico;
@@ -105,6 +110,7 @@ class _ReboteTactilState extends State<ReboteTactil>
             widget.alPulsar?.call();
           },
           behavior: HitTestBehavior.opaque,
+          excludeFromSemantics: widget.excluirDeSemantica,
           child: widget.child,
         );
       }
@@ -124,6 +130,7 @@ class _ReboteTactilState extends State<ReboteTactil>
           widget.alPulsar?.call();
         },
         behavior: HitTestBehavior.opaque,
+        excludeFromSemantics: widget.excluirDeSemantica,
         child: contenido,
       );
     }

@@ -32,6 +32,80 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCambiarConfirmarEtiqueta => 'Confirma la contraseña nueva';
 
   @override
+  String get accesoCambiarCorreoCodigoCorto => 'El código tiene 6 dígitos';
+
+  @override
+  String get accesoCambiarCorreoCodigoEtiqueta => 'Código de 6 dígitos';
+
+  @override
+  String get accesoCambiarCorreoCodigoInvalido =>
+      'Ese código no es válido, ya se usó o venció';
+
+  @override
+  String get accesoCambiarCorreoConfirmando => 'Confirmando…';
+
+  @override
+  String get accesoCambiarCorreoConfirmar => 'Confirmar';
+
+  @override
+  String get accesoCambiarCorreoContrasenaEtiqueta => 'Tu contraseña';
+
+  @override
+  String get accesoCambiarCorreoContrasenaFalta => 'Escribe tu contraseña';
+
+  @override
+  String get accesoCambiarCorreoContrasenaNoCoincide =>
+      'Tu contraseña no coincide';
+
+  @override
+  String get accesoCambiarCorreoContrasenaPista =>
+      'Con tu correo se entra a la app, así que confirmamos que eres tú.';
+
+  @override
+  String get accesoCambiarCorreoCorreoEnUso => 'Ese correo ya está en uso';
+
+  @override
+  String get accesoCambiarCorreoCorreoEtiqueta => 'Correo nuevo';
+
+  @override
+  String get accesoCambiarCorreoCorreoInvalido => 'Escribe un correo válido';
+
+  @override
+  String get accesoCambiarCorreoEnviando => 'Enviando…';
+
+  @override
+  String get accesoCambiarCorreoEnviar => 'Enviar el código';
+
+  @override
+  String get accesoCambiarCorreoExplicacion =>
+      'Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.';
+
+  @override
+  String get accesoCambiarCorreoFalloTitulo => 'No pudimos pedir el cambio';
+
+  @override
+  String accesoCambiarCorreoListoMensaje(String correo) {
+    return 'A partir de ahora entras con $correo.';
+  }
+
+  @override
+  String get accesoCambiarCorreoListoTitulo => 'Tu correo quedó actualizado';
+
+  @override
+  String accesoCambiarCorreoPasoDosExplicacion(String correo) {
+    return 'Te mandamos un código a $correo. Vence en 15 minutos.';
+  }
+
+  @override
+  String get accesoCambiarCorreoPedirOtro => 'Pedir otro código';
+
+  @override
+  String get accesoCambiarCorreoTitulo => 'Cambiar mi correo';
+
+  @override
+  String get accesoCambiarCorreoVencio => 'El código venció. Pide otro.';
+
+  @override
   String get accesoCambiarExplicacion =>
       'La agencia te dio una contraseña temporal. Elige una nueva para continuar.';
 
@@ -88,6 +162,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCorreoVacio => 'Escribe tu correo.';
 
   @override
+  String get accesoDesactivadaEscribir => 'Escribir un correo';
+
+  @override
+  String get accesoDesactivadaExplicacion =>
+      'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.';
+
+  @override
+  String get accesoDesactivadaLlamar => 'Llamar a la agencia';
+
+  @override
+  String get accesoDesactivadaNoSePudo =>
+      'No se pudo abrir en este dispositivo.';
+
+  @override
+  String get accesoDesactivadaTitulo => 'Tu cuenta está desactivada';
+
+  @override
+  String get accesoDesactivadaVolver => 'Volver a iniciar sesión';
+
+  @override
   String get accesoEnlaceNoValidoMensaje =>
       'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
 
@@ -108,6 +202,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoMiContrasenaCerrarOtras =>
+      'Cerrar sesión en todos mis dispositivos';
+
+  @override
+  String get accesoMiContrasenaCerrarOtrasDetalle =>
+      'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.';
+
+  @override
+  String get accesoMiContrasenaExplicacion =>
+      'Te pedimos la contraseña de ahora para confirmar que eres tú.';
+
+  @override
+  String get accesoMiContrasenaGuardar => 'Guardar la contraseña nueva';
+
+  @override
+  String get accesoMiContrasenaListo => 'Tu contraseña quedó actualizada';
+
+  @override
+  String get accesoMiContrasenaListoMensaje =>
+      'Úsala la próxima vez que inicies sesión.';
+
+  @override
+  String get accesoMiContrasenaTitulo => 'Cambiar mi contraseña';
 
   @override
   String get accesoNuevaExplicacion =>
@@ -138,6 +257,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoOlvide => '¿Olvidaste tu contraseña?';
 
   @override
+  String get accesoPerfilCandado => 'Entrar con huella o rostro';
+
+  @override
+  String get accesoPerfilCandadoDetalle =>
+      'Para abrir la app sin escribir tu contraseña';
+
+  @override
+  String get accesoPerfilCandadoMotivo =>
+      'Confirma tu huella para prender el desbloqueo.';
+
+  @override
+  String get accesoPerfilCandadoNoSePudo =>
+      'No pudimos confirmar tu huella. El desbloqueo sigue apagado.';
+
+  @override
   String get accesoPerfilCargando => 'Cargando tu perfil…';
 
   @override
@@ -164,7 +298,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoPerfilPie =>
-      'Para cambiar tu teléfono o tu correo, comunícate con la agencia.';
+      'Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.';
 
   @override
   String get accesoPerfilSinTelefono => 'Sin teléfono registrado';
@@ -220,6 +354,35 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get accesoSesionesCambio =>
       'Esa sesión cambió mientras la veías. Revisa la lista e inténtalo otra vez.';
+
+  @override
+  String get desbloqueoCambioMensaje =>
+      'Por seguridad apagamos el desbloqueo con huella. Entra con tu contraseña y lo puedes volver a prender.';
+
+  @override
+  String get desbloqueoCambioTitulo => 'La biometría de tu teléfono cambió';
+
+  @override
+  String get desbloqueoContrasena => 'Entrar con mi contraseña';
+
+  @override
+  String get desbloqueoExplicacion => 'Usa tu huella o tu rostro para entrar.';
+
+  @override
+  String get desbloqueoFalloMensaje =>
+      'Intenta otra vez o entra con tu contraseña.';
+
+  @override
+  String get desbloqueoFalloTitulo => 'No te reconocimos';
+
+  @override
+  String get desbloqueoIntentar => 'Usar mi huella o mi rostro';
+
+  @override
+  String get desbloqueoMotivo => 'Confirma que eres tú para entrar a CareCar.';
+
+  @override
+  String get desbloqueoTitulo => 'Desbloquea CareCar';
 
   @override
   String get accesoSesionesCancelar => 'Cancelar';
@@ -1028,7 +1191,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String tiendaApartadoMensaje(String fecha) {
-    return 'Pagas en caja. Tu apartado vence el $fecha.';
+    return 'Tu apartado vence el $fecha. Págalo ahora en la app o en caja al recoger.';
   }
 
   @override
@@ -1198,6 +1361,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get tiendaMedioTarjeta => 'tarjeta';
+
+  @override
   String get tiendaMisPedidos => 'Mis pedidos';
 
   @override
@@ -1219,6 +1385,38 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tiendaNoSeCambioTitulo => 'No se pudo cambiar el pedido';
+
+  @override
+  String get tiendaPagado => 'Pagado';
+
+  @override
+  String tiendaPagadoAviso(String medio) {
+    return 'Pagado con $medio';
+  }
+
+  @override
+  String get tiendaPagadoCancelarEnMostrador =>
+      'Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.';
+
+  @override
+  String tiendaPagadoMensaje(String fecha) {
+    return 'El $fecha. Ya no vence.';
+  }
+
+  @override
+  String tiendaPagar(String monto) {
+    return 'Pagar $monto';
+  }
+
+  @override
+  String get tiendaPagarAhora => 'Pagar ahora';
+
+  @override
+  String get tiendaPagarEnCaja => 'Pagar en caja';
+
+  @override
+  String get tiendaPagoEnAppOCaja =>
+      'Paga en la app desde tu pedido o en caja al recoger.';
 
   @override
   String get tiendaPagoEnCaja => 'No se cobra en la app: pagas en caja.';
@@ -1297,6 +1495,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este pedido ya se entregó o se canceló y no se puede cambiar.';
 
   @override
+  String get tiendaRechazoPagado =>
+      'Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.';
+
+  @override
   String get tiendaRechazoSinExistencia =>
       'Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.';
 
@@ -1331,6 +1533,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tiendaSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String tiendaTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
 
   @override
   String get tiendaTitulo => 'Tienda';
@@ -1557,7 +1764,94 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avisoCerrar => 'Cerrar aviso';
 
   @override
+  String get avisosPermisoTitulo => 'Para qué te avisamos';
+
+  @override
+  String get avisosPermisoExplicacion =>
+      'Solo te escribimos cuando pasa algo con tu auto. Nada más.';
+
+  @override
+  String get avisosPermisoTaller =>
+      'Cómo va tu auto en el taller, paso a paso.';
+
+  @override
+  String get avisosPermisoCitas => 'Tu cita, recordada 24 y 2 horas antes.';
+
+  @override
+  String get avisosPermisoRespuestas =>
+      'Cuando tu asesor te contesta o tus documentos ya están listos.';
+
+  @override
+  String get avisosPermisoSinPublicidad =>
+      'No mandamos publicidad, y los puedes apagar cuando quieras.';
+
+  @override
+  String get avisosPermisoActivar => 'Activar avisos';
+
+  @override
+  String get avisosPermisoAhoraNo => 'Ahora no';
+
+  @override
+  String get avisosPermisoListoTitulo => 'Listo, te vamos a avisar';
+
+  @override
+  String get avisosPermisoListoMensaje =>
+      'Puedes apagarlos cuando quieras desde tu perfil.';
+
+  @override
+  String get avisosPermisoNegadosTitulo => 'Los avisos están apagados';
+
+  @override
+  String get avisosPermisoNegadosMensaje =>
+      'Tu teléfono ya no nos deja preguntarte otra vez, pero los puedes prender en los ajustes del sistema.';
+
+  @override
+  String get avisosPermisoAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String get accesoPerfilAvisos => 'Avisos';
+
+  @override
+  String get accesoPerfilAvisosPrendidos => 'Prendidos';
+
+  @override
+  String get accesoPerfilAvisosApagados => 'Apagados';
+
+  @override
+  String get accesoPerfilAvisosSinPreguntar => 'Sin configurar';
+
+  @override
   String get navegacionPrincipal => 'Navegación principal';
+
+  @override
+  String get bienvenidaDosTexto =>
+      'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.';
+
+  @override
+  String get bienvenidaDosTitulo => 'Pide tu cita sin llamar';
+
+  @override
+  String get bienvenidaEmpezar => 'Empezar';
+
+  @override
+  String get bienvenidaSaltar => 'Saltar';
+
+  @override
+  String get bienvenidaSiguiente => 'Siguiente';
+
+  @override
+  String get bienvenidaTresTexto =>
+      'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.';
+
+  @override
+  String get bienvenidaTresTitulo => 'Sigue tu servicio al día';
+
+  @override
+  String get bienvenidaUnoTexto =>
+      'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.';
+
+  @override
+  String get bienvenidaUnoTitulo => 'Tus autos, en un solo lugar';
 
   @override
   String botonCargando(String texto) {
@@ -1866,6 +2160,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get historialVacioTitulo => 'Aún no hay servicios';
+
+  @override
+  String get analiticaTitulo => 'Compartir analítica';
+
+  @override
+  String get analiticaDescripcion =>
+      'Comparte métricas de uso y diagnóstico para mejorar CareCar.';
+
+  @override
+  String get analiticaError =>
+      'No se pudo guardar la preferencia. Intenta de nuevo.';
 
   @override
   String get idiomaEtiqueta => 'Idioma';
@@ -5599,4 +5904,674 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get datosFiscalesErrorCorreo => 'Revisa el correo.';
+
+  @override
+  String get pagosCargando => 'Cargando tus pagos';
+
+  @override
+  String get pagosReintentar => 'Reintentar';
+
+  @override
+  String get pagosSimuladoAviso =>
+      'Pago simulado: no se cobra nada. Usa una de las tarjetas de prueba.';
+
+  @override
+  String get pagosSimuladoPie =>
+      'Los pagos de la app son simulados: no se cobró nada.';
+
+  @override
+  String get pagosSimuladoCorto => 'Pago simulado: no se cobró nada.';
+
+  @override
+  String get pagosEnCaja => 'Se pagó en la caja de la agencia.';
+
+  @override
+  String get pagosPagarTitulo => 'Pagar orden';
+
+  @override
+  String pagosOrden(String orden) {
+    return 'Orden $orden';
+  }
+
+  @override
+  String get pagosDesglose => 'Lo que pagas';
+
+  @override
+  String get pagosManoDeObra => 'Mano de obra';
+
+  @override
+  String get pagosRefacciones => 'Refacciones';
+
+  @override
+  String get pagosSubtotal => 'Subtotal sin IVA';
+
+  @override
+  String get pagosIva => 'IVA';
+
+  @override
+  String get pagosTotal => 'Total';
+
+  @override
+  String get pagosPreciosConIva => 'Los precios incluyen IVA.';
+
+  @override
+  String get pagosConQue => 'Con qué pagas';
+
+  @override
+  String get pagosTarjeta => 'Tarjeta';
+
+  @override
+  String get pagosOtraTarjeta => 'Otra tarjeta';
+
+  @override
+  String pagosTarjetaVencida(String tarjeta) {
+    return '$tarjeta (vencida)';
+  }
+
+  @override
+  String get pagosNumero => 'Número de tarjeta';
+
+  @override
+  String get pagosNumeroSugerencia => '4242 4242 4242 4242';
+
+  @override
+  String get pagosVencimiento => 'Vence (MM/AA)';
+
+  @override
+  String get pagosVencimientoSugerencia => '12/28';
+
+  @override
+  String get pagosCvv => 'CVV';
+
+  @override
+  String get pagosCvvAyuda =>
+      'El número y el CVV no salen de tu teléfono: solo se envía un token de la tarjeta de prueba.';
+
+  @override
+  String get pagosGuardarTarjeta => 'Guardar tarjeta';
+
+  @override
+  String get pagosGuardarTarjetaAyuda =>
+      'Para pagar más rápido. Solo se guardan la marca, los últimos 4 y el vencimiento.';
+
+  @override
+  String get pagosTarjetasDePrueba => 'Tarjetas de prueba';
+
+  @override
+  String get pagosTarjetasDePruebaPie =>
+      'Toca una para escribir su número. Sirve cualquier vencimiento futuro y cualquier CVV de 3 dígitos.';
+
+  @override
+  String pagosTarjetaDePruebaDetalle(String marca, String escenario) {
+    return '$marca · $escenario';
+  }
+
+  @override
+  String get pagosEscenarioAprobada => 'Se aprueba';
+
+  @override
+  String get pagosEscenarioFondos => 'Se rechaza por fondos insuficientes';
+
+  @override
+  String get pagosEscenarioConfirmar => 'Tu banco pide confirmar';
+
+  @override
+  String get pagosEscenarioConfirmacionFalla => 'Tu banco no confirma';
+
+  @override
+  String get pagosFactura => 'Factura';
+
+  @override
+  String get pagosDatosFiscales => 'Datos fiscales';
+
+  @override
+  String get pagosFacturaAyuda =>
+      'Con tus datos fiscales se emite la factura simulada al pagar.';
+
+  @override
+  String get pagosSinFactura => 'Sin factura';
+
+  @override
+  String pagosPerfilFiscal(String rfc, String razonSocial) {
+    return '$rfc · $razonSocial';
+  }
+
+  @override
+  String pagosPagar(String monto) {
+    return 'Pagar $monto';
+  }
+
+  @override
+  String get pagosRevisaTarjeta => 'Revisa los datos de la tarjeta.';
+
+  @override
+  String get pagosSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo; no se cobrará dos veces.';
+
+  @override
+  String get pagosErrorPagar =>
+      'No pudimos procesar el pago. Intenta de nuevo.';
+
+  @override
+  String get pagosOrdenNoPagable =>
+      'Esta orden ya no se puede pagar en la app.';
+
+  @override
+  String get pagosPagoEnCurso =>
+      'Ya hay un pago de esta orden esperando la confirmación de tu banco. Revísalo en Mis pagos.';
+
+  @override
+  String get pagosPagoNoPendiente =>
+      'Este pago ya no espera la confirmación de tu banco.';
+
+  @override
+  String get pagosErrorNumeroVacio => 'Escribe el número de la tarjeta.';
+
+  @override
+  String get pagosErrorNumeroIncompleto => 'El número tiene 16 dígitos.';
+
+  @override
+  String get pagosErrorNumeroInvalido => 'Ese número no es válido; revísalo.';
+
+  @override
+  String get pagosErrorNoEsDePrueba => 'Usa una de las tarjetas de prueba.';
+
+  @override
+  String get pagosErrorVencimientoVacio => 'Escribe el vencimiento.';
+
+  @override
+  String get pagosErrorVencimientoInvalido => 'Escríbelo como MM/AA.';
+
+  @override
+  String get pagosErrorVencida => 'La tarjeta ya venció.';
+
+  @override
+  String get pagosErrorCvv => 'El CVV tiene 3 dígitos.';
+
+  @override
+  String get pagosBancoTitulo => 'Tu banco pide confirmar';
+
+  @override
+  String pagosBancoMensaje(String monto, String tarjeta) {
+    return 'Confirma el pago de $monto con $tarjeta. Esta pantalla del banco es simulada.';
+  }
+
+  @override
+  String get pagosBancoConfirmar => 'Confirmar';
+
+  @override
+  String get pagosBancoCancelar => 'Cancelar';
+
+  @override
+  String get pagosPagadoTitulo => '¡Orden pagada!';
+
+  @override
+  String pagosPagadoMensaje(String monto, String referencia) {
+    return 'Pagaste $monto. Referencia $referencia. Es un pago simulado: no se cobró nada.';
+  }
+
+  @override
+  String get pagosListo => 'Listo';
+
+  @override
+  String get pagosVerMisPagos => 'Ver mis pagos';
+
+  @override
+  String get pagosFalloTitulo => 'No se pudo pagar';
+
+  @override
+  String get pagosIntentarOtraVez => 'Intentar otra vez';
+
+  @override
+  String get pagosVolver => 'Volver';
+
+  @override
+  String get pagosMotivoFondos =>
+      'Tu banco rechazó la tarjeta por fondos insuficientes.';
+
+  @override
+  String get pagosMotivoAutenticacion => 'Tu banco no confirmó el pago.';
+
+  @override
+  String get pagosMotivoVencida => 'Nadie confirmó el pago a tiempo.';
+
+  @override
+  String get pagosMotivoCaja => 'La orden se pagó en caja.';
+
+  @override
+  String get pagosMotivoOtro => 'El pago no se completó.';
+
+  @override
+  String get pagosYaPagadaTitulo => 'Esta orden ya está pagada';
+
+  @override
+  String pagosYaPagadaMensaje(String medio, String fecha) {
+    return 'Con $medio el $fecha.';
+  }
+
+  @override
+  String get pagosVerPago => 'Ver el pago';
+
+  @override
+  String get pagosNoPagableTitulo => 'Esta orden aún no se puede pagar';
+
+  @override
+  String get pagosNoPagableMensaje =>
+      'Se paga en la app cuando está lista para entrega. Un servicio registrado ya hecho se paga en la agencia.';
+
+  @override
+  String get pagosMisPagosTitulo => 'Mis pagos';
+
+  @override
+  String get pagosMisPagosSubtitulo => 'Del más nuevo al más viejo';
+
+  @override
+  String get pagosMisPagosVacioTitulo => 'Aún no tienes pagos';
+
+  @override
+  String get pagosMisPagosVacioMensaje =>
+      'Aquí verás lo que pagues desde la app.';
+
+  @override
+  String pagosFilaSubtitulo(String estado, String medio, String fecha) {
+    return '$estado · $medio · $fecha';
+  }
+
+  @override
+  String pagosMontoConEstado(String monto, String estado) {
+    return '$monto, $estado';
+  }
+
+  @override
+  String get pagosCargandoMas => 'Cargando más pagos';
+
+  @override
+  String get pagosErrorCargarMas => 'No pudimos cargar más pagos.';
+
+  @override
+  String get pagosEstadoPendiente => 'Pendiente';
+
+  @override
+  String get pagosEstadoPagado => 'Pagado';
+
+  @override
+  String get pagosEstadoFallido => 'Fallido';
+
+  @override
+  String get pagosEstadoReembolsado => 'Reembolsado';
+
+  @override
+  String pagosMedioTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
+
+  @override
+  String get pagosMedioCaja => 'En caja';
+
+  @override
+  String get pagosMedioApplePay => 'Apple Pay (simulado)';
+
+  @override
+  String get pagosMedioGooglePay => 'Google Pay (simulado)';
+
+  @override
+  String get pagosPagoTitulo => 'Pago';
+
+  @override
+  String get pagosMonto => 'Monto';
+
+  @override
+  String get pagosMedio => 'Con qué se pagó';
+
+  @override
+  String get pagosFechaPago => 'Pagado el';
+
+  @override
+  String get pagosFechaIntento => 'Intentado el';
+
+  @override
+  String get pagosReferencia => 'Referencia';
+
+  @override
+  String get pagosMotivo => 'Por qué no se cobró';
+
+  @override
+  String get pagosConfirmarBanco => 'Confirmar con tu banco';
+
+  @override
+  String get pagosVerTicket => 'Ver el ticket';
+
+  @override
+  String get pagosPagarPedidoTitulo => 'Pagar pedido';
+
+  @override
+  String pagosPedido(String pedido) {
+    return 'Pedido $pedido';
+  }
+
+  @override
+  String get pagosPedidoYaPagadoTitulo => 'Este pedido ya está pagado';
+
+  @override
+  String get pagosPedidoNoPagableTitulo =>
+      'Este pedido ya no se puede pagar en la app';
+
+  @override
+  String get pagosPedidoNoPagableMensaje =>
+      'Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.';
+
+  @override
+  String get pagosPedidoNoPagable =>
+      'Este pedido ya no se puede pagar en la app.';
+
+  @override
+  String get pagosPedidoPagoEnCurso =>
+      'Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.';
+
+  @override
+  String get pagosPedidoPagadoTitulo => '¡Pedido pagado!';
+
+  @override
+  String get pagosVerPedido => 'Ver el pedido';
+
+  @override
+  String get pagosNoEncontradoTitulo => 'No encontramos este pago';
+
+  @override
+  String get pagosNoEncontradoMensaje =>
+      'Puede que sea de otra cuenta. Revisa Mis pagos.';
+
+  @override
+  String get pagosMetodosTitulo => 'Métodos de pago';
+
+  @override
+  String get pagosMetodosVacioTitulo => 'Aún no tienes tarjetas guardadas';
+
+  @override
+  String get pagosMetodosVacioMensaje =>
+      'Al pagar, marca «Guardar tarjeta» para que aparezca aquí.';
+
+  @override
+  String get pagosMetodosPie =>
+      'Solo se guardan la marca, los últimos 4 y el vencimiento de tarjetas de prueba.';
+
+  @override
+  String pagosVence(String vence) {
+    return 'Vence $vence';
+  }
+
+  @override
+  String pagosVenceYTipo(String vence, String tipo) {
+    return 'Vence $vence · $tipo';
+  }
+
+  @override
+  String get pagosCredito => 'Crédito';
+
+  @override
+  String get pagosDebito => 'Débito';
+
+  @override
+  String get pagosPredeterminada => 'Predeterminada';
+
+  @override
+  String get pagosVencidaInsignia => 'Vencida';
+
+  @override
+  String get pagosUsarPredeterminada => 'Usar como predeterminada';
+
+  @override
+  String get pagosBorrarTarjeta => 'Borrar tarjeta';
+
+  @override
+  String get pagosBorrarTitulo => '¿Borrar esta tarjeta?';
+
+  @override
+  String pagosBorrarMensaje(String tarjeta) {
+    return '$tarjeta ya no aparecerá al pagar. Los pagos que hiciste con ella se conservan.';
+  }
+
+  @override
+  String get pagosBorrarConfirmar => 'Borrar';
+
+  @override
+  String get pagosBorrarCancelar => 'Cancelar';
+
+  @override
+  String get pagosErrorMetodo =>
+      'No pudimos guardar el cambio. Intenta de nuevo.';
+
+  @override
+  String get historialTicketPago => 'Pago';
+
+  @override
+  String get historialTicketPagado => 'Pagado';
+
+  @override
+  String historialTicketPagadoDetalle(String medio, String fecha) {
+    return '$medio · $fecha';
+  }
+
+  @override
+  String get historialTicketPagadoEnCaja => 'En caja';
+
+  @override
+  String historialTicketTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
+
+  @override
+  String get historialTicketReferencia => 'Referencia';
+
+  @override
+  String historialTicketPagar(String monto) {
+    return 'Pagar $monto';
+  }
+
+  @override
+  String get pagosBilleteraApplePay => 'Pagar con Apple Pay';
+
+  @override
+  String get pagosBilleteraGooglePay => 'Pagar con Google Pay';
+
+  @override
+  String get pagosBilleteraAyuda =>
+      'Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.';
+
+  @override
+  String pagosBilleteraMensaje(String monto, String billetera) {
+    return 'Vas a pagar $monto con $billetera. Es simulado: no se cobra nada.';
+  }
+
+  @override
+  String get pagosBilleteraConfirmar => 'Pagar';
+
+  @override
+  String get pagosBilleteraCancelar => 'Cancelar';
+
+  @override
+  String pagosPagadoFacturaMensaje(String monto, String referencia) {
+    return 'Pagaste $monto. Referencia $referencia. La factura simulada queda en el detalle del pago. No se cobró nada.';
+  }
+
+  @override
+  String get pagosVerFactura => 'Ver la factura';
+
+  @override
+  String pagosFacturaFolio(String folio) {
+    return 'Factura $folio';
+  }
+
+  @override
+  String get pagosFacturaTimbrada => 'Timbrada';
+
+  @override
+  String get pagosFacturaFolioFiscal => 'Folio fiscal';
+
+  @override
+  String pagosFacturaReceptor(String usoCfdi) {
+    return 'Receptor · uso $usoCfdi';
+  }
+
+  @override
+  String get pagosFacturaPdf => 'Descargar PDF';
+
+  @override
+  String get pagosFacturaXml => 'Descargar XML';
+
+  @override
+  String get pagosFacturaSimulada =>
+      'Factura simulada con estructura de CFDI 4.0, sin validez fiscal.';
+
+  @override
+  String get pagosFacturaErrorDescargar =>
+      'No se pudo descargar la factura. Intenta otra vez.';
+
+  @override
+  String get pagosFacturar => 'Facturar';
+
+  @override
+  String get pagosFacturarAyuda =>
+      'Con estos datos se timbra la factura simulada de este pago.';
+
+  @override
+  String get pagosFacturaSinPerfiles =>
+      'Para facturar este pago agrega tus datos fiscales.';
+
+  @override
+  String get pagosAgregarDatosFiscales => 'Agregar datos fiscales';
+
+  @override
+  String get pagosTimbradoRechazado =>
+      'El timbrado rechazó tus datos fiscales.';
+
+  @override
+  String get pagosTimbradoRazonSocial =>
+      'Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).';
+
+  @override
+  String get pagosTimbradoCodigoPostal =>
+      'Revisa el código postal de tu domicilio fiscal.';
+
+  @override
+  String get pagosTimbradoOtro => 'Revisa tus datos fiscales.';
+
+  @override
+  String get pagosCorregirDatosFiscales => 'Corregir datos fiscales';
+
+  @override
+  String get pagosFacturaYaFacturada => 'Este pago ya tiene factura.';
+
+  @override
+  String get pagosFacturaNoFacturable =>
+      'Este pago no se puede facturar desde la app.';
+
+  @override
+  String get pagosFacturaErrorFacturar =>
+      'No se pudo facturar. Intenta otra vez.';
+
+  @override
+  String get pagosFacturaEnLaAgencia =>
+      'Los pagos en caja se facturan en la agencia.';
+
+  @override
+  String get pagosFacturaSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get sucursalesTitulo => 'Sucursales';
+
+  @override
+  String get sucursalesCargando => 'Cargando sucursales';
+
+  @override
+  String get sucursalesVacioTitulo => 'Aún no hay sucursales';
+
+  @override
+  String get sucursalesVacioMensaje =>
+      'Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.';
+
+  @override
+  String sucursalesMapaDe(String nombre) {
+    return 'Mapa con la ubicación de $nombre';
+  }
+
+  @override
+  String get sucursalesAbiertoAhora => 'Abierto ahora';
+
+  @override
+  String get sucursalesAbierto => 'Abierto';
+
+  @override
+  String get sucursalesCerrado => 'Cerrado';
+
+  @override
+  String get sucursalesLlamar => 'Llamar';
+
+  @override
+  String get sucursalesComoLlegar => 'Cómo llegar';
+
+  @override
+  String get sucursalesHorarios => 'Horarios';
+
+  @override
+  String get sucursalesTodas => 'Todas las sucursales';
+
+  @override
+  String get sucursalesSeleccionada => 'Seleccionada';
+
+  @override
+  String sucursalesDepartamento(String departamento) {
+    String _temp0 = intl.Intl.selectLogic(departamento, {
+      'ventas': 'Ventas',
+      'servicio': 'Servicio',
+      'refacciones': 'Refacciones',
+      'other': 'Otro',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiaCorto(String dia) {
+    String _temp0 = intl.Intl.selectLogic(dia, {
+      '1': 'lun',
+      '2': 'mar',
+      '3': 'mié',
+      '4': 'jue',
+      '5': 'vie',
+      '6': 'sáb',
+      '7': 'dom',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiasRango(String desde, String hasta) {
+    return '$desde a $hasta';
+  }
+
+  @override
+  String sucursalesTramo(String dias, String abre, String cierra) {
+    return '$dias: $abre a $cierra';
+  }
+
+  @override
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  ) {
+    return '$nombre, $estado. $direccion';
+  }
+
+  @override
+  String get sucursalesNoSePudoLlamar =>
+      'No pudimos abrir el marcador del teléfono.';
+
+  @override
+  String get sucursalesNoSePudoMapa => 'No pudimos abrir la app de mapas.';
+
+  @override
+  String get recoleccionSeguimientoMarcadorChofer => 'Tu chofer';
 }

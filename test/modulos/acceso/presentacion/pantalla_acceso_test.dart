@@ -1,14 +1,19 @@
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/aviso_bloqueo.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_acceso.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/proveedores_acceso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tono.dart';
+import 'package:carecar_mobile/nucleo/diseno/tema_pista.dart';
+import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../ayudas/api_falsa.dart';
 import '../../../ayudas/tema_pista.dart';
@@ -265,6 +270,78 @@ void main() {
       // De sacar al usuario de `/acceso` se encarga el guardia del enrutador.
       expect(sesion.estado, isA<Autenticada>());
       expect(tester.takeException(), isNull);
+    });
+  });
+
+  group('olvide mi contrasena', () {
+    /// La pantalla dentro de un enrutador con una `/recuperar` de mentira que
+    /// anota el correo con el que se llega. Que la sirva la v1 o la v2 es cosa
+    /// del interruptor: la pantalla solo tiene que ir a la ruta.
+    Future<List<String?>> montarConRecuperar(WidgetTester tester) async {
+      final llegadas = <String?>[];
+      final enrutador = GoRouter(
+        initialLocation: Rutas.acceso,
+        routes: [
+          GoRoute(
+            path: Rutas.acceso,
+            builder: (_, _) => const PantallaAcceso(),
+          ),
+          GoRoute(
+            path: Rutas.recuperar,
+            builder: (_, estado) {
+              llegadas.add(estado.uri.queryParameters['correo']);
+              return const Text('recuperar-destino');
+            },
+          ),
+        ],
+      );
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            controladorSesionProvider.overrideWithValue(
+              controlador(ApiFalsa()),
+            ),
+          ],
+          child: MaterialApp.router(
+            locale: idiomaBase,
+            localizationsDelegates: delegadasDeIdioma,
+            supportedLocales: idiomasSoportados,
+            theme: TemaPista.claro(),
+            routerConfig: enrutador,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      return llegadas;
+    }
+
+    testWidgets('lleva a recuperar con el correo que ya se escribio', (
+      tester,
+    ) async {
+      final llegadas = await montarConRecuperar(tester);
+
+      await tester.enterText(
+        find.byKey(PantallaAcceso.campoCorreo),
+        '  cliente1@example.com ',
+      );
+      await tester.tap(find.byKey(PantallaAcceso.botonOlvide));
+      await tester.pumpAndSettle();
+
+      expect(find.text('recuperar-destino'), findsOneWidget);
+      expect(llegadas, ['cliente1@example.com']);
+    });
+
+    testWidgets('si lo escrito no parece un correo, no lo arrastra', (
+      tester,
+    ) async {
+      final llegadas = await montarConRecuperar(tester);
+
+      await tester.enterText(find.byKey(PantallaAcceso.campoCorreo), 'cliente');
+      await tester.tap(find.byKey(PantallaAcceso.botonOlvide));
+      await tester.pumpAndSettle();
+
+      expect(find.text('recuperar-destino'), findsOneWidget);
+      expect(llegadas, [null]);
     });
   });
 }

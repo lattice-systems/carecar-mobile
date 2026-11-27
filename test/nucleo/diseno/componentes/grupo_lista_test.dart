@@ -199,6 +199,46 @@ void main() {
     semantica.dispose();
   });
 
+  testWidgets('con letra grande el fin baja y el título no se parte', (
+    tester,
+  ) async {
+    // Al lado de un valor, al 200 % «Notificaciones» se partía a media
+    // palabra: el fin pasa abajo del texto y el título recibe todo el ancho.
+    await tester.pumpWidget(
+      conTemaPista(
+        const GrupoLista(
+          filas: [FilaGrupo(titulo: 'Avisos', fin: Text('Activadas'))],
+        ),
+        escenario: Escenario.letraGrande,
+      ),
+    );
+
+    expect(
+      tester.getTopLeft(find.text('Activadas')).dy,
+      greaterThanOrEqualTo(tester.getBottomLeft(find.text('Avisos')).dy),
+    );
+    expect(
+      tester.getTopLeft(find.text('Activadas')).dx,
+      tester.getTopLeft(find.text('Avisos')).dx,
+    );
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('con letra normal el fin sigue a la derecha', (tester) async {
+    await tester.pumpWidget(
+      conTemaPista(
+        const GrupoLista(
+          filas: [FilaGrupo(titulo: 'Avisos', fin: Text('Activadas'))],
+        ),
+      ),
+    );
+
+    expect(
+      tester.getTopLeft(find.text('Activadas')).dx,
+      greaterThan(tester.getTopRight(find.text('Avisos')).dx),
+    );
+  });
+
   testWidgets('se ve en los tres escenarios sin desbordar', (tester) async {
     for (final escenario in Escenario.values) {
       await tester.pumpWidget(

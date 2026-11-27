@@ -22,7 +22,7 @@ Que el cliente de la agencia **viva toda la vida de su vehículo desde el celula
 
 ## Objetivos de producto (sin fechas)
 
-Cada objetivo tiene un indicador. Se mide desde la analítica de producto (M23).
+Cada objetivo tiene un indicador. El [tablero de CareCar](../docs/analitica/tablero.md) reúne los datos disponibles y señala las fuentes pendientes de M23.
 
 | ID | Objetivo | Indicador de éxito |
 | --- | --- | --- |

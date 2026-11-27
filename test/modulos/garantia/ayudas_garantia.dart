@@ -110,6 +110,7 @@ Widget appGarantia(
   EventosEnVivoFake? eventos,
   RepositorioCitasFake? citas,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [
     repositorioGarantiaProvider.overrideWithValue(repo),
@@ -127,6 +128,7 @@ Widget appGarantia(
       ),
     ),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 

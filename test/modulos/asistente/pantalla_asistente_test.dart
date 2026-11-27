@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 
 class _Repo implements RepositorioAsistente {
@@ -145,7 +146,7 @@ void main() {
       },
     );
 
-    _prueba('pregunta, espera y muestra la respuesta con su pagina', (
+    _prueba('V2-M24.03: la respuesta del manual muestra la página citada', (
       tester,
     ) async {
       final respuesta = Completer<RespuestaDelAsistente>();
@@ -242,6 +243,25 @@ void main() {
         expect(tester.takeException(), isNull);
       }
     });
+  });
+
+  group('Accesibilidad del chat (V2-M20.02, 03 y 08)', () {
+    for (final escenario in Escenario.values) {
+      testWidgets('pasa en 320 de ancho en ${escenario.name}', (tester) async {
+        telefonoChicoYAlto(tester, alto: 900);
+        await tester.pumpWidget(
+          _app(_Repo((_) async => _conCita), escenario: escenario),
+        );
+        await tester.pump();
+        await _preguntar(tester, '¿Cada cuánto cambio el aceite?');
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        if (escenario != Escenario.letraGrande) {
+          await auditarAccesibilidad(tester);
+        }
+      });
+    }
   });
 
   group('Preguntas sugeridas (V2-M24.08)', () {
@@ -432,7 +452,7 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    _prueba('una luz roja dice que te detengas y ofrece pedir ayuda', (
+    _prueba('V2-M24.05: el testigo rojo indica detenerse y pedir ayuda', (
       tester,
     ) async {
       final repo = _Repo((_) async => _conCita)

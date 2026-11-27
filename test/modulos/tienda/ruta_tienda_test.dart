@@ -3,7 +3,6 @@ import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/tienda/presentacion/proveedores_tienda.dart';
 import 'package:carecar_mobile/modulos/tienda/tienda.dart';
 import 'package:carecar_mobile/nucleo/navegacion/enlaces.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -100,7 +99,7 @@ void main() {
     expect(carrito.citaId, 31);
 
     await _tocar(tester, 'Apartar');
-    await _tocar(tester, 'Ver mi pedido');
+    await _tocar(tester, 'Pagar en caja');
     expect(find.byType(PantallaPedido), findsOneWidget);
   });
 
@@ -142,7 +141,7 @@ void main() {
 
     await _ir(tester, rutaTienda);
 
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('cerrar sesion vacia el carrito', (tester) async {

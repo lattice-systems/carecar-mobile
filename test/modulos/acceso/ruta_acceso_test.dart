@@ -13,13 +13,10 @@ import '../../ayudas/api_falsa.dart';
 
 /// V2-M01.01 · la ruta del modulo `acceso`.
 ///
-/// Se monta con un enrutador propio porque **la ruta todavia no esta
-/// registrada** en `registro_de_rutas.dart`: hoy `/acceso` lo sirve la
-/// pantalla v1. Lo que falta para encenderla esta en `rutas_acceso.dart`.
-///
-/// Aun sin registrar, conviene probarla: asi el dia del encendido se sabe que
-/// el camino y el nombre son los que el guardia espera, y no se descubre en un
-/// enrutador roto.
+/// Se monta con un enrutador propio, sin el guardia ni el interruptor: asi se
+/// comprueba el modulo solo, que el camino y el nombre son los que el guardia
+/// espera. Que el acceso este encendido y que la recuperacion siga en v1 se
+/// prueba en `interruptor_rutas_test.dart`.
 void main() {
   Widget app(ControladorSesion sesion) => ProviderScope(
     overrides: [controladorSesionProvider.overrideWithValue(sesion)],
@@ -115,7 +112,10 @@ void main() {
   testWidgets('las cuatro rutas del modulo no comparten camino', (
     tester,
   ) async {
-    final caminos = rutasAcceso.whereType<GoRoute>().map((r) => r.path);
+    final caminos = [
+      ...rutasAcceso,
+      ...rutasRecuperacion,
+    ].whereType<GoRoute>().map((r) => r.path);
     expect(caminos.toSet().length, caminos.length);
     expect(
       caminos,
@@ -149,7 +149,7 @@ void main() {
           supportedLocales: idiomasSoportados,
           routerConfig: GoRouter(
             initialLocation: '${Rutas.restablecer}?token=abc123',
-            routes: rutasAcceso,
+            routes: rutasRecuperacion,
           ),
         ),
       ),

@@ -2,7 +2,6 @@ import 'package:carecar_mobile/api/modelos/vehiculo.dart';
 import 'package:carecar_mobile/modulos/bitacora/bitacora.dart';
 import 'package:carecar_mobile/modulos/bitacora/datos/repositorio_bitacora_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/widgets.dart' show Size;
@@ -76,7 +75,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaBitacoraVehiculo(1));
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('estadísticas y exportación tienen su ruta', (tester) async {

@@ -95,6 +95,34 @@ enum CodigoProblema {
   /// dice que corregir en cada uno.
   datosFiscalesInvalidos('DATOS_FISCALES_INVALIDOS'),
 
+  /// V2-M08.02: la orden no se puede pagar en la app (aun no esta lista, no
+  /// viene del taller, no tiene total o ya esta pagada, tambien en caja).
+  ordenNoPagable('ORDEN_NO_PAGABLE'),
+
+  /// V2-M08.02: otro intento de pago de la orden espera el 3-D Secure.
+  pagoEnCurso('PAGO_EN_CURSO'),
+
+  /// V2-M08.02: el pago ya no espera el 3-D Secure.
+  pagoNoPendiente('PAGO_NO_PENDIENTE'),
+
+  /// V2-M14.04: el pedido no se puede pagar en la app (no esta apartado ni
+  /// listo, ya vencio, no tiene total o ya esta pagado).
+  pedidoNoPagable('PEDIDO_NO_PAGABLE'),
+
+  /// V2-M14.04: el pedido ya esta pagado y no se cancela desde la app.
+  pedidoPagado('PEDIDO_PAGADO'),
+
+  /// V2-M08.06: el pago ya tiene factura.
+  yaFacturado('YA_FACTURADO'),
+
+  /// V2-M08.06: el pago no esta pagado o se pago en caja (se factura en la
+  /// agencia).
+  pagoNoFacturable('PAGO_NO_FACTURABLE'),
+
+  /// V2-M08.06: el timbrado simulado rechazo los datos fiscales;
+  /// [Problema.campos] dice que corregir.
+  timbradoRechazado('TIMBRADO_RECHAZADO'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

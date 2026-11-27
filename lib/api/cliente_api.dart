@@ -42,6 +42,7 @@ class ClienteApi {
     http.Client? http,
     this.obtenerToken,
     this.renovarSesion,
+    this.alCuentaDesactivada,
     this.alVerificarCertificado,
     this.tiempoLimite = tiempoLimitePorOmision,
   }) : _http = http ?? _crearCliente(config);
@@ -76,6 +77,13 @@ class ClienteApi {
   /// la capa de datos dependeria de la de sesion, que es la direccion
   /// contraria: el controlador usa el cliente, no al reves.
   final Future<bool> Function()? renovarSesion;
+
+  /// Avisa que el servidor contesto 403 con un token puesto (V2-M01.08).
+  ///
+  /// En la app un 403 solo puede significar **cuenta desactivada**: un recurso
+  /// ajeno responde 404 (RIC-3). Quien lo reciba borra la sesion local; aqui no
+  /// se sabe que es una sesion, igual que con [renovarSesion].
+  final Future<void> Function()? alCuentaDesactivada;
 
   final Duration tiempoLimite;
 
@@ -118,6 +126,15 @@ class ClienteApi {
     required bool conToken,
   }) async {
     final respuesta = await _ejecutar(hacer);
+
+    // Se avisa aqui, en el embudo por el que pasan todas las peticiones con
+    // token, y no en cada pantalla: la cuenta se puede desactivar mientras la
+    // persona esta dentro, y entonces el 403 llega en cualquiera.
+    if (respuesta.statusCode == 403 && conToken && await _haySesion()) {
+      await alCuentaDesactivada?.call();
+      return respuesta;
+    }
+
     if (respuesta.statusCode != 401 || !conToken) return respuesta;
 
     final renovar = renovarSesion;
@@ -274,6 +291,22 @@ class ClienteApi {
     _verificarEstado(respuesta);
   }
 
+  /// El envío de analítica usa el cliente de la app y caduca con el permiso.
+  Future<void> enviarEventoAnalitica(
+    Map<String, Object> evento,
+    bool Function() siguePermitido,
+  ) async {
+    final encabezados = await _encabezados(conCuerpo: true);
+    if (!encabezados.containsKey('authorization') || !siguePermitido()) return;
+    await _http
+        .post(
+          config.ruta('/analitica/eventos'),
+          headers: encabezados,
+          body: jsonEncode(evento),
+        )
+        .timeout(const Duration(seconds: 5));
+  }
+
   /// POST `multipart/form-data` con un archivo y campos de texto, que devuelve
   /// un objeto (V2-M24.05: la foto de un testigo).
   Future<T> enviarArchivo<T>(
@@ -375,6 +408,27 @@ class ClienteApi {
   }) async {
     final respuesta = await _pedir(
       () async => _http.put(
+        config.ruta(camino),
+        headers: await _encabezados(conCuerpo: cuerpo != null),
+        body: cuerpo == null ? null : jsonEncode(cuerpo),
+      ),
+      conToken: true,
+    );
+    return _leerObjeto(respuesta, leer);
+  }
+
+  /// PATCH que devuelve un objeto (cambiar parte de un recurso propio).
+  ///
+  /// Se separa de [actualizar] porque el verbo importa: un PUT dice «esta es
+  /// la version completa» y un PATCH «cambia solo esto», y el contrato declara
+  /// PATCH donde el cliente manda un campo suelto.
+  Future<T> parchar<T>(
+    String camino, {
+    required Object? cuerpo,
+    required T Function(Map<String, Object?>) leer,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.patch(
         config.ruta(camino),
         headers: await _encabezados(conCuerpo: cuerpo != null),
         body: cuerpo == null ? null : jsonEncode(cuerpo),

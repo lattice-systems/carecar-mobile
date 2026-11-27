@@ -56,7 +56,7 @@ class CuadroFecha extends StatelessWidget {
                   fecha.day.toString(),
                   style: t.titulo3.copyWith(
                     color: c.sobreAcento,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     height: 1.1,
                   ),
                 ),

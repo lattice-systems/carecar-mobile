@@ -3,6 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../sesion/controlador_sesion.dart';
+import '../../notificaciones/servicio_notificaciones.dart';
+import '../avisos/destino_de_aviso.dart';
+import '../avisos/explicacion_de_avisos.dart';
+import '../bienvenida/estado_bienvenida.dart';
+import '../biometria/candado_biometrico.dart';
 import '../migracion/proveedores_migracion.dart';
 import '../privacidad/estado_aviso.dart';
 import '../sesion/proveedores_sesion.dart';
@@ -46,9 +51,20 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
   ref.listen(estadoSesionProvider, avisar);
   ref.listen(contrasenaCambiadaProvider, avisar);
   ref.listen(estadoAvisoProvider, avisar);
+  ref.listen(bienvenidaPendienteProvider, avisar);
+  ref.listen(candadoPorAbrirProvider, avisar);
+  ref.listen(avisosPorExplicarProvider, avisar);
+
+  // V2-M06.03, app cerrada: el sistema arranco la app por un aviso y el toque
+  // ya paso. No se navega -todavia no hay enrutador montado, y llamar a `go`
+  // aqui revienta-: se arranca directamente ahi. Es tambien lo que hace un
+  // enlace profundo en frio.
+  final avisos = Notificaciones.actual;
+  final deArranque = destinoDeAviso(avisos.destinoAlEntrar);
+  avisos.destinoAlEntrar = null;
 
   final enrutador = GoRouter(
-    initialLocation: Rutas.inicio,
+    initialLocation: deArranque ?? Rutas.inicio,
     refreshListenable: cambios,
     routes: rutasDeLaApp(ref.read(interruptorModulosProvider)),
     redirect: (context, state) {
@@ -61,6 +77,9 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
         estado: ref.read(estadoSesionProvider),
         contrasenaCambiada: ref.read(contrasenaCambiadaProvider),
         avisoPorAceptar: ref.read(estadoAvisoProvider).porAceptar,
+        bienvenidaPendiente: ref.read(bienvenidaPendienteProvider),
+        candadoPorAbrir: ref.read(candadoPorAbrirProvider),
+        avisosPorExplicar: ref.read(avisosPorExplicarProvider),
       );
     },
     // Una ruta que no existe (enlace viejo o mal escrito) no deja pantalla
@@ -68,7 +87,25 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
     onException: (context, state, router) => router.go(Rutas.inicio),
   );
 
+  // V2-M06.03: tocar un aviso lleva a su pantalla. El toque lo recibe el
+  // servicio de avisos, que vive fuera de Riverpod, asi que el destino entra
+  // por `destinoDeAvisoProvider` y de ahi se navega.
+  //
+  // Se navega con `go` y no con `push`: el aviso lleva A una pantalla, no
+  // encima de lo que hubiera. Si esa pantalla pide sesion, la guardia la
+  // manda al acceso con `desde` y vuelve sola al entrar.
+  ref.listen(destinoDeAvisoProvider, (_, destino) {
+    if (destino == null) return;
+    enrutador.go(destino);
+    ref.read(destinoDeAvisoProvider.notifier).atendido();
+  });
+
+  void alTocarUnAviso() =>
+      ref.read(destinoDeAvisoProvider.notifier).llego(avisos.ultimoDestino);
+  avisos.toques.addListener(alTocarUnAviso);
+
   ref.onDispose(() {
+    avisos.toques.removeListener(alTocarUnAviso);
     enrutador.dispose();
     cambios.dispose();
   });

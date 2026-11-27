@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +8,8 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/analitica/ambito_analitica.dart';
+import '../../../nucleo/analitica/analitica.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
@@ -64,6 +68,7 @@ class PantallaAgendarCita extends ConsumerStatefulWidget {
 }
 
 class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
+  final _embudo = EmbudoCitas();
   _Paso _paso = _Paso.formulario;
   int? _vehiculoId;
   DateTime? _mes;
@@ -148,6 +153,14 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
           icono: LucideIcons300.car,
         ),
       );
+    }
+    if (_paso == _Paso.formulario) {
+      final analitica = AmbitoAnalitica.de(context);
+      if (analitica != null && analitica.habilitada) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) unawaited(_embudo.mostrarDisponibilidad(analitica));
+        });
+      }
     }
     if (disponibilidad.requireValue.sinCupoEnTodoElRango &&
         _paso == _Paso.formulario) {
@@ -247,7 +260,14 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
                   _dia = d;
                   _franja = null;
                 }),
-                alElegirFranja: (i) => setState(() => _franja = franjas[i]),
+                alElegirFranja: (i) {
+                  setState(() => _franja = franjas[i]);
+                  final analitica = AmbitoAnalitica.de(context);
+                  if (analitica != null) {
+                    unawaited(_embudo.mostrarDisponibilidad(analitica));
+                    unawaited(_embudo.elegirFranja(analitica));
+                  }
+                },
               ),
               SeccionPantalla(
                 titulo: textos.citasAgendarMotivo,
@@ -534,6 +554,8 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
 
   Future<void> _confirmar() async {
     final franja = _franja!;
+    final intento = _embudo.intento;
+    final analitica = AmbitoAnalitica.de(context);
     setState(() {
       _enviando = true;
       _fallo = null;
@@ -546,6 +568,9 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         motivo: _motivo!,
         direccionRecoleccionId: _recoleccion ? _direccionId : null,
       );
+      if (analitica != null) {
+        unawaited(_embudo.confirmar(analitica, cita.id, intento));
+      }
       ref.invalidate(disponibilidadProvider);
       // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
       // inicio (V2-M25.01) deben ver la nueva.

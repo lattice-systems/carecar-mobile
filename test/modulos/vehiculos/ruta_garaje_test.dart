@@ -5,7 +5,6 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_ficha_tecni
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_auto.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/widgets.dart' show Size;
@@ -57,7 +56,7 @@ Future<void> _montar(WidgetTester tester, {bool conSesion = true}) async {
 }
 
 void main() {
-  testWidgets('/garaje con sesion muestra los vehiculos de la API', (
+  testWidgets('V2-M02.01: el garaje muestra los vehículos de la cuenta', (
     tester,
   ) async {
     await _montar(tester);
@@ -67,11 +66,11 @@ void main() {
     expect(find.text('CX-5 2024'), findsOneWidget);
   });
 
-  testWidgets('/garaje sin sesion manda al inicio de sesion', (tester) async {
+  testWidgets('V2-M02.01: el garaje requiere iniciar sesión', (tester) async {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('tocar la tarjeta del auto abre su detalle', (tester) async {
@@ -107,7 +106,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('el acceso Manuales del detalle abre el manual', (tester) async {

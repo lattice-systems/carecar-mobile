@@ -12,14 +12,111 @@ String? _va(
   EstadoSesion estado, {
   bool cambiada = false,
   bool aviso = false,
+  bool bienvenida = false,
+  bool candado = false,
+  bool avisos = false,
 }) => redirigirPorSesion(
   destino: Uri.parse(destino),
   estado: estado,
   contrasenaCambiada: cambiada,
   avisoPorAceptar: aviso,
+  bienvenidaPendiente: bienvenida,
+  candadoPorAbrir: candado,
+  avisosPorExplicar: avisos,
 );
 
 void main() {
+  group('explicar los avisos (V2-M06.01)', () {
+    test('con sesion y sin explicar, lleva a la pantalla previa', () {
+      expect(_va('/', _normal, avisos: true), Rutas.permisoAvisos);
+      expect(_va('/mis-citas', _normal, avisos: true), Rutas.permisoAvisos);
+    });
+
+    test('ya en la pantalla previa, se queda', () {
+      expect(_va(Rutas.permisoAvisos, _normal, avisos: true), isNull);
+    });
+
+    test('va DESPUES del aviso de privacidad y del cambio obligatorio', () {
+      // Explicar los avisos puede esperar; aceptar el aviso de privacidad no.
+      expect(
+        _va('/', _normal, aviso: true, avisos: true),
+        Rutas.localizacionAceptarAviso(),
+      );
+      expect(
+        _va('/', _temporal, avisos: true),
+        Rutas.localizacionCambiarContrasena(),
+      );
+      // Y despues del candado, que es lo primero con la app cerrada.
+      expect(_va('/', _normal, candado: true, avisos: true), Rutas.desbloquear);
+    });
+
+    test('sin sesion no se explica nada: primero hay que entrar', () {
+      expect(_va('/', _sinSesion, avisos: true), Rutas.localizacionAcceso());
+    });
+
+    test('explicado ya, la pantalla sigue abierta desde el perfil', () {
+      // No es un paso obligado: se entra a verla cuando la persona quiera.
+      expect(_va(Rutas.permisoAvisos, _normal), isNull);
+    });
+  });
+
+  group('candado de huella (V2-M01.05)', () {
+    test('con sesion y sin abrir, todo lleva al desbloqueo', () {
+      // Va antes que cambiar la contrasena temporal: con la app cerrada no se
+      // decide nada de la cuenta.
+      expect(_va('/', _normal, candado: true), Rutas.desbloquear);
+      expect(_va('/ejemplo/avisos', _normal, candado: true), Rutas.desbloquear);
+      expect(_va('/', _temporal, candado: true), Rutas.desbloquear);
+    });
+
+    test('en el desbloqueo se queda', () {
+      expect(_va(Rutas.desbloquear, _normal, candado: true), isNull);
+    });
+
+    test('sin sesion no aplica: manda el login', () {
+      expect(_va('/', _sinSesion, candado: true), isNotNull);
+      expect(_va(Rutas.desbloquear, _sinSesion, candado: true), isNotNull);
+    });
+  });
+
+  group('bienvenida (V2-M01.02)', () {
+    test('pendiente, va antes que el login', () {
+      // Es del primer arranque, no de la cuenta: quien no ha entrado tambien
+      // merece saber que hace la app.
+      expect(_va('/', _sinSesion, bienvenida: true), Rutas.bienvenida);
+      expect(_va(Rutas.acceso, _sinSesion, bienvenida: true), Rutas.bienvenida);
+      expect(_va('/', _normal, bienvenida: true), Rutas.bienvenida);
+    });
+
+    test('en la bienvenida se queda', () {
+      expect(_va(Rutas.bienvenida, _sinSesion, bienvenida: true), isNull);
+    });
+
+    test('vista, no estorba', () {
+      expect(_va('/', _normal), isNull);
+    });
+  });
+
+  group('cuenta desactivada (V2-M01.08)', () {
+    const desactivada = SinSesion(porCuentaDesactivada: true);
+
+    test('cualquier ruta va al aviso, no al login', () {
+      // Es la diferencia que importa: volver a escribir la contrasena no
+      // arregla una cuenta desactivada, asi que el login no es la salida.
+      expect(_va('/', desactivada), Rutas.cuentaDesactivada);
+      expect(_va(Rutas.acceso, desactivada), Rutas.cuentaDesactivada);
+      expect(_va('/ejemplo/avisos', desactivada), Rutas.cuentaDesactivada);
+    });
+
+    test('en el aviso se queda', () {
+      expect(_va(Rutas.cuentaDesactivada, desactivada), isNull);
+    });
+
+    test('sin esa marca, el aviso no atrapa a nadie', () {
+      expect(_va(Rutas.acceso, _sinSesion), isNull);
+    });
+  });
+
   group('sin sesion', () {
     test('una ruta privada va al acceso y guarda a donde volver', () {
       expect(
