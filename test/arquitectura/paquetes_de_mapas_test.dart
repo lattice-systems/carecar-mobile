@@ -12,13 +12,6 @@ const _permitidos = <String, Set<String>>{
   // Solo abre los ajustes de la app cuando se niega la cámara (V2-M24.05); no
   // lee la ubicación.
   'lib/nucleo/camara/selector_foto.dart': {'geolocator'},
-  // Provisional anterior al componente: lo retira el dueño de M17 en su
-  // siguiente cambio a esas pantallas (plan/trabajo-en-paralelo.md, sección
-  // 4). Al borrar el archivo se borra esta línea.
-  'lib/modulos/recoleccion/presentacion/provisional/mapa_provisional.dart': {
-    'flutter_map',
-    'latlong2',
-  },
 };
 
 final _importacion = RegExp(
