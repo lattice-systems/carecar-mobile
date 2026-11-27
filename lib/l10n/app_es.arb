@@ -8620,5 +8620,7 @@
     ]
   ],
   "sucursalesNoSePudoLlamar": "No pudimos abrir el marcador del teléfono.",
-  "sucursalesNoSePudoMapa": "No pudimos abrir la app de mapas."
+  "sucursalesNoSePudoMapa": "No pudimos abrir la app de mapas.",
+  "recoleccionSeguimientoMarcadorChofer": "Tu chofer",
+  "@recoleccionSeguimientoMarcadorChofer": {"description": "Etiqueta del marcador del chofer en el mapa del seguimiento."}
 }
