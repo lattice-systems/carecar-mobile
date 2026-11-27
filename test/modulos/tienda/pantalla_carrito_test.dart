@@ -50,15 +50,19 @@ void main() {
     expect(find.text('Tu carrito está vacío'), findsOneWidget);
   });
 
-  testWidgets('muestra el total, que se paga en caja y la vigencia', (
-    tester,
-  ) async {
-    await _montar(tester, tiendaDePrueba());
+  testWidgets(
+    'muestra el total, que se paga en la app o en caja y la vigencia',
+    (tester) async {
+      await _montar(tester, tiendaDePrueba());
 
-    expect(find.bySemanticsLabel(r'Total: $1,700.00'), findsOneWidget);
-    expect(find.text('No se cobra en la app: pagas en caja.'), findsOneWidget);
-    expect(find.textContaining('dura 48 horas'), findsOneWidget);
-  });
+      expect(find.bySemanticsLabel(r'Total: $1,700.00'), findsOneWidget);
+      expect(
+        find.text('Paga en la app desde tu pedido o en caja al recoger.'),
+        findsOneWidget,
+      );
+      expect(find.textContaining('dura 48 horas'), findsOneWidget);
+    },
+  );
 
   testWidgets('apartar reserva, vacia el carrito y dice cuando vence', (
     tester,

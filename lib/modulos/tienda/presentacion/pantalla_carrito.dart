@@ -28,8 +28,8 @@ import 'proveedores_tienda.dart';
 import 'rutas_tienda.dart';
 
 /// El carrito y el apartado (V2-M14.02): cantidades, recoger en mostrador o
-/// instalar en una cita (V2-M14.03) y cierre con la fecha en que vence. No se
-/// cobra en la app.
+/// instalar en una cita (V2-M14.03) y cierre con la fecha en que vence. Se
+/// paga en la app desde el pedido o en caja al recoger (V2-M14.04).
 class PantallaCarrito extends ConsumerStatefulWidget {
   const PantallaCarrito({super.key});
 
@@ -119,6 +119,23 @@ class _PantallaCarritoState extends ConsumerState<PantallaCarrito> {
   Widget _cierre(BuildContext context, Pedido pedido) {
     final t = AppLocalizations.of(context);
     final vence = pedido.venceEn;
+    if (pedido.pagable) {
+      return ResultadoPantalla(
+        titulo: t.tiendaApartadoTitulo,
+        mensaje: vence == null
+            ? t.tiendaPagoEnAppOCaja
+            : t.tiendaApartadoMensaje(momentoTienda(context, vence)),
+        principal: AccionPantalla(
+          texto: t.tiendaPagarAhora,
+          alPresionar: () =>
+              context.pushReplacement(rutaPedidoPagando(pedido.id)),
+        ),
+        secundaria: AccionPantalla(
+          texto: t.tiendaPagarEnCaja,
+          alPresionar: () => context.pushReplacement(rutaPedido(pedido.id)),
+        ),
+      );
+    }
     return ResultadoPantalla(
       titulo: t.tiendaApartadoTitulo,
       mensaje: vence == null
@@ -211,7 +228,7 @@ class _PantallaCarritoState extends ConsumerState<PantallaCarrito> {
               ),
               const SizedBox(height: Espaciado.e3),
               Aviso(
-                titulo: t.tiendaPagoEnCaja,
+                titulo: t.tiendaPagoEnAppOCaja,
                 mensaje: conCita
                     ? t.tiendaVigenciaCita
                     : t.tiendaVigenciaMostrador,

@@ -115,7 +115,9 @@ class _TarjetaPedido extends StatelessWidget {
         pesosTienda(pedido.total),
         pedido.piezas,
       ),
-      detalle: vence == null || !pedido.abierto
+      detalle: pedido.pagado
+          ? t.tiendaPagado
+          : vence == null || !pedido.abierto
           ? null
           : t.tiendaVence(momentoTienda(context, vence)),
       icono: LucideIcons300.shoppingBag,
