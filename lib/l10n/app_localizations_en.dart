@@ -6501,4 +6501,144 @@ class AppLocalizationsEn extends AppLocalizations {
   String contactoNoSePudoCorreo(String correo) {
     return 'We couldn\'t open your email app. Write to us at $correo.';
   }
+
+  @override
+  String get documentosTitulo => 'Documents';
+
+  @override
+  String get documentosCargando => 'Loading documents';
+
+  @override
+  String get documentosVaciaTitulo => 'No documents yet';
+
+  @override
+  String get documentosVaciaMensaje =>
+      'Your policy, registration card and inspection will live here, with their due dates.';
+
+  @override
+  String documentosSubtitulo(int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total documents',
+      one: '1 document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosResumenAtencion(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad documents need attention',
+      one: '1 document needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosResumenAlDia => 'All in order';
+
+  @override
+  String get documentosResumenAlDiaDetalle => 'Your documents are up to date.';
+
+  @override
+  String documentosResumenVence(String nombre, String cuando) {
+    return '$nombre is due $cuando.';
+  }
+
+  @override
+  String documentosResumenVencio(String nombre, String cuando) {
+    return '$nombre expired $cuando.';
+  }
+
+  @override
+  String get documentosGrupoPorVencer => 'Due soon';
+
+  @override
+  String get documentosGrupoVencidos => 'Expired';
+
+  @override
+  String get documentosGrupoVigentes => 'Valid';
+
+  @override
+  String get documentosGrupoSinFecha => 'No expiry date';
+
+  @override
+  String get documentosEstadoVigente => 'Valid';
+
+  @override
+  String get documentosEstadoPorVencer => 'Due soon';
+
+  @override
+  String get documentosEstadoVencido => 'Expired';
+
+  @override
+  String get documentosEstadoSinFecha => 'No date';
+
+  @override
+  String documentosVenceEl(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String documentosVencioEl(String fecha) {
+    return 'Expired on $fecha';
+  }
+
+  @override
+  String documentosEnDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'in $dias days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosHaceDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: '$dias days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosNumero(String numero) {
+    return 'No. $numero';
+  }
+
+  @override
+  String get documentosCargadoPorAgencia => 'Uploaded by the dealership';
+
+  @override
+  String get documentosTipoPoliza => 'Insurance policy';
+
+  @override
+  String get documentosTipoTarjetaCirculacion => 'Registration card';
+
+  @override
+  String get documentosTipoVerificacion => 'Vehicle inspection';
+
+  @override
+  String get documentosTipoTenencia => 'Vehicle tax';
+
+  @override
+  String get documentosTipoLicencia => 'Driver\'s license';
+
+  @override
+  String get documentosTipoGarantia => 'Warranty policy';
+
+  @override
+  String get documentosTipoFactura => 'Purchase invoice';
+
+  @override
+  String get documentosTipoOtro => 'Other document';
 }
