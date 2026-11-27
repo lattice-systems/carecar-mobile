@@ -269,10 +269,14 @@ void main() {
         );
         expect(tester.takeException(), isNull);
 
-        await tester.dragFrom(const Offset(160, 540), const Offset(0, -900));
+        for (var i = 0; i < 20; i++) {
+          if (find.text('Sucursales y horarios').evaluate().isNotEmpty) break;
+          await tester.dragFrom(const Offset(160, 540), const Offset(0, -200));
+          await tester.pump();
+          expect(tester.takeException(), isNull);
+        }
         await tester.pumpAndSettle();
-        expect(tester.takeException(), isNull);
-        expect(find.text('Escribir un correo'), findsOneWidget);
+        expect(find.text('Sucursales y horarios'), findsOneWidget);
       });
     }
 
