@@ -233,7 +233,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |
 | V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 (simulable) | Hecha | #168, backend#107 |
 | V2-M14.03 | Que me instalen lo comprado en mi cita | Cristian | B | V2-M14.02 (simulable), V2-M02.08 | Hecha | #168, backend#107 |
-| V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | En revisión | backend#112 |
+| V2-M14.04 | Pagar mi pedido en la app | Cristian | B | V2-M08.02 | Hecha | #189, backend#112 |
 | V2-M14.05 | Seguir mis pedidos | Cristian | B | V2-M14.02 (simulable), V2-M06.02 (solo push) | Hecha | #168, backend#107 |
 | V2-M16.01 | Pedir una prueba de manejo | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
