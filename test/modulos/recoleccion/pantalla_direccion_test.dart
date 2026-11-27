@@ -1,9 +1,9 @@
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
-import 'package:carecar_mobile/modulos/recoleccion/presentacion/provisional/mapa_provisional.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/aviso.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/campo_texto.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/mapa.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,8 +89,11 @@ Future<void> _abrir(WidgetTester tester) async {
 }
 
 Future<void> _ponerPinEnElMapa(WidgetTester tester) async {
-  await tester.tapAt(tester.getCenter(find.byType(MapaProvisional)));
-  await tester.pump(const Duration(milliseconds: 600));
+  expect(find.byType(Mapa), findsOneWidget);
+  // El componente pone el pin al centro con su botón y lo mueve con flechas.
+  final boton = find.text('Poner el pin en el centro');
+  await tester.ensureVisible(boton);
+  await tester.tap(boton);
   await tester.pumpAndSettle();
 }
 
