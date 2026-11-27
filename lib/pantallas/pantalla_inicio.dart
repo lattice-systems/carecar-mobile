@@ -73,6 +73,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
   }
 
   /// Al tocar un recordatorio: vuelve al menu y abre «Mis citas».
+  bool get _pestanasEnV2 => const [
+    ModuloMigrable.vehiculos,
+    ModuloMigrable.citas,
+    ModuloMigrable.catalogo,
+  ].every(widget.abrirEnV2.containsKey);
+
   void _abrirCitas() {
     final navegador = _navegador.currentState;
     if (!mounted || navegador == null) return;
@@ -157,6 +163,9 @@ class _PantallaInicioState extends State<PantallaInicio> {
                   servicioDelAuto: (id) =>
                       TarjetaProximoServicioDelAuto(vehiculoId: id),
                   alAgendar: alCitas,
+                  // Con los tres módulos de las pestañas en v2 la barra es la
+                  // fija del router; si alguno sigue en v1 la dibuja el inicio.
+                  conBarra: !_pestanasEnV2,
                   alAbrirVehiculos: alVehiculos,
                   alAbrirCitas: alCitas,
                   alAbrirCatalogo: alCatalogo,

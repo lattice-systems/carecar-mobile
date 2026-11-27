@@ -97,6 +97,7 @@ class InicioNuevo extends StatelessWidget {
     this.autos,
     this.proximaCita,
     this.servicioDelAuto,
+    this.conBarra = true,
   });
 
   /// Destinos de la barra (y de las tarjetas que llevan a ellos).
@@ -123,6 +124,11 @@ class InicioNuevo extends StatelessWidget {
   /// está viendo en el carrusel. Igual que [ordenEnCurso], lleva su propia
   /// separación inferior y no ocupa lugar si no hay qué mostrar.
   final Widget Function(int vehiculoId)? servicioDelAuto;
+
+  /// Si el inicio dibuja su propia barra. Con las pestañas v2 la barra vive
+  /// fuera (`MarcoDePestanas`) y aquí es `false`; con módulos en v1 (salida de
+  /// emergencia) la barra sigue aquí porque abre pantallas v1 encima del menú.
+  final bool conBarra;
 
   @override
   Widget build(BuildContext context) {
@@ -173,8 +179,10 @@ class _CuerpoState extends State<_Cuerpo> {
     final escala = MediaQuery.textScalerOf(context).scale(1);
     final conBotonFlotante = escala <= _escalaMaximaDelBoton;
     final reservaInferior =
-        (BarraFlotante.altoReservado *
-            (escala > 1 ? escala.clamp(1, 2).toDouble() : 1)) +
+        (inicio.conBarra
+            ? BarraFlotante.altoReservado *
+                  (escala > 1 ? escala.clamp(1, 2).toDouble() : 1)
+            : 0) +
         (conBotonFlotante ? 56 + Espaciado.e6 : Espaciado.e4) +
         MediaQuery.paddingOf(context).bottom;
 
@@ -248,7 +256,11 @@ class _CuerpoState extends State<_Cuerpo> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            // Sin barra propia, justo sobre la de fuera: su espacio ya viene en
+            // el margen inferior.
+            bottom: inicio.conBarra
+                ? 0
+                : MediaQuery.paddingOf(context).bottom - Espaciado.e4,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -264,37 +276,38 @@ class _CuerpoState extends State<_Cuerpo> {
                   ),
                   const SizedBox(height: Espaciado.e3),
                 ],
-                BarraFlotante(
-                  indice: 0,
-                  alCambiar: (i) => switch (i) {
-                    1 => inicio.alAbrirVehiculos(),
-                    2 => inicio.alAbrirCitas(),
-                    3 => inicio.alAbrirCatalogo(),
-                    _ => null,
-                  },
-                  destinos: [
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoInicio,
-                      icono: LucideIcons300.house,
-                      iconoActivo: LucideIcons300.house,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoVehiculos,
-                      icono: LucideIcons300.car,
-                      iconoActivo: LucideIcons300.car,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoCitas,
-                      icono: LucideIcons300.calendarDays,
-                      iconoActivo: LucideIcons300.calendarDays,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoCatalogo,
-                      icono: LucideIcons300.layoutGrid,
-                      iconoActivo: LucideIcons300.layoutGrid,
-                    ),
-                  ],
-                ),
+                if (inicio.conBarra)
+                  BarraFlotante(
+                    indice: 0,
+                    alCambiar: (i) => switch (i) {
+                      1 => inicio.alAbrirVehiculos(),
+                      2 => inicio.alAbrirCitas(),
+                      3 => inicio.alAbrirCatalogo(),
+                      _ => null,
+                    },
+                    destinos: [
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoInicio,
+                        icono: LucideIcons300.house,
+                        iconoActivo: LucideIcons300.house,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoVehiculos,
+                        icono: LucideIcons300.car,
+                        iconoActivo: LucideIcons300.car,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoCitas,
+                        icono: LucideIcons300.calendarDays,
+                        iconoActivo: LucideIcons300.calendarDays,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoCatalogo,
+                        icono: LucideIcons300.layoutGrid,
+                        iconoActivo: LucideIcons300.layoutGrid,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
