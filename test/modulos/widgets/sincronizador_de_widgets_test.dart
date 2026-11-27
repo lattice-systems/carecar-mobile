@@ -658,6 +658,11 @@ void main() {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
       addTearDown(() => debugDefaultTargetPlatformOverride = null);
       final e = await _montar(tester, ordenes: [_orden()]);
+      // El canal sin puente contesta por el bucle real, no por el simulado.
+      await tester.runAsync(
+        () => Future<void>.delayed(const Duration(milliseconds: 50)),
+      );
+      await tester.pumpAndSettle();
 
       expect(
         e.contenedor(tester).read(servicioActividadEnVivoProvider),
