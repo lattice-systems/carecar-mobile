@@ -1,8 +1,8 @@
+import 'package:carecar_mobile/modulos/acceso/acceso.dart';
 import 'package:carecar_mobile/modulos/ejemplo/ejemplo.dart';
+import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/nucleo/navegacion/enlaces.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_cambiar_contrasena.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -30,7 +30,15 @@ Future<ControladorSesion> _montar(
   if (conSesion) {
     await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
   }
-  await tester.pumpWidget(AppEnrutadaDePrueba(api: falsa, controlador: sesion));
+  // Lo que se entrega por defecto: el acceso en v2 y la recuperacion todavia
+  // en v1 (V2-T01.10), que es lo que recorren los flujos de abajo.
+  await tester.pumpWidget(
+    AppEnrutadaDePrueba(
+      api: falsa,
+      controlador: sesion,
+      interruptor: InterruptorModulos.porDefecto,
+    ),
+  );
   await tester.pumpAndSettle();
   return sesion;
 }
@@ -71,7 +79,7 @@ void main() {
 
     testWidgets('acceso muestra el login', (tester) async {
       await _montar(tester, conSesion: false);
-      expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+      expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
     });
 
     testWidgets('recuperar muestra el paso del correo, con el correo', (
@@ -141,7 +149,7 @@ void main() {
         enrutadorDe(tester).go(rutaAvisosEjemplo);
         await tester.pumpAndSettle();
 
-        expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+        expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
         expect(
           _ubicacion(tester),
           Rutas.localizacionAcceso(desde: rutaAvisosEjemplo),
@@ -193,7 +201,12 @@ void main() {
         find.byKey(PantallaCambiarContrasena.campoConfirmar),
         'NuevaClave2026',
       );
-      await tester.tap(find.byKey(PantallaCambiarContrasena.botonGuardar));
+      // La pantalla es mas alta que la ventana de prueba: el boton queda bajo
+      // el pliegue y un `tap` a ciegas no lo alcanza.
+      final guardar = find.byKey(PantallaCambiarContrasena.botonGuardar);
+      await tester.ensureVisible(guardar);
+      await tester.pump();
+      await tester.tap(guardar);
       await tester.pumpAndSettle();
 
       expect(api.ultimaNueva, 'NuevaClave2026');
@@ -211,7 +224,7 @@ void main() {
       final sesion = await _montar(tester);
       await sesion.cerrarSesion();
       await tester.pumpAndSettle();
-      expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+      expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
     });
   });
 
@@ -231,7 +244,7 @@ void main() {
           findsOneWidget,
         );
         expect(_codigoEscrito(tester), '123456');
-        expect(find.byKey(PantallaLogin.botonEntrar), findsNothing);
+        expect(find.byKey(PantallaAcceso.botonEntrar), findsNothing);
       },
     );
 
@@ -257,7 +270,7 @@ void main() {
     ) async {
       await _montar(tester, conSesion: false);
       await _abrirEnlace(tester, 'carecar://ejemplo/avisos');
-      expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+      expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
       expect(
         _ubicacion(tester),
         Rutas.localizacionAcceso(desde: rutaAvisosEjemplo),

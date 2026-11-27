@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart' show Locale;
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
+import 'package:carecar_mobile/modulos/acceso/acceso.dart';
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/citas/citas.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/nucleo/migracion/proveedores_migracion.dart';
+import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/catalogo/pantalla_catalogo.dart' as v1;
 import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart' as v1;
+import 'package:carecar_mobile/pantallas/pantalla_login.dart' as v1;
+import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart'
+    as v1;
 import 'package:carecar_mobile/pantallas/pantalla_vehiculos.dart' as v1;
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -19,12 +24,15 @@ import '../../ayudas/app_enrutada.dart';
 
 Future<void> _montar(
   WidgetTester tester,
-  InterruptorModulos interruptor,
-) async {
+  InterruptorModulos interruptor, {
+  bool conSesion = true,
+}) async {
   final api = ApiFalsa();
   final sesion = ControladorSesion(api, AlmacenEnMemoria());
   addTearDown(sesion.dispose);
-  await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
+  if (conSesion) {
+    await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
+  }
   await tester.pumpWidget(
     AppEnrutadaDePrueba(
       api: api,
@@ -43,17 +51,15 @@ Future<void> _ir(WidgetTester tester, String ruta) async {
 }
 
 void main() {
-  test(
-    'la app lee el interruptor de los --dart-define (todo v2 sin ellos)',
-    () {
-      final contenedor = ProviderContainer();
-      addTearDown(contenedor.dispose);
-      final i = contenedor.read(interruptorModulosProvider);
-      for (final m in ModuloMigrable.values) {
-        expect(i.esV2(m), isTrue, reason: m.name);
-      }
-    },
-  );
+  test('la app lee el interruptor de los --dart-define (v2 sin ellos, salvo la '
+      'recuperacion)', () {
+    final contenedor = ProviderContainer();
+    addTearDown(contenedor.dispose);
+    final i = contenedor.read(interruptorModulosProvider);
+    for (final m in ModuloMigrable.values) {
+      expect(i.esV2(m), m != ModuloMigrable.recuperacion, reason: m.name);
+    }
+  });
 
   group('rutas v2 segun el interruptor', () {
     const rutas = {
@@ -94,6 +100,68 @@ void main() {
   });
 
   // Los destinos del inicio viven en la barra flotante (V2-T02.22).
+  group('el acceso y la recuperacion son modulos aparte (V2-T01.10)', () {
+    testWidgets('acceso en v2: sin sesion se ve el acceso v2, no el v1', (
+      tester,
+    ) async {
+      await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
+      expect(find.byType(PantallaAcceso), findsOneWidget);
+      expect(find.byType(v1.PantallaLogin), findsNothing);
+    });
+
+    testWidgets('acceso en v1: la salida de emergencia devuelve el login v1', (
+      tester,
+    ) async {
+      await _montar(
+        tester,
+        InterruptorModulos.desdeValores(v1: 'acceso'),
+        conSesion: false,
+      );
+      expect(find.byType(v1.PantallaLogin), findsOneWidget);
+      expect(find.byType(PantallaAcceso), findsNothing);
+    });
+
+    testWidgets('por defecto /recuperar es la recuperacion v1, con codigo', (
+      tester,
+    ) async {
+      await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
+      await _ir(tester, Rutas.recuperar);
+      expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
+      expect(find.byType(PantallaRecuperar), findsNothing);
+    });
+
+    testWidgets('con MODULOS_V2=recuperacion /recuperar es la v2', (
+      tester,
+    ) async {
+      await _montar(
+        tester,
+        InterruptorModulos.desdeValores(v2: 'recuperacion'),
+        conSesion: false,
+      );
+      await _ir(tester, Rutas.recuperar);
+      expect(find.byType(PantallaRecuperar), findsOneWidget);
+      expect(find.byType(v1.PantallaRecuperarContrasena), findsNothing);
+    });
+
+    testWidgets('el enlace del correo tambien sigue a la recuperacion v1', (
+      tester,
+    ) async {
+      await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
+      await _ir(tester, Rutas.localizacionRestablecer(token: '123456'));
+      expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
+    });
+
+    testWidgets(
+      '«Olvide mi contrasena» del acceso v2 llega a la recuperacion',
+      (tester) async {
+        await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
+        await tester.tap(find.byKey(PantallaAcceso.botonOlvide));
+        await tester.pumpAndSettle();
+        expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
+      },
+    );
+  });
+
   group('el menu v1 abre la version que dice el interruptor', () {
     testWidgets('por defecto: la barra abre las pantallas v2', (tester) async {
       await _montar(tester, InterruptorModulos.porDefecto);

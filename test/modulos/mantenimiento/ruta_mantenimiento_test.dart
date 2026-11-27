@@ -6,7 +6,6 @@ import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.d
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/chip_pista.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +81,7 @@ void main() {
   testWidgets('sin sesión manda al acceso', (tester) async {
     await _montar(tester, conSesion: false);
     await _ir(tester, rutaMantenimientoVehiculo(1));
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
     expect(find.byType(PantallaPlanMantenimiento), findsNothing);
   });
 

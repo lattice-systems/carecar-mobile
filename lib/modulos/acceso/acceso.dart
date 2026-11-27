@@ -39,4 +39,5 @@ export 'presentacion/rutas_acceso.dart'
         rutaMiPerfil,
         rutaSesiones,
         rutasAcceso,
+        rutasRecuperacion,
         rutasSesiones;

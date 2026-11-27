@@ -41,9 +41,12 @@ import 'rutas_del_nucleo.dart';
 List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasDelNucleo(interruptor: interruptor, destinosV2: destinosDeMenuV2),
   // --- Un renglon por modulo, en orden alfabetico ---
-  // Del acceso (M01) solo se registra «mis sesiones» (V2-M01.09): sus otras
-  // cuatro rutas esperan a que el modulo se encienda, porque sus caminos ya
-  // los sirven pantallas v1. `/sesiones` no existe en la v1, asi que no choca.
+  // El acceso (M01) pasa por el interruptor: inicio de sesion y cambio
+  // obligatorio (V2-T01.10). La recuperacion de la contrasena es otro valor,
+  // porque su v2 espera un enlace del correo que aun no abre la app.
+  ...interruptor.rutas(ModuloMigrable.acceso, rutasAcceso),
+  ...interruptor.rutas(ModuloMigrable.recuperacion, rutasRecuperacion),
+  // `/sesiones` (V2-M01.09) no existe en la v1: se registra siempre.
   ...rutasSesiones,
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
   // El asistente (M24) es nuevo en v2: no pasa por el interruptor.

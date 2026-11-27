@@ -5,7 +5,6 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_ficha_tecni
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_auto.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/widgets.dart' show Size;
@@ -71,7 +70,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaGaraje);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('tocar la tarjeta del auto abre su detalle', (tester) async {
@@ -107,7 +106,7 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaDetalleVehiculo(1));
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('el acceso Manuales del detalle abre el manual', (tester) async {
