@@ -15,9 +15,9 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 ## Pantallas
 
 - **Pagar orden** — total y desglose del ticket (M04.07), perfil fiscal para facturar (opcional) y botón «Pagar», que abre la hoja de pago propia de la app, simulada (tarjeta guardada o una de las tarjetas de prueba, y «Apple Pay» o «Google Pay» simulados). Dice «Pago simulado, no se cobra». Al terminar, `ResultadoPantalla` con el estado.
-- **Métodos de pago** — tarjetas guardadas (marca, últimos 4, vencimiento), predeterminada y borrar. La app nunca ve el número completo.
+- **Métodos de pago** — tarjetas guardadas (marca, últimos 4, vencimiento), predeterminada y borrar. La app nunca ve el número completo. Se abre desde Perfil → Cuenta → «Métodos de pago» y desde «Mis pagos».
 - **Datos fiscales** — perfiles con RFC, razón social, régimen, código postal y uso de CFDI; alta, edición, predeterminado y borrar. Se abre desde Perfil → Cuenta → «Datos fiscales».
-- **Mis pagos y facturas** — lista paginada con estado, monto, fecha y referencia; detalle con su factura (PDF y XML) para abrir o compartir, y «Facturar» si se pagó sin perfil fiscal. La factura dice «Factura simulada, sin validez fiscal».
+- **Mis pagos y facturas** — lista paginada con estado, monto, fecha y referencia; detalle con su factura (PDF y XML) para abrir o compartir, y «Facturar» si se pagó sin perfil fiscal. La factura dice «Factura simulada, sin validez fiscal». Se abre desde Perfil → Cuenta → «Mis pagos».
 
 ## Datos
 
