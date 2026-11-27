@@ -1,0 +1,64 @@
+{
+  "documentos": [
+    {
+      "id": 1,
+      "vehiculoId": 1,
+      "tipo": "POLIZA",
+      "numero": "POL-000123",
+      "emitidoEn": "2026-01-10",
+      "venceEnDias": 18,
+      "origen": "CLIENTE",
+      "tieneArchivo": true,
+      "aseguradora": "Seguros Ejemplo",
+      "telefonoAseguradora": "+52 800 000 1234"
+    },
+    {
+      "id": 2,
+      "vehiculoId": 1,
+      "tipo": "TARJETA_CIRCULACION",
+      "numero": "TC-4455",
+      "emitidoEn": "2025-03-02",
+      "venceEnDias": 240,
+      "origen": "CLIENTE",
+      "tieneArchivo": true
+    },
+    {
+      "id": 3,
+      "vehiculoId": 1,
+      "tipo": "VERIFICACION",
+      "emitidoEn": "2025-06-15",
+      "venceEnDias": -12,
+      "origen": "CLIENTE",
+      "tieneArchivo": false
+    },
+    {
+      "id": 4,
+      "vehiculoId": 1,
+      "tipo": "FACTURA",
+      "numero": "A-9087",
+      "emitidoEn": "2024-11-20",
+      "origen": "AGENCIA",
+      "tieneArchivo": true
+    },
+    {
+      "id": 5,
+      "vehiculoId": 2,
+      "tipo": "GARANTIA",
+      "emitidoEn": "2025-08-01",
+      "venceEnDias": 610,
+      "origen": "AGENCIA",
+      "tieneArchivo": true
+    },
+    {
+      "id": 6,
+      "vehiculoId": 3,
+      "tipo": "POLIZA",
+      "numero": "POL-777",
+      "venceEnDias": 90,
+      "origen": "CLIENTE",
+      "tieneArchivo": false,
+      "aseguradora": "Aseguradora de Otro Cliente",
+      "telefonoAseguradora": "+52 800 111 2222"
+    }
+  ]
+}
