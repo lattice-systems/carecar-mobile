@@ -240,6 +240,20 @@ void main() {
       expect(e.servicio.llamadas.last, 'terminarTodas');
     });
 
+    test('si no se puede armar el registro, igual las termina', () async {
+      final servicio = ServicioActividadEnVivoFake();
+      final coordinador = CoordinadorDeActividadEnVivo(
+        servicio: servicio,
+        repositorio: () => throw StateError('apiClienteProvider no inyectado'),
+      );
+      await coordinador.alCambiarLasOrdenes([_orden()]);
+
+      await coordinador.alCerrarSesion();
+
+      expect(servicio.vivas, isEmpty);
+      expect(servicio.llamadas.last, 'terminarTodas');
+    });
+
     test('al perder la sesion termina todas sin tocar la red', () async {
       final e = _Escenario();
       await e.coordinador.alCambiarLasOrdenes([_orden()]);
