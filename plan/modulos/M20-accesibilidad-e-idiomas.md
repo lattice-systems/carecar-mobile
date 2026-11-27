@@ -64,7 +64,15 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 | La tarjeta del asistente, en el detalle del auto, tenía un toque sin nombre para el lector | El encabezado es el único botón que abre el asistente |
 | El chat del asistente se desbordaba con letra al 200 % | Los avisos ocupan un tercio del alto como mucho y el texto de ayuda del campo, dos líneas |
 
-- Las tres historias siguen abiertas: falta la prueba con TalkBack y VoiceOver, y las pantallas de acceso esperan a que su módulo se encienda en v2.
+- Las tres historias siguen abiertas: falta la prueba manual con TalkBack y VoiceOver en teléfono.
+
+### Pantallas de acceso v2
+
+El acceso ya se sirve en v2 por defecto (V2-T01.10), así que `test/accesibilidad/rutas/acceso_test.dart` audita el inicio de sesión, la bienvenida, la cuenta desactivada, el cambio obligatorio de contraseña, mi contraseña y cambiar correo, con la misma regla de 320 de ancho, claro y oscuro con las guías de Flutter y letra al 200 % sin desbordes.
+
+- Cada una pide un estado de sesión distinto (sin sesión, primer arranque, cuenta desactivada, contraseña temporal, sesión abierta), así que el ayudante `montarParaAuditar` acepta `prepararSesion`, y `auditarRutas` deja pasar al acceso cuando es la pantalla que se audita.
+- **Qué encontró:** nada. Las seis pantallas pasaron a la primera, sin cambios en ellas.
+- La recuperación de contraseña sigue en v1 y no se audita, como el resto de las pantallas v1. Cuando se encienda su módulo en v2 se suma a este archivo.
 
 ### Pantallas de taller, historial, garantía, lealtad y pagos
 
