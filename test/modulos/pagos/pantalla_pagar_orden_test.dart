@@ -32,6 +32,16 @@ Future<void> _pagar(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// Paga y espera a la pantalla del banco: mientras esta abierta el boton
+/// sigue cargando, asi que no se espera a que todo se detenga.
+Future<void> _pagarHastaElBanco(WidgetTester tester) async {
+  await tester.ensureVisible(find.byKey(FormularioPago.botonPagar));
+  await tester.tap(find.byKey(FormularioPago.botonPagar));
+  for (var i = 0; i < 10; i++) {
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+}
+
 Future<void> _llenarTarjeta(
   WidgetTester tester,
   String token, {
@@ -147,7 +157,7 @@ void main() {
     await _montar(tester, repo);
 
     await _llenarTarjeta(tester, 'tok_sim_3ds');
-    await _pagar(tester);
+    await _pagarHastaElBanco(tester);
     expect(find.text('Tu banco pide confirmar'), findsOneWidget);
     expect(find.textContaining(r'$1,650.00'), findsWidgets);
     await tester.tap(find.byKey(llaveConfirmarBanco));
@@ -162,7 +172,7 @@ void main() {
     await _montar(tester, repo);
 
     await _llenarTarjeta(tester, 'tok_sim_3ds');
-    await _pagar(tester);
+    await _pagarHastaElBanco(tester);
     await tester.tap(find.byKey(llaveCancelarBanco));
     await tester.pumpAndSettle();
 
