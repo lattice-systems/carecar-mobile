@@ -9,7 +9,10 @@ import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
+import '../../modulos/acceso/acceso.dart' show rutaMiContrasena, rutaMiPerfil;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
+import '../../modulos/pagos/pagos.dart'
+    show rutaDatosFiscales, rutaMetodosPago, rutaMisPagos;
 import '../../modulos/privacidad/privacidad.dart' show rutaPrivacidad;
 import '../../modulos/recoleccion/recoleccion.dart' show rutaMisDirecciones;
 import '../../notificaciones/servicio_notificaciones.dart';
@@ -57,6 +60,10 @@ class PantallaPerfil extends StatefulWidget {
   static const botonCambiarContrasena = Key('perfil_cambiar_contrasena');
   static const botonMisPuntos = Key('perfil_mis_puntos');
   static const botonMisDirecciones = Key('perfil_mis_direcciones');
+  static const botonDatosFiscales = Key('perfil_datos_fiscales');
+  static const botonMisPagos = Key('perfil_mis_pagos');
+  static const botonMetodosPago = Key('perfil_metodos_pago');
+  static const botonMiPerfil = Key('perfil_mi_perfil');
   static const botonContactar = Key('perfil_contactar');
   static const botonPrivacidad = Key('perfil_privacidad');
   static const botonConfirmarCierre = Key('perfil_confirmar_cierre');
@@ -99,7 +106,17 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     }
   }
 
+  /// Abre «Cambiar mi contrasena» (V2-M01.10).
+  ///
+  /// La pantalla v2 sustituye a la v1 de esta misma fila: pide la actual igual
+  /// y agrega cerrar las sesiones. La v1 se queda como respaldo para cuando
+  /// esta pantalla se monta sin enrutador (las pruebas de widget y la galeria
+  /// la montan asi), que es la misma regla que siguen las demas filas.
   void _cambiarContrasena() {
+    if (GoRouter.maybeOf(context) != null) {
+      GoRouter.of(context).push(rutaMiContrasena);
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (contexto) => PantallaCambiarContrasena(
@@ -124,6 +141,18 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
   /// Abre «Mis direcciones» (V2-M17.06). Solo se ofrece dentro de la app
   /// enrutada: sin enrutador no habria a donde ir.
   void _abrirDirecciones() => GoRouter.of(context).push(rutaMisDirecciones);
+
+  /// Abre «Datos fiscales» (V2-M08.05), para facturar los servicios.
+  void _abrirDatosFiscales() => GoRouter.of(context).push(rutaDatosFiscales);
+
+  /// Abre «Mis pagos» (V2-M08.07): lo que se pago desde la app.
+  void _abrirMisPagos() => GoRouter.of(context).push(rutaMisPagos);
+
+  /// Abre «Métodos de pago» (V2-M08.04): las tarjetas guardadas.
+  void _abrirMetodosPago() => GoRouter.of(context).push(rutaMetodosPago);
+
+  /// Abre «Mi perfil» (V2-M01.06). Solo se ofrece dentro de la app enrutada.
+  void _abrirMiPerfil() => GoRouter.of(context).push(rutaMiPerfil);
 
   /// Las hojas y los dialogos se montan bajo el tema de la aplicacion, no bajo
   /// el de esta pantalla; se vuelve a aplicar el de la pantalla (claro u
@@ -198,6 +227,14 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
           _Seccion(
             titulo: 'Cuenta',
             opciones: [
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonMiPerfil,
+                  icono: LucideIcons300.user,
+                  titulo: 'Mi perfil',
+                  subtitulo: 'Tus datos, tus vehículos y tus sesiones',
+                  alTocar: _abrirMiPerfil,
+                ),
               _Opcion(
                 llave: PantallaPerfil.botonCambiarContrasena,
                 icono: LucideIcons300.keyRound,
@@ -220,6 +257,30 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                   titulo: 'Mis direcciones',
                   subtitulo: 'Donde recogemos y entregamos tu auto',
                   alTocar: _abrirDirecciones,
+                ),
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonDatosFiscales,
+                  icono: LucideIcons300.fileText,
+                  titulo: 'Datos fiscales',
+                  subtitulo: 'Tu RFC y régimen para facturar tus servicios',
+                  alTocar: _abrirDatosFiscales,
+                ),
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonMisPagos,
+                  icono: LucideIcons300.receiptText,
+                  titulo: 'Mis pagos',
+                  subtitulo: 'Lo que pagaste desde la app',
+                  alTocar: _abrirMisPagos,
+                ),
+              if (GoRouter.maybeOf(context) != null)
+                _Opcion(
+                  llave: PantallaPerfil.botonMetodosPago,
+                  icono: LucideIcons300.creditCard,
+                  titulo: 'Métodos de pago',
+                  subtitulo: 'Tus tarjetas guardadas para pagar más rápido',
+                  alTocar: _abrirMetodosPago,
                 ),
             ],
           ),

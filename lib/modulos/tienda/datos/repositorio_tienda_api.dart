@@ -124,6 +124,7 @@ class RepositorioTiendaApi implements RepositorioTienda {
       CodigoProblema.pedidoNoModificable => MotivoRechazoPedido.noModificable,
       CodigoProblema.productoIncompatible =>
         MotivoRechazoPedido.productoIncompatible,
+      CodigoProblema.pedidoPagado => MotivoRechazoPedido.pagado,
       _ => null,
     };
     return motivo == null ? null : PedidoRechazado(motivo);

@@ -48,6 +48,38 @@ module.exports = function registrarHistorial(servidor, db, vehiculoDelCliente) {
     res.jsonp(anios.sort((a, b) => b - a));
   });
 
+  // V2-M08.02: con que quedo pagada la orden y si se puede pagar en la app
+  // (viene del taller, esta lista o entregada, tiene total y nadie la pago).
+  // Los pagos los guarda el modulo de pagos.
+  function cobro(servicio) {
+    const pagado = (db.get('pagosApp').value() || []).find((p) => p.ordenId === servicio.id && p.estado === 'PAGADO');
+    const pago = pagado
+      ? {
+          id: pagado.id,
+          ordenId: pagado.ordenId,
+          vehiculoId: pagado.vehiculoId,
+          monto: pagado.monto,
+          moneda: pagado.moneda,
+          medio: pagado.medio,
+          marca: pagado.marca ?? null,
+          ultimos4: pagado.ultimos4 ?? null,
+          tipoTarjeta: pagado.tipoTarjeta ?? null,
+          estado: pagado.estado,
+          motivoFallo: null,
+          requiereAutenticacion: false,
+          referencia: pagado.referencia,
+          simulado: pagado.simulado,
+          metodoPagoId: pagado.metodoPagoId ?? null,
+          perfilFiscalId: pagado.perfilFiscalId ?? null,
+          pagadoEn: pagado.pagadoEn,
+          creadoEn: pagado.creadoEn,
+        }
+      : null;
+    const pagable =
+      !pagado && servicio.delTaller === true && ['TERMINADO', 'ENTREGADO'].includes(servicio.estatus) && servicio.total > 0;
+    return { pago, pagable };
+  }
+
   // V2-M02.06: el ticket con mano de obra y refacciones. Los precios traen el IVA:
   // el subtotal y el IVA se desglosan del total, como en el backend.
   servidor.get(`${BASE}/servicios/:servicioId`, (req, res) => {
@@ -76,6 +108,7 @@ module.exports = function registrarHistorial(servidor, db, vehiculoDelCliente) {
       iva: Math.round((servicio.total - subtotal) * 100) / 100,
       total: servicio.total,
       puntosGanados: servicio.puntosGanados ?? null,
+      ...cobro(servicio),
     });
   });
 

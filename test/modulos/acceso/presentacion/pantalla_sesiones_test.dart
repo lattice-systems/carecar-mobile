@@ -263,6 +263,57 @@ void main() {
     });
   });
 
+  // La DoD pide claro, oscuro y letra al 200 %. Sin esto la pantalla podria
+  // verse rota en oscuro o desbordada con letra grande y nadie se enteraria:
+  // las pruebas de arriba corren todas en claro.
+  for (final escenario in [Escenario.oscuro, Escenario.letraGrande]) {
+    prueba('se ve completa en ${escenario.name} sin desbordar', (tester) async {
+      final repo = RepositorioAccesoFake()
+        ..sesionesAbiertas = [
+          sesion(
+            id: 9,
+            dispositivo: 'Pixel 7 · Android 14',
+            ultimoUso: ahora.subtract(const Duration(minutes: 5)),
+          ),
+          sesion(id: 4, dispositivo: null, ultimoUso: null, iniciadaEn: null),
+        ];
+
+      await tester.pumpWidget(app(repo, escenario: escenario));
+      await tester.pumpAndSettle();
+
+      // Un desbordamiento de layout llega como excepcion en las pruebas.
+      expect(tester.takeException(), isNull);
+      expect(find.text('Pixel 7 · Android 14'), findsOneWidget);
+      expect(find.text('Dispositivo sin nombre'), findsOneWidget);
+      expect(find.text('Cerrar todas las sesiones'), findsOneWidget);
+    });
+
+    prueba('el dialogo de cerrar todas cabe en ${escenario.name}', (
+      tester,
+    ) async {
+      // El dialogo es lo mas apretado de la pantalla: titulo, un mensaje de dos
+      // renglones y dos acciones. Con letra al 200 % es donde primero se rompe.
+      //
+      // Y se mide en una pantalla **de verdad**: las demas pruebas usan una
+      // vista de 4000 px de alto para que quepa la lista entera, y con esa
+      // altura un dialogo demasiado alto nunca desbordaria, asi que la prueba
+      // pasaria sin probar nada.
+      tester.view.physicalSize = const Size(360, 800);
+      final repo = RepositorioAccesoFake()
+        ..sesionesAbiertas = [sesion(ultimoUso: ahora)];
+
+      await tester.pumpWidget(app(repo, escenario: escenario));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Cerrar todas las sesiones'));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(Dialogo), findsOneWidget);
+      expect(find.text('Cerrar todas'), findsOneWidget);
+      expect(find.text('Cancelar'), findsOneWidget);
+    });
+  }
+
   group('cerrar todas', () {
     prueba('pregunta antes y avisa que incluye este telefono', (tester) async {
       final repo = RepositorioAccesoFake()

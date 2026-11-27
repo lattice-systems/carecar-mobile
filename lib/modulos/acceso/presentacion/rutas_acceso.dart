@@ -4,10 +4,30 @@ import 'package:go_router/go_router.dart';
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
+import 'pantalla_bienvenida.dart';
 import 'pantalla_cambiar_contrasena.dart';
+import 'pantalla_cambiar_correo.dart';
+import 'pantalla_cuenta_desactivada.dart';
+import 'pantalla_mi_contrasena.dart';
+import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
 import 'pantalla_recuperar.dart';
 import 'pantalla_sesiones.dart';
+
+/// Mi perfil (V2-M01.06). Se abre desde Ajustes.
+///
+/// `/perfil` esta tomado por el endpoint del contrato y `/ajustes` es la
+/// pantalla v1 que sigue viva, asi que no se usa ninguno de los dos.
+const rutaMiPerfil = '/mi-perfil';
+
+/// Cambiar mi correo (V2-M01.07). Se abre desde el perfil.
+const rutaCambiarCorreo = '/mi-perfil/correo';
+
+/// Cambiar mi contrasena cuando yo quiera (V2-M01.10). Se abre desde Ajustes.
+///
+/// Camino propio y no `Rutas.cambiarContrasena`: ese lo sirve hoy la pantalla
+/// v1 del cambio **obligatorio**, y son dos pantallas distintas.
+const rutaMiContrasena = '/mi-contrasena';
 
 /// Mis sesiones abiertas (V2-M01.09). Se abre desde el perfil.
 ///
@@ -86,7 +106,7 @@ final rutasAcceso = <RouteBase>[
   ),
 ];
 
-/// Mis sesiones abiertas, aparte de [rutasAcceso] · V2-M01.09.
+/// Mi perfil y mis sesiones, aparte de [rutasAcceso] · V2-M01.06 y V2-M01.09.
 ///
 /// Va en su propia lista **y si se registra hoy**. Las otras cuatro esperan a
 /// que el modulo se encienda porque sus caminos ya los sirven pantallas v1 y
@@ -94,6 +114,39 @@ final rutasAcceso = <RouteBase>[
 /// no choca con nada y no necesita el interruptor ni tocar las trece pruebas
 /// ajenas. Sin esto la pantalla existiria y nadie podria abrirla.
 final rutasSesiones = <RouteBase>[
+  GoRoute(
+    path: rutaMiPerfil,
+    name: 'mi-perfil',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaMiPerfil()),
+  ),
+  GoRoute(
+    path: rutaCambiarCorreo,
+    name: 'cambiar-correo',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaCambiarCorreo()),
+  ),
+  // V2-M01.02 y V2-M01.08. Sus caminos viven en `Rutas` y no aqui porque la
+  // guardia de sesion tiene que conocerlos, y esta en el nucleo: no puede
+  // importar un modulo.
+  GoRoute(
+    path: Rutas.bienvenida,
+    name: 'bienvenida',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaBienvenida()),
+  ),
+  GoRoute(
+    path: Rutas.cuentaDesactivada,
+    name: 'cuenta-desactivada',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaCuentaDesactivada()),
+  ),
+  GoRoute(
+    path: rutaMiContrasena,
+    name: 'mi-contrasena',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaMiContrasena()),
+  ),
   GoRoute(
     path: rutaSesiones,
     name: 'sesiones',

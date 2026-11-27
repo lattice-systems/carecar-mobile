@@ -207,8 +207,105 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto de la app: marco con regreso, el perfil en una tarjeta de resumen, grupos de lista, interruptor del sistema y diálogo y hoja del sistema. Es solo el aspecto: nada de lo que piden las historias de abajo cambia.
 
 - **V2-M01.06 (Ver mi perfil)** puede mover esta pantalla a un módulo `perfil` y completar sus estados; los textos siguen escritos a mano y habría que pasarlos a `app_es.arb`/`app_en.arb`.
-- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
+- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
+
+## Avance de V2-M01.02
+
+Quien decide mostrarla es la **guardia de rutas**, y va antes que todo, incluido el login: la bienvenida es del primer arranque, no de la cuenta, así que tiene que verla también quien todavía no ha entrado. Por eso el estado vive en `lib/nucleo/bienvenida/` y no en el módulo: la guardia está en el núcleo y no puede importar un módulo.
+
+«Una sola vez» se recuerda en las preferencias del dispositivo (`bienvenida_vista`), con las mismas que ya usaba el idioma. **Sin preferencias se responde que no falta verla**: mostrarla sin poder recordarlo la repetiría en cada arranque, y eso es peor que no mostrarla.
+
+Saltarla y terminarla hacen lo mismo —marcar que ya se vio—, porque el criterio es que no vuelva a estorbar, no que se lea completa. «Saltar» está arriba y alcanzable desde la primera lámina, no al final del recorrido.
+
+Lector de pantalla: cada lámina anuncia su título como **encabezado** y luego el texto; los puntos de abajo quedan fuera del árbol de semántica, porque son decorativos y repetir «paso 2 de 3» en tres nodos solo estorba.
+
+Seis pruebas: la guardia (pendiente va antes del login, en la bienvenida se queda, vista no estorba), el estado (primer arranque, que lo recuerde, y sin preferencias) y la app enrutada (aparece, se salta y lleva al acceso, y no vuelve).
+
+## Avance de V2-M01.08
+
+El 403 se atiende **en un solo lugar**: `ClienteApi._pedir`, el embudo por el que pasan todas las peticiones con token. La cuenta se puede desactivar con la persona dentro, así que el 403 puede llegar en cualquier pantalla; resolverlo pantalla por pantalla habría dejado huecos. Ahí se avisa con `alCuentaDesactivada` —un callback, como `renovarSesion`, para que la capa de datos no dependa de la de sesión— y `ControladorSesion` borra la sesión local y marca `SinSesion(porCuentaDesactivada: true)`. Solo se avisa si **hay** token: un 403 sin sesión no tiene sesión que cerrar.
+
+De ahí en adelante decide la guardia (`redirigirPorSesion`), que ya es pura y probada: con esa marca, **cualquier** ruta —incluido el login— lleva a `/cuenta-desactivada`. El camino vive en `Rutas` y no en el módulo porque la guardia está en el núcleo y no puede importar un módulo.
+
+**Dos pruebas que ya existían cambiaron de expectativa, a propósito.** Esperaban que un 403 al entrar se quedara en el login mostrando el mensaje del servidor (`controlador_sesion_test.dart` y la del login v1). Ese mensaje invitaba a reintentar algo que no se arregla reintentando, y el criterio pide una **pantalla dedicada**. Las dos quedaron reescritas diciendo por qué.
+
+La pantalla es un callejón a propósito: sin campos y sin «intentar de nuevo». Solo llamar a la agencia, escribirle, o volver al login si fue un error —y volver exige `reconocerCuentaDesactivada()`, porque si no la guardia regresaría ahí para siempre—. El `tel:` y el `mailto:` pasan por `abrirEnlaceProvider` para que la prueba no toque la plataforma.
+
+## Avance de V2-M01.10
+
+Pantalla propia (`PantallaMiContrasena`, ruta `/mi-contrasena`) y **no** un modo de la del cambio obligatorio: esa a propósito no tiene salida (V2-M01.03) y mezclarlas haría frágil justo el criterio que la define. Reusa `ReglasContrasena` y `ListaDeReglas`, así que la contraseña nueva se revisa con las mismas reglas en vivo. **No toca el contrato ni el backend.**
+
+**El criterio dice «cierra las demás sesiones» y eso no se puede hacer hoy.** El contrato solo tiene `DELETE /sesiones`, que cierra **todas, incluida la de quien llama**, y la app no puede saber cuál de la lista es este celular: eso espera el claim `sid` en el JWT, que es de `shared` y de otra persona. Las opciones eran tres: no ofrecerlo —y dejar sin salida a quien cambia su contraseña porque sospecha que alguien entró—, decir «las demás» y cerrar también esta —mentir—, o decirlo tal cual. Se eligió lo tercero: la casilla dice «cerrar sesión en todos mis dispositivos» y explica que incluye este, y al terminar la app suelta su propia sesión, porque el access token en curso sigue valiendo hasta que expire. **Cuando exista `sid`, esto se vuelve «las demás» sin tocar la pantalla**, solo el repositorio.
+
+La casilla viene **apagada**: cambiar la contraseña no debe sacar a nadie de sus otros dispositivos sin habérselo pedido. Y si el cambio funciona pero cerrar las sesiones falla, el aviso de éxito **se queda** y el fallo se muestra aparte: la contraseña ya cambió y decir lo contrario sería peor.
+
+Tres pruebas, una por criterio y una por el riesgo: que pida la actual y no toque las sesiones, que con la casilla marcada cierre todo y suelte esta sesión, y que un rechazo del servidor no cierre nada ni diga que se guardó.
+
+## Avance de V2-M01.06
+
+**Lo primero que apareció fue que la historia no se podía cumplir como estaba escrita.** El criterio pide nombre, correo, **teléfono**, **«cliente desde»** y vehículos; el contrato declaraba `Perfil` con `id`, `nombre` y `correo`, y `PerfilApp` del backend devolvía esos tres. La historia estaba marcada **sin** parte de backend y se corrigió a `B` al tomarla. No hizo falta migración: `cliente` ya tenía `telefono` y `created_at`.
+
+**Qué quedó**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| Contrato 2.23.0 | `Perfil` gana `telefono` y `clienteDesde` |
+| `api/modelos/perfil.dart` | Los lee; la caché los guarda |
+| `dominio/perfil_del_cliente.dart` | Distingue «no hay teléfono» de «hay uno vacío» |
+| `datos/` y `presentacion/` | `RepositorioAcceso.perfil()`, `perfilProvider`, `PantallaMiPerfil` y la ruta `/mi-perfil` |
+| Ajustes v1 | Una fila más que abre el perfil |
+| Backend | `ClienteRegistrado` y `PerfilApp` con los dos campos |
+
+**Las dos reglas no son simétricas, y de ahí sale casi todo**
+
+- **El teléfono puede faltar**: la agencia no siempre lo captura. Es opcional en el contrato, y la pantalla dice «Sin teléfono registrado» en vez de dejar el renglón vacío, que parecería un error de la app. Un teléfono con solo espacios cuenta como que no hay.
+- **«Cliente desde» siempre viene**, porque `cliente.created_at` es `not null`, así que va en `required`. Y es una **fecha**, no un instante: el servidor la resuelve en la zona de la agencia, porque convertirla en el celular haría que quien se registró el 1 de marzo a las 02:00 UTC apareciera como «desde febrero» en México.
+
+**Dos lecturas, dos estados.** El perfil y el garaje se piden por separado y cada uno lleva el suyo: si los vehículos no cargan, el perfil se sigue viendo con un aviso pequeño. Perder los datos que el cliente vino a confirmar porque una lista no respondió sería peor. Por eso esa sección no usa `VistaAsincrona`, que pinta el error a pantalla completa. Los vehículos vienen del módulo `vehiculos` por su contrato público (regla R1).
+
+**Esta historia vuelve alcanzable a V2-M01.09.** «Mis sesiones» tenía ruta y nada que llevara a ella; ahora se abre desde el perfil, y el perfil desde una fila más en Ajustes.
+
+**Dos cosas que conviene que el equipo sepa**
+
+- **La caché habría roto el perfil sin conexión**: guardaba solo `id`, `nombre` y `correo`, y releer esa copia con un campo obligatorio nuevo habría fallado. Ya guarda los cinco. No hizo falta tocar nada para las copias viejas: `_copia` descarta y borra la que no se puede leer con la forma de ahora.
+- **En el backend, la zona de la agencia está definida en tres lugares** (`AgendaAppService`, `ServicioApp` y una copia privada en `RecoleccionService`). Se usó la de `ServicioApp`; unificarlas merece su propia historia.
+
+**Pendiente:** demostrarlo en celular, que es lo único que le falta a su fila de `cumplimiento-ficha.md`. Editar teléfono y correo es V2-M01.07, que esta historia desbloquea.
+
+## Avance de V2-M01.07
+
+**Se hizo la mitad del correo. La del teléfono está bloqueada.**
+
+El criterio pide confirmar con **un código enviado al dato nuevo**. Para el teléfono eso exige un SMS, y en el backend no hay nada: ni proveedor, ni configuración, solo SMTP. Se buscó antes de empezar. Mandar ese código al correo verificaría que el dueño de la cuenta autorizó el cambio, **no que el teléfono sea suyo**, que es justo para lo que sirve la verificación; y contratar un proveedor tiene costo, credenciales y configuración, así que es una decisión del equipo.
+
+⚠️ **Queda pendiente preguntárselo.** La tabla se diseñó para los dos tipos —el `check` acepta `TELEFONO`— para que esa mitad no necesite otra migración.
+
+**Qué quedó**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| Contrato 2.26.0 | `PATCH /perfil` y `POST /perfil/verificaciones/{id}/confirmar` |
+| `verificacion_contacto` (V57) | El dato nuevo espera aquí, con el código en BCrypt, 15 minutos y 5 intentos |
+| `CambioDeContactoService` | Los dos pasos, separado como `RecuperacionContrasenaService` |
+| `EnvioCorreos.enviarCodigoDeContacto` | El código va **al correo nuevo** |
+| App | `pedirCambioDeCorreo`, `confirmarVerificacion`, tres fallos de dominio y `PantallaCambiarCorreo` |
+
+**Las tres decisiones que mandan**
+
+1. **El correo no se guarda hasta confirmar.** Vive en `valor_nuevo`. Guardarlo antes dejaría al cliente con un correo que no ha probado que es suyo y, como `cuenta_app.usuario` lo sigue (V2-T05.03), **sin poder entrar**.
+2. **Pedir el cambio exige la contraseña actual.** No lo decía el criterio; se propuso aparte. El correo es la identidad con la que se entra, así que sin eso alguien con el celular desbloqueado podría cambiarlo al suyo, recibir el código en su buzón y quedarse con la cuenta. Mismo requisito y precedente que cancelar la cuenta.
+3. **Los tres errores se distinguen por `Problema.codigo`**, y los tres códigos ya existían. La contraseña equivocada y el correo mal escrito llegan los dos como **400**; la pantalla señala cada uno en su campo. Confundirlos le diría a la persona que corrija lo que estaba bien.
+
+**Lo que costó integrarlo, por si le sirve a alguien más**
+
+El CI del backend encontró tres cosas en cadena, ninguna visible en una máquina sin Docker:
+
+- **El PR no corría CI** porque tenía conflictos con `main`: GitHub no ejecuta los workflows de un PR que no puede fusionar, así que «no hay checks» se parece a «va despacio». Si un PR lleva minutos sin un solo check, revisar `mergeStateStatus` antes de esperar más.
+- **Choque de números de migración.** Entró otra V55 mientras la historia se construía. **El rebase no lo detecta** —son archivos distintos—; solo Flyway al arrancar. El número se toma *después* de rebasar, mirando el directorio.
+- **Dos constructores sin `@Autowired`**: el contexto de Spring no arranca. Ni `test-compile` ni `checkstyle` lo ven.
+
+**Pendiente:** la mitad del teléfono (bloqueada por el SMS) y demostrar el cambio de correo en celular.
 
 ## Avance de V2-M01.09
 

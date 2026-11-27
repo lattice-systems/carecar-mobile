@@ -52,7 +52,25 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 
 - Las pantallas de M03, M14 y M26 pasan las guías en sus pruebas de módulo, en claro, oscuro y letra al 200 %. Las de catálogo y valuación se prueban además en 320 de ancho, como ya hacía la tienda.
 - **Excepción aceptada en V2-M20.08:** en teléfonos de 320 de ancho cada día del `Calendario` mide unos 42 de ancho y conserva 48 de alto, porque siete columnas de 48 suman 336. Se acepta porque supera el mínimo de WCAG 2.2 AA (24 × 24) y las otras salidas, como desplazar el mes de lado, son peores para quien lo usa. La prueba de agendar inspección exige al menos 40 de ancho y 48 de alto.
-- Las tres historias siguen abiertas: faltan las pantallas de los demás módulos y la prueba con TalkBack y VoiceOver.
+
+### Recorrido por las rutas del resto de módulos
+
+`test/accesibilidad/rutas/` monta la app con el enrutador real y abre las pantallas de lealtad, pagos, garantía, taller, historial, mantenimiento, bitácora, recolección, asistencia, vehículos, citas, mi perfil y sesiones. Cada una se prueba en 320 de ancho, en claro y oscuro con las guías de Flutter y con letra al 200 % sin desbordes. El ayudante es `test/ayudas/auditoria_rutas.dart`: una pantalla nueva suma su ruta al archivo de su módulo.
+
+| Qué encontró | Cómo quedó |
+| --- | --- |
+| Días del calendario de 37.7 de ancho al agendar, reprogramar y agendar una campaña | El calendario usa todo el ancho de su tarjeta y mide 41.1, dentro de la excepción de arriba |
+| Código de canje y de referido con 34 de alto | Miden al menos 48 |
+| La tarjeta del asistente, en el detalle del auto, tenía un toque sin nombre para el lector | El encabezado es el único botón que abre el asistente |
+| El chat del asistente se desbordaba con letra al 200 % | Los avisos ocupan un tercio del alto como mucho y el texto de ayuda del campo, dos líneas |
+
+- Las tres historias siguen abiertas: falta la prueba con TalkBack y VoiceOver, y las pantallas de acceso esperan a que su módulo se encienda en v2.
+
+### Pantallas de taller, historial, garantía, lealtad y pagos
+
+- Las pantallas de M04 (orden, inspección y adicionales), M02 (historial y ticket), M10 (garantía, campañas, campaña y agendar), M12 (lealtad, movimientos, recompensas, canjes y referir) y M08 (datos fiscales, perfil fiscal, pagar orden, mis pagos, pago y métodos de pago) pasan la auditoría en sus pruebas de módulo: `auditarAccesibilidad` en claro y oscuro a 320 de ancho, y sin desbordes con letra al 200 %.
+- Las pruebas de módulo encontraron además que Mis pagos tronaba sin pagos (el estado vacío pedía la altura intrínseca); ya se corrigió. Agendar una campaña se prueba con la excepción del calendario (40 × 48) y los códigos de canje y de referido con la corrección del recorrido por rutas.
+- Los ayudantes de prueba de esos módulos (`appTaller`, `appGarantia`, `appLealtad`, `appPagos` y `appCobro`) aceptan `ancho`, para montar cada pantalla en un teléfono chico.
 
 ## Avance de V2-M20.01 (fase 1)
 

@@ -1,0 +1,47 @@
+{
+  "sucursales": [
+    {
+      "id": 1,
+      "nombre": "CareCar León",
+      "direccion": "Blvd. Ejemplo 100, Col. Centro, 37000 León, Gto.",
+      "lat": 21.125,
+      "lng": -101.686,
+      "telefono": "+52 477 000 0000",
+      "correo": "contacto@agencia.example.com",
+      "activa": true,
+      "orden": 1,
+      "horarios": [
+        { "departamento": "VENTAS", "dias": [1, 2, 3, 4, 5, 6], "abre": "09:00", "cierra": "19:00" },
+        { "departamento": "SERVICIO", "dias": [1, 2, 3, 4, 5], "abre": "08:00", "cierra": "18:00" },
+        { "departamento": "SERVICIO", "dias": [6], "abre": "08:00", "cierra": "14:00" },
+        { "departamento": "REFACCIONES", "dias": [1, 2, 3, 4, 5], "abre": "09:00", "cierra": "17:00" }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "CareCar León Norte",
+      "direccion": "Av. Ejemplo Norte 450, Col. Jardines, 37160 León, Gto.",
+      "lat": 21.1527,
+      "lng": -101.6894,
+      "telefono": null,
+      "correo": null,
+      "activa": true,
+      "orden": 2,
+      "horarios": [
+        { "departamento": "VENTAS", "dias": [1, 2, 3, 4, 5, 6], "abre": "10:00", "cierra": "20:00" }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "CareCar Sucursal Retirada",
+      "direccion": "Calle Vieja 1, León, Gto.",
+      "lat": 21.1,
+      "lng": -101.7,
+      "telefono": null,
+      "correo": null,
+      "activa": false,
+      "orden": 3,
+      "horarios": []
+    }
+  ]
+}

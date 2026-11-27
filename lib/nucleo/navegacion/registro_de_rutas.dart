@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../modulos/acceso/acceso.dart';
 import '../../modulos/asistencia/asistencia.dart';
 import '../../modulos/asistente/asistente.dart';
+import '../../modulos/ayuda/ayuda.dart';
 import '../../modulos/bitacora/bitacora.dart';
 import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
@@ -14,6 +15,7 @@ import '../../modulos/garantia/garantia.dart';
 import '../../modulos/historial/historial.dart';
 import '../../modulos/lealtad/lealtad.dart';
 import '../../modulos/mantenimiento/mantenimiento.dart';
+import '../../modulos/pagos/pagos.dart';
 import '../../modulos/privacidad/privacidad.dart';
 import '../../modulos/recoleccion/recoleccion.dart';
 import '../../modulos/taller/taller.dart';
@@ -46,6 +48,9 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),
   // El asistente (M24) es nuevo en v2: no pasa por el interruptor.
   ...rutasAsistente,
+  // La ayuda y las sucursales (M27) son nuevas en v2: no pasan por el
+  // interruptor.
+  ...rutasAyuda,
   // La bitacora (M18) es nueva en v2: no pasa por el interruptor.
   ...rutasBitacora,
   // El estreno (M16) es nuevo en v2: no pasa por el interruptor.
@@ -65,6 +70,9 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   ...rutasLealtad,
   // El mantenimiento (M05) es nuevo en v2: no pasa por el interruptor.
   ...rutasMantenimiento,
+  // Los pagos y las facturas (M08) son nuevos en v2: no pasan por el
+  // interruptor.
+  ...rutasPagos,
   // La privacidad (M22) es nueva en v2: no pasa por el interruptor.
   ...rutasPrivacidad,
   // La recoleccion (M17) es nueva en v2: no pasa por el interruptor.

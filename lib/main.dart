@@ -155,6 +155,9 @@ class _AppCareCarState extends State<AppCareCar> {
         alVerificarCertificado: conexionSegura.actualizar,
         // RIC-3: ante un 401 se intenta refrescar una vez.
         renovarSesion: () => sesion.renovar(),
+        // V2-M01.08: un 403 significa que la agencia desactivo la cuenta. La
+        // sesion local se borra y la guardia lleva al aviso que lo explica.
+        alCuentaDesactivada: () => sesion.terminarPorCuentaDesactivada(),
       );
 
       final prefs = widget.prefs;

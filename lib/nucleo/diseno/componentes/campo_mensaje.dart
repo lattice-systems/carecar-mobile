@@ -114,6 +114,8 @@ class _CampoMensajeState extends State<CampoMensaje> {
             style: t.cuerpo.copyWith(color: c.texto),
             decoration: InputDecoration(
               hintText: widget.sugerencia,
+              // Con letra grande el texto de ayuda no hace crecer el campo sin fin.
+              hintMaxLines: 2,
               hintStyle: t.cuerpo.copyWith(color: c.textoSecundario),
               filled: true,
               fillColor: c.superficieHundida,

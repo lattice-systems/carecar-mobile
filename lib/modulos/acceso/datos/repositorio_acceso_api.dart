@@ -1,9 +1,12 @@
 import '../../../api/carecar_api.dart';
 import '../../../api/excepciones.dart';
+import '../../../api/modelos/perfil.dart';
 import '../../../api/modelos/problema.dart';
 import '../../../api/modelos/sesion.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
+import '../dominio/cambio_de_correo_pendiente.dart';
 import '../dominio/fallos_acceso.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -56,6 +59,65 @@ class RepositorioAccesoApi with RepositorioBase implements RepositorioAcceso {
       rethrow;
     }
   }
+
+  /// Las traducciones van **fuera** de [pedir], igual que en
+  /// `restablecerConEnlace`: un fallo de dominio es una `Exception` normal y
+  /// dentro saldria convertido en `ErrorDelServidor`, con lo que la pantalla
+  /// perderia el unico dato que necesita para decir que fallo.
+  @override
+  Future<CambioDeCorreoPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) async {
+    try {
+      final dto = await pedir(
+        () => _api.pedirCambioDeCorreo(
+          correo: correo,
+          contrasenaActual: contrasenaActual,
+        ),
+      );
+      return CambioDeCorreoPendiente(id: dto.id, expira: dto.expira);
+    } on DatosInvalidos catch (e) {
+      // Mismo 400 que un correo mal escrito; solo el codigo los separa.
+      if (e.problema?.codigo == CodigoProblema.credencialesInvalidas) {
+        throw const ContrasenaNoCoincide();
+      }
+      rethrow;
+    } on Conflicto {
+      throw const CorreoEnUso();
+    }
+  }
+
+  @override
+  Future<PerfilDelCliente> confirmarCambioDeCorreo({
+    required int id,
+    required String codigo,
+  }) async {
+    try {
+      final dto = await pedir(
+        () => _api.confirmarVerificacion(id: id, codigo: codigo),
+      );
+      return _aPerfil(dto);
+    } on DatosInvalidos catch (e) {
+      if (e.problema?.codigo == CodigoProblema.codigoInvalido) {
+        throw const CodigoNoValido();
+      }
+      rethrow;
+    } on Conflicto {
+      throw const CorreoEnUso();
+    }
+  }
+
+  @override
+  Future<PerfilDelCliente> perfil() =>
+      pedir(() async => _aPerfil(await _api.miPerfil()));
+
+  static PerfilDelCliente _aPerfil(Perfil dto) => PerfilDelCliente(
+    nombre: dto.nombre,
+    correo: dto.correo,
+    telefono: dto.telefono,
+    clienteDesde: dto.clienteDesde,
+  );
 
   @override
   Future<List<SesionDeLaCuenta>> sesiones() => pedir(() async {

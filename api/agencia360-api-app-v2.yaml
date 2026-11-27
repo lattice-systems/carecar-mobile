@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.24.0
+  version: 2.29.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -80,14 +80,23 @@ tags:
     description: V2-M12.01, V2-M12.03, V2-M12.04 y V2-M12.05
   - name: Pagos y facturas
     description: |
-      V2-M08.05 · Datos fiscales. Los pagos y las facturas de M08 son simulados (ADR 0009 de
-      carecar-mobile): no hay procesador ni proveedor de timbrado externos.
+      V2-M08.02 a V2-M08.07 · Pagar una orden, billeteras, tarjetas guardadas, datos fiscales,
+      facturas y mis pagos. Los pagos y las facturas de M08 son simulados (ADR 0009 de
+      carecar-mobile): no hay procesador ni proveedor de timbrado externos y no se cobra nada.
+      La app nunca manda el número de una tarjeta: manda el token de una de las tarjetas de
+      prueba (`tok_sim_visa`, `tok_sim_mastercard`, `tok_sim_visa_debito`,
+      `tok_sim_fondos_insuficientes`, `tok_sim_3ds` y `tok_sim_3ds_falla`). Apple Pay y Google Pay
+      también son simulados (V2-M08.03): no usan la billetera del teléfono. La factura es un XML
+      con la estructura de CFDI 4.0 y un timbre simulado, y su PDF dice «Factura simulada, sin
+      validez fiscal» (V2-M08.06).
   - name: Bitácora
     description: V2-M18.01 y V2-M18.04
   - name: Privacidad
     description: V2-M22.01, V2-M22.02 y V2-M22.03
   - name: Valuación
     description: V2-M26.01 a V2-M26.05
+  - name: Sucursales
+    description: V2-M27.02
 
 security:
   - bearerAuth: []
@@ -297,7 +306,7 @@ paths:
     get:
       tags: [Acceso]
       summary: Datos del cliente que inició sesión
-      description: APP-2.2 · Solo lectura; la edición del perfil se define en APP-2.2.
+      description: APP-2.2 · Solo lectura. Editar el correo es `PATCH /perfil`.
       responses:
         '200':
           description: Datos del cliente
@@ -309,6 +318,111 @@ paths:
           $ref: '#/components/responses/NoAutenticado'
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
+    patch:
+      tags: [Acceso]
+      summary: Pedir el cambio del correo
+      description: |
+        V2-M01.07 · **No cambia nada todavía**: crea una verificación y manda un código de
+        6 dígitos al correo nuevo. El cambio se aplica en
+        `POST /perfil/verificaciones/{id}/confirmar`.
+
+        Guardar el correo antes de confirmarlo dejaría al cliente con uno que no ha probado
+        que es suyo y, como `cuenta_app.usuario` sigue al correo, **sin poder entrar**.
+
+        **Pide la contraseña actual.** El correo es la identidad con la que se entra, así que
+        sin eso alguien con el celular desbloqueado del cliente podría cambiarlo al suyo,
+        recibir el código en su propio buzón y quedarse con la cuenta. Es el mismo requisito
+        que para cancelar la cuenta.
+
+        El teléfono **todavía no se puede cambiar**: verificarlo exige mandar un código por
+        SMS y no hay con qué. Se agregará aquí cuando exista.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CambioDeCorreoRequest'
+      responses:
+        '202':
+          description: Verificación creada; el código va al correo nuevo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificacionPendiente'
+        '400':
+          description: |
+            Se distinguen por `codigo`, y la pantalla necesita distinguirlos:
+            `CREDENCIALES_INVALIDAS` si la contraseña no coincide (400 y no 401 a propósito:
+            la app lee un 401 como sesión vencida y cerraría la sesión sin explicar nada) y
+            `DATOS_INVALIDOS` si el correo no tiene formato o falta un campo.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '409':
+          description: Ese correo ya es de otro cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /perfil/verificaciones/{id}/confirmar:
+    post:
+      tags: [Acceso]
+      summary: Confirmar el cambio con el código
+      description: >
+        V2-M01.07 · Aplica el cambio pedido en `PATCH /perfil`. El código vence a los 15
+        minutos y sirve una sola vez. Al cambiar el correo cambia también
+        `cuenta_app.usuario` (V2-T05.03). **No cierra las demás sesiones**: es la misma
+        persona y echarla de sus otros dispositivos por corregir su correo sería gratuito.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmarVerificacionRequest'
+      responses:
+        '200':
+          description: El perfil ya actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Perfil'
+        '400':
+          description: >
+            `CODIGO_INVALIDO` si el código es equivocado, venció o ya se usó, igual que al
+            restablecer la contraseña; `DATOS_INVALIDOS` si no viene el código.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          description: No existe esa verificación o no es de este cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '409':
+          description: Ese correo ya es de otro cliente (alguien lo tomó mientras se verificaba)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
 
   /sesiones:
     get:
@@ -1220,6 +1334,29 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /sucursales:
+    get:
+      tags: [Sucursales]
+      summary: Sucursales con su ubicación y sus horarios
+      description: |
+        Las sucursales activas, por `orden` y `id` (V2-M27.02). La lista puede venir vacía.
+        «Abierto ahora» lo calcula el servidor con la hora y la zona de la agencia
+        (`America/Mexico_City`), no el teléfono: la persona puede estar de viaje en otra zona
+        y la agencia sigue cerrando a la misma hora. La app lo pide cada vez que abre la pantalla.
+      responses:
+        '200':
+          description: Sucursales activas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sucursal'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
   /catalogo/{modeloId}:
     get:
       tags: [Catálogo]
@@ -2057,7 +2194,8 @@ paths:
           $ref: '#/components/responses/NoEncontrado'
         '409':
           description: |
-            `PEDIDO_NO_CANCELABLE`: ya se entregó.
+            `PEDIDO_NO_CANCELABLE` (ya se entregó), `PEDIDO_PAGADO` (V2-M14.04: ya se pagó en la app
+            y se cancela en mostrador) o `PAGO_EN_CURSO` (un intento de pago espera el 3-D Secure).
           content:
             application/json:
               schema:
@@ -2484,6 +2622,405 @@ paths:
       responses:
         '204':
           description: Borrado
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /ordenes/{ordenId}/pagos:
+    parameters:
+      - $ref: '#/components/parameters/OrdenId'
+    post:
+      tags: [Pagos y facturas]
+      summary: Pagar una orden
+      description: |
+        V2-M08.02 y V2-M08.04 · Cobra con el procesador simulado una orden del taller lista para
+        entrega o entregada. Con `tarjeta` se paga con una tarjeta de prueba nueva (token y
+        vencimiento) y `guardarTarjeta` la guarda al quedar pagada; con `metodoPagoId`, con una
+        guardada. El intento queda `PAGADO`, `FALLIDO` con `motivoFallo` o `PENDIENTE` con
+        `requiereAutenticacion` si el banco simulado pide 3-D Secure (se responde en
+        `POST /pagos/{pagoId}/autenticacion`; a los 15 minutos sin respuesta vence). Repetir la
+        misma `Idempotency-Key` responde 200 con el mismo intento y no cobra otra vez; para
+        reintentar un rechazo se usa una llave nueva. Al quedar pagada llega el evento
+        `pago.confirmado`.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPago'
+      responses:
+        '200':
+          description: El intento ya creado con esa llave
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '201':
+          description: Intento creado (pagado, fallido o esperando el 3-D Secure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `ORDEN_NO_PAGABLE` (no viene del taller, aún no está lista, no tiene total o ya está
+            pagada, también en caja) o `PAGO_EN_CURSO` (otro intento espera el 3-D Secure).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /pedidos/{pedidoId}/pagos:
+    parameters:
+      - name: pedidoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Tienda, Pagos y facturas]
+      summary: Pagar un pedido de la tienda
+      description: |
+        V2-M14.04: Cobra el total del pedido con el procesador simulado, igual que
+        `POST /ordenes/{ordenId}/pagos`: el mismo cuerpo, las mismas respuestas y el mismo `Pago`,
+        con `pedidoId` lleno y `ordenId` nulo. El pedido tiene que estar `apartado` o `listo`, sin
+        vencer, con total y sin pagar. El 3-D Secure se responde en
+        `POST /pagos/{pagoId}/autenticacion`. Repetir la misma `Idempotency-Key` responde 200 con el
+        mismo intento, y usarla con otra orden o con otro pedido es 400. Un pedido pagado ya no vence
+        y no se cancela desde la app. No suma puntos de lealtad. Al quedar pagado llega el evento
+        `pago.confirmado` con `pedidoId`.
+      parameters:
+        - name: Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPago'
+      responses:
+        '200':
+          description: El intento ya creado con esa llave
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '201':
+          description: Intento creado (pagado, fallido o esperando el 3-D Secure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `PEDIDO_NO_PAGABLE` (no está apartado ni listo, ya venció, no tiene total o ya está
+            pagado) o `PAGO_EN_CURSO` (otro intento espera el 3-D Secure).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /pagos:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis pagos
+      description: |
+        V2-M08.07 y V2-M14.04: Del más nuevo al más viejo, con los fallidos. Trae los pagos de
+        órdenes y los de pedidos de la tienda.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Pagos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaPagos'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /pagos/{pagoId}:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      tags: [Pagos y facturas]
+      summary: Ver un pago
+      description: V2-M08.02 y V2-M08.07 · Uno ajeno responde 404.
+      responses:
+        '200':
+          description: El pago
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /pagos/{pagoId}/autenticacion:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Pagos y facturas]
+      summary: Responder el 3-D Secure simulado
+      description: |
+        V2-M08.02 y V2-M14.04: Lo que la persona respondió en la pantalla simulada de su banco,
+        para el pago de una orden o de un pedido. Queda
+        `PAGADO` o `FALLIDO` con `AUTENTICACION_FALLIDA` (o `AUTENTICACION_VENCIDA` si pasaron
+        15 minutos).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutenticacionPago'
+      responses:
+        '200':
+          description: El pago ya resuelto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pago'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: '`PAGO_NO_PENDIENTE`: el pago ya no espera el 3-D Secure.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /pagos/{pagoId}/factura:
+    parameters:
+      - name: pagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    post:
+      tags: [Pagos y facturas]
+      summary: Facturar un pago
+      description: |
+        V2-M08.06 · Timbra (simulado) la factura de un pago `PAGADO` que se hizo sin datos
+        fiscales, o cuya factura automática se rechazó. Si al pagar se eligieron datos fiscales, la
+        factura se timbra sola al confirmarse el pago y llega `factura.timbrada`. Un pago de caja
+        se factura en la agencia. Los datos ajenos responden 404.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaFactura'
+      responses:
+        '201':
+          description: La factura timbrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Factura'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+        '409':
+          description: |
+            `YA_FACTURADO`: el pago ya tiene factura. `PAGO_NO_FACTURABLE`: el pago no está
+            `PAGADO` o se pagó en caja.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+        '422':
+          description: |
+            `TIMBRADO_RECHAZADO`: el timbrado (simulado) rechazó los datos fiscales; `campos` dice
+            qué corregir del perfil fiscal (por ejemplo `razonSocial` o `codigoPostal`).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Problema'
+
+  /facturas/{facturaId}/pdf:
+    parameters:
+      - $ref: '#/components/parameters/FacturaId'
+    get:
+      tags: [Pagos y facturas]
+      summary: Descargar el PDF de una factura
+      description: |
+        V2-M08.06 · Se descarga con el mismo token Bearer, como el ticket. El PDF dice «Factura
+        simulada, sin validez fiscal». Se guarda en el módulo `archivos` al timbrar y no cambia.
+      responses:
+        '200':
+          description: La factura en PDF
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="factura-{folio}.pdf"`'
+              schema:
+                type: string
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /facturas/{facturaId}/xml:
+    parameters:
+      - $ref: '#/components/parameters/FacturaId'
+    get:
+      tags: [Pagos y facturas]
+      summary: Descargar el XML de una factura
+      description: |
+        V2-M08.06 · XML con la estructura de CFDI 4.0 (emisor, receptor, conceptos e IVA) y el
+        complemento `TimbreFiscalDigital` simulado: sellos `SIMULADO`, sin validez fiscal.
+      responses:
+        '200':
+          description: La factura en XML
+          headers:
+            Content-Disposition:
+              description: '`attachment; filename="factura-{folio}.xml"`'
+              schema:
+                type: string
+          content:
+            application/xml:
+              schema:
+                type: string
+                format: binary
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /metodos-pago:
+    get:
+      tags: [Pagos y facturas]
+      summary: Mis tarjetas guardadas
+      description: V2-M08.04 · La predeterminada primero. Sin número ni token.
+      responses:
+        '200':
+          description: Tarjetas del cliente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetodoPago'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /metodos-pago/{metodoPagoId}:
+    parameters:
+      - name: metodoPagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      tags: [Pagos y facturas]
+      summary: Borrar una tarjeta guardada
+      description: |
+        V2-M08.04 · Si era la predeterminada, lo es la más vieja de las que quedan. Los pagos
+        hechos con ella se conservan. Una ajena responde 404.
+      responses:
+        '204':
+          description: Borrada
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /metodos-pago/{metodoPagoId}/predeterminado:
+    parameters:
+      - name: metodoPagoId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    put:
+      tags: [Pagos y facturas]
+      summary: Marcar la tarjeta predeterminada
+      description: V2-M08.04 · La que estaba deja de serlo. Una ajena responde 404.
+      responses:
+        '200':
+          description: La tarjeta, ya predeterminada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetodoPago'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -2973,6 +3510,13 @@ paths:
           consultar `GET /valuaciones/{valuacionId}`.
         - `pedido.estado` (V2-M14.05), `AvisoPedido`: cada vez que cambia el estado de un pedido
           de la tienda del cliente. La app vuelve a consultar `GET /tienda/pedidos/{pedidoId}`.
+        - `pago.confirmado` (V2-M08.02 y V2-M14.04), `AvisoPagoConfirmado`: cuando una orden del
+          cliente queda pagada, en la app o en caja, o un pedido de la tienda queda pagado en la
+          app. Con `ordenId` la app vuelve a consultar el ticket y sus pagos, y con `pedidoId`, el
+          pedido y la lista de pedidos.
+        - `factura.timbrada` (V2-M08.06), `AvisoFacturaTimbrada`: cuando queda timbrada la factura
+          de un pago del cliente, al confirmarse el pago o al facturarlo desde la app. La app
+          vuelve a consultar `GET /pagos/{pagoId}`.
 
         Ejemplo en el flujo:
         ```
@@ -3137,6 +3681,13 @@ components:
         format: int64
     OrdenId:
       name: ordenId
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    FacturaId:
+      name: facturaId
       in: path
       required: true
       schema:
@@ -3438,9 +3989,53 @@ components:
             A los 30 días del **último refresco**, no del inicio: cada refresco emite
             una sesión nueva con 30 días por delante. Usar la app la mantiene viva.
 
+    CambioDeCorreoRequest:
+      type: object
+      required: [correo, contrasenaActual]
+      description: V2-M01.07 · Lo que se manda para pedir el cambio de correo.
+      properties:
+        correo:
+          type: string
+          format: email
+          maxLength: 120
+        contrasenaActual:
+          type: string
+          format: password
+          description: >
+            Confirma que quien lo pide es el titular. Si no coincide, 400 con
+            `CREDENCIALES_INVALIDAS`.
+
+    VerificacionPendiente:
+      type: object
+      required: [id, expira]
+      description: >
+        V2-M01.07 · La verificación que se acaba de crear. No trae el correo nuevo: quien
+        pidió el cambio ya lo escribió, y repetirlo solo sería un dato personal más viajando.
+      properties:
+        id:
+          type: integer
+          format: int64
+        expira:
+          type: string
+          format: date-time
+          description: A los 15 minutos, igual que el código de recuperación.
+
+    ConfirmarVerificacionRequest:
+      type: object
+      required: [codigo]
+      description: V2-M01.07 · El código de 6 dígitos que llegó al correo nuevo.
+      properties:
+        codigo:
+          type: string
+          minLength: 6
+          maxLength: 6
+
     Perfil:
       type: object
-      required: [id, nombre, correo]
+      required: [id, nombre, correo, clienteDesde]
+      description: >
+        Datos de solo lectura del cliente autenticado. Editarlos es V2-M01.07, con su
+        verificación por código.
       properties:
         id:
           type: integer
@@ -3450,6 +4045,22 @@ components:
         correo:
           type: string
           format: email
+        telefono:
+          type: string
+          maxLength: 20
+          nullable: true
+          description: >
+            V2-M01.06 · Nulo cuando la agencia no lo capturó al dar de alta al cliente, que
+            pasa seguido. La app lo muestra como un dato que falta, no como un error.
+        clienteDesde:
+          type: string
+          format: date
+          description: >
+            V2-M01.06 · Desde cuándo es cliente de la agencia. **Siempre viene**:
+            `cliente.created_at` es `not null` desde la V7. Es una **fecha**, no un instante:
+            sale de ese `created_at` resuelto en la zona de la agencia, porque convertirlo en
+            el celular haría que quien se registró el 1 de marzo a las 02:00 UTC apareciera
+            como «desde febrero» en México.
 
     Vehiculo:
       type: object
@@ -3603,6 +4214,16 @@ components:
           type: integer
           nullable: true
           description: V2-M12.02 · Puntos de lealtad que dio la orden al entregarse; nulo si no dio
+        pago:
+          description: V2-M08.02 · El pago con que quedó pagada, en la app o en caja; nulo si no se ha pagado
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Pago'
+        pagable:
+          type: boolean
+          description: |
+            V2-M08.02 · Se puede pagar en la app: viene del taller, está lista para entrega o
+            entregada, tiene total y nadie la ha pagado.
 
     RenglonTicket:
       type: object
@@ -4036,6 +4657,67 @@ components:
         activo:
           type: boolean
           description: Siempre true en la app
+
+    Sucursal:
+      type: object
+      description: Una sucursal de la agencia con su ubicación y sus horarios (V2-M27.02)
+      required: [id, nombre, direccion, latitud, longitud, abiertaAhora, horarios]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        direccion:
+          type: string
+        latitud:
+          type: number
+          format: double
+          description: Grados, de -90 a 90 (`sucursal.lat`)
+        longitud:
+          type: number
+          format: double
+          description: Grados, de -180 a 180 (`sucursal.lng`)
+        telefono:
+          type: string
+          nullable: true
+          description: Con lada; la app lo usa en `tel:`
+        correo:
+          type: string
+          nullable: true
+        abiertaAhora:
+          type: boolean
+          description: Algún departamento está abierto en este momento, en la hora de la agencia
+        horarios:
+          type: array
+          description: Un departamento sin fila está cerrado; puede repetirse con otros días
+          items:
+            $ref: '#/components/schemas/HorarioSucursal'
+
+    HorarioSucursal:
+      type: object
+      required: [departamento, dias, abre, cierra, abiertoAhora]
+      properties:
+        departamento:
+          type: string
+          enum: [VENTAS, SERVICIO, REFACCIONES]
+        dias:
+          type: array
+          description: Días ISO, 1 lunes a 7 domingo
+          items:
+            type: integer
+            minimum: 1
+            maximum: 7
+        abre:
+          type: string
+          example: '09:00'
+          description: HH:mm en la hora de la agencia
+        cierra:
+          type: string
+          example: '18:00'
+          description: HH:mm en la hora de la agencia; siempre después de `abre`
+        abiertoAhora:
+          type: boolean
 
     DetalleModeloCatalogo:
       type: object
@@ -4685,7 +5367,7 @@ components:
 
     Pedido:
       type: object
-      required: [id, estado, entrega, total, creadoEn, renglones]
+      required: [id, estado, entrega, total, creadoEn, renglones, pagable]
       properties:
         id:
           type: integer
@@ -4721,6 +5403,21 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RenglonPedido'
+        pagable:
+          type: boolean
+          description: |
+            V2-M14.04: Se puede pagar en la app: está `apartado` o `listo`, no ha vencido, tiene
+            total y no está pagado.
+        pago:
+          allOf:
+            - $ref: '#/components/schemas/Pago'
+          nullable: true
+          description: V2-M14.04. El pago con que quedó pagado. No viene si no está pagado.
+        pagadoEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: V2-M14.04. Cuándo quedó pagado en la app. Ya no vence ni se cancela desde la app.
 
     CitaDePedido:
       type: object
@@ -5285,6 +5982,279 @@ components:
           type: string
           format: date-time
           nullable: true
+    AvisoPagoConfirmado:
+      type: object
+      description: |
+        Evento SSE `pago.confirmado` (V2-M08.02 y V2-M14.04). Exactamente uno de `ordenId` y
+        `pedidoId` viene lleno.
+      required: [pagoId, estado]
+      properties:
+        pagoId:
+          type: integer
+          format: int64
+        ordenId:
+          type: integer
+          format: int64
+          nullable: true
+        pedidoId:
+          type: integer
+          format: int64
+          nullable: true
+        estado:
+          type: string
+          enum: [PAGADO]
+    Pago:
+      type: object
+      description: |
+        V2-M08.02, V2-M08.07 y V2-M14.04: Un intento de pagar una orden o un pedido de la
+        tienda. Exactamente uno de `ordenId` y `pedidoId` viene lleno. Nunca trae el número de la
+        tarjeta, solo la marca y los últimos 4.
+      required: [id, ordenId, pedidoId, vehiculoId, monto, moneda, medio, estado,
+        requiereAutenticacion, referencia, simulado, creadoEn, factura, facturable]
+      properties:
+        id:
+          type: integer
+          format: int64
+        ordenId:
+          type: integer
+          format: int64
+          nullable: true
+          description: |
+            La orden de servicio, con su ticket en `GET /servicios/{ordenId}`. Nulo en el pago de un
+            pedido.
+        pedidoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: |
+            V2-M14.04. El pedido de la tienda, que se ve en `GET /tienda/pedidos/{pedidoId}`. Nulo en
+            el pago de una orden.
+        vehiculoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: El vehículo de la orden. Nulo en el pago de un pedido.
+        monto:
+          type: number
+          format: double
+          description: Total de la orden o del pedido, con IVA incluido
+          example: 1650.0
+        moneda:
+          type: string
+          enum: [MXN]
+        medio:
+          type: string
+          enum: [TARJETA, APPLE_PAY, GOOGLE_PAY, CAJA]
+          description: |
+            `APPLE_PAY` y `GOOGLE_PAY` son billeteras simuladas (V2-M08.03): sin marca ni últimos 4,
+            con `tipoTarjeta` `CREDITO`.
+        marca:
+          type: string
+          nullable: true
+          enum: [VISA, MASTERCARD]
+        ultimos4:
+          type: string
+          nullable: true
+          pattern: '^[0-9]{4}$'
+          example: '4242'
+        tipoTarjeta:
+          type: string
+          nullable: true
+          enum: [CREDITO, DEBITO]
+        estado:
+          type: string
+          enum: [PENDIENTE, PAGADO, FALLIDO, REEMBOLSADO]
+        motivoFallo:
+          type: string
+          nullable: true
+          enum: [FONDOS_INSUFICIENTES, AUTENTICACION_FALLIDA, AUTENTICACION_VENCIDA, PAGADA_EN_CAJA]
+          description: Solo en `FALLIDO`
+        requiereAutenticacion:
+          type: boolean
+          description: Sigue `PENDIENTE` porque el banco simulado pide 3-D Secure
+        referencia:
+          type: string
+          description: Folio del procesador simulado (`sim_pi_…`) o de caja
+          example: sim_pi_3f9a1c0b7e2d4a6c8b1e0f2a
+        simulado:
+          type: boolean
+          description: Lo cobró el procesador simulado; `false` si se pagó en caja
+        metodoPagoId:
+          type: integer
+          format: int64
+          nullable: true
+          description: La tarjeta guardada con que se pagó o que se guardó al pagar
+        perfilFiscalId:
+          type: integer
+          format: int64
+          nullable: true
+        pagadoEn:
+          type: string
+          format: date-time
+          nullable: true
+        creadoEn:
+          type: string
+          format: date-time
+        factura:
+          nullable: true
+          description: V2-M08.06 · La factura timbrada del pago; nula si aún no tiene
+          allOf:
+            - $ref: '#/components/schemas/Factura'
+        facturable:
+          type: boolean
+          description: |
+            V2-M08.06 · Se puede facturar desde la app ahora (`POST /pagos/{pagoId}/factura`):
+            está `PAGADO`, no se pagó en caja y aún no tiene factura.
+    PaginaPagos:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Pago'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+    NuevoPago:
+      type: object
+      description: |
+        V2-M08.02 y V2-M08.03 · Una tarjeta de prueba nueva (`tarjeta`), una guardada
+        (`metodoPagoId`) o una billetera simulada (`billetera`): exactamente una. Nunca el número
+        ni el CVV.
+      properties:
+        tarjeta:
+          type: object
+          required: [token, mesVence, anioVence]
+          properties:
+            token:
+              type: string
+              maxLength: 64
+              example: tok_sim_visa
+            mesVence:
+              type: integer
+              minimum: 1
+              maximum: 12
+            anioVence:
+              type: integer
+              example: 2028
+        metodoPagoId:
+          type: integer
+          format: int64
+        billetera:
+          type: string
+          enum: [APPLE_PAY, GOOGLE_PAY]
+          description: |
+            V2-M08.03 · Billetera simulada: no usa la del teléfono ni pide cuentas. Se aprueba sin
+            3-D Secure y no se guarda como tarjeta.
+        guardarTarjeta:
+          type: boolean
+          default: false
+          description: Guarda la tarjeta nueva al quedar pagado (hasta 10 por cliente)
+        perfilFiscalId:
+          type: integer
+          format: int64
+          nullable: true
+          description: Los datos fiscales para la factura (V2-M08.06)
+    Factura:
+      type: object
+      description: |
+        V2-M08.06 · La factura (simulada) de un pago, con la copia del receptor que se timbró.
+      required: [id, pagoId, folio, uuid, rfcReceptor, razonSocialReceptor, usoCfdi, total,
+        simulada, timbradaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        pagoId:
+          type: integer
+          format: int64
+        folio:
+          type: string
+          example: A-000124
+        uuid:
+          type: string
+          format: uuid
+          description: Folio fiscal del timbre simulado
+        rfcReceptor:
+          type: string
+          example: GODE561231GR8
+        razonSocialReceptor:
+          type: string
+          example: DOLORES GÓMEZ
+        usoCfdi:
+          type: string
+          example: G03
+        total:
+          type: number
+          format: double
+          example: 1650.0
+        simulada:
+          type: boolean
+          description: Siempre `true`, sin validez fiscal (ADR 0009)
+        timbradaEn:
+          type: string
+          format: date-time
+    NuevaFactura:
+      type: object
+      required: [perfilFiscalId]
+      properties:
+        perfilFiscalId:
+          type: integer
+          format: int64
+          description: Los datos fiscales con que se timbra
+    AvisoFacturaTimbrada:
+      type: object
+      description: Evento SSE `factura.timbrada` (V2-M08.06)
+      required: [facturaId, pagoId]
+      properties:
+        facturaId:
+          type: integer
+          format: int64
+        pagoId:
+          type: integer
+          format: int64
+    AutenticacionPago:
+      type: object
+      required: [confirmada]
+      properties:
+        confirmada:
+          type: boolean
+          description: '`false` si la persona canceló en la pantalla de su banco'
+    MetodoPago:
+      type: object
+      description: V2-M08.04 · Una tarjeta guardada, sin número ni token
+      required: [id, marca, ultimos4, tipo, mesVence, anioVence, vencida, predeterminado, creadoEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        marca:
+          type: string
+          enum: [VISA, MASTERCARD]
+        ultimos4:
+          type: string
+          pattern: '^[0-9]{4}$'
+        tipo:
+          type: string
+          enum: [CREDITO, DEBITO]
+        mesVence:
+          type: integer
+        anioVence:
+          type: integer
+        vencida:
+          type: boolean
+        predeterminado:
+          type: boolean
+        creadoEn:
+          type: string
+          format: date-time
     AvisoPuntosMovidos:
       type: object
       description: Evento SSE `puntos.movidos` (V2-M12.02)
@@ -6093,12 +7063,21 @@ components:
             - PEDIDO_NO_MODIFICABLE
             - PRODUCTO_INCOMPATIBLE
             - DATOS_FISCALES_INVALIDOS
+            - ORDEN_NO_PAGABLE
+            - PAGO_EN_CURSO
+            - PAGO_NO_PENDIENTE
+            - PEDIDO_NO_PAGABLE
+            - PEDIDO_PAGADO
+            - YA_FACTURADO
+            - PAGO_NO_FACTURABLE
+            - TIMBRADO_RECHAZADO
           example: FRANJA_SIN_CUPO
         campos:
           type: object
           description: |
             Qué está mal en cada campo de la petición (nombre del campo → por qué). Solo viene en
-            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS.
+            errores que lo explican por campo, como DATOS_FISCALES_INVALIDOS y
+            TIMBRADO_RECHAZADO.
           additionalProperties:
             type: string
         path:

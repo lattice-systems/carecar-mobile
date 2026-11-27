@@ -1,5 +1,7 @@
 import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/datos/repositorio_base.dart';
+import '../dominio/cambio_de_correo_pendiente.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -75,6 +77,97 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
     });
     final f = fallaDelEnlace;
     if (f != null) throw f;
+  }
+
+  // --- Perfil · V2-M01.06 ---
+
+  /// Lo que devuelve [perfil]. Si es nulo, uno cualquiera con telefono.
+  PerfilDelCliente? perfilDelCliente;
+
+  /// Si no es nulo, **solo** leer el perfil falla con esto.
+  Fallo? fallaAlLeerPerfil;
+
+  int llamadasAlPerfil = 0;
+
+  @override
+  Future<PerfilDelCliente> perfil() => pedir(() async {
+    llamadasAlPerfil++;
+    final espera = esperar;
+    if (espera != null) await espera;
+    final f = fallaAlLeerPerfil ?? falla;
+    if (f != null) throw f;
+    return perfilDelCliente ??
+        PerfilDelCliente(
+          nombre: 'Maria Elena Robles',
+          correo: 'cliente1@example.com',
+          telefono: '477 123 4567',
+          clienteDesde: DateTime(2022, 5, 18),
+        );
+  });
+
+  // --- Cambio de correo · V2-M01.07 ---
+
+  /// Si no es nulo, **pedir** el cambio falla con esto.
+  ///
+  /// Se separa de [falla] para montar el caso real de la pantalla: pedirlo
+  /// funciona y el codigo resulta equivocado, o al reves.
+  Object? fallaAlPedirCambio;
+
+  /// Si no es nulo, **confirmar** falla con esto.
+  Object? fallaAlConfirmar;
+
+  String? correoPedido;
+  String? contrasenaDelCambio;
+  int? verificacionConfirmada;
+  String? codigoConfirmado;
+
+  /// Lo que devuelve [pedirCambioDeCorreo]; por omision vence en 15 minutos.
+  CambioDeCorreoPendiente? cambioPendiente;
+
+  @override
+  Future<CambioDeCorreoPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) async {
+    await pedir(() async {
+      correoPedido = correo;
+      contrasenaDelCambio = contrasenaActual;
+      final espera = esperar;
+      if (espera != null) await espera;
+    });
+    final f = fallaAlPedirCambio;
+    if (f != null) throw f;
+    return cambioPendiente ??
+        CambioDeCorreoPendiente(
+          id: 12,
+          expira: DateTime.now().toUtc().add(const Duration(minutes: 15)),
+        );
+  }
+
+  @override
+  Future<PerfilDelCliente> confirmarCambioDeCorreo({
+    required int id,
+    required String codigo,
+  }) async {
+    await pedir(() async {
+      verificacionConfirmada = id;
+      codigoConfirmado = codigo;
+      final espera = esperar;
+      if (espera != null) await espera;
+    });
+    final f = fallaAlConfirmar;
+    if (f != null) throw f;
+    final antes = perfilDelCliente;
+    // El servidor devuelve el perfil ya actualizado, asi que el fake tambien:
+    // si devolviera el viejo, una pantalla rota pasaria la prueba.
+    final nuevo = PerfilDelCliente(
+      nombre: antes?.nombre ?? 'Maria Elena Robles',
+      correo: correoPedido ?? antes?.correo ?? 'cliente1@example.com',
+      telefono: antes?.telefono ?? '477 123 4567',
+      clienteDesde: antes?.clienteDesde ?? DateTime(2022, 5, 18),
+    );
+    perfilDelCliente = nuevo;
+    return nuevo;
   }
 
   // --- Sesiones activas · V2-M01.09 ---

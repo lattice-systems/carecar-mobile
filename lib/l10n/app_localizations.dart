@@ -134,6 +134,138 @@ abstract class AppLocalizations {
   /// **'Confirma la contraseña nueva'**
   String get accesoCambiarConfirmarEtiqueta;
 
+  /// Error del campo del código cuando no están los seis dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'El código tiene 6 dígitos'**
+  String get accesoCambiarCorreoCodigoCorto;
+
+  /// Etiqueta del campo donde se escribe el código que llegó al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get accesoCambiarCorreoCodigoEtiqueta;
+
+  /// Los tres casos llegan iguales del servidor a propósito: responder distinto permitiría averiguar qué códigos existen.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese código no es válido, ya se usó o venció'**
+  String get accesoCambiarCorreoCodigoInvalido;
+
+  /// Botón de confirmar mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmando…'**
+  String get accesoCambiarCorreoConfirmando;
+
+  /// Botón que manda el código y aplica el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get accesoCambiarCorreoConfirmar;
+
+  /// Etiqueta de la contraseña actual, que se pide para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get accesoCambiarCorreoContrasenaEtiqueta;
+
+  /// Error del campo de la contraseña cuando está vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe tu contraseña'**
+  String get accesoCambiarCorreoContrasenaFalta;
+
+  /// El servidor dice que la contraseña actual no es la correcta. Llega en el mismo 400 que un correo mal escrito y solo los separa el código, así que la pantalla tiene que culpar al campo correcto.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña no coincide'**
+  String get accesoCambiarCorreoContrasenaNoCoincide;
+
+  /// Explica por qué se pide la contraseña para cambiar el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tu correo se entra a la app, así que confirmamos que eres tú.'**
+  String get accesoCambiarCorreoContrasenaPista;
+
+  /// El correo nuevo ya es de otro cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese correo ya está en uso'**
+  String get accesoCambiarCorreoCorreoEnUso;
+
+  /// Etiqueta del campo del correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo nuevo'**
+  String get accesoCambiarCorreoCorreoEtiqueta;
+
+  /// Error del campo del correo cuando no tiene formato. Se detecta en la app, sin viajar al servidor.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un correo válido'**
+  String get accesoCambiarCorreoCorreoInvalido;
+
+  /// Botón de enviar el código mientras el servidor responde.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviando…'**
+  String get accesoCambiarCorreoEnviando;
+
+  /// Botón que pide el cambio y manda el código al correo nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar el código'**
+  String get accesoCambiarCorreoEnviar;
+
+  /// Explica el primer paso del cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandaremos un código al correo nuevo para confirmar que es tuyo. Tu correo no cambia hasta que lo escribas.'**
+  String get accesoCambiarCorreoExplicacion;
+
+  /// Título del aviso cuando falla pedir el cambio por una razón que no es la contraseña ni el correo en uso.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos pedir el cambio'**
+  String get accesoCambiarCorreoFalloTitulo;
+
+  /// Mensaje al terminar el cambio. Dice lo que de verdad cambió: con qué correo se entra.
+  ///
+  /// In es, this message translates to:
+  /// **'A partir de ahora entras con {correo}.'**
+  String accesoCambiarCorreoListoMensaje(String correo);
+
+  /// Título al terminar el cambio de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu correo quedó actualizado'**
+  String get accesoCambiarCorreoListoTitulo;
+
+  /// Explica el segundo paso y recuerda a qué correo fue el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te mandamos un código a {correo}. Vence en 15 minutos.'**
+  String accesoCambiarCorreoPasoDosExplicacion(String correo);
+
+  /// Vuelve al primer paso para pedir un código nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro código'**
+  String get accesoCambiarCorreoPedirOtro;
+
+  /// Título de la pantalla que cambia el correo del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi correo'**
+  String get accesoCambiarCorreoTitulo;
+
+  /// Aviso cuando pasaron los 15 minutos antes de escribir el código. Se detecta en la app, sin gastar un viaje condenado.
+  ///
+  /// In es, this message translates to:
+  /// **'El código venció. Pide otro.'**
+  String get accesoCambiarCorreoVencio;
+
   /// Explica por qué no se puede seguir sin cambiarla.
   ///
   /// In es, this message translates to:
@@ -242,6 +374,60 @@ abstract class AppLocalizations {
   /// **'Escribe tu correo.'**
   String get accesoCorreoVacio;
 
+  /// Botón secundario del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get accesoDesactivadaEscribir;
+
+  /// Explica por qué no se puede entrar y qué sí se puede hacer.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.'**
+  String get accesoDesactivadaExplicacion;
+
+  /// Botón principal del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get accesoDesactivadaLlamar;
+
+  /// Aviso cuando el celular no puede abrir el teléfono o el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir en este dispositivo.'**
+  String get accesoDesactivadaNoSePudo;
+
+  /// Título de la pantalla de V2-M01.08.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está desactivada'**
+  String get accesoDesactivadaTitulo;
+
+  /// Salida del aviso: regresa al login si fue un error.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a iniciar sesión'**
+  String get accesoDesactivadaVolver;
+
+  /// Explica por qué el enlace de recuperación dejó de servir.
+  ///
+  /// In es, this message translates to:
+  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
+  String get accesoEnlaceNoValidoMensaje;
+
+  /// Título cuando el enlace de recuperación venció o ya se usó.
+  ///
+  /// In es, this message translates to:
+  /// **'El enlace ya no sirve'**
+  String get accesoEnlaceNoValidoTitulo;
+
+  /// Botón que lleva a pedir un enlace de recuperación nuevo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir otro enlace'**
+  String get accesoEnlacePedirOtro;
+
   /// Texto del botón mientras el servidor responde al inicio de sesión.
   ///
   /// In es, this message translates to:
@@ -266,23 +452,47 @@ abstract class AppLocalizations {
   /// **'CareCar'**
   String get accesoMarca;
 
-  /// Explica por qué el enlace de recuperación dejó de servir.
+  /// Casilla opcional de V2-M01.10, apagada por omisión.
   ///
   /// In es, this message translates to:
-  /// **'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.'**
-  String get accesoEnlaceNoValidoMensaje;
+  /// **'Cerrar sesión en todos mis dispositivos'**
+  String get accesoMiContrasenaCerrarOtras;
 
-  /// Título cuando el enlace de recuperación venció o ya se usó.
+  /// Dice que cerrar todas también cierra la de este dispositivo.
   ///
   /// In es, this message translates to:
-  /// **'El enlace ya no sirve'**
-  String get accesoEnlaceNoValidoTitulo;
+  /// **'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.'**
+  String get accesoMiContrasenaCerrarOtrasDetalle;
 
-  /// Botón que lleva a pedir un enlace de recuperación nuevo.
+  /// Explica por qué se pide la contraseña actual.
   ///
   /// In es, this message translates to:
-  /// **'Pedir otro enlace'**
-  String get accesoEnlacePedirOtro;
+  /// **'Te pedimos la contraseña de ahora para confirmar que eres tú.'**
+  String get accesoMiContrasenaExplicacion;
+
+  /// Botón principal de «cambiar mi contraseña».
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar la contraseña nueva'**
+  String get accesoMiContrasenaGuardar;
+
+  /// Título del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó actualizada'**
+  String get accesoMiContrasenaListo;
+
+  /// Mensaje del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Úsala la próxima vez que inicies sesión.'**
+  String get accesoMiContrasenaListoMensaje;
+
+  /// Título de la pantalla de V2-M01.10, abierta desde Ajustes.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi contraseña'**
+  String get accesoMiContrasenaTitulo;
 
   /// Explica qué hace la pantalla a la que abre el enlace.
   ///
@@ -337,6 +547,96 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'¿Olvidaste tu contraseña?'**
   String get accesoOlvide;
+
+  /// Lo que anuncia el lector de pantalla mientras carga el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tu perfil…'**
+  String get accesoPerfilCargando;
+
+  /// Etiqueta de la fecha en que la persona se volvió cliente de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cliente desde'**
+  String get accesoPerfilClienteDesde;
+
+  /// Etiqueta del correo en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo'**
+  String get accesoPerfilCorreo;
+
+  /// Encabezado de la sección del perfil con las opciones de la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta'**
+  String get accesoPerfilCuentaEncabezado;
+
+  /// Encabezado de la sección del perfil con los datos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus datos'**
+  String get accesoPerfilDatosEncabezado;
+
+  /// Fila del perfil que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis sesiones'**
+  String get accesoPerfilMisSesiones;
+
+  /// Explicación de la fila que abre la lista de sesiones abiertas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mira y cierra las sesiones abiertas en otros dispositivos'**
+  String get accesoPerfilMisSesionesDetalle;
+
+  /// Etiqueta del nombre en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre'**
+  String get accesoPerfilNombre;
+
+  /// Pie de los datos del perfil. Son de solo lectura hasta que exista la edición (V2-M01.07), y conviene decir qué hacer mientras tanto en vez de dejar al cliente buscando un botón que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca tu correo para cambiarlo. Para el teléfono, comunícate con la agencia.'**
+  String get accesoPerfilPie;
+
+  /// Lo que se muestra cuando la agencia no capturó el teléfono del cliente, en vez de dejar el renglón vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin teléfono registrado'**
+  String get accesoPerfilSinTelefono;
+
+  /// Lo que dice la sección de vehículos del perfil cuando la cuenta no tiene ninguno.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes vehículos registrados'**
+  String get accesoPerfilSinVehiculos;
+
+  /// Etiqueta del teléfono en el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Teléfono'**
+  String get accesoPerfilTelefono;
+
+  /// Título de la pantalla del perfil del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi perfil'**
+  String get accesoPerfilTitulo;
+
+  /// Encabezado de la sección del perfil con los vehículos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus vehículos'**
+  String get accesoPerfilVehiculosEncabezado;
+
+  /// Aviso dentro del perfil cuando la lista de vehículos falla. El resto del perfil se sigue viendo, porque son dos lecturas distintas.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos traer tus vehículos'**
+  String get accesoPerfilVehiculosFallo;
 
   /// Título del aviso tras pedir el enlace de recuperación.
   ///
@@ -1655,7 +1955,7 @@ abstract class AppLocalizations {
   /// Detalle del cierre del apartado.
   ///
   /// In es, this message translates to:
-  /// **'Pagas en caja. Tu apartado vence el {fecha}.'**
+  /// **'Tu apartado vence el {fecha}. Págalo ahora en la app o en caja al recoger.'**
   String tiendaApartadoMensaje(String fecha);
 
   /// Cierre del apartado.
@@ -1946,6 +2246,12 @@ abstract class AppLocalizations {
   /// **'Ya llevas {piezas}, el máximo de este producto.'**
   String tiendaMaximoAlcanzado(int piezas);
 
+  /// Con qué se pagó si no se sabe la marca.
+  ///
+  /// In es, this message translates to:
+  /// **'tarjeta'**
+  String get tiendaMedioTarjeta;
+
   /// Título y botón de la lista de pedidos.
   ///
   /// In es, this message translates to:
@@ -1987,6 +2293,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo cambiar el pedido'**
   String get tiendaNoSeCambioTitulo;
+
+  /// Un pedido ya pagado en la app (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get tiendaPagado;
+
+  /// Título del aviso de un pedido pagado en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado con {medio}'**
+  String tiendaPagadoAviso(String medio);
+
+  /// En lugar del botón de cancelar de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.'**
+  String get tiendaPagadoCancelarEnMostrador;
+
+  /// Cuándo se pagó el pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'El {fecha}. Ya no vence.'**
+  String tiendaPagadoMensaje(String fecha);
+
+  /// Botón que abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String tiendaPagar(String monto);
+
+  /// Cierre del apartado: abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar ahora'**
+  String get tiendaPagarAhora;
+
+  /// Cierre del apartado: abre el pedido para pagarlo al recogerlo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar en caja'**
+  String get tiendaPagarEnCaja;
+
+  /// Cómo se paga un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Paga en la app desde tu pedido o en caja al recoger.'**
+  String get tiendaPagoEnAppOCaja;
 
   /// Cómo se paga.
   ///
@@ -2102,6 +2456,12 @@ abstract class AppLocalizations {
   /// **'Este pedido ya se entregó o se canceló y no se puede cambiar.'**
   String get tiendaRechazoNoModificable;
 
+  /// Rechazo PEDIDO_PAGADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.'**
+  String get tiendaRechazoPagado;
+
   /// Rechazo SIN_EXISTENCIA.
   ///
   /// In es, this message translates to:
@@ -2161,6 +2521,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin conexión'**
   String get tiendaSinConexionTitulo;
+
+  /// La tarjeta con que se pagó: marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String tiendaTarjeta(String marca, String ultimos4);
 
   /// Título de la tienda y de su entrada.
   ///
@@ -2569,6 +2935,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Navegación principal'**
   String get navegacionPrincipal;
+
+  /// Segunda lámina de la bienvenida: las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.'**
+  String get bienvenidaDosTexto;
+
+  /// Título de la segunda lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide tu cita sin llamar'**
+  String get bienvenidaDosTitulo;
+
+  /// Botón de la última lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Empezar'**
+  String get bienvenidaEmpezar;
+
+  /// Salida de la bienvenida, disponible desde la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Saltar'**
+  String get bienvenidaSaltar;
+
+  /// Avanza a la siguiente lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Siguiente'**
+  String get bienvenidaSiguiente;
+
+  /// Tercera lámina de la bienvenida: el seguimiento y los avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.'**
+  String get bienvenidaTresTexto;
+
+  /// Título de la tercera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue tu servicio al día'**
+  String get bienvenidaTresTitulo;
+
+  /// Primera lámina de la bienvenida: los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.'**
+  String get bienvenidaUnoTexto;
+
+  /// Título de la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, en un solo lugar'**
+  String get bienvenidaUnoTitulo;
 
   /// Lo que anuncia un botón mientras trabaja.
   ///
@@ -8921,6 +9341,1486 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{vehiculo} · {motivo}'**
   String citasMisCitasVehiculoYMotivo(String vehiculo, String motivo);
+
+  /// Título de mis datos fiscales (V2-M08.05).
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get datosFiscalesTitulo;
+
+  /// Subtítulo de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar tus servicios'**
+  String get datosFiscalesSubtitulo;
+
+  /// Esqueleto de carga para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus datos fiscales'**
+  String get datosFiscalesCargando;
+
+  /// Botón para volver a pedir los datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get datosFiscalesReintentar;
+
+  /// Estado vacío de mis datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes datos fiscales'**
+  String get datosFiscalesVacioTitulo;
+
+  /// Mensaje del estado vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Agrégalos para pedir factura de tus servicios.'**
+  String get datosFiscalesVacioMensaje;
+
+  /// Botón para dar de alta un perfil fiscal.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get datosFiscalesAgregar;
+
+  /// Encabezado de la lista de perfiles.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus perfiles'**
+  String get datosFiscalesEncabezado;
+
+  /// Pie de la lista: cómo capturarlos y que la facturación es simulada (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelos como en tu constancia de situación fiscal. Por ahora las facturas de la app son simuladas, sin validez fiscal.'**
+  String get datosFiscalesPie;
+
+  /// RFC, tipo de persona y régimen de un perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {persona} · Régimen {regimen}'**
+  String datosFiscalesFilaSubtitulo(String rfc, String persona, String regimen);
+
+  /// Insignia del perfil predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminado'**
+  String get datosFiscalesPredeterminado;
+
+  /// Título del alta.
+  ///
+  /// In es, this message translates to:
+  /// **'Nuevos datos fiscales'**
+  String get datosFiscalesNuevoTitulo;
+
+  /// Título de la edición.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar datos fiscales'**
+  String get datosFiscalesEditarTitulo;
+
+  /// Sección con RFC, nombre y código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Contribuyente'**
+  String get datosFiscalesSeccionContribuyente;
+
+  /// Sección con régimen, uso de CFDI y correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar'**
+  String get datosFiscalesSeccionFacturar;
+
+  /// Campo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'RFC'**
+  String get datosFiscalesRfc;
+
+  /// Ejemplo de RFC dentro del campo.
+  ///
+  /// In es, this message translates to:
+  /// **'GODE561231GR8'**
+  String get datosFiscalesRfcSugerencia;
+
+  /// Ayuda del RFC mientras no se sabe el tipo de persona.
+  ///
+  /// In es, this message translates to:
+  /// **'13 caracteres si eres persona física; 12 si es una empresa.'**
+  String get datosFiscalesRfcAyuda;
+
+  /// Tipo de persona física.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona física'**
+  String get datosFiscalesPersonaFisica;
+
+  /// Tipo de persona moral.
+  ///
+  /// In es, this message translates to:
+  /// **'Persona moral'**
+  String get datosFiscalesPersonaMoral;
+
+  /// Campo de la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Nombre o razón social'**
+  String get datosFiscalesRazonSocial;
+
+  /// Ayuda de la razón social para CFDI 4.0.
+  ///
+  /// In es, this message translates to:
+  /// **'Igual que en tu constancia, sin el régimen societario (S.A. de C.V.).'**
+  String get datosFiscalesRazonSocialAyuda;
+
+  /// Campo del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Código postal fiscal'**
+  String get datosFiscalesCodigoPostal;
+
+  /// Ayuda del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'El de tu domicilio fiscal.'**
+  String get datosFiscalesCodigoPostalAyuda;
+
+  /// Selector del régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Régimen fiscal'**
+  String get datosFiscalesRegimen;
+
+  /// Texto del selector de régimen vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen'**
+  String get datosFiscalesRegimenSugerencia;
+
+  /// Selector del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Uso del CFDI'**
+  String get datosFiscalesUso;
+
+  /// Texto del selector de uso vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso'**
+  String get datosFiscalesUsoSugerencia;
+
+  /// Ayuda del uso de CFDI.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo aparecen los que acepta tu régimen.'**
+  String get datosFiscalesUsoAyuda;
+
+  /// Opción de un catálogo del SAT con su clave.
+  ///
+  /// In es, this message translates to:
+  /// **'{clave} · {descripcion}'**
+  String datosFiscalesOpcion(String clave, String descripcion);
+
+  /// Campo del correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Correo para la factura (opcional)'**
+  String get datosFiscalesCorreo;
+
+  /// Casilla para volverlo el predeterminado.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminado'**
+  String get datosFiscalesHacerPredeterminado;
+
+  /// Descripción de la casilla.
+  ///
+  /// In es, this message translates to:
+  /// **'Es el que se propone al pagar.'**
+  String get datosFiscalesHacerPredeterminadoAyuda;
+
+  /// Botón que guarda el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar'**
+  String get datosFiscalesGuardar;
+
+  /// Botón que borra el perfil.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrar;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar estos datos fiscales?'**
+  String get datosFiscalesBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Se borra el perfil {rfc}. Las facturas que ya tengas no cambian.'**
+  String datosFiscalesBorrarMensaje(String rfc);
+
+  /// Confirma el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get datosFiscalesBorrarConfirmar;
+
+  /// Cancela el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get datosFiscalesBorrarCancelar;
+
+  /// Aviso cuando hay campos con error.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los campos marcados.'**
+  String get datosFiscalesRevisa;
+
+  /// Aviso sin conexión al guardar o borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get datosFiscalesSinConexion;
+
+  /// Error genérico al guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar tus datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorGuardar;
+
+  /// Error genérico al borrar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos borrar estos datos fiscales. Intenta de nuevo.'**
+  String get datosFiscalesErrorBorrar;
+
+  /// Estado cuando el perfil no aparece.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no encontramos estos datos fiscales'**
+  String get datosFiscalesNoEncontradoTitulo;
+
+  /// Mensaje del perfil no encontrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a Datos fiscales para ver tus perfiles.'**
+  String get datosFiscalesNoEncontradoMensaje;
+
+  /// Error: RFC vacío.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el RFC.'**
+  String get datosFiscalesErrorRfcVacio;
+
+  /// Error: largo del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC tiene 12 caracteres (persona moral) o 13 (persona física).'**
+  String get datosFiscalesErrorRfcLargo;
+
+  /// Error: forma del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC no tiene la forma del SAT.'**
+  String get datosFiscalesErrorRfcForma;
+
+  /// Error: RFC genérico.
+  ///
+  /// In es, this message translates to:
+  /// **'El RFC genérico no se usa en un perfil.'**
+  String get datosFiscalesErrorRfcGenerico;
+
+  /// Error: fecha del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'La fecha del RFC no existe.'**
+  String get datosFiscalesErrorRfcFecha;
+
+  /// Error: dígito verificador del RFC.
+  ///
+  /// In es, this message translates to:
+  /// **'El último carácter no coincide; revisa la homoclave.'**
+  String get datosFiscalesErrorRfcDigito;
+
+  /// Error: razón social vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el nombre o la razón social.'**
+  String get datosFiscalesErrorRazonVacia;
+
+  /// Error: razón social larga.
+  ///
+  /// In es, this message translates to:
+  /// **'El nombre es demasiado largo.'**
+  String get datosFiscalesErrorRazonLarga;
+
+  /// Error: código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 5 dígitos.'**
+  String get datosFiscalesErrorCodigoPostal;
+
+  /// Error: falta el régimen.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige tu régimen fiscal.'**
+  String get datosFiscalesErrorRegimenFalta;
+
+  /// Error: régimen de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese régimen no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorRegimenNoAplica;
+
+  /// Error: falta el uso.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el uso del CFDI.'**
+  String get datosFiscalesErrorUsoFalta;
+
+  /// Error: uso de otra persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no aplica a tu tipo de persona.'**
+  String get datosFiscalesErrorUsoNoAplica;
+
+  /// Error: uso que el régimen no acepta.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese uso no se puede con tu régimen.'**
+  String get datosFiscalesErrorUsoNoAceptaRegimen;
+
+  /// Error: correo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el correo.'**
+  String get datosFiscalesErrorCorreo;
+
+  /// Esqueleto de carga de pagos para el lector de pantalla (V2-M08).
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus pagos'**
+  String get pagosCargando;
+
+  /// Botón para volver a pedir los pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get pagosReintentar;
+
+  /// Aviso fijo de la pantalla de pago (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobra nada. Usa una de las tarjetas de prueba.'**
+  String get pagosSimuladoAviso;
+
+  /// Pie de mis pagos (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos de la app son simulados: no se cobró nada.'**
+  String get pagosSimuladoPie;
+
+  /// Aviso del detalle de un pago simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago simulado: no se cobró nada.'**
+  String get pagosSimuladoCorto;
+
+  /// Aviso del detalle de un pago en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'Se pagó en la caja de la agencia.'**
+  String get pagosEnCaja;
+
+  /// Título de la pantalla para pagar una orden (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar orden'**
+  String get pagosPagarTitulo;
+
+  /// Número de la orden de servicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Orden {orden}'**
+  String pagosOrden(String orden);
+
+  /// Encabezado del desglose del ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que pagas'**
+  String get pagosDesglose;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Mano de obra'**
+  String get pagosManoDeObra;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Refacciones'**
+  String get pagosRefacciones;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Subtotal sin IVA'**
+  String get pagosSubtotal;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'IVA'**
+  String get pagosIva;
+
+  /// Renglón del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Total'**
+  String get pagosTotal;
+
+  /// Pie del desglose.
+  ///
+  /// In es, this message translates to:
+  /// **'Los precios incluyen IVA.'**
+  String get pagosPreciosConIva;
+
+  /// Sección para elegir la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué pagas'**
+  String get pagosConQue;
+
+  /// Selector de tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta'**
+  String get pagosTarjeta;
+
+  /// Opción para escribir una tarjeta nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Otra tarjeta'**
+  String get pagosOtraTarjeta;
+
+  /// Tarjeta guardada que ya venció en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} (vencida)'**
+  String pagosTarjetaVencida(String tarjeta);
+
+  /// Campo del número de tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Número de tarjeta'**
+  String get pagosNumero;
+
+  /// Ejemplo dentro del campo del número.
+  ///
+  /// In es, this message translates to:
+  /// **'4242 4242 4242 4242'**
+  String get pagosNumeroSugerencia;
+
+  /// Campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence (MM/AA)'**
+  String get pagosVencimiento;
+
+  /// Ejemplo dentro del campo del vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'12/28'**
+  String get pagosVencimientoSugerencia;
+
+  /// Campo del código de seguridad.
+  ///
+  /// In es, this message translates to:
+  /// **'CVV'**
+  String get pagosCvv;
+
+  /// Ayuda bajo los campos de la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'El número y el CVV no salen de tu teléfono: solo se envía un token de la tarjeta de prueba.'**
+  String get pagosCvvAyuda;
+
+  /// Casilla para guardar la tarjeta (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar tarjeta'**
+  String get pagosGuardarTarjeta;
+
+  /// Descripción de la casilla para guardar la tarjeta.
+  ///
+  /// In es, this message translates to:
+  /// **'Para pagar más rápido. Solo se guardan la marca, los últimos 4 y el vencimiento.'**
+  String get pagosGuardarTarjetaAyuda;
+
+  /// Encabezado de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjetas de prueba'**
+  String get pagosTarjetasDePrueba;
+
+  /// Pie de la lista de tarjetas de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Toca una para escribir su número. Sirve cualquier vencimiento futuro y cualquier CVV de 3 dígitos.'**
+  String get pagosTarjetasDePruebaPie;
+
+  /// Marca y qué hace el banco simulado con la tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} · {escenario}'**
+  String pagosTarjetaDePruebaDetalle(String marca, String escenario);
+
+  /// Tarjeta de prueba aprobada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se aprueba'**
+  String get pagosEscenarioAprobada;
+
+  /// Tarjeta de prueba rechazada.
+  ///
+  /// In es, this message translates to:
+  /// **'Se rechaza por fondos insuficientes'**
+  String get pagosEscenarioFondos;
+
+  /// Tarjeta de prueba con 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosEscenarioConfirmar;
+
+  /// Tarjeta de prueba cuyo 3-D Secure falla.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirma'**
+  String get pagosEscenarioConfirmacionFalla;
+
+  /// Sección de datos fiscales al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura'**
+  String get pagosFactura;
+
+  /// Selector del perfil fiscal para facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Datos fiscales'**
+  String get pagosDatosFiscales;
+
+  /// Ayuda del selector de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Con tus datos fiscales se emite la factura simulada al pagar.'**
+  String get pagosFacturaAyuda;
+
+  /// Opción para pagar sin facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin factura'**
+  String get pagosSinFactura;
+
+  /// Un perfil fiscal en el selector.
+  ///
+  /// In es, this message translates to:
+  /// **'{rfc} · {razonSocial}'**
+  String pagosPerfilFiscal(String rfc, String razonSocial);
+
+  /// Botón para pagar la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String pagosPagar(String monto);
+
+  /// Aviso cuando la tarjeta no pasa las reglas.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos de la tarjeta.'**
+  String get pagosRevisaTarjeta;
+
+  /// Aviso sin conexión al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo; no se cobrará dos veces.'**
+  String get pagosSinConexion;
+
+  /// Aviso de error al pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos procesar el pago. Intenta de nuevo.'**
+  String get pagosErrorPagar;
+
+  /// 409 ORDEN_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya no se puede pagar en la app.'**
+  String get pagosOrdenNoPagable;
+
+  /// 409 PAGO_EN_CURSO.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de esta orden esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPagoEnCurso;
+
+  /// 409 PAGO_NO_PENDIENTE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya no espera la confirmación de tu banco.'**
+  String get pagosPagoNoPendiente;
+
+  /// Error: falta el número.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el número de la tarjeta.'**
+  String get pagosErrorNumeroVacio;
+
+  /// Error: número incompleto.
+  ///
+  /// In es, this message translates to:
+  /// **'El número tiene 16 dígitos.'**
+  String get pagosErrorNumeroIncompleto;
+
+  /// Error: no pasa el algoritmo de Luhn.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese número no es válido; revísalo.'**
+  String get pagosErrorNumeroInvalido;
+
+  /// Error: no es una tarjeta de prueba.
+  ///
+  /// In es, this message translates to:
+  /// **'Usa una de las tarjetas de prueba.'**
+  String get pagosErrorNoEsDePrueba;
+
+  /// Error: falta el vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el vencimiento.'**
+  String get pagosErrorVencimientoVacio;
+
+  /// Error: vencimiento sin forma.
+  ///
+  /// In es, this message translates to:
+  /// **'Escríbelo como MM/AA.'**
+  String get pagosErrorVencimientoInvalido;
+
+  /// Error: tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'La tarjeta ya venció.'**
+  String get pagosErrorVencida;
+
+  /// Error: CVV.
+  ///
+  /// In es, this message translates to:
+  /// **'El CVV tiene 3 dígitos.'**
+  String get pagosErrorCvv;
+
+  /// Título de la pantalla simulada de 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco pide confirmar'**
+  String get pagosBancoTitulo;
+
+  /// Mensaje del 3-D Secure simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirma el pago de {monto} con {tarjeta}. Esta pantalla del banco es simulada.'**
+  String pagosBancoMensaje(String monto, String tarjeta);
+
+  /// Botón para confirmar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar'**
+  String get pagosBancoConfirmar;
+
+  /// Botón para cancelar el 3-D Secure.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBancoCancelar;
+
+  /// Resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Orden pagada!'**
+  String get pagosPagadoTitulo;
+
+  /// Mensaje del resultado de un pago aprobado.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. Es un pago simulado: no se cobró nada.'**
+  String pagosPagadoMensaje(String monto, String referencia);
+
+  /// Botón para cerrar el resultado del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo'**
+  String get pagosListo;
+
+  /// Botón para ir a mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mis pagos'**
+  String get pagosVerMisPagos;
+
+  /// Resultado de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo pagar'**
+  String get pagosFalloTitulo;
+
+  /// Botón para reintentar con una llave nueva.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentar otra vez'**
+  String get pagosIntentarOtraVez;
+
+  /// Botón para salir del resultado.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver'**
+  String get pagosVolver;
+
+  /// Motivo: fondos insuficientes.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco rechazó la tarjeta por fondos insuficientes.'**
+  String get pagosMotivoFondos;
+
+  /// Motivo: 3-D Secure fallido o cancelado.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu banco no confirmó el pago.'**
+  String get pagosMotivoAutenticacion;
+
+  /// Motivo: 3-D Secure vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie confirmó el pago a tiempo.'**
+  String get pagosMotivoVencida;
+
+  /// Motivo: pagada en caja.
+  ///
+  /// In es, this message translates to:
+  /// **'La orden se pagó en caja.'**
+  String get pagosMotivoCaja;
+
+  /// Motivo que esta versión aún no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'El pago no se completó.'**
+  String get pagosMotivoOtro;
+
+  /// Estado de una orden pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden ya está pagada'**
+  String get pagosYaPagadaTitulo;
+
+  /// Con qué y cuándo se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'Con {medio} el {fecha}.'**
+  String pagosYaPagadaMensaje(String medio, String fecha);
+
+  /// Botón para ver el pago de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pago'**
+  String get pagosVerPago;
+
+  /// Estado de una orden que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta orden aún no se puede pagar'**
+  String get pagosNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app cuando está lista para entrega. Un servicio registrado ya hecho se paga en la agencia.'**
+  String get pagosNoPagableMensaje;
+
+  /// Título de mis pagos (V2-M08.07).
+  ///
+  /// In es, this message translates to:
+  /// **'Mis pagos'**
+  String get pagosMisPagosTitulo;
+
+  /// Subtítulo de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Del más nuevo al más viejo'**
+  String get pagosMisPagosSubtitulo;
+
+  /// Estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes pagos'**
+  String get pagosMisPagosVacioTitulo;
+
+  /// Mensaje del estado vacío de mis pagos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí verás lo que pagues desde la app.'**
+  String get pagosMisPagosVacioMensaje;
+
+  /// Estado, con qué y cuándo de un pago en la lista.
+  ///
+  /// In es, this message translates to:
+  /// **'{estado} · {medio} · {fecha}'**
+  String pagosFilaSubtitulo(String estado, String medio, String fecha);
+
+  /// Lo que oye el lector al final de la fila de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'{monto}, {estado}'**
+  String pagosMontoConEstado(String monto, String estado);
+
+  /// Indicador de la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando más pagos'**
+  String get pagosCargandoMas;
+
+  /// Error al pedir la página siguiente.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más pagos.'**
+  String get pagosErrorCargarMas;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pendiente'**
+  String get pagosEstadoPendiente;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get pagosEstadoPagado;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Fallido'**
+  String get pagosEstadoFallido;
+
+  /// Estado de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Reembolsado'**
+  String get pagosEstadoReembolsado;
+
+  /// Una tarjeta por su marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String pagosMedioTarjeta(String marca, String ultimos4);
+
+  /// Medio de pago: caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get pagosMedioCaja;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Apple Pay (simulado)'**
+  String get pagosMedioApplePay;
+
+  /// Medio de pago: billetera simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Google Pay (simulado)'**
+  String get pagosMedioGooglePay;
+
+  /// Título del detalle de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get pagosPagoTitulo;
+
+  /// Etiqueta del monto del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Monto'**
+  String get pagosMonto;
+
+  /// Fila del medio de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Con qué se pagó'**
+  String get pagosMedio;
+
+  /// Fila de la fecha de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado el'**
+  String get pagosFechaPago;
+
+  /// Fila de la fecha de un intento sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Intentado el'**
+  String get pagosFechaIntento;
+
+  /// Fila de la referencia del pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get pagosReferencia;
+
+  /// Fila del motivo de un pago fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'Por qué no se cobró'**
+  String get pagosMotivo;
+
+  /// Botón para responder un 3-D Secure pendiente.
+  ///
+  /// In es, this message translates to:
+  /// **'Confirmar con tu banco'**
+  String get pagosConfirmarBanco;
+
+  /// Botón para abrir el ticket de la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el ticket'**
+  String get pagosVerTicket;
+
+  /// Título del pago de un pedido de la tienda (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar pedido'**
+  String get pagosPagarPedidoTitulo;
+
+  /// Número del pedido de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedido {pedido}'**
+  String pagosPedido(String pedido);
+
+  /// Estado de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado'**
+  String get pagosPedidoYaPagadoTitulo;
+
+  /// Estado de un pedido que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app'**
+  String get pagosPedidoNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.'**
+  String get pagosPedidoNoPagableMensaje;
+
+  /// 409 PEDIDO_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app.'**
+  String get pagosPedidoNoPagable;
+
+  /// 409 PAGO_EN_CURSO de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPedidoPagoEnCurso;
+
+  /// Cierre de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Pedido pagado!'**
+  String get pagosPedidoPagadoTitulo;
+
+  /// Botón para abrir el pedido de la tienda pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pedido'**
+  String get pagosVerPedido;
+
+  /// Pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'No encontramos este pago'**
+  String get pagosNoEncontradoTitulo;
+
+  /// Mensaje del pago que no existe.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede que sea de otra cuenta. Revisa Mis pagos.'**
+  String get pagosNoEncontradoMensaje;
+
+  /// Título de mis tarjetas guardadas (V2-M08.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Métodos de pago'**
+  String get pagosMetodosTitulo;
+
+  /// Estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no tienes tarjetas guardadas'**
+  String get pagosMetodosVacioTitulo;
+
+  /// Mensaje del estado vacío de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Al pagar, marca «Guardar tarjeta» para que aparezca aquí.'**
+  String get pagosMetodosVacioMensaje;
+
+  /// Pie de métodos de pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo se guardan la marca, los últimos 4 y el vencimiento de tarjetas de prueba.'**
+  String get pagosMetodosPie;
+
+  /// Vencimiento de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence}'**
+  String pagosVence(String vence);
+
+  /// Vencimiento y tipo de una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence {vence} · {tipo}'**
+  String pagosVenceYTipo(String vence, String tipo);
+
+  /// Tarjeta de crédito.
+  ///
+  /// In es, this message translates to:
+  /// **'Crédito'**
+  String get pagosCredito;
+
+  /// Tarjeta de débito.
+  ///
+  /// In es, this message translates to:
+  /// **'Débito'**
+  String get pagosDebito;
+
+  /// Insignia de la tarjeta predeterminada.
+  ///
+  /// In es, this message translates to:
+  /// **'Predeterminada'**
+  String get pagosPredeterminada;
+
+  /// Insignia de una tarjeta vencida.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencida'**
+  String get pagosVencidaInsignia;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar como predeterminada'**
+  String get pagosUsarPredeterminada;
+
+  /// Acción sobre una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar tarjeta'**
+  String get pagosBorrarTarjeta;
+
+  /// Título de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Borrar esta tarjeta?'**
+  String get pagosBorrarTitulo;
+
+  /// Mensaje de la confirmación de borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'{tarjeta} ya no aparecerá al pagar. Los pagos que hiciste con ella se conservan.'**
+  String pagosBorrarMensaje(String tarjeta);
+
+  /// Botón para confirmar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Borrar'**
+  String get pagosBorrarConfirmar;
+
+  /// Botón para cancelar el borrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBorrarCancelar;
+
+  /// Error al cambiar una tarjeta guardada.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el cambio. Intenta de nuevo.'**
+  String get pagosErrorMetodo;
+
+  /// Encabezado del pago en el ticket (V2-M08.02).
+  ///
+  /// In es, this message translates to:
+  /// **'Pago'**
+  String get historialTicketPago;
+
+  /// La orden ya está pagada.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get historialTicketPagado;
+
+  /// Con qué y cuándo se pagó la orden.
+  ///
+  /// In es, this message translates to:
+  /// **'{medio} · {fecha}'**
+  String historialTicketPagadoDetalle(String medio, String fecha);
+
+  /// Se pagó en la caja de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'En caja'**
+  String get historialTicketPagadoEnCaja;
+
+  /// La tarjeta con que se pagó.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String historialTicketTarjeta(String marca, String ultimos4);
+
+  /// La referencia del pago en el ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Referencia'**
+  String get historialTicketReferencia;
+
+  /// Botón para pagar la orden desde su ticket.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String historialTicketPagar(String monto);
+
+  /// Botón para pagar con la billetera simulada en iPhone (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Apple Pay'**
+  String get pagosBilleteraApplePay;
+
+  /// Botón para pagar con la billetera simulada en Android (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Google Pay'**
+  String get pagosBilleteraGooglePay;
+
+  /// Ayuda bajo el botón de la billetera (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.'**
+  String get pagosBilleteraAyuda;
+
+  /// Mensaje de la hoja simulada de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a pagar {monto} con {billetera}. Es simulado: no se cobra nada.'**
+  String pagosBilleteraMensaje(String monto, String billetera);
+
+  /// Confirma el pago en la hoja de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar'**
+  String get pagosBilleteraConfirmar;
+
+  /// Cierra la hoja de la billetera sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBilleteraCancelar;
+
+  /// Resultado de un pago aprobado que pidió factura (V2-M08.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. La factura simulada queda en el detalle del pago. No se cobró nada.'**
+  String pagosPagadoFacturaMensaje(String monto, String referencia);
+
+  /// Lleva del resultado del pago al detalle con su factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver la factura'**
+  String get pagosVerFactura;
+
+  /// Serie y folio de la factura simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura {folio}'**
+  String pagosFacturaFolio(String folio);
+
+  /// Subtítulo de la fecha de timbrado de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Timbrada'**
+  String get pagosFacturaTimbrada;
+
+  /// Subtítulo del UUID del timbre simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio fiscal'**
+  String get pagosFacturaFolioFiscal;
+
+  /// Subtítulo de los datos fiscales de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Receptor · uso {usoCfdi}'**
+  String pagosFacturaReceptor(String usoCfdi);
+
+  /// Comparte el PDF de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar PDF'**
+  String get pagosFacturaPdf;
+
+  /// Comparte el XML de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar XML'**
+  String get pagosFacturaXml;
+
+  /// Aviso fijo de la factura (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Factura simulada con estructura de CFDI 4.0, sin validez fiscal.'**
+  String get pagosFacturaSimulada;
+
+  /// Error al descargar el PDF o el XML.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar la factura. Intenta otra vez.'**
+  String get pagosFacturaErrorDescargar;
+
+  /// Botón para timbrar la factura de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Facturar'**
+  String get pagosFacturar;
+
+  /// Ayuda del selector de datos fiscales al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Con estos datos se timbra la factura simulada de este pago.'**
+  String get pagosFacturarAyuda;
+
+  /// Aviso cuando el cliente no tiene datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar este pago agrega tus datos fiscales.'**
+  String get pagosFacturaSinPerfiles;
+
+  /// Lleva al alta de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get pagosAgregarDatosFiscales;
+
+  /// Encabezado del error 422 TIMBRADO_RECHAZADO.
+  ///
+  /// In es, this message translates to:
+  /// **'El timbrado rechazó tus datos fiscales.'**
+  String get pagosTimbradoRechazado;
+
+  /// Qué corregir cuando se rechaza la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).'**
+  String get pagosTimbradoRazonSocial;
+
+  /// Qué corregir cuando se rechaza el código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el código postal de tu domicilio fiscal.'**
+  String get pagosTimbradoCodigoPostal;
+
+  /// Qué corregir cuando se rechaza otro campo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tus datos fiscales.'**
+  String get pagosTimbradoOtro;
+
+  /// Lleva a editar el perfil fiscal rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Corregir datos fiscales'**
+  String get pagosCorregirDatosFiscales;
+
+  /// Error 409 YA_FACTURADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya tiene factura.'**
+  String get pagosFacturaYaFacturada;
+
+  /// Error 409 PAGO_NO_FACTURABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago no se puede facturar desde la app.'**
+  String get pagosFacturaNoFacturable;
+
+  /// Error genérico al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo facturar. Intenta otra vez.'**
+  String get pagosFacturaErrorFacturar;
+
+  /// Aviso de un pago en caja sin factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos en caja se facturan en la agencia.'**
+  String get pagosFacturaEnLaAgencia;
+
+  /// Sin conexión al facturar o descargar la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get pagosFacturaSinConexion;
+
+  /// Título de la pantalla de sucursales con mapa y horarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales'**
+  String get sucursalesTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando sucursales'**
+  String get sucursalesCargando;
+
+  /// No description provided for @sucursalesVacioTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay sucursales'**
+  String get sucursalesVacioTitulo;
+
+  /// No description provided for @sucursalesVacioMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.'**
+  String get sucursalesVacioMensaje;
+
+  /// Nombre del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con la ubicación de {nombre}'**
+  String sucursalesMapaDe(String nombre);
+
+  /// No description provided for @sucursalesAbiertoAhora.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto ahora'**
+  String get sucursalesAbiertoAhora;
+
+  /// Estado corto de un departamento de la sucursal que atiende en este momento.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto'**
+  String get sucursalesAbierto;
+
+  /// No description provided for @sucursalesCerrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrado'**
+  String get sucursalesCerrado;
+
+  /// No description provided for @sucursalesLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar'**
+  String get sucursalesLlamar;
+
+  /// No description provided for @sucursalesComoLlegar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo llegar'**
+  String get sucursalesComoLlegar;
+
+  /// No description provided for @sucursalesHorarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Horarios'**
+  String get sucursalesHorarios;
+
+  /// No description provided for @sucursalesTodas.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las sucursales'**
+  String get sucursalesTodas;
+
+  /// No description provided for @sucursalesSeleccionada.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionada'**
+  String get sucursalesSeleccionada;
+
+  /// Nombre del departamento de la agencia que tiene su propio horario.
+  ///
+  /// In es, this message translates to:
+  /// **'{departamento, select, ventas{Ventas} servicio{Servicio} refacciones{Refacciones} other{Otro}}'**
+  String sucursalesDepartamento(String departamento);
+
+  /// Día de la semana abreviado; 1 es lunes y 7 domingo.
+  ///
+  /// In es, this message translates to:
+  /// **'{dia, select, 1{lun} 2{mar} 3{mié} 4{jue} 5{vie} 6{sáb} 7{dom} other{}}'**
+  String sucursalesDiaCorto(String dia);
+
+  /// Tramo de días seguidos de un horario, por ejemplo «lun a vie».
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String sucursalesDiasRango(String desde, String hasta);
+
+  /// Una línea de horario, por ejemplo «lun a vie: 08:00 a 18:00».
+  ///
+  /// In es, this message translates to:
+  /// **'{dias}: {abre} a {cierra}'**
+  String sucursalesTramo(String dias, String abre, String cierra);
+
+  /// Lo que lee el lector de pantalla en la fila de una sucursal.
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre}, {estado}. {direccion}'**
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  );
+
+  /// No description provided for @sucursalesNoSePudoLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir el marcador del teléfono.'**
+  String get sucursalesNoSePudoLlamar;
+
+  /// No description provided for @sucursalesNoSePudoMapa.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir la app de mapas.'**
+  String get sucursalesNoSePudoMapa;
+
+  /// Etiqueta del marcador del chofer en el mapa del seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu chofer'**
+  String get recoleccionSeguimientoMarcadorChofer;
 }
 
 class _AppLocalizationsDelegate

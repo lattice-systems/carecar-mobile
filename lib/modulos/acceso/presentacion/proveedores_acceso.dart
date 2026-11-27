@@ -1,9 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_acceso_api.dart';
 import '../dominio/fallos_acceso.dart';
+import '../dominio/perfil_del_cliente.dart';
 import '../dominio/repositorio_acceso.dart';
 import '../dominio/sesion_de_la_cuenta.dart';
 
@@ -29,6 +31,17 @@ final repositorioAccesoProvider = Provider<RepositorioAcceso>(
 final relojAccesoProvider = Provider<DateTime Function()>(
   (ref) => DateTime.now,
   name: 'relojAccesoProvider',
+);
+
+/// Los datos del cliente que inicio sesion · V2-M01.06.
+///
+/// De solo lectura, asi que basta un `FutureProvider`: no hay nada que
+/// modificar hasta que exista la edicion (V2-M01.07).
+final perfilProvider = FutureProvider<PerfilDelCliente>(
+  (ref) => ref.watch(repositorioAccesoProvider).perfil(),
+  // El reintento es del usuario, con el boton de `EstadoError`.
+  retry: (_, _) => null,
+  name: 'perfilProvider',
 );
 
 /// Las sesiones abiertas de la cuenta · V2-M01.09.
@@ -84,3 +97,13 @@ final sesionesProvider =
       retry: (_, _) => null,
       name: 'sesionesProvider',
     );
+
+/// Como se abre un `tel:` o un `mailto:` · V2-M01.08.
+///
+/// Va detras de un proveedor para que la prueba del aviso de cuenta
+/// desactivada no toque la plataforma: `launchUrl` no existe en una prueba de
+/// widget y la pantalla no deberia saberlo.
+final abrirEnlaceProvider = Provider<Future<bool> Function(Uri)>(
+  (ref) => launchUrl,
+  name: 'abrirEnlaceProvider',
+);

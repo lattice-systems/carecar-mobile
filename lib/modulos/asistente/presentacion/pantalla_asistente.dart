@@ -170,43 +170,56 @@ class _ContenidoAsistente extends ConsumerWidget {
               top: false,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      Espaciado.e4,
-                      Espaciado.e2,
-                      Espaciado.e4,
-                      0,
+                  // Los avisos no pueden comerse la conversación con letra
+                  // grande: ocupan un tercio como mucho y se desplazan.
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.sizeOf(context).height / 3,
                     ),
-                    child: Aviso(
-                      mensaje: textos.asistenteAvisoIa,
-                      tono: Tono.informacion,
-                    ),
-                  ),
-                  if (sinPermiso)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        Espaciado.e4,
-                        Espaciado.e2,
-                        Espaciado.e4,
-                        0,
-                      ),
+                    child: SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Aviso(
-                            mensaje: textos.asistentePermisoCamara,
-                            tono: Tono.advertencia,
-                          ),
-                          const SizedBox(height: Espaciado.e2),
-                          BotonPildora(
-                            texto: textos.asistenteAbrirAjustes,
-                            icono: LucideIcons300.settings,
-                            variante: VarianteBotonPildora.vidrio,
-                            alPresionar: alAbrirAjustes,
+                          if (sinPermiso)
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                Espaciado.e4,
+                                Espaciado.e2,
+                                Espaciado.e4,
+                                0,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Aviso(
+                                    mensaje: textos.asistentePermisoCamara,
+                                    tono: Tono.advertencia,
+                                  ),
+                                  const SizedBox(height: Espaciado.e2),
+                                  BotonPildora(
+                                    texto: textos.asistenteAbrirAjustes,
+                                    icono: LucideIcons300.settings,
+                                    variante: VarianteBotonPildora.vidrio,
+                                    alPresionar: alAbrirAjustes,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              Espaciado.e4,
+                              Espaciado.e2,
+                              Espaciado.e4,
+                              0,
+                            ),
+                            child: Aviso(
+                              mensaje: textos.asistenteAvisoIa,
+                              tono: Tono.informacion,
+                            ),
                           ),
                         ],
                       ),
                     ),
+                  ),
                   Expanded(
                     child: mensajes.isEmpty
                         ? CentradoDesplazable(

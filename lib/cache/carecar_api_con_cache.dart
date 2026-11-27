@@ -134,7 +134,15 @@ class CarecarApiConCache implements CarecarApi {
   Future<Perfil> miPerfil() => _leer<Perfil>(
     'perfil',
     _api.miPerfil,
-    (p) => {'id': p.id, 'nombre': p.nombre, 'correo': p.correo},
+    (p) => {
+      'id': p.id,
+      'nombre': p.nombre,
+      'correo': p.correo,
+      'telefono': p.telefono,
+      // Como fecha, no como instante: el servidor ya la resolvio en la zona de
+      // la agencia y guardarla con hora la correria un dia al releerla.
+      'clienteDesde': escribirFecha(p.clienteDesde),
+    },
     (j) => Perfil.fromJson((j! as Map).cast<String, Object?>()),
   );
 
@@ -242,6 +250,12 @@ class CarecarApiConCache implements CarecarApi {
     (j) => _lista(j, ModeloCatalogo.fromJson),
   );
 
+  /// Sin copia local: «abierto ahora» lo calcula el servidor, y una copia
+  /// vieja diría «abierto» con la agencia ya cerrada (V2-M27.02). Sin conexión
+  /// la pantalla pide reintentar.
+  @override
+  Future<List<SucursalApi>> sucursales() => _api.sucursales();
+
   @override
   Future<DetalleModeloCatalogo> detalleModelo(int id) =>
       _leer<DetalleModeloCatalogo>(
@@ -268,6 +282,34 @@ class CarecarApiConCache implements CarecarApi {
     } finally {
       await limpiar();
     }
+  }
+
+  /// Pedir el cambio no toca nada guardado: todavia no cambia el perfil.
+  @override
+  Future<VerificacionPendiente> pedirCambioDeCorreo({
+    required String correo,
+    required String contrasenaActual,
+  }) => _api.pedirCambioDeCorreo(
+    correo: correo,
+    contrasenaActual: contrasenaActual,
+  );
+
+  /// Confirmar **si** cambia el perfil, asi que la copia guardada queda con el
+  /// correo viejo: se borra.
+  ///
+  /// No se vuelve a guardar con el perfil nuevo a proposito. La respuesta ya
+  /// trae el dato fresco para la pantalla, y dejar que la siguiente lectura lo
+  /// pida es mas simple que repetir aqui el cifrado de `_leer`. Sin conexion,
+  /// mientras tanto, el perfil dira que no hay copia, que es cierto: la que
+  /// habia mentia.
+  @override
+  Future<Perfil> confirmarVerificacion({
+    required int id,
+    required String codigo,
+  }) async {
+    final perfil = await _api.confirmarVerificacion(id: id, codigo: codigo);
+    await _prefs.remove('${_prefijo}perfil');
+    return perfil;
   }
 
   /// Las sesiones activas **nunca se guardan en copia** (V2-M01.09).
