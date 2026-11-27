@@ -1,7 +1,7 @@
 import 'pagos.dart';
 
-/// Pagos de ordenes, mis pagos y tarjetas guardadas (V2-M08.02, V2-M08.04 y
-/// V2-M08.07). Las excepciones de la API pasan tal cual, salvo los 409 de
+/// Pagos de ordenes y de pedidos de la tienda, mis pagos y tarjetas guardadas
+/// (V2-M08.02, V2-M08.04, V2-M08.07 y V2-M14.04). Las excepciones de la API pasan tal cual, salvo los 409 de
 /// pagos, que llegan como [PagoRechazado].
 abstract interface class RepositorioPagos {
   /// El desglose de la orden y si se puede pagar, de su ticket.
@@ -11,6 +11,18 @@ abstract interface class RepositorioPagos {
   /// otra vez.
   Future<Pago> pagar(
     int ordenId, {
+    required String llave,
+    required MedioElegido medio,
+    int? perfilFiscalId,
+  });
+
+  /// El total del pedido de la tienda y si se puede pagar (V2-M14.04).
+  Future<PedidoPorPagar> pedido(int pedidoId);
+
+  /// Cobra el pedido de la tienda con las mismas reglas que una orden: la
+  /// misma [llave] devuelve el mismo intento y no cobra otra vez (V2-M14.04).
+  Future<Pago> pagarPedido(
+    int pedidoId, {
     required String llave,
     required MedioElegido medio,
     int? perfilFiscalId,

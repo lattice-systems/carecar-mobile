@@ -5,9 +5,10 @@ import '../dominio/pagos.dart';
 import '../dominio/repositorio_pagos.dart';
 import 'lectura_pagos.dart';
 
-/// Pagos, mis pagos y tarjetas guardadas con el cliente del nucleo. Los 409
-/// con `ORDEN_NO_PAGABLE`, `PAGO_EN_CURSO` y `PAGO_NO_PENDIENTE` llegan como
-/// [PagoRechazado]; lo demas pasa tal cual.
+/// Pagos de ordenes y pedidos, mis pagos y tarjetas guardadas con el cliente
+/// del nucleo. Los 409 con `ORDEN_NO_PAGABLE`, `PEDIDO_NO_PAGABLE`,
+/// `PAGO_EN_CURSO` y `PAGO_NO_PENDIENTE` llegan como [PagoRechazado]. Lo demas
+/// pasa tal cual.
 class RepositorioPagosApi implements RepositorioPagos {
   const RepositorioPagosApi(this._cliente);
 
@@ -25,9 +26,29 @@ class RepositorioPagosApi implements RepositorioPagos {
     required String llave,
     required MedioElegido medio,
     int? perfilFiscalId,
-  }) => _traducir(
+  }) => _cobrar('/ordenes/$ordenId/pagos', llave, medio, perfilFiscalId);
+
+  @override
+  Future<PedidoPorPagar> pedido(int pedidoId) =>
+      _cliente.obtener('/tienda/pedidos/$pedidoId', _lectura.pedido);
+
+  @override
+  Future<Pago> pagarPedido(
+    int pedidoId, {
+    required String llave,
+    required MedioElegido medio,
+    int? perfilFiscalId,
+  }) => _cobrar('/pedidos/$pedidoId/pagos', llave, medio, perfilFiscalId);
+
+  /// Orden y pedido llevan el mismo cuerpo `NuevoPago` y la misma llave.
+  Future<Pago> _cobrar(
+    String ruta,
+    String llave,
+    MedioElegido medio,
+    int? perfilFiscalId,
+  ) => _traducir(
     () => _cliente.enviar(
-      '/ordenes/$ordenId/pagos',
+      ruta,
       cuerpo: {
         ...switch (medio) {
           TarjetaNueva(
@@ -106,6 +127,7 @@ class RepositorioPagosApi implements RepositorioPagos {
         CodigoProblema.ordenNoPagable => MotivoRechazoPago.ordenNoPagable,
         CodigoProblema.pagoEnCurso => MotivoRechazoPago.pagoEnCurso,
         CodigoProblema.pagoNoPendiente => MotivoRechazoPago.pagoNoPendiente,
+        CodigoProblema.pedidoNoPagable => MotivoRechazoPago.pedidoNoPagable,
         _ => null,
       };
       if (motivo == null) rethrow;
