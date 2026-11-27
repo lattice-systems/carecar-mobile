@@ -4,7 +4,6 @@ import 'package:carecar_mobile/modulos/documentos/documentos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/nucleo/privacidad/pantalla_segura.dart';
 import 'package:carecar_mobile/nucleo/privacidad/proteccion_de_captura.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +98,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PantallaDocumentos), findsNothing);
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('la fila Documentos del detalle abre los documentos del auto', (
