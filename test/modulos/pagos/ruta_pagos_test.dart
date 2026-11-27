@@ -145,6 +145,6 @@ void main() {
     await _montar(tester, conSesion: false);
     enrutadorDe(tester).go(rutaMisPagos);
     await tester.pumpAndSettle();
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 }

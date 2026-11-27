@@ -1,4 +1,3 @@
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +72,7 @@ Future<void> auditarRutas(
         enrutadorDe(tester).go(ruta);
         await tester.pumpAndSettle();
         if (find.byType(pantalla).evaluate().isEmpty ||
-            find.byType(PantallaLogin).evaluate().isNotEmpty) {
+            pantallaDeAcceso.evaluate().isNotEmpty) {
           faltas.add('$donde: no abrió $pantalla');
           continue;
         }
