@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -341,8 +343,9 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ref.invalidate(disponibilidadProvider);
       if (!mounted) return;
       ref.read(misCitasProvider.notifier).reemplazar(cancelada);
-      // V2-M06.06: ya no hay a que recordarle.
-      await ref.read(recordatoriosDeCitaProvider).alCancelar(cita.id);
+      // V2-M06.06: ya no hay a que recordarle. Sin esperarlo: la cita ya se
+      // cancelo y el aviso de exito no debe quedarse detras del sistema.
+      unawaited(ref.read(recordatoriosDeCitaProvider).alCancelar(cita.id));
       _mostrarAviso(textos.citasCancelada, Tono.exito);
     } on CitaNoModificable {
       // Alguien la cambio por otro lado: se vuelve a pedir la lista real.

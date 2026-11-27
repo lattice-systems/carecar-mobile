@@ -576,11 +576,13 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
       // inicio (V2-M25.01) deben ver la nueva.
       ref.invalidate(misCitasProvider);
-      // V2-M06.06: los recordatorios son locales, asi que suenan sin red. Se
-      // dejan antes de pintar el comprobante para que el aviso de
-      // confirmacion salga junto con la cita.
-      await ref.read(recordatoriosDeCitaProvider).alConfirmar(cita);
       if (!mounted) return;
+      // V2-M06.06: los recordatorios son locales, asi que suenan sin red. Se
+      // dejan DESPUES de pintar el comprobante y sin esperarlos: programarlos
+      // toca el sistema, y la cita ya esta hecha. Esperarlos dejaba la
+      // pantalla colgada detras del dialogo de permiso, y lo encontro la
+      // prueba de integracion en el emulador.
+      unawaited(ref.read(recordatoriosDeCitaProvider).alConfirmar(cita));
       setState(() {
         _confirmada = cita;
         _paso = _Paso.listo;

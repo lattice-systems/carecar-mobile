@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/api/modelos/cita.dart';
 import 'package:carecar_mobile/nucleo/registro/registro.dart';
+import 'package:carecar_mobile/nucleo/avisos/explicacion_de_avisos.dart';
 import 'package:carecar_mobile/notificaciones/recordatorios.dart';
 import 'package:carecar_mobile/notificaciones/servicio_notificaciones.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,6 +14,9 @@ class _PluginFalso implements PluginNotificaciones {
   final programadas = <int, DateTime>{};
   final mostradas = <int>[];
 
+  /// Veces que se disparo el dialogo del sistema (V2-M06.01).
+  int permisosPedidos = 0;
+
   /// A donde lleva cada aviso que se mostro o programo (V2-M06.03).
   final destinos = <int, String?>{};
 
@@ -25,7 +29,11 @@ class _PluginFalso implements PluginNotificaciones {
   @override
   Future<void> inicializar() async {}
   @override
-  Future<bool> pedirPermiso() async => true;
+  Future<bool> pedirPermiso() async {
+    permisosPedidos++;
+    return true;
+  }
+
   @override
   Future<void> mostrar(
     int id,
@@ -148,6 +156,35 @@ void main() {
 
       await servicio.alCancelar(5);
       expect(plugin.programadas, isEmpty);
+    });
+
+    test('agendar NO pide el permiso en frio (V2-M06.01)', () async {
+      // En Android 13 y despues el dialogo del sistema se muestra una sola vez
+      // en la vida de la instalacion. Si agendar lo dispara sin que nadie haya
+      // explicado para que sirve, se gasta el unico tiro.
+      //
+      // Ademas colgaba la pantalla: la confirmacion de la cita se quedaba
+      // esperando detras del dialogo. Lo encontro la prueba de integracion en
+      // el emulador, no esta.
+      await servicio.alAgendar(_cita(5, DateTime(2026, 11, 25)));
+
+      expect(plugin.permisosPedidos, 0);
+      // Y los recordatorios si quedan: no pedir el permiso no cancela nada.
+      expect(plugin.programadas, isNotEmpty);
+    });
+
+    test('ya explicado, agendar si lo pide, una sola vez', () async {
+      SharedPreferences.setMockInitialValues({claveAvisosRespondido: true});
+      final servicioExplicado = ServicioNotificaciones(
+        plugin,
+        await SharedPreferences.getInstance(),
+      );
+      await servicioExplicado.iniciar();
+
+      await servicioExplicado.alAgendar(_cita(5, DateTime(2026, 11, 25)));
+      await servicioExplicado.alAgendar(_cita(6, DateTime(2026, 11, 26)));
+
+      expect(plugin.permisosPedidos, 1);
     });
 
     test('cada aviso de cita lleva a «Mis citas» (V2-M06.03)', () async {

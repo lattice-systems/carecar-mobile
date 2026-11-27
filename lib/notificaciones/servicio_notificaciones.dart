@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/modelos/cita.dart';
+import '../nucleo/avisos/explicacion_de_avisos.dart';
 import '../nucleo/registro/registro.dart';
 import 'recordatorios.dart';
 
@@ -98,9 +99,19 @@ class ServicioNotificaciones {
     toques.value++;
   }
 
-  /// Pide permiso una sola vez; despues el usuario decide en el sistema.
+  /// Pide permiso una sola vez, **solo si ya se explico** (V2-M06.01).
+  ///
+  /// Antes lo pedia en frio: la primera cita agendada disparaba el dialogo del
+  /// sistema sin que nadie hubiera dicho para que sirve. En Android 13 y
+  /// despues ese dialogo se muestra **una sola vez en la vida de la
+  /// instalacion**, asi que pedirlo en frio gasta el unico tiro.
+  ///
+  /// Ahora quien lo pide es la pantalla de V2-M06.01, despues de explicar. Si
+  /// todavia nadie contesto ahi, esto no hace nada: no es una regresion, es
+  /// que el permiso dejo de ser asunto de este servicio.
   Future<void> pedirPermisoSiHaceFalta() async {
     if (!_listo || !activo) return;
+    if (!(_prefs?.getBool(claveAvisosRespondido) ?? false)) return;
     if (_prefs?.getBool(_clavePermisoPedido) ?? false) return;
     await _prefs?.setBool(_clavePermisoPedido, true);
     await _seguro(_plugin.pedirPermiso);
