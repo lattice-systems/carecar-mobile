@@ -112,6 +112,17 @@ enum CodigoProblema {
   /// V2-M14.04: el pedido ya esta pagado y no se cancela desde la app.
   pedidoPagado('PEDIDO_PAGADO'),
 
+  /// V2-M08.06: el pago ya tiene factura.
+  yaFacturado('YA_FACTURADO'),
+
+  /// V2-M08.06: el pago no esta pagado o se pago en caja (se factura en la
+  /// agencia).
+  pagoNoFacturable('PAGO_NO_FACTURABLE'),
+
+  /// V2-M08.06: el timbrado simulado rechazo los datos fiscales;
+  /// [Problema.campos] dice que corregir.
+  timbradoRechazado('TIMBRADO_RECHAZADO'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

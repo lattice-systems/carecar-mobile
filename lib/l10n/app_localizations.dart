@@ -10361,6 +10361,186 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Pagar {monto}'**
   String historialTicketPagar(String monto);
+
+  /// Botón para pagar con la billetera simulada en iPhone (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Apple Pay'**
+  String get pagosBilleteraApplePay;
+
+  /// Botón para pagar con la billetera simulada en Android (V2-M08.03).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar con Google Pay'**
+  String get pagosBilleteraGooglePay;
+
+  /// Ayuda bajo el botón de la billetera (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.'**
+  String get pagosBilleteraAyuda;
+
+  /// Mensaje de la hoja simulada de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Vas a pagar {monto} con {billetera}. Es simulado: no se cobra nada.'**
+  String pagosBilleteraMensaje(String monto, String billetera);
+
+  /// Confirma el pago en la hoja de la billetera.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar'**
+  String get pagosBilleteraConfirmar;
+
+  /// Cierra la hoja de la billetera sin pagar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get pagosBilleteraCancelar;
+
+  /// Resultado de un pago aprobado que pidió factura (V2-M08.06).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagaste {monto}. Referencia {referencia}. La factura simulada queda en el detalle del pago. No se cobró nada.'**
+  String pagosPagadoFacturaMensaje(String monto, String referencia);
+
+  /// Lleva del resultado del pago al detalle con su factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver la factura'**
+  String get pagosVerFactura;
+
+  /// Serie y folio de la factura simulada.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura {folio}'**
+  String pagosFacturaFolio(String folio);
+
+  /// Subtítulo de la fecha de timbrado de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Timbrada'**
+  String get pagosFacturaTimbrada;
+
+  /// Subtítulo del UUID del timbre simulado.
+  ///
+  /// In es, this message translates to:
+  /// **'Folio fiscal'**
+  String get pagosFacturaFolioFiscal;
+
+  /// Subtítulo de los datos fiscales de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Receptor · uso {usoCfdi}'**
+  String pagosFacturaReceptor(String usoCfdi);
+
+  /// Comparte el PDF de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar PDF'**
+  String get pagosFacturaPdf;
+
+  /// Comparte el XML de la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Descargar XML'**
+  String get pagosFacturaXml;
+
+  /// Aviso fijo de la factura (ADR 0009).
+  ///
+  /// In es, this message translates to:
+  /// **'Factura simulada con estructura de CFDI 4.0, sin validez fiscal.'**
+  String get pagosFacturaSimulada;
+
+  /// Error al descargar el PDF o el XML.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo descargar la factura. Intenta otra vez.'**
+  String get pagosFacturaErrorDescargar;
+
+  /// Botón para timbrar la factura de un pago.
+  ///
+  /// In es, this message translates to:
+  /// **'Facturar'**
+  String get pagosFacturar;
+
+  /// Ayuda del selector de datos fiscales al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'Con estos datos se timbra la factura simulada de este pago.'**
+  String get pagosFacturarAyuda;
+
+  /// Aviso cuando el cliente no tiene datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Para facturar este pago agrega tus datos fiscales.'**
+  String get pagosFacturaSinPerfiles;
+
+  /// Lleva al alta de datos fiscales.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar datos fiscales'**
+  String get pagosAgregarDatosFiscales;
+
+  /// Encabezado del error 422 TIMBRADO_RECHAZADO.
+  ///
+  /// In es, this message translates to:
+  /// **'El timbrado rechazó tus datos fiscales.'**
+  String get pagosTimbradoRechazado;
+
+  /// Qué corregir cuando se rechaza la razón social.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).'**
+  String get pagosTimbradoRazonSocial;
+
+  /// Qué corregir cuando se rechaza el código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa el código postal de tu domicilio fiscal.'**
+  String get pagosTimbradoCodigoPostal;
+
+  /// Qué corregir cuando se rechaza otro campo.
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa tus datos fiscales.'**
+  String get pagosTimbradoOtro;
+
+  /// Lleva a editar el perfil fiscal rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Corregir datos fiscales'**
+  String get pagosCorregirDatosFiscales;
+
+  /// Error 409 YA_FACTURADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago ya tiene factura.'**
+  String get pagosFacturaYaFacturada;
+
+  /// Error 409 PAGO_NO_FACTURABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pago no se puede facturar desde la app.'**
+  String get pagosFacturaNoFacturable;
+
+  /// Error genérico al facturar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo facturar. Intenta otra vez.'**
+  String get pagosFacturaErrorFacturar;
+
+  /// Aviso de un pago en caja sin factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Los pagos en caja se facturan en la agencia.'**
+  String get pagosFacturaEnLaAgencia;
+
+  /// Sin conexión al facturar o descargar la factura.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
+  String get pagosFacturaSinConexion;
 }
 
 class _AppLocalizationsDelegate

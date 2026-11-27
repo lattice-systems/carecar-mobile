@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../dominio/pagos.dart';
 import '../dominio/repositorio_pagos.dart';
 import '../dominio/tarjetas.dart';
@@ -6,7 +8,9 @@ import '../dominio/tarjetas.dart';
 /// procesador simulado: decide por la tarjeta de prueba, repetir la llave
 /// devuelve el mismo intento, `tok_sim_3ds` espera la confirmacion y la
 /// tarjeta se guarda al quedar pagado si se pidio. Cobra ordenes y pedidos de
-/// la tienda igual.
+/// la tienda igual. Las billeteras simuladas siempre se aprueban. Factura como
+/// el timbrado simulado: sola al quedar pagado con datos fiscales, o con
+/// [facturar]; [rechazoDeTimbrado] hace que el timbrado rechace esos campos.
 class RepositorioPagosFake implements RepositorioPagos {
   RepositorioPagosFake({
     Map<int, OrdenPorPagar> ordenes = const {},
@@ -16,6 +20,7 @@ class RepositorioPagosFake implements RepositorioPagos {
     this.falla,
     this.fallaAlPagar,
     this.ahora,
+    this.rechazoDeTimbrado,
   }) : _ordenes = Map.of(ordenes),
        _pedidos = Map.of(pedidos),
        _pagos = List.of(pagos),
@@ -34,12 +39,20 @@ class RepositorioPagosFake implements RepositorioPagos {
 
   final DateTime Function()? ahora;
 
+  /// Si no es nulo, el timbrado rechaza esos campos del perfil fiscal.
+  Set<String>? rechazoDeTimbrado;
+
+  /// Si no es nulo, facturar y descargar fallan con esto.
+  Object? fallaAlFacturar;
+
   final llavesRecibidas = <String>[];
   final mediosRecibidos = <MedioElegido>[];
   final perfilesRecibidos = <int?>[];
   final autenticaciones = <bool>[];
   final paginasPedidas = <int>[];
   final borrados = <int>[];
+  final facturasPedidas = <(int, int)>[];
+  final descargas = <(int, FormatoFactura)>[];
 
   final _porLlave = <String, int>{};
   final _tokenDelPago = <int, String>{};
@@ -177,6 +190,8 @@ class RepositorioPagosFake implements RepositorioPagos {
     final (token, marca, ultimos4, tipo, metodoId) = switch (medio) {
       TarjetaNueva(:final token) => _deToken(token),
       TarjetaGuardada(:final metodoPagoId) => _deMetodo(metodoPagoId),
+      Billetera(medio: MedioPago.applePay) => _deBilletera('tok_sim_apple_pay'),
+      Billetera() => _deBilletera('tok_sim_google_pay'),
     };
     final escenario = tarjetasDePrueba
         .where((t) => t.token == token)
@@ -189,7 +204,7 @@ class RepositorioPagosFake implements RepositorioPagos {
       pedidoId: pedidoId,
       vehiculoId: vehiculoId,
       monto: monto,
-      medio: MedioPago.tarjeta,
+      medio: medio is Billetera ? medio.medio : MedioPago.tarjeta,
       marca: marca,
       ultimos4: ultimos4,
       tipoTarjeta: tipo,
@@ -298,6 +313,71 @@ class RepositorioPagosFake implements RepositorioPagos {
     }
   }
 
+  @override
+  Future<Factura> facturar(int pagoId, {required int perfilFiscalId}) async {
+    final error = fallaAlFacturar;
+    if (error != null) throw error;
+    facturasPedidas.add((pagoId, perfilFiscalId));
+    final indice = _pagos.indexWhere((p) => p.id == pagoId);
+    if (indice < 0) throw StateError('No hay pago $pagoId');
+    final pago = _pagos[indice];
+    if (pago.factura != null) {
+      throw const FacturaRechazada(MotivoRechazoFactura.yaFacturado);
+    }
+    if (pago.estado != EstadoPago.pagado || pago.medio == MedioPago.caja) {
+      throw const FacturaRechazada(MotivoRechazoFactura.pagoNoFacturable);
+    }
+    final rechazo = rechazoDeTimbrado;
+    if (rechazo != null) throw TimbradoRechazado(rechazo);
+    final facturado = _conFactura(pago, perfilFiscalId);
+    _pagos[indice] = facturado;
+    return facturado.factura!;
+  }
+
+  @override
+  Future<ArchivoFactura> descargarFactura(
+    Factura factura,
+    FormatoFactura formato,
+  ) async {
+    final error = fallaAlFacturar;
+    if (error != null) throw error;
+    descargas.add((factura.id, formato));
+    return ArchivoFactura(
+      bytes: utf8.encode(switch (formato) {
+        FormatoFactura.pdf => '%PDF-1.4 factura simulada',
+        FormatoFactura.xml => '<cfdi:Comprobante Version="4.0"/>',
+      }),
+      nombre: 'factura-${factura.folio}.${formato.extension}',
+      formato: formato,
+    );
+  }
+
+  /// El pago con su factura timbrada; el receptor es siempre el de ejemplo.
+  Pago _conFactura(Pago pago, int perfilFiscalId) {
+    final facturaId =
+        _pagos.map((p) => p.factura?.id ?? 0).fold(0, (a, b) => a > b ? a : b) +
+        1;
+    final factura = Factura(
+      id: facturaId,
+      pagoId: pago.id,
+      folio: 'A-${(123 + facturaId).toString().padLeft(6, '0')}',
+      uuid: '6F1C2A3B-4D5E-4F60-8A7B-${facturaId.toString().padLeft(12, '0')}',
+      rfcReceptor: 'GODE561231GR8',
+      razonSocialReceptor: 'DOLORES GÓMEZ',
+      usoCfdi: 'G03',
+      total: pago.monto,
+      timbradaEn: _ahora,
+    );
+    return _copia(
+      pago,
+      estado: pago.estado,
+      motivoFallo: pago.motivoFallo,
+      pagadoEn: pago.pagadoEn,
+      perfilFiscalId: perfilFiscalId,
+      factura: factura,
+    );
+  }
+
   Pago _aprobar(Pago pago) {
     final nueva = _guardarDelPago[pago.id];
     int? metodoId = pago.metodoPagoId;
@@ -324,15 +404,21 @@ class RepositorioPagosFake implements RepositorioPagos {
         );
       }
     }
-    return _copia(
+    final aprobado = _copia(
       pago,
       estado: EstadoPago.pagado,
       pagadoEn: _ahora,
       metodoPagoId: metodoId,
     );
+    final perfilFiscalId = pago.perfilFiscalId;
+    if (perfilFiscalId == null || rechazoDeTimbrado != null) return aprobado;
+    return _conFactura(aprobado, perfilFiscalId);
   }
 
-  (String, String, String, TipoTarjeta?, int?) _deToken(String token) {
+  (String, String?, String?, TipoTarjeta?, int?) _deBilletera(String token) =>
+      (token, null, null, TipoTarjeta.credito, null);
+
+  (String, String?, String?, TipoTarjeta?, int?) _deToken(String token) {
     final tarjeta = tarjetasDePrueba.firstWhere(
       (t) => t.token == token,
       orElse: () => throw ArgumentError('Token desconocido: $token'),
@@ -340,7 +426,7 @@ class RepositorioPagosFake implements RepositorioPagos {
     return (token, tarjeta.marca, tarjeta.ultimos4, tarjeta.tipo, null);
   }
 
-  (String, String, String, TipoTarjeta?, int?) _deMetodo(int metodoPagoId) {
+  (String, String?, String?, TipoTarjeta?, int?) _deMetodo(int metodoPagoId) {
     final metodo = _metodos.firstWhere((m) => m.id == metodoPagoId);
     final token =
         tarjetasDePrueba
@@ -359,6 +445,8 @@ class RepositorioPagosFake implements RepositorioPagos {
     MotivoFalloPago? motivoFallo,
     DateTime? pagadoEn,
     int? metodoPagoId,
+    int? perfilFiscalId,
+    Factura? factura,
   }) => Pago(
     id: pago.id,
     ordenId: pago.ordenId,
@@ -375,9 +463,14 @@ class RepositorioPagosFake implements RepositorioPagos {
     referencia: pago.referencia,
     simulado: pago.simulado,
     metodoPagoId: metodoPagoId ?? pago.metodoPagoId,
-    perfilFiscalId: pago.perfilFiscalId,
+    perfilFiscalId: perfilFiscalId ?? pago.perfilFiscalId,
     pagadoEn: pagadoEn,
     creadoEn: pago.creadoEn,
+    factura: factura ?? pago.factura,
+    facturable:
+        estado == EstadoPago.pagado &&
+        pago.medio != MedioPago.caja &&
+        (factura ?? pago.factura) == null,
   );
 
   static MetodoPago _metodoCon(MetodoPago m, {required bool predeterminado}) =>

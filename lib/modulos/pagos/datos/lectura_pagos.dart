@@ -1,8 +1,8 @@
 import '../../../api/modelos/comun.dart';
 import '../dominio/pagos.dart';
 
-/// Lee `Pago`, `MetodoPago`, el ticket (`ServicioDetalle`) y lo que se cobra
-/// del pedido de la tienda (`Pedido`) del contrato. Lanza [FormatException] si
+/// Lee `Pago` con su `Factura`, `MetodoPago`, el ticket (`ServicioDetalle`)
+/// y lo que se cobra del pedido de la tienda (`Pedido`) del contrato. Lanza [FormatException] si
 /// falta algo obligatorio.
 class LecturaPagos {
   const LecturaPagos();
@@ -34,6 +34,29 @@ class LecturaPagos {
         ? null
         : leerMomentoUtc(json['pagadoEn'], 'pagadoEn'),
     creadoEn: leerMomentoUtc(json['creadoEn'], 'creadoEn'),
+    factura: switch (json['factura']) {
+      final Map<Object?, Object?> factura => this.factura(
+        factura.cast<String, Object?>(),
+      ),
+      _ => null,
+    },
+    facturable: json['facturable'] == true,
+  );
+
+  /// La `Factura` del contrato (V2-M08.06).
+  Factura factura(Map<String, Object?> json) => Factura(
+    id: leerEntero(json['id'], 'id'),
+    pagoId: leerEntero(json['pagoId'], 'pagoId'),
+    folio: leerTexto(json['folio'], 'folio'),
+    uuid: leerTexto(json['uuid'], 'uuid'),
+    rfcReceptor: leerTexto(json['rfcReceptor'], 'rfcReceptor'),
+    razonSocialReceptor: leerTexto(
+      json['razonSocialReceptor'],
+      'razonSocialReceptor',
+    ),
+    usoCfdi: leerTexto(json['usoCfdi'], 'usoCfdi'),
+    total: leerDecimal(json['total'], 'total'),
+    timbradaEn: leerMomentoUtc(json['timbradaEn'], 'timbradaEn'),
   );
 
   MetodoPago metodo(Map<String, Object?> json) => MetodoPago(

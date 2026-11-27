@@ -23,13 +23,14 @@ import 'confirmar_con_el_banco.dart';
 import 'esqueleto_pagos.dart';
 import 'formato_pagos.dart';
 import 'proveedores_pagos.dart';
+import 'seccion_factura.dart';
 
 /// Un pago (V2-M08.02 y V2-M08.07): estado, monto, con que, cuando, la
 /// referencia y, si fallo, por que. Si sigue esperando al banco simulado se
 /// puede confirmar desde aqui. Lleva al ticket de la orden o al pedido de la
-/// tienda (V2-M14.04). Se actualiza solo
-/// con `pago.confirmado`. Resuelve esqueleto, datos, no encontrado, error y
-/// sin conexion.
+/// tienda (V2-M14.04). Abajo, su factura simulada: descargarla o timbrarla
+/// (V2-M08.06). Se actualiza solo con `pago.confirmado` y `factura.timbrada`.
+/// Resuelve esqueleto, datos, no encontrado, error y sin conexion.
 class PantallaPago extends ConsumerWidget {
   const PantallaPago({required this.pagoId, super.key});
 
@@ -72,7 +73,10 @@ class PantallaPago extends ConsumerWidget {
             subtitulo: textoObjetivoPago(textos, pago),
             conRegreso: true,
             alRefrescar: () => ref.refresh(pagoProvider(pagoId).future),
-            slivers: [SliverToBoxAdapter(child: _Pago(pago: pago))],
+            slivers: [
+              SliverToBoxAdapter(child: _Pago(pago: pago)),
+              SliverToBoxAdapter(child: SeccionFactura(pago: pago)),
+            ],
           ),
         );
   }

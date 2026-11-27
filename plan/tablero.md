@@ -99,7 +99,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M01.04 | Recuperar mi contraseña con un enlace de un solo uso enviado a mi correo | Jael | B | V2-T05.04 (simulable), V2-T01.03 | Hecha | #152 |
 | V2-M01.05 | Desbloquear con huella o rostro | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.06 | Ver mi perfil | Jael | B | V2-M01.01 | Hecha | #180, backend #110 |
-| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | En curso | #190, backend #113 · **el correo ya está; el teléfono espera un proveedor de SMS** |
+| V2-M01.07 | Editar mi teléfono y correo | Jael | B | V2-M01.06, V2-T05.03 (simulable) | En curso | |
 | V2-M01.08 | Saber por qué no puedo entrar | Jael |  | V2-M01.01 | Lista | |
 | V2-M01.09 | Ver y cerrar mis sesiones abiertas en otros celulares | Jael | B | V2-M01.01 | Hecha | #175, backend #108 |
 | V2-M01.10 | Cambiar mi contraseña desde Seguridad cuando yo quiera | Jael |  | V2-M01.03 | Lista | |
@@ -225,10 +225,10 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M08.01 | Elegir el procesador de pagos | Ricardo |  | — | Hecha | #178 |
 | V2-M08.02 | Pagar mi orden con tarjeta desde la app | Ricardo | B | V2-M08.01, V2-M04.06 | Hecha | backend#111, #186 |
-| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | Lista | |
+| V2-M08.03 | Pagar con Apple Pay o Google Pay | Ricardo | B | V2-M08.02 | En revisión | |
 | V2-M08.04 | Guardar mis tarjetas | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
 | V2-M08.05 | Capturar mis datos fiscales | Ricardo | B | — | Hecha | backend#109, #178, #183 |
-| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | Lista | |
+| V2-M08.06 | Descargar mi factura PDF y XML | Ricardo | B | V2-M08.05, V2-M08.02 | En revisión | |
 | V2-M08.07 | Ver todos mis pagos | Ricardo | B | V2-M08.02 | Hecha | backend#111, #186, #187 |
 | V2-M14.01 | Ver accesorios compatibles con mi auto | Cristian | B | V2-M02.01 | Hecha | #168, backend#107 |
 | V2-M14.02 | Apartar productos | Cristian | B | V2-M14.01 (simulable) | Hecha | #168, backend#107 |

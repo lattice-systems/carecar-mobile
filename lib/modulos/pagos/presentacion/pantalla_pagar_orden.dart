@@ -26,6 +26,7 @@ import '../dominio/datos_fiscales.dart';
 import '../dominio/pagos.dart';
 import '../dominio/tarjetas.dart';
 import 'confirmar_con_el_banco.dart';
+import 'confirmar_con_la_billetera.dart';
 import 'esqueleto_pagos.dart';
 import 'formato_pagos.dart';
 import 'proveedores_datos_fiscales.dart';
@@ -34,8 +35,9 @@ import 'rutas_pagos.dart';
 
 /// Pagar una orden desde la app (V2-M08.02 y V2-M08.04), con el procesador
 /// simulado (ADR 0009): el desglose del ticket, con que se paga (una tarjeta
-/// guardada o una de las tarjetas de prueba, que se revisa en el telefono y
-/// solo sale como token), los datos fiscales para la factura y «Pagar». Si el
+/// guardada, una de las tarjetas de prueba, que se revisa en el telefono y
+/// solo sale como token, o la billetera simulada del telefono, V2-M08.03), los
+/// datos fiscales para la factura (V2-M08.06) y «Pagar». Si el
 /// banco simulado pide confirmar, abre su pantalla. Termina en un resultado:
 /// pagada, o no se pudo con su motivo y la opcion de intentar otra vez con una
 /// llave nueva. Una orden ya pagada o que aun no se puede pagar lo dice.
@@ -172,6 +174,7 @@ class FormularioPago extends ConsumerStatefulWidget {
   final ObjetivoCobro cobro;
 
   static const botonPagar = Key('pagos_pagar');
+  static const botonBilletera = Key('pagos_billetera');
   static const campoNumero = Key('pagos_numero');
   static const campoVencimiento = Key('pagos_vencimiento');
   static const campoCvv = Key('pagos_cvv');
@@ -268,6 +271,31 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
         metodos.firstWhere((m) => m.id == elegida),
       );
     }
+    await _cobrar(medio, tarjeta, perfiles);
+  }
+
+  /// La billetera simulada no pasa por la tarjeta: se confirma en su hoja y
+  /// se cobra.
+  Future<void> _pagarConBilletera(
+    MedioPago billetera,
+    List<PerfilFiscal> perfiles,
+  ) async {
+    final nombre = textoBilletera(AppLocalizations.of(context), billetera);
+    final confirmada = await confirmarConLaBilletera(
+      context,
+      monto: pesos(context, widget.cobro.total),
+      billetera: billetera,
+    );
+    if (!confirmada || !mounted) return;
+    await _cobrar(Billetera(billetera), nombre, perfiles);
+  }
+
+  /// Cobra con [medio]; [tarjeta] es como se nombra en la hoja del banco.
+  Future<void> _cobrar(
+    MedioElegido medio,
+    String tarjeta,
+    List<PerfilFiscal> perfiles,
+  ) async {
     final factura = _facturaElegida(perfiles);
     setState(() {
       _pagando = true;
@@ -379,6 +407,7 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     }
 
     final aviso = _avisoTexto(textos);
+    final billetera = ref.watch(billeteraDelTelefonoProvider);
 
     return MarcoPantalla(
       titulo: switch (cobro) {
@@ -444,6 +473,29 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
                   hijo: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      Boton(
+                        key: FormularioPago.botonBilletera,
+                        texto: billetera == MedioPago.applePay
+                            ? textos.pagosBilleteraApplePay
+                            : textos.pagosBilleteraGooglePay,
+                        variante: VarianteBoton.secundario,
+                        icono: LucideIcons300.wallet,
+                        anchoCompleto: true,
+                        alPresionar: _pagando
+                            ? null
+                            : () => _pagarConBilletera(billetera, perfiles),
+                      ),
+                      const SizedBox(height: Espaciado.e2),
+                      Text(
+                        textos.pagosBilleteraAyuda,
+                        style: TokensPista.de(context).tipografia.cuerpoChico
+                            .copyWith(
+                              color: TokensPista.de(context)
+                                  .colores
+                                  .textoSecundario,
+                            ),
+                      ),
+                      const SizedBox(height: Espaciado.e4),
                       if (metodos.isNotEmpty) ...[
                         Selector<int>(
                           key: ValueKey(('tarjeta', elegida)),
@@ -615,22 +667,28 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
   Widget _cierre(BuildContext context, Pago pago) {
     final textos = AppLocalizations.of(context);
     if (pago.estado == EstadoPago.pagado) {
+      final conFactura = pago.factura != null || pago.perfilFiscalId != null;
+      final monto = pesos(context, pago.monto);
       return ResultadoPantalla(
         titulo: _esPedido
             ? textos.pagosPedidoPagadoTitulo
             : textos.pagosPagadoTitulo,
-        mensaje: textos.pagosPagadoMensaje(
-          pesos(context, pago.monto),
-          pago.referencia,
-        ),
+        mensaje: conFactura
+            ? textos.pagosPagadoFacturaMensaje(monto, pago.referencia)
+            : textos.pagosPagadoMensaje(monto, pago.referencia),
         principal: AccionPantalla(
           texto: textos.pagosListo,
           alPresionar: () => context.pop(),
         ),
-        secundaria: AccionPantalla(
-          texto: textos.pagosVerMisPagos,
-          alPresionar: () => context.pushReplacement(rutaMisPagos),
-        ),
+        secundaria: conFactura
+            ? AccionPantalla(
+                texto: textos.pagosVerFactura,
+                alPresionar: () => context.pushReplacement(rutaPago(pago.id)),
+              )
+            : AccionPantalla(
+                texto: textos.pagosVerMisPagos,
+                alPresionar: () => context.pushReplacement(rutaMisPagos),
+              ),
       );
     }
     return ResultadoPantalla(

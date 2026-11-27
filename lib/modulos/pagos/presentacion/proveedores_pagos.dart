@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
 import '../../../nucleo/eventos/eventos_en_vivo.dart';
 import '../../../nucleo/eventos/proveedores_eventos.dart';
+import '../datos/compartir_factura.dart';
 import '../datos/pasarela_simulada.dart';
 import '../datos/repositorio_pagos_api.dart';
 import '../dominio/pagos.dart';
@@ -12,6 +14,10 @@ import '../dominio/tarjetas.dart';
 /// Aviso en vivo de que una orden (V2-M08.02) o un pedido de la tienda
 /// (V2-M14.04) del cliente quedo pagado. Trae `ordenId` o `pedidoId`.
 const eventoPagoConfirmado = 'pago.confirmado';
+
+/// Aviso en vivo de que se timbro la factura simulada de un pago
+/// (V2-M08.06). Trae `facturaId` y `pagoId`.
+const eventoFacturaTimbrada = 'factura.timbrada';
 
 /// Cuantos pagos se piden por pagina (V2-M08.07).
 const tamanoPaginaPagos = 20;
@@ -31,16 +37,36 @@ final pasarelaPagoProvider = Provider<PasarelaPago>(
   name: 'pasarelaPagoProvider',
 );
 
+/// Abre la hoja de compartir con el PDF o el XML de una factura. Las pruebas
+/// lo sustituyen.
+final compartirFacturaProvider =
+    Provider<Future<void> Function(ArchivoFactura)>(
+      (ref) => compartirFacturaConHojaDelSistema,
+      name: 'compartirFacturaProvider',
+    );
+
+/// La billetera simulada de este telefono (V2-M08.03): Apple Pay en iPhone y
+/// Mac, Google Pay en lo demas. En pruebas se fija.
+final billeteraDelTelefonoProvider = Provider<MedioPago>(
+  (ref) => switch (defaultTargetPlatform) {
+    TargetPlatform.iOS || TargetPlatform.macOS => MedioPago.applePay,
+    _ => MedioPago.googlePay,
+  },
+  name: 'billeteraDelTelefonoProvider',
+);
+
 /// La fecha de hoy para revisar vencimientos. En pruebas se fija.
 final hoyPagosProvider = Provider<DateTime Function()>(
   (ref) => DateTime.now,
   name: 'hoyPagosProvider',
 );
 
-/// Si [evento] pide volver a consultar los pagos: se confirmo uno o el canal
-/// volvio tras una caida y pudo perderse algun aviso.
+/// Si [evento] pide volver a consultar los pagos: se confirmo uno, se timbro
+/// su factura o el canal volvio tras una caida y pudo perderse algun aviso.
 bool _cambiaronPagos(EventoEnVivo evento) =>
-    evento.nombre == eventoPagoConfirmado || evento.nombre == eventoReconectado;
+    evento.nombre == eventoPagoConfirmado ||
+    evento.nombre == eventoFacturaTimbrada ||
+    evento.nombre == eventoReconectado;
 
 /// Lo que se cobra de una orden y si se puede pagar.
 final ordenPorPagarProvider = FutureProvider.autoDispose
@@ -58,7 +84,7 @@ final pedidoPorPagarProvider = FutureProvider.autoDispose
       name: 'pedidoPorPagarProvider',
     );
 
-/// Un pago. Se recarga solo con `pago.confirmado`.
+/// Un pago. Se recarga solo con `pago.confirmado` y `factura.timbrada`.
 class PagoNotifier extends AsyncNotifier<Pago> {
   PagoNotifier(this.pagoId);
 
@@ -81,6 +107,19 @@ class PagoNotifier extends AsyncNotifier<Pago> {
         .autenticar(pagoId, confirmada: confirmada);
     if (ref.mounted) state = AsyncData(pago);
     return pago;
+  }
+
+  /// Timbra la factura del pago con [perfilFiscalId] y vuelve a pedir el
+  /// pago para que ya la traiga. Lanza [FacturaRechazada] o
+  /// [TimbradoRechazado] si el servidor no la tomo.
+  Future<Factura> facturar({required int perfilFiscalId}) async {
+    final repositorio = ref.read(repositorioPagosProvider);
+    final factura = await repositorio.facturar(
+      pagoId,
+      perfilFiscalId: perfilFiscalId,
+    );
+    await _recargar();
+    return factura;
   }
 
   Future<void> _recargar() async {

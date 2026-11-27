@@ -93,6 +93,8 @@ class Pago {
     this.perfilFiscalId,
     this.pagadoEn,
     this.pedidoId,
+    this.factura,
+    this.facturable = false,
   });
 
   final int id;
@@ -127,6 +129,92 @@ class Pago {
   final int? perfilFiscalId;
   final DateTime? pagadoEn;
   final DateTime creadoEn;
+
+  /// La factura timbrada del pago (V2-M08.06); nula si aun no tiene.
+  final Factura? factura;
+
+  /// Se puede facturar desde la app: pagado, no en caja y sin factura.
+  final bool facturable;
+}
+
+/// La factura simulada de un pago (V2-M08.06): sin validez fiscal (ADR 0009).
+class Factura {
+  const Factura({
+    required this.id,
+    required this.pagoId,
+    required this.folio,
+    required this.uuid,
+    required this.rfcReceptor,
+    required this.razonSocialReceptor,
+    required this.usoCfdi,
+    required this.total,
+    required this.timbradaEn,
+  });
+
+  final int id;
+  final int pagoId;
+
+  /// Serie y folio, por ejemplo `A-000124`.
+  final String folio;
+
+  /// Folio fiscal del timbre simulado.
+  final String uuid;
+  final String rfcReceptor;
+  final String razonSocialReceptor;
+  final String usoCfdi;
+  final double total;
+  final DateTime timbradaEn;
+}
+
+/// En que formato se descarga una factura.
+enum FormatoFactura {
+  pdf('pdf', 'application/pdf'),
+  xml('xml', 'application/xml');
+
+  const FormatoFactura(this.extension, this.tipoContenido);
+
+  final String extension;
+  final String tipoContenido;
+}
+
+/// El PDF o el XML de una factura, listo para compartir.
+class ArchivoFactura {
+  const ArchivoFactura({
+    required this.bytes,
+    required this.nombre,
+    required this.formato,
+  });
+
+  final List<int> bytes;
+
+  /// `factura-A-000124.pdf`
+  final String nombre;
+  final FormatoFactura formato;
+}
+
+/// Por que el servidor no tomo la factura (409).
+enum MotivoRechazoFactura { yaFacturado, pagoNoFacturable }
+
+/// El servidor no facturo el pago por una regla (409).
+class FacturaRechazada implements Exception {
+  const FacturaRechazada(this.motivo);
+
+  final MotivoRechazoFactura motivo;
+
+  @override
+  String toString() => 'FacturaRechazada($motivo)';
+}
+
+/// El timbrado simulado rechazo los datos fiscales (422
+/// `TIMBRADO_RECHAZADO`): [campos] dice que corregir del perfil fiscal, con el
+/// nombre del campo del contrato (`razonSocial`, `codigoPostal`...).
+class TimbradoRechazado implements Exception {
+  const TimbradoRechazado(this.campos);
+
+  final Set<String> campos;
+
+  @override
+  String toString() => 'TimbradoRechazado($campos)';
 }
 
 /// Una pagina de mis pagos, del mas nuevo al mas viejo.
@@ -229,8 +317,8 @@ class PedidoPorPagar extends ObjetivoCobro {
   final Pago? pago;
 }
 
-/// Con que quiere pagar la persona: una tarjeta de prueba nueva o una
-/// guardada.
+/// Con que quiere pagar la persona: una tarjeta de prueba nueva, una
+/// guardada o una billetera simulada.
 sealed class MedioElegido {
   const MedioElegido();
 }
@@ -255,6 +343,15 @@ class TarjetaGuardada extends MedioElegido {
   const TarjetaGuardada(this.metodoPagoId);
 
   final int metodoPagoId;
+}
+
+/// Apple Pay o Google Pay simulados (V2-M08.03): no usan la billetera del
+/// telefono ni piden cuentas.
+class Billetera extends MedioElegido {
+  const Billetera(this.medio)
+    : assert(medio == MedioPago.applePay || medio == MedioPago.googlePay);
+
+  final MedioPago medio;
 }
 
 /// Por que el servidor no tomo el pago.

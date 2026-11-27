@@ -6,7 +6,7 @@
 | Dueño | Ricardo |
 | Revisa | Daniel |
 | Ficha técnica | ✅ Sección 8. Pagos y facturas |
-| Estado | En curso: V2-M08.01, V2-M08.02, V2-M08.04, V2-M08.05 y V2-M08.07 hechas; faltan V2-M08.03 y V2-M08.06; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
+| Estado | En revisión: V2-M08.01, V2-M08.02, V2-M08.04, V2-M08.05 y V2-M08.07 hechas; V2-M08.03 y V2-M08.06 en revisión; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
 
 ## Propósito
 
@@ -26,24 +26,24 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 | `pago_app` ➕ | id, orden_servicio_id, cliente_id, monto, moneda, procesador, intencion_id, llave_idempotencia, metodo (tarjeta/apple_pay/google_pay/caja), marca, ultimos4, estado (pendiente/pagado/fallido/reembolsado), motivo_fallo, perfil_fiscal_id, pagado_en, creado_en | Integrada en V55 (V2-M08.02). `procesador` = `SIMULADO`; `intencion_id` con prefijo `sim_pi_`. `intencion_id` y (`cliente_id`, `llave_idempotencia`) únicos; índices únicos parciales: un solo pago `PAGADO` y un solo `PENDIENTE` por orden. Campos agregados: `vehiculo_cliente_id`, `tipo_tarjeta`, `token_procesador`, `mes_vence`, `anio_vence`, `guardar_tarjeta`, `metodo_pago_id`, `autenticacion` (3-D Secure), `referencia_caja`, `registrado_por` y `actualizado_en`. El dinero no se borra: un reembolso es otra fila con monto negativo que apunta a la original. V2-M14.04 (V56) agrega `pedido_app_id` y deja `orden_servicio_id` con nulo permitido: un pago es de una orden o de un pedido de la tienda (`ck_pago_app_objeto`), con un solo `PAGADO` y un solo `PENDIENTE` por pedido. No se quita ni se renombra ninguna columna. |
 | `metodo_pago` ➕ | id, cliente_id, procesador, cliente_procesador_id, token_procesador, marca, ultimos4, mes_vence, anio_vence, predeterminado, creado_en | Integrada en V55 (V2-M08.04). Sin PAN ni CVV; `token_procesador` es el de la tarjeta de prueba (`tok_sim_…`) y `cliente_procesador_id` es `sim_cus_<id>`. Se agrega `tipo` (crédito o débito). Una tarjeta por cliente y token; un índice único parcial deja una sola predeterminada; hasta 10 por cliente. |
 | `perfil_fiscal` ➕ | id, cliente_id, rfc, razon_social, regimen_fiscal, codigo_postal, uso_cfdi, correo, predeterminado, creado_en | Integrada en V54 (V2-M08.05). RFC de 12 (moral) o 13 (física) caracteres con dígito verificador; régimen y uso con los catálogos del SAT de CFDI 4.0; `actualizado_en`; índice único parcial para un solo predeterminado. |
-| `factura` (existe) | se agregan tipo (VENTA_UNIDAD/SERVICIO), orden_servicio_id, pago_app_id, perfil_fiscal_id, uuid_fiscal, xml_archivo_id, pdf_archivo_id, timbrada_en | Se reutiliza (R1). Las columnas de la venta de un auto dejan de ser obligatorias y `ck_factura_tipo` exige las de cada tipo ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)). |
+| `factura` (existe) | se agregan tipo (VENTA_UNIDAD/SERVICIO/PEDIDO_APP), cliente_id, orden_servicio_id, pedido_app_id, pago_app_id, perfil_fiscal_id, uuid_fiscal, xml_archivo_id, pdf_archivo_id, timbrada_en, receptor_uso_cfdi, forma_pago | Se reutiliza (R1), integrada en V58 (V2-M08.06). `tipo` vale `VENTA_UNIDAD` por omisión, así que lo que inserta el ERP no cambia. Las columnas de la venta de un auto dejan de ser obligatorias y `ck_factura_tipo` exige las de cada tipo; `uq_factura_pago_app` deja una sola factura por pago y `uq_factura_uuid` un folio fiscal único. La factura copia emisor y receptor, así que editar o borrar el perfil fiscal no la cambia (`perfil_fiscal_id` queda nulo al borrarlo). Serie `A` con la misma secuencia de folios. No se quita ni se renombra ninguna columna ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)). |
 | `orden_servicio` (existe) | — | El total a pagar sale de su ticket (M04.07). |
 
 ## API (`/api/v1/app`)
 
 | Método | Ruta | Uso | Errores |
 | --- | --- | --- | --- |
-| POST | `/ordenes/{id}/pagos` | Crea el intento de pago `pendiente` con el token de prueba, la marca y los últimos 4 que manda la hoja propia. Header `Idempotency-Key`. Si la tarjeta de prueba pide 3-D Secure, lo dice. | 404 orden ajena · 409 `ORDEN_NO_PAGABLE` (no está lista o ya está pagada) · 409 `PAGO_EN_CURSO` |
+| POST | `/ordenes/{id}/pagos` | Crea el intento de pago `pendiente` con el token de prueba, la marca y los últimos 4 que manda la hoja propia, o con `billetera` (`APPLE_PAY` o `GOOGLE_PAY`, V2-M08.03): exactamente uno de los tres. Header `Idempotency-Key`. Si la tarjeta de prueba pide 3-D Secure, lo dice; la billetera se aprueba sin 3-D Secure y no se guarda. Con `perfilFiscalId` la factura se timbra sola al confirmarse. | 400 (ningún medio, dos medios o billetera desconocida) · 404 orden ajena · 409 `ORDEN_NO_PAGABLE` (no está lista o ya está pagada) · 409 `PAGO_EN_CURSO` |
 | POST | `/pedidos/{id}/pagos` | V2-M14.04: paga un pedido de la tienda con el mismo cuerpo, la misma llave y el mismo `Pago` que una orden. `Pago` trae `ordenId` o `pedidoId`, los dos nulables. | 400, 404, 409 `PEDIDO_NO_PAGABLE` o 409 `PAGO_EN_CURSO` |
-| GET | `/pagos/{id}` | Estado de un pago (la app consulta al volver de la hoja). | 404 |
+| GET | `/pagos/{id}` | Estado de un pago (la app consulta al volver de la hoja). Desde 2.27.0 trae `factura` (o nula) y `facturable`. | 404 |
 | POST | `/pagos/{id}/autenticacion` | Resultado del 3-D Secure simulado; confirma o falla el pago. | 404 · 409 `PAGO_NO_PENDIENTE` |
 | GET | `/pagos` | Mis pagos, paginado y del más nuevo al más viejo. | — |
 | GET · DELETE | `/metodos-pago` · `/metodos-pago/{id}` | Tarjetas guardadas (simuladas). | 404 |
 | PUT | `/metodos-pago/{id}/predeterminado` | Marcar la predeterminada. | 404 |
 | GET | `/catalogos-fiscales` | Regímenes fiscales y usos de CFDI de CFDI 4.0, con la persona a la que aplican y los regímenes que acepta cada uso. | — |
 | GET · POST · PUT · DELETE | `/perfiles-fiscales` · `/perfiles-fiscales/{id}` | Datos fiscales; el primero queda predeterminado. | 400 `DATOS_FISCALES_INVALIDOS` con `campos` · 404 ajeno |
-| POST | `/pagos/{id}/factura` | Facturar un pago que se hizo sin perfil fiscal. | 409 `YA_FACTURADO` · 422 `TIMBRADO_RECHAZADO` |
-| GET | `/facturas/{id}/pdf` · `/facturas/{id}/xml` | URL firmada de vida corta para descargar. | 404 |
+| POST | `/pagos/{id}/factura` | Facturar un pago `PAGADO` (de una orden o de un pedido) con `{perfilFiscalId}`; responde 201 `Factura`. | 400 · 404 pago o perfil ajeno · 409 `YA_FACTURADO` · 409 `PAGO_NO_FACTURABLE` (no está pagado o fue en caja) · 422 `TIMBRADO_RECHAZADO` con `campos` (qué corregir del perfil) |
+| GET | `/facturas/{id}/pdf` · `/facturas/{id}/xml` | El PDF o el XML en el cuerpo, como adjunto y `no-store`, con el token del cliente (como el ticket); no se firma una URL. | 404 ajena |
 | GET | `/eventos` | `pago.confirmado` (con `ordenId` o `pedidoId`, los dos nulables desde 2.25.0) y `factura.timbrada` en vivo. | — |
 | POST | `/api/v1/caja/ordenes/{id}/pagada-en-caja` | Personal (roles `CAJA` y `ADMINISTRADOR`): marca la orden como pagada en caja, con su referencia opcional, para que no se pague dos veces en la app. Un intento pendiente queda `fallido` con `PAGADA_EN_CAJA`. | 404 · 409 `ORDEN_NO_PAGABLE` |
 
@@ -114,7 +114,26 @@ La primera propuesta (Stripe y Facturama en modo de pruebas) **no se aprobó**: 
 - **Pagar una orden exige su línea de tiempo del taller**: un servicio registrado ya hecho se paga en la agencia.
 - **El 3-D Secure se responde en la misma pantalla** y queda pendiente si la persona se va; se puede confirmar desde el detalle del pago o vence a los 15 minutos.
 
-**Pendiente / fuera de alcance:** factura al pagar (V2-M08.06), billeteras simuladas (V2-M08.03) y demostrar en celular.
+**Pendiente / fuera de alcance:** factura al pagar (V2-M08.06) y billeteras simuladas (V2-M08.03), que se cuentan abajo, y demostrar en celular.
+
+## Avance de V2-M08.03 y V2-M08.06
+
+**Qué quedó**
+
+- **Billeteras** (V2-M08.03): `NuevoPago` gana `billetera` (`APPLE_PAY` o `GOOGLE_PAY`) y el servidor exige exactamente un medio. `PagoApp.conBilletera` deja el pago con `medio` de la billetera, sin marca, últimos 4 ni vencimiento, tipo crédito y el token `tok_sim_apple_pay` o `tok_sim_google_pay`; siempre se aprueba, sin 3-D Secure, y nunca se guarda como tarjeta. En la app, «Pagar con Apple Pay» en iPhone y «Pagar con Google Pay» en Android abren una hoja simulada (`confirmarConLaBilletera`) que dice que no se cobra nada; cancelar no cobra y no revisa los campos de la tarjeta.
+- **Factura** (V2-M08.06), backend (`carecarapp`): migración `V58__facturar_pagos_de_la_app.sql` sobre `factura`. `FacturaApp` mapea las facturas de la app y la `Factura` del ERP solo ve `VENTA_UNIDAD` (`@SQLRestriction`), así que el ERP no lista ni cuenta las de la app. `Comprobante` arma el CFDI 4.0: emisor de las variables `FACTURA_APP_EMISOR_*` (RFC de pruebas del SAT por omisión), receptor copiado del perfil, conceptos del ticket (mano de obra 78181500/E48 y refacciones 25174800/H87) o de los renglones del pedido, IVA 16 % desglosado de precios con IVA, forma de pago 28 (débito) o 04 (crédito y billeteras), método PUE, moneda MXN. `TimbradorSimulado` hace el XML con `cfdi:Comprobante` 4.0 y el complemento `tfd:TimbreFiscalDigital` 1.1 con UUID al azar, sellos «SIMULADO» y la leyenda; rechaza como un PAC una razón social de persona moral con el régimen societario o un código postal menor a 01000. `FacturaAppPdf` (OpenPDF) dice dos veces «Factura simulada, sin validez fiscal». El PDF y el XML se guardan en `archivos` (carpeta `facturas`, la única que acepta XML). `FacturasAppService` timbra solo al confirmarse un pago con perfil (`@ApplicationModuleListener` de `PagoConfirmado`) o con `POST /pagos/{id}/factura`, bajo un candado por pago, y publica `factura.timbrada`.
+- **App** (`lib/modulos/pagos/`): `SeccionFactura` en el detalle del pago. Timbrada: folio, folio fiscal, receptor con su uso de CFDI, aviso de factura simulada y «Descargar PDF» y «Descargar XML», que abren la hoja de compartir del sistema (`compartirFacturaProvider`, bytes en memoria). Sin factura y `facturable`: elige los datos fiscales (los del pago, el predeterminado o el primero) y «Facturar»; `TIMBRADO_RECHAZADO` dice qué corregir por campo y lleva a editar ese perfil; sin perfiles lleva al alta. Un pago en caja dice que se factura en la agencia. `factura.timbrada` recarga el pago y la lista. El resultado de pagar con datos fiscales lleva a «Ver la factura».
+- **mock_api**: billeteras, `POST /pagos/{id}/factura`, `GET /facturas/{id}/pdf` y `/xml`, factura sola al pagar con perfil, las mismas reglas de rechazo y `factura.timbrada`.
+- **Pruebas**: en el backend, dominio (`ComprobanteTest`, `PagoAppTest`), timbrador, PDF, servicio con Mockito y la integración HTTP de punta a punta (billetera, factura sola con su descarga, facturar después una sola vez, rechazo 422, pago en caja no facturable y que el ERP no ve folios `A-`); en la app, repositorio, la billetera en la pantalla de pago, la sección de factura (descargas, facturar, rechazos, en vivo y auditoría en 320) y el contrato 2.27.0.
+
+**Decisiones**
+
+- **Se reutiliza `factura` con `tipo`** y no se crea otra tabla (R1): la ficha la nombra para las facturas de la agencia.
+- **La descarga va por el endpoint con el token**, no por URL firmada: el ticket ya se baja así y no hace falta otra llave.
+- **También se facturan los pagos de la tienda** (`PEDIDO_APP`): el pago es el mismo.
+- **El rechazo del timbrado es realista** (razón social con régimen societario, código postal inexistente) para probar el 422 sin un PAC.
+
+**Pendiente / fuera de alcance:** cancelar o sustituir una factura (no hay PAC real) y demostrar en celular.
 
 ## Privacidad de pantalla
 
