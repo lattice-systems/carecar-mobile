@@ -164,6 +164,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoCorreoVacio => 'Enter your email.';
 
   @override
+  String get accesoDesactivadaEscribir => 'Send an email';
+
+  @override
+  String get accesoDesactivadaExplicacion =>
+      'The dealership turned off access for this account. We cannot turn it back on from the app: get in touch with them and they will help you.';
+
+  @override
+  String get accesoDesactivadaLlamar => 'Call the dealership';
+
+  @override
+  String get accesoDesactivadaNoSePudo => 'This device could not open it.';
+
+  @override
+  String get accesoDesactivadaTitulo => 'Your account is deactivated';
+
+  @override
+  String get accesoDesactivadaVolver => 'Back to sign in';
+
+  @override
   String get accesoEnlaceNoValidoMensaje =>
       'Links expire soon and work only once. Ask for a new one and check your email.';
 

@@ -14,7 +14,14 @@ sealed class EstadoSesion {
 
 /// Nadie ha entrado, o se cerro la sesion.
 class SinSesion extends EstadoSesion {
-  const SinSesion();
+  const SinSesion({this.porCuentaDesactivada = false});
+
+  /// La sesion no existe porque la agencia **desactivo la cuenta** (V2-M01.08).
+  ///
+  /// Se guarda en el estado y no aparte porque la guardia tiene que poder
+  /// distinguirlo: sin esto, la app mandaria al login a alguien que no puede
+  /// entrar y lo dejaria intentandolo sin saber por que.
+  final bool porCuentaDesactivada;
 }
 
 /// Hay una peticion de login en curso.
@@ -198,9 +205,14 @@ class ControladorSesion extends ChangeNotifier {
           esperaSegundos: e.esperaSegundos,
         ),
       );
+    } on CuentaDesactivada {
+      // V2-M01.08: no es un fallo que se corrija escribiendo otra vez, asi que
+      // no se queda en el login con un mensaje; la guardia lleva a la pantalla
+      // que lo explica y ofrece contactar a la agencia.
+      await _terminar(porCuentaDesactivada: true);
     } on ExcepcionApi catch (e) {
-      // Cubre credenciales invalidas, cuenta desactivada, datos invalidos y
-      // errores del servidor. El mensaje ya viene listo para mostrar.
+      // Cubre credenciales invalidas, datos invalidos y errores del servidor.
+      // El mensaje ya viene listo para mostrar.
       _cambiarA(FalloDeSesion(e.mensaje));
     } catch (e) {
       // Nada deberia llegar aqui, pero un error inesperado no puede dejar la
@@ -247,15 +259,22 @@ class ControladorSesion extends ChangeNotifier {
   /// En la app un 403 solo puede significar **cuenta desactivada**, porque un
   /// recurso ajeno responde 404 (RIC-3). No se avisa al servidor: ya fue el que
   /// lo dijo. La llama la pantalla que recibio `CuentaDesactivada`.
-  Future<void> terminarPorCuentaDesactivada() => _terminar();
+  Future<void> terminarPorCuentaDesactivada() =>
+      _terminar(porCuentaDesactivada: true);
+
+  /// La persona ya leyo el aviso de cuenta desactivada y quiere volver al
+  /// login (V2-M01.08). Sin esto la guardia la regresaria para siempre.
+  void reconocerCuentaDesactivada() {
+    if (_estado is SinSesion) _cambiarA(const SinSesion());
+  }
 
   /// Borra la sesion local sin avisarle al servidor.
   ///
   /// Se usa cuando el servidor ya dijo que la sesion no vale: un refresh
   /// vencido (401) o una cuenta desactivada (403). Avisar seria redundante.
-  Future<void> _terminar() async {
+  Future<void> _terminar({bool porCuentaDesactivada = false}) async {
     await _almacen.borrar();
-    _cambiarA(const SinSesion());
+    _cambiarA(SinSesion(porCuentaDesactivada: porCuentaDesactivada));
   }
 
   void _cambiarA(EstadoSesion nuevo) {

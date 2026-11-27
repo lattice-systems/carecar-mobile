@@ -162,6 +162,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCorreoVacio => 'Escribe tu correo.';
 
   @override
+  String get accesoDesactivadaEscribir => 'Escribir un correo';
+
+  @override
+  String get accesoDesactivadaExplicacion =>
+      'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.';
+
+  @override
+  String get accesoDesactivadaLlamar => 'Llamar a la agencia';
+
+  @override
+  String get accesoDesactivadaNoSePudo =>
+      'No se pudo abrir en este dispositivo.';
+
+  @override
+  String get accesoDesactivadaTitulo => 'Tu cuenta está desactivada';
+
+  @override
+  String get accesoDesactivadaVolver => 'Volver a iniciar sesión';
+
+  @override
   String get accesoEnlaceNoValidoMensaje =>
       'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
 

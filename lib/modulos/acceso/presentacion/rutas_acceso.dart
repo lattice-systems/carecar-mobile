@@ -6,6 +6,7 @@ import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
 import 'pantalla_cambiar_contrasena.dart';
 import 'pantalla_cambiar_correo.dart';
+import 'pantalla_cuenta_desactivada.dart';
 import 'pantalla_mi_contrasena.dart';
 import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
@@ -123,6 +124,14 @@ final rutasSesiones = <RouteBase>[
     name: 'cambiar-correo',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCambiarCorreo()),
+  ),
+  // V2-M01.08. El camino vive en `Rutas` y no aqui porque la guardia de sesion
+  // tiene que conocerlo, y esta en el nucleo: no puede importar un modulo.
+  GoRoute(
+    path: Rutas.cuentaDesactivada,
+    name: 'cuenta-desactivada',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaCuentaDesactivada()),
   ),
   GoRoute(
     path: rutaMiContrasena,

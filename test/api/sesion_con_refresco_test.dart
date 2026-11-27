@@ -308,4 +308,51 @@ void main() {
       );
     });
   });
+
+  group('cuenta desactivada (V2-M01.08)', () {
+    test('un 403 con token avisa una vez y no se reintenta', () async {
+      var intentos = 0;
+      var avisos = 0;
+
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        http: MockClient((_) async {
+          intentos++;
+          return http.Response(
+            _cuerpoError(403, codigo: 'CUENTA_DESACTIVADA'),
+            403,
+          );
+        }),
+        obtenerToken: () async => 'vigente',
+        alCuentaDesactivada: () async => avisos++,
+      );
+
+      await expectLater(
+        cliente.obtenerLista('/vehiculos', (j) => j),
+        throwsA(isA<CuentaDesactivada>()),
+      );
+
+      // El aviso es lo que borra la sesion local: se manda una sola vez y la
+      // peticion no se repite, porque no hay nada que reintentar.
+      expect(avisos, 1);
+      expect(intentos, 1);
+    });
+
+    test('un 403 sin token no toca la sesion', () async {
+      var avisos = 0;
+
+      final cliente = ClienteApi(
+        config: ApiConfig.para(_base),
+        http: MockClient((_) async => http.Response(_cuerpoError(403), 403)),
+        alCuentaDesactivada: () async => avisos++,
+      );
+
+      await expectLater(
+        cliente.obtenerLista('/vehiculos', (j) => j),
+        throwsA(isA<CuentaDesactivada>()),
+      );
+
+      expect(avisos, 0, reason: 'sin token no hay sesion que cerrar');
+    });
+  });
 }

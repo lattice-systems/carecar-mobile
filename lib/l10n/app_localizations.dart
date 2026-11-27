@@ -374,6 +374,42 @@ abstract class AppLocalizations {
   /// **'Escribe tu correo.'**
   String get accesoCorreoVacio;
 
+  /// Botón secundario del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get accesoDesactivadaEscribir;
+
+  /// Explica por qué no se puede entrar y qué sí se puede hacer.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.'**
+  String get accesoDesactivadaExplicacion;
+
+  /// Botón principal del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get accesoDesactivadaLlamar;
+
+  /// Aviso cuando el celular no puede abrir el teléfono o el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir en este dispositivo.'**
+  String get accesoDesactivadaNoSePudo;
+
+  /// Título de la pantalla de V2-M01.08.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está desactivada'**
+  String get accesoDesactivadaTitulo;
+
+  /// Salida del aviso: regresa al login si fue un error.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a iniciar sesión'**
+  String get accesoDesactivadaVolver;
+
   /// Explica por qué el enlace de recuperación dejó de servir.
   ///
   /// In es, this message translates to:

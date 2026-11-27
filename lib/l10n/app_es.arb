@@ -208,6 +208,30 @@
   "@accesoCorreoVacio": {
     "description": "Error bajo el campo cuando se intenta entrar sin correo."
   },
+  "accesoDesactivadaEscribir": "Escribir un correo",
+  "@accesoDesactivadaEscribir": {
+    "description": "Botón secundario del aviso de cuenta desactivada."
+  },
+  "accesoDesactivadaExplicacion": "La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.",
+  "@accesoDesactivadaExplicacion": {
+    "description": "Explica por qué no se puede entrar y qué sí se puede hacer."
+  },
+  "accesoDesactivadaLlamar": "Llamar a la agencia",
+  "@accesoDesactivadaLlamar": {
+    "description": "Botón principal del aviso de cuenta desactivada."
+  },
+  "accesoDesactivadaNoSePudo": "No se pudo abrir en este dispositivo.",
+  "@accesoDesactivadaNoSePudo": {
+    "description": "Aviso cuando el celular no puede abrir el teléfono o el correo."
+  },
+  "accesoDesactivadaTitulo": "Tu cuenta está desactivada",
+  "@accesoDesactivadaTitulo": {
+    "description": "Título de la pantalla de V2-M01.08."
+  },
+  "accesoDesactivadaVolver": "Volver a iniciar sesión",
+  "@accesoDesactivadaVolver": {
+    "description": "Salida del aviso: regresa al login si fue un error."
+  },
   "accesoEnlaceNoValidoMensaje": "Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.",
   "@accesoEnlaceNoValidoMensaje": {
     "description": "Explica por qué el enlace de recuperación dejó de servir."

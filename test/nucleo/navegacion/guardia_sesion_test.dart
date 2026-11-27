@@ -20,6 +20,26 @@ String? _va(
 );
 
 void main() {
+  group('cuenta desactivada (V2-M01.08)', () {
+    const desactivada = SinSesion(porCuentaDesactivada: true);
+
+    test('cualquier ruta va al aviso, no al login', () {
+      // Es la diferencia que importa: volver a escribir la contrasena no
+      // arregla una cuenta desactivada, asi que el login no es la salida.
+      expect(_va('/', desactivada), Rutas.cuentaDesactivada);
+      expect(_va(Rutas.acceso, desactivada), Rutas.cuentaDesactivada);
+      expect(_va('/ejemplo/avisos', desactivada), Rutas.cuentaDesactivada);
+    });
+
+    test('en el aviso se queda', () {
+      expect(_va(Rutas.cuentaDesactivada, desactivada), isNull);
+    });
+
+    test('sin esa marca, el aviso no atrapa a nadie', () {
+      expect(_va(Rutas.acceso, _sinSesion), isNull);
+    });
+  });
+
   group('sin sesion', () {
     test('una ruta privada va al acceso y guarda a donde volver', () {
       expect(

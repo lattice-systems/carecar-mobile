@@ -210,6 +210,16 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 - **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
 
+## Avance de V2-M01.08
+
+El 403 se atiende **en un solo lugar**: `ClienteApi._pedir`, el embudo por el que pasan todas las peticiones con token. La cuenta se puede desactivar con la persona dentro, así que el 403 puede llegar en cualquier pantalla; resolverlo pantalla por pantalla habría dejado huecos. Ahí se avisa con `alCuentaDesactivada` —un callback, como `renovarSesion`, para que la capa de datos no dependa de la de sesión— y `ControladorSesion` borra la sesión local y marca `SinSesion(porCuentaDesactivada: true)`. Solo se avisa si **hay** token: un 403 sin sesión no tiene sesión que cerrar.
+
+De ahí en adelante decide la guardia (`redirigirPorSesion`), que ya es pura y probada: con esa marca, **cualquier** ruta —incluido el login— lleva a `/cuenta-desactivada`. El camino vive en `Rutas` y no en el módulo porque la guardia está en el núcleo y no puede importar un módulo.
+
+**Dos pruebas que ya existían cambiaron de expectativa, a propósito.** Esperaban que un 403 al entrar se quedara en el login mostrando el mensaje del servidor (`controlador_sesion_test.dart` y la del login v1). Ese mensaje invitaba a reintentar algo que no se arregla reintentando, y el criterio pide una **pantalla dedicada**. Las dos quedaron reescritas diciendo por qué.
+
+La pantalla es un callejón a propósito: sin campos y sin «intentar de nuevo». Solo llamar a la agencia, escribirle, o volver al login si fue un error —y volver exige `reconocerCuentaDesactivada()`, porque si no la guardia regresaría ahí para siempre—. El `tel:` y el `mailto:` pasan por `abrirEnlaceProvider` para que la prueba no toque la plataforma.
+
 ## Avance de V2-M01.10
 
 Pantalla propia (`PantallaMiContrasena`, ruta `/mi-contrasena`) y **no** un modo de la del cambio obligatorio: esa a propósito no tiene salida (V2-M01.03) y mezclarlas haría frágil justo el criterio que la define. Reusa `ReglasContrasena` y `ListaDeReglas`, así que la contraseña nueva se revisa con las mismas reglas en vivo. **No toca el contrato ni el backend.**
