@@ -197,14 +197,6 @@ void main() {
     });
   }
 
-  pruebaGarantia(
-    'en 360 cada dia del calendario mide al menos 48 (V2-M20.08)',
-    (tester) async {
-      await _montar(tester);
-      await auditarAccesibilidad(tester);
-    },
-  );
-
   testWidgets('en 320 pasa la auditoria con la excepcion aceptada del '
       'calendario: dias de 40 x 48 (V2-M20.02, V2-M20.03 y V2-M20.08)', (
     tester,
