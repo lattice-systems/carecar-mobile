@@ -8759,5 +8759,9 @@
   "documentosTipoOtro": "Otro documento",
   "@documentosTipoOtro": {
     "description": "Tipo de documento: otro, cuando no trae título propio."
+  },
+  "asistenciaLlamarAseguradoraBuscando": "Buscando tu póliza…",
+  "@asistenciaLlamarAseguradoraBuscando": {
+    "description": "Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01)."
   }
 }
