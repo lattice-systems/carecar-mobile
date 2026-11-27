@@ -33,6 +33,7 @@ import 'nucleo/idioma/proveedores_idioma.dart';
 import 'nucleo/navegacion/proveedores_navegacion.dart';
 import 'nucleo/privacidad/cubierta_en_segundo_plano.dart';
 import 'nucleo/privacidad/estado_aviso.dart';
+import 'nucleo/conexion/aviso_sin_conexion.dart';
 import 'nucleo/seguridad/aviso_conexion_no_segura.dart';
 import 'nucleo/seguridad/aviso_equipo_comprometido.dart';
 import 'nucleo/seguridad/detector_integridad.dart';
@@ -345,15 +346,17 @@ class _AppCareCarState extends State<AppCareCar> {
                         child: SincronizadorDeWidgets(
                           child: ShadAppBuilder(
                             child: AvisoEquipoComprometido(
-                              child: AvisoConexionNoSegura(
-                                child: VerificadorDeAviso(
-                                  child: CortinaArranque(
-                                    listo: !_restaurando,
-                                    duracionMinima: widget.duracionArranque,
-                                    alTerminar: primeraPantalla,
-                                    siguiente: (_) => AmbitoAnalitica(
-                                      analitica: analitica,
-                                      child: child!,
+                              child: AvisoSinConexion(
+                                child: AvisoConexionNoSegura(
+                                  child: VerificadorDeAviso(
+                                    child: CortinaArranque(
+                                      listo: !_restaurando,
+                                      duracionMinima: widget.duracionArranque,
+                                      alTerminar: primeraPantalla,
+                                      siguiente: (_) => AmbitoAnalitica(
+                                        analitica: analitica,
+                                        child: child!,
+                                      ),
                                     ),
                                   ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../conexion/senal_de_conexion.dart';
 import 'fallo.dart';
 
 /// Base de los repositorios · V2-T01.08, criterio 2.
@@ -58,11 +59,19 @@ mixin RepositorioBase {
   @protected
   Future<T> pedir<T>(Future<T> Function() hacer) async {
     try {
-      return await hacer();
+      final dato = await hacer();
+      // V2-M21.04: hubo respuesta. Este es el unico lugar por el que pasan
+      // todas las llamadas, asi que es donde la senal se entera sin que nadie
+      // tenga que avisarle ni sondear la red.
+      SenalDeConexion.actual.acerto();
+      return dato;
     } on Error {
+      // Un bug nuestro no dice nada de la red: la senal no se toca.
       rethrow;
     } catch (error, pila) {
-      Error.throwWithStackTrace(falloDe(error), pila);
+      final fallo = falloDe(error);
+      SenalDeConexion.actual.fallo(fallo);
+      Error.throwWithStackTrace(fallo, pila);
     }
   }
 }

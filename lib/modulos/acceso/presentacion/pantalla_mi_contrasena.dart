@@ -9,6 +9,7 @@ import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
 import '../../../nucleo/diseno/componentes/control_binario.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
+import '../../../nucleo/conexion/senal_de_conexion.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
@@ -43,6 +44,7 @@ class PantallaMiContrasena extends ConsumerStatefulWidget {
   static const campoConfirmar = Key('mi_contrasena_confirmar');
   static const casillaCerrarOtras = Key('mi_contrasena_cerrar_otras');
   static const botonGuardar = Key('mi_contrasena_guardar');
+  static const explicacionSinRed = Key('mi_contrasena_sin_red');
   static const avisoDeError = Key('mi_contrasena_aviso_error');
 
   @override
@@ -137,6 +139,8 @@ class _EstadoPantallaMiContrasena extends ConsumerState<PantallaMiContrasena> {
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final tokens = TokensPista.de(context);
+    // V2-M21.04: cambiar la contrasena necesita servidor.
+    final sinRed = ref.watch(sinConexionProvider);
     final fallo = _fallo;
 
     return Scaffold(
@@ -238,10 +242,24 @@ class _EstadoPantallaMiContrasena extends ConsumerState<PantallaMiContrasena> {
                       texto: _guardando
                           ? textos.accesoCambiarGuardando
                           : textos.accesoMiContrasenaGuardar,
-                      alPresionar: _puedeGuardar ? _guardar : null,
+                      alPresionar: _puedeGuardar && !sinRed ? _guardar : null,
                       cargando: _guardando,
                       anchoCompleto: true,
                     ),
+                    // V2-M21.04: deshabilitado no basta, hay que decir por
+                    // que. Un boton apagado sin explicacion se lee como un
+                    // error de la app.
+                    if (sinRed) ...[
+                      const SizedBox(height: Espaciado.e2),
+                      Text(
+                        textos.conexionAccionSinRed,
+                        key: PantallaMiContrasena.explicacionSinRed,
+                        style: tokens.tipografia.cuerpoChico.copyWith(
+                          color: tokens.colores.textoSecundario,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ],
                 ],
               ),

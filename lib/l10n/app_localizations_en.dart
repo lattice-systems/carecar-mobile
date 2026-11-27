@@ -1768,6 +1768,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avisoCerrar => 'Close notice';
 
   @override
+  String get conexionSinRedTitulo => 'No connection to the dealership';
+
+  @override
+  String get conexionSinRedMensaje =>
+      'You can still see what was already saved. Anything that needs the internet will be retried when the signal is back.';
+
+  @override
+  String get conexionAccionSinRed =>
+      'Needs the internet. We will try when the signal is back.';
+
+  @override
   String get avisosPermisoTitulo => 'Why we notify you';
 
   @override
