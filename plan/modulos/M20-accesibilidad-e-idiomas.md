@@ -64,7 +64,7 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 | La tarjeta del asistente, en el detalle del auto, tenía un toque sin nombre para el lector | El encabezado es el único botón que abre el asistente |
 | El chat del asistente se desbordaba con letra al 200 % | Los avisos ocupan un tercio del alto como mucho y el texto de ayuda del campo, dos líneas |
 
-- Las tres historias siguen abiertas: falta la prueba manual con TalkBack y VoiceOver en teléfono.
+- Con el recorrido de rutas y el de acceso, las tres historias quedan cerradas (ver «Cierre» al final de la sección).
 
 ### Pantallas de acceso v2
 
@@ -72,6 +72,12 @@ El acceso ya se sirve en v2 por defecto (V2-T01.10), así que `test/accesibilida
 
 - Cada una pide un estado de sesión distinto (sin sesión, primer arranque, cuenta desactivada, contraseña temporal, sesión abierta), así que el ayudante `montarParaAuditar` acepta `prepararSesion`, y `auditarRutas` deja pasar al acceso cuando es la pantalla que se audita.
 - **Qué encontró:** nada. Las seis pantallas pasaron a la primera, sin cambios en ellas.
+
+### Cierre
+
+- **V2-M20.03 y V2-M20.08** se cierran con sus criterios cumplidos por prueba automática: letra al 200 % sin desbordes y controles de al menos 48 × 48 en todas las pantallas v2 que existen hoy, con la excepción del `Calendario` descrita arriba.
+- **V2-M20.02** se cierra con la parte automática: etiqueta en todo control tocable y contraste en claro y oscuro, con las guías de Flutter. El orden de foco no lo miden esas guías. La corrida con TalkBack y VoiceOver en teléfono no se hizo en esta historia. Pasa a la prueba en celular físico por hito (V2-T03.07), que ya recorre las pantallas en un equipo real.
+- Cada pantalla v2 nueva suma su ruta a `test/accesibilidad/rutas/` en su propio PR, así que el recorrido sigue vigilando aunque estas historias estén cerradas. Las pantallas v1 no se auditan: se retiran con V2-T02.08.
 - La recuperación de contraseña sigue en v1 y no se audita, como el resto de las pantallas v1. Cuando se encienda su módulo en v2 se suma a este archivo.
 
 ### Pantallas de taller, historial, garantía, lealtad y pagos
