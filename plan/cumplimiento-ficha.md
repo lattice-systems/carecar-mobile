@@ -66,7 +66,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | ⬜ | Ver M06 |
+| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); falta el registro del token FCM y el envío (V2-M06.02, V2-M06.07) | Ver M06 |
 | Bandeja de avisos | `notificacion` | ⬜ | Ver M06 |
 | Preferencias de avisos | `preferencia_notificacion` | ⬜ | Ver M06 |
 

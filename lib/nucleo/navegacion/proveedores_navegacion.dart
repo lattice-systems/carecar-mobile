@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../sesion/controlador_sesion.dart';
+import '../avisos/explicacion_de_avisos.dart';
 import '../bienvenida/estado_bienvenida.dart';
 import '../biometria/candado_biometrico.dart';
 import '../migracion/proveedores_migracion.dart';
@@ -50,6 +51,7 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
   ref.listen(estadoAvisoProvider, avisar);
   ref.listen(bienvenidaPendienteProvider, avisar);
   ref.listen(candadoPorAbrirProvider, avisar);
+  ref.listen(avisosPorExplicarProvider, avisar);
 
   final enrutador = GoRouter(
     initialLocation: Rutas.inicio,
@@ -67,6 +69,7 @@ final enrutadorProvider = Provider<GoRouter>((ref) {
         avisoPorAceptar: ref.read(estadoAvisoProvider).porAceptar,
         bienvenidaPendiente: ref.read(bienvenidaPendienteProvider),
         candadoPorAbrir: ref.read(candadoPorAbrirProvider),
+        avisosPorExplicar: ref.read(avisosPorExplicarProvider),
       );
     },
     // Una ruta que no existe (enlace viejo o mal escrito) no deja pantalla

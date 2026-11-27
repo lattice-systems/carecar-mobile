@@ -3008,6 +3008,108 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título de la pantalla que explica los avisos antes de pedir el permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'Para qué te avisamos'**
+  String get avisosPermisoTitulo;
+
+  /// Entrada de la pantalla previa al permiso de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Solo te escribimos cuando pasa algo con tu auto. Nada más.'**
+  String get avisosPermisoExplicacion;
+
+  /// Primer motivo por el que la app manda avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo va tu auto en el taller, paso a paso.'**
+  String get avisosPermisoTaller;
+
+  /// Segundo motivo por el que la app manda avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cita, recordada 24 y 2 horas antes.'**
+  String get avisosPermisoCitas;
+
+  /// Tercer motivo por el que la app manda avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando tu asesor te contesta o tus documentos ya están listos.'**
+  String get avisosPermisoRespuestas;
+
+  /// Promesa que cierra la pantalla previa al permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'No mandamos publicidad, y los puedes apagar cuando quieras.'**
+  String get avisosPermisoSinPublicidad;
+
+  /// Botón que acepta y dispara el diálogo del sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar avisos'**
+  String get avisosPermisoActivar;
+
+  /// Botón que sale sin pedir el permiso al sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora no'**
+  String get avisosPermisoAhoraNo;
+
+  /// Confirmación cuando el sistema concede el permiso.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo, te vamos a avisar'**
+  String get avisosPermisoListoTitulo;
+
+  /// Detalle de la confirmación del permiso de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes apagarlos cuando quieras desde tu perfil.'**
+  String get avisosPermisoListoMensaje;
+
+  /// Aviso cuando el permiso quedó negado.
+  ///
+  /// In es, this message translates to:
+  /// **'Los avisos están apagados'**
+  String get avisosPermisoNegadosTitulo;
+
+  /// Explica por qué hay que ir a los ajustes del sistema para reactivar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu teléfono ya no nos deja preguntarte otra vez, pero los puedes prender en los ajustes del sistema.'**
+  String get avisosPermisoNegadosMensaje;
+
+  /// Botón que lleva a la pantalla de ajustes de la app en el sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get avisosPermisoAbrirAjustes;
+
+  /// Fila del perfil que lleva a los avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Avisos'**
+  String get accesoPerfilAvisos;
+
+  /// Estado de la fila de avisos cuando el permiso está concedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Prendidos'**
+  String get accesoPerfilAvisosPrendidos;
+
+  /// Estado de la fila de avisos cuando el permiso está negado.
+  ///
+  /// In es, this message translates to:
+  /// **'Apagados'**
+  String get accesoPerfilAvisosApagados;
+
+  /// Estado de la fila de avisos cuando nunca se preguntó.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin configurar'**
+  String get accesoPerfilAvisosSinPreguntar;
+
   /// Nombre de la barra de navegación para el lector de pantalla.
   ///
   /// In es, this message translates to:

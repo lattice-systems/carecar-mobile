@@ -38,6 +38,13 @@ abstract final class Rutas {
   /// Aviso de cuenta desactivada (V2-M01.08). La sirve el modulo `acceso`.
   static const cuentaDesactivada = '/cuenta-desactivada';
 
+  /// Explicacion de los avisos antes de pedir el permiso (V2-M06.01). La
+  /// sirve el modulo `notificaciones`.
+  ///
+  /// **No es publica**: se explica a quien ya entro. Tampoco es un paso
+  /// obligado: se abre tambien desde el perfil, cuando la persona quiera.
+  static const permisoAvisos = '/avisos/permiso';
+
   /// Parametro con la ruta a la que se vuelve tras iniciar sesion.
   static const parametroDesde = 'desde';
 
