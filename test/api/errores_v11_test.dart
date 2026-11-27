@@ -143,6 +143,14 @@ void main() {
         'PEDIDO_NO_MODIFICABLE',
         'PRODUCTO_INCOMPATIBLE',
         'DATOS_FISCALES_INVALIDOS',
+        'ORDEN_NO_PAGABLE',
+        'PAGO_EN_CURSO',
+        'PAGO_NO_PENDIENTE',
+        'PEDIDO_NO_PAGABLE',
+        'PEDIDO_PAGADO',
+        'YA_FACTURADO',
+        'PAGO_NO_FACTURABLE',
+        'TIMBRADO_RECHAZADO',
       };
 
       final queLaAppMapea = CodigoProblema.values

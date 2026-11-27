@@ -10,6 +10,7 @@ import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
 import '../../../nucleo/diseno/componentes/dialogo.dart';
+import '../../../nucleo/diseno/componentes/mapa.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
@@ -19,7 +20,6 @@ import '../dominio/fallos_recoleccion.dart';
 import '../../../nucleo/diseno/componentes/boton_circular.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'proveedores_recoleccion.dart';
-import 'provisional/mapa_provisional.dart';
 
 /// Por qué no se pudo seguir: lo que se explica en un aviso dentro de la
 /// pantalla.
@@ -285,7 +285,11 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
                 hijo: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    MapaProvisional(pin: _pin, alElegir: _ponerPin),
+                    Mapa(
+                      teselas: ref.watch(configuracionTeselasProvider),
+                      pin: _pin,
+                      alMoverPin: _ponerPin,
+                    ),
                     const SizedBox(height: Espaciado.e2),
                     Text(
                       textos.recoleccionFormPinAyuda,

@@ -90,6 +90,9 @@ class _Contenido extends ConsumerWidget {
                       subtitulo: perfil.correo,
                       icono: LucideIcons300.mail,
                       colorIcono: c.acento,
+                      // Solo el correo se edita (V2-M01.07). El telefono no:
+                      // verificarlo exige un SMS y todavia no hay con que.
+                      alToque: () => context.push(rutaCambiarCorreo),
                     ),
                     FilaGrupo(
                       titulo: textos.accesoPerfilTelefono,

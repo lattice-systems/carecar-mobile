@@ -11,12 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 
 Widget _app(
   RepositorioHistorialFake repo, {
   int tamano = 20,
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [
     repositorioGarajeProvider.overrideWithValue(RepositorioGarajeFake()),
@@ -26,6 +28,7 @@ Widget _app(
   child: conTemaPista(
     const PantallaHistorial(vehiculoId: 1),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 
@@ -120,4 +123,23 @@ void main() {
       expect(find.text('Historial'), findsOneWidget);
     });
   }
+
+  testWidgets('pasa la auditoria de accesibilidad en 320 (V2-M20.02, '
+      'V2-M20.03 y V2-M20.08)', (tester) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        _app(
+          RepositorioHistorialFake(),
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      if (escenario != Escenario.letraGrande) {
+        await auditarAccesibilidad(tester);
+      }
+    }
+  });
 }

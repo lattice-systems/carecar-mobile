@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 
 class _Repo implements RepositorioAsistente {
@@ -242,6 +243,25 @@ void main() {
         expect(tester.takeException(), isNull);
       }
     });
+  });
+
+  group('Accesibilidad del chat (V2-M20.02, 03 y 08)', () {
+    for (final escenario in Escenario.values) {
+      testWidgets('pasa en 320 de ancho en ${escenario.name}', (tester) async {
+        telefonoChicoYAlto(tester, alto: 900);
+        await tester.pumpWidget(
+          _app(_Repo((_) async => _conCita), escenario: escenario),
+        );
+        await tester.pump();
+        await _preguntar(tester, '¿Cada cuánto cambio el aceite?');
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        if (escenario != Escenario.letraGrande) {
+          await auditarAccesibilidad(tester);
+        }
+      });
+    }
   });
 
   group('Preguntas sugeridas (V2-M24.08)', () {

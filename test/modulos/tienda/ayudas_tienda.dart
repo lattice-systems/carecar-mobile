@@ -67,11 +67,16 @@ RepositorioTiendaFake tiendaDePrueba({
   reloj: () => DateTime.utc(2026, 11, 26, 18),
 );
 
+/// Cuándo se pagó en la app un pedido de prueba (V2-M14.04).
+final pagadoEnPrueba = DateTime.utc(2026, 11, 26, 19);
+
 Pedido pedido({
   int id = 7,
   EstadoPedido estado = EstadoPedido.apartado,
   CitaDePedido? cita,
   MotivoCancelacion? motivo,
+  bool pagable = false,
+  bool pagado = false,
 }) {
   final abierto =
       estado == EstadoPedido.apartado || estado == EstadoPedido.listo;
@@ -93,6 +98,16 @@ Pedido pedido({
         : null,
     motivoCancelacion: motivo,
     cita: cita,
+    pagable: pagable && !pagado,
+    pagadoEn: pagado ? pagadoEnPrueba : null,
+    pago: pagado
+        ? PagoDePedido(
+            id: 12,
+            marca: 'VISA',
+            ultimos4: '4242',
+            pagadoEn: pagadoEnPrueba,
+          )
+        : null,
     renglones: const [
       RenglonPedido(
         productoId: 1,

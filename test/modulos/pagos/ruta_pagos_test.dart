@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/modulos/pagos/datos/repositorio_pagos_fake.dart';
 import 'package:carecar_mobile/modulos/pagos/pagos.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:carecar_mobile/nucleo/eventos/proveedores_eventos.dart';
@@ -10,11 +11,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../../ayudas/api_falsa.dart';
 import '../../ayudas/app_enrutada.dart';
+import 'ayudas_cobro.dart';
 import 'ayudas_pagos.dart';
 
 Future<ProteccionDeCapturaFake> _montar(
   WidgetTester tester, {
   bool conSesion = true,
+  RepositorioPagosFake? pagos,
 }) async {
   tester.view.physicalSize = const Size(800, 2400);
   tester.view.devicePixelRatio = 1;
@@ -38,6 +41,9 @@ Future<ProteccionDeCapturaFake> _montar(
       idioma: const Locale('es'),
       overrides: [
         repositorioDatosFiscalesProvider.overrideWithValue(repoDeEjemplo()),
+        repositorioPagosProvider.overrideWithValue(
+          pagos ?? repoCobro(pagos: [pagoDeEjemplo()], metodos: [visaGuardada]),
+        ),
         eventosEnVivoProvider.overrideWithValue(EventosEnVivoFake()),
         proteccionDeCapturaProvider.overrideWithValue(proteccion),
       ],
@@ -98,5 +104,47 @@ void main() {
     enrutadorDe(tester).go(rutaDatosFiscales);
     await tester.pumpAndSettle();
     expect(pantallaDeAcceso, findsOneWidget);
+  });
+
+  for (final (ruta, pantalla) in [
+    (rutaMisPagos, PantallaMisPagos),
+    (rutaPago(7), PantallaPago),
+    (rutaMetodosPago, PantallaMetodosPago),
+    (rutaPagarOrden(41), PantallaPagarOrden),
+  ]) {
+    testWidgets('$ruta abre su pantalla sin capturas (V2-M08.02)', (
+      tester,
+    ) async {
+      final proteccion = await _montar(tester);
+      enrutadorDe(tester).go(ruta);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(pantalla), findsOneWidget);
+      expect(find.byType(PantallaSegura), findsOneWidget);
+      expect(proteccion.bloqueada, isTrue);
+    });
+  }
+
+  testWidgets('el pago y la orden llegan con su numero', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaPago(7));
+    await tester.pumpAndSettle();
+    expect(tester.widget<PantallaPago>(find.byType(PantallaPago)).pagoId, 7);
+
+    enrutadorDe(tester).go(rutaPagarOrden(41));
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<PantallaPagarOrden>(find.byType(PantallaPagarOrden))
+          .ordenId,
+      41,
+    );
+  });
+
+  testWidgets('sin sesion mis pagos manda al inicio de sesion', (tester) async {
+    await _montar(tester, conSesion: false);
+    enrutadorDe(tester).go(rutaMisPagos);
+    await tester.pumpAndSettle();
+    expect(find.byType(PantallaLogin), findsOneWidget);
   });
 }

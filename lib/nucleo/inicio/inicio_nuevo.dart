@@ -201,7 +201,7 @@ class _CuerpoState extends State<_Cuerpo> {
                               textos.inicioSaludo(primero),
                               style: t.titulo1.copyWith(
                                 color: c.texto,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                     ),

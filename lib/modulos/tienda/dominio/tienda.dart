@@ -115,7 +115,25 @@ class RenglonPedido {
   final double importe;
 }
 
-/// Un pedido de la tienda (V2-M14.02 y V2-M14.05).
+/// El pago en la app con que quedó pagado un pedido (V2-M14.04): solo lo que
+/// la tienda muestra. El detalle del pago es del módulo `pagos`.
+class PagoDePedido {
+  const PagoDePedido({
+    required this.id,
+    this.marca,
+    this.ultimos4,
+    this.pagadoEn,
+  });
+
+  final int id;
+
+  /// `VISA` o `MASTERCARD`, como la manda el servidor.
+  final String? marca;
+  final String? ultimos4;
+  final DateTime? pagadoEn;
+}
+
+/// Un pedido de la tienda (V2-M14.02, V2-M14.04 y V2-M14.05).
 class Pedido {
   const Pedido({
     required this.id,
@@ -130,6 +148,9 @@ class Pedido {
     this.canceladoEn,
     this.motivoCancelacion,
     this.cita,
+    this.pagable = false,
+    this.pago,
+    this.pagadoEn,
   });
 
   final int id;
@@ -147,9 +168,24 @@ class Pedido {
   final CitaDePedido? cita;
   final List<RenglonPedido> renglones;
 
-  /// Sin entregar ni cancelar: se puede cancelar y cambiar la instalación.
+  /// Se puede pagar en la app ahora (V2-M14.04). Lo decide el servidor.
+  final bool pagable;
+
+  /// El pago con que quedó pagado en la app.
+  final PagoDePedido? pago;
+
+  /// Cuándo se pagó en la app. Un pedido pagado ya no vence.
+  final DateTime? pagadoEn;
+
+  /// Sin entregar ni cancelar: se puede cambiar la instalación y, si no está
+  /// pagado, cancelar.
   bool get abierto =>
       estado == EstadoPedido.apartado || estado == EstadoPedido.listo;
+
+  bool get pagado => pagadoEn != null;
+
+  /// Pagado en la app, solo se cancela en el mostrador.
+  bool get cancelableEnLaApp => abierto && !pagado;
 
   int get piezas => renglones.fold(0, (suma, r) => suma + r.cantidad);
 }
