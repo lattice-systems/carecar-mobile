@@ -241,6 +241,40 @@ Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto
 
 **Pendiente:** demostrarlo en celular, que es lo único que le falta a su fila de `cumplimiento-ficha.md`. Editar teléfono y correo es V2-M01.07, que esta historia desbloquea.
 
+## Avance de V2-M01.07
+
+**Se hizo la mitad del correo. La del teléfono está bloqueada.**
+
+El criterio pide confirmar con **un código enviado al dato nuevo**. Para el teléfono eso exige un SMS, y en el backend no hay nada: ni proveedor, ni configuración, solo SMTP. Se buscó antes de empezar. Mandar ese código al correo verificaría que el dueño de la cuenta autorizó el cambio, **no que el teléfono sea suyo**, que es justo para lo que sirve la verificación; y contratar un proveedor tiene costo, credenciales y configuración, así que es una decisión del equipo.
+
+⚠️ **Queda pendiente preguntárselo.** La tabla se diseñó para los dos tipos —el `check` acepta `TELEFONO`— para que esa mitad no necesite otra migración.
+
+**Qué quedó**
+
+| Pieza | Qué resuelve |
+| --- | --- |
+| Contrato 2.26.0 | `PATCH /perfil` y `POST /perfil/verificaciones/{id}/confirmar` |
+| `verificacion_contacto` (V57) | El dato nuevo espera aquí, con el código en BCrypt, 15 minutos y 5 intentos |
+| `CambioDeContactoService` | Los dos pasos, separado como `RecuperacionContrasenaService` |
+| `EnvioCorreos.enviarCodigoDeContacto` | El código va **al correo nuevo** |
+| App | `pedirCambioDeCorreo`, `confirmarVerificacion`, tres fallos de dominio y `PantallaCambiarCorreo` |
+
+**Las tres decisiones que mandan**
+
+1. **El correo no se guarda hasta confirmar.** Vive en `valor_nuevo`. Guardarlo antes dejaría al cliente con un correo que no ha probado que es suyo y, como `cuenta_app.usuario` lo sigue (V2-T05.03), **sin poder entrar**.
+2. **Pedir el cambio exige la contraseña actual.** No lo decía el criterio; se propuso aparte. El correo es la identidad con la que se entra, así que sin eso alguien con el celular desbloqueado podría cambiarlo al suyo, recibir el código en su buzón y quedarse con la cuenta. Mismo requisito y precedente que cancelar la cuenta.
+3. **Los tres errores se distinguen por `Problema.codigo`**, y los tres códigos ya existían. La contraseña equivocada y el correo mal escrito llegan los dos como **400**; la pantalla señala cada uno en su campo. Confundirlos le diría a la persona que corrija lo que estaba bien.
+
+**Lo que costó integrarlo, por si le sirve a alguien más**
+
+El CI del backend encontró tres cosas en cadena, ninguna visible en una máquina sin Docker:
+
+- **El PR no corría CI** porque tenía conflictos con `main`: GitHub no ejecuta los workflows de un PR que no puede fusionar, así que «no hay checks» se parece a «va despacio». Si un PR lleva minutos sin un solo check, revisar `mergeStateStatus` antes de esperar más.
+- **Choque de números de migración.** Entró otra V55 mientras la historia se construía. **El rebase no lo detecta** —son archivos distintos—; solo Flyway al arrancar. El número se toma *después* de rebasar, mirando el directorio.
+- **Dos constructores sin `@Autowired`**: el contexto de Spring no arranca. Ni `test-compile` ni `checkstyle` lo ven.
+
+**Pendiente:** la mitad del teléfono (bloqueada por el SMS) y demostrar el cambio de correo en celular.
+
 ## Avance de V2-M01.09
 
 **Qué quedó, en la app**
