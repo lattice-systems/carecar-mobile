@@ -6257,112 +6257,92 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get pagosBilleteraApplePay => 'Pay with Apple Pay';
+  String get sucursalesTitulo => 'Branches';
 
   @override
-  String get pagosBilleteraGooglePay => 'Pay with Google Pay';
+  String get sucursalesCargando => 'Loading branches';
 
   @override
-  String get pagosBilleteraAyuda =>
-      'Simulated wallet: it is always approved and never saved. Below you can pay with a card.';
+  String get sucursalesVacioTitulo => 'No branches yet';
 
   @override
-  String pagosBilleteraMensaje(String monto, String billetera) {
-    return 'You are about to pay $monto with $billetera. It is simulated: nothing is charged.';
+  String get sucursalesVacioMensaje =>
+      'When the dealership publishes its branches, you\'ll see them here with a map and opening hours.';
+
+  @override
+  String sucursalesMapaDe(String nombre) {
+    return 'Map showing the location of $nombre';
   }
 
   @override
-  String get pagosBilleteraConfirmar => 'Pay';
+  String get sucursalesAbiertoAhora => 'Open now';
 
   @override
-  String get pagosBilleteraCancelar => 'Cancel';
+  String get sucursalesCerrado => 'Closed';
 
   @override
-  String pagosPagadoFacturaMensaje(String monto, String referencia) {
-    return 'You paid $monto. Reference $referencia. The simulated invoice is in the payment details. Nothing was charged.';
+  String get sucursalesLlamar => 'Call';
+
+  @override
+  String get sucursalesComoLlegar => 'Get directions';
+
+  @override
+  String get sucursalesHorarios => 'Opening hours';
+
+  @override
+  String get sucursalesTodas => 'All branches';
+
+  @override
+  String get sucursalesSeleccionada => 'Selected';
+
+  @override
+  String sucursalesDepartamento(String departamento) {
+    String _temp0 = intl.Intl.selectLogic(departamento, {
+      'ventas': 'Sales',
+      'servicio': 'Service',
+      'refacciones': 'Parts',
+      'other': 'Other',
+    });
+    return '$_temp0';
   }
 
   @override
-  String get pagosVerFactura => 'View the invoice';
-
-  @override
-  String pagosFacturaFolio(String folio) {
-    return 'Invoice $folio';
+  String sucursalesDiaCorto(String dia) {
+    String _temp0 = intl.Intl.selectLogic(dia, {
+      '1': 'Mon',
+      '2': 'Tue',
+      '3': 'Wed',
+      '4': 'Thu',
+      '5': 'Fri',
+      '6': 'Sat',
+      '7': 'Sun',
+      'other': '',
+    });
+    return '$_temp0';
   }
 
   @override
-  String get pagosFacturaTimbrada => 'Stamped';
-
-  @override
-  String get pagosFacturaFolioFiscal => 'Tax folio';
-
-  @override
-  String pagosFacturaReceptor(String usoCfdi) {
-    return 'Recipient · use $usoCfdi';
+  String sucursalesDiasRango(String desde, String hasta) {
+    return '$desde to $hasta';
   }
 
   @override
-  String get pagosFacturaPdf => 'Download PDF';
+  String sucursalesTramo(String dias, String abre, String cierra) {
+    return '$dias: $abre to $cierra';
+  }
 
   @override
-  String get pagosFacturaXml => 'Download XML';
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  ) {
+    return '$nombre, $estado. $direccion';
+  }
 
   @override
-  String get pagosFacturaSimulada =>
-      'Simulated invoice with a CFDI 4.0 structure, not valid for tax purposes.';
+  String get sucursalesNoSePudoLlamar => 'We couldn\'t open the phone dialer.';
 
   @override
-  String get pagosFacturaErrorDescargar =>
-      'The invoice could not be downloaded. Try again.';
-
-  @override
-  String get pagosFacturar => 'Invoice';
-
-  @override
-  String get pagosFacturarAyuda =>
-      'These details are used to stamp the simulated invoice for this payment.';
-
-  @override
-  String get pagosFacturaSinPerfiles =>
-      'To invoice this payment add your tax details.';
-
-  @override
-  String get pagosAgregarDatosFiscales => 'Add tax details';
-
-  @override
-  String get pagosTimbradoRechazado =>
-      'The stamping rejected your tax details.';
-
-  @override
-  String get pagosTimbradoRazonSocial =>
-      'Write the company name as on your tax certificate, without the legal form (no «S.A. de C.V.»).';
-
-  @override
-  String get pagosTimbradoCodigoPostal =>
-      'Check the postal code of your tax address.';
-
-  @override
-  String get pagosTimbradoOtro => 'Check your tax details.';
-
-  @override
-  String get pagosCorregirDatosFiscales => 'Fix tax details';
-
-  @override
-  String get pagosFacturaYaFacturada => 'This payment already has an invoice.';
-
-  @override
-  String get pagosFacturaNoFacturable =>
-      'This payment cannot be invoiced from the app.';
-
-  @override
-  String get pagosFacturaErrorFacturar =>
-      'The payment could not be invoiced. Try again.';
-
-  @override
-  String get pagosFacturaEnLaAgencia =>
-      'Payments at the cashier are invoiced at the dealership.';
-
-  @override
-  String get pagosFacturaSinConexion =>
-      'No connection. Check your internet and try again.';
+  String get sucursalesNoSePudoMapa => 'We couldn\'t open the maps app.';
 }
