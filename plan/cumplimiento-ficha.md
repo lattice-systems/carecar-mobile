@@ -139,7 +139,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; faltan que estas pantallas pasen del mapa provisional al componente Mapa (ya existe, V2-T02.09), el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
+| Recolección y entrega del vehículo | `direccion_cliente`, `traslado`, `checklist_traslado`, `cita` | 🟡 direcciones, recolección al agendar, seguimiento del chofer en vivo y checklist con fotos en app y backend; cancelar o reprogramar mueve los traslados; las pantallas ya usan el componente Mapa (V2-T02.09); faltan el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M17.01, V2-M17.02, V2-M17.03, V2-M17.04 |
 
 ### 18. Bitácora del conductor — plan [M18](modulos/M18-bitacora-conductor.md)
 
@@ -178,7 +178,7 @@ Estado levantado contra `main` de `carecar-mobile` (PR #12) y `agencia-360-backe
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Preguntas frecuentes | `pregunta_frecuente` | ⬜ | Ver M27 |
-| Sucursales y horarios | `sucursal` | ⬜ | Ver M27 |
+| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar (falta integrar backend y probar en celular) | V2-M27.02 |
 | Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
 
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.

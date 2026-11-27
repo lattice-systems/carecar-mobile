@@ -501,6 +501,11 @@ class ApiFalsa implements CarecarApi {
 
   List<ModeloCatalogo> modelosCatalogo = const [];
 
+  @override
+  Future<List<SucursalApi>> sucursales() async => sucursalesApi;
+
+  List<SucursalApi> sucursalesApi = const [];
+
   /// Detalle por id. Un id que no esta aqui responde `NoEncontrado`.
   Map<int, DetalleModeloCatalogo> detallesCatalogo = {};
 

@@ -6365,4 +6365,101 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get pagosFacturaSinConexion =>
       'Sin conexión. Revisa tu internet e intenta de nuevo.';
+
+  @override
+  String get sucursalesTitulo => 'Sucursales';
+
+  @override
+  String get sucursalesCargando => 'Cargando sucursales';
+
+  @override
+  String get sucursalesVacioTitulo => 'Aún no hay sucursales';
+
+  @override
+  String get sucursalesVacioMensaje =>
+      'Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.';
+
+  @override
+  String sucursalesMapaDe(String nombre) {
+    return 'Mapa con la ubicación de $nombre';
+  }
+
+  @override
+  String get sucursalesAbiertoAhora => 'Abierto ahora';
+
+  @override
+  String get sucursalesAbierto => 'Abierto';
+
+  @override
+  String get sucursalesCerrado => 'Cerrado';
+
+  @override
+  String get sucursalesLlamar => 'Llamar';
+
+  @override
+  String get sucursalesComoLlegar => 'Cómo llegar';
+
+  @override
+  String get sucursalesHorarios => 'Horarios';
+
+  @override
+  String get sucursalesTodas => 'Todas las sucursales';
+
+  @override
+  String get sucursalesSeleccionada => 'Seleccionada';
+
+  @override
+  String sucursalesDepartamento(String departamento) {
+    String _temp0 = intl.Intl.selectLogic(departamento, {
+      'ventas': 'Ventas',
+      'servicio': 'Servicio',
+      'refacciones': 'Refacciones',
+      'other': 'Otro',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiaCorto(String dia) {
+    String _temp0 = intl.Intl.selectLogic(dia, {
+      '1': 'lun',
+      '2': 'mar',
+      '3': 'mié',
+      '4': 'jue',
+      '5': 'vie',
+      '6': 'sáb',
+      '7': 'dom',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiasRango(String desde, String hasta) {
+    return '$desde a $hasta';
+  }
+
+  @override
+  String sucursalesTramo(String dias, String abre, String cierra) {
+    return '$dias: $abre a $cierra';
+  }
+
+  @override
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  ) {
+    return '$nombre, $estado. $direccion';
+  }
+
+  @override
+  String get sucursalesNoSePudoLlamar =>
+      'No pudimos abrir el marcador del teléfono.';
+
+  @override
+  String get sucursalesNoSePudoMapa => 'No pudimos abrir la app de mapas.';
+
+  @override
+  String get recoleccionSeguimientoMarcadorChofer => 'Tu chofer';
 }

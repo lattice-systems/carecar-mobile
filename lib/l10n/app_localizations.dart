@@ -10673,6 +10673,136 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin conexión. Revisa tu internet e intenta de nuevo.'**
   String get pagosFacturaSinConexion;
+
+  /// Título de la pantalla de sucursales con mapa y horarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales'**
+  String get sucursalesTitulo;
+
+  /// Lo que anuncia el lector de pantalla mientras cargan las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando sucursales'**
+  String get sucursalesCargando;
+
+  /// No description provided for @sucursalesVacioTitulo.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay sucursales'**
+  String get sucursalesVacioTitulo;
+
+  /// No description provided for @sucursalesVacioMensaje.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.'**
+  String get sucursalesVacioMensaje;
+
+  /// Nombre del mapa para el lector de pantalla.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa con la ubicación de {nombre}'**
+  String sucursalesMapaDe(String nombre);
+
+  /// No description provided for @sucursalesAbiertoAhora.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto ahora'**
+  String get sucursalesAbiertoAhora;
+
+  /// Estado corto de un departamento de la sucursal que atiende en este momento.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto'**
+  String get sucursalesAbierto;
+
+  /// No description provided for @sucursalesCerrado.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrado'**
+  String get sucursalesCerrado;
+
+  /// No description provided for @sucursalesLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar'**
+  String get sucursalesLlamar;
+
+  /// No description provided for @sucursalesComoLlegar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cómo llegar'**
+  String get sucursalesComoLlegar;
+
+  /// No description provided for @sucursalesHorarios.
+  ///
+  /// In es, this message translates to:
+  /// **'Horarios'**
+  String get sucursalesHorarios;
+
+  /// No description provided for @sucursalesTodas.
+  ///
+  /// In es, this message translates to:
+  /// **'Todas las sucursales'**
+  String get sucursalesTodas;
+
+  /// No description provided for @sucursalesSeleccionada.
+  ///
+  /// In es, this message translates to:
+  /// **'Seleccionada'**
+  String get sucursalesSeleccionada;
+
+  /// Nombre del departamento de la agencia que tiene su propio horario.
+  ///
+  /// In es, this message translates to:
+  /// **'{departamento, select, ventas{Ventas} servicio{Servicio} refacciones{Refacciones} other{Otro}}'**
+  String sucursalesDepartamento(String departamento);
+
+  /// Día de la semana abreviado; 1 es lunes y 7 domingo.
+  ///
+  /// In es, this message translates to:
+  /// **'{dia, select, 1{lun} 2{mar} 3{mié} 4{jue} 5{vie} 6{sáb} 7{dom} other{}}'**
+  String sucursalesDiaCorto(String dia);
+
+  /// Tramo de días seguidos de un horario, por ejemplo «lun a vie».
+  ///
+  /// In es, this message translates to:
+  /// **'{desde} a {hasta}'**
+  String sucursalesDiasRango(String desde, String hasta);
+
+  /// Una línea de horario, por ejemplo «lun a vie: 08:00 a 18:00».
+  ///
+  /// In es, this message translates to:
+  /// **'{dias}: {abre} a {cierra}'**
+  String sucursalesTramo(String dias, String abre, String cierra);
+
+  /// Lo que lee el lector de pantalla en la fila de una sucursal.
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre}, {estado}. {direccion}'**
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  );
+
+  /// No description provided for @sucursalesNoSePudoLlamar.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir el marcador del teléfono.'**
+  String get sucursalesNoSePudoLlamar;
+
+  /// No description provided for @sucursalesNoSePudoMapa.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir la app de mapas.'**
+  String get sucursalesNoSePudoMapa;
+
+  /// Etiqueta del marcador del chofer en el mapa del seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu chofer'**
+  String get recoleccionSeguimientoMarcadorChofer;
 }
 
 class _AppLocalizationsDelegate

@@ -6365,4 +6365,100 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get pagosFacturaSinConexion =>
       'No connection. Check your internet and try again.';
+
+  @override
+  String get sucursalesTitulo => 'Branches';
+
+  @override
+  String get sucursalesCargando => 'Loading branches';
+
+  @override
+  String get sucursalesVacioTitulo => 'No branches yet';
+
+  @override
+  String get sucursalesVacioMensaje =>
+      'When the dealership publishes its branches, you\'ll see them here with a map and opening hours.';
+
+  @override
+  String sucursalesMapaDe(String nombre) {
+    return 'Map showing the location of $nombre';
+  }
+
+  @override
+  String get sucursalesAbiertoAhora => 'Open now';
+
+  @override
+  String get sucursalesAbierto => 'Open';
+
+  @override
+  String get sucursalesCerrado => 'Closed';
+
+  @override
+  String get sucursalesLlamar => 'Call';
+
+  @override
+  String get sucursalesComoLlegar => 'Get directions';
+
+  @override
+  String get sucursalesHorarios => 'Opening hours';
+
+  @override
+  String get sucursalesTodas => 'All branches';
+
+  @override
+  String get sucursalesSeleccionada => 'Selected';
+
+  @override
+  String sucursalesDepartamento(String departamento) {
+    String _temp0 = intl.Intl.selectLogic(departamento, {
+      'ventas': 'Sales',
+      'servicio': 'Service',
+      'refacciones': 'Parts',
+      'other': 'Other',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiaCorto(String dia) {
+    String _temp0 = intl.Intl.selectLogic(dia, {
+      '1': 'Mon',
+      '2': 'Tue',
+      '3': 'Wed',
+      '4': 'Thu',
+      '5': 'Fri',
+      '6': 'Sat',
+      '7': 'Sun',
+      'other': '',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String sucursalesDiasRango(String desde, String hasta) {
+    return '$desde to $hasta';
+  }
+
+  @override
+  String sucursalesTramo(String dias, String abre, String cierra) {
+    return '$dias: $abre to $cierra';
+  }
+
+  @override
+  String sucursalesDescripcionFila(
+    String nombre,
+    String estado,
+    String direccion,
+  ) {
+    return '$nombre, $estado. $direccion';
+  }
+
+  @override
+  String get sucursalesNoSePudoLlamar => 'We couldn\'t open the phone dialer.';
+
+  @override
+  String get sucursalesNoSePudoMapa => 'We couldn\'t open the maps app.';
+
+  @override
+  String get recoleccionSeguimientoMarcadorChofer => 'Your driver';
 }

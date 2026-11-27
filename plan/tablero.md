@@ -214,7 +214,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
 | V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
-| V2-M27.02 | Ver sucursales en un mapa con horarios | Haziel | B | — | Lista | |
+| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | En revisión | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Haziel |  | V2-M27.02 | Lista | |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
@@ -239,9 +239,9 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-M16.02 | Cotizar un auto nuevo con mensualidad estimada | Daniel | B | V2-M03.02 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.03 | Adjuntar mi estimación de toma a cuenta | Daniel | B | V2-M03.07 | Hecha | #118, backend#93, backend#94 |
 | V2-M16.04 | Ver el estado de mis solicitudes | Daniel | B | V2-M16.01 | Hecha | #118, backend#93, backend#94 |
-| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 (provisional) | Hecha | #94, backend#86, #121 |
+| V2-M17.01 | Guardar mis direcciones | Juan Pablo | B | V2-T02.09 | Hecha | #94, backend#86, #121, #193 |
 | V2-M17.02 | Pedir recolección al agendar | Juan Pablo | B | V2-M02.08, V2-M17.01 | Hecha | #94, backend#86 |
-| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09 (provisional), V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95 |
+| V2-M17.03 | Seguir al chofer | Juan Pablo | B | V2-M17.02, V2-M06.02, V2-T02.09, V2-T02.13 (provisional) | Hecha | #104, backend#88, #119, backend#95, #193 |
 | V2-M17.04 | El checklist con fotos del estado de mi auto | Juan Pablo | B | V2-M17.03, V2-T05.09 (simulable), V2-T02.12 | Hecha | #104, backend#88, #119, backend#95 |
 | V2-M17.05 | Cancelar o reprogramar la cita mueve sus traslados | Juan Pablo | B | V2-M17.02 | Hecha | backend#88 |
 | V2-M17.06 | Entrar a «Mis direcciones» desde el perfil | Juan Pablo |  | V2-M17.01 | Hecha | #104 |

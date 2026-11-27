@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.27.0
+  version: 2.28.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -95,6 +95,8 @@ tags:
     description: V2-M22.01, V2-M22.02 y V2-M22.03
   - name: Valuación
     description: V2-M26.01 a V2-M26.05
+  - name: Sucursales
+    description: V2-M27.02
 
 security:
   - bearerAuth: []
@@ -1300,6 +1302,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ModeloCatalogo'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /sucursales:
+    get:
+      tags: [Sucursales]
+      summary: Sucursales con su ubicación y sus horarios
+      description: |
+        Las sucursales activas, por `orden` y `id` (V2-M27.02). La lista puede venir vacía.
+        «Abierto ahora» lo calcula el servidor con la hora y la zona de la agencia
+        (`America/Mexico_City`), no el teléfono: la persona puede estar de viaje en otra zona
+        y la agencia sigue cerrando a la misma hora. La app lo pide cada vez que abre la pantalla.
+      responses:
+        '200':
+          description: Sucursales activas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sucursal'
         '401':
           $ref: '#/components/responses/NoAutenticado'
         '403':
@@ -4605,6 +4630,67 @@ components:
         activo:
           type: boolean
           description: Siempre true en la app
+
+    Sucursal:
+      type: object
+      description: Una sucursal de la agencia con su ubicación y sus horarios (V2-M27.02)
+      required: [id, nombre, direccion, latitud, longitud, abiertaAhora, horarios]
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        direccion:
+          type: string
+        latitud:
+          type: number
+          format: double
+          description: Grados, de -90 a 90 (`sucursal.lat`)
+        longitud:
+          type: number
+          format: double
+          description: Grados, de -180 a 180 (`sucursal.lng`)
+        telefono:
+          type: string
+          nullable: true
+          description: Con lada; la app lo usa en `tel:`
+        correo:
+          type: string
+          nullable: true
+        abiertaAhora:
+          type: boolean
+          description: Algún departamento está abierto en este momento, en la hora de la agencia
+        horarios:
+          type: array
+          description: Un departamento sin fila está cerrado; puede repetirse con otros días
+          items:
+            $ref: '#/components/schemas/HorarioSucursal'
+
+    HorarioSucursal:
+      type: object
+      required: [departamento, dias, abre, cierra, abiertoAhora]
+      properties:
+        departamento:
+          type: string
+          enum: [VENTAS, SERVICIO, REFACCIONES]
+        dias:
+          type: array
+          description: Días ISO, 1 lunes a 7 domingo
+          items:
+            type: integer
+            minimum: 1
+            maximum: 7
+        abre:
+          type: string
+          example: '09:00'
+          description: HH:mm en la hora de la agencia
+        cierra:
+          type: string
+          example: '18:00'
+          description: HH:mm en la hora de la agencia; siempre después de `abre`
+        abiertoAhora:
+          type: boolean
 
     DetalleModeloCatalogo:
       type: object

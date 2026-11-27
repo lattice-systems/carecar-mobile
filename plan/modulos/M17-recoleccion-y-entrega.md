@@ -63,9 +63,9 @@ El módulo vive en `lib/modulos/recoleccion/` (`dominio/`, `datos/`, `presentaci
 - **Formulario:** `PantallaDireccion` pide nombre, calle y número, colonia, código postal (5 dígitos, teclado numérico) y ciudad, con los largos del contrato validados antes de ir a la red. El pin se pone tocando el mapa, con «Usar mi ubicación» (`ProveedorUbicacion`; permiso denegado, ubicación apagada y tiempo agotado se explican y siempre se puede poner el pin a mano) o buscando la dirección escrita (`Geocodificador.coordenadasDe`). En los tres casos `Geocodificador.direccionDe` completa solo los campos vacíos, sin pisar lo que la persona escribió.
 - **Cobertura:** el aviso «Fuera de cobertura» sale al intentar guardar, cuando el servidor responde 422; no se guarda nada y lo escrito se conserva. No hay una consulta de cobertura previa en el contrato, por eso el aviso llega con el intento de guardar y no antes.
 - **Borrar:** pide confirmación con `Dialogo` de peligro; un 409 `DIRECCION_EN_USO` explica que ya tiene recolecciones y la deja en la lista.
-- **Mapa PROVISIONAL:** `presentacion/provisional/mapa_provisional.dart` es el único archivo que importa `flutter_map` y `latlong2` (ADR 0006) y lee las teselas de `configuracionTeselasProvider`. Está marcado `// PROVISIONAL: se reemplaza por Mapa de V2-T02.09`; al integrarse ese componente se borra el archivo y el formulario usa `Mapa`. **Este hito no cierra con él.**
+- **Mapa del sistema:** el formulario de direcciones y el seguimiento usan el componente `Mapa` de V2-T02.09 (ADR 0006), con las teselas de `configuracionTeselasProvider`. El pin se mueve con arrastre, flechas o «Poner el pin en el centro»; el chofer es un `MarcadorEnMovimiento`. El mapa provisional del módulo se borró y ya no quedan provisionales en M17. No hay fila del tablero para este cambio.
 - **Estilo:** «Estilo portada» (§8 del sistema de diseño): encabezado grande translúcido que se contrae, secciones con título y barra inferior fija; solo tokens y componentes del sistema (`GrupoLista`, `CampoTexto`, `Aviso`, `Dialogo`, `BotonPildora`, `EstadoVacio`, `EstadoError`, `Esqueleto`). Ningún contenido atraviesa el título al desplazar (prueba `titulos_al_desplazar_test.dart`) y se prueba en claro, oscuro y letra al 200 %.
-- **Pruebas:** `test/modulos/recoleccion/` (dominio, repositorio API y fake, proveedores, mapa provisional, lista, formulario, ruta, formato de pesos y títulos al desplazar), `test/api/cliente_api_test.dart` (PUT y DELETE) y `test/contrato/contrato_test.dart` (v1.5.0, 24 operaciones).
+- **Pruebas:** `test/modulos/recoleccion/` (dominio, repositorio API y fake, proveedores, lista, formulario, ruta, formato de pesos y títulos al desplazar), `test/api/cliente_api_test.dart` (PUT y DELETE) y `test/contrato/contrato_test.dart` (v1.5.0, 24 operaciones).
 - **Pendiente:** la entrada a «Mis direcciones» desde el perfil o el menú no existe todavía; hoy se llega desde el flujo de agendar (V2-M17.02) y por la ruta. Se agrega cuando el perfil v2 tenga su lista de ajustes.
 
 ## Avance de V2-M17.02
@@ -88,7 +88,7 @@ Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis 
 **V2-M17.03 · Seguir al chofer** (`/recoleccion/traslados/:id`, `PantallaSeguimientoTraslado`)
 
 - «Estilo portada»: `CabeceraPortada` con el traslado («Recogemos tu auto» o «Entregamos tu auto») y su estado, `LineaDeTiempo` con programado → en camino → recogido → en taller → de regreso → entregado (cancelado corta la línea), franja del traslado y «Actualizar».
-- **Mapa del chofer solo en `en_camino` y `de_regreso`:** usa el mapa PROVISIONAL del módulo (`MapaProvisional`, ahora de solo lectura, con ícono y descripción propios). Fuera de esos estados la ubicación se descarta aunque llegue.
+- **Mapa del chofer solo en `en_camino` y `de_regreso`:** usa el componente `Mapa` con el chofer como `MarcadorEnMovimiento` (solo lectura). Fuera de esos estados la ubicación se descarta aunque llegue.
 - **En vivo:** `seguimientoTrasladoProvider` aplica `traslado.estado` y `traslado.ubicacion`, consulta de nuevo al reconectar y a pedido (jalar o «Actualizar»); si falla, conserva lo mostrado y avisa. El canal solo está abierto mientras la pantalla está puesta (cliente de eventos del núcleo, ver V2-M11.04).
 - **Acceso:** desde el comprobante de la cita, cada traslado de «Recolección a domicilio» (`GrupoRecoleccionCita`) abre su seguimiento.
 - Cinco estados: cargando (esqueleto anunciado), datos, no encontrado (404), error con reintento y sin conexión.
@@ -108,11 +108,11 @@ Parte de la app de seguir al chofer, ver el checklist del auto y entrar a «Mis 
 
 - DTOs en `lib/api/modelos/traslado.dart` (`TrasladoDetalle`, `UbicacionChofer`, `ChecklistTraslado`, `EstadoTraslado`, `NivelGasolina`). El 404 del checklist se traduce a `null` en `RepositorioRecoleccionApi.checklist`. Código `TRANSICION_INVALIDA` agregado a `CodigoProblema` y a `test/api/errores_v11_test.dart`. `api/*.yaml` y `test/contrato` los integra quien integra.
 - `mock_api/modulos/recoleccion.js`: `GET /traslados/{id}` (ubicación solo en `en_camino` y `de_regreso`), `GET /traslados/{id}/checklist` (404 si no hay; URLs con firma que cambia en cada petición), cancelar una cita cancela sus traslados programados y un emisor de prueba (`POST /__mock/traslados/{id}/estado|ubicacion|checklist`, ver `mock_api/README.md`).
-- **Pruebas:** `test/api/traslado_modelos_test.dart`, repositorio, proveedores y fake de recolección, `seguimiento_traslado_test.dart`, `pantalla_seguimiento_traslado_test.dart`, `pantalla_checklist_traslado_test.dart`, `ruta_seguimiento_traslado_test.dart`, `mapa_provisional_test.dart`, `test/modulos/citas/grupo_recoleccion_cita_test.dart` y `test/pantallas/perfil/pantalla_perfil_direcciones_test.dart`.
+- **Pruebas:** `test/api/traslado_modelos_test.dart`, repositorio, proveedores y fake de recolección, `seguimiento_traslado_test.dart`, `pantalla_seguimiento_traslado_test.dart`, `pantalla_checklist_traslado_test.dart`, `ruta_seguimiento_traslado_test.dart`, `test/modulos/citas/grupo_recoleccion_cita_test.dart` y `test/pantallas/perfil/pantalla_perfil_direcciones_test.dart`.
 
 **Pendiente / fuera de alcance**
 
-- **Mapa PROVISIONAL:** sigue `// PROVISIONAL: se reemplaza por Mapa de V2-T02.09`; este hito no cierra con él.
+- **Mapa:** el provisional se reemplazó por el componente `Mapa`; M17 ya no tiene provisionales.
 - **Push** de cada cambio de estado (criterio de V2-M17.03): depende de V2-M06.02. Hoy el seguimiento solo se actualiza en vivo con la pantalla abierta.
 - ~~Acceso desde «Mis citas»~~ y ~~Comparar recoger y entregar~~: resueltos, ver «Deudas resueltas».
 - Fotos y firma con `NetworkImage`; si más adelante se quiere caché en disco, debe respetar la vida de 15 minutos de las URLs.

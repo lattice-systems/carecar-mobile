@@ -33,6 +33,7 @@ require('./modulos/valuacion')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/lealtad')(servidor, db, emitirEvento);
 require('./modulos/pagos')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/tienda')(servidor, db, vehiculoDelCliente, emitirEvento);
+require('./modulos/sucursales')(servidor, db);
 
 // Devuelve Problema para cualquier otra ruta de la app.
 servidor.use(BASE, (req, res) => {
