@@ -194,12 +194,13 @@ class _Contenido extends ConsumerWidget {
                   const SizedBox(height: Espaciado.e3),
                   Mapa(
                     teselas: ref.watch(configuracionTeselasProvider),
+                    descripcion: textos.recoleccionSeguimientoMapaDescripcion(
+                      '${chofer.lat}',
+                      '${chofer.lng}',
+                    ),
                     enMovimiento: MarcadorEnMovimiento(
                       posicion: Coordenada(chofer.lat, chofer.lng),
-                      etiqueta: textos.recoleccionSeguimientoMapaDescripcion(
-                        '${chofer.lat}',
-                        '${chofer.lng}',
-                      ),
+                      etiqueta: textos.recoleccionSeguimientoMarcadorChofer,
                     ),
                   ),
                   const SizedBox(height: Espaciado.e2),
