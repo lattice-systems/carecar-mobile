@@ -29,7 +29,9 @@ ProviderContainer _contenedor(RepositorioSucursales repo) {
 /// Mantiene vivo el proveedor (es `autoDispose`) mientras se espera la carga.
 Future<ContactoDeAgencia> _leer(ProviderContainer contenedor) async {
   final suscripcion = contenedor.listen(contactoDeAgenciaProvider, (_, _) {});
-  await contenedor.read(sucursalPrincipalProvider.future).catchError((_) => null);
+  await contenedor
+      .read(sucursalPrincipalProvider.future)
+      .catchError((_) => null);
   final contacto = contenedor.read(contactoDeAgenciaProvider);
   suscripcion.close();
   return contacto;
@@ -67,21 +69,27 @@ void main() {
     expect(contacto.telefono, Agencia.telefono);
   });
 
-  test('mientras carga queda el respaldo y luego cambia a la sucursal', () async {
-    final espera = Completer<List<Sucursal>>();
-    final contenedor = _contenedor(_Repo(() => espera.future));
-    final cambios = <bool>[];
-    final suscripcion = contenedor.listen(contactoDeAgenciaProvider, (_, nuevo) {
-      cambios.add(nuevo.esRespaldo);
-    }, fireImmediately: true);
+  test(
+    'mientras carga queda el respaldo y luego cambia a la sucursal',
+    () async {
+      final espera = Completer<List<Sucursal>>();
+      final contenedor = _contenedor(_Repo(() => espera.future));
+      final cambios = <bool>[];
+      final suscripcion = contenedor.listen(contactoDeAgenciaProvider, (
+        _,
+        nuevo,
+      ) {
+        cambios.add(nuevo.esRespaldo);
+      }, fireImmediately: true);
 
-    expect(contenedor.read(contactoDeAgenciaProvider).esRespaldo, isTrue);
+      expect(contenedor.read(contactoDeAgenciaProvider).esRespaldo, isTrue);
 
-    espera.complete(RepositorioSucursalesFake.ejemplo);
-    await contenedor.read(sucursalPrincipalProvider.future);
+      espera.complete(RepositorioSucursalesFake.ejemplo);
+      await contenedor.read(sucursalPrincipalProvider.future);
 
-    expect(contenedor.read(contactoDeAgenciaProvider).esRespaldo, isFalse);
-    expect(cambios, [true, false]);
-    suscripcion.close();
-  });
+      expect(contenedor.read(contactoDeAgenciaProvider).esRespaldo, isFalse);
+      expect(cambios, [true, false]);
+      suscripcion.close();
+    },
+  );
 }
