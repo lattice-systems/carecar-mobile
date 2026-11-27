@@ -223,6 +223,35 @@ class ControladorSesion extends ChangeNotifier {
     }
   }
 
+  /// Lo que los modulos piden correr al cerrar sesion, antes de avisar al
+  /// servidor (ver [registrarAntesDeCerrarSesion]).
+  final List<Future<void> Function()> _antesDeCerrarSesion = [];
+
+  /// Cuanto se espera a cada tarea: cerrar sesion no se puede colgar por una
+  /// red lenta.
+  static const _esperaAntesDeCerrar = Duration(seconds: 5);
+
+  /// Registra [tarea] para que corra al cerrar sesion **antes** de avisar al
+  /// servidor, mientras el access token todavia vale (V2-M06.02, V2-M25.05).
+  ///
+  /// Existe porque `/auth/cerrar-sesion` ya no lleva access token: lo que un
+  /// modulo tenga que dar de baja a nombre de la cuenta (el token de push, una
+  /// Live Activity) tiene que ir antes. La sesion no conoce modulos, asi que
+  /// cada uno se registra y se quita con la funcion que esto devuelve. Una
+  /// tarea que falla o tarda mas de [_esperaAntesDeCerrar] no impide cerrar.
+  void Function() registrarAntesDeCerrarSesion(Future<void> Function() tarea) {
+    _antesDeCerrarSesion.add(tarea);
+    return () => _antesDeCerrarSesion.remove(tarea);
+  }
+
+  Future<void> _correrTareasAntesDeCerrar() => Future.wait([
+    for (final tarea in List.of(_antesDeCerrarSesion))
+      Future.sync(tarea)
+          .timeout(_esperaAntesDeCerrar)
+          // Da igual por que fallo: la sesion se cierra de todos modos (RIC-4).
+          .then<void>((_) {}, onError: (Object _) {}),
+  ]);
+
   /// Cierra la sesion y **avisa al servidor** para que revoque el refresh
   /// token (RIC-4).
   ///
@@ -233,6 +262,7 @@ class ControladorSesion extends ChangeNotifier {
     final guardados = await _almacen.leer();
 
     if (guardados != null) {
+      await _correrTareasAntesDeCerrar();
       try {
         await _api.cerrarSesion(guardados.refreshToken);
       } on ExcepcionApi {
