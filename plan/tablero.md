@@ -176,8 +176,8 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
-| V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 | Lista | |
-| V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 | Lista | |
+| V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.30.0 y `mock_api`) | Lista | |
+| V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.30.0 y `mock_api`) | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | En revisión | #208 |
 | V2-M06.07 | Un servicio único de envío en el backend | Jael | B | V2-T05.01 | Lista | |
 | V2-M09.01 | Ver los documentos de mi auto con su estado | Haziel | B | V2-M02.02 | Lista | |

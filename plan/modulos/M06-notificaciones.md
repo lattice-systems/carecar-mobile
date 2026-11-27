@@ -144,3 +144,43 @@ historia o él en un PR chico aparte.
 | V2-M06.05 | Como cliente quiero elegir qué avisos recibir y un horario silencioso | Por categoría · respetado por el backend al enviar | ✅ | V2-M06.04 |
 | V2-M06.06 | Como cliente quiero recordatorios de cita aunque no tenga red | Recordatorios locales 24 h y 2 h antes (ya existen en v1; migrar a v2) | | V2-M02.08 |
 | V2-M06.07 | Como equipo queremos un servicio único de envío en el backend | Módulo `notificaciones` en Modulith escucha eventos de dominio (cita, orden, documento…) | ✅ | V2-T05.01 |
+
+## El contrato de la bandeja y las preferencias (v2 2.30.0)
+
+Escrito antes del código, para poder construir la M06.04 y la M06.05 contra
+`mock_api` sin esperar al backend (`plan/trabajo-en-paralelo.md`). Cinco
+operaciones nuevas en **`api/agencia360-api-app-v2.yaml`**: `GET
+/notificaciones`, `POST /notificaciones/leidas`, `POST
+/notificaciones/{id}/leida` y `GET`/`PUT /notificaciones/preferencias`.
+
+Va en el contrato **v2** porque el v1 quedó congelado como referencia de la app
+v1; lo dice su propia descripción y todo cambio nuevo entra solo en el v2.
+
+Tres decisiones que conviene revisar antes de programar contra ellas:
+
+| Decisión | Por qué |
+| --- | --- |
+| `noLeidas` viaja en **cada página** y es el total de la cuenta | Es lo que la app pinta en el contador del ícono, y pedirlo aparte sería una llamada más en cada entrada |
+| `PROMOCIONES` nace **apagada**, las demás encendidas | Lo comercial se pide, no se asume |
+| El horario silencioso es **de la cuenta**, no por categoría, y lo respeta el **servidor** al enviar | Un aviso que no se manda no despierta a nadie; filtrarlo en la app no sirve con la app cerrada. Si `desde` > `hasta` el rango cruza la medianoche (22:00–07:00), que es el caso normal |
+
+`GET /notificaciones/preferencias` devuelve **todas** las categorías, también
+las que nadie ha tocado, con su valor por omisión: así la app no tiene que
+saber cuáles existen ni qué se asume cuando falta una.
+
+Se guarda lo que la persona **eligió**, no solo lo que apagó. Guardar solo las
+apagadas volvía imposible prender `PROMOCIONES`, porque al no estar en la lista
+caía otra vez en su valor por omisión. Lo encontró una prueba a mano contra el
+simulador, no la lectura del código.
+
+### El contrato v2 solo existe en este repositorio
+
+`AGENTS.md` §7 dice que un cambio de contrato se hace primero en
+`agencia-360-backend/docs/api/`. **Ahí solo está el contrato v1, en su versión
+1.2.0 y sin tocarse desde el 26 de octubre de 2026**: el v2 nunca se copió al
+backend. Así que para la v2 esa regla no tiene a dónde apuntar, y el contrato
+vivo —el que leen la app y `mock_api`— es el de aquí.
+
+**Queda para que el equipo decida** si el v2 se copia al backend o si la regla
+se reescribe. También falta `agencia-360-backend/plan/historias-backend.md`,
+que §4.3 menciona y no existe.
