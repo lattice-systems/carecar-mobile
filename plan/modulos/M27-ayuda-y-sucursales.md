@@ -41,7 +41,7 @@ Resolver dudas sin llamar y saber dónde y cuándo está la agencia. Reemplaza l
 
 ### V2-M27.02 · Sucursales con mapa y horarios (Juan Pablo por R6, aviso a Haziel) — en revisión
 
-- **Backend** (rama `feat/v2-m27-02-sucursales`): migración `sucursal` (`lat`, `lng` y demás de la ficha, más `activa` y `orden`), sembrada con León, Gto. (21.1250, -101.6860); `GET /sucursales` en el contrato 2.27.0.
+- **Backend** (rama `feat/v2-m27-02-sucursales`): migración `sucursal` (migración `V59`; `lat`, `lng` y demás de la ficha, más `activa` y `orden`), sembrada con León, Gto. (21.1250, -101.6860); `GET /sucursales` en el contrato 2.28.0.
 - **App**: módulo `lib/modulos/ayuda/` (`ayuda.dart` es el contrato), ruta `/sucursales`, pantalla con el componente `Mapa`, horarios por departamento, llamar (`tel:`) y cómo llegar (`geo:` en Android, Mapas de Apple en iPhone). Mock en `mock_api/modulos/sucursales.js`.
 - **Decisiones**:
   - «Abierto ahora» lo calcula el **servidor** con la hora de la agencia (`America/Mexico_City`), no el teléfono.
