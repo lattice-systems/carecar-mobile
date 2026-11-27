@@ -39,6 +39,9 @@ const _propiedades = <String, Set<String>>{
     'motivoCancelacion',
     'cita',
     'renglones',
+    'pagable',
+    'pago',
+    'pagadoEn',
   },
   'CitaDePedido': {'id', 'fecha', 'hora', 'vehiculoId'},
   'RenglonPedido': {'productoId', 'nombre', 'cantidad', 'precio', 'importe'},
@@ -61,6 +64,7 @@ const _codigos = <String>{
   'PEDIDO_NO_CANCELABLE',
   'PEDIDO_NO_MODIFICABLE',
   'PRODUCTO_INCOMPATIBLE',
+  'PEDIDO_PAGADO',
 };
 
 void main() {
