@@ -20,6 +20,10 @@ enum MotivoRechazoPedido {
 
   /// Algún producto no le queda al vehículo de la cita.
   productoIncompatible,
+
+  /// El pedido ya está pagado en la app: se cancela en el mostrador
+  /// (V2-M14.04).
+  pagado,
 }
 
 /// Fallo esperado de un pedido.
@@ -57,7 +61,8 @@ abstract interface class RepositorioTienda {
 
   Future<Pedido> pedido(int pedidoId);
 
-  /// Libera las piezas. Lanza [PedidoRechazado] con `noCancelable`.
+  /// Libera las piezas. Lanza [PedidoRechazado] con `noCancelable` o, si ya
+  /// está pagado, `pagado`.
   Future<Pedido> cancelar(int pedidoId);
 
   /// Con [citaId] se instala en esa cita y sin él vuelve a mostrador. Lanza
