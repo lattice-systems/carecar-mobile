@@ -45,63 +45,109 @@ class PantallaPagarOrden extends ConsumerWidget {
   final int ordenId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) => _PantallaCobro(
+    titulo: AppLocalizations.of(context).pagosPagarTitulo,
+    valor: ref.watch(ordenPorPagarProvider(ordenId)),
+    alReintentar: () => ref.invalidate(ordenPorPagarProvider(ordenId)),
+  );
+}
+
+/// Pagar un pedido de la tienda desde la app (V2-M14.04). Es la misma
+/// pantalla que la de una orden, con el total del pedido en vez del desglose
+/// del ticket.
+class PantallaPagarPedido extends ConsumerWidget {
+  const PantallaPagarPedido({required this.pedidoId, super.key});
+
+  final int pedidoId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) => _PantallaCobro(
+    titulo: AppLocalizations.of(context).pagosPagarPedidoTitulo,
+    valor: ref.watch(pedidoPorPagarProvider(pedidoId)),
+    alReintentar: () => ref.invalidate(pedidoPorPagarProvider(pedidoId)),
+  );
+}
+
+/// Carga, error, ya pagado, aun no se puede pagar o el formulario, para una
+/// orden o un pedido.
+class _PantallaCobro extends StatelessWidget {
+  const _PantallaCobro({
+    required this.titulo,
+    required this.valor,
+    required this.alReintentar,
+  });
+
+  final String titulo;
+  final AsyncValue<ObjetivoCobro> valor;
+  final VoidCallback alReintentar;
+
+  @override
+  Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final titulo = textos.pagosPagarTitulo;
     Widget estado(Widget hijo) =>
         MarcoPantalla.estado(titulo: titulo, conRegreso: true, estado: hijo);
 
-    return ref
-        .watch(ordenPorPagarProvider(ordenId))
-        .when(
-          skipLoadingOnReload: true,
-          loading: () => estado(
-            EsqueletoPagos(
-              altos: const [56, 220, 160],
-              etiqueta: textos.pagosCargando,
+    return valor.when(
+      skipLoadingOnReload: true,
+      loading: () => estado(
+        EsqueletoPagos(
+          altos: const [56, 220, 160],
+          etiqueta: textos.pagosCargando,
+        ),
+      ),
+      error: (error, _) => estado(
+        EstadoError(
+          causa: error is SinConexion
+              ? CausaError.sinConexion
+              : CausaError.generico,
+          textoReintentar: textos.pagosReintentar,
+          alReintentar: alReintentar,
+        ),
+      ),
+      data: (cobro) {
+        final esPedido = cobro is PedidoPorPagar;
+        final pagado = cobro.pago;
+        if (pagado != null && pagado.estado == EstadoPago.pagado) {
+          return estado(
+            EstadoVacio(
+              titulo: esPedido
+                  ? textos.pagosPedidoYaPagadoTitulo
+                  : textos.pagosYaPagadaTitulo,
+              mensaje: textos.pagosYaPagadaMensaje(
+                textoMedio(textos, pagado),
+                fechaPago(context, pagado.pagadoEn ?? pagado.creadoEn),
+              ),
+              icono: LucideIcons300.circleCheckBig,
+              textoAccion: textos.pagosVerPago,
+              alAccion: () => context.pushReplacement(rutaPago(pagado.id)),
             ),
-          ),
-          error: (error, _) => estado(
-            EstadoError(
-              causa: error is SinConexion
-                  ? CausaError.sinConexion
-                  : CausaError.generico,
-              textoReintentar: textos.pagosReintentar,
-              alReintentar: () =>
-                  ref.invalidate(ordenPorPagarProvider(ordenId)),
+          );
+        }
+        if (!cobro.pagable) {
+          return estado(
+            EstadoVacio(
+              titulo: esPedido
+                  ? textos.pagosPedidoNoPagableTitulo
+                  : textos.pagosNoPagableTitulo,
+              mensaje: esPedido
+                  ? textos.pagosPedidoNoPagableMensaje
+                  : textos.pagosNoPagableMensaje,
+              icono: LucideIcons300.clock,
             ),
+          );
+        }
+        return switch (cobro) {
+          OrdenPorPagar() => FormularioPago(
+            key: ValueKey(('pagar', cobro.ordenId)),
+            orden: cobro,
           ),
-          data: (orden) {
-            final pagado = orden.pago;
-            if (pagado != null && pagado.estado == EstadoPago.pagado) {
-              return estado(
-                EstadoVacio(
-                  titulo: textos.pagosYaPagadaTitulo,
-                  mensaje: textos.pagosYaPagadaMensaje(
-                    textoMedio(textos, pagado),
-                    fechaPago(context, pagado.pagadoEn ?? pagado.creadoEn),
-                  ),
-                  icono: LucideIcons300.circleCheckBig,
-                  textoAccion: textos.pagosVerPago,
-                  alAccion: () => context.pushReplacement(rutaPago(pagado.id)),
-                ),
-              );
-            }
-            if (!orden.pagable) {
-              return estado(
-                EstadoVacio(
-                  titulo: textos.pagosNoPagableTitulo,
-                  mensaje: textos.pagosNoPagableMensaje,
-                  icono: LucideIcons300.clock,
-                ),
-              );
-            }
-            return FormularioPago(
-              key: ValueKey(('pagar', orden.ordenId)),
-              orden: orden,
-            );
-          },
-        );
+          PedidoPorPagar() => FormularioPago.pedido(
+            key: ValueKey(('pagar-pedido', cobro.pedidoId)),
+            pedido: cobro,
+          ),
+        };
+      },
+    );
   }
 }
 
@@ -114,11 +160,16 @@ const _otraTarjeta = -1;
 /// Valor del selector de factura para no facturar.
 const _sinFactura = 0;
 
-/// El formulario con la orden ya cargada.
+/// El formulario con la orden o el pedido ya cargado.
 class FormularioPago extends ConsumerStatefulWidget {
-  const FormularioPago({required this.orden, super.key});
+  const FormularioPago({required OrdenPorPagar orden, super.key})
+    : cobro = orden;
 
-  final OrdenPorPagar orden;
+  /// Para un pedido de la tienda (V2-M14.04).
+  const FormularioPago.pedido({required PedidoPorPagar pedido, super.key})
+    : cobro = pedido;
+
+  final ObjetivoCobro cobro;
 
   static const botonPagar = Key('pagos_pagar');
   static const campoNumero = Key('pagos_numero');
@@ -224,19 +275,28 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
       _rechazo = null;
     });
     final repositorio = ref.read(repositorioPagosProvider);
-    final orden = widget.orden;
+    final cobro = widget.cobro;
+    final perfilFiscalId = factura == _sinFactura ? null : factura;
     try {
-      var pago = await repositorio.pagar(
-        orden.ordenId,
-        llave: _llave,
-        medio: medio,
-        perfilFiscalId: factura == _sinFactura ? null : factura,
-      );
+      var pago = await switch (cobro) {
+        OrdenPorPagar(:final ordenId) => repositorio.pagar(
+          ordenId,
+          llave: _llave,
+          medio: medio,
+          perfilFiscalId: perfilFiscalId,
+        ),
+        PedidoPorPagar(:final pedidoId) => repositorio.pagarPedido(
+          pedidoId,
+          llave: _llave,
+          medio: medio,
+          perfilFiscalId: perfilFiscalId,
+        ),
+      };
       if (pago.requiereAutenticacion) {
         if (!mounted) return;
         final confirmada = await confirmarConElBanco(
           context,
-          monto: pesos(context, orden.total),
+          monto: pesos(context, cobro.total),
           tarjeta: tarjeta,
         );
         if (!mounted) return;
@@ -280,13 +340,19 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     });
   }
 
+  bool get _esPedido => widget.cobro is PedidoPorPagar;
+
   String? _avisoTexto(AppLocalizations textos) => switch (_aviso) {
     _Aviso.revisa => textos.pagosRevisaTarjeta,
     _Aviso.sinConexion => textos.pagosSinConexion,
     _Aviso.error => textos.pagosErrorPagar,
     _Aviso.rechazo => textoRechazo(
       textos,
-      _rechazo ?? MotivoRechazoPago.ordenNoPagable,
+      _rechazo ??
+          (_esPedido
+              ? MotivoRechazoPago.pedidoNoPagable
+              : MotivoRechazoPago.ordenNoPagable),
+      pedido: _esPedido,
     ),
     null => null,
   };
@@ -297,7 +363,7 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     final resultado = _resultado;
     if (resultado != null) return _cierre(context, resultado);
 
-    final orden = widget.orden;
+    final cobro = widget.cobro;
     final metodos =
         ref.watch(metodosPagoProvider).value ?? const <MetodoPago>[];
     final perfiles =
@@ -315,14 +381,20 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     final aviso = _avisoTexto(textos);
 
     return MarcoPantalla(
-      titulo: textos.pagosPagarTitulo,
-      subtitulo: textos.pagosOrden('${orden.ordenId}'),
+      titulo: switch (cobro) {
+        OrdenPorPagar() => textos.pagosPagarTitulo,
+        PedidoPorPagar() => textos.pagosPagarPedidoTitulo,
+      },
+      subtitulo: switch (cobro) {
+        OrdenPorPagar(:final ordenId) => textos.pagosOrden('$ordenId'),
+        PedidoPorPagar(:final pedidoId) => textos.pagosPedido('$pedidoId'),
+      },
       conRegreso: true,
       barraInferior: BarraInferior(
         hijos: [
           Boton(
             key: FormularioPago.botonPagar,
-            texto: textos.pagosPagar(pesos(context, orden.total)),
+            texto: textos.pagosPagar(pesos(context, cobro.total)),
             anchoCompleto: true,
             cargando: _pagando,
             alPresionar: _pagando ? null : () => _pagar(metodos, perfiles),
@@ -360,7 +432,10 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
                         ),
                       ],
                       const SizedBox(height: Espaciado.e4),
-                      _Desglose(orden: orden),
+                      switch (cobro) {
+                        OrdenPorPagar() => _Desglose(orden: cobro),
+                        PedidoPorPagar() => _TotalPedido(pedido: cobro),
+                      },
                     ],
                   ),
                 ),
@@ -541,7 +616,9 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     final textos = AppLocalizations.of(context);
     if (pago.estado == EstadoPago.pagado) {
       return ResultadoPantalla(
-        titulo: textos.pagosPagadoTitulo,
+        titulo: _esPedido
+            ? textos.pagosPedidoPagadoTitulo
+            : textos.pagosPagadoTitulo,
         mensaje: textos.pagosPagadoMensaje(
           pesos(context, pago.monto),
           pago.referencia,
@@ -601,6 +678,29 @@ class _Desglose extends StatelessWidget {
         fila(textos.pagosSubtotal, orden.subtotal),
         fila(textos.pagosIva, orden.iva),
         fila(textos.pagosTotal, orden.total, fuerte: true),
+      ],
+    );
+  }
+}
+
+/// El total del pedido de la tienda: sus renglones ya vienen con precio final.
+class _TotalPedido extends StatelessWidget {
+  const _TotalPedido({required this.pedido});
+
+  final PedidoPorPagar pedido;
+
+  @override
+  Widget build(BuildContext context) {
+    final textos = AppLocalizations.of(context);
+    final total = pesos(context, pedido.total);
+    return GrupoLista(
+      encabezado: textos.pagosDesglose,
+      filas: [
+        FilaGrupo(
+          titulo: textos.pagosTotal,
+          fin: Text(total, style: TokensPista.de(context).tipografia.titulo3),
+          etiquetaFin: total,
+        ),
       ],
     );
   }
