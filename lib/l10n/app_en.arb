@@ -3793,6 +3793,7 @@
   "sucursalesVacioMensaje": "When the dealership publishes its branches, you'll see them here with a map and opening hours.",
   "sucursalesMapaDe": "Map showing the location of {nombre}",
   "sucursalesAbiertoAhora": "Open now",
+  "sucursalesAbierto": "Open",
   "sucursalesCerrado": "Closed",
   "sucursalesLlamar": "Call",
   "sucursalesComoLlegar": "Get directions",
