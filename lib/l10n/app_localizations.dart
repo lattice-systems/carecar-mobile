@@ -1745,7 +1745,7 @@ abstract class AppLocalizations {
   /// Detalle del cierre del apartado.
   ///
   /// In es, this message translates to:
-  /// **'Pagas en caja. Tu apartado vence el {fecha}.'**
+  /// **'Tu apartado vence el {fecha}. Págalo ahora en la app o en caja al recoger.'**
   String tiendaApartadoMensaje(String fecha);
 
   /// Cierre del apartado.
@@ -2036,6 +2036,12 @@ abstract class AppLocalizations {
   /// **'Ya llevas {piezas}, el máximo de este producto.'**
   String tiendaMaximoAlcanzado(int piezas);
 
+  /// Con qué se pagó si no se sabe la marca.
+  ///
+  /// In es, this message translates to:
+  /// **'tarjeta'**
+  String get tiendaMedioTarjeta;
+
   /// Título y botón de la lista de pedidos.
   ///
   /// In es, this message translates to:
@@ -2077,6 +2083,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No se pudo cambiar el pedido'**
   String get tiendaNoSeCambioTitulo;
+
+  /// Un pedido ya pagado en la app (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado'**
+  String get tiendaPagado;
+
+  /// Título del aviso de un pedido pagado en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagado con {medio}'**
+  String tiendaPagadoAviso(String medio);
+
+  /// En lugar del botón de cancelar de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.'**
+  String get tiendaPagadoCancelarEnMostrador;
+
+  /// Cuándo se pagó el pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'El {fecha}. Ya no vence.'**
+  String tiendaPagadoMensaje(String fecha);
+
+  /// Botón que abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar {monto}'**
+  String tiendaPagar(String monto);
+
+  /// Cierre del apartado: abre el pago del pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar ahora'**
+  String get tiendaPagarAhora;
+
+  /// Cierre del apartado: abre el pedido para pagarlo al recogerlo.
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar en caja'**
+  String get tiendaPagarEnCaja;
+
+  /// Cómo se paga un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Paga en la app desde tu pedido o en caja al recoger.'**
+  String get tiendaPagoEnAppOCaja;
 
   /// Cómo se paga.
   ///
@@ -2192,6 +2246,12 @@ abstract class AppLocalizations {
   /// **'Este pedido ya se entregó o se canceló y no se puede cambiar.'**
   String get tiendaRechazoNoModificable;
 
+  /// Rechazo PEDIDO_PAGADO.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.'**
+  String get tiendaRechazoPagado;
+
   /// Rechazo SIN_EXISTENCIA.
   ///
   /// In es, this message translates to:
@@ -2251,6 +2311,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin conexión'**
   String get tiendaSinConexionTitulo;
+
+  /// La tarjeta con que se pagó: marca y últimos 4.
+  ///
+  /// In es, this message translates to:
+  /// **'{marca} •••• {ultimos4}'**
+  String tiendaTarjeta(String marca, String ultimos4);
 
   /// Título de la tienda y de su entrada.
   ///
@@ -9953,6 +10019,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ver el ticket'**
   String get pagosVerTicket;
+
+  /// Título del pago de un pedido de la tienda (V2-M14.04).
+  ///
+  /// In es, this message translates to:
+  /// **'Pagar pedido'**
+  String get pagosPagarPedidoTitulo;
+
+  /// Número del pedido de la tienda.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedido {pedido}'**
+  String pagosPedido(String pedido);
+
+  /// Estado de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya está pagado'**
+  String get pagosPedidoYaPagadoTitulo;
+
+  /// Estado de un pedido que no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app'**
+  String get pagosPedidoNoPagableTitulo;
+
+  /// Por qué no se paga en la app.
+  ///
+  /// In es, this message translates to:
+  /// **'Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.'**
+  String get pagosPedidoNoPagableMensaje;
+
+  /// 409 PEDIDO_NO_PAGABLE.
+  ///
+  /// In es, this message translates to:
+  /// **'Este pedido ya no se puede pagar en la app.'**
+  String get pagosPedidoNoPagable;
+
+  /// 409 PAGO_EN_CURSO de un pedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.'**
+  String get pagosPedidoPagoEnCurso;
+
+  /// Cierre de un pedido pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'¡Pedido pagado!'**
+  String get pagosPedidoPagadoTitulo;
+
+  /// Botón para abrir el pedido de la tienda pagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver el pedido'**
+  String get pagosVerPedido;
 
   /// Pago que no existe.
   ///

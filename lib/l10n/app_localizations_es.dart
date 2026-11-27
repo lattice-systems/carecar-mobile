@@ -1028,7 +1028,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String tiendaApartadoMensaje(String fecha) {
-    return 'Pagas en caja. Tu apartado vence el $fecha.';
+    return 'Tu apartado vence el $fecha. Págalo ahora en la app o en caja al recoger.';
   }
 
   @override
@@ -1198,6 +1198,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get tiendaMedioTarjeta => 'tarjeta';
+
+  @override
   String get tiendaMisPedidos => 'Mis pedidos';
 
   @override
@@ -1219,6 +1222,38 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tiendaNoSeCambioTitulo => 'No se pudo cambiar el pedido';
+
+  @override
+  String get tiendaPagado => 'Pagado';
+
+  @override
+  String tiendaPagadoAviso(String medio) {
+    return 'Pagado con $medio';
+  }
+
+  @override
+  String get tiendaPagadoCancelarEnMostrador =>
+      'Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.';
+
+  @override
+  String tiendaPagadoMensaje(String fecha) {
+    return 'El $fecha. Ya no vence.';
+  }
+
+  @override
+  String tiendaPagar(String monto) {
+    return 'Pagar $monto';
+  }
+
+  @override
+  String get tiendaPagarAhora => 'Pagar ahora';
+
+  @override
+  String get tiendaPagarEnCaja => 'Pagar en caja';
+
+  @override
+  String get tiendaPagoEnAppOCaja =>
+      'Paga en la app desde tu pedido o en caja al recoger.';
 
   @override
   String get tiendaPagoEnCaja => 'No se cobra en la app: pagas en caja.';
@@ -1297,6 +1332,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este pedido ya se entregó o se canceló y no se puede cambiar.';
 
   @override
+  String get tiendaRechazoPagado =>
+      'Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.';
+
+  @override
   String get tiendaRechazoSinExistencia =>
       'Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.';
 
@@ -1331,6 +1370,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get tiendaSinConexionTitulo => 'Sin conexión';
+
+  @override
+  String tiendaTarjeta(String marca, String ultimos4) {
+    return '$marca •••• $ultimos4';
+  }
 
   @override
   String get tiendaTitulo => 'Tienda';
@@ -5935,6 +5979,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pagosVerTicket => 'Ver el ticket';
+
+  @override
+  String get pagosPagarPedidoTitulo => 'Pagar pedido';
+
+  @override
+  String pagosPedido(String pedido) {
+    return 'Pedido $pedido';
+  }
+
+  @override
+  String get pagosPedidoYaPagadoTitulo => 'Este pedido ya está pagado';
+
+  @override
+  String get pagosPedidoNoPagableTitulo =>
+      'Este pedido ya no se puede pagar en la app';
+
+  @override
+  String get pagosPedidoNoPagableMensaje =>
+      'Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.';
+
+  @override
+  String get pagosPedidoNoPagable =>
+      'Este pedido ya no se puede pagar en la app.';
+
+  @override
+  String get pagosPedidoPagoEnCurso =>
+      'Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.';
+
+  @override
+  String get pagosPedidoPagadoTitulo => '¡Pedido pagado!';
+
+  @override
+  String get pagosVerPedido => 'Ver el pedido';
 
   @override
   String get pagosNoEncontradoTitulo => 'No encontramos este pago';

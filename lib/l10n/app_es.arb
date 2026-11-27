@@ -1172,7 +1172,7 @@
   "@tiendaAgregar": {
     "description": "Botón para agregar un producto."
   },
-  "tiendaApartadoMensaje": "Pagas en caja. Tu apartado vence el {fecha}.",
+  "tiendaApartadoMensaje": "Tu apartado vence el {fecha}. Págalo ahora en la app o en caja al recoger.",
   "@tiendaApartadoMensaje": {
     "description": "Detalle del cierre del apartado.",
     "placeholders": {
@@ -1406,6 +1406,10 @@
       }
     }
   },
+  "tiendaMedioTarjeta": "tarjeta",
+  "@tiendaMedioTarjeta": {
+    "description": "Con qué se pagó si no se sabe la marca."
+  },
   "tiendaMisPedidos": "Mis pedidos",
   "@tiendaMisPedidos": {
     "description": "Título y botón de la lista de pedidos."
@@ -1438,6 +1442,53 @@
   "tiendaNoSeCambioTitulo": "No se pudo cambiar el pedido",
   "@tiendaNoSeCambioTitulo": {
     "description": "Título del diálogo de rechazo al cambiar un pedido."
+  },
+  "tiendaPagado": "Pagado",
+  "@tiendaPagado": {
+    "description": "Un pedido ya pagado en la app (V2-M14.04)."
+  },
+  "tiendaPagadoAviso": "Pagado con {medio}",
+  "@tiendaPagadoAviso": {
+    "description": "Título del aviso de un pedido pagado en la app.",
+    "placeholders": {
+      "medio": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaPagadoCancelarEnMostrador": "Ya está pagado: si necesitas cancelarlo, hazlo en el mostrador.",
+  "@tiendaPagadoCancelarEnMostrador": {
+    "description": "En lugar del botón de cancelar de un pedido pagado."
+  },
+  "tiendaPagadoMensaje": "El {fecha}. Ya no vence.",
+  "@tiendaPagadoMensaje": {
+    "description": "Cuándo se pagó el pedido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaPagar": "Pagar {monto}",
+  "@tiendaPagar": {
+    "description": "Botón que abre el pago del pedido.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "tiendaPagarAhora": "Pagar ahora",
+  "@tiendaPagarAhora": {
+    "description": "Cierre del apartado: abre el pago del pedido."
+  },
+  "tiendaPagarEnCaja": "Pagar en caja",
+  "@tiendaPagarEnCaja": {
+    "description": "Cierre del apartado: abre el pedido para pagarlo al recogerlo."
+  },
+  "tiendaPagoEnAppOCaja": "Paga en la app desde tu pedido o en caja al recoger.",
+  "@tiendaPagoEnAppOCaja": {
+    "description": "Cómo se paga un pedido."
   },
   "tiendaPagoEnCaja": "No se cobra en la app: pagas en caja.",
   "@tiendaPagoEnCaja": {
@@ -1533,6 +1584,10 @@
   "@tiendaRechazoNoModificable": {
     "description": "Rechazo PEDIDO_NO_MODIFICABLE."
   },
+  "tiendaRechazoPagado": "Este pedido ya está pagado y no se cancela desde la app: cancélalo en el mostrador.",
+  "@tiendaRechazoPagado": {
+    "description": "Rechazo PEDIDO_PAGADO."
+  },
   "tiendaRechazoSinExistencia": "Ya no alcanzan las piezas. Revisa la existencia y ajusta la cantidad.",
   "@tiendaRechazoSinExistencia": {
     "description": "Rechazo SIN_EXISTENCIA."
@@ -1580,6 +1635,18 @@
   "tiendaSinConexionTitulo": "Sin conexión",
   "@tiendaSinConexionTitulo": {
     "description": "Error sin conexión."
+  },
+  "tiendaTarjeta": "{marca} •••• {ultimos4}",
+  "@tiendaTarjeta": {
+    "description": "La tarjeta con que se pagó: marca y últimos 4.",
+    "placeholders": {
+      "marca": {
+        "type": "String"
+      },
+      "ultimos4": {
+        "type": "String"
+      }
+    }
   },
   "tiendaTitulo": "Tienda",
   "@tiendaTitulo": {
@@ -7835,6 +7902,47 @@
   "pagosVerTicket": "Ver el ticket",
   "@pagosVerTicket": {
     "description": "Botón para abrir el ticket de la orden."
+  },
+  "pagosPagarPedidoTitulo": "Pagar pedido",
+  "@pagosPagarPedidoTitulo": {
+    "description": "Título del pago de un pedido de la tienda (V2-M14.04)."
+  },
+  "pagosPedido": "Pedido {pedido}",
+  "@pagosPedido": {
+    "description": "Número del pedido de la tienda.",
+    "placeholders": {
+      "pedido": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosPedidoYaPagadoTitulo": "Este pedido ya está pagado",
+  "@pagosPedidoYaPagadoTitulo": {
+    "description": "Estado de un pedido pagado."
+  },
+  "pagosPedidoNoPagableTitulo": "Este pedido ya no se puede pagar en la app",
+  "@pagosPedidoNoPagableTitulo": {
+    "description": "Estado de un pedido que no se paga en la app."
+  },
+  "pagosPedidoNoPagableMensaje": "Se paga en la app mientras está apartado o listo y no ha vencido. Si no, se paga en caja.",
+  "@pagosPedidoNoPagableMensaje": {
+    "description": "Por qué no se paga en la app."
+  },
+  "pagosPedidoNoPagable": "Este pedido ya no se puede pagar en la app.",
+  "@pagosPedidoNoPagable": {
+    "description": "409 PEDIDO_NO_PAGABLE."
+  },
+  "pagosPedidoPagoEnCurso": "Ya hay un pago de este pedido esperando la confirmación de tu banco. Revísalo en Mis pagos.",
+  "@pagosPedidoPagoEnCurso": {
+    "description": "409 PAGO_EN_CURSO de un pedido."
+  },
+  "pagosPedidoPagadoTitulo": "¡Pedido pagado!",
+  "@pagosPedidoPagadoTitulo": {
+    "description": "Cierre de un pedido pagado."
+  },
+  "pagosVerPedido": "Ver el pedido",
+  "@pagosVerPedido": {
+    "description": "Botón para abrir el pedido de la tienda pagado."
   },
   "pagosNoEncontradoTitulo": "No encontramos este pago",
   "@pagosNoEncontradoTitulo": {
