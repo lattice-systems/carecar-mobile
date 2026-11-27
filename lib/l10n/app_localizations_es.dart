@@ -6278,6 +6278,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sucursalesAbiertoAhora => 'Abierto ahora';
 
   @override
+  String get sucursalesAbierto => 'Abierto';
+
+  @override
   String get sucursalesCerrado => 'Cerrado';
 
   @override
