@@ -8459,6 +8459,10 @@
     ]
   ],
   "sucursalesAbiertoAhora": "Abierto ahora",
+  "sucursalesAbierto": "Abierto",
+  "@sucursalesAbierto": {
+    "description": "Estado corto de un departamento de la sucursal que atiende en este momento."
+  },
   "sucursalesCerrado": "Cerrado",
   "sucursalesLlamar": "Llamar",
   "sucursalesComoLlegar": "Cómo llegar",
