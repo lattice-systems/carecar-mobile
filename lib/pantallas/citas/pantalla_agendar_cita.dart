@@ -112,8 +112,9 @@ class _PantallaAgendarCitaState extends State<PantallaAgendarCita> {
     }
     if (mounted) {
       final analitica = AmbitoAnalitica.de(context);
-      if (analitica != null)
+      if (analitica != null) {
         unawaited(_embudo.mostrarDisponibilidad(analitica));
+      }
     }
     return franjas;
   }

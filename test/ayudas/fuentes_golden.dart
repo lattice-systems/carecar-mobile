@@ -38,8 +38,7 @@ void prepararFuentesGolden() {
     await _cargarFuentes(Tipografia.respaldoCifras.first, jetBrainsMono);
     // El set de íconos de la app (V2-T02.07): sin cargarlo salen cuadros.
     await _cargarFuentes('packages/lucide_icons_flutter/Lucide300', [
-      '$directorioAssets/packages/lucide_icons_flutter/assets/build_font/'
-          'LucideVariable-w300.ttf',
+      '$directorioAssets/packages/lucide_icons_flutter/assets/build_font/LucideVariable-w300.ttf',
     ]);
     await _cargarFuentes('MaterialIcons', [
       '$directorioAssets/fonts/MaterialIcons-Regular.otf',
