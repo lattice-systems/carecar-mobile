@@ -634,28 +634,36 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     res.status(201).jsonp(publicaFactura(timbrar(pago, perfil)));
   });
 
-  servidor.get(`${BASE}/facturas/:facturaId/:formato(pdf|xml)`, (req, res) => {
-    const factura = db.get('facturasApp').find({ id: Number(req.params.facturaId), clienteId: req.sesion.clienteId }).value();
-    if (!factura) return noEncontrado(req, res);
-    const nombre = `factura-${factura.folio}.${req.params.formato}`;
-    res.set('Content-Disposition', `attachment; filename="${nombre}"`);
-    res.set('Cache-Control', 'no-store');
-    if (req.params.formato === 'xml') return res.type('application/xml').send(xmlDe(factura));
-    const r = factura.receptor;
-    res.type('application/pdf').send(
-      construirTicketPdf([
-        'FACTURA SIMULADA, SIN VALIDEZ FISCAL (API simulada)',
-        '',
-        `Folio ${factura.folio}`,
-        `Folio fiscal: ${factura.uuid}`,
-        `Emisor: ${EMISOR.nombre} (${EMISOR.rfc})`,
-        `Receptor: ${r.razonSocial} (${r.rfc}) - Uso del CFDI ${r.usoCfdi}`,
-        `Total: $${factura.total.toFixed(2)} MXN - Forma de pago ${factura.formaPago} - PUE`,
-        '',
-        'Este documento no es un CFDI: el timbre y los sellos son simulados.',
-      ]),
-    );
-  });
+  function descargarFactura(formato) {
+    return (req, res) => {
+      const factura = db
+        .get('facturasApp')
+        .find({ id: Number(req.params.facturaId), clienteId: req.sesion.clienteId })
+        .value();
+      if (!factura) return noEncontrado(req, res);
+      const nombre = `factura-${factura.folio}.${formato}`;
+      res.set('Content-Disposition', `attachment; filename="${nombre}"`);
+      res.set('Cache-Control', 'no-store');
+      if (formato === 'xml') return res.type('application/xml').send(xmlDe(factura));
+      const r = factura.receptor;
+      res.type('application/pdf').send(
+        construirTicketPdf([
+          'FACTURA SIMULADA, SIN VALIDEZ FISCAL (API simulada)',
+          '',
+          `Folio ${factura.folio}`,
+          `Folio fiscal: ${factura.uuid}`,
+          `Emisor: ${EMISOR.nombre} (${EMISOR.rfc})`,
+          `Receptor: ${r.razonSocial} (${r.rfc}) - Uso del CFDI ${r.usoCfdi}`,
+          `Total: $${factura.total.toFixed(2)} MXN - Forma de pago ${factura.formaPago} - PUE`,
+          '',
+          'Este documento no es un CFDI: el timbre y los sellos son simulados.',
+        ]),
+      );
+    };
+  }
+
+  servidor.get(`${BASE}/facturas/:facturaId/pdf`, descargarFactura('pdf'));
+  servidor.get(`${BASE}/facturas/:facturaId/xml`, descargarFactura('xml'));
 
   servidor.get(`${BASE}/metodos-pago`, (req, res) => {
     res.jsonp(metodosDe(req.sesion.clienteId).map(publicoMetodo));

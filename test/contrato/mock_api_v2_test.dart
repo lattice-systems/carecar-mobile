@@ -17,13 +17,6 @@ const _metodos = {
 };
 const _login = {'correo': 'cliente1@example.com', 'contrasena': 'CareCar2026'};
 const _limite = Duration(seconds: 10);
-// El contrato compartido ya incluye M08.05. El simulador aún no ofrece
-// perfiles ni catálogos fiscales.
-const _fiscalesSinMock = {
-  '/catalogos-fiscales',
-  '/perfiles-fiscales',
-  '/perfiles-fiscales/{perfilId}',
-};
 
 void main() {
   final contrato = loadYaml(
@@ -31,11 +24,10 @@ void main() {
   ) as YamlMap;
   final operaciones = <String, YamlMap>{
     for (final ruta in (contrato['paths'] as YamlMap).entries)
-      if (!_fiscalesSinMock.contains(ruta.key))
-        for (final op in (ruta.value as YamlMap).entries)
-          if (_metodos.contains(op.key))
-            '${(op.key as String).toUpperCase()} ${ruta.key}':
-                op.value as YamlMap,
+      for (final op in (ruta.value as YamlMap).entries)
+        if (_metodos.contains(op.key))
+          '${(op.key as String).toUpperCase()} ${ruta.key}':
+              op.value as YamlMap,
   };
 
   Process? proceso;
