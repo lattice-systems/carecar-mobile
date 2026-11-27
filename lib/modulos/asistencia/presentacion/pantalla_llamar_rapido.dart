@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
-import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
@@ -11,6 +10,7 @@ import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../ayuda/ayuda.dart' show contactoDeAgenciaProvider;
 import '../dominio/contacto_de_llamada.dart';
 import 'proveedores_asistencia.dart';
 
@@ -47,8 +47,11 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final aseguradora = ref.watch(aseguradoraProvider);
+    // Teléfono de la sucursal principal (V2-M27.02); `Agencia` si aún carga,
+    // falla o no hay sucursales: la pantalla sirve sin datos.
+    final agencia = ref.watch(contactoDeAgenciaProvider);
     final contactos = contactosDeLlamada(
-      telefonoAgencia: Agencia.telefono,
+      telefonoAgencia: agencia.telefono,
       aseguradora: aseguradora,
     );
 
