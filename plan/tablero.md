@@ -86,7 +86,7 @@ Total: **234 historias** (una descartada) + 4 de H0.
 | V2-T05.07 | `franja_horario` como en la ficha | Ricardo | B | — | Hecha | backend#80, #85 |
 | V2-T05.08 | Eventos en vivo | Ricardo | B | V2-T05.01 | Hecha | backend#83, #89 |
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Hecha | backend#83, #89 |
-| V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Lista | |
+| V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Hecha | backend#116 |
 | V2-T05.11 | Desplegar la API en Azure automáticamente en cada merge | Daniel | B | — | Hecha | backend#71 |
 
 ## H2 · Núcleo de la ficha (secciones 1–3)
