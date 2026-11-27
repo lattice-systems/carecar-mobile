@@ -5,10 +5,11 @@ import '../dominio/pagos.dart';
 import '../dominio/repositorio_pagos.dart';
 import 'lectura_pagos.dart';
 
-/// Pagos de ordenes y pedidos, mis pagos y tarjetas guardadas con el cliente
-/// del nucleo. Los 409 con `ORDEN_NO_PAGABLE`, `PEDIDO_NO_PAGABLE`,
-/// `PAGO_EN_CURSO` y `PAGO_NO_PENDIENTE` llegan como [PagoRechazado]. Lo demas
-/// pasa tal cual.
+/// Pagos de ordenes y pedidos, mis pagos, tarjetas guardadas y facturas con
+/// el cliente del nucleo. Los 409 con `ORDEN_NO_PAGABLE`, `PEDIDO_NO_PAGABLE`,
+/// `PAGO_EN_CURSO` y `PAGO_NO_PENDIENTE` llegan como [PagoRechazado]; los de
+/// `YA_FACTURADO` y `PAGO_NO_FACTURABLE`, como [FacturaRechazada], y el 422
+/// `TIMBRADO_RECHAZADO`, como [TimbradoRechazado]. Lo demas pasa tal cual.
 class RepositorioPagosApi implements RepositorioPagos {
   const RepositorioPagosApi(this._cliente);
 
@@ -68,6 +69,7 @@ class RepositorioPagosApi implements RepositorioPagos {
           TarjetaGuardada(:final metodoPagoId) => {
             'metodoPagoId': metodoPagoId,
           },
+          Billetera(:final medio) => {'billetera': medio.enLaApi},
         },
         'perfilFiscalId': perfilFiscalId,
       },
@@ -118,6 +120,41 @@ class RepositorioPagosApi implements RepositorioPagos {
   @override
   Future<void> borrarMetodo(int metodoPagoId) =>
       _cliente.eliminar('/metodos-pago/$metodoPagoId');
+
+  @override
+  Future<Factura> facturar(int pagoId, {required int perfilFiscalId}) async {
+    try {
+      return await _cliente.enviar(
+        '/pagos/$pagoId/factura',
+        cuerpo: {'perfilFiscalId': perfilFiscalId},
+        leer: _lectura.factura,
+      );
+    } on Conflicto catch (e) {
+      final motivo = switch (e.problema?.codigo) {
+        CodigoProblema.yaFacturado => MotivoRechazoFactura.yaFacturado,
+        CodigoProblema.pagoNoFacturable =>
+          MotivoRechazoFactura.pagoNoFacturable,
+        _ => null,
+      };
+      if (motivo == null) rethrow;
+      throw FacturaRechazada(motivo);
+    } on SolicitudRechazada catch (e) {
+      if (e.codigo != CodigoProblema.timbradoRechazado) rethrow;
+      throw TimbradoRechazado(e.problema?.campos.keys.toSet() ?? const {});
+    }
+  }
+
+  @override
+  Future<ArchivoFactura> descargarFactura(
+    Factura factura,
+    FormatoFactura formato,
+  ) async => ArchivoFactura(
+    bytes: await _cliente.descargar(
+      '/facturas/${factura.id}/${formato.extension}',
+    ),
+    nombre: 'factura-${factura.folio}.${formato.extension}',
+    formato: formato,
+  );
 
   static Future<Pago> _traducir(Future<Pago> Function() pedir) async {
     try {
