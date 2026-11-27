@@ -180,7 +180,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Lista | |
 | V2-M06.07 | Un servicio único de envío en el backend | Jael | B | V2-T05.01 | Lista | |
-| V2-M09.01 | Ver los documentos de mi auto con su estado | Haziel | B | V2-M02.02 | Lista | |
+| V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | En curso | Tomada por Juan Pablo para destrabar V2-M11.02; aviso a Haziel |
 | V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
 | V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
