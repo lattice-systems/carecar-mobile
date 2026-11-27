@@ -3,7 +3,9 @@
 /// Otros modulos y la app solo importan este archivo. Trae los accesos rapidos
 /// del icono (V2-M25.04) y los widgets de pantalla de inicio, que se agregan
 /// por separado: proxima cita (V2-M25.01), taller en vivo (V2-M25.02),
-/// mantenimiento, bitacora y accesos rapidos; Wallet llega con V2-M25.03.
+/// mantenimiento, bitacora y accesos rapidos; Wallet llega con V2-M25.03. La
+/// Live Activity del taller en iPhone (V2-M25.05) no se exporta: la lleva
+/// [SincronizadorDeWidgets] con las mismas ordenes en curso.
 library;
 
 export 'dominio/acceso_rapido.dart'

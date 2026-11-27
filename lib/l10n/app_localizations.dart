@@ -3008,6 +3008,24 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título del aviso global cuando el servidor no contesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión con la agencia'**
+  String get conexionSinRedTitulo;
+
+  /// Explica que la app sigue sirviendo sin red y qué pasa con lo demás.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes seguir viendo lo que ya tenías guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la señal.'**
+  String get conexionSinRedMensaje;
+
+  /// Explicación de una acción deshabilitada por falta de conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesita internet. Lo intentamos cuando vuelva la señal.'**
+  String get conexionAccionSinRed;
+
   /// Título de la pantalla que explica los avisos antes de pedir el permiso.
   ///
   /// In es, this message translates to:
@@ -11001,6 +11019,258 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tu chofer'**
   String get recoleccionSeguimientoMarcadorChofer;
+
+  /// Título de la pantalla para contactar a la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Contacto'**
+  String get contactoTitulo;
+
+  /// Texto de apoyo bajo el título de Contacto.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.'**
+  String get contactoIntro;
+
+  /// Encabezado del grupo de medios de contacto (llamar y correo).
+  ///
+  /// In es, this message translates to:
+  /// **'Medios de contacto'**
+  String get contactoGrupoMedios;
+
+  /// Fila que abre el marcador con el teléfono de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get contactoLlamar;
+
+  /// Fila que abre la app de correo con el correo de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get contactoCorreo;
+
+  /// Encabezado del grupo que lleva a las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde estamos'**
+  String get contactoGrupoDonde;
+
+  /// Fila que abre la pantalla de sucursales con mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales y horarios'**
+  String get contactoVerSucursales;
+
+  /// Detalle de la fila de sucursales cuando aún no se conoce la sucursal principal.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa, horarios y cómo llegar'**
+  String get contactoVerSucursalesDetalle;
+
+  /// Aviso cuando el teléfono no tiene app de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir tu app de correo. Escríbenos a {correo}.'**
+  String contactoNoSePudoCorreo(String correo);
+
+  /// Título de la pantalla de documentos del vehículo (V2-M09.01) y de su acceso desde el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get documentosTitulo;
+
+  /// Lo que oye el lector de pantalla mientras cargan los documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando documentos'**
+  String get documentosCargando;
+
+  /// Título del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay documentos'**
+  String get documentosVaciaTitulo;
+
+  /// Mensaje del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.'**
+  String get documentosVaciaMensaje;
+
+  /// Subtítulo de la pantalla: cuántos documentos hay.
+  ///
+  /// In es, this message translates to:
+  /// **'{total, plural, =1{1 documento} other{{total} documentos}}'**
+  String documentosSubtitulo(int total);
+
+  /// Resumen de la portada cuando hay documentos por vencer o vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{1 documento necesita atención} other{{cantidad} documentos necesitan atención}}'**
+  String documentosResumenAtencion(int cantidad);
+
+  /// Resumen de la portada cuando ningún documento está por vencer ni vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo en orden'**
+  String get documentosResumenAlDia;
+
+  /// Detalle del resumen cuando todo está en orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus documentos están al día.'**
+  String get documentosResumenAlDiaDetalle;
+
+  /// Lo más urgente del resumen de portada, cuando aún no vence. «cuando» es «hoy», «mañana» o «en 12 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} vence {cuando}.'**
+  String documentosResumenVence(String nombre, String cuando);
+
+  /// Lo más urgente del resumen de portada, cuando ya venció. «cuando» es «hace 35 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} venció {cuando}.'**
+  String documentosResumenVencio(String nombre, String cuando);
+
+  /// Encabezado del grupo de documentos que vencen en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosGrupoPorVencer;
+
+  /// Encabezado del grupo de documentos vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencidos'**
+  String get documentosGrupoVencidos;
+
+  /// Encabezado del grupo de documentos vigentes.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigentes'**
+  String get documentosGrupoVigentes;
+
+  /// Encabezado del grupo de documentos sin vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha de vencimiento'**
+  String get documentosGrupoSinFecha;
+
+  /// Insignia de un documento vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get documentosEstadoVigente;
+
+  /// Insignia de un documento que vence en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosEstadoPorVencer;
+
+  /// Insignia de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get documentosEstadoVencido;
+
+  /// Insignia de un documento sin fecha de vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha'**
+  String get documentosEstadoSinFecha;
+
+  /// Fecha de vencimiento de un documento vigente o por vencer.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String documentosVenceEl(String fecha);
+
+  /// Fecha de vencimiento de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció el {fecha}'**
+  String documentosVencioEl(String fecha);
+
+  /// Cuándo vence: hoy, mañana o en N días.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =0{hoy} =1{mañana} other{en {dias} días}}'**
+  String documentosEnDias(int dias);
+
+  /// Hace cuánto venció un documento.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{hace 1 día} other{hace {dias} días}}'**
+  String documentosHaceDias(int dias);
+
+  /// Número o folio del documento.
+  ///
+  /// In es, this message translates to:
+  /// **'N.º {numero}'**
+  String documentosNumero(String numero);
+
+  /// Origen de un documento que subió la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargado por la agencia'**
+  String get documentosCargadoPorAgencia;
+
+  /// Tipo de documento: póliza de seguro.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de seguro'**
+  String get documentosTipoPoliza;
+
+  /// Tipo de documento: tarjeta de circulación.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta de circulación'**
+  String get documentosTipoTarjetaCirculacion;
+
+  /// Tipo de documento: verificación vehicular.
+  ///
+  /// In es, this message translates to:
+  /// **'Verificación vehicular'**
+  String get documentosTipoVerificacion;
+
+  /// Tipo de documento: tenencia y refrendo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tenencia y refrendo'**
+  String get documentosTipoTenencia;
+
+  /// Tipo de documento: licencia de conducir.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencia de conducir'**
+  String get documentosTipoLicencia;
+
+  /// Tipo de documento: póliza de garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de garantía'**
+  String get documentosTipoGarantia;
+
+  /// Tipo de documento: factura de compra.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura de compra'**
+  String get documentosTipoFactura;
+
+  /// Tipo de documento: otro, cuando no trae título propio.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro documento'**
+  String get documentosTipoOtro;
+
+  /// Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando tu póliza…'**
+  String get asistenciaLlamarAseguradoraBuscando;
 }
 
 class _AppLocalizationsDelegate

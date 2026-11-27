@@ -13,6 +13,7 @@ export 'presentacion/pantalla_pedir_ayuda.dart' show PantallaPedirAyuda;
 export 'presentacion/proveedores_asistencia.dart'
     show
         abrirLlamadaProvider,
+        aseguradoraCargandoProvider,
         aseguradoraProvider,
         repositorioAsistenciaProvider,
         solicitudActivaProvider;

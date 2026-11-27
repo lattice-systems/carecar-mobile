@@ -28,6 +28,8 @@ Sin tablas nuevas: lee `cita` y la orden de servicio abierta (M04).
 | Método | Ruta | Uso |
 | --- | --- | --- |
 | GET | `/citas/{id}/pase?plataforma=apple\|google` | Pase firmado por el backend con el QR del comprobante (V2-M02.11). Apple responde el archivo `.pkpass` (`application/vnd.apple.pkpass`); Google responde `{url}` con el enlace «Guardar en Google Wallet» (`https://pay.google.com/gp/v/save/<jwt>`). 404 si la cita no es del cliente; 409 `CITA_CANCELADA` si está cancelada (el pase queda vencido); 503 `WALLET_NO_CONFIGURADO` si el servidor no tiene certificados. Simulado en `mock_api`. |
+| PUT | `/ordenes/{ordenId}/actividad-en-vivo` | Registra el push token (hexadecimal, máx. 300) de la Live Activity de la orden (V2-M25.05); el backend la actualiza por APNs y la termina al entregar. 204 (idempotente) · 400 · 404 si la orden es ajena · 409 `ORDEN_CERRADA` si ya se entregó. Simulado en `mock_api`. |
+| DELETE | `/ordenes/{ordenId}/actividad-en-vivo?pushToken=` | Da de baja esa actividad; sin `pushToken`, todas las del cliente en la orden (al cerrar sesión). 204 idempotente · 404. Simulado en `mock_api`. |
 
 ## Historias
 
@@ -188,3 +190,52 @@ Rediseño de los widgets de inicio: cinco widgets independientes que se agregan 
 - **Actualización por push:** ActivityKit actualiza por APNs con un `push token` por actividad. Eso necesita el mismo certificado y servicio de envío que V2-M06.02/V2-M06.07; la app solo debe mandar ese token al backend (endpoint nuevo a definir con Ricardo/Jael, p. ej. `PUT /ordenes/{id}/actividad-en-vivo`).
 - **Contenido:** etapa actual y progreso de `OrdenEnVivo` (el mismo contrato de V2-M04.02 que ya usa el widget del taller, V2-M25.02), para no inventar otro modelo.
 - **Pendiente para tomarla:** que M04.03 y M06.02 estén integradas, enlazar el target en Xcode y definir el endpoint del token.
+
+## Avance de V2-M25.05 y V2-M25.06 (Apple)
+
+Live Activity del taller en la pantalla bloqueada (V2-M25.05, solo iPhone) y pases de Apple Wallet que siguen a la cita (V2-M25.06). **Estado: implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode.** Por eso ninguna de las dos pasa a `Hecha`; `plan/tablero.md` lo mueve quien integra.
+
+**Backend** (`agencia-360-backend`, rama `feat/v2-m25-apple-backend`; diseño en `plan/historias-backend.md`, secciones de V2-M25.05 y V2-M25.06)
+
+- **APNs** detrás de la interfaz `EnvioApns`: `EnvioApnsReal` firma un JWT ES256 con la llave `.p8` (`APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_KEY_P8_BASE64`, `APNS_BUNDLE_ID`, `APNS_SANDBOX`), lo reutiliza 40 minutos y habla HTTP/2 con el cliente del JDK; `EnvioApnsFake` en pruebas. Sin las variables no se manda ningún push y nada falla (R8).
+- **Live Activity:** tabla `actividad_en_vivo` (migración V62), `PUT`/`DELETE /ordenes/{ordenId}/actividad-en-vivo` y `ActualizadorDeActividadesEnVivo`, que escucha el mismo `OrdenServicioCambiada` del SSE (apertura, etapa, adicional, respuesta) y manda `apns-push-type: liveactivity` con `aps.content-state` `{etapa, estatus, avance, adicionalesPendientes, entregaEstimada?}` (nombres de los enums y la hora en segundos desde 1970). Un cambio de etapa trae `alert` en español. **Al entregar** manda `event: end` con el estado final y `dismissal-date` a 15 minutos y marca las actividades inactivas; un token muerto (410, `BadDeviceToken`) también.
+- **Pases de Apple (V2-M25.06):** el `pass.json` lleva `webServiceURL` y `authenticationToken` (HMAC por cita) cuando hay URL pública HTTPS; **PassKit Web Service** fuera de `/api/v1/app` (`/v1/devices/...`, `/v1/passes/...`, `/v1/log`) con la tabla `registro_pase_apple`. Al cancelar la cita el pase sale **`voided`**; al **reprogramar** trae la fecha nueva; en ambos casos un push vacío por APNs a cada dispositivo registrado hace que Wallet lo vuelva a pedir. Google ya marcaba `EXPIRED` u horario nuevo. Nunca revierte la cancelación.
+
+**App**
+
+- **V2-M25.06: sin cambio de código.** El pase se actualiza o se anula desde el servidor; la app solo copió el párrafo nuevo de la descripción de `GET /citas/{citaId}/pase` en `api/agencia360-api-app-v2.yaml`.
+- **Contrato:** copiadas solo las rutas `PUT`/`DELETE /ordenes/{ordenId}/actividad-en-vivo`, el esquema `ActividadEnVivoToken` y ese párrafo, en los mismos lugares que en el backend y sin tocar `version`. `ORDEN_CERRADA` ya estaba mapeado. Lo vigila `test/contrato/contrato_actividad_en_vivo_test.dart`.
+- **Cliente del núcleo** (`lib/api/cliente_api.dart`, aditivo): `actualizarSinRespuesta` (PUT que contesta 204) y `eliminar` con `consulta` opcional.
+- **Dominio** (`lib/modulos/widgets/dominio/actividad_en_vivo.dart`): `EstadoDeActividad` con las mismas llaves y tipos del `content-state` del backend (la actualización local y la remota pintan lo mismo); `ServicioActividadEnVivo` (puente con ActivityKit), `RepositorioActividadEnVivo` y `OrdenYaEntregada`.
+- **Datos:** `ServicioActividadEnVivoCanal` (`MethodChannel` `carecar/actividad_en_vivo` y `EventChannel` `carecar/actividad_en_vivo/tokens`; `MissingPluginException` y `PlatformException` son «no disponible»), `ServicioActividadEnVivoNulo` (Android, escritorio, web, pruebas) y `ServicioActividadEnVivoFake`; `RepositorioActividadEnVivoApi` y su fake. En producción el canal solo se usa si `defaultTargetPlatform == TargetPlatform.iOS` (`servicioActividadEnVivoProvider`).
+- **`CoordinadorDeActividadEnVivo`**, instanciado dentro de `SincronizadorDeWidgets` (no se tocó `lib/main.dart`): con cada lista de `ordenesEnCursoProvider` (que ya se refresca con el evento `orden` del canal en vivo, al reconectar y al volver a primer plano) inicia una actividad por orden abierta, la repinta si cambió su estado, la termina con el estado final al dejar de estar abierta (entregada) y manda cada push token al `PUT`. Al cerrar sesión, con `registrarAntesDeCerrarSesion`, da de baja cada actividad (`DELETE` con su token) y las termina; al perder la sesión sin cerrarla o en un equipo comprometido solo las termina. También termina las que quedaron de una ejecución anterior y ya no corresponden a una orden abierta.
+- **iOS** (Swift escrito, sin compilar): `ios/CareCarWidgets/ActividadTallerAtributos.swift` (`AtributosActividadTaller` con solo `ordenId` y `EstadoActividadTaller: Codable, Hashable` con las llaves exactas), `ios/CareCarWidgets/ActividadTallerLiveActivity.swift` (pantalla bloqueada y Dynamic Island compacta, mínima y expandida: etapa grande, barra de avance, hora estimada y aviso «trabajo por aprobar»; textos de etapa de la app en es y en; un toque abre `carecar://taller/<id>`), registrada en `CareCarWidgetsBundle.swift`, y el puente `ios/Runner/PuenteActividadEnVivo.swift` (`Activity.request(..., pushType: .token)`, `pushTokenUpdates` en hexadecimal por el `EventChannel`, update y end con las APIs de iOS 16.1 y 16.2). `NSSupportsLiveActivities` en `Info.plist` e `Info-desarrollo.plist`.
+- **mock_api:** `PUT` y `DELETE /ordenes/:ordenId/actividad-en-vivo` en `mock_api/modulos/taller.js` (204, 400 `DATOS_INVALIDOS`, 404 y 409 `ORDEN_CERRADA` en formato `Problema`; tokens en memoria).
+- **Pruebas:** `estado_de_actividad_test.dart`, `servicio_actividad_en_vivo_canal_test.dart` (sin puente, error de plataforma, llamadas y tokens filtrados), `repositorio_actividad_en_vivo_test.dart`, `coordinador_de_actividad_en_vivo_test.dart` (ciclo completo, rotación de token, 409, sin red, cerrar y perder sesión, actividades de una ejecución anterior) y casos nuevos en `sincronizador_de_widgets_test.dart`.
+
+**Decisiones**
+
+1. **La actividad sale de `OrdenEnCurso` (`GET /ordenes/activas`), no de `OrdenEnVivo`.** Trae justo la etapa, el avance, los adicionales pendientes y la hora estimada, ya la usa el widget del taller y ya la refresca el evento `orden`; `OrdenEnVivo` pediría un `GET /ordenes/{id}` por orden y no se exporta en `taller.dart`. El `estatus` se deriva de la etapa con la misma regla que `EtapaTaller.estatus()` del backend. No se tocó el contrato del módulo `taller`.
+2. **La hora estimada viaja como segundos desde 1970 con el desfase fijo de la agencia (UTC−6).** El contrato la da en hora de la agencia sin zona; México no tiene horario de verano desde 2022 y el backend usa `America/Mexico_City`, así que el instante coincide con el del push. En Swift es `Int?` y no `Date`: el `JSONDecoder` por omisión de ActivityKit leería un `Date` como segundos desde 2001.
+3. **Una actividad por orden abierta** (un cliente con dos autos ve dos), cada una con su token; el backend ya admite varias.
+4. **Al entregar no se manda `DELETE`:** el backend ya marca la actividad inactiva con su `event: end`. Solo se da de baja al cerrar sesión, con el token de este teléfono para no quitar la de otro dispositivo del mismo cliente; una actividad de una ejecución anterior sin token conocido se da de baja sin `pushToken` (todas las del cliente en esa orden).
+5. **Reintentos:** un `409 ORDEN_CERRADA` termina la actividad y esa orden no se vuelve a iniciar en la sesión; un fallo de red se reintenta con el siguiente cambio de órdenes (evento `orden`, reconexión o primer plano). Nada de esto lanza ni escribe en logs.
+6. **Sin dependencia nueva:** canal propio en vez de un paquete de Live Activities (evita un PR `build(deps)`).
+7. **El puente nativo queda sin enlazar** y `AppDelegate.swift` sin cambios, para no romper la compilación de iOS: mientras tanto Dart recibe `MissingPluginException` y la actividad queda «no disponible». Sin UI Flutter nueva ni claves ARB nuevas (los textos de la Live Activity son nativos).
+
+**Pasos en Xcode para enlazarla** (además de los de «Avance de widgets múltiples», que crean el target `CareCarWidgets`)
+
+1. Agregar `ios/CareCarWidgets/ActividadTallerAtributos.swift` a **los dos targets**, `Runner` y `CareCarWidgets` (Target Membership), y `ActividadTallerLiveActivity.swift` solo a `CareCarWidgets`.
+2. Agregar `ios/Runner/PuenteActividadEnVivo.swift` al target `Runner`.
+3. En `ios/Runner/AppDelegate.swift`, dentro de `didInitializeImplicitFlutterEngine`, después de `GeneratedPluginRegistrant.register(...)`: `if let registrador = engineBridge.pluginRegistry.registrar(forPlugin: "PuenteActividadEnVivo") { PuenteActividadEnVivo.registrar(con: registrador) }`.
+4. Capacidad **Push Notifications** en `Runner` (entitlement `aps-environment`); la extensión no la necesita.
+5. `NSSupportsLiveActivities` = YES ya está en `ios/Runner/Info.plist` (y en `Info-desarrollo.plist`).
+6. Compilar y corregir lo que diga el compilador: el Swift no se compiló aquí (sin Mac).
+7. En el servidor: `APNS_*` con la llave `.p8` del mismo equipo y `APNS_BUNDLE_ID` igual al bundle id de `Runner`; `APNS_SANDBOX=true` para compilaciones de desarrollo.
+
+**Qué no se probó**
+
+- El Swift no se compiló (sin Xcode); se revisó a mano: `@available(iOS 16.1, *)`, imports `ActivityKit`, `WidgetKit`, `SwiftUI` y `Flutter`, y las APIs de 16.1 y 16.2.
+- ActivityKit y APNs reales, la decodificación del push del backend en un iPhone, el presupuesto de actualizaciones de Apple y la Dynamic Island en un teléfono.
+- Pases de Apple contra Wallet: guardar el pase, que Wallet se registre, cancelar y ver el pase `voided`. Con un Apple ID gratis tampoco funcionaría (no puede firmar `aps-environment`; ver `docs/guia-instalar-ios-sin-mac.md`).
+- Las rutas nuevas de `mock_api` solo se revisaron cargando el módulo con Node (no había `node_modules` para levantar el servidor).

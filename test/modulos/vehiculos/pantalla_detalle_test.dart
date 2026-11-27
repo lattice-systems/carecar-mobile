@@ -129,7 +129,7 @@ void main() {
     for (final texto in ['Historial de servicios', 'Ficha técnica']) {
       expect(find.text(texto), findsOneWidget);
     }
-    // Seis destinos en un solo grupo con chevron (V2-T02.23).
+    // Siete destinos en un solo grupo con chevron (V2-T02.23 y V2-M09.01).
     // Una flecha por fila de la lista (la tarjeta del próximo servicio lleva la
     // suya, fuera de la lista).
     expect(
@@ -137,7 +137,7 @@ void main() {
         of: find.byType(GrupoLista),
         matching: find.byIcon(LucideIcons300.chevronRight),
       ),
-      findsNWidgets(6),
+      findsNWidgets(7),
     );
     // Manual y Agendar ya estan en la portada: no se repiten abajo.
     expect(find.text('Manuales'), findsNothing);

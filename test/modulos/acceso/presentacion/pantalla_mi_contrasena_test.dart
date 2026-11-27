@@ -2,6 +2,9 @@ import 'package:carecar_mobile/modulos/acceso/acceso.dart';
 import 'package:carecar_mobile/nucleo/sesion/proveedores_sesion.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
+import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/nucleo/conexion/senal_de_conexion.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -30,14 +33,18 @@ void main() {
     return local;
   }
 
-  Widget app(RepositorioAccesoFake repo, ControladorSesion local) =>
-      ProviderScope(
-        overrides: [
-          repositorioAccesoProvider.overrideWithValue(repo),
-          controladorSesionProvider.overrideWithValue(local),
-        ],
-        child: conTemaPista(const PantallaMiContrasena()),
-      );
+  Widget app(
+    RepositorioAccesoFake repo,
+    ControladorSesion local, {
+    SenalDeConexion? senal,
+  }) => ProviderScope(
+    overrides: [
+      repositorioAccesoProvider.overrideWithValue(repo),
+      controladorSesionProvider.overrideWithValue(local),
+      if (senal != null) senalDeConexionProvider.overrideWithValue(senal),
+    ],
+    child: conTemaPista(const PantallaMiContrasena()),
+  );
 
   void prueba(String descripcion, Future<void> Function(WidgetTester) cuerpo) =>
       testWidgets(descripcion, (tester) async {
@@ -125,5 +132,36 @@ void main() {
     expect(repo.cerroTodas, isFalse);
     expect(local.estado, isA<Autenticada>());
     expect(find.text('Tu contraseña quedó actualizada'), findsNothing);
+  });
+
+  prueba('sin conexión no se puede guardar, y se explica (V2-M21.04)', (
+    tester,
+  ) async {
+    final repo = RepositorioAccesoFake();
+    final local = await sesionDentro();
+    final senal = SenalDeConexion();
+    await tester.pumpWidget(app(repo, local, senal: senal));
+    await tester.pumpAndSettle();
+    await llenar(tester);
+
+    senal.fallo(const SinConexion(null));
+    await tester.pumpAndSettle();
+
+    // Deshabilitado no basta: un botón apagado sin explicación se lee como un
+    // error de la app.
+    final boton = tester.widget<Boton>(
+      find.byKey(PantallaMiContrasena.botonGuardar),
+    );
+    expect(boton.alPresionar, isNull);
+    expect(find.byKey(PantallaMiContrasena.explicacionSinRed), findsOneWidget);
+
+    senal.acerto();
+    await tester.pumpAndSettle();
+
+    final otra = tester.widget<Boton>(
+      find.byKey(PantallaMiContrasena.botonGuardar),
+    );
+    expect(otra.alPresionar, isNotNull);
+    expect(find.byKey(PantallaMiContrasena.explicacionSinRed), findsNothing);
   });
 }

@@ -417,6 +417,23 @@ class ClienteApi {
     return _leerObjeto(respuesta, leer);
   }
 
+  /// PUT de los endpoints que contestan 204 sin cuerpo (registrar el push
+  /// token de la Live Activity de una orden, V2-M25.05).
+  Future<void> actualizarSinRespuesta(
+    String camino, {
+    required Object? cuerpo,
+  }) async {
+    final respuesta = await _pedir(
+      () async => _http.put(
+        config.ruta(camino),
+        headers: await _encabezados(conCuerpo: cuerpo != null),
+        body: cuerpo == null ? null : jsonEncode(cuerpo),
+      ),
+      conToken: true,
+    );
+    _verificarEstado(respuesta);
+  }
+
   /// PATCH que devuelve un objeto (cambiar parte de un recurso propio).
   ///
   /// Se separa de [actualizar] porque el verbo importa: un PUT dice «esta es
@@ -438,11 +455,15 @@ class ClienteApi {
     return _leerObjeto(respuesta, leer);
   }
 
-  /// DELETE de los endpoints que contestan 204 sin cuerpo.
-  Future<void> eliminar(String camino) async {
+  /// DELETE de los endpoints que contestan 204 sin cuerpo. [consulta] va en
+  /// la direccion y omite los valores nulos (V2-M25.05: el `pushToken` de la
+  /// Live Activity que se da de baja es opcional).
+  Future<void> eliminar(String camino, {Map<String, String?>? consulta}) async {
     final respuesta = await _pedir(
-      () async =>
-          _http.delete(config.ruta(camino), headers: await _encabezados()),
+      () async => _http.delete(
+        config.ruta(camino, consulta: consulta),
+        headers: await _encabezados(),
+      ),
       conToken: true,
     );
     _verificarEstado(respuesta);

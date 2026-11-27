@@ -57,12 +57,35 @@ void main() {
     expect(find.byType(PantallaSucursales), findsNothing);
   });
 
+  testWidgets('/contacto con sesión muestra Contacto', (tester) async {
+    await _montar(tester);
+    enrutadorDe(tester).go(rutaContacto);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PantallaContacto), findsOneWidget);
+    expect(find.textContaining('CareCar León'), findsOneWidget);
+  });
+
+  testWidgets('/contacto sin sesión manda al acceso', (tester) async {
+    await _montar(tester, conSesion: false);
+    enrutadorDe(tester).go(rutaContacto);
+    await tester.pumpAndSettle();
+
+    expect(pantallaDeAcceso, findsOneWidget);
+    expect(find.byType(PantallaContacto), findsNothing);
+  });
+
+  test('contacto y sucursales no son rutas públicas', () {
+    expect(Rutas.publicas.contains(rutaContacto), isFalse);
+  });
+
   test('las sucursales no son una ruta pública', () {
     expect(Rutas.publicas.contains(rutaSucursales), isFalse);
   });
 
   test('exporta sus rutas', () {
     expect(rutaSucursales, '/sucursales');
+    expect(rutaContacto, '/contacto');
     expect(rutasAyuda, isNotEmpty);
   });
 }

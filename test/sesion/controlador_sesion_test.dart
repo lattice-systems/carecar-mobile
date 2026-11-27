@@ -493,6 +493,76 @@ void main() {
     });
   });
 
+  group('tareas antes de cerrar sesion (V2-M06.02, V2-M25.05)', () {
+    // `/auth/cerrar-sesion` ya no lleva access token: lo que un modulo tenga
+    // que dar de baja a nombre de la cuenta (el token de push, una Live
+    // Activity) tiene que correr antes, con la sesion todavia guardada.
+    Future<void> entrar() => controlador.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'x',
+    );
+
+    test('corren antes de avisar al servidor y con la sesion viva', () async {
+      await entrar();
+      final vistos = <String>[];
+      controlador.registrarAntesDeCerrarSesion(() async {
+        final guardada = await almacen.leer();
+        vistos.add('token:${guardada?.accessToken != null}');
+        vistos.add('cierres:${api.cierresPedidos.length}');
+      });
+
+      await controlador.cerrarSesion();
+
+      expect(vistos, ['token:true', 'cierres:0']);
+      expect(api.cierresPedidos, ['refresco.valido']);
+    });
+
+    test('una tarea que falla no impide cerrar la sesion', () async {
+      await entrar();
+      controlador.registrarAntesDeCerrarSesion(
+        () async => throw StateError('sin red'),
+      );
+
+      await controlador.cerrarSesion();
+
+      expect(api.cierresPedidos, ['refresco.valido']);
+      expect(await almacen.leer(), isNull);
+      expect(controlador.estado, isA<SinSesion>());
+    });
+
+    test('quitarla hace que ya no corra', () async {
+      await entrar();
+      var corridas = 0;
+      final quitar = controlador.registrarAntesDeCerrarSesion(
+        () async => corridas++,
+      );
+
+      quitar();
+      await controlador.cerrarSesion();
+
+      expect(corridas, 0);
+    });
+
+    test('sin sesion guardada no corren: no hay a nombre de quien', () async {
+      var corridas = 0;
+      controlador.registrarAntesDeCerrarSesion(() async => corridas++);
+
+      await controlador.cerrarSesion();
+
+      expect(corridas, 0);
+    });
+
+    test('un 403 no las corre: el servidor ya no acepta la cuenta', () async {
+      await entrar();
+      var corridas = 0;
+      controlador.registrarAntesDeCerrarSesion(() async => corridas++);
+
+      await controlador.terminarPorCuentaDesactivada();
+
+      expect(corridas, 0);
+    });
+  });
+
   group('RIC-5 · el bloqueo por demasiados intentos', () {
     test('le dice al usuario cuanto tiene que esperar', () async {
       // `ClienteApi` ya lee el encabezado `Retry-After` y arma el texto, pero

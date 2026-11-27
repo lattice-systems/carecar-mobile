@@ -24,6 +24,7 @@ import '../../../nucleo/idioma/formato_numeros.dart';
 import '../../asistente/asistente.dart';
 import '../../bitacora/bitacora.dart';
 import '../../citas/citas.dart';
+import '../../documentos/documentos.dart';
 import '../../garantia/garantia.dart';
 import '../../historial/historial.dart';
 import '../../mantenimiento/mantenimiento.dart';
@@ -214,6 +215,12 @@ class _DetalleState extends State<_Detalle> {
                     icono: LucideIcons300.megaphone,
                     colorIcono: c.acento,
                     alToque: () => context.push(rutaCampanasVehiculo(v.id)),
+                  ),
+                  FilaGrupo(
+                    titulo: textos.documentosTitulo,
+                    icono: LucideIcons300.folderOpen,
+                    colorIcono: c.acento,
+                    alToque: () => context.push(rutaDocumentosVehiculo(v.id)),
                   ),
                 ],
               ),
