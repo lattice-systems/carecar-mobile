@@ -6180,4 +6180,114 @@ class AppLocalizationsEs extends AppLocalizations {
   String historialTicketPagar(String monto) {
     return 'Pagar $monto';
   }
+
+  @override
+  String get pagosBilleteraApplePay => 'Pagar con Apple Pay';
+
+  @override
+  String get pagosBilleteraGooglePay => 'Pagar con Google Pay';
+
+  @override
+  String get pagosBilleteraAyuda =>
+      'Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.';
+
+  @override
+  String pagosBilleteraMensaje(String monto, String billetera) {
+    return 'Vas a pagar $monto con $billetera. Es simulado: no se cobra nada.';
+  }
+
+  @override
+  String get pagosBilleteraConfirmar => 'Pagar';
+
+  @override
+  String get pagosBilleteraCancelar => 'Cancelar';
+
+  @override
+  String pagosPagadoFacturaMensaje(String monto, String referencia) {
+    return 'Pagaste $monto. Referencia $referencia. La factura simulada queda en el detalle del pago. No se cobró nada.';
+  }
+
+  @override
+  String get pagosVerFactura => 'Ver la factura';
+
+  @override
+  String pagosFacturaFolio(String folio) {
+    return 'Factura $folio';
+  }
+
+  @override
+  String get pagosFacturaTimbrada => 'Timbrada';
+
+  @override
+  String get pagosFacturaFolioFiscal => 'Folio fiscal';
+
+  @override
+  String pagosFacturaReceptor(String usoCfdi) {
+    return 'Receptor · uso $usoCfdi';
+  }
+
+  @override
+  String get pagosFacturaPdf => 'Descargar PDF';
+
+  @override
+  String get pagosFacturaXml => 'Descargar XML';
+
+  @override
+  String get pagosFacturaSimulada =>
+      'Factura simulada con estructura de CFDI 4.0, sin validez fiscal.';
+
+  @override
+  String get pagosFacturaErrorDescargar =>
+      'No se pudo descargar la factura. Intenta otra vez.';
+
+  @override
+  String get pagosFacturar => 'Facturar';
+
+  @override
+  String get pagosFacturarAyuda =>
+      'Con estos datos se timbra la factura simulada de este pago.';
+
+  @override
+  String get pagosFacturaSinPerfiles =>
+      'Para facturar este pago agrega tus datos fiscales.';
+
+  @override
+  String get pagosAgregarDatosFiscales => 'Agregar datos fiscales';
+
+  @override
+  String get pagosTimbradoRechazado =>
+      'El timbrado rechazó tus datos fiscales.';
+
+  @override
+  String get pagosTimbradoRazonSocial =>
+      'Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).';
+
+  @override
+  String get pagosTimbradoCodigoPostal =>
+      'Revisa el código postal de tu domicilio fiscal.';
+
+  @override
+  String get pagosTimbradoOtro => 'Revisa tus datos fiscales.';
+
+  @override
+  String get pagosCorregirDatosFiscales => 'Corregir datos fiscales';
+
+  @override
+  String get pagosFacturaYaFacturada => 'Este pago ya tiene factura.';
+
+  @override
+  String get pagosFacturaNoFacturable =>
+      'Este pago no se puede facturar desde la app.';
+
+  @override
+  String get pagosFacturaErrorFacturar =>
+      'No se pudo facturar. Intenta otra vez.';
+
+  @override
+  String get pagosFacturaEnLaAgencia =>
+      'Los pagos en caja se facturan en la agencia.';
+
+  @override
+  String get pagosFacturaSinConexion =>
+      'Sin conexión. Revisa tu internet e intenta de nuevo.';
 }

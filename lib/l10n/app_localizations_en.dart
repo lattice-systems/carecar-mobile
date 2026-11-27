@@ -6182,4 +6182,114 @@ class AppLocalizationsEn extends AppLocalizations {
   String historialTicketPagar(String monto) {
     return 'Pay $monto';
   }
+
+  @override
+  String get pagosBilleteraApplePay => 'Pay with Apple Pay';
+
+  @override
+  String get pagosBilleteraGooglePay => 'Pay with Google Pay';
+
+  @override
+  String get pagosBilleteraAyuda =>
+      'Simulated wallet: it is always approved and never saved. Below you can pay with a card.';
+
+  @override
+  String pagosBilleteraMensaje(String monto, String billetera) {
+    return 'You are about to pay $monto with $billetera. It is simulated: nothing is charged.';
+  }
+
+  @override
+  String get pagosBilleteraConfirmar => 'Pay';
+
+  @override
+  String get pagosBilleteraCancelar => 'Cancel';
+
+  @override
+  String pagosPagadoFacturaMensaje(String monto, String referencia) {
+    return 'You paid $monto. Reference $referencia. The simulated invoice is in the payment details. Nothing was charged.';
+  }
+
+  @override
+  String get pagosVerFactura => 'View the invoice';
+
+  @override
+  String pagosFacturaFolio(String folio) {
+    return 'Invoice $folio';
+  }
+
+  @override
+  String get pagosFacturaTimbrada => 'Stamped';
+
+  @override
+  String get pagosFacturaFolioFiscal => 'Tax folio';
+
+  @override
+  String pagosFacturaReceptor(String usoCfdi) {
+    return 'Recipient · use $usoCfdi';
+  }
+
+  @override
+  String get pagosFacturaPdf => 'Download PDF';
+
+  @override
+  String get pagosFacturaXml => 'Download XML';
+
+  @override
+  String get pagosFacturaSimulada =>
+      'Simulated invoice with a CFDI 4.0 structure, not valid for tax purposes.';
+
+  @override
+  String get pagosFacturaErrorDescargar =>
+      'The invoice could not be downloaded. Try again.';
+
+  @override
+  String get pagosFacturar => 'Invoice';
+
+  @override
+  String get pagosFacturarAyuda =>
+      'These details are used to stamp the simulated invoice for this payment.';
+
+  @override
+  String get pagosFacturaSinPerfiles =>
+      'To invoice this payment add your tax details.';
+
+  @override
+  String get pagosAgregarDatosFiscales => 'Add tax details';
+
+  @override
+  String get pagosTimbradoRechazado =>
+      'The stamping rejected your tax details.';
+
+  @override
+  String get pagosTimbradoRazonSocial =>
+      'Write the company name as on your tax certificate, without the legal form (no «S.A. de C.V.»).';
+
+  @override
+  String get pagosTimbradoCodigoPostal =>
+      'Check the postal code of your tax address.';
+
+  @override
+  String get pagosTimbradoOtro => 'Check your tax details.';
+
+  @override
+  String get pagosCorregirDatosFiscales => 'Fix tax details';
+
+  @override
+  String get pagosFacturaYaFacturada => 'This payment already has an invoice.';
+
+  @override
+  String get pagosFacturaNoFacturable =>
+      'This payment cannot be invoiced from the app.';
+
+  @override
+  String get pagosFacturaErrorFacturar =>
+      'The payment could not be invoiced. Try again.';
+
+  @override
+  String get pagosFacturaEnLaAgencia =>
+      'Payments at the cashier are invoiced at the dealership.';
+
+  @override
+  String get pagosFacturaSinConexion =>
+      'No connection. Check your internet and try again.';
 }

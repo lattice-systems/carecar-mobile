@@ -8186,5 +8186,151 @@
         "type": "String"
       }
     }
+  },
+  "pagosBilleteraApplePay": "Pagar con Apple Pay",
+  "@pagosBilleteraApplePay": {
+    "description": "Botón para pagar con la billetera simulada en iPhone (V2-M08.03)."
+  },
+  "pagosBilleteraGooglePay": "Pagar con Google Pay",
+  "@pagosBilleteraGooglePay": {
+    "description": "Botón para pagar con la billetera simulada en Android (V2-M08.03)."
+  },
+  "pagosBilleteraAyuda": "Billetera simulada: siempre se aprueba y no se guarda. Abajo puedes pagar con tarjeta.",
+  "@pagosBilleteraAyuda": {
+    "description": "Ayuda bajo el botón de la billetera (ADR 0009)."
+  },
+  "pagosBilleteraMensaje": "Vas a pagar {monto} con {billetera}. Es simulado: no se cobra nada.",
+  "@pagosBilleteraMensaje": {
+    "description": "Mensaje de la hoja simulada de la billetera.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "billetera": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosBilleteraConfirmar": "Pagar",
+  "@pagosBilleteraConfirmar": {
+    "description": "Confirma el pago en la hoja de la billetera."
+  },
+  "pagosBilleteraCancelar": "Cancelar",
+  "@pagosBilleteraCancelar": {
+    "description": "Cierra la hoja de la billetera sin pagar."
+  },
+  "pagosPagadoFacturaMensaje": "Pagaste {monto}. Referencia {referencia}. La factura simulada queda en el detalle del pago. No se cobró nada.",
+  "@pagosPagadoFacturaMensaje": {
+    "description": "Resultado de un pago aprobado que pidió factura (V2-M08.06).",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "referencia": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosVerFactura": "Ver la factura",
+  "@pagosVerFactura": {
+    "description": "Lleva del resultado del pago al detalle con su factura."
+  },
+  "pagosFacturaFolio": "Factura {folio}",
+  "@pagosFacturaFolio": {
+    "description": "Serie y folio de la factura simulada.",
+    "placeholders": {
+      "folio": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosFacturaTimbrada": "Timbrada",
+  "@pagosFacturaTimbrada": {
+    "description": "Subtítulo de la fecha de timbrado de la factura."
+  },
+  "pagosFacturaFolioFiscal": "Folio fiscal",
+  "@pagosFacturaFolioFiscal": {
+    "description": "Subtítulo del UUID del timbre simulado."
+  },
+  "pagosFacturaReceptor": "Receptor · uso {usoCfdi}",
+  "@pagosFacturaReceptor": {
+    "description": "Subtítulo de los datos fiscales de la factura.",
+    "placeholders": {
+      "usoCfdi": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosFacturaPdf": "Descargar PDF",
+  "@pagosFacturaPdf": {
+    "description": "Comparte el PDF de la factura."
+  },
+  "pagosFacturaXml": "Descargar XML",
+  "@pagosFacturaXml": {
+    "description": "Comparte el XML de la factura."
+  },
+  "pagosFacturaSimulada": "Factura simulada con estructura de CFDI 4.0, sin validez fiscal.",
+  "@pagosFacturaSimulada": {
+    "description": "Aviso fijo de la factura (ADR 0009)."
+  },
+  "pagosFacturaErrorDescargar": "No se pudo descargar la factura. Intenta otra vez.",
+  "@pagosFacturaErrorDescargar": {
+    "description": "Error al descargar el PDF o el XML."
+  },
+  "pagosFacturar": "Facturar",
+  "@pagosFacturar": {
+    "description": "Botón para timbrar la factura de un pago."
+  },
+  "pagosFacturarAyuda": "Con estos datos se timbra la factura simulada de este pago.",
+  "@pagosFacturarAyuda": {
+    "description": "Ayuda del selector de datos fiscales al facturar."
+  },
+  "pagosFacturaSinPerfiles": "Para facturar este pago agrega tus datos fiscales.",
+  "@pagosFacturaSinPerfiles": {
+    "description": "Aviso cuando el cliente no tiene datos fiscales."
+  },
+  "pagosAgregarDatosFiscales": "Agregar datos fiscales",
+  "@pagosAgregarDatosFiscales": {
+    "description": "Lleva al alta de datos fiscales."
+  },
+  "pagosTimbradoRechazado": "El timbrado rechazó tus datos fiscales.",
+  "@pagosTimbradoRechazado": {
+    "description": "Encabezado del error 422 TIMBRADO_RECHAZADO."
+  },
+  "pagosTimbradoRazonSocial": "Escribe la razón social como en tu constancia, sin el régimen societario (sin «S.A. de C.V.»).",
+  "@pagosTimbradoRazonSocial": {
+    "description": "Qué corregir cuando se rechaza la razón social."
+  },
+  "pagosTimbradoCodigoPostal": "Revisa el código postal de tu domicilio fiscal.",
+  "@pagosTimbradoCodigoPostal": {
+    "description": "Qué corregir cuando se rechaza el código postal."
+  },
+  "pagosTimbradoOtro": "Revisa tus datos fiscales.",
+  "@pagosTimbradoOtro": {
+    "description": "Qué corregir cuando se rechaza otro campo."
+  },
+  "pagosCorregirDatosFiscales": "Corregir datos fiscales",
+  "@pagosCorregirDatosFiscales": {
+    "description": "Lleva a editar el perfil fiscal rechazado."
+  },
+  "pagosFacturaYaFacturada": "Este pago ya tiene factura.",
+  "@pagosFacturaYaFacturada": {
+    "description": "Error 409 YA_FACTURADO."
+  },
+  "pagosFacturaNoFacturable": "Este pago no se puede facturar desde la app.",
+  "@pagosFacturaNoFacturable": {
+    "description": "Error 409 PAGO_NO_FACTURABLE."
+  },
+  "pagosFacturaErrorFacturar": "No se pudo facturar. Intenta otra vez.",
+  "@pagosFacturaErrorFacturar": {
+    "description": "Error genérico al facturar."
+  },
+  "pagosFacturaEnLaAgencia": "Los pagos en caja se facturan en la agencia.",
+  "@pagosFacturaEnLaAgencia": {
+    "description": "Aviso de un pago en caja sin factura."
+  },
+  "pagosFacturaSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo.",
+  "@pagosFacturaSinConexion": {
+    "description": "Sin conexión al facturar o descargar la factura."
   }
 }
