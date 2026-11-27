@@ -10617,6 +10617,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos abrir la app de mapas.'**
   String get sucursalesNoSePudoMapa;
+
+  /// Etiqueta del marcador del chofer en el mapa del seguimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu chofer'**
+  String get recoleccionSeguimientoMarcadorChofer;
 }
 
 class _AppLocalizationsDelegate
