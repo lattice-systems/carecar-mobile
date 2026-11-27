@@ -8422,42 +8422,24 @@
     "description": "Sin conexión al facturar o descargar la factura."
   },
   "sucursalesTitulo": "Sucursales",
-  "@sucursalesTitulo": [
-    [
-      "description",
-      "Título de la pantalla de sucursales con mapa y horarios."
-    ]
-  ],
+  "@sucursalesTitulo": {
+    "description": "Título de la pantalla de sucursales con mapa y horarios."
+  },
   "sucursalesCargando": "Cargando sucursales",
-  "@sucursalesCargando": [
-    [
-      "description",
-      "Lo que anuncia el lector de pantalla mientras cargan las sucursales."
-    ]
-  ],
+  "@sucursalesCargando": {
+    "description": "Lo que anuncia el lector de pantalla mientras cargan las sucursales."
+  },
   "sucursalesVacioTitulo": "Aún no hay sucursales",
   "sucursalesVacioMensaje": "Cuando la agencia publique sus sucursales, las verás aquí con su mapa y sus horarios.",
   "sucursalesMapaDe": "Mapa con la ubicación de {nombre}",
-  "@sucursalesMapaDe": [
-    [
-      "description",
-      "Nombre del mapa para el lector de pantalla."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "nombre",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesMapaDe": {
+    "description": "Nombre del mapa para el lector de pantalla.",
+    "placeholders": {
+      "nombre": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesAbiertoAhora": "Abierto ahora",
   "sucursalesAbierto": "Abierto",
   "@sucursalesAbierto": {
@@ -8470,157 +8452,69 @@
   "sucursalesTodas": "Todas las sucursales",
   "sucursalesSeleccionada": "Seleccionada",
   "sucursalesDepartamento": "{departamento, select, ventas{Ventas} servicio{Servicio} refacciones{Refacciones} other{Otro}}",
-  "@sucursalesDepartamento": [
-    [
-      "description",
-      "Nombre del departamento de la agencia que tiene su propio horario."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "departamento",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesDepartamento": {
+    "description": "Nombre del departamento de la agencia que tiene su propio horario.",
+    "placeholders": {
+      "departamento": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesDiaCorto": "{dia, select, 1{lun} 2{mar} 3{mié} 4{jue} 5{vie} 6{sáb} 7{dom} other{}}",
-  "@sucursalesDiaCorto": [
-    [
-      "description",
-      "Día de la semana abreviado; 1 es lunes y 7 domingo."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "dia",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesDiaCorto": {
+    "description": "Día de la semana abreviado; 1 es lunes y 7 domingo.",
+    "placeholders": {
+      "dia": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesDiasRango": "{desde} a {hasta}",
-  "@sucursalesDiasRango": [
-    [
-      "description",
-      "Tramo de días seguidos de un horario, por ejemplo «lun a vie»."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "desde",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ],
-        [
-          "hasta",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesDiasRango": {
+    "description": "Tramo de días seguidos de un horario, por ejemplo «lun a vie».",
+    "placeholders": {
+      "desde": {
+        "type": "String"
+      },
+      "hasta": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesTramo": "{dias}: {abre} a {cierra}",
-  "@sucursalesTramo": [
-    [
-      "description",
-      "Una línea de horario, por ejemplo «lun a vie: 08:00 a 18:00»."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "dias",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ],
-        [
-          "abre",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ],
-        [
-          "cierra",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesTramo": {
+    "description": "Una línea de horario, por ejemplo «lun a vie: 08:00 a 18:00».",
+    "placeholders": {
+      "dias": {
+        "type": "String"
+      },
+      "abre": {
+        "type": "String"
+      },
+      "cierra": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesDescripcionFila": "{nombre}, {estado}. {direccion}",
-  "@sucursalesDescripcionFila": [
-    [
-      "description",
-      "Lo que lee el lector de pantalla en la fila de una sucursal."
-    ],
-    [
-      "placeholders",
-      [
-        [
-          "nombre",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ],
-        [
-          "estado",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ],
-        [
-          "direccion",
-          [
-            [
-              "type",
-              "String"
-            ]
-          ]
-        ]
-      ]
-    ]
-  ],
+  "@sucursalesDescripcionFila": {
+    "description": "Lo que lee el lector de pantalla en la fila de una sucursal.",
+    "placeholders": {
+      "nombre": {
+        "type": "String"
+      },
+      "estado": {
+        "type": "String"
+      },
+      "direccion": {
+        "type": "String"
+      }
+    }
+  },
   "sucursalesNoSePudoLlamar": "No pudimos abrir el marcador del teléfono.",
   "sucursalesNoSePudoMapa": "No pudimos abrir la app de mapas.",
   "recoleccionSeguimientoMarcadorChofer": "Tu chofer",
-  "@recoleccionSeguimientoMarcadorChofer": {"description": "Etiqueta del marcador del chofer en el mapa del seguimiento."}
+  "@recoleccionSeguimientoMarcadorChofer": {
+    "description": "Etiqueta del marcador del chofer en el mapa del seguimiento."
+  }
 }
