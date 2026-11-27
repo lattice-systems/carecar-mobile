@@ -23,3 +23,20 @@ Se realizó el 27 de noviembre de 2026 por USB con `adb reverse tcp:8080 tcp:808
 - APK con la corrección del avatar, SHA-256 `9ACEBC758A25A1A45F189B6BFE64148F9AA51101907A18416C535F22E093A655`.
 
 La compilación se hizo en una copia temporal fuera de OneDrive con Android Gradle Plugin 9.1.1. En Windows sin enlaces simbólicos, se apartó la plataforma Windows solo en esa copia antes de `flutter pub get --offline`, para generar el registro de plugins Android.
+
+## Corrida física de Haziel en Android
+
+Samsung SM-G781U con Android 13, conectado por USB el 27 de noviembre de 2026. Se usó un APK `desarrollo` de depuración de la copia local de CareCar, versión 1.0.0. SHA-256 `E351EEA1653F950634A49327278D5E3F2A2849C5C0DC1A7093E4FFB4E0FC17DE`. Agencia360 corrió con datos ficticios y 46 migraciones de la copia local aplicadas en PostgreSQL embebido.
+
+| Caso | Resultado observado |
+| --- | --- |
+| H3.3 · V2-M09.02 | Haziel capturó una hoja de prueba con la cámara y guardó el documento. La API respondió HTTP 201 y la app volvió al listado con «Seguro · Tu archivo». La relectura devolvió un JPEG de 990 × 2200 px y 391 299 bytes. El documento seguía en la lista después de reiniciar el proceso de la app. |
+| H3.3 · V2-M09.03 | La factura y la póliza de garantía publicadas para el March aparecieron como documentos de agencia. Ambos archivos se abrieron en el visor y mostraron «Página 1 de 1». |
+| H3.3 · V2-M09.06 | El 2 de diciembre quedó marcado con dos vencimientos. Al seleccionarlo, la lista mostró una póliza de garantía para el March y otra para el Sentra. |
+| H4.2 · V2-M27.05 | Acerca de mostró la versión instalada 1.0.0. Se abrió Licencias de software y el WebView mostró el documento local de términos, incluidos sus encabezados. |
+
+Pasaron siete pruebas dirigidas de Flutter para Documentos y Acerca de. La corrida física corresponde a la implementación local. La adaptación de Documentos al contrato integrado de V2-M09.01 sigue pendiente.
+
+### Rendimiento en Android físico
+
+Se instaló el APK `desarrollo` en modo `profile`, SHA-256 `55F28931A0A77FE3A361CBC899C2442E752BC544C66B0D6AC143C054A8D401D5`, y se hizo un arranque en frío con la sesión de prueba guardada. El panel O8 registró una muestra. El primer cuadro de Flutter llegó en **449 ms** y la primera pantalla útil en **2265 ms**. Se estimaron **3 cuadros perdidos de 120 medidos**. El backend respondió HTTP 204 al evento y se desactivó el consentimiento al terminar.

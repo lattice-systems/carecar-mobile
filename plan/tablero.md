@@ -15,6 +15,8 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
+Avance de Haziel al revisar T03 y M23 · **9 de 30 historias en Hecha (30 %)**.
+
 ## H0 · Base de trabajo
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
@@ -64,13 +66,13 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | Hecha | #169 |
 | V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | Hecha | #171 |
 | V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | Hecha | #172 |
-| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | En revisión | [Reglas](../analysis_options.yaml) · CI pendiente |
+| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Hecha | #200 · [Reglas](../analysis_options.yaml) · [análisis sin avisos en dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
-| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | En revisión | [Flujo Android](../integration_test/flujo_principal_test.dart) · CI pendiente |
-| V2-T03.04 | Cobertura visible | Haziel |  | — | En revisión | [Resumen LCOV](../tool/resumir_cobertura.js) · CI pendiente |
-| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | En revisión | [Evidencia por criterio](cumplimiento-ficha.md#evidencia-automática-por-criterio) |
-| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
-| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En revisión | [Tres casos de H1 en Android físico](../docs/pruebas/evidencia.md#corrida-física-h1) |
+| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Hecha | #200 · [Flujo Android](../integration_test/flujo_principal_test.dart) · [reserva y cancelación en CI completa de main](https://github.com/lattice-systems/carecar-mobile/actions/runs/46054289718) |
+| V2-T03.04 | Cobertura visible | Haziel |  | — | Hecha | #200 · [Resumen LCOV](../tool/resumir_cobertura.js) · [artefacto cobertura-carecar en dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380#artifacts) |
+| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Hecha | #200 · [Matriz de evidencia](cumplimiento-ficha.md#evidencia-automática-por-criterio) · [prueba de arquitectura en CI de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Hecha | #200 · [Prueba de contrato](../test/contrato/mock_api_v2_test.dart) · [CI de dev con el mock habilitado](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En revisión | #212, #215 · [H1 en Android físico](../docs/pruebas/evidencia.md#corrida-física-h1) y [corrida parcial H3/H4 sobre implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) · pendiente completar y registrar los demás casos por hito |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Hecha | #128 |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
@@ -150,10 +152,10 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
 | V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
-| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
+| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Hecha | #200 · [Catálogo de eventos con propiedades y objetivos](../docs/analitica/eventos.md) |
 | V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
-| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
+| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | Hecha | #200 · [Prueba de consentimiento y bloqueo de envíos](../test/nucleo/analitica/consentimiento_test.dart) · [CI de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | #200, #215 · [Muestra de arranque en frío, primera pantalla y cuadros perdidos en Android físico](../docs/pruebas/evidencia.md#rendimiento-en-android-físico) sobre una implementación local |
 | V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
 
 ## H3 · Postventa viva
