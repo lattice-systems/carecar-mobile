@@ -50,6 +50,9 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
     // Teléfono de la sucursal principal (V2-M27.02); `Agencia` si aún carga,
     // falla o no hay sucursales: la pantalla sirve sin datos.
     final agencia = ref.watch(contactoDeAgenciaProvider);
+    // Mientras se lee la poliza no se dice que falta: seria falso un instante.
+    final buscando =
+        aseguradora == null && ref.watch(aseguradoraCargandoProvider);
     final contactos = contactosDeLlamada(
       telefonoAgencia: agencia.telefono,
       aseguradora: aseguradora,
@@ -77,10 +80,11 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
               GrupoLista(
                 encabezado: textos.asistenciaLlamarGrupo,
                 filas: [
-                  for (final contacto in contactos) _fila(context, contacto),
+                  for (final contacto in contactos)
+                    _fila(context, contacto, buscando: buscando),
                 ],
               ),
-              if (aseguradora == null) ...[
+              if (aseguradora == null && !buscando) ...[
                 const SizedBox(height: Espaciado.e3),
                 Aviso(mensaje: textos.asistenciaLlamarAseguradoraComoAgregar),
               ],
@@ -91,7 +95,11 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
     );
   }
 
-  FilaGrupo _fila(BuildContext context, ContactoDeLlamada contacto) {
+  FilaGrupo _fila(
+    BuildContext context,
+    ContactoDeLlamada contacto, {
+    required bool buscando,
+  }) {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
     final (titulo, detalle, icono, color) = switch (contacto.tipo) {
@@ -111,6 +119,8 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
         contacto.nombre ?? textos.asistenciaLlamarAseguradora,
         contacto.puedeLlamar
             ? contacto.telefono!
+            : buscando
+            ? textos.asistenciaLlamarAseguradoraBuscando
             : textos.asistenciaLlamarAseguradoraFalta,
         LucideIcons300.shield,
         c.acento,
