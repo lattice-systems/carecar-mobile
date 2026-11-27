@@ -370,4 +370,4 @@ La v1 sí funciona hoy (correo con código). Encender la v2 sin resolver esto ca
 
 **Para encender la recuperación v2** (lo que sigue y a quién le toca decidir): (a) el dominio real y sus dos archivos de verificación (T01.03 lo dejó como `CONFIGURAR`), (b) que el backend mande el enlace que la app reconoce o que la app acepte también `restablecer-contrasena`, (c) probarlo en un celular con un correo real, que es también lo que le falta a la fila de `cumplimiento-ficha.md`, y (d) agregar `ModuloMigrable.recuperacion` a `InterruptorModulos.porDefecto`. Mientras tanto se prueba con `--dart-define=MODULOS_V2=recuperacion`.
 
-**Pendiente:** demostrar el inicio de sesión v2 en un celular real (fila de `cumplimiento-ficha.md`); V2-M01.10 (cambiar la contraseña desde Ajustes) sigue abriendo la pantalla v1.
+**Pendiente:** demostrar el inicio de sesión v2 en un celular real (fila de `cumplimiento-ficha.md`). V2-M01.10 ya conectó «Cambiar contraseña» de Ajustes con la pantalla v2 (`/mi-contrasena`), y la prueba `test/nucleo/migracion/convivencia_acceso_test.dart` lo comprueba con el acceso v2 por defecto.
