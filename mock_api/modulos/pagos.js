@@ -1,4 +1,6 @@
+const crypto = require('crypto');
 const { BASE, problema, noEncontrado, paginar } = require('../comun/http');
+const construirTicketPdf = require('../comun/ticket_pdf');
 
 module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emitirEvento) {
   // ── pagos y facturas: datos fiscales ──
@@ -168,7 +170,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
   // V2-M14.04: Un pedido de la tienda se paga con las mismas tarjetas si es
   // del cliente, esta apartado o listo, no ha vencido, tiene total y nadie lo
   // ha pagado. Pagado no suma puntos (son por servicio) y ya no vence.
-  db.defaults({ pagosApp: [], metodosPago: [] }).write();
+  // V2-M08.03: Apple Pay y Google Pay simulados (`billetera`) se aprueban
+  // siempre, sin 3-D Secure, y no se guardan.
+  db.defaults({ pagosApp: [], metodosPago: [], facturasApp: [] }).write();
 
   const TARJETAS = {
     tok_sim_visa: { marca: 'VISA', ultimos4: '4242', tipo: 'CREDITO', escenario: 'APROBADA' },
@@ -207,6 +211,8 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     perfilFiscalId: p.perfilFiscalId ?? null,
     pagadoEn: p.pagadoEn ?? null,
     creadoEn: p.creadoEn,
+    factura: publicaFactura(facturaDelPago(p.id)),
+    facturable: p.estado === 'PAGADO' && p.medio !== 'CAJA' && !facturaDelPago(p.id),
   });
   const publicoMetodo = (m) => {
     const hoy = new Date();
@@ -229,6 +235,104 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       .filter({ clienteId })
       .orderBy([(m) => (m.predeterminado ? 0 : 1), 'id'])
       .value();
+  // ── facturas ──
+  // V2-M08.06 · El timbrado simulado del backend (TimbradorSimulado, ADR
+  // 0009): serie A, folio fiscal al azar, rechaza una razón social de
+  // persona moral con el régimen societario («S.A. de C.V.») o un código
+  // postal menor a 01000 con 422 TIMBRADO_RECHAZADO y `campos`. Se timbra
+  // sola al quedar pagado con datos fiscales, o con POST /pagos/{id}/factura.
+  const EMISOR = { rfc: 'EKU9003173C9', nombre: 'ESCUELA KEMPER URGATE', regimenFiscal: '601', codigoPostal: '42501' };
+  const REGIMENES = new Set([
+    'SA', 'SADECV', 'SAB', 'SABDECV', 'SAPI', 'SAPIDECV', 'SAS', 'SASDECV', 'SDERL', 'SDERLDECV', 'SDERLMI',
+    'SC', 'SCDERL', 'AC', 'SCP', 'SPR', 'SPRDERL',
+  ]);
+  const facturaDelPago = (pagoId) => db.get('facturasApp').find({ pagoId }).value();
+  const publicaFactura = (f) =>
+    f
+      ? {
+          id: f.id,
+          pagoId: f.pagoId,
+          folio: f.folio,
+          uuid: f.uuid,
+          rfcReceptor: f.receptor.rfc,
+          razonSocialReceptor: f.receptor.razonSocial,
+          usoCfdi: f.receptor.usoCfdi,
+          total: f.total,
+          simulada: true,
+          timbradaEn: f.timbradaEn,
+        }
+      : null;
+
+  function rechazosDelTimbrado(perfil) {
+    const campos = {};
+    if (perfil.rfc.length === 12) {
+      const palabras = perfil.razonSocial.toUpperCase().replace(/[.,]/g, ' ').split(/\s+/).filter(Boolean);
+      for (let n = 1; n <= Math.min(8, palabras.length - 1); n++) {
+        if (REGIMENES.has(palabras.slice(-n).join(''))) {
+          campos.razonSocial = 'Escribe la razón social sin el régimen societario, como en la constancia';
+          break;
+        }
+      }
+    }
+    if (Number(perfil.codigoPostal) < 1000) campos.codigoPostal = 'El código postal no existe en el catálogo del SAT';
+    return campos;
+  }
+
+  function timbrar(pago, perfil) {
+    const id = siguiente('facturasApp');
+    const factura = {
+      id,
+      clienteId: pago.clienteId,
+      pagoId: pago.id,
+      folio: `A-${String(123 + id).padStart(6, '0')}`,
+      uuid: crypto.randomUUID().toUpperCase(),
+      receptor: {
+        rfc: perfil.rfc,
+        razonSocial: perfil.razonSocial,
+        regimenFiscal: perfil.regimenFiscal,
+        codigoPostal: perfil.codigoPostal,
+        usoCfdi: perfil.usoCfdi,
+      },
+      formaPago: pago.tipoTarjeta === 'DEBITO' ? '28' : '04',
+      total: pago.monto,
+      timbradaEn: ahora(),
+    };
+    db.get('facturasApp').push(factura).write();
+    pago.perfilFiscalId = perfil.id;
+    db.get('pagosApp').find({ id: pago.id }).assign({ perfilFiscalId: perfil.id }).write();
+    emitirEvento(pago.clienteId, 'factura.timbrada', { facturaId: id, pagoId: pago.id });
+    return factura;
+  }
+
+  function xmlDe(f) {
+    const base = (f.total / 1.16).toFixed(2);
+    const iva = (f.total - Number(base)).toFixed(2);
+    const fecha = f.timbradaEn.slice(0, 19);
+    const r = f.receptor;
+    const attr = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    return (
+      '<?xml version="1.0" encoding="UTF-8"?>\n' +
+      '<cfdi:Comprobante xmlns:cfdi="http://www.sat.gob.mx/cfd/4" Version="4.0" Serie="A" ' +
+      `Folio="${f.folio.slice(2)}" Fecha="${fecha}" FormaPago="${f.formaPago}" SubTotal="${base}" Moneda="MXN" ` +
+      `Total="${f.total.toFixed(2)}" TipoDeComprobante="I" Exportacion="01" MetodoPago="PUE" ` +
+      `LugarExpedicion="${EMISOR.codigoPostal}" Sello="SIMULADO" NoCertificado="00000000000000000000" Certificado="SIMULADO">\n` +
+      `  <cfdi:Emisor Rfc="${EMISOR.rfc}" Nombre="${EMISOR.nombre}" RegimenFiscal="${EMISOR.regimenFiscal}"/>\n` +
+      `  <cfdi:Receptor Rfc="${attr(r.rfc)}" Nombre="${attr(r.razonSocial)}" DomicilioFiscalReceptor="${attr(r.codigoPostal)}" ` +
+      `RegimenFiscalReceptor="${attr(r.regimenFiscal)}" UsoCFDI="${attr(r.usoCfdi)}"/>\n` +
+      '  <cfdi:Conceptos>\n' +
+      `    <cfdi:Concepto ClaveProdServ="78181500" Cantidad="1" ClaveUnidad="E48" Descripcion="Pago ${f.pagoId} (API simulada)" ` +
+      `ValorUnitario="${base}" Importe="${base}" ObjetoImp="02"/>\n` +
+      '  </cfdi:Conceptos>\n' +
+      `  <cfdi:Impuestos TotalImpuestosTrasladados="${iva}"/>\n` +
+      '  <cfdi:Complemento>\n' +
+      '    <tfd:TimbreFiscalDigital xmlns:tfd="http://www.sat.gob.mx/TimbreFiscalDigital" Version="1.1" ' +
+      `UUID="${f.uuid}" FechaTimbrado="${fecha}" RfcProvCertif="SIM010101AA1" ` +
+      'Leyenda="Factura simulada, sin validez fiscal" SelloCFD="SIMULADO" NoCertificadoSAT="00000000000000000000" SelloSAT="SIMULADO"/>\n' +
+      '  </cfdi:Complemento>\n' +
+      '</cfdi:Comprobante>\n'
+    );
+  }
+
   const pagadoDe = (ordenId) => db.get('pagosApp').find({ ordenId, estado: 'PAGADO' }).value();
   const pagadoDelPedido = (pedidoId) => db.get('pagosApp').find({ pedidoId, estado: 'PAGADO' }).value();
 
@@ -303,6 +407,10 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       pedidoId: pago.pedidoId ?? null,
       estado: 'PAGADO',
     });
+    const perfil = pago.perfilFiscalId == null ? null : db.get('perfilesFiscales').find({ id: pago.perfilFiscalId }).value();
+    if (perfil && pago.medio !== 'CAJA' && Object.keys(rechazosDelTimbrado(perfil)).length === 0) {
+      timbrar(pago, perfil);
+    }
   }
 
   function aplicar(pago, respuesta) {
@@ -332,8 +440,12 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     }
     const cuerpo = req.body || {};
     const conToken = Boolean(cuerpo.tarjeta && cuerpo.tarjeta.token);
-    if (conToken === (cuerpo.metodoPagoId != null)) {
-      return problema(req, res, 400, 'Paga con una tarjeta nueva o con una guardada, no con las dos', 'DATOS_INVALIDOS');
+    const conBilletera = cuerpo.billetera != null;
+    if ([conToken, cuerpo.metodoPagoId != null, conBilletera].filter(Boolean).length !== 1) {
+      return problema(req, res, 400, 'Paga con una tarjeta nueva, una guardada o una billetera, solo una', 'DATOS_INVALIDOS');
+    }
+    if (conBilletera && !['APPLE_PAY', 'GOOGLE_PAY'].includes(cuerpo.billetera)) {
+      return problema(req, res, 400, 'La billetera es APPLE_PAY o GOOGLE_PAY', 'DATOS_INVALIDOS');
     }
     const repetido = db.get('pagosApp').find({ clienteId, llave }).value();
     if (repetido) {
@@ -354,7 +466,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     let mesVence;
     let anioVence;
     let metodoPagoId = null;
-    if (conToken) {
+    if (conBilletera) {
+      token = cuerpo.billetera === 'APPLE_PAY' ? 'tok_sim_apple_pay' : 'tok_sim_google_pay';
+    } else if (conToken) {
       token = String(cuerpo.tarjeta.token).trim();
       mesVence = Number(cuerpo.tarjeta.mesVence);
       anioVence = Number(cuerpo.tarjeta.anioVence);
@@ -374,7 +488,9 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     if (perfilFiscalId != null && !db.get('perfilesFiscales').find({ id: perfilFiscalId, clienteId }).value()) {
       return noEncontrado(req, res);
     }
-    const tarjeta = TARJETAS[token];
+    const tarjeta = conBilletera
+      ? { marca: null, ultimos4: null, tipo: 'CREDITO', escenario: 'APROBADA' }
+      : TARJETAS[token];
     const pago = {
       id: siguiente('pagosApp'),
       clienteId,
@@ -383,7 +499,7 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       vehiculoId: cobro.vehiculoId,
       monto: cobro.monto,
       moneda: 'MXN',
-      medio: 'TARJETA',
+      medio: conBilletera ? cuerpo.billetera : 'TARJETA',
       marca: tarjeta.marca,
       ultimos4: tarjeta.ultimos4,
       tipoTarjeta: tarjeta.tipo,
@@ -398,7 +514,7 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
       creadoEn: ahora(),
       token,
       llave,
-      guardar: metodoPagoId == null && cuerpo.guardarTarjeta === true,
+      guardar: conToken && cuerpo.guardarTarjeta === true,
       mesVence,
       anioVence,
     };
@@ -489,6 +605,56 @@ module.exports = function registrarPagos(servidor, db, vehiculoDelCliente, emiti
     const pago = db.get('pagosApp').find({ id: Number(req.params.pagoId), clienteId }).value();
     if (!pago) return noEncontrado(req, res);
     res.jsonp(publicoPago(pago));
+  });
+
+  servidor.post(`${BASE}/pagos/:pagoId/factura`, (req, res) => {
+    const clienteId = req.sesion.clienteId;
+    const pago = db.get('pagosApp').find({ id: Number(req.params.pagoId), clienteId }).value();
+    if (!pago) return noEncontrado(req, res);
+    const perfilFiscalId = (req.body || {}).perfilFiscalId;
+    if (perfilFiscalId == null) return problema(req, res, 400, 'Falta perfilFiscalId', 'DATOS_INVALIDOS');
+    const perfil = db.get('perfilesFiscales').find({ id: Number(perfilFiscalId), clienteId }).value();
+    if (!perfil) return noEncontrado(req, res);
+    if (facturaDelPago(pago.id)) return problema(req, res, 409, 'El pago ya tiene factura', 'YA_FACTURADO');
+    if (pago.estado !== 'PAGADO' || pago.medio === 'CAJA') {
+      return problema(req, res, 409, 'El pago no se puede facturar desde la app', 'PAGO_NO_FACTURABLE');
+    }
+    const campos = rechazosDelTimbrado(perfil);
+    if (Object.keys(campos).length > 0) {
+      return res.status(422).jsonp({
+        timestamp: new Date().toISOString(),
+        status: 422,
+        error: 'Unprocessable Entity',
+        message: 'El timbrado rechazó los datos fiscales',
+        codigo: 'TIMBRADO_RECHAZADO',
+        campos,
+        path: req.originalUrl.split('?')[0],
+      });
+    }
+    res.status(201).jsonp(publicaFactura(timbrar(pago, perfil)));
+  });
+
+  servidor.get(`${BASE}/facturas/:facturaId/:formato(pdf|xml)`, (req, res) => {
+    const factura = db.get('facturasApp').find({ id: Number(req.params.facturaId), clienteId: req.sesion.clienteId }).value();
+    if (!factura) return noEncontrado(req, res);
+    const nombre = `factura-${factura.folio}.${req.params.formato}`;
+    res.set('Content-Disposition', `attachment; filename="${nombre}"`);
+    res.set('Cache-Control', 'no-store');
+    if (req.params.formato === 'xml') return res.type('application/xml').send(xmlDe(factura));
+    const r = factura.receptor;
+    res.type('application/pdf').send(
+      construirTicketPdf([
+        'FACTURA SIMULADA, SIN VALIDEZ FISCAL (API simulada)',
+        '',
+        `Folio ${factura.folio}`,
+        `Folio fiscal: ${factura.uuid}`,
+        `Emisor: ${EMISOR.nombre} (${EMISOR.rfc})`,
+        `Receptor: ${r.razonSocial} (${r.rfc}) - Uso del CFDI ${r.usoCfdi}`,
+        `Total: $${factura.total.toFixed(2)} MXN - Forma de pago ${factura.formaPago} - PUE`,
+        '',
+        'Este documento no es un CFDI: el timbre y los sellos son simulados.',
+      ]),
+    );
   });
 
   servidor.get(`${BASE}/metodos-pago`, (req, res) => {
