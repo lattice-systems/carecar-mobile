@@ -195,6 +195,36 @@ module.exports = function registrarTaller(servidor, db, vehiculoDelCliente, emit
     res.jsonp(comoOrdenEnVivo(orden, vehiculo));
   });
 
+  // V2-M25.05: push tokens de la Live Activity por orden, solo en memoria (el
+  // mock no manda pushes; basta con aceptarlos como el backend).
+  const actividadesEnVivo = new Map();
+
+  servidor.put(`${BASE}/ordenes/:ordenId/actividad-en-vivo`, (req, res) => {
+    const encontrada = ordenDelCliente(req, req.params.ordenId);
+    if (!encontrada) return noEncontrado(req, res);
+    const { pushToken } = req.body || {};
+    if (typeof pushToken !== 'string' || pushToken.length > 300 || !/^[0-9a-fA-F]+$/.test(pushToken)) {
+      return problema(req, res, 400, 'El pushToken debe ser hexadecimal de hasta 300 caracteres', 'DATOS_INVALIDOS');
+    }
+    if (etapaActual(encontrada.orden) === 'ENTREGADO') {
+      return problema(req, res, 409, 'La orden ya se entregó', 'ORDEN_CERRADA');
+    }
+    const tokens = actividadesEnVivo.get(encontrada.orden.id) || new Set();
+    tokens.add(pushToken);
+    actividadesEnVivo.set(encontrada.orden.id, tokens);
+    res.status(204).end();
+  });
+
+  servidor.delete(`${BASE}/ordenes/:ordenId/actividad-en-vivo`, (req, res) => {
+    const encontrada = ordenDelCliente(req, req.params.ordenId);
+    if (!encontrada) return noEncontrado(req, res);
+    const { pushToken } = req.query;
+    const tokens = actividadesEnVivo.get(encontrada.orden.id);
+    if (tokens && typeof pushToken === 'string') tokens.delete(pushToken);
+    else actividadesEnVivo.delete(encontrada.orden.id);
+    res.status(204).end();
+  });
+
   // Emisor de prueba fuera del contrato (sin token): hace de taller mientras el
   // ERP no tenga pantalla. Pasa la orden de etapa y avisa en vivo.
   servidor.post('/__mock/ordenes/:ordenId/etapa', (req, res) => {

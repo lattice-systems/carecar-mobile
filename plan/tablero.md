@@ -117,7 +117,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M02.09 | Ver mis citas próximas y pasadas con su estado | Juan Pablo |  | V2-M02.08 | Hecha | #65 |
 | V2-M02.10 | Cancelar una cita desde la app | Juan Pablo |  | V2-M02.09 | Hecha | #65 |
 | V2-M02.11 | Un comprobante con QR de mi cita | Juan Pablo | B | V2-M02.08 | Hecha | #65, backend#70 |
-| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Hecha | #130 |
+| V2-M02.12 | Agregar la cita a mi calendario del teléfono | Juan Pablo |  | V2-M02.08, V2-M27.02 | Hecha | #130, #203 · con la dirección real de la sucursal principal |
 | V2-M02.13 | Reprogramar una cita sin cancelarla | Juan Pablo | B | V2-M02.10 | Hecha | #65, backend#70 |
 | V2-M03.01 | Ver el catálogo de modelos actuales | Cristian |  | V2-T02.05 (provisional) | Hecha | #45 |
 | V2-M03.02 | El detalle de un modelo con galería y versiones | Cristian | B | V2-M03.01 | Hecha | #62, backend#68 |
@@ -171,16 +171,16 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
-| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98 |
+| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #130, backend#98, backend#117 · el recordatorio ya sale como push y queda en la bandeja (backend#117); llega al teléfono cuando haya FCM real y la app registre el token (V2-M06.02) |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
-| V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
+| V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En curso | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend hecho (`PUT`/`DELETE /dispositivos/{instalacionId}`, FCM HTTP v1 detrás de `EnvioPush`); falta la parte de la app; FCM real pendiente de credenciales |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | Lista | |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | Lista | |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
-| V2-M06.07 | Un servicio único de envío en el backend | Jael | B | V2-T05.01 | Lista | |
-| V2-M09.01 | Ver los documentos de mi auto con su estado | Haziel | B | V2-M02.02 | Lista | |
+| V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | En revisión | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda); FCM real pendiente de credenciales |
+| V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | En revisión | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 |
 | V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
 | V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
@@ -215,8 +215,8 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
 | V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
-| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | En revisión | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
-| V2-M27.03 | Contactar a la agencia por el medio que prefiera | Haziel |  | V2-M27.02 | Lista | |
+| V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
+| V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | En revisión | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
 
@@ -257,7 +257,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | V2-M11.01 | Pedir ayuda con mi ubicación | Juan Pablo | B | V2-M02.01, V2-T02.11 | Hecha | #94, backend#86 |
-| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Hecha | #130 |
+| V2-M11.02 | Llamar rápido a mi aseguradora o a la agencia | Juan Pablo |  | V2-M09.01, V2-M27.02 | Hecha | #130, #203 · aseguradora real desde la póliza (V2-M09.01) y teléfono de la sucursal principal |
 | V2-M11.03 | Guías de emergencia sin conexión | Juan Pablo |  | — | Hecha | #65, #121 |
 | V2-M11.04 | Ver el estado de mi solicitud | Juan Pablo | B | V2-M11.01, V2-M06.02, V2-T02.13 (provisional) | Hecha | #104, backend#88 |
 | V2-M18.01 | Registrar una carga de gasolina | Juan Pablo | B | V2-M05.03 | Hecha | #104, backend#88 |
@@ -283,8 +283,8 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Hecha | #119 |
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Hecha | #71, backend#73 |
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
-| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Lista | |
-| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | En curso | backend#98, #130 |
+| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | En revisión | #203, backend#117 · implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode |
+| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | En revisión | backend#98, #130, backend#117, #203 · implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode |
 
 ## H7 · Lista para entregar
 

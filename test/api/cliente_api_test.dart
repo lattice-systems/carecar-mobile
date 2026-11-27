@@ -555,4 +555,56 @@ void main() {
       );
     });
   });
+
+  group('PUT sin respuesta y DELETE con consulta (V2-M25.05)', () {
+    test('actualizarSinRespuesta manda PUT con JSON y acepta un 204', () async {
+      String? metodo;
+      Uri? ruta;
+      String? cuerpo;
+      final cliente = _clienteQueResponde((req) {
+        metodo = req.method;
+        ruta = req.url;
+        cuerpo = req.body;
+        return http.Response('', 204);
+      });
+
+      await cliente.actualizarSinRespuesta(
+        '/ordenes/41/actividad-en-vivo',
+        cuerpo: {'pushToken': 'aabb'},
+      );
+
+      expect(metodo, 'PUT');
+      expect(ruta!.path, '/api/v1/app/ordenes/41/actividad-en-vivo');
+      expect(jsonDecode(cuerpo!), {'pushToken': 'aabb'});
+    });
+
+    test('actualizarSinRespuesta mapea un 409 a Conflicto', () async {
+      final cliente = _clienteQueResponde((_) => _problema(409, 'Entregada'));
+      await expectLater(
+        cliente.actualizarSinRespuesta('/ordenes/41/x', cuerpo: const {}),
+        throwsA(isA<Conflicto>()),
+      );
+    });
+
+    test('eliminar manda la consulta y omite los valores nulos', () async {
+      final rutas = <Uri>[];
+      final cliente = _clienteQueResponde((req) {
+        rutas.add(req.url);
+        return http.Response('', 204);
+      });
+
+      await cliente.eliminar(
+        '/ordenes/41/actividad-en-vivo',
+        consulta: {'pushToken': 'aabb'},
+      );
+      await cliente.eliminar(
+        '/ordenes/41/actividad-en-vivo',
+        consulta: {'pushToken': null},
+      );
+
+      expect(rutas[0].queryParameters, {'pushToken': 'aabb'});
+      expect(rutas[1].hasQuery, isFalse);
+      expect(rutas[1].path, '/api/v1/app/ordenes/41/actividad-en-vivo');
+    });
+  });
 }

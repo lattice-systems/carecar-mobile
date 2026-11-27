@@ -104,6 +104,7 @@ Revisado contra el proyecto iOS actual (`ios/Runner`): **no hay archivo de entit
 | Sesión guardada en el llavero (`flutter_secure_storage`) | Sí | Funciona; se pierde si refirmas con otro Apple ID o bundle id. |
 | **Notificaciones push** remotas (APNs) | No las usa todavía | **No funcionarían**: una cuenta gratis no puede firmar con `aps-environment`. |
 | **Widget de la próxima cita** (WidgetKit, V2-M25.01) | No viene en el IPA: la extensión aún no está en el proyecto Xcode | Cuando se agregue necesitará **App Groups** y una extensión (otro App ID); con cuenta gratis Sideloadly suele quitar la capacidad o fallar, y el widget podría no mostrar datos. |
+| **Live Activity del taller** (pantalla bloqueada y Dynamic Island, V2-M25.05) | No viene en el IPA: el puente y la vista aún no están en el proyecto Xcode (pasos en `plan/modulos/M25-widgets-y-wallet.md`); la app la trata como «no disponible» | Iniciarla desde la app podría funcionar, pero **no se actualizaría por push**: el backend la sigue por APNs y una cuenta gratis no puede firmar con `aps-environment`. |
 | **Enlaces universales** (`https://…` que abren la app; Associated Domains) | No configurados | **No funcionarían** con cuenta gratis. |
 | **Iniciar sesión con Apple**, iCloud, Apple Pay | No los usa | **No funcionarían** con cuenta gratis. |
 
