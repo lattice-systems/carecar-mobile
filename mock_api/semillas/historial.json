@@ -35,7 +35,8 @@
           "importe": 300
         }
       ],
-      "total": 4250.5
+      "total": 4250.5,
+      "delTaller": true
     },
     {
       "id": 2,
@@ -61,7 +62,8 @@
         }
       ],
       "total": 2300,
-      "puntosGanados": 230
+      "puntosGanados": 230,
+      "delTaller": true
     },
     {
       "id": 3,
@@ -104,7 +106,8 @@
           "importe": 649.25
         }
       ],
-      "total": 6119.75
+      "total": 6119.75,
+      "delTaller": true
     },
     {
       "id": 6,
@@ -154,7 +157,8 @@
           "importe": 900
         }
       ],
-      "total": 1540
+      "total": 1540,
+      "delTaller": true
     },
     {
       "id": 5,
@@ -179,7 +183,8 @@
           "importe": 980
         }
       ],
-      "total": 980
+      "total": 980,
+      "delTaller": true
     }
   ]
 }

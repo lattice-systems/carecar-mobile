@@ -31,7 +31,7 @@ require('./modulos/bitacora')(servidor, db, vehiculoDelCliente);
 require('./modulos/garantia')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/valuacion')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/lealtad')(servidor, db, emitirEvento);
-require('./modulos/pagos')(servidor, db);
+require('./modulos/pagos')(servidor, db, vehiculoDelCliente, emitirEvento);
 require('./modulos/tienda')(servidor, db, vehiculoDelCliente, emitirEvento);
 
 // Devuelve Problema para cualquier otra ruta de la app.

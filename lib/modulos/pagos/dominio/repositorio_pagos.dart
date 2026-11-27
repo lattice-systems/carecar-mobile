@@ -1,0 +1,31 @@
+import 'pagos.dart';
+
+/// Pagos de ordenes, mis pagos y tarjetas guardadas (V2-M08.02, V2-M08.04 y
+/// V2-M08.07). Las excepciones de la API pasan tal cual, salvo los 409 de
+/// pagos, que llegan como [PagoRechazado].
+abstract interface class RepositorioPagos {
+  /// El desglose de la orden y si se puede pagar, de su ticket.
+  Future<OrdenPorPagar> orden(int ordenId);
+
+  /// Cobra la orden. La misma [llave] devuelve el mismo intento y no cobra
+  /// otra vez.
+  Future<Pago> pagar(
+    int ordenId, {
+    required String llave,
+    required MedioElegido medio,
+    int? perfilFiscalId,
+  });
+
+  /// Lo que la persona respondio en la pantalla simulada de su banco.
+  Future<Pago> autenticar(int pagoId, {required bool confirmada});
+
+  Future<Pago> pago(int pagoId);
+
+  Future<PaginaPagos> pagos({int pagina = 0, int tamano = 20});
+
+  Future<List<MetodoPago>> metodos();
+
+  Future<MetodoPago> predeterminar(int metodoPagoId);
+
+  Future<void> borrarMetodo(int metodoPagoId);
+}

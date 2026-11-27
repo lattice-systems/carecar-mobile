@@ -158,6 +158,7 @@ Widget appPagos(
   Widget pantalla,
   RepositorioDatosFiscalesFake repo, {
   Escenario escenario = Escenario.claro,
+  double ancho = 360,
 }) => ProviderScope(
   overrides: [repositorioDatosFiscalesProvider.overrideWithValue(repo)],
   child: conTemaPista(
@@ -168,6 +169,7 @@ Widget appPagos(
       ),
     ),
     escenario: escenario,
+    ancho: ancho,
   ),
 );
 

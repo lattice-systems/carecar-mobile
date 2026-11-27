@@ -6,7 +6,7 @@
 | Dueño | Ricardo |
 | Revisa | Daniel |
 | Ficha técnica | ✅ Sección 8. Pagos y facturas |
-| Estado | En curso: V2-M08.01 y V2-M08.05 hechas; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
+| Estado | En curso: V2-M08.01 y V2-M08.05 hechas; V2-M08.02, V2-M08.04 y V2-M08.07 en revisión; pagos y facturas simulados ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
 
 ## Propósito
 
@@ -23,8 +23,8 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 
 | Tabla | Campos | Notas |
 | --- | --- | --- |
-| `pago_app` ➕ | id, orden_servicio_id, cliente_id, monto, moneda, procesador, intencion_id, llave_idempotencia, metodo (tarjeta/apple_pay/google_pay), marca, ultimos4, estado (pendiente/pagado/fallido/reembolsado), motivo_fallo, perfil_fiscal_id, pagado_en, creado_en | `procesador` = `SIMULADO`; `intencion_id` con prefijo `sim_`. `intencion_id` y `llave_idempotencia` únicos. El dinero no se borra: un reembolso es otra fila con monto negativo que apunta a la original. |
-| `metodo_pago` ➕ | id, cliente_id, procesador, cliente_procesador_id, token_procesador, marca, ultimos4, mes_vence, anio_vence, predeterminado, creado_en | Sin PAN ni CVV; `token_procesador` simulado (`sim_`). Uno predeterminado por cliente. |
+| `pago_app` ➕ | id, orden_servicio_id, cliente_id, monto, moneda, procesador, intencion_id, llave_idempotencia, metodo (tarjeta/apple_pay/google_pay/caja), marca, ultimos4, estado (pendiente/pagado/fallido/reembolsado), motivo_fallo, perfil_fiscal_id, pagado_en, creado_en | Integrada en V55 (V2-M08.02). `procesador` = `SIMULADO`; `intencion_id` con prefijo `sim_pi_`. `intencion_id` y (`cliente_id`, `llave_idempotencia`) únicos; índices únicos parciales: un solo pago `PAGADO` y un solo `PENDIENTE` por orden. Campos agregados: `vehiculo_cliente_id`, `tipo_tarjeta`, `token_procesador`, `mes_vence`, `anio_vence`, `guardar_tarjeta`, `metodo_pago_id`, `autenticacion` (3-D Secure), `referencia_caja`, `registrado_por` y `actualizado_en`. El dinero no se borra: un reembolso es otra fila con monto negativo que apunta a la original. |
+| `metodo_pago` ➕ | id, cliente_id, procesador, cliente_procesador_id, token_procesador, marca, ultimos4, mes_vence, anio_vence, predeterminado, creado_en | Integrada en V55 (V2-M08.04). Sin PAN ni CVV; `token_procesador` es el de la tarjeta de prueba (`tok_sim_…`) y `cliente_procesador_id` es `sim_cus_<id>`. Se agrega `tipo` (crédito o débito). Una tarjeta por cliente y token; un índice único parcial deja una sola predeterminada; hasta 10 por cliente. |
 | `perfil_fiscal` ➕ | id, cliente_id, rfc, razon_social, regimen_fiscal, codigo_postal, uso_cfdi, correo, predeterminado, creado_en | Integrada en V54 (V2-M08.05). RFC de 12 (moral) o 13 (física) caracteres con dígito verificador; régimen y uso con los catálogos del SAT de CFDI 4.0; `actualizado_en`; índice único parcial para un solo predeterminado. |
 | `factura` (existe) | se agregan tipo (VENTA_UNIDAD/SERVICIO), orden_servicio_id, pago_app_id, perfil_fiscal_id, uuid_fiscal, xml_archivo_id, pdf_archivo_id, timbrada_en | Se reutiliza (R1). Las columnas de la venta de un auto dejan de ser obligatorias y `ck_factura_tipo` exige las de cada tipo ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)). |
 | `orden_servicio` (existe) | — | El total a pagar sale de su ticket (M04.07). |
@@ -44,7 +44,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 | POST | `/pagos/{id}/factura` | Facturar un pago que se hizo sin perfil fiscal. | 409 `YA_FACTURADO` · 422 `TIMBRADO_RECHAZADO` |
 | GET | `/facturas/{id}/pdf` · `/facturas/{id}/xml` | URL firmada de vida corta para descargar. | 404 |
 | GET | `/eventos` | `pago.confirmado` y `factura.timbrada` en vivo. | — |
-| POST | `/api/v1/servicio/ordenes/{id}/pagada-en-caja` | Personal (caja): marca la orden como pagada en caja para que no se pague dos veces en la app. | 404 · 409 `ORDEN_NO_PAGABLE` |
+| POST | `/api/v1/caja/ordenes/{id}/pagada-en-caja` | Personal (roles `CAJA` y `ADMINISTRADOR`): marca la orden como pagada en caja, con su referencia opcional, para que no se pague dos veces en la app. Un intento pendiente queda `fallido` con `PAGADA_EN_CAJA`. | 404 · 409 `ORDEN_NO_PAGABLE` |
 
 ## Historias
 
@@ -64,7 +64,7 @@ Pagar el servicio desde el celular y llevarse la factura sin pasar a caja. Mueve
 - Fuera de M08: OXXO, transferencias, meses sin intereses, propinas y pagar citas por adelantado. Los reembolsos los hace la agencia (no hay botón en la app); la app solo muestra el estado `reembolsado`.
 - Apple Pay y Google Pay reales quedan fuera: necesitan cuentas (Apple Developer cuesta $99 USD al año). M08.03 se cumple con billeteras simuladas.
 - Emisor de prueba: RFC `EKU9003173C9` («ESCUELA KEMPER URGATE», CP 42501, régimen 601) en `application.properties`. Conceptos: mano de obra 78181500 con unidad E48, refacciones con su clave, IVA 16 %, PUE, forma de pago 04 o 28.
-- Los puntos por pagar (V2-M12.02) escuchan `pago.confirmado` cuando M08.02 esté integrado; antes se ganan al cerrar la orden.
+- Los puntos por pagar (V2-M12.02) escuchan `pago.confirmado` (V2-M08.02): se suman al pagar o al entregar, lo que pase primero, una sola vez por orden.
 
 ## Avance de V2-M08.01
 
@@ -90,6 +90,29 @@ La primera propuesta (Stripe y Facturama en modo de pruebas) **no se aprobó**: 
 - **La factura guardará su propia copia del receptor** (V2-M08.06), así que editar o borrar un perfil no cambia facturas ya emitidas.
 
 **Pendiente / fuera de alcance:** usar el perfil al pagar (V2-M08.02) y al facturar (V2-M08.06); demostrar en celular, que es lo que le falta a la fila de `cumplimiento-ficha.md` para pasar a ✅.
+
+## Avance de V2-M08.02, V2-M08.04 y V2-M08.07
+
+**Qué quedó**
+
+- **Backend** (`carecarapp`): migración `V55__crear_pago_app_y_metodo_pago.sql`. `ProcesadorSimulado` es la única implementación de `ProcesadorPagos`: decide por la tarjeta de prueba (aprobada, fondos insuficientes, pide 3-D Secure, 3-D Secure que falla) y da `intencion_id` `sim_pi_…`. `PagosAppService` revisa que la orden sea del cliente, esté lista para entrega o entregada, tenga línea de tiempo del taller, total mayor a 0 y no esté pagada (409 `ORDEN_NO_PAGABLE`); un intento pendiente de menos de 15 minutos responde 409 `PAGO_EN_CURSO` y uno más viejo queda `fallido` con `AUTENTICACION_VENCIDA`. La misma `Idempotency-Key` devuelve el mismo pago con 200; con otra orden es 400. Un candado por orden (`pg_advisory_xact_lock`) evita dos cobros a la vez y los índices únicos parciales son la red de seguridad.
+- **Pagada en caja**: `POST /api/v1/caja/ordenes/{id}/pagada-en-caja` (roles `CAJA` y `ADMINISTRADOR`) deja un pago `CAJA` `PAGADO` con quien lo registró; desde ahí la app ya no la cobra.
+- **Evento y puntos**: al quedar pagado se publica `PagoConfirmado` dentro del módulo y `pago.confirmado` en `/eventos`. `LealtadAppService` suma los puntos bajo el candado del saldo del cliente, una sola vez por orden.
+- **Tarjetas guardadas**: con `guardarTarjeta` se guardan al aprobarse el pago (marca, últimos 4, tipo, vencimiento y token de prueba); la primera queda predeterminada. `GET`, `PUT …/predeterminado` y `DELETE` de `/metodos-pago`; una vencida no se puede usar (400).
+- **Ticket**: `GET /servicios/{id}` gana `pago` (con qué, referencia y fecha) y `pagable`.
+- **Privacidad**: los pagos (sin token) y las tarjetas guardadas entran en la copia de mis datos (V2-M22.02); al cancelar la cuenta se borra el token de los pagos y se borran las tarjetas (V2-M22.03). Los pagos se conservan: el dinero no se borra.
+- **App** (`lib/modulos/pagos/`): `PantallaPagarOrden` (`/pagar-orden/{id}`) con el desglose, la tarjeta predeterminada o una de prueba, la casilla «Guardar tarjeta», los datos fiscales predeterminados para la factura, la confirmación del banco simulada y el resultado con «Intentar otra vez» (llave nueva) o «Ver mis pagos». Sin conexión se reintenta con la misma llave. `PantallaMisPagos` (`/pagos`), paginada de 20 y en vivo con `pago.confirmado`; `PantallaPago` (`/pagos/{id}`) con el motivo del fallo, «Confirmar con tu banco» y «Ver el ticket»; `PantallaMetodosPago` (`/metodos-pago`). Todas con `PantallaSegura`. El ticket muestra «Pagado» con la referencia y el botón «Pagar» cuando `pagable`.
+- **Tarjetas de prueba** (las mismas en backend, app y mock): 4242 4242 4242 4242 (Visa, se aprueba), 5555 5555 5555 4444 (Mastercard), 4000 0566 5566 5556 (Visa débito), 4000 0000 0000 9995 (fondos insuficientes), 4000 0000 0000 3220 (pide confirmar) y 4000 0084 0000 1629 (el banco no confirma). La app las revisa con Luhn, vencimiento y CVV y solo manda el token.
+- **mock_api**: los mismos endpoints con las mismas reglas, puntos al pagar y `POST /__mock/ordenes/{id}/pagada-en-caja`.
+- **Pruebas**: 27 en el backend (dominio, servicio con Mockito e integración HTTP) más la de lealtad bajo candado; en la app, dominio de tarjetas, repositorio, las cuatro pantallas, la ruta segura, el contrato y el ticket, cada pantalla con la auditoría de accesibilidad en 320.
+
+**Decisiones**
+
+- **La pasarela vive en el módulo** `lib/modulos/pagos/` y no en `lib/nucleo/pagos/`: solo la usa M08 ([ADR 0009](../../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)).
+- **Pagar una orden exige su línea de tiempo del taller**: un servicio registrado ya hecho se paga en la agencia.
+- **El 3-D Secure se responde en la misma pantalla** y queda pendiente si la persona se va; se puede confirmar desde el detalle del pago o vence a los 15 minutos.
+
+**Pendiente / fuera de alcance:** factura al pagar (V2-M08.06), billeteras simuladas (V2-M08.03) y demostrar en celular.
 
 ## Privacidad de pantalla
 

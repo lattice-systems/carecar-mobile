@@ -7353,5 +7353,630 @@
   "datosFiscalesErrorCorreo": "Revisa el correo.",
   "@datosFiscalesErrorCorreo": {
     "description": "Error: correo."
+  },
+  "pagosCargando": "Cargando tus pagos",
+  "@pagosCargando": {
+    "description": "Esqueleto de carga de pagos para el lector de pantalla (V2-M08)."
+  },
+  "pagosReintentar": "Reintentar",
+  "@pagosReintentar": {
+    "description": "Botón para volver a pedir los pagos."
+  },
+  "pagosSimuladoAviso": "Pago simulado: no se cobra nada. Usa una de las tarjetas de prueba.",
+  "@pagosSimuladoAviso": {
+    "description": "Aviso fijo de la pantalla de pago (ADR 0009)."
+  },
+  "pagosSimuladoPie": "Los pagos de la app son simulados: no se cobró nada.",
+  "@pagosSimuladoPie": {
+    "description": "Pie de mis pagos (ADR 0009)."
+  },
+  "pagosSimuladoCorto": "Pago simulado: no se cobró nada.",
+  "@pagosSimuladoCorto": {
+    "description": "Aviso del detalle de un pago simulado."
+  },
+  "pagosEnCaja": "Se pagó en la caja de la agencia.",
+  "@pagosEnCaja": {
+    "description": "Aviso del detalle de un pago en caja."
+  },
+  "pagosPagarTitulo": "Pagar orden",
+  "@pagosPagarTitulo": {
+    "description": "Título de la pantalla para pagar una orden (V2-M08.02)."
+  },
+  "pagosOrden": "Orden {orden}",
+  "@pagosOrden": {
+    "description": "Número de la orden de servicio.",
+    "placeholders": {
+      "orden": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosDesglose": "Lo que pagas",
+  "@pagosDesglose": {
+    "description": "Encabezado del desglose del ticket."
+  },
+  "pagosManoDeObra": "Mano de obra",
+  "@pagosManoDeObra": {
+    "description": "Renglón del desglose."
+  },
+  "pagosRefacciones": "Refacciones",
+  "@pagosRefacciones": {
+    "description": "Renglón del desglose."
+  },
+  "pagosSubtotal": "Subtotal sin IVA",
+  "@pagosSubtotal": {
+    "description": "Renglón del desglose."
+  },
+  "pagosIva": "IVA",
+  "@pagosIva": {
+    "description": "Renglón del desglose."
+  },
+  "pagosTotal": "Total",
+  "@pagosTotal": {
+    "description": "Renglón del desglose."
+  },
+  "pagosPreciosConIva": "Los precios incluyen IVA.",
+  "@pagosPreciosConIva": {
+    "description": "Pie del desglose."
+  },
+  "pagosConQue": "Con qué pagas",
+  "@pagosConQue": {
+    "description": "Sección para elegir la tarjeta."
+  },
+  "pagosTarjeta": "Tarjeta",
+  "@pagosTarjeta": {
+    "description": "Selector de tarjeta guardada."
+  },
+  "pagosOtraTarjeta": "Otra tarjeta",
+  "@pagosOtraTarjeta": {
+    "description": "Opción para escribir una tarjeta nueva."
+  },
+  "pagosTarjetaVencida": "{tarjeta} (vencida)",
+  "@pagosTarjetaVencida": {
+    "description": "Tarjeta guardada que ya venció en el selector.",
+    "placeholders": {
+      "tarjeta": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosNumero": "Número de tarjeta",
+  "@pagosNumero": {
+    "description": "Campo del número de tarjeta."
+  },
+  "pagosNumeroSugerencia": "4242 4242 4242 4242",
+  "@pagosNumeroSugerencia": {
+    "description": "Ejemplo dentro del campo del número."
+  },
+  "pagosVencimiento": "Vence (MM/AA)",
+  "@pagosVencimiento": {
+    "description": "Campo del vencimiento."
+  },
+  "pagosVencimientoSugerencia": "12/28",
+  "@pagosVencimientoSugerencia": {
+    "description": "Ejemplo dentro del campo del vencimiento."
+  },
+  "pagosCvv": "CVV",
+  "@pagosCvv": {
+    "description": "Campo del código de seguridad."
+  },
+  "pagosCvvAyuda": "El número y el CVV no salen de tu teléfono: solo se envía un token de la tarjeta de prueba.",
+  "@pagosCvvAyuda": {
+    "description": "Ayuda bajo los campos de la tarjeta."
+  },
+  "pagosGuardarTarjeta": "Guardar tarjeta",
+  "@pagosGuardarTarjeta": {
+    "description": "Casilla para guardar la tarjeta (V2-M08.04)."
+  },
+  "pagosGuardarTarjetaAyuda": "Para pagar más rápido. Solo se guardan la marca, los últimos 4 y el vencimiento.",
+  "@pagosGuardarTarjetaAyuda": {
+    "description": "Descripción de la casilla para guardar la tarjeta."
+  },
+  "pagosTarjetasDePrueba": "Tarjetas de prueba",
+  "@pagosTarjetasDePrueba": {
+    "description": "Encabezado de la lista de tarjetas de prueba."
+  },
+  "pagosTarjetasDePruebaPie": "Toca una para escribir su número. Sirve cualquier vencimiento futuro y cualquier CVV de 3 dígitos.",
+  "@pagosTarjetasDePruebaPie": {
+    "description": "Pie de la lista de tarjetas de prueba."
+  },
+  "pagosTarjetaDePruebaDetalle": "{marca} · {escenario}",
+  "@pagosTarjetaDePruebaDetalle": {
+    "description": "Marca y qué hace el banco simulado con la tarjeta de prueba.",
+    "placeholders": {
+      "marca": {
+        "type": "String"
+      },
+      "escenario": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosEscenarioAprobada": "Se aprueba",
+  "@pagosEscenarioAprobada": {
+    "description": "Tarjeta de prueba aprobada."
+  },
+  "pagosEscenarioFondos": "Se rechaza por fondos insuficientes",
+  "@pagosEscenarioFondos": {
+    "description": "Tarjeta de prueba rechazada."
+  },
+  "pagosEscenarioConfirmar": "Tu banco pide confirmar",
+  "@pagosEscenarioConfirmar": {
+    "description": "Tarjeta de prueba con 3-D Secure."
+  },
+  "pagosEscenarioConfirmacionFalla": "Tu banco no confirma",
+  "@pagosEscenarioConfirmacionFalla": {
+    "description": "Tarjeta de prueba cuyo 3-D Secure falla."
+  },
+  "pagosFactura": "Factura",
+  "@pagosFactura": {
+    "description": "Sección de datos fiscales al pagar."
+  },
+  "pagosDatosFiscales": "Datos fiscales",
+  "@pagosDatosFiscales": {
+    "description": "Selector del perfil fiscal para facturar."
+  },
+  "pagosFacturaAyuda": "Con tus datos fiscales se emite la factura simulada al pagar.",
+  "@pagosFacturaAyuda": {
+    "description": "Ayuda del selector de datos fiscales."
+  },
+  "pagosSinFactura": "Sin factura",
+  "@pagosSinFactura": {
+    "description": "Opción para pagar sin facturar."
+  },
+  "pagosPerfilFiscal": "{rfc} · {razonSocial}",
+  "@pagosPerfilFiscal": {
+    "description": "Un perfil fiscal en el selector.",
+    "placeholders": {
+      "rfc": {
+        "type": "String"
+      },
+      "razonSocial": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosPagar": "Pagar {monto}",
+  "@pagosPagar": {
+    "description": "Botón para pagar la orden.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosRevisaTarjeta": "Revisa los datos de la tarjeta.",
+  "@pagosRevisaTarjeta": {
+    "description": "Aviso cuando la tarjeta no pasa las reglas."
+  },
+  "pagosSinConexion": "Sin conexión. Revisa tu internet e intenta de nuevo; no se cobrará dos veces.",
+  "@pagosSinConexion": {
+    "description": "Aviso sin conexión al pagar."
+  },
+  "pagosErrorPagar": "No pudimos procesar el pago. Intenta de nuevo.",
+  "@pagosErrorPagar": {
+    "description": "Aviso de error al pagar."
+  },
+  "pagosOrdenNoPagable": "Esta orden ya no se puede pagar en la app.",
+  "@pagosOrdenNoPagable": {
+    "description": "409 ORDEN_NO_PAGABLE."
+  },
+  "pagosPagoEnCurso": "Ya hay un pago de esta orden esperando la confirmación de tu banco. Revísalo en Mis pagos.",
+  "@pagosPagoEnCurso": {
+    "description": "409 PAGO_EN_CURSO."
+  },
+  "pagosPagoNoPendiente": "Este pago ya no espera la confirmación de tu banco.",
+  "@pagosPagoNoPendiente": {
+    "description": "409 PAGO_NO_PENDIENTE."
+  },
+  "pagosErrorNumeroVacio": "Escribe el número de la tarjeta.",
+  "@pagosErrorNumeroVacio": {
+    "description": "Error: falta el número."
+  },
+  "pagosErrorNumeroIncompleto": "El número tiene 16 dígitos.",
+  "@pagosErrorNumeroIncompleto": {
+    "description": "Error: número incompleto."
+  },
+  "pagosErrorNumeroInvalido": "Ese número no es válido; revísalo.",
+  "@pagosErrorNumeroInvalido": {
+    "description": "Error: no pasa el algoritmo de Luhn."
+  },
+  "pagosErrorNoEsDePrueba": "Usa una de las tarjetas de prueba.",
+  "@pagosErrorNoEsDePrueba": {
+    "description": "Error: no es una tarjeta de prueba."
+  },
+  "pagosErrorVencimientoVacio": "Escribe el vencimiento.",
+  "@pagosErrorVencimientoVacio": {
+    "description": "Error: falta el vencimiento."
+  },
+  "pagosErrorVencimientoInvalido": "Escríbelo como MM/AA.",
+  "@pagosErrorVencimientoInvalido": {
+    "description": "Error: vencimiento sin forma."
+  },
+  "pagosErrorVencida": "La tarjeta ya venció.",
+  "@pagosErrorVencida": {
+    "description": "Error: tarjeta vencida."
+  },
+  "pagosErrorCvv": "El CVV tiene 3 dígitos.",
+  "@pagosErrorCvv": {
+    "description": "Error: CVV."
+  },
+  "pagosBancoTitulo": "Tu banco pide confirmar",
+  "@pagosBancoTitulo": {
+    "description": "Título de la pantalla simulada de 3-D Secure."
+  },
+  "pagosBancoMensaje": "Confirma el pago de {monto} con {tarjeta}. Esta pantalla del banco es simulada.",
+  "@pagosBancoMensaje": {
+    "description": "Mensaje del 3-D Secure simulado.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "tarjeta": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosBancoConfirmar": "Confirmar",
+  "@pagosBancoConfirmar": {
+    "description": "Botón para confirmar el 3-D Secure."
+  },
+  "pagosBancoCancelar": "Cancelar",
+  "@pagosBancoCancelar": {
+    "description": "Botón para cancelar el 3-D Secure."
+  },
+  "pagosPagadoTitulo": "¡Orden pagada!",
+  "@pagosPagadoTitulo": {
+    "description": "Resultado de un pago aprobado."
+  },
+  "pagosPagadoMensaje": "Pagaste {monto}. Referencia {referencia}. Es un pago simulado: no se cobró nada.",
+  "@pagosPagadoMensaje": {
+    "description": "Mensaje del resultado de un pago aprobado.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "referencia": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosListo": "Listo",
+  "@pagosListo": {
+    "description": "Botón para cerrar el resultado del pago."
+  },
+  "pagosVerMisPagos": "Ver mis pagos",
+  "@pagosVerMisPagos": {
+    "description": "Botón para ir a mis pagos."
+  },
+  "pagosFalloTitulo": "No se pudo pagar",
+  "@pagosFalloTitulo": {
+    "description": "Resultado de un pago fallido."
+  },
+  "pagosIntentarOtraVez": "Intentar otra vez",
+  "@pagosIntentarOtraVez": {
+    "description": "Botón para reintentar con una llave nueva."
+  },
+  "pagosVolver": "Volver",
+  "@pagosVolver": {
+    "description": "Botón para salir del resultado."
+  },
+  "pagosMotivoFondos": "Tu banco rechazó la tarjeta por fondos insuficientes.",
+  "@pagosMotivoFondos": {
+    "description": "Motivo: fondos insuficientes."
+  },
+  "pagosMotivoAutenticacion": "Tu banco no confirmó el pago.",
+  "@pagosMotivoAutenticacion": {
+    "description": "Motivo: 3-D Secure fallido o cancelado."
+  },
+  "pagosMotivoVencida": "Nadie confirmó el pago a tiempo.",
+  "@pagosMotivoVencida": {
+    "description": "Motivo: 3-D Secure vencido."
+  },
+  "pagosMotivoCaja": "La orden se pagó en caja.",
+  "@pagosMotivoCaja": {
+    "description": "Motivo: pagada en caja."
+  },
+  "pagosMotivoOtro": "El pago no se completó.",
+  "@pagosMotivoOtro": {
+    "description": "Motivo que esta versión aún no conoce."
+  },
+  "pagosYaPagadaTitulo": "Esta orden ya está pagada",
+  "@pagosYaPagadaTitulo": {
+    "description": "Estado de una orden pagada."
+  },
+  "pagosYaPagadaMensaje": "Con {medio} el {fecha}.",
+  "@pagosYaPagadaMensaje": {
+    "description": "Con qué y cuándo se pagó.",
+    "placeholders": {
+      "medio": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosVerPago": "Ver el pago",
+  "@pagosVerPago": {
+    "description": "Botón para ver el pago de la orden."
+  },
+  "pagosNoPagableTitulo": "Esta orden aún no se puede pagar",
+  "@pagosNoPagableTitulo": {
+    "description": "Estado de una orden que no se paga en la app."
+  },
+  "pagosNoPagableMensaje": "Se paga en la app cuando está lista para entrega. Un servicio registrado ya hecho se paga en la agencia.",
+  "@pagosNoPagableMensaje": {
+    "description": "Por qué no se paga en la app."
+  },
+  "pagosMisPagosTitulo": "Mis pagos",
+  "@pagosMisPagosTitulo": {
+    "description": "Título de mis pagos (V2-M08.07)."
+  },
+  "pagosMisPagosSubtitulo": "Del más nuevo al más viejo",
+  "@pagosMisPagosSubtitulo": {
+    "description": "Subtítulo de mis pagos."
+  },
+  "pagosMisPagosVacioTitulo": "Aún no tienes pagos",
+  "@pagosMisPagosVacioTitulo": {
+    "description": "Estado vacío de mis pagos."
+  },
+  "pagosMisPagosVacioMensaje": "Aquí verás lo que pagues desde la app.",
+  "@pagosMisPagosVacioMensaje": {
+    "description": "Mensaje del estado vacío de mis pagos."
+  },
+  "pagosFilaSubtitulo": "{estado} · {medio} · {fecha}",
+  "@pagosFilaSubtitulo": {
+    "description": "Estado, con qué y cuándo de un pago en la lista.",
+    "placeholders": {
+      "estado": {
+        "type": "String"
+      },
+      "medio": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosMontoConEstado": "{monto}, {estado}",
+  "@pagosMontoConEstado": {
+    "description": "Lo que oye el lector al final de la fila de un pago.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      },
+      "estado": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosCargandoMas": "Cargando más pagos",
+  "@pagosCargandoMas": {
+    "description": "Indicador de la página siguiente."
+  },
+  "pagosErrorCargarMas": "No pudimos cargar más pagos.",
+  "@pagosErrorCargarMas": {
+    "description": "Error al pedir la página siguiente."
+  },
+  "pagosEstadoPendiente": "Pendiente",
+  "@pagosEstadoPendiente": {
+    "description": "Estado de un pago."
+  },
+  "pagosEstadoPagado": "Pagado",
+  "@pagosEstadoPagado": {
+    "description": "Estado de un pago."
+  },
+  "pagosEstadoFallido": "Fallido",
+  "@pagosEstadoFallido": {
+    "description": "Estado de un pago."
+  },
+  "pagosEstadoReembolsado": "Reembolsado",
+  "@pagosEstadoReembolsado": {
+    "description": "Estado de un pago."
+  },
+  "pagosMedioTarjeta": "{marca} •••• {ultimos4}",
+  "@pagosMedioTarjeta": {
+    "description": "Una tarjeta por su marca y últimos 4.",
+    "placeholders": {
+      "marca": {
+        "type": "String"
+      },
+      "ultimos4": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosMedioCaja": "En caja",
+  "@pagosMedioCaja": {
+    "description": "Medio de pago: caja de la agencia."
+  },
+  "pagosMedioApplePay": "Apple Pay (simulado)",
+  "@pagosMedioApplePay": {
+    "description": "Medio de pago: billetera simulada."
+  },
+  "pagosMedioGooglePay": "Google Pay (simulado)",
+  "@pagosMedioGooglePay": {
+    "description": "Medio de pago: billetera simulada."
+  },
+  "pagosPagoTitulo": "Pago",
+  "@pagosPagoTitulo": {
+    "description": "Título del detalle de un pago."
+  },
+  "pagosMonto": "Monto",
+  "@pagosMonto": {
+    "description": "Etiqueta del monto del pago."
+  },
+  "pagosMedio": "Con qué se pagó",
+  "@pagosMedio": {
+    "description": "Fila del medio de pago."
+  },
+  "pagosFechaPago": "Pagado el",
+  "@pagosFechaPago": {
+    "description": "Fila de la fecha de pago."
+  },
+  "pagosFechaIntento": "Intentado el",
+  "@pagosFechaIntento": {
+    "description": "Fila de la fecha de un intento sin pagar."
+  },
+  "pagosReferencia": "Referencia",
+  "@pagosReferencia": {
+    "description": "Fila de la referencia del pago."
+  },
+  "pagosMotivo": "Por qué no se cobró",
+  "@pagosMotivo": {
+    "description": "Fila del motivo de un pago fallido."
+  },
+  "pagosConfirmarBanco": "Confirmar con tu banco",
+  "@pagosConfirmarBanco": {
+    "description": "Botón para responder un 3-D Secure pendiente."
+  },
+  "pagosVerTicket": "Ver el ticket",
+  "@pagosVerTicket": {
+    "description": "Botón para abrir el ticket de la orden."
+  },
+  "pagosNoEncontradoTitulo": "No encontramos este pago",
+  "@pagosNoEncontradoTitulo": {
+    "description": "Pago que no existe."
+  },
+  "pagosNoEncontradoMensaje": "Puede que sea de otra cuenta. Revisa Mis pagos.",
+  "@pagosNoEncontradoMensaje": {
+    "description": "Mensaje del pago que no existe."
+  },
+  "pagosMetodosTitulo": "Métodos de pago",
+  "@pagosMetodosTitulo": {
+    "description": "Título de mis tarjetas guardadas (V2-M08.04)."
+  },
+  "pagosMetodosVacioTitulo": "Aún no tienes tarjetas guardadas",
+  "@pagosMetodosVacioTitulo": {
+    "description": "Estado vacío de métodos de pago."
+  },
+  "pagosMetodosVacioMensaje": "Al pagar, marca «Guardar tarjeta» para que aparezca aquí.",
+  "@pagosMetodosVacioMensaje": {
+    "description": "Mensaje del estado vacío de métodos de pago."
+  },
+  "pagosMetodosPie": "Solo se guardan la marca, los últimos 4 y el vencimiento de tarjetas de prueba.",
+  "@pagosMetodosPie": {
+    "description": "Pie de métodos de pago."
+  },
+  "pagosVence": "Vence {vence}",
+  "@pagosVence": {
+    "description": "Vencimiento de una tarjeta guardada.",
+    "placeholders": {
+      "vence": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosVenceYTipo": "Vence {vence} · {tipo}",
+  "@pagosVenceYTipo": {
+    "description": "Vencimiento y tipo de una tarjeta guardada.",
+    "placeholders": {
+      "vence": {
+        "type": "String"
+      },
+      "tipo": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosCredito": "Crédito",
+  "@pagosCredito": {
+    "description": "Tarjeta de crédito."
+  },
+  "pagosDebito": "Débito",
+  "@pagosDebito": {
+    "description": "Tarjeta de débito."
+  },
+  "pagosPredeterminada": "Predeterminada",
+  "@pagosPredeterminada": {
+    "description": "Insignia de la tarjeta predeterminada."
+  },
+  "pagosVencidaInsignia": "Vencida",
+  "@pagosVencidaInsignia": {
+    "description": "Insignia de una tarjeta vencida."
+  },
+  "pagosUsarPredeterminada": "Usar como predeterminada",
+  "@pagosUsarPredeterminada": {
+    "description": "Acción sobre una tarjeta guardada."
+  },
+  "pagosBorrarTarjeta": "Borrar tarjeta",
+  "@pagosBorrarTarjeta": {
+    "description": "Acción sobre una tarjeta guardada."
+  },
+  "pagosBorrarTitulo": "¿Borrar esta tarjeta?",
+  "@pagosBorrarTitulo": {
+    "description": "Título de la confirmación de borrado."
+  },
+  "pagosBorrarMensaje": "{tarjeta} ya no aparecerá al pagar. Los pagos que hiciste con ella se conservan.",
+  "@pagosBorrarMensaje": {
+    "description": "Mensaje de la confirmación de borrado.",
+    "placeholders": {
+      "tarjeta": {
+        "type": "String"
+      }
+    }
+  },
+  "pagosBorrarConfirmar": "Borrar",
+  "@pagosBorrarConfirmar": {
+    "description": "Botón para confirmar el borrado."
+  },
+  "pagosBorrarCancelar": "Cancelar",
+  "@pagosBorrarCancelar": {
+    "description": "Botón para cancelar el borrado."
+  },
+  "pagosErrorMetodo": "No pudimos guardar el cambio. Intenta de nuevo.",
+  "@pagosErrorMetodo": {
+    "description": "Error al cambiar una tarjeta guardada."
+  },
+  "historialTicketPago": "Pago",
+  "@historialTicketPago": {
+    "description": "Encabezado del pago en el ticket (V2-M08.02)."
+  },
+  "historialTicketPagado": "Pagado",
+  "@historialTicketPagado": {
+    "description": "La orden ya está pagada."
+  },
+  "historialTicketPagadoDetalle": "{medio} · {fecha}",
+  "@historialTicketPagadoDetalle": {
+    "description": "Con qué y cuándo se pagó la orden.",
+    "placeholders": {
+      "medio": {
+        "type": "String"
+      },
+      "fecha": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketPagadoEnCaja": "En caja",
+  "@historialTicketPagadoEnCaja": {
+    "description": "Se pagó en la caja de la agencia."
+  },
+  "historialTicketTarjeta": "{marca} •••• {ultimos4}",
+  "@historialTicketTarjeta": {
+    "description": "La tarjeta con que se pagó.",
+    "placeholders": {
+      "marca": {
+        "type": "String"
+      },
+      "ultimos4": {
+        "type": "String"
+      }
+    }
+  },
+  "historialTicketReferencia": "Referencia",
+  "@historialTicketReferencia": {
+    "description": "La referencia del pago en el ticket."
+  },
+  "historialTicketPagar": "Pagar {monto}",
+  "@historialTicketPagar": {
+    "description": "Botón para pagar la orden desde su ticket.",
+    "placeholders": {
+      "monto": {
+        "type": "String"
+      }
+    }
   }
 }

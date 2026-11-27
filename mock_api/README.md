@@ -156,7 +156,7 @@ Operaciones de la app y casos de error:
 | GET | `/vehiculos/{id}/ficha-tecnica` | Por modelo y año (V2-M02.04) · 404 si no hay ficha de ese modelo y año |
 | GET | `/vehiculos/{id}/servicios` | Orden cronológico, el más reciente primero; `anio` filtra por año y cada orden trae `fechaCierre` (V2-M02.05) |
 | GET | `/vehiculos/{id}/servicios/anios` | Años con servicios, del más reciente al más antiguo (V2-M02.05) |
-| GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) y `puntosGanados` de lealtad: la orden 2 dio 230 (V2-M12.02) |
+| GET | `/servicios/{id}` | Ticket con mano de obra, refacciones y totales (V2-M02.06) y `puntosGanados` de lealtad: la orden 2 dio 230 (V2-M12.02) · `pago` (con qué, referencia y fecha) y `pagable` (V2-M08.02): la 2 está pagada con la Visa 4242 |
 | GET | `/servicios/{id}/ticket` | PDF real, generado al momento |
 | GET | `/agenda/disponibilidad` | Solo franjas con cupo > 0 · 400 si falta `desde` o `hasta` |
 | GET | `/citas` | Solo las del cliente · cada cita con recolección trae `recoleccion` (traslados con su estado vigente, V2-M17.03) |
@@ -204,6 +204,10 @@ Operaciones de la app y casos de error:
 | GET | `/catalogos-fiscales` | Regímenes fiscales y usos de CFDI de CFDI 4.0, copia de `CatalogoFiscal.java` (`semillas/catalogos_fiscales.json`): a qué persona aplica cada clave y qué regímenes acepta cada uso (V2-M08.05) |
 | GET · POST | `/perfiles-fiscales` | Mis perfiles, el predeterminado primero · `cliente1` trae GODE561231GR8 · el primero que se crea queda predeterminado y otro lo toma con `predeterminado: true` · 400 `DATOS_FISCALES_INVALIDOS` con `campos` (RFC con forma, fecha y dígito verificador; régimen y uso del catálogo para la persona; uso aceptado por el régimen; código postal; correo) (V2-M08.05) |
 | GET · PUT · DELETE | `/perfiles-fiscales/{id}` | El mío o 404 · PUT con las mismas reglas · DELETE 204; si era el predeterminado, lo toma el más viejo. Los pagos y facturas de M08 son simulados ([ADR 0009](../docs/decisiones/0009-procesador-de-pagos-y-timbrado.md)) |
+| POST | `/ordenes/{id}/pagos` | Header `Idempotency-Key` · `{tarjeta: {token, mesVence, anioVence}}` o `{metodoPagoId}`, más `guardarTarjeta` y `perfilFiscalId` · 201, o 200 con la misma llave · decide por el token de prueba (`tok_sim_visa`, `tok_sim_mastercard`, `tok_sim_visa_debito`, `tok_sim_fondos_insuficientes`, `tok_sim_3ds`, `tok_sim_3ds_falla`) · 400 · 404 · 409 `ORDEN_NO_PAGABLE` o `PAGO_EN_CURSO` · al pagarse suma los puntos y emite `pago.confirmado` (V2-M08.02) |
+| POST | `/pagos/{id}/autenticacion` | `{confirmada}` · responde el 3-D Secure simulado · 404 · 409 `PAGO_NO_PENDIENTE` |
+| GET | `/pagos` y `/pagos/{id}` | Mis pagos del más nuevo, paginados (`pagina`, `tamano`) · `cliente1` trae uno pagado (orden 2) y uno fallido (orden 3) (V2-M08.07) |
+| GET · PUT · DELETE | `/metodos-pago` · `/metodos-pago/{id}/predeterminado` · `/metodos-pago/{id}` | Tarjetas guardadas, la predeterminada primero · `cliente1` trae la Visa 4242 · borrar la predeterminada pasa la marca a otra · 404 ajena (V2-M08.04) |
 | GET | `/api/v1/archivos/evidencias/{id}` | Fuera de la base y sin token: una foto PNG de prueba. El video de la orden apunta a un MP4 público, así que se ve con internet |
 | POST | `/valuaciones` | `{estimacionTomaCuentaId}`. 201, o 200 con la abierta de ese vehículo. 400. 404 si la estimación es ajena. 422 `VALUACION_SIN_VEHICULO` si se capturó a mano (V2-M26.01) |
 | GET | `/valuaciones` y `/valuaciones/{id}` | Paginadas, la más reciente primero, con el estado al día: oferta pasada es `VENCIDA` y una cita cancelada la regresa a `SOLICITADA`. La semilla trae el Jetta (6) con una oferta vigente y estimaciones del March (5) en varios meses, y agrega franjas futuras si las de citas ya pasaron |
@@ -260,6 +264,7 @@ curl -X POST localhost:3000/__mock/traslados/1/ubicacion -H 'content-type: appli
 curl -X POST localhost:3000/__mock/traslados/1/estado -H 'content-type: application/json' -d '{"estado":"recogido"}'
 # V2-M17.04 · checklist a mano (al pasar a recogido o entregado se crea uno)
 curl -X POST localhost:3000/__mock/traslados/1/checklist -H 'content-type: application/json' -d '{"km":45200,"gasolina":"medio"}'
+curl -X POST localhost:3000/__mock/ordenes/3/pagada-en-caja -H 'content-type: application/json' -d '{"referencia":"CAJA-0042"}'
 # V2-M04.03, V2-M04.06 y V2-M04.07 · el taller pasa la orden 41 a lista y luego la entrega
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"LISTO_PARA_ENTREGA"}'
 curl -X POST localhost:3000/__mock/ordenes/41/etapa -H 'content-type: application/json' -d '{"etapa":"ENTREGADO"}'

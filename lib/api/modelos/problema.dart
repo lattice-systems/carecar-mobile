@@ -95,6 +95,16 @@ enum CodigoProblema {
   /// dice que corregir en cada uno.
   datosFiscalesInvalidos('DATOS_FISCALES_INVALIDOS'),
 
+  /// V2-M08.02: la orden no se puede pagar en la app (aun no esta lista, no
+  /// viene del taller, no tiene total o ya esta pagada, tambien en caja).
+  ordenNoPagable('ORDEN_NO_PAGABLE'),
+
+  /// V2-M08.02: otro intento de pago de la orden espera el 3-D Secure.
+  pagoEnCurso('PAGO_EN_CURSO'),
+
+  /// V2-M08.02: el pago ya no espera el 3-D Secure.
+  pagoNoPendiente('PAGO_NO_PENDIENTE'),
+
   /// No vino `codigo`, o vino uno que el contrato todavia no declara.
   desconocido('');
 

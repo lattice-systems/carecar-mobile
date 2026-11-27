@@ -66,6 +66,12 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 
 - Las tres historias siguen abiertas: falta la prueba con TalkBack y VoiceOver, y las pantallas de acceso esperan a que su módulo se encienda en v2.
 
+### Pantallas de taller, historial, garantía, lealtad y pagos
+
+- Las pantallas de M04 (orden, inspección y adicionales), M02 (historial y ticket), M10 (garantía, campañas, campaña y agendar), M12 (lealtad, movimientos, recompensas, canjes y referir) y M08 (datos fiscales, perfil fiscal, pagar orden, mis pagos, pago y métodos de pago) pasan la auditoría en sus pruebas de módulo: `auditarAccesibilidad` en claro y oscuro a 320 de ancho, y sin desbordes con letra al 200 %.
+- Las pruebas de módulo encontraron además que Mis pagos tronaba sin pagos (el estado vacío pedía la altura intrínseca); ya se corrigió. Agendar una campaña se prueba con la excepción del calendario (40 × 48) y los códigos de canje y de referido con la corrección del recorrido por rutas.
+- Los ayudantes de prueba de esos módulos (`appTaller`, `appGarantia`, `appLealtad`, `appPagos` y `appCobro`) aceptan `ancho`, para montar cada pantalla en un teléfono chico.
+
 ## Avance de V2-M20.01 (fase 1)
 
 Los textos salen del código con `flutter_localizations` e `intl`, y `flutter gen-l10n` genera `AppLocalizations` a partir de `lib/l10n/app_es.arb` (base) y `app_en.arb`. Los archivos generados (`lib/l10n/app_localizations*.dart`) se versionan, igual que el resto del código.

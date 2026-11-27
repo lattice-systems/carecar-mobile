@@ -10,6 +10,7 @@ import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../ayudas/auditoria_accesibilidad.dart';
 import '../../ayudas/tema_pista.dart';
 import 'ayudas_lealtad.dart';
 
@@ -163,4 +164,24 @@ void main() {
       expect(find.byType(PantallaLealtad), findsOneWidget);
     });
   }
+
+  testWidgets('pasa la auditoria de accesibilidad en 320 (V2-M20.02, '
+      'V2-M20.03 y V2-M20.08)', (tester) async {
+    telefonoChicoYAlto(tester);
+    for (final escenario in Escenario.values) {
+      await tester.pumpWidget(
+        appLealtad(
+          _pantalla,
+          repoDeEjemplo(),
+          escenario: escenario,
+          ancho: anchoTelefonoChico,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull, reason: escenario.name);
+      if (escenario != Escenario.letraGrande) {
+        await auditarAccesibilidad(tester);
+      }
+    }
+  });
 }

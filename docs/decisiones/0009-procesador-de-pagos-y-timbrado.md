@@ -58,7 +58,7 @@ La primera versión de esta ADR comparó procesadores y proveedores de timbrado 
 
 ### App
 
-- **Hoja de pago propia** en `lib/nucleo/pagos/` (interfaz `PasarelaPago` y su implementación simulada), hecha con el sistema de diseño:
+- **Hoja de pago propia** en `lib/modulos/pagos/` (interfaz `PasarelaPago` en `dominio/tarjetas.dart` y `PasarelaSimulada` en `datos/`), hecha con el sistema de diseño. Se pensó en `lib/nucleo/pagos/`, pero solo la usa M08, así que vive en su módulo (V2-M08.02):
   - pide tarjeta, vencimiento y CVV y los valida en el teléfono (algoritmo de Luhn, fecha y largo);
   - **solo acepta las tarjetas de prueba listadas**, para que nadie escriba una real por error;
   - **nunca envía el número completo**: manda un token de prueba, la marca y los últimos 4. El backend nunca recibe ni guarda un número de tarjeta;
