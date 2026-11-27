@@ -173,18 +173,21 @@ void main() {
       expect(plugin.programadas, isNotEmpty);
     });
 
-    test('ya explicado, agendar si lo pide, una sola vez', () async {
+    test('ni siquiera despues de «Ahora no» lo pide', () async {
+      // «Ahora no» tambien marca la explicacion como contestada. Un intento
+      // anterior pedia el permiso en ese caso, y el dialogo le salia justo a
+      // quien acababa de decir que no. Nadie fuera de la pantalla de M06.01
+      // toca el sistema.
       SharedPreferences.setMockInitialValues({claveAvisosRespondido: true});
-      final servicioExplicado = ServicioNotificaciones(
+      final servicioContestado = ServicioNotificaciones(
         plugin,
         await SharedPreferences.getInstance(),
       );
-      await servicioExplicado.iniciar();
+      await servicioContestado.iniciar();
 
-      await servicioExplicado.alAgendar(_cita(5, DateTime(2026, 11, 25)));
-      await servicioExplicado.alAgendar(_cita(6, DateTime(2026, 11, 26)));
+      await servicioContestado.alAgendar(_cita(5, DateTime(2026, 11, 25)));
 
-      expect(plugin.permisosPedidos, 1);
+      expect(plugin.permisosPedidos, 0);
     });
 
     test('cada aviso de cita lleva a «Mis citas» (V2-M06.03)', () async {
