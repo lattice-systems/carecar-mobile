@@ -1,7 +1,7 @@
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-// V2-M27.02: la sucursal tal como la manda el contrato 2.27.0.
+// V2-M27.02: la sucursal tal como la manda el contrato 2.28.0.
 void main() {
   Map<String, Object?> json({Object? telefono = '+52 477 000 0000'}) => {
     'id': 1,
