@@ -10821,6 +10821,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tu chofer'**
   String get recoleccionSeguimientoMarcadorChofer;
+
+  /// Título de la pantalla para contactar a la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Contacto'**
+  String get contactoTitulo;
+
+  /// Texto de apoyo bajo el título de Contacto.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.'**
+  String get contactoIntro;
+
+  /// Encabezado del grupo de medios de contacto (llamar y correo).
+  ///
+  /// In es, this message translates to:
+  /// **'Medios de contacto'**
+  String get contactoGrupoMedios;
+
+  /// Fila que abre el marcador con el teléfono de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get contactoLlamar;
+
+  /// Fila que abre la app de correo con el correo de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get contactoCorreo;
+
+  /// Encabezado del grupo que lleva a las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde estamos'**
+  String get contactoGrupoDonde;
+
+  /// Fila que abre la pantalla de sucursales con mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales y horarios'**
+  String get contactoVerSucursales;
+
+  /// Detalle de la fila de sucursales cuando aún no se conoce la sucursal principal.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa, horarios y cómo llegar'**
+  String get contactoVerSucursalesDetalle;
+
+  /// Aviso cuando el teléfono no tiene app de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir tu app de correo. Escríbenos a {correo}.'**
+  String contactoNoSePudoCorreo(String correo);
 }
 
 class _AppLocalizationsDelegate
