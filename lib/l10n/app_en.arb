@@ -3822,5 +3822,14 @@
   "recoleccionSeguimientoMarcadorChofer": "Your driver",
   "@recoleccionSeguimientoMarcadorChofer": {
     "description": "Etiqueta del marcador del chofer en el mapa del seguimiento."
-  }
+  },
+  "contactoTitulo": "Contact",
+  "contactoIntro": "Choose how you'd like to reach the agency. Your main branch will help you.",
+  "contactoGrupoMedios": "Ways to reach us",
+  "contactoLlamar": "Call the agency",
+  "contactoCorreo": "Send an email",
+  "contactoGrupoDonde": "Where we are",
+  "contactoVerSucursales": "Branches and hours",
+  "contactoVerSucursalesDetalle": "Map, hours and directions",
+  "contactoNoSePudoCorreo": "We couldn't open your email app. Write to us at {correo}."
 }
