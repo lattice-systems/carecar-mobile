@@ -18,6 +18,7 @@ import '../../vehiculos/vehiculos.dart';
 import '../dominio/contenido_widgets.dart';
 import '../dominio/proxima_cita_widget.dart';
 import 'constructores_de_widgets.dart';
+import 'coordinador_de_actividad_en_vivo.dart';
 import 'proveedores_widgets.dart';
 
 /// Mantiene al día los widgets de pantalla de inicio (V2-M25): próxima cita,
@@ -39,6 +40,11 @@ import 'proveedores_widgets.dart';
 /// canal en vivo (o el canal se reconecta), cambia el idioma o la sesión, o la
 /// app vuelve al primer plano (la cita pudo empezar, el mes pudo cambiar). Un
 /// contenido igual al último publicado no se repinta.
+///
+/// Con las mismas órdenes en curso lleva la Live Activity del taller en el
+/// iPhone (V2-M25.05, [CoordinadorDeActividadEnVivo]): la inicia, la repinta,
+/// la termina al entregar y manda su push token al backend. Al cerrar sesión
+/// la da de baja antes de que el servidor revoque la sesión.
 ///
 /// Si una fuente falla o aún no carga, ese widget conserva lo último que
 /// mostraba. Al cerrar sesión, o en un equipo comprometido
@@ -63,12 +69,27 @@ class _SincronizadorDeWidgetsState extends ConsumerState<SincronizadorDeWidgets>
   int? _vehiculoSuscrito;
   final _ultimo = <TipoWidget, ContenidoWidget>{};
 
+  late final CoordinadorDeActividadEnVivo _actividad;
+  late final void Function() _quitarBajaDeActividad;
+
+  /// La última lista de órdenes que se le pasó a [_actividad]: el resto de las
+  /// fuentes también publica y no hace falta repetirle la misma.
+  List<OrdenEnCurso>? _ordenesDeLaActividad;
+
   bool get _suscrito => _fuentes.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _actividad = CoordinadorDeActividadEnVivo(
+      servicio: ref.read(servicioActividadEnVivoProvider),
+      // Solo se arma si hay Live Activities: en Android nunca se pide.
+      repositorio: () => ref.read(repositorioActividadEnVivoProvider),
+    );
+    _quitarBajaDeActividad = ref
+        .read(controladorSesionProvider)
+        .registrarAntesDeCerrarSesion(_actividad.alCerrarSesion);
     ref.listenManual(estadoSesionProvider, (_, _) => _sincronizar());
     // En un equipo con root o jailbreak los widgets no conservan datos del
     // cliente (V2-M22.05): si la detección llega tarde, se vacían al llegar.
@@ -100,6 +121,8 @@ class _SincronizadorDeWidgetsState extends ConsumerState<SincronizadorDeWidgets>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _politica.removeListener(_sincronizar);
+    _quitarBajaDeActividad();
+    _actividad.detener();
     _cerrarFuentes();
     super.dispose();
   }
@@ -113,6 +136,9 @@ class _SincronizadorDeWidgetsState extends ConsumerState<SincronizadorDeWidgets>
       _cerrarFuentes();
       _ultimo.clear();
       unawaited(_borrar());
+      // La pantalla bloqueada tampoco sigue mostrando la orden.
+      _ordenesDeLaActividad = null;
+      unawaited(_actividad.alPerderLaSesion());
       return;
     }
     if (!_suscrito) {
@@ -198,6 +224,10 @@ class _SincronizadorDeWidgetsState extends ConsumerState<SincronizadorDeWidgets>
     final ordenes = ref.read(ordenesEnCursoProvider).value;
     if (ordenes != null) {
       _enviar(contenidoDeTaller(textos, ordenes.firstOrNull));
+      if (!identical(ordenes, _ordenesDeLaActividad)) {
+        _ordenesDeLaActividad = ordenes;
+        unawaited(_actividad.alCambiarLasOrdenes(ordenes));
+      }
     }
 
     final autos = ref.read(garajeProvider).value;
