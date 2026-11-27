@@ -20,6 +20,46 @@ void main() {
 
   setUp(armar);
 
+  group('cuenta desactivada (V2-M01.08)', () {
+    test('un 403 al entrar no se queda en el login: marca el estado', () async {
+      armar(ApiFalsa.queFalla(const CuentaDesactivada('Esta desactivada.')));
+
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+
+      final estado = controlador.estado;
+      expect(estado, isA<SinSesion>());
+      expect((estado as SinSesion).porCuentaDesactivada, isTrue);
+    });
+
+    test('un 403 estando dentro borra la sesion guardada', () async {
+      armar();
+      await controlador.iniciarSesion(
+        correo: 'cliente1@example.com',
+        contrasena: 'CareCar2026',
+      );
+      expect(await almacen.leer(), isNotNull);
+
+      // Lo llama `ClienteApi` cuando el servidor contesta 403 con token: la
+      // agencia puede desactivar la cuenta con la persona dentro.
+      await controlador.terminarPorCuentaDesactivada();
+
+      expect(await almacen.leer(), isNull);
+      expect((controlador.estado as SinSesion).porCuentaDesactivada, isTrue);
+    });
+
+    test('reconocer el aviso deja volver al login', () async {
+      armar();
+      await controlador.terminarPorCuentaDesactivada();
+
+      controlador.reconocerCuentaDesactivada();
+
+      expect((controlador.estado as SinSesion).porCuentaDesactivada, isFalse);
+    });
+  });
+
   group('estado inicial', () {
     test('arranca sin sesion', () {
       expect(controlador.estado, isA<SinSesion>());
@@ -190,23 +230,30 @@ void main() {
   });
 
   group('otros fallos', () {
-    test('cuenta desactivada llega con su propio mensaje', () async {
-      armar(
-        ApiFalsa.queFalla(
-          const CuentaDesactivada('La cuenta esta desactivada'),
-        ),
-      );
+    // Antes esta prueba esperaba un `FalloDeSesion` con el mensaje del
+    // servidor: el login se quedaba ahi, diciendolo en un aviso. **V2-M01.08
+    // lo cambia a proposito**, porque ese mensaje invitaba a reintentar algo
+    // que no se arregla reintentando. Ahora la cuenta desactivada sale del
+    // login y la guardia lleva al aviso que lo explica y ofrece contactar a la
+    // agencia; el mensaje del servidor deja de usarse aqui.
+    test(
+      'cuenta desactivada saca del login, no se queda con el mensaje',
+      () async {
+        armar(
+          ApiFalsa.queFalla(
+            const CuentaDesactivada('La cuenta esta desactivada'),
+          ),
+        );
 
-      await controlador.iniciarSesion(
-        correo: 'cliente3@example.com',
-        contrasena: 'x',
-      );
+        await controlador.iniciarSesion(
+          correo: 'cliente3@example.com',
+          contrasena: 'x',
+        );
 
-      expect(
-        (controlador.estado as FalloDeSesion).mensaje,
-        'La cuenta esta desactivada',
-      );
-    });
+        expect(controlador.estado, isNot(isA<FalloDeSesion>()));
+        expect((controlador.estado as SinSesion).porCuentaDesactivada, isTrue);
+      },
+    );
 
     test('un error inesperado no tumba el controlador', () async {
       armar(ApiFalsa(alIniciarSesion: (_) async => throw StateError('boom')));

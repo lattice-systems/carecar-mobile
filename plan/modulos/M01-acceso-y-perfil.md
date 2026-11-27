@@ -207,8 +207,40 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto de la app: marco con regreso, el perfil en una tarjeta de resumen, grupos de lista, interruptor del sistema y diálogo y hoja del sistema. Es solo el aspecto: nada de lo que piden las historias de abajo cambia.
 
 - **V2-M01.06 (Ver mi perfil)** puede mover esta pantalla a un módulo `perfil` y completar sus estados; los textos siguen escritos a mano y habría que pasarlos a `app_es.arb`/`app_en.arb`.
-- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
+- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
+
+## Avance de V2-M01.02
+
+Quien decide mostrarla es la **guardia de rutas**, y va antes que todo, incluido el login: la bienvenida es del primer arranque, no de la cuenta, así que tiene que verla también quien todavía no ha entrado. Por eso el estado vive en `lib/nucleo/bienvenida/` y no en el módulo: la guardia está en el núcleo y no puede importar un módulo.
+
+«Una sola vez» se recuerda en las preferencias del dispositivo (`bienvenida_vista`), con las mismas que ya usaba el idioma. **Sin preferencias se responde que no falta verla**: mostrarla sin poder recordarlo la repetiría en cada arranque, y eso es peor que no mostrarla.
+
+Saltarla y terminarla hacen lo mismo —marcar que ya se vio—, porque el criterio es que no vuelva a estorbar, no que se lea completa. «Saltar» está arriba y alcanzable desde la primera lámina, no al final del recorrido.
+
+Lector de pantalla: cada lámina anuncia su título como **encabezado** y luego el texto; los puntos de abajo quedan fuera del árbol de semántica, porque son decorativos y repetir «paso 2 de 3» en tres nodos solo estorba.
+
+Seis pruebas: la guardia (pendiente va antes del login, en la bienvenida se queda, vista no estorba), el estado (primer arranque, que lo recuerde, y sin preferencias) y la app enrutada (aparece, se salta y lleva al acceso, y no vuelve).
+
+## Avance de V2-M01.08
+
+El 403 se atiende **en un solo lugar**: `ClienteApi._pedir`, el embudo por el que pasan todas las peticiones con token. La cuenta se puede desactivar con la persona dentro, así que el 403 puede llegar en cualquier pantalla; resolverlo pantalla por pantalla habría dejado huecos. Ahí se avisa con `alCuentaDesactivada` —un callback, como `renovarSesion`, para que la capa de datos no dependa de la de sesión— y `ControladorSesion` borra la sesión local y marca `SinSesion(porCuentaDesactivada: true)`. Solo se avisa si **hay** token: un 403 sin sesión no tiene sesión que cerrar.
+
+De ahí en adelante decide la guardia (`redirigirPorSesion`), que ya es pura y probada: con esa marca, **cualquier** ruta —incluido el login— lleva a `/cuenta-desactivada`. El camino vive en `Rutas` y no en el módulo porque la guardia está en el núcleo y no puede importar un módulo.
+
+**Dos pruebas que ya existían cambiaron de expectativa, a propósito.** Esperaban que un 403 al entrar se quedara en el login mostrando el mensaje del servidor (`controlador_sesion_test.dart` y la del login v1). Ese mensaje invitaba a reintentar algo que no se arregla reintentando, y el criterio pide una **pantalla dedicada**. Las dos quedaron reescritas diciendo por qué.
+
+La pantalla es un callejón a propósito: sin campos y sin «intentar de nuevo». Solo llamar a la agencia, escribirle, o volver al login si fue un error —y volver exige `reconocerCuentaDesactivada()`, porque si no la guardia regresaría ahí para siempre—. El `tel:` y el `mailto:` pasan por `abrirEnlaceProvider` para que la prueba no toque la plataforma.
+
+## Avance de V2-M01.10
+
+Pantalla propia (`PantallaMiContrasena`, ruta `/mi-contrasena`) y **no** un modo de la del cambio obligatorio: esa a propósito no tiene salida (V2-M01.03) y mezclarlas haría frágil justo el criterio que la define. Reusa `ReglasContrasena` y `ListaDeReglas`, así que la contraseña nueva se revisa con las mismas reglas en vivo. **No toca el contrato ni el backend.**
+
+**El criterio dice «cierra las demás sesiones» y eso no se puede hacer hoy.** El contrato solo tiene `DELETE /sesiones`, que cierra **todas, incluida la de quien llama**, y la app no puede saber cuál de la lista es este celular: eso espera el claim `sid` en el JWT, que es de `shared` y de otra persona. Las opciones eran tres: no ofrecerlo —y dejar sin salida a quien cambia su contraseña porque sospecha que alguien entró—, decir «las demás» y cerrar también esta —mentir—, o decirlo tal cual. Se eligió lo tercero: la casilla dice «cerrar sesión en todos mis dispositivos» y explica que incluye este, y al terminar la app suelta su propia sesión, porque el access token en curso sigue valiendo hasta que expire. **Cuando exista `sid`, esto se vuelve «las demás» sin tocar la pantalla**, solo el repositorio.
+
+La casilla viene **apagada**: cambiar la contraseña no debe sacar a nadie de sus otros dispositivos sin habérselo pedido. Y si el cambio funciona pero cerrar las sesiones falla, el aviso de éxito **se queda** y el fallo se muestra aparte: la contraseña ya cambió y decir lo contrario sería peor.
+
+Tres pruebas, una por criterio y una por el riesgo: que pida la actual y no toque las sesiones, que con la casilla marcada cierre todo y suelte esta sesión, y que un rechazo del servidor no cierre nada ni diga que se guardó.
 
 ## Avance de V2-M01.06
 

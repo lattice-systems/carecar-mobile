@@ -374,6 +374,42 @@ abstract class AppLocalizations {
   /// **'Escribe tu correo.'**
   String get accesoCorreoVacio;
 
+  /// Botón secundario del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get accesoDesactivadaEscribir;
+
+  /// Explica por qué no se puede entrar y qué sí se puede hacer.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.'**
+  String get accesoDesactivadaExplicacion;
+
+  /// Botón principal del aviso de cuenta desactivada.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get accesoDesactivadaLlamar;
+
+  /// Aviso cuando el celular no puede abrir el teléfono o el correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo abrir en este dispositivo.'**
+  String get accesoDesactivadaNoSePudo;
+
+  /// Título de la pantalla de V2-M01.08.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está desactivada'**
+  String get accesoDesactivadaTitulo;
+
+  /// Salida del aviso: regresa al login si fue un error.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a iniciar sesión'**
+  String get accesoDesactivadaVolver;
+
   /// Explica por qué el enlace de recuperación dejó de servir.
   ///
   /// In es, this message translates to:
@@ -415,6 +451,48 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'CareCar'**
   String get accesoMarca;
+
+  /// Casilla opcional de V2-M01.10, apagada por omisión.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión en todos mis dispositivos'**
+  String get accesoMiContrasenaCerrarOtras;
+
+  /// Dice que cerrar todas también cierra la de este dispositivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.'**
+  String get accesoMiContrasenaCerrarOtrasDetalle;
+
+  /// Explica por qué se pide la contraseña actual.
+  ///
+  /// In es, this message translates to:
+  /// **'Te pedimos la contraseña de ahora para confirmar que eres tú.'**
+  String get accesoMiContrasenaExplicacion;
+
+  /// Botón principal de «cambiar mi contraseña».
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar la contraseña nueva'**
+  String get accesoMiContrasenaGuardar;
+
+  /// Título del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó actualizada'**
+  String get accesoMiContrasenaListo;
+
+  /// Mensaje del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Úsala la próxima vez que inicies sesión.'**
+  String get accesoMiContrasenaListoMensaje;
+
+  /// Título de la pantalla de V2-M01.10, abierta desde Ajustes.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi contraseña'**
+  String get accesoMiContrasenaTitulo;
 
   /// Explica qué hace la pantalla a la que abre el enlace.
   ///
@@ -2857,6 +2935,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Navegación principal'**
   String get navegacionPrincipal;
+
+  /// Segunda lámina de la bienvenida: las citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.'**
+  String get bienvenidaDosTexto;
+
+  /// Título de la segunda lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide tu cita sin llamar'**
+  String get bienvenidaDosTitulo;
+
+  /// Botón de la última lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Empezar'**
+  String get bienvenidaEmpezar;
+
+  /// Salida de la bienvenida, disponible desde la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Saltar'**
+  String get bienvenidaSaltar;
+
+  /// Avanza a la siguiente lámina de la bienvenida.
+  ///
+  /// In es, this message translates to:
+  /// **'Siguiente'**
+  String get bienvenidaSiguiente;
+
+  /// Tercera lámina de la bienvenida: el seguimiento y los avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.'**
+  String get bienvenidaTresTexto;
+
+  /// Título de la tercera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Sigue tu servicio al día'**
+  String get bienvenidaTresTitulo;
+
+  /// Primera lámina de la bienvenida: los vehículos.
+  ///
+  /// In es, this message translates to:
+  /// **'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.'**
+  String get bienvenidaUnoTexto;
+
+  /// Título de la primera lámina.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos, en un solo lugar'**
+  String get bienvenidaUnoTitulo;
 
   /// Lo que anuncia un botón mientras trabaja.
   ///

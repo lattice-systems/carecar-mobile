@@ -208,6 +208,30 @@
   "@accesoCorreoVacio": {
     "description": "Error bajo el campo cuando se intenta entrar sin correo."
   },
+  "accesoDesactivadaEscribir": "Escribir un correo",
+  "@accesoDesactivadaEscribir": {
+    "description": "Botón secundario del aviso de cuenta desactivada."
+  },
+  "accesoDesactivadaExplicacion": "La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.",
+  "@accesoDesactivadaExplicacion": {
+    "description": "Explica por qué no se puede entrar y qué sí se puede hacer."
+  },
+  "accesoDesactivadaLlamar": "Llamar a la agencia",
+  "@accesoDesactivadaLlamar": {
+    "description": "Botón principal del aviso de cuenta desactivada."
+  },
+  "accesoDesactivadaNoSePudo": "No se pudo abrir en este dispositivo.",
+  "@accesoDesactivadaNoSePudo": {
+    "description": "Aviso cuando el celular no puede abrir el teléfono o el correo."
+  },
+  "accesoDesactivadaTitulo": "Tu cuenta está desactivada",
+  "@accesoDesactivadaTitulo": {
+    "description": "Título de la pantalla de V2-M01.08."
+  },
+  "accesoDesactivadaVolver": "Volver a iniciar sesión",
+  "@accesoDesactivadaVolver": {
+    "description": "Salida del aviso: regresa al login si fue un error."
+  },
   "accesoEnlaceNoValidoMensaje": "Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.",
   "@accesoEnlaceNoValidoMensaje": {
     "description": "Explica por qué el enlace de recuperación dejó de servir."
@@ -235,6 +259,34 @@
   "accesoMarca": "CareCar",
   "@accesoMarca": {
     "description": "Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce."
+  },
+  "accesoMiContrasenaCerrarOtras": "Cerrar sesión en todos mis dispositivos",
+  "@accesoMiContrasenaCerrarOtras": {
+    "description": "Casilla opcional de V2-M01.10, apagada por omisión."
+  },
+  "accesoMiContrasenaCerrarOtrasDetalle": "Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.",
+  "@accesoMiContrasenaCerrarOtrasDetalle": {
+    "description": "Dice que cerrar todas también cierra la de este dispositivo."
+  },
+  "accesoMiContrasenaExplicacion": "Te pedimos la contraseña de ahora para confirmar que eres tú.",
+  "@accesoMiContrasenaExplicacion": {
+    "description": "Explica por qué se pide la contraseña actual."
+  },
+  "accesoMiContrasenaGuardar": "Guardar la contraseña nueva",
+  "@accesoMiContrasenaGuardar": {
+    "description": "Botón principal de «cambiar mi contraseña»."
+  },
+  "accesoMiContrasenaListo": "Tu contraseña quedó actualizada",
+  "@accesoMiContrasenaListo": {
+    "description": "Título del aviso de éxito."
+  },
+  "accesoMiContrasenaListoMensaje": "Úsala la próxima vez que inicies sesión.",
+  "@accesoMiContrasenaListoMensaje": {
+    "description": "Mensaje del aviso de éxito."
+  },
+  "accesoMiContrasenaTitulo": "Cambiar mi contraseña",
+  "@accesoMiContrasenaTitulo": {
+    "description": "Título de la pantalla de V2-M01.10, abierta desde Ajustes."
   },
   "accesoNuevaExplicacion": "Elige una contraseña nueva. Este enlace sirve una sola vez.",
   "@accesoNuevaExplicacion": {
@@ -2051,6 +2103,42 @@
   "navegacionPrincipal": "Navegación principal",
   "@navegacionPrincipal": {
     "description": "Nombre de la barra de navegación para el lector de pantalla."
+  },
+  "bienvenidaDosTexto": "Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.",
+  "@bienvenidaDosTexto": {
+    "description": "Segunda lámina de la bienvenida: las citas."
+  },
+  "bienvenidaDosTitulo": "Pide tu cita sin llamar",
+  "@bienvenidaDosTitulo": {
+    "description": "Título de la segunda lámina."
+  },
+  "bienvenidaEmpezar": "Empezar",
+  "@bienvenidaEmpezar": {
+    "description": "Botón de la última lámina de la bienvenida."
+  },
+  "bienvenidaSaltar": "Saltar",
+  "@bienvenidaSaltar": {
+    "description": "Salida de la bienvenida, disponible desde la primera lámina."
+  },
+  "bienvenidaSiguiente": "Siguiente",
+  "@bienvenidaSiguiente": {
+    "description": "Avanza a la siguiente lámina de la bienvenida."
+  },
+  "bienvenidaTresTexto": "Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.",
+  "@bienvenidaTresTexto": {
+    "description": "Tercera lámina de la bienvenida: el seguimiento y los avisos."
+  },
+  "bienvenidaTresTitulo": "Sigue tu servicio al día",
+  "@bienvenidaTresTitulo": {
+    "description": "Título de la tercera lámina."
+  },
+  "bienvenidaUnoTexto": "Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.",
+  "@bienvenidaUnoTexto": {
+    "description": "Primera lámina de la bienvenida: los vehículos."
+  },
+  "bienvenidaUnoTitulo": "Tus autos, en un solo lugar",
+  "@bienvenidaUnoTitulo": {
+    "description": "Título de la primera lámina."
   },
   "botonCargando": "{texto}, cargando",
   "@botonCargando": {

@@ -162,6 +162,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoCorreoVacio => 'Escribe tu correo.';
 
   @override
+  String get accesoDesactivadaEscribir => 'Escribir un correo';
+
+  @override
+  String get accesoDesactivadaExplicacion =>
+      'La agencia desactivó el acceso de esta cuenta. Desde la app no podemos reactivarla: comunícate con ellos y te ayudan.';
+
+  @override
+  String get accesoDesactivadaLlamar => 'Llamar a la agencia';
+
+  @override
+  String get accesoDesactivadaNoSePudo =>
+      'No se pudo abrir en este dispositivo.';
+
+  @override
+  String get accesoDesactivadaTitulo => 'Tu cuenta está desactivada';
+
+  @override
+  String get accesoDesactivadaVolver => 'Volver a iniciar sesión';
+
+  @override
   String get accesoEnlaceNoValidoMensaje =>
       'Los enlaces vencen pronto y se pueden usar una sola vez. Pide uno nuevo y revisa tu correo.';
 
@@ -182,6 +202,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accesoMarca => 'CareCar';
+
+  @override
+  String get accesoMiContrasenaCerrarOtras =>
+      'Cerrar sesión en todos mis dispositivos';
+
+  @override
+  String get accesoMiContrasenaCerrarOtrasDetalle =>
+      'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.';
+
+  @override
+  String get accesoMiContrasenaExplicacion =>
+      'Te pedimos la contraseña de ahora para confirmar que eres tú.';
+
+  @override
+  String get accesoMiContrasenaGuardar => 'Guardar la contraseña nueva';
+
+  @override
+  String get accesoMiContrasenaListo => 'Tu contraseña quedó actualizada';
+
+  @override
+  String get accesoMiContrasenaListoMensaje =>
+      'Úsala la próxima vez que inicies sesión.';
+
+  @override
+  String get accesoMiContrasenaTitulo => 'Cambiar mi contraseña';
 
   @override
   String get accesoNuevaExplicacion =>
@@ -1676,6 +1721,36 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get navegacionPrincipal => 'Navegación principal';
+
+  @override
+  String get bienvenidaDosTexto =>
+      'Elige el día y la hora que te queden bien, y reagenda o cancela desde aquí.';
+
+  @override
+  String get bienvenidaDosTitulo => 'Pide tu cita sin llamar';
+
+  @override
+  String get bienvenidaEmpezar => 'Empezar';
+
+  @override
+  String get bienvenidaSaltar => 'Saltar';
+
+  @override
+  String get bienvenidaSiguiente => 'Siguiente';
+
+  @override
+  String get bienvenidaTresTexto =>
+      'Te avisamos cómo va tu auto en el taller y cuándo lo puedes recoger.';
+
+  @override
+  String get bienvenidaTresTitulo => 'Sigue tu servicio al día';
+
+  @override
+  String get bienvenidaUnoTexto =>
+      'Consulta su historial de servicios, sus documentos y lo que sigue en su mantenimiento.';
+
+  @override
+  String get bienvenidaUnoTitulo => 'Tus autos, en un solo lugar';
 
   @override
   String botonCargando(String texto) {
