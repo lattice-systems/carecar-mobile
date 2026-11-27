@@ -57,6 +57,7 @@ Estas tres historias recorren todas las pantallas, y las pantallas v2 apenas est
 ### Pantallas de taller, historial, garantía, lealtad y pagos
 
 - Las pantallas de M04 (orden, inspección y adicionales), M02 (historial y ticket), M10 (garantía, campañas, campaña y agendar), M12 (lealtad, movimientos, recompensas, canjes y referir) y M08 (datos fiscales, perfil fiscal, pagar orden, mis pagos, pago y métodos de pago) pasan la auditoría en sus pruebas de módulo: `auditarAccesibilidad` en claro y oscuro a 320 de ancho, y sin desbordes con letra al 200 %.
+- Lo que encontró la auditoría y se corrigió: el calendario de agendar una campaña tenía relleno de lado y en 360 cada día medía unos 43 de ancho. Ahora va como en valuación (12 de margen y sin relleno de lado), así que en 360 conserva 48 y en 320 aplica la excepción aceptada de 40 × 48. Los códigos de canje y de referido se pueden seleccionar para copiarlos y medían 34 de alto; ahora miden al menos `Espaciado.objetivoTactilMinimo` (48).
 - Los ayudantes de prueba de esos módulos (`appTaller`, `appGarantia`, `appLealtad`, `appPagos` y `appCobro`) aceptan `ancho`, para montar cada pantalla en un teléfono chico.
 - Sigue manual la prueba con TalkBack y VoiceOver de esas pantallas.
 
