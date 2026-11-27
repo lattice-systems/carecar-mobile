@@ -6473,4 +6473,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get recoleccionSeguimientoMarcadorChofer => 'Tu chofer';
+
+  @override
+  String get contactoTitulo => 'Contacto';
+
+  @override
+  String get contactoIntro =>
+      'Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.';
+
+  @override
+  String get contactoGrupoMedios => 'Medios de contacto';
+
+  @override
+  String get contactoLlamar => 'Llamar a la agencia';
+
+  @override
+  String get contactoCorreo => 'Escribir un correo';
+
+  @override
+  String get contactoGrupoDonde => 'Dónde estamos';
+
+  @override
+  String get contactoVerSucursales => 'Sucursales y horarios';
+
+  @override
+  String get contactoVerSucursalesDetalle => 'Mapa, horarios y cómo llegar';
+
+  @override
+  String contactoNoSePudoCorreo(String correo) {
+    return 'No pudimos abrir tu app de correo. Escríbenos a $correo.';
+  }
 }
