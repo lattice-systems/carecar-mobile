@@ -3,7 +3,6 @@ import 'package:carecar_mobile/nucleo/bienvenida/estado_bienvenida.dart';
 import 'package:carecar_mobile/nucleo/biometria/candado_biometrico.dart';
 import 'package:carecar_mobile/nucleo/biometria/lector_biometrico.dart';
 import 'package:carecar_mobile/nucleo/idioma/proveedores_idioma.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +91,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(sesion.estado, isA<SinSesion>());
-    expect(find.byType(PantallaLogin), findsOneWidget);
+    expect(pantallaDeAcceso, findsOneWidget);
   });
 
   testWidgets('si cambió la biometría del equipo, pide la contraseña', (
