@@ -10530,6 +10530,12 @@ abstract class AppLocalizations {
   /// **'Abierto ahora'**
   String get sucursalesAbiertoAhora;
 
+  /// Estado corto de un departamento de la sucursal que atiende en este momento.
+  ///
+  /// In es, this message translates to:
+  /// **'Abierto'**
+  String get sucursalesAbierto;
+
   /// No description provided for @sucursalesCerrado.
   ///
   /// In es, this message translates to:
