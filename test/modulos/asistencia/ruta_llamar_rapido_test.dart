@@ -1,3 +1,5 @@
+import 'package:carecar_mobile/api/modelos/sucursal.dart';
+import 'package:carecar_mobile/config/agencia.dart';
 import 'package:carecar_mobile/modulos/asistencia/asistencia.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -12,13 +14,14 @@ Future<List<Uri>> _montar(
   Aseguradora? aseguradora,
   bool abre = true,
   double letra = 1,
+  List<SucursalApi> sucursales = const [],
 }) async {
   tester.platformDispatcher.localesTestValue = const [Locale('es')];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
   tester.platformDispatcher.textScaleFactorTestValue = letra;
   addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
   final llamadas = <Uri>[];
-  final api = ApiFalsa();
+  final api = ApiFalsa()..sucursalesApi = sucursales;
   final sesion = ControladorSesion(api, AlmacenEnMemoria());
   addTearDown(sesion.dispose);
   await sesion.iniciarSesion(correo: 'a@b.mx', contrasena: 'CareCar2026');
@@ -48,6 +51,43 @@ void main() {
     expect(find.text('Emergencias'), findsOneWidget);
     expect(find.text('La agencia'), findsOneWidget);
     expect(find.text('Mi aseguradora'), findsOneWidget);
+  });
+
+  testWidgets('la agencia se llama al teléfono de la sucursal principal', (
+    tester,
+  ) async {
+    final llamadas = await _montar(
+      tester,
+      sucursales: const [
+        SucursalApi(
+          id: 1,
+          nombre: 'CareCar León',
+          direccion: 'Blvd. Ejemplo 100',
+          latitud: 21.125,
+          longitud: -101.686,
+          telefono: '+52 477 111 2233',
+          abiertaAhora: true,
+        ),
+      ],
+    );
+    expect(find.text('+52 477 111 2233'), findsOneWidget);
+    expect(find.text(Agencia.telefono), findsNothing);
+
+    await tester.tap(find.text('La agencia'));
+    await tester.pumpAndSettle();
+    expect(llamadas, [Uri.parse('tel:+524771112233')]);
+  });
+
+  testWidgets('sin sucursales la agencia usa el teléfono de la config', (
+    tester,
+  ) async {
+    final llamadas = await _montar(tester);
+    expect(find.text(Agencia.telefono), findsOneWidget);
+
+    await tester.tap(find.text('La agencia'));
+    await tester.pumpAndSettle();
+    expect(llamadas, hasLength(1));
+    expect(llamadas.single.scheme, 'tel');
   });
 
   testWidgets('un toque en el 911 abre el marcador con tel:911', (
