@@ -236,6 +236,34 @@
   "@accesoMarca": {
     "description": "Nombre de la app en el encabezado del acceso. Es un nombre propio: no se traduce."
   },
+  "accesoMiContrasenaCerrarOtras": "Cerrar sesión en todos mis dispositivos",
+  "@accesoMiContrasenaCerrarOtras": {
+    "description": "Casilla opcional de V2-M01.10, apagada por omisión."
+  },
+  "accesoMiContrasenaCerrarOtrasDetalle": "Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.",
+  "@accesoMiContrasenaCerrarOtrasDetalle": {
+    "description": "Dice que cerrar todas también cierra la de este dispositivo."
+  },
+  "accesoMiContrasenaExplicacion": "Te pedimos la contraseña de ahora para confirmar que eres tú.",
+  "@accesoMiContrasenaExplicacion": {
+    "description": "Explica por qué se pide la contraseña actual."
+  },
+  "accesoMiContrasenaGuardar": "Guardar la contraseña nueva",
+  "@accesoMiContrasenaGuardar": {
+    "description": "Botón principal de «cambiar mi contraseña»."
+  },
+  "accesoMiContrasenaListo": "Tu contraseña quedó actualizada",
+  "@accesoMiContrasenaListo": {
+    "description": "Título del aviso de éxito."
+  },
+  "accesoMiContrasenaListoMensaje": "Úsala la próxima vez que inicies sesión.",
+  "@accesoMiContrasenaListoMensaje": {
+    "description": "Mensaje del aviso de éxito."
+  },
+  "accesoMiContrasenaTitulo": "Cambiar mi contraseña",
+  "@accesoMiContrasenaTitulo": {
+    "description": "Título de la pantalla de V2-M01.10, abierta desde Ajustes."
+  },
   "accesoNuevaExplicacion": "Elige una contraseña nueva. Este enlace sirve una sola vez.",
   "@accesoNuevaExplicacion": {
     "description": "Explica qué hace la pantalla a la que abre el enlace."

@@ -184,6 +184,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoMiContrasenaCerrarOtras =>
+      'Cerrar sesión en todos mis dispositivos';
+
+  @override
+  String get accesoMiContrasenaCerrarOtrasDetalle =>
+      'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.';
+
+  @override
+  String get accesoMiContrasenaExplicacion =>
+      'Te pedimos la contraseña de ahora para confirmar que eres tú.';
+
+  @override
+  String get accesoMiContrasenaGuardar => 'Guardar la contraseña nueva';
+
+  @override
+  String get accesoMiContrasenaListo => 'Tu contraseña quedó actualizada';
+
+  @override
+  String get accesoMiContrasenaListoMensaje =>
+      'Úsala la próxima vez que inicies sesión.';
+
+  @override
+  String get accesoMiContrasenaTitulo => 'Cambiar mi contraseña';
+
+  @override
   String get accesoNuevaExplicacion =>
       'Elige una contraseña nueva. Este enlace sirve una sola vez.';
 

@@ -186,6 +186,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoMarca => 'CareCar';
 
   @override
+  String get accesoMiContrasenaCerrarOtras => 'Sign out on all my devices';
+
+  @override
+  String get accesoMiContrasenaCerrarOtrasDetalle =>
+      'This phone included: you will have to sign in again with your new password.';
+
+  @override
+  String get accesoMiContrasenaExplicacion =>
+      'We ask for your current password to confirm it is you.';
+
+  @override
+  String get accesoMiContrasenaGuardar => 'Save the new password';
+
+  @override
+  String get accesoMiContrasenaListo => 'Your password is updated';
+
+  @override
+  String get accesoMiContrasenaListoMensaje =>
+      'Use it the next time you sign in.';
+
+  @override
+  String get accesoMiContrasenaTitulo => 'Change my password';
+
+  @override
   String get accesoNuevaExplicacion =>
       'Choose a new password. This link works only once.';
 

@@ -207,8 +207,18 @@ Las piezas estaban probadas **por separado**: el controlador rota el par (`test/
 Ajustes (`lib/pantallas/perfil/pantalla_perfil.dart`, v1) ya se ve como el resto de la app: marco con regreso, el perfil en una tarjeta de resumen, grupos de lista, interruptor del sistema y diálogo y hoja del sistema. Es solo el aspecto: nada de lo que piden las historias de abajo cambia.
 
 - **V2-M01.06 (Ver mi perfil)** puede mover esta pantalla a un módulo `perfil` y completar sus estados; los textos siguen escritos a mano y habría que pasarlos a `app_es.arb`/`app_en.arb`.
-- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** sustituye a la pantalla v1 que abre hoy «Cambiar contraseña».
+- **V2-M01.10 (Cambiar mi contraseña desde Seguridad)** ya sustituyó a la pantalla v1 que abría «Cambiar contraseña»: la fila lleva a `/mi-contrasena` cuando hay enrutador, y la v1 se queda solo para cuando Ajustes se monta sin él.
 - Quien agregue una fila a Ajustes agrega un `_Opcion(...)` a su sección en `pantalla_perfil.dart`; el aspecto y la llave de la fila salen solos.
+
+## Avance de V2-M01.10
+
+Pantalla propia (`PantallaMiContrasena`, ruta `/mi-contrasena`) y **no** un modo de la del cambio obligatorio: esa a propósito no tiene salida (V2-M01.03) y mezclarlas haría frágil justo el criterio que la define. Reusa `ReglasContrasena` y `ListaDeReglas`, así que la contraseña nueva se revisa con las mismas reglas en vivo. **No toca el contrato ni el backend.**
+
+**El criterio dice «cierra las demás sesiones» y eso no se puede hacer hoy.** El contrato solo tiene `DELETE /sesiones`, que cierra **todas, incluida la de quien llama**, y la app no puede saber cuál de la lista es este celular: eso espera el claim `sid` en el JWT, que es de `shared` y de otra persona. Las opciones eran tres: no ofrecerlo —y dejar sin salida a quien cambia su contraseña porque sospecha que alguien entró—, decir «las demás» y cerrar también esta —mentir—, o decirlo tal cual. Se eligió lo tercero: la casilla dice «cerrar sesión en todos mis dispositivos» y explica que incluye este, y al terminar la app suelta su propia sesión, porque el access token en curso sigue valiendo hasta que expire. **Cuando exista `sid`, esto se vuelve «las demás» sin tocar la pantalla**, solo el repositorio.
+
+La casilla viene **apagada**: cambiar la contraseña no debe sacar a nadie de sus otros dispositivos sin habérselo pedido. Y si el cambio funciona pero cerrar las sesiones falla, el aviso de éxito **se queda** y el fallo se muestra aparte: la contraseña ya cambió y decir lo contrario sería peor.
+
+Tres pruebas, una por criterio y una por el riesgo: que pida la actual y no toque las sesiones, que con la casilla marcada cierre todo y suelte esta sesión, y que un rechazo del servidor no cierre nada ni diga que se guardó.
 
 ## Avance de V2-M01.06
 

@@ -416,6 +416,48 @@ abstract class AppLocalizations {
   /// **'CareCar'**
   String get accesoMarca;
 
+  /// Casilla opcional de V2-M01.10, apagada por omisión.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión en todos mis dispositivos'**
+  String get accesoMiContrasenaCerrarOtras;
+
+  /// Dice que cerrar todas también cierra la de este dispositivo.
+  ///
+  /// In es, this message translates to:
+  /// **'Incluye este celular: tendrás que entrar otra vez con tu contraseña nueva.'**
+  String get accesoMiContrasenaCerrarOtrasDetalle;
+
+  /// Explica por qué se pide la contraseña actual.
+  ///
+  /// In es, this message translates to:
+  /// **'Te pedimos la contraseña de ahora para confirmar que eres tú.'**
+  String get accesoMiContrasenaExplicacion;
+
+  /// Botón principal de «cambiar mi contraseña».
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar la contraseña nueva'**
+  String get accesoMiContrasenaGuardar;
+
+  /// Título del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña quedó actualizada'**
+  String get accesoMiContrasenaListo;
+
+  /// Mensaje del aviso de éxito.
+  ///
+  /// In es, this message translates to:
+  /// **'Úsala la próxima vez que inicies sesión.'**
+  String get accesoMiContrasenaListoMensaje;
+
+  /// Título de la pantalla de V2-M01.10, abierta desde Ajustes.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar mi contraseña'**
+  String get accesoMiContrasenaTitulo;
+
   /// Explica qué hace la pantalla a la que abre el enlace.
   ///
   /// In es, this message translates to:

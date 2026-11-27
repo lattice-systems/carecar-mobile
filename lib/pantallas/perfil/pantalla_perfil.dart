@@ -9,7 +9,7 @@ import '../../api/excepciones.dart';
 import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
-import '../../modulos/acceso/acceso.dart' show rutaMiPerfil;
+import '../../modulos/acceso/acceso.dart' show rutaMiContrasena, rutaMiPerfil;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
 import '../../modulos/pagos/pagos.dart'
     show rutaDatosFiscales, rutaMetodosPago, rutaMisPagos;
@@ -105,7 +105,17 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
     }
   }
 
+  /// Abre «Cambiar mi contrasena» (V2-M01.10).
+  ///
+  /// La pantalla v2 sustituye a la v1 de esta misma fila: pide la actual igual
+  /// y agrega cerrar las sesiones. La v1 se queda como respaldo para cuando
+  /// esta pantalla se monta sin enrutador (las pruebas de widget y la galeria
+  /// la montan asi), que es la misma regla que siguen las demas filas.
   void _cambiarContrasena() {
+    if (GoRouter.maybeOf(context) != null) {
+      GoRouter.of(context).push(rutaMiContrasena);
+      return;
+    }
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (contexto) => PantallaCambiarContrasena(

@@ -6,6 +6,7 @@ import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_acceso.dart';
 import 'pantalla_cambiar_contrasena.dart';
 import 'pantalla_cambiar_correo.dart';
+import 'pantalla_mi_contrasena.dart';
 import 'pantalla_mi_perfil.dart';
 import 'pantalla_nueva_contrasena.dart';
 import 'pantalla_recuperar.dart';
@@ -19,6 +20,12 @@ const rutaMiPerfil = '/mi-perfil';
 
 /// Cambiar mi correo (V2-M01.07). Se abre desde el perfil.
 const rutaCambiarCorreo = '/mi-perfil/correo';
+
+/// Cambiar mi contrasena cuando yo quiera (V2-M01.10). Se abre desde Ajustes.
+///
+/// Camino propio y no `Rutas.cambiarContrasena`: ese lo sirve hoy la pantalla
+/// v1 del cambio **obligatorio**, y son dos pantallas distintas.
+const rutaMiContrasena = '/mi-contrasena';
 
 /// Mis sesiones abiertas (V2-M01.09). Se abre desde el perfil.
 ///
@@ -116,6 +123,12 @@ final rutasSesiones = <RouteBase>[
     name: 'cambiar-correo',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaCambiarCorreo()),
+  ),
+  GoRoute(
+    path: rutaMiContrasena,
+    name: 'mi-contrasena',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaMiContrasena()),
   ),
   GoRoute(
     path: rutaSesiones,
