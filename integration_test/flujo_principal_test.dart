@@ -1,5 +1,6 @@
 import 'package:carecar_mobile/config/flavor.dart';
 import 'package:carecar_mobile/main.dart';
+import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_acceso.dart';
 import 'package:carecar_mobile/modulos/acceso/presentacion/pantalla_bienvenida.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
@@ -7,7 +8,6 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/calendario.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
 import 'package:carecar_mobile/sesion/almacen_seguro.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,14 +42,14 @@ void main() {
       // La bienvenida aparece antes del acceso en una instalación nueva.
       await _tocar(tester, find.byKey(PantallaBienvenida.botonSaltar));
 
-      final correo = find.byKey(PantallaLogin.campoCorreo);
+      final correo = find.byKey(PantallaAcceso.campoCorreo);
       await _esperar(tester, correo);
       await tester.enterText(correo, 'cliente1@example.com');
       await tester.enterText(
-        find.byKey(PantallaLogin.campoContrasena),
+        find.byKey(PantallaAcceso.campoContrasena),
         'CareCar2026',
       );
-      await _tocar(tester, find.byKey(PantallaLogin.botonEntrar));
+      await _tocar(tester, find.byKey(PantallaAcceso.botonEntrar));
 
       await _tocar(
         tester,
