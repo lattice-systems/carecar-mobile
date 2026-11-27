@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -5,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
+import '../../notificaciones/notificaciones.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
@@ -56,6 +59,20 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final citas = ref.watch(misCitasProvider);
+
+    // V2-M06.06: la lista recien llegada pone al dia los recordatorios
+    // locales. Importa para quien reinstalo la app o cambio de telefono: sus
+    // avisos no existen hasta que algo los vuelve a programar.
+    //
+    // La paginacion no estorba: `sincronizar` solo toca las citas que recibe
+    // -programa las confirmadas, cancela las que no-, no borra las que no
+    // vinieron en esta pagina.
+    ref.listen(misCitasProvider, (_, nuevas) {
+      final lista = nuevas.value?.citas;
+      if (lista != null) {
+        ref.read(recordatoriosDeCitaProvider).sincronizar(lista);
+      }
+    });
 
     if (citas.hasError && !citas.hasValue) {
       return MarcoPantalla.estado(
@@ -326,6 +343,9 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
       ref.invalidate(disponibilidadProvider);
       if (!mounted) return;
       ref.read(misCitasProvider.notifier).reemplazar(cancelada);
+      // V2-M06.06: ya no hay a que recordarle. Sin esperarlo: la cita ya se
+      // cancelo y el aviso de exito no debe quedarse detras del sistema.
+      unawaited(ref.read(recordatoriosDeCitaProvider).alCancelar(cita.id));
       _mostrarAviso(textos.citasCancelada, Tono.exito);
     } on CitaNoModificable {
       // Alguien la cambio por otro lado: se vuelve a pedir la lista real.

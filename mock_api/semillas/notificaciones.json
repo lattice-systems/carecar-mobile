@@ -1,0 +1,95 @@
+{
+  "notificaciones": [
+    {
+      "id": 1,
+      "clienteId": 1,
+      "categoria": "TALLER",
+      "titulo": "Tu Jetta ya está en diagnóstico",
+      "cuerpo": "El asesor revisó el auto y empezó el diagnóstico. Te avisamos cuando haya cotización.",
+      "destino": "/taller",
+      "leidaEn": null,
+      "creadaEn": "2026-11-26T17:40:00.000Z"
+    },
+    {
+      "id": 2,
+      "clienteId": 1,
+      "categoria": "CITAS",
+      "titulo": "Tu cita es mañana",
+      "cuerpo": "Mañana a las 10:00 en Agencia360 Zapopan, con tu Jetta 2021.",
+      "destino": "/citas",
+      "leidaEn": null,
+      "creadaEn": "2026-11-25T15:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "clienteId": 1,
+      "categoria": "DOCUMENTOS",
+      "titulo": "Tu factura ya está lista",
+      "cuerpo": "La factura del servicio de los 40 000 km ya se puede descargar.",
+      "destino": "/historial",
+      "leidaEn": null,
+      "creadaEn": "2026-11-24T20:15:00.000Z"
+    },
+    {
+      "id": 4,
+      "clienteId": 1,
+      "categoria": "MANTENIMIENTO",
+      "titulo": "Te toca servicio de 45 000 km",
+      "cuerpo": "Tu Jetta va en 43 800 km. Agenda cuando te quede bien.",
+      "destino": "/mantenimiento",
+      "leidaEn": "2026-11-23T14:05:00.000Z",
+      "creadaEn": "2026-11-22T16:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "clienteId": 1,
+      "categoria": "MENSAJES",
+      "titulo": "Tu asesor te contestó",
+      "cuerpo": "«Ya pedimos la refacción, llega el jueves.»",
+      "destino": "/taller",
+      "leidaEn": "2026-11-20T19:30:00.000Z",
+      "creadaEn": "2026-11-20T19:10:00.000Z"
+    },
+    {
+      "id": 6,
+      "clienteId": 1,
+      "categoria": "CITAS",
+      "titulo": "Confirmamos tu cita",
+      "cuerpo": "Quedó el 20 de noviembre a las 09:00. Puedes reagendarla desde la app.",
+      "destino": "/citas",
+      "leidaEn": "2026-11-18T18:00:00.000Z",
+      "creadaEn": "2026-11-18T17:45:00.000Z"
+    },
+    {
+      "id": 7,
+      "clienteId": 1,
+      "categoria": "TALLER",
+      "titulo": "Tu auto está listo para entrega",
+      "cuerpo": "Puedes recogerlo hoy hasta las 19:00. Total: $4,380.00",
+      "destino": "/taller",
+      "leidaEn": "2026-11-15T22:40:00.000Z",
+      "creadaEn": "2026-11-15T22:30:00.000Z"
+    },
+    {
+      "id": 8,
+      "clienteId": 1,
+      "categoria": "DOCUMENTOS",
+      "titulo": "Tu póliza de garantía está en la app",
+      "cuerpo": "Ya puedes consultar tus coberturas y lo que llevas usado.",
+      "destino": "/garantia",
+      "leidaEn": "2026-11-10T16:20:00.000Z",
+      "creadaEn": "2026-11-10T16:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "clienteId": 2,
+      "categoria": "CITAS",
+      "titulo": "Tu cita es mañana",
+      "cuerpo": "Mañana a las 12:00 en Agencia360 Zapopan.",
+      "destino": "/citas",
+      "leidaEn": null,
+      "creadaEn": "2026-11-26T15:00:00.000Z"
+    }
+  ],
+  "preferenciasNotificacion": []
+}
