@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.30.0
+  version: 2.32.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -97,6 +97,8 @@ tags:
     description: V2-M26.01 a V2-M26.05
   - name: Sucursales
     description: V2-M27.02
+  - name: Notificaciones
+    description: V2-M06.04 (bandeja) y V2-M06.05 (preferencias)
   - name: Documentos
     description: V2-M09.01
 
@@ -3683,6 +3685,128 @@ paths:
               schema:
                 $ref: '#/components/schemas/Problema'
 
+  /notificaciones:
+    get:
+      tags: [Notificaciones]
+      summary: Mis avisos
+      description: |
+        V2-M06.04 · La bandeja del cliente. Del más reciente, paginada.
+
+        `noLeidas` viene en cada página y es el total de la cuenta, no el de la página: es lo
+        que la app pinta en el contador del ícono, y pedirlo aparte seria una llamada más en
+        cada entrada.
+      parameters:
+        - $ref: '#/components/parameters/Pagina'
+        - $ref: '#/components/parameters/Tamano'
+      responses:
+        '200':
+          description: Avisos del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaNotificaciones'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /notificaciones/leidas:
+    post:
+      tags: [Notificaciones]
+      summary: Marcar todos mis avisos como leídos
+      description: |
+        V2-M06.04 · Marca los que estaban sin leer en ese momento. Idempotente: sin avisos
+        pendientes responde 204 igual.
+      responses:
+        '204':
+          description: No queda ninguno sin leer
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
+  /notificaciones/{notificacionId}/leida:
+    post:
+      tags: [Notificaciones]
+      summary: Marcar un aviso como leído
+      description: |
+        V2-M06.04 · Idempotente: marcarlo dos veces responde 204 igual y no mueve `leidaEn`,
+        así la app puede reintentar sin conexión sin cambiar la fecha.
+
+        Un aviso de otra cuenta responde 404 y no 403: no se confirma que exista.
+      parameters:
+        - name: notificacionId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Queda leído
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+        '404':
+          $ref: '#/components/responses/NoEncontrado'
+
+  /notificaciones/preferencias:
+    get:
+      tags: [Notificaciones]
+      summary: Qué avisos quiero recibir
+      description: |
+        V2-M06.05 · Devuelve **todas** las categorías, también las que el cliente nunca ha
+        tocado, con su valor por omisión. Así la app no tiene que saber cuáles existen ni qué
+        se asume cuando falta una.
+      responses:
+        '200':
+          description: Preferencias del cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferenciasNotificacion'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    put:
+      tags: [Notificaciones]
+      summary: Cambiar qué avisos quiero recibir
+      description: |
+        V2-M06.05 · Reemplaza las preferencias completas. Se guarda lo que la persona
+        **eligió**, no solo lo que apagó: si solo se guardaran las apagadas, `PROMOCIONES`
+        nunca podría prenderse porque volvería a caer en su valor por omisión.
+
+        El horario silencioso es de la cuenta, no de cada categoría, y lo respeta **el
+        servidor** al enviar. Es un criterio de la historia: un aviso que no se manda no
+        despierta a nadie, y filtrarlo en la app no sirve con la app cerrada.
+
+        `silencioDesde` y `silencioHasta` van juntos: uno sin el otro es 400. Si
+        `silencioDesde` es mayor que `silencioHasta` el rango cruza la medianoche
+        (22:00 a 07:00), que es el caso normal y no un error.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreferenciasNotificacion'
+      responses:
+        '200':
+          description: Preferencias como quedaron
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferenciasNotificacion'
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
   /ordenes/{ordenId}/actividad-en-vivo:
     put:
       tags: [Taller en vivo]
@@ -3909,6 +4033,109 @@ components:
           pattern: '^[0-9a-fA-F]+$'
           description: Push token de la Live Activity, en hexadecimal
           example: aabbccddeeff00112233445566778899
+    CategoriaNotificacion:
+      type: string
+      description: |
+        Las categorías de la sección 6 de la ficha. El servidor no manda otra; si algún día
+        agrega una, la app la trata como desconocida y la sigue mostrando en la bandeja en vez
+        de romperse.
+      enum:
+        - TALLER
+        - CITAS
+        - MANTENIMIENTO
+        - DOCUMENTOS
+        - PROMOCIONES
+        - MENSAJES
+
+    Notificacion:
+      type: object
+      required: [id, categoria, titulo, cuerpo, destino, creadaEn]
+      properties:
+        id:
+          type: integer
+          format: int64
+        categoria:
+          $ref: '#/components/schemas/CategoriaNotificacion'
+        titulo:
+          type: string
+        cuerpo:
+          type: string
+        destino:
+          type: string
+          description: |
+            Ruta interna de la app a la que lleva tocarlo (V2-M06.03), por ejemplo `/citas` o
+            `/citas/7/comprobante`. Nunca una URL: la app descarta cualquier cosa con esquema o
+            con `//host`, porque un destino sin revisar es una redirección abierta.
+
+            Obligatorio: `notificacion.destino` es `not null` en la base (V60 del backend), así
+            que todo aviso lleva a algún lado.
+          example: /citas
+        leidaEn:
+          type: string
+          format: date-time
+          nullable: true
+          description: Nulo si sigue sin leer.
+        creadaEn:
+          type: string
+          format: date-time
+
+    PaginaNotificaciones:
+      type: object
+      required: [contenido, pagina, tamano, totalElementos, totalPaginas, noLeidas]
+      properties:
+        contenido:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notificacion'
+        pagina:
+          type: integer
+        tamano:
+          type: integer
+        totalElementos:
+          type: integer
+          format: int64
+        totalPaginas:
+          type: integer
+        noLeidas:
+          type: integer
+          format: int64
+          description: Sin leer en toda la cuenta, no en esta página.
+
+    PreferenciaNotificacion:
+      type: object
+      required: [categoria, push]
+      properties:
+        categoria:
+          $ref: '#/components/schemas/CategoriaNotificacion'
+        push:
+          type: boolean
+          description: |
+            Por omisión `true` en todas menos `PROMOCIONES`, que nace apagada: lo comercial se
+            pide, no se asume.
+
+    PreferenciasNotificacion:
+      type: object
+      required: [categorias]
+      properties:
+        categorias:
+          type: array
+          description: Todas las categorías, también las que el cliente no ha tocado.
+          items:
+            $ref: '#/components/schemas/PreferenciaNotificacion'
+        silencioDesde:
+          type: string
+          nullable: true
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+          description: |
+            Hora local de la agencia. Nulo, junto con `silencioHasta`, si no hay horario
+            silencioso.
+          example: '22:00'
+        silencioHasta:
+          type: string
+          nullable: true
+          pattern: '^([01][0-9]|2[0-3]):[0-5][0-9]$'
+          example: '07:00'
+
     PreguntaAsistente:
       type: object
       required: [vehiculoId, pregunta]

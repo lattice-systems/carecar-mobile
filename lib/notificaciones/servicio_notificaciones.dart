@@ -55,7 +55,6 @@ class ServicioNotificaciones {
   final SharedPreferences? _prefs;
 
   static const _claveActivo = 'notificaciones.recordatorios_activos';
-  static const _clavePermisoPedido = 'notificaciones.permiso_pedido';
 
   /// Cambia cada vez que el usuario toca una notificacion de cita.
   final toques = ValueNotifier<int>(0);
@@ -98,13 +97,21 @@ class ServicioNotificaciones {
     toques.value++;
   }
 
-  /// Pide permiso una sola vez; despues el usuario decide en el sistema.
-  Future<void> pedirPermisoSiHaceFalta() async {
-    if (!_listo || !activo) return;
-    if (_prefs?.getBool(_clavePermisoPedido) ?? false) return;
-    await _prefs?.setBool(_clavePermisoPedido, true);
-    await _seguro(_plugin.pedirPermiso);
-  }
+  /// Ya no pide permiso: lo gobierna la pantalla de V2-M06.01.
+  ///
+  /// Antes lo pedia en frio aqui, y la primera cita agendada disparaba el
+  /// dialogo del sistema sin que nadie hubiera explicado para que sirve. En
+  /// Android 13 y despues ese dialogo se muestra **una sola vez en la vida de
+  /// la instalacion**, asi que pedirlo en frio gasta el unico tiro.
+  ///
+  /// Se queda como metodo vacio y no se borra porque lo llaman pantallas de la
+  /// v1. Quitarlo es trabajo de cuando la v1 se retire.
+  ///
+  /// Un intento intermedio fue pedirlo solo si la explicacion ya se habia
+  /// contestado, y estaba mal: «Ahora no» tambien cuenta como contestada, asi
+  /// que seguia saliendo el dialogo a quien acababa de decir que no. Lo
+  /// destapo el flujo del emulador, que se quedaba trabado detras de el.
+  Future<void> pedirPermisoSiHaceFalta() async {}
 
   Future<void> cambiarActivo(bool valor) async {
     await _prefs?.setBool(_claveActivo, valor);

@@ -131,3 +131,19 @@ Cada persona puede correr su propio equipo de agentes (roles en [`../AGENTS.md`]
 | Jael | Revisar el PR de `V2-T01.02` (es revisora de T01) · PR `build(deps)` de `drift` y su cifrado para `V2-M21.01` | **`V2-T01.08`** (núcleo de datos) · `V2-M21.01` | `V2-M01.02`, `V2-M01.01`, `V2-M21.04` (provisional) |
 
 Si todo lo tuyo está bloqueado, aplica "Nunca sin trabajo" de [`equipo-y-reparto.md`](equipo-y-reparto.md).
+
+## Rama `dev` y CI en dos niveles
+
+Para que los builds no frenen la integración, el trabajo diario va a `dev` y `main` queda como la rama estable.
+
+| Qué | PR a `dev` / push a `dev` | PR `dev` → `main` / push a `main` |
+| --- | --- | --- |
+| Formato, análisis, `flutter test` | Sí | Sí |
+| Integración Android (emulador), APK, iOS | No (se saltan) | Sí |
+| `Autoría` (sin co-autor de IA) | Sí | Sí |
+| CodeQL, revisión de dependencias, pines TLS | No | Sí |
+
+- Rama de trabajo desde `dev`, PR a `dev`; integra quien abre el PR al pasar la CI rápida.
+- Cuando `dev` junta una tanda de historias, se abre un PR `dev` → `main` y se integra con merge commit, sin squash, para no divergir.
+- Mantén `dev` al día con `main` (`git merge origin/main`) tras cada integración a `main`.
+- Los jobs saltados cuentan como aprobados para los checks requeridos, así que la protección de `dev` exige solo los checks rápidos.
