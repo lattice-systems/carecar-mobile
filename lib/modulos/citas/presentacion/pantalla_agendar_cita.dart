@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
+import '../../notificaciones/notificaciones.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/analitica/ambito_analitica.dart';
@@ -575,6 +576,10 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       // La lista de citas ya cargada quedo vieja: «Mis citas» y el widget de
       // inicio (V2-M25.01) deben ver la nueva.
       ref.invalidate(misCitasProvider);
+      // V2-M06.06: los recordatorios son locales, asi que suenan sin red. Se
+      // dejan antes de pintar el comprobante para que el aviso de
+      // confirmacion salga junto con la cita.
+      await ref.read(recordatoriosDeCitaProvider).alConfirmar(cita);
       if (!mounted) return;
       setState(() {
         _confirmada = cita;
