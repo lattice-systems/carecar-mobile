@@ -48,15 +48,14 @@ final sucursalPrincipalProvider = FutureProvider.autoDispose<Sucursal?>(
 /// (teléfono de la asistencia): nunca falla ni se queda en espera, así que
 /// quien lo use no necesita su propio respaldo. Cambia solo cuando llega la
 /// sucursal.
-final contactoDeAgenciaProvider = Provider.autoDispose<ContactoDeAgencia>(
-  (ref) {
-    final principal = ref.watch(sucursalPrincipalProvider).asData?.value;
-    return principal == null
-        ? const ContactoDeAgencia.respaldo()
-        : ContactoDeAgencia.deSucursal(principal);
-  },
-  name: 'contactoDeAgenciaProvider',
-);
+final contactoDeAgenciaProvider = Provider.autoDispose<ContactoDeAgencia>((
+  ref,
+) {
+  final principal = ref.watch(sucursalPrincipalProvider).asData?.value;
+  return principal == null
+      ? const ContactoDeAgencia.respaldo()
+      : ContactoDeAgencia.deSucursal(principal);
+}, name: 'contactoDeAgenciaProvider');
 
 /// Abre un `tel:`, un `mailto:` o el enlace de mapas en la app del sistema;
 /// `false` si no hay con qué abrirlo. En pruebas se sustituye para no salir de
