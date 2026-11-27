@@ -21,8 +21,11 @@ import '../dominio/actividad_en_vivo.dart';
 ///   ([alPerderLaSesion]) solo las termina.
 ///
 /// Las operaciones con ActivityKit van una tras otra para que dos listas
-/// seguidas no inicien dos actividades de la misma orden. Nada de esto lanza
-/// ni escribe en logs: el token identifica la actividad.
+/// seguidas no inicien dos actividades de la misma orden. Dejar de escuchar
+/// los tokens no se espera: cancelar devuelve un futuro de la zona raíz que en
+/// las pruebas con tiempo simulado nunca termina, y la fila se quedaría
+/// atorada. Nada de esto lanza ni escribe en logs: el token identifica la
+/// actividad.
 class CoordinadorDeActividadEnVivo {
   CoordinadorDeActividadEnVivo({
     required this._servicio,
@@ -138,7 +141,7 @@ class CoordinadorDeActividadEnVivo {
         .listen((token) => _alLlegarToken(ordenId, actividad, token));
     if (!await _servicio.iniciar(ordenId, estado)) {
       _vivas.remove(ordenId);
-      await actividad.tokens?.cancel();
+      unawaited(actividad.tokens?.cancel());
     }
   }
 
@@ -187,7 +190,7 @@ class CoordinadorDeActividadEnVivo {
   Future<void> _terminarEntregada(int ordenId) async {
     final actividad = _vivas.remove(ordenId);
     if (actividad == null) return;
-    await actividad.tokens?.cancel();
+    unawaited(actividad.tokens?.cancel());
     await _servicio.terminar(
       ordenId,
       estadoFinal: actividad.estado.entregada(),
@@ -196,7 +199,7 @@ class CoordinadorDeActividadEnVivo {
 
   Future<void> _terminarTodas() async {
     for (final actividad in _vivas.values) {
-      await actividad.tokens?.cancel();
+      unawaited(actividad.tokens?.cancel());
     }
     _vivas.clear();
     _cerradas.clear();
