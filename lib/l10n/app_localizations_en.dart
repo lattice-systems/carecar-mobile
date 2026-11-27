@@ -6348,4 +6348,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sucursalesNoSePudoMapa => 'We couldn\'t open the maps app.';
+
+  @override
+  String get recoleccionSeguimientoMarcadorChofer => 'Your driver';
 }
