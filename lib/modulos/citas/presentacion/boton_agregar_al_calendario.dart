@@ -3,19 +3,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
-import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../ayuda/ayuda.dart' show contactoDeAgenciaProvider;
 import '../dominio/comprobante_de_cita.dart';
 import '../dominio/evento_de_calendario.dart';
 import 'proveedores_calendario.dart';
 
 /// Boton «Agregar al calendario» del comprobante (V2-M02.12).
 ///
-/// Arma el evento de la cita (direccion del taller y un recordatorio) y lo
+/// Arma el evento de la cita (nombre y direccion de la sucursal principal y
+/// un recordatorio) y lo
 /// entrega al sistema como `.ics`. No pide permisos ni guarda nada: cada toque
 /// lo arma de nuevo. Un fallo se muestra en linea y se puede reintentar.
 class BotonAgregarAlCalendario extends ConsumerStatefulWidget {
@@ -40,9 +41,9 @@ class _EstadoBoton extends ConsumerState<BotonAgregarAlCalendario> {
       horaInicio: cita.horaInicio,
       horaFin: cita.horaFin,
       titulo: textos.citasCalendarioTitulo,
-      // SUPUESTO (V2-M27.02 es de Haziel): hasta que existan las sucursales,
-      // la direccion es la de la config de la agencia.
-      direccion: Agencia.direccion,
+      // La sucursal principal (V2-M27.02): «nombre, direccion». Si aun carga,
+      // falla o no hay sucursales, el contacto trae la direccion de `Agencia`.
+      direccion: ref.read(contactoDeAgenciaProvider).direccionParaEvento,
       descripcion: cita.vehiculoNombre == null
           ? null
           : textos.citasCalendarioDescripcion(cita.vehiculoNombre!),
@@ -73,6 +74,9 @@ class _EstadoBoton extends ConsumerState<BotonAgregarAlCalendario> {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
+    // Se observa desde que se ve el boton para que la sucursal ya este leida
+    // cuando se toque (el proveedor se libera si nadie lo escucha).
+    ref.watch(contactoDeAgenciaProvider);
     final pildora = BotonPildora(
       texto: textos.citasCalendarioAgregar,
       icono: LucideIcons300.calendar,
