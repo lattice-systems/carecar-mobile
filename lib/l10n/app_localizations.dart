@@ -10875,6 +10875,198 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No pudimos abrir tu app de correo. Escríbenos a {correo}.'**
   String contactoNoSePudoCorreo(String correo);
+
+  /// Título de la pantalla de documentos del vehículo (V2-M09.01) y de su acceso desde el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get documentosTitulo;
+
+  /// Lo que oye el lector de pantalla mientras cargan los documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando documentos'**
+  String get documentosCargando;
+
+  /// Título del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay documentos'**
+  String get documentosVaciaTitulo;
+
+  /// Mensaje del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.'**
+  String get documentosVaciaMensaje;
+
+  /// Subtítulo de la pantalla: cuántos documentos hay.
+  ///
+  /// In es, this message translates to:
+  /// **'{total, plural, =1{1 documento} other{{total} documentos}}'**
+  String documentosSubtitulo(int total);
+
+  /// Resumen de la portada cuando hay documentos por vencer o vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{1 documento necesita atención} other{{cantidad} documentos necesitan atención}}'**
+  String documentosResumenAtencion(int cantidad);
+
+  /// Resumen de la portada cuando ningún documento está por vencer ni vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo en orden'**
+  String get documentosResumenAlDia;
+
+  /// Detalle del resumen cuando todo está en orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus documentos están al día.'**
+  String get documentosResumenAlDiaDetalle;
+
+  /// Lo más urgente del resumen de portada, cuando aún no vence. «cuando» es «hoy», «mañana» o «en 12 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} vence {cuando}.'**
+  String documentosResumenVence(String nombre, String cuando);
+
+  /// Lo más urgente del resumen de portada, cuando ya venció. «cuando» es «hace 35 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} venció {cuando}.'**
+  String documentosResumenVencio(String nombre, String cuando);
+
+  /// Encabezado del grupo de documentos que vencen en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosGrupoPorVencer;
+
+  /// Encabezado del grupo de documentos vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencidos'**
+  String get documentosGrupoVencidos;
+
+  /// Encabezado del grupo de documentos vigentes.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigentes'**
+  String get documentosGrupoVigentes;
+
+  /// Encabezado del grupo de documentos sin vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha de vencimiento'**
+  String get documentosGrupoSinFecha;
+
+  /// Insignia de un documento vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get documentosEstadoVigente;
+
+  /// Insignia de un documento que vence en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosEstadoPorVencer;
+
+  /// Insignia de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get documentosEstadoVencido;
+
+  /// Insignia de un documento sin fecha de vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha'**
+  String get documentosEstadoSinFecha;
+
+  /// Fecha de vencimiento de un documento vigente o por vencer.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String documentosVenceEl(String fecha);
+
+  /// Fecha de vencimiento de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció el {fecha}'**
+  String documentosVencioEl(String fecha);
+
+  /// Cuándo vence: hoy, mañana o en N días.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =0{hoy} =1{mañana} other{en {dias} días}}'**
+  String documentosEnDias(int dias);
+
+  /// Hace cuánto venció un documento.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{hace 1 día} other{hace {dias} días}}'**
+  String documentosHaceDias(int dias);
+
+  /// Número o folio del documento.
+  ///
+  /// In es, this message translates to:
+  /// **'N.º {numero}'**
+  String documentosNumero(String numero);
+
+  /// Origen de un documento que subió la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargado por la agencia'**
+  String get documentosCargadoPorAgencia;
+
+  /// Tipo de documento: póliza de seguro.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de seguro'**
+  String get documentosTipoPoliza;
+
+  /// Tipo de documento: tarjeta de circulación.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta de circulación'**
+  String get documentosTipoTarjetaCirculacion;
+
+  /// Tipo de documento: verificación vehicular.
+  ///
+  /// In es, this message translates to:
+  /// **'Verificación vehicular'**
+  String get documentosTipoVerificacion;
+
+  /// Tipo de documento: tenencia y refrendo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tenencia y refrendo'**
+  String get documentosTipoTenencia;
+
+  /// Tipo de documento: licencia de conducir.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencia de conducir'**
+  String get documentosTipoLicencia;
+
+  /// Tipo de documento: póliza de garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de garantía'**
+  String get documentosTipoGarantia;
+
+  /// Tipo de documento: factura de compra.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura de compra'**
+  String get documentosTipoFactura;
+
+  /// Tipo de documento: otro, cuando no trae título propio.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro documento'**
+  String get documentosTipoOtro;
 }
 
 class _AppLocalizationsDelegate
