@@ -3808,5 +3808,7 @@
   "sucursalesNoSePudoLlamar": "We couldn't open the phone dialer.",
   "sucursalesNoSePudoMapa": "We couldn't open the maps app.",
   "recoleccionSeguimientoMarcadorChofer": "Your driver",
-  "@recoleccionSeguimientoMarcadorChofer": {"description": "Etiqueta del marcador del chofer en el mapa del seguimiento."}
+  "@recoleccionSeguimientoMarcadorChofer": {
+    "description": "Etiqueta del marcador del chofer en el mapa del seguimiento."
+  }
 }
