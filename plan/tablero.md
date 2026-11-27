@@ -173,7 +173,7 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
 | V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98 |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
-| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Lista | |
+| V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | En curso | |
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Jael | B | V2-M06.01 | Lista | |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 | Lista | |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 | Lista | |
