@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/config/agencia.dart';
+import 'package:carecar_mobile/modulos/ayuda/ayuda.dart';
+import 'package:carecar_mobile/modulos/ayuda/datos/repositorio_sucursales_fake.dart';
 import 'package:carecar_mobile/l10n/idiomas.dart';
 import 'package:carecar_mobile/modulos/asistencia/datos/repositorio_asistencia_fake.dart';
 import 'package:carecar_mobile/modulos/asistencia/dominio/repositorio_asistencia.dart';
@@ -299,6 +302,55 @@ void main() {
     await _deslizar(tester);
     await _tocar(tester, 'Llamar a Emergencias');
     expect(llamadas, [Uri.parse('tel:911')]);
+  });
+
+  testWidgets('sin conexion el atajo llama a la agencia a la sucursal '
+      'principal', (tester) async {
+    final llamadas = <Uri>[];
+    final repo = RepositorioAsistenciaFake(fallo: const SinConexion());
+    await _montar(
+      tester,
+      repo: repo,
+      overrides: [
+        repositorioSucursalesProvider.overrideWithValue(
+          RepositorioSucursalesFake(),
+        ),
+        abrirLlamadaProvider.overrideWithValue((uri) async {
+          llamadas.add(uri);
+          return true;
+        }),
+      ],
+    );
+    await _llenarLoBasico(tester);
+    await _deslizar(tester);
+    await _tocar(tester, 'Llamar a La agencia');
+    expect(llamadas, [Uri.parse('tel:+524770000000')]);
+  });
+
+  testWidgets('sin conexion y sin sucursales el atajo usa el telefono de la '
+      'config', (tester) async {
+    final llamadas = <Uri>[];
+    final repo = RepositorioAsistenciaFake(fallo: const SinConexion());
+    await _montar(
+      tester,
+      repo: repo,
+      overrides: [
+        repositorioSucursalesProvider.overrideWithValue(
+          RepositorioSucursalesFake(sucursales: []),
+        ),
+        abrirLlamadaProvider.overrideWithValue((uri) async {
+          llamadas.add(uri);
+          return true;
+        }),
+      ],
+    );
+    await _llenarLoBasico(tester);
+    await _deslizar(tester);
+    await _tocar(tester, 'Llamar a La agencia');
+    expect(
+      llamadas.single.path,
+      Agencia.telefono.replaceAll(RegExp('[^+0-9]'), ''),
+    );
   });
 
   testWidgets('vehiculo ajeno (404) explica y deja elegir otro', (
