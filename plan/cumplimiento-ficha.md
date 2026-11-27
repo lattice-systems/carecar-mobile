@@ -88,7 +88,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | ⬜ | Ver M09 |
+| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | 🟡 `documento_vehiculo` existe (backend V61) con los campos de la ficha más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora`; `GET /vehiculos/{id}/documentos` con el estado calculado por la fecha de la agencia, pantalla, mock y pruebas (V2-M09.01). Ninguna columna de la ficha se quita ni se renombra. Faltan subir o fotografiar (V2-M09.02), los de la agencia (V2-M09.03), sin conexión (V2-M09.05), calendario (V2-M09.06) y demostrar en celular | V2-M09.01 |
 | Alertas de vencimiento | `documento_vehiculo`, `notificacion` | ⬜ | Ver M09 |
 
 ### 10. Garantía y campañas de seguridad — plan [M10](modulos/M10-garantia-y-campanas.md)
@@ -102,7 +102,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia (con el teléfono de la sucursal principal) y la aseguradora hechas (V2-M11.02, la aseguradora espera a V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia (con el teléfono de la sucursal principal) y la aseguradora hechas (V2-M11.02, la aseguradora sale de la póliza de V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
