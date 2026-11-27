@@ -37,6 +37,8 @@ class TarjetaAsistente extends StatelessWidget {
       container: true,
       child: ReboteTactil(
         alPulsar: abrir,
+        // El encabezado ya es el botón con nombre que abre el asistente.
+        excluirDeSemantica: true,
         child: SuperficieLiquida(
           intensidadDesenfoque: 0,
           colorFondo: c.texto.withValues(alpha: _alfaVidrio),

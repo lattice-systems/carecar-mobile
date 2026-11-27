@@ -109,12 +109,18 @@ class _Canje extends StatelessWidget {
               if (vigente) ...[
                 _TarjetaQr(codigo: canje.codigo),
                 const SizedBox(height: Espaciado.e4),
-                SelectableText(
-                  canje.codigo,
-                  textAlign: TextAlign.center,
-                  style: tokens.tipografia.titulo1.copyWith(
-                    color: c.texto,
-                    letterSpacing: 4,
+                // Alto de objetivo táctil: se mantiene presionado para copiar.
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: Espaciado.objetivoTactilMinimo,
+                  ),
+                  child: SelectableText(
+                    canje.codigo,
+                    textAlign: TextAlign.center,
+                    style: tokens.tipografia.titulo1.copyWith(
+                      color: c.texto,
+                      letterSpacing: 4,
+                    ),
                   ),
                 ),
                 const SizedBox(height: Espaciado.e4),

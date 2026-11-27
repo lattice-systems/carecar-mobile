@@ -235,12 +235,18 @@ class _MiCodigo extends ConsumerWidget {
           : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SelectableText(
-                  codigo,
-                  textAlign: TextAlign.center,
-                  style: tokens.tipografia.titulo1.copyWith(
-                    color: c.texto,
-                    letterSpacing: 4,
+                // Alto de objetivo táctil: se mantiene presionado para copiar.
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: Espaciado.objetivoTactilMinimo,
+                  ),
+                  child: SelectableText(
+                    codigo,
+                    textAlign: TextAlign.center,
+                    style: tokens.tipografia.titulo1.copyWith(
+                      color: c.texto,
+                      letterSpacing: 4,
+                    ),
                   ),
                 ),
                 const SizedBox(height: Espaciado.e3),
