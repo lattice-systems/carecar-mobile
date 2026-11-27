@@ -15,8 +15,6 @@ void main() {
         ),
       ],
     );
-    await auditarRutas(tester, {
-      rutaDocumentosVehiculo(5): PantallaDocumentos,
-    });
+    await auditarRutas(tester, {rutaDocumentosVehiculo(5): PantallaDocumentos});
   });
 }
