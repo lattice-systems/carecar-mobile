@@ -4,7 +4,7 @@ name: Autoría
 # co-autor ni llevar la firma "Generated with ...".
 on:
   pull_request:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
