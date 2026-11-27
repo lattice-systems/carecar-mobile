@@ -76,7 +76,6 @@ class PantallaMisPagos extends ConsumerWidget {
                   alRefrescar: () => ref.refresh(pagosProvider.future),
                   slivers: [
                     SliverFillRemaining(
-                      hasScrollBody: false,
                       child: EstadoVacio(
                         titulo: textos.pagosMisPagosVacioTitulo,
                         mensaje: textos.pagosMisPagosVacioMensaje,
