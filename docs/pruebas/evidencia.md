@@ -70,3 +70,13 @@ La prueba de widgets abre la tarjeta, aplaza la encuesta, envía una respuesta y
 - [Formulario claro](capturas-m15/formulario-claro.png)
 - [Formulario oscuro](capturas-m15/formulario-oscuro.png)
 - [Formulario con texto al 200 %](capturas-m15/formulario-texto-200.png)
+
+## Fallos que solo aparecieron contra la API real
+
+Probando la app de producción con la cuenta de demo contra Azure salieron tres errores que `mock_api` no reproducía:
+
+| Pantalla | Qué pasaba | Causa | Arreglo |
+| --- | --- | --- | --- |
+| Manuales | «Manual no disponible» aunque el manual existía | La API armaba la URL firmada con `http://` y la app solo baja archivos por https | backend #124: `server.forward-headers-strategy=framework` en producción |
+| Catálogo (detalle y comparar) | «No encontramos el modelo» | `GET /app/catalogo/{id}` solo existía en el contrato y en `mock_api` | backend #125: endpoint, migración V67 y datos de ejemplo |
+| Bitácora y «agregar a mi cita» de la tienda | No cargaban los gastos ni las citas | Pedían páginas de 100 y la API acepta de 1 a 50 | `tamano` de 50; `test/arquitectura/paginas_de_hasta_50_test.dart` lo vigila |

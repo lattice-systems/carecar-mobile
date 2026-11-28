@@ -16,7 +16,7 @@ class RepositorioBitacoraApi implements RepositorioBitacora {
 
   final ApiCliente _cliente;
 
-  static const int _tamanoPagina = 100;
+  static const int _tamanoPagina = 50;
 
   @override
   Future<List<Gasto>> gastos(int vehiculoId) async {

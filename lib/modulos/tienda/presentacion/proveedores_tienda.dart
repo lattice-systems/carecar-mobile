@@ -395,7 +395,7 @@ final citasParaInstalarProvider = FutureProvider.autoDispose<List<CitaCliente>>(
     final ahora = ref.watch(relojCitasProvider)();
     final proximas = <CitaCliente>[];
     for (var pagina = 0; pagina < _paginasDeCitas; pagina++) {
-      final respuesta = await repositorio.misCitas(pagina: pagina, tamano: 100);
+      final respuesta = await repositorio.misCitas(pagina: pagina, tamano: 50);
       proximas.addAll(respuesta.citas.where((c) => c.esProxima(ahora)));
       if (!respuesta.hayMas) break;
     }
