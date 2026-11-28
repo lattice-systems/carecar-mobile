@@ -29,12 +29,13 @@ final rutasEncuestas = <RouteBase>[
     routes: [
       GoRoute(
         path: ':id',
-        builder: (context, state) => _tema(
-          context,
-          _FormularioEncuesta(
-            ordenId: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
-          ),
-        ),
+        builder: (context, state) {
+          final ordenId = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+          return _tema(
+            context,
+            _FormularioEncuesta(key: ValueKey(ordenId), ordenId: ordenId),
+          );
+        },
       ),
     ],
   ),
@@ -139,7 +140,7 @@ class _ListaEncuestas extends ConsumerWidget {
 }
 
 class _FormularioEncuesta extends ConsumerStatefulWidget {
-  const _FormularioEncuesta({required this.ordenId});
+  const _FormularioEncuesta({super.key, required this.ordenId});
   final int ordenId;
 
   @override
@@ -197,7 +198,30 @@ class _FormularioEstado extends ConsumerState<_FormularioEncuesta> {
       CalificacionEncuesta.limpieza: textos.m15Limpieza,
       CalificacionEncuesta.asesor: textos.m15Asesor,
     };
-    if (_noDisponible || widget.ordenId < 1) {
+    final pendientes = _respondida || _noDisponible || widget.ordenId < 1
+        ? null
+        : ref.watch(encuestasPendientesProvider);
+    if (pendientes != null && !pendientes.hasValue) {
+      final error = pendientes.error;
+      return MarcoPantalla.estado(
+        titulo: textos.m15Titulo,
+        conRegreso: true,
+        estado: error == null
+            ? const Center(child: CircularProgressIndicator())
+            : EstadoError(
+                causa: error is SinConexion
+                    ? CausaError.sinConexion
+                    : CausaError.generico,
+                alReintentar: () => ref.invalidate(encuestasPendientesProvider),
+              ),
+      );
+    }
+    if (_noDisponible ||
+        widget.ordenId < 1 ||
+        pendientes?.value?.any(
+              (encuesta) => encuesta.ordenId == widget.ordenId,
+            ) ==
+            false) {
       return MarcoPantalla.estado(
         titulo: textos.m15Titulo,
         conRegreso: true,

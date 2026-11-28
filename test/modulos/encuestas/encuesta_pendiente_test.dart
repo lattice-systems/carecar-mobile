@@ -84,6 +84,17 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(find.text('Encuestas de servicio'), findsOneWidget);
+
+      router.go('/encuestas/8');
+      await tester.pumpAndSettle();
+      final textos = AppLocalizations.of(
+        tester.element(find.byType(Scaffold).last),
+      );
+      expect(find.text(textos.m15NoDisponible), findsOneWidget);
+      expect(find.text(textos.m15Enviar), findsNothing);
+
+      router.go('/');
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Encuestas de servicio'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('March de prueba'));
