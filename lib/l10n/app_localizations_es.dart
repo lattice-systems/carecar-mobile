@@ -6863,4 +6863,49 @@ class AppLocalizationsEs extends AppLocalizations {
   String documentosDetalle(String fecha, String vehiculo) {
     return '$fecha · $vehiculo';
   }
+
+  @override
+  String get ayudaBuscar => 'Buscar';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Escribe una pregunta o tema';
+
+  @override
+  String get ayudaDescripcion => 'Descripción';
+
+  @override
+  String get ayudaDescripcionPista => 'Cuéntanos qué ocurrió';
+
+  @override
+  String get ayudaEnviado => 'Reporte enviado';
+
+  @override
+  String get ayudaEnviar => 'Enviar reporte';
+
+  @override
+  String get ayudaErrorReporte =>
+      'No se pudo enviar el reporte. Intenta de nuevo.';
+
+  @override
+  String get ayudaGracias => 'Gracias por ayudarnos a mejorar.';
+
+  @override
+  String get ayudaLongitud =>
+      'Describe el problema con entre 10 y 2000 caracteres.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Prueba con otras palabras.';
+
+  @override
+  String get ayudaPreguntas => 'Preguntas frecuentes';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.';
+
+  @override
+  String get ayudaReporte => 'Reportar un problema';
+
+  @override
+  String get ayudaSinResultados => 'Sin resultados';
 }

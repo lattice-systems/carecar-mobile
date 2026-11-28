@@ -3,6 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
 import '../datos/repositorio_sucursales_api.dart';
+import '../datos/repositorio_centro_ayuda_api.dart';
+import '../dominio/centro_ayuda.dart';
 import '../dominio/contacto_de_agencia.dart';
 import '../dominio/repositorio_sucursales.dart';
 import '../dominio/sucursal.dart';
@@ -65,3 +67,12 @@ final abrirEnlaceDeSucursalProvider = Provider<Future<bool> Function(Uri)>(
       (enlace) => launchUrl(enlace, mode: LaunchMode.externalApplication),
   name: 'abrirEnlaceDeSucursalProvider',
 );
+
+final repositorioCentroAyudaProvider = Provider<RepositorioCentroAyuda>(
+  (ref) => RepositorioCentroAyudaApi(ref.watch(apiClienteProvider)),
+);
+final preguntasFrecuentesProvider =
+    FutureProvider.autoDispose<List<PreguntaFrecuente>>(
+      (ref) => ref.watch(repositorioCentroAyudaProvider).preguntas(),
+      retry: (_, _) => null,
+    );

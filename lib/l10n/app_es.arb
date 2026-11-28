@@ -8967,5 +8967,19 @@
   "documentosDiaVacio": "No hay vencimientos en este día.",
   "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
   "documentosDetalle": "{fecha} · {vehiculo}",
-  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}}
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Buscar",
+  "ayudaBuscarSugerencia": "Escribe una pregunta o tema",
+  "ayudaDescripcion": "Descripción",
+  "ayudaDescripcionPista": "Cuéntanos qué ocurrió",
+  "ayudaEnviado": "Reporte enviado",
+  "ayudaEnviar": "Enviar reporte",
+  "ayudaErrorReporte": "No se pudo enviar el reporte. Intenta de nuevo.",
+  "ayudaGracias": "Gracias por ayudarnos a mejorar.",
+  "ayudaLongitud": "Describe el problema con entre 10 y 2000 caracteres.",
+  "ayudaOtrasPalabras": "Prueba con otras palabras.",
+  "ayudaPreguntas": "Preguntas frecuentes",
+  "ayudaPrivacidadReporte": "Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.",
+  "ayudaReporte": "Reportar un problema",
+  "ayudaSinResultados": "Sin resultados"
 }

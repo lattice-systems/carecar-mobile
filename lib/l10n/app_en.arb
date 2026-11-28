@@ -3934,5 +3934,19 @@
   "documentosDiaVacio": "No expirations on this day.",
   "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
   "documentosDetalle": "{fecha} · {vehiculo}",
-  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}}
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Search",
+  "ayudaBuscarSugerencia": "Enter a question or topic",
+  "ayudaDescripcion": "Description",
+  "ayudaDescripcionPista": "Tell us what happened",
+  "ayudaEnviado": "Report sent",
+  "ayudaEnviar": "Send report",
+  "ayudaErrorReporte": "Could not send your report. Try again.",
+  "ayudaGracias": "Thanks for helping us improve.",
+  "ayudaLongitud": "Describe the problem in 10 to 2,000 characters.",
+  "ayudaOtrasPalabras": "Try different keywords.",
+  "ayudaPreguntas": "Frequently asked questions",
+  "ayudaPrivacidadReporte": "Your report includes the CareCar version, operating system and device model. Avoid including personal details.",
+  "ayudaReporte": "Report a problem",
+  "ayudaSinResultados": "No results"
 }
