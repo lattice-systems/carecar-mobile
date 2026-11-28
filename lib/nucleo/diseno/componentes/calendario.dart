@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../tokens/espaciado.dart';
 import '../tokens/radios.dart';
@@ -91,7 +93,7 @@ class Calendario extends StatelessWidget {
                 onPressed: hayAnterior ? () => alCambiarMes(anterior) : null,
                 tooltip: AppLocalizations.of(context).calendarioMesAnterior,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                icon: const Icon(Icons.chevron_left),
+                icon: const Icon(LucideIcons300.chevronLeft),
               ),
               Expanded(
                 child: Semantics(
@@ -108,7 +110,7 @@ class Calendario extends StatelessWidget {
                 onPressed: haySiguiente ? () => alCambiarMes(siguiente) : null,
                 tooltip: AppLocalizations.of(context).calendarioMesSiguiente,
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                icon: const Icon(Icons.chevron_right),
+                icon: const Icon(LucideIcons300.chevronRight),
               ),
             ],
           ),
