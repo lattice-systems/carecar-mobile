@@ -50,10 +50,12 @@ void main() {
     bool conFirebase = true,
   }) async {
     tester.platformDispatcher.localesTestValue = const [Locale('es')];
+    tester.platformDispatcher.localeTestValue = const Locale('es');
     addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+    addTearDown(tester.platformDispatcher.clearLocaleTestValue);
     SharedPreferences.setMockInitialValues({
       if (permitidos != null) 'avisos.respondido': true,
-      if (permitidos != null) 'avisos.permitidos': permitidos,
+      'avisos.permitidos': ?permitidos,
     });
     final prefs = await SharedPreferences.getInstance();
     api = ApiFalsa();
