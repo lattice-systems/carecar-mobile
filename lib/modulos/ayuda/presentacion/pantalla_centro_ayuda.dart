@@ -56,24 +56,19 @@ class _PreguntasState extends ConsumerState<PantallaPreguntasFrecuentes> {
                           .contains(_consulta),
                     )
                     .toList();
-                if (encontrados.isEmpty)
+                if (encontrados.isEmpty) {
                   return EstadoVacio(
                     titulo: AppLocalizations.of(context).ayudaSinResultados,
                     mensaje: AppLocalizations.of(context).ayudaOtrasPalabras,
                   );
+                }
                 return ListView(
                   children: [
-                    BarraPantalla(
-                      titulo: AppLocalizations.of(context).ayudaPreguntas,
-                    ),
                     for (final p in encontrados)
                       ExpansionTile(
                         title: Text(p.pregunta),
                         subtitle: Text(p.tema),
                         children: [
-                          BarraPantalla(
-                            titulo: AppLocalizations.of(context).ayudaPreguntas,
-                          ),
                           Padding(
                             padding: const EdgeInsets.all(Espaciado.e4),
                             child: Text(p.respuesta),
@@ -140,8 +135,9 @@ class _ReporteState extends ConsumerState<PantallaReporteApp> {
           );
       if (mounted) setState(() => _enviado = true);
     } on Object {
-      if (mounted)
+      if (mounted) {
         setState(() => _error = AppLocalizations.of(context).ayudaErrorReporte);
+      }
     } finally {
       if (mounted) setState(() => _guardando = false);
     }
