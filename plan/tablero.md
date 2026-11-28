@@ -137,7 +137,7 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-M20.06 | Contraste AA garantizado | Cristian |  | V2-T02.01 | Hecha | #30 |
 | V2-M20.07 | Una auditoría WCAG 2.2 AA | Cristian |  | H6 | Lista | |
 | V2-M20.08 | Objetivos táctiles cómodos | Cristian |  | V2-T02.05 | Hecha | #174, #185, #198 |
-| V2-M21.01 | Una base local | Jael |  | V2-T01.02 | Lista | |
+| V2-M21.01 | Una base local | Jael |  | V2-T01.02 | En revisión | #239 |
 | V2-M21.02 | Ver vehículos, historial, citas y documentos | Jael |  | V2-M21.01 | Lista | |
 | V2-M21.03 | Que mis acciones se envíen al volver la conexión | Jael | B | V2-M21.01 | Lista | |
 | V2-M21.04 | Saber si estoy sin conexión | Jael |  | V2-T02.05 (provisional) | Hecha | #210 |
