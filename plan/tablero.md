@@ -220,7 +220,7 @@ Avance de Haziel al revisar T03 y M23 · **9 de 30 historias en Hecha (30 %)**.
 | V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | En revisión | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
 | V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
-| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
+| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | Dependencia WebView para los términos locales |
 
 ## H5 · Comercio
 
