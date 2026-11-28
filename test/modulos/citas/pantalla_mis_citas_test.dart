@@ -6,7 +6,10 @@ import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/componentes/vacio_ilustrado.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/dialogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
@@ -94,6 +97,22 @@ void main() {
       expect(find.bySemanticsLabel('Cargando tus citas'), findsOneWidget);
       await tester.pumpAndSettle();
       expect(find.byType(Esqueleto), findsNothing);
+    });
+
+    _prueba('es raíz de pestaña: Agendar cita flota y no hay regresar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_repo()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BotonRegresar), findsNothing);
+      expect(find.byType(BotonCerrar), findsNothing);
+      // La acción principal flota abajo a la derecha, como en el inicio.
+      final boton = find.byType(BotonAccionFlotante);
+      expect(boton, findsOneWidget);
+      // A 16 del borde derecho del contenido, que en pantallas anchas se centra.
+      final contenido = tester.getRect(find.byType(CustomScrollView));
+      expect(tester.getBottomRight(boton).dx, contenido.right - 16);
     });
 
     _prueba('la proxima va en su tarjeta y luego proximas y pasadas', (

@@ -25,7 +25,7 @@ import '../../vehiculos/vehiculos.dart';
 import '../dominio/cita_cliente.dart';
 import '../dominio/fallos_agenda.dart';
 import '../dominio/motivo_cita.dart';
-import '../../../nucleo/diseno/componentes/boton_circular.dart';
+import '../../../nucleo/diseno/componentes/boton_accion_flotante.dart';
 import 'componentes/grupo_recoleccion_cita.dart';
 import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import 'componentes/vacio_ilustrado.dart';
@@ -60,7 +60,8 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.hasError && !citas.hasValue) {
       return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
-        conRegreso: true,
+        subtitulo: textos.citasMisCitasSubtitulo,
+        icono: LucideIcons300.calendarDays,
         acciones: const [],
         estado: EstadoError(
           causa: citas.error is SinConexion
@@ -73,7 +74,8 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (!citas.hasValue) {
       return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
-        conRegreso: true,
+        subtitulo: textos.citasMisCitasSubtitulo,
+        icono: LucideIcons300.calendarDays,
         acciones: const [],
         estado: const _Cargando(),
       );
@@ -81,7 +83,8 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
     if (citas.requireValue.citas.isEmpty) {
       return MarcoPantalla.estado(
         titulo: textos.citasMisCitasTitulo,
-        conRegreso: true,
+        subtitulo: textos.citasMisCitasSubtitulo,
+        icono: LucideIcons300.calendarDays,
         acciones: const [],
         estado: VacioIlustrado(
           titulo: textos.citasMisCitasVacioTitulo,
@@ -127,15 +130,16 @@ class _EstadoPantallaMisCitas extends ConsumerState<PantallaMisCitas> {
 
     return MarcoPantalla(
       titulo: textos.citasMisCitasTitulo,
-      conRegreso: true,
-      acciones: [
-        BotonCircular(
-          etiqueta: textos.citasMisCitasAgendar,
-          icono: LucideIcons300.plus,
-          variante: VarianteBotonCircular.acento,
-          alPresionar: () => context.push(rutaAgendarCita),
-        ),
-      ],
+      subtitulo: textos.citasMisCitasSubtitulo,
+      icono: LucideIcons300.calendarDays,
+      // Raíz de pestaña: la barra de abajo lleva a las demás, no hay a dónde
+      // «regresar». Sin acciones propias, el marco pondría «Cerrar».
+      acciones: const [],
+      botonFlotante: BotonAccionFlotante(
+        texto: textos.citasMisCitasAgendar,
+        icono: LucideIcons300.plus,
+        alPresionar: () => context.push(rutaAgendarCita),
+      ),
       alRefrescar: () async {
         ref.invalidate(misCitasProvider);
         await ref.read(misCitasProvider.future);
