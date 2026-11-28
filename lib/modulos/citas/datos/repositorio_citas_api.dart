@@ -60,6 +60,7 @@ class RepositorioCitasApi implements RepositorioCitas {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) async {
     try {
       final cita = await _api.agendarCita(
@@ -69,6 +70,7 @@ class RepositorioCitasApi implements RepositorioCitas {
           fecha: franja.fecha,
           motivo: motivo.codigo,
           recoleccionDireccionId: direccionRecoleccionId,
+          promocionId: promocionId,
         ),
       );
       return _aDominio(cita);
@@ -190,6 +192,7 @@ class RepositorioCitasApi implements RepositorioCitas {
     horaFin: c.horaFin,
     motivo: MotivoCita.desdeCodigo(c.motivo),
     recoleccion: _aRecoleccion(c.recoleccion),
+    cupon: c.cupon,
   );
 
   static RecoleccionAgendada? _aRecoleccion(RecoleccionCita? r) {

@@ -1,7 +1,7 @@
 const { BASE, noEncontrado, problema } = require('../comun/http');
 const semillas = require('../semillas/encuestas.json');
 
-module.exports = function registrarEncuestas(servidor, db) {
+module.exports = function registrarEncuestas(servidor, db, notificaciones) {
   db.defaults(semillas).write();
   const ordenPropia = req => db.get('serviciosCerradosEncuestables')
     .find({ ordenId: Number(req.params.ordenId), clienteId: req.sesion.clienteId }).value();
@@ -54,6 +54,27 @@ module.exports = function registrarEncuestas(servidor, db) {
       tareas.push({ ordenId: orden.ordenId, creadaEn: new Date().toISOString() }).write();
     }
     actual.assign({ pideContacto: true }).write();
+    return res.status(204).end();
+  });
+
+  // Operación exclusiva de la API simulada. Representa el cierre del asesor.
+  servidor.post('/simulacion/encuestas/:ordenId/respuesta', (req, res) => {
+    const ordenId = Number(req.params.ordenId);
+    const orden = db.get('serviciosCerradosEncuestables').find({ ordenId }).value();
+    const tarea = db.get('tareasContactoEncuesta').find({ ordenId });
+    if (!orden || !tarea.value()) return noEncontrado(req, res);
+
+    const respuesta = typeof req.body?.respuesta === 'string' ? req.body.respuesta.trim() : '';
+    if (!respuesta || respuesta.length > 1000) {
+      return problema(req, res, 400, 'La respuesta debe tener entre 1 y 1000 caracteres', 'DATOS_INVALIDOS');
+    }
+    if (tarea.value().cerradaEn) return res.status(204).end();
+
+    const aviso = notificaciones.guardar(
+      orden.clienteId, 'MENSAJES', 'La agencia respondió a tu encuesta',
+      respuesta, '/encuestas', `encuesta:${ordenId}`,
+    );
+    tarea.assign({ respuesta: aviso.cuerpo, cerradaEn: aviso.creadaEn }).write();
     return res.status(204).end();
   });
 };

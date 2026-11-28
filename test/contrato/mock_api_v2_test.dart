@@ -116,6 +116,110 @@ void main() {
         }
       });
 
+      test(
+        'catálogo simulado filtra, adjunta cupón y registra la conversión',
+        () async {
+          final login = await pedir('POST', '/auth/login', cuerpo: _login);
+          final token =
+              (jsonDecode(login.body) as Map<String, dynamic>)['accessToken']
+                  as String;
+          final sinMarch = await pedir(
+            'POST',
+            '/auth/login',
+            cuerpo: {
+              'correo': 'cliente2@example.com',
+              'contrasena': 'Temporal123',
+            },
+          );
+          final otroToken =
+              (jsonDecode(sinMarch.body) as Map<String, dynamic>)['accessToken']
+                  as String;
+
+          final publicaciones = await pedir('GET', '/novedades', token: token);
+          expect(publicaciones.statusCode, 200);
+          final novedades = (jsonDecode(publicaciones.body) as List)
+              .cast<Map<String, dynamic>>();
+          expect(novedades.single['cuerpo'], contains('ficticia'));
+
+          final respuesta = await pedir('GET', '/promociones', token: token);
+          expect(respuesta.statusCode, 200);
+          final ofertas = (jsonDecode(respuesta.body) as List)
+              .cast<Map<String, dynamic>>();
+          expect(ofertas.single['id'], 1);
+          expect(ofertas.single['vehiculosIds'], [5]);
+
+          final otras = await pedir('GET', '/promociones', token: otroToken);
+          expect(otras.statusCode, 200);
+          expect(jsonDecode(otras.body), isEmpty);
+          expect(
+            (await pedir(
+              'POST',
+              '/promociones/1/vista',
+              token: otroToken,
+            )).statusCode,
+            404,
+          );
+          for (var i = 0; i < 2; i++) {
+            expect(
+              (await pedir(
+                'POST',
+                '/promociones/1/vista',
+                token: token,
+              )).statusCode,
+              204,
+            );
+          }
+
+          final cita = {
+            'vehiculoId': 5,
+            'franjaId': 1,
+            'fecha': '2026-10-20',
+            'motivo': 'MANTENIMIENTO',
+            'promocionId': 1,
+          };
+          expect(
+            (await pedir(
+              'POST',
+              '/citas',
+              token: token,
+              cuerpo: {...cita, 'vehiculoId': 6},
+            )).statusCode,
+            400,
+          );
+          final confirmada = await pedir(
+            'POST',
+            '/citas',
+            token: token,
+            cuerpo: cita,
+          );
+          expect(confirmada.statusCode, 201, reason: confirmada.body);
+          expect(
+            (jsonDecode(confirmada.body) as Map<String, dynamic>)['cupon'],
+            'DEMO-CARECAR',
+          );
+
+          final guardadas = await pedir('GET', '/citas', token: token);
+          final datos =
+              ((jsonDecode(guardadas.body) as Map<String, dynamic>)['contenido']
+                      as List)
+                  .cast<Map<String, dynamic>>();
+          expect(
+            datos.where((cita) => cita['cupon'] == 'DEMO-CARECAR'),
+            hasLength(1),
+          );
+
+          final metricas = await cliente.get(
+            Uri.parse(base).replace(path: '/promocionesVistas'),
+          );
+          expect(metricas.statusCode, 200);
+          final vistas = (jsonDecode(metricas.body) as List)
+              .cast<Map<String, dynamic>>();
+          expect(vistas.single['promocionId'], 1);
+          expect(vistas.single['vistaEn'], isA<String>());
+          expect(vistas.single['usadaEn'], isA<String>());
+        },
+      );
+
       test('la factura publicada se descarga como PDF autenticado', () async {
         final sesion = await pedir('POST', '/auth/login', cuerpo: _login);
         final token =
@@ -143,7 +247,15 @@ void main() {
           Uri.parse(base).path,
           (contrato['servers'] as YamlList).first['url'],
         );
-        expect(rutasDelMock, unorderedEquals(operaciones.keys));
+        expect(
+          rutasDelMock,
+          unorderedEquals([
+            ...operaciones.keys,
+            'GET /novedades',
+            'GET /promociones',
+            'POST /promociones/{promocionId}/vista',
+          ]),
+        );
       });
 
       test(
@@ -304,6 +416,72 @@ void main() {
           await comprobar204(
             '/encuestas/{ordenId}/contacto',
             '/encuestas/$ordenId/contacto',
+          );
+
+          final preferencias = await pedir(
+            'PUT',
+            '/notificaciones/preferencias',
+            token: token,
+            cuerpo: {
+              'categorias': [
+                {'categoria': 'MENSAJES', 'push': false},
+              ],
+            },
+          );
+          expect(preferencias.statusCode, 200);
+
+          final rutaRespuesta = Uri.parse(base)
+              .replace(path: '/simulacion/encuestas/$ordenId/respuesta');
+          const textoAsesor = 'Gracias por compartir cómo te fue en el taller.';
+          for (final texto in [textoAsesor, 'Reintento con otro texto']) {
+            final respuestaAsesor = await cliente.post(
+              rutaRespuesta,
+              headers: {'Content-Type': 'application/json'},
+              body: jsonEncode({'respuesta': texto}),
+            );
+            expect(respuestaAsesor.statusCode, 204);
+          }
+
+          Future<List<Map<String, dynamic>>> avisos(String token) async {
+            final bandeja = await pedir('GET', '/notificaciones', token: token);
+            expect(bandeja.statusCode, 200);
+            final datos = jsonDecode(bandeja.body) as Map<String, dynamic>;
+            return (datos['contenido'] as List).cast<Map<String, dynamic>>();
+          }
+
+          const titulo = 'La agencia respondió a tu encuesta';
+          final aviso = (await avisos(token))
+              .singleWhere((aviso) => aviso['titulo'] == titulo);
+          expect(aviso['cuerpo'], textoAsesor);
+          expect(aviso['destino'], '/encuestas');
+          expect(aviso['leidaEn'], isNull);
+
+          final otraSesion = await pedir(
+            'POST',
+            '/auth/login',
+            cuerpo: {
+              'correo': 'cliente2@example.com',
+              'contrasena': 'Temporal123',
+            },
+          );
+          final otroToken =
+              (jsonDecode(otraSesion.body)
+                      as Map<String, dynamic>)['accessToken']
+                  as String;
+          expect(
+            (await avisos(otroToken)).where((n) => n['titulo'] == titulo),
+            isEmpty,
+          );
+          final lectura = '/notificaciones/${aviso['id']}/leida';
+          expect(
+            (await pedir('POST', lectura, token: otroToken)).statusCode,
+            404,
+          );
+          expect((await pedir('POST', lectura, token: token)).statusCode, 204);
+          expect(
+            (await avisos(token))
+                .singleWhere((n) => n['id'] == aviso['id'])['leidaEn'],
+            isA<String>(),
           );
         },
       );

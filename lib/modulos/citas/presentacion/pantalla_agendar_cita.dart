@@ -54,6 +54,8 @@ class PantallaAgendarCita extends ConsumerStatefulWidget {
     super.key,
     this.vehiculoInicial,
     this.motivoInicial,
+    this.promocionId,
+    this.vehiculosConPromocion,
   });
 
   /// Vehiculo ya elegido al abrir (V2-M24.06, desde el asistente). Si no esta
@@ -62,6 +64,9 @@ class PantallaAgendarCita extends ConsumerStatefulWidget {
 
   /// Motivo ya elegido al abrir; la persona lo puede cambiar.
   final MotivoCita? motivoInicial;
+
+  final int? promocionId;
+  final Set<int>? vehiculosConPromocion;
 
   @override
   ConsumerState<PantallaAgendarCita> createState() =>
@@ -144,12 +149,17 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     if (!garaje.hasValue || !disponibilidad.hasValue) {
       return estado(const _Cargando());
     }
+    final elegibles = widget.vehiculosConPromocion;
+    final vehiculos = elegibles == null
+        ? garaje.requireValue
+        : garaje.requireValue
+              .where((auto) => elegibles.contains(auto.id))
+              .toList();
     // Un vehiculo precargado que ya no esta en el garaje no cuenta.
-    if (_vehiculoId != null &&
-        !garaje.requireValue.any((v) => v.id == _vehiculoId)) {
+    if (_vehiculoId != null && !vehiculos.any((v) => v.id == _vehiculoId)) {
       _vehiculoId = null;
     }
-    if (garaje.requireValue.isEmpty) {
+    if (vehiculos.isEmpty) {
       return estado(
         EstadoVacio(
           titulo: textos.citasSinVehiculosTitulo,
@@ -179,10 +189,10 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     return switch (_paso) {
       _Paso.formulario => _formulario(
         context,
-        garaje.requireValue,
+        vehiculos,
         disponibilidad.requireValue,
       ),
-      _Paso.resumen => _resumen(context, garaje.requireValue),
+      _Paso.resumen => _resumen(context, vehiculos),
       _Paso.listo => _listo(context),
     };
   }
@@ -552,9 +562,17 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         texto: textos.citasListoCerrar,
         alPresionar: () => Navigator.of(context).maybePop(),
       ),
-      contenido: cita.recoleccion == null
+      contenido: cita.cupon == null && cita.recoleccion == null
           ? null
-          : GrupoRecoleccionCita(recoleccion: cita.recoleccion!),
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (cita.cupon case final cupon?)
+                  Text(textos.m13CuponCodigo(cupon)),
+                if (cita.recoleccion case final recoleccion?)
+                  GrupoRecoleccionCita(recoleccion: recoleccion),
+              ],
+            ),
     );
   }
 
@@ -573,6 +591,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
         franja: franja,
         motivo: _motivo!,
         direccionRecoleccionId: _recoleccion ? _direccionId : null,
+        promocionId: widget.promocionId,
       );
       if (analitica != null) {
         unawaited(_embudo.confirmar(analitica, cita.id, intento));

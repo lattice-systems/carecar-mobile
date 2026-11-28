@@ -14,6 +14,7 @@ class CitaAgendada {
     required this.horaFin,
     this.motivo,
     this.recoleccion,
+    this.cupon,
   });
 
   final int id;
@@ -28,4 +29,5 @@ class CitaAgendada {
   /// Los traslados de recoger y entregar el auto (V2-M17.02); nulo si la cita
   /// se agendó sin recolección.
   final RecoleccionAgendada? recoleccion;
+  final String? cupon;
 }

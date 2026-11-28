@@ -143,7 +143,17 @@ module.exports = function registrarNotificaciones(servidor, db) {
     const prefs = preferenciasDe(clienteId);
     const quiere = prefs.categorias.find((c) => c.categoria === categoria)?.push ?? true;
     if (!quiere) return null;
-    const ids = db.get('notificaciones').map('id').value();
+    return guardar(clienteId, categoria, titulo, cuerpo, destino);
+  }
+
+  // La bandeja conserva respuestas de servicio aunque el cliente apague push.
+  function guardar(clienteId, categoria, titulo, cuerpo, destino, clave) {
+    const avisos = db.get('notificaciones');
+    if (clave != null) {
+      const existente = avisos.find({ clienteId, clave }).value();
+      if (existente) return existente;
+    }
+    const ids = avisos.map('id').value();
     const aviso = {
       id: ids.length ? Math.max(...ids) + 1 : 1,
       clienteId,
@@ -153,10 +163,11 @@ module.exports = function registrarNotificaciones(servidor, db) {
       destino,
       leidaEn: null,
       creadaEn: new Date().toISOString(),
+      ...(clave == null ? {} : { clave }),
     };
-    db.get('notificaciones').push(aviso).write();
+    avisos.push(aviso).write();
     return aviso;
   }
 
-  return { enviar };
+  return { enviar, guardar };
 };

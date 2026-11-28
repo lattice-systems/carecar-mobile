@@ -120,7 +120,7 @@ PDF de agencia (V2-M09.03) · publicado sobre el listado existente y entregado c
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Promociones personalizadas | `promocion`, `promocion_vista`, `cita` | ⬜ | Ver M13 |
+| Promociones personalizadas y novedades | `promocion`, `promocion_vista`, `cita` | 🟡 Simulación comprobada en CareCar Dev. Publicaciones y catálogo oficiales pendientes. | [V2-M13.01–.04](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) |
 
 ### 14. Tienda de refacciones y accesorios — plan [M14](modulos/M14-tienda.md)
 
@@ -190,6 +190,8 @@ PDF de agencia (V2-M09.03) · publicado sobre el listado existente y entregado c
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
 
 ## Evidencia automática por criterio
+
+La [prueba de la respuesta simulada](../test/contrato/mock_api_v2_test.dart) verifica destinatario, reintento y lectura en la bandeja (V2-M15.03).
 
 La [prueba de indicadores simulados](../tool/simular_objetivos.test.js) verifica las reglas de O2, O3 y O4 para V2-M23.06. Los resultados operativos requieren las fuentes de la agencia.
 
