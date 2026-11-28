@@ -40,3 +40,12 @@ Pasaron siete pruebas dirigidas de Flutter para Documentos y Acerca de. La corri
 ### Rendimiento en Android físico
 
 Se instaló el APK `desarrollo` en modo `profile`, SHA-256 `55F28931A0A77FE3A361CBC899C2442E752BC544C66B0D6AC143C054A8D401D5`, y se hizo un arranque en frío con la sesión de prueba guardada. El panel O8 registró una muestra. El primer cuadro de Flutter llegó en **449 ms** y la primera pantalla útil en **2265 ms**. Se estimaron **3 cuadros perdidos de 120 medidos**. El backend respondió HTTP 204 al evento y se desactivó el consentimiento al terminar.
+
+## Encuestas de servicio (M15)
+
+La prueba de widgets abre la tarjeta, aplaza la encuesta, envía una respuesta y pide contacto tras un NPS de 5. La prueba de contrato comprueba el aplazamiento, el rechazo de una segunda respuesta y la solicitud de contacto contra la API simulada. La interfaz se revisó con datos de prueba a 390 × 844 píxeles.
+
+- [Tarjeta en Inicio](capturas-m15/inicio-claro.png)
+- [Formulario claro](capturas-m15/formulario-claro.png)
+- [Formulario oscuro](capturas-m15/formulario-oscuro.png)
+- [Formulario con texto al 200 %](capturas-m15/formulario-texto-200.png)
