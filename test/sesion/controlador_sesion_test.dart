@@ -611,7 +611,7 @@ void main() {
       expect(corridas, 1);
     });
 
-    test('no corren si la sesion sigue viva ni con un login fallido', () async {
+    test('no corren mientras la sesion sigue viva (login y renovar)', () async {
       var corridas = 0;
       controlador.registrarAlTerminarSesion(() async => corridas++);
       await entrar();

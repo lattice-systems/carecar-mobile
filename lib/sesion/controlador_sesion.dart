@@ -252,6 +252,31 @@ class ControladorSesion extends ChangeNotifier {
           .then<void>((_) {}, onError: (Object _) {}),
   ]);
 
+  /// Lo que los modulos piden correr cada vez que la sesion **termina**.
+  final List<Future<void> Function()> _alTerminar = [];
+
+  /// Registra [tarea] para que corra cada vez que la sesion termina, sea cual
+  /// sea la causa: cierre voluntario, refresh vencido (401) o cuenta
+  /// desactivada (403) (V2-M21.01).
+  ///
+  /// Es lo que borra la base local con los datos del cliente. Corre **antes**
+  /// de borrar los tokens: si la app muere entre una cosa y otra, queda la
+  /// sesion con la base vacia (se vuelve a descargar) y no una persona sin
+  /// sesion con datos suyos en el telefono. Una tarea que falla o tarda mas de
+  /// [_esperaAntesDeCerrar] no impide terminar. Devuelve la funcion que la
+  /// quita.
+  void Function() registrarAlTerminarSesion(Future<void> Function() tarea) {
+    _alTerminar.add(tarea);
+    return () => _alTerminar.remove(tarea);
+  }
+
+  Future<void> _correrTareasAlTerminar() => Future.wait([
+    for (final tarea in List.of(_alTerminar))
+      Future.sync(tarea)
+          .timeout(_esperaAntesDeCerrar)
+          .then<void>((_) {}, onError: (Object _) {}),
+  ]);
+
   /// Cierra la sesion y **avisa al servidor** para que revoque el refresh
   /// token (RIC-4).
   ///
@@ -303,6 +328,7 @@ class ControladorSesion extends ChangeNotifier {
   /// Se usa cuando el servidor ya dijo que la sesion no vale: un refresh
   /// vencido (401) o una cuenta desactivada (403). Avisar seria redundante.
   Future<void> _terminar({bool porCuentaDesactivada = false}) async {
+    await _correrTareasAlTerminar();
     await _almacen.borrar();
     _cambiarA(SinSesion(porCuentaDesactivada: porCuentaDesactivada));
   }
