@@ -117,7 +117,7 @@ void main() {
         tester,
         find.text('Cita cancelada. El horario quedó libre.'),
       );
-      await _tocar(tester, find.byTooltip('Regresar'));
+      // La cancelación se hace en Mis citas: ahí mismo se ve el estado.
       await _tocar(tester, citas);
       await _esperar(
         tester,
