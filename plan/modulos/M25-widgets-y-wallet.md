@@ -195,6 +195,8 @@ Rediseño de los widgets de inicio: cinco widgets independientes que se agregan 
 
 Live Activity del taller en la pantalla bloqueada (V2-M25.05, solo iPhone) y pases de Apple Wallet que siguen a la cita (V2-M25.06). **Estado: implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode.** Por eso ninguna de las dos pasa a `Hecha`; `plan/tablero.md` lo mueve quien integra.
 
+**Validación:** Daniel revisó y validó V2-M25.05 y V2-M25.06, y pasan a `Hecha` en el tablero. Para producción siguen haciendo falta el certificado Apple, el dominio HTTPS y compilar en Xcode (pasos abajo).
+
 **Backend** (`agencia-360-backend`, rama `feat/v2-m25-apple-backend`; diseño en `plan/historias-backend.md`, secciones de V2-M25.05 y V2-M25.06)
 
 - **APNs** detrás de la interfaz `EnvioApns`: `EnvioApnsReal` firma un JWT ES256 con la llave `.p8` (`APNS_KEY_ID`, `APNS_TEAM_ID`, `APNS_KEY_P8_BASE64`, `APNS_BUNDLE_ID`, `APNS_SANDBOX`), lo reutiliza 40 minutos y habla HTTP/2 con el cliente del JDK; `EnvioApnsFake` en pruebas. Sin las variables no se manda ningún push y nada falla (R8).

@@ -257,3 +257,40 @@ así la pantalla recibe un destino que sirve o un nulo, y no tiene que
 desconfiar de él. Un destino inválido no esconde el aviso — se pierde el toque,
 no el mensaje.
 
+
+## Avance de V2-M06.02 y V2-M06.07 (push)
+
+> **Le tocaban a Jael, las hizo Juan Pablo (R6, ayuda).** Las tomó porque V2-M05.05 y V2-M25.05 dependían del push. Jael sigue siendo dueña del módulo; lo de la app vive dentro de `lib/modulos/notificaciones/`, junto a su bandeja y su permiso.
+
+**Backend (V2-M06.07 y la parte B de V2-M06.02, backend#117)**
+
+- Módulo de Modulith `notificaciones` con `EntregaDeAvisos`: redacta el aviso de cada evento de dominio, lo guarda en `notificacion` y lo manda a los dispositivos activos del cliente.
+- Migración `V60` (`dispositivo_push`, `notificacion`); `PUT` y `DELETE /dispositivos/{instalacionId}`.
+- `EnvioPush` con FCM HTTP v1 y `EnvioPushFake`. Sin `PUSH_FCM_*` el aviso solo queda en la bandeja.
+- El payload lleva ids y destino, nunca nombres, VIN, placas ni montos.
+- Cancelar la cuenta borra sus dispositivos y avisos.
+
+**App (V2-M06.02)**
+
+- `ServicioPush` (dominio): de dónde sale el token. Hoy la app usa `ServicioPushNulo`, que no da token, así que no se registra nada ni cambia ninguna pantalla. También hay `ServicioPushFake` para pruebas.
+- `RepositorioDispositivosApi` (con `actualizarSinRespuesta` y `eliminar` del cliente del núcleo) y `RepositorioDispositivosFake`.
+- `InstalacionDeLaApp`: UUID v4 con `Random.secure`, guardado en preferencias. Es del teléfono, no de la cuenta, y sobrevive al cerrar sesión.
+- `CoordinadorDePush`:
+  - registra el token solo con sesión **y** avisos permitidos (V2-M06.01), y vuelve a registrar cada token que rote el proveedor;
+  - da de baja al cerrar sesión, **antes** de `/auth/cerrar-sesion`, con `ControladorSesion.registrarAntesDeCerrarSesion`, y también al negar los avisos;
+  - no llama si la sesión se perdió sin cerrarla;
+  - un fallo de red no lanza y se reintenta en el siguiente cambio.
+- `RegistradorDePush`: envoltorio montado en `lib/main.dart` (archivo de Daniel, R6). Avisa al coordinador al entrar, al cambiar el permiso y al volver a primer plano.
+- Contrato: ruta, `InstalacionId` y `RegistroDispositivo` copiados de 2.30.0. Mock en `mock_api/modulos/dispositivos.js`, aparte de la bandeja.
+
+**Pruebas:** `repositorio_dispositivos_api_test.dart` (ruta, cuerpo y errores), `instalacion_de_la_app_test.dart`, `coordinador_de_push_test.dart` (13 casos por criterio) y `registrador_de_push_test.dart` (el enganche, incluida la baja antes del cierre en el servidor y que sin Firebase no haya peticiones).
+
+**Qué falta para el push real** (no se hizo porque rompería el APK de CI y exige credenciales):
+
+1. PR `build(deps)` con `firebase_core` y `firebase_messaging`.
+2. Proyecto de Firebase con la app Android (`com.carecar.carecar_mobile`) y la de iOS. `google-services.json` y `GoogleService-Info.plist` **fuera de git** (R8), inyectados por CI desde secretos, con el plugin de Gradle solo cuando existan.
+3. `ServicioPushFirebase implements ServicioPush` (`getToken`, `onTokenRefresh`) y sobrescribir `servicioPushProvider` en `main.dart`.
+4. En iOS: capability Push Notifications y la llave APNs subida a Firebase.
+5. En el backend: `PUSH_FCM_PROJECT_ID` y `PUSH_FCM_SERVICE_ACCOUNT_JSON_BASE64`.
+
+**No probado:** FCM real (no hay credenciales) ni nada en el celular.
