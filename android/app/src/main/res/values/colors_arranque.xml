@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Mismo azul con el que empieza la cortina de arranque de Flutter. -->
-    <color name="azul_arranque">#1D3557</color>
+    <color name="azul_arranque">#2457F5</color>
 </resources>
