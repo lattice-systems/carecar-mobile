@@ -76,3 +76,9 @@ Ver los documentos de cada auto con su estado de vencimiento. Backend y app.
 - La aseguradora de V2-M11.02 sale de la póliza (no de una tabla aparte), porque la ficha no define otra y la póliza ya trae la aseguradora.
 
 **No probado:** en el celular. Subir o fotografiar un documento es V2-M09.02.
+
+### V2-M09.06 · Calendario de todos los vehículos
+
+Desde Documentos se puede abrir el calendario de todo el garaje. Cada marca anuncia cuántos vencimientos hay y la lista permite abrir los documentos del vehículo. Usa el listado existente de V2-M09.01 y conserva la protección de pantalla.
+
+La [prueba de calendario](../../test/modulos/documentos/calendario_documentos_test.dart) verifica dos vehículos, cambio de mes, filtro por día y recuperación ante errores.

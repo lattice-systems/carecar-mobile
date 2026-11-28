@@ -213,6 +213,8 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
+| `V2-M09.06: combina los autos, marca los días y filtra la lista` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
+| `V2-M09.06: ofrece reintentar cuando falla la consulta de un auto` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
 | `V2-M27.05: muestra la versión del paquete y abre las licencias` | [Prueba](../test/modulos/ayuda/acerca_de_test.dart) |
 | `V2-M27.05: abre los términos incluidos en el paquete` | [Prueba](../integration_test/terminos_instalados_test.dart) |
 | `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
