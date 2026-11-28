@@ -563,6 +563,104 @@ void main() {
     });
   });
 
+  group('tareas al terminar la sesion (V2-M21.01)', () {
+    // La base local con los datos del cliente se borra cada vez que la sesion
+    // termina, sea cual sea la causa: el cierre voluntario, un refresh vencido
+    // o una cuenta desactivada. No debe quedar ni un dato de esa cuenta para la
+    // siguiente persona que use el telefono.
+    Future<void> entrar() => controlador.iniciarSesion(
+      correo: 'cliente1@example.com',
+      contrasena: 'x',
+    );
+
+    test(
+      'corren al cerrar sesion, aunque falle el aviso al servidor',
+      () async {
+        await entrar();
+        var corridas = 0;
+        controlador.registrarAlTerminarSesion(() async => corridas++);
+
+        await controlador.cerrarSesion();
+
+        expect(corridas, 1);
+      },
+    );
+
+    test('corren con una cuenta desactivada (403)', () async {
+      await entrar();
+      var corridas = 0;
+      controlador.registrarAlTerminarSesion(() async => corridas++);
+
+      await controlador.terminarPorCuentaDesactivada();
+
+      expect(corridas, 1);
+    });
+
+    test('corren cuando el refresh token ya no sirve (401)', () async {
+      armar(
+        ApiFalsa()
+          ..alRefrescar = (_) async =>
+              throw const CredencialesInvalidas('La sesion termino'),
+      );
+      await dejarSesionGuardada(vida: Duration.zero);
+      var corridas = 0;
+      controlador.registrarAlTerminarSesion(() async => corridas++);
+
+      await controlador.restaurar();
+
+      expect(corridas, 1);
+    });
+
+    test('no corren si la sesion sigue viva ni con un login fallido', () async {
+      var corridas = 0;
+      controlador.registrarAlTerminarSesion(() async => corridas++);
+      await entrar();
+      await controlador.renovar();
+
+      expect(corridas, 0);
+    });
+
+    test('corren antes de borrar los tokens: si se corta, no se pierde', () async {
+      // Si la app muere entre una cosa y otra, es mejor quedarse con la sesion
+      // y la base vacia (se vuelve a descargar) que sin sesion y con datos.
+      await entrar();
+      bool? habiaTokens;
+      controlador.registrarAlTerminarSesion(() async {
+        habiaTokens = await almacen.leer() != null;
+      });
+
+      await controlador.cerrarSesion();
+
+      expect(habiaTokens, isTrue);
+      expect(await almacen.leer(), isNull);
+    });
+
+    test('una tarea que falla no impide cerrar la sesion', () async {
+      await entrar();
+      controlador.registrarAlTerminarSesion(
+        () async => throw StateError('disco lleno'),
+      );
+
+      await controlador.cerrarSesion();
+
+      expect(await almacen.leer(), isNull);
+      expect(controlador.estado, isA<SinSesion>());
+    });
+
+    test('quitarla hace que ya no corra', () async {
+      await entrar();
+      var corridas = 0;
+      final quitar = controlador.registrarAlTerminarSesion(
+        () async => corridas++,
+      );
+
+      quitar();
+      await controlador.cerrarSesion();
+
+      expect(corridas, 0);
+    });
+  });
+
   group('RIC-5 · el bloqueo por demasiados intentos', () {
     test('le dice al usuario cuanto tiene que esperar', () async {
       // `ClienteApi` ya lee el encabezado `Retry-After` y arma el texto, pero
