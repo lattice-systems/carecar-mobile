@@ -212,7 +212,7 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
 | V2-M13.04 | Saber qué promociones funcionan | Haziel | B | V2-M13.01 | Borrador | |
-| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | En curso | [Tarjeta, aplazamiento y respuesta](../test/modulos/encuestas/encuesta_pendiente_test.dart). Pendiente validar push. |
+| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | En curso | [Tarjeta, aplazamiento y respuesta](../test/modulos/encuestas/encuesta_pendiente_test.dart). La ruta rechaza encuestas que no están pendientes en la cuenta activa. Pendiente validar push real. |
 | V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Hecha | [Solicitud desde el formulario](../test/modulos/encuestas/encuesta_pendiente_test.dart) y [tarea en Agencia360 #121](https://github.com/lattice-systems/agencia-360-backend/pull/121). |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Hecha | [Agregados de O7 por periodo y asesor](https://github.com/lattice-systems/agencia-360-backend/pull/121) · [CI con PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46092880424). |
