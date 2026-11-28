@@ -3907,5 +3907,14 @@
   "documentosTipoGarantia": "Warranty policy",
   "documentosTipoFactura": "Purchase invoice",
   "documentosTipoOtro": "Other document",
-  "asistenciaLlamarAseguradoraBuscando": "Looking for your policy…"
+  "asistenciaLlamarAseguradoraBuscando": "Looking for your policy…",
+  "ayudaAcerca": "About CareCar",
+  "ayudaVersion": "Version",
+  "ayudaCargando": "Loading…",
+  "ayudaLicencias": "Software licenses",
+  "ayudaLicenciasDetalle": "Components included in the app",
+  "ayudaPrivacidad": "Privacy notice",
+  "ayudaTerminos": "Terms of use",
+  "ayudaTerminosAusentes": "The document is unavailable.",
+  "ayudaCerrar": "Close"
 }

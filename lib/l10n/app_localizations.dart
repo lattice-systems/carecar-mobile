@@ -11331,6 +11331,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Buscando tu póliza…'**
   String get asistenciaLlamarAseguradoraBuscando;
+
+  /// No description provided for @ayudaAcerca.
+  ///
+  /// In es, this message translates to:
+  /// **'Acerca de CareCar'**
+  String get ayudaAcerca;
+
+  /// No description provided for @ayudaVersion.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión'**
+  String get ayudaVersion;
+
+  /// No description provided for @ayudaCargando.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando…'**
+  String get ayudaCargando;
+
+  /// No description provided for @ayudaLicencias.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencias de software'**
+  String get ayudaLicencias;
+
+  /// No description provided for @ayudaLicenciasDetalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Componentes incluidos en la aplicación'**
+  String get ayudaLicenciasDetalle;
+
+  /// No description provided for @ayudaPrivacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get ayudaPrivacidad;
+
+  /// No description provided for @ayudaTerminos.
+  ///
+  /// In es, this message translates to:
+  /// **'Términos de uso'**
+  String get ayudaTerminos;
+
+  /// No description provided for @ayudaTerminosAusentes.
+  ///
+  /// In es, this message translates to:
+  /// **'El documento no está disponible.'**
+  String get ayudaTerminosAusentes;
+
+  /// No description provided for @ayudaCerrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get ayudaCerrar;
 }
 
 class _AppLocalizationsDelegate
