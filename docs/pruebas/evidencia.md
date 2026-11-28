@@ -11,6 +11,8 @@ Registra cada corrida del [guion por hito](guion-por-hito.md). Agrega una fila p
 | H2 | H2.1–H2.3 | Pendiente | Pendiente | Pendiente | — |
 | H3 | H3.1–H3.3 | Pendiente | Pendiente | Pendiente | — |
 | H4 | H4.1–H4.2 | Pendiente | Pendiente | Pendiente | — |
+| H3 | H3.3 · Documentos | Samsung SM-G781U, Android 13 | dev `5895971c` · Agencia360 local V66 | Parcial | Estados, factura, garantía y calendario de dos autos. El selector de galería se abrió y la carga quedó pendiente. Alertas y campaña pendientes. [Corrida Android](#corrida-de-documentos-y-encuestas-en-android) |
+| H4 | H4.1 · Encuesta | Samsung SM-G781U, Android 13 | dev `5895971c` · Agencia360 local V66 | Parcial | Tarjeta, formulario y aplazamiento de una orden. Push y chat pendientes. [Corrida Android](#corrida-de-documentos-y-encuestas-en-android) |
 | H5 | H5.1–H5.2 | Pendiente | Pendiente | Pendiente | — |
 | H6 | H6.1–H6.3 | Pendiente | Pendiente | Pendiente | — |
 | H7 | H7.1–H7.2 | Pendiente | Pendiente | Pendiente | — |
@@ -41,11 +43,24 @@ Samsung SM-G781U con Android 13, conectado por USB el 27 de noviembre de 2026. S
 | H3.3 · V2-M09.06 | El 2 de diciembre quedó marcado con dos vencimientos. Al seleccionarlo, la lista mostró una póliza de garantía para el March y otra para el Sentra. |
 | H4.2 · V2-M27.05 | Acerca de mostró la versión instalada 1.0.0. Se abrió Licencias de software y el WebView mostró el documento local de términos, incluidos sus encabezados. |
 
-Pasaron siete pruebas dirigidas de Flutter para Documentos y Acerca de. La corrida física corresponde a la implementación local. La adaptación de Documentos al contrato integrado de V2-M09.01 sigue pendiente.
+Pasaron siete pruebas dirigidas de Flutter para Documentos y Acerca de. La corrida física corresponde a la implementación local. La validación sobre el contrato integrado de V2-M09.01 se registró en la corrida de Android descrita abajo.
 
 ### Rendimiento en Android físico
 
 Se instaló el APK `desarrollo` en modo `profile`, SHA-256 `55F28931A0A77FE3A361CBC899C2442E752BC544C66B0D6AC143C054A8D401D5`, y se hizo un arranque en frío con la sesión de prueba guardada. El panel O8 registró una muestra. El primer cuadro de Flutter llegó en **449 ms** y la primera pantalla útil en **2265 ms**. Se estimaron **3 cuadros perdidos de 120 medidos**. El backend respondió HTTP 204 al evento y se desactivó el consentimiento al terminar.
+
+## Corrida de Documentos y Encuestas en Android
+
+Samsung SM-G781U, Android 13, por USB. APK de desarrollo y depuración de `dev` en `5895971c`, SHA-256 `7C42B0CC96D384052328A224B30DB102CFE2093C0949E042ABEFE1AE5CF184B8`. La compilación temporal usó Flutter 3.50.1, Android Gradle Plugin 9.1.1 y el registro de plugins Android generado en esa copia. La API apuntó a Agencia360 `c5f8215`, con PostgreSQL 16.15 aislado y migraciones hasta V66. Las cuentas, vehículos y documentos eran ficticios.
+
+| Caso | Resultado observado |
+| --- | --- |
+| H2.1 · Acceso normal | Inicio de sesión con una cuenta ficticia y aceptación del aviso vigente. La app abrió Mi garaje. Quedan contraseña temporal y recuperación para completar el caso. |
+| H3.3 · Listado de documentos | El March mostró verificación vencida hacía 2 días y póliza por vencer en 5 días. La API local devolvió HTTP 404 al intentar listar un vehículo ajeno con la segunda cuenta. |
+| H3.3 · Foto del cliente | El formulario abrió el selector de Android. La carga del JPEG desde esta compilación queda por repetir. |
+| H3.3 · PDF de agencia | La factura y la garantía publicadas en la API aparecieron en el listado integrado. Cada una abrió el visor y mostró «Página 1 de 1». |
+| H3.3 · Calendario | Al seleccionar el 2 de diciembre, la lista mostró la póliza del March y la del Sentra. |
+| H4.1 · Encuesta | La tarjeta abrió las encuestas de March y Sentra. Al posponer la del March, quedó visible solo la del Sentra. PostgreSQL registró el aplazamiento para la orden del March. |
 
 ## Encuestas de servicio (M15)
 

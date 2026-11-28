@@ -75,7 +75,7 @@ Ver los documentos de cada auto con su estado de vencimiento. Backend y app.
 - El estado lo calcula el servidor y la app no lo recalcula: así el teléfono con la hora mal puesta no cambia lo que se ve.
 - La aseguradora de V2-M11.02 sale de la póliza (no de una tabla aparte), porque la ficha no define otra y la póliza ya trae la aseguradora.
 
-**No probado:** en el celular. Subir o fotografiar un documento es V2-M09.02.
+El [listado integrado se probó en Android físico](../../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android), junto con la factura, la garantía y el calendario de dos vehículos.
 
 ### V2-M09.06 · Calendario de todos los vehículos
 

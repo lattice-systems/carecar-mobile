@@ -88,7 +88,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | 🟡 `documento_vehiculo` existe (backend V61) con los campos de la ficha más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora`; `GET /vehiculos/{id}/documentos` con el estado calculado por la fecha de la agencia, pantalla, mock y pruebas (V2-M09.01). Ninguna columna de la ficha se quita ni se renombra. Faltan subir o fotografiar (V2-M09.02), los de la agencia (V2-M09.03), sin conexión (V2-M09.05), calendario (V2-M09.06) y demostrar en celular | V2-M09.01 |
+| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | 🟡 `documento_vehiculo` existe (backend V61) con los campos de la ficha más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora`; `GET /vehiculos/{id}/documentos` con el estado calculado por la fecha de la agencia, pantalla, mock y pruebas (V2-M09.01). Ninguna columna de la ficha se quita ni se renombra. dev integra captura JPEG (V2-M09.02), PDF de agencia (V2-M09.03) y calendario (V2-M09.06). [Evidencia en Android físico](../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android). Siguen pendientes las alertas (V2-M09.04) y la copia cifrada sin conexión (V2-M09.05) | V2-M09.01 |
 | Alertas de vencimiento | `documento_vehiculo`, `notificacion` | ⬜ | Ver M09 |
 
 Captura JPEG (V2-M09.02) · el registro se guarda en la tabla integrada y la foto se adjunta con la autorización del cliente.
