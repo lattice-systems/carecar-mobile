@@ -191,6 +191,8 @@ Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Anal�
 
 ## Evidencia automática por criterio
 
+La [prueba de indicadores simulados](../tool/simular_objetivos.test.js) verifica las reglas de O2, O3 y O4 para V2-M23.06. Los resultados operativos requieren las fuentes de la agencia.
+
 La [prueba de Encuestas](../test/modulos/encuestas/encuesta_pendiente_test.dart) verifica que una ruta solo muestra el formulario cuando la orden está entre las encuestas pendientes de la cuenta activa (V2-M15.01).
 
 Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
@@ -216,7 +218,7 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
 | `V2-M23.01: solo registra fallos nuevos del periodo consentido` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | `V2-M23.01: descarta la consulta si cambia el consentimiento` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
-| V2-M23.01: una preferencia previa empieza sin historial | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | V2-M23.01: el APK y los símbolos Dart coinciden y permiten resolver una traza | [Corrida de CI](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831) · [APK, símbolos y verificación](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831/artifacts/15245534947) |
 | `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
