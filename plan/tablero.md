@@ -173,10 +173,10 @@ Avance de Haziel en dev · **11 de 30 historias en Hecha (37 %)**.
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
-| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98, backend#117, #223 · validada por Daniel; el push llega con la app cerrada cuando haya credenciales de FCM |
+| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98, backend#117, #224 · validada por Daniel; el push llega con la app cerrada cuando haya credenciales de FCM |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
-| V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En revisión | backend#117, #223 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend y app hechos (`ServicioPush`, registro tras entrar y baja al salir); FCM real pendiente de credenciales |
+| V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En revisión | backend#117, #224 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend y app hechos (`ServicioPush`, registro tras entrar y baja al salir); FCM real pendiente de credenciales |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | Hecha | #216 |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | Lista | |
