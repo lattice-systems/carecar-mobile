@@ -93,6 +93,7 @@ class CampoContrasena extends StatefulWidget {
     required this.etiqueta,
     super.key,
     this.controlador,
+    this.sugerencia,
     this.ayuda,
     this.error,
     this.alCambiar,
@@ -103,6 +104,9 @@ class CampoContrasena extends StatefulWidget {
 
   final String etiqueta;
   final TextEditingController? controlador;
+
+  /// Texto de ejemplo dentro del campo vacío.
+  final String? sugerencia;
   final String? ayuda;
   final String? error;
   final ValueChanged<String>? alCambiar;
@@ -123,6 +127,7 @@ class _CampoContrasenaState extends State<CampoContrasena> {
     return CampoTexto(
       etiqueta: widget.etiqueta,
       controlador: widget.controlador,
+      sugerencia: widget.sugerencia,
       ayuda: widget.ayuda,
       error: widget.error,
       alCambiar: widget.alCambiar,

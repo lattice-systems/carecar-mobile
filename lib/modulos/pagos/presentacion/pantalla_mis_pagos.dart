@@ -52,6 +52,7 @@ class PantallaMisPagos extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.wallet,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoPagos(
@@ -60,6 +61,7 @@ class PantallaMisPagos extends ConsumerWidget {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.wallet,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -72,6 +74,7 @@ class PantallaMisPagos extends ConsumerWidget {
           ),
           data: (estado) => estado.pagos.isEmpty
               ? MarcoPantalla(
+                  icono: LucideIcons300.wallet,
                   titulo: titulo,
                   conRegreso: true,
                   acciones: acciones,
@@ -87,6 +90,7 @@ class PantallaMisPagos extends ConsumerWidget {
                   ],
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.wallet,
                   titulo: titulo,
                   subtitulo: textos.pagosMisPagosSubtitulo,
                   conRegreso: true,

@@ -350,11 +350,23 @@ abstract class AppLocalizations {
   /// **'Escribe tu contraseña.'**
   String get accesoContrasenaVacia;
 
-  /// Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente.
+  /// Ejemplo dentro del campo de correo del acceso.
   ///
   /// In es, this message translates to:
-  /// **'El que le diste a la agencia'**
-  String get accesoCorreoAyuda;
+  /// **'tu@correo.com'**
+  String get accesoCorreoSugerencia;
+
+  /// Ejemplo dentro del campo de contraseña del acceso.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu contraseña'**
+  String get accesoContrasenaSugerencia;
+
+  /// Créditos al pie del acceso: año y equipo que desarrolla la app.
+  ///
+  /// In es, this message translates to:
+  /// **'© {anio} Lattice Systems'**
+  String accesoCreditos(int anio);
 
   /// Etiqueta del campo de correo en la pantalla de acceso.
   ///
@@ -662,6 +674,60 @@ abstract class AppLocalizations {
   /// **'No pudimos traer tus vehículos'**
   String get accesoPerfilVehiculosFallo;
 
+  /// Título del paso del código de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el código'**
+  String get accesoCodigoTitulo;
+
+  /// Explicación del paso del código; {correo} es el correo al que se envió.
+  ///
+  /// In es, this message translates to:
+  /// **'Te lo enviamos a {correo}. Tiene 6 dígitos y vence en 15 minutos.'**
+  String accesoCodigoExplicacion(String correo);
+
+  /// Etiqueta del campo del código de recuperación.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get accesoCodigoEtiqueta;
+
+  /// Error cuando el código no tiene 6 dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 6 dígitos del código'**
+  String get accesoCodigoIncompleto;
+
+  /// Aviso cuando el servidor rechaza el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese código no sirve'**
+  String get accesoCodigoNoValidoTitulo;
+
+  /// Mensaje del aviso de código rechazado.
+  ///
+  /// In es, this message translates to:
+  /// **'Puede estar mal escrito, ya usado o vencido. Revisa el correo más reciente o pide otro.'**
+  String get accesoCodigoNoValidoMensaje;
+
+  /// Botón para pedir otro código.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar otro código'**
+  String get accesoCodigoReenviar;
+
+  /// Aviso tras pedir otro código.
+  ///
+  /// In es, this message translates to:
+  /// **'Te enviamos otro código'**
+  String get accesoCodigoReenviado;
+
+  /// Título cuando se llega al paso del código sin correo ni enlace.
+  ///
+  /// In es, this message translates to:
+  /// **'Pide primero el código'**
+  String get accesoCodigoSinCorreo;
+
   /// Título del aviso tras pedir el enlace de recuperación.
   ///
   /// In es, this message translates to:
@@ -671,7 +737,7 @@ abstract class AppLocalizations {
   /// Explica que el enlace puede no llegar si el correo no tiene cuenta, para que nadie se quede esperando.
   ///
   /// In es, this message translates to:
-  /// **'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.'**
+  /// **'Si ese correo tiene una cuenta, te llegará un código de 6 dígitos. Vence en 15 minutos y sirve una sola vez.'**
   String get accesoRecuperarEnviadoMensaje;
 
   /// Texto del botón mientras el servidor responde.
@@ -683,19 +749,19 @@ abstract class AppLocalizations {
   /// Botón que pide el enlace de recuperación.
   ///
   /// In es, this message translates to:
-  /// **'Enviarme el enlace'**
+  /// **'Enviarme el código'**
   String get accesoRecuperarEnviar;
 
   /// Explica qué hace la pantalla de recuperación.
   ///
   /// In es, this message translates to:
-  /// **'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.'**
+  /// **'Escribe tu correo y te enviamos un código de 6 dígitos para elegir una contraseña nueva.'**
   String get accesoRecuperarExplicacion;
 
   /// Título del aviso cuando falla la petición del enlace.
   ///
   /// In es, this message translates to:
-  /// **'No pudimos enviar el enlace'**
+  /// **'No pudimos enviar el código'**
   String get accesoRecuperarFalloTitulo;
 
   /// Título de la pantalla de recuperación.
@@ -932,6 +998,12 @@ abstract class AppLocalizations {
   /// **'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.'**
   String get accesoSinRegistro;
 
+  /// Lema en la portada del acceso, en dos líneas, bajo el logo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu auto,\nen buenas manos.'**
+  String get accesoLema;
+
   /// Frase bajo el nombre de la app en la pantalla de acceso.
   ///
   /// In es, this message translates to:
@@ -1135,6 +1207,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Guías de emergencia'**
   String get asistenciaGuiasTitulo;
+
+  /// Descripción bajo el título del catálogo de modelos.
+  ///
+  /// In es, this message translates to:
+  /// **'Los modelos vigentes de la agencia con su precio. Toca uno para ver el detalle, o compara varios.'**
+  String get catalogoSubtitulo;
 
   /// Título de la pantalla del catálogo de modelos.
   ///
@@ -1447,6 +1525,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cargando tus citas'**
   String get citasMisCitasCargando;
+
+  /// Descripción bajo el título de Mis citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus citas próximas y pasadas, cada una con su estado.'**
+  String get citasMisCitasSubtitulo;
 
   /// Título de la lista de citas del cliente.
   ///
@@ -2954,6 +3038,12 @@ abstract class AppLocalizations {
   /// **'Mi garaje'**
   String get vehiculosTitulo;
 
+  /// Descripción bajo el título de la pantalla con los vehículos del cliente.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus autos en un solo lugar. Toca uno para ver su ficha, su historial y agendar su servicio.'**
+  String get vehiculosSubtitulo;
+
   /// No description provided for @vehiculosVacioMensaje.
   ///
   /// In es, this message translates to:
@@ -3901,6 +3991,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'English'**
   String get idiomaIngles;
+
+  /// Descripción bajo el título del detalle de un modelo del catálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Conoce sus versiones, pide una prueba de manejo o cotiza.'**
+  String get catalogoDetalleSubtitulo;
 
   /// Título de la pantalla de detalle de un modelo.
   ///
@@ -5356,6 +5452,24 @@ abstract class AppLocalizations {
   /// **'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.'**
   String get seguridadConexionNoSeguraMensaje;
 
+  /// Saludo del inicio antes del mediodía; va antes del nombre.
+  ///
+  /// In es, this message translates to:
+  /// **'Buenos días,'**
+  String get inicioSaludoManana;
+
+  /// Saludo del inicio de las 12 a las 19 h; va antes del nombre.
+  ///
+  /// In es, this message translates to:
+  /// **'Buenas tardes,'**
+  String get inicioSaludoTarde;
+
+  /// Saludo del inicio desde las 19 h; va antes del nombre.
+  ///
+  /// In es, this message translates to:
+  /// **'Buenas noches,'**
+  String get inicioSaludoNoche;
+
   /// Saludo de la pantalla de inicio con el primer nombre del cliente.
   ///
   /// In es, this message translates to:
@@ -5431,7 +5545,7 @@ abstract class AppLocalizations {
   /// Destino de la barra inferior.
   ///
   /// In es, this message translates to:
-  /// **'Vehículos'**
+  /// **'Garaje'**
   String get inicioDestinoVehiculos;
 
   /// Destino de la barra inferior.

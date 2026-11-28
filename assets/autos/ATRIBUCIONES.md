@@ -82,3 +82,7 @@ Fotos de Wikimedia Commons con licencia libre (CC0, CC BY, CC BY-SA 3.0/4.0, dom
 - **z_2** — Nissan Z NISMO, 2023, rear.jpg — Kazyakuruma — CC0 — https://commons.wikimedia.org/wiki/File:Nissan_Z_NISMO,_2023,_rear.jpg
 - **pathfinder_1** — 2022 Nissan Pathfinder, rear 6.11.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder,_rear_6.11.22.jpg
 - **pathfinder_2** — 2022 Nissan Pathfinder SV, front 6.2.22.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2022_Nissan_Pathfinder_SV,_front_6.2.22.jpg
+- **jetta** — 2019 Volkswagen Jetta 1.4L front 3.22.19.jpg — Kevauto — CC BY-SA 4.0 — https://commons.wikimedia.org/wiki/File:2019_Volkswagen_Jetta_1.4L_front_3.22.19.jpg
+- **tsuru** — Nissan Tsuru (Current).JPG — Bull-Doser — Public domain — https://commons.wikimedia.org/wiki/File:Nissan_Tsuru_(Current).JPG
+
+`march`, `versa`, `kicks` y `sentra` se volvieron a bajar a 1600 px de ancho (mismo archivo y autor de arriba) porque el inicio las muestra a todo lo ancho de la pantalla.

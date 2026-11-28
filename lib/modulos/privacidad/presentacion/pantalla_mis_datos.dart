@@ -98,6 +98,7 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
     return acceso.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.database,
         titulo: titulo,
         conRegreso: true,
         estado: Semantics(
@@ -117,6 +118,7 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
         ),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.database,
         titulo: titulo,
         conRegreso: true,
         estado: EstadoError(
@@ -127,6 +129,7 @@ class _PantallaMisDatosState extends ConsumerState<PantallaMisDatos> {
         ),
       ),
       data: (solicitud) => MarcoPantalla(
+        icono: LucideIcons300.database,
         titulo: titulo,
         conRegreso: true,
         slivers: [

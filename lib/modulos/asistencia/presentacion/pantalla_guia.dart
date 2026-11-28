@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:flutter/semantics.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -30,6 +31,7 @@ class PantallaGuia extends StatelessWidget {
     final titulo = textos.tituloDeGuia(guia.tipo);
 
     return MarcoPantalla(
+      icono: LucideIcons300.bookOpen,
       titulo: titulo,
       subtitulo: textos.asistenciaGuiaSubtituloSinConexion(guia.pasos),
       conRegreso: true,

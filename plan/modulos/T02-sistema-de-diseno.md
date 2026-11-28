@@ -269,6 +269,25 @@ Con la v2 por defecto ([V2-T01.09](T01-arquitectura-v2.md)) se recorrieron en la
 
 **Sigue como estaba:** la calculadora de toma a cuenta conserva `BarraPantalla` (título pequeño) porque desplaza a mano hasta el resultado con un controlador propio; pasarla a `MarcoPantalla` pide darle un controlador al marco.
 
+## Avance de V2-T02.27 (cierre del rediseño)
+
+Daniel revisó la app pantalla por pantalla en su teléfono y fue cerrando lo que se sentía genérico. Reglas que salieron de esa revisión y que ya cumple el sistema: **letra Geist, el azul `#2457F5` de siempre, sin degradados nuevos, y los mismos radios, bordes y sombras en toda tarjeta**.
+
+| Pieza | Cambio |
+| --- | --- |
+| `EncabezadoGrande` y `MarcoPantalla` | `icono`, `tono` y `subtitulo`: el icono va en un cuadro de color dentro de una tarjeta sobre el título y su descripción. Sin botones (raíces de pestaña) el título sube a ocupar la barra, y recogido queda centrado (`NavigationToolbar`) |
+| `MarcoPantalla.botonFlotante` | La acción principal flota abajo a la derecha, en el lugar de «Agendar cita» del inicio. Con letra a más de 150 % se esconde y la acción pasa a un botón redondo en la barra. Al final de la lista queda aire para la barra de pestañas y el botón |
+| `BotonAccionFlotante` | 48 de alto, con icono de 20 y texto `cuerpoChico` |
+| `BarraFlotante` | Sólida (con el vidrio las tarjetas azules teñían la barra) y la pestaña activa lleva icono y texto en `acento` |
+| `TarjetaAuto` y `TarjetaVehiculo` | Mismo estilo que `TarjetaResumen`: superficie, radio y sombra, con la foto del modelo dentro (`fotoDeModelo`). `TarjetaVehiculo` usa la foto incluida si la del catálogo no carga. Sin foto, `TarjetaAuto` conserva la silueta |
+| `TarjetaResumen.iconoArriba` | El icono se alinea con el título; el chevron sigue centrado (la usa el taller) |
+| `MarcaCareCar` y `Aparecer` | La doble C dibujada en código con trazo animado (quieta con «reducir movimiento») y la entrada escalonada de Inicio. Tokens `Movimiento.portada` y `Movimiento.curvaDeTrazo` |
+
+- **Pestañas.** Inicio, Garaje, Citas y Catálogo comparten la barra fija; sus raíces no llevan «Regresar» ni «Cerrar». La barra dice «Garaje» (antes «Vehículos») para coincidir con «Mi garaje», como «Citas» con «Mis citas».
+- **Marca.** Doble C sobre `#2457F5`: ícono de la app (Android adaptativo y monocromo, iOS), pantalla de carga plana y logo del acceso y del inicio.
+- **Fotos.** `assets/autos/` con atribuciones en `ATRIBUCIONES.md`.
+- **Seguimiento.** Las pantallas nuevas de otras personas (documentos, encuestas, ayuda, avisos y el detalle de producto de la tienda) conservan el encabezado simple; pasarles `icono` y `subtitulo` es un cambio chico y aparte, para no pisar sus PR abiertos.
+
 ## Avance de V2-T02.02
 
 | Criterio | Dónde se cumple |

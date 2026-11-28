@@ -58,6 +58,7 @@ class PantallaFichaTecnica extends ConsumerWidget {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.fileText,
       titulo: textos.vehiculosFichaTitulo,
       conRegreso: true,
       alRefrescar: () => ref.refresh(fichaTecnicaProvider(vehiculoId).future),

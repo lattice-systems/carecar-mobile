@@ -5,23 +5,17 @@ import 'package:go_router/go_router.dart';
 
 void main() {
   group('valor por defecto en codigo', () {
-    test('lo que existia en v1 arranca en v2, menos la recuperacion', () {
+    test('lo que existia en v1 arranca en v2', () {
       const interruptor = InterruptorModulos.porDefecto;
       for (final m in ModuloMigrable.values) {
-        expect(
-          interruptor.esV2(m),
-          m != ModuloMigrable.recuperacion,
-          reason: m.name,
-        );
+        expect(interruptor.esV2(m), isTrue, reason: m.name);
       }
     });
 
-    test('la recuperacion sigue en v1 hasta que el enlace del correo abra la '
-        'app (V2-T01.10)', () {
-      expect(
-        InterruptorModulos.porDefecto.de(ModuloMigrable.recuperacion),
-        VersionModulo.v1,
-      );
+    test('el acceso y la recuperacion ya no tienen v1 (V2-T02.27)', () {
+      final nombres = ModuloMigrable.values.map((m) => m.name);
+      expect(nombres, isNot(contains('acceso')));
+      expect(nombres, isNot(contains('recuperacion')));
     });
 
     test('todoV1 apaga cada modulo: es la v1 de las pruebas', () {
@@ -75,18 +69,9 @@ void main() {
       }
     });
 
-    test(
-      'MODULOS_V2=recuperacion prueba la recuperacion v2 sin tocar el resto',
-      () {
-        final i = InterruptorModulos.desdeValores(v2: 'recuperacion');
-        expect(i.esV2(ModuloMigrable.recuperacion), isTrue);
-        expect(i.esV2(ModuloMigrable.acceso), isTrue);
-      },
-    );
-
-    test('MODULOS_V1=acceso devuelve solo el acceso a la v1', () {
-      final i = InterruptorModulos.desdeValores(v1: 'acceso');
-      expect(i.esV2(ModuloMigrable.acceso), isFalse);
+    test('MODULOS_V1=catalogo devuelve solo el catalogo a la v1', () {
+      final i = InterruptorModulos.desdeValores(v1: 'catalogo');
+      expect(i.esV2(ModuloMigrable.catalogo), isFalse);
       expect(i.esV2(ModuloMigrable.citas), isTrue);
     });
 

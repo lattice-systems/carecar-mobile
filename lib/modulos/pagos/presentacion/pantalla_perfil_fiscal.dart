@@ -47,8 +47,12 @@ class PantallaPerfilFiscal extends ConsumerWidget {
     final catalogo = ref.watch(catalogoFiscalProvider);
     final perfiles = id == null ? null : ref.watch(perfilesFiscalesProvider);
 
-    Widget estado(Widget hijo) =>
-        MarcoPantalla.estado(titulo: titulo, conRegreso: true, estado: hijo);
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.receipt,
+      titulo: titulo,
+      conRegreso: true,
+      estado: hijo,
+    );
 
     final error = catalogo.error ?? perfiles?.error;
     if (error != null) {
@@ -292,6 +296,7 @@ class _EstadoFormularioPerfilFiscal
     final aviso = _aviso;
 
     return MarcoPantalla(
+      icono: LucideIcons300.receipt,
       titulo: widget.titulo,
       conRegreso: true,
       barraInferior: BarraInferior(

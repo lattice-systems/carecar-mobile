@@ -59,6 +59,7 @@ class _EstadoLlamar extends ConsumerState<PantallaLlamarRapido> {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.phone,
       titulo: textos.asistenciaLlamarTitulo,
       conRegreso: true,
       slivers: [

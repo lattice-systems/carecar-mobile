@@ -41,6 +41,7 @@ class PantallaMiPerfil extends ConsumerWidget {
     return VistaAsincrona<PerfilDelCliente>(
       estado: ref.watch(perfilProvider),
       cargando: (_) => MarcoPantalla.estado(
+        icono: LucideIcons300.user,
         titulo: textos.accesoPerfilTitulo,
         conRegreso: true,
         estado: const _Cargando(),
@@ -64,6 +65,7 @@ class _Contenido extends ConsumerWidget {
     final sinLeer = ref.watch(avisosSinLeerProvider);
 
     return MarcoPantalla(
+      icono: LucideIcons300.user,
       titulo: textos.accesoPerfilTitulo,
       conRegreso: true,
       alRefrescar: () async {

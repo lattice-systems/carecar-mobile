@@ -156,6 +156,7 @@ class _PantallaCotizacionEstrenoState
     }
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.fileText,
       titulo: textos.estrenoCotizacionTitulo,
       estado: hijo,
     );
@@ -208,6 +209,7 @@ class _PantallaCotizacionEstrenoState
     final calculo = _calculo;
 
     return MarcoPantalla(
+      icono: LucideIcons300.fileText,
       titulo: textos.estrenoCotizacionTitulo,
       subtitulo: modelo.titulo,
       slivers: [

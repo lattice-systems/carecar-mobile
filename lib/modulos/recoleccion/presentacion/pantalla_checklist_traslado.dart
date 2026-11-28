@@ -145,6 +145,7 @@ class _VistaChecklist extends ConsumerWidget {
 
     Widget marco(Widget hijo) => conMarco
         ? MarcoPantalla.estado(
+            icono: LucideIcons300.clipboardCheck,
             titulo: textos.recoleccionChecklistTitulo,
             conRegreso: true,
             estado: hijo,
@@ -292,6 +293,7 @@ class _Datos extends ConsumerWidget {
     );
     if (!conMarco) return SingleChildScrollView(child: contenido);
     return MarcoPantalla(
+      icono: LucideIcons300.clipboardCheck,
       titulo: textos.recoleccionChecklistTitulo,
       subtitulo: textos.recoleccionChecklistRegistrado(registrado),
       conRegreso: true,

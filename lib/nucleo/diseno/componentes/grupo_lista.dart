@@ -10,7 +10,10 @@ import 'rebote_tactil.dart';
 /// Una fila de un [GrupoLista].
 ///
 /// `icono` se dibuja sobre un cuadro redondeado de `colorIcono` (por defecto el
-/// acento). Con `alToque` la fila entera es tocable y muestra un chevron, salvo
+/// acento). `visual` lo sustituye cuando la fila lo merece (el día de una
+/// cita): debe medir 40 de ancho, como el cuadro de icono de `TarjetaResumen`,
+/// y no se lee aparte, porque el título ya dice lo que muestra. Con `alToque`
+/// la fila entera es tocable y muestra un chevron, salvo
 /// que `conChevron` sea falso (una fila con interruptor responde al toque pero
 /// no lleva a otra pantalla). El lector de pantalla recibe un solo nodo con
 /// titulo, subtitulo y `etiquetaFin`; el `fin` no se lee, asi que una cifra
@@ -22,6 +25,7 @@ class FilaGrupo {
     this.subtitulo,
     this.icono,
     this.colorIcono,
+    this.visual,
     this.fin,
     this.etiquetaFin,
     this.alToque,
@@ -33,6 +37,9 @@ class FilaGrupo {
   final String? subtitulo;
   final IconData? icono;
   final Color? colorIcono;
+
+  /// Pieza propia en lugar del icono; mide 40 de ancho.
+  final Widget? visual;
 
   /// Texto o adorno antes del chevron, por ejemplo un valor.
   final Widget? fin;
@@ -60,6 +67,7 @@ class GrupoLista extends StatelessWidget {
   final String? pie;
 
   static const double _cuadroIcono = 32;
+  static const double _cuadroVisual = 40;
   static const double _escalaQueApila = 1.5;
 
   @override
@@ -67,9 +75,15 @@ class GrupoLista extends StatelessWidget {
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
-    final alineaDivisor = filas.any((f) => f.icono != null);
+    // Los divisores empiezan donde el texto: tras el visual, tras el icono o,
+    // si ninguna fila lleva nada a la izquierda, en el margen.
+    final anchoInicial = filas.any((f) => f.visual != null)
+        ? _cuadroVisual
+        : filas.any((f) => f.icono != null)
+        ? _cuadroIcono
+        : 0.0;
     final sangria =
-        Espaciado.e4 + (alineaDivisor ? _cuadroIcono + Espaciado.e3 : 0);
+        Espaciado.e4 + (anchoInicial > 0 ? anchoInicial + Espaciado.e3 : 0);
 
     final hijos = <Widget>[];
     for (var i = 0; i < filas.length; i++) {
@@ -162,7 +176,10 @@ class _Fila extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, caja) => Row(
             children: [
-              if (fila.icono != null) ...[
+              if (fila.visual != null) ...[
+                ExcludeSemantics(child: fila.visual!),
+                const SizedBox(width: Espaciado.e3),
+              ] else if (fila.icono != null) ...[
                 ExcludeSemantics(
                   child: Container(
                     width: GrupoLista._cuadroIcono,

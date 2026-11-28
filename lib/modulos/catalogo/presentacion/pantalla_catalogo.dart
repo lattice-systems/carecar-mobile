@@ -16,11 +16,11 @@ import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_vehiculo.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../tienda/tienda.dart';
 import '../dominio/comparativa.dart';
 import '../dominio/modelo_vigente.dart';
-import '../../../nucleo/diseno/componentes/boton_circular.dart';
+import '../../../nucleo/diseno/componentes/boton_accion_flotante.dart';
+import 'foto_incluida.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
 
@@ -67,18 +67,20 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
         modelos.asData?.value.where((m) => m.id != null).length ?? 0;
 
     final titulo = textos.catalogoTitulo;
-    final c = TokensPista.de(context).colores;
-
     return modelos.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
         titulo: titulo,
-        conRegreso: true,
+        subtitulo: textos.catalogoSubtitulo,
+        icono: LucideIcons300.layoutGrid,
+        acciones: const [],
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
         titulo: titulo,
-        conRegreso: true,
+        subtitulo: textos.catalogoSubtitulo,
+        icono: LucideIcons300.layoutGrid,
+        acciones: const [],
         estado: EstadoError(
           causa: error is SinConexion
               ? CausaError.sinConexion
@@ -89,7 +91,9 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
       data: (lista) => lista.isEmpty
           ? MarcoPantalla.estado(
               titulo: titulo,
-              conRegreso: true,
+              subtitulo: textos.catalogoSubtitulo,
+              icono: LucideIcons300.layoutGrid,
+              acciones: const [],
               estado: EstadoVacio(
                 titulo: textos.catalogoVacioTitulo,
                 mensaje: textos.catalogoVacioMensaje,
@@ -100,20 +104,20 @@ class _EstadoPantallaCatalogo extends ConsumerState<PantallaCatalogo> {
             )
           : MarcoPantalla(
               titulo: titulo,
-              conRegreso: true,
-              acciones: [
-                if (comparables >= minimoComparables)
-                  BotonCircular(
-                    etiqueta: _comparando
-                        ? textos.catalogoSalirDeComparar
-                        : textos.catalogoComparar,
-                    icono: _comparando
-                        ? LucideIcons300.x
-                        : LucideIcons300.arrowRightLeft,
-                    colorIcono: c.texto,
-                    alPresionar: _alternarModo,
-                  ),
-              ],
+              subtitulo: textos.catalogoSubtitulo,
+              icono: LucideIcons300.layoutGrid,
+              acciones: const [],
+              botonFlotante: comparables >= minimoComparables
+                  ? BotonAccionFlotante(
+                      texto: _comparando
+                          ? textos.catalogoSalirDeComparar
+                          : textos.catalogoComparar,
+                      icono: _comparando
+                          ? LucideIcons300.x
+                          : LucideIcons300.arrowRightLeft,
+                      alPresionar: _alternarModo,
+                    )
+                  : null,
               alRefrescar: () => ref.refresh(catalogoProvider.future),
               barraInferior: _comparando
                   ? BarraInferior(
@@ -188,6 +192,7 @@ class _Lista extends StatelessWidget {
             nombre: m.titulo,
             detalle: _detalle(context, m),
             foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
+            fotoRespaldo: fotoIncluidaDeModelo(m.titulo),
             descripcionFoto: textos.fotoDeModelo(m.titulo),
             heroTag: m.id == null ? null : 'modelo-${m.id}',
             alToque: m.id == null

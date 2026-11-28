@@ -135,11 +135,13 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.package,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoTienda(altos: [96, 180, 120]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.package,
             titulo: titulo,
             conRegreso: true,
             estado: error is NoEncontrado
@@ -157,6 +159,7 @@ class _PantallaPedidoState extends ConsumerState<PantallaPedido> {
                   ),
           ),
           data: (pedido) => MarcoPantalla(
+            icono: LucideIcons300.package,
             titulo: titulo,
             conRegreso: true,
             barraInferior: pedido.pagable

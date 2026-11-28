@@ -79,6 +79,30 @@ class RepositorioAccesoFake with RepositorioBase implements RepositorioAcceso {
     if (f != null) throw f;
   }
 
+  /// Si no es nulo, restablecer con código falla con esto.
+  Object? fallaDelCodigo;
+  String? ultimoCodigo;
+
+  @override
+  Future<void> restablecerConCodigo({
+    required String correo,
+    required String codigo,
+    required String contrasenaNueva,
+  }) async {
+    await pedir(() async {
+      llamadasAlRestablecer++;
+      ultimoCorreo = correo;
+      ultimoCodigo = codigo;
+      ultimaContrasenaDelEnlace = contrasenaNueva;
+      final espera = esperar;
+      if (espera != null) await espera;
+      final f = falla;
+      if (f != null) throw f;
+    });
+    final f = fallaDelCodigo;
+    if (f != null) throw f;
+  }
+
   // --- Perfil · V2-M01.06 ---
 
   /// Lo que devuelve [perfil]. Si es nulo, uno cualquiera con telefono.

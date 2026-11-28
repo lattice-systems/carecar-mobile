@@ -85,11 +85,13 @@ class _EstadoPantallaPlanMantenimiento
     return plan.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.wrench,
         titulo: titulo,
         conRegreso: true,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.wrench,
         titulo: titulo,
         conRegreso: true,
         estado: EstadoError(
@@ -102,6 +104,7 @@ class _EstadoPantallaPlanMantenimiento
       ),
       data: (p) => p.sinPlan
           ? MarcoPantalla.estado(
+              icono: LucideIcons300.wrench,
               titulo: titulo,
               conRegreso: true,
               estado: EstadoVacio(
@@ -159,6 +162,7 @@ class _Plan extends StatelessWidget {
     final proximo = plan.proximo;
 
     return MarcoPantalla(
+      icono: LucideIcons300.wrench,
       titulo: textos.mantenimientoTitulo,
       conRegreso: true,
       alRefrescar: alRefrescar,

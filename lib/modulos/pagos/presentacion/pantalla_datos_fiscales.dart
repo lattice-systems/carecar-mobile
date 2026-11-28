@@ -32,6 +32,7 @@ class PantallaDatosFiscales extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.fileText,
       titulo: textos.datosFiscalesTitulo,
       conRegreso: true,
       estado: hijo,
@@ -90,6 +91,7 @@ class _Lista extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
     return MarcoPantalla(
+      icono: LucideIcons300.fileText,
       titulo: textos.datosFiscalesTitulo,
       subtitulo: textos.datosFiscalesSubtitulo,
       conRegreso: true,

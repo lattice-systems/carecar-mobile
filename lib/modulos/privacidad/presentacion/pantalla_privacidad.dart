@@ -22,6 +22,7 @@ class PantallaPrivacidad extends StatelessWidget {
     final c = TokensPista.de(context).colores;
 
     return MarcoPantalla(
+      icono: LucideIcons300.shield,
       titulo: textos.privacidadHubTitulo,
       conRegreso: true,
       slivers: [

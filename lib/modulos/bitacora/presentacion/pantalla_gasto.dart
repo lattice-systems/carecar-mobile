@@ -309,6 +309,7 @@ class _EstadoPantallaGasto extends ConsumerState<PantallaGasto> {
     ];
 
     return MarcoPantalla(
+      icono: LucideIcons300.coins,
       titulo: _titulo(textos),
       barraInferior: BarraInferior(
         hijos: [

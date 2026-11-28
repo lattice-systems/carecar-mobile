@@ -34,11 +34,13 @@ class PantallaMisPedidos extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.package,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoTienda(altos: [112, 112, 112]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.package,
             titulo: titulo,
             conRegreso: true,
             estado: ErrorTienda(
@@ -48,6 +50,7 @@ class PantallaMisPedidos extends ConsumerWidget {
           ),
           data: (lista) => lista.elementos.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.package,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -59,6 +62,7 @@ class PantallaMisPedidos extends ConsumerWidget {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.package,
                   titulo: titulo,
                   conRegreso: true,
                   alRefrescar: () => ref.refresh(misPedidosProvider.future),

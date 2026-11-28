@@ -218,7 +218,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: assets/marca/agencia360-icono.png
+  image_path: assets/marca/carecar-icono.png
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"
 

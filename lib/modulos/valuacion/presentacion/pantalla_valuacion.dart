@@ -112,11 +112,13 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.badgeDollarSign,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoValuacion(altos: [96, 120, 180]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.badgeDollarSign,
             titulo: titulo,
             conRegreso: true,
             estado: error is NoEncontrado
@@ -134,6 +136,7 @@ class _PantallaValuacionState extends ConsumerState<PantallaValuacion> {
                   ),
           ),
           data: (valuacion) => MarcoPantalla(
+            icono: LucideIcons300.badgeDollarSign,
             titulo: titulo,
             conRegreso: true,
             alRefrescar: () =>

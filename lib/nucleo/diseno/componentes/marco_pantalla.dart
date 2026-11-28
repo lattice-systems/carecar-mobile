@@ -1,9 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../tokens/espaciado.dart';
 import '../tokens/tokens_pista.dart';
+import 'boton_accion_flotante.dart';
+import 'boton_circular.dart';
 import 'boton_cerrar.dart';
 import 'encabezado_grande.dart';
+import 'tono.dart';
 
 /// El marco de toda pantalla de detalle o de formulario: encabezado grande que
 /// se recoge, contenido que se desplaza sin atravesar el título y, si hace
@@ -17,6 +22,12 @@ import 'encabezado_grande.dart';
 /// - `acciones`: botones al final de la barra. Si no se pasan y no hay regreso,
 ///   la barra lleva «Cerrar» (la pantalla se abrió encima de otra).
 /// - `alRefrescar`: jalar para recargar; nulo lo desactiva.
+/// - `icono` y `tono`: el cuadro de color sobre el título grande.
+/// - `botonFlotante`: la acción principal de la pantalla, en una píldora que
+///   flota abajo a la derecha, en el mismo lugar que «Agendar cita» del inicio
+///   (sobre la barra de pestañas, o sobre la [BarraInferior] si hay). Con
+///   letra muy grande se esconde y la acción pasa a un botón redondo en la
+///   barra de arriba, para que nunca tape el contenido.
 /// - `barraInferior`: ver [BarraInferior].
 ///
 /// Los estados de pantalla completa (cargando, vacío, error) se pasan con
@@ -30,7 +41,10 @@ class MarcoPantalla extends StatelessWidget {
     this.acciones,
     this.conRegreso = false,
     this.barraInferior,
+    this.botonFlotante,
     this.alRefrescar,
+    this.icono,
+    this.tono = Tono.informacion,
   });
 
   /// Marco con un solo estado que ocupa el resto de la pantalla.
@@ -41,10 +55,13 @@ class MarcoPantalla extends StatelessWidget {
     this.subtitulo,
     this.acciones,
     this.conRegreso = false,
+    this.icono,
+    this.tono = Tono.informacion,
   }) : // El estado se centra y se desplaza solo (CentradoDesplazable), así que
        // ocupa el resto con alto fijo en vez de medirse con intrínsecos.
        slivers = [SliverFillRemaining(child: estado)],
        barraInferior = null,
+       botonFlotante = null,
        alRefrescar = null;
 
   final String titulo;
@@ -53,11 +70,23 @@ class MarcoPantalla extends StatelessWidget {
   final List<Widget>? acciones;
   final bool conRegreso;
   final Widget? barraInferior;
+  final BotonAccionFlotante? botonFlotante;
   final Future<void> Function()? alRefrescar;
+
+  /// Icono de la pantalla en el encabezado; ver [EncabezadoGrande.icono].
+  final IconData? icono;
+  final Tono tono;
 
   @override
   Widget build(BuildContext context) {
     final c = TokensPista.de(context).colores;
+    final escala = MediaQuery.textScalerOf(context).scale(1);
+    final pedido = botonFlotante;
+    final flotante =
+        pedido != null && escala <= BotonAccionFlotante.escalaMaxima
+        ? pedido
+        : null;
+    final base = acciones ?? (conRegreso ? const [] : const [BotonCerrar()]);
 
     Widget desplazable = CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(),
@@ -67,10 +96,35 @@ class MarcoPantalla extends StatelessWidget {
           subtitulo: subtitulo,
           translucido: true,
           conRegreso: conRegreso,
-          acciones: acciones ?? (conRegreso ? const [] : const [BotonCerrar()]),
+          icono: icono,
+          tono: tono,
+          acciones: [
+            ...base,
+            // Sin lugar para el flotante, la misma acción va arriba.
+            if (pedido != null && flotante == null)
+              BotonCircular(
+                etiqueta: pedido.texto,
+                icono: pedido.icono,
+                variante: VarianteBotonCircular.acento,
+                alPresionar: pedido.alPresionar,
+              ),
+          ],
         ),
         ...slivers,
-        const SliverToBoxAdapter(child: SizedBox(height: Espaciado.e6)),
+        // Al final queda aire para que lo último no quede bajo la barra de
+        // pestañas ni bajo el botón flotante.
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height:
+                Espaciado.e6 +
+                (barraInferior == null
+                    ? MediaQuery.paddingOf(context).bottom
+                    : 0) +
+                (flotante == null
+                    ? 0
+                    : BotonAccionFlotante.alto + Espaciado.e4),
+          ),
+        ),
       ],
     );
     if (alRefrescar != null) {
@@ -91,7 +145,27 @@ class MarcoPantalla extends StatelessWidget {
                 constraints: const BoxConstraints(
                   maxWidth: Espaciado.anchoMaximoContenido,
                 ),
-                child: desplazable,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    desplazable,
+                    if (flotante != null)
+                      Positioned(
+                        right: Espaciado.e4,
+                        // Igual que en el inicio: sobre la barra de pestañas
+                        // (su espacio viene en el margen inferior) o, con
+                        // barra inferior propia, justo sobre ella.
+                        bottom: barraInferior == null
+                            ? math.max(
+                                MediaQuery.paddingOf(context).bottom -
+                                    Espaciado.e1,
+                                Espaciado.e3,
+                              )
+                            : Espaciado.e3,
+                        child: flotante,
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
