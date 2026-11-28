@@ -8940,5 +8940,14 @@
   "asistenciaLlamarAseguradoraBuscando": "Buscando tu póliza…",
   "@asistenciaLlamarAseguradoraBuscando": {
     "description": "Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01)."
-  }
+  },
+  "ayudaAcerca": "Acerca de CareCar",
+  "ayudaVersion": "Versión",
+  "ayudaCargando": "Cargando…",
+  "ayudaLicencias": "Licencias de software",
+  "ayudaLicenciasDetalle": "Componentes incluidos en la aplicación",
+  "ayudaPrivacidad": "Aviso de privacidad",
+  "ayudaTerminos": "Términos de uso",
+  "ayudaTerminosAusentes": "El documento no está disponible.",
+  "ayudaCerrar": "Cerrar"
 }

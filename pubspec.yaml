@@ -178,6 +178,7 @@ flutter:
         - asset: assets/fonts/JetBrainsMono-700.ttf
           weight: 700
   assets:
+    - terminos.txt
     - assets/marca/
     - assets/autos/galeria/
     - assets/autos/
