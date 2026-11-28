@@ -15,7 +15,7 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
-Avance de Haziel en dev · **11 de 30 historias en Hecha (37 %)**.
+Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
 
 ## H0 · Base de trabajo
 
@@ -151,12 +151,12 @@ Avance de Haziel en dev · **11 de 30 historias en Hecha (37 %)**.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) · pendiente comprobar el artefacto de símbolos de distribución |
 | V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Hecha | #200 · [Catálogo de eventos con propiedades y objetivos](../docs/analitica/eventos.md) |
-| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
+| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Hecha | #200 · [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) |
 | V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | Hecha | #200 · [Prueba de consentimiento y bloqueo de envíos](../test/nucleo/analitica/consentimiento_test.dart) · [CI de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | #200, #215 · [Muestra de arranque en frío, primera pantalla y cuadros perdidos en Android físico](../docs/pruebas/evidencia.md#rendimiento-en-android-físico) sobre una implementación local |
-| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | Hecha | #200, #215 · [Rendimiento en Android físico](../docs/pruebas/evidencia.md#rendimiento-en-android-físico) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) |
+| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) · quedan fuentes y acuerdos para O2, O3 y O4 |
 
 ## H3 · Postventa viva
 
