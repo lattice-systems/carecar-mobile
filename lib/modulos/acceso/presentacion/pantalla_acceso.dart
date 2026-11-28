@@ -1,18 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/aparecer.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
-import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
+import '../../../nucleo/diseno/componentes/marca_carecar.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/movimiento.dart';
+import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import '../../../nucleo/sesion/proveedores_sesion.dart';
@@ -48,8 +52,29 @@ class PantallaAcceso extends ConsumerStatefulWidget {
   ConsumerState<PantallaAcceso> createState() => _EstadoPantallaAcceso();
 }
 
-class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
+class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso>
+    with SingleTickerProviderStateMixin {
   final _correo = TextEditingController();
+
+  /// La entrada de la portada: logo, lema y subtítulo suben uno tras otro.
+  late final AnimationController _entrada = AnimationController(
+    vsync: this,
+    duration: Movimiento.portada.duracion,
+  );
+  bool _entradaLista = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_entradaLista) return;
+    _entradaLista = true;
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _entrada.value = 1;
+    } else {
+      _entrada.forward();
+    }
+  }
+
   final _contrasena = TextEditingController();
 
   /// Los errores de campo los guarda la pantalla.
@@ -106,6 +131,7 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
 
   @override
   void dispose() {
+    _entrada.dispose();
     _esperaDelServidor?.cancel();
     _correo.dispose();
     _contrasena.dispose();
@@ -158,98 +184,156 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
     // primero, porque un segundo toque pediria otra sesion al servidor.
     final puedeEntrar = !entrando && estado is! Autenticada;
 
-    return Scaffold(
-      body: SafeArea(
-        child: CentradoDesplazable(
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e5),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _Encabezado(
-                    marca: textos.accesoMarca,
-                    subtitulo: textos.accesoSubtitulo,
-                  ),
-                  const SizedBox(height: Espaciado.e6),
-                  if (_servidorTarda) ...[
-                    const AvisoEsperaServidor(),
-                    const SizedBox(height: Espaciado.e4),
-                  ],
-                  if (_bloqueo != null) ...[
-                    AvisoBloqueo(
-                      bloqueo: _bloqueo!,
-                      reloj: ref.watch(relojAccesoProvider),
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                  ] else if (fallo != null) ...[
-                    Aviso(
-                      key: PantallaAcceso.avisoDeError,
-                      // Ni «sin conexion» ni «demasiados intentos» son errores
-                      // de quien entra: son esperas, y no hay nada que
-                      // corregir en el formulario. Van en ambar, no en rojo.
-                      tono: fallo.esFalloDeRed || fallo.esBloqueoTemporal
-                          ? Tono.advertencia
-                          : Tono.peligro,
-                      titulo: switch (fallo) {
-                        _ when fallo.esFalloDeRed =>
-                          textos.accesoSinConexionTitulo,
-                        _ when fallo.esBloqueoTemporal =>
-                          textos.accesoBloqueoTitulo,
-                        _ => textos.accesoFalloTitulo,
-                      },
-                      mensaje: fallo.mensaje,
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                  ],
-                  CampoTexto(
-                    key: PantallaAcceso.campoCorreo,
-                    etiqueta: textos.accesoCorreoEtiqueta,
-                    ayuda: textos.accesoCorreoAyuda,
-                    controlador: _correo,
-                    error: _errorCorreo,
-                    habilitado: puedeEntrar,
-                    // Teclado de correo, como pidio RIC-8.
-                    teclado: TextInputType.emailAddress,
-                    pistasAutocompletar: const [AutofillHints.email],
-                    accionTeclado: TextInputAction.next,
-                  ),
-                  const SizedBox(height: Espaciado.e4),
-                  CampoContrasena(
-                    key: PantallaAcceso.campoContrasena,
-                    etiqueta: textos.accesoContrasenaEtiqueta,
-                    controlador: _contrasena,
-                    error: _errorContrasena,
-                    habilitado: puedeEntrar,
-                    accionTeclado: TextInputAction.done,
-                    alEnviar: puedeEntrar ? (_) => _entrar() : null,
-                  ),
-                  const SizedBox(height: Espaciado.e6),
-                  Boton(
-                    key: PantallaAcceso.botonEntrar,
-                    texto: entrando
-                        ? textos.accesoEntrando
-                        : textos.accesoEntrar,
-                    // Deshabilitado mientras entra: evita el doble toque, que
-                    // con cinco intentos y bloqueo de 15 minutos sale caro.
-                    alPresionar: puedeEntrar ? _entrar : null,
-                    cargando: entrando,
-                    anchoCompleto: true,
-                  ),
-                  const SizedBox(height: Espaciado.e2),
-                  Boton(
-                    key: PantallaAcceso.botonOlvide,
-                    texto: textos.accesoOlvide,
-                    variante: VarianteBoton.terciario,
-                    alPresionar: puedeEntrar ? _olvide : null,
-                  ),
-                  const SizedBox(height: Espaciado.e5),
-                  _NotaSinRegistro(texto: textos.accesoSinRegistro),
-                ],
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    // Los íconos del sistema van sobre el panel de color: claros si el panel
+    // es oscuro (tema claro) y al revés.
+    final estiloBarra = c.sobreAcento.computeLuminance() > 0.5
+        ? SystemUiOverlayStyle.light
+        : SystemUiOverlayStyle.dark;
+
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: estiloBarra,
+      child: Scaffold(
+        backgroundColor: c.acento,
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: SafeArea(
+                bottom: false,
+                child: _Portada(
+                  entrada: _entrada,
+                  lema: textos.accesoLema,
+                  subtitulo: textos.accesoSubtitulo,
+                ),
               ),
             ),
-          ),
+            // La hoja del formulario mide lo que su contenido; con el teclado
+            // abierto o en pantallas bajas la pantalla se desplaza.
+            SliverToBoxAdapter(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: c.fondo,
+                  borderRadius: Radios.bordeHoja,
+                ),
+                child: SafeArea(
+                  top: false,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          Espaciado.e5,
+                          Espaciado.e8,
+                          Espaciado.e5,
+                          Espaciado.e5,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (_servidorTarda) ...[
+                              const AvisoEsperaServidor(),
+                              const SizedBox(height: Espaciado.e4),
+                            ],
+                            if (_bloqueo != null) ...[
+                              AvisoBloqueo(
+                                bloqueo: _bloqueo!,
+                                reloj: ref.watch(relojAccesoProvider),
+                              ),
+                              const SizedBox(height: Espaciado.e4),
+                            ] else if (fallo != null) ...[
+                              Aviso(
+                                key: PantallaAcceso.avisoDeError,
+                                // Ni «sin conexion» ni «demasiados intentos» son errores
+                                // de quien entra: son esperas, y no hay nada que
+                                // corregir en el formulario. Van en ambar, no en rojo.
+                                tono:
+                                    fallo.esFalloDeRed ||
+                                        fallo.esBloqueoTemporal
+                                    ? Tono.advertencia
+                                    : Tono.peligro,
+                                titulo: switch (fallo) {
+                                  _ when fallo.esFalloDeRed =>
+                                    textos.accesoSinConexionTitulo,
+                                  _ when fallo.esBloqueoTemporal =>
+                                    textos.accesoBloqueoTitulo,
+                                  _ => textos.accesoFalloTitulo,
+                                },
+                                mensaje: fallo.mensaje,
+                              ),
+                              const SizedBox(height: Espaciado.e4),
+                            ],
+                            CampoTexto(
+                              key: PantallaAcceso.campoCorreo,
+                              etiqueta: textos.accesoCorreoEtiqueta,
+                              sugerencia: textos.accesoCorreoSugerencia,
+                              controlador: _correo,
+                              error: _errorCorreo,
+                              habilitado: puedeEntrar,
+                              // Teclado de correo, como pidio RIC-8.
+                              teclado: TextInputType.emailAddress,
+                              pistasAutocompletar: const [AutofillHints.email],
+                              accionTeclado: TextInputAction.next,
+                            ),
+                            const SizedBox(height: Espaciado.e4),
+                            CampoContrasena(
+                              key: PantallaAcceso.campoContrasena,
+                              etiqueta: textos.accesoContrasenaEtiqueta,
+                              sugerencia: textos.accesoContrasenaSugerencia,
+                              controlador: _contrasena,
+                              error: _errorContrasena,
+                              habilitado: puedeEntrar,
+                              accionTeclado: TextInputAction.done,
+                              alEnviar: puedeEntrar ? (_) => _entrar() : null,
+                            ),
+                            const SizedBox(height: Espaciado.e6),
+                            Boton(
+                              key: PantallaAcceso.botonEntrar,
+                              texto: entrando
+                                  ? textos.accesoEntrando
+                                  : textos.accesoEntrar,
+                              // Deshabilitado mientras entra: evita el doble toque, que
+                              // con cinco intentos y bloqueo de 15 minutos sale caro.
+                              alPresionar: puedeEntrar ? _entrar : null,
+                              cargando: entrando,
+                              anchoCompleto: true,
+                            ),
+                            const SizedBox(height: Espaciado.e2),
+                            Boton(
+                              key: PantallaAcceso.botonOlvide,
+                              texto: textos.accesoOlvide,
+                              variante: VarianteBoton.terciario,
+                              alPresionar: puedeEntrar ? _olvide : null,
+                            ),
+                            const SizedBox(height: Espaciado.e5),
+                            _NotaSinRegistro(texto: textos.accesoSinRegistro),
+                            const SizedBox(height: Espaciado.e8),
+                            Text(
+                              textos.accesoCreditos(2026),
+                              textAlign: TextAlign.center,
+                              // textoSecundario: el terciario no llega a 4.5:1 en claro.
+                              style: TokensPista.de(context).tipografia.etiqueta
+                                  .copyWith(
+                                    color: TokensPista.de(context)
+                                        .colores
+                                        .textoSecundario,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            // Lo que sobra abajo va del color de la hoja, no del panel.
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: ColoredBox(color: c.fondo),
+            ),
+          ],
         ),
       ),
     );
@@ -258,9 +342,7 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
   /// Lleva a la recuperacion con el correo que ya se escribio, para no pedirlo
   /// otra vez; si lo escrito no parece un correo no se arrastra.
   ///
-  /// Es la unica navegacion de esta pantalla y solo conoce el camino: quien
-  /// lo sirve (la recuperacion v1, con codigo, o la v2, con enlace) lo decide
-  /// el interruptor `ModuloMigrable.recuperacion`.
+  /// Es la unica navegacion de esta pantalla.
   void _olvide() {
     final correo = _correo.text.trim();
     context.push(
@@ -269,27 +351,65 @@ class _EstadoPantallaAcceso extends ConsumerState<PantallaAcceso> {
   }
 }
 
-class _Encabezado extends StatelessWidget {
-  const _Encabezado({required this.marca, required this.subtitulo});
+/// La parte de arriba del acceso: el panel de color de la marca con el logo,
+/// el lema y el subtítulo. Color liso, sin degradados.
+class _Portada extends StatelessWidget {
+  const _Portada({
+    required this.entrada,
+    required this.lema,
+    required this.subtitulo,
+  });
 
-  final String marca;
+  final Animation<double> entrada;
+  final String lema;
   final String subtitulo;
 
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
-    return Column(
-      children: [
-        Text(marca, style: tokens.tipografia.titulo1),
-        const SizedBox(height: Espaciado.e1),
-        Text(
-          subtitulo,
-          textAlign: TextAlign.center,
-          style: tokens.tipografia.cuerpo.copyWith(
-            color: tokens.colores.textoSecundario,
+    final frente = tokens.colores.sobreAcento;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        Espaciado.e5,
+        Espaciado.e6,
+        Espaciado.e5,
+        Espaciado.e10,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Aparecer(
+            entrada: entrada,
+            hasta: 0.5,
+            child: MarcaCareCar(tamano: 36, color: frente, animar: true),
           ),
-        ),
-      ],
+          const SizedBox(height: Espaciado.e6),
+          Aparecer(
+            entrada: entrada,
+            desde: 0.1,
+            hasta: 0.65,
+            child: Semantics(
+              header: true,
+              child: Text(
+                lema,
+                style: tokens.tipografia.titulo1.copyWith(color: frente),
+              ),
+            ),
+          ),
+          const SizedBox(height: Espaciado.e3),
+          Aparecer(
+            entrada: entrada,
+            desde: 0.22,
+            hasta: 0.8,
+            child: Text(
+              subtitulo,
+              style: tokens.tipografia.cuerpo.copyWith(
+                color: frente.withValues(alpha: 0.9),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

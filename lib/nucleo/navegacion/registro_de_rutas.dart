@@ -71,11 +71,10 @@ List<RouteBase> _demasRutas(
 ) => [
   ...nucleo,
   // --- Un renglon por modulo, en orden alfabetico ---
-  // El acceso (M01) pasa por el interruptor: inicio de sesion y cambio
-  // obligatorio (V2-T01.10). La recuperacion de la contrasena es otro valor,
-  // porque su v2 espera un enlace del correo que aun no abre la app.
-  ...interruptor.rutas(ModuloMigrable.acceso, rutasAcceso),
-  ...interruptor.rutas(ModuloMigrable.recuperacion, rutasRecuperacion),
+  // El acceso (M01): inicio de sesion, cambio obligatorio y recuperacion.
+  // Sin v1 desde V2-T02.27.
+  ...rutasAcceso,
+  ...rutasRecuperacion,
   // `/sesiones` (V2-M01.09) no existe en la v1: se registra siempre.
   ...rutasSesiones,
   ...interruptor.rutas(ModuloMigrable.asistencia, rutasAsistencia),

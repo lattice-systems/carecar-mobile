@@ -37,6 +37,19 @@ abstract interface class RepositorioAcceso {
     required String contrasenaNueva,
   });
 
+  /// `POST /auth/restablecer-contrasena` con el correo y el código de 6
+  /// dígitos que trae el mismo correo de recuperación (V2-T02.27).
+  ///
+  /// Es el camino que sirve hoy: el enlace aún no abre la app (falta el
+  /// dominio con enlaces universales). Lanza [CodigoNoValido] si el código
+  /// vencio, ya se uso o esta mal escrito; una contrasena que no cumple sale
+  /// tal cual, igual que con el enlace.
+  Future<void> restablecerConCodigo({
+    required String correo,
+    required String codigo,
+    required String contrasenaNueva,
+  });
+
   /// `GET /perfil`: los datos del cliente que inicio sesion · V2-M01.06.
   ///
   /// De solo lectura: editarlos es V2-M01.07.

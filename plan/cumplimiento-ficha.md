@@ -191,8 +191,8 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 
 | Criterio probado | Archivo |
 | --- | --- |
-| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
-| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/modulos/acceso/presentacion/pantalla_acceso_test.dart) |
+| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/modulos/acceso/presentacion/pantalla_acceso_test.dart) |
 | `V2-M02.01: el garaje muestra los vehículos de la cuenta` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
 | `V2-M02.01: el garaje requiere iniciar sesión` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
 | `V2-M02.07: anuncia y deshabilita los días sin cupo` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |

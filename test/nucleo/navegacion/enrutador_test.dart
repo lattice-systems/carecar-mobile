@@ -3,11 +3,9 @@ import 'package:carecar_mobile/modulos/ejemplo/ejemplo.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/nucleo/navegacion/enlaces.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
-import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -56,16 +54,6 @@ Future<void> _abrirEnlace(WidgetTester tester, String enlace) async {
   await tester.pumpAndSettle();
 }
 
-String _codigoEscrito(WidgetTester tester) => tester
-    .widget<EditableText>(
-      find.descendant(
-        of: find.byKey(PantallaRecuperarContrasena.campoCodigo),
-        matching: find.byType(EditableText),
-      ),
-    )
-    .controller
-    .text;
-
 String _ubicacion(WidgetTester tester) =>
     enrutadorDe(tester).routerDelegate.currentConfiguration.uri.toString();
 
@@ -90,28 +78,18 @@ void main() {
           .go(Rutas.localizacionRecuperar(correo: 'ana@example.com'));
       await tester.pumpAndSettle();
 
-      expect(
-        find.byKey(PantallaRecuperarContrasena.botonEnviar),
-        findsOneWidget,
-      );
+      expect(find.byKey(PantallaRecuperar.botonEnviar), findsOneWidget);
       expect(find.text('ana@example.com'), findsOneWidget);
     });
 
-    testWidgets('restablecer muestra el paso del codigo', (tester) async {
+    testWidgets('restablecer con el correo pide el codigo', (tester) async {
       await _montar(tester, conSesion: false);
-      enrutadorDe(tester).go(
-        Rutas.localizacionRestablecer(
-          token: '123456',
-          correo: 'ana@example.com',
-        ),
-      );
+      enrutadorDe(tester)
+          .go(Rutas.localizacionRestablecer(correo: 'ana@example.com'));
       await tester.pumpAndSettle();
 
-      expect(
-        find.byKey(PantallaRecuperarContrasena.campoCodigo),
-        findsOneWidget,
-      );
-      expect(_codigoEscrito(tester), '123456');
+      expect(find.byKey(PantallaNuevaContrasena.campoCodigo), findsOneWidget);
+      expect(find.byKey(PantallaNuevaContrasena.campoNueva), findsOneWidget);
     });
 
     testWidgets('cambiar-contrasena muestra el cambio obligatorio', (
@@ -230,7 +208,7 @@ void main() {
 
   group('deep links', () {
     testWidgets(
-      'carecar://restablecer?token=... abre la recuperacion con el codigo',
+      'carecar://restablecer?token=... abre la contrasena nueva sin codigo',
       (tester) async {
         await _montar(tester, conSesion: false);
         await _abrirEnlace(
@@ -239,11 +217,9 @@ void main() {
         );
 
         expect(_ubicacion(tester), startsWith(Rutas.restablecer));
-        expect(
-          find.byKey(PantallaRecuperarContrasena.campoCodigo),
-          findsOneWidget,
-        );
-        expect(_codigoEscrito(tester), '123456');
+        expect(find.byKey(PantallaNuevaContrasena.campoNueva), findsOneWidget);
+        // El enlace ya prueba quien es: no se pide el codigo.
+        expect(find.byKey(PantallaNuevaContrasena.campoCodigo), findsNothing);
         expect(find.byKey(PantallaAcceso.botonEntrar), findsNothing);
       },
     );
@@ -258,11 +234,8 @@ void main() {
         '?token=654321&correo=ana%40example.com',
       );
 
-      expect(
-        find.byKey(PantallaRecuperarContrasena.campoCodigo),
-        findsOneWidget,
-      );
-      expect(_codigoEscrito(tester), '654321');
+      expect(find.byKey(PantallaNuevaContrasena.campoNueva), findsOneWidget);
+      expect(find.byKey(PantallaNuevaContrasena.campoCodigo), findsNothing);
     });
 
     testWidgets('un enlace a una ruta privada sin sesion pasa por el login', (

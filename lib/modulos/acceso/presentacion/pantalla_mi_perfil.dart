@@ -41,6 +41,7 @@ class PantallaMiPerfil extends ConsumerWidget {
     return VistaAsincrona<PerfilDelCliente>(
       estado: ref.watch(perfilProvider),
       cargando: (_) => MarcoPantalla.estado(
+        icono: LucideIcons300.user,
         titulo: textos.accesoPerfilTitulo,
         conRegreso: true,
         estado: const _Cargando(),
@@ -63,6 +64,7 @@ class _Contenido extends ConsumerWidget {
     final idioma = Localizations.localeOf(context).toString();
 
     return MarcoPantalla(
+      icono: LucideIcons300.user,
       titulo: textos.accesoPerfilTitulo,
       conRegreso: true,
       alRefrescar: () async {

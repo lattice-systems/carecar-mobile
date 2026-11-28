@@ -125,6 +125,66 @@ void main() {
     });
   });
 
+  group('restablecer con el codigo del correo (V2-T02.27)', () {
+    test('manda correo, codigo y contrasena, sin token', () async {
+      final api = ApiFalsa();
+      final repositorio = RepositorioAccesoApi(api);
+
+      await repositorio.restablecerConCodigo(
+        correo: 'cliente1@example.com',
+        codigo: '123456',
+        contrasenaNueva: 'carecar2026',
+      );
+
+      expect(api.ultimoRestablecimiento?.correo, 'cliente1@example.com');
+      expect(api.ultimoRestablecimiento?.codigo, '123456');
+      expect(api.ultimoRestablecimiento?.contrasenaNueva, 'carecar2026');
+      expect(api.ultimoRestablecimiento?.token, isNull);
+    });
+
+    test('un codigo vencido, usado o mal escrito es CodigoNoValido', () async {
+      final api = ApiFalsa()
+        ..alRestablecerContrasena = (_) async => throw DatosInvalidos(
+          'El codigo no sirve.',
+          problema: problemaDePrueba(
+            400,
+            codigo: CodigoProblema.codigoInvalido,
+          ),
+        );
+      final repositorio = RepositorioAccesoApi(api);
+
+      await expectLater(
+        repositorio.restablecerConCodigo(
+          correo: 'cliente1@example.com',
+          codigo: '000000',
+          contrasenaNueva: 'carecar2026',
+        ),
+        throwsA(isA<CodigoNoValido>()),
+      );
+    });
+
+    test('una contrasena que no cumple NO se confunde con el codigo', () async {
+      final api = ApiFalsa()
+        ..alRestablecerContrasena = (_) async => throw DatosInvalidos(
+          'Revisa los datos.',
+          problema: problemaDePrueba(
+            400,
+            codigo: CodigoProblema.datosInvalidos,
+          ),
+        );
+      final repositorio = RepositorioAccesoApi(api);
+
+      await expectLater(
+        repositorio.restablecerConCodigo(
+          correo: 'cliente1@example.com',
+          codigo: '123456',
+          contrasenaNueva: 'ab',
+        ),
+        throwsA(allOf(isA<DatosInvalidos>(), isNot(isA<CodigoNoValido>()))),
+      );
+    });
+  });
+
   group('el fallo de dominio sobrevive a RepositorioBase', () {
     test('EnlaceNoValido no se convierte en error del servidor', () async {
       // `pedir` tipa todo lo que no sea `ExcepcionApi`, y un fallo de dominio

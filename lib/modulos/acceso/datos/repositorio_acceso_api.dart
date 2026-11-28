@@ -60,6 +60,33 @@ class RepositorioAccesoApi with RepositorioBase implements RepositorioAcceso {
     }
   }
 
+  /// Igual que [restablecerConEnlace]: la traduccion a [CodigoNoValido] va
+  /// fuera de [pedir] para que el fallo de dominio no salga como error del
+  /// servidor.
+  @override
+  Future<void> restablecerConCodigo({
+    required String correo,
+    required String codigo,
+    required String contrasenaNueva,
+  }) async {
+    try {
+      await pedir(
+        () => _api.restablecerContrasena(
+          PeticionRestablecer(
+            correo: correo,
+            codigo: codigo,
+            contrasenaNueva: contrasenaNueva,
+          ),
+        ),
+      );
+    } on DatosInvalidos catch (e) {
+      if (e.problema?.codigo == CodigoProblema.codigoInvalido) {
+        throw const CodigoNoValido();
+      }
+      rethrow;
+    }
+  }
+
   /// Las traducciones van **fuera** de [pedir], igual que en
   /// `restablecerConEnlace`: un fallo de dominio es una `Exception` normal y
   /// dentro saldria convertido en `ErrorDelServidor`, con lo que la pantalla

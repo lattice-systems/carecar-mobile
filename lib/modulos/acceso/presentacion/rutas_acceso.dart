@@ -53,9 +53,7 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
 /// `Rutas.localizacionAcceso` y `Rutas.localizacionCambiarContrasena`, asi
 /// que el guardia no se entera de que version las sirve.
 ///
-/// Se registran por el interruptor (`ModuloMigrable.acceso`, encendido por
-/// defecto desde V2-T01.10). Con el modulo en v1, `rutas_del_nucleo.dart`
-/// sirve esos mismos caminos con las pantallas v1; nunca las dos a la vez.
+/// Desde V2-T02.27 el login v1 ya no existe: se registran siempre.
 final rutasAcceso = <RouteBase>[
   GoRoute(
     path: Rutas.acceso,
@@ -70,24 +68,16 @@ final rutasAcceso = <RouteBase>[
   ),
 ];
 
-/// Recuperar y restablecer la contrasena con el enlace del correo (V2-M01.04).
+/// Recuperar y restablecer la contrasena · V2-M01.04 y V2-T02.27.
 ///
-/// Es un modulo del interruptor **aparte** (`ModuloMigrable.recuperacion`) y
-/// **no esta encendido por defecto**: la pantalla de restablecer espera un
-/// enlace que abra la app, y hoy no lo hace.
+/// El correo de recuperacion trae un codigo de 6 digitos y un enlace. Hoy se
+/// usa el codigo: `/recuperar` lo pide y lleva a `/restablecer?correo=...`,
+/// donde se escribe junto con la contrasena nueva. El enlace
+/// (`carecar://restablecer?token=...`) cae en la misma pantalla sin pedir
+/// codigo; para que abra la app desde el correo falta el dominio con enlaces
+/// universales (`assetlinks.json` y `apple-app-site-association`).
 ///
-/// - El correo del backend trae `carecar://restablecer-contrasena?token=...`
-///   (`RECUPERACION_ENLACE`) y la app entiende `carecar://restablecer?token=...`.
-/// - El enlace universal `https://<host>/app/restablecer` apunta a
-///   `carecar.example.com`, un marcador: aun no hay dominio con
-///   `assetlinks.json` ni `apple-app-site-association`.
-/// - El mismo correo trae el codigo de 6 digitos, que solo la pantalla v1
-///   sabe recibir.
-///
-/// Mientras tanto la v1 resuelve la recuperacion con el codigo, y por eso
-/// sigue siendo la que se ve. Para encenderla falta: el dominio y los dos
-/// archivos de verificacion, que el backend mande un enlace que la app
-/// reconozca, y probarlo en un celular con un correo real.
+/// Desde V2-T02.27 ya no hay version v1: se registran siempre.
 final rutasRecuperacion = <RouteBase>[
   GoRoute(
     path: Rutas.recuperar,
@@ -103,8 +93,12 @@ final rutasRecuperacion = <RouteBase>[
     name: NombresRuta.restablecer,
     builder: (context, state) => _conTemaPista(
       context,
-      // El token llega por enlace profundo; sin el, la pantalla lo dice.
-      PantallaNuevaContrasena(token: state.uri.queryParameters['token']),
+      // Desde «Recupera tu contraseña» llega el correo y se pide el codigo;
+      // por el enlace del correo llega el token.
+      PantallaNuevaContrasena(
+        token: state.uri.queryParameters['token'],
+        correo: state.uri.queryParameters['correo'],
+      ),
     ),
   ),
 ];

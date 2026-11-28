@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
@@ -7,14 +9,17 @@ import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
-import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
+import '../../../nucleo/navegacion/rutas.dart';
 import '../dominio/correo.dart';
 import 'proveedores_acceso.dart';
 
-/// Pide el enlace de recuperacion · V2-M01.04.
+/// Pide el codigo de recuperacion · V2-M01.04 y V2-T02.27.
+///
+/// El correo trae un codigo de 6 digitos (y un enlace que todavia no abre la
+/// app). Al enviarlo lleva al paso del codigo con el correo ya puesto.
 ///
 /// **Responde igual exista o no el correo.** El contrato contesta 202 en los
 /// dos casos para no revelar que cuentas hay registradas, y esta pantalla no
@@ -78,6 +83,7 @@ class _EstadoPantallaRecuperar extends ConsumerState<PantallaRecuperar> {
         _enviando = false;
         _enviado = true;
       });
+      await context.push(Rutas.localizacionRestablecer(correo: correo));
     } catch (error) {
       if (!mounted) return;
       setState(() {
@@ -90,86 +96,78 @@ class _EstadoPantallaRecuperar extends ConsumerState<PantallaRecuperar> {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
     final fallo = _fallo;
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: CentradoDesplazable(
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e5),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    textos.accesoRecuperarTitulo,
-                    style: tokens.tipografia.titulo2,
+    return MarcoPantalla(
+      titulo: textos.accesoRecuperarTitulo,
+      subtitulo: textos.accesoRecuperarExplicacion,
+      conRegreso: true,
+      icono: LucideIcons300.keyRound,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(
+            Espaciado.margenTelefono,
+            Espaciado.e4,
+            Espaciado.margenTelefono,
+            Espaciado.e8,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (_enviado) ...[
+                  Aviso(
+                    key: PantallaRecuperar.avisoEnviado,
+                    tono: Tono.informacion,
+                    titulo: textos.accesoRecuperarEnviado,
+                    mensaje: textos.accesoRecuperarEnviadoMensaje,
                   ),
-                  const SizedBox(height: Espaciado.e2),
-                  Text(
-                    textos.accesoRecuperarExplicacion,
-                    style: tokens.tipografia.cuerpo.copyWith(
-                      color: tokens.colores.textoSecundario,
-                    ),
-                  ),
-                  const SizedBox(height: Espaciado.e6),
-                  if (_enviado) ...[
-                    Aviso(
-                      key: PantallaRecuperar.avisoEnviado,
-                      tono: Tono.informacion,
-                      titulo: textos.accesoRecuperarEnviado,
-                      mensaje: textos.accesoRecuperarEnviadoMensaje,
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                  ],
-                  if (fallo != null) ...[
-                    Aviso(
-                      key: PantallaRecuperar.avisoDeError,
-                      // Sin conexion y el bloqueo por intentos son esperas,
-                      // no algo que la persona pueda corregir aqui.
-                      tono: fallo.esSinConexion || fallo is DemasiadosIntentos
-                          ? Tono.advertencia
-                          : Tono.peligro,
-                      titulo: switch (fallo) {
-                        _ when fallo.esSinConexion =>
-                          textos.accesoSinConexionTitulo,
-                        DemasiadosIntentos() => textos.accesoBloqueoTitulo,
-                        _ => textos.accesoRecuperarFalloTitulo,
-                      },
-                      mensaje: fallo.mensaje,
-                    ),
-                    const SizedBox(height: Espaciado.e4),
-                  ],
-                  CampoTexto(
-                    key: PantallaRecuperar.campoCorreo,
-                    etiqueta: textos.accesoCorreoEtiqueta,
-                    controlador: _correo,
-                    error: _errorCorreo,
-                    habilitado: !_enviando,
-                    teclado: TextInputType.emailAddress,
-                    pistasAutocompletar: const [AutofillHints.email],
-                    accionTeclado: TextInputAction.done,
-                    alEnviar: _enviando ? null : (_) => _enviar(),
-                  ),
-                  const SizedBox(height: Espaciado.e6),
-                  Boton(
-                    key: PantallaRecuperar.botonEnviar,
-                    texto: _enviando
-                        ? textos.accesoRecuperarEnviando
-                        : textos.accesoRecuperarEnviar,
-                    alPresionar: _enviando ? null : _enviar,
-                    cargando: _enviando,
-                    anchoCompleto: true,
-                  ),
+                  const SizedBox(height: Espaciado.e4),
                 ],
-              ),
+                if (fallo != null) ...[
+                  Aviso(
+                    key: PantallaRecuperar.avisoDeError,
+                    // Sin conexion y el bloqueo por intentos son esperas, no
+                    // algo que la persona pueda corregir aqui.
+                    tono: fallo.esSinConexion || fallo is DemasiadosIntentos
+                        ? Tono.advertencia
+                        : Tono.peligro,
+                    titulo: switch (fallo) {
+                      _ when fallo.esSinConexion =>
+                        textos.accesoSinConexionTitulo,
+                      DemasiadosIntentos() => textos.accesoBloqueoTitulo,
+                      _ => textos.accesoRecuperarFalloTitulo,
+                    },
+                    mensaje: fallo.mensaje,
+                  ),
+                  const SizedBox(height: Espaciado.e4),
+                ],
+                CampoTexto(
+                  key: PantallaRecuperar.campoCorreo,
+                  etiqueta: textos.accesoCorreoEtiqueta,
+                  controlador: _correo,
+                  error: _errorCorreo,
+                  habilitado: !_enviando,
+                  teclado: TextInputType.emailAddress,
+                  pistasAutocompletar: const [AutofillHints.email],
+                  accionTeclado: TextInputAction.done,
+                  alEnviar: _enviando ? null : (_) => _enviar(),
+                ),
+                const SizedBox(height: Espaciado.e6),
+                Boton(
+                  key: PantallaRecuperar.botonEnviar,
+                  texto: _enviando
+                      ? textos.accesoRecuperarEnviando
+                      : textos.accesoRecuperarEnviar,
+                  alPresionar: _enviando ? null : _enviar,
+                  cargando: _enviando,
+                  anchoCompleto: true,
+                ),
+              ],
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
