@@ -6825,4 +6825,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ayudaCerrar => 'Cerrar';
+
+  @override
+  String get documentosCalendario => 'Calendario de vencimientos';
+
+  @override
+  String get documentosVencimientos => 'Vencimientos';
+
+  @override
+  String get documentosErrorCalendario =>
+      'No se pudieron cargar los vencimientos';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad vencimientos',
+      one: '1 vencimiento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Vencimientos del mes';
+
+  @override
+  String get documentosVerMes => 'Ver todo el mes';
+
+  @override
+  String get documentosMesVacio => 'No hay vencimientos este mes.';
+
+  @override
+  String get documentosDiaVacio => 'No hay vencimientos en este día.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
 }

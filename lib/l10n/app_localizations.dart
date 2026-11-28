@@ -11385,6 +11385,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cerrar'**
   String get ayudaCerrar;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario de vencimientos'**
+  String get documentosCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos'**
+  String get documentosVencimientos;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los vencimientos'**
+  String get documentosErrorCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}'**
+  String documentosCantidad(int cantidad);
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos del mes'**
+  String get documentosDelMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo el mes'**
+  String get documentosVerMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos este mes.'**
+  String get documentosMesVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos en este día.'**
+  String get documentosDiaVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {vehiculo}'**
+  String documentosDetalle(String fecha, String vehiculo);
 }
 
 class _AppLocalizationsDelegate
