@@ -133,6 +133,38 @@ paths:
         '404':
           $ref: '#/components/responses/NoEncontrado'
 
+  /ayuda/preguntas-frecuentes:
+    get:
+      tags: [Ayuda y sucursales]
+      summary: Consultar preguntas frecuentes activas
+      description: Contenido para búsqueda local en CareCar; se entrega ordenado por tema y prioridad.
+      responses:
+        '200':
+          description: Preguntas frecuentes activas
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/PreguntaFrecuente' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+
+  /ayuda/reportes:
+    post:
+      tags: [Ayuda y sucursales]
+      summary: Registrar un reporte de problema
+      description: Conserva descripción y diagnóstico técnico mínimo, sin datos personales ni adjuntos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReporteAppRequest' }
+      responses:
+        '204': { description: Reporte recibido }
+        '400': { $ref: '#/components/responses/DatosInvalidos' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+
   /auth/login:
     post:
       tags: [Acceso]
@@ -7385,6 +7417,26 @@ components:
           type: integer
           minimum: 0
           maximum: 60000
+
+    PreguntaFrecuente:
+      type: object
+      required: [id, tema, pregunta, respuesta, orden]
+      properties:
+        id: { type: integer, format: int64 }
+        tema: { type: string, maxLength: 80 }
+        pregunta: { type: string, maxLength: 240 }
+        respuesta: { type: string, maxLength: 4000 }
+        orden: { type: integer }
+
+    ReporteAppRequest:
+      type: object
+      additionalProperties: false
+      required: [descripcion, versionApp, sistema, dispositivo]
+      properties:
+        descripcion: { type: string, minLength: 10, maxLength: 2000 }
+        versionApp: { type: string, minLength: 1, maxLength: 40 }
+        sistema: { type: string, minLength: 1, maxLength: 60 }
+        dispositivo: { type: string, minLength: 1, maxLength: 120 }
 
     Problema:
       type: object

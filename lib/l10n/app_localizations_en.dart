@@ -6862,4 +6862,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String documentosDetalle(String fecha, String vehiculo) {
     return '$fecha · $vehiculo';
   }
+
+  @override
+  String get ayudaBuscar => 'Search';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Enter a question or topic';
+
+  @override
+  String get ayudaDescripcion => 'Description';
+
+  @override
+  String get ayudaDescripcionPista => 'Tell us what happened';
+
+  @override
+  String get ayudaEnviado => 'Report sent';
+
+  @override
+  String get ayudaEnviar => 'Send report';
+
+  @override
+  String get ayudaErrorReporte => 'Could not send your report. Try again.';
+
+  @override
+  String get ayudaGracias => 'Thanks for helping us improve.';
+
+  @override
+  String get ayudaLongitud => 'Describe the problem in 10 to 2,000 characters.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Try different keywords.';
+
+  @override
+  String get ayudaPreguntas => 'Frequently asked questions';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Your report includes the CareCar version, operating system and device model. Avoid including personal details.';
+
+  @override
+  String get ayudaReporte => 'Report a problem';
+
+  @override
+  String get ayudaSinResultados => 'No results';
 }

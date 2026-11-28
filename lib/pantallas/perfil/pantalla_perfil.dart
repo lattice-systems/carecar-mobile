@@ -10,8 +10,14 @@ import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
 import '../../modulos/acceso/acceso.dart' show rutaMiContrasena, rutaMiPerfil;
+import '../../l10n/app_localizations.dart';
 import '../../modulos/ayuda/ayuda.dart'
-    show rutaAcercaDe, rutaContacto, rutaSucursales;
+    show
+        rutaAcercaDe,
+        rutaContacto,
+        rutaPreguntasFrecuentes,
+        rutaReporteApp,
+        rutaSucursales;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
 import '../../modulos/pagos/pagos.dart'
     show rutaDatosFiscales, rutaMetodosPago, rutaMisPagos;
@@ -314,6 +320,18 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
           _Seccion(
             titulo: 'Ayuda',
             opciones: [
+              if (GoRouter.maybeOf(context) != null) ...[
+                _Opcion(
+                  icono: LucideIcons300.search,
+                  titulo: AppLocalizations.of(context).ayudaPreguntas,
+                  alTocar: () => context.push(rutaPreguntasFrecuentes),
+                ),
+                _Opcion(
+                  icono: LucideIcons300.bug,
+                  titulo: AppLocalizations.of(context).ayudaReporte,
+                  alTocar: () => context.push(rutaReporteApp),
+                ),
+              ],
               _Opcion(
                 llave: PantallaPerfil.botonContactar,
                 icono: LucideIcons300.headset,

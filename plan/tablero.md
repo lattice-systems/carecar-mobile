@@ -15,7 +15,7 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
-Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
+Avance de Haziel en dev · **15 de 30 historias en Hecha (50 %)**.
 
 ## H0 · Base de trabajo
 
@@ -216,10 +216,10 @@ Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
 | V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Lista | |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
-| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
+| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Hecha | [Búsqueda y caché](../test/modulos/ayuda/preguntas_sin_conexion_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
 | V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | En revisión | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
-| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
+| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Hecha | [Validación y envío del reporte](../test/modulos/ayuda/reporte_app_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Hecha | [Versión y licencias](../test/modulos/ayuda/acerca_de_test.dart) · [Términos incluidos en la app](../integration_test/terminos_instalados_test.dart) · [Android físico](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 
 ## H5 · Comercio

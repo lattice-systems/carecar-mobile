@@ -71,3 +71,7 @@ Resolver dudas sin llamar y saber dónde y cuándo está la agencia. Reemplaza l
 Desde Ajustes, la fila CareCar abre la versión instalada, las licencias de Flutter, el aviso de privacidad y los términos incluidos en la aplicación. La pantalla de términos muestra el texto aprobado que se incluye en el paquete, con encabezados accesibles.
 
 La [prueba de widget](../../test/modulos/ayuda/acerca_de_test.dart) comprueba la versión y las licencias. La [prueba de integración](../../integration_test/terminos_instalados_test.dart) comprueba también los términos del paquete. La [corrida física H4.2](../../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) documenta su apertura en Android.
+
+### V2-M27.01 y V2-M27.04 · Preguntas frecuentes y reportes
+
+Ajustes ofrece la búsqueda de preguntas y el formulario de reporte junto a las rutas existentes de contacto y sucursales. La búsqueda funciona con la última copia guardada cuando falla la conexión. Los reportes incluyen descripción, versión, familia del sistema y modelo disponible, sin identificadores del equipo.

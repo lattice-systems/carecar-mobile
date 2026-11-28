@@ -23,4 +23,10 @@ export 'presentacion/proveedores_ayuda.dart'
         sucursalPrincipalProvider,
         sucursalesProvider;
 export 'presentacion/rutas_ayuda.dart'
-    show rutaAcercaDe, rutaContacto, rutaSucursales, rutasAyuda;
+    show
+        rutaAcercaDe,
+        rutaContacto,
+        rutaPreguntasFrecuentes,
+        rutaReporteApp,
+        rutaSucursales,
+        rutasAyuda;
