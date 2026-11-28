@@ -351,6 +351,7 @@ class _RepoQueSeLlena extends RepositorioCitasFake {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) {
     if (!_yaFallo) {
       _yaFallo = true;
@@ -361,6 +362,7 @@ class _RepoQueSeLlena extends RepositorioCitasFake {
       franja: franja,
       motivo: motivo,
       direccionRecoleccionId: direccionRecoleccionId,
+      promocionId: promocionId,
     );
   }
 }
@@ -376,5 +378,6 @@ class _RepoQueFalla extends RepositorioCitasFake {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) => Future.error(_fallo);
 }

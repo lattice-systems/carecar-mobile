@@ -47,6 +47,7 @@ class _RepoEspia extends RepositorioCitasFake {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) {
     direcciones.add(direccionRecoleccionId);
     return super.agendar(
@@ -54,6 +55,7 @@ class _RepoEspia extends RepositorioCitasFake {
       franja: franja,
       motivo: motivo,
       direccionRecoleccionId: direccionRecoleccionId,
+      promocionId: promocionId,
     );
   }
 }
@@ -69,6 +71,7 @@ class _RepoQueFalla extends RepositorioCitasFake {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) => Future.error(_fallo);
 }
 

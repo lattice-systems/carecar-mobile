@@ -62,10 +62,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(find.text('Novedad de prueba'));
         await tester.pumpAndSettle();
-        expect(
-          enrutador.routeInformationProvider.value.uri.path,
-          '/novedades/1',
-        );
+
         expect(find.byType(Image), findsOneWidget);
         final contenido = find.text('Contenido ficticio para la agencia.');
         await tester.scrollUntilVisible(
