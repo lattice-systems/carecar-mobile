@@ -8993,5 +8993,73 @@
   "documentosGuardar": "Guardar documento",
   "documentosProgreso": "Carga del documento",
   "documentosTipo": "Tipo de documento",
-  "documentosVistaPrevia": "Vista previa del documento"
+  "documentosVistaPrevia": "Vista previa del documento",
+  "m15Titulo": "Encuestas de servicio",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Califica tu visita al taller",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "No tienes encuestas pendientes",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "¿Qué tan probable es que recomiendes nuestro servicio?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Tiempo del servicio",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Trato recibido",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Limpieza del vehículo",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Atención del asesor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Elige una calificación para cada pregunta. El número más alto es la mejor calificación.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Comentario opcional",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Enviar encuesta",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Posponer por 24 horas",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Gracias por calificar tu servicio",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Pedir que la agencia me contacte",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "La agencia recibió tu solicitud de contacto.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "No se pudo guardar. Intenta de nuevo.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "Esta encuesta ya no está disponible",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  }
 }

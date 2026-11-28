@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.33.0
+  version: 2.34.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -164,6 +164,68 @@ paths:
         '400': { $ref: '#/components/responses/DatosInvalidos' }
         '401': { $ref: '#/components/responses/NoAutenticado' }
         '403': { $ref: '#/components/responses/CuentaDesactivada' }
+
+  /encuestas/pendientes:
+    get:
+      summary: Listar encuestas pendientes de órdenes propias entregadas
+      responses:
+        '200':
+          description: Encuestas que se pueden contestar ahora
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: '#/components/schemas/EncuestaPendiente' } }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+
+  /encuestas/{ordenId}/posponer:
+    post:
+      summary: Posponer una encuesta por 24 horas
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      responses:
+        '204': { description: Encuesta pospuesta }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: La encuesta ya está respondida
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Problema' }
+
+  /encuestas/{ordenId}/responder:
+    post:
+      summary: Guardar una respuesta por orden
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/RespuestaEncuesta' }
+      responses:
+        '204': { description: Encuesta recibida }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+        '400': { $ref: '#/components/responses/DatosInvalidos' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
+        '409':
+          description: La encuesta ya está respondida
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Problema' }
+
+  /encuestas/{ordenId}/contacto:
+    post:
+      summary: Pedir que la agencia contacte al cliente si su NPS es de 0 a 6
+      parameters:
+        - $ref: '#/components/parameters/OrdenId'
+      responses:
+        '204': { description: Tarea de contacto creada o existente }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+        '400': { $ref: '#/components/responses/DatosInvalidos' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
 
   /auth/login:
     post:
@@ -7571,6 +7633,25 @@ components:
         versionApp: { type: string, minLength: 1, maxLength: 40 }
         sistema: { type: string, minLength: 1, maxLength: 60 }
         dispositivo: { type: string, minLength: 1, maxLength: 120 }
+
+    EncuestaPendiente:
+      type: object
+      required: [ordenId, cerradaEn, modelo]
+      properties:
+        ordenId: { type: integer, format: int64 }
+        cerradaEn: { type: string, format: date-time }
+        modelo: { type: string }
+
+    RespuestaEncuesta:
+      type: object
+      required: [nps, tiempo, trato, limpieza, asesor]
+      properties:
+        nps: { type: integer, minimum: 0, maximum: 10 }
+        tiempo: { type: integer, minimum: 1, maximum: 5 }
+        trato: { type: integer, minimum: 1, maximum: 5 }
+        limpieza: { type: integer, minimum: 1, maximum: 5 }
+        asesor: { type: integer, minimum: 1, maximum: 5 }
+        comentario: { type: string, maxLength: 1000, nullable: true }
 
     Problema:
       type: object

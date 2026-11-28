@@ -233,6 +233,82 @@ void main() {
       );
 
       test(
+        'valida el aplazamiento y la respuesta única de una encuesta',
+        () async {
+          final sesion = verificarRespuesta(
+            'POST /auth/login',
+            await pedir('POST', '/auth/login', cuerpo: _login),
+            200,
+            'application/json',
+          ) as Map<String, dynamic>;
+          final token = sesion['accessToken'] as String;
+
+          Future<List<dynamic>> obtenerLista(String ruta) async =>
+              verificarRespuesta(
+                'GET $ruta',
+                await pedir('GET', ruta, token: token),
+                200,
+                'application/json',
+              ) as List<dynamic>;
+
+          Future<void> comprobar204(
+            String plantilla,
+            String ruta, {
+            Map<String, Object>? cuerpo,
+          }) async {
+            final operacion = operaciones['POST $plantilla']!;
+            final respuesta = await pedir(
+              'POST',
+              ruta,
+              token: token,
+              cuerpo: cuerpo,
+            );
+            expect(operacion['responses'], contains('204'), reason: plantilla);
+            expect(respuesta.statusCode, 204, reason: ruta);
+            expect(respuesta.bodyBytes, isEmpty, reason: ruta);
+          }
+
+          const pendientes = '/encuestas/pendientes';
+          final encuestas = await obtenerLista(pendientes);
+          expect(encuestas, isNotEmpty);
+          final ordenId = (encuestas.first as Map<String, dynamic>)['ordenId'];
+          await comprobar204(
+            '/encuestas/{ordenId}/posponer',
+            '/encuestas/$ordenId/posponer',
+          );
+          expect(
+            (await obtenerLista(
+              pendientes,
+            )).where((e) => (e as Map<String, dynamic>)['ordenId'] == ordenId),
+            isEmpty,
+          );
+          const respuesta = {
+            'nps': 6,
+            'tiempo': 2,
+            'trato': 3,
+            'limpieza': 4,
+            'asesor': 3,
+          };
+          final responder = '/encuestas/$ordenId/responder';
+          await comprobar204(
+            '/encuestas/{ordenId}/responder',
+            responder,
+            cuerpo: respuesta,
+          );
+          verificarRespuesta(
+            'POST /encuestas/{ordenId}/responder',
+            await pedir('POST', responder, token: token, cuerpo: respuesta),
+            409,
+            'application/json',
+          );
+          await comprobar204(
+            '/encuestas/{ordenId}/contacto',
+            '/encuestas/$ordenId/contacto',
+          );
+        },
+      );
+
+      test(
         'valida respuestas JSON, PDF y SSE con una sesión real del mock',
         () async {
           final sesion = verificarRespuesta(

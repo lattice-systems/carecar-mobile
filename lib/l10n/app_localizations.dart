@@ -11595,6 +11595,108 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Vista previa del documento'**
   String get documentosVistaPrevia;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Encuestas de servicio'**
+  String get m15Titulo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Califica tu visita al taller'**
+  String get m15Pendientes;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes encuestas pendientes'**
+  String get m15Vacio;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué tan probable es que recomiendes nuestro servicio?'**
+  String get m15Recomendar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Tiempo del servicio'**
+  String get m15Tiempo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Trato recibido'**
+  String get m15Trato;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Limpieza del vehículo'**
+  String get m15Limpieza;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Atención del asesor'**
+  String get m15Asesor;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.'**
+  String get m15Escala;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Comentario opcional'**
+  String get m15Comentario;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar encuesta'**
+  String get m15Enviar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Posponer por 24 horas'**
+  String get m15Posponer;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por calificar tu servicio'**
+  String get m15Gracias;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir que la agencia me contacte'**
+  String get m15Contacto;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia recibió tu solicitud de contacto.'**
+  String get m15ContactoListo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar. Intenta de nuevo.'**
+  String get m15Error;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta encuesta ya no está disponible'**
+  String get m15NoDisponible;
 }
 
 class _AppLocalizationsDelegate

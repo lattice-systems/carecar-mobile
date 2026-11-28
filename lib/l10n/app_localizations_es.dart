@@ -6945,4 +6945,57 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get documentosVistaPrevia => 'Vista previa del documento';
+
+  @override
+  String get m15Titulo => 'Encuestas de servicio';
+
+  @override
+  String get m15Pendientes => 'Califica tu visita al taller';
+
+  @override
+  String get m15Vacio => 'No tienes encuestas pendientes';
+
+  @override
+  String get m15Recomendar =>
+      '¿Qué tan probable es que recomiendes nuestro servicio?';
+
+  @override
+  String get m15Tiempo => 'Tiempo del servicio';
+
+  @override
+  String get m15Trato => 'Trato recibido';
+
+  @override
+  String get m15Limpieza => 'Limpieza del vehículo';
+
+  @override
+  String get m15Asesor => 'Atención del asesor';
+
+  @override
+  String get m15Escala =>
+      'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.';
+
+  @override
+  String get m15Comentario => 'Comentario opcional';
+
+  @override
+  String get m15Enviar => 'Enviar encuesta';
+
+  @override
+  String get m15Posponer => 'Posponer por 24 horas';
+
+  @override
+  String get m15Gracias => 'Gracias por calificar tu servicio';
+
+  @override
+  String get m15Contacto => 'Pedir que la agencia me contacte';
+
+  @override
+  String get m15ContactoListo => 'La agencia recibió tu solicitud de contacto.';
+
+  @override
+  String get m15Error => 'No se pudo guardar. Intenta de nuevo.';
+
+  @override
+  String get m15NoDisponible => 'Esta encuesta ya no está disponible';
 }
