@@ -169,6 +169,10 @@ jobs:
       - name: Instalar dependencias de la API simulada
         run: npm ci --prefix mock_api
 
+      - name: Comprobar el tablero simulado
+        if: matrix.parte == 1
+        run: node --test tool/simular_objetivos.test.js
+
       - name: Correr su parte de las pruebas
         run: >
           flutter test $COBERTURA --reporter expanded

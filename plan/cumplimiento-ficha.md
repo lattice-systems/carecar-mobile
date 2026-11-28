@@ -191,6 +191,8 @@ Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Anal�
 
 ## Evidencia automática por criterio
 
+La [prueba de indicadores simulados](../tool/simular_objetivos.test.js) verifica las reglas de O2, O3 y O4 para V2-M23.06. Los resultados operativos requieren las fuentes de la agencia.
+
 La [prueba de Encuestas](../test/modulos/encuestas/encuesta_pendiente_test.dart) verifica que una ruta solo muestra el formulario cuando la orden está entre las encuestas pendientes de la cuenta activa (V2-M15.01).
 
 Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
