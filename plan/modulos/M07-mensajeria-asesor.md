@@ -223,8 +223,8 @@ transporte y los adjuntos quedaban abiertos.
 
 ### El tiempo real va por el canal SSE que ya existe, no por WebSocket
 
-La tabla de arriba propone `WS /conversaciones/tiempo-real` con STOMP. **Se
-descarta.** La app ya tiene un canal de eventos en vivo por SSE:
+El plan original proponia `WS /conversaciones/tiempo-real` con STOMP. **Se
+descarta**, y la tabla de arriba ya quedo con el canal SSE. La app ya tiene un canal de eventos en vivo por SSE:
 `GET /eventos` en el contrato, `lib/nucleo/eventos/` con su analizador y su
 reconexión, y lo usan taller (V2-M04.03), garantía, lealtad y asistencia.
 
