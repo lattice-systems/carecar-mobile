@@ -77,7 +77,7 @@ void main() {
       await _esperar(tester, find.byType(PantallaGaraje));
       final vehiculo = find.text('Nissan March Sense 2020');
       await _esperar(tester, vehiculo, coincidencias: findsWidgets);
-      await _tocar(tester, find.byTooltip('Regresar'));
+      // El garaje ya no lleva botón de regresar: se cambia de pestaña con la barra.
       await _tocar(tester, citas);
       await _esperar(tester, find.byType(PantallaMisCitas));
       await _tocar(
