@@ -6798,4 +6798,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaLlamarAseguradoraBuscando => 'Buscando tu póliza…';
+
+  @override
+  String get ayudaAcerca => 'Acerca de CareCar';
+
+  @override
+  String get ayudaVersion => 'Versión';
+
+  @override
+  String get ayudaCargando => 'Cargando…';
+
+  @override
+  String get ayudaLicencias => 'Licencias de software';
+
+  @override
+  String get ayudaLicenciasDetalle => 'Componentes incluidos en la aplicación';
+
+  @override
+  String get ayudaPrivacidad => 'Aviso de privacidad';
+
+  @override
+  String get ayudaTerminos => 'Términos de uso';
+
+  @override
+  String get ayudaTerminosAusentes => 'El documento no está disponible.';
+
+  @override
+  String get ayudaCerrar => 'Cerrar';
 }

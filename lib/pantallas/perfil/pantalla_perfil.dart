@@ -10,7 +10,8 @@ import '../../api/modelos/modelos.dart';
 import '../../config/agencia.dart';
 import '../../config/version_app.dart';
 import '../../modulos/acceso/acceso.dart' show rutaMiContrasena, rutaMiPerfil;
-import '../../modulos/ayuda/ayuda.dart' show rutaContacto, rutaSucursales;
+import '../../modulos/ayuda/ayuda.dart'
+    show rutaAcercaDe, rutaContacto, rutaSucursales;
 import '../../modulos/lealtad/lealtad.dart' show rutaLealtad;
 import '../../modulos/pagos/pagos.dart'
     show rutaDatosFiscales, rutaMetodosPago, rutaMisPagos;
@@ -346,6 +347,9 @@ class _PantallaPerfilState extends State<PantallaPerfil> {
                 icono: LucideIcons300.info,
                 titulo: 'CareCar',
                 subtitulo: _version.isEmpty ? null : 'Versión $_version',
+                alTocar: GoRouter.maybeOf(context) == null
+                    ? null
+                    : () => context.push(rutaAcercaDe),
               ),
             ],
           ),
