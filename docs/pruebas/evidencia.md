@@ -4,7 +4,7 @@ Registra cada corrida del [guion por hito](guion-por-hito.md). Agrega una fila p
 
 | Hito | Caso | Dispositivo y SO | App y ambiente de API | Resultado | Evidencia o bloqueo |
 | --- | --- | --- | --- | --- | --- |
-| H0 | H0.1 | Pendiente | Pendiente | Pendiente | Falta registrar la instalación en celular. |
+| H0 | H0.1 | Samsung SM-G781U, Android 13 | CareCar Pruebas 1.0.0 (3), dev `eba35efe` | Pasa | Instalación por USB, apertura de Bienvenida y llegada a Acceso al tocar «Saltar». [Corrida H0](#corrida-de-instalación-h0-en-android) |
 | H1 | H1.1 | Samsung SM-G781U, Android 13 | APK `E93F2B4F1669` · Agencia360 local | Pasa | Al abrir `carecar://garaje` sin sesión se mostró Acceso. Al entrar, se reanudó Mi garaje con el vehículo ficticio. `carecar://ruta-inexistente` volvió al menú utilizable. |
 | H1 | H1.2 | Samsung SM-G781U, Android 13, ancho de 360 dp | APK `9ACEBC758A25` · desarrollo | Pasa | Botones, insignias, chips y avatares en [claro](capturas-h1/h1-galeria-claro.png), [oscuro](capturas-h1/h1-galeria-oscuro.png) y [texto al 200 % con desplazamiento](capturas-h1/h1-galeria-200.png). El avatar chico mostró ambas iniciales después de corregir el recorte. CI de golden se revisará en la fase final. |
 | H1 | H1.3 | Samsung SM-G781U, Android 13 | APK `E93F2B4F1669`, relectura con `9ACEBC758A25` · Agencia360 local | Pasa | Cita ficticia del 1 de diciembre a las 09:00. La app confirmó, canceló y volvió a mostrarla como Cancelada incluso al reinstalar y reabrir. El cupo de la franja pasó de 3 a 2 y regresó a 3. |
@@ -14,6 +14,12 @@ Registra cada corrida del [guion por hito](guion-por-hito.md). Agrega una fila p
 | H5 | H5.1–H5.2 | Pendiente | Pendiente | Pendiente | — |
 | H6 | H6.1–H6.3 | Pendiente | Pendiente | Pendiente | — |
 | H7 | H7.1–H7.2 | Pendiente | Pendiente | Pendiente | — |
+
+## Corrida de instalación H0 en Android
+
+Se instaló por USB el APK `app-pruebas-release.apk` del commit `eba35efe` de `dev` en un Samsung SM-G781U con Android 13. Android confirmó la instalación de `com.carecar.carecar_mobile.pruebas`, versión 1.0.0, compilación 3. La app mostró Bienvenida y, después de tocar «Saltar», Acceso con correo, contraseña e «Iniciar sesión». SHA-256 del APK: `46D39EFEBD2AAB502B557ACC4184C4071DF226210EBB3EB432C089A065326C5F`.
+
+Este caso termina en Acceso. El APK se instala con `adb install -r app-pruebas-release.apk` y se abre desde «CareCar Pruebas». [Corrida de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46103029307) · [APK en el artefacto](https://github.com/lattice-systems/carecar-mobile/actions/runs/46103029307/artifacts/15246488656).
 
 ## Corrida física H1
 
