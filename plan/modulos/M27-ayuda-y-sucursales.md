@@ -66,6 +66,12 @@ Resolver dudas sin llamar y saber dónde y cuándo está la agencia. Reemplaza l
   - Mientras la sucursal carga se usa `Agencia`; si la sucursal llega después, las filas cambian solas.
   - **Antes de entregar** hay que reemplazar los valores de ejemplo de `Agencia` por los reales (siguen siendo el respaldo); `PantallaCuentaDesactivada` (módulo `acceso`) aún usa `Agencia` directo: se conectaría igual con `contactoDeAgenciaProvider` (sin sesión no hay sucursales, así que su valor real es el de `Agencia`).
 
-### V2-M27.05 · Versión, licencias y términos
+### V2-M27.05 · Acerca de
 
-La [corrida en Android físico](../../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) comprobó la versión instalada, la pantalla de licencias y el contenido del documento local de términos en el WebView. Se usó la implementación local de Acerca de. Quedan pendientes su integración y la comprobación en iOS.
+Desde Ajustes, la fila CareCar abre la versión instalada, las licencias de Flutter, el aviso de privacidad y los términos incluidos en la aplicación. La pantalla de términos muestra el texto aprobado que se incluye en el paquete, con encabezados accesibles.
+
+La [prueba de widget](../../test/modulos/ayuda/acerca_de_test.dart) comprueba la versión y las licencias. La [prueba de integración](../../integration_test/terminos_instalados_test.dart) comprueba también los términos del paquete. La [corrida física H4.2](../../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) documenta su apertura en Android.
+
+### V2-M27.01 y V2-M27.04 · Preguntas frecuentes y reportes
+
+Ajustes ofrece la búsqueda de preguntas y el formulario de reporte junto a las rutas existentes de contacto y sucursales. La búsqueda funciona con la última copia guardada cuando falla la conexión. Los reportes incluyen descripción, versión, familia del sistema y modelo disponible, sin identificadores del equipo.

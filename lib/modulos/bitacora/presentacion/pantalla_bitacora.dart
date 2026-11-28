@@ -49,12 +49,14 @@ class PantallaBitacora extends ConsumerWidget {
     return gastos.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.notebookPen,
         titulo: titulo,
         subtitulo: subtitulo,
         conRegreso: true,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.notebookPen,
         titulo: titulo,
         subtitulo: subtitulo,
         conRegreso: true,
@@ -109,6 +111,7 @@ class _Contenido extends ConsumerWidget {
     final meses = porMes.keys.toList()..sort((a, b) => b.compareTo(a));
 
     return MarcoPantalla(
+      icono: LucideIcons300.notebookPen,
       titulo: textos.bitacoraTitulo,
       subtitulo: nombre ?? textos.bitacoraSubtituloSinNombre,
       conRegreso: true,

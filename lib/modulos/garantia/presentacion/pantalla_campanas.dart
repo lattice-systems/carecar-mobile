@@ -40,11 +40,13 @@ class PantallaCampanas extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.megaphone,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoGarantia(altos: [96, 96]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.megaphone,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -57,6 +59,7 @@ class PantallaCampanas extends ConsumerWidget {
           ),
           data: (campanas) => campanas.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.megaphone,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -66,6 +69,7 @@ class PantallaCampanas extends ConsumerWidget {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.megaphone,
                   titulo: titulo,
                   subtitulo: textos.campanasAccesoResumen,
                   conRegreso: true,

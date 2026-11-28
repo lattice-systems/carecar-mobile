@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'modelos/preferencias_notificacion.dart';
+import 'modelos/notificacion.dart';
 import 'modelos/modelos.dart';
 
 /// Lo que la app puede pedirle a Agencia360.
@@ -208,6 +210,32 @@ abstract interface class CarecarApi {
 
   /// `GET /citas?pagina=&tamano=`, una pagina.
   Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20});
+
+  /// La bandeja de avisos, del mas reciente · V2-M06.04.
+  ///
+  /// La pagina trae `noLeidas` de toda la cuenta, que es lo que la app pinta
+  /// en el contador: asi no hace falta una segunda llamada en cada entrada.
+  Future<PaginaDeNotificaciones> paginaDeNotificaciones({
+    int pagina = 0,
+    int tamano = 20,
+  });
+
+  /// Marca un aviso como leido. Idempotente: dos veces no mueve `leidaEn`.
+  Future<void> marcarAvisoLeido(int notificacionId);
+
+  /// Marca como leidos todos los que estuvieran sin leer.
+  Future<void> marcarAvisosLeidos();
+
+  /// Que avisos quiere recibir el cliente y su horario silencioso · V2-M06.05.
+  ///
+  /// Devuelve **todas** las categorias, tambien las que nunca toco, con su
+  /// valor por omision: asi la app no tiene que saber cuales existen.
+  Future<PreferenciasNotificacion> preferenciasDeAvisos();
+
+  /// Reemplaza las preferencias completas y devuelve como quedaron.
+  Future<PreferenciasNotificacion> guardarPreferenciasDeAvisos(
+    PreferenciasNotificacion nuevas,
+  );
 
   /// `POST /citas`. Lanza `Conflicto` si la franja ya no tiene cupo.
   Future<Cita> agendarCita(NuevaCita nueva);

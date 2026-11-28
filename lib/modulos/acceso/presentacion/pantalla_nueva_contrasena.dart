@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'
+    show FilteringTextInputFormatter, LengthLimitingTextInputFormatter;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -7,17 +10,22 @@ import '../../../nucleo/datos/fallo.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton.dart';
 import '../../../nucleo/diseno/componentes/campo_texto.dart';
-import '../../../nucleo/diseno/componentes/centrado_desplazable.dart';
+import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
-import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import '../dominio/fallos_acceso.dart';
 import '../dominio/reglas_contrasena.dart';
 import 'pantalla_cambiar_contrasena.dart' show ListaDeReglas;
 import 'proveedores_acceso.dart';
 
-/// A donde abre el enlace del correo · V2-M01.04.
+/// El paso final de la recuperacion: el codigo del correo (o el enlace) y la
+/// contrasena nueva · V2-M01.04 y V2-T02.27.
+///
+/// - **Con [correo] y sin [token]** (lo de hoy): pide el codigo de 6 digitos
+///   que trae el correo, ademas de la contrasena. Ofrece pedir otro codigo.
+/// - **Con [token]**: llego por el enlace; no pide codigo.
+/// - **Sin ninguno**: no hay con que restablecer; ofrece pedir el codigo.
 ///
 /// Llega por enlace profundo: `carecar://restablecer?token=…` o el enlace
 /// universal `https://<host>/app/restablecer?token=…`, que el nucleo traduce
@@ -35,10 +43,18 @@ import 'proveedores_acceso.dart';
 ///   para corregir y volver a intentar; mandar a pedir otro enlace seria
 ///   hacer empezar de cero sin motivo.
 class PantallaNuevaContrasena extends ConsumerStatefulWidget {
-  const PantallaNuevaContrasena({required this.token, super.key});
+  const PantallaNuevaContrasena({required this.token, this.correo, super.key});
 
   /// El token que venia en el enlace. Nulo si el enlace llego sin el.
   final String? token;
+
+  /// El correo al que se envio el codigo, cuando se llega desde «Recupera tu
+  /// contrasena».
+  final String? correo;
+
+  static const campoCodigo = Key('nueva_codigo');
+  static const botonReenviar = Key('nueva_reenviar');
+  static const avisoReenviado = Key('nueva_aviso_reenviado');
 
   static const campoNueva = Key('nueva_contrasena');
   static const campoConfirmar = Key('nueva_confirmar');
@@ -56,8 +72,18 @@ class PantallaNuevaContrasena extends ConsumerStatefulWidget {
 
 class _EstadoPantallaNuevaContrasena
     extends ConsumerState<PantallaNuevaContrasena> {
+  final _codigo = TextEditingController();
   final _nueva = TextEditingController();
   final _confirmar = TextEditingController();
+
+  /// Con codigo cuando no hay token y si hay correo.
+  bool get _conCodigo =>
+      (widget.token ?? '').trim().isEmpty &&
+      (widget.correo ?? '').trim().isNotEmpty;
+
+  String? _errorCodigo;
+  bool _reenviando = false;
+  bool _reenviado = false;
 
   bool _guardando = false;
   bool _listo = false;
@@ -68,10 +94,16 @@ class _EstadoPantallaNuevaContrasena
   ///
   /// Arranca en `true` cuando no hay token, para no pedirle una contrasena a
   /// alguien que de todos modos no la va a poder guardar.
-  late bool _enlaceRoto = (widget.token ?? '').trim().isEmpty;
+  late bool _enlaceRoto =
+      (widget.token ?? '').trim().isEmpty &&
+      (widget.correo ?? '').trim().isEmpty;
+
+  /// El servidor rechazo el codigo: se conserva el formulario para corregirlo.
+  bool _codigoRechazado = false;
 
   @override
   void dispose() {
+    _codigo.dispose();
     _nueva.dispose();
     _confirmar.dispose();
     super.dispose();
@@ -84,27 +116,44 @@ class _EstadoPantallaNuevaContrasena
     final textos = AppLocalizations.of(context);
 
     final coinciden = _nueva.text == _confirmar.text;
-    setState(
-      () => _errorConfirmar = coinciden ? null : textos.accesoCambiarNoCoincide,
-    );
-    if (!_revision.cumpleTodo || !coinciden) return;
+    final codigo = _codigo.text.trim();
+    final codigoCompleto = !_conCodigo || RegExp(r'^\d{6}$').hasMatch(codigo);
+    setState(() {
+      _errorConfirmar = coinciden ? null : textos.accesoCambiarNoCoincide;
+      _errorCodigo = codigoCompleto ? null : textos.accesoCodigoIncompleto;
+    });
+    if (!_revision.cumpleTodo || !coinciden || !codigoCompleto) return;
 
     setState(() {
       _guardando = true;
       _fallo = null;
+      _codigoRechazado = false;
     });
 
     try {
-      await ref
-          .read(repositorioAccesoProvider)
-          .restablecerConEnlace(
-            token: widget.token!.trim(),
-            contrasenaNueva: _nueva.text,
-          );
+      final repositorio = ref.read(repositorioAccesoProvider);
+      if (_conCodigo) {
+        await repositorio.restablecerConCodigo(
+          correo: widget.correo!.trim(),
+          codigo: codigo,
+          contrasenaNueva: _nueva.text,
+        );
+      } else {
+        await repositorio.restablecerConEnlace(
+          token: widget.token!.trim(),
+          contrasenaNueva: _nueva.text,
+        );
+      }
       if (!mounted) return;
       setState(() {
         _guardando = false;
         _listo = true;
+      });
+    } on CodigoNoValido {
+      if (!mounted) return;
+      setState(() {
+        _guardando = false;
+        _codigoRechazado = true;
       });
     } on EnlaceNoValido {
       if (!mounted) return;
@@ -121,44 +170,70 @@ class _EstadoPantallaNuevaContrasena
     }
   }
 
+  /// Pide otro codigo al mismo correo, sin salir de la pantalla.
+  Future<void> _reenviar() async {
+    if (_reenviando) return;
+    setState(() {
+      _reenviando = true;
+      _reenviado = false;
+      _fallo = null;
+    });
+    try {
+      await ref
+          .read(repositorioAccesoProvider)
+          .pedirEnlaceDeRecuperacion(widget.correo!.trim());
+      if (!mounted) return;
+      setState(() {
+        _reenviando = false;
+        _reenviado = true;
+        _codigoRechazado = false;
+      });
+    } catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _reenviando = false;
+        _fallo = falloDe(error);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    final tokens = TokensPista.de(context);
+    final titulo = _enlaceRoto
+        ? (_conCodigo || (widget.token ?? '').trim().isNotEmpty
+              ? textos.accesoEnlaceNoValidoTitulo
+              : textos.accesoCodigoSinCorreo)
+        : _conCodigo && !_listo
+        ? textos.accesoCodigoTitulo
+        : textos.accesoNuevaTitulo;
+    final subtitulo = _enlaceRoto || _listo
+        ? null
+        : _conCodigo
+        ? textos.accesoCodigoExplicacion(widget.correo!.trim())
+        : textos.accesoNuevaExplicacion;
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: CentradoDesplazable(
-          child: Padding(
-            padding: const EdgeInsets.all(Espaciado.e5),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    _enlaceRoto
-                        ? textos.accesoEnlaceNoValidoTitulo
-                        : textos.accesoNuevaTitulo,
-                    style: tokens.tipografia.titulo2,
-                  ),
-                  const SizedBox(height: Espaciado.e2),
-                  if (!_enlaceRoto && !_listo)
-                    Text(
-                      textos.accesoNuevaExplicacion,
-                      style: tokens.tipografia.cuerpo.copyWith(
-                        color: tokens.colores.textoSecundario,
-                      ),
-                    ),
-                  const SizedBox(height: Espaciado.e6),
-                  ..._contenido(textos),
-                ],
-              ),
+    return MarcoPantalla(
+      titulo: titulo,
+      subtitulo: subtitulo,
+      conRegreso: true,
+      icono: LucideIcons300.lockKeyhole,
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(
+            Espaciado.margenTelefono,
+            Espaciado.e4,
+            Espaciado.margenTelefono,
+            Espaciado.e8,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: _contenido(textos),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 
@@ -176,7 +251,8 @@ class _EstadoPantallaNuevaContrasena
           key: PantallaNuevaContrasena.botonPedirOtro,
           texto: textos.accesoEnlacePedirOtro,
           anchoCompleto: true,
-          alPresionar: () => context.go(Rutas.recuperar),
+          alPresionar: () =>
+              context.go(Rutas.localizacionRecuperar(correo: widget.correo)),
         ),
       ];
     }
@@ -201,6 +277,24 @@ class _EstadoPantallaNuevaContrasena
 
     final fallo = _fallo;
     return [
+      if (_reenviado) ...[
+        Aviso(
+          key: PantallaNuevaContrasena.avisoReenviado,
+          tono: Tono.informacion,
+          titulo: textos.accesoCodigoReenviado,
+          mensaje: textos.accesoRecuperarEnviadoMensaje,
+        ),
+        const SizedBox(height: Espaciado.e4),
+      ],
+      if (_codigoRechazado) ...[
+        Aviso(
+          key: PantallaNuevaContrasena.avisoEnlaceNoValido,
+          tono: Tono.advertencia,
+          titulo: textos.accesoCodigoNoValidoTitulo,
+          mensaje: textos.accesoCodigoNoValidoMensaje,
+        ),
+        const SizedBox(height: Espaciado.e4),
+      ],
       if (fallo != null) ...[
         Aviso(
           key: PantallaNuevaContrasena.avisoDeError,
@@ -209,6 +303,23 @@ class _EstadoPantallaNuevaContrasena
               ? textos.accesoSinConexionTitulo
               : textos.accesoNuevaFalloTitulo,
           mensaje: fallo.mensaje,
+        ),
+        const SizedBox(height: Espaciado.e4),
+      ],
+      if (_conCodigo) ...[
+        CampoTexto(
+          key: PantallaNuevaContrasena.campoCodigo,
+          etiqueta: textos.accesoCodigoEtiqueta,
+          controlador: _codigo,
+          error: _errorCodigo,
+          habilitado: !_guardando,
+          teclado: TextInputType.number,
+          pistasAutocompletar: const [AutofillHints.oneTimeCode],
+          formatos: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(6),
+          ],
+          accionTeclado: TextInputAction.next,
         ),
         const SizedBox(height: Espaciado.e4),
       ],
@@ -245,6 +356,16 @@ class _EstadoPantallaNuevaContrasena
         cargando: _guardando,
         anchoCompleto: true,
       ),
+      if (_conCodigo) ...[
+        const SizedBox(height: Espaciado.e2),
+        Boton(
+          key: PantallaNuevaContrasena.botonReenviar,
+          texto: textos.accesoCodigoReenviar,
+          variante: VarianteBoton.terciario,
+          alPresionar: _guardando || _reenviando ? null : _reenviar,
+          cargando: _reenviando,
+        ),
+      ],
     ];
   }
 }

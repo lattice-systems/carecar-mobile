@@ -149,7 +149,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoContrasenaVacia => 'Escribe tu contraseña.';
 
   @override
-  String get accesoCorreoAyuda => 'El que le diste a la agencia';
+  String get accesoCorreoSugerencia => 'tu@correo.com';
+
+  @override
+  String get accesoContrasenaSugerencia => 'Tu contraseña';
+
+  @override
+  String accesoCreditos(int anio) {
+    return '© $anio Lattice Systems';
+  }
 
   @override
   String get accesoCorreoEtiqueta => 'Correo';
@@ -319,24 +327,54 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoPerfilVehiculosFallo => 'No pudimos traer tus vehículos';
 
   @override
+  String get accesoCodigoTitulo => 'Escribe el código';
+
+  @override
+  String accesoCodigoExplicacion(String correo) {
+    return 'Te lo enviamos a $correo. Tiene 6 dígitos y vence en 15 minutos.';
+  }
+
+  @override
+  String get accesoCodigoEtiqueta => 'Código de 6 dígitos';
+
+  @override
+  String get accesoCodigoIncompleto => 'Escribe los 6 dígitos del código';
+
+  @override
+  String get accesoCodigoNoValidoTitulo => 'Ese código no sirve';
+
+  @override
+  String get accesoCodigoNoValidoMensaje =>
+      'Puede estar mal escrito, ya usado o vencido. Revisa el correo más reciente o pide otro.';
+
+  @override
+  String get accesoCodigoReenviar => 'Enviar otro código';
+
+  @override
+  String get accesoCodigoReenviado => 'Te enviamos otro código';
+
+  @override
+  String get accesoCodigoSinCorreo => 'Pide primero el código';
+
+  @override
   String get accesoRecuperarEnviado => 'Revisa tu correo';
 
   @override
   String get accesoRecuperarEnviadoMensaje =>
-      'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.';
+      'Si ese correo tiene una cuenta, te llegará un código de 6 dígitos. Vence en 15 minutos y sirve una sola vez.';
 
   @override
   String get accesoRecuperarEnviando => 'Enviando…';
 
   @override
-  String get accesoRecuperarEnviar => 'Enviarme el enlace';
+  String get accesoRecuperarEnviar => 'Enviarme el código';
 
   @override
   String get accesoRecuperarExplicacion =>
-      'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.';
+      'Escribe tu correo y te enviamos un código de 6 dígitos para elegir una contraseña nueva.';
 
   @override
-  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el enlace';
+  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el código';
 
   @override
   String get accesoRecuperarTitulo => 'Recupera tu contraseña';
@@ -496,6 +534,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.';
 
   @override
+  String get accesoLema => 'Tu auto,\nen buenas manos.';
+
+  @override
   String get accesoSubtitulo => 'Tu acceso a la agencia';
 
   @override
@@ -624,6 +665,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaGuiasTitulo => 'Guías de emergencia';
+
+  @override
+  String get catalogoSubtitulo =>
+      'Los modelos vigentes de la agencia con su precio. Toca uno para ver el detalle, o compara varios.';
 
   @override
   String get catalogoTitulo => 'Catálogo';
@@ -833,6 +878,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get citasMisCitasCargando => 'Cargando tus citas';
+
+  @override
+  String get citasMisCitasSubtitulo =>
+      'Tus citas próximas y pasadas, cada una con su estado.';
 
   @override
   String get citasMisCitasTitulo => 'Mis citas';
@@ -1736,6 +1785,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehiculosTitulo => 'Mi garaje';
 
   @override
+  String get vehiculosSubtitulo =>
+      'Tus autos en un solo lugar. Toca uno para ver su ficha, su historial y agendar su servicio.';
+
+  @override
   String get vehiculosVacioMensaje =>
       'La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.';
 
@@ -1762,6 +1815,123 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get avisoCerrar => 'Cerrar aviso';
+
+  @override
+  String get preferenciasAvisosTitulo => 'Qué avisos recibo';
+
+  @override
+  String get preferenciasAvisosSubtitulo => 'Se guarda al momento';
+
+  @override
+  String get preferenciasAvisosCargando => 'Cargando tus preferencias';
+
+  @override
+  String get preferenciasAvisosFalloTitulo => 'No pudimos guardar el cambio';
+
+  @override
+  String get preferenciasAvisosFalloMensaje =>
+      'Lo dejamos como estaba. Inténtalo otra vez en un momento.';
+
+  @override
+  String get preferenciasAvisosTaller => 'Mi auto en el taller';
+
+  @override
+  String get preferenciasAvisosTallerDetalle =>
+      'Cada vez que tu auto avanza de etapa.';
+
+  @override
+  String get preferenciasAvisosCitas => 'Mis citas';
+
+  @override
+  String get preferenciasAvisosCitasDetalle =>
+      'Recordatorios 24 y 2 horas antes.';
+
+  @override
+  String get preferenciasAvisosMantenimiento => 'Mantenimiento';
+
+  @override
+  String get preferenciasAvisosDocumentos => 'Documentos';
+
+  @override
+  String get preferenciasAvisosMensajes => 'Mensajes de mi asesor';
+
+  @override
+  String get preferenciasAvisosPromociones => 'Promociones';
+
+  @override
+  String get preferenciasAvisosPromocionesDetalle =>
+      'Ofertas y novedades de la agencia. Vienen apagadas.';
+
+  @override
+  String get preferenciasAvisosOtros => 'Otros avisos';
+
+  @override
+  String get preferenciasAvisosSilencio => 'Horario silencioso';
+
+  @override
+  String get preferenciasAvisosSilencioDetalle =>
+      'En ese rango no te avisamos nada.';
+
+  @override
+  String get preferenciasAvisosCruzaMedianoche =>
+      'El silencio cruza la medianoche, que es lo normal para dormir.';
+
+  @override
+  String get preferenciasAvisosMismoDia =>
+      'El silencio es dentro del mismo día.';
+
+  @override
+  String get accesoPerfilPreferenciasAvisos => 'Qué avisos recibo';
+
+  @override
+  String preferenciasAvisosDesde(String hora) {
+    return 'Desde $hora';
+  }
+
+  @override
+  String preferenciasAvisosHasta(String hora) {
+    return 'Hasta $hora';
+  }
+
+  @override
+  String get bandejaTitulo => 'Avisos';
+
+  @override
+  String get bandejaCargando => 'Cargando tus avisos';
+
+  @override
+  String get bandejaVacioTitulo => 'Todavía no tienes avisos';
+
+  @override
+  String get bandejaVacioMensaje =>
+      'Aquí te vamos a decir cómo va tu auto en el taller, cuándo es tu cita y cuándo están listos tus documentos.';
+
+  @override
+  String get bandejaMarcarTodos => 'Marcar todos como leídos';
+
+  @override
+  String get bandejaSinLeerUno => 'Sin leer';
+
+  @override
+  String get bandejaErrorMasTitulo => 'No pudimos cargar más avisos';
+
+  @override
+  String get bandejaErrorMasMensaje =>
+      'Lo que ya se cargó sigue aquí. Desliza hacia abajo para intentarlo otra vez.';
+
+  @override
+  String get accesoPerfilMisAvisos => 'Mis avisos';
+
+  @override
+  String bandejaSinLeer(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n sin leer',
+      one: '1 sin leer',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get conexionSinRedTitulo => 'Sin conexión con la agencia';
@@ -2194,6 +2364,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get idiomaIngles => 'English';
+
+  @override
+  String get catalogoDetalleSubtitulo =>
+      'Conoce sus versiones, pide una prueba de manejo o cotiza.';
 
   @override
   String get catalogoDetalleTitulo => 'Detalle del modelo';
@@ -3072,6 +3246,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.';
 
   @override
+  String get inicioSaludoManana => 'Buenos días,';
+
+  @override
+  String get inicioSaludoTarde => 'Buenas tardes,';
+
+  @override
+  String get inicioSaludoNoche => 'Buenas noches,';
+
+  @override
   String inicioSaludo(String nombre) {
     return 'Hola, $nombre';
   }
@@ -3117,7 +3300,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get inicioDestinoInicio => 'Inicio';
 
   @override
-  String get inicioDestinoVehiculos => 'Vehículos';
+  String get inicioDestinoVehiculos => 'Garaje';
 
   @override
   String get inicioDestinoCitas => 'Citas';
@@ -6758,4 +6941,227 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaLlamarAseguradoraBuscando => 'Buscando tu póliza…';
+
+  @override
+  String get ayudaAcerca => 'Acerca de CareCar';
+
+  @override
+  String get ayudaVersion => 'Versión';
+
+  @override
+  String get ayudaCargando => 'Cargando…';
+
+  @override
+  String get ayudaLicencias => 'Licencias de software';
+
+  @override
+  String get ayudaLicenciasDetalle => 'Componentes incluidos en la aplicación';
+
+  @override
+  String get ayudaPrivacidad => 'Aviso de privacidad';
+
+  @override
+  String get ayudaTerminos => 'Términos de uso';
+
+  @override
+  String get ayudaTerminosAusentes => 'El documento no está disponible.';
+
+  @override
+  String get ayudaCerrar => 'Cerrar';
+
+  @override
+  String get documentosCalendario => 'Calendario de vencimientos';
+
+  @override
+  String get documentosVencimientos => 'Vencimientos';
+
+  @override
+  String get documentosErrorCalendario =>
+      'No se pudieron cargar los vencimientos';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad vencimientos',
+      one: '1 vencimiento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Vencimientos del mes';
+
+  @override
+  String get documentosVerMes => 'Ver todo el mes';
+
+  @override
+  String get documentosMesVacio => 'No hay vencimientos este mes.';
+
+  @override
+  String get documentosDiaVacio => 'No hay vencimientos en este día.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
+
+  @override
+  String get ayudaBuscar => 'Buscar';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Escribe una pregunta o tema';
+
+  @override
+  String get ayudaDescripcion => 'Descripción';
+
+  @override
+  String get ayudaDescripcionPista => 'Cuéntanos qué ocurrió';
+
+  @override
+  String get ayudaEnviado => 'Reporte enviado';
+
+  @override
+  String get ayudaEnviar => 'Enviar reporte';
+
+  @override
+  String get ayudaErrorReporte =>
+      'No se pudo enviar el reporte. Intenta de nuevo.';
+
+  @override
+  String get ayudaGracias => 'Gracias por ayudarnos a mejorar.';
+
+  @override
+  String get ayudaLongitud =>
+      'Describe el problema con entre 10 y 2000 caracteres.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Prueba con otras palabras.';
+
+  @override
+  String get ayudaPreguntas => 'Preguntas frecuentes';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.';
+
+  @override
+  String get ayudaReporte => 'Reportar un problema';
+
+  @override
+  String get ayudaSinResultados => 'Sin resultados';
+
+  @override
+  String get documentosPdfAgencia => 'Documento de la agencia';
+
+  @override
+  String get documentosAgregar => 'Agregar documento';
+
+  @override
+  String get documentosAgregarFecha => 'Agregar fecha de vencimiento';
+
+  @override
+  String get documentosCamara => 'Tomar fotografía';
+
+  @override
+  String get documentosErrorFoto => 'No se pudo preparar la foto.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'No se pudo guardar el documento. Intenta de nuevo.';
+
+  @override
+  String get documentosFaltaFoto => 'Selecciona una imagen del documento.';
+
+  @override
+  String get documentosGaleria => 'Elegir de galería';
+
+  @override
+  String get documentosGuardar => 'Guardar documento';
+
+  @override
+  String get documentosProgreso => 'Carga del documento';
+
+  @override
+  String get documentosTipo => 'Tipo de documento';
+
+  @override
+  String get documentosVistaPrevia => 'Vista previa del documento';
+
+  @override
+  String get m15Titulo => 'Encuestas de servicio';
+
+  @override
+  String get m15Pendientes => 'Califica tu visita al taller';
+
+  @override
+  String get m15Vacio => 'No tienes encuestas pendientes';
+
+  @override
+  String get m15Recomendar =>
+      '¿Qué tan probable es que recomiendes nuestro servicio?';
+
+  @override
+  String get m15Tiempo => 'Tiempo del servicio';
+
+  @override
+  String get m15Trato => 'Trato recibido';
+
+  @override
+  String get m15Limpieza => 'Limpieza del vehículo';
+
+  @override
+  String get m15Asesor => 'Atención del asesor';
+
+  @override
+  String get m15Escala =>
+      'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.';
+
+  @override
+  String get m15Comentario => 'Comentario opcional';
+
+  @override
+  String get m15Enviar => 'Enviar encuesta';
+
+  @override
+  String get m15Posponer => 'Posponer por 24 horas';
+
+  @override
+  String get m15Gracias => 'Gracias por calificar tu servicio';
+
+  @override
+  String get m15Contacto => 'Pedir que la agencia me contacte';
+
+  @override
+  String get m15ContactoListo => 'La agencia recibió tu solicitud de contacto.';
+
+  @override
+  String get m15Error => 'No se pudo guardar. Intenta de nuevo.';
+
+  @override
+  String get m15NoDisponible => 'Esta encuesta ya no está disponible';
+
+  @override
+  String get m13Novedades => 'Novedades';
+
+  @override
+  String get m13ParaTi => 'Para ti';
+
+  @override
+  String get m13SinNovedades => 'No hay novedades por ahora';
+
+  @override
+  String get m13NoDisponible => 'Esta publicación ya no está disponible';
+
+  @override
+  String get m13Cupon => 'Cupón';
+
+  @override
+  String m13CuponCodigo(String codigo) {
+    return 'Cupón: $codigo';
+  }
+
+  @override
+  String get m13Agendar => 'Agendar con esta promoción';
 }

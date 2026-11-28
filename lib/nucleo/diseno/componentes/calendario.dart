@@ -25,6 +25,7 @@ class Calendario extends StatelessWidget {
     super.key,
     this.habilitado,
     this.hoy,
+    this.marcaDelDia,
   });
 
   /// Cualquier fecha del mes que se muestra.
@@ -41,6 +42,9 @@ class Calendario extends StatelessWidget {
   /// Dia que se marca como hoy. Se pasa para que las pruebas no dependan del
   /// reloj.
   final DateTime? hoy;
+
+  /// Etiqueta accesible para los días que muestran un punto.
+  final String? Function(DateTime dia)? marcaDelDia;
 
   static DateTime _solo(DateTime d) => DateTime(d.year, d.month, d.day);
 
@@ -153,6 +157,7 @@ class Calendario extends StatelessWidget {
     final elegible = _puedeElegir(dia);
     final elegido = _mismoDia(dia, seleccionado);
     final esHoy = _mismoDia(dia, hoy);
+    final marca = marcaDelDia?.call(dia);
 
     final fondo = elegido ? c.acento : Colors.transparent;
     final colorTexto = elegido
@@ -163,6 +168,7 @@ class Calendario extends StatelessWidget {
     final etiqueta = [
       textos.calendarioDia(dia),
       if (esHoy) textos.calendarioHoy,
+      ?marca,
       if (elegido) textos.calendarioSeleccionado,
       if (!elegible) textos.calendarioSinCupo,
     ].join(', ');
@@ -191,12 +197,33 @@ class Calendario extends StatelessWidget {
                     ? Border.all(color: c.acento, width: 2)
                     : null,
               ),
-              child: Text(
-                numero.toString(),
-                style: t.cuerpo.copyWith(
-                  color: colorTexto,
-                  decoration: elegible ? null : TextDecoration.lineThrough,
-                ),
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.expand,
+                children: [
+                  Center(
+                    child: Text(
+                      numero.toString(),
+                      style: t.cuerpo.copyWith(
+                        color: colorTexto,
+                        decoration: elegible
+                            ? null
+                            : TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ),
+                  if (marca != null)
+                    Positioned(
+                      bottom: 3,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: elegido ? c.sobreAcento : c.acento,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const SizedBox.square(dimension: 5),
+                      ),
+                    ),
+                ],
               ),
             ),
           ),

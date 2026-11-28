@@ -1,3 +1,5 @@
+import 'dart:ui' show Size;
+
 import 'package:carecar_mobile/api/excepciones.dart';
 import 'package:carecar_mobile/modulos/valuacion/datos/repositorio_valuacion_fake.dart';
 import 'package:carecar_mobile/modulos/valuacion/valuacion.dart';
@@ -84,6 +86,11 @@ void main() {
   });
 
   testWidgets('sin conexion deja reintentar, con la leyenda', (tester) async {
+    // Alta: con el encabezado en tarjeta, «Reintentar» queda fuera de los 600
+    // de alto de la pantalla de pruebas.
+    tester.view.physicalSize = const Size(800, 1200);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     final repo = RepositorioValuacionFake(
       puntos: [punto(11, 110000)],
       falla: const SinConexion(),

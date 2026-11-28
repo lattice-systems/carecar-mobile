@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:carecar_mobile/api/carecar_api.dart';
 import 'package:carecar_mobile/api/excepciones.dart';
+import 'package:carecar_mobile/api/modelos/preferencias_notificacion.dart';
+import 'package:carecar_mobile/api/modelos/notificacion.dart';
 import 'package:carecar_mobile/api/modelos/modelos.dart';
 
 /// Implementacion de [CarecarApi] para las pruebas.
@@ -425,6 +427,60 @@ class ApiFalsa implements CarecarApi {
   @override
   Future<Pagina<Cita>> paginaDeCitas({int pagina = 0, int tamano = 20}) async =>
       _rebanar(await misCitas(), pagina, tamano);
+
+  /// La bandeja que contesta la falsa · V2-M06.04.
+  List<Notificacion> avisos = const [];
+  int avisosLeidosEnLote = 0;
+  final avisosMarcados = <int>[];
+
+  @override
+  Future<PaginaDeNotificaciones> paginaDeNotificaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) async {
+    final trozo = _rebanar(avisos, pagina, tamano);
+    return PaginaDeNotificaciones(
+      contenido: trozo.contenido,
+      pagina: trozo.pagina,
+      totalPaginas: trozo.totalPaginas,
+      noLeidas: avisos.where((a) => a.leidaEn == null).length,
+    );
+  }
+
+  @override
+  Future<void> marcarAvisoLeido(int notificacionId) async =>
+      avisosMarcados.add(notificacionId);
+
+  @override
+  Future<void> marcarAvisosLeidos() async => avisosLeidosEnLote++;
+
+  /// Las preferencias que contesta la falsa · V2-M06.05. Por omision todas
+  /// encendidas menos promociones, como el contrato.
+  PreferenciasNotificacion preferencias = const PreferenciasNotificacion(
+    categorias: [
+      PreferenciaNotificacion(categoria: 'TALLER', push: true),
+      PreferenciaNotificacion(categoria: 'CITAS', push: true),
+      PreferenciaNotificacion(categoria: 'MANTENIMIENTO', push: true),
+      PreferenciaNotificacion(categoria: 'DOCUMENTOS', push: true),
+      PreferenciaNotificacion(categoria: 'PROMOCIONES', push: false),
+      PreferenciaNotificacion(categoria: 'MENSAJES', push: true),
+    ],
+  );
+
+  /// Lo ultimo que se mando a guardar, para comprobar el cuerpo del PUT.
+  PreferenciasNotificacion? preferenciasGuardadas;
+
+  @override
+  Future<PreferenciasNotificacion> preferenciasDeAvisos() async => preferencias;
+
+  @override
+  Future<PreferenciasNotificacion> guardarPreferenciasDeAvisos(
+    PreferenciasNotificacion nuevas,
+  ) async {
+    preferenciasGuardadas = nuevas;
+    preferencias = nuevas;
+    return nuevas;
+  }
 
   static Pagina<T> _rebanar<T>(List<T> todo, int pagina, int tamano) {
     final inicio = (pagina * tamano).clamp(0, todo.length);

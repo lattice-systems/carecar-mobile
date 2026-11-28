@@ -38,6 +38,7 @@ class PantallaMovimientos extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.arrowLeftRight,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoLealtad(
@@ -46,6 +47,7 @@ class PantallaMovimientos extends ConsumerWidget {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.arrowLeftRight,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -58,6 +60,7 @@ class PantallaMovimientos extends ConsumerWidget {
           ),
           data: (estado) => estado.movimientos.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.arrowLeftRight,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -67,6 +70,7 @@ class PantallaMovimientos extends ConsumerWidget {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.arrowLeftRight,
                   titulo: titulo,
                   subtitulo: textos.lealtadMovimientosResumen,
                   conRegreso: true,

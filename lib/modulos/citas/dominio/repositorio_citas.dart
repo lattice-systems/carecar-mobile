@@ -27,6 +27,7 @@ abstract interface class RepositorioCitas {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   });
 
   /// Una página de las citas del cliente, de la más reciente a la más antigua

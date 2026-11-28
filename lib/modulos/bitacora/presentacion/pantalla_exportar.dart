@@ -43,6 +43,7 @@ class PantallaExportar extends ConsumerWidget {
     final gastos = ref.watch(gastosProvider(vehiculoId));
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.download,
       titulo: textos.bitacoraExportarTitulo,
       estado: hijo,
     );
@@ -198,6 +199,7 @@ class _EstadoFormulario extends ConsumerState<_Formulario> {
     ];
 
     return MarcoPantalla(
+      icono: LucideIcons300.download,
       titulo: textos.bitacoraExportarTitulo,
       barraInferior: BarraInferior(
         hijos: [

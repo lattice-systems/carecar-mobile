@@ -239,6 +239,7 @@ Operaciones de la app y casos de error:
 | POST | `/notificaciones/leidas` | Marca todas como leídas · 204 también si ya no había ninguna |
 | POST | `/notificaciones/{id}/leida` | 204, idempotente: dos veces no mueve `leidaEn` · 404 si el aviso es de otra cuenta, sin confirmar que exista |
 | GET · PUT | `/notificaciones/preferencias` | **Todas** las categorías, también las que nadie tocó: `PROMOCIONES` nace apagada y las demás encendidas · se guarda lo que la persona **eligió**, no solo lo que apagó, para que sí se pueda prender promociones · el horario silencioso es de la cuenta y cruzar la medianoche (22:00–07:00) es válido · 400 si `silencioDesde` va sin `silencioHasta`, si la hora no tiene forma o si la categoría no existe (V2-M06.05) |
+| PUT · DELETE | `/dispositivos/{instalacionId}` | Token de push de esta instalación: `{tokenFcm, plataforma (android/ios), idioma?}` · 204 · 400 `DATOS_INVALIDOS` si el id no cumple `^[A-Za-z0-9-]{8,64}$` o falta un campo · el mismo token en otra instalación descarta la vieja · la baja es idempotente y no toca instalaciones ajenas · en memoria, no manda push (V2-M06.02) |
 | GET | `/tienda/productos` | `vehiculoId`, `categoria` (`accesorio`, `refaccion`, `cuidado`), `q`, `pagina` y `tamano`. Por nombre. Con `vehiculoId` solo salen los universales y los de su modelo y año, con `compatible`. Los agotados sí se listan. 400. 404 si el vehículo es ajeno (V2-M14.01) |
 | GET | `/tienda/productos/{id}` | Con `vehiculoId` dice `compatible`. 404 (V2-M14.01) |
 | POST | `/tienda/pedidos` | `Idempotency-Key` obligatoria. 201, o 200 con el pedido de esa llave. 400. 404. 409 `SIN_EXISTENCIA`, `CITA_NO_DISPONIBLE` o `LIMITE_APARTADOS` (3 sin entregar). 422 `PRODUCTO_INCOMPATIBLE`. Vence en 48 horas o al final del día siguiente a la cita (V2-M14.02 y V2-M14.03) |
@@ -354,3 +355,8 @@ cerraron los avisos de `body-parser` (1.20.8 → 1.20.9) y `qs` (6.16.0 → 6.16
 **La contrapartida:** las respuestas se mantienen a mano, así que pueden desviarse
 del contrato cuando Ricardo lo cambie. Eso lo cubre la prueba de validación contra
 el contrato (tarea 4 de TEC-5).
+
+
+## Catálogo simulado de CareCar Dev
+
+Las rutas GET /novedades, GET /promociones y POST /promociones/{promocionId}/vista usan las semillas ficticias de M13. POST /citas acepta el campo opcional promocionId para validar y guardar un cupón de demostración. Estas extensiones se usan en el simulador. Consulta el alcance en [M13](../plan/modulos/M13-promociones.md#simulación-de-catálogo-en-dev).

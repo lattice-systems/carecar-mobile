@@ -192,10 +192,12 @@
   "@accesoContrasenaVacia": {
     "description": "Error bajo el campo cuando se intenta entrar sin contraseña."
   },
-  "accesoCorreoAyuda": "El que le diste a la agencia",
-  "@accesoCorreoAyuda": {
-    "description": "Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente."
-  },
+  "accesoCorreoSugerencia": "tu@correo.com",
+  "accesoContrasenaSugerencia": "Tu contraseña",
+  "@accesoCorreoSugerencia": {"description": "Ejemplo dentro del campo de correo del acceso."},
+  "@accesoContrasenaSugerencia": {"description": "Ejemplo dentro del campo de contraseña del acceso."},
+  "accesoCreditos": "© {anio} Lattice Systems",
+  "@accesoCreditos": {"description": "Créditos al pie del acceso: año y equipo que desarrolla la app.", "placeholders": { "anio": { "type": "int" } }},
   "accesoCorreoEtiqueta": "Correo",
   "@accesoCorreoEtiqueta": {
     "description": "Etiqueta del campo de correo en la pantalla de acceso."
@@ -400,11 +402,29 @@
   "@accesoPerfilVehiculosFallo": {
     "description": "Aviso dentro del perfil cuando la lista de vehículos falla. El resto del perfil se sigue viendo, porque son dos lecturas distintas."
   },
+  "accesoCodigoTitulo": "Escribe el código",
+  "@accesoCodigoTitulo": {"description": "Título del paso del código de recuperación."},
+  "accesoCodigoExplicacion": "Te lo enviamos a {correo}. Tiene 6 dígitos y vence en 15 minutos.",
+  "@accesoCodigoExplicacion": {"description": "Explicación del paso del código; {correo} es el correo al que se envió.", "placeholders": { "correo": { "type": "String" } }},
+  "accesoCodigoEtiqueta": "Código de 6 dígitos",
+  "@accesoCodigoEtiqueta": {"description": "Etiqueta del campo del código de recuperación."},
+  "accesoCodigoIncompleto": "Escribe los 6 dígitos del código",
+  "@accesoCodigoIncompleto": {"description": "Error cuando el código no tiene 6 dígitos."},
+  "accesoCodigoNoValidoTitulo": "Ese código no sirve",
+  "@accesoCodigoNoValidoTitulo": {"description": "Aviso cuando el servidor rechaza el código."},
+  "accesoCodigoNoValidoMensaje": "Puede estar mal escrito, ya usado o vencido. Revisa el correo más reciente o pide otro.",
+  "@accesoCodigoNoValidoMensaje": {"description": "Mensaje del aviso de código rechazado."},
+  "accesoCodigoReenviar": "Enviar otro código",
+  "@accesoCodigoReenviar": {"description": "Botón para pedir otro código."},
+  "accesoCodigoReenviado": "Te enviamos otro código",
+  "@accesoCodigoReenviado": {"description": "Aviso tras pedir otro código."},
+  "accesoCodigoSinCorreo": "Pide primero el código",
+  "@accesoCodigoSinCorreo": {"description": "Título cuando se llega al paso del código sin correo ni enlace."},
   "accesoRecuperarEnviado": "Revisa tu correo",
   "@accesoRecuperarEnviado": {
     "description": "Título del aviso tras pedir el enlace de recuperación."
   },
-  "accesoRecuperarEnviadoMensaje": "Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.",
+  "accesoRecuperarEnviadoMensaje": "Si ese correo tiene una cuenta, te llegará un código de 6 dígitos. Vence en 15 minutos y sirve una sola vez.",
   "@accesoRecuperarEnviadoMensaje": {
     "description": "Explica que el enlace puede no llegar si el correo no tiene cuenta, para que nadie se quede esperando."
   },
@@ -412,15 +432,15 @@
   "@accesoRecuperarEnviando": {
     "description": "Texto del botón mientras el servidor responde."
   },
-  "accesoRecuperarEnviar": "Enviarme el enlace",
+  "accesoRecuperarEnviar": "Enviarme el código",
   "@accesoRecuperarEnviar": {
     "description": "Botón que pide el enlace de recuperación."
   },
-  "accesoRecuperarExplicacion": "Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.",
+  "accesoRecuperarExplicacion": "Escribe tu correo y te enviamos un código de 6 dígitos para elegir una contraseña nueva.",
   "@accesoRecuperarExplicacion": {
     "description": "Explica qué hace la pantalla de recuperación."
   },
-  "accesoRecuperarFalloTitulo": "No pudimos enviar el enlace",
+  "accesoRecuperarFalloTitulo": "No pudimos enviar el código",
   "@accesoRecuperarFalloTitulo": {
     "description": "Título del aviso cuando falla la petición del enlace."
   },
@@ -616,6 +636,8 @@
   "@accesoSinRegistro": {
     "description": "Nota que explica por qué no hay registro: la cuenta la entrega la agencia."
   },
+  "accesoLema": "Tu auto,\nen buenas manos.",
+  "@accesoLema": {"description": "Lema en la portada del acceso, en dos líneas, bajo el logo."},
   "accesoSubtitulo": "Tu acceso a la agencia",
   "@accesoSubtitulo": {
     "description": "Frase bajo el nombre de la app en la pantalla de acceso."
@@ -704,6 +726,10 @@
   "asistenciaGuiasTitulo": "Guías de emergencia",
   "@asistenciaGuiasTitulo": {
     "description": "Título de la pantalla de guías de emergencia."
+  },
+  "catalogoSubtitulo": "Los modelos vigentes de la agencia con su precio. Toca uno para ver el detalle, o compara varios.",
+  "@catalogoSubtitulo": {
+    "description": "Descripción bajo el título del catálogo de modelos."
   },
   "catalogoTitulo": "Catálogo",
   "@catalogoTitulo": {
@@ -927,6 +953,10 @@
   "citasMisCitasCargando": "Cargando tus citas",
   "@citasMisCitasCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras cargan las citas."
+  },
+  "citasMisCitasSubtitulo": "Tus citas próximas y pasadas, cada una con su estado.",
+  "@citasMisCitasSubtitulo": {
+    "description": "Descripción bajo el título de Mis citas."
   },
   "citasMisCitasTitulo": "Mis citas",
   "@citasMisCitasTitulo": {
@@ -2122,6 +2152,10 @@
   "@vehiculosTitulo": {
     "description": "Título de la pantalla con los vehículos del cliente."
   },
+  "vehiculosSubtitulo": "Tus autos en un solo lugar. Toca uno para ver su ficha, su historial y agendar su servicio.",
+  "@vehiculosSubtitulo": {
+    "description": "Descripción bajo el título de la pantalla con los vehículos del cliente."
+  },
   "vehiculosVacioMensaje": "La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.",
   "vehiculosVacioTitulo": "Aún no tienes vehículos",
   "vehiculosVersion": "Versión",
@@ -2151,6 +2185,149 @@
   "avisoCerrar": "Cerrar aviso",
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
+  },
+  "preferenciasAvisosTitulo": "Qu\u00e9 avisos recibo",
+  "@preferenciasAvisosTitulo": {
+    "description": "T\u00edtulo de la pantalla de preferencias de avisos."
+  },
+  "preferenciasAvisosSubtitulo": "Se guarda al momento",
+  "@preferenciasAvisosSubtitulo": {
+    "description": "Aclara que no hay bot\u00f3n de guardar."
+  },
+  "preferenciasAvisosCargando": "Cargando tus preferencias",
+  "@preferenciasAvisosCargando": {
+    "description": "Anuncio al lector de pantalla mientras cargan."
+  },
+  "preferenciasAvisosFalloTitulo": "No pudimos guardar el cambio",
+  "@preferenciasAvisosFalloTitulo": {
+    "description": "T\u00edtulo del aviso cuando el guardado falla."
+  },
+  "preferenciasAvisosFalloMensaje": "Lo dejamos como estaba. Int\u00e9ntalo otra vez en un momento.",
+  "@preferenciasAvisosFalloMensaje": {
+    "description": "Explica que el interruptor se revirti\u00f3."
+  },
+  "preferenciasAvisosTaller": "Mi auto en el taller",
+  "@preferenciasAvisosTaller": {
+    "description": "Categor\u00eda de avisos del taller."
+  },
+  "preferenciasAvisosTallerDetalle": "Cada vez que tu auto avanza de etapa.",
+  "@preferenciasAvisosTallerDetalle": {
+    "description": "Detalle de la categor\u00eda del taller."
+  },
+  "preferenciasAvisosCitas": "Mis citas",
+  "@preferenciasAvisosCitas": {
+    "description": "Categor\u00eda de avisos de citas."
+  },
+  "preferenciasAvisosCitasDetalle": "Recordatorios 24 y 2 horas antes.",
+  "@preferenciasAvisosCitasDetalle": {
+    "description": "Detalle de la categor\u00eda de citas."
+  },
+  "preferenciasAvisosMantenimiento": "Mantenimiento",
+  "@preferenciasAvisosMantenimiento": {
+    "description": "Categor\u00eda de avisos de mantenimiento."
+  },
+  "preferenciasAvisosDocumentos": "Documentos",
+  "@preferenciasAvisosDocumentos": {
+    "description": "Categor\u00eda de avisos de documentos."
+  },
+  "preferenciasAvisosMensajes": "Mensajes de mi asesor",
+  "@preferenciasAvisosMensajes": {
+    "description": "Categor\u00eda de avisos de mensajer\u00eda."
+  },
+  "preferenciasAvisosPromociones": "Promociones",
+  "@preferenciasAvisosPromociones": {
+    "description": "Categor\u00eda de avisos comerciales."
+  },
+  "preferenciasAvisosPromocionesDetalle": "Ofertas y novedades de la agencia. Vienen apagadas.",
+  "@preferenciasAvisosPromocionesDetalle": {
+    "description": "Detalle de la categor\u00eda de promociones."
+  },
+  "preferenciasAvisosOtros": "Otros avisos",
+  "@preferenciasAvisosOtros": {
+    "description": "Categor\u00eda que esta versi\u00f3n no conoce."
+  },
+  "preferenciasAvisosSilencio": "Horario silencioso",
+  "@preferenciasAvisosSilencio": {
+    "description": "Interruptor del horario silencioso."
+  },
+  "preferenciasAvisosSilencioDetalle": "En ese rango no te avisamos nada.",
+  "@preferenciasAvisosSilencioDetalle": {
+    "description": "Detalle del horario silencioso."
+  },
+  "preferenciasAvisosCruzaMedianoche": "El silencio cruza la medianoche, que es lo normal para dormir.",
+  "@preferenciasAvisosCruzaMedianoche": {
+    "description": "Explica que un rango que cruza la medianoche es correcto."
+  },
+  "preferenciasAvisosMismoDia": "El silencio es dentro del mismo d\u00eda.",
+  "@preferenciasAvisosMismoDia": {
+    "description": "Explica un rango que no cruza la medianoche."
+  },
+  "accesoPerfilPreferenciasAvisos": "Qu\u00e9 avisos recibo",
+  "@accesoPerfilPreferenciasAvisos": {
+    "description": "Fila del perfil que abre las preferencias de avisos."
+  },
+  "preferenciasAvisosDesde": "Desde {hora}",
+  "@preferenciasAvisosDesde": {
+    "description": "Boton que elige la hora de inicio del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "preferenciasAvisosHasta": "Hasta {hora}",
+  "@preferenciasAvisosHasta": {
+    "description": "Boton que elige la hora de fin del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "bandejaTitulo": "Avisos",
+  "@bandejaTitulo": {
+    "description": "T\u00edtulo de la bandeja de avisos."
+  },
+  "bandejaCargando": "Cargando tus avisos",
+  "@bandejaCargando": {
+    "description": "Anuncio al lector de pantalla mientras carga la bandeja."
+  },
+  "bandejaVacioTitulo": "Todav\u00eda no tienes avisos",
+  "@bandejaVacioTitulo": {
+    "description": "T\u00edtulo de la bandeja vac\u00eda."
+  },
+  "bandejaVacioMensaje": "Aqu\u00ed te vamos a decir c\u00f3mo va tu auto en el taller, cu\u00e1ndo es tu cita y cu\u00e1ndo est\u00e1n listos tus documentos.",
+  "@bandejaVacioMensaje": {
+    "description": "Mensaje de la bandeja vac\u00eda."
+  },
+  "bandejaMarcarTodos": "Marcar todos como le\u00eddos",
+  "@bandejaMarcarTodos": {
+    "description": "Bot\u00f3n que marca toda la bandeja como le\u00edda."
+  },
+  "bandejaSinLeerUno": "Sin leer",
+  "@bandejaSinLeerUno": {
+    "description": "Lo que el lector de pantalla dice antes de un aviso sin leer."
+  },
+  "bandejaErrorMasTitulo": "No pudimos cargar m\u00e1s avisos",
+  "@bandejaErrorMasTitulo": {
+    "description": "T\u00edtulo del aviso cuando falla cargar otra p\u00e1gina."
+  },
+  "bandejaErrorMasMensaje": "Lo que ya se carg\u00f3 sigue aqu\u00ed. Desliza hacia abajo para intentarlo otra vez.",
+  "@bandejaErrorMasMensaje": {
+    "description": "Explica que no se perdi\u00f3 lo cargado."
+  },
+  "accesoPerfilMisAvisos": "Mis avisos",
+  "@accesoPerfilMisAvisos": {
+    "description": "Fila del perfil que abre la bandeja."
+  },
+  "bandejaSinLeer": "{n, plural, =1{1 sin leer} other{{n} sin leer}}",
+  "@bandejaSinLeer": {
+    "description": "Cuantos avisos sin leer hay en la cuenta.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
   },
   "conexionSinRedTitulo": "Sin conexi\u00f3n con la agencia",
   "@conexionSinRedTitulo": {
@@ -2783,6 +2960,10 @@
   "idiomaIngles": "English",
   "@idiomaIngles": {
     "description": "Nombre del idioma inglés, escrito en inglés."
+  },
+  "catalogoDetalleSubtitulo": "Conoce sus versiones, pide una prueba de manejo o cotiza.",
+  "@catalogoDetalleSubtitulo": {
+    "description": "Descripción bajo el título del detalle de un modelo del catálogo."
   },
   "catalogoDetalleTitulo": "Detalle del modelo",
   "@catalogoDetalleTitulo": {
@@ -3962,6 +4143,12 @@
   "@seguridadConexionNoSeguraMensaje": {
     "description": "Explica por qué se cortó la conexión y qué hacer: cambiar de red."
   },
+  "inicioSaludoManana": "Buenos días,",
+  "@inicioSaludoManana": {"description": "Saludo del inicio antes del mediodía; va antes del nombre."},
+  "inicioSaludoTarde": "Buenas tardes,",
+  "@inicioSaludoTarde": {"description": "Saludo del inicio de las 12 a las 19 h; va antes del nombre."},
+  "inicioSaludoNoche": "Buenas noches,",
+  "@inicioSaludoNoche": {"description": "Saludo del inicio desde las 19 h; va antes del nombre."},
   "inicioSaludo": "Hola, {nombre}",
   "@inicioSaludo": {
     "description": "Saludo de la pantalla de inicio con el primer nombre del cliente.",
@@ -3989,7 +4176,7 @@
   "@inicioPerfilYAjustes": { "description": "Nombre del botón del avatar, arriba a la izquierda del inicio." },
   "inicioDestinoInicio": "Inicio",
   "@inicioDestinoInicio": { "description": "Destino de la barra inferior." },
-  "inicioDestinoVehiculos": "Vehículos",
+  "inicioDestinoVehiculos": "Garaje",
   "@inicioDestinoVehiculos": { "description": "Destino de la barra inferior." },
   "inicioDestinoCitas": "Citas",
   "@inicioDestinoCitas": { "description": "Destino de la barra inferior." },
@@ -8895,5 +9082,143 @@
   "asistenciaLlamarAseguradoraBuscando": "Buscando tu póliza…",
   "@asistenciaLlamarAseguradoraBuscando": {
     "description": "Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01)."
-  }
+  },
+  "ayudaAcerca": "Acerca de CareCar",
+  "ayudaVersion": "Versión",
+  "ayudaCargando": "Cargando…",
+  "ayudaLicencias": "Licencias de software",
+  "ayudaLicenciasDetalle": "Componentes incluidos en la aplicación",
+  "ayudaPrivacidad": "Aviso de privacidad",
+  "ayudaTerminos": "Términos de uso",
+  "ayudaTerminosAusentes": "El documento no está disponible.",
+  "ayudaCerrar": "Cerrar",
+  "documentosCalendario": "Calendario de vencimientos",
+  "@documentosCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosVencimientos": "Vencimientos",
+  "@documentosVencimientos": {"description":"Texto de documentos del vehículo."},
+  "documentosErrorCalendario": "No se pudieron cargar los vencimientos",
+  "@documentosErrorCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosCantidad": "{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}",
+  "@documentosCantidad": {"description":"Texto de documentos del vehículo.","placeholders":{"cantidad":{"type":"int"}}},
+  "documentosDelMes": "Vencimientos del mes",
+  "@documentosDelMes": {"description":"Texto de documentos del vehículo."},
+  "documentosVerMes": "Ver todo el mes",
+  "@documentosVerMes": {"description":"Texto de documentos del vehículo."},
+  "documentosMesVacio": "No hay vencimientos este mes.",
+  "@documentosMesVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDiaVacio": "No hay vencimientos en este día.",
+  "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDetalle": "{fecha} · {vehiculo}",
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Buscar",
+  "ayudaBuscarSugerencia": "Escribe una pregunta o tema",
+  "ayudaDescripcion": "Descripción",
+  "ayudaDescripcionPista": "Cuéntanos qué ocurrió",
+  "ayudaEnviado": "Reporte enviado",
+  "ayudaEnviar": "Enviar reporte",
+  "ayudaErrorReporte": "No se pudo enviar el reporte. Intenta de nuevo.",
+  "ayudaGracias": "Gracias por ayudarnos a mejorar.",
+  "ayudaLongitud": "Describe el problema con entre 10 y 2000 caracteres.",
+  "ayudaOtrasPalabras": "Prueba con otras palabras.",
+  "ayudaPreguntas": "Preguntas frecuentes",
+  "ayudaPrivacidadReporte": "Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.",
+  "ayudaReporte": "Reportar un problema",
+  "ayudaSinResultados": "Sin resultados",
+  "documentosPdfAgencia": "Documento de la agencia",
+  "documentosAgregar": "Agregar documento",
+  "documentosAgregarFecha": "Agregar fecha de vencimiento",
+  "documentosCamara": "Tomar fotografía",
+  "documentosErrorFoto": "No se pudo preparar la foto.",
+  "documentosErrorGuardar": "No se pudo guardar el documento. Intenta de nuevo.",
+  "documentosFaltaFoto": "Selecciona una imagen del documento.",
+  "documentosGaleria": "Elegir de galería",
+  "documentosGuardar": "Guardar documento",
+  "documentosProgreso": "Carga del documento",
+  "documentosTipo": "Tipo de documento",
+  "documentosVistaPrevia": "Vista previa del documento",
+  "m15Titulo": "Encuestas de servicio",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Califica tu visita al taller",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "No tienes encuestas pendientes",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "¿Qué tan probable es que recomiendes nuestro servicio?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Tiempo del servicio",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Trato recibido",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Limpieza del vehículo",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Atención del asesor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Elige una calificación para cada pregunta. El número más alto es la mejor calificación.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Comentario opcional",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Enviar encuesta",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Posponer por 24 horas",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Gracias por calificar tu servicio",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Pedir que la agencia me contacte",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "La agencia recibió tu solicitud de contacto.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "No se pudo guardar. Intenta de nuevo.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "Esta encuesta ya no está disponible",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m13Novedades": "Novedades",
+  "@m13Novedades": {"description": "Texto de promociones y novedades."},
+  "m13ParaTi": "Para ti",
+  "@m13ParaTi": {"description": "Texto de promociones y novedades."},
+  "m13SinNovedades": "No hay novedades por ahora",
+  "@m13SinNovedades": {"description": "Texto de promociones y novedades."},
+  "m13NoDisponible": "Esta publicación ya no está disponible",
+  "@m13NoDisponible": {"description": "Texto de promociones y novedades."},
+  "m13Cupon": "Cupón",
+  "@m13Cupon": {"description": "Texto de promociones y novedades."},
+  "m13CuponCodigo": "Cupón: {codigo}",
+  "@m13CuponCodigo": {
+    "description": "El cupón de la promoción en el resultado de la cita.",
+    "placeholders": {"codigo": {"type": "String"}}
+  },
+  "m13Agendar": "Agendar con esta promoción",
+  "@m13Agendar": {"description": "Texto de promociones y novedades."}
 }

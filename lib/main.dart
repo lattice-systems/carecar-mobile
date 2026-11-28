@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,6 +42,10 @@ import 'nucleo/seguridad/detector_integridad.dart';
 import 'nucleo/seguridad/estado_de_conexion_segura.dart';
 import 'nucleo/seguridad/politica_datos_locales.dart';
 import 'nucleo/seguridad/proveedores_seguridad.dart';
+import 'nucleo/base_local/base_local.dart';
+import 'nucleo/base_local/base_local_con_politica.dart';
+import 'nucleo/base_local/base_local_drift.dart';
+import 'nucleo/base_local/proveedores_base_local.dart';
 import 'nucleo/sesion/proveedores_sesion.dart';
 import 'notificaciones/plugin_notificaciones_local.dart';
 import 'notificaciones/servicio_notificaciones.dart';
@@ -73,12 +79,25 @@ Future<void> arrancar(Flavor flavor) async {
   final politica = PoliticaDatosLocales(
     await evaluarIntegridad(const DetectorIntegridadDelSistema()),
   );
+  // Base local cifrada (V2-M21.01): la llave vive en el Keystore o el
+  // Keychain y el archivo, en la carpeta privada de la app. Se borra al
+  // terminar la sesion (ver `_AppCareCarState`).
+  final baseLocal = BaseLocalConPolitica(
+    BaseLocalDrift(
+      archivo: File(
+        '${(await getApplicationSupportDirectory()).path}/base_local/carecar.db',
+      ),
+      almacenamiento: AlmacenamientoDelSistema(),
+    ),
+    politica,
+  );
   // Sin ProviderScope aqui: AppCareCar crea el suyo con las inyecciones, y un
   // alcance anidado no vería los proveedores del enrutador.
   runApp(
     AppCareCar(
       prefs: prefs,
       politica: politica,
+      baseLocal: baseLocal,
       relojArranque: relojArranque,
       avisos: AvisosDelSistemaReal(plugin),
     ),
@@ -99,6 +118,7 @@ class AppCareCar extends StatefulWidget {
     super.key,
     this.prefs,
     this.politica,
+    this.baseLocal,
     this.avisos,
     this.relojArranque,
     this.duracionArranque = const Duration(milliseconds: 1200),
@@ -111,6 +131,10 @@ class AppCareCar extends StatefulWidget {
   /// Que se puede guardar en el equipo segun su integridad (V2-M22.05). Sin
   /// ella la app se comporta como en un equipo sin señal de riesgo.
   final PoliticaDatosLocales? politica;
+
+  /// La base local cifrada (V2-M21.01). Si viene, se vacia cada vez que la
+  /// sesion termina. Sin ella la app no guarda datos en base local.
+  final BaseLocal? baseLocal;
 
   /// Quien pide el permiso de avisos al sistema (V2-M06.01). Sin el, la
   /// pantalla explica igual pero aceptar no concede nada.
@@ -206,6 +230,12 @@ class _AppCareCarState extends State<AppCareCar> {
       _conexionSegura = conexionSegura;
       _api = api;
       _sesion = sesion;
+      // V2-M21.01: ni un dato del cliente queda en el telefono al terminar la
+      // sesion, por cierre, refresh vencido o cuenta desactivada.
+      final baseLocal = widget.baseLocal;
+      if (baseLocal != null) {
+        sesion.registrarAlTerminarSesion(baseLocal.borrarTodo);
+      }
 
       _restaurar(sesion);
     } on ApiConfigInvalida catch (e) {
@@ -262,6 +292,8 @@ class _AppCareCarState extends State<AppCareCar> {
           avisosDelSistemaProvider.overrideWithValue(widget.avisos),
         if (widget.politica != null)
           politicaDatosLocalesProvider.overrideWithValue(widget.politica!),
+        if (widget.baseLocal != null)
+          baseLocalProvider.overrideWithValue(widget.baseLocal!),
         if (_cliente != null) apiClienteProvider.overrideWithValue(_cliente!),
         if (_conexionSegura != null)
           estadoConexionSeguraProvider.overrideWithValue(_conexionSegura!),
@@ -321,7 +353,9 @@ class _AppCareCarState extends State<AppCareCar> {
               // Los accesos del icono (V2-M25.04) se registran aqui porque
               // necesitan los textos del idioma activo y el enrutador. El widget
               // de inicio con la proxima cita (V2-M25.01) se mantiene aqui por
-              // lo mismo y porque observa la sesion.
+              // lo mismo y porque observa la sesion. El registro del token de
+              // push (V2-M06.02) tambien observa la sesion y el permiso de
+              // avisos, y da de baja el token antes de cerrar sesion.
               // La cubierta de privacidad (V2-M22.06) va por fuera de todo para
               // tapar tambien la cortina y los dialogos en el selector de apps.
               builder: (context, child) {
@@ -343,19 +377,21 @@ class _AppCareCarState extends State<AppCareCar> {
                 Widget contenido([VoidCallback? primeraPantalla]) =>
                     CubiertaEnSegundoPlano(
                       child: InstaladorDeAccesosRapidos(
-                        child: SincronizadorDeWidgets(
-                          child: ShadAppBuilder(
-                            child: AvisoEquipoComprometido(
-                              child: AvisoSinConexion(
-                                child: AvisoConexionNoSegura(
-                                  child: VerificadorDeAviso(
-                                    child: CortinaArranque(
-                                      listo: !_restaurando,
-                                      duracionMinima: widget.duracionArranque,
-                                      alTerminar: primeraPantalla,
-                                      siguiente: (_) => AmbitoAnalitica(
-                                        analitica: analitica,
-                                        child: child!,
+                        child: RegistradorDePush(
+                          child: SincronizadorDeWidgets(
+                            child: ShadAppBuilder(
+                              child: AvisoEquipoComprometido(
+                                child: AvisoSinConexion(
+                                  child: AvisoConexionNoSegura(
+                                    child: VerificadorDeAviso(
+                                      child: CortinaArranque(
+                                        listo: !_restaurando,
+                                        duracionMinima: widget.duracionArranque,
+                                        alTerminar: primeraPantalla,
+                                        siguiente: (_) => AmbitoAnalitica(
+                                          analitica: analitica,
+                                          child: child!,
+                                        ),
                                       ),
                                     ),
                                   ),

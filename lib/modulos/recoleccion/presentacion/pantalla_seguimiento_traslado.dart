@@ -48,6 +48,7 @@ class PantallaSeguimientoTraslado extends ConsumerWidget {
     if (traslado == null) {
       final error = estado.error;
       return MarcoPantalla.estado(
+        icono: LucideIcons300.truck,
         titulo: textos.recoleccionSeguimientoTitulo,
         conRegreso: true,
         estado: switch (error) {
@@ -136,6 +137,7 @@ class _Contenido extends ConsumerWidget {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.truck,
       titulo: titulo,
       subtitulo: nombre,
       conRegreso: true,

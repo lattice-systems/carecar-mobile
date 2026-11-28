@@ -1,8 +1,10 @@
 # Pruebas en celular físico por hito
 
+La validación física de este corte se realiza en Android.
+
 Usa una compilación identificable de CareCar y un backend real con cuenta y vehículos de prueba. Anota el commit de la app, el ambiente del backend, el modelo del celular y la versión del sistema en el [registro de evidencia](evidencia.md). Ejecuta los casos del hito y repite el flujo base de H1 para detectar regresiones.
 
-Instala el APK o IPA siguiendo la [guía de distribución](../publicacion.md). Usa Wi-Fi o datos móviles según el caso y confirma que el teléfono llega al backend antes de empezar. En Android de desarrollo con el backend en la PC puedes usar `adb reverse tcp:8080 tcp:8080` y `--dart-define=API_BASE_URL=http://localhost:8080/api/v1/app`. Para iOS usa una dirección HTTPS alcanzable desde el teléfono.
+Instala el APK de Android siguiendo la [guía de distribución](../publicacion.md). Usa Wi-Fi o datos móviles según el caso y confirma que el teléfono llega al backend antes de empezar. En Android de desarrollo con el backend en la PC puedes usar `adb reverse tcp:8080 tcp:8080` y `--dart-define=API_BASE_URL=http://localhost:8080/api/v1/app`.
 
 Marca `Pasa`, `Falla` o `Bloqueado` por caso. Anota resultado, motivo o enlace al reporte y adjunta evidencia sin credenciales, datos personales o tokens. Si una prueba crea una cita, un pedido o una solicitud usa datos de prueba y devuelve el registro a un estado reutilizable al terminar. Los criterios de cierre completos están en el [plan de hitos](../../plan/hitos.md).
 
@@ -46,5 +48,5 @@ Marca `Pasa`, `Falla` o `Bloqueado` por caso. Anota resultado, motivo o enlace a
 
 ## H7 · Lista para entregar
 
-- **H7.1** Instala en Android e iOS con sus canales de entrega. Repite H1.1 y H1.3 con una compilación que habilite esos módulos y revisa español, inglés, lector de pantalla y texto al 200 %. Adjunta la ejecución de H1.2 en una compilación de desarrollo.
+- **H7.1** Instala en Android con su canal de entrega. Repite H1.1 y H1.3 con una compilación que habilite esos módulos y revisa español, inglés, lector de pantalla y texto al 200 %. Adjunta la ejecución de H1.2 en una compilación de desarrollo.
 - **H7.2** Comprueba aviso de privacidad, exportación y solicitud ARCO con una cuenta de prueba. Adjunta corridas de accesibilidad, seguridad y rendimiento. Cruza la evidencia acumulada con la [matriz de la ficha](../../plan/cumplimiento-ficha.md).

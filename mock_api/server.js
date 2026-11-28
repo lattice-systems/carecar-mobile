@@ -14,11 +14,13 @@ function crearServidor(datos, { logger = true } = {}) {
 
   require('./modulos/acceso')(servidor, db);
   require('./modulos/analitica')(servidor, db);
+  require('./modulos/ayuda')(servidor, db);
   const vehiculoDelCliente = require('./modulos/vehiculos')(servidor, db);
   const emitirEvento = require('./modulos/eventos')(servidor);
   const recoleccion = require('./modulos/recoleccion')(servidor, db, emitirEvento);
   require('./modulos/historial')(servidor, db, vehiculoDelCliente);
-  require('./modulos/citas')(servidor, db, vehiculoDelCliente, recoleccion);
+  const promociones = require('./modulos/promociones')(servidor, db);
+  require('./modulos/citas')(servidor, db, vehiculoDelCliente, recoleccion, promociones);
   require('./modulos/asistencia')(servidor, vehiculoDelCliente, emitirEvento);
   require('./modulos/mantenimiento')(servidor, db, vehiculoDelCliente);
   require('./modulos/catalogo')(servidor, db, vehiculoDelCliente);
@@ -35,7 +37,9 @@ function crearServidor(datos, { logger = true } = {}) {
   require('./modulos/tienda')(servidor, db, vehiculoDelCliente, emitirEvento);
   require('./modulos/sucursales')(servidor, db);
   require('./modulos/documentos')(servidor, db, vehiculoDelCliente);
-  require('./modulos/notificaciones')(servidor, db);
+  const notificaciones = require('./modulos/notificaciones')(servidor, db);
+  require('./modulos/dispositivos')(servidor);
+  require('./modulos/encuestas')(servidor, db, notificaciones);
 
   servidor.use(BASE, (req, res) => {
     problema(req, res, 404, 'Esa ruta no existe en el contrato');

@@ -369,6 +369,50 @@ void main() {
       expect(find.byType(SiluetaAuto), findsOneWidget);
     });
 
+    testWidgets('con foto es una tarjeta de superficie, sin silueta', (
+      tester,
+    ) async {
+      await _telefono(tester);
+      await tester.pumpWidget(
+        _app(
+          const Scaffold(
+            body: TarjetaAuto(
+              marca: 'Nissan',
+              titulo: 'March 2020',
+              placas: 'ABC-12-34',
+              foto: 'assets/autos/march.jpg',
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('March 2020'), findsOneWidget);
+      // Marca, placas y kilometraje van juntos en un renglón.
+      expect(find.text('Nissan · ABC-12-34'), findsOneWidget);
+      expect(find.byType(SiluetaAuto), findsNothing);
+      expect(find.byType(Image), findsOneWidget);
+    });
+
+    testWidgets('con foto y sin textos ni toque es solo la foto', (
+      tester,
+    ) async {
+      await _telefono(tester);
+      await tester.pumpWidget(
+        _app(
+          const Scaffold(
+            body: TarjetaAuto(foto: 'assets/autos/march.jpg', alto: 240),
+          ),
+        ),
+      );
+
+      // El encabezado de la pantalla ya dice qué auto es: no queda un renglón
+      // vacío ni un chevron bajo la foto.
+      expect(find.byType(Text), findsNothing);
+      expect(find.byIcon(LucideIcons300.chevronRight), findsNothing);
+      expect(tester.getSize(find.byType(TarjetaAuto)).height, 240);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('es un boton solo si tiene alToque y se anuncia entera', (
       tester,
     ) async {

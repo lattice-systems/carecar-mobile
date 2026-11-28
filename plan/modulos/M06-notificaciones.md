@@ -211,3 +211,133 @@ adelante.
 **Pendiente del equipo**, no de esta historia: volver a sincronizar las dos
 copias, y copiar estas rutas al backend como pide §7. También falta
 `agencia-360-backend/plan/historias-backend.md`, que §4.3 menciona y no existe.
+
+## Cómo quedó la bandeja (V2-M06.04)
+
+Se construyó contra el contrato v2 2.31.0 y `mock_api`, porque el endpoint HTTP
+del backend todavía no existe: las tablas sí (migración V60) y la `Bandeja`
+interna también, pero nada expuesto. Es lo que `plan/trabajo-en-paralelo.md`
+pide hacer en vez de esperar.
+
+Los tres criterios:
+
+| Criterio | Cómo queda |
+| --- | --- |
+| Paginada | `BandejaNotifier` con `cargarMas`, que pide la siguiente página 400 px antes del fondo. Si esa página falla, **se conserva lo cargado** y se dice; no se pierde lo que la persona estaba leyendo |
+| No leídos con contador | `noLeidos` viene en cada página y es de **toda la cuenta**, no de lo cargado. Con la bandeja a medio paginar, contar lo cargado daría un número más chico que el real |
+| Marcar todas como leídas | Un botón que desaparece cuando ya no hay nada sin leer, y una sola llamada |
+
+### Dos decisiones que conviene revisar
+
+**Se pinta leído antes de que el servidor conteste.** Abrir un aviso no debe
+sentirse lento, el endpoint es idempotente y la próxima carga manda la verdad.
+Si la llamada falla, lo peor es que el aviso vuelva a verse sin leer.
+
+**El no leído se distingue con punto, con negrita y con texto**, no solo con
+color: un punto de color no lo ve quien no distingue tonos. El lector de
+pantalla lo anuncia como «Sin leer. <título>».
+
+### El contador en el ícono de la barra: pendiente de T02
+
+El criterio dice «no leídos con contador en el ícono». El contador está en la
+fila **Mis avisos** del perfil, que es la entrada a la bandeja. Ponerlo en el
+ícono de la barra de navegación necesita que `DestinoNavegacion` acepte una
+insignia, y eso vive en `lib/nucleo/diseno/componentes/`, carpeta de Cristian
+(T02). **Queda como PR chico aparte que hay que pedirle**, como manda
+`plan/trabajo-en-paralelo.md` sección 5.
+
+### La categoría desconocida no tumba la bandeja
+
+`CategoriaDeAviso.desconocida` no la manda el servidor: existe para que agregar
+una categoría del lado del backend no rompa la pantalla. Un aviso de categoría
+nueva se sigue leyendo; solo pierde su icono propio y cae en la campana.
+
+El `destino` se valida **al traducir** con la regla de V2-M06.03, no al tocar:
+así la pantalla recibe un destino que sirve o un nulo, y no tiene que
+desconfiar de él. Un destino inválido no esconde el aviso — se pierde el toque,
+no el mensaje.
+
+
+## Avance de V2-M06.02 y V2-M06.07 (push)
+
+> **Le tocaban a Jael, las hizo Juan Pablo (R6, ayuda).** Las tomó porque V2-M05.05 y V2-M25.05 dependían del push. Jael sigue siendo dueña del módulo; lo de la app vive dentro de `lib/modulos/notificaciones/`, junto a su bandeja y su permiso.
+
+**Backend (V2-M06.07 y la parte B de V2-M06.02, backend#117)**
+
+- Módulo de Modulith `notificaciones` con `EntregaDeAvisos`: redacta el aviso de cada evento de dominio, lo guarda en `notificacion` y lo manda a los dispositivos activos del cliente.
+- Migración `V60` (`dispositivo_push`, `notificacion`); `PUT` y `DELETE /dispositivos/{instalacionId}`.
+- `EnvioPush` con FCM HTTP v1 y `EnvioPushFake`. Sin `PUSH_FCM_*` el aviso solo queda en la bandeja.
+- El payload lleva ids y destino, nunca nombres, VIN, placas ni montos.
+- Cancelar la cuenta borra sus dispositivos y avisos.
+
+**App (V2-M06.02)**
+
+- `ServicioPush` (dominio): de dónde sale el token. Hoy la app usa `ServicioPushNulo`, que no da token, así que no se registra nada ni cambia ninguna pantalla. También hay `ServicioPushFake` para pruebas.
+- `RepositorioDispositivosApi` (con `actualizarSinRespuesta` y `eliminar` del cliente del núcleo) y `RepositorioDispositivosFake`.
+- `InstalacionDeLaApp`: UUID v4 con `Random.secure`, guardado en preferencias. Es del teléfono, no de la cuenta, y sobrevive al cerrar sesión.
+- `CoordinadorDePush`:
+  - registra el token solo con sesión **y** avisos permitidos (V2-M06.01), y vuelve a registrar cada token que rote el proveedor;
+  - da de baja al cerrar sesión, **antes** de `/auth/cerrar-sesion`, con `ControladorSesion.registrarAntesDeCerrarSesion`, y también al negar los avisos;
+  - no llama si la sesión se perdió sin cerrarla;
+  - un fallo de red no lanza y se reintenta en el siguiente cambio.
+- `RegistradorDePush`: envoltorio montado en `lib/main.dart` (archivo de Daniel, R6). Avisa al coordinador al entrar, al cambiar el permiso y al volver a primer plano.
+- Contrato: ruta, `InstalacionId` y `RegistroDispositivo` copiados de 2.30.0. Mock en `mock_api/modulos/dispositivos.js`, aparte de la bandeja.
+
+**Pruebas:** `repositorio_dispositivos_api_test.dart` (ruta, cuerpo y errores), `instalacion_de_la_app_test.dart`, `coordinador_de_push_test.dart` (13 casos por criterio) y `registrador_de_push_test.dart` (el enganche, incluida la baja antes del cierre en el servidor y que sin Firebase no haya peticiones).
+
+**Qué falta para el push real** (no se hizo porque rompería el APK de CI y exige credenciales):
+
+1. PR `build(deps)` con `firebase_core` y `firebase_messaging`.
+2. Proyecto de Firebase con la app Android (`com.carecar.carecar_mobile`) y la de iOS. `google-services.json` y `GoogleService-Info.plist` **fuera de git** (R8), inyectados por CI desde secretos, con el plugin de Gradle solo cuando existan.
+3. `ServicioPushFirebase implements ServicioPush` (`getToken`, `onTokenRefresh`) y sobrescribir `servicioPushProvider` en `main.dart`.
+4. En iOS: capability Push Notifications y la llave APNs subida a Firebase.
+5. En el backend: `PUSH_FCM_PROJECT_ID` y `PUSH_FCM_SERVICE_ACCOUNT_JSON_BASE64`.
+
+**No probado:** FCM real (no hay credenciales) ni nada en el celular.
+
+## Las preferencias y el horario silencioso (V2-M06.05)
+
+Construida contra el contrato y `mock_api`: la tabla `preferencia_notificacion`
+no existe en el backend —la propia migración V60 dice que es trabajo de esta
+historia—, así que el endpoint real llegará después.
+
+### No hay botón de guardar
+
+Cada interruptor guarda al tocarse. Una pantalla de interruptores con botón
+obliga a recordar que falta confirmar, y la mitad de la gente se sale sin
+tocarlo.
+
+El precio es que cada cambio tiene que pintarse al instante y **revertirse si
+el servidor falla**. Un interruptor que se queda mintiendo es peor que uno
+lento: la persona creería que apagó algo que sigue encendido. Cuando falla, el
+control vuelve a su lugar y la pantalla lo dice.
+
+Se usa lo que **contesta** el servidor, no lo que se mandó: si el backend
+normaliza algo, la pantalla queda con la verdad.
+
+### El rango que cruza la medianoche es el caso normal
+
+22:00 a 07:00 es lo que la gente configura de verdad. Tratarlo como un rango
+cualquiera dejaría **la noche entera sin silencio**, que es justo lo contrario
+de lo que se pidió. `HorarioSilencioso.silencia()` lo resuelve y tiene su
+prueba; la pantalla además lo dice en palabras, para que nadie crea que lo
+configuró mal.
+
+Dos detalles que se decidieron ahí:
+
+- **`desde == hasta` no silencia nada.** Silenciar el día entero sería una
+  sorpresa desagradable para quien eligió dos horas iguales.
+- **Una hora que no se puede leer deja el horario en nulo**, no en una hora
+  inventada: mejor sin silencio que silenciando a una hora que nadie eligió.
+
+### Quién respeta el silencio
+
+**El servidor, al enviar.** Es el criterio de la historia y no un detalle: un
+aviso que no se manda no despierta a nadie, y filtrarlo en la app no sirve con
+la app cerrada. `HoraDelDia` y `HorarioSilencioso` viven en el dominio para
+poder decírselo a la persona y para probarlo, no para decidirlo.
+
+La categoría `desconocida` no se le manda al servidor: el contrato no la
+declara y sería un 400. Existe solo para que una categoría nueva del backend no
+tumbe la pantalla.
+

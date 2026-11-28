@@ -4,13 +4,15 @@ import '../api/carecar_api.dart';
 import '../api/modelos/cita.dart';
 import '../api/modelos/perfil.dart';
 import '../api/modelos/vehiculo.dart';
+import '../modulos/encuestas/encuestas.dart';
+import '../modulos/promociones/promociones.dart';
 import '../modulos/mantenimiento/mantenimiento.dart';
 import '../modulos/taller/taller.dart';
 import '../nucleo/inicio/inicio_nuevo.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
 import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
-import '../widgets/menu_carecar.dart' show abrirPantalla;
+import '../widgets/menu_carecar.dart' show abrirPantalla, rutaCareCar;
 import '../widgets/pagina_carecar.dart';
 import 'citas/pantalla_mis_citas.dart';
 import 'pantalla_ajustes.dart';
@@ -73,6 +75,12 @@ class _PantallaInicioState extends State<PantallaInicio> {
   }
 
   /// Al tocar un recordatorio: vuelve al menu y abre «Mis citas».
+  bool get _pestanasEnV2 => const [
+    ModuloMigrable.vehiculos,
+    ModuloMigrable.citas,
+    ModuloMigrable.catalogo,
+  ].every(widget.abrirEnV2.containsKey);
+
   void _abrirCitas() {
     final navegador = _navegador.currentState;
     if (!mounted || navegador == null) return;
@@ -154,19 +162,37 @@ class _PantallaInicioState extends State<PantallaInicio> {
                       .toList(),
                   proximaCita: _proximaCita(citas, vehiculos ?? const []),
                   ordenEnCurso: const TarjetaOrdenEnCurso(),
+                  encuestaPendiente: const EncuestasInicio(),
+                  promociones: catalogoSimuladoHabilitado
+                      ? const PromocionesInicio()
+                      : null,
                   servicioDelAuto: (id) =>
                       TarjetaProximoServicioDelAuto(vehiculoId: id),
                   alAgendar: alCitas,
+                  // Con los tres módulos de las pestañas en v2 la barra es la
+                  // fija del router; si alguno sigue en v1 la dibuja el inicio.
+                  conBarra: !_pestanasEnV2,
                   alAbrirVehiculos: alVehiculos,
                   alAbrirCitas: alCitas,
                   alAbrirCatalogo: alCatalogo,
-                  alAbrirAjustes: () => abrirPantalla(
-                    context,
-                    PantallaAjustes(
+                  alAbrirAjustes: () {
+                    final ajustes = PantallaAjustes(
                       api: widget.api,
                       alCerrarSesion: _cerrarSesion,
-                    ),
-                  ),
+                    );
+                    // Con la barra de pestañas del router, Ajustes se abre
+                    // por encima de ella: si no, la barra tapa lo último de
+                    // la lista («Cerrar sesión»).
+                    if (_pestanasEnV2) {
+                      if (ModalRoute.of(context)?.isCurrent != true) return;
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).push(rutaCareCar<void>(ajustes));
+                    } else {
+                      abrirPantalla(context, ajustes);
+                    }
+                  },
                 );
               },
             ),

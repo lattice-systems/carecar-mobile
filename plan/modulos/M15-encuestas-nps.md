@@ -32,3 +32,16 @@ Medir la satisfacción después de cada servicio y cerrar el ciclo cuando algo s
 | V2-M15.02 | Como cliente insatisfecho quiero que me contacten | NPS ≤ 6 → opción de contacto que crea tarea para la agencia | ✅ | V2-M15.01 |
 | V2-M15.03 | Como cliente quiero ver la respuesta de la agencia | Llega a la bandeja (M06) | ✅ | V2-M06.04 |
 | V2-M15.04 | Como agencia queremos el NPS por periodo y asesor | Endpoint de agregados para analítica (M23) | ✅ | V2-M15.01 |
+
+## Integración
+
+- Inicio muestra una tarjeta si hay encuestas pendientes de órdenes entregadas. El formulario permite aplazar la encuesta por 24 horas o contestarla una vez. Al abrir la ruta de una orden, la app comprueba que su encuesta sigue pendiente en la cuenta activa.
+- El [recorrido en Android físico](../../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android) verificó la tarjeta y el aplazamiento de una orden contra Agencia360 local. Después de responder con NPS de 0 a 6, el cliente puede solicitar contacto. La entrega de la invitación por push sigue pendiente.
+- Agencia360 agrega el NPS por periodo y asesor al objetivo O7. La tarea de contacto y los agregados pasaron la CI de Agencia360 con PostgreSQL y están disponibles en Azure. [Agencia360 #121](https://github.com/lattice-systems/agencia-360-backend/pull/121) · [Despliegue](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46093728740).
+
+
+## Respuesta del asesor en el simulador
+
+Tras solicitar contacto por una encuesta, la operación ficticia de cierre recibe el texto del asesor y guarda un aviso de mensajes para el cliente de la orden. La bandeja conserva la respuesta con push apagado. Repetir el cierre devuelve el mismo resultado y conserva el primer texto.
+
+La [prueba del simulador](../../test/contrato/mock_api_v2_test.dart) comprueba el aislamiento con dos cuentas, la lectura del aviso y la ausencia de duplicados. La implementación operativa del cierre requiere Agencia360.

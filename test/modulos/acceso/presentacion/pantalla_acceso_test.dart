@@ -15,6 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../ayudas/vista_telefono.dart';
 import '../../../ayudas/api_falsa.dart';
 import '../../../ayudas/tema_pista.dart';
 
@@ -33,15 +34,18 @@ void main() {
     WidgetTester tester,
     ControladorSesion sesion, {
     DateTime Function()? reloj,
-  }) => tester.pumpWidget(
-    ProviderScope(
-      overrides: [
-        controladorSesionProvider.overrideWithValue(sesion),
-        if (reloj != null) relojAccesoProvider.overrideWithValue(reloj),
-      ],
-      child: conTemaPista(const PantallaAcceso()),
-    ),
-  );
+  }) {
+    vistaDeTelefono(tester);
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          controladorSesionProvider.overrideWithValue(sesion),
+          if (reloj != null) relojAccesoProvider.overrideWithValue(reloj),
+        ],
+        child: conTemaPista(const PantallaAcceso()),
+      ),
+    );
+  }
 
   Future<void> escribir(
     WidgetTester tester, {
@@ -61,12 +65,29 @@ void main() {
   }
 
   group('el acceso es cerrado', () {
-    testWidgets('no hay ningun flujo de registro', (tester) async {
+    testWidgets('V2-M01.01: la app no ofrece registro público', (tester) async {
       await montar(tester, controlador(ApiFalsa()));
 
-      // El criterio de aceptacion es explicito: la agencia entrega la cuenta.
-      expect(find.textContaining('egistr'), findsNothing);
-      expect(find.textContaining('rear cuenta'), findsNothing);
+      // El criterio es explícito: «la interfaz no debe mostrar botones ni
+      // flujos de Registro de cuenta nueva».
+      for (final prohibido in [
+        'Registrarme',
+        'Registrarse',
+        'Registro',
+        'Crear cuenta',
+        'Crear una cuenta',
+        'Registrate',
+        'Sign up',
+        '¿No tienes cuenta?',
+        'egistr',
+        'rear cuenta',
+      ]) {
+        expect(
+          find.textContaining(prohibido, findRichText: true),
+          findsNothing,
+          reason: 'apareció «$prohibido» y el criterio lo prohíbe',
+        );
+      }
     });
 
     testWidgets('explica de donde sale el acceso', (tester) async {
@@ -258,7 +279,7 @@ void main() {
   });
 
   group('al entrar', () {
-    testWidgets('la sesion queda autenticada y la pantalla no navega sola', (
+    testWidgets('V2-M01.01: avisa que la sesión quedó iniciada', (
       tester,
     ) async {
       final sesion = controlador(ApiFalsa());
@@ -295,6 +316,7 @@ void main() {
           ),
         ],
       );
+      vistaDeTelefono(tester);
       await tester.pumpWidget(
         ProviderScope(
           overrides: [

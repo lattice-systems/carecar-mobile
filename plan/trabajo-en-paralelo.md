@@ -136,13 +136,16 @@ Si todo lo tuyo está bloqueado, aplica "Nunca sin trabajo" de [`equipo-y-repart
 
 Para que los builds no frenen la integración, el trabajo diario va a `dev` y `main` queda como la rama estable.
 
-| Qué | PR a `dev` / push a `dev` | PR `dev` → `main` / push a `main` |
+| Qué | PR a `dev` | PR `dev` → `main` / push a `main` |
 | --- | --- | --- |
-| Formato, análisis, `flutter test` | Sí | Sí |
+| Formato, análisis, `flutter test` (8 partes en paralelo) | Sí | Sí |
+| Cobertura de las pruebas (LCOV y resumen) | No | Sí |
 | Integración Android (emulador), APK, iOS | No (se saltan) | Sí |
 | `Autoría` (sin co-autor de IA) | Sí | Sí |
 | CodeQL, revisión de dependencias, pines TLS | No | Sí |
 
+- Al integrar en `dev` no corre otra CI: el PR ya corrió lo mismo con el mismo código. La suite completa se parte en 8 partes (`pruebas-partes` en `ci.yml`); el check requerido sigue llamándose `Pruebas (flutter test)` y pasa cuando pasan todas.
+- En local, `tool/probar.sh` corre solo las pruebas de lo que cambiaste; `tool/probar.sh --todo` corre todo con todos tus núcleos.
 - Rama de trabajo desde `dev`, PR a `dev`; integra quien abre el PR al pasar la CI rápida.
 - Cuando `dev` junta una tanda de historias, se abre un PR `dev` → `main` y se integra con merge commit, sin squash, para no divergir.
 - Mantén `dev` al día con `main` (`git merge origin/main`) tras cada integración a `main`.

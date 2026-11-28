@@ -41,6 +41,16 @@ abstract final class Movimiento {
     Cubic(0.05, 0.7, 0.1, 1),
   );
 
+  /// Entrada de una portada (inicio, acceso): larga, arranca rápido y se posa.
+  /// Se reparte en tramos con `Aparecer`.
+  static const TokenMovimiento portada = TokenMovimiento(
+    Duration(milliseconds: 1100),
+    Cubic(0.16, 1, 0.3, 1),
+  );
+
+  /// Curva con la que se trazan las dos C del logo: arranca y frena suave.
+  static const Curve curvaDeTrazo = Curves.easeInOutCubic;
+
   static const double amortiguacionResorte = 0.85;
 
   static final SpringDescription resorte = SpringDescription.withDampingRatio(

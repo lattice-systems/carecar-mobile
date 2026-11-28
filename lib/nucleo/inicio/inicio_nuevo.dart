@@ -5,18 +5,22 @@ import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../l10n/app_localizations.dart';
+import '../diseno/componentes/aparecer.dart';
 import '../diseno/componentes/avatar.dart';
 import '../diseno/componentes/barra_flotante.dart';
 import '../diseno/componentes/barra_navegacion.dart' show DestinoNavegacion;
 import '../diseno/componentes/boton_accion_flotante.dart';
 import '../diseno/componentes/cuadro_fecha.dart';
+import '../autos/foto_de_modelo.dart';
 import '../diseno/componentes/esqueleto.dart';
+import '../diseno/componentes/marca_carecar.dart';
 import '../diseno/componentes/tarjeta_auto.dart';
 import '../diseno/componentes/tarjeta_resumen.dart';
 import '../diseno/componentes/tinte_auto.dart';
 import '../diseno/componentes/tono.dart';
 import '../diseno/tema_pista.dart';
 import '../diseno/tokens/espaciado.dart';
+import '../diseno/tokens/movimiento.dart';
 import '../diseno/tokens/radios.dart';
 import '../diseno/tokens/tokens_pista.dart';
 import '../idioma/formato_numeros.dart';
@@ -94,10 +98,17 @@ class InicioNuevo extends StatelessWidget {
     super.key,
     this.nombre,
     this.ordenEnCurso,
+    this.encuestaPendiente,
+    this.promociones,
     this.autos,
     this.proximaCita,
     this.servicioDelAuto,
+    this.conBarra = true,
+    this.ahora,
   });
+
+  /// Reloj para el saludo según la hora; las pruebas lo fijan.
+  final DateTime Function()? ahora;
 
   /// Destinos de la barra (y de las tarjetas que llevan a ellos).
   final VoidCallback alAbrirVehiculos;
@@ -113,6 +124,10 @@ class InicioNuevo extends StatelessWidget {
   /// separación inferior y no ocupa lugar cuando no hay orden.
   final Widget? ordenEnCurso;
 
+  /// Invitación a calificar un servicio entregado.
+  final Widget? encuestaPendiente;
+  final Widget? promociones;
+
   /// Autos del cliente; `null` mientras cargan.
   final List<AutoInicio>? autos;
 
@@ -123,6 +138,11 @@ class InicioNuevo extends StatelessWidget {
   /// está viendo en el carrusel. Igual que [ordenEnCurso], lleva su propia
   /// separación inferior y no ocupa lugar si no hay qué mostrar.
   final Widget Function(int vehiculoId)? servicioDelAuto;
+
+  /// Si el inicio dibuja su propia barra. Con las pestañas v2 la barra vive
+  /// fuera (`MarcoDePestanas`) y aquí es `false`; con módulos en v1 (salida de
+  /// emergencia) la barra sigue aquí porque abre pantallas v1 encima del menú.
+  final bool conBarra;
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +160,7 @@ class InicioNuevo extends StatelessWidget {
 const double _huecoDeSombra = 28;
 
 /// Por encima de esta escala de letra el botón flotante se esconde.
-const double _escalaMaximaDelBoton = 1.5;
+const double _escalaMaximaDelBoton = BotonAccionFlotante.escalaMaxima;
 
 class _Cuerpo extends StatefulWidget {
   const _Cuerpo({required this.inicio});
@@ -151,16 +171,42 @@ class _Cuerpo extends StatefulWidget {
   State<_Cuerpo> createState() => _CuerpoState();
 }
 
-class _CuerpoState extends State<_Cuerpo> {
+class _CuerpoState extends State<_Cuerpo> with SingleTickerProviderStateMixin {
   /// Posición en el carrusel del auto que se está viendo.
   int _auto = 0;
+
+  /// La entrada del inicio: el saludo sube palabra por palabra y la foto del
+  /// auto se asienta. Una sola vez, al abrir; con «reducir movimiento» ya
+  /// arranca terminada.
+  late final AnimationController _entrada = AnimationController(
+    vsync: this,
+    duration: _duracionEntrada,
+  );
+  bool _entradaLista = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_entradaLista) return;
+    _entradaLista = true;
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _entrada.value = 1;
+    } else {
+      _entrada.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _entrada.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final inicio = widget.inicio;
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
-    final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
     final primero = (inicio.nombre ?? '').trim().split(RegExp(r'\s+')).first;
     final autos = inicio.autos;
@@ -173,9 +219,13 @@ class _CuerpoState extends State<_Cuerpo> {
     final escala = MediaQuery.textScalerOf(context).scale(1);
     final conBotonFlotante = escala <= _escalaMaximaDelBoton;
     final reservaInferior =
-        (BarraFlotante.altoReservado *
-            (escala > 1 ? escala.clamp(1, 2).toDouble() : 1)) +
-        (conBotonFlotante ? 56 + Espaciado.e6 : Espaciado.e4) +
+        (inicio.conBarra
+            ? BarraFlotante.altoReservado *
+                  (escala > 1 ? escala.clamp(1, 2).toDouble() : 1)
+            : 0) +
+        (conBotonFlotante
+            ? BotonAccionFlotante.alto + Espaciado.e6
+            : Espaciado.e4) +
         MediaQuery.paddingOf(context).bottom;
 
     return Scaffold(
@@ -194,17 +244,8 @@ class _CuerpoState extends State<_Cuerpo> {
               children: [
                 Row(
                   children: [
-                    Expanded(
-                      child: primero.isEmpty
-                          ? const SizedBox.shrink()
-                          : Text(
-                              textos.inicioSaludo(primero),
-                              style: t.titulo1.copyWith(
-                                color: c.texto,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                    ),
+                    const MarcaCareCar(tamano: 28),
+                    const Spacer(),
                     _BotonPerfil(
                       nombre: inicio.nombre,
                       etiqueta: textos.inicioPerfilYAjustes,
@@ -212,8 +253,15 @@ class _CuerpoState extends State<_Cuerpo> {
                     ),
                   ],
                 ),
+                const SizedBox(height: Espaciado.e5),
+                _Saludo(
+                  nombre: primero,
+                  ahora: inicio.ahora?.call() ?? DateTime.now(),
+                  entrada: _entrada,
+                ),
                 const SizedBox(height: Espaciado.e4),
                 _SeccionAutos(
+                  entrada: _entrada,
                   autos: autos,
                   alToque: inicio.alAbrirVehiculos,
                   escala: escala,
@@ -226,6 +274,8 @@ class _CuerpoState extends State<_Cuerpo> {
                 // invitación a agendar) va al final: nunca por encima de lo
                 // que sí hay.
                 ?inicio.ordenEnCurso,
+                ?inicio.encuestaPendiente,
+                ?inicio.promociones,
                 if (autos != null) ...[
                   if (inicio.proximaCita != null)
                     _TarjetaCita(
@@ -248,7 +298,11 @@ class _CuerpoState extends State<_Cuerpo> {
           Positioned(
             left: 0,
             right: 0,
-            bottom: 0,
+            // Sin barra propia, justo sobre la de fuera: su espacio ya viene en
+            // el margen inferior.
+            bottom: inicio.conBarra
+                ? 0
+                : MediaQuery.paddingOf(context).bottom - Espaciado.e4,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -264,37 +318,38 @@ class _CuerpoState extends State<_Cuerpo> {
                   ),
                   const SizedBox(height: Espaciado.e3),
                 ],
-                BarraFlotante(
-                  indice: 0,
-                  alCambiar: (i) => switch (i) {
-                    1 => inicio.alAbrirVehiculos(),
-                    2 => inicio.alAbrirCitas(),
-                    3 => inicio.alAbrirCatalogo(),
-                    _ => null,
-                  },
-                  destinos: [
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoInicio,
-                      icono: LucideIcons300.house,
-                      iconoActivo: LucideIcons300.house,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoVehiculos,
-                      icono: LucideIcons300.car,
-                      iconoActivo: LucideIcons300.car,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoCitas,
-                      icono: LucideIcons300.calendarDays,
-                      iconoActivo: LucideIcons300.calendarDays,
-                    ),
-                    DestinoNavegacion(
-                      etiqueta: textos.inicioDestinoCatalogo,
-                      icono: LucideIcons300.layoutGrid,
-                      iconoActivo: LucideIcons300.layoutGrid,
-                    ),
-                  ],
-                ),
+                if (inicio.conBarra)
+                  BarraFlotante(
+                    indice: 0,
+                    alCambiar: (i) => switch (i) {
+                      1 => inicio.alAbrirVehiculos(),
+                      2 => inicio.alAbrirCitas(),
+                      3 => inicio.alAbrirCatalogo(),
+                      _ => null,
+                    },
+                    destinos: [
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoInicio,
+                        icono: LucideIcons300.house,
+                        iconoActivo: LucideIcons300.house,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoVehiculos,
+                        icono: LucideIcons300.car,
+                        iconoActivo: LucideIcons300.car,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoCitas,
+                        icono: LucideIcons300.calendarDays,
+                        iconoActivo: LucideIcons300.calendarDays,
+                      ),
+                      DestinoNavegacion(
+                        etiqueta: textos.inicioDestinoCatalogo,
+                        icono: LucideIcons300.layoutGrid,
+                        iconoActivo: LucideIcons300.layoutGrid,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -312,12 +367,14 @@ class _CuerpoState extends State<_Cuerpo> {
 /// con puntos si hay varios.
 class _SeccionAutos extends StatefulWidget {
   const _SeccionAutos({
+    required this.entrada,
     required this.autos,
     required this.alToque,
     required this.escala,
     required this.alCambiarDeAuto,
   });
 
+  final Animation<double> entrada;
   final List<AutoInicio>? autos;
   final VoidCallback alToque;
   final double escala;
@@ -344,8 +401,12 @@ class _SeccionAutosState extends State<_SeccionAutos> {
     final c = TokensPista.de(context).colores;
     final autos = widget.autos;
     // Con letra grande la tarjeta crece para que el texto no se encime a la
-    // silueta.
-    final alto = TarjetaAuto.altoPara(conTitulo: true, escala: widget.escala);
+    // silueta (o, con foto, para que los datos quepan bajo ella). Si alguno de
+    // los autos lleva foto, todos toman ese alto: el carrusel no salta.
+    final conFoto = autos?.any((a) => _fotoDe(a) != null) ?? false;
+    final alto = conFoto
+        ? TarjetaAuto.altoConFoto(escala: widget.escala)
+        : TarjetaAuto.altoPara(conTitulo: true, escala: widget.escala);
     if (autos == null) {
       return Esqueleto(alto: alto, radio: Radios.hoja);
     }
@@ -381,11 +442,15 @@ class _SeccionAutosState extends State<_SeccionAutos> {
                   right: autos.length > 1 ? Espaciado.e1 : 0,
                   bottom: _huecoDeSombra,
                 ),
-                child: _TarjetaDelAuto(
-                  auto: autos[i],
-                  posicion: autos.length > 1 ? (i + 1, autos.length) : null,
-                  alToque: widget.alToque,
-                  alto: alto,
+                // La tarjeta aparece después del saludo, al abrir.
+                child: FadeTransition(
+                  opacity: _curvaTarjeta.animate(widget.entrada),
+                  child: _TarjetaDelAuto(
+                    auto: autos[i],
+                    posicion: autos.length > 1 ? (i + 1, autos.length) : null,
+                    alToque: widget.alToque,
+                    alto: alto,
+                  ),
                 ),
               ),
             ),
@@ -418,6 +483,10 @@ class _SeccionAutosState extends State<_SeccionAutos> {
 }
 
 /// La tarjeta de un auto del cliente, con sus textos ya traducidos.
+/// Foto incluida para el auto: primero por el modelo, luego con la marca.
+String? _fotoDe(AutoInicio auto) =>
+    fotoDeModelo(auto.modelo) ?? fotoDeModelo('${auto.marca} ${auto.modelo}');
+
 class _TarjetaDelAuto extends StatelessWidget {
   const _TarjetaDelAuto({
     required this.auto,
@@ -458,6 +527,83 @@ class _TarjetaDelAuto extends StatelessWidget {
       alToque: alToque,
       etiqueta: etiqueta,
       alto: alto,
+      foto: _fotoDe(auto),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Saludo
+// ---------------------------------------------------------------------------
+
+final _duracionEntrada = Movimiento.portada.duracion;
+final _curvaTarjeta = CurveTween(
+  curve: Interval(0.3, 0.85, curve: Movimiento.portada.curva),
+);
+
+/// La fecha y el saludo según la hora con el nombre. Cada línea sube y
+/// aparece un poco después de la otra.
+class _Saludo extends StatelessWidget {
+  const _Saludo({
+    required this.nombre,
+    required this.ahora,
+    required this.entrada,
+  });
+
+  final String nombre;
+  final DateTime ahora;
+  final Animation<double> entrada;
+
+  @override
+  Widget build(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final t = tokens.tipografia;
+    final textos = AppLocalizations.of(context);
+    final idioma = Localizations.localeOf(context).toLanguageTag();
+    final saludo = switch (ahora.hour) {
+      >= 5 && < 12 => textos.inicioSaludoManana,
+      >= 12 && < 19 => textos.inicioSaludoTarde,
+      _ => textos.inicioSaludoNoche,
+    };
+    final fecha = DateFormat.MMMMEEEEd(idioma).format(ahora).toUpperCase();
+    // Hasta que llega el nombre solo se ve la fecha: «Buenos días,» solo se
+    // leería cortado.
+    final conNombre = nombre.isNotEmpty;
+    final saludoConNombre = '$saludo $nombre';
+    return Semantics(
+      header: true,
+      label: conNombre ? saludoConNombre : fecha,
+      excludeSemantics: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Aparecer(
+            entrada: entrada,
+            desde: 0,
+            hasta: 0.45,
+            child: Text(
+              fecha,
+              style: t.micro.copyWith(
+                color: c.textoSecundario,
+                letterSpacing: 11 * 0.14,
+              ),
+            ),
+          ),
+          if (conNombre) ...[
+            const SizedBox(height: Espaciado.e2),
+            Aparecer(
+              entrada: entrada,
+              desde: 0.08,
+              hasta: 0.6,
+              child: Text(
+                saludoConNombre,
+                style: t.titulo2.copyWith(color: c.texto),
+              ),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

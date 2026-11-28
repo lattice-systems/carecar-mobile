@@ -59,7 +59,7 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
    - Si depende de una historia de backend sin integrar, **no esperes**: trabaja contra el contrato y `mock_api` (dependencia `(simulable)` en el tablero).
 4. **TDD**: prueba que falla → código mínimo → refactor. Un commit por paso con intención.
 5. **Docs**: ficha del módulo (`plan/modulos/`), README, decisiones, diseño, cumplimiento de ficha — lo que aplique.
-6. **Verificar local**: `dart format lib test && flutter analyze && flutter test`.
+6. **Verificar local**: `dart format lib test && flutter analyze && tool/probar.sh` (solo las pruebas de lo que tocaste). La suite completa la corre la CI en 8 partes en paralelo; en local `tool/probar.sh --todo` solo si dudas.
 7. **PR** con la plantilla; enlaza la historia; capturas si hay UI (claro y oscuro).
 8. **Tablero**: `En revisión` en el PR; `Hecha` lo marca quien integra.
 
@@ -81,7 +81,9 @@ flutter pub get
 flutter run --flavor desarrollo -t lib/main_desarrollo.dart   # mock_api (en emulador Android usa 10.0.2.2)
 dart format lib test        # formato
 flutter analyze             # análisis estático
-flutter test                # pruebas
+flutter test                # pruebas (suite completa: lenta; la CI la reparte en 8 partes)
+tool/probar.sh              # solo las pruebas de lo que cambiaste vs origin/dev (rápido)
+tool/probar.sh --todo       # la suite completa con todos tus núcleos
 flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart   # lo que compila CI (los tres flavors)
 cd mock_api && npm install && npm start   # API simulada en :3000
 ```

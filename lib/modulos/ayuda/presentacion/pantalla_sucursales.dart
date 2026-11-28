@@ -65,11 +65,13 @@ class _EstadoPantallaSucursales extends ConsumerState<PantallaSucursales> {
     return sucursales.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.mapPin,
         titulo: titulo,
         conRegreso: true,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.mapPin,
         titulo: titulo,
         conRegreso: true,
         estado: EstadoError(
@@ -82,6 +84,7 @@ class _EstadoPantallaSucursales extends ConsumerState<PantallaSucursales> {
       data: (lista) {
         if (lista.isEmpty) {
           return MarcoPantalla.estado(
+            icono: LucideIcons300.mapPin,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoVacio(
@@ -96,6 +99,7 @@ class _EstadoPantallaSucursales extends ConsumerState<PantallaSucursales> {
           orElse: () => lista.first,
         );
         return MarcoPantalla(
+          icono: LucideIcons300.mapPin,
           titulo: titulo,
           conRegreso: true,
           alRefrescar: () => ref.refresh(sucursalesProvider.future),

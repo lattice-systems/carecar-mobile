@@ -4,6 +4,8 @@ import 'package:carecar_mobile/api/modelos/modelo_catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/catalogo.dart';
 import 'package:carecar_mobile/modulos/catalogo/datos/repositorio_catalogo_api.dart';
 import 'package:carecar_mobile/modulos/catalogo/dominio/repositorio_catalogo.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +99,14 @@ void main() {
   });
 
   group('PantallaCatalogo', () {
+    testWidgets('es raíz de pestaña: sin regresar ni cerrar', (tester) async {
+      await tester.pumpWidget(_app(_Repo(() async => const [_cx5])));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BotonRegresar), findsNothing);
+      expect(find.byType(BotonCerrar), findsNothing);
+    });
+
     testWidgets('muestra foto, nombre y precio desde de cada modelo', (
       tester,
     ) async {

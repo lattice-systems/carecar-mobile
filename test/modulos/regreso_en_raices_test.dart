@@ -9,7 +9,6 @@ import 'package:carecar_mobile/modulos/mantenimiento/presentacion/proveedores_ma
 import 'package:carecar_mobile/modulos/recoleccion/datos/repositorio_recoleccion_fake.dart';
 import 'package:carecar_mobile/modulos/recoleccion/recoleccion.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
-import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/mapas/mapas.dart';
@@ -22,6 +21,11 @@ import 'bitacora/arnes_bitacora.dart';
 
 /// V2-M02 / V2-M17 ajustes visuales: toda pantalla raiz de un modulo, la que
 /// se abre desde el menu o un enlace, debe tener «Regresar».
+///
+/// Las raices de pestana (Garaje, Citas y Catalogo) no entran: a ellas se llega
+/// por la barra de pestanas, que lleva a todas las demas, y no hay a donde
+/// regresar. Que no lleven «Regresar» ni «Cerrar» lo prueba cada una en su
+/// archivo (`pantalla_garaje_test`, `pantalla_mis_citas_test`, `catalogo_test`).
 Widget _con(Widget pantalla, {Escenario escenario = Escenario.claro}) =>
     ProviderScope(
       overrides: [
@@ -48,8 +52,6 @@ Widget _con(Widget pantalla, {Escenario escenario = Escenario.claro}) =>
 
 void main() {
   final raices = <String, Widget Function()>{
-    'Mi garaje': () => const PantallaGaraje(),
-    'Mis citas': () => const PantallaMisCitas(),
     'Guias de emergencia': () => const PantallaGuias(),
     'Mis direcciones': () => const PantallaMisDirecciones(),
     'Mantenimiento': () => const PantallaPlanMantenimiento(vehiculoId: 5),

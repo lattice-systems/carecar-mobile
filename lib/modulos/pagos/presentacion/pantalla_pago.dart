@@ -40,8 +40,12 @@ class PantallaPago extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final textos = AppLocalizations.of(context);
     final titulo = textos.pagosPagoTitulo;
-    Widget estado(Widget hijo) =>
-        MarcoPantalla.estado(titulo: titulo, conRegreso: true, estado: hijo);
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.receipt,
+      titulo: titulo,
+      conRegreso: true,
+      estado: hijo,
+    );
 
     return ref
         .watch(pagoProvider(pagoId))
@@ -69,6 +73,7 @@ class PantallaPago extends ConsumerWidget {
                   ),
           ),
           data: (pago) => MarcoPantalla(
+            icono: LucideIcons300.receipt,
             titulo: titulo,
             subtitulo: textoObjetivoPago(textos, pago),
             conRegreso: true,

@@ -7,6 +7,7 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/autos/foto_de_modelo.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -55,11 +56,13 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
         titulo: titulo,
+        icono: LucideIcons300.car,
         conRegreso: true,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
         titulo: titulo,
+        icono: LucideIcons300.car,
         conRegreso: true,
         estado: EstadoError(
           causa: error is SinConexion
@@ -71,6 +74,7 @@ class PantallaDetalleVehiculo extends ConsumerWidget {
       data: (v) => v == null
           ? MarcoPantalla.estado(
               titulo: titulo,
+              icono: LucideIcons300.car,
               conRegreso: true,
               estado: EstadoVacio(
                 titulo: textos.vehiculosNoEncontradoTitulo,
@@ -124,12 +128,15 @@ class _DetalleState extends State<_Detalle> {
     final vin = v.vin;
     final placas = v.placas;
     final sinPlacas = placas == null || placas.isEmpty;
+    final foto =
+        fotoDeModelo(v.modelo) ?? fotoDeModelo('${v.marca} ${v.modelo}');
 
     return MarcoPantalla(
       titulo: v.titulo,
       subtitulo: sinPlacas
           ? textos.vehiculosSinPlacas
           : textos.vehiculosPlacas(placas),
+      icono: LucideIcons300.car,
       conRegreso: true,
       alRefrescar: widget.alRefrescar,
       slivers: [
@@ -138,7 +145,12 @@ class _DetalleState extends State<_Detalle> {
           sliver: SliverList.list(
             children: [
               const SizedBox(height: Espaciado.e2),
-              TarjetaAuto(tinte: tinte, alto: 150),
+              TarjetaAuto(
+                tinte: tinte,
+                foto: foto,
+                // La foto necesita más alto que la silueta.
+                alto: foto == null ? 150 : 240,
+              ),
               const SizedBox(height: Espaciado.e4),
               FilaAcciones(
                 principal: AccionPantalla(

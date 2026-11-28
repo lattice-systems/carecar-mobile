@@ -29,8 +29,9 @@ void main() {
       'por defecto': InterruptorModulos.porDefecto,
       'todo v1': InterruptorModulos.todoV1,
       'todo v2': InterruptorModulos.todoV2,
-      'acceso en v1': InterruptorModulos.desdeValores(v1: 'acceso'),
-      'recuperacion en v2': InterruptorModulos.desdeValores(v2: 'recuperacion'),
+      // El acceso y la recuperación ya no se conmutan: son siempre v2.
+      'citas en v1': InterruptorModulos.desdeValores(v1: 'citas'),
+      'vehiculos en v2': InterruptorModulos.desdeValores(v2: 'vehiculos'),
     };
     for (final e in interruptores.entries) {
       test(e.key, () {

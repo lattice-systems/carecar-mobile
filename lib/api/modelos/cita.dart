@@ -34,6 +34,7 @@ class NuevaCita {
     required this.fecha,
     this.motivo,
     this.recoleccionDireccionId,
+    this.promocionId,
   });
 
   final int vehiculoId;
@@ -47,12 +48,14 @@ class NuevaCita {
   /// Dirección guardada donde recoger y entregar el auto (V2-M17.02); se
   /// omite del cuerpo si no se pidió recolección.
   final int? recoleccionDireccionId;
+  final int? promocionId;
 
   Map<String, Object?> toJson() => {
     'vehiculoId': vehiculoId,
     'franjaId': franjaId,
     'fecha': escribirFecha(fecha),
     if (motivo != null) 'motivo': motivo,
+    if (promocionId != null) 'promocionId': promocionId,
     if (recoleccionDireccionId != null)
       'recoleccion': {'direccionId': recoleccionDireccionId},
   };
@@ -71,6 +74,7 @@ class Cita {
     this.vehiculoNombre,
     this.motivo,
     this.recoleccion,
+    this.cupon,
   });
 
   factory Cita.fromJson(Map<String, Object?> json) => Cita(
@@ -87,6 +91,7 @@ class Cita {
         : null,
     vehiculoNombre: _leerNombreVehiculo(json),
     motivo: json['motivo'] is String ? json['motivo']! as String : null,
+    cupon: json['cupon'] as String?,
     recoleccion: json['recoleccion'] is Map
         ? RecoleccionCita.fromJson(
             (json['recoleccion']! as Map).cast<String, Object?>(),
@@ -128,6 +133,7 @@ class Cita {
 
   /// Recolección a domicilio (V2-M17.02); solo viene al agendar con ella.
   final RecoleccionCita? recoleccion;
+  final String? cupon;
 
   bool get sePuedeCancelar => estado == EstadoCita.confirmada;
 }

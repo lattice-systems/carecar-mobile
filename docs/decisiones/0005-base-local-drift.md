@@ -20,3 +20,4 @@ Opción 2. SQL tipado con migraciones versionadas y consultas reactivas; mismo m
 
 - Generación de código y migraciones locales que mantener (M21.01).
 - La base se borra al cerrar sesión.
+- (V2-M21.01) Con `sqlite3` 3.x el motor cifrado se elige con `hooks: user_defines: sqlite3: source: sqlcipher` en `pubspec.yaml`. Los paquetes `sqlite3_flutter_libs` y `sqlcipher_flutter_libs` que esta decisión mencionaba al proponerse quedaron como paquetes vacíos (`+eol`), así que **no se agregaron**; se agregaron `drift`, `sqlite3` y `path_provider` (más `drift_dev` y `build_runner` solo en desarrollo). El código generado (`*.g.dart`) se versiona; se regenera con `dart run build_runner build --delete-conflicting-outputs`.
