@@ -7,6 +7,7 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/autos/foto_de_modelo.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
@@ -14,6 +15,7 @@ import '../../../nucleo/diseno/componentes/marco_pantalla.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
 import '../../../nucleo/diseno/componentes/tinte_auto.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
+import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../garantia/garantia.dart';
 import '../dominio/vehiculo_garaje.dart';
@@ -40,12 +42,16 @@ class PantallaGaraje extends ConsumerWidget {
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
         titulo: titulo,
-        conRegreso: true,
+        subtitulo: textos.vehiculosSubtitulo,
+        icono: LucideIcons300.car,
+        acciones: const [],
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
         titulo: titulo,
-        conRegreso: true,
+        subtitulo: textos.vehiculosSubtitulo,
+        icono: LucideIcons300.car,
+        acciones: const [],
         estado: EstadoError(
           causa: error is SinConexion
               ? CausaError.sinConexion
@@ -56,7 +62,9 @@ class PantallaGaraje extends ConsumerWidget {
       data: (lista) => lista.isEmpty
           ? MarcoPantalla.estado(
               titulo: titulo,
-              conRegreso: true,
+              subtitulo: textos.vehiculosSubtitulo,
+              icono: LucideIcons300.car,
+              acciones: const [],
               estado: EstadoVacio(
                 titulo: textos.vehiculosVacioTitulo,
                 mensaje: textos.vehiculosVacioMensaje,
@@ -65,7 +73,9 @@ class PantallaGaraje extends ConsumerWidget {
             )
           : MarcoPantalla(
               titulo: titulo,
-              conRegreso: true,
+              subtitulo: textos.vehiculosSubtitulo,
+              icono: LucideIcons300.car,
+              acciones: const [],
               alRefrescar: () => ref.refresh(garajeProvider.future),
               slivers: [
                 SliverPadding(
@@ -106,6 +116,9 @@ class _TarjetaDelAuto extends ConsumerWidget {
               NumberFormat.decimalPattern(_localeNumeros(context)).format(km),
             ),
       tinte: tinteDeColorAuto(c, auto.color),
+      foto:
+          fotoDeModelo(auto.modelo) ??
+          fotoDeModelo('${auto.marca} ${auto.modelo}'),
       alToque: () => context.push(rutaDetalleVehiculo(auto.id)),
     );
     if (!ref.watch(hayCampanaAbiertaProvider(auto.id))) return tarjeta;
@@ -131,17 +144,20 @@ class _Cargando extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final alto = TarjetaAuto.altoConFoto(
+      escala: MediaQuery.textScalerOf(context).scale(1),
+    );
     return Semantics(
       label: AppLocalizations.of(context).vehiculosCargando,
       liveRegion: true,
-      child: const SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        padding: EdgeInsets.all(Espaciado.e4),
+      child: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        padding: const EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [
-            Esqueleto(alto: TarjetaAuto.altoBase, radio: 28),
-            SizedBox(height: Espaciado.e4),
-            Esqueleto(alto: TarjetaAuto.altoBase, radio: 28),
+            Esqueleto(alto: alto, radio: Radios.hoja),
+            const SizedBox(height: Espaciado.e4),
+            Esqueleto(alto: alto, radio: Radios.hoja),
           ],
         ),
       ),
