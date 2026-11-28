@@ -129,7 +129,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Encuesta de satisfacción del servicio | `encuesta_servicio`, `orden_servicio` | ⬜ | Ver M15 |
+| Encuesta de satisfacción del servicio | `encuesta_servicio`, `orden_servicio` | 🟡 tarjeta, aplazamiento y respuesta contra el contrato de Encuestas. Falta comprobar el push y la respuesta del asesor en la bandeja | Ver M15 |
 
 ### 16. Estreno — plan [M16](modulos/M16-estreno.md)
 

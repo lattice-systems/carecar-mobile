@@ -3934,5 +3934,73 @@
   "documentosDiaVacio": "No expirations on this day.",
   "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
   "documentosDetalle": "{fecha} · {vehiculo}",
-  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}}
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "m15Titulo": "Service surveys",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Rate your service visit",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "You have no pending surveys",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "How likely are you to recommend our service?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Time taken",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Courtesy",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Vehicle cleanliness",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Service advisor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Choose a rating for each question. The highest number is the best rating.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Optional comment",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Submit survey",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Remind me in 24 hours",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Thanks for rating your service",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Ask the dealership to contact me",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "The dealership received your request.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "Could not save. Try again.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "This survey is no longer available",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  }
 }

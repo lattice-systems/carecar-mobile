@@ -6862,4 +6862,56 @@ class AppLocalizationsEn extends AppLocalizations {
   String documentosDetalle(String fecha, String vehiculo) {
     return '$fecha · $vehiculo';
   }
+
+  @override
+  String get m15Titulo => 'Service surveys';
+
+  @override
+  String get m15Pendientes => 'Rate your service visit';
+
+  @override
+  String get m15Vacio => 'You have no pending surveys';
+
+  @override
+  String get m15Recomendar => 'How likely are you to recommend our service?';
+
+  @override
+  String get m15Tiempo => 'Time taken';
+
+  @override
+  String get m15Trato => 'Courtesy';
+
+  @override
+  String get m15Limpieza => 'Vehicle cleanliness';
+
+  @override
+  String get m15Asesor => 'Service advisor';
+
+  @override
+  String get m15Escala =>
+      'Choose a rating for each question. The highest number is the best rating.';
+
+  @override
+  String get m15Comentario => 'Optional comment';
+
+  @override
+  String get m15Enviar => 'Submit survey';
+
+  @override
+  String get m15Posponer => 'Remind me in 24 hours';
+
+  @override
+  String get m15Gracias => 'Thanks for rating your service';
+
+  @override
+  String get m15Contacto => 'Ask the dealership to contact me';
+
+  @override
+  String get m15ContactoListo => 'The dealership received your request.';
+
+  @override
+  String get m15Error => 'Could not save. Try again.';
+
+  @override
+  String get m15NoDisponible => 'This survey is no longer available';
 }

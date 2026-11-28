@@ -212,8 +212,8 @@ Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
 | V2-M13.04 | Saber qué promociones funcionan | Haziel | B | V2-M13.01 | Borrador | |
-| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | Lista | |
-| V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Lista | |
+| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | En curso | [Tarjeta, aplazamiento y respuesta](../test/modulos/encuestas/encuesta_pendiente_test.dart). Pendiente validar push. |
+| V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | En curso | Opción para NPS ≤ 6. Pendiente validar la tarea en Agencia360. |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
 | V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |

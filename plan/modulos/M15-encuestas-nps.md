@@ -32,3 +32,8 @@ Medir la satisfacción después de cada servicio y cerrar el ciclo cuando algo s
 | V2-M15.02 | Como cliente insatisfecho quiero que me contacten | NPS ≤ 6 → opción de contacto que crea tarea para la agencia | ✅ | V2-M15.01 |
 | V2-M15.03 | Como cliente quiero ver la respuesta de la agencia | Llega a la bandeja (M06) | ✅ | V2-M06.04 |
 | V2-M15.04 | Como agencia queremos el NPS por periodo y asesor | Endpoint de agregados para analítica (M23) | ✅ | V2-M15.01 |
+
+## Integración
+
+- Inicio muestra una tarjeta si hay encuestas pendientes de órdenes entregadas. El formulario permite aplazar la encuesta por 24 horas o contestarla una vez.
+- Después de responder con NPS de 0 a 6, el cliente puede solicitar contacto. La entrega de la invitación por push y la respuesta del asesor en la bandeja requieren validación aparte.

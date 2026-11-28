@@ -94,6 +94,7 @@ class InicioNuevo extends StatelessWidget {
     super.key,
     this.nombre,
     this.ordenEnCurso,
+    this.encuestaPendiente,
     this.autos,
     this.proximaCita,
     this.servicioDelAuto,
@@ -112,6 +113,9 @@ class InicioNuevo extends StatelessWidget {
   /// Tarjeta de lo que el taller tiene en curso, si hay. Lleva su propia
   /// separación inferior y no ocupa lugar cuando no hay orden.
   final Widget? ordenEnCurso;
+
+  /// Invitación a calificar un servicio entregado.
+  final Widget? encuestaPendiente;
 
   /// Autos del cliente; `null` mientras cargan.
   final List<AutoInicio>? autos;
@@ -226,6 +230,7 @@ class _CuerpoState extends State<_Cuerpo> {
                 // invitación a agendar) va al final: nunca por encima de lo
                 // que sí hay.
                 ?inicio.ordenEnCurso,
+                ?inicio.encuestaPendiente,
                 if (autos != null) ...[
                   if (inicio.proximaCita != null)
                     _TarjetaCita(

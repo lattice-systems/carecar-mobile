@@ -1,0 +1,7 @@
+{
+  "serviciosCerradosEncuestables": [
+    { "ordenId": 1001, "clienteId": 1, "cerradaEn": "2025-02-02T19:00:00Z", "modelo": "March" }
+  ],
+  "encuestasServicio": [],
+  "tareasContactoEncuesta": []
+}
