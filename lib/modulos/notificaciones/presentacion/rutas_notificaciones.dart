@@ -5,6 +5,7 @@ import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/navegacion/rutas.dart';
 import 'pantalla_bandeja.dart';
 import 'pantalla_permiso_avisos.dart';
+import 'pantalla_preferencias_avisos.dart';
 
 /// Pantalla previa que explica para que sirven los avisos (V2-M06.01).
 ///
@@ -14,6 +15,9 @@ const rutaPermisoAvisos = Rutas.permisoAvisos;
 
 /// La bandeja de avisos (V2-M06.04). Se abre desde el perfil.
 const rutaBandeja = '/avisos';
+
+/// Elegir que avisos recibir (V2-M06.05). Se abre desde el perfil.
+const rutaPreferenciasAvisos = '/avisos/preferencias';
 
 Widget _conTemaPista(BuildContext context, Widget pantalla) => Theme(
   data: MediaQuery.platformBrightnessOf(context) == Brightness.dark
@@ -29,6 +33,12 @@ final rutasNotificaciones = <RouteBase>[
     name: 'bandejaAvisos',
     builder: (context, state) =>
         _conTemaPista(context, const PantallaBandeja()),
+  ),
+  GoRoute(
+    path: rutaPreferenciasAvisos,
+    name: 'preferenciasAvisos',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaPreferenciasAvisos()),
   ),
   GoRoute(
     path: rutaPermisoAvisos,

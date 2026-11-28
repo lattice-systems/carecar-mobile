@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/carecar_api.dart';
 import '../api/excepciones.dart';
+import '../api/modelos/preferencias_notificacion.dart';
 import '../api/modelos/notificacion.dart';
 import '../api/modelos/comun.dart';
 import '../api/modelos/modelos.dart';
@@ -226,6 +227,15 @@ class CarecarApiConCache implements CarecarApi {
 
   @override
   Future<void> marcarAvisosLeidos() => _api.marcarAvisosLeidos();
+
+  @override
+  Future<PreferenciasNotificacion> preferenciasDeAvisos() =>
+      _api.preferenciasDeAvisos();
+
+  @override
+  Future<PreferenciasNotificacion> guardarPreferenciasDeAvisos(
+    PreferenciasNotificacion nuevas,
+  ) => _api.guardarPreferenciasDeAvisos(nuevas);
 
   @override
   Future<List<Cita>> misCitas() => _leer<List<Cita>>(

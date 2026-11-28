@@ -257,3 +257,49 @@ así la pantalla recibe un destino que sirve o un nulo, y no tiene que
 desconfiar de él. Un destino inválido no esconde el aviso — se pierde el toque,
 no el mensaje.
 
+## Las preferencias y el horario silencioso (V2-M06.05)
+
+Construida contra el contrato y `mock_api`: la tabla `preferencia_notificacion`
+no existe en el backend —la propia migración V60 dice que es trabajo de esta
+historia—, así que el endpoint real llegará después.
+
+### No hay botón de guardar
+
+Cada interruptor guarda al tocarse. Una pantalla de interruptores con botón
+obliga a recordar que falta confirmar, y la mitad de la gente se sale sin
+tocarlo.
+
+El precio es que cada cambio tiene que pintarse al instante y **revertirse si
+el servidor falla**. Un interruptor que se queda mintiendo es peor que uno
+lento: la persona creería que apagó algo que sigue encendido. Cuando falla, el
+control vuelve a su lugar y la pantalla lo dice.
+
+Se usa lo que **contesta** el servidor, no lo que se mandó: si el backend
+normaliza algo, la pantalla queda con la verdad.
+
+### El rango que cruza la medianoche es el caso normal
+
+22:00 a 07:00 es lo que la gente configura de verdad. Tratarlo como un rango
+cualquiera dejaría **la noche entera sin silencio**, que es justo lo contrario
+de lo que se pidió. `HorarioSilencioso.silencia()` lo resuelve y tiene su
+prueba; la pantalla además lo dice en palabras, para que nadie crea que lo
+configuró mal.
+
+Dos detalles que se decidieron ahí:
+
+- **`desde == hasta` no silencia nada.** Silenciar el día entero sería una
+  sorpresa desagradable para quien eligió dos horas iguales.
+- **Una hora que no se puede leer deja el horario en nulo**, no en una hora
+  inventada: mejor sin silencio que silenciando a una hora que nadie eligió.
+
+### Quién respeta el silencio
+
+**El servidor, al enviar.** Es el criterio de la historia y no un detalle: un
+aviso que no se manda no despierta a nadie, y filtrarlo en la app no sirve con
+la app cerrada. `HoraDelDia` y `HorarioSilencioso` viven en el dominio para
+poder decírselo a la persona y para probarlo, no para decidirlo.
+
+La categoría `desconocida` no se le manda al servidor: el contrato no la
+declara y sería un 400. Existe solo para que una categoría nueva del backend no
+tumbe la pantalla.
+
