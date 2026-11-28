@@ -6,6 +6,7 @@ import 'package:carecar_mobile/modulos/citas/presentacion/pantalla_mis_citas.dar
 import 'package:carecar_mobile/modulos/notificaciones/presentacion/pantalla_permiso_avisos.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/barra_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_circular.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/calendario.dart';
@@ -84,6 +85,7 @@ void main() {
         tester,
         find.byWidgetPredicate(
           (w) =>
+              (w is BotonAccionFlotante && w.texto == 'Agendar cita') ||
               (w is BotonPildora && w.texto == 'Agendar cita') ||
               (w is BotonCircular && w.etiqueta == 'Agendar cita'),
         ),
