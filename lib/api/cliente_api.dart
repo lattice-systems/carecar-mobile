@@ -316,22 +316,40 @@ class ClienteApi {
     required List<int> bytes,
     required String tipo,
     required T Function(Map<String, Object?>) leer,
+    String? nombreOriginal,
+    void Function(double)? alProgreso,
   }) async {
     final respuesta = await _pedir(() async {
+      alProgreso?.call(0);
       final peticion = http.MultipartRequest('POST', config.ruta(camino))
         ..headers.addAll(await _encabezados())
         ..fields.addAll(campos)
         ..files.add(
-          http.MultipartFile.fromBytes(
+          http.MultipartFile(
             nombreArchivo,
-            bytes,
-            filename: nombreArchivo,
+            alProgreso == null
+                ? Stream.value(bytes)
+                : _archivoConProgreso(bytes, alProgreso),
+            bytes.length,
+            filename: nombreOriginal ?? nombreArchivo,
             contentType: MediaType.parse(tipo),
           ),
         );
       return http.Response.fromStream(await _http.send(peticion));
     }, conToken: true);
     return _leerObjeto(respuesta, leer);
+  }
+
+  Stream<List<int>> _archivoConProgreso(
+    List<int> bytes,
+    void Function(double) alProgreso,
+  ) async* {
+    const tamanoBloque = 32 * 1024;
+    for (var inicio = 0; inicio < bytes.length; inicio += tamanoBloque) {
+      final fin = (inicio + tamanoBloque).clamp(0, bytes.length);
+      yield bytes.sublist(inicio, fin);
+      alProgreso(fin / bytes.length);
+    }
   }
 
   /// POST que responde con Server-Sent Events (V2-M24.09). Cada evento llega

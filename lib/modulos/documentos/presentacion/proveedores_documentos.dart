@@ -11,7 +11,7 @@ import '../dominio/repositorio_documentos.dart';
 /// Repositorio del modulo. En pruebas:
 /// `repositorioDocumentosProvider.overrideWithValue(RepositorioDocumentosFake())`.
 final repositorioDocumentosProvider = Provider<RepositorioDocumentos>(
-  (ref) => RepositorioDocumentosApi(ref.watch(apiClienteProvider)),
+  (ref) => ref.watch(repositorioDocumentosApiProvider),
   retry: (_, _) => null,
   name: 'repositorioDocumentosProvider',
 );
@@ -59,3 +59,7 @@ final pdfDocumentoProvider = Provider.autoDispose
       final api = ref.watch(apiClienteProvider);
       return () => api.descargar('/documentos/$id/archivo');
     });
+
+final repositorioDocumentosApiProvider = Provider<RepositorioDocumentosApi>(
+  (ref) => RepositorioDocumentosApi(ref.watch(apiClienteProvider)),
+);

@@ -86,3 +86,7 @@ La [prueba de calendario](../../test/modulos/documentos/calendario_documentos_te
 ### V2-M09.03 · PDF de agencia
 
 La factura y la póliza de garantía publicadas por la agencia aparecen en el listado existente. Si tienen archivo, se abren con el visor PDF dentro de una pantalla protegida. La API exige que el documento pertenezca a un vehículo de la cuenta antes de dar la URL temporal.
+
+### V2-M09.02 · Captura y carga de foto
+
+Desde Documentos se puede abrir cámara o galería, previsualizar el recorte y agregar el vencimiento. La app normaliza la orientación, recorta solo si detecta bordes y quita EXIF antes de comprimir JPEG. Muestra el progreso de envío y refresca el listado al guardar. La API limita el archivo a 5 MB y comprueba la propiedad del vehículo.

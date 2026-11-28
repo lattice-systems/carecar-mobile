@@ -3949,5 +3949,16 @@
   "ayudaPrivacidadReporte": "Your report includes the CareCar version, operating system and device model. Avoid including personal details.",
   "ayudaReporte": "Report a problem",
   "ayudaSinResultados": "No results",
-  "documentosPdfAgencia": "Dealership document"
+  "documentosPdfAgencia": "Dealership document",
+  "documentosAgregar": "Add document",
+  "documentosAgregarFecha": "Add expiration date",
+  "documentosCamara": "Take photo",
+  "documentosErrorFoto": "Could not prepare the photo.",
+  "documentosErrorGuardar": "Could not save the document. Try again.",
+  "documentosFaltaFoto": "Select an image of the document.",
+  "documentosGaleria": "Choose from gallery",
+  "documentosGuardar": "Save document",
+  "documentosProgreso": "Document upload",
+  "documentosTipo": "Document type",
+  "documentosVistaPrevia": "Document preview"
 }
