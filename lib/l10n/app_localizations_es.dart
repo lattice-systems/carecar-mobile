@@ -6911,4 +6911,38 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get documentosPdfAgencia => 'Documento de la agencia';
+
+  @override
+  String get documentosAgregar => 'Agregar documento';
+
+  @override
+  String get documentosAgregarFecha => 'Agregar fecha de vencimiento';
+
+  @override
+  String get documentosCamara => 'Tomar fotografía';
+
+  @override
+  String get documentosErrorFoto => 'No se pudo preparar la foto.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'No se pudo guardar el documento. Intenta de nuevo.';
+
+  @override
+  String get documentosFaltaFoto => 'Selecciona una imagen del documento.';
+
+  @override
+  String get documentosGaleria => 'Elegir de galería';
+
+  @override
+  String get documentosGuardar => 'Guardar documento';
+
+  @override
+  String get documentosProgreso => 'Carga del documento';
+
+  @override
+  String get documentosTipo => 'Tipo de documento';
+
+  @override
+  String get documentosVistaPrevia => 'Vista previa del documento';
 }

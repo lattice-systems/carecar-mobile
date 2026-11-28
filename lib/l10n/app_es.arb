@@ -8982,5 +8982,16 @@
   "ayudaPrivacidadReporte": "Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.",
   "ayudaReporte": "Reportar un problema",
   "ayudaSinResultados": "Sin resultados",
-  "documentosPdfAgencia": "Documento de la agencia"
+  "documentosPdfAgencia": "Documento de la agencia",
+  "documentosAgregar": "Agregar documento",
+  "documentosAgregarFecha": "Agregar fecha de vencimiento",
+  "documentosCamara": "Tomar fotografía",
+  "documentosErrorFoto": "No se pudo preparar la foto.",
+  "documentosErrorGuardar": "No se pudo guardar el documento. Intenta de nuevo.",
+  "documentosFaltaFoto": "Selecciona una imagen del documento.",
+  "documentosGaleria": "Elegir de galería",
+  "documentosGuardar": "Guardar documento",
+  "documentosProgreso": "Carga del documento",
+  "documentosTipo": "Tipo de documento",
+  "documentosVistaPrevia": "Vista previa del documento"
 }

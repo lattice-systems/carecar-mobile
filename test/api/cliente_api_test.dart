@@ -36,6 +36,41 @@ http.Response _problema(int status, String mensaje) => http.Response(
 
 void main() {
   test(
+    'mide los bytes del archivo enviados en el formulario multipart',
+    () async {
+      final progreso = <double>[];
+      final api = ClienteApi(
+        config: _config,
+        obtenerToken: () async => 'token',
+        http: MockClient((peticion) async {
+          expect(peticion.headers['authorization'], 'Bearer token');
+          expect(
+            peticion.body,
+            contains('name="archivo"; filename="documento.jpg"'),
+          );
+          expect(peticion.body, contains('name="tipo"\r\n\r\nPOLIZA'));
+          return http.Response('{"id":1}', 201);
+        }),
+      );
+      addTearDown(api.cerrar);
+
+      final id = await api.enviarArchivo(
+        '/vehiculos/1/documentos',
+        campos: {'tipo': 'POLIZA'},
+        nombreArchivo: 'archivo',
+        nombreOriginal: 'documento.jpg',
+        bytes: List<int>.filled(65536, 65),
+        tipo: 'image/jpeg',
+        alProgreso: progreso.add,
+        leer: (json) => json['id'],
+      );
+
+      expect(id, 1);
+      expect(progreso, [0, .5, 1]);
+    },
+  );
+
+  test(
     'el tiempo limite por omision cubre el arranque en frio del servidor',
     () {
       // Azure Container Apps tarda ~35 s en despertar (V2-M01.12).

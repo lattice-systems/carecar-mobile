@@ -11529,6 +11529,72 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Documento de la agencia'**
   String get documentosPdfAgencia;
+
+  /// No description provided for @documentosAgregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar documento'**
+  String get documentosAgregar;
+
+  /// No description provided for @documentosAgregarFecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar fecha de vencimiento'**
+  String get documentosAgregarFecha;
+
+  /// No description provided for @documentosCamara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar fotografía'**
+  String get documentosCamara;
+
+  /// No description provided for @documentosErrorFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo preparar la foto.'**
+  String get documentosErrorFoto;
+
+  /// No description provided for @documentosErrorGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el documento. Intenta de nuevo.'**
+  String get documentosErrorGuardar;
+
+  /// No description provided for @documentosFaltaFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una imagen del documento.'**
+  String get documentosFaltaFoto;
+
+  /// No description provided for @documentosGaleria.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de galería'**
+  String get documentosGaleria;
+
+  /// No description provided for @documentosGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar documento'**
+  String get documentosGuardar;
+
+  /// No description provided for @documentosProgreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Carga del documento'**
+  String get documentosProgreso;
+
+  /// No description provided for @documentosTipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de documento'**
+  String get documentosTipo;
+
+  /// No description provided for @documentosVistaPrevia.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista previa del documento'**
+  String get documentosVistaPrevia;
 }
 
 class _AppLocalizationsDelegate
