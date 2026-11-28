@@ -116,6 +116,28 @@ void main() {
         }
       });
 
+      test('la factura publicada se descarga como PDF autenticado', () async {
+        final sesion = await pedir('POST', '/auth/login', cuerpo: _login);
+        final token =
+            (jsonDecode(sesion.body) as Map<String, dynamic>)['accessToken']
+                as String;
+        final respuesta = await pedir(
+          'GET',
+          '/documentos/4/archivo',
+          token: token,
+        );
+        verificarRespuesta(
+          'GET /documentos/{documentoId}/archivo',
+          respuesta,
+          200,
+          'application/pdf',
+        );
+        expect(
+          respuesta.bodyBytes.take(5),
+          orderedEquals([37, 80, 68, 70, 45]),
+        );
+      });
+
       test('registra cada método y ruta del contrato una sola vez', () {
         expect(
           Uri.parse(base).path,

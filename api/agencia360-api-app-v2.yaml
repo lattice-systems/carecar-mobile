@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.32.0
+  version: 2.33.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -2516,7 +2516,7 @@ paths:
         (`America/Mexico_City`), no el teléfono: `VENCIDO` si la fecha ya pasó, `POR_VENCER` si
         vence hoy o en los siguientes 30 días, `VIGENTE` si falta más y `SIN_FECHA` si no tiene
         vencimiento. Sin documentos responde 200 con una lista vacía. No incluye la dirección del
-        archivo: `tieneArchivo` solo indica si hay uno (la descarga firmada llega con V2-M09.02).
+        archivo: `tieneArchivo` solo indica si hay uno (el archivo se descarga mediante una URL firmada).
         La póliza trae `aseguradora` y `telefonoAseguradora`, que usa V2-M11.02.
         Un vehículo que no es del cliente responde 404, igual que uno que no existe.
       parameters:
@@ -2536,6 +2536,67 @@ paths:
           $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
+
+    post:
+      summary: Guardar una foto JPEG de hasta 5 MB como documento del vehículo propio
+      parameters:
+        - in: path
+          name: vehiculoId
+          required: true
+          schema: { type: integer, format: int64 }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [tipo, archivo]
+              properties:
+                tipo:
+                  type: string
+                  enum: [POLIZA, TARJETA_CIRCULACION, VERIFICACION, TENENCIA, LICENCIA, GARANTIA, FACTURA, OTRO]
+                titulo: { type: string, maxLength: 80, description: Obligatorio si el tipo es OTRO }
+                venceEn: { type: string, format: date }
+                archivo: { type: string, format: binary }
+            encoding:
+              archivo: { contentType: image/jpeg }
+      responses:
+        '201':
+          description: Documento guardado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Documento' }
+        '400':
+          description: Tipo, fecha o archivo inválido
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Problema' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
+
+  /documentos/{documentoId}/archivo:
+    get:
+      summary: Descargar la foto del cliente o el PDF de agencia de un vehículo propio
+      parameters:
+        - in: path
+          name: documentoId
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: Foto JPEG o PDF al seguir la redirección
+          content:
+            image/jpeg:
+              schema: { type: string, format: binary }
+            application/pdf:
+              schema: { type: string, format: binary }
+        '302':
+          description: Redirección a la descarga firmada por 15 minutos
+          headers:
+            Location:
+              schema: { type: string, format: uri-reference }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
 
   /vehiculos/{vehiculoId}/campanas:
     get:

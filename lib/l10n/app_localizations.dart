@@ -11523,6 +11523,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Sin resultados'**
   String get ayudaSinResultados;
+
+  /// No description provided for @documentosPdfAgencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento de la agencia'**
+  String get documentosPdfAgencia;
 }
 
 class _AppLocalizationsDelegate
