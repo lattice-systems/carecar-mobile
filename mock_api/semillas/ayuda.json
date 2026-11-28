@@ -1,0 +1,21 @@
+{
+  "preguntasFrecuentes": [
+    {
+      "id": 1,
+      "tema": "Citas",
+      "pregunta": "Como puedo cambiar mi cita?",
+      "respuesta": "Abre Mis citas, elige una cita confirmada y selecciona reprogramar para escoger otra fecha disponible.",
+      "orden": 1,
+      "activa": true
+    },
+    {
+      "id": 2,
+      "tema": "Cuenta",
+      "pregunta": "Como actualizo mi contrasena?",
+      "respuesta": "En tu perfil puedes cambiar la contrasena de tu cuenta CareCar.",
+      "orden": 2,
+      "activa": true
+    }
+  ],
+  "reportesApp": []
+}

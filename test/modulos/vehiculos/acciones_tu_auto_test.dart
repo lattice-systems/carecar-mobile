@@ -34,6 +34,7 @@ const _destinos = [
   'Bitácora',
   'Garantía',
   'Campañas de seguridad',
+  'Documentos',
 ];
 
 /// El grupo de lista que lleva el encabezado «Tu auto».

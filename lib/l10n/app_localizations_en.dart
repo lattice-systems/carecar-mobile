@@ -1821,6 +1821,134 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avisoCerrar => 'Close notice';
 
   @override
+  String get preferenciasAvisosTitulo => 'Which notifications I get';
+
+  @override
+  String get preferenciasAvisosSubtitulo => 'Saved as you change it';
+
+  @override
+  String get preferenciasAvisosCargando => 'Loading your preferences';
+
+  @override
+  String get preferenciasAvisosFalloTitulo => 'We could not save the change';
+
+  @override
+  String get preferenciasAvisosFalloMensaje =>
+      'We left it as it was. Try again in a moment.';
+
+  @override
+  String get preferenciasAvisosTaller => 'My car at the shop';
+
+  @override
+  String get preferenciasAvisosTallerDetalle =>
+      'Every time your car moves to a new stage.';
+
+  @override
+  String get preferenciasAvisosCitas => 'My appointments';
+
+  @override
+  String get preferenciasAvisosCitasDetalle =>
+      'Reminders 24 and 2 hours ahead.';
+
+  @override
+  String get preferenciasAvisosMantenimiento => 'Maintenance';
+
+  @override
+  String get preferenciasAvisosDocumentos => 'Documents';
+
+  @override
+  String get preferenciasAvisosMensajes => 'Messages from my advisor';
+
+  @override
+  String get preferenciasAvisosPromociones => 'Promotions';
+
+  @override
+  String get preferenciasAvisosPromocionesDetalle =>
+      'Offers and news from the dealership. Off by default.';
+
+  @override
+  String get preferenciasAvisosOtros => 'Other notifications';
+
+  @override
+  String get preferenciasAvisosSilencio => 'Quiet hours';
+
+  @override
+  String get preferenciasAvisosSilencioDetalle =>
+      'We will not notify you during that range.';
+
+  @override
+  String get preferenciasAvisosCruzaMedianoche =>
+      'Quiet hours cross midnight, which is normal for sleeping.';
+
+  @override
+  String get preferenciasAvisosMismoDia =>
+      'Quiet hours are within the same day.';
+
+  @override
+  String get accesoPerfilPreferenciasAvisos => 'Which notifications I get';
+
+  @override
+  String preferenciasAvisosDesde(String hora) {
+    return 'From $hora';
+  }
+
+  @override
+  String preferenciasAvisosHasta(String hora) {
+    return 'Until $hora';
+  }
+
+  @override
+  String get bandejaTitulo => 'Notifications';
+
+  @override
+  String get bandejaCargando => 'Loading your notifications';
+
+  @override
+  String get bandejaVacioTitulo => 'No notifications yet';
+
+  @override
+  String get bandejaVacioMensaje =>
+      'Here we will tell you how your car is doing at the shop, when your appointment is, and when your documents are ready.';
+
+  @override
+  String get bandejaMarcarTodos => 'Mark all as read';
+
+  @override
+  String get bandejaSinLeerUno => 'Unread';
+
+  @override
+  String get bandejaErrorMasTitulo => 'We could not load more notifications';
+
+  @override
+  String get bandejaErrorMasMensaje =>
+      'What already loaded is still here. Pull down to try again.';
+
+  @override
+  String get accesoPerfilMisAvisos => 'My notifications';
+
+  @override
+  String bandejaSinLeer(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n unread',
+      one: '1 unread',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get conexionSinRedTitulo => 'No connection to the dealership';
+
+  @override
+  String get conexionSinRedMensaje =>
+      'You can still see what was already saved. Anything that needs the internet will be retried when the signal is back.';
+
+  @override
+  String get conexionAccionSinRed =>
+      'Needs the internet. We will try when the signal is back.';
+
+  @override
   String get avisosPermisoTitulo => 'Why we notify you';
 
   @override
@@ -6640,4 +6768,373 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recoleccionSeguimientoMarcadorChofer => 'Your driver';
+
+  @override
+  String get contactoTitulo => 'Contact';
+
+  @override
+  String get contactoIntro =>
+      'Choose how you\'d like to reach the agency. Your main branch will help you.';
+
+  @override
+  String get contactoGrupoMedios => 'Ways to reach us';
+
+  @override
+  String get contactoLlamar => 'Call the agency';
+
+  @override
+  String get contactoCorreo => 'Send an email';
+
+  @override
+  String get contactoGrupoDonde => 'Where we are';
+
+  @override
+  String get contactoVerSucursales => 'Branches and hours';
+
+  @override
+  String get contactoVerSucursalesDetalle => 'Map, hours and directions';
+
+  @override
+  String contactoNoSePudoCorreo(String correo) {
+    return 'We couldn\'t open your email app. Write to us at $correo.';
+  }
+
+  @override
+  String get documentosTitulo => 'Documents';
+
+  @override
+  String get documentosCargando => 'Loading documents';
+
+  @override
+  String get documentosVaciaTitulo => 'No documents yet';
+
+  @override
+  String get documentosVaciaMensaje =>
+      'Your policy, registration card and inspection will live here, with their due dates.';
+
+  @override
+  String documentosSubtitulo(int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total documents',
+      one: '1 document',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosResumenAtencion(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad documents need attention',
+      one: '1 document needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosResumenAlDia => 'All in order';
+
+  @override
+  String get documentosResumenAlDiaDetalle => 'Your documents are up to date.';
+
+  @override
+  String documentosResumenVence(String nombre, String cuando) {
+    return '$nombre is due $cuando.';
+  }
+
+  @override
+  String documentosResumenVencio(String nombre, String cuando) {
+    return '$nombre expired $cuando.';
+  }
+
+  @override
+  String get documentosGrupoPorVencer => 'Due soon';
+
+  @override
+  String get documentosGrupoVencidos => 'Expired';
+
+  @override
+  String get documentosGrupoVigentes => 'Valid';
+
+  @override
+  String get documentosGrupoSinFecha => 'No expiry date';
+
+  @override
+  String get documentosEstadoVigente => 'Valid';
+
+  @override
+  String get documentosEstadoPorVencer => 'Due soon';
+
+  @override
+  String get documentosEstadoVencido => 'Expired';
+
+  @override
+  String get documentosEstadoSinFecha => 'No date';
+
+  @override
+  String documentosVenceEl(String fecha) {
+    return 'Expires on $fecha';
+  }
+
+  @override
+  String documentosVencioEl(String fecha) {
+    return 'Expired on $fecha';
+  }
+
+  @override
+  String documentosEnDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: 'in $dias days',
+      one: 'tomorrow',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosHaceDias(int dias) {
+    String _temp0 = intl.Intl.pluralLogic(
+      dias,
+      locale: localeName,
+      other: '$dias days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String documentosNumero(String numero) {
+    return 'No. $numero';
+  }
+
+  @override
+  String get documentosCargadoPorAgencia => 'Uploaded by the dealership';
+
+  @override
+  String get documentosTipoPoliza => 'Insurance policy';
+
+  @override
+  String get documentosTipoTarjetaCirculacion => 'Registration card';
+
+  @override
+  String get documentosTipoVerificacion => 'Vehicle inspection';
+
+  @override
+  String get documentosTipoTenencia => 'Vehicle tax';
+
+  @override
+  String get documentosTipoLicencia => 'Driver\'s license';
+
+  @override
+  String get documentosTipoGarantia => 'Warranty policy';
+
+  @override
+  String get documentosTipoFactura => 'Purchase invoice';
+
+  @override
+  String get documentosTipoOtro => 'Other document';
+
+  @override
+  String get asistenciaLlamarAseguradoraBuscando => 'Looking for your policy…';
+
+  @override
+  String get ayudaAcerca => 'About CareCar';
+
+  @override
+  String get ayudaVersion => 'Version';
+
+  @override
+  String get ayudaCargando => 'Loading…';
+
+  @override
+  String get ayudaLicencias => 'Software licenses';
+
+  @override
+  String get ayudaLicenciasDetalle => 'Components included in the app';
+
+  @override
+  String get ayudaPrivacidad => 'Privacy notice';
+
+  @override
+  String get ayudaTerminos => 'Terms of use';
+
+  @override
+  String get ayudaTerminosAusentes => 'The document is unavailable.';
+
+  @override
+  String get ayudaCerrar => 'Close';
+
+  @override
+  String get documentosCalendario => 'Expiration calendar';
+
+  @override
+  String get documentosVencimientos => 'Expirations';
+
+  @override
+  String get documentosErrorCalendario => 'Could not load expirations';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad expirations',
+      one: '1 expiration',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Expirations this month';
+
+  @override
+  String get documentosVerMes => 'View full month';
+
+  @override
+  String get documentosMesVacio => 'No expirations this month.';
+
+  @override
+  String get documentosDiaVacio => 'No expirations on this day.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
+
+  @override
+  String get ayudaBuscar => 'Search';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Enter a question or topic';
+
+  @override
+  String get ayudaDescripcion => 'Description';
+
+  @override
+  String get ayudaDescripcionPista => 'Tell us what happened';
+
+  @override
+  String get ayudaEnviado => 'Report sent';
+
+  @override
+  String get ayudaEnviar => 'Send report';
+
+  @override
+  String get ayudaErrorReporte => 'Could not send your report. Try again.';
+
+  @override
+  String get ayudaGracias => 'Thanks for helping us improve.';
+
+  @override
+  String get ayudaLongitud => 'Describe the problem in 10 to 2,000 characters.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Try different keywords.';
+
+  @override
+  String get ayudaPreguntas => 'Frequently asked questions';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Your report includes the CareCar version, operating system and device model. Avoid including personal details.';
+
+  @override
+  String get ayudaReporte => 'Report a problem';
+
+  @override
+  String get ayudaSinResultados => 'No results';
+
+  @override
+  String get documentosPdfAgencia => 'Dealership document';
+
+  @override
+  String get documentosAgregar => 'Add document';
+
+  @override
+  String get documentosAgregarFecha => 'Add expiration date';
+
+  @override
+  String get documentosCamara => 'Take photo';
+
+  @override
+  String get documentosErrorFoto => 'Could not prepare the photo.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'Could not save the document. Try again.';
+
+  @override
+  String get documentosFaltaFoto => 'Select an image of the document.';
+
+  @override
+  String get documentosGaleria => 'Choose from gallery';
+
+  @override
+  String get documentosGuardar => 'Save document';
+
+  @override
+  String get documentosProgreso => 'Document upload';
+
+  @override
+  String get documentosTipo => 'Document type';
+
+  @override
+  String get documentosVistaPrevia => 'Document preview';
+
+  @override
+  String get m15Titulo => 'Service surveys';
+
+  @override
+  String get m15Pendientes => 'Rate your service visit';
+
+  @override
+  String get m15Vacio => 'You have no pending surveys';
+
+  @override
+  String get m15Recomendar => 'How likely are you to recommend our service?';
+
+  @override
+  String get m15Tiempo => 'Time taken';
+
+  @override
+  String get m15Trato => 'Courtesy';
+
+  @override
+  String get m15Limpieza => 'Vehicle cleanliness';
+
+  @override
+  String get m15Asesor => 'Service advisor';
+
+  @override
+  String get m15Escala =>
+      'Choose a rating for each question. The highest number is the best rating.';
+
+  @override
+  String get m15Comentario => 'Optional comment';
+
+  @override
+  String get m15Enviar => 'Submit survey';
+
+  @override
+  String get m15Posponer => 'Remind me in 24 hours';
+
+  @override
+  String get m15Gracias => 'Thanks for rating your service';
+
+  @override
+  String get m15Contacto => 'Ask the dealership to contact me';
+
+  @override
+  String get m15ContactoListo => 'The dealership received your request.';
+
+  @override
+  String get m15Error => 'Could not save. Try again.';
+
+  @override
+  String get m15NoDisponible => 'This survey is no longer available';
 }

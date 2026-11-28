@@ -74,6 +74,7 @@ dependencies:
   latlong2: ^0.10.1
   geolocator: ^14.0.1
   geocoding: ^5.0.1
+  image: ^3.3.0
   image_picker: ^1.2.4
   http_parser: ^4.1.2
 
@@ -178,6 +179,7 @@ flutter:
         - asset: assets/fonts/JetBrainsMono-700.ttf
           weight: 700
   assets:
+    - terminos.txt
     - assets/marca/
     - assets/autos/galeria/
     - assets/autos/

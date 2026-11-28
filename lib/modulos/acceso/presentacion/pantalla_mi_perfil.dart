@@ -62,6 +62,7 @@ class _Contenido extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
     final c = TokensPista.de(context).colores;
     final idioma = Localizations.localeOf(context).toString();
+    final sinLeer = ref.watch(avisosSinLeerProvider);
 
     return MarcoPantalla(
       icono: LucideIcons300.user,
@@ -135,6 +136,23 @@ class _Contenido extends ConsumerWidget {
                     // despues de negarlos. En Android 13 y despues el dialogo
                     // del sistema ya no vuelve, asi que si no esta aqui no
                     // hay forma de prenderlos.
+                    // V2-M06.04: la bandeja, con su contador de no leidos.
+                    FilaGrupo(
+                      titulo: textos.accesoPerfilMisAvisos,
+                      subtitulo: sinLeer > 0
+                          ? textos.bandejaSinLeer(sinLeer)
+                          : null,
+                      icono: LucideIcons300.inbox,
+                      colorIcono: c.acento,
+                      alToque: () => context.push(rutaBandeja),
+                    ),
+                    // V2-M06.05: elegir que avisos recibir.
+                    FilaGrupo(
+                      titulo: textos.accesoPerfilPreferenciasAvisos,
+                      icono: LucideIcons300.slidersHorizontal,
+                      colorIcono: c.acento,
+                      alToque: () => context.push(rutaPreferenciasAvisos),
+                    ),
                     FilaGrupo(
                       titulo: textos.accesoPerfilAvisos,
                       subtitulo: switch (ref.watch(permisoDeAvisosProvider)) {

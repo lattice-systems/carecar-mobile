@@ -36,6 +36,41 @@ http.Response _problema(int status, String mensaje) => http.Response(
 
 void main() {
   test(
+    'mide los bytes del archivo enviados en el formulario multipart',
+    () async {
+      final progreso = <double>[];
+      final api = ClienteApi(
+        config: _config,
+        obtenerToken: () async => 'token',
+        http: MockClient((peticion) async {
+          expect(peticion.headers['authorization'], 'Bearer token');
+          expect(
+            peticion.body,
+            contains('name="archivo"; filename="documento.jpg"'),
+          );
+          expect(peticion.body, contains('name="tipo"\r\n\r\nPOLIZA'));
+          return http.Response('{"id":1}', 201);
+        }),
+      );
+      addTearDown(api.cerrar);
+
+      final id = await api.enviarArchivo(
+        '/vehiculos/1/documentos',
+        campos: {'tipo': 'POLIZA'},
+        nombreArchivo: 'archivo',
+        nombreOriginal: 'documento.jpg',
+        bytes: List<int>.filled(65536, 65),
+        tipo: 'image/jpeg',
+        alProgreso: progreso.add,
+        leer: (json) => json['id'],
+      );
+
+      expect(id, 1);
+      expect(progreso, [0, .5, 1]);
+    },
+  );
+
+  test(
     'el tiempo limite por omision cubre el arranque en frio del servidor',
     () {
       // Azure Container Apps tarda ~35 s en despertar (V2-M01.12).
@@ -553,6 +588,58 @@ void main() {
         cliente.eliminar('/direcciones/4'),
         throwsA(isA<Conflicto>()),
       );
+    });
+  });
+
+  group('PUT sin respuesta y DELETE con consulta (V2-M25.05)', () {
+    test('actualizarSinRespuesta manda PUT con JSON y acepta un 204', () async {
+      String? metodo;
+      Uri? ruta;
+      String? cuerpo;
+      final cliente = _clienteQueResponde((req) {
+        metodo = req.method;
+        ruta = req.url;
+        cuerpo = req.body;
+        return http.Response('', 204);
+      });
+
+      await cliente.actualizarSinRespuesta(
+        '/ordenes/41/actividad-en-vivo',
+        cuerpo: {'pushToken': 'aabb'},
+      );
+
+      expect(metodo, 'PUT');
+      expect(ruta!.path, '/api/v1/app/ordenes/41/actividad-en-vivo');
+      expect(jsonDecode(cuerpo!), {'pushToken': 'aabb'});
+    });
+
+    test('actualizarSinRespuesta mapea un 409 a Conflicto', () async {
+      final cliente = _clienteQueResponde((_) => _problema(409, 'Entregada'));
+      await expectLater(
+        cliente.actualizarSinRespuesta('/ordenes/41/x', cuerpo: const {}),
+        throwsA(isA<Conflicto>()),
+      );
+    });
+
+    test('eliminar manda la consulta y omite los valores nulos', () async {
+      final rutas = <Uri>[];
+      final cliente = _clienteQueResponde((req) {
+        rutas.add(req.url);
+        return http.Response('', 204);
+      });
+
+      await cliente.eliminar(
+        '/ordenes/41/actividad-en-vivo',
+        consulta: {'pushToken': 'aabb'},
+      );
+      await cliente.eliminar(
+        '/ordenes/41/actividad-en-vivo',
+        consulta: {'pushToken': null},
+      );
+
+      expect(rutas[0].queryParameters, {'pushToken': 'aabb'});
+      expect(rutas[1].hasQuery, isFalse);
+      expect(rutas[1].path, '/api/v1/app/ordenes/41/actividad-en-vivo');
     });
   });
 }

@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
-import '../../../config/agencia.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/diseno/componentes/aviso.dart';
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
@@ -18,6 +17,7 @@ import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../../nucleo/mapas/mapas.dart';
+import '../../ayuda/ayuda.dart' show contactoDeAgenciaProvider;
 import '../../vehiculos/vehiculos.dart' show VehiculoGaraje;
 import '../dominio/contacto_de_llamada.dart';
 import '../dominio/repositorio_asistencia.dart';
@@ -213,6 +213,9 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
     final c = tokens.colores;
 
     final conUbicacion = _coordenada != null;
+    // Se observa desde que se ve el formulario: asi la sucursal ya esta leida
+    // si despues se pierde la conexion (el proveedor se libera sin oyentes).
+    ref.watch(contactoDeAgenciaProvider);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
@@ -309,7 +312,9 @@ class _FormularioPedirAyudaState extends ConsumerState<FormularioPedirAyuda> {
                 icono: LucideIcons300.phone,
                 expandido: true,
                 variante: VarianteBotonPildora.tonal,
-                alPresionar: () => _marcar(Agencia.telefono),
+                // Sucursal principal (V2-M27.02); `Agencia` de respaldo.
+                alPresionar: () =>
+                    _marcar(ref.read(contactoDeAgenciaProvider).telefono),
               ),
             ],
             const SizedBox(height: Espaciado.e4),

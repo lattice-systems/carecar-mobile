@@ -3098,6 +3098,216 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título de la pantalla de preferencias de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué avisos recibo'**
+  String get preferenciasAvisosTitulo;
+
+  /// Aclara que no hay botón de guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Se guarda al momento'**
+  String get preferenciasAvisosSubtitulo;
+
+  /// Anuncio al lector de pantalla mientras cargan.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus preferencias'**
+  String get preferenciasAvisosCargando;
+
+  /// Título del aviso cuando el guardado falla.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el cambio'**
+  String get preferenciasAvisosFalloTitulo;
+
+  /// Explica que el interruptor se revirtió.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo dejamos como estaba. Inténtalo otra vez en un momento.'**
+  String get preferenciasAvisosFalloMensaje;
+
+  /// Categoría de avisos del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi auto en el taller'**
+  String get preferenciasAvisosTaller;
+
+  /// Detalle de la categoría del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Cada vez que tu auto avanza de etapa.'**
+  String get preferenciasAvisosTallerDetalle;
+
+  /// Categoría de avisos de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis citas'**
+  String get preferenciasAvisosCitas;
+
+  /// Detalle de la categoría de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordatorios 24 y 2 horas antes.'**
+  String get preferenciasAvisosCitasDetalle;
+
+  /// Categoría de avisos de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get preferenciasAvisosMantenimiento;
+
+  /// Categoría de avisos de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get preferenciasAvisosDocumentos;
+
+  /// Categoría de avisos de mensajería.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensajes de mi asesor'**
+  String get preferenciasAvisosMensajes;
+
+  /// Categoría de avisos comerciales.
+  ///
+  /// In es, this message translates to:
+  /// **'Promociones'**
+  String get preferenciasAvisosPromociones;
+
+  /// Detalle de la categoría de promociones.
+  ///
+  /// In es, this message translates to:
+  /// **'Ofertas y novedades de la agencia. Vienen apagadas.'**
+  String get preferenciasAvisosPromocionesDetalle;
+
+  /// Categoría que esta versión no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Otros avisos'**
+  String get preferenciasAvisosOtros;
+
+  /// Interruptor del horario silencioso.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario silencioso'**
+  String get preferenciasAvisosSilencio;
+
+  /// Detalle del horario silencioso.
+  ///
+  /// In es, this message translates to:
+  /// **'En ese rango no te avisamos nada.'**
+  String get preferenciasAvisosSilencioDetalle;
+
+  /// Explica que un rango que cruza la medianoche es correcto.
+  ///
+  /// In es, this message translates to:
+  /// **'El silencio cruza la medianoche, que es lo normal para dormir.'**
+  String get preferenciasAvisosCruzaMedianoche;
+
+  /// Explica un rango que no cruza la medianoche.
+  ///
+  /// In es, this message translates to:
+  /// **'El silencio es dentro del mismo día.'**
+  String get preferenciasAvisosMismoDia;
+
+  /// Fila del perfil que abre las preferencias de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué avisos recibo'**
+  String get accesoPerfilPreferenciasAvisos;
+
+  /// Boton que elige la hora de inicio del silencio.
+  ///
+  /// In es, this message translates to:
+  /// **'Desde {hora}'**
+  String preferenciasAvisosDesde(String hora);
+
+  /// Boton que elige la hora de fin del silencio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hasta {hora}'**
+  String preferenciasAvisosHasta(String hora);
+
+  /// Título de la bandeja de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Avisos'**
+  String get bandejaTitulo;
+
+  /// Anuncio al lector de pantalla mientras carga la bandeja.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus avisos'**
+  String get bandejaCargando;
+
+  /// Título de la bandeja vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no tienes avisos'**
+  String get bandejaVacioTitulo;
+
+  /// Mensaje de la bandeja vacía.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí te vamos a decir cómo va tu auto en el taller, cuándo es tu cita y cuándo están listos tus documentos.'**
+  String get bandejaVacioMensaje;
+
+  /// Botón que marca toda la bandeja como leída.
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar todos como leídos'**
+  String get bandejaMarcarTodos;
+
+  /// Lo que el lector de pantalla dice antes de un aviso sin leer.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin leer'**
+  String get bandejaSinLeerUno;
+
+  /// Título del aviso cuando falla cargar otra página.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos cargar más avisos'**
+  String get bandejaErrorMasTitulo;
+
+  /// Explica que no se perdió lo cargado.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que ya se cargó sigue aquí. Desliza hacia abajo para intentarlo otra vez.'**
+  String get bandejaErrorMasMensaje;
+
+  /// Fila del perfil que abre la bandeja.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis avisos'**
+  String get accesoPerfilMisAvisos;
+
+  /// Cuantos avisos sin leer hay en la cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'{n, plural, =1{1 sin leer} other{{n} sin leer}}'**
+  String bandejaSinLeer(int n);
+
+  /// Título del aviso global cuando el servidor no contesta.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin conexión con la agencia'**
+  String get conexionSinRedTitulo;
+
+  /// Explica que la app sigue sirviendo sin red y qué pasa con lo demás.
+  ///
+  /// In es, this message translates to:
+  /// **'Puedes seguir viendo lo que ya tenías guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la señal.'**
+  String get conexionSinRedMensaje;
+
+  /// Explicación de una acción deshabilitada por falta de conexión.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesita internet. Lo intentamos cuando vuelva la señal.'**
+  String get conexionAccionSinRed;
+
   /// Título de la pantalla que explica los avisos antes de pedir el permiso.
   ///
   /// In es, this message translates to:
@@ -11115,6 +11325,624 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Tu chofer'**
   String get recoleccionSeguimientoMarcadorChofer;
+
+  /// Título de la pantalla para contactar a la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Contacto'**
+  String get contactoTitulo;
+
+  /// Texto de apoyo bajo el título de Contacto.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.'**
+  String get contactoIntro;
+
+  /// Encabezado del grupo de medios de contacto (llamar y correo).
+  ///
+  /// In es, this message translates to:
+  /// **'Medios de contacto'**
+  String get contactoGrupoMedios;
+
+  /// Fila que abre el marcador con el teléfono de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Llamar a la agencia'**
+  String get contactoLlamar;
+
+  /// Fila que abre la app de correo con el correo de la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribir un correo'**
+  String get contactoCorreo;
+
+  /// Encabezado del grupo que lleva a las sucursales.
+  ///
+  /// In es, this message translates to:
+  /// **'Dónde estamos'**
+  String get contactoGrupoDonde;
+
+  /// Fila que abre la pantalla de sucursales con mapa.
+  ///
+  /// In es, this message translates to:
+  /// **'Sucursales y horarios'**
+  String get contactoVerSucursales;
+
+  /// Detalle de la fila de sucursales cuando aún no se conoce la sucursal principal.
+  ///
+  /// In es, this message translates to:
+  /// **'Mapa, horarios y cómo llegar'**
+  String get contactoVerSucursalesDetalle;
+
+  /// Aviso cuando el teléfono no tiene app de correo.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos abrir tu app de correo. Escríbenos a {correo}.'**
+  String contactoNoSePudoCorreo(String correo);
+
+  /// Título de la pantalla de documentos del vehículo (V2-M09.01) y de su acceso desde el detalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get documentosTitulo;
+
+  /// Lo que oye el lector de pantalla mientras cargan los documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando documentos'**
+  String get documentosCargando;
+
+  /// Título del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aún no hay documentos'**
+  String get documentosVaciaTitulo;
+
+  /// Mensaje del estado vacío de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.'**
+  String get documentosVaciaMensaje;
+
+  /// Subtítulo de la pantalla: cuántos documentos hay.
+  ///
+  /// In es, this message translates to:
+  /// **'{total, plural, =1{1 documento} other{{total} documentos}}'**
+  String documentosSubtitulo(int total);
+
+  /// Resumen de la portada cuando hay documentos por vencer o vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, =1{1 documento necesita atención} other{{cantidad} documentos necesitan atención}}'**
+  String documentosResumenAtencion(int cantidad);
+
+  /// Resumen de la portada cuando ningún documento está por vencer ni vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Todo en orden'**
+  String get documentosResumenAlDia;
+
+  /// Detalle del resumen cuando todo está en orden.
+  ///
+  /// In es, this message translates to:
+  /// **'Tus documentos están al día.'**
+  String get documentosResumenAlDiaDetalle;
+
+  /// Lo más urgente del resumen de portada, cuando aún no vence. «cuando» es «hoy», «mañana» o «en 12 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} vence {cuando}.'**
+  String documentosResumenVence(String nombre, String cuando);
+
+  /// Lo más urgente del resumen de portada, cuando ya venció. «cuando» es «hace 35 días».
+  ///
+  /// In es, this message translates to:
+  /// **'{nombre} venció {cuando}.'**
+  String documentosResumenVencio(String nombre, String cuando);
+
+  /// Encabezado del grupo de documentos que vencen en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosGrupoPorVencer;
+
+  /// Encabezado del grupo de documentos vencidos.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencidos'**
+  String get documentosGrupoVencidos;
+
+  /// Encabezado del grupo de documentos vigentes.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigentes'**
+  String get documentosGrupoVigentes;
+
+  /// Encabezado del grupo de documentos sin vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha de vencimiento'**
+  String get documentosGrupoSinFecha;
+
+  /// Insignia de un documento vigente.
+  ///
+  /// In es, this message translates to:
+  /// **'Vigente'**
+  String get documentosEstadoVigente;
+
+  /// Insignia de un documento que vence en 30 días o menos.
+  ///
+  /// In es, this message translates to:
+  /// **'Por vencer'**
+  String get documentosEstadoPorVencer;
+
+  /// Insignia de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencido'**
+  String get documentosEstadoVencido;
+
+  /// Insignia de un documento sin fecha de vencimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin fecha'**
+  String get documentosEstadoSinFecha;
+
+  /// Fecha de vencimiento de un documento vigente o por vencer.
+  ///
+  /// In es, this message translates to:
+  /// **'Vence el {fecha}'**
+  String documentosVenceEl(String fecha);
+
+  /// Fecha de vencimiento de un documento vencido.
+  ///
+  /// In es, this message translates to:
+  /// **'Venció el {fecha}'**
+  String documentosVencioEl(String fecha);
+
+  /// Cuándo vence: hoy, mañana o en N días.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =0{hoy} =1{mañana} other{en {dias} días}}'**
+  String documentosEnDias(int dias);
+
+  /// Hace cuánto venció un documento.
+  ///
+  /// In es, this message translates to:
+  /// **'{dias, plural, =1{hace 1 día} other{hace {dias} días}}'**
+  String documentosHaceDias(int dias);
+
+  /// Número o folio del documento.
+  ///
+  /// In es, this message translates to:
+  /// **'N.º {numero}'**
+  String documentosNumero(String numero);
+
+  /// Origen de un documento que subió la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargado por la agencia'**
+  String get documentosCargadoPorAgencia;
+
+  /// Tipo de documento: póliza de seguro.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de seguro'**
+  String get documentosTipoPoliza;
+
+  /// Tipo de documento: tarjeta de circulación.
+  ///
+  /// In es, this message translates to:
+  /// **'Tarjeta de circulación'**
+  String get documentosTipoTarjetaCirculacion;
+
+  /// Tipo de documento: verificación vehicular.
+  ///
+  /// In es, this message translates to:
+  /// **'Verificación vehicular'**
+  String get documentosTipoVerificacion;
+
+  /// Tipo de documento: tenencia y refrendo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tenencia y refrendo'**
+  String get documentosTipoTenencia;
+
+  /// Tipo de documento: licencia de conducir.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencia de conducir'**
+  String get documentosTipoLicencia;
+
+  /// Tipo de documento: póliza de garantía.
+  ///
+  /// In es, this message translates to:
+  /// **'Póliza de garantía'**
+  String get documentosTipoGarantia;
+
+  /// Tipo de documento: factura de compra.
+  ///
+  /// In es, this message translates to:
+  /// **'Factura de compra'**
+  String get documentosTipoFactura;
+
+  /// Tipo de documento: otro, cuando no trae título propio.
+  ///
+  /// In es, this message translates to:
+  /// **'Otro documento'**
+  String get documentosTipoOtro;
+
+  /// Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01).
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando tu póliza…'**
+  String get asistenciaLlamarAseguradoraBuscando;
+
+  /// No description provided for @ayudaAcerca.
+  ///
+  /// In es, this message translates to:
+  /// **'Acerca de CareCar'**
+  String get ayudaAcerca;
+
+  /// No description provided for @ayudaVersion.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión'**
+  String get ayudaVersion;
+
+  /// No description provided for @ayudaCargando.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando…'**
+  String get ayudaCargando;
+
+  /// No description provided for @ayudaLicencias.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencias de software'**
+  String get ayudaLicencias;
+
+  /// No description provided for @ayudaLicenciasDetalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Componentes incluidos en la aplicación'**
+  String get ayudaLicenciasDetalle;
+
+  /// No description provided for @ayudaPrivacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get ayudaPrivacidad;
+
+  /// No description provided for @ayudaTerminos.
+  ///
+  /// In es, this message translates to:
+  /// **'Términos de uso'**
+  String get ayudaTerminos;
+
+  /// No description provided for @ayudaTerminosAusentes.
+  ///
+  /// In es, this message translates to:
+  /// **'El documento no está disponible.'**
+  String get ayudaTerminosAusentes;
+
+  /// No description provided for @ayudaCerrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get ayudaCerrar;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario de vencimientos'**
+  String get documentosCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos'**
+  String get documentosVencimientos;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los vencimientos'**
+  String get documentosErrorCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}'**
+  String documentosCantidad(int cantidad);
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos del mes'**
+  String get documentosDelMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo el mes'**
+  String get documentosVerMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos este mes.'**
+  String get documentosMesVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos en este día.'**
+  String get documentosDiaVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {vehiculo}'**
+  String documentosDetalle(String fecha, String vehiculo);
+
+  /// No description provided for @ayudaBuscar.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar'**
+  String get ayudaBuscar;
+
+  /// No description provided for @ayudaBuscarSugerencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe una pregunta o tema'**
+  String get ayudaBuscarSugerencia;
+
+  /// No description provided for @ayudaDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get ayudaDescripcion;
+
+  /// No description provided for @ayudaDescripcionPista.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuéntanos qué ocurrió'**
+  String get ayudaDescripcionPista;
+
+  /// No description provided for @ayudaEnviado.
+  ///
+  /// In es, this message translates to:
+  /// **'Reporte enviado'**
+  String get ayudaEnviado;
+
+  /// No description provided for @ayudaEnviar.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar reporte'**
+  String get ayudaEnviar;
+
+  /// No description provided for @ayudaErrorReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar el reporte. Intenta de nuevo.'**
+  String get ayudaErrorReporte;
+
+  /// No description provided for @ayudaGracias.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por ayudarnos a mejorar.'**
+  String get ayudaGracias;
+
+  /// No description provided for @ayudaLongitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Describe el problema con entre 10 y 2000 caracteres.'**
+  String get ayudaLongitud;
+
+  /// No description provided for @ayudaOtrasPalabras.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con otras palabras.'**
+  String get ayudaOtrasPalabras;
+
+  /// No description provided for @ayudaPreguntas.
+  ///
+  /// In es, this message translates to:
+  /// **'Preguntas frecuentes'**
+  String get ayudaPreguntas;
+
+  /// No description provided for @ayudaPrivacidadReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.'**
+  String get ayudaPrivacidadReporte;
+
+  /// No description provided for @ayudaReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Reportar un problema'**
+  String get ayudaReporte;
+
+  /// No description provided for @ayudaSinResultados.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin resultados'**
+  String get ayudaSinResultados;
+
+  /// No description provided for @documentosPdfAgencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento de la agencia'**
+  String get documentosPdfAgencia;
+
+  /// No description provided for @documentosAgregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar documento'**
+  String get documentosAgregar;
+
+  /// No description provided for @documentosAgregarFecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar fecha de vencimiento'**
+  String get documentosAgregarFecha;
+
+  /// No description provided for @documentosCamara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar fotografía'**
+  String get documentosCamara;
+
+  /// No description provided for @documentosErrorFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo preparar la foto.'**
+  String get documentosErrorFoto;
+
+  /// No description provided for @documentosErrorGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el documento. Intenta de nuevo.'**
+  String get documentosErrorGuardar;
+
+  /// No description provided for @documentosFaltaFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una imagen del documento.'**
+  String get documentosFaltaFoto;
+
+  /// No description provided for @documentosGaleria.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de galería'**
+  String get documentosGaleria;
+
+  /// No description provided for @documentosGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar documento'**
+  String get documentosGuardar;
+
+  /// No description provided for @documentosProgreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Carga del documento'**
+  String get documentosProgreso;
+
+  /// No description provided for @documentosTipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de documento'**
+  String get documentosTipo;
+
+  /// No description provided for @documentosVistaPrevia.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista previa del documento'**
+  String get documentosVistaPrevia;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Encuestas de servicio'**
+  String get m15Titulo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Califica tu visita al taller'**
+  String get m15Pendientes;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes encuestas pendientes'**
+  String get m15Vacio;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué tan probable es que recomiendes nuestro servicio?'**
+  String get m15Recomendar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Tiempo del servicio'**
+  String get m15Tiempo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Trato recibido'**
+  String get m15Trato;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Limpieza del vehículo'**
+  String get m15Limpieza;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Atención del asesor'**
+  String get m15Asesor;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.'**
+  String get m15Escala;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Comentario opcional'**
+  String get m15Comentario;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar encuesta'**
+  String get m15Enviar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Posponer por 24 horas'**
+  String get m15Posponer;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por calificar tu servicio'**
+  String get m15Gracias;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir que la agencia me contacte'**
+  String get m15Contacto;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia recibió tu solicitud de contacto.'**
+  String get m15ContactoListo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar. Intenta de nuevo.'**
+  String get m15Error;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta encuesta ya no está disponible'**
+  String get m15NoDisponible;
 }
 
 class _AppLocalizationsDelegate

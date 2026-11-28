@@ -2186,6 +2186,161 @@
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
   },
+  "preferenciasAvisosTitulo": "Qu\u00e9 avisos recibo",
+  "@preferenciasAvisosTitulo": {
+    "description": "T\u00edtulo de la pantalla de preferencias de avisos."
+  },
+  "preferenciasAvisosSubtitulo": "Se guarda al momento",
+  "@preferenciasAvisosSubtitulo": {
+    "description": "Aclara que no hay bot\u00f3n de guardar."
+  },
+  "preferenciasAvisosCargando": "Cargando tus preferencias",
+  "@preferenciasAvisosCargando": {
+    "description": "Anuncio al lector de pantalla mientras cargan."
+  },
+  "preferenciasAvisosFalloTitulo": "No pudimos guardar el cambio",
+  "@preferenciasAvisosFalloTitulo": {
+    "description": "T\u00edtulo del aviso cuando el guardado falla."
+  },
+  "preferenciasAvisosFalloMensaje": "Lo dejamos como estaba. Int\u00e9ntalo otra vez en un momento.",
+  "@preferenciasAvisosFalloMensaje": {
+    "description": "Explica que el interruptor se revirti\u00f3."
+  },
+  "preferenciasAvisosTaller": "Mi auto en el taller",
+  "@preferenciasAvisosTaller": {
+    "description": "Categor\u00eda de avisos del taller."
+  },
+  "preferenciasAvisosTallerDetalle": "Cada vez que tu auto avanza de etapa.",
+  "@preferenciasAvisosTallerDetalle": {
+    "description": "Detalle de la categor\u00eda del taller."
+  },
+  "preferenciasAvisosCitas": "Mis citas",
+  "@preferenciasAvisosCitas": {
+    "description": "Categor\u00eda de avisos de citas."
+  },
+  "preferenciasAvisosCitasDetalle": "Recordatorios 24 y 2 horas antes.",
+  "@preferenciasAvisosCitasDetalle": {
+    "description": "Detalle de la categor\u00eda de citas."
+  },
+  "preferenciasAvisosMantenimiento": "Mantenimiento",
+  "@preferenciasAvisosMantenimiento": {
+    "description": "Categor\u00eda de avisos de mantenimiento."
+  },
+  "preferenciasAvisosDocumentos": "Documentos",
+  "@preferenciasAvisosDocumentos": {
+    "description": "Categor\u00eda de avisos de documentos."
+  },
+  "preferenciasAvisosMensajes": "Mensajes de mi asesor",
+  "@preferenciasAvisosMensajes": {
+    "description": "Categor\u00eda de avisos de mensajer\u00eda."
+  },
+  "preferenciasAvisosPromociones": "Promociones",
+  "@preferenciasAvisosPromociones": {
+    "description": "Categor\u00eda de avisos comerciales."
+  },
+  "preferenciasAvisosPromocionesDetalle": "Ofertas y novedades de la agencia. Vienen apagadas.",
+  "@preferenciasAvisosPromocionesDetalle": {
+    "description": "Detalle de la categor\u00eda de promociones."
+  },
+  "preferenciasAvisosOtros": "Otros avisos",
+  "@preferenciasAvisosOtros": {
+    "description": "Categor\u00eda que esta versi\u00f3n no conoce."
+  },
+  "preferenciasAvisosSilencio": "Horario silencioso",
+  "@preferenciasAvisosSilencio": {
+    "description": "Interruptor del horario silencioso."
+  },
+  "preferenciasAvisosSilencioDetalle": "En ese rango no te avisamos nada.",
+  "@preferenciasAvisosSilencioDetalle": {
+    "description": "Detalle del horario silencioso."
+  },
+  "preferenciasAvisosCruzaMedianoche": "El silencio cruza la medianoche, que es lo normal para dormir.",
+  "@preferenciasAvisosCruzaMedianoche": {
+    "description": "Explica que un rango que cruza la medianoche es correcto."
+  },
+  "preferenciasAvisosMismoDia": "El silencio es dentro del mismo d\u00eda.",
+  "@preferenciasAvisosMismoDia": {
+    "description": "Explica un rango que no cruza la medianoche."
+  },
+  "accesoPerfilPreferenciasAvisos": "Qu\u00e9 avisos recibo",
+  "@accesoPerfilPreferenciasAvisos": {
+    "description": "Fila del perfil que abre las preferencias de avisos."
+  },
+  "preferenciasAvisosDesde": "Desde {hora}",
+  "@preferenciasAvisosDesde": {
+    "description": "Boton que elige la hora de inicio del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "preferenciasAvisosHasta": "Hasta {hora}",
+  "@preferenciasAvisosHasta": {
+    "description": "Boton que elige la hora de fin del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "bandejaTitulo": "Avisos",
+  "@bandejaTitulo": {
+    "description": "T\u00edtulo de la bandeja de avisos."
+  },
+  "bandejaCargando": "Cargando tus avisos",
+  "@bandejaCargando": {
+    "description": "Anuncio al lector de pantalla mientras carga la bandeja."
+  },
+  "bandejaVacioTitulo": "Todav\u00eda no tienes avisos",
+  "@bandejaVacioTitulo": {
+    "description": "T\u00edtulo de la bandeja vac\u00eda."
+  },
+  "bandejaVacioMensaje": "Aqu\u00ed te vamos a decir c\u00f3mo va tu auto en el taller, cu\u00e1ndo es tu cita y cu\u00e1ndo est\u00e1n listos tus documentos.",
+  "@bandejaVacioMensaje": {
+    "description": "Mensaje de la bandeja vac\u00eda."
+  },
+  "bandejaMarcarTodos": "Marcar todos como le\u00eddos",
+  "@bandejaMarcarTodos": {
+    "description": "Bot\u00f3n que marca toda la bandeja como le\u00edda."
+  },
+  "bandejaSinLeerUno": "Sin leer",
+  "@bandejaSinLeerUno": {
+    "description": "Lo que el lector de pantalla dice antes de un aviso sin leer."
+  },
+  "bandejaErrorMasTitulo": "No pudimos cargar m\u00e1s avisos",
+  "@bandejaErrorMasTitulo": {
+    "description": "T\u00edtulo del aviso cuando falla cargar otra p\u00e1gina."
+  },
+  "bandejaErrorMasMensaje": "Lo que ya se carg\u00f3 sigue aqu\u00ed. Desliza hacia abajo para intentarlo otra vez.",
+  "@bandejaErrorMasMensaje": {
+    "description": "Explica que no se perdi\u00f3 lo cargado."
+  },
+  "accesoPerfilMisAvisos": "Mis avisos",
+  "@accesoPerfilMisAvisos": {
+    "description": "Fila del perfil que abre la bandeja."
+  },
+  "bandejaSinLeer": "{n, plural, =1{1 sin leer} other{{n} sin leer}}",
+  "@bandejaSinLeer": {
+    "description": "Cuantos avisos sin leer hay en la cuenta.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "conexionSinRedTitulo": "Sin conexi\u00f3n con la agencia",
+  "@conexionSinRedTitulo": {
+    "description": "T\u00edtulo del aviso global cuando el servidor no contesta."
+  },
+  "conexionSinRedMensaje": "Puedes seguir viendo lo que ya ten\u00edas guardado. Lo que necesite internet lo intentamos otra vez cuando vuelva la se\u00f1al.",
+  "@conexionSinRedMensaje": {
+    "description": "Explica que la app sigue sirviendo sin red y qu\u00e9 pasa con lo dem\u00e1s."
+  },
+  "conexionAccionSinRed": "Necesita internet. Lo intentamos cuando vuelva la se\u00f1al.",
+  "@conexionAccionSinRed": {
+    "description": "Explicaci\u00f3n de una acci\u00f3n deshabilitada por falta de conexi\u00f3n."
+  },
   "avisosPermisoTitulo": "Para qu\u00e9 te avisamos",
   "@avisosPermisoTitulo": {
     "description": "T\u00edtulo de la pantalla que explica los avisos antes de pedir el permiso."
@@ -8692,5 +8847,361 @@
   "recoleccionSeguimientoMarcadorChofer": "Tu chofer",
   "@recoleccionSeguimientoMarcadorChofer": {
     "description": "Etiqueta del marcador del chofer en el mapa del seguimiento."
+  },
+  "contactoTitulo": "Contacto",
+  "@contactoTitulo": {
+    "description": "Título de la pantalla para contactar a la agencia."
+  },
+  "contactoIntro": "Elige cómo prefieres hablar con la agencia. Te atiende la sucursal principal.",
+  "@contactoIntro": {
+    "description": "Texto de apoyo bajo el título de Contacto."
+  },
+  "contactoGrupoMedios": "Medios de contacto",
+  "@contactoGrupoMedios": {
+    "description": "Encabezado del grupo de medios de contacto (llamar y correo)."
+  },
+  "contactoLlamar": "Llamar a la agencia",
+  "@contactoLlamar": {
+    "description": "Fila que abre el marcador con el teléfono de la agencia."
+  },
+  "contactoCorreo": "Escribir un correo",
+  "@contactoCorreo": {
+    "description": "Fila que abre la app de correo con el correo de la agencia."
+  },
+  "contactoGrupoDonde": "Dónde estamos",
+  "@contactoGrupoDonde": {
+    "description": "Encabezado del grupo que lleva a las sucursales."
+  },
+  "contactoVerSucursales": "Sucursales y horarios",
+  "@contactoVerSucursales": {
+    "description": "Fila que abre la pantalla de sucursales con mapa."
+  },
+  "contactoVerSucursalesDetalle": "Mapa, horarios y cómo llegar",
+  "@contactoVerSucursalesDetalle": {
+    "description": "Detalle de la fila de sucursales cuando aún no se conoce la sucursal principal."
+  },
+  "contactoNoSePudoCorreo": "No pudimos abrir tu app de correo. Escríbenos a {correo}.",
+  "@contactoNoSePudoCorreo": {
+    "description": "Aviso cuando el teléfono no tiene app de correo.",
+    "placeholders": {
+      "correo": {
+        "type": "String"
+      }
+    }
+  },
+  "documentosTitulo": "Documentos",
+  "@documentosTitulo": {
+    "description": "Título de la pantalla de documentos del vehículo (V2-M09.01) y de su acceso desde el detalle."
+  },
+  "documentosCargando": "Cargando documentos",
+  "@documentosCargando": {
+    "description": "Lo que oye el lector de pantalla mientras cargan los documentos."
+  },
+  "documentosVaciaTitulo": "Aún no hay documentos",
+  "@documentosVaciaTitulo": {
+    "description": "Título del estado vacío de documentos."
+  },
+  "documentosVaciaMensaje": "Aquí vivirán la póliza, la tarjeta de circulación y la verificación de tu auto, con su fecha de vencimiento.",
+  "@documentosVaciaMensaje": {
+    "description": "Mensaje del estado vacío de documentos."
+  },
+  "documentosSubtitulo": "{total, plural, =1{1 documento} other{{total} documentos}}",
+  "@documentosSubtitulo": {
+    "description": "Subtítulo de la pantalla: cuántos documentos hay.",
+    "placeholders": {
+      "total": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "documentosResumenAtencion": "{cantidad, plural, =1{1 documento necesita atención} other{{cantidad} documentos necesitan atención}}",
+  "@documentosResumenAtencion": {
+    "description": "Resumen de la portada cuando hay documentos por vencer o vencidos.",
+    "placeholders": {
+      "cantidad": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "documentosResumenAlDia": "Todo en orden",
+  "@documentosResumenAlDia": {
+    "description": "Resumen de la portada cuando ningún documento está por vencer ni vencido."
+  },
+  "documentosResumenAlDiaDetalle": "Tus documentos están al día.",
+  "@documentosResumenAlDiaDetalle": {
+    "description": "Detalle del resumen cuando todo está en orden."
+  },
+  "documentosResumenVence": "{nombre} vence {cuando}.",
+  "@documentosResumenVence": {
+    "description": "Lo más urgente del resumen de portada, cuando aún no vence. «cuando» es «hoy», «mañana» o «en 12 días».",
+    "placeholders": {
+      "nombre": {
+        "type": "String",
+        "example": "Póliza de seguro"
+      },
+      "cuando": {
+        "type": "String",
+        "example": "en 12 días"
+      }
+    }
+  },
+  "documentosResumenVencio": "{nombre} venció {cuando}.",
+  "@documentosResumenVencio": {
+    "description": "Lo más urgente del resumen de portada, cuando ya venció. «cuando» es «hace 35 días».",
+    "placeholders": {
+      "nombre": {
+        "type": "String",
+        "example": "Verificación vehicular"
+      },
+      "cuando": {
+        "type": "String",
+        "example": "hace 35 días"
+      }
+    }
+  },
+  "documentosGrupoPorVencer": "Por vencer",
+  "@documentosGrupoPorVencer": {
+    "description": "Encabezado del grupo de documentos que vencen en 30 días o menos."
+  },
+  "documentosGrupoVencidos": "Vencidos",
+  "@documentosGrupoVencidos": {
+    "description": "Encabezado del grupo de documentos vencidos."
+  },
+  "documentosGrupoVigentes": "Vigentes",
+  "@documentosGrupoVigentes": {
+    "description": "Encabezado del grupo de documentos vigentes."
+  },
+  "documentosGrupoSinFecha": "Sin fecha de vencimiento",
+  "@documentosGrupoSinFecha": {
+    "description": "Encabezado del grupo de documentos sin vencimiento."
+  },
+  "documentosEstadoVigente": "Vigente",
+  "@documentosEstadoVigente": {
+    "description": "Insignia de un documento vigente."
+  },
+  "documentosEstadoPorVencer": "Por vencer",
+  "@documentosEstadoPorVencer": {
+    "description": "Insignia de un documento que vence en 30 días o menos."
+  },
+  "documentosEstadoVencido": "Vencido",
+  "@documentosEstadoVencido": {
+    "description": "Insignia de un documento vencido."
+  },
+  "documentosEstadoSinFecha": "Sin fecha",
+  "@documentosEstadoSinFecha": {
+    "description": "Insignia de un documento sin fecha de vencimiento."
+  },
+  "documentosVenceEl": "Vence el {fecha}",
+  "@documentosVenceEl": {
+    "description": "Fecha de vencimiento de un documento vigente o por vencer.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "12 dic 2026"
+      }
+    }
+  },
+  "documentosVencioEl": "Venció el {fecha}",
+  "@documentosVencioEl": {
+    "description": "Fecha de vencimiento de un documento vencido.",
+    "placeholders": {
+      "fecha": {
+        "type": "String",
+        "example": "23 oct 2026"
+      }
+    }
+  },
+  "documentosEnDias": "{dias, plural, =0{hoy} =1{mañana} other{en {dias} días}}",
+  "@documentosEnDias": {
+    "description": "Cuándo vence: hoy, mañana o en N días.",
+    "placeholders": {
+      "dias": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "documentosHaceDias": "{dias, plural, =1{hace 1 día} other{hace {dias} días}}",
+  "@documentosHaceDias": {
+    "description": "Hace cuánto venció un documento.",
+    "placeholders": {
+      "dias": {
+        "type": "int",
+        "example": "35"
+      }
+    }
+  },
+  "documentosNumero": "N.º {numero}",
+  "@documentosNumero": {
+    "description": "Número o folio del documento.",
+    "placeholders": {
+      "numero": {
+        "type": "String",
+        "example": "POL-501"
+      }
+    }
+  },
+  "documentosCargadoPorAgencia": "Cargado por la agencia",
+  "@documentosCargadoPorAgencia": {
+    "description": "Origen de un documento que subió la agencia."
+  },
+  "documentosTipoPoliza": "Póliza de seguro",
+  "@documentosTipoPoliza": {
+    "description": "Tipo de documento: póliza de seguro."
+  },
+  "documentosTipoTarjetaCirculacion": "Tarjeta de circulación",
+  "@documentosTipoTarjetaCirculacion": {
+    "description": "Tipo de documento: tarjeta de circulación."
+  },
+  "documentosTipoVerificacion": "Verificación vehicular",
+  "@documentosTipoVerificacion": {
+    "description": "Tipo de documento: verificación vehicular."
+  },
+  "documentosTipoTenencia": "Tenencia y refrendo",
+  "@documentosTipoTenencia": {
+    "description": "Tipo de documento: tenencia y refrendo."
+  },
+  "documentosTipoLicencia": "Licencia de conducir",
+  "@documentosTipoLicencia": {
+    "description": "Tipo de documento: licencia de conducir."
+  },
+  "documentosTipoGarantia": "Póliza de garantía",
+  "@documentosTipoGarantia": {
+    "description": "Tipo de documento: póliza de garantía."
+  },
+  "documentosTipoFactura": "Factura de compra",
+  "@documentosTipoFactura": {
+    "description": "Tipo de documento: factura de compra."
+  },
+  "documentosTipoOtro": "Otro documento",
+  "@documentosTipoOtro": {
+    "description": "Tipo de documento: otro, cuando no trae título propio."
+  },
+  "asistenciaLlamarAseguradoraBuscando": "Buscando tu póliza…",
+  "@asistenciaLlamarAseguradoraBuscando": {
+    "description": "Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01)."
+  },
+  "ayudaAcerca": "Acerca de CareCar",
+  "ayudaVersion": "Versión",
+  "ayudaCargando": "Cargando…",
+  "ayudaLicencias": "Licencias de software",
+  "ayudaLicenciasDetalle": "Componentes incluidos en la aplicación",
+  "ayudaPrivacidad": "Aviso de privacidad",
+  "ayudaTerminos": "Términos de uso",
+  "ayudaTerminosAusentes": "El documento no está disponible.",
+  "ayudaCerrar": "Cerrar",
+  "documentosCalendario": "Calendario de vencimientos",
+  "@documentosCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosVencimientos": "Vencimientos",
+  "@documentosVencimientos": {"description":"Texto de documentos del vehículo."},
+  "documentosErrorCalendario": "No se pudieron cargar los vencimientos",
+  "@documentosErrorCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosCantidad": "{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}",
+  "@documentosCantidad": {"description":"Texto de documentos del vehículo.","placeholders":{"cantidad":{"type":"int"}}},
+  "documentosDelMes": "Vencimientos del mes",
+  "@documentosDelMes": {"description":"Texto de documentos del vehículo."},
+  "documentosVerMes": "Ver todo el mes",
+  "@documentosVerMes": {"description":"Texto de documentos del vehículo."},
+  "documentosMesVacio": "No hay vencimientos este mes.",
+  "@documentosMesVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDiaVacio": "No hay vencimientos en este día.",
+  "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDetalle": "{fecha} · {vehiculo}",
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Buscar",
+  "ayudaBuscarSugerencia": "Escribe una pregunta o tema",
+  "ayudaDescripcion": "Descripción",
+  "ayudaDescripcionPista": "Cuéntanos qué ocurrió",
+  "ayudaEnviado": "Reporte enviado",
+  "ayudaEnviar": "Enviar reporte",
+  "ayudaErrorReporte": "No se pudo enviar el reporte. Intenta de nuevo.",
+  "ayudaGracias": "Gracias por ayudarnos a mejorar.",
+  "ayudaLongitud": "Describe el problema con entre 10 y 2000 caracteres.",
+  "ayudaOtrasPalabras": "Prueba con otras palabras.",
+  "ayudaPreguntas": "Preguntas frecuentes",
+  "ayudaPrivacidadReporte": "Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.",
+  "ayudaReporte": "Reportar un problema",
+  "ayudaSinResultados": "Sin resultados",
+  "documentosPdfAgencia": "Documento de la agencia",
+  "documentosAgregar": "Agregar documento",
+  "documentosAgregarFecha": "Agregar fecha de vencimiento",
+  "documentosCamara": "Tomar fotografía",
+  "documentosErrorFoto": "No se pudo preparar la foto.",
+  "documentosErrorGuardar": "No se pudo guardar el documento. Intenta de nuevo.",
+  "documentosFaltaFoto": "Selecciona una imagen del documento.",
+  "documentosGaleria": "Elegir de galería",
+  "documentosGuardar": "Guardar documento",
+  "documentosProgreso": "Carga del documento",
+  "documentosTipo": "Tipo de documento",
+  "documentosVistaPrevia": "Vista previa del documento",
+  "m15Titulo": "Encuestas de servicio",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Califica tu visita al taller",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "No tienes encuestas pendientes",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "¿Qué tan probable es que recomiendes nuestro servicio?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Tiempo del servicio",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Trato recibido",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Limpieza del vehículo",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Atención del asesor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Elige una calificación para cada pregunta. El número más alto es la mejor calificación.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Comentario opcional",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Enviar encuesta",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Posponer por 24 horas",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Gracias por calificar tu servicio",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Pedir que la agencia me contacte",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "La agencia recibió tu solicitud de contacto.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "No se pudo guardar. Intenta de nuevo.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "Esta encuesta ya no está disponible",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
   }
 }

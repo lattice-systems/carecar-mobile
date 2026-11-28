@@ -25,7 +25,7 @@ App móvil **CareCar** (Flutter, Android + iOS) para clientes postventa de la ag
 | R2 | **Documentación siempre, sin excepción.** Todo PR actualiza la documentación afectada (plan, tablero, módulo, README, decisiones, diseño). Un PR sin cambio en docs se rechaza salvo que el PR mismo explique por qué ningún documento cambió… y aun así actualiza `plan/tablero.md`. |
 | R3 | **Sin IA como autor o co-autor.** Prohibido `Co-Authored-By:` de Claude/Codex/Gemini/Copilot/Antigravity y prohibidas líneas tipo "Generated with". El autor es la persona dueña de la tarea. Lo vigilan el hook [`.githooks/commit-msg`](.githooks/commit-msg) y el workflow `Autoría`. |
 | R4 | **Commits atómicos con intención.** Un commit = un cambio con un porqué. Formato `<tipo>(<alcance>): <verbo + cambio>` ([`docs/convenciones-commits.md`](docs/convenciones-commits.md)). El cuerpo explica el **porqué**, no el qué. Nada de `wip`, `update`, `fix` solos. |
-| R5 | **Nada directo a `main`.** Rama `<tipo>/<id-historia>-<descripcion>` → PR → checks verdes (incluido `Sin co-autor de IA`) → merge commit. La revisión de otra persona se recomienda pero **no es obligatoria** (por ahora). Abre el PR en cuanto la rama tenga algo revisable (borrador si hace falta). |
+| R5 | **Nada directo a `main` ni a `dev`.** Rama `<tipo>/<id-historia>-<descripcion>` desde `dev` → PR **a `dev`** (CI rápida: formato, análisis, pruebas) → merge commit. `dev` sube a `main` con un PR `dev` → `main` (CI completa: integración Android, APK, iOS), una vez por tanda. La revisión de otra persona se recomienda pero **no es obligatoria** (por ahora). Abre el PR en cuanto la rama tenga algo revisable (borrador si hace falta). |
 | R6 | **Todos contribuyen.** Las 6 personas programan, sin importar su rol Scrum. El reparto vive en [`plan/equipo-y-reparto.md`](plan/equipo-y-reparto.md). |
 | R7 | **Sin fechas en el plan.** Se planea con objetivos, hitos y criterios de salida; nunca con calendarios. |
 | R8 | **Sin secretos en el repo.** `.env`, llaves y tokens fuera de git (ver `.gitignore`). |
@@ -53,13 +53,13 @@ Flujo típico en Claude Code: `sincronizador` → `planificador` (si la historia
 ## 4. Flujo de una historia
 
 1. **Elegir** del tablero ([`plan/tablero.md`](plan/tablero.md)) una historia `Lista` del hito activo, asignada a ti (o sin dueño en tu frente).
-2. **Rama** desde `main` actualizado: `feat/v2-m04-03-linea-de-tiempo-taller`.
+2. **Rama** desde `dev` actualizado: `feat/v2-m04-03-linea-de-tiempo-taller`.
 3. **Tablero**: primer commit mueve la historia a `En curso` con tu nombre (`docs(tablero): tomar V2-M04.03`).
    - Si es **B**, el siguiente commit escribe su diseño (tablas, migración, eventos, endpoints con errores) en `agencia-360-backend/plan/historias-backend.md` y el endpoint en el contrato. No se espera a que alguien más lo diseñe.
    - Si depende de una historia de backend sin integrar, **no esperes**: trabaja contra el contrato y `mock_api` (dependencia `(simulable)` en el tablero).
 4. **TDD**: prueba que falla → código mínimo → refactor. Un commit por paso con intención.
 5. **Docs**: ficha del módulo (`plan/modulos/`), README, decisiones, diseño, cumplimiento de ficha — lo que aplique.
-6. **Verificar local**: `dart format lib test && flutter analyze && flutter test`.
+6. **Verificar local**: `dart format lib test && flutter analyze && tool/probar.sh` (solo las pruebas de lo que tocaste). La suite completa la corre la CI en 8 partes en paralelo; en local `tool/probar.sh --todo` solo si dudas.
 7. **PR** con la plantilla; enlaza la historia; capturas si hay UI (claro y oscuro).
 8. **Tablero**: `En revisión` en el PR; `Hecha` lo marca quien integra.
 
@@ -81,7 +81,9 @@ flutter pub get
 flutter run --flavor desarrollo -t lib/main_desarrollo.dart   # mock_api (en emulador Android usa 10.0.2.2)
 dart format lib test        # formato
 flutter analyze             # análisis estático
-flutter test                # pruebas
+flutter test                # pruebas (suite completa: lenta; la CI la reparte en 8 partes)
+tool/probar.sh              # solo las pruebas de lo que cambiaste vs origin/dev (rápido)
+tool/probar.sh --todo       # la suite completa con todos tus núcleos
 flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart   # lo que compila CI (los tres flavors)
 cd mock_api && npm install && npm start   # API simulada en :3000
 ```

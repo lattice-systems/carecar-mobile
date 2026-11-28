@@ -1,13 +1,18 @@
 name: CI
 
-# Corre en cada PR hacia main y en cada push a main (al integrar). Las ramas de
-# feature no corren con su push: las cubre su PR, así cada cambio compila una
-# vez y no dos. Abre el PR temprano (aunque sea en borrador) para tener CI.
+# Dos niveles para que integrar no sea un cuello de botella:
+#   - PR hacia `dev`: solo lo rápido (formato, análisis y `flutter test` en 8
+#     partes en paralelo, sin cobertura). Al integrar en `dev` no se repite:
+#     el PR ya lo corrió con el mismo código.
+#   - PR `dev` -> `main` y push a `main`: CI completa (además, integración en
+#     emulador Android, APK e iOS). Corre una vez por tanda, no por cada PR.
+# Las ramas de feature no corren con su push: las cubre su PR. Abre el PR
+# temprano (aunque sea en borrador) para tener CI.
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
   workflow_dispatch: {}
 
 permissions:
@@ -40,11 +45,25 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       codigo: ${{ steps.revisar.outputs.codigo }}
+      # Los jobs pesados solo corren hacia main (PR dev->main o push a main).
+      completa: ${{ steps.nivel.outputs.completa }}
     steps:
       - name: Descargar el código
         uses: actions/checkout@v7
         with:
           fetch-depth: 2
+
+      - name: Decidir el nivel de CI
+        id: nivel
+        env:
+          BASE: ${{ github.base_ref || github.ref_name }}
+        run: |
+          if [ "$BASE" = "dev" ]; then
+            echo "completa=false" >> "$GITHUB_OUTPUT"
+            echo "Rama dev: solo CI rápida."
+          else
+            echo "completa=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Revisar qué archivos cambiaron
         id: revisar
@@ -109,11 +128,23 @@ jobs:
       - name: Revisar el código con las reglas de analysis_options.yaml
         run: flutter analyze --fatal-infos --fatal-warnings
 
-  pruebas:
-    name: Pruebas (flutter test)
+  # Las pruebas se reparten en partes que corren en paralelo (flutter test
+  # --shard-index/--total-shards reparte por archivo). Para cambiar el número de
+  # partes: edita `parte` aquí y TOTAL_PARTES, y nada más.
+  pruebas-partes:
+    name: Pruebas parte ${{ matrix.parte }}/8
     needs: cambios
     if: needs.cambios.outputs.codigo == 'true'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        parte: [1, 2, 3, 4, 5, 6, 7, 8]
+    env:
+      TOTAL_PARTES: 8
+      # La cobertura solo se mide en la CI completa (hacia main): con ella
+      # cada parte tarda bastante más y en una PR a dev nadie mira el reporte.
+      COBERTURA: ${{ needs.cambios.outputs.completa == 'true' && '--coverage' || '' }}
     steps:
       - name: Descargar el código
         uses: actions/checkout@v7
@@ -138,18 +169,17 @@ jobs:
       - name: Instalar dependencias de la API simulada
         run: npm ci --prefix mock_api
 
-      - name: Correr las pruebas
-        run: flutter test --coverage --reporter expanded --dart-define=PROBAR_MOCK_API=true
+      - name: Correr su parte de las pruebas
+        run: >
+          flutter test $COBERTURA --reporter expanded
+          --total-shards "$TOTAL_PARTES" --shard-index "$(( ${{ matrix.parte }} - 1 ))"
+          --dart-define=PROBAR_MOCK_API=true
 
-      - name: Resumir la cobertura
-        if: success() || (!cancelled() && hashFiles('coverage/lcov.info') != '')
-        run: node tool/resumir_cobertura.js | tee -a "$GITHUB_STEP_SUMMARY"
-
-      - name: Guardar LCOV
+      - name: Guardar el LCOV de esta parte
         if: ${{ !cancelled() && hashFiles('coverage/lcov.info') != '' }}
         uses: actions/upload-artifact@v7
         with:
-          name: cobertura-carecar
+          name: lcov-parte-${{ matrix.parte }}
           path: coverage/lcov.info
           if-no-files-found: error
 
@@ -157,14 +187,57 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v7
         with:
-          name: diferencias-golden
+          name: diferencias-golden-parte-${{ matrix.parte }}
           path: test/**/failures/*.png
           if-no-files-found: ignore
+
+  # Un solo check con el nombre de siempre: la protección de la rama exige este
+  # nombre, no el de cada parte. Pasa si todas pasaron o si se saltaron (solo
+  # documentación).
+  pruebas:
+    name: Pruebas (flutter test)
+    needs: [cambios, pruebas-partes]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Todas las partes tienen que haber pasado
+        env:
+          RESULTADO: ${{ needs.pruebas-partes.result }}
+        run: |
+          echo "Partes: $RESULTADO"
+          [ "$RESULTADO" = "success" ] || [ "$RESULTADO" = "skipped" ]
+
+      - name: Descargar el código
+        if: needs.cambios.outputs.completa == 'true' && needs.pruebas-partes.result == 'success'
+        uses: actions/checkout@v7
+
+      - name: Juntar el LCOV de las partes
+        if: needs.cambios.outputs.completa == 'true' && needs.pruebas-partes.result == 'success'
+        uses: actions/download-artifact@v8
+        with:
+          pattern: lcov-parte-*
+          path: partes
+
+      - name: Resumir la cobertura
+        if: needs.cambios.outputs.completa == 'true' && needs.pruebas-partes.result == 'success'
+        run: |
+          mkdir -p coverage
+          cat partes/*/lcov.info > coverage/lcov.info
+          node tool/resumir_cobertura.js | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Guardar LCOV
+        if: needs.cambios.outputs.completa == 'true' && needs.pruebas-partes.result == 'success'
+        uses: actions/upload-artifact@v7
+        with:
+          name: cobertura-carecar
+          path: coverage/lcov.info
+          if-no-files-found: error
+
 
   integracion-android:
     name: Integración Android con mock_api
     needs: cambios
-    if: needs.cambios.outputs.codigo == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -217,7 +290,7 @@ jobs:
   build-android:
     name: Build Android (APK)
     needs: cambios
-    if: needs.cambios.outputs.codigo == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar el código
@@ -267,7 +340,7 @@ jobs:
     # veces los de Linux y a veces no hay runners). No es un check requerido.
     # Para activarlo: gh variable set MACOS_ACTIVO --body true
     # (docs/pausa-de-macos.md).
-    if: needs.cambios.outputs.codigo == 'true' && vars.MACOS_ACTIVO == 'true'
+    if: needs.cambios.outputs.codigo == 'true' && needs.cambios.outputs.completa == 'true' && vars.MACOS_ACTIVO == 'true'
     # Xcode solo existe en macOS. Se compila sin firmar: comprueba que el
     # proyecto iOS compila sin certificados ni perfiles de Apple.
     runs-on: macos-latest

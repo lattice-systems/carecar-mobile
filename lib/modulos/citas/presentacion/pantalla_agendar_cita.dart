@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
+import '../../notificaciones/notificaciones.dart';
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../nucleo/analitica/ambito_analitica.dart';
@@ -581,6 +582,12 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
       // inicio (V2-M25.01) deben ver la nueva.
       ref.invalidate(misCitasProvider);
       if (!mounted) return;
+      // V2-M06.06: los recordatorios son locales, asi que suenan sin red. Se
+      // dejan DESPUES de pintar el comprobante y sin esperarlos: programarlos
+      // toca el sistema, y la cita ya esta hecha. Esperarlos dejaba la
+      // pantalla colgada detras del dialogo de permiso, y lo encontro la
+      // prueba de integracion en el emulador.
+      unawaited(ref.read(recordatoriosDeCitaProvider).alConfirmar(cita));
       setState(() {
         _confirmada = cita;
         _paso = _Paso.listo;

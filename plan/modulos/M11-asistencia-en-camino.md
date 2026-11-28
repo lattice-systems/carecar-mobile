@@ -164,15 +164,23 @@ Llamar con un toque al 911, a la agencia o a la aseguradora, sin depender de la 
 **Decisiones sobre trabajo de otras personas** (para reconciliar al integrar sus historias)
 
 - **Aseguradora (V2-M09.01, Haziel):** esa historia no está integrada y aún no define dónde vive la aseguradora. Se asumió que la póliza vigente del vehículo trae nombre y teléfono de siniestros. `aseguradoraProvider` (en el contrato público del módulo) devuelve `null` hoy; cuando exista, Haziel o quien integre solo cambia el cuerpo de ese proveedor para leer la póliza. Mientras sea `null`, el botón explica cómo agregarla y no llama.
-- **Número de la agencia (V2-M27.02, Haziel):** se usa `Agencia.telefono` (`lib/config/agencia.dart`, hoy un valor de ejemplo) en vez del teléfono de la sucursal más cercana. Al integrar las sucursales, sustituir por la principal o la más cercana. Hay que reemplazar el valor de ejemplo antes de entregar.
+- **Número de la agencia (V2-M27.02, ya integrada):** sale de la sucursal principal (`contactoDeAgenciaProvider` del módulo `ayuda`, V2-M27.03), tanto en la pantalla de llamadas como en el atajo sin conexión de «Pedir ayuda». Si la lectura falla, aún carga o no hay sucursales, queda `Agencia.telefono` (`lib/config/agencia.dart`, un valor de ejemplo que hay que reemplazar antes de entregar). Limitación: sin conexión y sin una lectura previa de la sesión, el teléfono es el de `Agencia`; una historia nueva (Borrador, ver M27) guardaría solo el teléfono de la sucursal para que el atajo marque el número real aunque la app abra sin datos.
 - No se agregó ningún campo ni endpoint al contrato: no hay nada que coordinar con el backend.
 
 **Pendiente**
 
-- Conectar la aseguradora real cuando exista V2-M09.01 (ver arriba) y el teléfono de V2-M27.02.
+- Conectar la aseguradora real cuando exista V2-M09.01 (ver arriba). El teléfono de la agencia ya viene de V2-M27.02.
 - Píldora «Llamar a la agencia» dentro de cada guía (quedó anotada en el rediseño de V2-M11.03): no se agregó para no duplicar el acceso que ya está en Emergencias.
 - Probar el marcador real en un teléfono. En pruebas solo se comprueba el `tel:`.
 - La historia no pasa a `Hecha` hasta tener la aseguradora real: queda `En revisión`.
+
+### Aseguradora real (con V2-M09.01)
+
+- `aseguradoraProvider` ya no devuelve `null` fijo: toma, entre los documentos de **todos** los autos del garaje, la póliza no vencida con aseguradora y teléfono (`polizaParaLlamar` del módulo `documentos`). Es `autoDispose`, así que se relee cada vez que se abre la pantalla.
+- `aseguradoraCargandoProvider` (nuevo en el contrato público) dice si aún se está leyendo: mientras tanto la fila dice «Buscando tu póliza…» y no aparece «Aún no registras tu aseguradora», que sería falso un instante para quien sí la tiene.
+- Si el garaje o los documentos fallan, no hay aseguradora y la pantalla explica cómo agregarla: llamar al 911 y a la agencia nunca depende de esa lectura.
+- Pruebas: `aseguradora_provider_test.dart` (póliza vigente, por vencer, vencida, sin teléfono, varios autos, fallo) y `ruta_llamar_rapido_test.dart` (llamar a la aseguradora guardada, el estado de búsqueda y sin póliza).
+- Con esto queda cerrado el pendiente «conectar la aseguradora real» de arriba. No probado en el celular.
 
 ## Rediseño: encabezados ligeros (V2-T02.21)
 

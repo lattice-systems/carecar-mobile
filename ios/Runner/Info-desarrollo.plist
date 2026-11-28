@@ -57,6 +57,9 @@
 		<string>CareCar usa Face ID solo para abrir la app sin que escribas tu contraseña, si tú lo prendes. CareCar no ve ni guarda tu rostro: el sistema solo le dice si eres tú.</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
+		<!-- Live Activity del taller (V2-M25.05): sin esta llave ActivityKit no deja iniciarla. -->
+		<key>NSSupportsLiveActivities</key>
+		<true/>
 		<key>UIApplicationSceneManifest</key>
 		<dict>
 			<key>UIApplicationSupportsMultipleScenes</key>

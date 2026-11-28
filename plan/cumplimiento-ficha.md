@@ -37,7 +37,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Agendar cita | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app y backend (`cita.motivo`, `CITA_DUPLICADA`) listos; falta demostrar en celular | V2-M02.08 |
 | Mis citas (próximas y pasadas) | `cita`, `franja_horario`, `vehiculo_cliente` | 🟡 app v2 lista con estados y paginación; falta demostrar en celular | V2-M02.09 |
 | Cancelar y reprogramar cita | `cita`, `franja_horario` | 🟡 app y backend de cancelar y reprogramar listos; falta demostrar en celular | V2-M02.10, V2-M02.13 |
-| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; agregar al calendario como `.ics` hecho (V2-M02.12, falta la dirección de la sucursal de V2-M27.02 y probar en celular) | V2-M02.11, V2-M02.12 |
+| Comprobante de cita con código QR | `cita`, `vehiculo_cliente` | 🟡 QR firmado en app y backend; agregar al calendario como `.ics` hecho con la dirección de la sucursal principal (V2-M02.12 con V2-M27.02; falta probar en celular) | V2-M02.11, V2-M02.12 |
 
 ### 3. Catálogo y calculadora — plan [M03](modulos/M03-catalogo-y-calculadora.md)
 
@@ -66,9 +66,9 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); tocar un aviso lleva a su pantalla con la app abierta, en segundo plano y cerrada, y si el destino pide sesión vuelve ahí al entrar (V2-M06.03, `test/nucleo/avisos/tocar_un_aviso_test.dart`); falta el registro del token FCM y el envío (V2-M06.02, V2-M06.07) | Ver M06 |
-| Bandeja de avisos | `notificacion` | ⬜ | Ver M06 |
-| Preferencias de avisos | `preferencia_notificacion` | ⬜ | Ver M06 |
+| Notificaciones push | `dispositivo_push`, `cuenta_app`, `notificacion` | 🟡 el permiso ya se explica al entrar a la cuenta, antes de pedirlo al sistema, y se puede reactivar desde el perfil (V2-M06.01, `test/modulos/notificaciones/`, `test/nucleo/avisos/`); tocar un aviso lleva a su pantalla con la app abierta, en segundo plano y cerrada, y si el destino pide sesión vuelve ahí al entrar (V2-M06.03, `test/nucleo/avisos/tocar_un_aviso_test.dart`); los recordatorios locales de cita (24 h y 2 h antes) vuelven a tener disparador en la v2 (V2-M06.06, `test/modulos/notificaciones/recordatorios_de_cita_test.dart`); `dispositivo_push` y `notificacion` existen en el backend (V60, backend#117) con los nombres de la ficha, más `instalacion_id`, `activo`, `creado_en`, `evento` y `datos`; el servicio único escucha los eventos de dominio y envía por FCM HTTP v1 (V2-M06.07), y la app registra el token tras entrar y lo da de baja al salir (V2-M06.02, `test/modulos/notificaciones/coordinador_de_push_test.dart`). Ninguna columna de la ficha se quita ni se renombra. Falta el FCM real (credenciales y `firebase_messaging`) y demostrar en celular | Ver M06 |
+| Bandeja de avisos | `notificacion` | 🟡 app lista contra el contrato v2 2.31.0 y `mock_api`: paginada, con contador de no leídos y marcar todas (V2-M06.04, `test/modulos/notificaciones/`); falta el endpoint HTTP del backend —las tablas ya existen (V60)— y la insignia en el ícono de la barra, que pide T02 | Ver M06 |
+| Preferencias de avisos | `preferencia_notificacion` | 🟡 app lista contra el contrato y `mock_api`: seis categorías que se guardan al tocar y horario silencioso que cruza la medianoche (V2-M06.05, `test/modulos/notificaciones/`); falta la tabla y el endpoint del backend, que la migración V60 deja anotados como trabajo de esta historia | Ver M06 |
 
 ### 7. Mensajería con el asesor — plan [M07](modulos/M07-mensajeria-asesor.md)
 
@@ -88,8 +88,12 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | ⬜ | Ver M09 |
+| Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | 🟡 `documento_vehiculo` existe (backend V61) con los campos de la ficha más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora`; `GET /vehiculos/{id}/documentos` con el estado calculado por la fecha de la agencia, pantalla, mock y pruebas (V2-M09.01). Ninguna columna de la ficha se quita ni se renombra. dev integra captura JPEG (V2-M09.02), PDF de agencia (V2-M09.03) y calendario (V2-M09.06). [Evidencia en Android físico](../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android). Siguen pendientes las alertas (V2-M09.04) y la copia cifrada sin conexión (V2-M09.05) | V2-M09.01 |
 | Alertas de vencimiento | `documento_vehiculo`, `notificacion` | ⬜ | Ver M09 |
+
+Captura JPEG (V2-M09.02) · el registro se guarda en la tabla integrada y la foto se adjunta con la autorización del cliente.
+
+PDF de agencia (V2-M09.03) · publicado sobre el listado existente y entregado con autorización del propietario.
 
 ### 10. Garantía y campañas de seguridad — plan [M10](modulos/M10-garantia-y-campanas.md)
 
@@ -102,7 +106,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia y la aseguradora hechas (V2-M11.02, la aseguradora espera a V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
+| Solicitud de asistencia (SOS) | `solicitud_asistencia`, `vehiculo_cliente` | 🟡 guías, solicitud con ubicación y estado en vivo (SSE) en app y backend; llamadas rápidas al 911, la agencia (con el teléfono de la sucursal principal) y la aseguradora hechas (V2-M11.02, la aseguradora sale de la póliza de V2-M09.01); falta el push con la app cerrada (V2-M06.02) y demostrar en celular | V2-M11.01, V2-M11.02, V2-M11.03, V2-M11.04 |
 
 ### 12. Lealtad y recompensas — plan [M12](modulos/M12-lealtad.md)
 
@@ -129,7 +133,7 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Encuesta de satisfacción del servicio | `encuesta_servicio`, `orden_servicio` | ⬜ | Ver M15 |
+| Encuesta de satisfacción del servicio | `encuesta_servicio`, `orden_servicio` | 🟡 tarjeta, aplazamiento y respuesta contra el contrato de Encuestas. Falta comprobar el push y la respuesta del asesor en la bandeja | Ver M15 |
 
 ### 16. Estreno — plan [M16](modulos/M16-estreno.md)
 
@@ -180,12 +184,14 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Preguntas frecuentes | `pregunta_frecuente` | ⬜ | Ver M27 |
-| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar (falta integrar backend y probar en celular) | V2-M27.02 |
+| Sucursales y horarios | `sucursal` | 🟡 V2-M27.02: tabla `sucursal` con `lat` y `lng` de la ficha, `GET /sucursales`, mapa, horarios por departamento, llamar y cómo llegar, integrada en `main`; V2-M27.03: pantalla de contacto (llamar y correo) y entrada desde el perfil, con sucursal principal como fuente del teléfono, correo y dirección (falta el chat con V2-M07 y probar en celular) | V2-M27.02, V2-M27.03 |
 | Reporte de problemas de la app | `reporte_app` | ⬜ | Ver M27 |
 
 Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Analítica, M25 Widgets) no están en la ficha: son frentes transversales que se cumplen dentro de cada funcionalidad.
 
 ## Evidencia automática por criterio
+
+La [prueba de Encuestas](../test/modulos/encuestas/encuesta_pendiente_test.dart) verifica que una ruta solo muestra el formulario cuando la orden está entre las encuestas pendientes de la cuenta activa (V2-M15.01).
 
 Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
 
@@ -210,9 +216,16 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
 | `V2-M23.01: solo registra fallos nuevos del periodo consentido` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | `V2-M23.01: descarta la consulta si cambia el consentimiento` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
-| `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| V2-M23.01: una preferencia previa empieza sin historial | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| V2-M23.01: el APK y los símbolos Dart coinciden y permiten resolver una traza | [Corrida de CI](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831) · [APK, símbolos y verificación](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831/artifacts/15245534947) |
 | `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
+| `V2-M09.06: combina los autos, marca los días y filtra la lista` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
+| `V2-M09.06: ofrece reintentar cuando falla la consulta de un auto` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
+| `V2-M27.01: busca y abre preguntas guardadas cuando falla la red` | [Prueba](../test/modulos/ayuda/preguntas_sin_conexion_test.dart) |
+| `V2-M27.04: envía únicamente la descripción y el diagnóstico` | [Prueba](../test/modulos/ayuda/reporte_app_test.dart) |
+| `V2-M27.05: muestra la versión del paquete y abre las licencias` | [Prueba](../test/modulos/ayuda/acerca_de_test.dart) |
+| `V2-M27.05: abre los términos incluidos en el paquete` | [Prueba](../integration_test/terminos_instalados_test.dart) |
 | `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
 | `V2-M24.05: el testigo rojo indica detenerse y pedir ayuda` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
 

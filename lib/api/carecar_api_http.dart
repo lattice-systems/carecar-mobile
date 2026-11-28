@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'carecar_api.dart';
 import 'cliente_api.dart';
+import 'modelos/preferencias_notificacion.dart';
+import 'modelos/notificacion.dart';
 import 'modelos/comun.dart';
 import 'modelos/modelos.dart';
 
@@ -169,6 +171,39 @@ class CarecarApiHttp implements CarecarApi {
         pagina: pagina,
         tamano: tamano,
       );
+
+  @override
+  Future<PaginaDeNotificaciones> paginaDeNotificaciones({
+    int pagina = 0,
+    int tamano = 20,
+  }) => _cliente.obtener(
+    '/notificaciones',
+    PaginaDeNotificaciones.fromJson,
+    consulta: {'pagina': '$pagina', 'tamano': '$tamano'},
+  );
+
+  @override
+  Future<void> marcarAvisoLeido(int notificacionId) =>
+      _cliente.enviarSinRespuesta('/notificaciones/$notificacionId/leida');
+
+  @override
+  Future<void> marcarAvisosLeidos() =>
+      _cliente.enviarSinRespuesta('/notificaciones/leidas');
+
+  @override
+  Future<PreferenciasNotificacion> preferenciasDeAvisos() => _cliente.obtener(
+    '/notificaciones/preferencias',
+    PreferenciasNotificacion.fromJson,
+  );
+
+  @override
+  Future<PreferenciasNotificacion> guardarPreferenciasDeAvisos(
+    PreferenciasNotificacion nuevas,
+  ) => _cliente.actualizar(
+    '/notificaciones/preferencias',
+    cuerpo: nuevas.aJson(),
+    leer: PreferenciasNotificacion.fromJson,
+  );
 
   @override
   Future<RespuestaAsistente> preguntarAlAsistente({
