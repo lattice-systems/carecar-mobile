@@ -34,6 +34,7 @@ class PantallaComparador extends ConsumerWidget {
     final textos = AppLocalizations.of(context);
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.scale,
       titulo: textos.catalogoComparadorTitulo,
       conRegreso: true,
       estado: hijo,
@@ -71,6 +72,7 @@ class PantallaComparador extends ConsumerWidget {
                   ),
           ),
           data: (modelos) => MarcoPantalla(
+            icono: LucideIcons300.scale,
             titulo: textos.catalogoComparadorTitulo,
             conRegreso: true,
             alRefrescar: () => ref.refresh(comparativaProvider(clave).future),

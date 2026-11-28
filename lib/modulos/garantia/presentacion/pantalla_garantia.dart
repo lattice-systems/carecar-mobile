@@ -40,11 +40,13 @@ class PantallaGarantia extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.shieldCheck,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoGarantia(altos: [140, 140, 140]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.shieldCheck,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -57,6 +59,7 @@ class PantallaGarantia extends ConsumerWidget {
           ),
           data: (garantia) => garantia.coberturas.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.shieldCheck,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -87,6 +90,7 @@ class _Garantia extends StatelessWidget {
     final km = garantia.kmActual;
 
     return MarcoPantalla(
+      icono: LucideIcons300.shieldCheck,
       titulo: textos.garantiaTitulo,
       subtitulo: km == null
           ? null

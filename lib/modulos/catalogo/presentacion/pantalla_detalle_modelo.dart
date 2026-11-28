@@ -20,6 +20,7 @@ import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import '../../estreno/estreno.dart';
 import '../dominio/detalle_modelo.dart';
+import 'foto_incluida.dart';
 import 'proveedores_catalogo.dart';
 import 'rutas_catalogo.dart';
 
@@ -45,11 +46,15 @@ class PantallaDetalleModelo extends ConsumerWidget {
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
         titulo: titulo,
+        subtitulo: textos.catalogoDetalleSubtitulo,
+        icono: LucideIcons300.car,
         conRegreso: true,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
         titulo: titulo,
+        subtitulo: textos.catalogoDetalleSubtitulo,
+        icono: LucideIcons300.car,
         conRegreso: true,
         estado: error is NoEncontrado
             ? EstadoVacio(
@@ -67,6 +72,8 @@ class PantallaDetalleModelo extends ConsumerWidget {
       ),
       data: (d) => MarcoPantalla(
         titulo: titulo,
+        subtitulo: textos.catalogoDetalleSubtitulo,
+        icono: LucideIcons300.car,
         conRegreso: true,
         alRefrescar: () => ref.refresh(detalleModeloProvider(modeloId).future),
         slivers: [
@@ -138,6 +145,7 @@ class _Detalle extends StatelessWidget {
             if (precio != null) textos.precioDesde(_pesos.format(precio)),
           ].join(' · '),
           foto: m.imagenUrl == null ? null : NetworkImage(m.imagenUrl!),
+          fotoRespaldo: fotoIncluidaDeModelo(m.titulo),
           descripcionFoto: textos.fotoDeModelo(m.titulo),
           heroTag: 'modelo-$modeloId',
         ),
@@ -153,7 +161,9 @@ class _Detalle extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // El principal es más ancho: «Quiero probarlo» no cabe en media fila.
             Expanded(
+              flex: 3,
               child: BotonPildora(
                 texto: textos.estrenoQuieroProbarlo,
                 icono: LucideIcons300.car,
@@ -163,6 +173,7 @@ class _Detalle extends StatelessWidget {
             ),
             const SizedBox(width: Espaciado.e2),
             Expanded(
+              flex: 2,
               child: BotonPildora(
                 texto: textos.estrenoCotizar,
                 icono: LucideIcons300.fileText,

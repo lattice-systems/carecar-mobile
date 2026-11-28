@@ -37,6 +37,7 @@ class PantallaLealtad extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.award,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoLealtad(
@@ -45,6 +46,7 @@ class PantallaLealtad extends ConsumerWidget {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.award,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -56,6 +58,7 @@ class PantallaLealtad extends ConsumerWidget {
             ),
           ),
           data: (resumen) => MarcoPantalla(
+            icono: LucideIcons300.award,
             titulo: titulo,
             subtitulo: textos.lealtadSubtitulo,
             conRegreso: true,

@@ -34,6 +34,7 @@ class PantallaCanjes extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoLealtad(
@@ -42,6 +43,7 @@ class PantallaCanjes extends ConsumerWidget {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -54,6 +56,7 @@ class PantallaCanjes extends ConsumerWidget {
           ),
           data: (canjes) => canjes.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.gift,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -65,6 +68,7 @@ class PantallaCanjes extends ConsumerWidget {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.gift,
                   titulo: titulo,
                   subtitulo: textos.lealtadCanjesResumen,
                   conRegreso: true,

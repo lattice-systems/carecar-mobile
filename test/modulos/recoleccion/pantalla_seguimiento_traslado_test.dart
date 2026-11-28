@@ -149,7 +149,15 @@ void main() {
     await tester.pump();
 
     expect(find.byType(Mapa), findsOneWidget);
-    expect(find.byIcon(LucideIcons300.truck), findsOneWidget);
+    // El marcador del chofer, dentro del mapa: el encabezado también lleva el
+    // icono del camión.
+    expect(
+      find.descendant(
+        of: find.byType(Mapa),
+        matching: find.byIcon(LucideIcons300.truck),
+      ),
+      findsOneWidget,
+    );
     expect(
       tester.widget<Mapa>(find.byType(Mapa)).enMovimiento,
       isNotNull,

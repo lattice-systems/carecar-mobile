@@ -38,6 +38,7 @@ class TarjetaResumen extends StatelessWidget {
     this.estado,
     this.tonoEstado = Tono.neutro,
     this.estadoConIcono = false,
+    this.iconoArriba = false,
     this.progreso,
     this.etiquetaProgreso,
     this.alToque,
@@ -61,6 +62,10 @@ class TarjetaResumen extends StatelessWidget {
   final String? estado;
   final Tono tonoEstado;
   final bool estadoConIcono;
+
+  /// El icono se alinea arriba, con el título, en vez de centrarse en la
+  /// altura de la tarjeta; el chevron sigue centrado.
+  final bool iconoArriba;
   final double? progreso;
   final String? etiquetaProgreso;
   final VoidCallback? alToque;
@@ -77,30 +82,46 @@ class TarjetaResumen extends StatelessWidget {
     final t = tokens.tipografia;
     final colores = ColoresTono.de(tono, c);
 
+    // Con el icono arriba la fila se estira a lo alto para que cada pieza se
+    // alinee sola: el icono arriba y el chevron al centro.
+    Widget fila({required List<Widget> children}) => iconoArriba
+        ? IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: children,
+            ),
+          )
+        : Row(children: children);
+
     final cuerpo = Padding(
       padding: const EdgeInsets.all(Espaciado.e4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          fila(
             children: [
               if (visual != null || icono != null) ...[
                 // Igual que el icono de las filas de [GrupoLista]: cuadro
                 // pleno del tono con el icono en `sobreAcento`.
-                ExcludeSemantics(
-                  child:
-                      visual ??
-                      DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: colores.frente,
-                          borderRadius: Radios.bordeControl,
+                Align(
+                  alignment: iconoArriba
+                      ? Alignment.topCenter
+                      : Alignment.center,
+                  child: ExcludeSemantics(
+                    child:
+                        visual ??
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: colores.frente,
+                            borderRadius: Radios.bordeControl,
+                          ),
+                          child: SizedBox(
+                            width: _cuadroIcono,
+                            height: _cuadroIcono,
+                            child: Icon(icono, size: 24, color: c.sobreAcento),
+                          ),
                         ),
-                        child: SizedBox(
-                          width: _cuadroIcono,
-                          height: _cuadroIcono,
-                          child: Icon(icono, size: 24, color: c.sobreAcento),
-                        ),
-                      ),
+                  ),
                 ),
                 const SizedBox(width: Espaciado.e3),
               ],
@@ -136,9 +157,12 @@ class TarjetaResumen extends StatelessWidget {
               if (alToque != null)
                 Padding(
                   padding: const EdgeInsets.only(left: Espaciado.e2),
-                  child: Icon(
-                    LucideIcons300.chevronRight,
-                    color: c.textoTerciario,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Icon(
+                      LucideIcons300.chevronRight,
+                      color: c.textoTerciario,
+                    ),
                   ),
                 ),
             ],

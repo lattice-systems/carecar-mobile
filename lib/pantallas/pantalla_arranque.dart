@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../tema/tema_carecar.dart';
+import '../nucleo/diseno/componentes/marca_carecar.dart';
+import '../nucleo/diseno/tema_pista.dart';
+import '../nucleo/diseno/tokens/tokens_pista.dart';
 import '../widgets/espera_servidor.dart';
-import '../widgets/logo_carecar.dart';
 
 /// Cortina de arranque: telon con la marca que se abre sobre la pantalla
 /// siguiente cuando termina la restauracion de sesion.
@@ -133,88 +134,65 @@ class _CortinaArranqueState extends State<CortinaArranque>
   }
 }
 
+/// El telón: el azul de la marca, liso, con la doble C que se traza al
+/// centro y la carga abajo (V2-T02.27). Lleva su propio tema Pista porque
+/// aparece antes que el resto de la app.
 class _Telon extends StatelessWidget {
   const _Telon();
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [TemaCareCar.azulAgencia, TemaCareCar.azulProfundo],
-          ),
-        ),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            const Positioned(top: -70, right: -60, child: _Destello(220)),
-            const Positioned(bottom: -90, left: -80, child: _Destello(260)),
-            Center(
-              child: TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: 1),
-                duration: const Duration(milliseconds: 900),
-                curve: Curves.elasticOut,
-                builder: (context, v, hijo) => Opacity(
-                  opacity: v.clamp(0.0, 1.0),
-                  child: Transform.scale(scale: 0.7 + 0.3 * v, child: hijo),
+    final tema = MediaQuery.platformBrightnessOf(context) == Brightness.dark
+        ? TemaPista.oscuro()
+        : TemaPista.claro();
+    return Theme(
+      data: tema,
+      child: Builder(
+        builder: (context) {
+          final c = TokensPista.de(context).colores;
+          return Material(
+            color: c.acento,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Center(child: _Marca(color: c.sobreAcento)),
+                Positioned(
+                  left: 56,
+                  right: 56,
+                  bottom: 64,
+                  child: _Carga(color: c.sobreAcento),
                 ),
-                child: const _Marca(),
-              ),
+              ],
             ),
-            const Positioned(left: 56, right: 56, bottom: 64, child: _Carga()),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Destello extends StatelessWidget {
-  const _Destello(this.tamano);
-  final double tamano;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: tamano,
-      height: tamano,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [
-            TemaCareCar.turquesa.withValues(alpha: 0.22),
-            TemaCareCar.turquesa.withValues(alpha: 0),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 }
 
 class _Marca extends StatelessWidget {
-  const _Marca();
+  const _Marca({required this.color});
+
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
+    final t = TokensPista.de(context).tipografia;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const LogoCareCar(
-          tamano: 112,
+        MarcaCareCar(
+          tamano: 96,
           vertical: true,
+          animar: true,
+          color: color,
           llaveIcono: CortinaArranque.logo,
         ),
         const SizedBox(height: 6),
         Text(
-          'Posventa Agencia360',
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.72),
-            fontSize: 14,
-            letterSpacing: 0.6,
-          ),
+          'de Agencia360',
+          style: t.cuerpoChico.copyWith(color: color.withValues(alpha: 0.72)),
         ),
       ],
     );
@@ -222,7 +200,9 @@ class _Marca extends StatelessWidget {
 }
 
 class _Carga extends StatefulWidget {
-  const _Carga();
+  const _Carga({required this.color});
+
+  final Color color;
 
   @override
   State<_Carga> createState() => _CargaState();
@@ -259,8 +239,8 @@ class _CargaState extends State<_Carga> {
             height: 3,
             child: LinearProgressIndicator(
               value: animar ? null : 0.4,
-              backgroundColor: Colors.white.withValues(alpha: 0.15),
-              valueColor: const AlwaysStoppedAnimation(TemaCareCar.turquesa),
+              backgroundColor: widget.color.withValues(alpha: 0.2),
+              valueColor: AlwaysStoppedAnimation(widget.color),
             ),
           ),
         ),
@@ -270,7 +250,7 @@ class _CargaState extends State<_Carga> {
           key: _servidorTarda ? CortinaArranque.avisoServidorDespertando : null,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.7),
+            color: widget.color.withValues(alpha: 0.75),
             fontSize: 13,
           ),
         ),

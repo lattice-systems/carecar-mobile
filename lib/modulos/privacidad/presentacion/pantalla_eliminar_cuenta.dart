@@ -125,6 +125,8 @@ class _PantallaEliminarCuentaState
     };
 
     return MarcoPantalla(
+      icono: LucideIcons300.userX,
+      tono: Tono.peligro,
       titulo: textos.eliminarCuentaTitulo,
       conRegreso: true,
       slivers: [

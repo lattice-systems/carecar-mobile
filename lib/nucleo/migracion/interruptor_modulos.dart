@@ -6,14 +6,13 @@
 /// codigo que se sobrescribe con `--dart-define`; no hay servidor ni secretos.
 ///
 /// Desde V2-T01.09 el valor por defecto es **v2 en todo lo que existia en
-/// v1**, con una excepcion a proposito: `recuperacion` sigue en v1 (V2-T01.10)
-/// hasta que el enlace del correo abra la app. La v1 queda como salida de
+/// v1**. El acceso y la recuperacion de la contrasena ya no tienen v1
+/// (V2-T02.27): no pasan por aqui. La v1 del resto queda como salida de
 /// emergencia hasta que se retire:
 ///
 /// ```bash
 /// flutter run --dart-define=MODULOS_V1=todos        # todo vuelve a la v1
 /// flutter run --dart-define=MODULOS_V1=catalogo     # solo el catalogo
-/// flutter run --dart-define=MODULOS_V2=recuperacion # un modulo aun no encendido
 /// ```
 ///
 /// Se retira completo en V2-T01.07 (guia en `plan/arquitectura-v2.md`).
@@ -27,17 +26,10 @@ enum VersionModulo { v1, v2 }
 /// Modulos con equivalente en v1. Para migrar uno se agrega aqui su valor
 /// (ver la guia de migracion en `plan/arquitectura-v2.md`).
 enum ModuloMigrable {
-  /// Inicio de sesion y cambio obligatorio de la contrasena temporal.
-  acceso,
   asistencia,
   catalogo,
   citas,
 
-  /// Recuperar y restablecer la contrasena. Es un modulo aparte del acceso a
-  /// proposito: la v2 depende de un enlace del correo que abra la app, y eso
-  /// necesita un dominio con enlaces universales que todavia no existe, asi
-  /// que sigue en v1 (codigo de 6 digitos) mientras el acceso ya va en v2.
-  recuperacion,
   vehiculos;
 
   /// Nombre que se escribe en `MODULOS_V1` / `MODULOS_V2`.
@@ -48,15 +40,11 @@ class InterruptorModulos {
   const InterruptorModulos(this._versiones);
 
   /// Valor por defecto en codigo: los modulos que ya existian en v1 van en v2
-  /// (V2-T01.09, y el acceso en V2-T01.10), salvo la recuperacion de la
-  /// contrasena: su v2 usa el enlace del correo y mientras ese enlace no abra
-  /// la app, quien olvida su contrasena solo puede entrar con el codigo de la
-  /// v1. Un modulo nuevo se enciende aqui cuando esta completo y se decide que
+  /// (V2-T01.09). Un modulo nuevo se enciende aqui cuando esta completo y se decide que
   /// llegue a todos; mientras no este, [de] responde v1 y solo se prueba con
   /// `--dart-define=MODULOS_V2=<modulo>`. Volver atras sin tocar codigo:
   /// `--dart-define=MODULOS_V1=todos`.
   static const porDefecto = InterruptorModulos({
-    ModuloMigrable.acceso: VersionModulo.v2,
     ModuloMigrable.asistencia: VersionModulo.v2,
     ModuloMigrable.catalogo: VersionModulo.v2,
     ModuloMigrable.citas: VersionModulo.v2,

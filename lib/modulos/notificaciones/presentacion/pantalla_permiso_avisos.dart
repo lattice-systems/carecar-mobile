@@ -79,6 +79,7 @@ class _EstadoPantallaPermisoAvisos
     final estado = ref.watch(permisoDeAvisosProvider);
 
     return MarcoPantalla(
+      icono: LucideIcons300.bell,
       titulo: textos.avisosPermisoTitulo,
       conRegreso: true,
       slivers: [

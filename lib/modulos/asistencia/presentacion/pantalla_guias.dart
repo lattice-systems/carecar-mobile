@@ -32,6 +32,7 @@ class PantallaGuias extends StatelessWidget {
     final c = TokensPista.de(context).colores;
 
     return MarcoPantalla(
+      icono: LucideIcons300.bookOpen,
       titulo: textos.asistenciaListaTitulo,
       conRegreso: true,
       slivers: [

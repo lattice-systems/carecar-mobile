@@ -10,9 +10,6 @@ import 'package:carecar_mobile/nucleo/migracion/proveedores_migracion.dart';
 import 'package:carecar_mobile/nucleo/navegacion/rutas.dart';
 import 'package:carecar_mobile/pantallas/catalogo/pantalla_catalogo.dart' as v1;
 import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart' as v1;
-import 'package:carecar_mobile/pantallas/pantalla_login.dart' as v1;
-import 'package:carecar_mobile/pantallas/pantalla_recuperar_contrasena.dart'
-    as v1;
 import 'package:carecar_mobile/pantallas/pantalla_vehiculos.dart' as v1;
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
@@ -51,13 +48,12 @@ Future<void> _ir(WidgetTester tester, String ruta) async {
 }
 
 void main() {
-  test('la app lee el interruptor de los --dart-define (v2 sin ellos, salvo la '
-      'recuperacion)', () {
+  test('la app lee el interruptor de los --dart-define (v2 sin ellos)', () {
     final contenedor = ProviderContainer();
     addTearDown(contenedor.dispose);
     final i = contenedor.read(interruptorModulosProvider);
     for (final m in ModuloMigrable.values) {
-      expect(i.esV2(m), m != ModuloMigrable.recuperacion, reason: m.name);
+      expect(i.esV2(m), isTrue, reason: m.name);
     }
   });
 
@@ -100,55 +96,31 @@ void main() {
   });
 
   // Los destinos del inicio viven en la barra flotante (V2-T02.22).
-  group('el acceso y la recuperacion son modulos aparte (V2-T01.10)', () {
-    testWidgets('acceso en v2: sin sesion se ve el acceso v2, no el v1', (
-      tester,
-    ) async {
-      await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
-      expect(find.byType(PantallaAcceso), findsOneWidget);
-      expect(find.byType(v1.PantallaLogin), findsNothing);
-    });
+  // El acceso y la recuperacion ya no tienen v1 (V2-T02.27): el interruptor
+  // no los toca, ni siquiera con todo en v1.
+  group('el acceso y la recuperacion siempre son v2', () {
+    for (final (nombre, interruptor) in [
+      ('por defecto', InterruptorModulos.porDefecto),
+      ('todo en v1', InterruptorModulos.todoV1),
+    ]) {
+      testWidgets('$nombre: sin sesion se ve el acceso v2', (tester) async {
+        await _montar(tester, interruptor, conSesion: false);
+        expect(find.byType(PantallaAcceso), findsOneWidget);
+      });
 
-    testWidgets('acceso en v1: la salida de emergencia devuelve el login v1', (
-      tester,
-    ) async {
-      await _montar(
-        tester,
-        InterruptorModulos.desdeValores(v1: 'acceso'),
-        conSesion: false,
-      );
-      expect(find.byType(v1.PantallaLogin), findsOneWidget);
-      expect(find.byType(PantallaAcceso), findsNothing);
-    });
+      testWidgets('$nombre: /recuperar es la recuperacion v2', (tester) async {
+        await _montar(tester, interruptor, conSesion: false);
+        await _ir(tester, Rutas.recuperar);
+        expect(find.byType(PantallaRecuperar), findsOneWidget);
+      });
+    }
 
-    testWidgets('por defecto /recuperar es la recuperacion v1, con codigo', (
-      tester,
-    ) async {
-      await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
-      await _ir(tester, Rutas.recuperar);
-      expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
-      expect(find.byType(PantallaRecuperar), findsNothing);
-    });
-
-    testWidgets('con MODULOS_V2=recuperacion /recuperar es la v2', (
-      tester,
-    ) async {
-      await _montar(
-        tester,
-        InterruptorModulos.desdeValores(v2: 'recuperacion'),
-        conSesion: false,
-      );
-      await _ir(tester, Rutas.recuperar);
-      expect(find.byType(PantallaRecuperar), findsOneWidget);
-      expect(find.byType(v1.PantallaRecuperarContrasena), findsNothing);
-    });
-
-    testWidgets('el enlace del correo tambien sigue a la recuperacion v1', (
+    testWidgets('el enlace del correo abre el paso de la contrasena nueva', (
       tester,
     ) async {
       await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
       await _ir(tester, Rutas.localizacionRestablecer(token: '123456'));
-      expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
+      expect(find.byType(PantallaNuevaContrasena), findsOneWidget);
     });
 
     testWidgets(
@@ -157,7 +129,7 @@ void main() {
         await _montar(tester, InterruptorModulos.porDefecto, conSesion: false);
         await tester.tap(find.byKey(PantallaAcceso.botonOlvide));
         await tester.pumpAndSettle();
-        expect(find.byType(v1.PantallaRecuperarContrasena), findsOneWidget);
+        expect(find.byType(PantallaRecuperar), findsOneWidget);
       },
     );
   });
@@ -165,7 +137,7 @@ void main() {
   group('el menu v1 abre la version que dice el interruptor', () {
     testWidgets('por defecto: la barra abre las pantallas v2', (tester) async {
       await _montar(tester, InterruptorModulos.porDefecto);
-      await tester.tap(find.text('Vehículos'));
+      await tester.tap(find.text('Garaje'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsNothing);
       expect(find.byType(PantallaGaraje), findsOneWidget);
@@ -175,14 +147,14 @@ void main() {
       tester,
     ) async {
       await _montar(tester, InterruptorModulos.desdeValores(v1: 'todos'));
-      await tester.tap(find.text('Vehículos'));
+      await tester.tap(find.text('Garaje'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsOneWidget);
     });
 
     testWidgets('todo en v1: la barra abre las pantallas v1', (tester) async {
       await _montar(tester, InterruptorModulos.todoV1);
-      await tester.tap(find.text('Vehículos'));
+      await tester.tap(find.text('Garaje'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsOneWidget);
     });
@@ -192,7 +164,7 @@ void main() {
         tester,
         const InterruptorModulos({ModuloMigrable.vehiculos: VersionModulo.v2}),
       );
-      await tester.tap(find.text('Vehículos'));
+      await tester.tap(find.text('Garaje'));
       await tester.pumpAndSettle();
       expect(find.byType(v1.PantallaVehiculos), findsNothing);
       expect(find.byType(PantallaGaraje), findsOneWidget);

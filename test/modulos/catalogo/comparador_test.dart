@@ -281,7 +281,7 @@ void main() {
       await montar(tester);
       // El enrutador de prueba sigue el idioma del sistema: ingles.
       expect(find.byType(Checkbox), findsNothing);
-      await tester.tap(find.byTooltip('Compare models'));
+      await tester.tap(find.text('Compare models'));
       await tester.pumpAndSettle();
 
       expect(find.byType(Checkbox), findsNWidgets(3));
@@ -312,7 +312,7 @@ void main() {
         ModeloCatalogo.fromJson(_modelo(4, 'March')),
       ];
       await montar(tester, api: api);
-      await tester.tap(find.byTooltip('Compare models'));
+      await tester.tap(find.text('Compare models'));
       await tester.pumpAndSettle();
       for (final n in ['Versa', 'Kicks', 'Sentra']) {
         await tester.tap(find.text('Compare Nissan $n 2025'));
@@ -326,15 +326,15 @@ void main() {
       tester,
     ) async {
       await montar(tester);
-      await tester.tap(find.byTooltip('Compare models'));
+      await tester.tap(find.text('Compare models'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Compare Nissan Versa 2025'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip('Exit compare mode'));
+      await tester.tap(find.text('Exit compare mode'));
       await tester.pumpAndSettle();
       expect(find.byType(Checkbox), findsNothing);
 
-      await tester.tap(find.byTooltip('Compare models'));
+      await tester.tap(find.text('Compare models'));
       await tester.pumpAndSettle();
       expect(find.text('Pick 2 or 3 models'), findsOneWidget);
     });
@@ -343,7 +343,7 @@ void main() {
       final api = _api();
       api.modelosCatalogo = [api.modelosCatalogo.first];
       await montar(tester, api: api);
-      expect(find.byTooltip('Compare models'), findsNothing);
+      expect(find.text('Compare models'), findsNothing);
     });
 
     testWidgets('la ruta /catalogo/comparar abre la comparativa', (

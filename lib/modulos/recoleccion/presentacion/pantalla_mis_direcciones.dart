@@ -31,6 +31,7 @@ class PantallaMisDirecciones extends ConsumerWidget {
     final direcciones = ref.watch(direccionesProvider);
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.mapPin,
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       estado: hijo,
@@ -93,6 +94,7 @@ class _Lista extends ConsumerWidget {
     final c = TokensPista.de(context).colores;
 
     return MarcoPantalla(
+      icono: LucideIcons300.mapPin,
       titulo: textos.recoleccionDireccionesTitulo,
       conRegreso: true,
       alRefrescar: () async {

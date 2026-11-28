@@ -5,6 +5,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/barra_navegacion.dart'
     show DestinoNavegacion;
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_acciones_pildora.dart';
+import 'package:carecar_mobile/nucleo/diseno/tokens/tokens_pista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -108,6 +109,49 @@ void main() {
       expect(activo.fontWeight, FontWeight.w600);
       expect(activo.color, isNot(inactivo.color));
     });
+
+    testWidgets('el destino activo va en azul de acento, icono y texto', (
+      tester,
+    ) async {
+      await tester.pumpWidget(barra(1, (_) {}));
+
+      final c = TokensPista.de(tester.element(find.byType(BarraFlotante)))
+          .colores;
+      expect(
+        tester.widget<Text>(find.text('Vehículos')).style!.color,
+        c.acento,
+      );
+      expect(
+        tester.widget<Icon>(find.byIcon(LucideIcons300.car)).color,
+        c.acento,
+      );
+      expect(
+        tester.widget<Text>(find.text('Inicio')).style!.color,
+        c.textoSecundario,
+      );
+    });
+
+    testWidgets(
+      'la barra es sólida: la pastilla se ve igual sobre cualquier fondo',
+      (tester) async {
+        // Con el fondo translúcido, una tarjeta azul debajo teñía la barra.
+        await tester.pumpWidget(barra(1, (_) {}));
+
+        final c = TokensPista.de(tester.element(find.byType(BarraFlotante)))
+            .colores;
+        final fondo = tester
+            .widgetList<DecoratedBox>(
+              find.descendant(
+                of: find.byType(BarraFlotante),
+                matching: find.byType(DecoratedBox),
+              ),
+            )
+            .map((d) => d.decoration)
+            .whereType<BoxDecoration>()
+            .where((d) => d.color == c.superficie);
+        expect(fondo, isNotEmpty);
+      },
+    );
   });
 
   group('GrupoAccionesPildora', () {
@@ -200,10 +244,8 @@ void main() {
       expect(find.byIcon(LucideIcons300.plus), findsOneWidget);
       await tester.tap(find.text('Agendar cita'));
       expect(toques, 1);
-      expect(
-        tester.getSize(find.byType(BotonAccionFlotante)).height,
-        greaterThanOrEqualTo(48),
-      );
+      // Más bajo que antes (56), pero sin bajar del mínimo táctil de 48.
+      expect(tester.getSize(find.byType(BotonAccionFlotante)).height, 48);
     });
 
     testWidgets('es un botón para el lector de pantalla', (tester) async {

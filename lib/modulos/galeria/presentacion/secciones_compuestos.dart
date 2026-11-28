@@ -15,7 +15,6 @@ import '../../../nucleo/diseno/componentes/deslizar_para_confirmar.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
 import '../../../nucleo/diseno/componentes/estado_vacio.dart';
-import '../../../nucleo/diseno/componentes/fila_lista.dart';
 import '../../../nucleo/diseno/componentes/firma.dart';
 import '../../../nucleo/diseno/componentes/galeria_fotos.dart';
 import '../../../nucleo/diseno/componentes/grafica.dart';
@@ -110,17 +109,9 @@ List<SeccionGaleria> seccionesCompuestos() => [
     ),
   ),
   SeccionGaleria(
-    titulo: 'Fila de lista y semaforo',
+    titulo: 'Semaforo',
     construir: (context) => Column(
       children: [
-        FilaLista(
-          titulo: 'Mazda CX-5 2024',
-          subtitulo: 'Proximo servicio en 1 200 km',
-          inicio: const Icon(LucideIcons300.car),
-          alToque: () {},
-        ),
-        const FilaLista(titulo: 'Sin toque', subtitulo: 'No es tocable'),
-        const SizedBox(height: Espaciado.e3),
         for (final estado in EstadoSemaforo.values)
           Padding(
             padding: const EdgeInsets.only(bottom: Espaciado.e2),

@@ -1,3 +1,4 @@
+import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -248,5 +249,93 @@ void main() {
       );
       expect(tester.takeException(), isNull);
     }
+  });
+
+  group('una fila con visual propio (el día de una cita)', () {
+    Widget conVisual({double ancho = 360}) => conTemaPista(
+      ancho: ancho,
+      GrupoLista(
+        filas: [
+          FilaGrupo(
+            titulo: 'jue 12 mar · 10:30',
+            subtitulo: 'Vehiculo con un nombre bastante largo · Servicio',
+            visual: CuadroFecha(fecha: DateTime(2026, 3, 12)),
+            fin: const Text('Confirmada'),
+            etiquetaFin: 'Confirmada',
+            alToque: () {},
+          ),
+          FilaGrupo(
+            titulo: 'lun 2 mar · 09:00',
+            visual: CuadroFecha(fecha: DateTime(2026, 3, 2)),
+          ),
+        ],
+      ),
+    );
+
+    testWidgets('el visual ocupa el lugar del icono', (tester) async {
+      await tester.pumpWidget(conVisual());
+      expect(find.byType(CuadroFecha), findsNWidgets(2));
+    });
+
+    testWidgets('el divisor empieza donde el texto: tras los 40 del visual', (
+      tester,
+    ) async {
+      await tester.pumpWidget(conVisual());
+      final divisor = tester.getTopLeft(find.byType(Divider));
+      final texto = tester.getTopLeft(find.text('jue 12 mar · 10:30'));
+      expect(divisor.dx, texto.dx);
+    });
+
+    testWidgets('el título no se parte por la insignia del final', (
+      tester,
+    ) async {
+      // En pruebas la letra es Ahem (1 em por carácter): se compara la altura
+      // del título con y sin insignia, con un título corto que sí cabe. Antes
+      // el espacio libre se repartía a partes iguales y el título se partía.
+      Future<double> alturaDelTitulo({required bool conFin}) async {
+        await tester.pumpWidget(
+          conTemaPista(
+            GrupoLista(
+              filas: [
+                FilaGrupo(
+                  titulo: 'jue 12 mar',
+                  visual: CuadroFecha(fecha: DateTime(2026, 3, 12)),
+                  fin: conFin ? const SizedBox(width: 90, height: 24) : null,
+                ),
+              ],
+            ),
+          ),
+        );
+        return tester.getSize(find.text('jue 12 mar')).height;
+      }
+
+      final sinFin = await alturaDelTitulo(conFin: false);
+      final conFin = await alturaDelTitulo(conFin: true);
+      expect(conFin, sinFin);
+    });
+
+    testWidgets('el lector oye título, subtítulo y estado en un solo nodo', (
+      tester,
+    ) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(conVisual());
+      expect(
+        find.bySemanticsLabel(
+          'jue 12 mar · 10:30. Vehiculo con un nombre bastante largo · '
+          'Servicio. Confirmada',
+        ),
+        findsOneWidget,
+      );
+      semantica.dispose();
+    });
+
+    testWidgets('el visual no se lee aparte: la fila ya dijo la fecha', (
+      tester,
+    ) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(conVisual());
+      expect(find.bySemanticsLabel('12'), findsNothing);
+      semantica.dispose();
+    });
   });
 }

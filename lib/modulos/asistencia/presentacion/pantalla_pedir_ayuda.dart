@@ -54,10 +54,12 @@ class _PantallaPedirAyudaState extends ConsumerState<PantallaPedirAyuda> {
     return activa.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.lifeBuoy,
         titulo: textos.asistenciaPedirTitulo,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.lifeBuoy,
         titulo: textos.asistenciaPedirTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -86,10 +88,12 @@ class _ConGaraje extends ConsumerWidget {
     return garaje.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.lifeBuoy,
         titulo: textos.asistenciaPedirTitulo,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.lifeBuoy,
         titulo: textos.asistenciaPedirTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -100,6 +104,7 @@ class _ConGaraje extends ConsumerWidget {
       ),
       data: (vehiculos) => vehiculos.isEmpty
           ? MarcoPantalla.estado(
+              icono: LucideIcons300.lifeBuoy,
               titulo: textos.asistenciaPedirTitulo,
               estado: EstadoVacio(
                 titulo: textos.asistenciaGarajeVacioTitulo,
@@ -108,6 +113,7 @@ class _ConGaraje extends ConsumerWidget {
               ),
             )
           : MarcoPantalla(
+              icono: LucideIcons300.lifeBuoy,
               titulo: textos.asistenciaPedirTitulo,
               slivers: [
                 SliverToBoxAdapter(

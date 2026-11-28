@@ -20,6 +20,10 @@ import 'silueta_auto.dart';
 /// es un botón. `etiqueta` es lo que lee el lector de pantalla: por omisión, los
 /// textos en orden.
 ///
+/// Con `foto` (la ruta de un asset, ver `fotoDeModelo`) es una tarjeta como
+/// [TarjetaResumen]: misma superficie, radio, sombra y letra, con la foto real
+/// del modelo arriba y el nombre y los datos debajo (V2-T02.27).
+///
 /// Con letra grande las placas bajan debajo del nombre y la tarjeta crece.
 class TarjetaAuto extends StatelessWidget {
   const TarjetaAuto({
@@ -32,7 +36,11 @@ class TarjetaAuto extends StatelessWidget {
     this.alToque,
     this.etiqueta,
     this.alto,
+    this.foto,
   });
+
+  /// Ruta del asset con la foto del modelo; sin ella va la silueta.
+  final String? foto;
 
   final String? titulo;
   final String? marca;
@@ -56,11 +64,17 @@ class TarjetaAuto extends StatelessWidget {
       (conTitulo ? altoBase : _altoSinTitulo) +
       (escala - 1).clamp(0.0, 1.0) * 190;
 
+  /// Alto con foto: la foto toma lo fijo y los textos crecen con la letra.
+  static double altoConFoto({required double escala}) =>
+      _altoConFoto + (escala - 1).clamp(0.0, 1.0) * 60;
+  static const double _altoConFoto = 264;
+
   /// Por encima de esta escala las placas bajan bajo el nombre.
   static const double _escalaPlacasAbajo = 1.3;
 
   @override
   Widget build(BuildContext context) {
+    if (foto != null) return _conFoto(context);
     final tokens = TokensPista.de(context);
     final c = tokens.colores;
     final t = tokens.tipografia;
@@ -195,6 +209,101 @@ class TarjetaAuto extends StatelessWidget {
       child: alToque == null
           ? cuerpo
           : ReboteTactil(alPulsar: alToque, child: cuerpo),
+    );
+  }
+
+  /// La variante con foto, con la forma de [TarjetaResumen].
+  Widget _conFoto(BuildContext context) {
+    final tokens = TokensPista.de(context);
+    final c = tokens.colores;
+    final t = tokens.tipografia;
+    final escala = MediaQuery.textScalerOf(context).scale(1);
+    final datos = [?marca, ?placas, ?kilometraje].join(' · ');
+    final conTextos = titulo != null || datos.isNotEmpty || alToque != null;
+
+    final tarjeta = DecoratedBox(
+      decoration: BoxDecoration(
+        color: c.superficie,
+        borderRadius: Radios.bordeTarjeta,
+        boxShadow: tokens.sombras,
+      ),
+      child: SizedBox(
+        height: alto ?? altoConFoto(escala: escala),
+        child: Padding(
+          padding: const EdgeInsets.all(Espaciado.e4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: Radios.bordeControl,
+                  child: ColoredBox(
+                    color: c.superficieHundida,
+                    child: Image.asset(
+                      foto!,
+                      fit: BoxFit.cover,
+                      // Si el asset faltara queda el fondo hundido, sin error.
+                      errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                    ),
+                  ),
+                ),
+              ),
+              // Sin textos ni toque (el encabezado ya dice qué auto es) es solo
+              // la foto en su tarjeta.
+              if (conTextos) ...[
+                const SizedBox(height: Espaciado.e3),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (titulo != null)
+                            Text(
+                              titulo!,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: t.titulo3.copyWith(color: c.texto),
+                            ),
+                          if (datos.isNotEmpty)
+                            Text(
+                              datos,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: t.cuerpoChico.copyWith(
+                                color: c.textoSecundario,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    if (alToque != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: Espaciado.e2),
+                        child: Icon(
+                          LucideIcons300.chevronRight,
+                          color: c.textoTerciario,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+
+    final partes = [?marca, ?titulo, ?placas, ?kilometraje];
+    return Semantics(
+      button: alToque != null,
+      container: true,
+      label: etiqueta ?? partes.join(', '),
+      excludeSemantics: true,
+      onTap: alToque,
+      child: alToque == null
+          ? tarjeta
+          : ReboteTactil(alPulsar: alToque, child: tarjeta),
     );
   }
 

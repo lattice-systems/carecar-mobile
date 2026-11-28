@@ -4,11 +4,14 @@ import 'package:carecar_mobile/modulos/vehiculos/dominio/repositorio_garaje.dart
 import 'package:carecar_mobile/modulos/vehiculos/dominio/vehiculo_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/pantalla_garaje.dart';
 import 'package:carecar_mobile/modulos/vehiculos/presentacion/proveedores_vehiculos.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_vacio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 
@@ -31,6 +34,20 @@ Widget _app(
 );
 
 void main() {
+  testWidgets('es raíz de pestaña: sin regresar ni cerrar, con su icono', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioGarajeFake()));
+    await tester.pumpAndSettle();
+
+    // La barra de pestañas lleva a las demás pantallas: no hay a dónde
+    // regresar, y «Cerrar» es de las pantallas que se abren encima de otra.
+    expect(find.byType(BotonRegresar), findsNothing);
+    expect(find.byType(BotonCerrar), findsNothing);
+    expect(find.byIcon(LucideIcons300.car), findsWidgets);
+    expect(find.text('Mi garaje'), findsOneWidget);
+  });
+
   testWidgets('una tarjeta por vehiculo con modelo, anio, placas y km', (
     tester,
   ) async {

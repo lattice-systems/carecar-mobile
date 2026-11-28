@@ -57,10 +57,12 @@ class PantallaComprobanteCita extends ConsumerWidget {
     return comprobante.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.calendarCheck,
         titulo: textos.citasComprobanteTitulo,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.calendarCheck,
         titulo: textos.citasComprobanteTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -70,6 +72,7 @@ class PantallaComprobanteCita extends ConsumerWidget {
         ),
       ),
       data: (datos) => MarcoPantalla(
+        icono: LucideIcons300.calendarCheck,
         titulo: textos.citasComprobanteFolio(datos.citaId),
         subtitulo: textos.citasComprobanteCuando(
           datos.fecha,

@@ -67,6 +67,7 @@ class _EstadoPantallaReprogramarCita
     final ahora = ref.watch(relojCitasProvider)();
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.calendarClock,
       titulo: textos.citasReprogramarTitulo,
       estado: hijo,
     );
@@ -122,6 +123,7 @@ class _EstadoPantallaReprogramarCita
     final indice = franjas.indexWhere((f) => f.franjaId == _franja?.franjaId);
 
     return MarcoPantalla(
+      icono: LucideIcons300.calendarClock,
       titulo: textos.citasReprogramarTitulo,
       alRefrescar: () async {
         ref.invalidate(disponibilidadProvider);

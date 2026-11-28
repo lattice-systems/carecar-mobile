@@ -121,6 +121,7 @@ class _EstadoPantallaMisEstimaciones
     ];
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.calculator,
       titulo: t.misEstimacionesTitulo,
       conRegreso: true,
       acciones: acciones,
@@ -150,6 +151,7 @@ class _EstadoPantallaMisEstimaciones
       );
     }
     return MarcoPantalla(
+      icono: LucideIcons300.calculator,
       titulo: t.misEstimacionesTitulo,
       conRegreso: true,
       acciones: acciones,

@@ -109,6 +109,7 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoLealtad(
@@ -117,6 +118,7 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -129,6 +131,7 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
           ),
           data: (recompensas) => recompensas.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.gift,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -138,6 +141,7 @@ class _PantallaRecompensasState extends ConsumerState<PantallaRecompensas> {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.gift,
                   titulo: titulo,
                   subtitulo: saldo == null
                       ? null

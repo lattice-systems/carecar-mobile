@@ -4,8 +4,10 @@ import 'dart:ui' show ImageFilter;
 import 'package:flutter/material.dart';
 
 import '../tokens/espaciado.dart';
+import '../tokens/radios.dart';
 import '../tokens/tokens_pista.dart';
 import 'boton_regresar.dart';
+import 'tono.dart';
 
 /// Encabezado de pantalla con título grande que se recoge al desplazar.
 ///
@@ -17,6 +19,10 @@ import 'boton_regresar.dart';
 ///   `GrupoAccionesPildora`). Al recogerse muestra el título pequeño entre
 ///   ambos.
 /// - **El título grande**, alineado a la izquierda, con el `subtitulo` debajo.
+///   Con `icono` va en una tarjeta separada de la barra, con un cuadro del
+///   `tono` arriba del título: dice de un
+///   vistazo de qué trata la pantalla (V2-T02.27). Al recogerse queda la
+///   barra de siempre.
 ///   Se desliza hacia arriba por debajo de la barra y se desvanece mientras el
 ///   título pequeño aparece; recogido del todo, el subtítulo ya no se arma.
 ///
@@ -34,10 +40,16 @@ class EncabezadoGrande extends StatelessWidget {
     this.acciones = const [],
     this.translucido = false,
     this.conRegreso = false,
+    this.icono,
+    this.tono = Tono.informacion,
   });
 
   final String titulo;
   final String? subtitulo;
+
+  /// Icono de la pantalla, en un cuadro del [tono] sobre el título grande.
+  final IconData? icono;
+  final Tono tono;
 
   /// Botones al final de la barra, cada uno con su zona táctil de 48.
   final List<Widget> acciones;
@@ -63,6 +75,8 @@ class EncabezadoGrande extends StatelessWidget {
         acciones: acciones,
         translucido: translucido,
         conRegreso: conRegreso,
+        icono: icono,
+        tono: tono,
         escala: MediaQuery.textScalerOf(context),
         tokens: TokensPista.de(context),
         arriba: MediaQuery.paddingOf(context).top,
@@ -80,6 +94,8 @@ class _Delegado extends SliverPersistentHeaderDelegate {
     required this.acciones,
     required this.translucido,
     required this.conRegreso,
+    required this.icono,
+    required this.tono,
     required this.escala,
     required this.tokens,
     required this.arriba,
@@ -94,6 +110,8 @@ class _Delegado extends SliverPersistentHeaderDelegate {
   final List<Widget> acciones;
   final bool translucido;
   final bool conRegreso;
+  final IconData? icono;
+  final Tono tono;
   final TextScaler escala;
   final TokensPista tokens;
   final double arriba;
@@ -107,17 +125,29 @@ class _Delegado extends SliverPersistentHeaderDelegate {
 
   /// Aire bajo el título grande.
   static const double _aireAbajo = Espaciado.e3;
+
+  /// Con icono: la tarjeta, su relleno, el aire que la separa de la barra,
+  /// el lado del cuadro del icono y el aire entre él y el título.
+  static const double _aireArribaTarjeta = Espaciado.e5;
+  static const double _rellenoTarjeta = Espaciado.e5;
+  static const double _cuadroIcono = 48;
+  static const double _aireIcono = Espaciado.e4;
   static const double _desenfoque = 30;
 
   late final double _altoBloque;
 
-  double _medir(TextStyle estilo, String texto, int lineas) {
+  double _medir(
+    TextStyle estilo,
+    String texto,
+    int lineas, {
+    double ancho = double.infinity,
+  }) {
     final pintor = TextPainter(
       text: TextSpan(text: texto, style: estilo),
       textDirection: direccion,
       textScaler: escala,
       maxLines: lineas,
-    )..layout(maxWidth: math.max(1, anchoTexto));
+    )..layout(maxWidth: math.max(1, math.min(ancho, anchoTexto)));
     final alto = pintor.height;
     pintor.dispose();
     return alto;
@@ -125,6 +155,21 @@ class _Delegado extends SliverPersistentHeaderDelegate {
 
   void _medirBloque() {
     final t = tokens.tipografia;
+    if (icono != null) {
+      // En tarjeta: el texto pierde el relleno de los dos lados.
+      final ancho = anchoTexto - 2 * _rellenoTarjeta;
+      var alto =
+          _aireArribaTarjeta +
+          2 * _rellenoTarjeta +
+          _cuadroIcono +
+          _aireIcono +
+          _medir(t.titulo2, titulo, 2, ancho: ancho);
+      if (subtitulo != null) {
+        alto += Espaciado.e2 + _medir(t.cuerpo, subtitulo!, 4, ancho: ancho);
+      }
+      _altoBloque = alto;
+      return;
+    }
     var alto = _medir(t.titulo1, titulo, 2);
     if (subtitulo != null) {
       alto += Espaciado.e1 + _medir(t.cuerpoChico, subtitulo!, 2);
@@ -135,8 +180,21 @@ class _Delegado extends SliverPersistentHeaderDelegate {
   @override
   double get minExtent => arriba + _alturaBarra;
 
+  /// Sin botón de regreso ni acciones (las raíces de pestaña) la barra está
+  /// vacía mientras el título es grande: el bloque sube a ocuparla y solo al
+  /// recogerse queda la barra con el título chico.
+  bool get _barraVacia => !conRegreso && acciones.isEmpty;
+
+  /// Donde empieza el título grande.
+  double get _tope =>
+      _barraVacia ? arriba + (icono == null ? Espaciado.e4 : 0) : minExtent;
+
   @override
-  double get maxExtent => minExtent + _altoBloque + _aireAbajo;
+  // Con tarjeta el aire de abajo deja ver su sombra entera.
+  double get maxExtent => math.max(
+    minExtent,
+    _tope + _altoBloque + (icono == null ? _aireAbajo : Espaciado.e6),
+  );
 
   @override
   Widget build(
@@ -158,34 +216,88 @@ class _Delegado extends SliverPersistentHeaderDelegate {
         ? c.fondo.withValues(alpha: 1 - 0.08 * avance)
         : c.fondo;
 
+    final Widget contenidoBloque;
+    if (icono != null) {
+      // En una tarjeta separada de la barra: el icono arriba y debajo el
+      // título y la explicación, alineados a la izquierda.
+      contenidoBloque = Padding(
+        padding: const EdgeInsets.only(top: _aireArribaTarjeta),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: c.superficie,
+            borderRadius: Radios.bordeTarjeta,
+            boxShadow: tokens.sombras,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(_rellenoTarjeta),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ExcludeSemantics(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: ColoresTono.de(tono, c).frente,
+                      borderRadius: Radios.bordeControl,
+                    ),
+                    child: SizedBox.square(
+                      dimension: _cuadroIcono,
+                      child: Icon(icono, size: 26, color: c.sobreAcento),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: _aireIcono),
+                Semantics(
+                  header: true,
+                  child: Text(
+                    titulo,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: t.titulo2.copyWith(color: c.texto),
+                  ),
+                ),
+                if (subtitulo != null) ...[
+                  const SizedBox(height: Espaciado.e2),
+                  Text(
+                    subtitulo!,
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
+                    style: t.cuerpo.copyWith(color: c.textoSecundario),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      contenidoBloque = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Semantics(
+            header: true,
+            child: Text(
+              titulo,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: t.titulo1.copyWith(color: c.texto),
+            ),
+          ),
+          if (subtitulo != null) ...[
+            const SizedBox(height: Espaciado.e1),
+            Text(
+              subtitulo!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: t.cuerpoChico.copyWith(color: c.textoSecundario),
+            ),
+          ],
+        ],
+      );
+    }
+
     final bloque = Padding(
       padding: const EdgeInsets.symmetric(horizontal: Espaciado.margenTelefono),
-      child: Opacity(
-        opacity: opacidadGrande,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Semantics(
-              header: true,
-              child: Text(
-                titulo,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: t.titulo1.copyWith(color: c.texto),
-              ),
-            ),
-            if (subtitulo != null) ...[
-              const SizedBox(height: Espaciado.e1),
-              Text(
-                subtitulo!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: t.cuerpoChico.copyWith(color: c.textoSecundario),
-              ),
-            ],
-          ],
-        ),
-      ),
+      child: Opacity(opacity: opacidadGrande, child: contenidoBloque),
     );
 
     final barra = Padding(
@@ -197,35 +309,40 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       ),
       child: SizedBox(
         height: _alturaBarra,
-        child: Row(
-          children: [
-            if (conRegreso) ...[
-              const BotonRegresar(),
-              const SizedBox(width: Espaciado.e3),
-            ],
-            Expanded(
-              child: grande
-                  ? const SizedBox.shrink()
-                  : Semantics(
-                      header: true,
-                      child: Opacity(
-                        opacity: opacidadChico,
-                        // Aunque aún no se vea, es el encabezado para el lector.
-                        alwaysIncludeSemantics: true,
-                        child: Text(
-                          titulo,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: t.titulo3.copyWith(color: c.texto),
-                        ),
-                      ),
+        // El título chico va al centro de la barra, no pegado al botón: la
+        // barra de navegación mide el botón y las acciones y lo centra.
+        child: NavigationToolbar(
+          leading: conRegreso ? const BotonRegresar() : null,
+          centerMiddle: true,
+          middleSpacing: Espaciado.e3,
+          middle: grande
+              ? null
+              : Semantics(
+                  header: true,
+                  child: Opacity(
+                    opacity: opacidadChico,
+                    // Aunque aún no se vea, es el encabezado para el lector.
+                    alwaysIncludeSemantics: true,
+                    child: Text(
+                      titulo,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: t.titulo3.copyWith(color: c.texto),
                     ),
-            ),
-            for (var i = 0; i < acciones.length; i++) ...[
-              if (i > 0) const SizedBox(width: Espaciado.e2),
-              acciones[i],
-            ],
-          ],
+                  ),
+                ),
+          trailing: acciones.isEmpty
+              ? null
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (var i = 0; i < acciones.length; i++) ...[
+                      if (i > 0) const SizedBox(width: Espaciado.e2),
+                      acciones[i],
+                    ],
+                  ],
+                ),
         ),
       ),
     );
@@ -242,10 +359,11 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       ),
       child: Stack(
         children: [
-          // El título grande vive bajo la barra y sube con el desplazamiento:
-          // la ventana recorta lo que pasa por detrás de la barra.
+          // El título grande vive bajo la barra (o, sin botones, desde el reloj)
+          // y sube con el desplazamiento: la ventana recorta lo que pasa por
+          // detrás de la barra.
           Positioned(
-            top: minExtent,
+            top: _tope,
             left: 0,
             right: 0,
             bottom: 0,
@@ -288,6 +406,8 @@ class _Delegado extends SliverPersistentHeaderDelegate {
       anterior.acciones != acciones ||
       anterior.translucido != translucido ||
       anterior.conRegreso != conRegreso ||
+      anterior.icono != icono ||
+      anterior.tono != tono ||
       anterior.escala != escala ||
       anterior.tokens != tokens ||
       anterior.arriba != arriba ||

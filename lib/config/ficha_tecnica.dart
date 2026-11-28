@@ -1,4 +1,4 @@
-import '../widgets/foto_auto.dart';
+import '../nucleo/autos/foto_de_modelo.dart';
 
 /// Ficha tecnica de un modelo, segun su generacion y su version.
 ///

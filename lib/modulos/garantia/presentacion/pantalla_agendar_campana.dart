@@ -116,11 +116,13 @@ class _PantallaAgendarCampanaState
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.calendarPlus,
             titulo: titulo,
             subtitulo: campana?.titulo,
             estado: const EsqueletoGarantia(altos: [320, 96]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.calendarPlus,
             titulo: titulo,
             subtitulo: campana?.titulo,
             estado: EstadoError(
@@ -133,6 +135,7 @@ class _PantallaAgendarCampanaState
           ),
           data: (taller) => taller.sinCupoEnTodoElRango
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.calendarPlus,
                   titulo: titulo,
                   subtitulo: campana?.titulo,
                   estado: EstadoVacio(
@@ -163,6 +166,7 @@ class _PantallaAgendarCampanaState
     final rechazo = _rechazo;
 
     return MarcoPantalla(
+      icono: LucideIcons300.calendarPlus,
       titulo: textos.campanasAgendarTitulo,
       subtitulo: campana?.titulo,
       alRefrescar: () async {

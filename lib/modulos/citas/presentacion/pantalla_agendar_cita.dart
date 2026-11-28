@@ -129,8 +129,11 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     final garaje = ref.watch(garajeProvider);
     final disponibilidad = ref.watch(disponibilidadProvider);
 
-    Widget estado(Widget hijo) =>
-        MarcoPantalla.estado(titulo: textos.citasAgendarTitulo, estado: hijo);
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.calendarPlus,
+      titulo: textos.citasAgendarTitulo,
+      estado: hijo,
+    );
 
     final error = garaje.error ?? disponibilidad.error;
     if (error != null && !(garaje.hasValue && disponibilidad.hasValue)) {
@@ -210,6 +213,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     final escala = MediaQuery.textScalerOf(context).scale(1);
 
     return MarcoPantalla(
+      icono: LucideIcons300.calendarPlus,
       titulo: textos.citasAgendarTitulo,
       alRefrescar: () async {
         ref.invalidate(garajeProvider);
@@ -323,6 +327,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
     ).format(franja.fecha);
 
     return MarcoPantalla(
+      icono: LucideIcons300.calendarPlus,
       titulo: textos.citasResumenTitulo,
       subtitulo: vehiculo.titulo,
       acciones: const [],
