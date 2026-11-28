@@ -3,10 +3,13 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/privacidad/pantalla_segura.dart';
+import 'pantalla_calendario_documentos.dart';
 import 'pantalla_documentos.dart';
 
 /// Raiz de las rutas de documentos.
 const rutaDocumentos = '/documentos';
+
+const rutaCalendarioDocumentos = '$rutaDocumentos/calendario';
 
 /// Documentos del vehiculo: `/documentos/5`.
 String rutaDocumentosVehiculo(int vehiculoId) => '$rutaDocumentos/$vehiculoId';
@@ -24,6 +27,12 @@ Widget _segura(BuildContext context, Widget hijo) => PantallaSegura(
 
 /// Rutas que el modulo `documentos` entrega al enrutador.
 final rutasDocumentos = <RouteBase>[
+  GoRoute(
+    path: rutaCalendarioDocumentos,
+    name: 'calendario-documentos',
+    builder: (context, state) =>
+        _segura(context, const PantallaCalendarioDocumentos()),
+  ),
   GoRoute(
     path: '$rutaDocumentos/:vehiculoId',
     name: 'documentos-vehiculo',

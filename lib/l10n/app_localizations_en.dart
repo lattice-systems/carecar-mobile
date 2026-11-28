@@ -6825,4 +6825,41 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ayudaCerrar => 'Close';
+
+  @override
+  String get documentosCalendario => 'Expiration calendar';
+
+  @override
+  String get documentosVencimientos => 'Expirations';
+
+  @override
+  String get documentosErrorCalendario => 'Could not load expirations';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad expirations',
+      one: '1 expiration',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Expirations this month';
+
+  @override
+  String get documentosVerMes => 'View full month';
+
+  @override
+  String get documentosMesVacio => 'No expirations this month.';
+
+  @override
+  String get documentosDiaVacio => 'No expirations on this day.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
 }

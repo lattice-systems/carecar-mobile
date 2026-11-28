@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
+import '../../vehiculos/vehiculos.dart';
 import '../datos/repositorio_documentos_api.dart';
 import '../dominio/documento_vehiculo.dart';
 import '../dominio/repositorio_documentos.dart';
@@ -24,3 +25,28 @@ final documentosProvider = FutureProvider.autoDispose
       retry: (_, _) => null,
       name: 'documentosProvider',
     );
+
+typedef VencimientoVehiculo = ({
+  VehiculoGaraje vehiculo,
+  DocumentoVehiculo documento,
+  DateTime fecha,
+});
+
+final vencimientosGarajeProvider =
+    FutureProvider.autoDispose<List<VencimientoVehiculo>>((ref) async {
+      final vehiculos = await ref.watch(garajeProvider.future);
+      if (!ref.mounted) return [];
+      final documentosPorVehiculo = await Future.wait([
+        for (final vehiculo in vehiculos)
+          ref.watch(documentosProvider(vehiculo.id).future),
+      ]);
+
+      final vencimientos = [
+        for (var i = 0; i < vehiculos.length; i++)
+          for (final documento in documentosPorVehiculo[i])
+            if (documento.venceEn case final fecha?)
+              (vehiculo: vehiculos[i], documento: documento, fecha: fecha),
+      ];
+      vencimientos.sort((a, b) => a.fecha.compareTo(b.fecha));
+      return vencimientos;
+    }, retry: (_, _) => null);
