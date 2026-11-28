@@ -388,7 +388,9 @@ void main() {
 
     testWidgets('desde la barra se abren Mis valuaciones', (tester) async {
       await abrirDetalle(tester);
-      tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+      // Con las pestañas (V2-T02.27) la lista y el detalle viven en el
+      // navegador de la barra fija, no en el raíz: se regresa por el enrutador.
+      enrutadorDe(tester).pop();
       await tester.pumpAndSettle();
       await tester.tap(find.byTooltip('Mis valuaciones'));
       await tester.pumpAndSettle();
