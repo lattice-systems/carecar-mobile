@@ -26,7 +26,7 @@ la opción de compartir analítica activa.
 
 1. Ejecutar la suite de Flutter y la prueba de integración del flujo principal.
 2. Con el APK profile de desarrollo y una cuenta de prueba, activar **Compartir analítica**. Provocar un cierre de la instancia de prueba y volver a abrirla. Comprobar que la API responde 204 a `{"tipo":"CRASH_ANDROID"}` y que una segunda reapertura no repite el evento. Repetir con el interruptor apagado y verificar que la API no recibe el reporte.
-3. Comprobar que el workflow de distribución publica el artefacto de símbolos Dart del APK.
+3. Ejecutar [APK y símbolos de dev](../../.github/workflows/apk-simbolos-dev.yml) y descargar el artefacto de la corrida. Contiene el APK de pruebas, los símbolos Dart y verificacion.txt con el identificador de compilación y el resultado de simbolizar un marco de prueba por arquitectura. El APK usa la firma de debug y se distribuye como artefacto de CI.
 
 En el emulador API 37, con el APK profile de desarrollo, Android clasificó los cierres controlados con `SIGSEGV` como fallos de código nativo. El simulador recibió un evento con `tipo` como único campo y devolvió 204. La segunda apertura no repitió el envío. Un nuevo cierre con la opción apagada quedó fuera del reporte. Una sonda temporal reportó `ERROR_FLUTTER` al activar el permiso. Tanto esa categoría como `CRASH_ANDROID` quedaron fuera del envío con la opción apagada. El archivo de símbolos Dart x86_64 y `libapp.so` del APK tienen el mismo identificador de compilación.
 
