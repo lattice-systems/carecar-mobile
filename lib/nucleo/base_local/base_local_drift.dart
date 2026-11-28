@@ -37,12 +37,10 @@ import 'esquema_local.dart';
 /// así [borrarTodo] nunca corre a la mitad de un guardado.
 class BaseLocalDrift implements BaseLocal {
   BaseLocalDrift({
-    required File archivo,
-    required AlmacenamientoCifrado almacenamiento,
+    required this.archivo,
+    required this.almacenamiento,
     DateTime Function()? reloj,
-  }) : _archivo = archivo,
-       _almacenamiento = almacenamiento,
-       _reloj = reloj ?? DateTime.now;
+  }) : _reloj = reloj ?? DateTime.now;
 
   /// Dónde se guarda la llave. Si cambia, la base existente se descarta.
   static const claveEnAlmacen = 'carecar.base_local.clave.v1';
@@ -50,8 +48,11 @@ class BaseLocalDrift implements BaseLocal {
   /// Versión del esquema de [BaseDeDatosLocal].
   static const versionDelEsquema = 2;
 
-  final File _archivo;
-  final AlmacenamientoCifrado _almacenamiento;
+  /// Dónde vive la base cifrada.
+  final File archivo;
+
+  /// Dónde se guarda la llave.
+  final AlmacenamientoCifrado almacenamiento;
   final DateTime Function() _reloj;
 
   BaseDeDatosLocal? _base;
@@ -86,9 +87,9 @@ class BaseLocalDrift implements BaseLocal {
   }
 
   Future<BaseDeDatosLocal> _abrirConLlave(String llave) async {
-    await _archivo.parent.create(recursive: true);
+    await archivo.parent.create(recursive: true);
     final base = BaseDeDatosLocal(
-      NativeDatabase.createInBackground(_archivo, setup: _prepararMotor(llave)),
+      NativeDatabase.createInBackground(archivo, setup: _prepararMotor(llave)),
     );
     try {
       // Drift abre perezosamente: esto fuerza la apertura y las migraciones
@@ -114,7 +115,7 @@ class BaseLocalDrift implements BaseLocal {
 
   Future<String> _cargarOCrearLlave() async {
     try {
-      final guardada = await _almacenamiento.leer(claveEnAlmacen);
+      final guardada = await almacenamiento.leer(claveEnAlmacen);
       if (guardada != null && RegExp(r'^[0-9a-f]{64}$').hasMatch(guardada)) {
         return guardada;
       }
@@ -125,7 +126,7 @@ class BaseLocalDrift implements BaseLocal {
       ].join();
       // Una llave nueva deja ilegible lo que hubiera: se parte de cero.
       await _borrarArchivos();
-      await _almacenamiento.escribir(claveEnAlmacen, nueva);
+      await almacenamiento.escribir(claveEnAlmacen, nueva);
       return nueva;
     } catch (e) {
       throw BaseLocalNoDisponible('El almacenamiento seguro falló: $e');
@@ -134,7 +135,7 @@ class BaseLocalDrift implements BaseLocal {
 
   Future<void> _borrarArchivos() async {
     for (final sufijo in ['', '-wal', '-shm', '-journal']) {
-      final f = File('${_archivo.path}$sufijo');
+      final f = File('${archivo.path}$sufijo');
       if (f.existsSync()) await f.delete();
     }
   }
@@ -196,7 +197,7 @@ class BaseLocalDrift implements BaseLocal {
   Future<void> borrarTodo() => _enCola(() async {
     await _soltar();
     await _borrarArchivos();
-    await _almacenamiento.borrar(claveEnAlmacen);
+    await almacenamiento.borrar(claveEnAlmacen);
   });
 
   @override
