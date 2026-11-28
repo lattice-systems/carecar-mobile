@@ -37,9 +37,9 @@ function crearServidor(datos, { logger = true } = {}) {
   require('./modulos/tienda')(servidor, db, vehiculoDelCliente, emitirEvento);
   require('./modulos/sucursales')(servidor, db);
   require('./modulos/documentos')(servidor, db, vehiculoDelCliente);
-  require('./modulos/notificaciones')(servidor, db);
+  const notificaciones = require('./modulos/notificaciones')(servidor, db);
   require('./modulos/dispositivos')(servidor);
-  require('./modulos/encuestas')(servidor, db);
+  require('./modulos/encuestas')(servidor, db, notificaciones);
 
   servidor.use(BASE, (req, res) => {
     problema(req, res, 404, 'Esa ruta no existe en el contrato');

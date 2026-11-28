@@ -52,6 +52,8 @@ La cobertura de respuestas autenticadas es por casos representativos. La variant
 
 ## V2-T03.07 · Pruebas en celular físico
 
+El alcance del guion físico de este corte es Android.
+
 El [caso H0.1](../../docs/pruebas/evidencia.md#corrida-de-instalación-h0-en-android) verificó la instalación y apertura del APK de `dev` en Android físico. La [corrida de Documentos y Encuestas](../../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android) aporta evidencia parcial de H2, H3 y H4.
 
 El [guion por hito](../../docs/pruebas/guion-por-hito.md) cubre H0–H7 y el [registro](../../docs/pruebas/evidencia.md) recibe resultados por caso y dispositivo. La primera corrida física H1 pasó en un Samsung con Android 13 y un backend local de Agencia360 con PostgreSQL aislado. El registro conserva los resultados de enlaces, galería y reserva y cancelación.

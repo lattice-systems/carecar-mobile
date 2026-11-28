@@ -417,6 +417,72 @@ void main() {
             '/encuestas/{ordenId}/contacto',
             '/encuestas/$ordenId/contacto',
           );
+
+          final preferencias = await pedir(
+            'PUT',
+            '/notificaciones/preferencias',
+            token: token,
+            cuerpo: {
+              'categorias': [
+                {'categoria': 'MENSAJES', 'push': false},
+              ],
+            },
+          );
+          expect(preferencias.statusCode, 200);
+
+          final rutaRespuesta = Uri.parse(base)
+              .replace(path: '/simulacion/encuestas/$ordenId/respuesta');
+          const textoAsesor = 'Gracias por compartir cómo te fue en el taller.';
+          for (final texto in [textoAsesor, 'Reintento con otro texto']) {
+            final respuestaAsesor = await cliente.post(
+              rutaRespuesta,
+              headers: {'Content-Type': 'application/json'},
+              body: jsonEncode({'respuesta': texto}),
+            );
+            expect(respuestaAsesor.statusCode, 204);
+          }
+
+          Future<List<Map<String, dynamic>>> avisos(String token) async {
+            final bandeja = await pedir('GET', '/notificaciones', token: token);
+            expect(bandeja.statusCode, 200);
+            final datos = jsonDecode(bandeja.body) as Map<String, dynamic>;
+            return (datos['contenido'] as List).cast<Map<String, dynamic>>();
+          }
+
+          const titulo = 'La agencia respondió a tu encuesta';
+          final aviso = (await avisos(token))
+              .singleWhere((aviso) => aviso['titulo'] == titulo);
+          expect(aviso['cuerpo'], textoAsesor);
+          expect(aviso['destino'], '/encuestas');
+          expect(aviso['leidaEn'], isNull);
+
+          final otraSesion = await pedir(
+            'POST',
+            '/auth/login',
+            cuerpo: {
+              'correo': 'cliente2@example.com',
+              'contrasena': 'Temporal123',
+            },
+          );
+          final otroToken =
+              (jsonDecode(otraSesion.body)
+                      as Map<String, dynamic>)['accessToken']
+                  as String;
+          expect(
+            (await avisos(otroToken)).where((n) => n['titulo'] == titulo),
+            isEmpty,
+          );
+          final lectura = '/notificaciones/${aviso['id']}/leida';
+          expect(
+            (await pedir('POST', lectura, token: otroToken)).statusCode,
+            404,
+          );
+          expect((await pedir('POST', lectura, token: token)).statusCode, 204);
+          expect(
+            (await avisos(token))
+                .singleWhere((n) => n['id'] == aviso['id'])['leidaEn'],
+            isA<String>(),
+          );
         },
       );
 
