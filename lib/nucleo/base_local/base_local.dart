@@ -58,3 +58,17 @@ abstract interface class BaseLocal {
   /// Suelta los recursos. No borra datos.
   Future<void> cerrar();
 }
+
+/// La base local no se pudo abrir (el almacenamiento seguro no entregó la
+/// llave, o el motor cifrado no está disponible).
+///
+/// Nunca se cae a una base sin cifrar: quien guarda copias debe tratarlo como
+/// «sin copia local» y seguir con la red.
+class BaseLocalNoDisponible implements Exception {
+  const BaseLocalNoDisponible(this.motivo);
+
+  final String motivo;
+
+  @override
+  String toString() => 'BaseLocalNoDisponible: $motivo';
+}
