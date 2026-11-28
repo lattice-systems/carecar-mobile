@@ -27,7 +27,7 @@ class RepositorioDocumentosApi implements RepositorioDocumentos {
     '/vehiculos/$vehiculoId/documentos',
     campos: {
       'tipo': tipo.codigo,
-      if (titulo != null) 'titulo': titulo,
+      'titulo': ?titulo,
       if (venceEn != null)
         'venceEn': venceEn.toIso8601String().split('T').first,
     },
