@@ -389,3 +389,12 @@ La v1 sí funciona hoy (correo con código). Encender la v2 sin resolver esto ca
 **Para encender la recuperación v2** (lo que sigue y a quién le toca decidir): (a) el dominio real y sus dos archivos de verificación (T01.03 lo dejó como `CONFIGURAR`), (b) que el backend mande el enlace que la app reconoce o que la app acepte también `restablecer-contrasena`, (c) probarlo en un celular con un correo real, que es también lo que le falta a la fila de `cumplimiento-ficha.md`, y (d) agregar `ModuloMigrable.recuperacion` a `InterruptorModulos.porDefecto`. Mientras tanto se prueba con `--dart-define=MODULOS_V2=recuperacion`.
 
 **Pendiente:** demostrar el inicio de sesión v2 en un celular real (fila de `cumplimiento-ficha.md`). V2-M01.10 ya conectó «Cambiar contraseña» de Ajustes con la pantalla v2 (`/mi-contrasena`), y la prueba `test/nucleo/migracion/convivencia_acceso_test.dart` lo comprueba con el acceso v2 por defecto.
+
+## Avance de V2-T02.27 (acceso y recuperación rediseñados)
+
+El acceso y la recuperación de contraseña ya viven solo en v2 (ver el avance de V2-T01.10 arriba, que esto supera en lo de la recuperación).
+
+- **Acceso:** panel azul liso con el logo, el lema («Tu auto, en buenas manos.») y el formulario en una hoja; los campos llevan texto de ejemplo (`tu@correo.com`, `Tu contraseña`) en lugar de ayudas, y abajo van la nota de que la agencia entrega el acceso y «© 2026 Lattice Systems». El subtítulo y los créditos cumplen 4.5:1 de contraste (`test/accesibilidad/rutas/acceso_test.dart`).
+- **Recuperar (V2-M01.04):** `PantallaRecuperar` pide el correo y lleva a `PantallaNuevaContrasena`, que recibe el **código de 6 dígitos** del correo (solo números, con reenvío) y la contraseña nueva. `RepositorioAcceso.restablecerConCodigo` mapea `CODIGO_INVALIDO` a `CodigoNoValido`; el enlace con token sigue funcionando por el mismo camino de siempre. Comprobado contra la API simulada: un código malo dice «Ese código no sirve» y el bueno cambia la contraseña.
+- **Sigue pendiente de V2-M01.04:** el dominio real con `assetlinks.json` y `apple-app-site-association` para que el enlace del correo abra la app.
+

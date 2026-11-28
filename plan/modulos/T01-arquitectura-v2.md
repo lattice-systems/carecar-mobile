@@ -90,7 +90,7 @@ Descripción del objetivo: [`../arquitectura-v2.md`](../arquitectura-v2.md). Dec
 
 **Qué quedó**
 
-- `lib/nucleo/migracion/`: `ModuloMigrable` (acceso, asistencia, catalogo, citas, recuperacion, vehiculos), `VersionModulo`, `InterruptorModulos` y `interruptorModulosProvider`. Valor por defecto en código: todo en v1. Se sobrescribe con `--dart-define=MODULOS_V2=<lista|todos>` y `MODULOS_V1=<lista|todos>` (v1 gana si hay choque; un nombre desconocido lanza `ArgumentError`). Sin servidor ni secretos.
+- `lib/nucleo/migracion/`: `ModuloMigrable` (asistencia, catalogo, citas, vehiculos; `acceso` y `recuperacion` se retiraron en V2-T02.27), `VersionModulo`, `InterruptorModulos` y `interruptorModulosProvider`. Valor por defecto en código: todo en v1. Se sobrescribe con `--dart-define=MODULOS_V2=<lista|todos>` y `MODULOS_V1=<lista|todos>` (v1 gana si hay choque; un nombre desconocido lanza `ArgumentError`). Sin servidor ni secretos.
 - `registro_de_rutas.dart`: `rutasDeLaApp(interruptor)` solo registra las rutas v2 de un módulo si está en v2; `destinosDeMenuV2` dice a qué ruta lleva cada tarjeta del menú v1.
 - `PantallaInicio` (v1) recibe `abrirEnV2`: con el módulo en v2 la tarjeta va a la ruta v2; sin él, abre la pantalla v1 igual que antes. El resto de la v1 no cambió.
 - Pruebas: `test/nucleo/migracion/` (valores por defecto, `--dart-define`, rutas por módulo en v1 y v2, tarjetas del menú). `AppEnrutadaDePrueba` acepta `interruptor` (por omisión todo en v2; las pruebas de la v1 pasan `InterruptorModulos.porDefecto`).
@@ -185,3 +185,11 @@ Daniel pidió terminar de pasar las pantallas a v2 (2026-11-26). Lo único que q
   3. El mismo correo trae el código de 6 dígitos, que solo sabe recibir la pantalla v1; la v2 no tiene dónde escribirlo.
 - **Para encender la recuperación v2:** el dominio real con sus dos archivos de verificación; que el backend mande un enlace que la app reconozca (o que la app acepte ambos); probarlo en un celular con un correo real; y agregar `ModuloMigrable.recuperacion: VersionModulo.v2` a `InterruptorModulos.porDefecto`.
 - **Qué sigue en v1 por defecto:** la recuperación de contraseña y «Cambiar contraseña» dentro de Ajustes (V2-M01.10, Jael).
+
+## Avance de V2-T02.27 (el acceso y la recuperación dejan el interruptor)
+
+Con la recuperación de contraseña en v2 (pide el código de 6 dígitos que ya trae el correo) no queda nada del acceso en v1, así que se retiran sus piezas de la v1 y del interruptor. **Esto supera lo dicho arriba** sobre `acceso` y `recuperacion` como módulos migrables y sobre la recuperación que «sigue en v1».
+
+- `ModuloMigrable` pierde `acceso` y `recuperacion`: quedan asistencia, catálogo, citas y vehículos. `rutas_del_nucleo.dart` ya no monta pantallas del acceso; `registro_de_rutas.dart` registra `rutasAcceso` y `rutasRecuperacion` siempre, sin pasar por el interruptor. `MODULOS_V1=acceso` y `MODULOS_V2=recuperacion` dejan de existir (un nombre desconocido lanza `ArgumentError`, como siempre).
+- Se borran `lib/pantallas/pantalla_login.dart`, `pantalla_recuperar_contrasena.dart` y sus pruebas. Los criterios `V2-M01.01` de `plan/cumplimiento-ficha.md` se prueban ahora en `test/modulos/acceso/presentacion/pantalla_acceso_test.dart`.
+- Las pestañas (inicio, garaje, citas y catálogo) comparten la barra fija (`MarcoDePestanas`, V2-T01.09) y sus raíces ya no llevan «Regresar».
