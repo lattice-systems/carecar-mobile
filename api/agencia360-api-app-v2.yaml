@@ -1399,6 +1399,51 @@ paths:
         '403':
           $ref: '#/components/responses/CuentaDesactivada'
 
+  /dispositivos/{instalacionId}:
+    put:
+      tags: [Notificaciones]
+      summary: Registrar o actualizar el token de push de esta instalación
+      description: |
+        V2-M06.02 · La app lo llama tras iniciar sesión y cada vez que Firebase le da un token
+        nuevo. `instalacionId` es un identificador que la app genera una vez por instalación
+        (UUID). Una instalación tiene un solo token; si el mismo token aparece con otra
+        instalación (reinstalación), la fila vieja se descarta; si la instalación estaba a nombre
+        de otra cuenta (otro cliente entró en el mismo teléfono), pasa a la cuenta de quien llama.
+        Es idempotente.
+      parameters:
+        - $ref: '#/components/parameters/InstalacionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroDispositivo'
+      responses:
+        '204':
+          description: Token registrado
+        '400':
+          $ref: '#/components/responses/DatosInvalidos'
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+    delete:
+      tags: [Notificaciones]
+      summary: Dar de baja el token de esta instalación
+      description: |
+        V2-M06.02 · La app lo llama **antes** de `/auth/cerrar-sesion` (esta ya no lleva access
+        token), para que el teléfono deje de recibir avisos de esa cuenta. Idempotente: una
+        instalación que no existe, o que es de otra cuenta, responde 204 igual y no se toca.
+      parameters:
+        - $ref: '#/components/parameters/InstalacionId'
+      responses:
+        '204':
+          description: Token dado de baja
+        '401':
+          $ref: '#/components/responses/NoAutenticado'
+        '403':
+          $ref: '#/components/responses/CuentaDesactivada'
+
   /catalogo/{modeloId}:
     get:
       tags: [Catálogo]
@@ -3969,6 +4014,16 @@ components:
       bearerFormat: JWT
 
   parameters:
+    InstalacionId:
+      name: instalacionId
+      in: path
+      required: true
+      description: Identificador de la instalación de la app (UUID generado una vez)
+      schema:
+        type: string
+        minLength: 8
+        maxLength: 64
+        pattern: '^[A-Za-z0-9-]+$'
     DireccionId:
       name: direccionId
       in: path
@@ -5088,6 +5143,24 @@ components:
         activo:
           type: boolean
           description: Siempre true en la app
+
+    RegistroDispositivo:
+      type: object
+      required: [tokenFcm, plataforma]
+      properties:
+        tokenFcm:
+          type: string
+          minLength: 1
+          maxLength: 4096
+          description: Token de Firebase Cloud Messaging de esta instalación
+        plataforma:
+          type: string
+          enum: [android, ios]
+        idioma:
+          type: string
+          maxLength: 10
+          example: es
+          description: Idioma de la app en el teléfono; sin él se asume `es`
 
     Sucursal:
       type: object
