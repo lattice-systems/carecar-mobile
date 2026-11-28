@@ -27,6 +27,7 @@ Future<List<String>> _montar(
   CitaInicio? cita,
   bool conServicio = false,
   bool esperar = true,
+  DateTime? ahora,
 }) async {
   final toques = <String>[];
   tester.platformDispatcher.platformBrightnessTestValue = brillo;
@@ -44,6 +45,8 @@ Future<List<String>> _montar(
         nombre: nombre,
         autos: autos,
         proximaCita: cita,
+        // Fija la hora: el saludo cambia con ella.
+        ahora: () => ahora ?? DateTime(2026, 11, 27, 9),
         alAbrirVehiculos: () => toques.add('vehiculos'),
         alAbrirCitas: () => toques.add('citas'),
         alAbrirCatalogo: () => toques.add('catalogo'),
@@ -79,15 +82,23 @@ void main() {
     ) async {
       await _montar(tester);
 
-      expect(find.text('Hola, Maria'), findsOneWidget);
+      expect(find.text('Buenos días, Maria'), findsOneWidget);
       expect(find.byKey(const Key('orden')), findsOneWidget);
     });
 
     testWidgets('sin nombre aún no muestra saludo ni falla', (tester) async {
       await _montar(tester, nombre: null);
 
-      expect(find.textContaining('Hola'), findsNothing);
+      expect(find.textContaining('Buen'), findsNothing);
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('el saludo cambia con la hora', (tester) async {
+      await _montar(tester, ahora: DateTime(2026, 11, 27, 15));
+      expect(find.text('Buenas tardes, Maria'), findsOneWidget);
+
+      await _montar(tester, ahora: DateTime(2026, 11, 27, 22));
+      expect(find.text('Buenas noches, Maria'), findsOneWidget);
     });
 
     testWidgets(
@@ -98,7 +109,7 @@ void main() {
 
         // Antes el cuerpo traía tres accesos redondos con los mismos destinos
         // que la barra. Cada nombre debe aparecer una sola vez, en la barra.
-        for (final destino in ['Vehículos', 'Citas', 'Catálogo']) {
+        for (final destino in ['Garaje', 'Citas', 'Catálogo']) {
           expect(find.text(destino), findsOneWidget, reason: destino);
           expect(
             find.descendant(
@@ -123,7 +134,7 @@ void main() {
         await tester.tap(
           find.descendant(
             of: find.byType(BarraFlotante),
-            matching: find.text('Vehículos'),
+            matching: find.text('Garaje'),
           ),
         );
         await tester.tap(
@@ -162,9 +173,8 @@ void main() {
       final toques = await _montar(tester);
 
       expect(find.text('March 2020'), findsOneWidget);
-      expect(find.text('Nissan'), findsOneWidget);
-      expect(find.text('XYZ-123'), findsOneWidget);
-      expect(find.text('24,300 km'), findsOneWidget);
+      // La tarjeta con foto junta marca, placas y kilometraje en un renglón.
+      expect(find.text('Nissan · XYZ-123 · 24,300 km'), findsOneWidget);
 
       await tester.tap(find.text('March 2020'));
       expect(toques, ['vehiculos']);
@@ -331,7 +341,7 @@ void main() {
         conServicio: true,
       );
 
-      expect(find.text('Hola, Maria'), findsOneWidget);
+      expect(find.text('Buenos días, Maria'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

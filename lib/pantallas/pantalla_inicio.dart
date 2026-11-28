@@ -10,7 +10,7 @@ import '../nucleo/inicio/inicio_nuevo.dart';
 import '../nucleo/migracion/interruptor_modulos.dart';
 import '../notificaciones/servicio_notificaciones.dart';
 import '../sesion/controlador_sesion.dart';
-import '../widgets/menu_carecar.dart' show abrirPantalla;
+import '../widgets/menu_carecar.dart' show abrirPantalla, rutaCareCar;
 import '../widgets/pagina_carecar.dart';
 import 'citas/pantalla_mis_citas.dart';
 import 'pantalla_ajustes.dart';
@@ -169,13 +169,24 @@ class _PantallaInicioState extends State<PantallaInicio> {
                   alAbrirVehiculos: alVehiculos,
                   alAbrirCitas: alCitas,
                   alAbrirCatalogo: alCatalogo,
-                  alAbrirAjustes: () => abrirPantalla(
-                    context,
-                    PantallaAjustes(
+                  alAbrirAjustes: () {
+                    final ajustes = PantallaAjustes(
                       api: widget.api,
                       alCerrarSesion: _cerrarSesion,
-                    ),
-                  ),
+                    );
+                    // Con la barra de pestañas del router, Ajustes se abre
+                    // por encima de ella: si no, la barra tapa lo último de
+                    // la lista («Cerrar sesión»).
+                    if (_pestanasEnV2) {
+                      if (ModalRoute.of(context)?.isCurrent != true) return;
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).push(rutaCareCar<void>(ajustes));
+                    } else {
+                      abrirPantalla(context, ajustes);
+                    }
+                  },
                 );
               },
             ),
