@@ -10,6 +10,7 @@ import '../../modulos/catalogo/catalogo.dart';
 import '../../modulos/citas/citas.dart';
 import '../../modulos/documentos/documentos.dart';
 import '../../modulos/encuestas/encuestas.dart';
+import '../../modulos/promociones/promociones.dart';
 import '../../modulos/ejemplo/ejemplo.dart';
 import '../../modulos/estreno/estreno.dart';
 import '../../modulos/galeria/galeria.dart';
@@ -66,6 +67,7 @@ List<RouteBase> rutasDeLaApp(InterruptorModulos interruptor) => [
   // Los documentos (M09) son nuevos en v2: no pasan por el interruptor.
   ...rutasDocumentos,
   ...rutasEncuestas,
+  if (catalogoSimuladoHabilitado) ...rutasPromociones,
   // El ejemplo es solo para desarrollo; se elimina en V2-T01.07.
   if (kDebugMode) ...rutasEjemplo,
   // La galeria del sistema de diseno es solo para desarrollo (V2-T02.06).

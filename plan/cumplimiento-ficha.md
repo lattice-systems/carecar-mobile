@@ -120,7 +120,7 @@ PDF de agencia (V2-M09.03) · publicado sobre el listado existente y entregado c
 
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
-| Promociones personalizadas | `promocion`, `promocion_vista`, `cita` | ⬜ | Ver M13 |
+| Promociones personalizadas y novedades | `promocion`, `promocion_vista`, `cita` | 🟡 Simulación comprobada en CareCar Dev. Publicaciones y catálogo oficiales pendientes. | [V2-M13.01–.04](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) |
 
 ### 14. Tienda de refacciones y accesorios — plan [M14](modulos/M14-tienda.md)
 
@@ -216,7 +216,7 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
 | `V2-M23.01: solo registra fallos nuevos del periodo consentido` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | `V2-M23.01: descarta la consulta si cambia el consentimiento` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
-| V2-M23.01: una preferencia previa empieza sin historial | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | V2-M23.01: el APK y los símbolos Dart coinciden y permiten resolver una traza | [Corrida de CI](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831) · [APK, símbolos y verificación](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831/artifacts/15245534947) |
 | `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |

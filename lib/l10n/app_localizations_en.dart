@@ -7071,4 +7071,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m15NoDisponible => 'This survey is no longer available';
+
+  @override
+  String get m13Novedades => 'News';
+
+  @override
+  String get m13ParaTi => 'For you';
+
+  @override
+  String get m13SinNovedades => 'No news yet';
+
+  @override
+  String get m13NoDisponible => 'This post is unavailable';
+
+  @override
+  String get m13Cupon => 'Coupon';
+
+  @override
+  String get m13Agendar => 'Book with this offer';
 }

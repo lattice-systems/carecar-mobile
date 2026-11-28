@@ -355,3 +355,8 @@ cerraron los avisos de `body-parser` (1.20.8 → 1.20.9) y `qs` (6.16.0 → 6.16
 **La contrapartida:** las respuestas se mantienen a mano, así que pueden desviarse
 del contrato cuando Ricardo lo cambie. Eso lo cubre la prueba de validación contra
 el contrato (tarea 4 de TEC-5).
+
+
+## Catálogo simulado de CareCar Dev
+
+Las rutas GET /novedades, GET /promociones y POST /promociones/{promocionId}/vista usan las semillas ficticias de M13. POST /citas acepta el campo opcional promocionId para validar y guardar un cupón de demostración. Estas extensiones se usan en el simulador. Consulta el alcance en [M13](../plan/modulos/M13-promociones.md#simulación-de-catálogo-en-dev).

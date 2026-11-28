@@ -3,7 +3,7 @@ const { BASE, ES_FECHA, problema, noEncontrado, paginar } = require('../comun/ht
 const SECRETO_DEV = require('../comun/firma');
 const construirTicketPdf = require('../comun/ticket_pdf');
 
-module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recoleccion) {
+module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recoleccion, promociones) {
   const {
     direccionDelCliente,
     enCobertura,
@@ -46,6 +46,7 @@ module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recol
     horaFin: c.horaFin,
     estado: c.estado,
     ...(c.motivo ? { motivo: c.motivo } : {}),
+    ...(c.cupon ? { cupon: c.cupon } : {}),
     // V2-M17.03 · GET /citas trae la recoleccion de cada cita (o nada si no la
     // lleva), con el estado vigente de sus traslados, igual que POST /citas.
     ...recoleccionDeCita(c),
@@ -79,7 +80,7 @@ module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recol
   });
 
   servidor.post(`${BASE}/citas`, (req, res) => {
-    const { vehiculoId, franjaId, fecha, motivo, recoleccion } = req.body || {};
+    const { vehiculoId, franjaId, fecha, motivo, recoleccion, promocionId } = req.body || {};
     if (!vehiculoId || !franjaId || !ES_FECHA.test(fecha || '')) {
       return problema(req, res, 400, 'Faltan vehiculoId, franjaId o fecha (AAAA-MM-DD)');
     }
@@ -123,6 +124,11 @@ module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recol
       return problema(req, res, 409, 'Ya tienes una cita para ese vehiculo ese dia', 'CITA_DUPLICADA');
     }
 
+    const cupon = promocionId == null ? null : promociones.cupon(promocionId, vehiculo);
+    if (promocionId != null && !cupon) {
+      return problema(req, res, 400, 'La promoción ya no aplica a ese vehículo', 'DATOS_INVALIDOS');
+    }
+
     const ids = db.get('citas').value().map((c) => c.id);
     const cita = {
       id: ids.length ? Math.max(...ids) + 1 : 1,
@@ -135,6 +141,7 @@ module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recol
       estado: 'CONFIRMADA',
       // V2-M02.08: para que viene el cliente. Opcional.
       ...(typeof motivo === 'string' && motivo.trim() ? { motivo: motivo.trim() } : {}),
+      ...(cupon ? { promocionId, cupon } : {}),
     };
 
     // La cita descuenta capacidad de la franja (APP-3.3).
@@ -148,6 +155,7 @@ module.exports = function registrarCitas(servidor, db, vehiculoDelCliente, recol
     if (direccionRecoleccion) {
       cuerpo.recoleccion = crearTraslados(cita, direccionRecoleccion);
     }
+    if (cupon) promociones.uso(promocionId, cita.clienteId, new Date().toISOString());
     res.status(201).jsonp(cuerpo);
   });
 

@@ -7075,4 +7075,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get m15NoDisponible => 'Esta encuesta ya no está disponible';
+
+  @override
+  String get m13Novedades => 'Novedades';
+
+  @override
+  String get m13ParaTi => 'Para ti';
+
+  @override
+  String get m13SinNovedades => 'No hay novedades por ahora';
+
+  @override
+  String get m13NoDisponible => 'Esta publicación ya no está disponible';
+
+  @override
+  String get m13Cupon => 'Cupón';
+
+  @override
+  String get m13Agendar => 'Agendar con esta promoción';
 }

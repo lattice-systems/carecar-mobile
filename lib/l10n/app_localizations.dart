@@ -11829,6 +11829,42 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Esta encuesta ya no está disponible'**
   String get m15NoDisponible;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'Novedades'**
+  String get m13Novedades;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'Para ti'**
+  String get m13ParaTi;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay novedades por ahora'**
+  String get m13SinNovedades;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta publicación ya no está disponible'**
+  String get m13NoDisponible;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'Cupón'**
+  String get m13Cupon;
+
+  /// Texto de promociones y novedades.
+  ///
+  /// In es, this message translates to:
+  /// **'Agendar con esta promoción'**
+  String get m13Agendar;
 }
 
 class _AppLocalizationsDelegate

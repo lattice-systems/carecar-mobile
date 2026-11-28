@@ -95,6 +95,7 @@ class InicioNuevo extends StatelessWidget {
     this.nombre,
     this.ordenEnCurso,
     this.encuestaPendiente,
+    this.promociones,
     this.autos,
     this.proximaCita,
     this.servicioDelAuto,
@@ -116,6 +117,7 @@ class InicioNuevo extends StatelessWidget {
 
   /// Invitación a calificar un servicio entregado.
   final Widget? encuestaPendiente;
+  final Widget? promociones;
 
   /// Autos del cliente; `null` mientras cargan.
   final List<AutoInicio>? autos;
@@ -231,6 +233,7 @@ class _CuerpoState extends State<_Cuerpo> {
                 // que sí hay.
                 ?inicio.ordenEnCurso,
                 ?inicio.encuestaPendiente,
+                ?inicio.promociones,
                 if (autos != null) ...[
                   if (inicio.proximaCita != null)
                     _TarjetaCita(

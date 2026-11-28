@@ -208,10 +208,10 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-M12.03 | Canjear recompensas | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
 | V2-M12.04 | Referir a un amigo | Ricardo | B | V2-M12.01 | Hecha | backend#105, #165 |
 | V2-M12.05 | Ver mis movimientos de puntos | Ricardo | B | V2-M12.01 | Hecha | backend#105, #163, #165 |
-| V2-M13.01 | Ver promociones que apliquen a mi auto | Haziel | B | V2-M02.01 | Borrador | |
-| V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
-| V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
-| V2-M13.04 | Saber qué promociones funcionan | Haziel | B | V2-M13.01 | Borrador | |
+| V2-M13.01 | Ver promociones que apliquen a mi auto | Haziel | B | V2-M02.01 | Hecha | [Catálogo simulado](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) · catálogo oficial pendiente |
+| V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Hecha | [Catálogo simulado](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) · catálogo oficial pendiente |
+| V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Hecha | [Catálogo simulado](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) · catálogo oficial pendiente |
+| V2-M13.04 | Saber qué promociones funcionan | Haziel | B | V2-M13.01 | Hecha | [Catálogo simulado](modulos/M13-promociones.md#simulación-de-catálogo-en-dev) · catálogo oficial pendiente |
 | V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | En curso | [Tarjeta, aplazamiento y respuesta](../test/modulos/encuestas/encuesta_pendiente_test.dart). La ruta rechaza encuestas que no están pendientes en la cuenta activa. [Aplazamiento en Android contra Agencia360 local](../docs/pruebas/evidencia.md#corrida-de-documentos-y-encuestas-en-android). Pendiente validar push real. |
 | V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Hecha | [Solicitud desde el formulario](../test/modulos/encuestas/encuesta_pendiente_test.dart) y [tarea en Agencia360 #121](https://github.com/lattice-systems/agencia-360-backend/pull/121). |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |

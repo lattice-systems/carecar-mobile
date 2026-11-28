@@ -4050,5 +4050,17 @@
   "m15NoDisponible": "This survey is no longer available",
   "@m15NoDisponible": {
     "description": "Texto de encuestas o contacto con la agencia."
-  }
+  },
+  "m13Novedades": "News",
+  "@m13Novedades": {"description": "Texto de promociones y novedades."},
+  "m13ParaTi": "For you",
+  "@m13ParaTi": {"description": "Texto de promociones y novedades."},
+  "m13SinNovedades": "No news yet",
+  "@m13SinNovedades": {"description": "Texto de promociones y novedades."},
+  "m13NoDisponible": "This post is unavailable",
+  "@m13NoDisponible": {"description": "Texto de promociones y novedades."},
+  "m13Cupon": "Coupon",
+  "@m13Cupon": {"description": "Texto de promociones y novedades."},
+  "m13Agendar": "Book with this offer",
+  "@m13Agendar": {"description": "Texto de promociones y novedades."}
 }

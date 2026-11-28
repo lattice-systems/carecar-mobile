@@ -122,6 +122,7 @@ class RepositorioCitasFake implements RepositorioCitas {
     required FranjaDisponible franja,
     required MotivoCita motivo,
     int? direccionRecoleccionId,
+    int? promocionId,
   }) async {
     final falla = error;
     if (falla != null) throw falla;
