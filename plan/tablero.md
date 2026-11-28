@@ -179,7 +179,7 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En revisión | backend#117, #224 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend y app hechos (`ServicioPush`, registro tras entrar y baja al salir); FCM real pendiente de credenciales |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | Hecha | #216 |
-| V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | Lista | |
+| V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | En revisión | #229 |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
 | V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | Hecha | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda) · validada por Daniel; FCM real pendiente de credenciales |
 | V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | Hecha | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 · validada por Daniel |

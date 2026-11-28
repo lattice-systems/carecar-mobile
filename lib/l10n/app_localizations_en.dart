@@ -1768,6 +1768,83 @@ class AppLocalizationsEn extends AppLocalizations {
   String get avisoCerrar => 'Close notice';
 
   @override
+  String get preferenciasAvisosTitulo => 'Which notifications I get';
+
+  @override
+  String get preferenciasAvisosSubtitulo => 'Saved as you change it';
+
+  @override
+  String get preferenciasAvisosCargando => 'Loading your preferences';
+
+  @override
+  String get preferenciasAvisosFalloTitulo => 'We could not save the change';
+
+  @override
+  String get preferenciasAvisosFalloMensaje =>
+      'We left it as it was. Try again in a moment.';
+
+  @override
+  String get preferenciasAvisosTaller => 'My car at the shop';
+
+  @override
+  String get preferenciasAvisosTallerDetalle =>
+      'Every time your car moves to a new stage.';
+
+  @override
+  String get preferenciasAvisosCitas => 'My appointments';
+
+  @override
+  String get preferenciasAvisosCitasDetalle =>
+      'Reminders 24 and 2 hours ahead.';
+
+  @override
+  String get preferenciasAvisosMantenimiento => 'Maintenance';
+
+  @override
+  String get preferenciasAvisosDocumentos => 'Documents';
+
+  @override
+  String get preferenciasAvisosMensajes => 'Messages from my advisor';
+
+  @override
+  String get preferenciasAvisosPromociones => 'Promotions';
+
+  @override
+  String get preferenciasAvisosPromocionesDetalle =>
+      'Offers and news from the dealership. Off by default.';
+
+  @override
+  String get preferenciasAvisosOtros => 'Other notifications';
+
+  @override
+  String get preferenciasAvisosSilencio => 'Quiet hours';
+
+  @override
+  String get preferenciasAvisosSilencioDetalle =>
+      'We will not notify you during that range.';
+
+  @override
+  String get preferenciasAvisosCruzaMedianoche =>
+      'Quiet hours cross midnight, which is normal for sleeping.';
+
+  @override
+  String get preferenciasAvisosMismoDia =>
+      'Quiet hours are within the same day.';
+
+  @override
+  String get accesoPerfilPreferenciasAvisos => 'Which notifications I get';
+
+  @override
+  String preferenciasAvisosDesde(String hora) {
+    return 'From $hora';
+  }
+
+  @override
+  String preferenciasAvisosHasta(String hora) {
+    return 'Until $hora';
+  }
+
+  @override
   String get bandejaTitulo => 'Notifications';
 
   @override

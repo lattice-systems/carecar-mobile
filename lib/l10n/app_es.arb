@@ -2152,6 +2152,104 @@
   "@avisoCerrar": {
     "description": "Botón para cerrar un aviso."
   },
+  "preferenciasAvisosTitulo": "Qu\u00e9 avisos recibo",
+  "@preferenciasAvisosTitulo": {
+    "description": "T\u00edtulo de la pantalla de preferencias de avisos."
+  },
+  "preferenciasAvisosSubtitulo": "Se guarda al momento",
+  "@preferenciasAvisosSubtitulo": {
+    "description": "Aclara que no hay bot\u00f3n de guardar."
+  },
+  "preferenciasAvisosCargando": "Cargando tus preferencias",
+  "@preferenciasAvisosCargando": {
+    "description": "Anuncio al lector de pantalla mientras cargan."
+  },
+  "preferenciasAvisosFalloTitulo": "No pudimos guardar el cambio",
+  "@preferenciasAvisosFalloTitulo": {
+    "description": "T\u00edtulo del aviso cuando el guardado falla."
+  },
+  "preferenciasAvisosFalloMensaje": "Lo dejamos como estaba. Int\u00e9ntalo otra vez en un momento.",
+  "@preferenciasAvisosFalloMensaje": {
+    "description": "Explica que el interruptor se revirti\u00f3."
+  },
+  "preferenciasAvisosTaller": "Mi auto en el taller",
+  "@preferenciasAvisosTaller": {
+    "description": "Categor\u00eda de avisos del taller."
+  },
+  "preferenciasAvisosTallerDetalle": "Cada vez que tu auto avanza de etapa.",
+  "@preferenciasAvisosTallerDetalle": {
+    "description": "Detalle de la categor\u00eda del taller."
+  },
+  "preferenciasAvisosCitas": "Mis citas",
+  "@preferenciasAvisosCitas": {
+    "description": "Categor\u00eda de avisos de citas."
+  },
+  "preferenciasAvisosCitasDetalle": "Recordatorios 24 y 2 horas antes.",
+  "@preferenciasAvisosCitasDetalle": {
+    "description": "Detalle de la categor\u00eda de citas."
+  },
+  "preferenciasAvisosMantenimiento": "Mantenimiento",
+  "@preferenciasAvisosMantenimiento": {
+    "description": "Categor\u00eda de avisos de mantenimiento."
+  },
+  "preferenciasAvisosDocumentos": "Documentos",
+  "@preferenciasAvisosDocumentos": {
+    "description": "Categor\u00eda de avisos de documentos."
+  },
+  "preferenciasAvisosMensajes": "Mensajes de mi asesor",
+  "@preferenciasAvisosMensajes": {
+    "description": "Categor\u00eda de avisos de mensajer\u00eda."
+  },
+  "preferenciasAvisosPromociones": "Promociones",
+  "@preferenciasAvisosPromociones": {
+    "description": "Categor\u00eda de avisos comerciales."
+  },
+  "preferenciasAvisosPromocionesDetalle": "Ofertas y novedades de la agencia. Vienen apagadas.",
+  "@preferenciasAvisosPromocionesDetalle": {
+    "description": "Detalle de la categor\u00eda de promociones."
+  },
+  "preferenciasAvisosOtros": "Otros avisos",
+  "@preferenciasAvisosOtros": {
+    "description": "Categor\u00eda que esta versi\u00f3n no conoce."
+  },
+  "preferenciasAvisosSilencio": "Horario silencioso",
+  "@preferenciasAvisosSilencio": {
+    "description": "Interruptor del horario silencioso."
+  },
+  "preferenciasAvisosSilencioDetalle": "En ese rango no te avisamos nada.",
+  "@preferenciasAvisosSilencioDetalle": {
+    "description": "Detalle del horario silencioso."
+  },
+  "preferenciasAvisosCruzaMedianoche": "El silencio cruza la medianoche, que es lo normal para dormir.",
+  "@preferenciasAvisosCruzaMedianoche": {
+    "description": "Explica que un rango que cruza la medianoche es correcto."
+  },
+  "preferenciasAvisosMismoDia": "El silencio es dentro del mismo d\u00eda.",
+  "@preferenciasAvisosMismoDia": {
+    "description": "Explica un rango que no cruza la medianoche."
+  },
+  "accesoPerfilPreferenciasAvisos": "Qu\u00e9 avisos recibo",
+  "@accesoPerfilPreferenciasAvisos": {
+    "description": "Fila del perfil que abre las preferencias de avisos."
+  },
+  "preferenciasAvisosDesde": "Desde {hora}",
+  "@preferenciasAvisosDesde": {
+    "description": "Boton que elige la hora de inicio del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
+  "preferenciasAvisosHasta": "Hasta {hora}",
+  "@preferenciasAvisosHasta": {
+    "description": "Boton que elige la hora de fin del silencio.",
+    "placeholders": {
+      "hora": {
+        "type": "String"
+      }
+    }
+  },
   "bandejaTitulo": "Avisos",
   "@bandejaTitulo": {
     "description": "T\u00edtulo de la bandeja de avisos."

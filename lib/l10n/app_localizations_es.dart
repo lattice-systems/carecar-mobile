@@ -1764,6 +1764,83 @@ class AppLocalizationsEs extends AppLocalizations {
   String get avisoCerrar => 'Cerrar aviso';
 
   @override
+  String get preferenciasAvisosTitulo => 'Qué avisos recibo';
+
+  @override
+  String get preferenciasAvisosSubtitulo => 'Se guarda al momento';
+
+  @override
+  String get preferenciasAvisosCargando => 'Cargando tus preferencias';
+
+  @override
+  String get preferenciasAvisosFalloTitulo => 'No pudimos guardar el cambio';
+
+  @override
+  String get preferenciasAvisosFalloMensaje =>
+      'Lo dejamos como estaba. Inténtalo otra vez en un momento.';
+
+  @override
+  String get preferenciasAvisosTaller => 'Mi auto en el taller';
+
+  @override
+  String get preferenciasAvisosTallerDetalle =>
+      'Cada vez que tu auto avanza de etapa.';
+
+  @override
+  String get preferenciasAvisosCitas => 'Mis citas';
+
+  @override
+  String get preferenciasAvisosCitasDetalle =>
+      'Recordatorios 24 y 2 horas antes.';
+
+  @override
+  String get preferenciasAvisosMantenimiento => 'Mantenimiento';
+
+  @override
+  String get preferenciasAvisosDocumentos => 'Documentos';
+
+  @override
+  String get preferenciasAvisosMensajes => 'Mensajes de mi asesor';
+
+  @override
+  String get preferenciasAvisosPromociones => 'Promociones';
+
+  @override
+  String get preferenciasAvisosPromocionesDetalle =>
+      'Ofertas y novedades de la agencia. Vienen apagadas.';
+
+  @override
+  String get preferenciasAvisosOtros => 'Otros avisos';
+
+  @override
+  String get preferenciasAvisosSilencio => 'Horario silencioso';
+
+  @override
+  String get preferenciasAvisosSilencioDetalle =>
+      'En ese rango no te avisamos nada.';
+
+  @override
+  String get preferenciasAvisosCruzaMedianoche =>
+      'El silencio cruza la medianoche, que es lo normal para dormir.';
+
+  @override
+  String get preferenciasAvisosMismoDia =>
+      'El silencio es dentro del mismo día.';
+
+  @override
+  String get accesoPerfilPreferenciasAvisos => 'Qué avisos recibo';
+
+  @override
+  String preferenciasAvisosDesde(String hora) {
+    return 'Desde $hora';
+  }
+
+  @override
+  String preferenciasAvisosHasta(String hora) {
+    return 'Hasta $hora';
+  }
+
+  @override
   String get bandejaTitulo => 'Avisos';
 
   @override

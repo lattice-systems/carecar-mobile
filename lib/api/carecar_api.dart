@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'modelos/preferencias_notificacion.dart';
 import 'modelos/notificacion.dart';
 import 'modelos/modelos.dart';
 
@@ -224,6 +225,17 @@ abstract interface class CarecarApi {
 
   /// Marca como leidos todos los que estuvieran sin leer.
   Future<void> marcarAvisosLeidos();
+
+  /// Que avisos quiere recibir el cliente y su horario silencioso · V2-M06.05.
+  ///
+  /// Devuelve **todas** las categorias, tambien las que nunca toco, con su
+  /// valor por omision: asi la app no tiene que saber cuales existen.
+  Future<PreferenciasNotificacion> preferenciasDeAvisos();
+
+  /// Reemplaza las preferencias completas y devuelve como quedaron.
+  Future<PreferenciasNotificacion> guardarPreferenciasDeAvisos(
+    PreferenciasNotificacion nuevas,
+  );
 
   /// `POST /citas`. Lanza `Conflicto` si la franja ya no tiene cupo.
   Future<Cita> agendarCita(NuevaCita nueva);

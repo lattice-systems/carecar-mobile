@@ -3008,6 +3008,138 @@ abstract class AppLocalizations {
   /// **'Cerrar aviso'**
   String get avisoCerrar;
 
+  /// Título de la pantalla de preferencias de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué avisos recibo'**
+  String get preferenciasAvisosTitulo;
+
+  /// Aclara que no hay botón de guardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Se guarda al momento'**
+  String get preferenciasAvisosSubtitulo;
+
+  /// Anuncio al lector de pantalla mientras cargan.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando tus preferencias'**
+  String get preferenciasAvisosCargando;
+
+  /// Título del aviso cuando el guardado falla.
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos guardar el cambio'**
+  String get preferenciasAvisosFalloTitulo;
+
+  /// Explica que el interruptor se revirtió.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo dejamos como estaba. Inténtalo otra vez en un momento.'**
+  String get preferenciasAvisosFalloMensaje;
+
+  /// Categoría de avisos del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Mi auto en el taller'**
+  String get preferenciasAvisosTaller;
+
+  /// Detalle de la categoría del taller.
+  ///
+  /// In es, this message translates to:
+  /// **'Cada vez que tu auto avanza de etapa.'**
+  String get preferenciasAvisosTallerDetalle;
+
+  /// Categoría de avisos de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Mis citas'**
+  String get preferenciasAvisosCitas;
+
+  /// Detalle de la categoría de citas.
+  ///
+  /// In es, this message translates to:
+  /// **'Recordatorios 24 y 2 horas antes.'**
+  String get preferenciasAvisosCitasDetalle;
+
+  /// Categoría de avisos de mantenimiento.
+  ///
+  /// In es, this message translates to:
+  /// **'Mantenimiento'**
+  String get preferenciasAvisosMantenimiento;
+
+  /// Categoría de avisos de documentos.
+  ///
+  /// In es, this message translates to:
+  /// **'Documentos'**
+  String get preferenciasAvisosDocumentos;
+
+  /// Categoría de avisos de mensajería.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensajes de mi asesor'**
+  String get preferenciasAvisosMensajes;
+
+  /// Categoría de avisos comerciales.
+  ///
+  /// In es, this message translates to:
+  /// **'Promociones'**
+  String get preferenciasAvisosPromociones;
+
+  /// Detalle de la categoría de promociones.
+  ///
+  /// In es, this message translates to:
+  /// **'Ofertas y novedades de la agencia. Vienen apagadas.'**
+  String get preferenciasAvisosPromocionesDetalle;
+
+  /// Categoría que esta versión no conoce.
+  ///
+  /// In es, this message translates to:
+  /// **'Otros avisos'**
+  String get preferenciasAvisosOtros;
+
+  /// Interruptor del horario silencioso.
+  ///
+  /// In es, this message translates to:
+  /// **'Horario silencioso'**
+  String get preferenciasAvisosSilencio;
+
+  /// Detalle del horario silencioso.
+  ///
+  /// In es, this message translates to:
+  /// **'En ese rango no te avisamos nada.'**
+  String get preferenciasAvisosSilencioDetalle;
+
+  /// Explica que un rango que cruza la medianoche es correcto.
+  ///
+  /// In es, this message translates to:
+  /// **'El silencio cruza la medianoche, que es lo normal para dormir.'**
+  String get preferenciasAvisosCruzaMedianoche;
+
+  /// Explica un rango que no cruza la medianoche.
+  ///
+  /// In es, this message translates to:
+  /// **'El silencio es dentro del mismo día.'**
+  String get preferenciasAvisosMismoDia;
+
+  /// Fila del perfil que abre las preferencias de avisos.
+  ///
+  /// In es, this message translates to:
+  /// **'Qué avisos recibo'**
+  String get accesoPerfilPreferenciasAvisos;
+
+  /// Boton que elige la hora de inicio del silencio.
+  ///
+  /// In es, this message translates to:
+  /// **'Desde {hora}'**
+  String preferenciasAvisosDesde(String hora);
+
+  /// Boton que elige la hora de fin del silencio.
+  ///
+  /// In es, this message translates to:
+  /// **'Hasta {hora}'**
+  String preferenciasAvisosHasta(String hora);
+
   /// Título de la bandeja de avisos.
   ///
   /// In es, this message translates to:

@@ -144,6 +144,13 @@ class _Contenido extends ConsumerWidget {
                       colorIcono: c.acento,
                       alToque: () => context.push(rutaBandeja),
                     ),
+                    // V2-M06.05: elegir que avisos recibir.
+                    FilaGrupo(
+                      titulo: textos.accesoPerfilPreferenciasAvisos,
+                      icono: LucideIcons300.slidersHorizontal,
+                      colorIcono: c.acento,
+                      alToque: () => context.push(rutaPreferenciasAvisos),
+                    ),
                     FilaGrupo(
                       titulo: textos.accesoPerfilAvisos,
                       subtitulo: switch (ref.watch(permisoDeAvisosProvider)) {
