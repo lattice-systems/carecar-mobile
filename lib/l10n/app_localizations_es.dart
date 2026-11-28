@@ -6908,4 +6908,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ayudaSinResultados => 'Sin resultados';
+
+  @override
+  String get documentosPdfAgencia => 'Documento de la agencia';
 }

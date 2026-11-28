@@ -15,7 +15,7 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
-Avance de Haziel en dev · **15 de 30 historias en Hecha (50 %)**.
+Avance de Haziel en dev · **16 de 30 historias en Hecha (53 %)**.
 
 ## H0 · Base de trabajo
 
@@ -184,7 +184,7 @@ Avance de Haziel en dev · **15 de 30 historias en Hecha (50 %)**.
 | V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | En revisión | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda); FCM real pendiente de credenciales |
 | V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | En revisión | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 |
 | V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
-| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
+| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Hecha | [Visor de PDF](../lib/modulos/documentos/presentacion/pantalla_documento_agencia.dart) · [backend #120](https://github.com/lattice-systems/agencia-360-backend/pull/120) · [Prueba de contrato](../test/contrato/mock_api_v2_test.dart) |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
 | V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Hecha | [Calendario y lista sobre el API de documentos integrado](../test/modulos/documentos/calendario_documentos_test.dart) |

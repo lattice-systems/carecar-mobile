@@ -82,3 +82,7 @@ Ver los documentos de cada auto con su estado de vencimiento. Backend y app.
 Desde Documentos se puede abrir el calendario de todo el garaje. Cada marca anuncia cuántos vencimientos hay y la lista permite abrir los documentos del vehículo. Usa el listado existente de V2-M09.01 y conserva la protección de pantalla.
 
 La [prueba de calendario](../../test/modulos/documentos/calendario_documentos_test.dart) verifica dos vehículos, cambio de mes, filtro por día y recuperación ante errores.
+
+### V2-M09.03 · PDF de agencia
+
+La factura y la póliza de garantía publicadas por la agencia aparecen en el listado existente. Si tienen archivo, se abren con el visor PDF dentro de una pantalla protegida. La API exige que el documento pertenezca a un vehículo de la cuenta antes de dar la URL temporal.

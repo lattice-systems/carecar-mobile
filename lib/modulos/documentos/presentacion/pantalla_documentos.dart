@@ -154,6 +154,12 @@ class _Documentos extends StatelessWidget {
       colorIcono: ColoresTono.de(tono, c).frente,
       fin: Insignia(texto: estado, tono: tono, conIcono: true),
       etiquetaFin: estado,
+      alToque:
+          documento.origen == OrigenDocumento.agencia &&
+              documento.tieneArchivo &&
+              GoRouter.maybeOf(context) != null
+          ? () => context.push(rutaPdfDocumento(documento.id))
+          : null,
     );
   }
 }
