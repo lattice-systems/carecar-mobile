@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../nucleo/api/proveedores_api.dart';
@@ -9,7 +11,7 @@ import '../dominio/repositorio_documentos.dart';
 /// Repositorio del modulo. En pruebas:
 /// `repositorioDocumentosProvider.overrideWithValue(RepositorioDocumentosFake())`.
 final repositorioDocumentosProvider = Provider<RepositorioDocumentos>(
-  (ref) => RepositorioDocumentosApi(ref.watch(apiClienteProvider)),
+  (ref) => ref.watch(repositorioDocumentosApiProvider),
   retry: (_, _) => null,
   name: 'repositorioDocumentosProvider',
 );
@@ -50,3 +52,14 @@ final vencimientosGarajeProvider =
       vencimientos.sort((a, b) => a.fecha.compareTo(b.fecha));
       return vencimientos;
     }, retry: (_, _) => null);
+
+/// Solicita los bytes del archivo protegido al abrir el visor o reintentar.
+final pdfDocumentoProvider = Provider.autoDispose
+    .family<Future<Uint8List> Function(), int>((ref, id) {
+      final api = ref.watch(apiClienteProvider);
+      return () => api.descargar('/documentos/$id/archivo');
+    });
+
+final repositorioDocumentosApiProvider = Provider<RepositorioDocumentosApi>(
+  (ref) => RepositorioDocumentosApi(ref.watch(apiClienteProvider)),
+);

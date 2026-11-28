@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../nucleo/diseno/componentes/grupo_acciones_pildora.dart';
 import '../../../nucleo/diseno/componentes/esqueleto.dart';
 import '../../../nucleo/diseno/componentes/fila_lista.dart';
 import '../../../nucleo/diseno/componentes/estado_error.dart';
@@ -64,6 +65,7 @@ class PantallaDocumentos extends ConsumerWidget {
               ? MarcoPantalla.estado(
                   titulo: titulo,
                   conRegreso: true,
+                  acciones: _accionesDocumento(context, vehiculoId),
                   estado: EstadoVacio(
                     titulo: textos.documentosVaciaTitulo,
                     mensaje: textos.documentosVaciaMensaje,
@@ -78,6 +80,7 @@ class PantallaDocumentos extends ConsumerWidget {
                 )
               : _Documentos(
                   documentos: documentos,
+                  vehiculoId: vehiculoId,
                   alRefrescar: () =>
                       ref.refresh(documentosProvider(vehiculoId).future),
                 ),
@@ -86,10 +89,15 @@ class PantallaDocumentos extends ConsumerWidget {
 }
 
 class _Documentos extends StatelessWidget {
-  const _Documentos({required this.documentos, required this.alRefrescar});
+  const _Documentos({
+    required this.documentos,
+    required this.alRefrescar,
+    required this.vehiculoId,
+  });
 
   final List<DocumentoVehiculo> documentos;
   final Future<void> Function() alRefrescar;
+  final int vehiculoId;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +117,7 @@ class _Documentos extends StatelessWidget {
       subtitulo: textos.documentosSubtitulo(documentos.length),
       conRegreso: true,
       alRefrescar: alRefrescar,
+      acciones: _accionesDocumento(context, vehiculoId),
       slivers: [
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: Espaciado.e4),
@@ -154,6 +163,12 @@ class _Documentos extends StatelessWidget {
       colorIcono: ColoresTono.de(tono, c).frente,
       fin: Insignia(texto: estado, tono: tono, conIcono: true),
       etiquetaFin: estado,
+      alToque:
+          documento.origen == OrigenDocumento.agencia &&
+              documento.tieneArchivo &&
+              GoRouter.maybeOf(context) != null
+          ? () => context.push(rutaPdfDocumento(documento.id))
+          : null,
     );
   }
 }
@@ -228,4 +243,19 @@ class _Cargando extends StatelessWidget {
       ),
     );
   }
+}
+
+List<Widget>? _accionesDocumento(BuildContext context, int vehiculoId) {
+  if (GoRouter.maybeOf(context) == null) return null;
+  return [
+    GrupoAccionesPildora(
+      acciones: [
+        AccionIcono(
+          icono: LucideIcons300.plus,
+          etiqueta: AppLocalizations.of(context).documentosAgregar,
+          alPresionar: () => context.push(rutaAgregarDocumento(vehiculoId)),
+        ),
+      ],
+    ),
+  ];
 }

@@ -15,7 +15,7 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
-Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
+Avance de Haziel en dev · **17 de 30 historias en Hecha (57 %)**.
 
 ## H0 · Base de trabajo
 
@@ -183,8 +183,8 @@ Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
 | V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | Hecha | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda) · validada por Daniel; FCM real pendiente de credenciales |
 | V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | Hecha | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 · validada por Daniel |
-| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
-| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
+| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Hecha | [Recorte y compresión](../test/modulos/documentos/preparar_foto_documento_test.dart) · [Progreso multipart](../test/api/cliente_api_test.dart) · [backend #120](https://github.com/lattice-systems/agencia-360-backend/pull/120) |
+| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Hecha | [Visor de PDF](../lib/modulos/documentos/presentacion/pantalla_documento_agencia.dart) · [backend #120](https://github.com/lattice-systems/agencia-360-backend/pull/120) · [Prueba de contrato](../test/contrato/mock_api_v2_test.dart) |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
 | V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Hecha | [Calendario y lista sobre el API de documentos integrado](../test/modulos/documentos/calendario_documentos_test.dart) |
@@ -216,10 +216,10 @@ Avance de Haziel en dev · **13 de 30 historias en Hecha (43 %)**.
 | V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | En curso | Opción para NPS ≤ 6. Pendiente validar la tarea en Agencia360. |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
 | V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
-| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
+| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Hecha | [Búsqueda y caché](../test/modulos/ayuda/preguntas_sin_conexion_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
 | V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
 | V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | Hecha | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · validada por Daniel · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
-| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
+| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Hecha | [Validación y envío del reporte](../test/modulos/ayuda/reporte_app_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
 | V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Hecha | [Versión y licencias](../test/modulos/ayuda/acerca_de_test.dart) · [Términos incluidos en la app](../integration_test/terminos_instalados_test.dart) · [Android físico](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 
 ## H5 · Comercio

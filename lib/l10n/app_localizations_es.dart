@@ -6865,6 +6865,88 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get ayudaBuscar => 'Buscar';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Escribe una pregunta o tema';
+
+  @override
+  String get ayudaDescripcion => 'Descripción';
+
+  @override
+  String get ayudaDescripcionPista => 'Cuéntanos qué ocurrió';
+
+  @override
+  String get ayudaEnviado => 'Reporte enviado';
+
+  @override
+  String get ayudaEnviar => 'Enviar reporte';
+
+  @override
+  String get ayudaErrorReporte =>
+      'No se pudo enviar el reporte. Intenta de nuevo.';
+
+  @override
+  String get ayudaGracias => 'Gracias por ayudarnos a mejorar.';
+
+  @override
+  String get ayudaLongitud =>
+      'Describe el problema con entre 10 y 2000 caracteres.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Prueba con otras palabras.';
+
+  @override
+  String get ayudaPreguntas => 'Preguntas frecuentes';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.';
+
+  @override
+  String get ayudaReporte => 'Reportar un problema';
+
+  @override
+  String get ayudaSinResultados => 'Sin resultados';
+
+  @override
+  String get documentosPdfAgencia => 'Documento de la agencia';
+
+  @override
+  String get documentosAgregar => 'Agregar documento';
+
+  @override
+  String get documentosAgregarFecha => 'Agregar fecha de vencimiento';
+
+  @override
+  String get documentosCamara => 'Tomar fotografía';
+
+  @override
+  String get documentosErrorFoto => 'No se pudo preparar la foto.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'No se pudo guardar el documento. Intenta de nuevo.';
+
+  @override
+  String get documentosFaltaFoto => 'Selecciona una imagen del documento.';
+
+  @override
+  String get documentosGaleria => 'Elegir de galería';
+
+  @override
+  String get documentosGuardar => 'Guardar documento';
+
+  @override
+  String get documentosProgreso => 'Carga del documento';
+
+  @override
+  String get documentosTipo => 'Tipo de documento';
+
+  @override
+  String get documentosVistaPrevia => 'Vista previa del documento';
+
+  @override
   String get m15Titulo => 'Encuestas de servicio';
 
   @override

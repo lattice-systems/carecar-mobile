@@ -14,6 +14,7 @@ function crearServidor(datos, { logger = true } = {}) {
 
   require('./modulos/acceso')(servidor, db);
   require('./modulos/analitica')(servidor, db);
+  require('./modulos/ayuda')(servidor, db);
   const vehiculoDelCliente = require('./modulos/vehiculos')(servidor, db);
   const emitirEvento = require('./modulos/eventos')(servidor);
   const recoleccion = require('./modulos/recoleccion')(servidor, db, emitirEvento);

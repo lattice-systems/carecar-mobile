@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Agencia360 · API para la app CareCar v2
-  version: 2.32.0
+  version: 2.34.0
   description: |
     Contrato de API que Agencia360 expone a la app CareCar v2.
 
@@ -132,6 +132,38 @@ paths:
           $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
+
+  /ayuda/preguntas-frecuentes:
+    get:
+      tags: [Ayuda y sucursales]
+      summary: Consultar preguntas frecuentes activas
+      description: Contenido para búsqueda local en CareCar; se entrega ordenado por tema y prioridad.
+      responses:
+        '200':
+          description: Preguntas frecuentes activas
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/PreguntaFrecuente' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
+
+  /ayuda/reportes:
+    post:
+      tags: [Ayuda y sucursales]
+      summary: Registrar un reporte de problema
+      description: Conserva descripción y diagnóstico técnico mínimo, sin datos personales ni adjuntos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ReporteAppRequest' }
+      responses:
+        '204': { description: Reporte recibido }
+        '400': { $ref: '#/components/responses/DatosInvalidos' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '403': { $ref: '#/components/responses/CuentaDesactivada' }
 
   /encuestas/pendientes:
     get:
@@ -2546,7 +2578,7 @@ paths:
         (`America/Mexico_City`), no el teléfono: `VENCIDO` si la fecha ya pasó, `POR_VENCER` si
         vence hoy o en los siguientes 30 días, `VIGENTE` si falta más y `SIN_FECHA` si no tiene
         vencimiento. Sin documentos responde 200 con una lista vacía. No incluye la dirección del
-        archivo: `tieneArchivo` solo indica si hay uno (la descarga firmada llega con V2-M09.02).
+        archivo: `tieneArchivo` solo indica si hay uno (el archivo se descarga mediante una URL firmada).
         La póliza trae `aseguradora` y `telefonoAseguradora`, que usa V2-M11.02.
         Un vehículo que no es del cliente responde 404, igual que uno que no existe.
       parameters:
@@ -2566,6 +2598,67 @@ paths:
           $ref: '#/components/responses/CuentaDesactivada'
         '404':
           $ref: '#/components/responses/NoEncontrado'
+
+    post:
+      summary: Guardar una foto JPEG de hasta 5 MB como documento del vehículo propio
+      parameters:
+        - in: path
+          name: vehiculoId
+          required: true
+          schema: { type: integer, format: int64 }
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [tipo, archivo]
+              properties:
+                tipo:
+                  type: string
+                  enum: [POLIZA, TARJETA_CIRCULACION, VERIFICACION, TENENCIA, LICENCIA, GARANTIA, FACTURA, OTRO]
+                titulo: { type: string, maxLength: 80, description: Obligatorio si el tipo es OTRO }
+                venceEn: { type: string, format: date }
+                archivo: { type: string, format: binary }
+            encoding:
+              archivo: { contentType: image/jpeg }
+      responses:
+        '201':
+          description: Documento guardado
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Documento' }
+        '400':
+          description: Tipo, fecha o archivo inválido
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Problema' }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
+
+  /documentos/{documentoId}/archivo:
+    get:
+      summary: Descargar la foto del cliente o el PDF de agencia de un vehículo propio
+      parameters:
+        - in: path
+          name: documentoId
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: Foto JPEG o PDF al seguir la redirección
+          content:
+            image/jpeg:
+              schema: { type: string, format: binary }
+            application/pdf:
+              schema: { type: string, format: binary }
+        '302':
+          description: Redirección a la descarga firmada por 15 minutos
+          headers:
+            Location:
+              schema: { type: string, format: uri-reference }
+        '401': { $ref: '#/components/responses/NoAutenticado' }
+        '404': { $ref: '#/components/responses/NoEncontrado' }
 
   /vehiculos/{vehiculoId}/campanas:
     get:
@@ -7520,6 +7613,26 @@ components:
           type: integer
           minimum: 0
           maximum: 60000
+
+    PreguntaFrecuente:
+      type: object
+      required: [id, tema, pregunta, respuesta, orden]
+      properties:
+        id: { type: integer, format: int64 }
+        tema: { type: string, maxLength: 80 }
+        pregunta: { type: string, maxLength: 240 }
+        respuesta: { type: string, maxLength: 4000 }
+        orden: { type: integer }
+
+    ReporteAppRequest:
+      type: object
+      additionalProperties: false
+      required: [descripcion, versionApp, sistema, dispositivo]
+      properties:
+        descripcion: { type: string, minLength: 10, maxLength: 2000 }
+        versionApp: { type: string, minLength: 1, maxLength: 40 }
+        sistema: { type: string, minLength: 1, maxLength: 60 }
+        dispositivo: { type: string, minLength: 1, maxLength: 120 }
 
     EncuestaPendiente:
       type: object

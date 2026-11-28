@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import 'pantalla_acerca_de.dart';
+import 'pantalla_centro_ayuda.dart';
 import 'pantalla_contacto.dart';
 import 'pantalla_sucursales.dart';
 
@@ -13,6 +14,8 @@ const rutaSucursales = '/sucursales';
 const rutaContacto = '/contacto';
 
 const rutaAcercaDe = '/acerca-de';
+const rutaPreguntasFrecuentes = '/ayuda/preguntas-frecuentes';
+const rutaReporteApp = '/ayuda/reportar';
 
 // Mientras la app no tenga el tema v2 global (V2-T01.05), la ruta de un
 // modulo v2 se envuelve con el tema Pista.
@@ -25,6 +28,18 @@ Widget _conTemaPista(BuildContext context, Widget hijo) => Theme(
 
 /// Rutas que el modulo `ayuda` entrega al enrutador.
 final rutasAyuda = <RouteBase>[
+  GoRoute(
+    path: rutaPreguntasFrecuentes,
+    name: 'preguntas-frecuentes',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaPreguntasFrecuentes()),
+  ),
+  GoRoute(
+    path: rutaReporteApp,
+    name: 'reportar-problema',
+    builder: (context, state) =>
+        _conTemaPista(context, const PantallaReporteApp()),
+  ),
   GoRoute(
     path: rutaAcercaDe,
     name: 'acerca-de',

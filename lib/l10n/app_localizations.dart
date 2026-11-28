@@ -11440,6 +11440,162 @@ abstract class AppLocalizations {
   /// **'{fecha} · {vehiculo}'**
   String documentosDetalle(String fecha, String vehiculo);
 
+  /// No description provided for @ayudaBuscar.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar'**
+  String get ayudaBuscar;
+
+  /// No description provided for @ayudaBuscarSugerencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe una pregunta o tema'**
+  String get ayudaBuscarSugerencia;
+
+  /// No description provided for @ayudaDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get ayudaDescripcion;
+
+  /// No description provided for @ayudaDescripcionPista.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuéntanos qué ocurrió'**
+  String get ayudaDescripcionPista;
+
+  /// No description provided for @ayudaEnviado.
+  ///
+  /// In es, this message translates to:
+  /// **'Reporte enviado'**
+  String get ayudaEnviado;
+
+  /// No description provided for @ayudaEnviar.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar reporte'**
+  String get ayudaEnviar;
+
+  /// No description provided for @ayudaErrorReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar el reporte. Intenta de nuevo.'**
+  String get ayudaErrorReporte;
+
+  /// No description provided for @ayudaGracias.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por ayudarnos a mejorar.'**
+  String get ayudaGracias;
+
+  /// No description provided for @ayudaLongitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Describe el problema con entre 10 y 2000 caracteres.'**
+  String get ayudaLongitud;
+
+  /// No description provided for @ayudaOtrasPalabras.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con otras palabras.'**
+  String get ayudaOtrasPalabras;
+
+  /// No description provided for @ayudaPreguntas.
+  ///
+  /// In es, this message translates to:
+  /// **'Preguntas frecuentes'**
+  String get ayudaPreguntas;
+
+  /// No description provided for @ayudaPrivacidadReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.'**
+  String get ayudaPrivacidadReporte;
+
+  /// No description provided for @ayudaReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Reportar un problema'**
+  String get ayudaReporte;
+
+  /// No description provided for @ayudaSinResultados.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin resultados'**
+  String get ayudaSinResultados;
+
+  /// No description provided for @documentosPdfAgencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento de la agencia'**
+  String get documentosPdfAgencia;
+
+  /// No description provided for @documentosAgregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar documento'**
+  String get documentosAgregar;
+
+  /// No description provided for @documentosAgregarFecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar fecha de vencimiento'**
+  String get documentosAgregarFecha;
+
+  /// No description provided for @documentosCamara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar fotografía'**
+  String get documentosCamara;
+
+  /// No description provided for @documentosErrorFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo preparar la foto.'**
+  String get documentosErrorFoto;
+
+  /// No description provided for @documentosErrorGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el documento. Intenta de nuevo.'**
+  String get documentosErrorGuardar;
+
+  /// No description provided for @documentosFaltaFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una imagen del documento.'**
+  String get documentosFaltaFoto;
+
+  /// No description provided for @documentosGaleria.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de galería'**
+  String get documentosGaleria;
+
+  /// No description provided for @documentosGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar documento'**
+  String get documentosGuardar;
+
+  /// No description provided for @documentosProgreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Carga del documento'**
+  String get documentosProgreso;
+
+  /// No description provided for @documentosTipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de documento'**
+  String get documentosTipo;
+
+  /// No description provided for @documentosVistaPrevia.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista previa del documento'**
+  String get documentosVistaPrevia;
+
   /// Texto de encuestas o contacto con la agencia.
   ///
   /// In es, this message translates to:

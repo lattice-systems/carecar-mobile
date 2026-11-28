@@ -3,7 +3,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../nucleo/diseno/tema_pista.dart';
 import '../../../nucleo/privacidad/pantalla_segura.dart';
+import 'pantalla_agregar_documento.dart';
 import 'pantalla_calendario_documentos.dart';
+import 'pantalla_documento_agencia.dart';
 import 'pantalla_documentos.dart';
 
 /// Raiz de las rutas de documentos.
@@ -26,7 +28,35 @@ Widget _segura(BuildContext context, Widget hijo) => PantallaSegura(
 );
 
 /// Rutas que el modulo `documentos` entrega al enrutador.
+String rutaPdfDocumento(int documentoId) =>
+    '$rutaDocumentos/archivo/$documentoId';
+
+String rutaAgregarDocumento(int vehiculoId) =>
+    '$rutaDocumentos/$vehiculoId/agregar';
+
 final rutasDocumentos = <RouteBase>[
+  GoRoute(
+    path: '$rutaDocumentos/:vehiculoId/agregar',
+    name: 'agregar-documento',
+    builder: (context, state) => _segura(
+      context,
+      PantallaAgregarDocumento(
+        vehiculoId:
+            int.tryParse(state.pathParameters['vehiculoId'] ?? '') ?? -1,
+      ),
+    ),
+  ),
+  GoRoute(
+    path: '$rutaDocumentos/archivo/:documentoId',
+    name: 'archivo-documento',
+    builder: (context, state) => _segura(
+      context,
+      PantallaDocumentoAgencia(
+        documentoId:
+            int.tryParse(state.pathParameters['documentoId'] ?? '') ?? -1,
+      ),
+    ),
+  ),
   GoRoute(
     path: rutaCalendarioDocumentos,
     name: 'calendario-documentos',

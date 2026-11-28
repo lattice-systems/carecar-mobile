@@ -91,6 +91,10 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Documentos del vehículo | `documento_vehiculo`, `vehiculo_cliente` | 🟡 `documento_vehiculo` existe (backend V61) con los campos de la ficha más `titulo`, `numero`, `emitido_en`, `aseguradora` y `telefono_aseguradora`; `GET /vehiculos/{id}/documentos` con el estado calculado por la fecha de la agencia, pantalla, mock y pruebas (V2-M09.01). Ninguna columna de la ficha se quita ni se renombra. Faltan subir o fotografiar (V2-M09.02), los de la agencia (V2-M09.03), sin conexión (V2-M09.05), calendario (V2-M09.06) y demostrar en celular | V2-M09.01 |
 | Alertas de vencimiento | `documento_vehiculo`, `notificacion` | ⬜ | Ver M09 |
 
+Captura JPEG (V2-M09.02) · el registro se guarda en la tabla integrada y la foto se adjunta con la autorización del cliente.
+
+PDF de agencia (V2-M09.03) · publicado sobre el listado existente y entregado con autorización del propietario.
+
 ### 10. Garantía y campañas de seguridad — plan [M10](modulos/M10-garantia-y-campanas.md)
 
 | Funcionalidad | Tablas | Estado | Historias |
@@ -215,6 +219,8 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |
 | `V2-M09.06: combina los autos, marca los días y filtra la lista` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
 | `V2-M09.06: ofrece reintentar cuando falla la consulta de un auto` | [Prueba](../test/modulos/documentos/calendario_documentos_test.dart) |
+| `V2-M27.01: busca y abre preguntas guardadas cuando falla la red` | [Prueba](../test/modulos/ayuda/preguntas_sin_conexion_test.dart) |
+| `V2-M27.04: envía únicamente la descripción y el diagnóstico` | [Prueba](../test/modulos/ayuda/reporte_app_test.dart) |
 | `V2-M27.05: muestra la versión del paquete y abre las licencias` | [Prueba](../test/modulos/ayuda/acerca_de_test.dart) |
 | `V2-M27.05: abre los términos incluidos en el paquete` | [Prueba](../integration_test/terminos_instalados_test.dart) |
 | `V2-M24.03: la respuesta del manual muestra la página citada` | [Prueba](../test/modulos/asistente/pantalla_asistente_test.dart) |
