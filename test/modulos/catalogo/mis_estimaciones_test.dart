@@ -73,8 +73,12 @@ Widget _app(
   ),
 );
 
-/// Una fila por estimación: cada una lleva el icono de la calculadora.
-final _filas = find.byIcon(LucideIcons300.calculator);
+/// Una fila por estimación: cada una lleva el icono de la calculadora. Se busca
+/// dentro de la lista, porque el encabezado también lleva ese icono.
+final _filas = find.descendant(
+  of: find.byType(GrupoLista),
+  matching: find.byIcon(LucideIcons300.calculator),
+);
 
 void _pantallaAlta(WidgetTester tester) {
   tester.view.physicalSize = const Size(800, 3000);
