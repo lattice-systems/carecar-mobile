@@ -151,7 +151,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoContrasenaVacia => 'Enter your password.';
 
   @override
-  String get accesoCorreoAyuda => 'The one you gave the dealership';
+  String get accesoCorreoSugerencia => 'you@email.com';
+
+  @override
+  String get accesoContrasenaSugerencia => 'Your password';
+
+  @override
+  String accesoCreditos(int anio) {
+    return '© $anio Lattice Systems';
+  }
 
   @override
   String get accesoCorreoEtiqueta => 'Email';
@@ -319,24 +327,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accesoPerfilVehiculosFallo => 'We couldn\'t load your vehicles';
 
   @override
+  String get accesoCodigoTitulo => 'Enter the code';
+
+  @override
+  String accesoCodigoExplicacion(String correo) {
+    return 'We sent it to $correo. It has 6 digits and expires in 15 minutes.';
+  }
+
+  @override
+  String get accesoCodigoEtiqueta => '6-digit code';
+
+  @override
+  String get accesoCodigoIncompleto => 'Enter the 6 digits of the code';
+
+  @override
+  String get accesoCodigoNoValidoTitulo => 'That code doesn\'t work';
+
+  @override
+  String get accesoCodigoNoValidoMensaje =>
+      'It may be mistyped, already used or expired. Check the latest email or ask for another one.';
+
+  @override
+  String get accesoCodigoReenviar => 'Send another code';
+
+  @override
+  String get accesoCodigoReenviado => 'We sent you another code';
+
+  @override
+  String get accesoCodigoSinCorreo => 'Ask for the code first';
+
+  @override
   String get accesoRecuperarEnviado => 'Check your email';
 
   @override
   String get accesoRecuperarEnviadoMensaje =>
-      'If that email has an account, you\'ll get a link to choose a new password. It expires soon and works only once.';
+      'If that email has an account, you\'ll get a 6-digit code. It expires in 15 minutes and works only once.';
 
   @override
   String get accesoRecuperarEnviando => 'Sending…';
 
   @override
-  String get accesoRecuperarEnviar => 'Send me the link';
+  String get accesoRecuperarEnviar => 'Send me the code';
 
   @override
   String get accesoRecuperarExplicacion =>
-      'Enter your email and we\'ll send you a link to choose a new password.';
+      'Enter your email and we\'ll send you a 6-digit code to choose a new password.';
 
   @override
-  String get accesoRecuperarFalloTitulo => 'We couldn\'t send the link';
+  String get accesoRecuperarFalloTitulo => 'We couldn\'t send the code';
 
   @override
   String get accesoRecuperarTitulo => 'Recover your password';
@@ -497,6 +535,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'The dealership gives you your access when you pick up your vehicle. If you don\'t have it, get in touch with them.';
 
   @override
+  String get accesoLema => 'Your car,\nin good hands.';
+
+  @override
   String get accesoSubtitulo => 'Your access to the dealership';
 
   @override
@@ -625,6 +666,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistenciaGuiasTitulo => 'Emergency guides';
+
+  @override
+  String get catalogoSubtitulo =>
+      'The dealership\'s current models with their price. Tap one for details, or compare several.';
 
   @override
   String get catalogoTitulo => 'Catalog';
@@ -836,6 +881,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get citasMisCitasCargando => 'Loading your appointments';
+
+  @override
+  String get citasMisCitasSubtitulo =>
+      'Your upcoming and past appointments, each with its status.';
 
   @override
   String get citasMisCitasTitulo => 'My appointments';
@@ -1740,6 +1789,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vehiculosTitulo => 'My garage';
 
   @override
+  String get vehiculosSubtitulo =>
+      'Your cars in one place. Tap one to see its spec sheet, its history and to book its service.';
+
+  @override
   String get vehiculosVacioMensaje =>
       'The dealership registers your cars when it hands them over. Once it does, they will show up here.';
 
@@ -2188,6 +2241,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get idiomaIngles => 'English';
+
+  @override
+  String get catalogoDetalleSubtitulo =>
+      'See its versions, book a test drive or request a quote.';
 
   @override
   String get catalogoDetalleTitulo => 'Model details';
@@ -3064,6 +3121,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'The certificate the server presented is not the one the app expects. This can happen on a filtered network (public Wi-Fi, school or work). Try mobile data or another network.';
 
   @override
+  String get inicioSaludoManana => 'Good morning,';
+
+  @override
+  String get inicioSaludoTarde => 'Good afternoon,';
+
+  @override
+  String get inicioSaludoNoche => 'Good evening,';
+
+  @override
   String inicioSaludo(String nombre) {
     return 'Hi, $nombre';
   }
@@ -3109,7 +3175,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inicioDestinoInicio => 'Home';
 
   @override
-  String get inicioDestinoVehiculos => 'Vehicles';
+  String get inicioDestinoVehiculos => 'Garage';
 
   @override
   String get inicioDestinoCitas => 'Appointments';

@@ -149,7 +149,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoContrasenaVacia => 'Escribe tu contraseña.';
 
   @override
-  String get accesoCorreoAyuda => 'El que le diste a la agencia';
+  String get accesoCorreoSugerencia => 'tu@correo.com';
+
+  @override
+  String get accesoContrasenaSugerencia => 'Tu contraseña';
+
+  @override
+  String accesoCreditos(int anio) {
+    return '© $anio Lattice Systems';
+  }
 
   @override
   String get accesoCorreoEtiqueta => 'Correo';
@@ -319,24 +327,54 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accesoPerfilVehiculosFallo => 'No pudimos traer tus vehículos';
 
   @override
+  String get accesoCodigoTitulo => 'Escribe el código';
+
+  @override
+  String accesoCodigoExplicacion(String correo) {
+    return 'Te lo enviamos a $correo. Tiene 6 dígitos y vence en 15 minutos.';
+  }
+
+  @override
+  String get accesoCodigoEtiqueta => 'Código de 6 dígitos';
+
+  @override
+  String get accesoCodigoIncompleto => 'Escribe los 6 dígitos del código';
+
+  @override
+  String get accesoCodigoNoValidoTitulo => 'Ese código no sirve';
+
+  @override
+  String get accesoCodigoNoValidoMensaje =>
+      'Puede estar mal escrito, ya usado o vencido. Revisa el correo más reciente o pide otro.';
+
+  @override
+  String get accesoCodigoReenviar => 'Enviar otro código';
+
+  @override
+  String get accesoCodigoReenviado => 'Te enviamos otro código';
+
+  @override
+  String get accesoCodigoSinCorreo => 'Pide primero el código';
+
+  @override
   String get accesoRecuperarEnviado => 'Revisa tu correo';
 
   @override
   String get accesoRecuperarEnviadoMensaje =>
-      'Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.';
+      'Si ese correo tiene una cuenta, te llegará un código de 6 dígitos. Vence en 15 minutos y sirve una sola vez.';
 
   @override
   String get accesoRecuperarEnviando => 'Enviando…';
 
   @override
-  String get accesoRecuperarEnviar => 'Enviarme el enlace';
+  String get accesoRecuperarEnviar => 'Enviarme el código';
 
   @override
   String get accesoRecuperarExplicacion =>
-      'Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.';
+      'Escribe tu correo y te enviamos un código de 6 dígitos para elegir una contraseña nueva.';
 
   @override
-  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el enlace';
+  String get accesoRecuperarFalloTitulo => 'No pudimos enviar el código';
 
   @override
   String get accesoRecuperarTitulo => 'Recupera tu contraseña';
@@ -496,6 +534,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'La agencia te entrega tu acceso cuando recibes tu unidad. Si no lo tienes, comunícate con la agencia.';
 
   @override
+  String get accesoLema => 'Tu auto,\nen buenas manos.';
+
+  @override
   String get accesoSubtitulo => 'Tu acceso a la agencia';
 
   @override
@@ -624,6 +665,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaGuiasTitulo => 'Guías de emergencia';
+
+  @override
+  String get catalogoSubtitulo =>
+      'Los modelos vigentes de la agencia con su precio. Toca uno para ver el detalle, o compara varios.';
 
   @override
   String get catalogoTitulo => 'Catálogo';
@@ -833,6 +878,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get citasMisCitasCargando => 'Cargando tus citas';
+
+  @override
+  String get citasMisCitasSubtitulo =>
+      'Tus citas próximas y pasadas, cada una con su estado.';
 
   @override
   String get citasMisCitasTitulo => 'Mis citas';
@@ -1736,6 +1785,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehiculosTitulo => 'Mi garaje';
 
   @override
+  String get vehiculosSubtitulo =>
+      'Tus autos en un solo lugar. Toca uno para ver su ficha, su historial y agendar su servicio.';
+
+  @override
   String get vehiculosVacioMensaje =>
       'La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.';
 
@@ -2183,6 +2236,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get idiomaIngles => 'English';
+
+  @override
+  String get catalogoDetalleSubtitulo =>
+      'Conoce sus versiones, pide una prueba de manejo o cotiza.';
 
   @override
   String get catalogoDetalleTitulo => 'Detalle del modelo';
@@ -3061,6 +3118,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'El certificado que presentó el servidor no es el que la app espera. Puede pasar en una red con filtros (WiFi público, escuela o trabajo). Prueba con datos móviles u otra red.';
 
   @override
+  String get inicioSaludoManana => 'Buenos días,';
+
+  @override
+  String get inicioSaludoTarde => 'Buenas tardes,';
+
+  @override
+  String get inicioSaludoNoche => 'Buenas noches,';
+
+  @override
   String inicioSaludo(String nombre) {
     return 'Hola, $nombre';
   }
@@ -3106,7 +3172,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get inicioDestinoInicio => 'Inicio';
 
   @override
-  String get inicioDestinoVehiculos => 'Vehículos';
+  String get inicioDestinoVehiculos => 'Garaje';
 
   @override
   String get inicioDestinoCitas => 'Citas';

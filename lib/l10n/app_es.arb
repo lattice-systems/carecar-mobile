@@ -192,10 +192,12 @@
   "@accesoContrasenaVacia": {
     "description": "Error bajo el campo cuando se intenta entrar sin contraseña."
   },
-  "accesoCorreoAyuda": "El que le diste a la agencia",
-  "@accesoCorreoAyuda": {
-    "description": "Ayuda bajo el campo de correo: con cuál de sus correos entra el cliente."
-  },
+  "accesoCorreoSugerencia": "tu@correo.com",
+  "accesoContrasenaSugerencia": "Tu contraseña",
+  "@accesoCorreoSugerencia": {"description": "Ejemplo dentro del campo de correo del acceso."},
+  "@accesoContrasenaSugerencia": {"description": "Ejemplo dentro del campo de contraseña del acceso."},
+  "accesoCreditos": "© {anio} Lattice Systems",
+  "@accesoCreditos": {"description": "Créditos al pie del acceso: año y equipo que desarrolla la app.", "placeholders": { "anio": { "type": "int" } }},
   "accesoCorreoEtiqueta": "Correo",
   "@accesoCorreoEtiqueta": {
     "description": "Etiqueta del campo de correo en la pantalla de acceso."
@@ -400,11 +402,29 @@
   "@accesoPerfilVehiculosFallo": {
     "description": "Aviso dentro del perfil cuando la lista de vehículos falla. El resto del perfil se sigue viendo, porque son dos lecturas distintas."
   },
+  "accesoCodigoTitulo": "Escribe el código",
+  "@accesoCodigoTitulo": {"description": "Título del paso del código de recuperación."},
+  "accesoCodigoExplicacion": "Te lo enviamos a {correo}. Tiene 6 dígitos y vence en 15 minutos.",
+  "@accesoCodigoExplicacion": {"description": "Explicación del paso del código; {correo} es el correo al que se envió.", "placeholders": { "correo": { "type": "String" } }},
+  "accesoCodigoEtiqueta": "Código de 6 dígitos",
+  "@accesoCodigoEtiqueta": {"description": "Etiqueta del campo del código de recuperación."},
+  "accesoCodigoIncompleto": "Escribe los 6 dígitos del código",
+  "@accesoCodigoIncompleto": {"description": "Error cuando el código no tiene 6 dígitos."},
+  "accesoCodigoNoValidoTitulo": "Ese código no sirve",
+  "@accesoCodigoNoValidoTitulo": {"description": "Aviso cuando el servidor rechaza el código."},
+  "accesoCodigoNoValidoMensaje": "Puede estar mal escrito, ya usado o vencido. Revisa el correo más reciente o pide otro.",
+  "@accesoCodigoNoValidoMensaje": {"description": "Mensaje del aviso de código rechazado."},
+  "accesoCodigoReenviar": "Enviar otro código",
+  "@accesoCodigoReenviar": {"description": "Botón para pedir otro código."},
+  "accesoCodigoReenviado": "Te enviamos otro código",
+  "@accesoCodigoReenviado": {"description": "Aviso tras pedir otro código."},
+  "accesoCodigoSinCorreo": "Pide primero el código",
+  "@accesoCodigoSinCorreo": {"description": "Título cuando se llega al paso del código sin correo ni enlace."},
   "accesoRecuperarEnviado": "Revisa tu correo",
   "@accesoRecuperarEnviado": {
     "description": "Título del aviso tras pedir el enlace de recuperación."
   },
-  "accesoRecuperarEnviadoMensaje": "Si ese correo tiene una cuenta, te llegará un enlace para elegir una contraseña nueva. Vence en poco tiempo y sirve una sola vez.",
+  "accesoRecuperarEnviadoMensaje": "Si ese correo tiene una cuenta, te llegará un código de 6 dígitos. Vence en 15 minutos y sirve una sola vez.",
   "@accesoRecuperarEnviadoMensaje": {
     "description": "Explica que el enlace puede no llegar si el correo no tiene cuenta, para que nadie se quede esperando."
   },
@@ -412,15 +432,15 @@
   "@accesoRecuperarEnviando": {
     "description": "Texto del botón mientras el servidor responde."
   },
-  "accesoRecuperarEnviar": "Enviarme el enlace",
+  "accesoRecuperarEnviar": "Enviarme el código",
   "@accesoRecuperarEnviar": {
     "description": "Botón que pide el enlace de recuperación."
   },
-  "accesoRecuperarExplicacion": "Escribe tu correo y te enviamos un enlace para elegir una contraseña nueva.",
+  "accesoRecuperarExplicacion": "Escribe tu correo y te enviamos un código de 6 dígitos para elegir una contraseña nueva.",
   "@accesoRecuperarExplicacion": {
     "description": "Explica qué hace la pantalla de recuperación."
   },
-  "accesoRecuperarFalloTitulo": "No pudimos enviar el enlace",
+  "accesoRecuperarFalloTitulo": "No pudimos enviar el código",
   "@accesoRecuperarFalloTitulo": {
     "description": "Título del aviso cuando falla la petición del enlace."
   },
@@ -616,6 +636,8 @@
   "@accesoSinRegistro": {
     "description": "Nota que explica por qué no hay registro: la cuenta la entrega la agencia."
   },
+  "accesoLema": "Tu auto,\nen buenas manos.",
+  "@accesoLema": {"description": "Lema en la portada del acceso, en dos líneas, bajo el logo."},
   "accesoSubtitulo": "Tu acceso a la agencia",
   "@accesoSubtitulo": {
     "description": "Frase bajo el nombre de la app en la pantalla de acceso."
@@ -704,6 +726,10 @@
   "asistenciaGuiasTitulo": "Guías de emergencia",
   "@asistenciaGuiasTitulo": {
     "description": "Título de la pantalla de guías de emergencia."
+  },
+  "catalogoSubtitulo": "Los modelos vigentes de la agencia con su precio. Toca uno para ver el detalle, o compara varios.",
+  "@catalogoSubtitulo": {
+    "description": "Descripción bajo el título del catálogo de modelos."
   },
   "catalogoTitulo": "Catálogo",
   "@catalogoTitulo": {
@@ -927,6 +953,10 @@
   "citasMisCitasCargando": "Cargando tus citas",
   "@citasMisCitasCargando": {
     "description": "Lo que anuncia el lector de pantalla mientras cargan las citas."
+  },
+  "citasMisCitasSubtitulo": "Tus citas próximas y pasadas, cada una con su estado.",
+  "@citasMisCitasSubtitulo": {
+    "description": "Descripción bajo el título de Mis citas."
   },
   "citasMisCitasTitulo": "Mis citas",
   "@citasMisCitasTitulo": {
@@ -2122,6 +2152,10 @@
   "@vehiculosTitulo": {
     "description": "Título de la pantalla con los vehículos del cliente."
   },
+  "vehiculosSubtitulo": "Tus autos en un solo lugar. Toca uno para ver su ficha, su historial y agendar su servicio.",
+  "@vehiculosSubtitulo": {
+    "description": "Descripción bajo el título de la pantalla con los vehículos del cliente."
+  },
   "vehiculosVacioMensaje": "La agencia registra tus autos al entregártelos. Cuando lo haga, aparecerán aquí.",
   "vehiculosVacioTitulo": "Aún no tienes vehículos",
   "vehiculosVersion": "Versión",
@@ -2771,6 +2805,10 @@
   "idiomaIngles": "English",
   "@idiomaIngles": {
     "description": "Nombre del idioma inglés, escrito en inglés."
+  },
+  "catalogoDetalleSubtitulo": "Conoce sus versiones, pide una prueba de manejo o cotiza.",
+  "@catalogoDetalleSubtitulo": {
+    "description": "Descripción bajo el título del detalle de un modelo del catálogo."
   },
   "catalogoDetalleTitulo": "Detalle del modelo",
   "@catalogoDetalleTitulo": {
@@ -3950,6 +3988,12 @@
   "@seguridadConexionNoSeguraMensaje": {
     "description": "Explica por qué se cortó la conexión y qué hacer: cambiar de red."
   },
+  "inicioSaludoManana": "Buenos días,",
+  "@inicioSaludoManana": {"description": "Saludo del inicio antes del mediodía; va antes del nombre."},
+  "inicioSaludoTarde": "Buenas tardes,",
+  "@inicioSaludoTarde": {"description": "Saludo del inicio de las 12 a las 19 h; va antes del nombre."},
+  "inicioSaludoNoche": "Buenas noches,",
+  "@inicioSaludoNoche": {"description": "Saludo del inicio desde las 19 h; va antes del nombre."},
   "inicioSaludo": "Hola, {nombre}",
   "@inicioSaludo": {
     "description": "Saludo de la pantalla de inicio con el primer nombre del cliente.",
@@ -3977,7 +4021,7 @@
   "@inicioPerfilYAjustes": { "description": "Nombre del botón del avatar, arriba a la izquierda del inicio." },
   "inicioDestinoInicio": "Inicio",
   "@inicioDestinoInicio": { "description": "Destino de la barra inferior." },
-  "inicioDestinoVehiculos": "Vehículos",
+  "inicioDestinoVehiculos": "Garaje",
   "@inicioDestinoVehiculos": { "description": "Destino de la barra inferior." },
   "inicioDestinoCitas": "Citas",
   "@inicioDestinoCitas": { "description": "Destino de la barra inferior." },
