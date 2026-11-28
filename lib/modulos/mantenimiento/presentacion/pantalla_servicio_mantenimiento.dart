@@ -48,10 +48,12 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
     return plan.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.wrench,
         titulo: textos.mantenimientoTitulo,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.wrench,
         titulo: textos.mantenimientoTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -65,6 +67,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
         final servicio = p.servicioPorId(servicioId);
         if (servicio == null) {
           return MarcoPantalla.estado(
+            icono: LucideIcons300.wrench,
             titulo: textos.mantenimientoTitulo,
             estado: EstadoVacio(
               titulo: textos.mantenimientoServicioNoEncontradoTitulo,
@@ -74,6 +77,7 @@ class PantallaServicioMantenimiento extends ConsumerWidget {
           );
         }
         return MarcoPantalla(
+          icono: LucideIcons300.wrench,
           titulo: servicio.nombre,
           alRefrescar: () =>
               ref.refresh(planMantenimientoProvider(vehiculoId).future),
@@ -227,7 +231,10 @@ class _Cargando extends StatelessWidget {
     return Semantics(
       label: AppLocalizations.of(context).mantenimientoCargandoServicio,
       liveRegion: true,
-      child: const Padding(
+      // Desplazable aunque no se pueda mover: con letra grande el encabezado
+      // deja poco alto y el esqueleto no debe desbordar.
+      child: const SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
         padding: EdgeInsets.all(Espaciado.e4),
         child: Column(
           children: [

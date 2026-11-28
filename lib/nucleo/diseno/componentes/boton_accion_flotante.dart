@@ -25,6 +25,13 @@ class BotonAccionFlotante extends StatelessWidget {
   final IconData icono;
   final VoidCallback? alPresionar;
 
+  /// Alto del botón; la pantalla lo suma a la reserva de su lista.
+  static const double alto = 48;
+
+  /// Por encima de esta escala de letra el botón flotante se esconde: la barra
+  /// de pestañas crece y taparía media pantalla.
+  static const double escalaMaxima = 1.5;
+
   @override
   Widget build(BuildContext context) {
     final tokens = TokensPista.de(context);
@@ -62,24 +69,25 @@ class BotonAccionFlotante extends StatelessWidget {
             ],
           ),
           child: ConstrainedBox(
-            constraints: const BoxConstraints(minHeight: 56),
+            constraints: const BoxConstraints(minHeight: alto),
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: Espaciado.e5,
-                vertical: Espaciado.e3,
+                horizontal: Espaciado.e4,
+                vertical: Espaciado.e2,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icono, size: 22, color: frente),
+                  Icon(icono, size: 20, color: frente),
                   const SizedBox(width: Espaciado.e2),
                   Flexible(
                     child: Text(
                       texto,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: tokens.tipografia.cuerpoFuerte.copyWith(
+                      style: tokens.tipografia.cuerpoChico.copyWith(
                         color: frente,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),

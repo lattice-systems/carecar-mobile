@@ -81,6 +81,7 @@ class _PantallaMisSolicitudesState
     final pagina = ref.watch(misSolicitudesProvider);
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.inbox,
       titulo: textos.estrenoMisSolicitudes,
       conRegreso: true,
       estado: hijo,
@@ -120,6 +121,7 @@ class _PantallaMisSolicitudesState
               ),
             )
           : MarcoPantalla(
+              icono: LucideIcons300.inbox,
               titulo: textos.estrenoMisSolicitudes,
               conRegreso: true,
               alRefrescar: _recargar,

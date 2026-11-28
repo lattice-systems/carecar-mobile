@@ -243,6 +243,7 @@ class _EstadoPantallaDireccion extends ConsumerState<PantallaDireccion> {
     final editando = widget.editando != null;
 
     return MarcoPantalla(
+      icono: LucideIcons300.mapPin,
       titulo: editando
           ? textos.recoleccionFormEditarTitulo
           : textos.recoleccionFormNuevaTitulo,

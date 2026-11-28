@@ -6,6 +6,7 @@ import 'package:carecar_mobile/nucleo/diseno/componentes/tarjeta_resumen.dart';
 import 'package:carecar_mobile/nucleo/eventos/eventos_en_vivo_fake.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../ayudas/tema_pista.dart';
 import 'ayudas_taller.dart';
@@ -40,6 +41,25 @@ void main() {
       find.widgetWithText(Insignia, '2 trabajos por aprobar'),
       findsOneWidget,
     );
+  });
+
+  pruebaTaller('el icono va arriba, junto al título, y el chevron al centro', (
+    tester,
+  ) async {
+    await tester.pumpWidget(_app(RepositorioTallerFake()));
+    await tester.pumpAndSettle();
+
+    final tarjeta = tester.getRect(find.byType(TarjetaResumen));
+    final icono = tester.getRect(find.byIcon(LucideIcons300.wrench));
+    final titulo = tester.getRect(
+      find.text('Tu Nissan March 2026 está en el taller'),
+    );
+    final chevron = tester.getRect(find.byIcon(LucideIcons300.chevronRight));
+    // El icono arranca a la altura del título, no en medio de la tarjeta.
+    expect(icono.center.dy, lessThan(tarjeta.center.dy));
+    expect(icono.top, lessThanOrEqualTo(titulo.top + 8));
+    // Lo único que sigue centrado es el chevron.
+    expect(chevron.center.dy, greaterThan(icono.center.dy));
   });
 
   pruebaTaller('es la misma tarjeta de resumen que usa el resto del inicio', (

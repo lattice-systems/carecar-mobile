@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../nucleo/diseno/componentes/boton_pildora.dart';
+import '../../../nucleo/diseno/componentes/cuadro_fecha.dart';
 import '../../../nucleo/diseno/componentes/estante.dart';
 import '../../../nucleo/diseno/componentes/fila_acciones.dart';
 import '../../../nucleo/diseno/componentes/grupo_lista.dart';
+import '../../../nucleo/diseno/componentes/insignia.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_auto.dart';
 import '../../../nucleo/diseno/componentes/tarjeta_resumen.dart';
 import '../../../nucleo/diseno/componentes/tono.dart';
 import '../../../nucleo/diseno/tokens/colores.dart';
+import '../../../nucleo/diseno/tokens/espaciado.dart';
 import '../../../nucleo/diseno/tokens/radios.dart';
 import '../../../nucleo/diseno/tokens/tokens_pista.dart';
 import 'seccion_galeria.dart';
@@ -122,29 +125,66 @@ List<SeccionGaleria> seccionesPantalla() => [
     titulo: 'Grupo de lista',
     construir: (context) {
       final PaletaColores c = TokensPista.de(context).colores;
-      return GrupoLista(
-        encabezado: 'Cuenta',
-        pie: 'Tus datos se guardan en este telefono.',
-        filas: [
-          FilaGrupo(
-            titulo: 'Perfil',
-            subtitulo: 'Nombre y telefono',
-            icono: LucideIcons300.user,
-            colorIcono: c.acento,
-            alToque: () {},
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          GrupoLista(
+            encabezado: 'Cuenta',
+            pie: 'Tus datos se guardan en este telefono.',
+            filas: [
+              FilaGrupo(
+                titulo: 'Perfil',
+                subtitulo: 'Nombre y telefono',
+                icono: LucideIcons300.user,
+                colorIcono: c.acento,
+                alToque: () {},
+              ),
+              FilaGrupo(
+                titulo: 'Seguridad',
+                icono: LucideIcons300.lock,
+                colorIcono: c.exito,
+                alToque: () {},
+              ),
+              FilaGrupo(
+                titulo: 'Notificaciones',
+                icono: LucideIcons300.bell,
+                colorIcono: c.peligro,
+                fin: const Text('Activadas'),
+                alToque: () {},
+              ),
+            ],
           ),
-          FilaGrupo(
-            titulo: 'Seguridad',
-            icono: LucideIcons300.lock,
-            colorIcono: c.exito,
-            alToque: () {},
-          ),
-          FilaGrupo(
-            titulo: 'Notificaciones',
-            icono: LucideIcons300.bell,
-            colorIcono: c.peligro,
-            fin: const Text('Activadas'),
-            alToque: () {},
+          const SizedBox(height: Espaciado.e4),
+          // Con un visual propio en lugar del icono: el dia de una cita.
+          GrupoLista(
+            encabezado: 'Citas',
+            filas: [
+              FilaGrupo(
+                titulo: 'jue 12 mar · 10:30',
+                subtitulo: 'Mazda CX-5 · Servicio',
+                visual: CuadroFecha(
+                  fecha: DateTime(2026, 3, 12),
+                  tono: Tono.exito,
+                ),
+                fin: const Insignia(
+                  texto: 'Confirmada',
+                  tono: Tono.exito,
+                  conIcono: true,
+                ),
+                etiquetaFin: 'Confirmada',
+                alToque: () {},
+              ),
+              FilaGrupo(
+                titulo: 'lun 2 mar · 09:00',
+                subtitulo: 'Mazda CX-5',
+                visual: CuadroFecha(
+                  fecha: DateTime(2026, 3, 2),
+                  tono: Tono.neutro,
+                ),
+                fin: const Insignia(texto: 'Atendida'),
+                etiquetaFin: 'Atendida',
+              ),
+            ],
           ),
         ],
       );

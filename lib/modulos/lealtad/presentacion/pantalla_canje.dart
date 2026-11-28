@@ -38,6 +38,7 @@ class PantallaCanje extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoLealtad(
@@ -46,6 +47,7 @@ class PantallaCanje extends ConsumerWidget {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.gift,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -60,6 +62,7 @@ class PantallaCanje extends ConsumerWidget {
             final canje = canjes.where((c) => c.id == canjeId).firstOrNull;
             if (canje == null) {
               return MarcoPantalla.estado(
+                icono: LucideIcons300.gift,
                 titulo: titulo,
                 conRegreso: true,
                 estado: EstadoVacio(
@@ -70,6 +73,7 @@ class PantallaCanje extends ConsumerWidget {
               );
             }
             return MarcoPantalla(
+              icono: LucideIcons300.gift,
               titulo: canje.recompensa,
               subtitulo: textoFechaCanje(context, canje),
               conRegreso: true,

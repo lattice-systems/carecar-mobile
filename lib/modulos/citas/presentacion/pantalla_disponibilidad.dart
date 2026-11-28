@@ -42,10 +42,12 @@ class _EstadoPantallaDisponibilidad
     return disponibilidad.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.clock,
         titulo: textos.citasTitulo,
         estado: const _Cargando(),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.clock,
         titulo: textos.citasTitulo,
         estado: EstadoError(
           causa: error is SinConexion
@@ -56,6 +58,7 @@ class _EstadoPantallaDisponibilidad
       ),
       data: (taller) => taller.sinCupoEnTodoElRango
           ? MarcoPantalla.estado(
+              icono: LucideIcons300.clock,
               titulo: textos.citasTitulo,
               estado: EstadoVacio(
                 titulo: textos.citasVacioTitulo,
@@ -64,6 +67,7 @@ class _EstadoPantallaDisponibilidad
               ),
             )
           : MarcoPantalla(
+              icono: LucideIcons300.clock,
               titulo: textos.citasTitulo,
               alRefrescar: () => ref.refresh(disponibilidadProvider.future),
               slivers: [SliverToBoxAdapter(child: _contenido(context, taller))],

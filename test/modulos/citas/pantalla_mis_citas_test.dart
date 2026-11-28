@@ -6,11 +6,15 @@ import 'package:carecar_mobile/modulos/citas/dominio/fallos_agenda.dart';
 import 'package:carecar_mobile/modulos/vehiculos/datos/repositorio_garaje_fake.dart';
 import 'package:carecar_mobile/modulos/vehiculos/vehiculos.dart';
 import 'package:carecar_mobile/modulos/citas/presentacion/componentes/vacio_ilustrado.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_accion_flotante.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_cerrar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/boton_pildora.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/boton_regresar.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/cuadro_fecha.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/dialogo.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/esqueleto.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/estado_error.dart';
+import 'package:carecar_mobile/nucleo/diseno/componentes/grupo_lista.dart';
 import 'package:carecar_mobile/nucleo/diseno/componentes/insignia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -95,6 +99,22 @@ void main() {
       expect(find.byType(Esqueleto), findsNothing);
     });
 
+    _prueba('es raíz de pestaña: Agendar cita flota y no hay regresar', (
+      tester,
+    ) async {
+      await tester.pumpWidget(_app(_repo()));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(BotonRegresar), findsNothing);
+      expect(find.byType(BotonCerrar), findsNothing);
+      // La acción principal flota abajo a la derecha, como en el inicio.
+      final boton = find.byType(BotonAccionFlotante);
+      expect(boton, findsOneWidget);
+      // A 16 del borde derecho del contenido, que en pantallas anchas se centra.
+      final contenido = tester.getRect(find.byType(CustomScrollView));
+      expect(tester.getBottomRight(boton).dx, contenido.right - 16);
+    });
+
     _prueba('la proxima va en su tarjeta y luego proximas y pasadas', (
       tester,
     ) async {
@@ -110,6 +130,32 @@ void main() {
       final pasadas = tester.getTopLeft(find.text('Pasadas')).dy;
       expect(heroe, lessThan(proximas));
       expect(proximas, lessThan(pasadas));
+    });
+
+    _prueba('proximas y pasadas son la lista del sistema, con el dia en su '
+        'cuadro', (tester) async {
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
+      await tester.pumpAndSettle();
+      // Una lista para las proximas y otra para las pasadas: ya no hay una
+      // copia propia del modulo.
+      expect(find.byType(GrupoLista), findsNWidgets(2));
+      // La proxima destacada, otra proxima y cuatro pasadas llevan el dia.
+      expect(find.byType(CuadroFecha), findsNWidgets(6));
+    });
+
+    _prueba('cada fila de la lista dice fecha, vehiculo y estado juntos', (
+      tester,
+    ) async {
+      final semantica = tester.ensureSemantics();
+      await tester.pumpWidget(_app(_repo(_conOtraProxima())));
+      await tester.pumpAndSettle();
+      final etiquetas = find.byWidgetPredicate(
+        (w) =>
+            w is Semantics &&
+            (w.properties.label?.endsWith('. Cancelada') ?? false),
+      );
+      expect(etiquetas, findsOneWidget);
+      semantica.dispose();
     });
 
     _prueba(

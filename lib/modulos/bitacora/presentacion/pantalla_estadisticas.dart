@@ -36,6 +36,7 @@ class PantallaEstadisticas extends ConsumerWidget {
     final gastos = ref.watch(gastosProvider(vehiculoId));
 
     Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.chartColumn,
       titulo: textos.bitacoraEstadisticasTitulo,
       estado: hijo,
     );
@@ -101,6 +102,7 @@ class _Estadisticas extends StatelessWidget {
     final cargas = gastos.where((g) => g.esCarga && g.km != null).length;
 
     return MarcoPantalla(
+      icono: LucideIcons300.chartColumn,
       titulo: textos.bitacoraEstadisticasTitulo,
       slivers: [
         SliverToBoxAdapter(

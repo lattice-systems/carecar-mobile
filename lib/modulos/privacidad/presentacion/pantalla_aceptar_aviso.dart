@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -113,6 +114,7 @@ class _PantallaAceptarAvisoState extends ConsumerState<PantallaAceptarAviso> {
 
     // Sin regreso ni cierre: la puerta se cruza aceptando o cerrando sesión.
     return MarcoPantalla(
+      icono: LucideIcons300.shieldCheck,
       titulo: textos.privacidadAntesDeContinuar,
       subtitulo: textos.privacidadTitulo,
       acciones: const [],

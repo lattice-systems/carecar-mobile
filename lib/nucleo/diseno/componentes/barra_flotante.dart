@@ -15,7 +15,8 @@ import 'rebote_tactil.dart';
 /// A diferencia de [BarraNavegacion], que ocupa todo el ancho y se pega al
 /// borde, esta flota con margen a los lados y abajo, sobre el contenido, con
 /// fondo de vidrio y sombra suave. El destino activo va en una píldora más
-/// oscura; los demás, solo icono y etiqueta. Siempre se ve el texto: nunca se
+/// oscura con icono y etiqueta en el color de acento; los demás, solo icono
+/// y etiqueta. Siempre se ve el texto: nunca se
 /// esconde en los inactivos.
 ///
 /// Es controlada: quien la usa guarda `indice`. Cada destino mide al menos 48,
@@ -72,7 +73,9 @@ class BarraFlotante extends StatelessWidget {
               filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: c.superficie.withValues(alpha: 0.92),
+                  // Sólida: con el vidrio translúcido, las tarjetas azules de debajo
+                  // teñían la barra y la pastilla activa casi no se veía.
+                  color: c.superficie,
                   borderRadius: Radios.bordePildora,
                   border: Border.all(color: c.borde.withValues(alpha: 0.6)),
                 ),
@@ -126,7 +129,7 @@ class _Destino extends StatelessWidget {
     final c = tokens.colores;
     final t = tokens.tipografia;
     final textos = AppLocalizations.of(context);
-    final color = seleccionado ? c.texto : c.textoSecundario;
+    final color = seleccionado ? c.acento : c.textoSecundario;
     final pendientes = destino.conteo;
 
     return Semantics(

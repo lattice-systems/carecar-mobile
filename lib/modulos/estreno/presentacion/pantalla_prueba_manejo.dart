@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -75,6 +76,7 @@ class _PantallaPruebaManejoState extends ConsumerState<PantallaPruebaManejo> {
     final modelo = ref.watch(detalleModeloProvider(widget.modeloId)).value;
 
     return MarcoPantalla(
+      icono: LucideIcons300.car,
       titulo: textos.estrenoPruebaTitulo,
       subtitulo: modelo?.modelo.titulo,
       slivers: [

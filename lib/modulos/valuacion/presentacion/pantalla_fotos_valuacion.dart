@@ -83,11 +83,13 @@ class _PantallaFotosValuacionState
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.camera,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoValuacion(altos: [240, 240]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.camera,
             titulo: titulo,
             conRegreso: true,
             estado: error is NoEncontrado
@@ -120,6 +122,7 @@ class _PantallaFotosValuacionState
         : null;
 
     return MarcoPantalla(
+      icono: LucideIcons300.camera,
       titulo: t.valuacionFotosGuiadasTitulo,
       subtitulo: t.valuacionFotosAvance(
         valuacion.fotos.length,

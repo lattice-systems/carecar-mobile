@@ -99,6 +99,7 @@ class _Tarjeta extends StatelessWidget {
                 : null),
       tonoEstado: lista ? Tono.exito : Tono.advertencia,
       estadoConIcono: true,
+      iconoArriba: true,
       progreso: lista ? null : (orden.avance / 100).clamp(0.0, 1.0),
       etiquetaProgreso: lista ? null : textos.tallerTarjetaAvance(orden.avance),
       pista: textos.tallerTarjetaAbrir,

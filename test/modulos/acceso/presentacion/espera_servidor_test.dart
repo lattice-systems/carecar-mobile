@@ -12,6 +12,7 @@ import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../../../ayudas/vista_telefono.dart';
 import '../../../ayudas/api_falsa.dart';
 import '../../../ayudas/tema_pista.dart';
 
@@ -35,13 +36,15 @@ void main() {
     );
   }
 
-  Future<void> montar(WidgetTester tester, ControladorSesion sesion) =>
-      tester.pumpWidget(
-        ProviderScope(
-          overrides: [controladorSesionProvider.overrideWithValue(sesion)],
-          child: conTemaPista(const PantallaAcceso()),
-        ),
-      );
+  Future<void> montar(WidgetTester tester, ControladorSesion sesion) {
+    vistaDeTelefono(tester);
+    return tester.pumpWidget(
+      ProviderScope(
+        overrides: [controladorSesionProvider.overrideWithValue(sesion)],
+        child: conTemaPista(const PantallaAcceso()),
+      ),
+    );
+  }
 
   Future<void> pedirAcceso(WidgetTester tester) async {
     await tester.enterText(

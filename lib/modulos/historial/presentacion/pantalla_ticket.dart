@@ -96,6 +96,7 @@ class _EstadoPantallaTicket extends ConsumerState<PantallaTicket> {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.receiptText,
       titulo: textos.historialTicketTitulo,
       subtitulo: datos == null ? null : fechaDe(context, datos.fecha),
       conRegreso: true,

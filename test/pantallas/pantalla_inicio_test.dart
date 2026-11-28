@@ -5,7 +5,7 @@ import 'package:carecar_mobile/api/modelos/modelos.dart';
 import 'package:carecar_mobile/nucleo/migracion/interruptor_modulos.dart';
 import 'package:carecar_mobile/pantallas/citas/pantalla_mis_citas.dart';
 import 'package:carecar_mobile/pantallas/pantalla_inicio.dart';
-import 'package:carecar_mobile/pantallas/pantalla_login.dart';
+import 'package:carecar_mobile/modulos/acceso/acceso.dart';
 import 'package:carecar_mobile/sesion/almacen_sesion.dart';
 import 'package:carecar_mobile/sesion/controlador_sesion.dart';
 import 'package:carecar_mobile/nucleo/inicio/inicio_nuevo.dart';
@@ -77,7 +77,7 @@ Future<void> _tocar(WidgetTester tester, String texto) async {
   // conserva como alias para no reescribir todas las pruebas.
   // (la arnés usa el idioma por omisión, inglés: se acepta el nombre en ambos)
   const enLaBarra = {
-    'Mis vehículos': ['Vehículos', 'Vehicles'],
+    'Mis vehículos': ['Garaje', 'Garage'],
     'Citas': ['Citas', 'Appointments'],
     'Catálogo': ['Catálogo', 'Catalog'],
   };
@@ -156,7 +156,7 @@ void main() {
         throw const CredencialesInvalidas('La sesión terminó');
     expect(await sesion.renovar(), isFalse);
     await tester.pumpAndSettle();
-    expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+    expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
     expect(find.text(_march.vin), findsNothing);
     await tester.binding.handlePopRoute();
     await tester.pumpAndSettle();
@@ -179,18 +179,18 @@ void main() {
       final api = ApiFalsa();
       final sesion = await _montar(tester, api, login: true);
       await tester.enterText(
-        find.byKey(PantallaLogin.campoCorreo),
+        find.byKey(PantallaAcceso.campoCorreo),
         'cliente1@example.com',
       );
       await tester.enterText(
-        find.byKey(PantallaLogin.campoContrasena),
+        find.byKey(PantallaAcceso.campoContrasena),
         'CareCar2026',
       );
-      await tester.tap(find.byKey(PantallaLogin.botonEntrar));
+      await tester.tap(find.byKey(PantallaAcceso.botonEntrar));
       await tester.pumpAndSettle();
       expect(find.byType(InicioNuevo), findsOneWidget);
       // Los destinos viven solo en la barra: el cuerpo ya no los repite.
-      for (final opcion in ['Vehículos', 'Citas', 'Catálogo']) {
+      for (final opcion in ['Garaje', 'Citas', 'Catálogo']) {
         expect(find.text(opcion), findsOneWidget, reason: opcion);
         expect(
           find.descendant(
@@ -226,7 +226,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(sesion.haySesion, isFalse);
       expect(await sesion.obtenerToken(), isNull);
-      expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+      expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
     },
   );
 
@@ -250,7 +250,7 @@ void main() {
         find.descendant(
           of: find.byType(BarraFlotante),
           matching: find.byWidgetPredicate(
-            (w) => w is Text && ['Vehículos', 'Vehicles'].contains(w.data),
+            (w) => w is Text && ['Garaje', 'Garage'].contains(w.data),
           ),
         ),
       );
@@ -372,7 +372,7 @@ void main() {
       await _tocar(tester, '${_march.modelo} 2020');
       await tester.tap(find.byKey(PantallaInicio.botonCerrarSesion));
       await tester.pumpAndSettle();
-      expect(find.byKey(PantallaLogin.botonEntrar), findsOneWidget);
+      expect(find.byKey(PantallaAcceso.botonEntrar), findsOneWidget);
       expect(find.text(_march.vin), findsNothing);
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();

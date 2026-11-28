@@ -15,8 +15,8 @@ Consulta la [evidencia automática por criterio](#evidencia-automática-por-crit
 | Funcionalidad | Tablas | Estado | Historias |
 | --- | --- | --- | --- |
 | Inicio de sesión (cuenta entregada por la agencia, sin registro público) | `cliente`, `cuenta_app`, `sesion_app` | 🟡 pantalla v2 con 42 pruebas (V2-M01.01) y la renovación de 30 días demostrada de punta a punta (V2-M01.11); **ya es la pantalla que se ve por defecto** (V2-T01.10, con «Olvidé mi contraseña» conectado a la recuperación) y falta demostrarla en celular | V2-M01.01, V2-M01.11 |
-| Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 pantalla v2 con 15 pruebas y el apretón de manos con el guardia fijado (V2-M01.03); su ruta **no está encendida** hasta V2-M01.04, y falta demostrarla en celular | V2-M01.03 |
-| Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); las dos pantallas de la app con 26 pruebas (V2-M01.04), **la ruta del módulo no está encendida** y falta demostrarlo en celular con un correo real | V2-M01.04, V2-T05.04 |
+| Cambio obligatorio de la contraseña temporal | `cuenta_app` | 🟡 pantalla v2 con 15 pruebas y el apretón de manos con el guardia fijado (V2-M01.03); su ruta ya está encendida (V2-T01.10) y falta demostrarla en celular | V2-M01.03 |
+| Recuperación de contraseña por enlace de un solo uso | `cuenta_app`, `token_recuperacion` | 🟡 backend con `token_recuperacion` y enlace de un solo uso (`AccesoAppIntegrationTest`); las dos pantallas de la app (V2-M01.04) **ya son las que se ven por defecto** y piden el código de 6 dígitos que trae el correo (V2-T02.27; comprobado contra la API simulada), y falta demostrarlo en celular con un correo real y el dominio del enlace | V2-M01.04, V2-T05.04 |
 | Desbloqueo con huella o rostro | `cuenta_app`, `sesion_app` | 🟡 **completo en la app** (V2-M01.05): candado opcional con `local_auth` detrás de `LectorBiometrico`, que se prende desde el perfil identificándose ahí mismo y se apaga igual. No sustituye al token: es un candado local sobre la sesión, y siempre queda la salida «entrar con mi contraseña», que cierra la sesión. Si cambia la biometría del equipo se apaga y se pide la contraseña, con el límite anotado en AUTH-2 de la revisión MASVS. 10 pruebas. **Falta probarlo en celular**, que es lo único que de verdad lo comprueba | V2-M01.05 |
 | Consulta del perfil | `cliente`, `cuenta_app`, `vehiculo_cliente` | 🟡 **completa de punta a punta** (V2-M01.06): la pantalla muestra nombre, correo, teléfono, desde cuándo es cliente y sus vehículos, con los cinco estados, y el backend suma `telefono` y `clienteDesde` a `GET /perfil` sin migración. 21 pruebas en la app y 2 de integración en el backend. Se abre desde Ajustes y desde ahí se llega a «mis sesiones». **Solo falta demostrarlo en celular.** Editar esos datos es V2-M01.07 | V2-M01.06 |
 | Edición de teléfono y correo con verificación | `cliente`, `cuenta_app`, `verificacion_contacto` | 🟡 **el correo, completo de punta a punta** (V2-M01.07): `verificacion_contacto` (V57), `PATCH /perfil` y la confirmación por código, con la pantalla y 28 pruebas en la app más 11 de integración. Pedirlo exige la contraseña actual y el correo no se guarda hasta confirmar. **El teléfono no se puede hacer**: verificarlo exige mandar el código al teléfono y no hay proveedor de SMS; la tabla ya acepta `TELEFONO` para cuando lo haya. Falta demostrarlo en celular | V2-M01.07, V2-T05.03 |
@@ -191,14 +191,16 @@ Los módulos sin tablas propias (M20 Accesibilidad, M21 Sin conexión, M23 Anal�
 
 ## Evidencia automática por criterio
 
+La [prueba de indicadores simulados](../tool/simular_objetivos.test.js) verifica las reglas de O2, O3 y O4 para V2-M23.06. Los resultados operativos requieren las fuentes de la agencia.
+
 La [prueba de Encuestas](../test/modulos/encuestas/encuesta_pendiente_test.dart) verifica que una ruta solo muestra el formulario cuando la orden está entre las encuestas pendientes de la cuenta activa (V2-M15.01).
 
 Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <criterio>` y enlaza su archivo aquí. Una historia puede tener varias pruebas. Conserva los requisitos de backend y de evidencia en celular que indica la fila de la funcionalidad.
 
 | Criterio probado | Archivo |
 | --- | --- |
-| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
-| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/pantallas/pantalla_login_test.dart) |
+| `V2-M01.01: la app no ofrece registro público` | [Prueba](../test/modulos/acceso/presentacion/pantalla_acceso_test.dart) |
+| `V2-M01.01: avisa que la sesión quedó iniciada` | [Prueba](../test/modulos/acceso/presentacion/pantalla_acceso_test.dart) |
 | `V2-M02.01: el garaje muestra los vehículos de la cuenta` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
 | `V2-M02.01: el garaje requiere iniciar sesión` | [Prueba](../test/modulos/vehiculos/ruta_garaje_test.dart) |
 | `V2-M02.07: anuncia y deshabilita los días sin cupo` | [Prueba](../test/modulos/citas/pantalla_disponibilidad_test.dart) |
@@ -216,7 +218,7 @@ Al implementar un criterio, registra una prueba con el título `V2-Mxx.nn: <crit
 | `V2-M23.04: la opción persiste y apagada bloquea los envíos` | [Prueba](../test/nucleo/analitica/consentimiento_test.dart) |
 | `V2-M23.01: solo registra fallos nuevos del periodo consentido` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | `V2-M23.01: descarta la consulta si cambia el consentimiento` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
-| V2-M23.01: una preferencia previa empieza sin historial | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
+| `V2-M23.01: una preferencia previa empieza sin historial` | [Prueba](../test/nucleo/analitica/crashes_android_test.dart) |
 | V2-M23.01: el APK y los símbolos Dart coinciden y permiten resolver una traza | [Corrida de CI](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831) · [APK, símbolos y verificación](https://github.com/lattice-systems/carecar-mobile/actions/runs/46102214831/artifacts/15245534947) |
 | `V2-M23.03: el embudo deduplica pasos y respeta la revocación` | [Prueba](../test/nucleo/analitica/embudo_citas_test.dart) |
 | `V2-M23.05: estima cuadros perdidos con la frecuencia de la pantalla` | [Prueba](../test/nucleo/analitica/rendimiento_test.dart) |

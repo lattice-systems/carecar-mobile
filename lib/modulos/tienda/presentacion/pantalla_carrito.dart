@@ -79,6 +79,7 @@ class _PantallaCarritoState extends ConsumerState<PantallaCarrito> {
     final carrito = ref.watch(carritoProvider);
     if (carrito.vacio) {
       return MarcoPantalla.estado(
+        icono: LucideIcons300.shoppingCart,
         titulo: t.tiendaCarritoTitulo,
         conRegreso: true,
         estado: EstadoVacio(
@@ -92,6 +93,7 @@ class _PantallaCarritoState extends ConsumerState<PantallaCarrito> {
     }
 
     return MarcoPantalla(
+      icono: LucideIcons300.shoppingCart,
       titulo: t.tiendaCarritoTitulo,
       conRegreso: true,
       barraInferior: BarraInferior(

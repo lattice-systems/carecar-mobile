@@ -97,6 +97,7 @@ class _PantallaTiendaState extends ConsumerState<PantallaTienda> {
     final productos = ref.watch(productosTiendaProvider);
 
     return MarcoPantalla(
+      icono: LucideIcons300.store,
       titulo: t.tiendaTitulo,
       conRegreso: true,
       acciones: [

@@ -122,6 +122,13 @@ Future<void> _guardar(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+/// El pin del mapa. Se busca dentro del mapa: el encabezado de la pantalla
+/// también lleva un icono de pin.
+final _pinEnElMapa = find.descendant(
+  of: find.byType(Mapa),
+  matching: find.byIcon(LucideIcons300.mapPin),
+);
+
 void main() {
   _prueba('guardar sin llenar marca cada campo y no guarda', (tester) async {
     final repo = RepositorioRecoleccionFake();
@@ -235,7 +242,7 @@ void main() {
       'Mi colonia',
       reason: 'no se pisa lo escrito',
     );
-    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
+    expect(_pinEnElMapa, findsOneWidget);
   });
 
   _prueba('sin permiso de ubicación lo explica y deja poner el pin a mano', (
@@ -251,10 +258,10 @@ void main() {
     await tester.tap(find.text('Usar mi ubicación'));
     await tester.pumpAndSettle();
     expect(find.textContaining('Necesitamos tu permiso'), findsOneWidget);
-    expect(find.byIcon(LucideIcons300.mapPin), findsNothing);
+    expect(_pinEnElMapa, findsNothing);
 
     await _ponerPinEnElMapa(tester);
-    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
+    expect(_pinEnElMapa, findsOneWidget);
   });
 
   _prueba('con la ubicación apagada lo avisa', (tester) async {
@@ -286,7 +293,7 @@ void main() {
     await tester.tap(find.byTooltip('Buscar'));
     await tester.pumpAndSettle();
 
-    expect(find.byIcon(LucideIcons300.mapPin), findsOneWidget);
+    expect(_pinEnElMapa, findsOneWidget);
     final cp = tester.widget<TextField>(_campo('Código postal'));
     expect(cp.controller!.text, '06600');
   });
