@@ -58,6 +58,7 @@ class PantallaOrden extends ConsumerWidget {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.wrench,
       titulo: textos.tallerOrdenTitulo,
       subtitulo: orden.value?.vehiculo,
       conRegreso: true,

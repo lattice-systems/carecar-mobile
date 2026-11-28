@@ -139,6 +139,7 @@ class _EstadoAdicionales extends ConsumerState<PantallaAdicionales> {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.listPlus,
       titulo: textos.tallerAdicionalesTitulo,
       subtitulo: orden.value?.vehiculo,
       conRegreso: true,

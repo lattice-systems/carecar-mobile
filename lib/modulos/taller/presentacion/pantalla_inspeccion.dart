@@ -84,6 +84,7 @@ class _EstadoInspeccion extends ConsumerState<PantallaInspeccion> {
     );
 
     return MarcoPantalla(
+      icono: LucideIcons300.searchCheck,
       titulo: textos.tallerInspeccionTitulo,
       subtitulo: orden.value?.vehiculo,
       conRegreso: true,
