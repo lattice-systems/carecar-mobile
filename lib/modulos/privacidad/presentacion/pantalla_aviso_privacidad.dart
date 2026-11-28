@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../l10n/app_localizations.dart';
@@ -58,6 +59,7 @@ class _PantallaAvisoPrivacidadState
     return aviso.when(
       skipLoadingOnReload: true,
       loading: () => MarcoPantalla.estado(
+        icono: LucideIcons300.shieldCheck,
         titulo: titulo,
         conRegreso: true,
         estado: const SingleChildScrollView(
@@ -67,6 +69,7 @@ class _PantallaAvisoPrivacidadState
         ),
       ),
       error: (error, _) => MarcoPantalla.estado(
+        icono: LucideIcons300.shieldCheck,
         titulo: titulo,
         conRegreso: true,
         estado: EstadoError(
@@ -77,6 +80,7 @@ class _PantallaAvisoPrivacidadState
         ),
       ),
       data: (a) => MarcoPantalla(
+        icono: LucideIcons300.shieldCheck,
         titulo: titulo,
         conRegreso: true,
         slivers: [

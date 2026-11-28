@@ -101,6 +101,7 @@ class _EstadoPantallaRegistrarKm extends ConsumerState<PantallaRegistrarKm> {
     };
 
     return MarcoPantalla(
+      icono: LucideIcons300.gauge,
       titulo: textos.mantenimientoKmTitulo,
       barraInferior: BarraInferior(
         hijos: [

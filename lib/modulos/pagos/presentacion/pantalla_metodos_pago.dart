@@ -134,6 +134,7 @@ class _EstadoPantallaMetodosPago extends ConsumerState<PantallaMetodosPago> {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.creditCard,
             titulo: titulo,
             conRegreso: true,
             estado: EsqueletoPagos(
@@ -142,6 +143,7 @@ class _EstadoPantallaMetodosPago extends ConsumerState<PantallaMetodosPago> {
             ),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.creditCard,
             titulo: titulo,
             conRegreso: true,
             estado: EstadoError(
@@ -154,6 +156,7 @@ class _EstadoPantallaMetodosPago extends ConsumerState<PantallaMetodosPago> {
           ),
           data: (metodos) => metodos.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.creditCard,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -163,6 +166,7 @@ class _EstadoPantallaMetodosPago extends ConsumerState<PantallaMetodosPago> {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.creditCard,
                   titulo: titulo,
                   conRegreso: true,
                   alRefrescar: () => ref.refresh(metodosPagoProvider.future),

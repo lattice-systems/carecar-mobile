@@ -86,8 +86,12 @@ class _PantallaCobro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
-    Widget estado(Widget hijo) =>
-        MarcoPantalla.estado(titulo: titulo, conRegreso: true, estado: hijo);
+    Widget estado(Widget hijo) => MarcoPantalla.estado(
+      icono: LucideIcons300.creditCard,
+      titulo: titulo,
+      conRegreso: true,
+      estado: hijo,
+    );
 
     return valor.when(
       skipLoadingOnReload: true,
@@ -410,6 +414,7 @@ class _EstadoFormularioPago extends ConsumerState<FormularioPago> {
     final billetera = ref.watch(billeteraDelTelefonoProvider);
 
     return MarcoPantalla(
+      icono: LucideIcons300.creditCard,
       titulo: switch (cobro) {
         OrdenPorPagar() => textos.pagosPagarTitulo,
         PedidoPorPagar() => textos.pagosPagarPedidoTitulo,

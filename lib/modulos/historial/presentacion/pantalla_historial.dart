@@ -82,6 +82,7 @@ class _EstadoPantallaHistorial extends ConsumerState<PantallaHistorial> {
     }
 
     return MarcoPantalla(
+      icono: LucideIcons300.history,
       titulo: textos.historialTitulo,
       subtitulo: vehiculo?.titulo,
       conRegreso: true,

@@ -35,11 +35,13 @@ class PantallaMisValuaciones extends ConsumerWidget {
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.badgeDollarSign,
             titulo: titulo,
             conRegreso: true,
             estado: const EsqueletoValuacion(altos: [112, 112, 112]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.badgeDollarSign,
             titulo: titulo,
             conRegreso: true,
             estado: ErrorValuacion(
@@ -49,6 +51,7 @@ class PantallaMisValuaciones extends ConsumerWidget {
           ),
           data: (estado) => estado.valuaciones.isEmpty
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.badgeDollarSign,
                   titulo: titulo,
                   conRegreso: true,
                   estado: EstadoVacio(
@@ -60,6 +63,7 @@ class PantallaMisValuaciones extends ConsumerWidget {
                   ),
                 )
               : MarcoPantalla(
+                  icono: LucideIcons300.badgeDollarSign,
                   titulo: titulo,
                   conRegreso: true,
                   alRefrescar: () => ref.refresh(misValuacionesProvider.future),

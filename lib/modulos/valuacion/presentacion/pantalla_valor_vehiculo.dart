@@ -66,6 +66,7 @@ class PantallaValorVehiculo extends ConsumerWidget {
         );
 
     return MarcoPantalla(
+      icono: LucideIcons300.badgeDollarSign,
       titulo: t.valuacionValorTitulo,
       conRegreso: true,
       alRefrescar: () => ref.refresh(proveedor.future),

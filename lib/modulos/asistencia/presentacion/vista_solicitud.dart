@@ -59,6 +59,7 @@ class VistaSolicitud extends ConsumerWidget {
     final comentario = solicitud.comentario;
 
     return MarcoPantalla(
+      icono: LucideIcons300.lifeBuoy,
       titulo: folio,
       subtitulo: estado == EstadoSolicitud.recibida
           ? textos.asistenciaSolicitudRecibida

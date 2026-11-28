@@ -125,6 +125,7 @@ class _PantallaReferirState extends ConsumerState<PantallaReferir> {
     final enviado = _enviado;
 
     return MarcoPantalla(
+      icono: LucideIcons300.userPlus,
       titulo: textos.referirTitulo,
       subtitulo: textos.referirSubtitulo,
       conRegreso: true,

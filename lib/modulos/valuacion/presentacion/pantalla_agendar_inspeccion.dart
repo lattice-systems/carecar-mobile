@@ -108,12 +108,14 @@ class _PantallaAgendarInspeccionState
         .when(
           skipLoadingOnReload: true,
           loading: () => MarcoPantalla.estado(
+            icono: LucideIcons300.calendarPlus,
             titulo: titulo,
             subtitulo: auto,
             conRegreso: true,
             estado: const EsqueletoValuacion(altos: [320, 96]),
           ),
           error: (error, _) => MarcoPantalla.estado(
+            icono: LucideIcons300.calendarPlus,
             titulo: titulo,
             subtitulo: auto,
             conRegreso: true,
@@ -124,6 +126,7 @@ class _PantallaAgendarInspeccionState
           ),
           data: (taller) => taller.sinCupoEnTodoElRango
               ? MarcoPantalla.estado(
+                  icono: LucideIcons300.calendarPlus,
                   titulo: titulo,
                   subtitulo: auto,
                   conRegreso: true,
@@ -153,6 +156,7 @@ class _PantallaAgendarInspeccionState
     final rechazo = _rechazo;
 
     return MarcoPantalla(
+      icono: LucideIcons300.calendarPlus,
       titulo: t.valuacionAgendar,
       subtitulo: auto,
       conRegreso: true,
