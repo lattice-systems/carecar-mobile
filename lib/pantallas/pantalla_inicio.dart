@@ -4,6 +4,7 @@ import '../api/carecar_api.dart';
 import '../api/modelos/cita.dart';
 import '../api/modelos/perfil.dart';
 import '../api/modelos/vehiculo.dart';
+import '../modulos/encuestas/encuestas.dart';
 import '../modulos/mantenimiento/mantenimiento.dart';
 import '../modulos/taller/taller.dart';
 import '../nucleo/inicio/inicio_nuevo.dart';
@@ -154,6 +155,7 @@ class _PantallaInicioState extends State<PantallaInicio> {
                       .toList(),
                   proximaCita: _proximaCita(citas, vehiculos ?? const []),
                   ordenEnCurso: const TarjetaOrdenEnCurso(),
+                  encuestaPendiente: const EncuestasInicio(),
                   servicioDelAuto: (id) =>
                       TarjetaProximoServicioDelAuto(vehiculoId: id),
                   alAgendar: alCitas,

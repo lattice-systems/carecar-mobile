@@ -90,6 +90,8 @@ Recordatorio del próximo servicio. Backend (parte B) en `agencia-360-backend` (
 
 **Pendiente:** el push real con la app cerrada (depende de M06) y un umbral por cliente (depende de V2-M06.05). La historia queda `En revisión`, no `Hecha`.
 
+**Con el push (backend#117 y la app de V2-M06.02):** el módulo `notificaciones` del backend ya escucha `mantenimiento.recordatorio` y lo manda como push con el texto «Se acerca tu próximo servicio» y destino `/mantenimiento/{vehiculoId}`. También lo guarda en la bandeja (`RedactorDeAvisosTest`, `AvisosPushIntegrationTest`). La app registra el token del teléfono al entrar. Para que llegue con la app cerrada solo falta el FCM real (ver «Avance de V2-M06.02 y V2-M06.07» en M06). Daniel la validó y pasa a `Hecha`.
+
 ## Mock
 
 `mock_api/modulos/mantenimiento.js` simula ambos endpoints: plan de 8 servicios cada 5 000 km cuyo estado sale del km vigente, promedio diario de las lecturas (35 km/día por omisión), 404 para vehículo ajeno, 400 `DATOS_INVALIDOS` y 422 `KM_INVALIDO` en las lecturas. Los vehículos de 2014 o anteriores no tienen plan.

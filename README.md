@@ -181,7 +181,8 @@ Módulos válidos: `acceso`, `asistencia`, `catalogo`, `citas`, `recuperacion`, 
 | `flutter run --flavor desarrollo -t lib/main_desarrollo.dart` | Corre la app con recarga en caliente (`r` en la terminal) |
 | `dart format lib test`      | Aplica el formato oficial de Dart                         |
 | `flutter analyze`           | Análisis estático con las reglas de `flutter_lints`       |
-| `flutter test`              | Corre todas las pruebas                                   |
+| `flutter test`              | Corre todas las pruebas (lento; la CI las reparte en 8 partes) |
+| `tool/probar.sh`            | Corre solo las pruebas de lo que cambiaste respecto a `origin/dev` |
 | `flutter build apk --debug --flavor desarrollo -t lib/main_desarrollo.dart` | Compila el APK de Android (CI compila los tres flavors) |
 | `flutter build ios --no-codesign --flavor produccion -t lib/main_produccion.dart` | Compila iOS sin firmar (solo macOS; lo mismo que CI) |
 | `flutter build apk --release --flavor produccion -t lib/main_produccion.dart` (agrega `--dart-define=API_BASE_URL=...` para otra API) | APK para instalar en el celular |
@@ -277,7 +278,9 @@ Lineamientos que afectan a la app:
 Las pruebas viven en `test/` con el sufijo `_test.dart` (API, contrato, sesión y pantallas; `test/ayudas/api_falsa.dart` simula la API). Las animaciones infinitas se apagan en pruebas (`test/flutter_test_config.dart`).
 
 ```bash
-flutter test                          # todas las pruebas
+tool/probar.sh                        # solo las pruebas de lo que cambiaste (rápido)
+tool/probar.sh --todo                 # todas, con todos tus núcleos
+flutter test                          # todas, de corrido (lento)
 flutter test test/widget_test.dart    # un solo archivo
 ```
 
@@ -295,7 +298,7 @@ Todo vive en `.github/workflows/` y corre en GitHub Actions. La rama `main` est�
 | ------------------------------------------- | ----------------- | ------------------------------------- |
 | `Formato (dart format)`                     | CI                | Cada PR y cada push a `main`         |
 | `Análisis estático (flutter analyze)`       | CI                | Cada PR y cada push a `main`         |
-| `Pruebas (flutter test)`                    | CI                | Cada PR y cada push a `main`         |
+| `Pruebas (flutter test)`                    | CI                | Cada PR (en 8 partes en paralelo) y cada push a `main` |
 | `Build Android (APK)`                       | CI                | Cada PR y cada push a `main`         |
 | `Build iOS (sin firma)`                     | CI (macOS)        | En pausa: se salta ([cómo activarlo](docs/pausa-de-macos.md)) |
 | `Análisis de CodeQL (GitHub Actions)`       | CodeQL            | PR y push a `main`, y todos los lunes |
@@ -311,7 +314,7 @@ Los cinco jobs de CI corren en paralelo. Los builds de Android e iOS son los má
 Antes de hacer push, corre lo mismo en local para no enterarte del error hasta abrir el PR:
 
 ```bash
-dart format lib test && flutter analyze && flutter test
+dart format lib test && flutter analyze && tool/probar.sh
 ```
 
 El detalle de cada check (y por qué CodeQL revisa los workflows y no el código Dart) está en [`docs/convenciones-commits.md`](docs/convenciones-commits.md).

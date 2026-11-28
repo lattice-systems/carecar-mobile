@@ -15,6 +15,8 @@ Cómo se edita este archivo para no chocar: cada quien cambia **solo su fila** (
 
 Total: **235 historias** (una descartada) + 4 de H0.
 
+Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
+
 ## H0 · Base de trabajo
 
 | ID | Historia | Dueño | B | Depende de | Estado | PR |
@@ -64,13 +66,13 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | Hecha | #169 |
 | V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | Hecha | #171 |
 | V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | Hecha | #172 |
-| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | En revisión | [Reglas](../analysis_options.yaml) · CI pendiente |
+| V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Hecha | #200 · [Reglas](../analysis_options.yaml) · [análisis sin avisos en dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
-| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | En revisión | [Flujo Android](../integration_test/flujo_principal_test.dart) · CI pendiente |
-| V2-T03.04 | Cobertura visible | Haziel |  | — | En revisión | [Resumen LCOV](../tool/resumir_cobertura.js) · CI pendiente |
-| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | En revisión | [Evidencia por criterio](cumplimiento-ficha.md#evidencia-automática-por-criterio) |
-| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | En revisión | [Prueba de contrato del mock](../test/contrato/mock_api_v2_test.dart) |
-| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En revisión | [Tres casos de H1 en Android físico](../docs/pruebas/evidencia.md#corrida-física-h1) |
+| V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Hecha | #200 · [Flujo Android](../integration_test/flujo_principal_test.dart) · [reserva y cancelación en CI completa de main](https://github.com/lattice-systems/carecar-mobile/actions/runs/46054289718) |
+| V2-T03.04 | Cobertura visible | Haziel |  | — | Hecha | #200 · [Resumen LCOV](../tool/resumir_cobertura.js) · [artefacto cobertura-carecar en dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380#artifacts) |
+| V2-T03.05 | Que cada criterio de aceptación tenga su prueba | Haziel |  | — | Hecha | #200 · [Matriz de evidencia](cumplimiento-ficha.md#evidencia-automática-por-criterio) · [prueba de arquitectura en CI de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-T03.06 | Que la API simulada siga al contrato v2 | Haziel |  | V2-T05.02 | Hecha | #200 · [Prueba de contrato](../test/contrato/mock_api_v2_test.dart) · [CI de dev con el mock habilitado](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-T03.07 | Pruebas en celular físico por hito | Haziel |  | — | En revisión | #212, #215 · [H1 en Android físico](../docs/pruebas/evidencia.md#corrida-física-h1) y [corrida parcial H3/H4 sobre implementación local](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) · pendiente completar y registrar los demás casos por hito |
 | V2-T03.08 | API simulada partida por módulo | Haziel |  | — | Hecha | #128 |
 | V2-T04.01 | Versión automática | Daniel |  | — | Hecha | #40 |
 | V2-T04.02 | Firmar builds en CI sin secretos en el repo | Daniel |  | V2-T04.01 | Hecha | #102 |
@@ -149,12 +151,12 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M22.07 | Logs sin datos personales | Daniel |  | V2-T03.01 | Hecha | #126 |
 | V2-M22.08 | Una revisión MASVS L1 | Daniel |  | H6 | Hecha | #133 (primera pasada; se repite al cerrar H6, ver H7) |
 | V2-M22.09 | HTTPS fuera de local | Daniel |  | V2-T04.01 | Hecha | #99 |
-| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · diagnóstico validado con el simulador en Android · integración con PostgreSQL y símbolos en CI pendientes |
-| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | En revisión | [Catálogo](../docs/analitica/eventos.md) |
-| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | En revisión | [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) |
-| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | En revisión | Ajustes y envío condicionado |
-| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | En revisión | Instrumentación inicial · prueba en equipo pendiente |
-| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · backend pendiente de validar |
+| V2-M23.01 | Reportes de crashes y errores | Haziel |  | V2-T04.02 | En curso | [ADR](../docs/decisiones/0010-diagnostico-de-carecar.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) · pendiente comprobar el artefacto de símbolos de distribución |
+| V2-M23.02 | Un catálogo de eventos de producto | Haziel |  | — | Hecha | #200 · [Catálogo de eventos con propiedades y objetivos](../docs/analitica/eventos.md) |
+| V2-M23.03 | Medir el embudo de citas | Haziel |  | V2-M23.02, V2-M02.08 | Hecha | #200 · [Eventos y cálculo de asistencia](../docs/analitica/eventos.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) |
+| V2-M23.04 | Decidir si comparto analítica | Haziel |  | V2-M23.02 | Hecha | #200 · [Prueba de consentimiento y bloqueo de envíos](../test/nucleo/analitica/consentimiento_test.dart) · [CI de dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
+| V2-M23.05 | Medir rendimiento | Haziel |  | V2-M23.01 | Hecha | #200, #215 · [Rendimiento en Android físico](../docs/pruebas/evidencia.md#rendimiento-en-android-físico) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) |
+| V2-M23.06 | Un tablero de objetivos | Haziel | B | V2-M23.03 | En revisión | [Panel O1–O10](../docs/analitica/tablero.md) · [backend #118](https://github.com/lattice-systems/agencia-360-backend/pull/118) · [pruebas en PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46086972007/job/140798736239) · quedan fuentes y acuerdos para O2, O3 y O4 |
 
 ## H3 · Postventa viva
 
@@ -171,21 +173,21 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M05.02 | Saber cuándo toca mi próximo servicio | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M05.03 | Registrar mi kilometraje actual | Juan Pablo | B | V2-M05.02 | Hecha | #104, backend#88 |
 | V2-M05.04 | Agendar el servicio recomendado en un toque | Juan Pablo |  | V2-M05.02, V2-M02.08 | Hecha | #104 |
-| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | En revisión | #130, backend#98, backend#117 · el recordatorio ya sale como push y queda en la bandeja (backend#117); llega al teléfono cuando haya FCM real y la app registre el token (V2-M06.02) |
+| V2-M05.05 | Un recordatorio cuando se acerque mi servicio | Juan Pablo | B | V2-M06.02 | Hecha | #130, backend#98, backend#117, #224 · validada por Daniel; el push llega con la app cerrada cuando haya credenciales de FCM |
 | V2-M05.06 | Ver qué incluye cada servicio y su precio estimado | Juan Pablo | B | V2-M05.01 | Hecha | #104, backend#88 |
 | V2-M06.01 | Que se me explique por qué la app pide notificaciones | Jael |  | V2-T01.03 | Hecha | #206 |
-| V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En curso | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend hecho (`PUT`/`DELETE /dispositivos/{instalacionId}`, FCM HTTP v1 detrás de `EnvioPush`); falta la parte de la app; FCM real pendiente de credenciales |
+| V2-M06.02 | Recibir push de la agencia en Android e iOS | Juan Pablo (R6, ayuda a Jael) | B | V2-M06.01 | En revisión | backend#117, #224 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda): backend y app hechos (`ServicioPush`, registro tras entrar y baja al salir); FCM real pendiente de credenciales |
 | V2-M06.03 | Que tocar una notificación me lleve a su pantalla | Jael |  | V2-M06.02 (simulable con los avisos locales) | Hecha | #207 |
 | V2-M06.04 | Una bandeja con todos mis avisos | Jael | B | V2-M06.02 (simulable: contrato v2 2.31.0 y `mock_api`) | Hecha | #216 |
 | V2-M06.05 | Elegir qué avisos recibir y un horario silencioso | Jael | B | V2-M06.04 (simulable: contrato v2 2.31.0 y `mock_api`) | En revisión | #229 |
 | V2-M06.06 | Recordatorios de cita aunque no tenga red | Jael |  | V2-M02.08 | Hecha | #208 |
-| V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | En revisión | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda); FCM real pendiente de credenciales |
-| V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | En revisión | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 |
-| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Lista | |
-| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Lista | |
+| V2-M06.07 | Un servicio único de envío en el backend | Juan Pablo (R6, ayuda a Jael) | B | V2-T05.01 | Hecha | backend#117 · le tocaba a Jael, la hizo Juan Pablo (R6, ayuda) · validada por Daniel; FCM real pendiente de credenciales |
+| V2-M09.01 | Ver los documentos de mi auto con su estado | Juan Pablo (R6, ayuda a Haziel) | B | V2-M02.02 | Hecha | #203, backend#117 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) para destrabar V2-M11.02 · validada por Daniel |
+| V2-M09.02 | Fotografiar un documento y guardarlo | Haziel | B | V2-M09.01 | Hecha | [Recorte y compresión](../test/modulos/documentos/preparar_foto_documento_test.dart) · [Progreso multipart](../test/api/cliente_api_test.dart) · [backend #120](https://github.com/lattice-systems/agencia-360-backend/pull/120) |
+| V2-M09.03 | Ver los documentos que me dio la agencia | Haziel | B | V2-M09.01 | Hecha | [Visor de PDF](../lib/modulos/documentos/presentacion/pantalla_documento_agencia.dart) · [backend #120](https://github.com/lattice-systems/agencia-360-backend/pull/120) · [Prueba de contrato](../test/contrato/mock_api_v2_test.dart) |
 | V2-M09.04 | Alertas antes de que venza un documento | Haziel | B | V2-M06.02 | Lista | |
 | V2-M09.05 | Ver mis documentos sin conexión | Haziel |  | V2-M21.01 | Lista | |
-| V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Lista | |
+| V2-M09.06 | Un calendario con todos mis vencimientos | Haziel |  | V2-M09.01 | Hecha | [Calendario y lista sobre el API de documentos integrado](../test/modulos/documentos/calendario_documentos_test.dart) |
 | V2-M10.01 | Ver qué cubre mi garantía y hasta cuándo | Ricardo | B | V2-M02.02 | Hecha | backend#103, #157 |
 | V2-M10.02 | Saber si mi auto tiene una campaña de seguridad | Ricardo | B | V2-M02.01 | Hecha | backend#103, #157, #158 |
 | V2-M10.03 | Agendar la atención de una campaña | Ricardo | B | V2-M10.02, V2-M02.08 | Hecha | backend#103, #157 |
@@ -210,15 +212,15 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M13.02 | Usar una promoción al agendar | Haziel | B | V2-M13.01, V2-M02.08 | Borrador | |
 | V2-M13.03 | Ver novedades de la agencia | Haziel | B | — | Borrador | |
 | V2-M13.04 | Saber qué promociones funcionan | Haziel | B | V2-M13.01 | Borrador | |
-| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | Lista | |
-| V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Lista | |
+| V2-M15.01 | Calificar mi servicio al recogerlo | Haziel | B | V2-M04.07 | En curso | [Tarjeta, aplazamiento y respuesta](../test/modulos/encuestas/encuesta_pendiente_test.dart). Pendiente validar push. |
+| V2-M15.02 | Que me contacten | Haziel | B | V2-M15.01 | Hecha | [Solicitud desde el formulario](../test/modulos/encuestas/encuesta_pendiente_test.dart) y [tarea en Agencia360 #121](https://github.com/lattice-systems/agencia-360-backend/pull/121). |
 | V2-M15.03 | Ver la respuesta de la agencia | Haziel | B | V2-M06.04 | Lista | |
-| V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Lista | |
-| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Lista | |
+| V2-M15.04 | El NPS por periodo y asesor | Haziel | B | V2-M15.01 | Hecha | [Agregados de O7 por periodo y asesor](https://github.com/lattice-systems/agencia-360-backend/pull/121) · [CI con PostgreSQL](https://github.com/lattice-systems/agencia-360-backend/actions/runs/46092880424). |
+| V2-M27.01 | Buscar en preguntas frecuentes | Haziel | B | — | Hecha | [Búsqueda y caché](../test/modulos/ayuda/preguntas_sin_conexion_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
 | V2-M27.02 | Ver sucursales en un mapa con horarios | Juan Pablo | B | — | Hecha | #193, backend#115 · tomada por Juan Pablo (R6), aviso a Haziel |
-| V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | En revisión | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
-| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Lista | |
-| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Lista | |
+| V2-M27.03 | Contactar a la agencia por el medio que prefiera | Juan Pablo (R6, ayuda a Haziel) |  | V2-M27.02 | Hecha | #203 · le tocaba a Haziel, la hizo Juan Pablo (R6, ayuda) · validada por Daniel · llamar y correo hechos, el chat espera a V2-M07.01; conecta V2-M02.12 y V2-M11.02 con la sucursal |
+| V2-M27.04 | Reportar un problema de la app | Haziel | B | — | Hecha | [Validación y envío del reporte](../test/modulos/ayuda/reporte_app_test.dart) · [backend #119](https://github.com/lattice-systems/agencia-360-backend/pull/119) |
+| V2-M27.05 | Ver la versión, licencias y términos | Haziel |  | — | Hecha | [Versión y licencias](../test/modulos/ayuda/acerca_de_test.dart) · [Términos incluidos en la app](../integration_test/terminos_instalados_test.dart) · [Android físico](../docs/pruebas/evidencia.md#corrida-física-de-haziel-en-android) |
 
 ## H5 · Comercio
 
@@ -283,8 +285,8 @@ Total: **235 historias** (una descartada) + 4 de H0.
 | V2-M25.02 | Ver en el widget el estado de mi auto en el taller | Juan Pablo |  | V2-M04.02, V2-M25.01 | Hecha | #119 |
 | V2-M25.03 | Guardar mi cita en Wallet | Juan Pablo | B | V2-M02.11 | Hecha | #71, backend#73 |
 | V2-M25.04 | Accesos rápidos desde el ícono | Juan Pablo |  | V2-T01.03 | Hecha | #65 |
-| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | En revisión | #203, backend#117 · implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode |
-| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | En revisión | backend#98, #130, backend#117, #203 · implementado con fakes; falta certificado Apple, dominio HTTPS y compilar en Xcode |
+| V2-M25.05 | Ver el estado del taller en la pantalla bloqueada | Juan Pablo | B | V2-M04.03 | Hecha | #203, backend#117 · validada por Daniel · para producción falta el certificado Apple, el dominio HTTPS y compilar en Xcode |
+| V2-M25.06 | Anular los pases de Wallet al cancelar o reprogramar | Juan Pablo | B | V2-M25.03 | Hecha | backend#98, #130, backend#117, #203 · validada por Daniel · para producción falta el certificado Apple, el dominio HTTPS y compilar en Xcode |
 
 ## H7 · Lista para entregar
 

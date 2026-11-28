@@ -9038,5 +9038,126 @@
   "asistenciaLlamarAseguradoraBuscando": "Buscando tu póliza…",
   "@asistenciaLlamarAseguradoraBuscando": {
     "description": "Detalle de la fila «Mi aseguradora» mientras se lee la póliza de los documentos del auto (V2-M11.02 con V2-M09.01)."
+  },
+  "ayudaAcerca": "Acerca de CareCar",
+  "ayudaVersion": "Versión",
+  "ayudaCargando": "Cargando…",
+  "ayudaLicencias": "Licencias de software",
+  "ayudaLicenciasDetalle": "Componentes incluidos en la aplicación",
+  "ayudaPrivacidad": "Aviso de privacidad",
+  "ayudaTerminos": "Términos de uso",
+  "ayudaTerminosAusentes": "El documento no está disponible.",
+  "ayudaCerrar": "Cerrar",
+  "documentosCalendario": "Calendario de vencimientos",
+  "@documentosCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosVencimientos": "Vencimientos",
+  "@documentosVencimientos": {"description":"Texto de documentos del vehículo."},
+  "documentosErrorCalendario": "No se pudieron cargar los vencimientos",
+  "@documentosErrorCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosCantidad": "{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}",
+  "@documentosCantidad": {"description":"Texto de documentos del vehículo.","placeholders":{"cantidad":{"type":"int"}}},
+  "documentosDelMes": "Vencimientos del mes",
+  "@documentosDelMes": {"description":"Texto de documentos del vehículo."},
+  "documentosVerMes": "Ver todo el mes",
+  "@documentosVerMes": {"description":"Texto de documentos del vehículo."},
+  "documentosMesVacio": "No hay vencimientos este mes.",
+  "@documentosMesVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDiaVacio": "No hay vencimientos en este día.",
+  "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDetalle": "{fecha} · {vehiculo}",
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Buscar",
+  "ayudaBuscarSugerencia": "Escribe una pregunta o tema",
+  "ayudaDescripcion": "Descripción",
+  "ayudaDescripcionPista": "Cuéntanos qué ocurrió",
+  "ayudaEnviado": "Reporte enviado",
+  "ayudaEnviar": "Enviar reporte",
+  "ayudaErrorReporte": "No se pudo enviar el reporte. Intenta de nuevo.",
+  "ayudaGracias": "Gracias por ayudarnos a mejorar.",
+  "ayudaLongitud": "Describe el problema con entre 10 y 2000 caracteres.",
+  "ayudaOtrasPalabras": "Prueba con otras palabras.",
+  "ayudaPreguntas": "Preguntas frecuentes",
+  "ayudaPrivacidadReporte": "Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.",
+  "ayudaReporte": "Reportar un problema",
+  "ayudaSinResultados": "Sin resultados",
+  "documentosPdfAgencia": "Documento de la agencia",
+  "documentosAgregar": "Agregar documento",
+  "documentosAgregarFecha": "Agregar fecha de vencimiento",
+  "documentosCamara": "Tomar fotografía",
+  "documentosErrorFoto": "No se pudo preparar la foto.",
+  "documentosErrorGuardar": "No se pudo guardar el documento. Intenta de nuevo.",
+  "documentosFaltaFoto": "Selecciona una imagen del documento.",
+  "documentosGaleria": "Elegir de galería",
+  "documentosGuardar": "Guardar documento",
+  "documentosProgreso": "Carga del documento",
+  "documentosTipo": "Tipo de documento",
+  "documentosVistaPrevia": "Vista previa del documento",
+  "m15Titulo": "Encuestas de servicio",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Califica tu visita al taller",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "No tienes encuestas pendientes",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "¿Qué tan probable es que recomiendes nuestro servicio?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Tiempo del servicio",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Trato recibido",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Limpieza del vehículo",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Atención del asesor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Elige una calificación para cada pregunta. El número más alto es la mejor calificación.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Comentario opcional",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Enviar encuesta",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Posponer por 24 horas",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Gracias por calificar tu servicio",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Pedir que la agencia me contacte",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "La agencia recibió tu solicitud de contacto.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "No se pudo guardar. Intenta de nuevo.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "Esta encuesta ya no está disponible",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
   }
 }

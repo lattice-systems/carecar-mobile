@@ -11463,6 +11463,372 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Buscando tu póliza…'**
   String get asistenciaLlamarAseguradoraBuscando;
+
+  /// No description provided for @ayudaAcerca.
+  ///
+  /// In es, this message translates to:
+  /// **'Acerca de CareCar'**
+  String get ayudaAcerca;
+
+  /// No description provided for @ayudaVersion.
+  ///
+  /// In es, this message translates to:
+  /// **'Versión'**
+  String get ayudaVersion;
+
+  /// No description provided for @ayudaCargando.
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando…'**
+  String get ayudaCargando;
+
+  /// No description provided for @ayudaLicencias.
+  ///
+  /// In es, this message translates to:
+  /// **'Licencias de software'**
+  String get ayudaLicencias;
+
+  /// No description provided for @ayudaLicenciasDetalle.
+  ///
+  /// In es, this message translates to:
+  /// **'Componentes incluidos en la aplicación'**
+  String get ayudaLicenciasDetalle;
+
+  /// No description provided for @ayudaPrivacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Aviso de privacidad'**
+  String get ayudaPrivacidad;
+
+  /// No description provided for @ayudaTerminos.
+  ///
+  /// In es, this message translates to:
+  /// **'Términos de uso'**
+  String get ayudaTerminos;
+
+  /// No description provided for @ayudaTerminosAusentes.
+  ///
+  /// In es, this message translates to:
+  /// **'El documento no está disponible.'**
+  String get ayudaTerminosAusentes;
+
+  /// No description provided for @ayudaCerrar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar'**
+  String get ayudaCerrar;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Calendario de vencimientos'**
+  String get documentosCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos'**
+  String get documentosVencimientos;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudieron cargar los vencimientos'**
+  String get documentosErrorCalendario;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{cantidad, plural, one{1 vencimiento} other{{cantidad} vencimientos}}'**
+  String documentosCantidad(int cantidad);
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Vencimientos del mes'**
+  String get documentosDelMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver todo el mes'**
+  String get documentosVerMes;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos este mes.'**
+  String get documentosMesVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'No hay vencimientos en este día.'**
+  String get documentosDiaVacio;
+
+  /// Texto de documentos del vehículo.
+  ///
+  /// In es, this message translates to:
+  /// **'{fecha} · {vehiculo}'**
+  String documentosDetalle(String fecha, String vehiculo);
+
+  /// No description provided for @ayudaBuscar.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscar'**
+  String get ayudaBuscar;
+
+  /// No description provided for @ayudaBuscarSugerencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe una pregunta o tema'**
+  String get ayudaBuscarSugerencia;
+
+  /// No description provided for @ayudaDescripcion.
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción'**
+  String get ayudaDescripcion;
+
+  /// No description provided for @ayudaDescripcionPista.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuéntanos qué ocurrió'**
+  String get ayudaDescripcionPista;
+
+  /// No description provided for @ayudaEnviado.
+  ///
+  /// In es, this message translates to:
+  /// **'Reporte enviado'**
+  String get ayudaEnviado;
+
+  /// No description provided for @ayudaEnviar.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar reporte'**
+  String get ayudaEnviar;
+
+  /// No description provided for @ayudaErrorReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo enviar el reporte. Intenta de nuevo.'**
+  String get ayudaErrorReporte;
+
+  /// No description provided for @ayudaGracias.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por ayudarnos a mejorar.'**
+  String get ayudaGracias;
+
+  /// No description provided for @ayudaLongitud.
+  ///
+  /// In es, this message translates to:
+  /// **'Describe el problema con entre 10 y 2000 caracteres.'**
+  String get ayudaLongitud;
+
+  /// No description provided for @ayudaOtrasPalabras.
+  ///
+  /// In es, this message translates to:
+  /// **'Prueba con otras palabras.'**
+  String get ayudaOtrasPalabras;
+
+  /// No description provided for @ayudaPreguntas.
+  ///
+  /// In es, this message translates to:
+  /// **'Preguntas frecuentes'**
+  String get ayudaPreguntas;
+
+  /// No description provided for @ayudaPrivacidadReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.'**
+  String get ayudaPrivacidadReporte;
+
+  /// No description provided for @ayudaReporte.
+  ///
+  /// In es, this message translates to:
+  /// **'Reportar un problema'**
+  String get ayudaReporte;
+
+  /// No description provided for @ayudaSinResultados.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin resultados'**
+  String get ayudaSinResultados;
+
+  /// No description provided for @documentosPdfAgencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Documento de la agencia'**
+  String get documentosPdfAgencia;
+
+  /// No description provided for @documentosAgregar.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar documento'**
+  String get documentosAgregar;
+
+  /// No description provided for @documentosAgregarFecha.
+  ///
+  /// In es, this message translates to:
+  /// **'Agregar fecha de vencimiento'**
+  String get documentosAgregarFecha;
+
+  /// No description provided for @documentosCamara.
+  ///
+  /// In es, this message translates to:
+  /// **'Tomar fotografía'**
+  String get documentosCamara;
+
+  /// No description provided for @documentosErrorFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo preparar la foto.'**
+  String get documentosErrorFoto;
+
+  /// No description provided for @documentosErrorGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el documento. Intenta de nuevo.'**
+  String get documentosErrorGuardar;
+
+  /// No description provided for @documentosFaltaFoto.
+  ///
+  /// In es, this message translates to:
+  /// **'Selecciona una imagen del documento.'**
+  String get documentosFaltaFoto;
+
+  /// No description provided for @documentosGaleria.
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir de galería'**
+  String get documentosGaleria;
+
+  /// No description provided for @documentosGuardar.
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar documento'**
+  String get documentosGuardar;
+
+  /// No description provided for @documentosProgreso.
+  ///
+  /// In es, this message translates to:
+  /// **'Carga del documento'**
+  String get documentosProgreso;
+
+  /// No description provided for @documentosTipo.
+  ///
+  /// In es, this message translates to:
+  /// **'Tipo de documento'**
+  String get documentosTipo;
+
+  /// No description provided for @documentosVistaPrevia.
+  ///
+  /// In es, this message translates to:
+  /// **'Vista previa del documento'**
+  String get documentosVistaPrevia;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Encuestas de servicio'**
+  String get m15Titulo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Califica tu visita al taller'**
+  String get m15Pendientes;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes encuestas pendientes'**
+  String get m15Vacio;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Qué tan probable es que recomiendes nuestro servicio?'**
+  String get m15Recomendar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Tiempo del servicio'**
+  String get m15Tiempo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Trato recibido'**
+  String get m15Trato;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Limpieza del vehículo'**
+  String get m15Limpieza;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Atención del asesor'**
+  String get m15Asesor;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.'**
+  String get m15Escala;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Comentario opcional'**
+  String get m15Comentario;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar encuesta'**
+  String get m15Enviar;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Posponer por 24 horas'**
+  String get m15Posponer;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Gracias por calificar tu servicio'**
+  String get m15Gracias;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Pedir que la agencia me contacte'**
+  String get m15Contacto;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'La agencia recibió tu solicitud de contacto.'**
+  String get m15ContactoListo;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar. Intenta de nuevo.'**
+  String get m15Error;
+
+  /// Texto de encuestas o contacto con la agencia.
+  ///
+  /// In es, this message translates to:
+  /// **'Esta encuesta ya no está disponible'**
+  String get m15NoDisponible;
 }
 
 class _AppLocalizationsDelegate

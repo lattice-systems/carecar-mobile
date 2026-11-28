@@ -6875,4 +6875,200 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get asistenciaLlamarAseguradoraBuscando => 'Looking for your policy…';
+
+  @override
+  String get ayudaAcerca => 'About CareCar';
+
+  @override
+  String get ayudaVersion => 'Version';
+
+  @override
+  String get ayudaCargando => 'Loading…';
+
+  @override
+  String get ayudaLicencias => 'Software licenses';
+
+  @override
+  String get ayudaLicenciasDetalle => 'Components included in the app';
+
+  @override
+  String get ayudaPrivacidad => 'Privacy notice';
+
+  @override
+  String get ayudaTerminos => 'Terms of use';
+
+  @override
+  String get ayudaTerminosAusentes => 'The document is unavailable.';
+
+  @override
+  String get ayudaCerrar => 'Close';
+
+  @override
+  String get documentosCalendario => 'Expiration calendar';
+
+  @override
+  String get documentosVencimientos => 'Expirations';
+
+  @override
+  String get documentosErrorCalendario => 'Could not load expirations';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad expirations',
+      one: '1 expiration',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Expirations this month';
+
+  @override
+  String get documentosVerMes => 'View full month';
+
+  @override
+  String get documentosMesVacio => 'No expirations this month.';
+
+  @override
+  String get documentosDiaVacio => 'No expirations on this day.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
+
+  @override
+  String get ayudaBuscar => 'Search';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Enter a question or topic';
+
+  @override
+  String get ayudaDescripcion => 'Description';
+
+  @override
+  String get ayudaDescripcionPista => 'Tell us what happened';
+
+  @override
+  String get ayudaEnviado => 'Report sent';
+
+  @override
+  String get ayudaEnviar => 'Send report';
+
+  @override
+  String get ayudaErrorReporte => 'Could not send your report. Try again.';
+
+  @override
+  String get ayudaGracias => 'Thanks for helping us improve.';
+
+  @override
+  String get ayudaLongitud => 'Describe the problem in 10 to 2,000 characters.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Try different keywords.';
+
+  @override
+  String get ayudaPreguntas => 'Frequently asked questions';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Your report includes the CareCar version, operating system and device model. Avoid including personal details.';
+
+  @override
+  String get ayudaReporte => 'Report a problem';
+
+  @override
+  String get ayudaSinResultados => 'No results';
+
+  @override
+  String get documentosPdfAgencia => 'Dealership document';
+
+  @override
+  String get documentosAgregar => 'Add document';
+
+  @override
+  String get documentosAgregarFecha => 'Add expiration date';
+
+  @override
+  String get documentosCamara => 'Take photo';
+
+  @override
+  String get documentosErrorFoto => 'Could not prepare the photo.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'Could not save the document. Try again.';
+
+  @override
+  String get documentosFaltaFoto => 'Select an image of the document.';
+
+  @override
+  String get documentosGaleria => 'Choose from gallery';
+
+  @override
+  String get documentosGuardar => 'Save document';
+
+  @override
+  String get documentosProgreso => 'Document upload';
+
+  @override
+  String get documentosTipo => 'Document type';
+
+  @override
+  String get documentosVistaPrevia => 'Document preview';
+
+  @override
+  String get m15Titulo => 'Service surveys';
+
+  @override
+  String get m15Pendientes => 'Rate your service visit';
+
+  @override
+  String get m15Vacio => 'You have no pending surveys';
+
+  @override
+  String get m15Recomendar => 'How likely are you to recommend our service?';
+
+  @override
+  String get m15Tiempo => 'Time taken';
+
+  @override
+  String get m15Trato => 'Courtesy';
+
+  @override
+  String get m15Limpieza => 'Vehicle cleanliness';
+
+  @override
+  String get m15Asesor => 'Service advisor';
+
+  @override
+  String get m15Escala =>
+      'Choose a rating for each question. The highest number is the best rating.';
+
+  @override
+  String get m15Comentario => 'Optional comment';
+
+  @override
+  String get m15Enviar => 'Submit survey';
+
+  @override
+  String get m15Posponer => 'Remind me in 24 hours';
+
+  @override
+  String get m15Gracias => 'Thanks for rating your service';
+
+  @override
+  String get m15Contacto => 'Ask the dealership to contact me';
+
+  @override
+  String get m15ContactoListo => 'The dealership received your request.';
+
+  @override
+  String get m15Error => 'Could not save. Try again.';
+
+  @override
+  String get m15NoDisponible => 'This survey is no longer available';
 }

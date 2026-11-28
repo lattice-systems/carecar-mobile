@@ -15,4 +15,27 @@ class RepositorioDocumentosApi implements RepositorioDocumentos {
   @override
   Future<List<DocumentoVehiculo>> documentos(int vehiculoId) => _cliente
       .obtenerLista('/vehiculos/$vehiculoId/documentos', _lectura.documento);
+
+  Future<DocumentoVehiculo> subir({
+    required int vehiculoId,
+    required TipoDocumento tipo,
+    required String? titulo,
+    required DateTime? venceEn,
+    required List<int> bytes,
+    required void Function(double) alProgreso,
+  }) => _cliente.enviarArchivo(
+    '/vehiculos/$vehiculoId/documentos',
+    campos: {
+      'tipo': tipo.codigo,
+      'titulo': ?titulo,
+      if (venceEn != null)
+        'venceEn': venceEn.toIso8601String().split('T').first,
+    },
+    nombreArchivo: 'archivo',
+    nombreOriginal: 'documento.jpg',
+    bytes: bytes,
+    tipo: 'image/jpeg',
+    alProgreso: alProgreso,
+    leer: _lectura.documento,
+  );
 }

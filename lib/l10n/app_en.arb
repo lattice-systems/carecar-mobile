@@ -3929,5 +3929,126 @@
   "documentosTipoGarantia": "Warranty policy",
   "documentosTipoFactura": "Purchase invoice",
   "documentosTipoOtro": "Other document",
-  "asistenciaLlamarAseguradoraBuscando": "Looking for your policy…"
+  "asistenciaLlamarAseguradoraBuscando": "Looking for your policy…",
+  "ayudaAcerca": "About CareCar",
+  "ayudaVersion": "Version",
+  "ayudaCargando": "Loading…",
+  "ayudaLicencias": "Software licenses",
+  "ayudaLicenciasDetalle": "Components included in the app",
+  "ayudaPrivacidad": "Privacy notice",
+  "ayudaTerminos": "Terms of use",
+  "ayudaTerminosAusentes": "The document is unavailable.",
+  "ayudaCerrar": "Close",
+  "documentosCalendario": "Expiration calendar",
+  "@documentosCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosVencimientos": "Expirations",
+  "@documentosVencimientos": {"description":"Texto de documentos del vehículo."},
+  "documentosErrorCalendario": "Could not load expirations",
+  "@documentosErrorCalendario": {"description":"Texto de documentos del vehículo."},
+  "documentosCantidad": "{cantidad, plural, one{1 expiration} other{{cantidad} expirations}}",
+  "@documentosCantidad": {"description":"Texto de documentos del vehículo.","placeholders":{"cantidad":{"type":"int"}}},
+  "documentosDelMes": "Expirations this month",
+  "@documentosDelMes": {"description":"Texto de documentos del vehículo."},
+  "documentosVerMes": "View full month",
+  "@documentosVerMes": {"description":"Texto de documentos del vehículo."},
+  "documentosMesVacio": "No expirations this month.",
+  "@documentosMesVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDiaVacio": "No expirations on this day.",
+  "@documentosDiaVacio": {"description":"Texto de documentos del vehículo."},
+  "documentosDetalle": "{fecha} · {vehiculo}",
+  "@documentosDetalle": {"description":"Texto de documentos del vehículo.","placeholders":{"fecha":{"type":"String"},"vehiculo":{"type":"String"}}},
+  "ayudaBuscar": "Search",
+  "ayudaBuscarSugerencia": "Enter a question or topic",
+  "ayudaDescripcion": "Description",
+  "ayudaDescripcionPista": "Tell us what happened",
+  "ayudaEnviado": "Report sent",
+  "ayudaEnviar": "Send report",
+  "ayudaErrorReporte": "Could not send your report. Try again.",
+  "ayudaGracias": "Thanks for helping us improve.",
+  "ayudaLongitud": "Describe the problem in 10 to 2,000 characters.",
+  "ayudaOtrasPalabras": "Try different keywords.",
+  "ayudaPreguntas": "Frequently asked questions",
+  "ayudaPrivacidadReporte": "Your report includes the CareCar version, operating system and device model. Avoid including personal details.",
+  "ayudaReporte": "Report a problem",
+  "ayudaSinResultados": "No results",
+  "documentosPdfAgencia": "Dealership document",
+  "documentosAgregar": "Add document",
+  "documentosAgregarFecha": "Add expiration date",
+  "documentosCamara": "Take photo",
+  "documentosErrorFoto": "Could not prepare the photo.",
+  "documentosErrorGuardar": "Could not save the document. Try again.",
+  "documentosFaltaFoto": "Select an image of the document.",
+  "documentosGaleria": "Choose from gallery",
+  "documentosGuardar": "Save document",
+  "documentosProgreso": "Document upload",
+  "documentosTipo": "Document type",
+  "documentosVistaPrevia": "Document preview",
+  "m15Titulo": "Service surveys",
+  "@m15Titulo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Pendientes": "Rate your service visit",
+  "@m15Pendientes": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Vacio": "You have no pending surveys",
+  "@m15Vacio": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Recomendar": "How likely are you to recommend our service?",
+  "@m15Recomendar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Tiempo": "Time taken",
+  "@m15Tiempo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Trato": "Courtesy",
+  "@m15Trato": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Limpieza": "Vehicle cleanliness",
+  "@m15Limpieza": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Asesor": "Service advisor",
+  "@m15Asesor": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Escala": "Choose a rating for each question. The highest number is the best rating.",
+  "@m15Escala": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Comentario": "Optional comment",
+  "@m15Comentario": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Enviar": "Submit survey",
+  "@m15Enviar": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Posponer": "Remind me in 24 hours",
+  "@m15Posponer": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Gracias": "Thanks for rating your service",
+  "@m15Gracias": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Contacto": "Ask the dealership to contact me",
+  "@m15Contacto": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15ContactoListo": "The dealership received your request.",
+  "@m15ContactoListo": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15Error": "Could not save. Try again.",
+  "@m15Error": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  },
+  "m15NoDisponible": "This survey is no longer available",
+  "@m15NoDisponible": {
+    "description": "Texto de encuestas o contacto con la agencia."
+  }
 }

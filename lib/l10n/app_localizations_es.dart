@@ -6875,4 +6875,204 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get asistenciaLlamarAseguradoraBuscando => 'Buscando tu póliza…';
+
+  @override
+  String get ayudaAcerca => 'Acerca de CareCar';
+
+  @override
+  String get ayudaVersion => 'Versión';
+
+  @override
+  String get ayudaCargando => 'Cargando…';
+
+  @override
+  String get ayudaLicencias => 'Licencias de software';
+
+  @override
+  String get ayudaLicenciasDetalle => 'Componentes incluidos en la aplicación';
+
+  @override
+  String get ayudaPrivacidad => 'Aviso de privacidad';
+
+  @override
+  String get ayudaTerminos => 'Términos de uso';
+
+  @override
+  String get ayudaTerminosAusentes => 'El documento no está disponible.';
+
+  @override
+  String get ayudaCerrar => 'Cerrar';
+
+  @override
+  String get documentosCalendario => 'Calendario de vencimientos';
+
+  @override
+  String get documentosVencimientos => 'Vencimientos';
+
+  @override
+  String get documentosErrorCalendario =>
+      'No se pudieron cargar los vencimientos';
+
+  @override
+  String documentosCantidad(int cantidad) {
+    String _temp0 = intl.Intl.pluralLogic(
+      cantidad,
+      locale: localeName,
+      other: '$cantidad vencimientos',
+      one: '1 vencimiento',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get documentosDelMes => 'Vencimientos del mes';
+
+  @override
+  String get documentosVerMes => 'Ver todo el mes';
+
+  @override
+  String get documentosMesVacio => 'No hay vencimientos este mes.';
+
+  @override
+  String get documentosDiaVacio => 'No hay vencimientos en este día.';
+
+  @override
+  String documentosDetalle(String fecha, String vehiculo) {
+    return '$fecha · $vehiculo';
+  }
+
+  @override
+  String get ayudaBuscar => 'Buscar';
+
+  @override
+  String get ayudaBuscarSugerencia => 'Escribe una pregunta o tema';
+
+  @override
+  String get ayudaDescripcion => 'Descripción';
+
+  @override
+  String get ayudaDescripcionPista => 'Cuéntanos qué ocurrió';
+
+  @override
+  String get ayudaEnviado => 'Reporte enviado';
+
+  @override
+  String get ayudaEnviar => 'Enviar reporte';
+
+  @override
+  String get ayudaErrorReporte =>
+      'No se pudo enviar el reporte. Intenta de nuevo.';
+
+  @override
+  String get ayudaGracias => 'Gracias por ayudarnos a mejorar.';
+
+  @override
+  String get ayudaLongitud =>
+      'Describe el problema con entre 10 y 2000 caracteres.';
+
+  @override
+  String get ayudaOtrasPalabras => 'Prueba con otras palabras.';
+
+  @override
+  String get ayudaPreguntas => 'Preguntas frecuentes';
+
+  @override
+  String get ayudaPrivacidadReporte =>
+      'Se adjuntan la versión de CareCar, el sistema y el modelo del equipo. Evita incluir datos personales en la descripción.';
+
+  @override
+  String get ayudaReporte => 'Reportar un problema';
+
+  @override
+  String get ayudaSinResultados => 'Sin resultados';
+
+  @override
+  String get documentosPdfAgencia => 'Documento de la agencia';
+
+  @override
+  String get documentosAgregar => 'Agregar documento';
+
+  @override
+  String get documentosAgregarFecha => 'Agregar fecha de vencimiento';
+
+  @override
+  String get documentosCamara => 'Tomar fotografía';
+
+  @override
+  String get documentosErrorFoto => 'No se pudo preparar la foto.';
+
+  @override
+  String get documentosErrorGuardar =>
+      'No se pudo guardar el documento. Intenta de nuevo.';
+
+  @override
+  String get documentosFaltaFoto => 'Selecciona una imagen del documento.';
+
+  @override
+  String get documentosGaleria => 'Elegir de galería';
+
+  @override
+  String get documentosGuardar => 'Guardar documento';
+
+  @override
+  String get documentosProgreso => 'Carga del documento';
+
+  @override
+  String get documentosTipo => 'Tipo de documento';
+
+  @override
+  String get documentosVistaPrevia => 'Vista previa del documento';
+
+  @override
+  String get m15Titulo => 'Encuestas de servicio';
+
+  @override
+  String get m15Pendientes => 'Califica tu visita al taller';
+
+  @override
+  String get m15Vacio => 'No tienes encuestas pendientes';
+
+  @override
+  String get m15Recomendar =>
+      '¿Qué tan probable es que recomiendes nuestro servicio?';
+
+  @override
+  String get m15Tiempo => 'Tiempo del servicio';
+
+  @override
+  String get m15Trato => 'Trato recibido';
+
+  @override
+  String get m15Limpieza => 'Limpieza del vehículo';
+
+  @override
+  String get m15Asesor => 'Atención del asesor';
+
+  @override
+  String get m15Escala =>
+      'Elige una calificación para cada pregunta. El número más alto es la mejor calificación.';
+
+  @override
+  String get m15Comentario => 'Comentario opcional';
+
+  @override
+  String get m15Enviar => 'Enviar encuesta';
+
+  @override
+  String get m15Posponer => 'Posponer por 24 horas';
+
+  @override
+  String get m15Gracias => 'Gracias por calificar tu servicio';
+
+  @override
+  String get m15Contacto => 'Pedir que la agencia me contacte';
+
+  @override
+  String get m15ContactoListo => 'La agencia recibió tu solicitud de contacto.';
+
+  @override
+  String get m15Error => 'No se pudo guardar. Intenta de nuevo.';
+
+  @override
+  String get m15NoDisponible => 'Esta encuesta ya no está disponible';
 }
