@@ -59,7 +59,8 @@ jobs:
         run: |
           bash tool/verificar_simbolos_android.sh \
             build/app/outputs/flutter-apk/app-pruebas-release.apk \
-            build/simbolos/android | tee build/simbolos/android/verificacion.txt
+            build/simbolos/android "$ANDROID_NDK_LATEST_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin" |
+            tee build/simbolos/android/verificacion.txt
 
       - name: Guardar APK y símbolos
         uses: actions/upload-artifact@v7
