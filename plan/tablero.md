@@ -66,7 +66,7 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-T02.24 | Ajustes con el lenguaje v2: marco único, listas agrupadas y sin cabecera héroe (rediseño; no es historia de usuario) | Daniel |  | V2-T02.23 | Hecha | #169 |
 | V2-T02.25 | Las pantallas v2 que faltaban: un solo marco, un solo estilo de lista y de flecha, la próxima cita de «Mis citas» y los textos de error (rediseño; no es historia de usuario) | Daniel |  | V2-T02.24 | Hecha | #171 |
 | V2-T02.26 | Segunda pasada a las pantallas v2: comprobante, ficha técnica, Emergencias y Pedir ayuda (rediseño; no es historia de usuario) | Daniel |  | V2-T02.25 | Hecha | #172 |
-| V2-T02.27 | Cierre del rediseño v2: acceso y recuperación sin v1, encabezado con icono, logo de la doble C, fotos de los autos y barra de pestañas fija (rediseño; no es historia de usuario) | Daniel |  | V2-T02.26 | En revisión | PR pendiente |
+| V2-T02.27 | Cierre del rediseño v2: acceso y recuperación sin v1, encabezado con icono, logo de la doble C, fotos de los autos y barra de pestañas fija (rediseño; no es historia de usuario) | Daniel |  | V2-T02.26 | En revisión | #240 |
 | V2-T03.01 | Reglas de análisis más estrictas | Haziel |  | — | Hecha | #200 · [Reglas](../analysis_options.yaml) · [análisis sin avisos en dev](https://github.com/lattice-systems/carecar-mobile/actions/runs/46077339380) |
 | V2-T03.02 | Pruebas golden | Haziel |  | V2-T02.01 | Hecha | #124 |
 | V2-T03.03 | `integration_test` del flujo principal | Haziel |  | V2-T01.03 | Hecha | #200 · [Flujo Android](../integration_test/flujo_principal_test.dart) · [reserva y cancelación en CI completa de main](https://github.com/lattice-systems/carecar-mobile/actions/runs/46054289718) |
