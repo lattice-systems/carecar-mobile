@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons_300.dart';
 
 import '../../../api/excepciones.dart';
 import '../../../config/flavor.dart';
@@ -35,7 +36,7 @@ class PromocionesInicio extends ConsumerWidget {
         children: [
           FilaLista(
             titulo: textos.m13Novedades,
-            inicio: const Icon(Icons.newspaper_outlined),
+            inicio: const Icon(LucideIcons300.newspaper),
             alToque: () => context.push('/novedades'),
           ),
           if (ofertas.isNotEmpty) ...[
@@ -50,7 +51,7 @@ class PromocionesInicio extends ConsumerWidget {
                       child: FilaLista(
                         titulo: promocion.titulo,
                         conDivisor: false,
-                        inicio: const Icon(Icons.local_offer_outlined),
+                        inicio: const Icon(LucideIcons300.tag),
                         alToque: () =>
                             context.push('/promociones/${promocion.id}'),
                       ),
@@ -224,8 +225,9 @@ class _Detalle extends ConsumerWidget {
             final item = lista
                 .where((publicacion) => publicacion.id == id)
                 .firstOrNull;
-            if (item == null)
+            if (item == null) {
               return estado(EstadoVacio(titulo: textos.m13NoDisponible));
+            }
             return _Contenido(
               key: ValueKey(item.id),
               item: item,
@@ -333,8 +335,7 @@ class _Foto extends StatelessWidget {
               uri.toString(),
               fit: BoxFit.cover,
               excludeFromSemantics: true,
-              errorBuilder: (_, _, _) =>
-                  const Icon(Icons.image_not_supported_outlined),
+              errorBuilder: (_, _, _) => const Icon(LucideIcons300.imageOff),
             )
           : Image.asset(
               'assets/autos/march.jpg',

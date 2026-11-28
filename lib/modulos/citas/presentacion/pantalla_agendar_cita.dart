@@ -568,7 +568,7 @@ class _EstadoPantallaAgendarCita extends ConsumerState<PantallaAgendarCita> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (cita.cupon case final cupon?)
-                  Text('${textos.m13Cupon}: $cupon'),
+                  Text(textos.m13CuponCodigo(cupon)),
                 if (cita.recoleccion case final recoleccion?)
                   GrupoRecoleccionCita(recoleccion: recoleccion),
               ],

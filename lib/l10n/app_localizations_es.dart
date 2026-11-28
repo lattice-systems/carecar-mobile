@@ -7158,5 +7158,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get m13Cupon => 'Cupón';
 
   @override
+  String m13CuponCodigo(String codigo) {
+    return 'Cupón: $codigo';
+  }
+
+  @override
   String get m13Agendar => 'Agendar con esta promoción';
 }

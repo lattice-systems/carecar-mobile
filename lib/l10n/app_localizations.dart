@@ -11974,6 +11974,12 @@ abstract class AppLocalizations {
   /// **'Cupón'**
   String get m13Cupon;
 
+  /// El cupón de la promoción en el resultado de la cita.
+  ///
+  /// In es, this message translates to:
+  /// **'Cupón: {codigo}'**
+  String m13CuponCodigo(String codigo);
+
   /// Texto de promociones y novedades.
   ///
   /// In es, this message translates to:

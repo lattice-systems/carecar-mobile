@@ -4084,6 +4084,7 @@
   "@m13NoDisponible": {"description": "Texto de promociones y novedades."},
   "m13Cupon": "Coupon",
   "@m13Cupon": {"description": "Texto de promociones y novedades."},
+  "m13CuponCodigo": "Coupon: {codigo}",
   "m13Agendar": "Book with this offer",
   "@m13Agendar": {"description": "Texto de promociones y novedades."}
 }

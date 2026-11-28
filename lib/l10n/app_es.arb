@@ -9214,6 +9214,11 @@
   "@m13NoDisponible": {"description": "Texto de promociones y novedades."},
   "m13Cupon": "Cupón",
   "@m13Cupon": {"description": "Texto de promociones y novedades."},
+  "m13CuponCodigo": "Cupón: {codigo}",
+  "@m13CuponCodigo": {
+    "description": "El cupón de la promoción en el resultado de la cita.",
+    "placeholders": {"codigo": {"type": "String"}}
+  },
   "m13Agendar": "Agendar con esta promoción",
   "@m13Agendar": {"description": "Texto de promociones y novedades."}
 }
