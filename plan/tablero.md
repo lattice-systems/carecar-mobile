@@ -92,6 +92,7 @@ Avance de Haziel en dev · **19 de 30 historias en Hecha (63 %)**.
 | V2-T05.09 | Almacenamiento de archivos | Ricardo | B | — | Hecha | backend#83, #89 |
 | V2-T05.10 | Datos de ejemplo | Ricardo | B | — | Hecha | backend#116 |
 | V2-T05.11 | Desplegar la API en Azure automáticamente en cada merge | Daniel | B | — | Hecha | backend#71 |
+| V2-T05.12 | Datos de ejemplo completos también en la API real (Azure + Neon) | Daniel | B | V2-T05.10 | En revisión | backend#122 |
 
 ## H2 · Núcleo de la ficha (secciones 1–3)
 
